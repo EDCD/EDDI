@@ -36,7 +36,7 @@ namespace EddiCrimeMonitor
         private string crimeAuthorityFaction;
         public List<Target> shipTargets = new List<Target>();
 
-        private static readonly object recordLock = new object();
+        internal static readonly object recordLock = new object();
         public event EventHandler RecordUpdatedEvent;
         private readonly IBgsService bgsService;
 
@@ -321,9 +321,12 @@ namespace EddiCrimeMonitor
                 List<string> systemFactions = EDDI.Instance.CurrentStarSystem?.factions.Select(f => f.name).ToList();
 
                 // Get record which matches a system faction and the bond claims amount
-                record = criminalrecord
-                    .Where(r => systemFactions?.Contains(r.faction) ?? false)
-                    .FirstOrDefault(r => r.bondsAmount == amount);
+                lock (recordLock)
+                {
+                    record = criminalrecord
+                        .Where(r => systemFactions?.Contains(r.faction) ?? false)
+                        .FirstOrDefault(r => r.bondsAmount == amount);
+                }
             }
             else
             {
@@ -429,7 +432,10 @@ namespace EddiCrimeMonitor
                 // Handle journal event from Interstellar Factors transaction (FDEV bug)
                 if (string.IsNullOrEmpty(reward.faction))
                 {
-                    record = criminalrecord.FirstOrDefault(r => r.bountiesAmount == amount);
+                    lock (recordLock)
+                    {
+                        record = criminalrecord.FirstOrDefault(r => r.bountiesAmount == amount);
+                    }
                 }
                 else
                 {
@@ -546,15 +552,18 @@ namespace EddiCrimeMonitor
             }
 
             bool update = false;
-            foreach (FactionRecord record in criminalrecord.ToList()
-                // Filter out records from factions within the current star system
-                .Where(r => !(EDDI.Instance.CurrentStarSystem?.factions?.Select(f => f.name) ?? new List<string>()).Contains(r.faction)))
+            lock (recordLock)
             {
-                if (@event.allbounties || record.faction == @event.faction)
+                foreach (FactionRecord record in criminalrecord.ToList()
+                             // Filter out records from factions within the current star system
+                             .Where(r => !(EDDI.Instance.CurrentStarSystem?.factions?.Select(f => f.name) ?? new List<string>()).Contains(r.faction)))
                 {
-                    PayBounty(record);
-                    update = true;
-                    if (record.faction == @event.faction) { break; }
+                    if (@event.allbounties || record.faction == @event.faction)
+                    {
+                        PayBounty(record);
+                        update = true;
+                        if (record.faction == @event.faction) { break; }
+                    }
                 }
             }
             if (!update)
@@ -563,11 +572,14 @@ namespace EddiCrimeMonitor
                 var superpower = Superpower.FromNameOrEdName(@event.faction);
                 if (superpower != null)
                 {
-                    var record = criminalrecord.ToList().SingleOrDefault(r => r.Allegiance == superpower && r.bounties == @event.amount);
-                    if (record != null)
+                    lock (recordLock)
                     {
-                        PayBounty(record);
-                        update = true;
+                        var record = criminalrecord.ToList().SingleOrDefault(r => r.Allegiance == superpower && r.bounties == @event.amount);
+                        if (record != null)
+                        {
+                            PayBounty(record);
+                            update = true;
+                        }
                     }
                 }
             }
@@ -617,40 +629,43 @@ namespace EddiCrimeMonitor
         {
             // This event may trigger for both bounties paid and fines paid (FDev bug)
             bool update = false;
-            foreach (FactionRecord record in criminalrecord.ToList())
+            lock (recordLock)
             {
-                if (@event.allfines || record.faction == @event.faction)
+                foreach (FactionRecord record in criminalrecord.ToList())
                 {
-                    // Get all fines incurred, excluding the discrepancy report
-                    List<FactionReport> reports = record.factionReports
-                        .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Fine)
-                        .ToList();
-                    long total = reports.Sum(r => r.amount);
-
-                    // Check for discrepancy in logged fines incurred
-                    if (total < @event.amount)
+                    if (@event.allfines || record.faction == @event.faction)
                     {
-                        // Adjust the discrepancy report & remove when zeroed out
-                        FactionReport report = record.factionReports
-                            .FirstOrDefault(r => r.crimeDef == Crime.Fine);
-                        if (report != null)
-                        {
-                            report.amount -= Math.Min(@event.amount - total, report.amount);
-                            if (report.amount == 0) { reports.Add(report); }
-                        }
-                    }
-                    // Remove associated records
-                    record.factionReports = record.factionReports.Except(reports).ToList();
+                        // Get all fines incurred, excluding the discrepancy report
+                        List<FactionReport> reports = record.factionReports
+                            .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Fine)
+                            .ToList();
+                        long total = reports.Sum(r => r.amount);
 
-                    // Adjust the total fines incurred amount
-                    record.fines -= Math.Min(@event.amount, record.fines);
-                    
-                    RemoveRecordIfEmpty(record);
-                    update = true;
-                    if (record.faction == @event.faction) { break; }
+                        // Check for discrepancy in logged fines incurred
+                        if (total < @event.amount)
+                        {
+                            // Adjust the discrepancy report & remove when zeroed out
+                            FactionReport report = record.factionReports
+                                .FirstOrDefault(r => r.crimeDef == Crime.Fine);
+                            if (report != null)
+                            {
+                                report.amount -= Math.Min(@event.amount - total, report.amount);
+                                if (report.amount == 0) { reports.Add(report); }
+                            }
+                        }
+                        // Remove associated records
+                        record.factionReports = record.factionReports.Except(reports).ToList();
+
+                        // Adjust the total fines incurred amount
+                        record.fines -= Math.Min(@event.amount, record.fines);
+
+                        RemoveRecordIfEmpty(record);
+                        update = true;
+                        if (record.faction == @event.faction) { break; }
+                    }
                 }
+                return update;
             }
-            return update;
         }
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
@@ -714,18 +729,21 @@ namespace EddiCrimeMonitor
             void RemoveCriminalRecords(string faction = null)
             {
                 // Update the criminal record fines and bounties for each faction, as appropriate.
-                foreach (FactionRecord record in criminalrecord.ToList())
+                lock (recordLock)
                 {
-                    if ((!string.IsNullOrEmpty(faction) && faction == record.faction) || string.IsNullOrEmpty(faction))
+                    foreach (FactionRecord record in criminalrecord.ToList())
                     {
-                        var crimeReports = record.factionReports
-                            .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim)
-                            .ToList();
-                        // Remove all pending fines and bounties (from a named faction, if a faction name is given)
-                        string forFaction = !string.IsNullOrEmpty(faction) ? $"for faction {record.faction} " : "";
-                        Logging.Debug($"Paid {@event.price} credits to resolve fines and bounties {forFaction} (expected {crimeReports.Sum(r => r.amount)}).");
-                        record.factionReports = record.factionReports.Except(crimeReports).ToList();
-                        RemoveRecordIfEmpty(record);
+                        if ((!string.IsNullOrEmpty(faction) && faction == record.faction) || string.IsNullOrEmpty(faction))
+                        {
+                            var crimeReports = record.factionReports
+                                .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim)
+                                .ToList();
+                            // Remove all pending fines and bounties (from a named faction, if a faction name is given)
+                            string forFaction = !string.IsNullOrEmpty(faction) ? $"for faction {record.faction} " : "";
+                            Logging.Debug($"Paid {@event.price} credits to resolve fines and bounties {forFaction} (expected {crimeReports.Sum(r => r.amount)}).");
+                            record.factionReports = record.factionReports.Except(crimeReports).ToList();
+                            RemoveRecordIfEmpty(record);
+                        }
                     }
                 }
             }
@@ -733,15 +751,18 @@ namespace EddiCrimeMonitor
             void RemoveClaimsRecords()
             {
                 // Update the criminal record pending claims for each faction, as appropriate.
-                foreach (FactionRecord record in criminalrecord.ToList())
+                lock (recordLock)
                 {
-                    // Remove all pending claims from faction
-                    var claimReports = record.factionReports
-                        .Where(r => r.crimeDef == Crime.None || r.crimeDef == Crime.Claim)
-                        .ToList();
-                    Logging.Debug($"Removed vouchers for {claimReports.Sum(r => r.amount)} unclaimed credits from {record.faction}.");
-                    record.factionReports = record.factionReports.Except(claimReports).ToList();
-                    RemoveRecordIfEmpty(record);
+                    foreach (FactionRecord record in criminalrecord.ToList())
+                    {
+                        // Remove all pending claims from faction
+                        var claimReports = record.factionReports
+                            .Where(r => r.crimeDef == Crime.None || r.crimeDef == Crime.Claim)
+                            .ToList();
+                        Logging.Debug($"Removed vouchers for {claimReports.Sum(r => r.amount)} unclaimed credits from {record.faction}.");
+                        record.factionReports = record.factionReports.Except(claimReports).ToList();
+                        RemoveRecordIfEmpty(record);
+                    }
                 }
             }
 
@@ -984,12 +1005,12 @@ namespace EddiCrimeMonitor
 
         public FactionRecord GetRecordWithFaction(string faction)
         {
-            if (faction == null)
+            if (faction == null) { return null; }
+            lock (recordLock)
             {
-                return null;
+                return criminalrecord.FirstOrDefault(c =>
+                    string.Equals(c.faction, faction, StringComparison.InvariantCultureIgnoreCase));
             }
-            return criminalrecord.FirstOrDefault(c =>
-                string.Equals(c.faction, faction, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public void GetFactionData(FactionRecord record, string homeSystem = null)
@@ -1102,12 +1123,15 @@ namespace EddiCrimeMonitor
         {
             Thread stationUpdateThread = new Thread(() =>
             {
-                foreach (FactionRecord record in criminalrecord.ToList())
+                lock (recordLock)
                 {
-                    Superpower Allegiance = Superpower.FromNameOrEdName(record.faction);
-                    if (Allegiance == null)
+                    foreach (FactionRecord record in criminalrecord.ToList())
                     {
-                        record.station = GetFactionStation(record.system);
+                        Superpower Allegiance = Superpower.FromNameOrEdName(record.faction);
+                        if (Allegiance == null)
+                        {
+                            record.station = GetFactionStation(record.system);
+                        }
                     }
                 }
                 writeRecord();

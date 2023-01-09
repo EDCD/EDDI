@@ -32,7 +32,10 @@ namespace EddiCrimeMonitor
         private void addRecord(object sender, RoutedEventArgs e)
         {
             FactionRecord record = new FactionRecord(Properties.CrimeMonitor.blank_faction);
-            crimeMonitor()?.criminalrecord.Add(record);
+            lock (CrimeMonitor.recordLock)
+            {
+                crimeMonitor()?.criminalrecord.Add(record);
+            }
             crimeMonitor()?.writeRecord();
         }
 
