@@ -170,7 +170,7 @@
     <value>Carrierroute</value>
   </data>
   <data name="query_type_scorpion" xml:space="preserve">
-    <value>SRV Scorpion Anbieter</value>
+    <value>Scorpion Anbieter</value>
     <comment>RouteDetails `scorpion` query description</comment>
   </data>
 </root>

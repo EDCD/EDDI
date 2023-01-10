@@ -129,8 +129,14 @@
     <value>Unità di manutenzione automatica</value>
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
-  
-  
+  <data name="AXMissileRack" xml:space="preserve">
+    <value>Lanciamissili AX</value>
+    <comment>Module AXMissileRack</comment>
+  </data>
+  <data name="AXMulti_Cannon" xml:space="preserve">
+    <value>Cannone rotante AX</value>
+    <comment>Module AXMulti_Cannon</comment>
+  </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
     <value>Scanner di Esplorazione basilare</value>
     <comment>Module BasicDiscoveryScanner</comment>
@@ -340,7 +346,7 @@
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
-    <value>Porta Missili</value>
+    <value>Lanciamissili</value>
     <comment>Module MissileRack</comment>
   </data>
   <data name="ModuleReinforcementPackage" xml:space="preserve">
@@ -528,7 +534,7 @@
     <comment>Modile FlechetteLauncher</comment>
   </data>
   <data name="EnzymeMissileRack" xml:space="preserve">
-    <value>Porta Missili Corrosivi</value>
+    <value>Lanciamissili corrosivi</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
   <data name="GuardianHullReinforcement" xml:space="preserve">
@@ -556,7 +562,7 @@
     <comment>Module Seismic Charge</comment>
   </data>
   <data name="DisplacementMissile" xml:space="preserve">
-    <value>Proiettile Dislocante Iposuperficiale</value>
+    <value>Missile dislocante sottosuperficiale</value>
     <comment>Module Displacement Missile</comment>
   </data>
   <data name="AbrasionBlaster" xml:space="preserve">
@@ -580,7 +586,7 @@
     <comment>Module Advanced Multi-Cannon (from the `Bridging the Gap` initiative)</comment>
   </data>
   <data name="AdvancedMissileRack" xml:space="preserve">
-    <value>Porta Missili Avanzato</value>
+    <value>Lanciamissili avanzato</value>
     <comment>Module Advanced Missile Rack</comment>
   </data>
   <data name="RetributorBeamLaser" xml:space="preserve">
@@ -607,6 +613,12 @@
     <value>MultiControllore Droni Multiuso</value>
     <comment>Module MultiDroneControl_Universal</comment>
   </data>
-  
-  
+  <data name="Enhanced_AXMissileRack" xml:space="preserve">
+    <value>Lanciamissili AX migliorato</value>
+    <comment>Module Enhanced AX Missile Rack</comment>
+  </data>
+  <data name="Enhanced_AXMulti_Cannon" xml:space="preserve">
+    <value>Cannone rotante AX migliorato</value>
+    <comment>Module Enhanced AX Multi-Cannon</comment>
+  </data>
 </root>
