@@ -48,7 +48,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return Properties.EddpResources.desc;
+            return "(Currently under maintenance and disabled) " + Properties.EddpResources.desc;
         }
 
         public bool IsRequired()
@@ -68,7 +68,7 @@ namespace EddiEddpMonitor
         {
             configuration = ConfigService.Instance.eddpConfiguration;
             EDDI.Instance.GameVersionUpdated += OnGameVersionUpdated;
-            running = true;
+            running = false; //true;
             monitor();
         }
 
