@@ -485,7 +485,7 @@
     <value>Hochleistungsrakete</value>
   </data>
   <data name="MulticannonHighCapacity" xml:space="preserve">
-    <value>Hochleistungs-Mehrzweckgeschütz</value>
+    <value>Hochleistungs-Mehrfachgeschütz</value>
   </data>
   <data name="RailGunHighCapacity" xml:space="preserve">
     <value>Hochleistungsschienenkanone</value>
@@ -509,7 +509,7 @@
     <value>Leichte Rakete</value>
   </data>
   <data name="MulticannonLightWeight" xml:space="preserve">
-    <value>Leichtes Mehrzweckgeschütz</value>
+    <value>Leichtes Mehrfachgeschütz</value>
   </data>
   <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
     <value>Leichter Plasmabeschleuniger</value>
@@ -533,7 +533,7 @@
     <value>Langstrecken-Kanone</value>
   </data>
   <data name="MulticannonLongRange" xml:space="preserve">
-    <value>Langstrecken-Mehrzweckgeschütz</value>
+    <value>Langstrecken-Mehrfachgeschütz</value>
   </data>
   <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
     <value>Langstrecken-Plasmabeschleuniger</value>
@@ -557,7 +557,7 @@
     <value>Überladungs-Splitterkanone</value>
   </data>
   <data name="MulticannonOvercharged" xml:space="preserve">
-    <value>Überladungs-Mehrzweckgeschütz</value>
+    <value>Überladungs-Mehrfachgeschütz</value>
   </data>
   <data name="PlasmaAcceleratorOvercharged" xml:space="preserve">
     <value>Überladungs-Plasmabeschleuniger</value>
@@ -581,7 +581,7 @@
     <value>Schnellfeuer-Rakete</value>
   </data>
   <data name="MulticannonRapidFire" xml:space="preserve">
-    <value>Schnellfeuer-Mehrzweckgeschütz</value>
+    <value>Schnellfeuer-Mehrfachgeschütz</value>
   </data>
   <data name="PlasmaAcceleratorRapidFire" xml:space="preserve">
     <value>Schnellfeuer-Plasmabeschleuniger</value>
@@ -599,7 +599,7 @@
     <value>Kurzstrecken-Kanone</value>
   </data>
   <data name="MulticannonShortRange" xml:space="preserve">
-    <value>Kurzstrecken-Mehrzweckgeschütz</value>
+    <value>Kurzstrecken-Mehrfachgeschütz</value>
   </data>
   <data name="PlasmaAcceleratorShortRange" xml:space="preserve">
     <value>Kurzstrecken-Plasmabeschleuniger</value>
@@ -629,7 +629,7 @@
     <value>Stabile Rakete</value>
   </data>
   <data name="MulticannonSturdy" xml:space="preserve">
-    <value>Stabiles Mehrzweckgeschütz</value>
+    <value>Stabiles Mehrfachgeschütz</value>
   </data>
   <data name="PlasmaAcceleratorSturdy" xml:space="preserve">
     <value>Stabiler Plasmabeschleuniger</value>
