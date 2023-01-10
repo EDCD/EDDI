@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-## 4.0.2-rc2
+## 4.0.2
   * Core
     * Fix on-foot missions not redirecting appropriately to origin.
     * Fix a crash that could occur when selecting a destination without a localized name.
