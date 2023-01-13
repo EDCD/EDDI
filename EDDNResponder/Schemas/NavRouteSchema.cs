@@ -16,6 +16,7 @@ namespace EddiEddnResponder.Schemas
             try
             {
                 if (!edTypes.Contains(edType)) { return false; }
+                if (!data.ContainsKey("Route")) { return false; }
                 if (eddnState?.GameVersion == null) { return false; }
                 data = eddnState.GameVersion.AugmentVersion(data);
                 EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/navroute/1", data, eddnState);
