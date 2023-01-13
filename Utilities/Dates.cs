@@ -27,5 +27,16 @@ namespace Utilities
         {
             return dateTime?.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture) ?? string.Empty;
         }
+
+        public static DateTime? FromString(string dateTime)
+        {
+            if (!string.IsNullOrEmpty(dateTime) && 
+                DateTime.TryParseExact(dateTime, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture,
+                    DateTimeStyles.AdjustToUniversal, out var date))
+            {
+                return date;
+            }
+            return null;
+        }
     }
 }

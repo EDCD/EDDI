@@ -3794,15 +3794,27 @@ namespace EddiJournalMonitor
                                 break;
                             case "NavRoute":
                                 {
-                                    NavRouteInfo.FromFile(out NavRouteInfo navRoute, out string rawRoute);
-                                    events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
+                                    if (NavRouteInfo.TryFromFile(timestamp, true, out NavRouteInfo navRoute, out string rawRoute))
+                                    {
+                                        events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
+                                    }
+                                    else if (!fromLogLoad)
+                                    {
+                                        Logging.Warn("NavRoute.json was not updated. The read operation timed out.");
+                                    }
                                 }
                                 handled = true;
                                 break;
                             case "NavRouteClear":
                                 {
-                                    NavRouteInfo.FromFile(out NavRouteInfo navRoute, out string rawRoute);
-                                    events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
+                                    if (NavRouteInfo.TryFromFile(timestamp, false, out NavRouteInfo navRoute, out string rawRoute))
+                                    {
+                                        events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
+                                    }
+                                    else if (!fromLogLoad)
+                                    {
+                                        Logging.Warn("NavRoute.json was not updated. The read operation timed out.");
+                                    }
                                 }
                                 handled = true;
                                 break;
