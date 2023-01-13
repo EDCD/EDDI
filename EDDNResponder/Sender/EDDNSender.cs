@@ -11,11 +11,12 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Threading;
+using System.Web;
 using Utilities;
 
 namespace EddiEddnResponder.Sender
 {
-    public class EDDNSender
+    public static class EDDNSender
     {
         public static bool unitTesting = false;
 
@@ -104,17 +105,16 @@ namespace EddiEddnResponder.Sender
 
             Thread thread = new Thread(() =>
             {
-                IRestResponse response = null;
                 try
                 {
-                    response = client.Execute(request);
+                    IRestResponse response = client.Execute(request);
                     Logging.Debug("Response content is " + response.Content);
                     switch (response.StatusCode)
                     {
                         // Invalid status codes are defined at https://github.com/EDCD/EDDN/blob/master/docs/Developers.md#server-responses
                         case HttpStatusCode.BadRequest: // Code 400
                             {
-                                throw new ArgumentException(response.Content);
+                                throw new HttpException(400, response.Content);
                             }
                         case HttpStatusCode.RequestTimeout: // Code 408
                         case HttpStatusCode.GatewayTimeout: // Code 504
@@ -124,7 +124,7 @@ namespace EddiEddnResponder.Sender
                                 {
                                     Thread.Sleep(TimeSpan.FromSeconds(30));
                                     sendMessage(body);
-                                });
+                                }).ConfigureAwait(false);
                                 break;
                             }
                         case HttpStatusCode.RequestEntityTooLarge: // Code 413
@@ -143,7 +143,7 @@ namespace EddiEddnResponder.Sender
                                 if (response.StatusCode != HttpStatusCode.Accepted)
                                 {
                                     var iex = new Exception(response.Content);
-                                    throw new WebException("Failed to resend to EDDN service with compressed data.", iex);
+                                    throw new HttpException(413, "Failed to resend to EDDN service with compressed data.", iex);
                                 }
                                 break;
                             }
@@ -152,8 +152,7 @@ namespace EddiEddnResponder.Sender
                                 // Note that this deviates from the typical usage of code 426
                                 // (which typically indicates that this client is using an obsolete security protocol.
                                 invalidSchemas.Add(body.schemaRef);
-                                Logging.Warn($"EDDN service is unable to process the message. Schema {body.schemaRef} is obsolete.");
-                                break;
+                                throw new HttpException(426, $"Schema {body.schemaRef} is obsolete.");
                             }
                         case HttpStatusCode.ServiceUnavailable: // Code 503
                             {
@@ -162,14 +161,14 @@ namespace EddiEddnResponder.Sender
                                 {
                                     Thread.Sleep(TimeSpan.FromMinutes(2));
                                     sendMessage(body);
-                                });
+                                }).ConfigureAwait(false);
                                 break;
                             }
                         default:
                             {
                                 if ((int)response.StatusCode >= 400)
                                 {
-                                    throw new WebException("Unexpected EDDN service response");
+                                    throw new HttpException((int)response.StatusCode, "Unexpected EDDN service response");
                                 }
                                 break;
                             }
@@ -181,7 +180,7 @@ namespace EddiEddnResponder.Sender
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("EDDN could not accept data", ex);
+                    Logging.Error($"EDDN {body.schemaRef} Error: {ex.Message}", ex);
                 }
             })
             {
