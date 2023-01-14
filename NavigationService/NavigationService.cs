@@ -580,7 +580,7 @@ namespace EddiNavigationService
                 }
 
                 // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithm (RNNA)
-                var navWaypoints = dataProviderService.GetSystemsData(systems.ToArray(), false, false, false, false).Select(s => new NavWaypoint(s)).ToList();
+                var navWaypoints = dataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false).Select(s => new NavWaypoint(s)).ToList();
                 if (CalculateRNNA(navWaypoints, missions, out sortedRoute, homeSystemWaypoint))
                 {
                     // Prepend our current system to the route if it is not already present

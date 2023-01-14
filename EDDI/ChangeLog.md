@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.3
+  * Navigation Monitor
+    * Fix `Shortest Missions Route` reports all distances as zero (0) light-years (#2488).
+
 ## 4.0.2
   * Core
     * Fix on-foot missions not redirecting appropriately to origin.
