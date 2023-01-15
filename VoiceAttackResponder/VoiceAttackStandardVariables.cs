@@ -269,7 +269,7 @@ namespace EddiVoiceAttackResponder
                     setShipModuleValues(ship.sensors, prefix + " sensors", ref vaProxy);
                     setShipModuleValues(ship.fueltank, prefix + " fuel tank", ref vaProxy);
 
-                    if (EDDI.Instance.CurrentStation?.outfitting.Any() ?? false)
+                    if (EDDI.Instance.CurrentStation?.outfitting?.Any() ?? false)
                     {
                         var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.Copy();
                         setShipModuleOutfittingValues(ship.lifesupport, stationOutfitting, prefix + " life support", ref vaProxy);

@@ -386,23 +386,6 @@ namespace EddiCore
         }
         private FleetCarrier fleetCarrier;
 
-        public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
-
-        // Information from the last events of each type that we've received (for reference)
-        private SortedDictionary<string, Event> lastEvents { get; set; } = new SortedDictionary<string, Event>();
-
-        // Current vehicle of player
-        public string Vehicle
-        {
-            get => vehicle;
-            set
-            {
-                vehicle = value;
-                OnPropertyChanged();
-            }
-        }
-        private string vehicle = Constants.VEHICLE_SHIP;
-
         public Ship CurrentShip
         {
             get => _currentShip;
@@ -420,6 +403,23 @@ namespace EddiCore
                 OnPropertyChanged();
             }
         }
+
+        public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
+
+        // Information from the last events of each type that we've received (for reference)
+        private SortedDictionary<string, Event> lastEvents { get; set; } = new SortedDictionary<string, Event>();
+
+        // Current vehicle of player
+        public string Vehicle
+        {
+            get => vehicle;
+            set
+            {
+                vehicle = value;
+                OnPropertyChanged();
+            }
+        }
+        private string vehicle = Constants.VEHICLE_SHIP;
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 

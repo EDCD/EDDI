@@ -200,10 +200,10 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        [JsonIgnore]
+        [JsonIgnore, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<EconomyShare> economyShares
         {
-            get => _economyShares ?? new List<EconomyShare>(2);
+            get => _economyShares;
             set
             {
                 if (value != null && (value.Count != value.Select(v => v.economy).Distinct().Count()))
@@ -224,8 +224,8 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        [JsonProperty(nameof(economyShares))]
-        private List<EconomyShare> _economyShares;
+        [JsonProperty(nameof(economyShares)), JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        private List<EconomyShare> _economyShares = new List<EconomyShare>(2);
 
         /// <summary>What are the localized economies at the stations</summary>
         [JsonIgnore]
@@ -243,13 +243,13 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>Which commodities are bought/sold by the station</summary>
-        [PublicAPI]
+        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityMarketQuote> commodities
         {
             get => _commodities;
             set { _commodities = value; OnPropertyChanged();}
         }
-        private List<CommodityMarketQuote> _commodities;
+        private List<CommodityMarketQuote> _commodities = new List<CommodityMarketQuote>();
 
         /// <summary>Which commodities are imported by the station</summary>
         [PublicAPI, JsonIgnore]
@@ -266,30 +266,31 @@ namespace EddiDataDefinitions
             .ToList();
 
         /// <summary>Which commodities are prohibited at the station</summary>
-        [PublicAPI]
+        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityDefinition> prohibited
         {
             get => _prohibited;
             set { _prohibited = value; OnPropertyChanged();}
         }
-        private List<CommodityDefinition> _prohibited;
+        private List<CommodityDefinition> _prohibited = new List<CommodityDefinition>();
 
         /// <summary>Which modules are available for outfitting at the station</summary>
-        [PublicAPI]
+        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Module> outfitting
         {
             get => _outfitting;
             set { _outfitting = value; OnPropertyChanged();}
         }
-        private List<Module> _outfitting;
+        private List<Module> _outfitting = new List<Module>();
 
         /// <summary>Which ships are available for purchase at the station</summary>
+        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Ship> shipyard
         {
             get => _shipyard;
             set { _shipyard = value; OnPropertyChanged();}
         }
-        private List<Ship> _shipyard;
+        private List<Ship> _shipyard = new List<Ship>();
 
         // Admin - the last time the information present changed
         [PublicAPI]

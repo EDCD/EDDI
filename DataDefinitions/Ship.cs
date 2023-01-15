@@ -477,29 +477,29 @@ namespace EddiDataDefinitions
         }
         private Module _fueltank;
 
-        [PublicAPI]
+        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Hardpoint> hardpoints
         {
             get => _hardpoints;
             set { _hardpoints = value; OnPropertyChanged(); }
         }
-        private List<Hardpoint> _hardpoints;
+        private List<Hardpoint> _hardpoints = new List<Hardpoint>();
 
-        [PublicAPI]
+        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Compartment> compartments
         {
             get => _compartments;
             set { _compartments = value; OnPropertyChanged(); }
         }
-        private List<Compartment> _compartments;
+        private List<Compartment> _compartments = new List<Compartment>();
 
-        [PublicAPI]
+        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<LaunchBay> launchbays
         {
             get => _launchbays;
             set { _launchbays = value; OnPropertyChanged(); }
         }
-        private List<LaunchBay> _launchbays;
+        private List<LaunchBay> _launchbays = new List<LaunchBay>();
 
         public string paintjob { get; set; }
 
