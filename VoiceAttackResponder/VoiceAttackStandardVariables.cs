@@ -349,7 +349,6 @@ namespace EddiVoiceAttackResponder
                 }
                 catch (Exception e)
                 {
-                    Logging.Error("Failed to set VoiceAttack ship information", e);
                     setStatus(ref vaProxy, "Failed to set ship information", e);
                 }
 
@@ -630,14 +629,14 @@ namespace EddiVoiceAttackResponder
         protected static void setStatus(ref dynamic vaProxy, string status, Exception exception = null)
         {
             vaProxy.SetText("EDDI status", status);
-            if (status == "Operational")
+            if (exception is null)
             {
                 vaProxy.SetText("EDDI exception", null);
             }
             else
             {
-                Logging.Warn("EDDI exception: " + (exception == null ? "<null>" : exception.ToString()));
-                vaProxy.SetText("EDDI exception", exception?.ToString());
+                Logging.Error(status, exception);
+                vaProxy.SetText("EDDI exception", exception.ToString());
             }
         }
 
