@@ -1472,8 +1472,8 @@ namespace EddiShipMonitor
                     ship.y = null;
                     ship.z = null;
                     ship.distance = null;
-                    EDDI.Instance.CurrentShip = ship;
                 }
+                EDDI.Instance.CurrentShip = ship;
             }
         }
 
