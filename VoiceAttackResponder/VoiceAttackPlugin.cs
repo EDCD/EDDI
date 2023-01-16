@@ -69,6 +69,9 @@ namespace EddiVoiceAttackResponder
                 {
                     Logging.Info("Initialising EDDI VoiceAttack plugin");
 
+                    // Set initial values for standard variables
+                    initializeStandardValues();
+
                     // Set up our event responder.
                     VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
                     {
@@ -140,9 +143,6 @@ namespace EddiVoiceAttackResponder
                             }
                         }
                     };
-
-                    // Set initial values for standard variables
-                    initializeStandardValues();
 
                     // Display instance information if available
                     if (EddiUpgrader.UpgradeRequired)
