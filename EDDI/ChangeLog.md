@@ -4,7 +4,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.3
   * Navigation Monitor
-    * Fix `Shortest Missions Route` reports all distances as zero (0) light-years (#2488).
+    * Fix `Shortest Missions Route` reports all distances as zero (0) light-years #2488
+  * Speech Responder
+    * Changes to existing scripts
+      * `Swapout check` updated to fix a bug that was causing false positives.
   * VoiceAttack Responder
     * Fixed a bug that prevented current ship variables from being updated properly on a ship change. #2482
 
