@@ -228,7 +228,7 @@ namespace EddiDataDefinitions
 
         public long? EDID { get; private set; }
 
-        public MicroResourceCategory Category { get; private set; }
+        public MicroResourceCategory Category { get; set; }
 
         // dummy used to ensure that the static constructor has run
         public MicroResource() : this("", MicroResourceCategory.Unknown)

@@ -1,25 +1,58 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class CargoInfo
     {
-        public int Count => Inventory.Count;
-        public List<CargoInfoItem> Inventory { get; set; } = new List<CargoInfoItem>();
+        [JsonProperty]
+        public DateTime timestamp { get; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
-        public static CargoInfo FromFile(string filename = null)
+        [JsonProperty]
+        public string Vessel { get; }
+
+        [JsonProperty]
+        public int Count { get; }
+
+        [JsonProperty]
+        public List<CargoInfoItem> Inventory { get; }
+
+        public CargoInfo(DateTime timestamp, string vessel, int count, List<CargoInfoItem> inventory)
         {
-            CargoInfo info = new CargoInfo();
+            this.timestamp = timestamp;
+            Vessel = vessel;
+            Count = count;
+            Inventory = inventory ?? new List<CargoInfoItem>();
+        }
 
-            string data = Files.FromSavedGames("Cargo.json");
-            if (data != null)
+        [UsedImplicitly]
+        public static bool TryFromFile(DateTime journalTimeStamp, string expectedVessel, int expectedCount, [CanBeNull] out CargoInfo info, [CanBeNull] out string rawCargo, string filename = "Cargo.json")
+        {
+            info = null;
+            int attemptsRemaining = 10;
+            TimeSpan? timeDiff = null;
+            do
             {
-                info = JsonConvert.DeserializeObject<CargoInfo>(data);
-            }
-            return info;
+                if (attemptsRemaining < 10) { Thread.Sleep(200); }
+                rawCargo = Files.FromSavedGames(filename);
+                if (!string.IsNullOrEmpty(rawCargo))
+                {
+                    info = JsonConvert.DeserializeObject<CargoInfo>(rawCargo);
+                }
+                if (info?.Inventory != null &&
+                    info.Vessel == expectedVessel &&
+                    info.Count == expectedCount)
+                {
+                    timeDiff = info.timestamp - journalTimeStamp;
+                }
+                attemptsRemaining--;
+            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
+
+            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
         }
     }
 }

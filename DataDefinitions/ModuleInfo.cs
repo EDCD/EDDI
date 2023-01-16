@@ -1,39 +1,48 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class ModuleInfo
     {
         [JsonProperty]
-        public string slot { get; set; }
+        public DateTime timestamp { get; }
 
         [JsonProperty]
-        public string item { get; set; }
+        public List<ModuleInfoItem> Modules { get; } 
 
-        [JsonProperty]
-        public decimal power { get; set; }
-
-        [JsonProperty]
-        public int priority { get; set; }
-
-        public ModuleInfo()
-        { }
-
-        public ModuleInfo(ModuleInfo ModuleInfo)
+        public ModuleInfo(DateTime timestamp, List<ModuleInfoItem> modules)
         {
-            this.slot = ModuleInfo.slot;
-            this.item = ModuleInfo.item;
-            this.power = ModuleInfo.power;
-            this.priority = ModuleInfo.priority;
+            this.timestamp = timestamp;
+            Modules = modules ?? new List<ModuleInfoItem>();
         }
 
-        public ModuleInfo(string Slot, string Item, decimal Power, int Priority)
+        [UsedImplicitly]
+        public static bool TryFromFile(DateTime journalTimeStamp, [CanBeNull] out ModuleInfo info, [CanBeNull] out string rawModules, string filename = "ModulesInfo.json")
         {
-            this.slot = Slot;
-            this.item = Item;
-            this.power = Power;
-            this.priority = Priority;
+            info = null;
+            int attemptsRemaining = 10;
+            TimeSpan? timeDiff = null;
+            do
+            {
+                if (attemptsRemaining < 10) { Thread.Sleep(200); }
+                rawModules = Files.FromSavedGames(filename);
+                if (!string.IsNullOrEmpty(rawModules))
+                {
+                    info = JsonConvert.DeserializeObject<ModuleInfo>(rawModules);
+                }
+                if (info?.Modules != null)
+                {
+                    timeDiff = info.timestamp - journalTimeStamp;
+                }
+                attemptsRemaining--;
+            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
 
+            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
         }
     }
 }

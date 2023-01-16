@@ -65,7 +65,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModuleInfoReader.cs" />
     <Compile Include="Properties\ShipMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

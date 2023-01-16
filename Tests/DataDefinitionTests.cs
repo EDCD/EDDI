@@ -625,8 +625,7 @@ namespace UnitTests
         public void TestMicroResourceInfo()
         {
             var json = TestBase.DeserializeJsonResource<string>(Resources.shipLocker);
-            var data = Deserializtion.DeserializeData(json);
-            var info = new MicroResourceInfo().FromData(data);
+            var info = JsonConvert.DeserializeObject<MicroResourceInfo>(json);
 
             Assert.AreEqual(38, info.Items.Count);
             Assert.AreEqual("WeaponSchematic", info.Items[0].edname);

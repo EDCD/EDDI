@@ -70,6 +70,7 @@
     <Compile Include="JumpDetail.cs" />
     <Compile Include="FCMaterialsInfo.cs" />
     <Compile Include="FCMaterialInfoItem.cs" />
+    <Compile Include="ModuleInfo.cs" />
     <Compile Include="NavWaypointCollection.cs" />
     <Compile Include="NavWaypoint.cs" />
     <Compile Include="ModuleMount.cs" />
@@ -282,7 +283,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AtmosphereClass.resx</DependentUpon>
     </Compile>
-    <Compile Include="ModuleInfo.cs" />
+    <Compile Include="ModuleInfoItem.cs" />
     <Compile Include="Properties\Commodities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -923,6 +924,7 @@
     <EmbeddedResource Include="Properties\MessageSources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MessageSources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\RingCompositions.cs.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.pt-BR.resx" />

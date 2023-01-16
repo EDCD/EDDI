@@ -1,4 +1,5 @@
-﻿using Utilities;
+﻿using Newtonsoft.Json;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -20,16 +21,15 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing
         public MicroResource microResource { get; }
-        public int? ownerId { get; }
-        public decimal? missionId { get; }
+        public long? ownerId { get; }
+        public long? missionId { get; }
 
-        public MicroResourceAmount(MicroResource microResource, int? ownerId, decimal? missionId, int amount, int? price = null)
+        public MicroResourceAmount([JsonProperty] string Name, [JsonProperty] long? OwnerID, [JsonProperty] int Count, [JsonProperty] string Type = null, [JsonProperty] string Name_Localised = null, [JsonProperty] long? MissionID = null)
         {
-            this.microResource = microResource;
-            this.ownerId = ownerId;
-            this.missionId = missionId;
-            this.amount = amount;
-            this.price = price;
+            this.microResource = MicroResource.FromEDName(Name, Name_Localised, Type);
+            this.ownerId = OwnerID;
+            this.amount = Count;
+            this.missionId = MissionID;
         }
     }
 }

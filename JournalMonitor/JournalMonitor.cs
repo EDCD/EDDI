@@ -837,11 +837,19 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "ModuleInfo":
-                                events.Add(new ModuleInfoEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                {
+                                    if (ModuleInfo.TryFromFile(timestamp, out var info, out line))
+                                    {
+                                        events.Add(new ModuleInfoEvent(timestamp, info.Modules)
+                                            { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                }
                                 handled = true;
                                 break;
                             case "CockpitBreached":
-                                events.Add(new CockpitBreachedEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                {
+                                    events.Add(new CockpitBreachedEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                }
                                 handled = true;
                                 break;
                             case "ApproachBody":
@@ -1108,17 +1116,9 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var raw = Files.FromSavedGames("Shipyard.json");
-                                    if (raw != null)
+                                    if (ShipyardInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
                                     {
-                                        var info = JsonConvert.DeserializeObject<ShipyardInfo>(raw);
-                                        if (info.PriceList != null && info.MarketID == marketId
-                                                                   && info.StarSystem == system
-                                                                   && info.StationName == station
-                                                                   && info.Horizons == EDDI.Instance.inHorizons)
-                                        {
-                                            events.Add(new ShipyardEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
-                                        }
+                                        events.Add(new ShipyardEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -1634,17 +1634,9 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var raw = Files.FromSavedGames("Outfitting.json");
-                                    if (raw != null)
+                                    if (OutfittingInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
                                     {
-                                        var info = JsonConvert.DeserializeObject<OutfittingInfo>(raw);
-                                        if (info.Items != null && info.MarketID == marketId
-                                                               && info.StarSystem == system
-                                                               && info.StationName == station
-                                                               && info.Horizons == EDDI.Instance.inHorizons)
-                                        {
-                                            events.Add(new OutfittingEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
-                                        }
+                                        events.Add(new OutfittingEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -1970,6 +1962,11 @@ namespace EddiJournalMonitor
                                                     ? NpcAuthorityShip.FromEDName(from)?.localizedName 
                                                     : JsonParsing.getString(data, "From_Localised");
                                             }
+                                        }
+                                        else if (from.StartsWith("$Name_AX_Military; "))
+                                        {
+                                            source = MessageSource.FromMessage(from, message);
+                                            from = from.Replace("$Name_AX_Military; ", "");
                                         }
                                         else if (message.StartsWith("$STATION_") || message.Contains("$Docking"))
                                         {
@@ -2391,16 +2388,9 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var raw = Files.FromSavedGames("Market.json");
-                                    if (raw != null)
+                                    if (MarketInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
                                     {
-                                        var info = JsonConvert.DeserializeObject<MarketInfo>(raw);
-                                        if (info != null && info.MarketID == marketId
-                                                         && info.StarSystem == system
-                                                         && info.StationName == station)
-                                        {
-                                            events.Add(new MarketEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
-                                        }
+                                        events.Add(new MarketEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -3431,9 +3421,7 @@ namespace EddiJournalMonitor
                                                 if (MicroResource.EDNameExists(m))
                                                 {
                                                     // This is an on-foot micro-resource
-                                                    var rewardMicroResource = MicroResource.FromEDName(m);
-                                                    rewardMicroResource.fallbackLocalizedName = fallbackM;
-                                                    microResourceRewards.Add(new MicroResourceAmount(rewardMicroResource, null, null, count));
+                                                    microResourceRewards.Add(new MicroResourceAmount(m, null, count, null, fallbackM));
                                                 }
                                                 else
                                                 {
@@ -3759,7 +3747,6 @@ namespace EddiJournalMonitor
                                 break;
                             case "Cargo":
                                 {
-                                    bool update = false;
                                     var inventory = new List<CargoInfoItem>();
 
                                     string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
@@ -3777,17 +3764,11 @@ namespace EddiJournalMonitor
                                             var info = new CargoInfoItem(name, missionid, count, stolen);
                                             inventory.Add(info);
                                         }
+                                        events.Add(new CargoEvent(timestamp, false, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
                                     }
-                                    else
+                                    else if (CargoInfo.TryFromFile(timestamp, vessel, cargocarried, out var info, out line))
                                     {
-                                        inventory = CargoInfo.FromFile().Inventory;
-                                        update = true;
-                                    }
-
-                                    // Protect against out of date Cargo.json files during 'LogLoad'
-                                    if (cargocarried == inventory.Sum(i => i.count))
-                                    {
-                                        events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new CargoEvent(timestamp, true, vessel, info.Inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -4613,16 +4594,7 @@ namespace EddiJournalMonitor
                             case "Backpack":
                             case "ShipLocker":
                                 {
-                                    MicroResourceInfo info = null;
-                                    try
-                                    {
-                                        info = new MicroResourceInfo().FromFile($"{edType}.json");
-                                    }
-                                    catch (JsonReaderException jsonEx)
-                                    {
-                                        Logging.Warn($"Failed to read malformed {edType}.json", jsonEx);
-                                    }
-                                    if (info != null)
+                                    if (MicroResourceInfo.TryFromFile(timestamp, out var info, out line, $"{edType}.json"))
                                     {
                                         // Flatten the list
                                         var inventory = new List<MicroResourceAmount>();

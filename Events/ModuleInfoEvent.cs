@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EddiDataDefinitions;
 using Utilities;
 
 namespace EddiEvents
@@ -10,7 +12,12 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when a ModulesInfo.json file is generated/updated";
         public const string SAMPLE = null;
 
-        public ModuleInfoEvent(DateTime timestamp) : base(timestamp, NAME)
-        { }
+        // Not intended to be user facing
+        public List<ModuleInfoItem> Modules { get; }
+
+        public ModuleInfoEvent(DateTime timestamp, List<ModuleInfoItem> Modules) : base(timestamp, NAME)
+        {
+            this.Modules = Modules;
+        }
     }
 }

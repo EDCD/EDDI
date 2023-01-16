@@ -940,114 +940,132 @@ namespace EddiShipMonitor
             {
                 updatedAt = @event.timestamp;
                 Ship ship = GetCurrentShip();
-                if (ship != null)
+                if (ship != null && @event.Modules != null)
                 {
-                    ModuleInfoReader info = ModuleInfoReader.FromFile();
-                    if (info != null)
+                    for (int i = 0; i < @event.Modules.Count(); i++)
                     {
-                        for (int i = 0; i < info.Modules.Count(); i++)
+                        int position = i + 1;
+                        int priority = @event.Modules[i].priority + 1;
+                        decimal power = @event.Modules[i].power;
+
+                        string slot = @event.Modules[i].slot;
+                        if (!string.IsNullOrEmpty(slot))
                         {
-                            int position = i + 1;
-                            int priority = info.Modules[i].priority + 1;
-                            decimal power = info.Modules[i].power;
-
-                            string slot = info.Modules[i].slot;
-                            if (!String.IsNullOrEmpty(slot))
+                            switch (slot)
                             {
-                                switch (slot)
+                                case "CargoHatch":
                                 {
-                                    case "CargoHatch":
-                                        {
-                                            ship.cargohatch = ship.cargohatch ?? new Module();
-                                            ship.cargohatch.position = position;
-                                            ship.cargohatch.priority = priority;
-                                            ship.cargohatch.power = power;
-                                        }
-                                        break;
-                                    case "FrameShiftDrive":
-                                        {
-                                            ship.frameshiftdrive = ship.frameshiftdrive ?? new Module();
-                                            ship.frameshiftdrive.position = position;
-                                            ship.frameshiftdrive.priority = priority;
-                                            ship.frameshiftdrive.power = power;
-                                        }
-                                        break;
-                                    case "LifeSupport":
-                                        {
-                                            ship.lifesupport = ship.lifesupport ?? new Module();
-                                            ship.lifesupport.position = position;
-                                            ship.lifesupport.priority = priority;
-                                            ship.lifesupport.power = power;
-                                        }
-                                        break;
-                                    case "MainEngines":
-                                        {
-                                            ship.thrusters = ship.thrusters ?? new Module();
-                                            ship.thrusters.position = position;
-                                            ship.thrusters.priority = priority;
-                                            ship.thrusters.power = power;
-                                        }
-                                        break;
-                                    case "PowerDistributor":
-                                        {
-                                            ship.powerdistributor = ship.powerdistributor ?? new Module();
-                                            ship.powerdistributor.position = position;
-                                            ship.powerdistributor.priority = priority;
-                                            ship.powerdistributor.power = power;
-                                        }
-                                        break;
-                                    case "PowerPlant":
-                                        {
-                                            ship.powerplant = ship.powerplant ?? new Module();
-                                            ship.powerplant.position = position;
-                                            ship.powerplant.priority = priority;
-                                            ship.powerplant.power = power;
-                                        }
-                                        break;
-                                    case "Radar":
-                                        {
-                                            ship.sensors = ship.sensors ?? new Module();
-                                            ship.sensors.position = position;
-                                            ship.sensors.priority = priority;
-                                            ship.sensors.power = power;
-                                        }
-                                        break;
-                                    case "ShipCockpit":
-                                        {
-                                            ship.canopy = ship.canopy ?? new Module();
-                                            ship.canopy.position = position;
-                                            ship.canopy.priority = priority;
-                                            ship.canopy.power = power;
-                                        }
-                                        break;
+                                    ship.cargohatch = ship.cargohatch 
+                                                      ?? Module.FromEDName(@event.Modules[i].item) 
+                                                      ?? new Module();
+                                    ship.cargohatch.position = position;
+                                    ship.cargohatch.priority = priority;
+                                    ship.cargohatch.power = power;
+                                    break;
                                 }
-
-                                if (slot.Contains("Slot"))
+                                case "FrameShiftDrive":
                                 {
-                                    Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
-                                    if (compartment != null)
-                                    {
-                                        compartment.module = compartment.module ?? new Module();
-                                        compartment.module.position = position;
-                                        compartment.module.priority = priority;
-                                        compartment.module.power = power;
-                                    }
+                                    ship.frameshiftdrive = ship.frameshiftdrive
+                                                           ?? Module.FromEDName(@event.Modules[i].item)
+                                                           ?? new Module();
+                                    ship.frameshiftdrive.position = position;
+                                    ship.frameshiftdrive.priority = priority;
+                                    ship.frameshiftdrive.power = power;
+                                    break;
                                 }
-                                else if (slot.Contains("Hardpoint"))
+                                case "LifeSupport":
                                 {
-                                    Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
-                                    if (hardpoint != null)
-                                    {
-                                        hardpoint.module = hardpoint.module ?? new Module();
-                                        hardpoint.module.position = position;
-                                        hardpoint.module.priority = priority;
-                                        hardpoint.module.power = power;
-                                    }
+                                    ship.lifesupport = ship.lifesupport
+                                                       ?? Module.FromEDName(@event.Modules[i].item)
+                                                       ?? new Module();
+                                    ship.lifesupport.position = position;
+                                    ship.lifesupport.priority = priority;
+                                    ship.lifesupport.power = power;
+                                    break;
+                                }
+                                case "MainEngines":
+                                {
+                                    ship.thrusters = ship.thrusters
+                                                     ?? Module.FromEDName(@event.Modules[i].item)
+                                                     ?? new Module();
+                                    ship.thrusters.position = position;
+                                    ship.thrusters.priority = priority;
+                                    ship.thrusters.power = power;
+                                }
+                                    break;
+                                case "PowerDistributor":
+                                {
+                                    ship.powerdistributor = ship.powerdistributor
+                                                            ?? Module.FromEDName(@event.Modules[i].item)
+                                                            ?? new Module();
+                                    ship.powerdistributor.position = position;
+                                    ship.powerdistributor.priority = priority;
+                                    ship.powerdistributor.power = power;
+                                }
+                                    break;
+                                case "PowerPlant":
+                                {
+                                    ship.powerplant = ship.powerplant
+                                                      ?? Module.FromEDName(@event.Modules[i].item)
+                                                      ?? new Module();
+                                    ship.powerplant.position = position;
+                                    ship.powerplant.priority = priority;
+                                    ship.powerplant.power = power;
+                                }
+                                    break;
+                                case "Radar":
+                                {
+                                    ship.sensors = ship.sensors
+                                                   ?? Module.FromEDName(@event.Modules[i].item)
+                                                   ?? new Module();
+                                    ship.sensors.position = position;
+                                    ship.sensors.priority = priority;
+                                    ship.sensors.power = power;
+                                }
+                                    break;
+                                case "ShipCockpit":
+                                {
+                                    ship.canopy = ship.canopy
+                                                  ?? Module.FromEDName(@event.Modules[i].item)
+                                                  ?? new Module();
+                                    ship.canopy.position = position;
+                                    ship.canopy.priority = priority;
+                                    ship.canopy.power = power;
+                                }
+                                    break;
+                            }
+                            if (slot.Contains("Slot"))
+                            {
+                                Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
+                                if (compartment != null)
+                                {
+                                    compartment.module = compartment.module
+                                                         ?? Module.FromEDName(@event.Modules[i].item)
+                                                         ?? new Module();
+                                    compartment.module.position = position;
+                                    compartment.module.priority = priority;
+                                    compartment.module.power = power;
+                                }
+                            }
+                            else if (slot.Contains("Hardpoint"))
+                            {
+                                Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
+                                if (hardpoint != null)
+                                {
+                                    hardpoint.module = hardpoint.module
+                                                       ?? Module.FromEDName(@event.Modules[i].item)
+                                                       ?? new Module();
+                                    hardpoint.module.position = position;
+                                    hardpoint.module.priority = priority;
+                                    hardpoint.module.power = power;
                                 }
                             }
                         }
                     }
-                    if (!@event.fromLoad) { writeShips(); }
+                    if (!@event.fromLoad)
+                    {
+                        writeShips();
+                    }
                 }
             }
         }
