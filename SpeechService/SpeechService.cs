@@ -19,6 +19,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechService
@@ -343,7 +344,7 @@ namespace EddiSpeechService
 
                 if (allVoices.All(v => v.name != voice))
                 {
-                    voice = windowsMediaSynth?.voice ?? systemSpeechSynth?.voice;
+                    voice = windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice;
 
                     // If the prior selected voice is no longer a valid option, we revert to the system default.
                     Configuration.StandardVoice = null;
@@ -355,11 +356,11 @@ namespace EddiSpeechService
                     Logging.Error("Could not obtain a voice for speaking.");
                 }
 
-                var stream = speak(voice, speech);
+                var stream = speak(voice, speech, allVoices.Copy());
                 if (stream is null || stream.Length == 0)
                 {
                     // Try again, with speech devoid of SSML
-                    stream = speak(voice, Regex.Replace(speech, "<.*?>", string.Empty));
+                    stream = speak(voice, Regex.Replace(speech, "<.*?>", string.Empty), allVoices.Copy());
                 }
 
                 return stream;
@@ -372,26 +373,47 @@ namespace EddiSpeechService
             return null;
         }
 
-        private Stream speak(string voice, string speech)
+        private Stream speak(string requestedVoice, string speech, List<VoiceDetails> voiceList)
         {
             // Get the voice we will use for speaking
-            VoiceDetails voiceDetails = null;
-            if (!string.IsNullOrEmpty(voice))
+            var voiceDetails = voiceList.FirstOrDefault(v => string.Equals(v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase));
+            if (voiceDetails != null)
             {
-                voiceDetails = allVoices.SingleOrDefault(v => string.Equals(v.name, voice, StringComparison.InvariantCultureIgnoreCase));
+                return speak(voiceDetails, speech, voiceList);
             }
-            return speak(voiceDetails, speech);
+            voiceDetails = voiceList.FirstOrDefault();
+            if (voiceDetails != null)
+            {
+                Logging.Warn($"Speech failed. Retrying with voice {voiceDetails.name}");
+                return speak(voiceDetails, speech, voiceList);
+            }
+            Logging.Warn("No available voices.");
+            return null;
         }
 
-        private Stream speak(VoiceDetails voiceDetails, string speech)
+        private Stream speak([NotNull] VoiceDetails voiceDetails, string speech, List<VoiceDetails> voiceList)
         {
-            if (voiceDetails?.synthType is nameof(System))
+            try
             {
-                return systemSpeechSynth?.Speak(voiceDetails, speech, Configuration);
+                if (voiceDetails.synthType is nameof(System))
+                {
+                    return systemSpeechSynth?.Speak(voiceDetails, speech, Configuration);
+                }
+                else if (voiceDetails.synthType is nameof(Windows.Media))
+                {
+                    return windowsMediaSynth?.Speak(voiceDetails, speech, Configuration);
+                }
             }
-            else if (voiceDetails?.synthType is nameof(Windows.Media))
+            catch (Exception ex)
             {
-                return windowsMediaSynth?.Speak(voiceDetails, speech, Configuration);
+                Logging.Error(ex.Message, ex);
+
+                voiceList.Remove(voiceDetails);
+                if (voiceList.Any())
+                {
+                    // Fall back to another voice from the voice list
+                    return speak(string.Empty, speech, voiceList);
+                }
             }
             return null;
         }
@@ -553,24 +575,24 @@ namespace EddiSpeechService
         }
     }
 
-    [PublicAPI]
+    [Utilities.PublicAPI]
     public class VoiceDetails : IEquatable<VoiceDetails>
     {
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string name { get; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string gender { get; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string culturecode { get; }
 
         public string synthType { get; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string cultureinvariantname => Culture.EnglishName;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string culturename => Culture.NativeName;
 
         public CultureInfo Culture { get; }

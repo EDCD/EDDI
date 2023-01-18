@@ -1,6 +1,5 @@
 ﻿using EddiSpeechService.SpeechPreparation;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -8,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 using Windows.Media.SpeechSynthesis;
 
@@ -19,7 +19,7 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         private static readonly object synthLock = new object();
 
-        internal string voice
+        internal string currentVoice
         {
             get
             {
@@ -62,7 +62,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                 {
                     try
                     {
-                        Logging.Debug($"Found voice: ", voice);
+                        Logging.Debug($"Found voice: {voice.DisplayName}", voice);
 
                         var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
                             CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
@@ -70,11 +70,12 @@ namespace EddiSpeechService.SpeechSynthesizers
                         // Skip voices which are not fully registered
                         if (!TryOneCoreVoice(voiceDetails))
                         {
+                            Logging.Debug($"{voice.DisplayName} is missing registry keys (may have been uninstalled?), skipping.");
                             continue;
                         }
 
                         voiceStore.Add(voiceDetails);
-                        Logging.Debug($"Loaded voice: ", voiceDetails);
+                        Logging.Debug($"Loaded voice: {voice.DisplayName}", voiceDetails);
                     }
                     catch (Exception e)
                     {
@@ -96,7 +97,7 @@ namespace EddiSpeechService.SpeechSynthesizers
 
             // Speak using the Windows.Media.SpeechSynthesis speech synthesizer. 
             SpeechSynthesisStream stream = null;
-            var synthThread = new Thread(() =>
+            var synthTask = Task.Run(() =>
             {
                 try
                 {
@@ -142,12 +143,13 @@ namespace EddiSpeechService.SpeechSynthesizers
                             {
                                 var badSpeech = new Dictionary<string, object>
                                 {
-                                        {"voice", voice},
-                                        {"speech", speech},
-                                        {"exception", ex}
-                                    };
+                                    { "voice", voice },
+                                    { "speech", speech },
+                                    { "exception", ex }
+                                };
                                 Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech)).AsTask().Result;
+                                stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech)).AsTask()
+                                    .Result;
                             }
                         }
                         else
@@ -163,20 +165,20 @@ namespace EddiSpeechService.SpeechSynthesizers
                 {
                     Logging.Debug("Thread aborted");
                 }
-                catch (Exception ex)
-                {
-                    var badSpeech = new Dictionary<string, object>
-                    {
-                            {"voice", voice},
-                            {"speech", speech},
-                            {"exception", ex}
-                        };
-                    string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                    Logging.Warn("Speech failed", badSpeechJSON);
-                }
             });
-            synthThread.Start();
-            synthThread.Join();
+
+            try
+            {
+                Task.WaitAll(synthTask);
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    throw ex;
+                }
+            }
+
             return stream;
         }
 

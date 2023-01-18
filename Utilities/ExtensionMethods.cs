@@ -6,6 +6,21 @@ namespace Utilities
 {
     public static class CustomExtensionMethods
     {
+        #region JTokenExtensions
+
+        public static bool IsNullOrEmpty(this JToken token)
+        {
+            return (token == null) ||
+                   (token.Type == JTokenType.Array && !token.HasValues) ||
+                   (token.Type == JTokenType.Object && !token.HasValues) ||
+                   (token.Type == JTokenType.String && token.ToString() == String.Empty) ||
+                   (token.Type == JTokenType.Null);
+        }
+
+        #endregion
+        
+        #region ObjectExtensions
+
         public static bool DeepEquals(this object obj, object another)
         {
             if (ReferenceEquals(obj, another)) { return true; }
@@ -18,14 +33,9 @@ namespace Utilities
             return objJson == anotherJson;
         }
 
-        public static bool IsNullOrEmpty(this JToken token)
-        {
-            return (token == null) ||
-                   (token.Type == JTokenType.Array && !token.HasValues) ||
-                   (token.Type == JTokenType.Object && !token.HasValues) ||
-                   (token.Type == JTokenType.String && token.ToString() == String.Empty) ||
-                   (token.Type == JTokenType.Null);
-        }
+        #endregion
+
+        #region StringExtensions
 
         // Remove undesired characters from end of a string (like the +++ on the end of some station names)
         public static string ReplaceEnd(this string str, char endreplace)
@@ -49,5 +59,7 @@ namespace Utilities
         {
             return dec.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
+
+        #endregion
     }
 }
