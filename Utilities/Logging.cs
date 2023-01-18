@@ -379,8 +379,7 @@ namespace Utilities
                         { CodeVersion = ThisAssembly.Git.Sha }
                 );
                 RollbarInfrastructure.Instance.Init(config);
-                //RollbarLocator.RollbarInstance.Configure(config.RollbarLoggerConfig);
-                //RollbarInfrastructure.Instance.Start();
+                RollbarLocator.RollbarInstance.Configure(config.RollbarLoggerConfig);
             }
             catch (Exception e)
             {
