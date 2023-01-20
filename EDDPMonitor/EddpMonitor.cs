@@ -58,7 +58,7 @@ namespace EddiEddpMonitor
 
         public bool NeedsStart()
         {
-            return true;
+            return false;
         }
 
         /// <summary>
