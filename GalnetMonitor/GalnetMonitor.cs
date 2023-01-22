@@ -366,11 +366,14 @@ namespace EddiGalnetMonitor
             foreach (DirectoryInfo dir in subDirs)
             {
                 string name = dir.Name;
-                if (name == "x86" || name == "x64")
+                if (name == "x86" || 
+                    name == "x64" ||
+                    !dir.GetFiles().Any(f => f.Extension.Equals(".dll"))
+                    )
                 {
                     continue;
                 }
-                if (dir.GetFiles().Count() == 0)
+                if (!dir.GetFiles().Any())
                 {
                     continue;
                 }
