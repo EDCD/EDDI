@@ -349,6 +349,10 @@ namespace EddiVoiceAttackResponder
                         Application.Current.Shutdown();
                     });
                 }
+                catch (ThreadAbortException)
+                {
+                    // Nothing to do if thread is already being aborted.
+                }
                 catch (Exception ex)
                 {
                     Logging.Debug("EDDI configuration UI close from VA failed." + ex + ".");
