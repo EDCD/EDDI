@@ -60,14 +60,12 @@ namespace EddiSpeechResponder.Service
         /// <summary> From a custom store </summary>
         public string resolveFromName(string name, BuiltinStore store, bool isTopLevelScript)
         {
-            Logging.Debug($"Resolving script {name}");
             if (!scripts.TryGetValue(name, out Script script) || 
                 script?.Value is null)
             {
                 Logging.Debug($"No {name} script found");
                 return null;
             }
-            Logging.Debug($"Found script {name}");
             if (script.Enabled == false)
             {
                 Logging.Debug($"{name} script disabled");
