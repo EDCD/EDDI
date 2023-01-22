@@ -380,9 +380,11 @@ namespace Utilities
                 );
                 RollbarInfrastructure.Instance.Init(config);
                 RollbarLocator.RollbarInstance.Configure(config.RollbarLoggerConfig);
+                Thread.Sleep(100); // Give some space for Rollbar to initialize before we begin sending data
             }
             catch (Exception e)
             {
+                TelemetryEnabled = false;
                 Logging.Warn("Telemetry process has failed", e);
             }
         }
