@@ -24,7 +24,7 @@ namespace EddiBgsService
         public readonly IBgsRestClient eddbRestClient;
 
         private const string bgsBaseUrl = "https://elitebgs.app/api/ebgs/";
-        private const string eddbBaseUrl = "https://eddbapi.kodeblox.com/api/";
+        private const string eddbBaseUrl = "https://eddbapi.elitebgs.app/api/";
 
         private class BgsRestClient : IBgsRestClient
         {
