@@ -88,8 +88,10 @@ namespace EddiSpeechService.SpeechSynthesizers
                             voiceDetails.hideVoice = true;
                         }
 
-                        // Skip Amazon Polly neural voices - these tend to throw an internal error (cause unknown) with the system speech synthesizer and are not currently reliable.
-                        if (!string.IsNullOrEmpty(voiceDetails.name) && voiceDetails.name.StartsWith("Amazon Polly") && voiceDetails.name.EndsWith("Neural"))
+                        // Skip Amazon Polly voices - these tend to throw various internal errors (cause unknown)
+                        // and are not currently reliable, particularly in VoiceAttack.
+                        if (!string.IsNullOrEmpty(voiceDetails.name) && 
+                            voiceDetails.name.StartsWith("Amazon Polly"))
                         {
                             continue;
                         }

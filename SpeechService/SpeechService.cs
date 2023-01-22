@@ -381,13 +381,19 @@ namespace EddiSpeechService
             {
                 return speak(voiceDetails, speech, voiceList);
             }
-            voiceDetails = voiceList.FirstOrDefault();
-            if (voiceDetails != null)
+            if (voiceList.Count > 0)
             {
-                Logging.Warn($"Speech failed. Retrying with voice {voiceDetails.name}");
-                return speak(voiceDetails, speech, voiceList);
+                voiceDetails = voiceList[new Random().Next(voiceList.Count - 1)];
+                if (voiceDetails != null)
+                {
+                    Logging.Warn($"Speech failed. Retrying with voice {voiceDetails.name}");
+                    return speak(voiceDetails, speech, voiceList);
+                }
             }
-            Logging.Warn("No available voices.");
+            else
+            {
+                Logging.Warn("No available voices.");
+            }
             return null;
         }
 
