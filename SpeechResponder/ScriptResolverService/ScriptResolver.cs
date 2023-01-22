@@ -96,7 +96,7 @@ namespace EddiSpeechResponder.Service
                 if (isTopLevelScript)
                 {
                     result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
-                    Logging.Debug("Turned script " + script + " in to speech " + result);
+                    Logging.Debug($"Turned {scriptObject?.Name} script into speech '{result}'");
                     result = result.Trim() == "" ? null : result.Trim();
                 }
 
