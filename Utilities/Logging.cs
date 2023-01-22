@@ -276,7 +276,8 @@ namespace Utilities
                         "HappiestSystem",
                         "HomeSystem",
                         "access_token",
-                        "refresh_token"
+                        "refresh_token",
+                        "uploaderID"
                     };
 
                     foreach (string property in filterProperties)
@@ -370,7 +371,7 @@ namespace Utilities
                 config.RollbarLoggerConfig.RollbarDataSecurityOptions.Reconfigure(
                     new RollbarDataSecurityOptions(PersonDataCollectionPolicies.None,
                         IpAddressCollectionPolicy.DoNotCollect,
-                        new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token" }));
+                        new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID" }));
                 config.RollbarLoggerConfig.RollbarPayloadAdditionOptions.Reconfigure(
                     new RollbarPayloadAdditionOptions(
                             new Person(uniqueId + (fromVA ? " VA" : "")),
