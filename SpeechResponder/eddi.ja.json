@@ -2116,7 +2116,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.source = \"Scoop\":\r\n   {SetState('eddi_context_fuel_remaining', event.total)}\r\n|elif event.full:\r\n   {SetState('eddi_context_fuel_remaining', ship.fueltanktotalcapacity)}\r\n|else:\r\n   {SetState('eddi_context_fuel_remaining', state.eddi_context_fuel_remaining + event.amount)}\r\n}\r\n\r\n{Pause(2000)}\r\n{if event.full:\r\n   {set refueled_desc to OneOf(\"fully refuelled\", \"at maximum fuel capacity\",\"at 100% fuel capacity\")}\r\n   {OneOf(\"Refueled\", \"Fuel at maximum\", \"Maximum fuel\", \"{ShipName()} is now {refueled_desc}\" )}\r\n|else:\r\n   {if event.amount <= 5.0000:\r\n      {F('Fuel check')}\r\n   }\r\n}",
+      "script": "{if event.source = \"Scoop\":\r\n    {SetState('eddi_context_fuel_remaining', event.total)}\r\n|elif event.full:\r\n    {SetState('eddi_context_fuel_remaining', ship.fueltanktotalcapacity)}\r\n|else:\r\n    {SetState('eddi_context_fuel_remaining', state.eddi_context_fuel_remaining + event.amount)}\r\n}\r\n\r\n{if event.full:\r\n    {Pause(2000)}\r\n    {set refueled_desc to OneOf(\"fully refuelled\", \"at maximum fuel capacity\",\"at 100% fuel capacity\")}\r\n    {OneOf(\"Refueled\", \"Fuel at maximum\", \"Maximum fuel\", \"{ShipName()} is now {refueled_desc}\" )}\r\n|else:\r\n    {if event.amount <= 5.0000:\r\n        {Pause(2000)}\r\n        {F('Fuel check')}\r\n    }\r\n}",
       "default": true,
       "name": "Ship refuelled",
       "description": "Triggered when you refuel your ship"
