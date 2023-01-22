@@ -264,6 +264,7 @@ namespace EddiVoiceAttackResponder
                     .Results
                     .AsVoiceAttackVariables("EDDI", @event.type);
                 foreach (var @var in eventVariables) { @var.Set(vaProxy); }
+                Logging.Debug($"Set VoiceAttack variables for EDDI event {@event.type}", eventVariables);
 
                 // Save the updated state of our event variables
                 currentVariables.AddRange(eventVariables);

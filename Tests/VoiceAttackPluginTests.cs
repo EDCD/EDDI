@@ -161,7 +161,7 @@ namespace UnitTests
             
             var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
             foreach (var @var in vaVars) { @var.Set(vaProxy); }
-            Assert.AreEqual(1, vaVars.Count);
+            Assert.AreEqual(2, vaVars.Count);
             Assert.AreEqual("ready", vaProxy.vaVars.FirstOrDefault(k => k.Key == "EDDI ship fsd status").Value);
             foreach (VoiceAttackVariable variable in vaVars)
             {

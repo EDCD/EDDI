@@ -390,7 +390,6 @@ namespace Utilities
                 if (variableType is null)
                 {
                     // No idea what it might have been so reset everything
-                    Logging.Debug($"'{key}' type is null; Unset all possible values");
                     vaProxy.SetText(key, null);
                     vaProxy.SetInt(key, null);
                     vaProxy.SetDecimal(key, null);
@@ -399,27 +398,22 @@ namespace Utilities
                 }
                 else if (variableType == typeof(string))
                 {
-                    Logging.Debug($"Setting string value '{key}' to: {value}");
                     vaProxy.SetText(key, (string)value);
                 }
                 else if (variableType == typeof(int))
                 {
-                    Logging.Debug($"Setting integer value '{key}' to: {value}");
                     vaProxy.SetInt(key, (int?)value);
                 }
                 else if (variableType == typeof(bool))
                 {
-                    Logging.Debug($"Setting boolean value '{key}' to: {value}");
                     vaProxy.SetBoolean(key, (bool?)value);
                 }
                 else if (variableType == typeof(decimal))
                 {
-                    Logging.Debug($"Setting decimal value '{key}' to: {value}");
                     vaProxy.SetDecimal(key, (decimal?)value);
                 }
                 else if (variableType == typeof(DateTime))
                 {
-                    Logging.Debug($"Setting date value '{key} to {value}");
                     vaProxy.SetDate(key, (DateTime?)value);
                 }
                 else
@@ -429,7 +423,7 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                Logging.Error($"Failed to write VoiceAttack value for key '{key}' with value {JsonConvert.SerializeObject(value)}", ex);
+                Logging.Error($@"Failed to write VoiceAttack value for {(variableType is null ? "<null type>" : variableType.ToString())} key '{key}' with value {JsonConvert.SerializeObject(value)}", ex);
             }
         }
     }

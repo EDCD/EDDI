@@ -137,7 +137,7 @@ namespace UnitTests
             var vars = new MetaVariables(entry.Value, null).Results;
 
             var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(1, cottleVars.Count);
+            Assert.AreEqual(2, cottleVars.Count);
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "fsd_status"));
 
             var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
