@@ -277,7 +277,8 @@ namespace Utilities
                         "HomeSystem",
                         "access_token",
                         "refresh_token",
-                        "uploaderID"
+                        "uploaderID",
+                        "commanderName"
                     };
 
                     foreach (string property in filterProperties)
