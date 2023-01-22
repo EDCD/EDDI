@@ -57,6 +57,7 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {BOOL:Status overheating} a boolean value indicating whether the commander's vehicle is overheating
   * {BOOL:Status low fuel} a boolean value indicating whether the commander has less than 25% fuel remaining
   * {TXT:Status fsd status} the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
+  * {BOOL:Status fsd hyperdrive charging} a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
   * {BOOL:Status srv drive assist} a boolean value indicating whether SRV drive assist is active
   * {BOOL:Status srv under ship} a boolean value indicating whether the SRV in within the proximity zone around the ship
   * {BOOL:Status srv turret deployed} a boolean value indicating whether the SRV's turret has been deployed

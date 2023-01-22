@@ -69,7 +69,8 @@ namespace EddiDataDefinitions
             OnFootExterior = 0x00008000,            // On Foot Exterior (Not sure when this would actually be set. Space walks maybe?)
             BreathableAtmosphere = 0x00010000,      // Breathable Atmosphere
             TelepresenceMulticrew = 0x00020000,     // Telepresence Multicrew
-            PhysicalMulticrew = 0x00040000          // Physical Multicrew
+            PhysicalMulticrew = 0x00040000,          // Physical Multicrew
+            FsdHyperDriveCharging = 0x00080000          // Fsd hyperdrive charging
         }
 
         // Variables set from status flags (when not signed in, this is set to '0')
@@ -100,10 +101,13 @@ namespace EddiDataDefinitions
 
         [PublicAPI]
         public string fsd_status =>
-                ((flags & Flags.FsdCooldown) != 0) ? "cooldown"
-                : ((flags & Flags.FsdCharging) != 0) ? "charging"
-                : ((flags & Flags.FsdMassLocked) != 0) ? "masslock"
-                : "ready";
+                ((flags & Flags.FsdCooldown) != 0) ? "cooldown" :
+                ((flags & Flags.FsdCharging) != 0) ? "charging" :
+                ((flags & Flags.FsdMassLocked) != 0) ? "masslock" :
+                "ready";
+
+        [PublicAPI] 
+        public bool fsd_hyperdrive_charging => (flags2 & Flags2.FsdHyperDriveCharging) != 0;
 
         [PublicAPI]
         public bool srv_drive_assist => (flags & Flags.SrvDriveAssist) != 0 && (flags & Flags.InSRV) != 0;

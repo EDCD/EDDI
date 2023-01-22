@@ -135,7 +135,7 @@ namespace EddiStatusMonitor
                         }
                         else
                         {
-                            EDDI.Instance.enqueueEvent(new ShipFsdEvent(thisStatus.timestamp, thisStatus.fsd_status));
+                            EDDI.Instance.enqueueEvent(new ShipFsdEvent(thisStatus.timestamp, thisStatus.fsd_status, thisStatus.fsd_hyperdrive_charging));
                         }
                     }
                     if (thisStatus.low_fuel != lastStatus.low_fuel)

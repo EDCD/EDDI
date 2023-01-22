@@ -758,6 +758,7 @@ Any values might be missing, depending on EDDI's configuration.
   - *overheating* - a boolean value indicating whether the commander's vehicle is overheating
   - *low_fuel* - a boolean value indicating whether the commander has less than 25% fuel remaining
   - *fsd_status* - the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
+  - *fsd_hyperdrive_charging* - a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
   - *srv_drive_assist* - a boolean value indicating whether SRV drive assist is active
   - *srv_highbeam* - true if the lights in your SRV are set to the high beam mode.
   - *srv_under_ship* - a boolean value indicating whether the SRV in within the proximity zone around the ship

@@ -5,8 +5,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.3
   * Navigation Monitor
     * Fix `Shortest Missions Route` reports all distances as zero (0) light-years #2488
+    * The `status` object now contains a new property `fsd_hyperdrive_charging` (`{BOOL:Status fsd hyperdrive charging}` in VoiceAttack), which contains a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
   * Speech Responder
+    * Events
+      * `Ship FSD` event now includes a new boolean `hyperdrive_charging`.
     * Changes to existing scripts
+      * `Fsd engaged` (triggered after the FSD is engaged) no longer warns about hazardous or non-scoopable arrival stars.
+      * `Ship FSD` (triggered before the FSD is engaged) now warns about nearby hazardous stars or no charted scoopable stars in your arrival system. 
       * `Swapout check` updated to fix a bug that was causing false positives.
   * VoiceAttack Responder
     * Fixed a bug that prevented current ship variables from being updated properly on a ship change. #2482
