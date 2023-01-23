@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using System;
+using EddiDataDefinitions;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using RestSharp;

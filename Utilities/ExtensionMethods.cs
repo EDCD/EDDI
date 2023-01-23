@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 
-namespace Utilities
+namespace System
 {
-    public static class CustomExtensionMethods
+    public static class JTokenExtensions
     {
-        #region JTokenExtensions
-
         public static bool IsNullOrEmpty(this JToken token)
         {
             return (token == null) ||
@@ -16,11 +13,10 @@ namespace Utilities
                    (token.Type == JTokenType.String && token.ToString() == String.Empty) ||
                    (token.Type == JTokenType.Null);
         }
+    }
 
-        #endregion
-        
-        #region ObjectExtensions
-
+    public static partial class ObjectExtensions
+    {
         public static bool DeepEquals(this object obj, object another)
         {
             if (ReferenceEquals(obj, another)) { return true; }
@@ -32,10 +28,15 @@ namespace Utilities
 
             return objJson == anotherJson;
         }
+    }
 
-        #endregion
 
-        #region StringExtensions
+    public static class StringExtensions
+    {
+        public static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source?.IndexOf(toCheck, comp) >= 0;
+        }
 
         // Remove undesired characters from end of a string (like the +++ on the end of some station names)
         public static string ReplaceEnd(this string str, char endreplace)
@@ -59,7 +60,5 @@ namespace Utilities
         {
             return dec.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
-
-        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using Utilities;
 

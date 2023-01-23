@@ -26,7 +26,7 @@ namespace System
     // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
     // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-    public static class ObjectExtensions
+    public static partial class ObjectExtensions
     {
         private static readonly MethodInfo CloneMethod = typeof(Object).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -90,7 +90,7 @@ namespace System
         }
     }
 
-    public class ReferenceEqualityComparer : EqualityComparer<Object>
+    public class ReferenceEqualityComparer : EqualityComparer<object>
     {
         public override bool Equals(object x, object y)
         {
@@ -98,7 +98,6 @@ namespace System
         }
         public override int GetHashCode(object obj)
         {
-            if (obj == null) return 0;
             return obj.GetHashCode();
         }
     }
@@ -118,8 +117,8 @@ namespace System
 
         internal class ArrayTraverse
         {
-            public int[] Position;
-            private int[] maxLengths;
+            public readonly int[] Position;
+            private readonly int[] maxLengths;
 
             public ArrayTraverse(Array array)
             {
