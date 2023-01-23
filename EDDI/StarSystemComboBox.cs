@@ -1,4 +1,4 @@
-﻿using EddiStarMapService;
+﻿using EddiSpanshService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +13,9 @@ namespace Eddi
         public TextBox TextBox { get; private set; }
 
         private List<string> systemList = new List<string>();
-        private int systemListSize = 10;
-        private readonly IEdsmService edsmService = new StarMapService();
+        private readonly Dictionary<string, List<string>> systemListCache = new Dictionary<string, List<string>>();
+        private const int systemDisplayListSize = 10;
+        private readonly ISpanshService spanshService = new SpanshService();
 
         public StarSystemComboBox()
         {
@@ -29,24 +30,42 @@ namespace Eddi
             }
         }
 
-        private List<string> SystemsBeginningWith(string partialSystemName)
+        private List<string> GetTypeAheadSystemNames(string partialSystemName)
         {
-            return edsmService.GetTypeAheadStarSystems(partialSystemName) ?? new List<string>();
+            // We'll need to request a new list if our cache does not already contain the key value
+            if (!systemListCache.ContainsKey(partialSystemName))
+            {
+                // Request a new list
+                systemListCache[partialSystemName] = spanshService.GetTypeAheadStarSystems(partialSystemName) ?? new List<string>();
+            }
+
+            return systemListCache[partialSystemName];
         }
 
         public void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
             if (Text == oldValue) { return; }
 
-            string systemName = Text;
+            string systemName = Text.ToLowerInvariant();
             if (systemName.Length > 1)
             {
                 // Obtain a new systemList when the string is being shortened or when the current systemList no longer contains a valid entry
-                systemList = e.Changes.All(t => t.RemovedLength == 0) 
-                             && e.Changes.Any(t => t.AddedLength > 0) 
-                             && systemList.Any(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)) 
-                    ? systemList.Where(s => s.StartsWith(Text, StringComparison.InvariantCultureIgnoreCase)).ToList() 
-                    : SystemsBeginningWith(systemName);
+                if (e.Changes.All(t => t.RemovedLength == 0) &&
+                    e.Changes.Any(t => t.AddedLength > 0) &&
+                    systemList.Any(s => s.Contains(systemName, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    // Filter down from our prior list
+                    systemList = systemList.Where(s => s.Contains(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    // If the filtered list is less than our desired display list size, try to fetch more systems
+                    if (systemList.Count < systemDisplayListSize)
+                    {
+                        systemList = GetTypeAheadSystemNames(systemName);
+                    }
+                }
+                else
+                {
+                    systemList = GetTypeAheadSystemNames(systemName);
+                }
 
                 var caretIndex = TextBox.CaretIndex;
                 if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
@@ -57,7 +76,7 @@ namespace Eddi
                 }
                 else
                 {
-                    ItemsSource = systemList.Take(systemListSize);
+                    ItemsSource = systemList.Take(systemDisplayListSize);
                     Text = systemName;
                     IsDropDownOpen = true;
                 }
@@ -90,6 +109,7 @@ namespace Eddi
                 ItemsSource = null;
             }
             systemList.Clear();
+            systemListCache.Clear();
         }
     }
 }

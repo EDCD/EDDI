@@ -347,7 +347,7 @@ namespace EddiNavigationMonitor
             {
                 searchTask = Task.Run(() =>
                 {
-                    var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg);
+                    var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg, null, null, true);
                     if (@event == null) { return; }
                     EDDI.Instance?.enqueueEvent(@event);
                 });
@@ -445,11 +445,11 @@ namespace EddiNavigationMonitor
         {
             if (GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button)
             {
-                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.cancel));
+                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.cancel, null, null, null, null, true));
             }
             else
             {
-                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.set));
+                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.set, null, null, null, null, true));
             }
         }
 
@@ -459,7 +459,7 @@ namespace EddiNavigationMonitor
             {
                 if (navigationMonitor().PlottedRoute.GuidanceEnabled)
                 {
-                    NavigationService.Instance.NavQuery(QueryType.cancel);
+                    NavigationService.Instance.NavQuery(QueryType.cancel, null, null, null, null, true);
                 }
                 navigationMonitor().PlottedRoute.Waypoints.Clear();
                 navigationMonitor().WriteNavConfig();

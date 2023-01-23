@@ -48,6 +48,7 @@
     <Compile Include="ISpanshService.cs" />
     <Compile Include="SpanshService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpanshTypeAhead.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">

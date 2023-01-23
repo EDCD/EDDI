@@ -13,8 +13,18 @@ namespace EddiSpanshService
     {
         // Request a route from the Spansh Carrier Plotter.
         [CanBeNull]
-        public NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null)
+        public NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null, bool fromUIquery = false)
         {
+            if (!fromUIquery)
+            {
+                // The Spansh Carrier Plotter uses case sensitive system names. Use the TypeAhead API to normalize casing.
+                currentSystem = GetTypeAheadStarSystems(currentSystem).FirstOrDefault();
+                for (int i = 0; i < targetSystems.Length; i++)
+                {
+                    targetSystems[i] = GetTypeAheadStarSystems(targetSystems[i]).FirstOrDefault();
+                }                
+            }
+
             if (string.IsNullOrEmpty(currentSystem) || targetSystems.Any(s => string.IsNullOrEmpty(s)))
             {
                 Logging.Warn("Carrier route plotting is not available, origin or target is not defined.");

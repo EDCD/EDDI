@@ -223,6 +223,10 @@
       <Project>{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}</Project>
       <Name>EddiInaraService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj">
+      <Project>{eeb0110f-5abf-466b-be85-d5bd21a57cd5}</Project>
+      <Name>EddiSpanshService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj">
       <Project>{7d25af37-6ef2-4210-b079-14672becdbb0}</Project>
       <Name>EddiStatusService</Name>

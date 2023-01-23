@@ -225,7 +225,7 @@ namespace EddiNavigationService
         /// <param name="prioritizeOrbitalStationArg">The query prioritizeOrbitalStation argument</param>
         /// <returns>The query result</returns>
         [CanBeNull]
-        public RouteDetailsEvent NavQuery(QueryType queryType, string stringArg0 = null, string stringArg1 = null, decimal? numericArg = null, bool? prioritizeOrbitalStationArg = null)
+        public RouteDetailsEvent NavQuery(QueryType queryType, string stringArg0 = null, string stringArg1 = null, decimal? numericArg = null, bool? prioritizeOrbitalStationArg = null, bool fromUI = false)
         {
             IsWorking = true;
             RouteDetailsEvent result;
@@ -923,7 +923,7 @@ namespace EddiNavigationService
 
         /// <summary> Obtains a neutron star route between the current star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetNeutronRoute(string targetSystemName, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
+        private RouteDetailsEvent GetNeutronRoute(string targetSystemName, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false, bool fromUIquery = false)
         {
             var plottedRouteList = new NavWaypointCollection();
                 var currentSystemName = EDDI.Instance.CurrentStarSystem.systemname;
@@ -947,7 +947,7 @@ namespace EddiNavigationService
                     s.LocalId == shipID);
                 var spanshService = new SpanshService();
                 plottedRouteList = spanshService.GetGalaxyRoute(currentSystemName, targetSystemName, ship, cargoCarriedTons,
-                    is_supercharged, use_supercharge, use_injections, exclude_secondary);
+                    is_supercharged, use_supercharge, use_injections, exclude_secondary, fromUIquery);
             }
 
             if (plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1) { return null; }
@@ -970,7 +970,7 @@ namespace EddiNavigationService
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetCarrierRoute(string targetSystemName, string startingSystemName, long? usedCarrierCapacity = 0, string[] refuel_destinations = null)
+        private RouteDetailsEvent GetCarrierRoute(string targetSystemName, string startingSystemName, long? usedCarrierCapacity = 0, string[] refuel_destinations = null, bool fromUIquery = false)
         {
             if (string.IsNullOrEmpty(startingSystemName))
             {
@@ -986,7 +986,7 @@ namespace EddiNavigationService
             var spanshService = new SpanshService();
             usedCarrierCapacity = usedCarrierCapacity ?? EDDI.Instance.FleetCarrier?.usedCapacity;
             if (usedCarrierCapacity is null) { return null; }
-            var plottedRouteList = spanshService.GetCarrierRoute(startingSystemName, new[] { targetSystemName }, Convert.ToInt64(usedCarrierCapacity), false, refuel_destinations);
+            var plottedRouteList = spanshService.GetCarrierRoute(startingSystemName, new[] { targetSystemName }, Convert.ToInt64(usedCarrierCapacity), false, refuel_destinations, fromUIquery);
 
             if (plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1) { return null; }
 

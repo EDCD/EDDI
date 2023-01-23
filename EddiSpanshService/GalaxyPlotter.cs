@@ -14,14 +14,25 @@ namespace EddiSpanshService
     {
         // Request a route from the Spansh Galaxy Plotter.
         [CanBeNull]
-        public NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false)
+        public NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false, bool fromUIquery = false)
         {
-            if (ship is null)
+            if (!fromUIquery)
             {
-                Logging.Warn("Neutron route plotting is not available, ship details are unknown.");
-                return null;
-            }
+                // The Spansh Galaxy Plotter uses case sensitive system names. Use the TypeAhead API to normalize casing.
+                targetSystem = GetTypeAheadStarSystems(targetSystem).FirstOrDefault();
+                if (string.IsNullOrEmpty(targetSystem))
+                {
+                    Logging.Warn("Neutron route plotting is not available, requested star system is unknown.");
+                    return null;
+                }
 
+                if (ship is null)
+                {
+                    Logging.Warn("Neutron route plotting is not available, ship details are unknown.");
+                    return null;
+                }                
+            }
+            
             GetShipJumpDetails(ship, out decimal fuel_power, out decimal fuel_multiplier, out decimal optimal_mass,
                 out decimal base_mass, out decimal tank_size, out decimal internal_tank_size,
                 out decimal max_fuel_per_jump, out decimal range_boost);

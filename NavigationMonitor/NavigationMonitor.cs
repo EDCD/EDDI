@@ -730,7 +730,7 @@ namespace EddiNavigationMonitor
             if (PlottedRoute.GuidanceEnabled && PlottedRoute.Waypoints.All(w => w.visited))
             {
                 // Deactivate guidance once we've reached our destination.
-                NavigationService.Instance.NavQuery(QueryType.cancel);
+                NavigationService.Instance.NavQuery(QueryType.cancel, null, null, null, null, true);
             }
         }
 
