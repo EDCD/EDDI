@@ -251,4 +251,5 @@
   <data name="context_menu_disable_all" xml:space="preserve">
     <value>全てのイベントに基づくスクリプトを無効化</value>
   </data>
+  
 </root>

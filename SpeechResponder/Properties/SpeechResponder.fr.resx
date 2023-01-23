@@ -251,4 +251,5 @@
   <data name="context_menu_disable_all" xml:space="preserve">
     <value>Désactiver tous les scripts basés sur des événements</value>
   </data>
+  
 </root>

@@ -252,4 +252,5 @@ Chcete jej znovu otevřít?</value>
   <data name="context_menu_disable_all" xml:space="preserve">
     <value>Zakázat všechny skripty založené na akci</value>
   </data>
+  
 </root>
