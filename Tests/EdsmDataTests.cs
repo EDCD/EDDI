@@ -143,10 +143,10 @@ namespace UnitTests
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = System.DateTime.UtcNow;
+            body.scanned = DateTime.UtcNow;
             Assert.AreEqual(14849, body.estimatedvalue);
-            body.mapped = System.DateTime.UtcNow;
-            Assert.AreEqual(49497, body.estimatedvalue);
+            body.mapped = DateTime.UtcNow;
+            Assert.AreEqual(64345, body.estimatedvalue);
 
             // Test terraformed body
             body = bodies.Find(s => s.bodyname == "Founders World");
@@ -188,10 +188,10 @@ namespace UnitTests
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = System.DateTime.UtcNow;
+            body.scanned = DateTime.UtcNow;
             Assert.AreEqual(276297, body.estimatedvalue);
-            body.mapped = System.DateTime.UtcNow;
-            Assert.AreEqual(920990, body.estimatedvalue);
+            body.mapped = DateTime.UtcNow;
+            Assert.AreEqual(1197287, body.estimatedvalue);
 
             // Test volcanic icy body
             body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 1 b");
@@ -234,10 +234,10 @@ namespace UnitTests
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = System.DateTime.UtcNow;
+            body.scanned = DateTime.UtcNow;
             Assert.AreEqual(500, body.estimatedvalue);
-            body.mapped = System.DateTime.UtcNow;
-            Assert.AreEqual(1191, body.estimatedvalue);
+            body.mapped = DateTime.UtcNow;
+            Assert.AreEqual(1746, body.estimatedvalue);
 
             // Test ringed gas giant
             body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 2");
@@ -284,10 +284,10 @@ namespace UnitTests
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = System.DateTime.UtcNow;
+            body.scanned = DateTime.UtcNow;
             Assert.AreEqual(4883, body.estimatedvalue);
-            body.mapped = System.DateTime.UtcNow;
-            Assert.AreEqual(16278, body.estimatedvalue);
+            body.mapped = DateTime.UtcNow;
+            Assert.AreEqual(21161, body.estimatedvalue);
         }
 
         [TestMethod]

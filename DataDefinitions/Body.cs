@@ -96,15 +96,19 @@ namespace EddiDataDefinitions
 
         /// <summary>The estimated value of the body</summary>
         [PublicAPI, JsonIgnore]
-        public long estimatedvalue => scanned == null ? 0 : solarmass == null 
+        public long estimatedvalue => scanned == null 
+            ? 0 
+            : solarmass == null 
                 ? estimateBodyValue(mapped != null, mappedEfficiently) 
                 : estimateStarValue();
 
         /// <summary>The estimated maximum value of the body</summary>
         [PublicAPI, JsonIgnore]
-        public long maxestimatedvalue => scanned == null ? 0 : solarmass == null
-            ? estimateBodyValue(true, true)
-            : estimateStarValue();
+        public long maxestimatedvalue => scanned == null 
+            ? 0 
+            : solarmass == null
+                ? estimateBodyValue(true, true)
+                : estimateStarValue();
 
         // Orbital characteristics
 
@@ -318,7 +322,7 @@ namespace EddiDataDefinitions
 
         private long estimateStarValue()
         {
-            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+            // Credit to MattG's thread at https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/ for scan value formulas
 
             if (stellarclass is null || solarmass is null)
             {
@@ -482,8 +486,8 @@ namespace EddiDataDefinitions
 
         private long estimateBodyValue(bool isMapped, bool isMappedEfficiently)
         {
-            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
-
+            // Credit to MattG's thread at https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/ for scan value formulas
+            
             if (earthmass is null || terraformState is null || planetClass is null)
             {
                 return 0;
@@ -496,12 +500,10 @@ namespace EddiDataDefinitions
             const double firstDiscoveryMultiplier = 2.6;
             const double efficientMappingMultiplier = 1.25;
 
-            bool terraformable = terraformState.edname == "Terraformable" || terraformState.edname == "Terraformed";
             int k = 300; // base value
             int k_terraformable = 93328;
-            double mappingMultiplier = 1;
 
-            var alreadyDiscovered = (alreadydiscovered ?? true); 
+            var alreadyDiscovered = (alreadydiscovered ?? true);
             var alreadyMapped = (alreadymapped ?? true); // If we don't know then we'll assume true to underestimate rather than overestimate the value
 
             // Override constants for specific types of bodies
@@ -539,8 +541,11 @@ namespace EddiDataDefinitions
             }
 
             // Terraformability is a scale from 0-100%, but since we don't know the % we'll assume 100% for the time being.
-            k = terraformable ? (k + k_terraformable) : k;
+            k = terraformState.edname == "Terraformable" || terraformState.edname == "Terraformed" 
+                ? (k + k_terraformable) 
+                : k;
 
+            double mappingMultiplier = 1;
             if (isMapped)
             {
                 if (!alreadyDiscovered && !alreadyMapped) // First to discover and first to map
@@ -555,13 +560,20 @@ namespace EddiDataDefinitions
                 {
                     mappingMultiplier = 3.3333333333;
                 }
-                mappingMultiplier *= (isMappedEfficiently) ? efficientMappingMultiplier : 1;
             }
 
             // Calculate exploration scan values
-            double result = Math.Max(scanMinValue, (k + (k * q * Math.Pow((double)earthmass, scanPower))) * mappingMultiplier);
-            result *= !alreadyDiscovered ? firstDiscoveryMultiplier : 1;
-            return (long)Math.Round(result);
+            double value = Math.Max(scanMinValue, (k + (k * q * Math.Pow((double)earthmass, scanPower))) * mappingMultiplier);
+            if (isMapped)
+            {
+                value += ((value * 0.3) > 555) ? value * 0.3 : 555;
+                if (isMappedEfficiently)
+                {
+                    value *= efficientMappingMultiplier;
+                }
+            }
+            value *= !alreadyDiscovered ? firstDiscoveryMultiplier : 1;
+            return (long)Math.Round(value);
         }
 
         // Miscellaneous and legacy properties and methods
