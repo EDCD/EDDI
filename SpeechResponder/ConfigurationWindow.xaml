@@ -60,7 +60,7 @@
         </StackPanel>
         <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Margin="0, 0, 5, 0">
             <Label x:Name ="searchLabel" VerticalContentAlignment="Center" Content="{x:Static resx:SpeechResponder.search_filter}" />
-            <TextBox x:Name ="searchFilterText" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="Auto" MinWidth="100" TextChanged="SearchFilterText_OnTextChanged"/>
+            <TextBox x:Name ="searchFilterText" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="Auto" MinWidth="100" TextChanged="SearchFilterText_OnTextChanged" ToolTip="{x:Static resx:SpeechResponder.search_filter_tooltip}"/>
             <Grid Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

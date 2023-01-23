@@ -251,4 +251,8 @@
   <data name="context_menu_disable_all" xml:space="preserve">
     <value>Disable all event-based scripts</value>
   </data>
+  <data name="search_filter_tooltip" xml:space="preserve">
+    <value>Filter results by script name, description, or full text.</value>
+    <comment>tooltip that appears when the search filter textbox is selected</comment>
+  </data>
 </root>
