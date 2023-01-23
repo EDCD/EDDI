@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Tests.Properties;
 
@@ -34,7 +35,13 @@ namespace UnitTests
         IRestResponse ISpanshRestClient.Get(IRestRequest request)
         {
             // this will throw if given a resource not in the canned dictionaries: that's OK
-            string content = CannedContent[request.Resource];
+            string resourceString = $"{request.Resource}";
+            resourceString += request.Parameters.Any() ? "?" : string.Empty;
+            foreach (var parameter in request.Parameters)
+            {
+                resourceString += $"{parameter.Name}={parameter.Value}";
+            }
+            string content = CannedContent[resourceString];
             IRestResponse restResponse = new RestResponse
             {
                 Content = content,
@@ -68,7 +75,9 @@ namespace UnitTests
         public void TestSpanshCarrierRoute()
         {
             // Arrange
-            fakeSpanshRestClient.Expect("fleetcarrier/route", "{\"job\":\"F2B5B476-4458-11ED-9B9F-5DE194EB4526\",\"status\":\"queued\"}");
+            fakeSpanshRestClient.Expect("systems/field_values/system_names?q=NLTT 13249", "{\"values\":[\"NLTT 13249\"]}");
+            fakeSpanshRestClient.Expect("systems/field_values/system_names?q=Sagittarius A*", "{\"values\":[\"Sagittarius A*\"]}");
+            fakeSpanshRestClient.Expect("fleetcarrier/route?source=NLTT 13249capacity_used=25000calculate_starting_fuel=1destinations=Sagittarius A*", "{\"job\":\"F2B5B476-4458-11ED-9B9F-5DE194EB4526\",\"status\":\"queued\"}");
             fakeSpanshRestClient.Expect("results/F2B5B476-4458-11ED-9B9F-5DE194EB4526", DeserializeJsonResource<string>(Resources.SpanshCarrierResult));
 
             // Act
@@ -150,7 +159,9 @@ namespace UnitTests
         public void TestSpanshGalaxyRoute()
         {
             // Arrange
-            fakeSpanshRestClient.Expect("generic/route", "{\"job\":\"F2B5B476-4458-11ED-9B9F-5DE194EB4527\",\"status\":\"queued\"}");
+            fakeSpanshRestClient.Expect("systems/field_values/system_names?q=NLTT 13249", "{\"values\":[\"NLTT 13249\"]}");
+            fakeSpanshRestClient.Expect("systems/field_values/system_names?q=Soul Sector EL-Y d7", "{\"values\":[\"Soul Sector EL-Y d7\"]}");
+            fakeSpanshRestClient.Expect("generic/route?source=NLTT 13249destination=Soul Sector EL-Y d7is_supercharged=0use_supercharge=1use_injections=0exclude_secondary=0fuel_power=2.60fuel_multiplier=0.012optimal_mass=1800.0base_mass=0tank_size=16internal_tank_size=1.07max_fuel_per_jump=8.00range_boost=0", "{\"job\":\"F2B5B476-4458-11ED-9B9F-5DE194EB4527\",\"status\":\"queued\"}");
             fakeSpanshRestClient.Expect("results/F2B5B476-4458-11ED-9B9F-5DE194EB4527", DeserializeJsonResource<string>(Resources.SpanshGalaxyResult));
 
             // Act
