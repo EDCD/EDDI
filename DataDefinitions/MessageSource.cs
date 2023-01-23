@@ -10,6 +10,7 @@
         }
 
         public static readonly MessageSource AmbushedPilot = new MessageSource("AmbushedPilot");
+        public static readonly MessageSource AXPilot = new MessageSource("AXPilot");
         public static readonly MessageSource BountyHunter = new MessageSource("BountyHunter");
         public static readonly MessageSource CapShip = new MessageSource("CapShip");
         public static readonly MessageSource CargoHunter = new MessageSource("CargoHunter");
@@ -55,6 +56,10 @@
             if (message.StartsWith("$AmbushedPilot_"))
             {
                 by = AmbushedPilot;
+            }
+            else if (message.StartsWith("$AX_"))
+            {
+                by = AXPilot;
             }
             else if (message.StartsWith("$BountyHunter"))
             {

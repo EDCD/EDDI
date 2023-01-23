@@ -13,6 +13,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship FSD` event now includes a new boolean `hyperdrive_charging`.
     * Changes to existing scripts
       * `Bodies to map` updated to add a preference for recommending already mapped bodies. #2490
+      * `Message received` updated to improve localization of AX pilot messages, add randomized voices for player messages, and allow setting the gender of the voice based on the name of the sender.
       * `Fsd engaged` (triggered after the FSD is engaged) no longer warns about hazardous or non-scoopable arrival stars.
       * `Ship FSD` (triggered before the FSD is engaged) now warns about nearby hazardous stars or no charted scoopable stars in your arrival system. 
       * `Ship refuelled` revised to prevent adding pauses when there is no other speech.
