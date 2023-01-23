@@ -161,11 +161,11 @@ namespace EddiEvents
 
         public long? bodyId => star.bodyId;
 
-        public DateTime? mapped => star.mapped;
+        public DateTime? mapped => star.mappedDateTime;
 
         public List<IDictionary<string, object>> parents => star.parents;
 
-        public DateTime? scanned => star.scanned;
+        public DateTime? scanned => star.scannedDateTime;
 
         public Body star { get; private set; }
 

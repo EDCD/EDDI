@@ -157,9 +157,9 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public DateTime? scanned => body?.scanned;
+        public DateTime? scanned => body?.scannedDateTime;
 
-        public DateTime? mapped => body?.mapped;
+        public DateTime? mapped => body?.mappedDateTime;
 
         [Obsolete("Use 'bodyname' instead")]
         public string name => body?.bodyname;

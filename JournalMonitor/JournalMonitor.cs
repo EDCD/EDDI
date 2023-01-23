@@ -980,7 +980,7 @@ namespace EddiJournalMonitor
 
                                         Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped, systemName, systemAddress)
                                         {
-                                            scanned = (DateTime?)timestamp
+                                            scannedDateTime = (DateTime?)timestamp
                                         };
 
                                         events.Add(new StarScannedEvent(timestamp, scantype, star) { raw = line, fromLoad = fromLogLoad });
@@ -1089,7 +1089,7 @@ namespace EddiJournalMonitor
 
                                         Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, systemName, systemAddress)
                                         {
-                                            scanned = (DateTime?)timestamp
+                                            scannedDateTime = (DateTime?)timestamp
                                         };
 
                                         events.Add(new BodyScannedEvent(timestamp, scantype, body) { raw = line, fromLoad = fromLogLoad });
@@ -2326,8 +2326,8 @@ namespace EddiJournalMonitor
                                         body = system?.BodyWithID(bodyId);
                                         if (!(body is null))
                                         {
-                                            body.scanned = body.scanned ?? timestamp;
-                                            body.mapped = timestamp;
+                                            body.scannedDateTime = body.scannedDateTime ?? timestamp;
+                                            body.mappedDateTime = timestamp;
                                             body.mappedEfficiently = probesUsed <= efficiencyTarget;
                                             events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                         }

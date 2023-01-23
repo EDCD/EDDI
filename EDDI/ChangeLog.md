@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.3
   * Core
     * Updated body mapping values (these were buffed slightly for Odyssey).
+    * `scanned` and `mapped` body properties are now unix timestamps (seconds since Jan 01 1970 UTC) rather than DateTime objects. #2468
   * Navigation Monitor
     * Fix `Shortest Missions Route` reports all distances as zero (0) light-years #2488
     * The `status` object now contains a new property `fsd_hyperdrive_charging` (`{BOOL:Status fsd hyperdrive charging}` in VoiceAttack), which contains a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.

@@ -1697,9 +1697,9 @@ namespace EddiCore
                 CurrentStarSystem.systemScanCompleted = true;
                 // Update any bodies that aren't yet recorded as scanned (these were likely scanned while EDDI was not running)
                 var bodiesToUpdate = new List<Body>();
-                foreach (var body in CurrentStarSystem.bodies.Where(b => b.scanned is null))
+                foreach (var body in CurrentStarSystem.bodies.Where(b => b.scannedDateTime is null))
                 {
-                    body.scanned = @event.timestamp;
+                    body.scannedDateTime = @event.timestamp;
                     bodiesToUpdate.Add(body);
                 }
                 if (bodiesToUpdate.Any()) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
@@ -1719,9 +1719,9 @@ namespace EddiCore
                 {
                     // Update any bodies that aren't yet recorded as scanned (these were likely scanned while EDDI was not running)
                     var bodiesToUpdate = new List<Body>();
-                    foreach (var body in CurrentStarSystem.bodies.Where(b => b.scanned is null))
+                    foreach (var body in CurrentStarSystem.bodies.Where(b => b.scannedDateTime is null))
                     {
-                        body.scanned = @event.timestamp;
+                        body.scannedDateTime = @event.timestamp;
                         bodiesToUpdate.Add(body);
                     }
                     if (bodiesToUpdate.Any()) { CurrentStarSystem.AddOrUpdateBodies(bodiesToUpdate); }
@@ -2922,7 +2922,7 @@ namespace EddiCore
                 .Find(s => 
                     (string.IsNullOrEmpty(s.bodyname) && s.distance == 0M && s.distance == theEvent.distance) || 
                     s.bodyname == theEvent.bodyname);
-            if (star?.scanned is null)
+            if (star?.scannedDateTime is null)
             {
                 CurrentStarSystem.AddOrUpdateBody(theEvent.star);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -2941,7 +2941,7 @@ namespace EddiCore
             // replace prior data which isn't re-obtainable from this event. 
             // (e.g. alreadydiscovered, scanned, alreadymapped, mapped, mappedEfficiently, etc.)
             Body body = CurrentStarSystem.bodies?.Find(s => s.bodyname == theEvent.bodyname);
-            if (body?.scanned is null)
+            if (body?.scannedDateTime is null)
             {
                 CurrentStarSystem.AddOrUpdateBody(theEvent.body);
 

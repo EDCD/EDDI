@@ -99,22 +99,22 @@ namespace EddiDataDefinitions
                 if (newBodyBuilder.Any(b => b.bodyname == oldBody.bodyname))
                 {
                     int index = newBodyBuilder.FindIndex(b => b.bodyname == oldBody.bodyname);
-                    if (oldBody.scanned != null)
+                    if (oldBody.scannedDateTime != null)
                     {
-                        if (oldBody.scanned != newBodyBuilder[index].scanned)
+                        if (oldBody.scannedDateTime != newBodyBuilder[index].scannedDateTime)
                         {
-                            newBodyBuilder[index].scanned = oldBody.scanned;
+                            newBodyBuilder[index].scannedDateTime = oldBody.scannedDateTime;
                         }
                         if (oldBody.alreadydiscovered != newBodyBuilder[index].alreadydiscovered)
                         {
                             newBodyBuilder[index].alreadydiscovered = oldBody.alreadydiscovered;
                         }
                     }
-                    if (oldBody.mapped != null)
+                    if (oldBody.mappedDateTime != null)
                     {
-                        if (oldBody.mapped != newBodyBuilder[index].mapped)
+                        if (oldBody.mappedDateTime != newBodyBuilder[index].mappedDateTime)
                         {
-                            newBodyBuilder[index].mapped = oldBody.mapped;
+                            newBodyBuilder[index].mappedDateTime = oldBody.mappedDateTime;
                         }
                         if (oldBody.alreadymapped != newBodyBuilder[index].alreadymapped)
                         {
@@ -155,7 +155,7 @@ namespace EddiDataDefinitions
                 {
                     // `newBodies` did not contain the `oldBody` so we add it here, provided we've
                     // scanned the body ourselves so that we're confident that our old data is accurate. 
-                    if (oldBody.scanned != null)
+                    if (oldBody.scannedDateTime != null)
                     {
                         newBodyBuilder.Add(oldBody);
                     }
@@ -379,10 +379,10 @@ namespace EddiDataDefinitions
         private int _totalbodies;
 
         [PublicAPI, JsonIgnore]
-        public int scannedbodies => bodies.Count(b => b.scanned != null);
+        public int scannedbodies => bodies.Count(b => b.scannedDateTime != null);
 
         [PublicAPI, JsonIgnore]
-        public int mappedbodies => bodies.Count(b => b.mapped != null);
+        public int mappedbodies => bodies.Count(b => b.mappedDateTime != null);
 
         // Not intended to be user facing - the last time the information present changed
         [PublicAPI]
@@ -463,13 +463,13 @@ namespace EddiDataDefinitions
             }
 
             // Bonus for fully discovering a system
-            if (totalbodies == bodies.Count(b => b.scanned != null))
+            if (totalbodies == bodies.Count(b => b.scannedDateTime != null))
             {
                 value += totalbodies * 1000;
 
                 // Bonus for fully mapping a system
                 int mappableBodies = bodies.Count(b => b.bodyType.invariantName != "Star");
-                if (mappableBodies == bodies.Count(b => b.mapped != null))
+                if (mappableBodies == bodies.Count(b => b.mappedDateTime != null))
                 {
                     value += mappableBodies * 10000;
                 }

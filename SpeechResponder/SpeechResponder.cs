@@ -264,7 +264,7 @@ namespace EddiSpeechResponder
                 }
                 else if (EDDI.Instance.CurrentStarSystem?.bodies?
                     .FirstOrDefault(s => s.bodyname == starScannedEvent.bodyname)?
-                    .scanned < starScannedEvent.timestamp)
+                    .scannedDateTime < starScannedEvent.timestamp)
                 {
                     // Suppress voicing new scans after the first scan occurrence
                     return;

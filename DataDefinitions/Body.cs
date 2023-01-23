@@ -64,27 +64,37 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public bool? alreadydiscovered { get; set; }
 
-        /// <summary>When we scanned this object, if we have (DateTime)</summary>
-        [PublicAPI]
-        public DateTime? scanned
+        /// <summary>When we scanned this object, if we have</summary>
+        [PublicAPI, JsonIgnore]
+        public long? scanned => scannedDateTime is null 
+            ? null 
+            : (long?)Dates.fromDateTimeToSeconds((DateTime)scannedDateTime);
+
+        [JsonProperty(nameof(scanned))]
+        public DateTime? scannedDateTime
         {
-            get => _scanned;
-            set { _scanned = value; OnPropertyChanged(); }
+            get => _scannedDateTime;
+            set { _scannedDateTime = value; OnPropertyChanged(); }
         }
-        [JsonIgnore] private DateTime? _scanned;
+        [JsonIgnore] private DateTime? _scannedDateTime;
 
         /// <summary>Whether we're the first commander to map this body</summary>
         [PublicAPI]
         public bool? alreadymapped { get; set; }
 
-        /// <summary>When we mapped this object, if we have (DateTime)</summary>
-        [PublicAPI]
-        public DateTime? mapped
+        /// <summary>When we mapped this object, if we have</summary>
+        [PublicAPI, JsonIgnore]
+        public long? mapped => mappedDateTime is null
+            ? null
+            : (long?)Dates.fromDateTimeToSeconds((DateTime)mappedDateTime);
+
+        [JsonProperty(nameof(mapped))]
+        public DateTime? mappedDateTime
         {
-            get => _mapped;
-            set { _mapped = value; OnPropertyChanged(); }
+            get => _mappedDateTime;
+            set { _mappedDateTime = value; OnPropertyChanged(); }
         }
-        [JsonIgnore] private DateTime? _mapped;
+        [JsonIgnore] private DateTime? _mappedDateTime;
 
         /// <summary>Whether we received an efficiency bonus when mapping this body</summary>
         public bool mappedEfficiently
@@ -96,15 +106,15 @@ namespace EddiDataDefinitions
 
         /// <summary>The estimated value of the body</summary>
         [PublicAPI, JsonIgnore]
-        public long estimatedvalue => scanned == null 
+        public long estimatedvalue => scannedDateTime == null 
             ? 0 
             : solarmass == null 
-                ? estimateBodyValue(mapped != null, mappedEfficiently) 
+                ? estimateBodyValue(mappedDateTime != null, mappedEfficiently) 
                 : estimateStarValue();
 
         /// <summary>The estimated maximum value of the body</summary>
         [PublicAPI, JsonIgnore]
-        public long maxestimatedvalue => scanned == null 
+        public long maxestimatedvalue => scannedDateTime == null 
             ? 0 
             : solarmass == null
                 ? estimateBodyValue(true, true)

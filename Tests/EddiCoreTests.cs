@@ -130,14 +130,14 @@ namespace UnitTests
 
             // Set up conditions to test the first scan of the body
             var body = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
-            if (body != null) { body.scanned = null; }
+            if (body != null) { body.scannedDateTime = null; }
             privateObject.Invoke("eventBodyScanned", new object[] { @event });
-            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scannedDateTime);
 
             // Re-scanning the same body shouldn't replace the first scan's data
             BodyScannedEvent @event2 = new BodyScannedEvent(@event.timestamp.AddSeconds(60), @event.scantype, @event.body);
             privateObject.Invoke("eventBodyScanned", new object[] { @event2 });
-            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scannedDateTime);
         }
 
         [TestMethod]
@@ -156,9 +156,9 @@ namespace UnitTests
 
             // Set up conditions to test the first scan of the body
             var body = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
-            if (body != null) { body.scanned = null; }
+            if (body != null) { body.scannedDateTime = null; }
             privateObject.Invoke("eventBodyScanned", new object[] { @event });
-            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4")?.scanned);
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4")?.scannedDateTime);
             long? event1EstimatedValue = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue;
 
             // Map the body
@@ -168,8 +168,8 @@ namespace UnitTests
             BodyMappedEvent @event2 = (BodyMappedEvent)events[0];
             privateObject.Invoke("eventBodyMapped", new object[] { @event2 });
 
-            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
-            Assert.AreEqual(@event2.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").mapped);
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scannedDateTime);
+            Assert.AreEqual(@event2.timestamp, EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").mappedDateTime);
             Assert.IsTrue(EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue > event1EstimatedValue);
         }
 

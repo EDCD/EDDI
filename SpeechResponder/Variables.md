@@ -565,8 +565,8 @@ All bodies have the following data:
   - *temperature* - the surface temperature of the body, in Kelvin
   - *radius* - the radius of the body, in km
   - *rings* - (when applicable) (an array of ring objects)
-  - *scanned* - a DateTime value that is set when the body is scanned and unset otherwise.
-  - *mapped* - a DateTime value that is set when the body is mapped and unset otherwise.
+  - *scanned* - a unix timestamp* value that is set when the body is scanned and unset otherwise.
+  - *mapped* - a unix timestamp* value that is set when the body is mapped and unset otherwise.
   - *alreadydiscovered* - whether another commander has already submitted a scan of the body to Universal Cartographics (scan required to fill this value)
   - *alreadymapped* - whether another commander has already submitted mapping data for the body to Universal Cartographics (scan required to fill this value)
   - *estimatedvalue* - the current estimated value of the body, taking into account scans and mapping.
@@ -591,6 +591,8 @@ All bodies have the following data:
   - *tiltprobability* - the cumulative probability describing the body's orbital tilt, relative to other bodies of the same planet type or stellar class.
   - *densityprobability* - the cumulative probability describing the body's density, relative to other bodies of the same planet type or stellar class.
   - *reserves* - the reserve level of the body
+
+    \* unix timestamp values are defined as the number of seconds since January 01 1970. (UTC) 
 
 In addition, stars have the following data:
 

@@ -95,12 +95,12 @@ namespace UnitTests
             Assert.AreEqual(1, star.rings?.Count);
             Assert.AreEqual("Rocky", star.rings?[0].invariantComposition);
             Assert.AreEqual(1522275140, star.updatedat);
-            Assert.IsNull(star.scanned);
-            Assert.IsNull(star.mapped);
+            Assert.IsNull(star.scannedDateTime);
+            Assert.IsNull(star.mappedDateTime);
 
             // Test value estimation
             Assert.AreEqual(0, star.estimatedvalue);
-            star.scanned = System.DateTime.UtcNow;
+            star.scannedDateTime = System.DateTime.UtcNow;
             Assert.AreEqual(1212, star.estimatedvalue);
 
             // Test landable high metal content world
@@ -138,14 +138,14 @@ namespace UnitTests
             Assert.AreEqual("Arsenic", body.materials[7].name);
             Assert.AreEqual(2.16406, Convert.ToDouble(body.materials[7].percentage), 0.01);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsNull(body.scanned);
-            Assert.IsNull(body.mapped);
+            Assert.IsNull(body.scannedDateTime);
+            Assert.IsNull(body.mappedDateTime);
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = DateTime.UtcNow;
+            body.scannedDateTime = DateTime.UtcNow;
             Assert.AreEqual(14849, body.estimatedvalue);
-            body.mapped = DateTime.UtcNow;
+            body.mappedDateTime = DateTime.UtcNow;
             Assert.AreEqual(64345, body.estimatedvalue);
 
             // Test terraformed body
@@ -183,14 +183,14 @@ namespace UnitTests
             Assert.AreEqual(0.373026, Convert.ToDouble(body.tilt), 0.01);
             Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsNull(body.scanned);
-            Assert.IsNull(body.mapped);
+            Assert.IsNull(body.scannedDateTime);
+            Assert.IsNull(body.mappedDateTime);
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = DateTime.UtcNow;
+            body.scannedDateTime = DateTime.UtcNow;
             Assert.AreEqual(276297, body.estimatedvalue);
-            body.mapped = DateTime.UtcNow;
+            body.mappedDateTime = DateTime.UtcNow;
             Assert.AreEqual(1197287, body.estimatedvalue);
 
             // Test volcanic icy body
@@ -229,14 +229,14 @@ namespace UnitTests
             Assert.AreEqual(-0.287234, Convert.ToDouble(body.tilt), 0.01);
             Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsNull(body.scanned);
-            Assert.IsNull(body.mapped);
+            Assert.IsNull(body.scannedDateTime);
+            Assert.IsNull(body.mappedDateTime);
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = DateTime.UtcNow;
+            body.scannedDateTime = DateTime.UtcNow;
             Assert.AreEqual(500, body.estimatedvalue);
-            body.mapped = DateTime.UtcNow;
+            body.mappedDateTime = DateTime.UtcNow;
             Assert.AreEqual(1746, body.estimatedvalue);
 
             // Test ringed gas giant
@@ -279,14 +279,14 @@ namespace UnitTests
             Assert.AreEqual(273390, body.rings[0].outerradius);
             Assert.AreEqual("Common", body.reserveLevel.invariantName);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsNull(body.scanned);
-            Assert.IsNull(body.mapped);
+            Assert.IsNull(body.scannedDateTime);
+            Assert.IsNull(body.mappedDateTime);
 
             // Test value estimation
             Assert.AreEqual(0, body.estimatedvalue);
-            body.scanned = DateTime.UtcNow;
+            body.scannedDateTime = DateTime.UtcNow;
             Assert.AreEqual(4883, body.estimatedvalue);
-            body.mapped = DateTime.UtcNow;
+            body.mappedDateTime = DateTime.UtcNow;
             Assert.AreEqual(21161, body.estimatedvalue);
         }
 
