@@ -97,37 +97,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SquadronMate" xml:space="preserve">
+    <value>Člen letky</value>
+  </data>
+  <data name="WingMate" xml:space="preserve">
+    <value>Člen křídla</value>
+  </data>
+  <data name="CrewMate" xml:space="preserve">
+    <value>Člen posádky</value>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Velitel</value>
+  </data>
+  <data name="AmbushedPilot" xml:space="preserve">
+    <value>Přepadený pilot</value>
+  </data>
+  <data name="BountyHunter" xml:space="preserve">
+    <value>Lovec odměn</value>
+  </data>
+  <data name="CapShip" xml:space="preserve">
+    <value>Capital ship</value>
+  </data>
+  <data name="CargoHunter" xml:space="preserve">
+    <value>Lovec nákladů</value>
+  </data>
+  <data name="ConvoyExplorers" xml:space="preserve">
+    <value>Průzkumný konvoj</value>
+  </data>
+  <data name="ConvoyWedding" xml:space="preserve">
+    <value>Svatební konvoj</value>
+  </data>
+  <data name="CruiseLiner" xml:space="preserve">
+    <value>Výletní loď</value>
+  </data>
+  <data name="Escort" xml:space="preserve">
+    <value>Doprovod</value>
+  </data>
+  <data name="Hitman" xml:space="preserve">
+    <value>Nájemný vrah</value>
+  </data>
+  <data name="Messenger" xml:space="preserve">
+    <value>Posel</value>
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>Vojenský</value>
+  </data>
+  <data name="Miner" xml:space="preserve">
+    <value>Těžař</value>
+  </data>
+  <data name="PassengerHunter" xml:space="preserve">
+    <value>Lovec cestujících</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirát</value>
+  </data>
+  <data name="Police" xml:space="preserve">
+    <value>Policie</value>
+  </data>
+  <data name="PowersAssassin" xml:space="preserve">
+    <value>Agent Soupeřící mocnosti</value>
+  </data>
+  <data name="PowersPirate" xml:space="preserve">
+    <value>Agent Soupeřící mocnosti</value>
+  </data>
+  <data name="PowersSecurity" xml:space="preserve">
+    <value>Agent Soupeřící mocnosti</value>
+  </data>
+  <data name="Propagandist" xml:space="preserve">
+    <value>Propagandista</value>
+  </data>
+  <data name="Protester" xml:space="preserve">
+    <value>Protestující</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>Uprchlík</value>
+  </data>
+  <data name="StarshipOne" xml:space="preserve">
+    <value>Starship One</value>
+    <comment>StarshipOne
+The Federation presidential flagship, like "Airforce One" in real life.</comment>
+  </data>
+  <data name="SearchandRescue" xml:space="preserve">
+    <value>Patrací tým</value>
+  </data>
+  <data name="NPC" xml:space="preserve">
+    <value>NPC</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Stanice</value>
+  </data>
+  <data name="CivilianPilot" xml:space="preserve">
+    <value>Civilní pilot</value>
+  </data>
+  <data name="ConflictZone" xml:space="preserve">
+    <value>Konfliktní zóna</value>
+  </data>
+  <data name="AXPilot" xml:space="preserve">
+    <value>Anti-xeno pilot</value>
+  </data>
 </root>
