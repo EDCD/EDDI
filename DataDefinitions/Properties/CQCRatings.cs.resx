@@ -97,18 +97,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Helpless" xml:space="preserve">
+    <value>Bezmocný</value>
+    <comment>CQC rating Helpless</comment>
+  </data>
+  <data name="MostlyHelpless" xml:space="preserve">
+    <value>Většinou bezmocný</value>
+    <comment>CQC rating MostlyHelpless</comment>
+  </data>
+  <data name="Amateur" xml:space="preserve">
+    <value>Amatér</value>
+    <comment>CQC rating Amateur</comment>
+  </data>
+  <data name="SemiProfessional" xml:space="preserve">
+    <value>Polo-profesionál</value>
+    <comment>CQC rating SemiProfessional</comment>
+  </data>
+  <data name="Professional" xml:space="preserve">
+    <value>Profesionál</value>
+    <comment>CQC rating Professional</comment>
+  </data>
+  <data name="Champion" xml:space="preserve">
+    <value>Šampion</value>
+    <comment>CQC rating Champion</comment>
+  </data>
+  <data name="Hero" xml:space="preserve">
+    <value>Hrdina</value>
+    <comment>CQC rating Hero</comment>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legenda</value>
+    <comment>CQC rating Legend</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>Elite</value>
+    <comment>CQC rating Elite</comment>
+  </data>
+  <data name="EliteI" xml:space="preserve">
+    <value>Elite 1</value>
+    <comment>CQC rating Elite I</comment>
+  </data>
+  <data name="EliteII" xml:space="preserve">
+    <value>Elite 2</value>
+    <comment>CQC rating Elite II</comment>
+  </data>
+  <data name="EliteIII" xml:space="preserve">
+    <value>Elite 3</value>
+    <comment>CQC rating Elite III</comment>
+  </data>
+  <data name="EliteIV" xml:space="preserve">
+    <value>Elite 4</value>
+    <comment>CQC rating Elite IV</comment>
+  </data>
+  <data name="EliteV" xml:space="preserve">
+    <value>Elite 5</value>
+    <comment>CQC rating Elite V</comment>
+  </data>
 </root>
