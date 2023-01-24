@@ -98,8 +98,20 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
+  <data name="Icy" xml:space="preserve">
+    <value>Ledový</value>
+    <comment>Composition type Icy</comment>
+  </data>
+  <data name="MetalRich" xml:space="preserve">
+    <value>Bohaté na kovy</value>
+    <comment>Composition type MetalRich</comment>
+  </data>
+  <data name="Metalic" xml:space="preserve">
+    <value>Kovové</value>
+    <comment>Composition type Metalic</comment>
+  </data>
+  <data name="Rocky" xml:space="preserve">
+    <value>Kamenité</value>
+    <comment>Composition type Rocky</comment>
+  </data>
 </root>
