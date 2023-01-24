@@ -117,18 +117,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Clean" xml:space="preserve">
+    <value>Čistý</value>
+    <comment>LegalStatus - Clean</comment>
+  </data>
+  <data name="Enemy" xml:space="preserve">
+    <value>Nepřítel</value>
+    <comment>LegalStatus - Enemy</comment>
+  </data>
+  <data name="Hunter" xml:space="preserve">
+    <value>Lovec</value>
+    <comment>LegalStatus - Hunter</comment>
+  </data>
+  <data name="Lawless" xml:space="preserve">
+    <value>Nezákonný</value>
+    <comment>LegalStatus - Lawless</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Žádné</value>
+    <comment>LegalStatus - None</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Neznámý</value>
+    <comment>LegalStatus - Unknown</comment>
+  </data>
+  <data name="Wanted" xml:space="preserve">
+    <value>Hledaný</value>
+    <comment>LegalStatus - Wanted</comment>
+  </data>
+  <data name="WantedEnemy" xml:space="preserve">
+    <value>Hledaný nepřítel</value>
+    <comment>LegalStatus - WantedEnemy</comment>
+  </data>
+  <data name="Warrant" xml:space="preserve">
+    <value>Zatykač</value>
+    <comment>LegalStatus - Warrant</comment>
+  </data>
+  <data name="IllegalCargo" xml:space="preserve">
+    <value>Ilegální náklad</value>
+    <comment>LegalStatus - Illegal cargo</comment>
+  </data>
+  <data name="Speeding" xml:space="preserve">
+    <value>Nedodržení rychlosti</value>
+    <comment>LegalStatus - Speeding</comment>
+  </data>
+  <data name="Hostile" xml:space="preserve">
+    <value>Nepřátelský</value>
+    <comment>LegalStatus - Hostile</comment>
+  </data>
+  <data name="PassengerWanted" xml:space="preserve">
+    <value>Hledaný cestující</value>
+    <comment>LegalStatus - PassengerWanted</comment>
+  </data>
+  <data name="Thargoid" xml:space="preserve">
+    <value>Thargoid</value>
+    <comment>LegalState Thargoid</comment>
+  </data>
 </root>
