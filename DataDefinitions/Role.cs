@@ -78,7 +78,7 @@ namespace EddiDataDefinitions
             }
             else
             {
-                return localizedName.CompareTo(rhs.localizedName);
+                return string.Compare(localizedName, rhs.localizedName, StringComparison.Ordinal);
             }
         }
 

@@ -50,7 +50,7 @@ namespace Eddi
 
             public int CompareTo(LanguageDef rhs)
             {
-                return this.displayName.CompareTo(rhs.displayName);
+                return string.Compare(displayName, rhs.displayName, StringComparison.Ordinal);
             }
         }
 

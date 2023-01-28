@@ -65,8 +65,8 @@ namespace EddiGalnetMonitor
                 value = StripHTML(value);
                 value = StripDoubleOrMoreWhiteSpace(RemoveControlChars(value));
                 value = value.Normalize().Trim();
-                int start = value.IndexOf("GUID") + 5;
-                int end = value.IndexOf("en Image") - start;
+                int start = value.IndexOf("GUID", StringComparison.Ordinal) + 5;
+                int end = value.IndexOf("en Image", StringComparison.Ordinal) - start;
                 value = value.Substring(start, end);
             }
             return value;
@@ -84,8 +84,8 @@ namespace EddiGalnetMonitor
                 value = value.Normalize().Trim();
                 if (content && GalnetMonitor.altURL)
                 {
-                    int start = value.IndexOf("Body") + 5;
-                    int end = value.LastIndexOf("Date") - start;
+                    int start = value.IndexOf("Body", StringComparison.Ordinal) + 5;
+                    int end = value.LastIndexOf("Date", StringComparison.Ordinal) - start;
                     value = value.Substring(start, end - 1);
                 }
             }
