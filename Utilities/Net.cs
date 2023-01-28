@@ -182,13 +182,10 @@ namespace Utilities
             string urlAssociation = @"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http";
             string browserPathKey = @"$BROWSER$\shell\open\command";
 
-            RegistryKey userChoiceKey = null;
-            string browserPath = "";
-
             try
             {
                 // Read default browser path from userChoiceLKey
-                userChoiceKey = Registry.CurrentUser.OpenSubKey(urlAssociation + @"\UserChoice", false);
+                var userChoiceKey = Registry.CurrentUser.OpenSubKey(urlAssociation + @"\UserChoice", false);
 
                 // If user choice was not found, try machine default
                 if (userChoiceKey == null)
@@ -217,7 +214,7 @@ namespace Utilities
                     // now look up the path of the executable
                     string concreteBrowserKey = browserPathKey.Replace("$BROWSER$", progId);
                     var kp = Registry.ClassesRoot.OpenSubKey(concreteBrowserKey, false);
-                    browserPath = CleanifyBrowserPath(kp?.GetValue(null) as string);
+                    var browserPath = CleanifyBrowserPath(kp?.GetValue(null) as string);
                     kp?.Close();
                     Logging.Debug("Browser path (2) is " + browserPath);
                     return browserPath;
