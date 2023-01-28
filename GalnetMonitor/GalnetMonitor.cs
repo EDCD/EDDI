@@ -352,7 +352,7 @@ namespace EddiGalnetMonitor
 
         public Dictionary<string, string> GetGalnetLocales()
         {
-            Dictionary<string, string> locales = new Dictionary<string, string>
+            Dictionary<string, string> galnetLocales = new Dictionary<string, string>
             {
                 { "English", "en" } // Add our "neutral" language "en".
             };
@@ -398,10 +398,10 @@ namespace EddiGalnetMonitor
             list.Sort();
             foreach (var key in list)
             {
-                locales.Add(key, satelliteLocales[key]);
+                galnetLocales.Add(key, satelliteLocales[key]);
             }
 
-            return locales;
+            return galnetLocales;
         }
     }
 }

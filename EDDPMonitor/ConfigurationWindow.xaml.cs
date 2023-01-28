@@ -20,12 +20,12 @@ namespace EddiEddpMonitor
 
         public List<KeyValuePair<string, FactionState>> StatesPlusNone { get; set; }
 
-        private ObservableCollection<BgsWatch> watches;
         public ObservableCollection<BgsWatch> Watches
         {
-            get { return watches; }
-            set { watches = value; OnPropertyChanged("Watch"); }
+            get { return _watches; }
+            set { _watches = value; OnPropertyChanged("Watch"); }
         }
+        private ObservableCollection<BgsWatch> _watches;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
@@ -50,7 +50,7 @@ namespace EddiEddpMonitor
         private void configurationFromFile()
         {
             configuration = ConfigService.Instance.eddpConfiguration;
-            ObservableCollection<BgsWatch> watches = new ObservableCollection<BgsWatch>();
+            var watches = new ObservableCollection<BgsWatch>();
             foreach (BgsWatch watch in configuration.watches)
             {
                 watches.Add(watch);

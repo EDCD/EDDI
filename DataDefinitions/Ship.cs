@@ -885,7 +885,7 @@ namespace EddiDataDefinitions
             return 0;
         }
 
-        private decimal JumpRange(decimal currentFuel, int cargoCarried)
+        private decimal JumpRange(decimal currentFuel, int carriedCargo)
         {
             if (frameshiftdrive is null) 
             {
@@ -903,7 +903,7 @@ namespace EddiDataDefinitions
                 Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
             }
 
-            decimal massRatio = optimalmass / (unladenmass + currentFuel + cargoCarried);
+            decimal massRatio = optimalmass / (unladenmass + currentFuel + carriedCargo);
             decimal fuel = Math.Min(currentFuel, maxfuelperjump);
 
             return ((decimal)Math.Pow((double)(1000 * fuel / fsdRatingConstant), (double)(1 / fsdPowerConstant)) * massRatio) + boostConstant;

@@ -14,26 +14,26 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.SetState;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
+            string varName = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
             Cottle.Value value = values[1];
             if (value.Type == Cottle.ValueContent.Boolean)
             {
-                EDDI.Instance.State[name] = value.AsBoolean;
+                EDDI.Instance.State[varName] = value.AsBoolean;
                 store["state"] = ScriptResolver.buildState();
             }
             else if (value.Type == Cottle.ValueContent.Number)
             {
-                EDDI.Instance.State[name] = value.AsNumber;
+                EDDI.Instance.State[varName] = value.AsNumber;
                 store["state"] = ScriptResolver.buildState();
             }
             else if (value.Type == Cottle.ValueContent.String)
             {
-                EDDI.Instance.State[name] = value.AsString;
+                EDDI.Instance.State[varName] = value.AsString;
                 store["state"] = ScriptResolver.buildState();
             }
             else if (value.Type == Cottle.ValueContent.Void)
             {
-                EDDI.Instance.State[name] = null;
+                EDDI.Instance.State[varName] = null;
                 store["state"] = ScriptResolver.buildState();
             }
             // Ignore other possibilities

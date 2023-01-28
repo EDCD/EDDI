@@ -28,9 +28,9 @@
         private MaterialCategory(string edname) : base(edname, edname)
         { }
 
-        new public MaterialCategory FromEDName(string edname)
+        public new MaterialCategory FromEDName(string EDName)
         {
-            string normalizedEDName = edname.Replace("$MICRORESOURCE_CATEGORY_", "").Replace(";", "");
+            string normalizedEDName = EDName.Replace("$MICRORESOURCE_CATEGORY_", "").Replace(";", "");
             return ResourceBasedLocalizedEDName<MaterialCategory>.FromEDName(normalizedEDName);
         }
     }

@@ -58,7 +58,7 @@ namespace UnitTests
         [TestMethod]
         public void TestMaterialAmountFromJson()
         {
-            string json = @"{
+            string molybdenumJson = @"{
               ""edname"": ""molybdenum"",
               ""amount"": 102,
               ""minimum"": 60,
@@ -68,7 +68,7 @@ namespace UnitTests
                 ""edname"": ""standard""
               }
             }";
-            MaterialAmount materialAmount = JsonConvert.DeserializeObject<MaterialAmount>(json);
+            MaterialAmount materialAmount = JsonConvert.DeserializeObject<MaterialAmount>(molybdenumJson);
             Assert.IsNotNull(materialAmount);
             Assert.AreEqual(102, materialAmount.amount);
             Assert.AreEqual(60, materialAmount.minimum);
