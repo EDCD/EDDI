@@ -1,9 +1,9 @@
-﻿using System;
-using EddiConfigService;
+﻿using EddiConfigService;
 using EddiCore;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiStarMapService;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Controls;

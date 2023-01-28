@@ -1,11 +1,11 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
+using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace UnitTests

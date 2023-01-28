@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Tests.Properties;
-using Utilities;
 
 namespace UnitTests
 {

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
+using System.Collections.Generic;
 
 namespace EddiSpanshService
 {

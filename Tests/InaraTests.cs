@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using Tests.Properties;
-using Utilities;
 
 namespace UnitTests
 {

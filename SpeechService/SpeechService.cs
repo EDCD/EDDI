@@ -6,6 +6,7 @@ using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiSpeechService.SpeechPreparation;
 using EddiSpeechService.SpeechSynthesizers;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Utilities;
 
 namespace EddiSpeechService

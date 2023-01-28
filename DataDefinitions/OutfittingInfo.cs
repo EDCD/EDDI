@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using System.Threading;
+﻿using JetBrains.Annotations;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using Utilities;
 
 namespace EddiDataDefinitions

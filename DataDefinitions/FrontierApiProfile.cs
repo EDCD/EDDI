@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using Utilities;
 
 namespace EddiDataDefinitions
 {
