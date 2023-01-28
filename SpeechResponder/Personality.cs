@@ -382,7 +382,9 @@ namespace EddiSpeechResponder
             {
                 foreach (var personalityScriptKV in personality.Scripts.Where(s => !fixedScripts.Keys.Contains(s.Key)))
                 {
+#pragma warning disable IDE0018 // Inline variable declaration - we fail CI testing when we try to in-line this.
                     Script defaultScript = null;
+#pragma warning restore IDE0018 // Inline variable declaration
                     if ((defaultPersonality.Scripts?.TryGetValue(personalityScriptKV.Key, out defaultScript) ?? false) && 
                         !obsoleteScriptKeys.Contains(personalityScriptKV.Key))
                     {

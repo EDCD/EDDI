@@ -310,7 +310,9 @@ namespace EddiCompanionAppService
             return paramsDict;
         }
 
+#pragma warning disable IDE0051 // Remove unused private members - Preserve unusued method as it may be useful for future debug testing
         private JObject DecodeToken()
+#pragma warning restore IDE0051 // Remove unused private members
         {
             if (Credentials.accessToken == null) { return null; }
 
