@@ -931,6 +931,7 @@ namespace EddiDataDefinitions
                 new Module(128793942, "Int_DroneControl_Decontamination_Size3_Class1", 1633, "DecontaminationLimpetController", 3, "E", 16201),
                 new Module(128793943, "Int_DroneControl_Decontamination_Size5_Class1", 1634, "DecontaminationLimpetController", 5, "E", 145801),
                 new Module(128793944, "Int_DroneControl_Decontamination_Size7_Class1", 1635, "DecontaminationLimpetController", 7, "E", 1312201),
+                new Module(128808878, "Hpt_XenoScannerMK2_Basic_Tiny", -1, "XenoScannerMK2", 0, "C", 745950),
                 new Module(128816569, "Krait_mkii_Armour_Grade1", 1645, "LightweightAlloy", 1, "I", 0, 128816567),
                 new Module(128816570, "Krait_mkii_Armour_Grade2", 1646, "ReinforcedAlloy", 1, "I", 22791270, 128816567),
                 new Module(128816571, "Krait_mkii_Armour_Grade3", 1647, "MilitaryGradeComposite", 1, "I", 51280360, 128816567),
@@ -1074,6 +1075,7 @@ namespace EddiDataDefinitions
                 new Module(129001928, "Int_MultiDroneControl_Xeno_Size3_Class4", 1823, "MultiDroneControl_Xeno", 3, "B", 80000),
                 new Module(129001929, "Int_MultiDroneControl_Universal_Size7_Class3", 1824, "MultiDroneControl_Universal", 7, "C", 4000000),
                 new Module(129001930, "Int_MultiDroneControl_Universal_Size7_Class5", 1825, "MultiDroneControl_Universal", 7, "A", 8000000),
+                new Module(129019260, "Int_ExpModuleStabiliser_Size3_Class3", -1, "ExpModuleStabiliser", 3, "F", 2000000),
                 new Module(129022079, "Hpt_ATDumbfireMissile_Fixed_Large_V2", 1832, "Enhanced_AXMissileRack", 3, "B", 1703836, ModuleMount.Fixed),
                 new Module(129022080, "Hpt_ATMultiCannon_Fixed_Medium_V2", 1828, "Enhanced_AXMulti_Cannon", 2, "D", 455078, ModuleMount.Fixed),
                 new Module(129022081, "Hpt_ATDumbfireMissile_Fixed_Medium_V2", 1833, "Enhanced_AXMissileRack", 2, "D", 681534, ModuleMount.Fixed),
@@ -1193,9 +1195,6 @@ namespace EddiDataDefinitions
 
                 // Needs pricing
                 new Module(128066402, "Int_DroneControl_ResourceSiphon", 1803, "HatchBreakerLimpetController", 1, "I", 0),
-
-                // Needs confirmation of localized name
-                new Module(128808878, "Hpt_XenoScannerMk2_Basic_Tiny", -1, "XenoScanner", 0, "E", 745950),
             };
         }
 

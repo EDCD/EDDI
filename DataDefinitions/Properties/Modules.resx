@@ -621,4 +621,12 @@
     <value>Enhanced Anti-Xeno Multi-Cannon</value>
     <comment>Module Enhanced AX Multi-Cannon</comment>
   </data>
+  <data name="ExpModuleStabiliser" xml:space="preserve">
+    <value>Experimental Weapon Stabilizer</value>
+    <comment>Module Experimental Weapon Stabilizer</comment>
+  </data>
+  <data name="XenoScannerMK2" xml:space="preserve">
+    <value>Enhanced Xeno Scanner</value>
+    <comment>Module Enhanced Xeno Scanner</comment>
+  </data>
 </root>

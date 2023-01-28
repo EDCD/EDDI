@@ -403,6 +403,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Experimental Weapon Stabilizer.
+        /// </summary>
+        public static string ExpModuleStabiliser {
+            get {
+                return ResourceManager.GetString("ExpModuleStabiliser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fighter Armour.
         /// </summary>
         public static string FighterArmour {
@@ -1191,6 +1200,15 @@ namespace EddiDataDefinitions.Properties {
         public static string XenoScanner {
             get {
                 return ResourceManager.GetString("XenoScanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enhanced Xeno Scanner.
+        /// </summary>
+        public static string XenoScannerMK2 {
+            get {
+                return ResourceManager.GetString("XenoScannerMK2", resourceCulture);
             }
         }
     }
