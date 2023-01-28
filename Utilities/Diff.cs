@@ -303,7 +303,7 @@ namespace Utilities
                 }
 
                 EndPos = StartPos;
-                while ((EndPos < Data.Length) && (Data.modified[EndPos] == true))
+                while ((EndPos < Data.Length) && (Data.modified[EndPos]))
                 {
                     EndPos++;
                 }
