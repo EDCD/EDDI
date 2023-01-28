@@ -134,7 +134,7 @@ namespace UnitTests
             }
 
             // Add antimony so that we can test whether obsolete data in our inventory but not listed in the event is corrected 
-            var antimony = materialMonitor.inventory.Single(m => string.Equals(m.edname, "antimony", StringComparison.InvariantCultureIgnoreCase));
+            var antimony = materialMonitor.inventory.SingleOrDefault(m => string.Equals(m.edname, "antimony", StringComparison.InvariantCultureIgnoreCase));
             if (antimony is null)
             {
                 antimony = new MaterialAmount("antimony", Rarity.Rare, 5, 25, 50, 75);
