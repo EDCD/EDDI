@@ -1145,7 +1145,7 @@ namespace EddiShipMonitor
                     else
                     {
                         // Update launch bays from profile
-                        if (profileCurrentShip?.launchbays?.Any() ?? false)
+                        if (profileCurrentShip.launchbays.Any())
                         {
                             ship.launchbays = profileCurrentShip.launchbays;
                         }
