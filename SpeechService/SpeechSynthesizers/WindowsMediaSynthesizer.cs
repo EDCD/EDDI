@@ -32,55 +32,52 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         public WindowsMediaSynthesizer(ref HashSet<VoiceDetails> voiceStore)
         {
-            lock (synthLock)
+            bool TryOneCoreVoice(VoiceDetails voiceDetails)
             {
-                bool TryOneCoreVoice(VoiceDetails voiceDetails)
+                // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
+                // so we test the registry entries for each voice to see if it is really fully registered.
+                var oneCoreVoicesRegistryDir = @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens";
+                var voiceKeys = Registry.LocalMachine.OpenSubKey(oneCoreVoicesRegistryDir, false);
+                if (voiceKeys != null)
                 {
-                    // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
-                    // so we test the registry entries for each voice to see if it is really fully registered.
-                    var oneCoreVoicesRegistryDir = @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens";
-                    var voiceKeys = Registry.LocalMachine.OpenSubKey(oneCoreVoicesRegistryDir, false);
-                    if (voiceKeys != null)
+                    foreach (var subKeyName in voiceKeys.GetSubKeyNames())
                     {
-                        foreach (var subKeyName in voiceKeys.GetSubKeyNames())
+                        var voiceKey =
+                            Registry.LocalMachine.OpenSubKey($@"{oneCoreVoicesRegistryDir}\{subKeyName}");
+                        var voiceName = voiceKey?.GetValue("").ToString();
+                        if (voiceName?.Contains(voiceDetails.name) ?? false)
                         {
-                            var voiceKey =
-                                Registry.LocalMachine.OpenSubKey($@"{oneCoreVoicesRegistryDir}\{subKeyName}");
-                            var voiceName = voiceKey?.GetValue("").ToString();
-                            if (voiceName?.Contains(voiceDetails.name) ?? false)
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
-
-                    return false;
                 }
 
-                // Get all available voices from Windows.Media.SpeechSynthesis
-                foreach (var voice in SpeechSynthesizer.AllVoices)
+                return false;
+            }
+
+            // Get all available voices from Windows.Media.SpeechSynthesis
+            foreach (var voice in SpeechSynthesizer.AllVoices)
+            {
+                try
                 {
-                    try
+                    Logging.Debug($"Found voice: {voice.DisplayName}", voice);
+
+                    var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
+                        CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
+
+                    // Skip voices which are not fully registered
+                    if (!TryOneCoreVoice(voiceDetails))
                     {
-                        Logging.Debug($"Found voice: {voice.DisplayName}", voice);
-
-                        var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
-                            CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
-
-                        // Skip voices which are not fully registered
-                        if (!TryOneCoreVoice(voiceDetails))
-                        {
-                            Logging.Debug($"{voice.DisplayName} is missing registry keys (may have been uninstalled?), skipping.");
-                            continue;
-                        }
-
-                        voiceStore.Add(voiceDetails);
-                        Logging.Debug($"Loaded voice: {voice.DisplayName}", voiceDetails);
+                        Logging.Debug($"{voice.DisplayName} is missing registry keys (may have been uninstalled?), skipping.");
+                        continue;
                     }
-                    catch (Exception e)
-                    {
-                        Logging.Error($"Failed to load {voice.DisplayName}", e);
-                    }
+
+                    voiceStore.Add(voiceDetails);
+                    Logging.Debug($"Loaded voice: {voice.DisplayName}", voiceDetails);
+                }
+                catch (Exception e)
+                {
+                    Logging.Error($"Failed to load {voice.DisplayName}", e);
                 }
             }
         }
@@ -129,32 +126,42 @@ namespace EddiSpeechService.SpeechSynthesizers
 
                         synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
                         synth.Options.AudioVolume = (double)Configuration.Volume / 100;
-                        Logging.Debug("Configuration is: ", Configuration);
+                    }
+                    Logging.Debug("Configuration is: ", Configuration);
 
-                        SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
-                        if (useSSML)
+                    SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
+                    if (useSSML)
+                    {
+                        try
                         {
-                            try
+                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                            lock (synthLock)
                             {
-                                Logging.Debug("Feeding SSML to synthesizer: " + speech);
                                 stream = synth.SynthesizeSsmlToStreamAsync(speech).AsTask().Result;
                             }
-                            catch (Exception ex)
+                        }
+                        catch (Exception ex)
+                        {
+                            var badSpeech = new Dictionary<string, object>
                             {
-                                var badSpeech = new Dictionary<string, object>
-                                {
-                                    { "voice", voice },
-                                    { "speech", speech },
-                                    { "exception", ex }
-                                };
-                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech)).AsTask()
+                                { "voice", voice },
+                                { "speech", speech },
+                                { "exception", ex }
+                            };
+                            Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                            lock (synthLock)
+                            {
+                                stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech))
+                                    .AsTask()
                                     .Result;
                             }
                         }
-                        else
+                    }
+                    else
+                    {
+                        Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                        lock (synthLock)
                         {
-                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
                             stream = synth.SynthesizeTextToStreamAsync(speech).AsTask().Result;
                         }
                     }
