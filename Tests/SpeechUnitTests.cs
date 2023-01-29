@@ -14,8 +14,6 @@ namespace UnitTests
     [TestClass]
     public class SpeechUnitTests : TestBase
     {
-        private readonly PrivateObject speechService = new PrivateObject(new SpeechService());
-        private readonly HumanizeTests _humanizeTests = new HumanizeTests();
 
         [TestInitialize]
         public void start()
@@ -31,6 +29,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechPriorityIfInOrder()
         {
+            var speechService = new PrivateObject(new SpeechService());
             speechService.SetFieldOrProperty("speechQueue", new SpeechQueue());
             SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
 
@@ -40,7 +39,6 @@ namespace UnitTests
             speechQueue.Enqueue(speech1);
             speechQueue.Enqueue(speech2);
 
-            PrivateObject speechQueueObject = new PrivateObject(speechQueue);
             speechQueue.TryDequeue(out EddiSpeech result1);
             speechQueue.TryDequeue(out EddiSpeech result2);
 
@@ -55,6 +53,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechPriorityIfOutOfOrder()
         {
+            var speechService = new PrivateObject(new SpeechService());
             speechService.SetFieldOrProperty("speechQueue", new SpeechQueue());
             SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
 
@@ -79,6 +78,8 @@ namespace UnitTests
         [TestMethod]
         public void TestActiveSpeechPriority()
         {
+            var speechService = new PrivateObject(new SpeechService());
+
             EddiSpeech priority5speech = new EddiSpeech("Priority 5", null, 5);
             EddiSpeech priority4speech = new EddiSpeech("Priority 2", null, 4);
             EddiSpeech priority2speech = new EddiSpeech("Priority 4", null, 2);
@@ -314,49 +315,22 @@ namespace UnitTests
             privateObject.Invoke("DequeueAllSpeech", System.Array.Empty<object>());
         }
 
-        [TestMethod]
-        public void TestSpeechServiceEscaping1()
+        [DataTestMethod]
+        // Test escaping for invalid ssml.
+        [DataRow("<invalid>test</invalid> <invalid withattribute='attribute'>test2</invalid>", "&lt;invalid&gt;test&lt;/invalid&gt; &lt;invalid withattribute='attribute'&gt;test2&lt;/invalid&gt;")]
+        // Test escaping for double quotes, single quotes, and <phoneme> ssml commands. XML characters outside of ssml elements are escaped.
+        [DataRow(@"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> & Co's shop", "<phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> &amp; Co&apos;s shop")]
+        // Test escaping for <break> elements. XML characters outside of ssml elements are escaped.
+        [DataRow(@"<break time=""100ms""/>He said ""Foo"".", "<break time=\"100ms\"/>He said &quot;Foo&quot;.")] 
+        // Test escaping for Cereproc unique <usel> and <spurt> elements. Input and output should be equal.
+        [DataRow(@"<spurt audio='g0001_004'>cough</spurt> This is a <usel variant=""1"">test</usel> sentence.", @"<spurt audio='g0001_004'>cough</spurt> This is a <usel variant=""1"">test</usel> sentence.")]
+        // Test escaping for characters included in the escape sequence ('X' in this case)
+        [DataRow(@"Brazilian armada <say-as interpret-as=""characters"">X</say-as>", @"Brazilian armada <say-as interpret-as=""characters"">X</say-as>")]
+        public void TestSpeechServiceEscaping(string input, string expectedOutput)
         {
-            // Test escaping for invalid ssml.
-            var line = @"<invalid>test</invalid> <invalid withattribute='attribute'>test2</invalid>";
-            var result = SpeechFormatter.EscapeSSML(line);
-            Assert.AreEqual("&lt;invalid&gt;test&lt;/invalid&gt; &lt;invalid withattribute='attribute'&gt;test2&lt;/invalid&gt;", result);
-        }
-
-        [TestMethod]
-        public void TestSpeechServiceEscaping2()
-        {
-            // Test escaping for double quotes, single quotes, and <phoneme> ssml commands. XML characters outside of ssml elements are escaped.
-            var line = @"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> & Co's shop";
-            var result = SpeechFormatter.EscapeSSML(line);
-            Assert.AreEqual("<phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet='ipa' ph='ˈdezɦrə'>Dezhra</phoneme> &amp; Co&apos;s shop", result);
-        }
-
-        [TestMethod]
-        public void TestSpeechServiceEscaping3()
-        {
-            // Test escaping for <break> elements. XML characters outside of ssml elements are escaped.
-            var line = @"<break time=""100ms""/>He said ""Foo"".";
-            var result = SpeechFormatter.EscapeSSML(line);
-            Assert.AreEqual("<break time=\"100ms\"/>He said &quot;Foo&quot;.", result);
-        }
-
-        [TestMethod]
-        public void TestSpeechServiceEscaping4()
-        {
-            // Test escaping for Cereproc unique <usel> and <spurt> elements
-            var line = @"<spurt audio='g0001_004'>cough</spurt> This is a <usel variant=""1"">test</usel> sentence.";
-            var result = SpeechFormatter.EscapeSSML(line);
-            Assert.AreEqual(line, result);
-        }
-
-        [TestMethod]
-        public void TestSpeechServiceEscaping5()
-        {
-            // Test escaping for characters included in the escape sequence ('X' in this case)
-            var line = @"Brazilian armada <say-as interpret-as=""characters"">X</say-as>";
-            var result = SpeechFormatter.EscapeSSML(line);
-            Assert.AreEqual(line, result);
+            
+            var result = SpeechFormatter.EscapeSSML(input);
+            Assert.AreEqual(expectedOutput, result);
         }
 
         [TestMethod]
@@ -398,6 +372,17 @@ namespace UnitTests
                 }
             }
             Assert.AreEqual(0, missingScripts.Count);
+        }
+
+        [DataTestMethod]
+        [DataRow(@"   ", "")]
+        [DataRow(@"Test <break time=""3s""/>", "Test")]
+        [DataRow(@"<break time=""3ms""/> Test", @"<break time=""3ms""/> Test")]
+        [DataRow(@"<break time=""3ms""/> <break time=""3ms""/>", "")]
+        [DataRow(@"<break time=""3s""/> Test <break time=""3s""/>", @"<break time=""3s""/> Test")]
+        public void TestSpeechServiceTrimming(string input, string output)
+        {
+            Assert.AreEqual(output, SpeechFormatter.TrimSpeech(input));
         }
     }
 }

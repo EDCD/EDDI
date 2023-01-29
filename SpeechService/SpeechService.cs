@@ -161,7 +161,9 @@ namespace EddiSpeechService
 
         public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
         {
-            if (message == null) { return; }
+            // Skip empty speech and speech containing nothing except one or more pauses / breaks.
+            message = SpeechFormatter.TrimSpeech(message);
+            if (string.IsNullOrEmpty(message)) { return; }
 
             Thread speechQueueHandler = new Thread(() =>
             {

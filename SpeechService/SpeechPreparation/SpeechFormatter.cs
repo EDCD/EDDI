@@ -18,6 +18,24 @@ namespace EddiSpeechService.SpeechPreparation
             @"(<voice.*?>[\s\S]*?<\/voice>)",
         };
 
+        /// <summary>
+        /// Removes excess whitespace and SSML &lt;break/&gt; tags.
+        /// </summary>
+        /// <param name="s">The target string</param>
+        /// <returns>The trimmed string</returns>
+        public static string TrimSpeech(string s)
+        {
+            // Skip empty speech, speech containing nothing except one or more pauses / breaks,
+            // and pauses appended to the end of speech with nothing following.
+            s = s?.Trim();
+            if (!string.IsNullOrEmpty(s))
+            {
+                s = Regex.Replace(s, @"(?>\s*<break time=""\d+[ms]+""\s*\/>)+\s*$", "");
+                return s;
+            }
+            return string.Empty;
+        }
+
         internal static void PrepareSpeech(VoiceDetails voice, ref string speech, out bool useSSML)
         {
             var lexicons = voice.GetLexicons();

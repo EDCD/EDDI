@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.3
   * Core
+    * Trim any pauses or breaks from the end of speech when that speech isn't followed by more speech.
     * Updated body mapping values (these were buffed slightly for Odyssey).
     * `scanned` and `mapped` body properties are now unix timestamps (seconds since Jan 01 1970 UTC) rather than DateTime objects. #2468
   * Navigation Monitor
