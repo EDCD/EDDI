@@ -103,7 +103,7 @@
     <comment>An on foot NPC loadout</comment>
   </data>
   <data name="citizensuitai_scientific" xml:space="preserve">
-    <value>Scientist</value>
+    <value>Researcher</value>
     
     <comment>An on foot NPC loadout</comment>
   </data>
@@ -125,7 +125,7 @@
     <comment>An on foot NPC loadout</comment>
   </data>
   <data name="citizensuitai_industrial" xml:space="preserve">
-    <value>Worker</value>
+    <value>Technician</value>
     <comment>An on foot NPC loadout</comment>
   </data>
 </root>

@@ -877,6 +877,7 @@
     <EmbeddedResource Include="Properties\NpcSuitLoadout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NpcSuitLoadout.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\NpcSuitLoadout.ru.resx" />
     <EmbeddedResource Include="Properties\PassengerType.cs.resx" />

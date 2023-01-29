@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using Tests.Properties;
 using Utilities;
+using Windows.UI.Xaml.Shapes;
 
 namespace UnitTests
 {
@@ -1849,6 +1850,35 @@ namespace UnitTests
             Assert.AreEqual(expectedHumanSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Human")?.amount ?? 0);
             Assert.AreEqual(expectedThargoidSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Thargoid")?.amount ?? 0);
             Assert.AreEqual(expectedOtherSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Other")?.amount ?? 0);
+        }
+
+        [TestMethod]
+        public void TestBountyAwardedOdyssey()
+        {
+            string line1 = @"{ ""timestamp"":""2023-01-28T23:36:38Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""Duwali Liberty Party"", ""Reward"":2050 } ], ""Target"":""citizensuitai_scientific"", ""Target_Localised"":""Researcher"", ""TotalReward"":2050, ""VictimFaction"":""Duwali Partnership"" }";
+            string line2 = @"{ ""timestamp"":""2023-01-28T23:36:59Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""Defence Party of Duwali"", ""Reward"":14100 } ], ""Target"":""citizensuitai_industrial"", ""Target_Localised"":""Technician"", ""TotalReward"":14100, ""VictimFaction"":""Duwali Partnership"" }";
+
+            var events1 = JournalMonitor.ParseJournalEntry(line1);
+            Assert.AreEqual(1, events1.Count);
+            var event1 = (BountyAwardedEvent)events1[0];
+            Assert.IsNotNull(event1);
+            Assert.AreEqual(1, event1.rewards.Count);
+            Assert.AreEqual("Duwali Liberty Party", event1.rewards[0].faction);
+            Assert.AreEqual(2050, event1.rewards[0].amount);
+            Assert.AreEqual("Researcher", event1.target);
+            Assert.AreEqual(2050, event1.reward);
+            Assert.AreEqual("Duwali Partnership", event1.faction);
+
+            var events2 = JournalMonitor.ParseJournalEntry(line2);
+            Assert.AreEqual(1, events2.Count);
+            var event2 = (BountyAwardedEvent)events2[0];
+            Assert.IsNotNull(event2);
+            Assert.AreEqual(1, event2.rewards.Count);
+            Assert.AreEqual("Defence Party of Duwali", event2.rewards[0].faction);
+            Assert.AreEqual(14100, event2.rewards[0].amount);
+            Assert.AreEqual("Technician", event2.target);
+            Assert.AreEqual(14100, event2.reward);
+            Assert.AreEqual("Duwali Partnership", event2.faction);
         }
     }
 }
