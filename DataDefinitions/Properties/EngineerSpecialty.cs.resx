@@ -118,6 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="Armour" xml:space="preserve">
+    <value>Obrnění</value>
+  </data>
+  <data name="Cannons" xml:space="preserve">
+    <value>Děla</value>
+  </data>
   
   
   
@@ -125,26 +131,58 @@
   
   
   
+  <data name="Lasers" xml:space="preserve">
+    <value>Lasery</value>
+  </data>
+  <data name="LifeSupportSystems" xml:space="preserve">
+    <value>Systémy podpory života</value>
+  </data>
   
+  <data name="Mines" xml:space="preserve">
+    <value>Miny</value>
+  </data>
+  <data name="Missiles" xml:space="preserve">
+    <value>Rakety</value>
+  </data>
+  <data name="MultiCannons" xml:space="preserve">
+    <value>Multi-děla</value>
+  </data>
+  <data name="PlasmaAccelerators" xml:space="preserve">
+    <value>Akcelerátory plasmy</value>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Bod obrany</value>
+  </data>
+  <data name="PowerDistributors" xml:space="preserve">
+    <value>Distributory energie</value>
+  </data>
+  <data name="PowerPlants" xml:space="preserve">
+    <value>Elektrárny</value>
+  </data>
   
+  <data name="Refineries" xml:space="preserve">
+    <value>Rafinérie</value>
+  </data>
+  <data name="Scanners" xml:space="preserve">
+    <value>Skenery</value>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Senzory</value>
+  </data>
+  <data name="ShieldBoosters" xml:space="preserve">
+    <value>Posilovače štítů</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShieldGenerators" xml:space="preserve">
+    <value>Generátory štítů</value>
+  </data>
+  <data name="SurfaceScanners" xml:space="preserve">
+    <value>Skenery povrchu</value>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Trysky</value>
+  </data>
+  <data name="Torpedos" xml:space="preserve">
+    <value>Torpéda</value>
+  </data>
 </root>

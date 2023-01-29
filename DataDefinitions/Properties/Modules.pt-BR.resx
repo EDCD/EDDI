@@ -621,4 +621,12 @@
     <value>Canhão de Repetição Anti-Xeno Melhorado</value>
     <comment>Module Enhanced AX Multi-Cannon</comment>
   </data>
+  <data name="ExpModuleStabiliser" xml:space="preserve">
+    <value>Estabilizador de Arma Experimental</value>
+    <comment>Module Experimental Weapon Stabilizer</comment>
+  </data>
+  <data name="XenoScannerMK2" xml:space="preserve">
+    <value>Xeno Scanner Melhorado</value>
+    <comment>Module Enhanced Xeno Scanner</comment>
+  </data>
 </root>

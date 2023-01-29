@@ -195,5 +195,7 @@ The Federation presidential flagship, like "Airforce One" in real life.</comment
   <data name="ConflictZone" xml:space="preserve">
     <value>Zona de conflito</value>
   </data>
-  
+  <data name="AXPilot" xml:space="preserve">
+    <value>Piloto Anti-xeno</value>
+  </data>
 </root>
