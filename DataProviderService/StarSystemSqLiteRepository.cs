@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using EddiStarMapService;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -205,46 +206,48 @@ namespace EddiDataProviderService
             for (int i = 0; i < dataSets.Count; i++)
             {
                 DatabaseStarSystem dbStarSystem = dataSets[i];
-                if (dbStarSystem.systemJson != null)
+                if (!string.IsNullOrEmpty(dbStarSystem.systemJson))
                 {
                     // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
-                    dbStarSystem.systemJson = dbStarSystem.systemJson?.Replace(@"""No volcanism""", "null");
+                    dbStarSystem.systemJson = dbStarSystem.systemJson?
+                        .Replace(@"""No volcanism""", "null");
 
                     // Old versions of the data could have a string "InterstellarFactorsContact" for the facilitator station service.  If so we update it
-                    dbStarSystem.systemJson = dbStarSystem.systemJson?.Replace(@"""InterstellarFactorsContact""", @"""Facilitator""");
+                    dbStarSystem.systemJson = dbStarSystem.systemJson?
+                        .Replace(@"""InterstellarFactorsContact""", @"""Facilitator""");
+                }
 
-                    if (refreshIfOutdated)
+                if (refreshIfOutdated)
+                {
+                    if (dbStarSystem.lastUpdated < DateTime.UtcNow.AddHours(-1))
                     {
-                        if (dbStarSystem.lastUpdated < DateTime.UtcNow.AddHours(-1))
-                        {
-                            // Data is stale or we have no record of ever updating this star system
-                            needToUpdate = true;
-                        }
-                        else if (SCHEMA_VERSION >= 2 && (dbStarSystem.systemAddress is null))
-                        {
-                            // Obtain data for optimized data searches starting with schema version 2
-                            needToUpdate = true;
-                        }
+                        // Data is stale or we have no record of ever updating this star system
+                        needToUpdate = true;
                     }
-
-                    if (needToUpdate)
+                    else if (SCHEMA_VERSION >= 2 && dbStarSystem.systemAddress is null)
                     {
-                        // We want to update this star system (don't deserialize the old result at this time)
-                        systemsToUpdate.Add(dbStarSystem);
+                        // Obtain data for optimized data searches starting with schema version 2
+                        needToUpdate = true;
+                    }
+                }
+
+                if (needToUpdate)
+                {
+                    // We want to update this star system (don't deserialize the old result at this time)
+                    systemsToUpdate.Add(dbStarSystem);
+                }
+                else
+                {
+                    // Deserialize the old result
+                    var result = DeserializeStarSystem(dbStarSystem.systemName, dbStarSystem.systemJson, ref needToUpdate);
+                    if (result != null)
+                    {
+                        results.Add(result);
                     }
                     else
                     {
-                        // Deserialize the old result
-                        StarSystem result = DeserializeStarSystem(dbStarSystem.systemName, dbStarSystem.systemJson, ref needToUpdate);
-                        if (result != null)
-                        {
-                            results.Add(result);
-                        }
-                        else
-                        {
-                            // Something went wrong... retrieve new data.
-                            systemsToUpdate.Add(dbStarSystem);
-                        }
+                        // Something went wrong... retrieve new data.
+                        systemsToUpdate.Add(dbStarSystem);
                     }
                 }
             }
@@ -383,6 +386,7 @@ namespace EddiDataProviderService
             }
         }
 
+        [NotNull, ItemNotNull]
         private List<DatabaseStarSystem> ReadStarSystems(string[] names)
         {
             if (!names.Any()) { return new List<DatabaseStarSystem>(); }
@@ -397,6 +401,7 @@ namespace EddiDataProviderService
                     {
                         foreach (string name in names)
                         {
+                            if (string.IsNullOrEmpty(name)) { continue; }
                             try
                             {
                                 cmd.Prepare();
