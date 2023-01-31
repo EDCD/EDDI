@@ -2937,19 +2937,12 @@ namespace EddiCore
             updateCurrentSystem(theEvent.body?.systemname);
             if (CurrentStarSystem == null) { return false; }
 
-            // Add this body if it hasn't been previously added to our database, but don't
-            // replace prior data which isn't re-obtainable from this event. 
-            // (e.g. alreadydiscovered, scanned, alreadymapped, mapped, mappedEfficiently, etc.)
-            Body body = CurrentStarSystem.bodies?.Find(s => s.bodyname == theEvent.bodyname);
-            if (body?.scannedDateTime is null)
-            {
-                CurrentStarSystem.AddOrUpdateBody(theEvent.body);
+            CurrentStarSystem.AddOrUpdateBody(theEvent.body);
 
-                Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                return true;
-            }
-            return false;
+            Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+            return true;
         }
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)

@@ -63,7 +63,7 @@ namespace UnitTests
             Assert.AreEqual("Minor", ev.volcanism.invariantAmount);
             Assert.AreEqual((decimal)2.171783, ev.earthmass);
             Assert.AreEqual((double)7622.170500000M, (double?)ev.radius ?? 0, 0.01);
-            Assert.AreEqual(Utilities.ConstantConverters.ms2g((decimal)14.899396), ev.gravity);
+            Assert.AreEqual(ConstantConverters.ms2g((decimal)14.899396), ev.gravity);
             Assert.AreEqual((decimal)836.165466, ev.temperature);
             Assert.AreEqual(325.986, (double?)ev.pressure ?? 0, 0.01);
             Assert.IsNotNull(ev.landable);
@@ -152,6 +152,103 @@ namespace UnitTests
             Assert.AreEqual("Planet", ev.body.bodyType.invariantName);
             Debug.Assert(ev.alreadydiscovered != null, "ev.alreadydiscovered != null");
             Assert.IsTrue((bool)ev.alreadydiscovered);
+            Debug.Assert(ev.alreadymapped != null, "ev.alreadymapped != null");
+            Assert.IsTrue((bool)ev.alreadymapped);
+        }
+
+        [TestMethod]
+        public void TestJournalPlanetScan5()
+        {
+            // Test Nav Beacon scan data from game version 4.0.
+            string line = @"{
+                ""timestamp"": ""2023-01-29T13:05:14Z"",
+                ""event"": ""Scan"",
+                ""ScanType"": ""NavBeaconDetail"",
+                ""BodyName"": ""Nakulha BC 4 a"",
+                ""BodyID"": 9,
+                ""Parents"": [{
+                        ""Planet"": 8
+                    }, {
+                        ""Null"": 2
+                    }, {
+                        ""Null"": 0
+                    }
+                ],
+                ""StarSystem"": ""Nakulha"",
+                ""SystemAddress"": 20461895296465,
+                ""DistanceFromArrivalLS"": 2506.979499,
+                ""TidalLock"": true,
+                ""TerraformState"": """",
+                ""PlanetClass"": ""Icy body"",
+                ""Atmosphere"": """",
+                ""AtmosphereType"": ""None"",
+                ""Volcanism"": """",
+                ""MassEM"": 0.001115,
+                ""Radius"": 909518.812500,
+                ""SurfaceGravity"": 0.536999,
+                ""SurfaceTemperature"": 114.884079,
+                ""SurfacePressure"": 0.000000,
+                ""Landable"": true,
+                ""Materials"": [{
+                        ""Name"": ""sulphur"",
+                        ""Percent"": 26.425076
+                    }, {
+                        ""Name"": ""carbon"",
+                        ""Percent"": 22.220751
+                    }, {
+                        ""Name"": ""phosphorus"",
+                        ""Percent"": 14.226108
+                    }, {
+                        ""Name"": ""iron"",
+                        ""Percent"": 13.131762
+                    }, {
+                        ""Name"": ""nickel"",
+                        ""Percent"": 9.932315
+                    }, {
+                        ""Name"": ""manganese"",
+                        ""Percent"": 5.423284
+                    }, {
+                        ""Name"": ""germanium"",
+                        ""Percent"": 3.475405
+                    }, {
+                        ""Name"": ""vanadium"",
+                        ""Percent"": 3.224703
+                    }, {
+                        ""Name"": ""niobium"",
+                        ""Percent"": 0.897486
+                    }, {
+                        ""Name"": ""mercury"",
+                        ""Percent"": 0.573442
+                    }, {
+                        ""Name"": ""technetium"",
+                        ""Percent"": 0.469670
+                    }
+                ],
+                ""Composition"": {
+                    ""Ice"": 0.807359,
+                    ""Rock"": 0.165785,
+                    ""Metal"": 0.026856
+                },
+                ""SemiMajorAxis"": 36050819.158554,
+                ""Eccentricity"": 0.000000,
+                ""OrbitalInclination"": -42.302688,
+                ""Periapsis"": 19.727769,
+                ""OrbitalPeriod"": 420461.648703,
+                ""AscendingNode"": 139.366346,
+                ""MeanAnomaly"": 289.416976,
+                ""RotationPeriod"": 429682.225063,
+                ""AxialTilt"": 0.232535,
+                ""WasDiscovered"": false,
+                ""WasMapped"": true
+            }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
+            BodyScannedEvent ev = events[0] as BodyScannedEvent;
+            Assert.IsNotNull(ev);
+            Assert.AreEqual("Moon", ev.body.bodyType.invariantName);
+            Debug.Assert(ev.alreadydiscovered != null, "ev.alreadydiscovered != null");
+            Assert.IsFalse((bool)ev.alreadydiscovered);
             Debug.Assert(ev.alreadymapped != null, "ev.alreadymapped != null");
             Assert.IsTrue((bool)ev.alreadymapped);
         }

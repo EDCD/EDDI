@@ -70,86 +70,36 @@ namespace EddiDataDefinitions
             bodies = builder.ToImmutable();
         }
 
-        private void internalAddOrUpdateBody(Body body, ImmutableList<Body>.Builder builder)
+        private void internalAddOrUpdateBody(Body newOrUpdatedBody, ImmutableList<Body>.Builder builder)
         {
             // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
-            int index = builder.FindIndex(b => b.bodyname == body.bodyname || ((b.mainstar ?? false) && b.mainstar == body.mainstar));
+            int index = builder.FindIndex(b => b.bodyname == newOrUpdatedBody.bodyname || ((b.mainstar ?? false) && b.mainstar == newOrUpdatedBody.mainstar));
             if (index >= 0)
             {
-                builder[index] = body;
+                builder[index] = PreserveBodyData(builder[index], newOrUpdatedBody);
             }
             else
             {
-                builder.Add(body);
+                builder.Add(newOrUpdatedBody);
             }
 
             // Update the system reserve level, when appropriate
-            if (body.reserveLevel != ReserveLevel.None)
+            if (newOrUpdatedBody.reserveLevel != ReserveLevel.None)
             {
-                Reserve = body.reserveLevel;
+                Reserve = newOrUpdatedBody.reserveLevel;
             }
         }
 
         public void PreserveBodyData(List<Body> oldBodies, ImmutableList<Body> newBodies)
         {
-            // Update `bodies` with new server data, except preserve properties not available via the server
+            // Update `bodies` with new data, except preserve properties not available via the server
             var newBodyBuilder = newBodies.ToBuilder();
             foreach (Body oldBody in oldBodies)
             {
                 if (newBodyBuilder.Any(b => b.bodyname == oldBody.bodyname))
                 {
                     int index = newBodyBuilder.FindIndex(b => b.bodyname == oldBody.bodyname);
-                    if (oldBody.scannedDateTime != null)
-                    {
-                        if (oldBody.scannedDateTime != newBodyBuilder[index].scannedDateTime)
-                        {
-                            newBodyBuilder[index].scannedDateTime = oldBody.scannedDateTime;
-                        }
-                        if (oldBody.alreadydiscovered != newBodyBuilder[index].alreadydiscovered)
-                        {
-                            newBodyBuilder[index].alreadydiscovered = oldBody.alreadydiscovered;
-                        }
-                    }
-                    if (oldBody.mappedDateTime != null)
-                    {
-                        if (oldBody.mappedDateTime != newBodyBuilder[index].mappedDateTime)
-                        {
-                            newBodyBuilder[index].mappedDateTime = oldBody.mappedDateTime;
-                        }
-                        if (oldBody.alreadymapped != newBodyBuilder[index].alreadymapped)
-                        {
-                            newBodyBuilder[index].alreadymapped = oldBody.alreadymapped;
-                        }
-                        if (oldBody.mappedEfficiently != newBodyBuilder[index].mappedEfficiently)
-                        {
-                            newBodyBuilder[index].mappedEfficiently = oldBody.mappedEfficiently;
-                        }
-                    }
-                    if (oldBody.rings?.Any() ?? false)
-                    {
-                        if (newBodyBuilder[index].rings is null)
-                        {
-                            newBodyBuilder[index].rings = new List<Ring>();
-                        }
-                        foreach (var oldRing in oldBody.rings)
-                        {
-                            var newRing = newBodyBuilder[index].rings.FirstOrDefault(r => r.name == oldRing.name);
-                            if (oldRing.mapped != null)
-                            {
-                                if (newRing != null)
-                                {
-                                    newRing.mapped = oldRing.mapped;
-                                    newRing.hotspots = oldRing.hotspots;
-                                }
-                                else
-                                {
-                                    // Our data source didn't contain any data about a ring we've scanned.
-                                    // We add it here because we scanned the ring ourselves and are confident that the data is accurate
-                                    newBodyBuilder[index].rings.Add(oldRing);
-                                }
-                            }
-                        }
-                    }
+                    newBodyBuilder[index] = PreserveBodyData(oldBody, newBodyBuilder[index]);
                 }
                 else
                 {
@@ -163,6 +113,67 @@ namespace EddiDataDefinitions
             }
             newBodyBuilder.Sort(Body.CompareById);
             bodies = newBodyBuilder.ToImmutable();
+        }
+
+        private static Body PreserveBodyData(Body oldBody, Body updatedBody)
+        {
+            if (oldBody.scannedDateTime != null &&
+                oldBody.scannedDateTime < updatedBody.scannedDateTime)
+            {
+                updatedBody.scannedDateTime = oldBody.scannedDateTime;
+            }
+
+            if (oldBody.alreadydiscovered is true && 
+                oldBody.alreadydiscovered != updatedBody.alreadydiscovered)
+            {
+                updatedBody.alreadydiscovered = oldBody.alreadydiscovered;
+            }
+
+            if (oldBody.mappedDateTime != null &&
+                oldBody.mappedDateTime < updatedBody.mappedDateTime)
+            {
+                updatedBody.mappedDateTime = oldBody.mappedDateTime;
+            }
+
+            if (oldBody.alreadymapped is true &&
+                oldBody.alreadymapped != updatedBody.alreadymapped)
+            {
+                updatedBody.alreadymapped = oldBody.alreadymapped;
+            }
+
+            if (oldBody.mappedEfficiently &&
+                oldBody.mappedEfficiently != updatedBody.mappedEfficiently)
+            {
+                updatedBody.mappedEfficiently = oldBody.mappedEfficiently;
+            }
+
+            if (oldBody.rings?.Any() ?? false)
+            {
+                if (updatedBody.rings is null)
+                {
+                    updatedBody.rings = new List<Ring>();
+                }
+
+                foreach (var oldRing in oldBody.rings)
+                {
+                    var newRing = updatedBody.rings.FirstOrDefault(r => r.name == oldRing.name);
+                    if (oldRing.mapped != null)
+                    {
+                        if (newRing != null)
+                        {
+                            newRing.mapped = oldRing.mapped;
+                            newRing.hotspots = oldRing.hotspots;
+                        }
+                        else
+                        {
+                            // Our data source didn't contain any data about a ring we've scanned.
+                            // We add it here because we scanned the ring ourselves and are confident that the data is accurate
+                            updatedBody.rings.Add(oldRing);
+                        }
+                    }
+                }
+            }
+            return updatedBody;
         }
 
         /// <summary>True if any star in the system is scoopable</summary>
