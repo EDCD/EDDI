@@ -14,7 +14,6 @@ using System.Linq;
 using System.Text;
 using Tests.Properties;
 using Utilities;
-using Windows.UI.Xaml.Shapes;
 
 namespace UnitTests
 {
