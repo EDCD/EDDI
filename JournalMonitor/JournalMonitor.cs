@@ -946,7 +946,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Scan status
-                                    bool? alreadydiscovered = JsonParsing.getOptionalBool(data, "WasDiscovered");
+                                    bool? alreadydiscovered = scantype == "NavBeaconDetail" ? true : JsonParsing.getOptionalBool(data, "WasDiscovered");
                                     bool? alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped");
 
                                     // Rings

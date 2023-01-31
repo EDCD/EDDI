@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.3
   * Core
     * Fixed a bug that prevented updating body data on nav beacon scans of fully discovered systems. #2505
+    * Fixed a bug where bodies scanned from a nav beacon scan could be reported as previously undiscovered.
     * `scanned` and `mapped` body properties are now unix timestamps (seconds since Jan 01 1970 UTC) rather than DateTime objects. #2468   
     * Trim any pauses or breaks from the end of speech when that speech isn't followed by more speech.
     * Updated body mapping values (these were buffed slightly for Odyssey).
