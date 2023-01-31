@@ -248,7 +248,7 @@ namespace UnitTests
             Assert.IsNotNull(ev);
             Assert.AreEqual("Moon", ev.body.bodyType.invariantName);
             Debug.Assert(ev.alreadydiscovered != null, "ev.alreadydiscovered != null");
-            Assert.IsFalse((bool)ev.alreadydiscovered);
+            Assert.IsTrue((bool)ev.alreadydiscovered);
             Debug.Assert(ev.alreadymapped != null, "ev.alreadymapped != null");
             Assert.IsTrue((bool)ev.alreadymapped);
         }
