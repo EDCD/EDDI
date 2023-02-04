@@ -590,7 +590,7 @@
     <comment>Material protoradiolicalloys</comment>
   </data>
   <data name="unknownenergysource" xml:space="preserve">
-    <value>Unbekanntes Fragment</value>
+    <value>Sensor Fragment</value>
     <comment>Material unknownenergysource</comment>
   </data>
   <data name="unknownorganiccircuitry" xml:space="preserve">
