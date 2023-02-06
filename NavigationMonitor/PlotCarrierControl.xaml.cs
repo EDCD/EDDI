@@ -54,7 +54,7 @@ namespace EddiNavigationMonitor
                 var fleetCarrier = navigationMonitor().FleetCarrier;
                 LastCarrierOriginArg = fleetCarrier?.currentStarSystem;
 
-                Dispatcher.Invoke(() =>
+                Application.Current.Dispatcher.Invoke(() =>
                 {
                     carrierNameTextBlock.Text = !string.IsNullOrEmpty(fleetCarrier?.name)
                         ? $@"{fleetCarrier?.name} ({fleetCarrier?.callsign})"
