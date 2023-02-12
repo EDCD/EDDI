@@ -710,10 +710,9 @@ namespace EddiNavigationMonitor
                         poiBookmark.visitLog.Add(timestamp);
                     }
                 }
-                Application.Current.Dispatcher?.Invoke(() =>
+                ConfigurationTabItem().Dispatcher.Invoke(() =>
                 {
-                    var configWindow = ConfigurationTabItem();
-                    if (configWindow.TryFindResource(nameof(GalacticPOIControl.POIView)) is ICollectionView poiView)
+                    if (ConfigurationTabItem().TryFindResource(nameof(GalacticPOIControl.POIView)) is ICollectionView poiView)
                     {
                         poiView.Refresh();
                     }

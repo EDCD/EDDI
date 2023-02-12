@@ -373,13 +373,6 @@ namespace EddiCore
                 if (fleetCarrier != null) { fleetCarrier.PropertyChanged -= childPropertyChangedHandler; }
                 if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
 
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-                if (configuration.fleetCarrier != value)
-                {
-                    configuration.fleetCarrier = value;
-                    ConfigService.Instance.eddiConfiguration = configuration;
-                }
-
                 fleetCarrier = value;
                 OnPropertyChanged();
             }
@@ -1153,6 +1146,7 @@ namespace EddiCore
             FleetCarrier.bankPurchaseAllocationsBalance = carrierStatsEvent.bankBalance -
                                                           carrierStatsEvent.bankReservedBalance -
                                                           carrierStatsEvent.bankAvailableBalance;
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -1163,6 +1157,7 @@ namespace EddiCore
                 FleetCarrier = new FleetCarrier(carrierNameChangeEvent.carrierID);
             }
             FleetCarrier.name = carrierNameChangeEvent.name;
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -1177,6 +1172,7 @@ namespace EddiCore
             FleetCarrier.bankPurchaseAllocationsBalance = carrierFinanceEvent.bankBalance
                                                           - carrierFinanceEvent.bankReservedBalance
                                                           - carrierFinanceEvent.bankAvailableBalance;
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -1188,6 +1184,7 @@ namespace EddiCore
             }
             FleetCarrier.dockingAccess = carrierDockingPermissionEvent.dockingAccess;
             FleetCarrier.notoriousAccess = carrierDockingPermissionEvent.allowNotorious;
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -1198,6 +1195,7 @@ namespace EddiCore
                 FleetCarrier = new FleetCarrier(carrierFuelDepositEvent.carrierID);
             }
             FleetCarrier.fuel = carrierFuelDepositEvent.total;
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -1208,6 +1206,7 @@ namespace EddiCore
                 FleetCarrier = new FleetCarrier(carrierDecommissionScheduledEvent.carrierID);
             }
             FleetCarrier.state = "pendingDecommission";
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -1218,6 +1217,7 @@ namespace EddiCore
                 FleetCarrier = new FleetCarrier(carrierDecommissionCancelledEvent.carrierID);
             }
             FleetCarrier.state = "normalOperation";
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -1229,6 +1229,7 @@ namespace EddiCore
             }
             Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
             FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
+            UpdateFleetCarrierConfig();
             return true;
         }
 
@@ -3091,6 +3092,7 @@ namespace EddiCore
                             FleetCarrier.UpdateFrom(frontierApiCarrierJson, timestamp);
                         }
                     });
+                    UpdateFleetCarrierConfig();
                 }
             }
         }
@@ -3558,6 +3560,16 @@ namespace EddiCore
                         }
                     }
                 }
+                ConfigService.Instance.eddiConfiguration = configuration;
+            }
+        }
+
+        private void UpdateFleetCarrierConfig()
+        {
+            var configuration = ConfigService.Instance.eddiConfiguration;
+            if (configuration.fleetCarrier != FleetCarrier)
+            {
+                configuration.fleetCarrier = FleetCarrier;
                 ConfigService.Instance.eddiConfiguration = configuration;
             }
         }
