@@ -17,14 +17,15 @@ env:
 # Define our triggers
 on: 
   push:
-    branches: [ develop, '!l10n_develop', experimental/github-actions-ci ]
+    branches-ignore: [ l10n_develop, refs/pull/* ]
     paths-ignore:
     - docs/*        # Every file in the root docs folder
     - '**.html'     # HTML files anywhere in the repo
     - '**.md'       # Markdown files anywhere in the repo
     - '**.resx'     # RESX files anywhere in the repo
   pull_request:
-    branches: [ develop ]
+    branches:
+    - develop
     paths-ignore:
     - docs/*        # Every file in the root docs folder
     - '**.html'     # HTML files anywhere in the repo
