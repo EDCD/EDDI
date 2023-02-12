@@ -54,7 +54,7 @@ jobs:
       uses: actions/cache@main
       with:
         path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
         restore-keys: |
           ${{ runner.os }}-nuget
     - name: Restore any missing dependencies
@@ -65,14 +65,14 @@ jobs:
       uses: actions/cache/save@v3
       with:
         path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
     - name: Build our solution
       run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3.1.0
       with:
         name: ${{ env.build-artifact-name }}
-        path: .\bin\Release\*
+        path: ./bin/Release/*
 
   test:
     name: Test and generate coverage report
@@ -87,7 +87,7 @@ jobs:
       uses: actions/cache@main
       with:
         path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
         restore-keys: |
           ${{ runner.os }}-nuget
     - name: Download build artifacts
@@ -97,6 +97,8 @@ jobs:
         path: ./bin/Release/
     - name: Make a TestResults directory
       run: mkdir -p ./TestResults
+    - name: DEBUG - Inspect our current directory
+      run: dir
     - name: Test our solution and generate a coverage report using OpenCover
       uses: ./.github/actions/TestWithCoverage
       with:
