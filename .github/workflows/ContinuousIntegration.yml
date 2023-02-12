@@ -72,7 +72,7 @@ jobs:
       uses: actions/upload-artifact@v3.1.0
       with:
         name: ${{ env.build-artifact-name }}
-        path: ./bin/Release/*
+        path: .\bin\Release\*
 
   test:
     name: Test and generate coverage report
