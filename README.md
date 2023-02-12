@@ -1,4 +1,4 @@
-﻿![Build status](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml/badge.svg) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/eddi/localized.svg)](https://crowdin.com/project/eddi)
+﻿![Build status](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml/badge.svg?branch=stable) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/eddi/localized.svg)](https://crowdin.com/project/eddi)
 
 # EDDI: The Elite Dangerous Data Interface
 
