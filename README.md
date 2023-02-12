@@ -1,4 +1,10 @@
-﻿![Build status](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml/badge.svg) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/eddi/localized.svg)](https://crowdin.com/project/eddi)
+﻿[![Crowdin](https://d322cqt584bo4o.cloudfront.net/eddi/localized.svg)](https://crowdin.com/project/eddi)
+
+| Branch | Status |
+|--------|--------|
+| stable | [![stable](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml/badge.svg?branch=stable)](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml?query=branch%3Astable) |
+| beta | [![beta](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml/badge.svg?branch=beta)](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml?query=branch%3Abeta) |
+| develop | [![develop](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml/badge.svg?branch=develop)](https://github.com/EDCD/EDDI/actions/workflows/ContinuousIntegration.yml?query=branch%3Adevelop) |
 
 # EDDI: The Elite Dangerous Data Interface
 

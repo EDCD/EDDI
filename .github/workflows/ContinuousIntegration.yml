@@ -1,20 +1,36 @@
 ﻿# Workflow Syntax: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 # Example: https://github.com/github/VisualStudio/blob/263aac11f57d53c5f9fe64ba9916f77c058974d7/.github/workflows/main.yml
+# Build and Test (ref. https://docs.github.com/en/actions/guides/building-and-testing-net)
+# Note: Github recommends using full commit SHAs when using 3rd party actions
 
 name: Continuous Integration
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+  cancel-in-progress: true
 env:
   build-config: Release
   solution: EDDI.sln
 
+  # Build artifact variables
+  build-artifact-name: build-artifact
+
 # Define our triggers
-on:
+on: 
   push:
-    branches-ignore: [ l10n_develop ]
-    # For CodeQL code scanning workflow files, don't use the paths-ignore or paths keywords with the on:push event 
-    # as this is likely to cause missing analyses. For accurate results, CodeQL code scanning needs to be able to 
-    # compare new changes with the analysis of the previous commit.
+    branches: 
+    - '*'
+    - develop
+    - '!l10n_develop'
+    - '!refs/pull/*'
+    paths-ignore:
+    - docs/*        # Every file in the root docs folder
+    - '**.html'     # HTML files anywhere in the repo
+    - '**.md'       # Markdown files anywhere in the repo
+    - '**.resx'     # RESX files anywhere in the repo
   pull_request:
-    branches: [ develop, '!l10n_develop', experimental/github-actions-ci ]
+    # The branches below must be a subset of the branches above
+    branches:
+    - develop
     paths-ignore:
     - docs/*        # Every file in the root docs folder
     - '**.html'     # HTML files anywhere in the repo
@@ -32,62 +48,49 @@ on:
     #        *  * * * *
     - cron: '30 2 * * 0' # Runs at 2:30 AM UTC, any day of the month, any month of the year, on Sundays
 
-# Build and Test (ref. https://docs.github.com/en/actions/guides/building-and-testing-net)
 jobs:
-  analyze:
-    name: Analyze
-    runs-on: windows-2019
-
+  build:
+    name: Build & Test
+    runs-on: windows-latest
     steps:
     - name: Check out the repository on the workflow runner
       uses: actions/checkout@v3.1.0
 
-    # Setup our PATH
+    # Build
     - name: Add msbuild.exe to PATH
       uses: microsoft/setup-msbuild@v1.1.3
-    - name: Add VSTest.console.exe to PATH
-      uses: darenm/Setup-VSTest@v1.1.1
     - name: Add nuget to PATH
-      uses: nuget/setup-nuget@v1.1.1
+      uses: nuget/setup-nuget@fd9fffd6ca4541cf4152a9565835ca1a88a6eb37
       with:
         nuget-version: 'latest'
-
-    # Retrieve any cached copies of dependencies (these may be stored for up to a week) then install any missing dependencies
-    - name: Retrieve any cached copies of dependencies
+    - name: Retrieve any cached copies of dependencies (these may be stored for up to a week)
       uses: actions/cache@main
       with:
         path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
         restore-keys: |
           ${{ runner.os }}-nuget
-    - name: Restore any missing any dependencies
+    - name: Restore any missing dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: nuget restore ${{ env.solution }} -NonInteractive
-
-    # Initializes Github's CodeQL tools for scanning our build
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+    - name: Save our updated cache of dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
       with:
-        languages: csharp
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-        # queries: ./path/to/local/query, your-org/your-repo/queries@main
-
-    # Build
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
     - name: Build our solution
+      id: build
       run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
-
-    # Compress and upload our build assets
-    - name: Compress build artifacts
-      run: Compress-Archive -Path ./bin/Release/* -DestinationPath build-artifact.zip
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3.1.0
       with:
-        name: build-artifact
-        path: build-artifact.zip
+        name: ${{ env.build-artifact-name }}
+        path: ./bin/Release/*
 
-    # Test and generate coverage report
+    # Perform unit testing
+    - name: Add VSTest.console.exe to PATH
+      uses: darenm/Setup-VSTest@d9a5dffa3f11d9c27ec42eb69515d3aaeaad9ef8
     - name: Make a TestResults directory
       run: mkdir -p ./TestResults
     - name: Test our solution and generate a coverage report using OpenCover
@@ -98,14 +101,8 @@ jobs:
         target-path: vstest.console.exe
         target-args: Tests/bin/Release/Tests.dll /tests:UnitTests /Parallel /InIsolation /Blame
         output-path: ./TestResults/coverage.xml
-
-    # Upload coverage results
     - name: Upload coverage to CodeCov (ref. https://github.com/codecov/codecov-action)
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@d9f34f8cd5cb3b3eb79b3e4b5dae3a16df499a70
       with:
         files: TestResults/coverage.xml
         fail_ci_if_error: false # Specify if CI pipeline should fail when Codecov runs into errors during upload. Defaults to false
-
-    # Analyze our build for security vulnerabilities
-    - name: Perform CodeQL Security Analysis
-      uses: github/codeql-action/analyze@v2

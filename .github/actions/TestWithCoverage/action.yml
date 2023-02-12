@@ -36,7 +36,7 @@ runs:
         Invoke-Expression $runCoverageCmd
       } catch {
         # seems to have failed
-        ECHO "::error::Tests failed"
+        ECHO "::error::Tests failed - " + $_.Exception.Message
+        EXIT 1
       }
-      ECHO LASTEXITCODE $LASTEXITCODE
     shell: pwsh
