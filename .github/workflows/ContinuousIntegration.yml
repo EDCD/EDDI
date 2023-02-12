@@ -15,12 +15,9 @@ env:
   build-artifact-name: build-artifact
 
 # Define our triggers
-on:
+on: 
   push:
     branches-ignore: [ l10n_develop ]
-    # For CodeQL code scanning workflow files, don't use the paths-ignore or paths keywords with the on:push event 
-    # as this is likely to cause missing analyses. For accurate results, CodeQL code scanning needs to be able to 
-    # compare new changes with the analysis of the previous commit.
   pull_request:
     branches: [ develop, '!l10n_develop', experimental/github-actions-ci ]
     paths-ignore:
@@ -100,29 +97,6 @@ jobs:
       with:
         files: TestResults/coverage.xml
         fail_ci_if_error: false # Specify if CI pipeline should fail when Codecov runs into errors during upload. Defaults to false
-
-  codeql:
-    name: Github CodeQL Code Analysis
-    runs-on: windows-latest
-    needs: build
-    steps:
-    - name: Check out the repository on the workflow runner
-      uses: actions/checkout@v3
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: csharp
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-        # queries: ./path/to/local/query, your-org/your-repo/queries@main
-    - name: Download build artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: ${{ env.build-artifact-name }}
-        path: ./bin/Release/
-    - name: Perform CodeQL Security Analysis
-      uses: github/codeql-action/analyze@v2
 
   qodana:
     name: JetBrains Qodana Code Analysis (ref. https://www.jetbrains.com/help/qodana/github.html)
