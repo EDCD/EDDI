@@ -621,6 +621,12 @@
     <value>Cannone rotante AX migliorato</value>
     <comment>Module Enhanced AX Multi-Cannon</comment>
   </data>
-  
-  
+  <data name="ExpModuleStabiliser" xml:space="preserve">
+    <value>Stabilizzatore Sperimentale per Armi</value>
+    <comment>Module Experimental Weapon Stabilizer</comment>
+  </data>
+  <data name="XenoScannerMK2" xml:space="preserve">
+    <value>Scanner AX Avanzato</value>
+    <comment>Module Enhanced Xeno Scanner</comment>
+  </data>
 </root>
