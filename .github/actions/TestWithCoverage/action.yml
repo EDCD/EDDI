@@ -37,6 +37,6 @@ runs:
       } catch {
         # seems to have failed
         ECHO "::error::Tests failed"
+        EXIT 1
       }
-      ECHO LASTEXITCODE $LASTEXITCODE
     shell: pwsh
