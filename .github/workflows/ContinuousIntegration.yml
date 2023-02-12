@@ -61,6 +61,7 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: nuget restore ${{ env.solution }} -NonInteractive
     - name: Save our updated cache of dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
       with:
         path: ~/.nuget/packages
