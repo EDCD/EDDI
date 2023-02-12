@@ -5,7 +5,7 @@
 
 name: Continuous Integration
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.sha }}
   cancel-in-progress: true
 env:
   build-config: Release
@@ -39,11 +39,13 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build & Test
     runs-on: windows-latest
     steps:
     - name: Check out the repository on the workflow runner
       uses: actions/checkout@v3.1.0
+
+    # Build
     - name: Add msbuild.exe to PATH
       uses: microsoft/setup-msbuild@v1.1.3
     - name: Add nuget to PATH
@@ -67,6 +69,7 @@ jobs:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
     - name: Build our solution
+      id: build
       run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3.1.0
@@ -74,31 +77,11 @@ jobs:
         name: ${{ env.build-artifact-name }}
         path: ./bin/Release/*
 
-  test:
-    name: Test and generate coverage report
-    runs-on: windows-latest
-    needs: build
-    steps:
-    - name: Check out the repository on the workflow runner
-      uses: actions/checkout@v3.1.0
+    # Perform unit testing
     - name: Add VSTest.console.exe to PATH
       uses: darenm/Setup-VSTest@d9a5dffa3f11d9c27ec42eb69515d3aaeaad9ef8
-    - name: Retrieve any cached copies of dependencies (these may be stored for up to a week)
-      uses: actions/cache@main
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files with embedded PackageReference data
-        restore-keys: |
-          ${{ runner.os }}-nuget
-    - name: Download build artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: ${{ env.build-artifact-name }}
-        path: ./bin/Release/
     - name: Make a TestResults directory
       run: mkdir -p ./TestResults
-    - name: DEBUG - Inspect our current directory
-      run: dir
     - name: Test our solution and generate a coverage report using OpenCover
       uses: ./.github/actions/TestWithCoverage
       with:
@@ -112,16 +95,3 @@ jobs:
       with:
         files: TestResults/coverage.xml
         fail_ci_if_error: false # Specify if CI pipeline should fail when Codecov runs into errors during upload. Defaults to false
-
-  qodana:
-    name: JetBrains Qodana Code Analysis (ref. https://www.jetbrains.com/help/qodana/github.html)
-    runs-on: windows-latest
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Perform Qodana code quality scan
-        uses: JetBrains/qodana-action@584b706efdfc1149cfb5234066b3bbf73d48249e
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
