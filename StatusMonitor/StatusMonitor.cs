@@ -16,6 +16,7 @@ namespace EddiStatusMonitor
         // Miscellaneous tracking
         private bool jumping;
         private string lastDestinationPOI;
+        private int? lastFuelPercentile;
 
         public StatusMonitor()
         {
@@ -69,12 +70,16 @@ namespace EddiStatusMonitor
                     }
 
                     // Update vehicle information
-                    if (!string.IsNullOrEmpty(thisStatus.vehicle) && thisStatus.vehicle != lastStatus.vehicle && lastStatus.vehicle == EDDI.Instance.Vehicle)
+                    if (!string.IsNullOrEmpty(thisStatus.vehicle) && thisStatus.vehicle != lastStatus.vehicle)
                     {
-                        var statusSummary = new Dictionary<string, Status> { { "isStatus", thisStatus }, { "wasStatus", lastStatus } };
-                        Logging.Debug($"Status changed vehicle from {lastStatus.vehicle} to {thisStatus.vehicle}", statusSummary);
+                        lastFuelPercentile = null; // reset fuel percentile tracking when we change vehicles
 
-                        EDDI.Instance.Vehicle = thisStatus.vehicle;
+                        if (EDDI.Instance.Vehicle != thisStatus.vehicle)
+                        {
+                            var statusSummary = new Dictionary<string, Status> { { "isStatus", thisStatus }, { "wasStatus", lastStatus } };
+                            Logging.Debug($"Status changed vehicle from {lastStatus.vehicle} to {thisStatus.vehicle}", statusSummary);
+                            EDDI.Instance.Vehicle = thisStatus.vehicle;
+                        }
                     }
                     if (thisStatus.vehicle == Constants.VEHICLE_SHIP && EDDI.Instance.CurrentShip != null)
                     {
@@ -138,14 +143,25 @@ namespace EddiStatusMonitor
                             EDDI.Instance.enqueueEvent(new ShipFsdEvent(thisStatus.timestamp, thisStatus.fsd_status, thisStatus.fsd_hyperdrive_charging));
                         }
                     }
-                    if (thisStatus.low_fuel != lastStatus.low_fuel)
+                    if (thisStatus.low_fuel) // 'low fuel' is 25% or less
                     {
-                        // Don't trigger 'low fuel' event when fuel exceeds 25% or when we're not in our ship
-                        if (thisStatus.low_fuel
-                            && thisStatus.vehicle == Constants.VEHICLE_SHIP)
+                        if (thisStatus.fuel_percent != null)
                         {
-                            EDDI.Instance.enqueueEvent(new ShipLowFuelEvent(thisStatus.timestamp));
+                            // Trigger `Low fuel` events for each 5% fuel increment at 25% fuel or less
+                            var fuelPercentile = (int)decimal.Floor((decimal)thisStatus.fuel_percent / 5); 
+                            if (fuelPercentile > 0 && (lastFuelPercentile is null || fuelPercentile < lastFuelPercentile))
+                            {
+                                lastFuelPercentile = fuelPercentile;
+                                EDDI.Instance.enqueueEvent(new LowFuelEvent(thisStatus.timestamp));
+                            }
                         }
+
+                        //// Don't trigger 'low fuel' event when fuel exceeds 25% or when we're not in our ship
+                        //if (thisStatus.low_fuel
+                        //    && thisStatus.vehicle == Constants.VEHICLE_SHIP)
+                        //{
+                        //    EDDI.Instance.enqueueEvent(new LowFuelEvent(thisStatus.timestamp));
+                        //}
                     }
                     if (thisStatus.landing_gear_down != lastStatus.landing_gear_down
                         && thisStatus.vehicle == Constants.VEHICLE_SHIP && lastStatus.vehicle == Constants.VEHICLE_SHIP)
