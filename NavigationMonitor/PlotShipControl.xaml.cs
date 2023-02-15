@@ -88,7 +88,7 @@ namespace EddiNavigationMonitor
                 {
                     case nameof(NavWaypointCollection.GuidanceEnabled):
                         {
-                            Dispatcher.Invoke(() =>
+                            NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
                             {
                                 UpdateGuidanceLock(navWaypointCollection.GuidanceEnabled);
                             });
@@ -96,7 +96,7 @@ namespace EddiNavigationMonitor
                         }
                     case nameof(NavWaypointCollection.Waypoints):
                         {
-                            Dispatcher.Invoke(() =>
+                            NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
                             {
                                 ClearRouteButton.IsEnabled = navWaypointCollection.Waypoints.Count > 0;
                             });
@@ -121,18 +121,24 @@ namespace EddiNavigationMonitor
                     {
                         if (NavigationService.Instance.IsWorking)
                         {
-                            Dispatcher.Invoke(() => { SearchProgressBar.Visibility = Visibility.Visible; });
+                            NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
+                            {
+                                SearchProgressBar.Visibility = Visibility.Visible;
+                            });
                         }
                         else
                         {
-                            Dispatcher.Invoke(() => { SearchProgressBar.Visibility = Visibility.Collapsed; });
+                            NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
+                            {
+                                SearchProgressBar.Visibility = Visibility.Collapsed;
+                            });
                         }
                         break;
                     }
                 case nameof(NavigationService.Instance.LastQuery):
                     {
                         var queryType = NavigationService.Instance.LastQuery;
-                        Dispatcher.Invoke(() =>
+                        NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
                         {
                             searchGroupDropDown.SelectedItem = queryType.Group();
                             searchQueryDropDown.SelectedItem = queryType;
@@ -144,7 +150,7 @@ namespace EddiNavigationMonitor
                 case nameof(NavigationService.Instance.LastQuerySystemArg):
                     {
                         var querySystem = NavigationService.Instance.LastQuerySystemArg;
-                        Dispatcher.Invoke(() =>
+                        NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
                         {
                             if (searchSystemDropDown.Text != querySystem)
                             {
@@ -156,7 +162,7 @@ namespace EddiNavigationMonitor
                 case nameof(NavigationService.Instance.LastQueryStationArg):
                     {
                         var queryStation = NavigationService.Instance.LastQueryStationArg;
-                        Dispatcher.Invoke(() =>
+                        NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
                         {
                             if (searchStationDropDown.Text != queryStation)
                             {

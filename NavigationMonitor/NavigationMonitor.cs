@@ -50,6 +50,8 @@ namespace EddiNavigationMonitor
 
         private DateTime updateDat;
 
+        public static ConfigurationWindow configWindow;
+
         internal Status currentStatus { get; set; }
 
         public string MonitorName()
@@ -134,7 +136,7 @@ namespace EddiNavigationMonitor
 
         public UserControl ConfigurationTabItem()
         {
-            return new ConfigurationWindow();
+            return configWindow ?? (configWindow = new ConfigurationWindow());
         }
 
         public void HandleProfile(JObject profile)
@@ -710,9 +712,10 @@ namespace EddiNavigationMonitor
                         poiBookmark.visitLog.Add(timestamp);
                     }
                 }
-                ConfigurationTabItem().Dispatcher.Invoke(() =>
+                
+                configWindow.Dispatcher.Invoke(() =>
                 {
-                    if (ConfigurationTabItem().TryFindResource(nameof(GalacticPOIControl.POIView)) is ICollectionView poiView)
+                    if (configWindow.TryFindResource(nameof(GalacticPOIControl.POIView)) is ICollectionView poiView)
                     {
                         poiView.Refresh();
                     }
