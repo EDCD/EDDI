@@ -34,7 +34,6 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("gameIsBeta", true);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static T DeserializeJsonResource<T>(byte[] data, JsonSerializerSettings settings = null) where T : class
         {
             using (var stream = new MemoryStream(data))

@@ -54,8 +54,6 @@ namespace EddiStatusService
             }
         }
 
-        /// <summary>Monitor Status.json for changes</summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public void Start()
         {
             if (string.IsNullOrWhiteSpace(Directory))

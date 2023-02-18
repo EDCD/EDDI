@@ -76,9 +76,7 @@ namespace Eddi
         // For standalone, this will be handled here.
         public static bool AlreadyRunning()
         {
-#pragma warning disable IDE0067 // Dispose objects before losing scope
             eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
-#pragma warning restore IDE0067 // Dispose objects before losing scope
 
             if (!firstOwner)
             {

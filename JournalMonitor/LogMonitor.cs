@@ -32,8 +32,6 @@ namespace EddiJournalMonitor
             Callback = callback;
         }
 
-        /// <summary>Monitor the netlog for changes, running a callback when the file changes</summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public void start(bool readAllOnLoad = false)
         {
             if (Directory == null || Directory.Trim() == "")

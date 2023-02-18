@@ -24,7 +24,6 @@ namespace SpeechTests
             MakeSafe();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
         [TestMethod, TestCategory("Speech")]
         public void TestPhonemes()
         {
@@ -91,7 +90,6 @@ namespace SpeechTests
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.GetTranslation("i Bootis") + ".");
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfecrtly correct    
         [TestMethod, TestCategory("Speech")]
         public void TestAudio()
         {
@@ -225,7 +223,6 @@ namespace SpeechTests
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight returning from orbit.", 3, null, true);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfecrtly correct    
         [TestMethod, TestCategory("Speech")]
         public void TestSpeech()
         {
@@ -248,7 +245,6 @@ namespace SpeechTests
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfecrtly correct    
         [TestMethod, TestCategory("Speech")]
         public void TestDropOff()
         {

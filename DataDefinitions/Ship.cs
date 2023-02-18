@@ -705,7 +705,6 @@ namespace EddiDataDefinitions
             return Functions.StellarDistanceLy(x, y, z, fromX, fromY, fromZ);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
         public string CoriolisUri()
         {
             if (raw != null)
@@ -734,7 +733,6 @@ namespace EddiDataDefinitions
             return null;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public string EDShipyardUri()
         {
             // Once Coriolis supports POSTing, we can switch to POSTing to https://edsy.org/import

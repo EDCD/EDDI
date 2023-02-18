@@ -11,8 +11,6 @@ namespace EddiDataDefinitions
 
     public class CommodityDefinition : ResourceBasedLocalizedEDName<CommodityDefinition>
     {
-        [SuppressMessage("ReSharper", "StringLiteralTypo")]
-        [SuppressMessage("ReSharper", "RedundantArgumentDefaultValue")]
         static CommodityDefinition()
         {
             resourceManager = Properties.Commodities.ResourceManager;

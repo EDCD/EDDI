@@ -211,8 +211,6 @@ namespace EddiSpeechService.SpeechSynthesizers
             GC.SuppressFinalize(this);
         }
 
-        // another false positive from CA2213
-        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "<synth>k__BackingField")]
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

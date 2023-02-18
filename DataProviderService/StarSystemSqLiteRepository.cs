@@ -764,8 +764,6 @@ namespace EddiDataProviderService
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2100:Review SQL queries for security vulnerabilities")]
-        // The schema version is a constant set at the top of the file, thus usage here is perfectly correct.
         private static void CreateOrUpdateDatabase()
         {
             using (var con = SimpleDbConnection())
@@ -892,7 +890,6 @@ namespace EddiDataProviderService
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public void RecoverStarSystemDB()
         {
             using (var con = SimpleDbConnection())
