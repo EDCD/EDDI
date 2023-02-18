@@ -90,7 +90,7 @@ namespace Eddi
 
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        public static void Upgrade()
+        public static async void Upgrade()
         {
             try
             {
@@ -98,7 +98,7 @@ namespace Eddi
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
                     SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.downloading_upgrade, 0);
-                    string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
+                    string updateFile = await Net.DownloadFileAsync(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
                         SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.download_failed, 0);

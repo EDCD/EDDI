@@ -2,12 +2,14 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public class Net
+    public static class Net
     {
         static Net()
         {
@@ -94,13 +96,16 @@ namespace Utilities
             return data;
         }
 
-        public static string DownloadFile(string uri, string name)
+        public static async Task<string> DownloadFileAsync(string uri, string name)
         {
             try
             {
-                WebClient client = new WebClient();
-                string fileName = Path.GetTempPath() + @"\" + name;
-                client.DownloadFile(new Uri(uri), fileName);
+                var fileName = Path.GetTempPath() + @"\" + name;
+                var response = await new HttpClient().GetAsync(uri);
+                using (var fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    await response.Content.CopyToAsync(fs);
+                }
                 return fileName;
             }
             catch (Exception ex)
@@ -152,31 +157,6 @@ namespace Utilities
             return response;
         }
 
-        // Async send a string
-        public static void UploadString(string uri, string data)
-        {
-            Thread thread = new Thread(() =>
-            {
-                try
-                {
-                    using (var client = new WebClient())
-                    {
-                        client.UploadString(uri, data);
-                    }
-                }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Failed to send string to " + uri, ex);
-                }
-            });
-            thread.IsBackground = true;
-            thread.Start();
-        }
-
         public static string GetDefaultBrowserPath()
         {
             string urlAssociation = @"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http";
@@ -191,15 +171,11 @@ namespace Utilities
                 if (userChoiceKey == null)
                 {
                     // Read default browser path from Win XP registry key
-                    var browserKey = Registry.ClassesRoot.OpenSubKey(@"HTTP\shell\open\command", false);
-
                     // If browser path wasn’t found, try Win Vista (and newer) registry key
-                    if (browserKey == null)
-                    {
-                        browserKey =
-                        Registry.CurrentUser.OpenSubKey(
+                    var browserKey = Registry.ClassesRoot.OpenSubKey(@"HTTP\shell\open\command", false) ?? 
+                                     Registry.CurrentUser.OpenSubKey(
                         urlAssociation, false);
-                    }
+
                     var path = CleanifyBrowserPath(browserKey?.GetValue(null) as string);
                     browserKey?.Close();
                     Logging.Debug("Browser path (1) is " + path);
