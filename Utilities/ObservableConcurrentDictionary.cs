@@ -46,16 +46,10 @@ namespace Utilities
             {
                 _context.Post(s =>
                 {
-                    if (collectionHandler != null)
-                    {
-                        collectionHandler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                    }
-                    if (propertyHandler != null)
-                    {
-                        propertyHandler(this, new PropertyChangedEventArgs("Count"));
-                        propertyHandler(this, new PropertyChangedEventArgs("Keys"));
-                        propertyHandler(this, new PropertyChangedEventArgs("Values"));
-                    }
+                    collectionHandler?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Count"));
+                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Keys"));
+                    propertyHandler?.Invoke(this, new PropertyChangedEventArgs("Values"));
                 }, null);
             }
         }
@@ -134,7 +128,7 @@ namespace Utilities
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            return TryRemoveWithNotification(item.Key, out TValue temp);
+            return TryRemoveWithNotification(item.Key, out _);
         }
         #endregion
 
@@ -168,7 +162,7 @@ namespace Utilities
 
         public bool Remove(TKey key)
         {
-            return TryRemoveWithNotification(key, out TValue temp);
+            return TryRemoveWithNotification(key, out _);
         }
 
         public bool TryGetValue(TKey key, out TValue value)

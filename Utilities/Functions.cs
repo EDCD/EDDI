@@ -38,11 +38,11 @@ namespace Utilities
                 // if deltaLong is over 180°, take the shorter rhumb line across the anti-meridian
                 if (Math.Abs(deltaLong) > Math.PI)
                 {
-                    deltaLong = deltaLong > 0 ? -(2*Math.PI - deltaLong) : (2*Math.PI + deltaLong);
+                    deltaLong = deltaLong > 0 ? -((2*Math.PI) - deltaLong) : ((2*Math.PI) + deltaLong);
                 }
 
                 // Calculate heading using Law of Haversines
-                double projectedDeltaLat = Math.Log(Math.Tan(Math.PI/4 + lat2/2) / Math.Tan(Math.PI/4 + lat1/2));
+                double projectedDeltaLat = Math.Log(Math.Tan((Math.PI / 4) + (lat2 / 2)) / Math.Tan((Math.PI / 4) + (lat1 / 2)));
                 var headingRadians = Math.Atan2(deltaLong, projectedDeltaLat);
                 var headingDegrees = (decimal)(headingRadians * 180 / Math.PI);
                 while (headingDegrees < 0) { headingDegrees += 360; }
@@ -72,13 +72,13 @@ namespace Utilities
                 // if deltaLong is over 180°, take the shorter rhumb line across the anti-meridian
                 if (Math.Abs(deltaLong) > Math.PI)
                 {
-                    deltaLong = deltaLong > 0 ? -(2 * Math.PI - deltaLong) : (2 * Math.PI + deltaLong);
+                    deltaLong = deltaLong > 0 ? -((2 * Math.PI) - deltaLong) : ((2 * Math.PI) + deltaLong);
                 }
 
                 // Calculate straight path distance using Law of Haversines
-                double projectedDeltaLat = Math.Log(Math.Tan(Math.PI / 4 + lat2 / 2) / Math.Tan(Math.PI / 4 + lat1 / 2));
+                double projectedDeltaLat = Math.Log(Math.Tan((Math.PI / 4) + (lat2 / 2)) / Math.Tan((Math.PI / 4) + (lat1 / 2)));
                 double q = Math.Abs(projectedDeltaLat) > 10E-12 ? deltaLat / projectedDeltaLat : Math.Cos(lat1); // // E-W course becomes ill-conditioned with 0/0
-                var distanceKm = (decimal)Math.Sqrt(square(deltaLat) + square(q) * square(deltaLong)) * planetRadiusMeters / 1000;
+                var distanceKm = (decimal)Math.Sqrt((square(deltaLat)) + (square(q) * square(deltaLong))) * planetRadiusMeters / 1000;
                 return distanceKm;
             }
             else
@@ -110,13 +110,13 @@ namespace Utilities
                 if (slopeRadians > minSlopeRadians)
                 {
                     // Calculate the orbital cruise 'point to' position using Laws of Sines & Haversines 
-                    double a = Math.PI / 2 - slopeRadians;
+                    double a = (Math.PI / 2) - slopeRadians;
                     double path = altitudeKm / Math.Cos(a);
                     double c = Math.Asin(path * Math.Sin(a) / radiusKm);
                     double heading = (double)headingDegrees * Math.PI / 180;
-                    double Lat = Math.Asin(Math.Sin(currLat) * Math.Cos(c) + Math.Cos(currLat) * Math.Sin(c) * Math.Cos(heading));
+                    double Lat = Math.Asin((Math.Sin(currLat) * Math.Cos(c)) + (Math.Cos(currLat) * Math.Sin(c) * Math.Cos(heading)));
                     double Lon = currLong + Math.Atan2(Math.Sin(heading) * Math.Sin(c) * Math.Cos(Lat),
-                        Math.Cos(c) - Math.Sin(currLat) * Math.Sin(Lat));
+                        Math.Cos(c) - (Math.Sin(currLat) * Math.Sin(Lat)));
 
                     // Convert position to degrees
                     outputLatitude = (decimal)Math.Round(Lat * 180 / Math.PI, 4);
@@ -140,7 +140,7 @@ namespace Utilities
                 double deltaLong = (double)(destinationLongitude - currentLongitude) * Math.PI / 180;
 
                 // Calculate shortest path distance using Law of Haversines
-                double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(lat2) * Math.Cos(lat1) * square(Math.Sin(deltaLong / 2));
+                double a = square(Math.Sin(deltaLat / 2)) + ( Math.Cos(lat2) * Math.Cos(lat1) * square(Math.Sin(deltaLong / 2)) );
                 double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
                 var distanceKm = (decimal)(c * radiusKm);
                 return distanceKm;
@@ -163,7 +163,7 @@ namespace Utilities
 
                 // Calculate heading using Law of Haversines
                 double y = Math.Sin(deltaLong) * Math.Cos(lat2);
-                double x = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(deltaLong);
+                double x = ( Math.Cos(lat1) * Math.Sin(lat2) ) - ( Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(deltaLong) );
                 var headingRadians = Math.Atan2(y, x);
                 var headingDegrees = (decimal)(headingRadians * 180 / Math.PI);
                 while (headingDegrees < 0) { headingDegrees += 360; }

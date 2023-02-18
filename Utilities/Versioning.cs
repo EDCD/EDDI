@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Utilities
 {
-    public struct Version : IEquatable<Version>, IComparable<Version>
+    public readonly struct Version : IEquatable<Version>, IComparable<Version>
     {
         public enum TestPhase
         {
@@ -101,11 +101,11 @@ namespace Utilities
         {
             // this is not critical as we don't use collections of Versions, so just do something fast that mixes in all fields, multiplying by a prime number
             int hashCode = 17;
-            hashCode = hashCode * 23 + major;
-            hashCode = hashCode * 23 + minor;
-            hashCode = hashCode * 23 + patch;
-            hashCode = hashCode * 23 + (int)phase;
-            hashCode = hashCode * 23 + iteration;
+            hashCode = (hashCode * 23) + major;
+            hashCode = (hashCode * 23) + minor;
+            hashCode = (hashCode * 23) + patch;
+            hashCode = (hashCode * 23) + (int)phase;
+            hashCode = (hashCode * 23) + iteration;
             return hashCode;
         }
 

@@ -86,7 +86,7 @@ namespace Utilities
         public const int carrierLandingPadLockdownSeconds = 180; // Landing pads are locked down 3 minutes prior to jumping
     }
 
-    public class ConstantConverters
+    public static class ConstantConverters
     {
         // NB We can take advantage of the 'lifted' operators in Nullable<T> to have the compiler do our null-checking for us
 

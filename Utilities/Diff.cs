@@ -272,9 +272,9 @@ namespace Utilities
 
             int MAX = DataA.Length + DataB.Length + 1;
             // vector for the (0,0) to (x,y) search
-            int[] DownVector = new int[2 * MAX + 2];
+            int[] DownVector = new int[(2 * MAX) + 2];
             // vector for the (u,v) to (N,M) search
-            int[] UpVector = new int[2 * MAX + 2];
+            int[] UpVector = new int[(2 * MAX) + 2];
 
             LCS(DataA, 0, DataA.Length, DataB, 0, DataB.Length, DownVector, UpVector);
 
@@ -303,7 +303,8 @@ namespace Utilities
                 }
 
                 EndPos = StartPos;
-                while ((EndPos < Data.Length) && (Data.modified[EndPos]))
+                while (EndPos < Data.Length && 
+                       Data.modified[EndPos])
                 {
                     EndPos++;
                 }
@@ -336,9 +337,9 @@ namespace Utilities
 
             int MAX = DataA.Length + DataB.Length + 1;
             // vector for the (0,0) to (x,y) search
-            int[] DownVector = new int[2 * MAX + 2];
+            int[] DownVector = new int[(2 * MAX) + 2];
             // vector for the (u,v) to (N,M) search
-            int[] UpVector = new int[2 * MAX + 2];
+            int[] UpVector = new int[(2 * MAX) + 2];
 
             LCS(DataA, 0, DataA.Length, DataB, 0, DataB.Length, DownVector, UpVector);
             return CreateDiffs(DataA, DataB);
