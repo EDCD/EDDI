@@ -1,4 +1,5 @@
 ﻿using EddiConfigService;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -40,7 +41,7 @@ namespace EddiInaraService
             {
                 Logging.Debug("Starting Inara service background sync.");
                 eddiIsBeta = _eddiIsBeta;
-                Task.Run(() => BackgroundSync());
+                Task.Run(BackgroundSync);
             }
         }
 
@@ -124,7 +125,7 @@ namespace EddiInaraService
                 {
                     var client = new RestClient("https://inara.cz/inapi/v1/");
                     var request = new RestRequest(Method.POST);
-                    InaraSendJson inaraRequest = new InaraSendJson()
+                    var inaraRequest = new InaraSendJson()
                     {
                         header = new Dictionary<string, object>()
                         {
@@ -195,7 +196,7 @@ namespace EddiInaraService
                 if (invalidAPIEvents.Contains(indexedEvent.eventName)) { continue; }
 
                 // Exclude and discard old / stale events
-                if (inaraConfiguration?.lastSync > indexedEvent.eventTimestamp) { continue; }
+                if (inaraConfiguration.lastSync > indexedEvent.eventTimestamp) { continue; }
 
                 // Inara will ignore the "setCommunityGoal" event while EDDI is in development mode (i.e. beta).
                 if (indexedEvent.eventName == "setCommunityGoal" && eddiIsBeta) { continue; }
@@ -242,7 +243,7 @@ namespace EddiInaraService
                             inaraConfiguration.isAPIkeyValid = false;
                             ConfigService.Instance.inaraConfiguration = inaraConfiguration;
                             // Send internal events to the Inara Responder and the UI to handle the invalid API key appropriately
-                            invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs());
+                            invalidAPIkey?.Invoke(inaraConfiguration, EventArgs.Empty);
                         }
                         else if (inaraResponse.eventStatusText.Contains("access to API was temporarily revoked"))
                         {
@@ -273,7 +274,7 @@ namespace EddiInaraService
             if (!inaraConfiguration.isAPIkeyValid)
             {
                 Logging.Warn("Background sync skipped: API key is invalid.");
-                invalidAPIkey?.Invoke(inaraConfiguration, new EventArgs());
+                invalidAPIkey?.Invoke(inaraConfiguration, EventArgs.Empty);
                 return false;
             }
             if (string.IsNullOrEmpty(inaraConfiguration.apiKey))
@@ -289,7 +290,7 @@ namespace EddiInaraService
             return true;
         }
 
-        public void SendAPIEvents(List<InaraAPIEvent> queue)
+        private void SendAPIEvents(List<InaraAPIEvent> queue)
         {
             var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
             if (checkAPIcredentialsOk(inaraConfiguration))
@@ -340,26 +341,26 @@ namespace EddiInaraService
 
     internal class InaraSendJson
     {
-        public Dictionary<string, object> header { get; set; }
+        [UsedImplicitly] public Dictionary<string, object> header;
 
-        public List<InaraAPIEvent> events { get; set; }
+        [UsedImplicitly] public List<InaraAPIEvent> events;
     }
 
     internal class InaraResponses
     {
-        public InaraResponse header { get; set; }
+        [UsedImplicitly] public InaraResponse header { get; set; }
 
-        public List<InaraResponse> events { get; set; }
+        [UsedImplicitly] public List<InaraResponse> events { get; set;  }
     }
 
     public class InaraResponse
     {
-        public int eventStatus { get; set; }
+        [UsedImplicitly] public int eventStatus { get; set; }
 
-        public string eventStatusText { get; set; }
+        [UsedImplicitly] public string eventStatusText { get; set; }
 
-        public object eventData { get; set; }
+        [UsedImplicitly] public object eventData { get; }
 
-        public int eventCustomID { get; set; } // Optional index. Used to match outgoing API events to responses.
+        [UsedImplicitly] public int eventCustomID { get; } // Optional index. Used to match outgoing API events to responses.
     }
 }

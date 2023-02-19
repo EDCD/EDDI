@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraService;
 using EddiSpeechService;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace EddiInaraResponder
 {
     // Documentation: https://inara.cz/inara-api-docs/
 
+    [UsedImplicitly]
     public class InaraResponder : IEddiResponder
     {
         private readonly IInaraService inaraService = new InaraService();
@@ -790,7 +792,7 @@ namespace EddiInaraResponder
                 { "isCurrentShip", true }
             };
             var currentShip = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == @event.shipid);
-            if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip?.EDName == @event.edModel)
+            if (!string.IsNullOrEmpty(currentShip?.EDName) && currentShip.EDName == @event.edModel)
             {
                 currentShipData.Add("shipName", currentShip.name);
                 currentShipData.Add("shipIdent", currentShip.ident);
@@ -1384,12 +1386,15 @@ namespace EddiInaraResponder
             if (val != null)
             {
                 // This is a startup entry, containing data about all known engineers
-                List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
-                List<object> engineers = (List<object>)val;
-                foreach (IDictionary<string, object> engineerData in engineers)
+                var eventData = new List<Dictionary<string, object>>();
+                var engineers = (List<object>)val;
+                foreach (var eng in engineers)
                 {
-                    Dictionary<string, object> engineer = parseEngineerInara(engineerData);
-                    eventData.Add(engineer);
+                    if ( eng is IDictionary<string, object> engineerData )
+                    {
+                        var engineer = parseEngineerInara(engineerData);
+                        eventData.Add ( engineer );
+                    }
                 }
                 if (eventData.Count > 0)
                 {
@@ -1399,7 +1404,7 @@ namespace EddiInaraResponder
             else
             {
                 // This is a progress entry, containing data about a single engineer
-                Dictionary<string, object> eventData = parseEngineerInara(data);
+                var eventData = parseEngineerInara(data);
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankEngineer", eventData));
             }
         }
@@ -1436,7 +1441,7 @@ namespace EddiInaraResponder
             // spam player's credits log with unusable data and they won't be most likely very happy about it. 
             // It may be good to set credits just on the session start, session end and on the big changes 
             // or in hourly intervals.
-            long? startingAssets = (long?)JObject.FromObject(data)?["Bank_Account"]?["Current_Wealth"];
+            long? startingAssets = (long?)JObject.FromObject(data)["Bank_Account"]?["Current_Wealth"];
             data = new Dictionary<string, object>()
             {
                 {"commanderCredits", startingCredits},
@@ -1535,38 +1540,44 @@ namespace EddiInaraResponder
             }
             if (@event.commodityrewards?.Count > 0)
             {
-                List<Dictionary<string, object>> rewardCommodities = new List<Dictionary<string, object>>();
+                var rewardCommodities = new List<Dictionary<string, object>>();
                 missionCompletedObj.TryGetValue("CommodityReward", out object commodityRewardVal);
                 if (commodityRewardVal != null)
                 {
-                    foreach (Dictionary<string, object> commodityRewardData in (List<object>)commodityRewardVal)
+                    foreach (var obj in (List<object>)commodityRewardVal)
                     {
-                        string commodityName = JsonParsing.getString(commodityRewardData, "Name");
-                        int commodityCount = JsonParsing.getInt(commodityRewardData, "Count");
-                        rewardCommodities.Add(new Dictionary<string, object>()
+                        if ( obj is Dictionary<string, object> commodityRewardData )
                         {
-                            { "itemName", commodityName },
-                            { "itemCount", commodityCount }
-                        });
+                            var commodityName = JsonParsing.getString(commodityRewardData, "Name");
+                            var commodityCount = JsonParsing.getInt(commodityRewardData, "Count");
+                            rewardCommodities.Add ( new Dictionary<string, object> ()
+                            {
+                                { "itemName", commodityName },
+                                { "itemCount", commodityCount }
+                            } );
+                        }
                     }
                     eventData.Add("rewardCommodities", rewardCommodities);
                 }
             }
             if (@event.materialsrewards?.Count > 0)
             {
-                List<Dictionary<string, object>> rewardMaterials = new List<Dictionary<string, object>>();
+                var rewardMaterials = new List<Dictionary<string, object>>();
                 missionCompletedObj.TryGetValue("MaterialsReward", out object materialsRewardVal);
                 if (materialsRewardVal != null)
                 {
-                    foreach (Dictionary<string, object> materialRewardData in (List<object>)materialsRewardVal)
+                    foreach (var obj in (List<object>)materialsRewardVal)
                     {
-                        string materialName = JsonParsing.getString(materialRewardData, "Name");
-                        int materialCount = JsonParsing.getInt(materialRewardData, "Count");
-                        rewardMaterials.Add(new Dictionary<string, object>()
+                        if ( obj is Dictionary<string, object> materialRewardData )
                         {
-                            { "itemName", materialName },
-                            { "itemCount", materialCount }
-                        });
+                            var materialName = JsonParsing.getString(materialRewardData, "Name");
+                            var materialCount = JsonParsing.getInt(materialRewardData, "Count");
+                            rewardMaterials.Add ( new Dictionary<string, object> ()
+                            {
+                                { "itemName", materialName },
+                                { "itemCount", materialCount }
+                            } );
+                        }
                     }
                 }
                 eventData.Add("rewardMaterials", rewardMaterials);
@@ -1575,26 +1586,28 @@ namespace EddiInaraResponder
             if (factionEffectsVal is List<object> factionEffects)
             {
                 List<Dictionary<string, object>> minorfactionEffects = new List<Dictionary<string, object>>();
-                foreach (Dictionary<string, object> factionEffect in factionEffects)
+                foreach (var obj in factionEffects)
                 {
-                    string factionName = JsonParsing.getString(factionEffect, "Faction");
-                    Dictionary<string, object> minorfactionEffect = new Dictionary<string, object>() { { "minorfactionName", factionName } };
-                    factionEffect.TryGetValue("Effect", out object effectsVal);
-                    if (effectsVal is List<object> effects)
+                    if ( !( obj is Dictionary<string, object> factionEffect ) ) { continue; }
+                    var factionName = JsonParsing.getString(factionEffect, "Faction");
+                    var minorfactionEffect = new Dictionary<string, object>() { { "minorfactionName", factionName } };
+                    factionEffect.TryGetValue ( "Effect", out object effectsVal );
+                    if ( effectsVal is List<object> effects )
                     {
-                        foreach (Dictionary<string, object> effect in effects)
+                        foreach ( var eff in effects )
                         {
-                            effect.TryGetValue("Influence", out object influenceVal);
-                            if (influenceVal is Dictionary<string, object> influenceData)
+                            if ( !( eff is Dictionary<string, object> effect ) ) { continue; }
+                            effect.TryGetValue ( "Influence", out object influenceVal );
+                            if ( influenceVal is Dictionary<string, object> influenceData )
                             {
                                 string influence = JsonParsing.getString(influenceData, "Influence");
-                                minorfactionEffect.Add("influenceGain", influence);
+                                minorfactionEffect.Add ( "influenceGain", influence );
                             }
-                            string reputation = JsonParsing.getString(effect, "Reputation");
-                            minorfactionEffect.Add("reputationGain", reputation);
+                            var reputation = JsonParsing.getString(effect, "Reputation");
+                            minorfactionEffect.Add ( "reputationGain", reputation );
                         }
                     }
-                    minorfactionEffects.Add(minorfactionEffect);
+                    minorfactionEffects.Add ( minorfactionEffect );
                 }
                 eventData.Add("minorfactionEffects", minorfactionEffects);
             }
