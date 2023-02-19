@@ -111,7 +111,7 @@ namespace EddiVoiceAttackResponder
                     };
                     StatusService.StatusUpdatedEvent += OnStatusUpdated;
 
-                    CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
+                    var cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                     cargoMonitor.InventoryUpdatedEvent += (s, e) =>
                     {
                         lock (vaProxyLock)
@@ -120,7 +120,7 @@ namespace EddiVoiceAttackResponder
                         }
                     };
 
-                    ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+                    var shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
                     if (shipMonitor != null)
                     {
                         shipMonitor.ShipyardUpdatedEvent += (s, e) =>
@@ -667,13 +667,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Entered");
             try
             {
-                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() == null)
+                if (EDDI.Instance.CurrentShip == null)
                 {
                     Logging.Debug("No information on ship");
                     return;
                 }
 
-                string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().CoriolisUri();
+                string shipUri = EDDI.Instance.CurrentShip.CoriolisUri();
                 OpenOrStoreURI(ref vaProxy, shipUri);
                 setStatus(ref vaProxy, "Operational");
             }
@@ -689,13 +689,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Entered");
             try
             {
-                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() == null)
+                if (EDDI.Instance.CurrentShip == null)
                 {
                     Logging.Debug("No information on ship");
                     return;
                 }
 
-                string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().EDShipyardUri();
+                string shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
                 OpenOrStoreURI(ref vaProxy, shipUri);
                 setStatus(ref vaProxy, "Operational");
             }
@@ -749,7 +749,7 @@ namespace EddiVoiceAttackResponder
                 Ship ship = null;
                 if(EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                 { 
-                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                    ship = EDDI.Instance.CurrentShip;
                 }
 
                 SpeechService.Instance.Say(ship, speech, (int)priority, voice, false, null, true);
@@ -780,7 +780,7 @@ namespace EddiVoiceAttackResponder
                 Ship ship = null;
                 if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                 {
-                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                    ship = EDDI.Instance.CurrentShip;
                 }
 
                 SpeechService.Instance.Say(ship, speech, (int)priority, voice, true, null, true);
@@ -831,7 +831,7 @@ namespace EddiVoiceAttackResponder
                 Ship ship = null;
                 if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
                 {
-                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                    ship = EDDI.Instance.CurrentShip;
                 }
 
                 // sayOutLoud must be true to match the behavior described by the wiki for the `disablespeechresponder` command
@@ -940,7 +940,7 @@ namespace EddiVoiceAttackResponder
             if (script == null) { return null; }
 
             // Variable replacement
-            Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+            Ship ship = EDDI.Instance.CurrentShip;
             if (ship != null)
             {
                 script = script.Replace("$=", ship.phoneticname);
