@@ -19,7 +19,7 @@ using Utilities;
 namespace EddiCargoMonitor
 {
     /// Monitor cargo for the current ship
-    public class CargoMonitor : EDDIMonitor
+    public class CargoMonitor : IEddiMonitor
     {
         // Observable collection for us to handle changes
         public ObservableCollection<Cargo> inventory { get; private set; }

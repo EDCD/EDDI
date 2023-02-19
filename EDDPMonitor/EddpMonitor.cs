@@ -20,7 +20,7 @@ namespace EddiEddpMonitor
     /// An EDDI monitor to watch the EDDP feed for changes to the state of systems and stations
     /// </summary>
     [UsedImplicitly]
-    public class EddpMonitor : EDDIMonitor
+    public class EddpMonitor : IEddiMonitor
     {
         private bool running;
         private bool reloading;

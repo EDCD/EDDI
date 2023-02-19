@@ -8,7 +8,7 @@ namespace EddiCore
     /// <summary>
     /// The methods required for an EDDI monitor.
     /// </summary>
-    public interface EDDIMonitor
+    public interface IEddiMonitor
     {
         /// <summary>
         /// A short name for the monitor

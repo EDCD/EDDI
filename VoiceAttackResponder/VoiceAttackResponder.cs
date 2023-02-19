@@ -10,7 +10,7 @@ namespace EddiVoiceAttackResponder
     /// <summary>
     /// A responder for EDDI to provide information to VoiceAttack.  This is very simple, just adding events to the VoiceAttack plugin's event queue
     /// </summary>
-    class VoiceAttackResponder : EDDIResponder
+    class VoiceAttackResponder : IEddiResponder
     {
         public static event EventHandler<Event> RaiseEvent;
 

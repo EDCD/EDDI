@@ -16,7 +16,7 @@ namespace EddiInaraResponder
 {
     // Documentation: https://inara.cz/inara-api-docs/
 
-    public class InaraResponder : EDDIResponder
+    public class InaraResponder : IEddiResponder
     {
         private readonly IInaraService inaraService = new InaraService();
 

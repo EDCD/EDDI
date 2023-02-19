@@ -8,7 +8,7 @@ namespace EddiCore
     /// The methods required for an EDDI responder.
     /// </summary>
     [AddInContract]
-    public interface EDDIResponder
+    public interface IEddiResponder
     {
         /// <summary>
         /// A short name for the responder

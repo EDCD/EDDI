@@ -24,7 +24,7 @@ using Utilities;
 namespace EddiNavigationMonitor
 {
     [UsedImplicitly]
-    public class NavigationMonitor : EDDIMonitor
+    public class NavigationMonitor : IEddiMonitor
     {
         public FleetCarrier FleetCarrier => EDDI.Instance.FleetCarrier;
 

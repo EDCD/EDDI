@@ -21,7 +21,7 @@ namespace EddiMaterialMonitor
     /// <summary>
     /// A monitor that keeps track of the number of materials held and sends events on user-defined changes
     /// </summary>
-    public class MaterialMonitor : EDDIMonitor
+    public class MaterialMonitor : IEddiMonitor
     {
         // Observable collection for us to handle
         public ObservableCollection<MaterialAmount> inventory { get; private set; } = new ObservableCollection<MaterialAmount>();

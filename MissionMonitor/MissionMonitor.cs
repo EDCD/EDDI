@@ -21,7 +21,7 @@ namespace EddiMissionMonitor
     /**
      * Monitor missions for the commander
      */
-    public class MissionMonitor : EDDIMonitor
+    public class MissionMonitor : IEddiMonitor
     {
         // Keep track of status
         private bool running;

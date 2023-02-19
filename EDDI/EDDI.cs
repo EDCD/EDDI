@@ -150,12 +150,12 @@ namespace EddiCore
         private static EDDI instance;
         private static readonly object instanceLock = new object();
 
-        public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
-        private ConcurrentBag<EDDIMonitor> activeMonitors = new ConcurrentBag<EDDIMonitor>();
+        public List<IEddiMonitor> monitors = new List<IEddiMonitor>();
+        private ConcurrentBag<IEddiMonitor> activeMonitors = new ConcurrentBag<IEddiMonitor>();
         private static readonly object monitorLock = new object();
 
-        public List<EDDIResponder> responders = new List<EDDIResponder>();
-        private ConcurrentBag<EDDIResponder> activeResponders = new ConcurrentBag<EDDIResponder>();
+        public List<IEddiResponder> responders = new List<IEddiResponder>();
+        private ConcurrentBag<IEddiResponder> activeResponders = new ConcurrentBag<IEddiResponder>();
         private static readonly object responderLock = new object();
 
         public string vaVersion { get; set; }
@@ -558,7 +558,7 @@ namespace EddiCore
             {
                 EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
 
-                foreach (EDDIMonitor monitor in monitors)
+                foreach (IEddiMonitor monitor in monitors)
                 {
                     if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out bool enabled))
                     {
@@ -585,7 +585,7 @@ namespace EddiCore
                     }
                 }
 
-                foreach (EDDIResponder responder in responders)
+                foreach (IEddiResponder responder in responders)
                 {
                     if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
                     {
@@ -629,11 +629,11 @@ namespace EddiCore
             if (started)
             {
                 eventHandlerTS.Cancel();
-                foreach (EDDIResponder responder in responders)
+                foreach (IEddiResponder responder in responders)
                 {
                     DisableResponder(responder.ResponderName());
                 }
-                foreach (EDDIMonitor monitor in monitors)
+                foreach (IEddiMonitor monitor in monitors)
                 {
                     DisableMonitor(monitor.MonitorName());
                 }
@@ -648,11 +648,11 @@ namespace EddiCore
         /// </summary>
         public void Reload()
         {
-            foreach (EDDIResponder responder in responders)
+            foreach (IEddiResponder responder in responders)
             {
                 responder.Reload();
             }
-            foreach (EDDIMonitor monitor in monitors)
+            foreach (IEddiMonitor monitor in monitors)
             {
                 monitor.Reload();
             }
@@ -663,9 +663,9 @@ namespace EddiCore
         /// <summary>
         /// Obtain a named monitor
         /// </summary>
-        public EDDIMonitor ObtainMonitor(string invariantName)
+        public IEddiMonitor ObtainMonitor(string invariantName)
         {
-            foreach (EDDIMonitor monitor in monitors)
+            foreach (IEddiMonitor monitor in monitors)
             {
                 if (monitor.MonitorName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -676,9 +676,9 @@ namespace EddiCore
         }
 
         /// <summary> Obtain a named responder </summary>
-        public EDDIResponder ObtainResponder(string invariantName)
+        public IEddiResponder ObtainResponder(string invariantName)
         {
-            foreach (EDDIResponder responder in responders)
+            foreach (IEddiResponder responder in responders)
             {
                 if (responder.ResponderName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -691,14 +691,14 @@ namespace EddiCore
         /// <summary> Disable a named responder for this session.  This does not update the on-disk status of the responder </summary>
         public void DisableResponder(string invariantName)
         {
-            EDDIResponder responder = ObtainResponder(invariantName);
+            IEddiResponder responder = ObtainResponder(invariantName);
             if (responder != null)
             {
                 lock (responderLock)
                 {
                     responder.Stop();
-                    ConcurrentBag<EDDIResponder> newResponders = new ConcurrentBag<EDDIResponder>();
-                    while (activeResponders.TryTake(out EDDIResponder item))
+                    ConcurrentBag<IEddiResponder> newResponders = new ConcurrentBag<IEddiResponder>();
+                    while (activeResponders.TryTake(out IEddiResponder item))
                     {
                         if (item != responder) { newResponders.Add(item); }
                     }
@@ -710,7 +710,7 @@ namespace EddiCore
         /// <summary> Enable a named responder for this session.  This does not update the on-disk status of the responder </summary>
         public void EnableResponder(string invariantName)
         {
-            EDDIResponder responder = ObtainResponder(invariantName);
+            IEddiResponder responder = ObtainResponder(invariantName);
             if (responder != null)
             {
                 if (!activeResponders.Contains(responder))
@@ -724,14 +724,14 @@ namespace EddiCore
         /// <summary> Disable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
         public void DisableMonitor(string invariantName)
         {
-            EDDIMonitor monitor = ObtainMonitor(invariantName);
+            IEddiMonitor monitor = ObtainMonitor(invariantName);
             if (monitor != null)
             {
                 lock (monitorLock)
                 {
                     monitor.Stop();
-                    ConcurrentBag<EDDIMonitor> newMonitors = new ConcurrentBag<EDDIMonitor>();
-                    while (activeMonitors.TryTake(out EDDIMonitor item))
+                    ConcurrentBag<IEddiMonitor> newMonitors = new ConcurrentBag<IEddiMonitor>();
+                    while (activeMonitors.TryTake(out IEddiMonitor item))
                     {
                         if (item != monitor) { newMonitors.Add(item); }
                     }
@@ -743,7 +743,7 @@ namespace EddiCore
         /// <summary> Enable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
         public void EnableMonitor(string invariantName)
         {
-            EDDIMonitor monitor = ObtainMonitor(invariantName);
+            IEddiMonitor monitor = ObtainMonitor(invariantName);
             if (monitor != null)
             {
                 if (!activeMonitors.Contains(monitor))
@@ -765,7 +765,7 @@ namespace EddiCore
         /// <summary> Reload a specific monitor or responder </summary>
         public void Reload(string name)
         {
-            foreach (EDDIResponder responder in responders)
+            foreach (IEddiResponder responder in responders)
             {
                 if (responder.ResponderName() == name)
                 {
@@ -773,7 +773,7 @@ namespace EddiCore
                     return;
                 }
             }
-            foreach (EDDIMonitor monitor in monitors)
+            foreach (IEddiMonitor monitor in monitors)
             {
                 if (monitor.MonitorName() == name)
                 {
@@ -1777,7 +1777,7 @@ namespace EddiCore
 
         private void passToMonitorPreHandlers(Event @event)
         {
-            foreach (EDDIMonitor monitor in activeMonitors)
+            foreach (IEddiMonitor monitor in activeMonitors)
             {
                 try
                 {
@@ -1793,7 +1793,7 @@ namespace EddiCore
         private async Task passToRespondersAsync(Event @event)
         {
             List<Task> responderTasks = new List<Task>();
-            foreach (EDDIResponder responder in activeResponders)
+            foreach (IEddiResponder responder in activeResponders)
             {
                 var responderTask = Task.Run(() =>
                 {
@@ -1814,7 +1814,7 @@ namespace EddiCore
         private async Task passToMonitorPostHandlersAsync(Event @event)
         {
             List<Task> monitorTasks = new List<Task>();
-            foreach (EDDIMonitor monitor in activeMonitors)
+            foreach (IEddiMonitor monitor in activeMonitors)
             {
                 var monitorTask = Task.Run(() =>
                 {
@@ -3026,7 +3026,7 @@ namespace EddiCore
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                         }
 
-                        foreach (EDDIMonitor monitor in activeMonitors)
+                        foreach (IEddiMonitor monitor in activeMonitors)
                         {
                             try
                             {
@@ -3141,7 +3141,7 @@ namespace EddiCore
         /// <summary>
         /// Find all monitors
         /// </summary>
-        public List<EDDIMonitor> findMonitors()
+        public List<IEddiMonitor> findMonitors()
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(path))
@@ -3151,8 +3151,8 @@ namespace EddiCore
             }
 
             DirectoryInfo dir = new DirectoryInfo(path);
-            List<EDDIMonitor> foundMonitors = new List<EDDIMonitor>();
-            Type pluginType = typeof(EDDIMonitor);
+            List<IEddiMonitor> foundMonitors = new List<IEddiMonitor>();
+            Type pluginType = typeof(IEddiMonitor);
             foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
             {
                 Logging.Debug("Checking potential plugin at " + file.FullName);
@@ -3172,9 +3172,9 @@ namespace EddiCore
                                 try
                                 {
                                     Logging.Debug("Instantiating monitor plugin at " + file.FullName);
-                                    EDDIMonitor monitor = type.InvokeMember(null,
+                                    IEddiMonitor monitor = type.InvokeMember(null,
                                                                BindingFlags.CreateInstance,
-                                                               null, null, null) as EDDIMonitor;
+                                                               null, null, null) as IEddiMonitor;
                                     foundMonitors.Add(monitor);
                                 }
                                 catch (TargetInvocationException)
@@ -3226,7 +3226,7 @@ namespace EddiCore
         /// <summary>
         /// Find all responders
         /// </summary>
-        public List<EDDIResponder> findResponders()
+        public List<IEddiResponder> findResponders()
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(path))
@@ -3235,8 +3235,8 @@ namespace EddiCore
                 return null;
             }
             DirectoryInfo dir = new DirectoryInfo(path);
-            List<EDDIResponder> foundResponders = new List<EDDIResponder>();
-            Type pluginType = typeof(EDDIResponder);
+            List<IEddiResponder> foundResponders = new List<IEddiResponder>();
+            Type pluginType = typeof(IEddiResponder);
             foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
             {
                 Logging.Debug("Checking potential plugin at " + file.FullName);
@@ -3254,9 +3254,9 @@ namespace EddiCore
                             if (type.GetInterface(pluginType.FullName) != null)
                             {
                                 Logging.Debug("Instantiating responder plugin at " + file.FullName);
-                                EDDIResponder responder = type.InvokeMember(null,
+                                IEddiResponder responder = type.InvokeMember(null,
                                                            BindingFlags.CreateInstance,
-                                                           null, null, null) as EDDIResponder;
+                                                           null, null, null) as IEddiResponder;
                                 foundResponders.Add(responder);
                             }
                         }

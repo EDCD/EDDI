@@ -348,7 +348,7 @@ namespace Eddi
         private List<TabItem> LoadMonitors(EDDIConfiguration eddiConfiguration)
         {
             List<TabItem> result = new List<TabItem>();
-            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+            foreach (IEddiMonitor monitor in EDDI.Instance.monitors)
             {
                 Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
 
@@ -387,7 +387,7 @@ namespace Eddi
         private List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
         {
             List<TabItem> result = new List<TabItem>();
-            foreach (EDDIResponder responder in EDDI.Instance.responders)
+            foreach (IEddiResponder responder in EDDI.Instance.responders)
             {
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
 

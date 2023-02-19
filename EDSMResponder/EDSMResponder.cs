@@ -11,7 +11,7 @@ using Utilities;
 
 namespace EddiEdsmResponder
 {
-    public class EDSMResponder : EDDIResponder
+    public class EDSMResponder : IEddiResponder
     {
         private Thread updateThread;
         private List<string> ignoredEvents = new List<string>();

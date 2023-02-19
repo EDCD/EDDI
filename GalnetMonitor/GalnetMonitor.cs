@@ -22,7 +22,7 @@ namespace EddiGalnetMonitor
     /// <summary>
     /// A sample EDDI monitor to watch The Elite: Dangerous RSS feed and generate an event for new items
     /// </summary>
-    public class GalnetMonitor : EDDIMonitor
+    public class GalnetMonitor : IEddiMonitor
     {
         private static Dictionary<string, string> locales = new Dictionary<string, string>();
         protected static string locale;

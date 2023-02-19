@@ -25,34 +25,34 @@ namespace IntegrationTests
         public void TestKeepAlive()
         {
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            EDDIMonitor monitor = ((List<EDDIMonitor>)privateObject
+            IEddiMonitor monitor = ((List<IEddiMonitor>)privateObject
                 .GetFieldOrProperty("monitors"))
                 .FirstOrDefault(m => m.MonitorName() == "Journal monitor");
 
             Assert.IsNotNull(monitor);
             privateObject.Invoke("EnableMonitor", new object[] { monitor.MonitorName() });
             monitor.Stop();
-            Assert.AreEqual(1, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
 
             privateObject.Invoke("DisableMonitor", new object[] { monitor.MonitorName() });
-            Assert.AreEqual(0, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(0, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
 
             privateObject.Invoke("EnableMonitor", new object[] { monitor.MonitorName() });
             monitor.Stop();
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
 
-            ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).TryTake(out EDDIMonitor activeMonitor);
+            ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).TryTake(out IEddiMonitor activeMonitor);
             Assert.AreEqual(monitor, activeMonitor);
         }
 

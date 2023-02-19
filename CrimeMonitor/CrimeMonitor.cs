@@ -23,7 +23,7 @@ namespace EddiCrimeMonitor
     /**
      * Monitor claims, fines, and bounties for the current ship
      */
-    public class CrimeMonitor : EDDIMonitor
+    public class CrimeMonitor : IEddiMonitor
     {
         // Observable collection for us to handle changes
         public ObservableCollection<FactionRecord> criminalrecord { get; private set; }

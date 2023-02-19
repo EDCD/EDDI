@@ -96,8 +96,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="EDDI.cs" />
-    <Compile Include="EDDIMonitor.cs" />
-    <Compile Include="EDDIResponder.cs" />
+    <Compile Include="IEddiMonitor.cs" />
+    <Compile Include="IEddiResponder.cs" />
     <Page Include="ChangeLog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

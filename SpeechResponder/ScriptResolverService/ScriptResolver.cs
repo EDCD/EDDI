@@ -248,7 +248,7 @@ namespace EddiSpeechResponder.Service
             }
 
             // Obtain additional variables from each monitor
-            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+            foreach (IEddiMonitor monitor in EDDI.Instance.monitors)
             {
                 IDictionary<string, object> monitorVariables = monitor.GetVariables();
                 if (monitorVariables != null)

@@ -11,7 +11,7 @@ using Utilities;
 
 namespace EddiStatusMonitor
 {
-    public class StatusMonitor : EDDIMonitor
+    public class StatusMonitor : IEddiMonitor
     {
         // Miscellaneous tracking
         private bool jumping;

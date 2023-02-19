@@ -19,7 +19,7 @@ namespace EddiEddnResponder
     /// <summary>
     /// A responder for EDDI to provide information to EDDN.
     /// </summary>
-    public class EDDNResponder : EDDIResponder
+    public class EDDNResponder : IEddiResponder
     {
         // Schema reference: https://github.com/EDCD/EDDN/tree/master/schemas
 

@@ -21,7 +21,7 @@ using Utilities;
 
 namespace EddiShipMonitor
 {
-    public class ShipMonitor : EDDIMonitor
+    public class ShipMonitor : IEddiMonitor
     {
         private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 

@@ -17,7 +17,7 @@ using Utilities;
 
 namespace EddiJournalMonitor
 {
-    public class JournalMonitor : LogMonitor, EDDIMonitor
+    public class JournalMonitor : LogMonitor, IEddiMonitor
     {
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", (result, isLogLoadEvent) =>
