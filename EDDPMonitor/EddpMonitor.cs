@@ -4,8 +4,6 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using JetBrains.Annotations;
-using NetMQ;
-using NetMQ.Sockets;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -126,24 +124,24 @@ namespace EddiEddpMonitor
                         // We only listen for updates if the user has selected anything to listen to
                         if (configuration.watches != null && configuration.watches.Count > 0)
                         {
-                            using (var subscriber = new SubscriberSocket())
-                            {
-                                subscriber.Connect("tcp://api.eddp.co:5556");
-                                subscriber.Subscribe("eddp.delta.system");
-                                while (running && !reloading)
-                                {
-                                    if (subscriber.TryReceiveFrameString(new TimeSpan(0, 0, 1), out string topic))
-                                    {
-                                        string message = subscriber.ReceiveFrameString();
-                                        Logging.Debug("Message is " + message);
-                                        JObject json = JObject.Parse(message);
-                                        if (topic == "eddp.delta.system")
-                                        {
-                                            handleSystemDelta(json);
-                                        }
-                                    }
-                                }
-                            }
+                            //using (var subscriber = new SubscriberSocket())
+                            //{
+                            //    subscriber.Connect("tcp://api.eddp.co:5556");
+                            //    subscriber.Subscribe("eddp.delta.system");
+                            //    while (running && !reloading)
+                            //    {
+                            //        if (subscriber.TryReceiveFrameString(new TimeSpan(0, 0, 1), out string topic))
+                            //        {
+                            //            string message = subscriber.ReceiveFrameString();
+                            //            Logging.Debug("Message is " + message);
+                            //            JObject json = JObject.Parse(message);
+                            //            if (topic == "eddp.delta.system")
+                            //            {
+                            //                handleSystemDelta(json);
+                            //            }
+                            //        }
+                            //    }
+                            //}
                         }
                     }
                     catch (SocketException ex)
