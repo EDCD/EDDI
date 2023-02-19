@@ -1053,16 +1053,18 @@ namespace EddiVoiceAttackResponder
                 string string0 = vaProxy.GetText("System variable");
                 string string1 = vaProxy.GetText("System variable 2") ?? vaProxy.GetText("Station variable");
                 decimal? numeric = vaProxy.GetDecimal("Numeric variable");
+                bool? boolean = vaProxy.GetBoolean ("Boolean variable");
 
                 vaProxy.SetText("Type variable", null);
                 vaProxy.SetText("System variable", null);
                 vaProxy.SetText("System variable 2", null);
                 vaProxy.SetText("Station variable", null);
                 vaProxy.SetDecimal("Numeric variable", null);
+                vaProxy.SetBoolean("Boolean variable", null );
 
-                if (Enum.TryParse(type, true, out QueryType result))
+                if ( Enum.TryParse(type, true, out QueryType result))
                 {
-                    var @event = NavigationService.Instance.NavQuery(result, string0, string1, numeric);
+                    var @event = NavigationService.Instance.NavQuery(result, string0, string1, numeric, boolean);
                     if (@event != null)
                     {
                         EDDI.Instance?.enqueueEvent(@event);

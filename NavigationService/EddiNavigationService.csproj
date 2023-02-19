@@ -45,12 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Query.cs" />
+    <Compile Include="IQueryResolver.cs" />
     <Compile Include="EDAstro.cs" />
     <Compile Include="Properties\NavigationService.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NavigationService.resx</DependentUpon>
     </Compile>
+    <Compile Include="QueryResolvers\GalaxyQueryResolvers.cs" />
+    <Compile Include="QueryResolvers\MissionQueryResolvers.cs" />
+    <Compile Include="QueryResolvers\RouteQueryResolvers.cs" />
+    <Compile Include="QueryResolvers\ServiceQueryResolvers.cs" />
     <Compile Include="QueryGroup.cs" />
     <Compile Include="QueryType.cs" />
     <Compile Include="NavigationService.cs" />
@@ -126,5 +132,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\NavigationService.ru.resx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
