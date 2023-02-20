@@ -50,7 +50,12 @@ namespace EddiNavigationMonitor
 
         private DateTime updateDat;
 
-        public static ConfigurationWindow configWindow;
+        public static ConfigurationWindow configWindow
+        {
+            get => _configWindow ?? new ConfigurationWindow(); 
+            private set => _configWindow = value;
+        }
+        private static ConfigurationWindow _configWindow;
 
         internal Status currentStatus { get; set; }
 
@@ -136,7 +141,7 @@ namespace EddiNavigationMonitor
 
         public UserControl ConfigurationTabItem()
         {
-            return configWindow ?? (configWindow = new ConfigurationWindow());
+            return configWindow;
         }
 
         public void HandleProfile(JObject profile)
