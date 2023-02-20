@@ -284,6 +284,10 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public decimal? fuel_percent { get; set; }
 
+        public int? fuel_percentile => fuel_percent is null 
+            ? null 
+            : (int?) decimal.Ceiling((decimal) fuel_percent / 5);
+
         [PublicAPI]
         public int? fuel_seconds { get; set; }
 

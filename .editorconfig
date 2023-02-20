@@ -65,6 +65,7 @@ dotnet_style_readonly_field = true
 
 # Parameter preferences
 dotnet_code_quality_unused_parameters = all
+dotnet_code_quality.enable_platform_analyzer_on_pre_net5_target = true
 
 # Suppression preferences
 dotnet_remove_unnecessary_suppression_exclusions = none

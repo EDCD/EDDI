@@ -1294,7 +1294,7 @@
       "responder": true,
       "script": null,
       "name": "Low fuel",
-      "description": "Se activa cuando los niveles de combustible bajan del 25%"
+      "description": "Se activa cuando los niveles de combustible bajan del 25% y en incrementos del 5 % a partir de entonces"
     },
     "Market information updated": {
       "enabled": true,

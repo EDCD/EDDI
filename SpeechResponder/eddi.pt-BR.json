@@ -1417,7 +1417,7 @@
 			"responder": true,
 			"script": null,
 			"name": "Low fuel",
-			"description": "Triggered when your fuel level falls below 25%.",
+			"description": "Triggered when your fuel level falls below 25% and in 5% increments thereafter.",
 			"default": true
 		},
 		"Market information updated": {

@@ -1320,7 +1320,7 @@
       "script": " {SpeechRate('Attention, Attention!', 'fast')}, {SpeechPitch('niveau de ', 'x-low')}{SpeechPitch('carburant en ', 'x-high')}dessous de 25%!",
       "default": true,
       "name": "Low fuel",
-      "description": "Triggered when your fuel level falls below 25%."
+      "description": "Triggered when your fuel level falls below 25% and in 5% increments thereafter."
     },
     "Market information updated": {
       "enabled": true,
