@@ -13,21 +13,36 @@ namespace EddiDataDefinitions
             resourceManager = Properties.TradeRatings.ResourceManager;
             resourceManager.IgnoreCase = false;
 
-            var Penniless = new TradeRating("Penniless", 0);
-            var MostlyPenniless = new TradeRating("MostlyPenniless", 1);
-            var Peddler = new TradeRating("Peddler", 2);
-            var Dealer = new TradeRating("Dealer", 3);
-            var Merchant = new TradeRating("Merchant", 4);
-            var Broker = new TradeRating("Broker", 5);
-            var Entrepreneur = new TradeRating("Entrepreneur", 6);
-            var Tycoon = new TradeRating("Tycoon", 7);
-            var Elite = new TradeRating("Elite", 8);
-            var EliteI = new TradeRating("EliteI", 9);
-            var EliteII = new TradeRating("EliteII", 10);
-            var EliteIII = new TradeRating("EliteIII", 11);
-            var EliteIV = new TradeRating("EliteIV", 12);
-            var EliteV = new TradeRating("EliteV", 13);
+            Penniless = new TradeRating("Penniless", 0);
+            MostlyPenniless = new TradeRating("MostlyPenniless", 1);
+            Peddler = new TradeRating("Peddler", 2);
+            Dealer = new TradeRating("Dealer", 3);
+            Merchant = new TradeRating("Merchant", 4);
+            Broker = new TradeRating("Broker", 5);
+            Entrepreneur = new TradeRating("Entrepreneur", 6);
+            Tycoon = new TradeRating("Tycoon", 7);
+            Elite = new TradeRating("Elite", 8);
+            EliteI = new TradeRating("EliteI", 9);
+            EliteII = new TradeRating("EliteII", 10);
+            EliteIII = new TradeRating("EliteIII", 11);
+            EliteIV = new TradeRating("EliteIV", 12);
+            EliteV = new TradeRating("EliteV", 13);
         }
+
+        public static readonly TradeRating Penniless;
+        public static readonly TradeRating MostlyPenniless;
+        public static readonly TradeRating Peddler;
+        public static readonly TradeRating Dealer;
+        public static readonly TradeRating Merchant;
+        public static readonly TradeRating Broker;
+        public static readonly TradeRating Entrepreneur;
+        public static readonly TradeRating Tycoon;
+        public static readonly TradeRating Elite;
+        public static readonly TradeRating EliteI;
+        public static readonly TradeRating EliteII;
+        public static readonly TradeRating EliteIII;
+        public static readonly TradeRating EliteIV;
+        public static readonly TradeRating EliteV;
 
         [PublicAPI]
         public int rank { get; private set; }

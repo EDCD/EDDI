@@ -13,21 +13,36 @@ namespace EddiDataDefinitions
             resourceManager = Properties.ExplorationRatings.ResourceManager;
             resourceManager.IgnoreCase = false;
 
-            var Aimless = new ExplorationRating("Aimless", 0);
-            var MostlyAimless = new ExplorationRating("MostlyAimless", 1);
-            var Scout = new ExplorationRating("Scout", 2);
-            var Surveyor = new ExplorationRating("Surveyor", 3);
-            var Trailblazer = new ExplorationRating("Trailblazer", 4);
-            var Pathfinder = new ExplorationRating("Pathfinder", 5);
-            var Ranger = new ExplorationRating("Ranger", 6);
-            var Pioneer = new ExplorationRating("Pioneer", 7);
-            var Elite = new ExplorationRating("Elite", 8);
-            var EliteI = new ExplorationRating("EliteI", 9);
-            var EliteII = new ExplorationRating("EliteII", 10);
-            var EliteIII = new ExplorationRating("EliteIII", 11);
-            var EliteIV = new ExplorationRating("EliteIV", 12);
-            var EliteV = new ExplorationRating("EliteV", 13);
+            Aimless = new ExplorationRating("Aimless", 0);
+            MostlyAimless = new ExplorationRating("MostlyAimless", 1);
+            Scout = new ExplorationRating("Scout", 2);
+            Surveyor = new ExplorationRating("Surveyor", 3);
+            Trailblazer = new ExplorationRating("Trailblazer", 4);
+            Pathfinder = new ExplorationRating("Pathfinder", 5);
+            Ranger = new ExplorationRating("Ranger", 6);
+            Pioneer = new ExplorationRating("Pioneer", 7);
+            Elite = new ExplorationRating("Elite", 8);
+            EliteI = new ExplorationRating("EliteI", 9);
+            EliteII = new ExplorationRating("EliteII", 10);
+            EliteIII = new ExplorationRating("EliteIII", 11);
+            EliteIV = new ExplorationRating("EliteIV", 12);
+            EliteV = new ExplorationRating("EliteV", 13);
         }
+
+        public static readonly ExplorationRating Aimless;
+        public static readonly ExplorationRating MostlyAimless;
+        public static readonly ExplorationRating Scout;
+        public static readonly ExplorationRating Surveyor;
+        public static readonly ExplorationRating Trailblazer;
+        public static readonly ExplorationRating Pathfinder;
+        public static readonly ExplorationRating Ranger;
+        public static readonly ExplorationRating Pioneer;
+        public static readonly ExplorationRating Elite;
+        public static readonly ExplorationRating EliteI;
+        public static readonly ExplorationRating EliteII;
+        public static readonly ExplorationRating EliteIII;
+        public static readonly ExplorationRating EliteIV;
+        public static readonly ExplorationRating EliteV;
 
         [PublicAPI]
         public int rank { get; private set; }

@@ -13,20 +13,31 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
 
             None = new Power("None", Superpower.None, "None");
-            var ALavignyDuval = new Power("ALavignyDuval", Superpower.Empire, "Kamadhenu");
-            var AislingDuval = new Power("AislingDuval", Superpower.Empire, "Cubeo");
-            var ArchonDelaine = new Power("ArchonDelaine", Superpower.Independent, "Harma");
-            var DentonPatreus = new Power("DentonPatreus", Superpower.Empire, "Eotienses");
-            var EdmundMahon = new Power("EdmundMahon", Superpower.Alliance, "Gateway");
-            var FeliciaWinters = new Power("FeliciaWinters", Superpower.Federation, "Rhea");
-            var LiYongRui = new Power("LiYongRui", Superpower.Independent, "Lembava");
-            var PranavAntal = new Power("PranavAntal", Superpower.Independent, "Polevnic");
-            var YuriGrom = new Power("YuriGrom", Superpower.Alliance, "Clayakarma");
-            var ZacharyHudson = new Power("ZacharyHudson", Superpower.Federation, "Nanomam");
-            var ZeminaTorval = new Power("ZeminaTorval", Superpower.Empire, "Synteini");
+            ALavignyDuval = new Power("ALavignyDuval", Superpower.Empire, "Kamadhenu");
+            AislingDuval = new Power("AislingDuval", Superpower.Empire, "Cubeo");
+            ArchonDelaine = new Power("ArchonDelaine", Superpower.Independent, "Harma");
+            DentonPatreus = new Power("DentonPatreus", Superpower.Empire, "Eotienses");
+            EdmundMahon = new Power("EdmundMahon", Superpower.Alliance, "Gateway");
+            FeliciaWinters = new Power("FeliciaWinters", Superpower.Federation, "Rhea");
+            LiYongRui = new Power("LiYongRui", Superpower.Independent, "Lembava");
+            PranavAntal = new Power("PranavAntal", Superpower.Independent, "Polevnic");
+            YuriGrom = new Power("YuriGrom", Superpower.Alliance, "Clayakarma");
+            ZacharyHudson = new Power("ZacharyHudson", Superpower.Federation, "Nanomam");
+            ZeminaTorval = new Power("ZeminaTorval", Superpower.Empire, "Synteini");
         }
 
         public static readonly Power None;
+        public static readonly Power ALavignyDuval;
+        public static readonly Power AislingDuval;
+        public static readonly Power ArchonDelaine;
+        public static readonly Power DentonPatreus;
+        public static readonly Power EdmundMahon;
+        public static readonly Power FeliciaWinters;
+        public static readonly Power LiYongRui;
+        public static readonly Power PranavAntal;
+        public static readonly Power YuriGrom;
+        public static readonly Power ZacharyHudson;
+        public static readonly Power ZeminaTorval;
 
         public Superpower Allegiance { get; private set; }
         public string headquarters { get; private set; }

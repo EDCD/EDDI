@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
     public class Haulage
     {
         [JsonIgnore]
-        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> CHAINED = new Dictionary<string, string>()
         {
             {"clearingthepath", "delivery"},
             {"helpfinishtheorder", "delivery"},

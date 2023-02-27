@@ -10,10 +10,14 @@
             resourceManager = Properties.GameModes.ResourceManager;
             resourceManager.IgnoreCase = false;
 
-            var Open = new GameMode("Open");
-            var Group = new GameMode("Group");
-            var Solo = new GameMode("Solo");
+            Open = new GameMode("Open");
+            Group = new GameMode("Group");
+            Solo = new GameMode("Solo");
         }
+
+        public static readonly GameMode Open;
+        public static readonly GameMode Group;
+        public static readonly GameMode Solo;
 
         // dummy used to ensure that the static constructor has run
         public GameMode() : this("")

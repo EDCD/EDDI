@@ -77,15 +77,18 @@ namespace EddiDataDefinitions
             {
                 if (val is List<object> listVal)
                 {
-                    foreach (IDictionary<string, object> microResourceVal in listVal)
+                    foreach (var v in listVal)
                     {
-                        var edname = JsonParsing.getString(microResourceVal, "Name");
-                        var fallbackName = JsonParsing.getString(microResourceVal, "Name_Localised");
-                        var categoryEdName = JsonParsing.getString(microResourceVal, "Type") ?? MicroResourceCategory.Unknown.edname;
-                        var ownerId = JsonParsing.getOptionalLong(microResourceVal, "OwnerID");
-                        var missionId = JsonParsing.getOptionalLong(microResourceVal, "MissionID");
-                        var amount = JsonParsing.getInt(microResourceVal, "Count");
-                        result.Add(new MicroResourceAmount(edname, ownerId, amount, categoryEdName, fallbackName, missionId));
+                        if ( v is IDictionary<string, object> microResourceVal )
+                        {
+                            var edname = JsonParsing.getString(microResourceVal, "Name");
+                            var fallbackName = JsonParsing.getString(microResourceVal, "Name_Localised");
+                            var categoryEdName = JsonParsing.getString(microResourceVal, "Type") ?? MicroResourceCategory.Unknown.edname;
+                            var ownerId = JsonParsing.getOptionalLong(microResourceVal, "OwnerID");
+                            var missionId = JsonParsing.getOptionalLong(microResourceVal, "MissionID");
+                            var amount = JsonParsing.getInt(microResourceVal, "Count");
+                            result.Add( new MicroResourceAmount( edname, ownerId, amount, categoryEdName, fallbackName, missionId ) );
+                        }
                     }
                 }
             }

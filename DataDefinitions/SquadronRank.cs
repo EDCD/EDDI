@@ -14,14 +14,19 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
 
             None = new SquadronRank("None", 0);
-            var Leader = new SquadronRank("Leader", 1);
-            var SeniorOfficer = new SquadronRank("SeniorOfficer", 2);
-            var Officer = new SquadronRank("Officer", 3);
-            var Agent = new SquadronRank("Agent", 4);
-            var Rookie = new SquadronRank("Rookie", 5);
+            Leader = new SquadronRank("Leader", 1);
+            SeniorOfficer = new SquadronRank("SeniorOfficer", 2);
+            Officer = new SquadronRank("Officer", 3);
+            Agent = new SquadronRank("Agent", 4);
+            Rookie = new SquadronRank("Rookie", 5);
         }
 
         public static readonly SquadronRank None;
+        public static readonly SquadronRank Leader;
+        public static readonly SquadronRank SeniorOfficer;
+        public static readonly SquadronRank Officer;
+        public static readonly SquadronRank Agent;
+        public static readonly SquadronRank Rookie;
 
         [PublicAPI]
         public int rank { get; private set; }

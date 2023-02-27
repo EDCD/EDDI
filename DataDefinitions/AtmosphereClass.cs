@@ -13,37 +13,60 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new AtmosphereClass(edname);
 
             None = new AtmosphereClass("None");
-            var Ammonia = new AtmosphereClass("Ammonia");
-            var AmmoniaOxygen = new AtmosphereClass("AmmoniaOxygen");
-            var AmmoniaAndOxygen = new AtmosphereClass("AmmoniaAndOxygen");
-            var AmmoniaRich = new AtmosphereClass("AmmoniaRich");
-            var Argon = new AtmosphereClass("Argon");
-            var ArgonRich = new AtmosphereClass("ArgonRich");
-            var CarbonDioxide = new AtmosphereClass("CarbonDioxide");
-            var CarbonDioxideRich = new AtmosphereClass("CarbonDioxideRich");
-            var EarthLike = new AtmosphereClass("EarthLike");
-            var Helium = new AtmosphereClass("Helium");
-            var Methane = new AtmosphereClass("Methane");
-            var MethaneRich = new AtmosphereClass("MethaneRich");
-            var MetallicVapour = new AtmosphereClass("MetallicVapour");
-            var Neon = new AtmosphereClass("Neon");
-            var NeonRich = new AtmosphereClass("NeonRich");
-            var Nitrogen = new AtmosphereClass("Nitrogen");
-            var Oxygen = new AtmosphereClass("Oxygen");
-            var SilicateVapour = new AtmosphereClass("SilicateVapour");
-            var SuitableForWaterBasedLife = new AtmosphereClass("SuitableForWaterBasedLife");
-            var SulphurDioxide = new AtmosphereClass("SulphurDioxide");
-            var Water = new AtmosphereClass("Water");
-            var WaterRich = new AtmosphereClass("WaterRich");
+            Ammonia = new AtmosphereClass("Ammonia");
+            AmmoniaOxygen = new AtmosphereClass("AmmoniaOxygen");
+            AmmoniaAndOxygen = new AtmosphereClass("AmmoniaAndOxygen");
+            AmmoniaRich = new AtmosphereClass("AmmoniaRich");
+            Argon = new AtmosphereClass("Argon");
+            ArgonRich = new AtmosphereClass("ArgonRich");
+            CarbonDioxide = new AtmosphereClass("CarbonDioxide");
+            CarbonDioxideRich = new AtmosphereClass("CarbonDioxideRich");
+            EarthLike = new AtmosphereClass("EarthLike");
+            Helium = new AtmosphereClass("Helium");
+            Methane = new AtmosphereClass("Methane");
+            MethaneRich = new AtmosphereClass("MethaneRich");
+            MetallicVapour = new AtmosphereClass("MetallicVapour");
+            Neon = new AtmosphereClass("Neon");
+            NeonRich = new AtmosphereClass("NeonRich");
+            Nitrogen = new AtmosphereClass("Nitrogen");
+            Oxygen = new AtmosphereClass("Oxygen");
+            SilicateVapour = new AtmosphereClass("SilicateVapour");
+            SuitableForWaterBasedLife = new AtmosphereClass("SuitableForWaterBasedLife");
+            SulphurDioxide = new AtmosphereClass("SulphurDioxide");
+            Water = new AtmosphereClass("Water");
+            WaterRich = new AtmosphereClass("WaterRich");
 
             // Synthetic name(s)
-            var GasGiant = new AtmosphereClass("GasGiant");
+            GasGiant = new AtmosphereClass("GasGiant");
         }
 
         public static readonly AtmosphereClass None;
+        public static readonly AtmosphereClass Ammonia;
+        public static readonly AtmosphereClass AmmoniaOxygen;
+        public static readonly AtmosphereClass AmmoniaAndOxygen;
+        public static readonly AtmosphereClass AmmoniaRich;
+        public static readonly AtmosphereClass Argon;
+        public static readonly AtmosphereClass ArgonRich;
+        public static readonly AtmosphereClass CarbonDioxide;
+        public static readonly AtmosphereClass CarbonDioxideRich;
+        public static readonly AtmosphereClass EarthLike;
+        public static readonly AtmosphereClass Helium;
+        public static readonly AtmosphereClass Methane;
+        public static readonly AtmosphereClass MethaneRich;
+        public static readonly AtmosphereClass MetallicVapour;
+        public static readonly AtmosphereClass Neon;
+        public static readonly AtmosphereClass NeonRich;
+        public static readonly AtmosphereClass Nitrogen;
+        public static readonly AtmosphereClass Oxygen;
+        public static readonly AtmosphereClass SilicateVapour;
+        public static readonly AtmosphereClass SuitableForWaterBasedLife;
+        public static readonly AtmosphereClass SulphurDioxide;
+        public static readonly AtmosphereClass Water;
+        public static readonly AtmosphereClass WaterRich;
+        public static readonly AtmosphereClass GasGiant;
 
         // dummy used to ensure that the static constructor has run
-        public AtmosphereClass() : this("")
+        public AtmosphereClass () : this("")
         { }
 
         private AtmosphereClass(string edname) : base(edname, edname

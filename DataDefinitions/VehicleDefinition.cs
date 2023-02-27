@@ -10,24 +10,33 @@ namespace EddiDataDefinitions
             resourceManager = Properties.Vehicle.ResourceManager;
             resourceManager.IgnoreCase = true;
 
-            var Empire = new VehicleDefinition("Empire");
-            var Federation = new VehicleDefinition("Federation");
-            var GdnHybridV1 = new VehicleDefinition("GdnHybridV1");
-            var GdnHybridV2 = new VehicleDefinition("GdnHybridV2");
-            var GdnHybridV3 = new VehicleDefinition("GdnHybridV3");
-            var Independent = new VehicleDefinition("Independent");
-            var TestBuggy = new VehicleDefinition("TestBuggy"); // Scarab SRV
-            var CombatSRV = new VehicleDefinition("CombatMulticrewSRV01"); // Scorpion SRV
+            Empire = new VehicleDefinition("Empire");
+            Federation = new VehicleDefinition("Federation");
+            GdnHybridV1 = new VehicleDefinition("GdnHybridV1");
+            GdnHybridV2 = new VehicleDefinition("GdnHybridV2");
+            GdnHybridV3 = new VehicleDefinition("GdnHybridV3");
+            Independent = new VehicleDefinition("Independent");
+            TestBuggy = new VehicleDefinition("TestBuggy"); // Scarab SRV
+            CombatSRV = new VehicleDefinition("CombatMulticrewSRV01"); // Scorpion SRV
         }
 
+        public static readonly VehicleDefinition Empire;
+        public static readonly VehicleDefinition Federation;
+        public static readonly VehicleDefinition GdnHybridV1;
+        public static readonly VehicleDefinition GdnHybridV2;
+        public static readonly VehicleDefinition GdnHybridV3;
+        public static readonly VehicleDefinition Independent;
+        public static readonly VehicleDefinition TestBuggy;
+        public static readonly VehicleDefinition CombatSRV;
+        
         // dummy used to ensure that the static constructor has run
-        public VehicleDefinition() : this("")
+        public VehicleDefinition () : this("")
         { }
 
         private VehicleDefinition(string edname) : base(edname, edname)
         { }
 
-        public new static VehicleDefinition FromEDName(string edName)
+        public static new VehicleDefinition FromEDName(string edName)
         {
             if (edName == null) { return null; }
 
