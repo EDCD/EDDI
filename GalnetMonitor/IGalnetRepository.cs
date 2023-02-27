@@ -2,7 +2,7 @@
 
 namespace EddiGalnetMonitor
 {
-    public interface GalnetRepository
+    public interface IGalnetRepository
     {
         News GetArticle(string uuid);
         //Dictionary<string, List<News>> GetLatest(int entries, string category);

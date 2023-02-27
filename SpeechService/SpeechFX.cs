@@ -133,7 +133,7 @@ namespace EddiSpeechService
             int distortionFX = 0;
             if (distortionLevel > 0)
             {
-                distortionFX = (int)Decimal.Round((distortionLevel / 100M) * (100M - Configuration.EffectsLevel));
+                distortionFX = (int)decimal.Round(distortionLevel / 100M * (100M - Configuration.EffectsLevel));
                 Logging.Debug("Calculating effect of distortion on speech effects: +" + distortionFX);
             }
             return Configuration.EffectsLevel + distortionFX;

@@ -19,9 +19,9 @@ namespace EddiGalnetMonitor
     /// </remarks>
     public class GalnetFeedItemNormalizer : IFeedItemNormalizer
     {
-        private static Regex _htmlRegex = new Regex(@"<[^>]*>", RegexOptions.Compiled);    //@"<(.|\n)*?>"
-        private static Regex _controlCodesRegex = new Regex(@"[\x00-\x1F\x7f]", RegexOptions.Compiled);
-        private static Regex _whiteSpaceRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
+        private static readonly Regex _htmlRegex = new Regex(@"<[^>]*>", RegexOptions.Compiled);    //@"<(.|\n)*?>"
+        private static readonly Regex _controlCodesRegex = new Regex(@"[\x00-\x1F\x7f]", RegexOptions.Compiled);
+        private static readonly Regex _whiteSpaceRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
         /// <summary>
         /// Normalizes a SyndicationItem into a FeedItem.

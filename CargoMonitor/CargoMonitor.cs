@@ -31,7 +31,7 @@ namespace EddiCargoMonitor
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
 
-        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> CHAINED = new Dictionary<string, string>()
         {
             {"clearingthepath", "delivery"},
             {"helpfinishtheorder", "delivery"},
@@ -206,9 +206,9 @@ namespace EddiCargoMonitor
                 // If we fail a mission with cargo it becomes stolen
                 handleMissionFailedEvent(missionFailedEvent);
             }
-            else if (@event is DiedEvent diedEvent)
+            else if (@event is DiedEvent)
             {
-                handleDiedEvent(diedEvent);
+                handleDiedEvent();
             }
             else if (@event is EngineerContributedEvent engineerContributedEvent)
             {
@@ -742,14 +742,10 @@ namespace EddiCargoMonitor
         private bool _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             bool update = false;
-            Haulage haulage = new Haulage();
 
-            // Protect against duplicates & empty strings
-            haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
+            var haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage == null && !string.IsNullOrEmpty(@event.name))
             {
-                Cargo cargo = new Cargo();
-
                 string type = @event.name.Split('_').ElementAt(1)?.ToLowerInvariant();
                 if (type != null && CHAINED.TryGetValue(type, out string value))
                 {
@@ -791,7 +787,7 @@ namespace EddiCargoMonitor
                                 haulage.sourcesystem = @event.destinationsystem;
                             }
 
-                            cargo = GetCargoWithEDName(@event.Mission.CommodityDefinition?.edname) ?? new Cargo(@event.Mission.CommodityDefinition?.edname);
+                            var cargo = GetCargoWithEDName(@event.Mission.CommodityDefinition?.edname) ?? new Cargo(@event.Mission.CommodityDefinition?.edname);
                             cargo.haulageData.Add(haulage);
                             cargo.CalculateNeed();
                             AddOrUpdateCargo(cargo);
@@ -887,7 +883,7 @@ namespace EddiCargoMonitor
             return update;
         }
 
-        private void handleDiedEvent(DiedEvent @event)
+        private void handleDiedEvent()
         {
             inventory.Clear();
             writeInventory();

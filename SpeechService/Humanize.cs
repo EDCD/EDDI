@@ -64,7 +64,7 @@ namespace EddiSpeechService
 
         private static (int number, int nextDigit) Normalize(decimal inputValue, decimal orderMultiplierVal)
         {
-            return (number: (int) (inputValue / orderMultiplierVal), nextDigit: (int) ((inputValue % orderMultiplierVal) / (orderMultiplierVal / 10)));
+            return (number: (int) (inputValue / orderMultiplierVal), nextDigit: (int) (inputValue % orderMultiplierVal / (orderMultiplierVal / 10)));
         }
 
         private static string FormatWith2SignificantDigits(int number, bool isNegative, long orderMultiplier, int nextDigit, decimal value, bool wantIntegerMantissa)
@@ -77,7 +77,7 @@ namespace EddiSpeechService
                 {
                 case true when orderMultiplier >= 1000:
                     // borrow a factor of 1000 from orderMultiplier and multiply the mantissa by it
-                    number = number * 1000 + nextDigit * 100;
+                    number = (number * 1000) + (nextDigit * 100);
                     orderMultiplier /= 1000;
                     return FormatVerbatim(number, isNegative, orderMultiplier);
                 default:
@@ -119,7 +119,7 @@ namespace EddiSpeechService
             decimal value)
         {
             // Round mantissas in the hundreds to the nearest 10, except where the number after the hundreds place is 20 or less
-            if (number - (int)((decimal)number / 100) * 100 >= 20)
+            if ((number - ((int)((decimal)number / 100) * 100)) >= 20)
             {
                 (number, nextDigit) = Normalize(number, 10);
                 number *= 10;

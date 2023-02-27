@@ -1,5 +1,4 @@
-﻿using EddiConfigService;
-using EddiConfigService.Configurations;
+﻿using EddiConfigService.Configurations;
 using EddiInaraService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

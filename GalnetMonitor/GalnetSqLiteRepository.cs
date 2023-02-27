@@ -8,7 +8,7 @@ using Utilities;
 
 namespace EddiGalnetMonitor
 {
-    public class GalnetSqLiteRepository : SqLiteBaseRepository, GalnetRepository
+    public class GalnetSqLiteRepository : SqLiteBaseRepository, IGalnetRepository
     {
         private const string CREATE_SQL = @"
                     CREATE TABLE IF NOT EXISTS galnet(

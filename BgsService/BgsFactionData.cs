@@ -115,22 +115,24 @@ namespace EddiBgsService
                     updatedAt = (DateTime)factionJson["updated_at"],
                     Government = Government.FromName((string)factionJson["government"]),
                     Allegiance = Superpower.FromName((string)factionJson["allegiance"]),
+
+                    // EDDB ID may not be present for new / unknown factions
+                    EDDBID = JsonParsing.getOptionalLong(factionJson, "eddb_id")
                 };
-                // EDDB ID may not be present for new / unknown factions
-                faction.EDDBID = JsonParsing.getOptionalLong(factionJson, "eddb_id");
 
                 foreach (object presence in (List<object>)factionJson["faction_presence"])
                 {
                     IDictionary<string, object> presenceJson = (IDictionary<string, object>)presence;
-                    FactionPresence factionPresence = new FactionPresence()
+                    FactionPresence factionPresence = new FactionPresence
                     {
                         systemName = JsonParsing.getString(presenceJson, "system_name"),
                         influence = (JsonParsing.getOptionalDecimal(presenceJson, "influence") ?? 0) * 100, // Convert from a 0-1 range to a percentage
                         FactionState = FactionState.FromEDName(JsonParsing.getString(presenceJson, "state")) ?? FactionState.None,
+
+                        Happiness = Happiness.FromEDName(JsonParsing.getString(presenceJson, "happiness")?.Replace("none", "")) ?? Happiness.None
                     };
 
                     // These properties may not be present in the json, so we pass them after initializing our FactionPresence object.
-                    factionPresence.Happiness = Happiness.FromEDName(JsonParsing.getString(presenceJson, "happiness")?.Replace("none", "")) ?? Happiness.None;
                     presenceJson.TryGetValue("updated_at", out object updatedVal);
                     factionPresence.updatedAt = (DateTime?)updatedVal ?? DateTime.MinValue;
 
@@ -139,9 +141,13 @@ namespace EddiBgsService
                     if (activeStatesVal != null)
                     {
                         var activeStatesList = (List<object>)activeStatesVal;
-                        foreach (IDictionary<string, object> activeState in activeStatesList)
+                        foreach (var obj in activeStatesList)
                         {
-                            factionPresence.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "state")) ?? FactionState.None);
+                            if ( obj is IDictionary<string, object> activeState )
+                            {
+                                factionPresence.ActiveStates
+                                    .Add(FactionState.FromEDName(JsonParsing.getString(activeState, "state")) ?? FactionState.None);
+                            }
                         }
                     }
 
@@ -150,13 +156,16 @@ namespace EddiBgsService
                     if (pendingStatesVal != null)
                     {
                         var pendingStatesList = (List<object>)pendingStatesVal;
-                        foreach (IDictionary<string, object> pendingState in pendingStatesList)
+                        foreach (var obj in pendingStatesList)
                         {
-                            FactionTrendingState pTrendingState = new FactionTrendingState(
-                                FactionState.FromEDName(JsonParsing.getString(pendingState, "state")) ?? FactionState.None,
-                                JsonParsing.getOptionalInt(pendingState, "trend")
-                            );
-                            factionPresence.PendingStates.Add(pTrendingState);
+                            if ( obj is IDictionary<string, object> pendingState )
+                            {
+                                FactionTrendingState pTrendingState = new FactionTrendingState(
+                                    FactionState.FromEDName(JsonParsing.getString(pendingState, "state")) ?? FactionState.None,
+                                    JsonParsing.getOptionalInt(pendingState, "trend")
+                                );
+                                factionPresence.PendingStates.Add(pTrendingState);                                
+                            }
                         }
                     }
 
@@ -165,13 +174,16 @@ namespace EddiBgsService
                     if (recoveringStatesVal != null)
                     {
                         var recoveringStatesList = (List<object>)recoveringStatesVal;
-                        foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
+                        foreach (var obj in recoveringStatesList)
                         {
-                            FactionTrendingState rTrendingState = new FactionTrendingState(
-                                FactionState.FromEDName(JsonParsing.getString(recoveringState, "state")) ?? FactionState.None,
-                                JsonParsing.getOptionalInt(recoveringState, "trend")
-                            );
-                            factionPresence.RecoveringStates.Add(rTrendingState);
+                            if ( obj is IDictionary<string, object> recoveringState )
+                            {
+                                FactionTrendingState rTrendingState = new FactionTrendingState(
+                                    FactionState.FromEDName(JsonParsing.getString(recoveringState, "state")) ?? FactionState.None,
+                                    JsonParsing.getOptionalInt(recoveringState, "trend")
+                                );
+                                factionPresence.RecoveringStates.Add(rTrendingState);                                
+                            }
                         }
                     }
 

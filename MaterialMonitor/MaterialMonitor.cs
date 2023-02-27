@@ -32,7 +32,7 @@ namespace EddiMaterialMonitor
 
         // The material monitor both consumes and emits events, but only one for a given event.  We hold any pending events here so
         // they are fired at the correct time
-        private ConcurrentQueue<Event> pendingEvents = new ConcurrentQueue<Event>();
+        private readonly ConcurrentQueue<Event> pendingEvents = new ConcurrentQueue<Event>();
 
         public string MonitorName()
         {
@@ -314,7 +314,7 @@ namespace EddiMaterialMonitor
                 var rarityLevel = Material.FromEDName(ma.edname).Rarity.level;
                 if (rarityLevel > 0)
                 {
-                    max = -50 * (rarityLevel) + 350;
+                    max = (-50 * rarityLevel) + 350;
                 }
 
                 // Add our amount, not exceeding our storage maximum
@@ -463,7 +463,7 @@ namespace EddiMaterialMonitor
                             int rarityLevel = Material.FromEDName(ma2.edname).Rarity.level;
                             if (rarityLevel > 0)
                             {
-                                ma2.maximum = -50 * (rarityLevel) + 350;
+                                ma2.maximum = (-50 * rarityLevel) + 350;
                             }
                         }
                         newInventory.Add(ma2);

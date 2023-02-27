@@ -11,9 +11,9 @@ using Utilities;
 namespace EddiShipMonitor
 {
     // Handle the Frontier API definition for ships
-    public class FrontierApi
+    public static class FrontierApi
     {
-        private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+        private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
         public static List<Ship> ShipyardFromJson(Ship activeShip, dynamic json)
         {
@@ -70,8 +70,7 @@ namespace EddiShipMonitor
                 Logging.Info("Ship definition error: " + edName, JsonConvert.SerializeObject(json));
 
                 // Create a basic ship definition & supplement from the info available 
-                Ship = new Ship();
-                Ship.EDName = edName;
+                Ship = new Ship { EDName = edName };
             }
 
             // We want to return a basic ship if the parsing fails so wrap this
@@ -95,14 +94,14 @@ namespace EddiShipMonitor
                 if (json["modules"] != null)
                 {
                     // Obtain the internals
-                    Ship.bulkheads = ModuleFromJson("Armour", (JObject)json["modules"]["Armour"]);
-                    Ship.powerplant = ModuleFromJson("PowerPlant", (JObject)json["modules"]["PowerPlant"]);
-                    Ship.thrusters = ModuleFromJson("MainEngines", (JObject)json["modules"]["MainEngines"]);
-                    Ship.frameshiftdrive = ModuleFromJson("FrameShiftDrive", (JObject)json["modules"]["FrameShiftDrive"]);
-                    Ship.lifesupport = ModuleFromJson("LifeSupport", (JObject)json["modules"]["LifeSupport"]);
-                    Ship.powerdistributor = ModuleFromJson("PowerDistributor", (JObject)json["modules"]["PowerDistributor"]);
-                    Ship.sensors = ModuleFromJson("Radar", (JObject)json["modules"]["Radar"]);
-                    Ship.fueltank = ModuleFromJson("FuelTank", (JObject)json["modules"]["FuelTank"]);
+                    Ship.bulkheads = ModuleFromJson( (JObject)json["modules"]["Armour"]);
+                    Ship.powerplant = ModuleFromJson( (JObject)json["modules"]["PowerPlant"]);
+                    Ship.thrusters = ModuleFromJson( (JObject)json["modules"]["MainEngines"]);
+                    Ship.frameshiftdrive = ModuleFromJson( (JObject)json["modules"]["FrameShiftDrive"]);
+                    Ship.lifesupport = ModuleFromJson( (JObject)json["modules"]["LifeSupport"]);
+                    Ship.powerdistributor = ModuleFromJson( (JObject)json["modules"]["PowerDistributor"]);
+                    Ship.sensors = ModuleFromJson( (JObject)json["modules"]["Radar"]);
+                    Ship.fueltank = ModuleFromJson( (JObject)json["modules"]["FuelTank"]);
                     if (Ship.fueltank != null)
                     {
                         Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
@@ -212,9 +211,9 @@ namespace EddiShipMonitor
 
             if (json.Value is JObject)
             {
-                if (json.Value.TryGetValue("module", out JToken value))
+                if (json.Value.TryGetValue("module", out JToken _))
                 {
-                    Hardpoint.module = ModuleFromJson(name, json.Value);
+                    Hardpoint.module = ModuleFromJson( json.Value);
                 }
             }
 
@@ -233,16 +232,16 @@ namespace EddiShipMonitor
 
                 if (json.Value is JObject)
                 {
-                    if (json.Value.TryGetValue("module", out JToken value))
+                    if (json.Value.TryGetValue("module", out JToken _))
                     {
-                        Compartment.module = ModuleFromJson((string)json.Name, json.Value);
+                        Compartment.module = ModuleFromJson( json.Value);
                     }
                 }
             }
             return Compartment;
         }
 
-        public static Module ModuleFromJson(string name, JObject json)
+        public static Module ModuleFromJson(JObject json)
         {
             long id = (long)json["module"]["id"];
             string edName = (string)json["module"]["name"];

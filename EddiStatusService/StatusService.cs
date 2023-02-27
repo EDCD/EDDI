@@ -433,7 +433,7 @@ namespace EddiStatusService
                     var deltaLong = (double)(status.longitude - LastStatus.longitude) * Math.PI / 180;
 
                     // Calculate distance traveled using Law of Haversines
-                    var a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
+                    var a = square(Math.Sin(deltaLat / 2)) + (Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2)));
                     var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
                     var distanceKm = c * radiusKm;
 

@@ -245,8 +245,10 @@ namespace EddiNavigationMonitor
                 }
 
                 NavBookmark navBookmark = new NavBookmark(currentSystem.systemname, currentSystem.systemAddress, currentSystem.x, currentSystem.y, currentSystem.z,
-                    navigationMonitor().currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby);
-                navBookmark.visitLog = currentSystem.visitLog;
+                    navigationMonitor().currentStatus?.bodyname, poi, isStation, latitude, longitude, nearby)
+                {
+                    visitLog = currentSystem.visitLog
+                };
                 navigationMonitor().Bookmarks.Add(navBookmark);
                 navigationMonitor().WriteNavConfig();
                 EDDI.Instance.enqueueEvent(new BookmarkDetailsEvent(DateTime.UtcNow, "location", navBookmark));

@@ -378,7 +378,7 @@ namespace EddiJournalMonitor
                                     // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
-                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
@@ -4349,7 +4349,7 @@ namespace EddiJournalMonitor
                                     bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
-                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the carrier jump cooldown completes
                                     if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
@@ -4402,7 +4402,7 @@ namespace EddiJournalMonitor
                                         // These may be cancelled via the cancellation token source above.
 
                                         // Jumps seem to be scheduled for 10 seconds after the minute, between 15:10 and 16:10 after the request
-                                        int varSeconds = (60 + 10) - timestamp.Second;
+                                        int varSeconds = 60 + 10 - timestamp.Second;
                                         var tasks = new List<Task>
                                         {
                                             Task.Run(async () =>
@@ -4835,7 +4835,7 @@ namespace EddiJournalMonitor
                             case "CargoTransfer": // Could use for cargo transfers between ship and fleet carrier; the `Cargo` event already keeps ship and SRV cargo up to date.
                             case "CarrierModulePack": 
                             case "CarrierShipPack":
-                            case "ClearImpound":
+                            case "ClearImpound": // Sample: { "timestamp":"2022-10-20T18:01:17Z", "event":"ClearImpound", "ShipType":"asp", "ShipType_Localised":"Asp Explorer", "ShipID":34, "ShipMarketID":3705689344, "MarketID":3705689344 }
                             case "CreateSuitLoadout": 
                             case "DeleteSuitLoadout": 
                             case "LoadoutEquipModule":

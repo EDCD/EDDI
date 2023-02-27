@@ -59,8 +59,10 @@ namespace EddiNavigationService
                         var z = coordinates[2]?.ToObject<decimal>();
 
                         var poiBookmark = new NavBookmark(systemName, systemAddress, x, y, z, "", poiName, false, null,
-                            null, false);
-                        poiBookmark.descriptionMarkdown = obj["descriptionMardown"].ToString();
+                            null, false)
+                        {
+                            descriptionMarkdown = obj["descriptionMardown"].ToString()
+                        };
 
                         if (obj["source"].ToString() == "GEC")
                         {

@@ -9,7 +9,7 @@ namespace UnitTests
     [TestClass]
     public class StatusMonitorTests : TestBase
     {
-        StatusService statusService = new StatusService();
+        readonly StatusService statusService = new StatusService();
         
         [TestInitialize]
         public void start()

@@ -23,7 +23,7 @@ namespace UnitTests
             MakeSafe();
         }
 
-        class MockStarService : StarSystemRepository
+        class MockStarService : IStarSystemRepository
         {
             public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
             {

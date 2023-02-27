@@ -50,7 +50,7 @@
     <Compile Include="DataProviderService.cs" />
     <Compile Include="StarSystemCache.cs" />
     <Compile Include="StarSystemSqLiteRepository.cs" />
-    <Compile Include="StarSystemRepository.cs" />
+    <Compile Include="IStarSystemRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlLiteBaseRepository.cs" />
   </ItemGroup>

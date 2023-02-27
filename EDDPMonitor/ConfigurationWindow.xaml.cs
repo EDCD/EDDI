@@ -77,8 +77,7 @@ namespace EddiEddpMonitor
 
         private void eddpAddWatch(object sender, RoutedEventArgs e)
         {
-            BgsWatch bgsWatch = new BgsWatch();
-            bgsWatch.Name = Properties.EddpResources.new_watch;
+            BgsWatch bgsWatch = new BgsWatch { Name = Properties.EddpResources.new_watch };
 
             configuration.watches.Add(bgsWatch);
             updateWatchesConfiguration();

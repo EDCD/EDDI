@@ -61,9 +61,8 @@ namespace EddiShipMonitor
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
             ship.health = 100;
-            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             string nameToSpeak = ship.phoneticname;
-            string message = String.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
+            string message = string.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
             SpeechService.Instance.Say(ship, message, 0);
         }
 

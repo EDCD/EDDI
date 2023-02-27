@@ -1,11 +1,11 @@
-﻿using EddiCore;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiSpanshService;
 using JetBrains.Annotations;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 

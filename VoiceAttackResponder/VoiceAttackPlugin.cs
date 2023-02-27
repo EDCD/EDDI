@@ -397,7 +397,7 @@ namespace EddiVoiceAttackResponder
                         InvokeEDShipyard(ref vaProxy);
                         break;
                     case "profile":
-                        InvokeUpdateProfile(ref vaProxy);
+                        InvokeUpdateProfile();
                         break;
                     case "say":
                         InvokeSay(ref vaProxy);
@@ -597,7 +597,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Force-update EDDI's information</summary>
-        private static void InvokeUpdateProfile(ref dynamic vaProxy)
+        private static void InvokeUpdateProfile()
         {
             EDDI.Instance.refreshProfile(true);
         }

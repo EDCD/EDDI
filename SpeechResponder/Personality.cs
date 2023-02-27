@@ -118,7 +118,7 @@ namespace EddiSpeechResponder
         private static readonly string DEFAULT_PATH = new DirectoryInfo(DIRECTORYPATH).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
         private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
 
-        private static List<string> upgradedPersonalities = new List<string>();
+        private static readonly List<string> upgradedPersonalities = new List<string>();
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {

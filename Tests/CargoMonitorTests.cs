@@ -14,7 +14,7 @@ namespace UnitTests
     [TestClass]
     public class CargoMonitorTests : TestBase
     {
-        CargoMonitor cargoMonitor = new CargoMonitor(new CargoMonitorConfiguration());
+        readonly CargoMonitor cargoMonitor = new CargoMonitor(new CargoMonitorConfiguration());
         Cargo cargo;
         string line;
         List<Event> events;

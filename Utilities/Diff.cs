@@ -422,7 +422,7 @@ namespace Utilities
             int DownK = LowerA - LowerB; // the k-line to start the forward search
             int UpK = UpperA - UpperB; // the k-line to start the reverse search
 
-            int Delta = (UpperA - LowerA) - (UpperB - LowerB);
+            int Delta = UpperA - LowerA - (UpperB - LowerB);
             bool oddDelta = (Delta & 1) != 0;
 
             // The vectors in the publication accepts negative indexes. the vectors implemented here are 0-based

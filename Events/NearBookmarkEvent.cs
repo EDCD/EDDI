@@ -42,7 +42,7 @@ namespace EddiEvents
         public bool landable => bookmark?.landable ?? false;
 
         // Variables below are not intended to be user facing
-        private NavBookmark bookmark;
+        private readonly NavBookmark bookmark;
 
         public NearBookmarkEvent(DateTime timestamp, bool approachingBookmark, NavBookmark bookmark) : base(timestamp, NAME)
         {

@@ -14,13 +14,13 @@ namespace UnitTests
     [TestClass]
     public class CrimeMonitorTests : TestBase
     {
-        CrimeMonitor crimeMonitor = new CrimeMonitor();
+        readonly CrimeMonitor crimeMonitor = new CrimeMonitor();
         FactionRecord record;
         FactionReport report;
         string line;
         List<Event> events;
 
-        string crimeConfigJson = @"{
+        readonly string crimeConfigJson = @"{
             ""criminalrecord"": [{
                 ""faction"": ""Calennero State Industries"",
                 ""allegiance"": ""Empire"",

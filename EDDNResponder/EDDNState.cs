@@ -11,7 +11,7 @@ namespace EddiEddnResponder
 
         public readonly PersonalDataStripper PersonalData;
 
-        public EDDNState(StarSystemRepository starSystemRepository)
+        public EDDNState(IStarSystemRepository starSystemRepository)
         {
             GameVersion = new GameVersionAugmenter();
             Location = new LocationAugmenter(starSystemRepository);

@@ -29,12 +29,12 @@ namespace EddiEddnResponder.Toolkit
         public int? journalBodyId { get; private set; }
         public string statusBodyName { get; private set; }
 
-        public LocationAugmenter(StarSystemRepository starSystemRepository)
+        public LocationAugmenter(IStarSystemRepository starSystemRepository)
         {
             StarSystemRepository = starSystemRepository;
         }
 
-        internal StarSystemRepository StarSystemRepository;
+        internal IStarSystemRepository StarSystemRepository;
 
         public bool invalidState { get; private set; } // Are we in an invalid state?
 

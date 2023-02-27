@@ -236,7 +236,7 @@ namespace Utilities
     public class MetaVariable
     {
         /// <summary> The full path to access the key </summary>
-        public List<string> keysPath { get; }
+        public List<string> keysPath { get; set; }
 
         /// <summary> The variable's type </summary>
         public Type type { get; }

@@ -16,7 +16,7 @@ namespace UnitTests
             MakeSafe();
         }
 
-        string data = @"{
+        readonly string data = @"{
   ""commander"": {
                 ""id"": 123456,
     ""name"": ""Testy"",

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EddiDataProviderService
 {
-    public interface StarSystemRepository
+    public interface IStarSystemRepository
     {
         StarSystem GetStarSystem(string name, bool refreshIfOutdated = true);
         StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true);

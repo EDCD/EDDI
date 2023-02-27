@@ -12,7 +12,7 @@ using Utilities;
 
 namespace EddiDataProviderService
 {
-    public class StarSystemSqLiteRepository : SqLiteBaseRepository, StarSystemRepository
+    public class StarSystemSqLiteRepository : SqLiteBaseRepository, IStarSystemRepository
     {
         private const string TABLE_GET_SCHEMA_VERSION_SQL = @"PRAGMA user_version;";
         private const string TABLE_SET_SCHEMA_VERSION_SQL = @"PRAGMA user_version = ";
@@ -102,7 +102,7 @@ namespace EddiDataProviderService
         private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
         private static StarSystemSqLiteRepository instance;
-        private StarSystemCache starSystemCache;
+        private readonly StarSystemCache starSystemCache;
 
         private StarSystemSqLiteRepository(IEdsmService edsmService)
         {
@@ -324,11 +324,14 @@ namespace EddiDataProviderService
                 // Visits should sync from EDSM, but in case there is a problem with the connection we will also seed back in our old star system visit data
                 if (visitLogObj is List<object> oldVisitLog)
                 {
-                    foreach (DateTime visit in oldVisitLog)
+                    foreach (var obj in oldVisitLog)
                     {
-                        // The SortedSet<T> class does not accept duplicate elements so we can safely add timestamps which may be duplicates of visits already reported from EDSM.
-                        // If an item is already in the set, processing continues and no exception is thrown.
-                        updatedSystem.visitLog.Add(visit);
+                        if ( obj is DateTime visit )
+                        {
+                            // The SortedSet<T> class does not accept duplicate elements so we can safely add timestamps which may be duplicates of visits already reported from EDSM.
+                            // If an item is already in the set, processing continues and no exception is thrown.
+                            updatedSystem.visitLog.Add(visit);                            
+                        }
                     }
                 }
             }
@@ -591,7 +594,7 @@ namespace EddiDataProviderService
             foreach (StarSystem system in starSystems)
             {
                 DatabaseStarSystem dbSystem = dbSystems.FirstOrDefault(s =>
-                    s.systemAddress != null && s.systemAddress == system.systemAddress ||
+                    (s.systemAddress != null && s.systemAddress == system.systemAddress) ||
                     s.systemName == system.systemname);
 
                 if (dbSystem?.systemJson is null ||

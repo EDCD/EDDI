@@ -46,7 +46,7 @@ namespace EddiEddnResponder
         public EDDNResponder() : this(StarSystemSqLiteRepository.Instance)
         { }
 
-        public EDDNResponder(StarSystemRepository starSystemRepository, bool unitTesting = false)
+        public EDDNResponder(IStarSystemRepository starSystemRepository, bool unitTesting = false)
         {
             EDDNSender.unitTesting = unitTesting;
 

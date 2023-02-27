@@ -27,7 +27,6 @@ namespace EddiEvents
         {
             string getRankType (object ratingObj)
             {
-                var temp = ratingObj.GetType();
                 return ratingObj
                     .GetType()
                     .Name

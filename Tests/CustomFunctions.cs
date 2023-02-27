@@ -1,5 +1,4 @@
-﻿using Cottle;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiSpeechResponder;
 using EddiSpeechResponder.CustomFunctions;
 using EddiSpeechResponder.Service;

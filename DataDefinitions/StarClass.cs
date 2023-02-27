@@ -211,7 +211,7 @@ namespace EddiDataDefinitions
 
         public static decimal temperature(decimal luminosity, decimal radius)
         {
-            return (decimal)Math.Pow(((double)luminosity * Constants.solLuminosity) /
+            return (decimal)Math.Pow((double)luminosity * Constants.solLuminosity /
                 (4 * Math.PI * Math.Pow((double)radius, 2) * Constants.stefanBoltzmann), 0.25);
         }
 
@@ -221,7 +221,7 @@ namespace EddiDataDefinitions
             double top = Math.Pow(stellarRadiusKilometers * 1000, 2.0) * Math.Pow(stellarTemperatureKelvin, 4.0);
             double bottom = 4.0 * Math.Pow(targetTempKelvin, 4.0);
             double distanceMeters = Math.Pow(top / bottom, 0.5);
-            double distancels = (distanceMeters) / Constants.lightSpeedMetersPerSecond;
+            double distancels = distanceMeters / Constants.lightSpeedMetersPerSecond;
             return Convert.ToDecimal(distancels);
         }
     }

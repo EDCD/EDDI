@@ -32,7 +32,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSqlRepositoryPresent()
         {
-            StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
+            IStarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
             StarSystem DBData = starSystemRepository.GetOrFetchStarSystem("Sol", true);
             Assert.IsNotNull(DBData);
             Assert.AreEqual("Sol", DBData.systemname);
@@ -41,7 +41,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSqlRepositoryMissing()
         {
-            StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
+            IStarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
             StarSystem DBData = starSystemRepository.GetStarSystem("Not here");
             Assert.IsNull(DBData);
         }
@@ -50,7 +50,7 @@ namespace UnitTests
         public void TestVolcanismConversion()
         {
             // Fetch a star system with various types of volcanism
-            //StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
+            //IStarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
             //StarSystem sol = starSystemRepository.GetOrFetchStarSystem("Sol", true);
             //Assert.IsNotNull(sol);
             var sol = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem6);

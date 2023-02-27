@@ -117,7 +117,7 @@ namespace EddiEvents
             string carrierName, StationModel carrierType, long? carrierId, List<StationService> stationServices,
             Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy systemEconomy, Economy systemEconomy2, SecurityLevel systemSecurity, long? systemPopulation, 
-            Power powerplayPower, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
+            Power powerplayPower, PowerplayState powerplayState) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

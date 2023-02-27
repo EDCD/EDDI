@@ -40,6 +40,7 @@ namespace EddiSpeechResponder.AvalonEdit
 
         private static void AddHighlightWords ( XshdSyntaxDefinition xshd, string ruleSetName, IEnumerable<string> words )
         {
+            if ( words is null ) { return; }
             var ruleSet = xshd.Elements.OfType<XshdRuleSet>().First( o => string.Equals(o.Name, ruleSetName, StringComparison.InvariantCultureIgnoreCase));
             var newKeyWords = new XshdKeywords { ColorReference = new XshdReference<XshdColor>( null, ruleSetName ) };
             foreach ( var w in words )

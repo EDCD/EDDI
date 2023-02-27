@@ -78,7 +78,7 @@ namespace Utilities
                 // Calculate straight path distance using Law of Haversines
                 double projectedDeltaLat = Math.Log(Math.Tan((Math.PI / 4) + (lat2 / 2)) / Math.Tan((Math.PI / 4) + (lat1 / 2)));
                 double q = Math.Abs(projectedDeltaLat) > 10E-12 ? deltaLat / projectedDeltaLat : Math.Cos(lat1); // // E-W course becomes ill-conditioned with 0/0
-                var distanceKm = (decimal)Math.Sqrt((square(deltaLat)) + (square(q) * square(deltaLong))) * planetRadiusMeters / 1000;
+                var distanceKm = (decimal)Math.Sqrt(square(deltaLat) + (square(q) * square(deltaLong))) * planetRadiusMeters / 1000;
                 return distanceKm;
             }
             else

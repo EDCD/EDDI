@@ -16,7 +16,7 @@ namespace UnitTests
 
         public Dictionary<string, object> vaVars = new Dictionary<string, object>();
 
-        public void WriteToLog(string msg, string color = null)
+        public void WriteToLog(string msg)
         {
             vaLog.Add(msg);
         }
@@ -56,7 +56,7 @@ namespace UnitTests
             MakeSafe();
         }
 
-        private MockVAProxy vaProxy = new MockVAProxy();
+        private readonly MockVAProxy vaProxy = new MockVAProxy();
 
         [TestMethod]
         public void TestVAExplorationDataSoldEvent()

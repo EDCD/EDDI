@@ -2173,7 +2173,7 @@ namespace EddiCore
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new market data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.system, theEvent.station, theEvent.marketId, new HashSet<string> { "market" }) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, new HashSet<string> { "market" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -2216,7 +2216,7 @@ namespace EddiCore
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new outfitting data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.system, theEvent.station, theEvent.marketId, new HashSet<string> { "outfitting" }) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, new HashSet<string> { "outfitting" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -2258,7 +2258,7 @@ namespace EddiCore
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new shipyard data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.system, theEvent.station, theEvent.marketId, new HashSet<string> { "shipyard" }) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, new HashSet<string> { "shipyard" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -3331,12 +3331,7 @@ namespace EddiCore
                         {
                             updates.Add("shipyard");
                         }
-                        var @event = new MarketInformationUpdatedEvent(
-                            profile.timestamp,
-                            profile.currentStarSystem,
-                            profileStation.name,
-                            profileStation.marketId,
-                            updates);
+                        var @event = new MarketInformationUpdatedEvent( profile.timestamp, updates);
                         enqueueEvent(@event);
 
                         // We have the required station information

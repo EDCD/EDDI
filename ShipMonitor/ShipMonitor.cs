@@ -184,21 +184,21 @@ namespace EddiShipMonitor
             {
                 handleShipRefuelledEvent(shipRefuelledEvent);
             }
-            else if (@event is ShipAfmuRepairedEvent shipAfmuRepairedEvent)
+            else if (@event is ShipAfmuRepairedEvent)
             {
-                handleShipAFMURepairedEvent(shipAfmuRepairedEvent);
+                handleShipAFMURepairedEvent();
             }
             else if (@event is ShipRepairedEvent shipRepairedEvent)
             {
                 handleShipRepairedEvent(shipRepairedEvent);
             }
-            else if (@event is ShipRepairDroneEvent shipRepairDroneEvent)
+            else if (@event is ShipRepairDroneEvent)
             {
-                handleShipRepairDroneEvent(shipRepairDroneEvent);
+                handleShipRepairDroneEvent();
             }
-            else if (@event is ShipRestockedEvent shipRestockedEvent)
+            else if (@event is ShipRestockedEvent)
             {
-                handleShipRestockedEvent(shipRestockedEvent);
+                handleShipRestockedEvent();
             }
             else if (@event is ModulePurchasedEvent modulePurchasedEvent)
             {
@@ -212,9 +212,9 @@ namespace EddiShipMonitor
             {
                 handleModuleSoldEvent(moduleSoldEvent);
             }
-            else if (@event is ModuleSoldFromStorageEvent moduleSoldFromStorageEvent)
+            else if (@event is ModuleSoldFromStorageEvent)
             {
-                handleModuleSoldFromStorageEvent(moduleSoldFromStorageEvent);
+                handleModuleSoldFromStorageEvent();
             }
             else if (@event is ModuleStoredEvent moduleStoredEvent)
             {
@@ -228,9 +228,9 @@ namespace EddiShipMonitor
             {
                 handleModuleSwappedEvent(moduleSwappedEvent);
             }
-            else if (@event is ModuleTransferEvent moduleTransferEvent)
+            else if (@event is ModuleTransferEvent)
             {
-                handleModuleTransferEvent(moduleTransferEvent);
+                handleModuleTransferEvent();
             }
             else if (@event is ModuleInfoEvent moduleInfoEvent)
             {
@@ -759,7 +759,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleShipAFMURepairedEvent(ShipAfmuRepairedEvent @event)
+        private void handleShipAFMURepairedEvent()
         {
             // This doesn't give us enough information at present to do anything useful
         }
@@ -774,7 +774,7 @@ namespace EddiShipMonitor
             if (!@event.fromLoad) { writeShips(); }
         }
 
-        private void handleShipRepairDroneEvent(ShipRepairDroneEvent @event)
+        private void handleShipRepairDroneEvent()
         {
             // This event does not report the percentage of hull repaired.
             // It reports the integrity repaired (which we can't use since we do not calculate integrity).
@@ -793,7 +793,7 @@ namespace EddiShipMonitor
             // We use status to track current fuel level so we won't update the ship fuel level here
         }
 
-        private void handleShipRestockedEvent(ShipRestockedEvent @event)
+        private void handleShipRestockedEvent()
         {
             // TODO
         }
@@ -834,7 +834,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleModuleSoldFromStorageEvent(ModuleSoldFromStorageEvent @event)
+        private void handleModuleSoldFromStorageEvent()
         {
             // We don't do anything here as the ship object is unaffected
         }
@@ -882,15 +882,13 @@ namespace EddiShipMonitor
                     Hardpoint fromHardpoint = ship.hardpoints.FirstOrDefault(h => h.name == fromSlot);
                     if (fromHardpoint is null)
                     {
-                        fromHardpoint = new Hardpoint() { name = fromSlot };
-                        fromHardpoint.size = getHardpointSize(fromSlot);
+                        fromHardpoint = new Hardpoint { name = fromSlot, size = getHardpointSize(fromSlot) };
                         ship.hardpoints.Add(fromHardpoint);
                     }
                     Hardpoint toHardpoint = ship.hardpoints.FirstOrDefault(h => h.name == toSlot);
                     if (toHardpoint is null)
                     {
-                        toHardpoint = new Hardpoint() { name = toSlot };
-                        toHardpoint.size = getHardpointSize(toSlot);
+                        toHardpoint = new Hardpoint { name = toSlot, size = getHardpointSize(toSlot) };
                         ship.hardpoints.Add(toHardpoint);
                     }
                     sortHardpoints(ship);
@@ -928,7 +926,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleModuleTransferEvent(ModuleTransferEvent @event)
+        private void handleModuleTransferEvent()
         {
             // We don't do anything here as the ship object is unaffected
         }
@@ -1527,8 +1525,7 @@ namespace EddiShipMonitor
                         Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
                         if (hardpoint is null)
                         {
-                            hardpoint = new Hardpoint() { name = slot };
-                            hardpoint.size = getHardpointSize(slot);
+                            hardpoint = new Hardpoint { name = slot, size = getHardpointSize(slot) };
                             ship.hardpoints.Add(hardpoint);
                         }
                         hardpoint.module = module;
@@ -1540,8 +1537,7 @@ namespace EddiShipMonitor
                         Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
                         if (compartment is null)
                         {
-                            compartment = new Compartment() { name = slot };
-                            compartment.size = getCompartmentSize(slot, ship.militarysize);
+                            compartment = new Compartment { name = slot, size = getCompartmentSize(slot, ship.militarysize) };
                             ship.compartments.Add(compartment);
                         }
                         compartment.module = module;

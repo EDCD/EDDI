@@ -4,7 +4,6 @@ using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiStarMapService;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -29,7 +28,7 @@ namespace EddiMissionMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
-        private List<Mission> communityGoalHolder = new List<Mission>();
+        private readonly List<Mission> communityGoalHolder = new List<Mission>();
 
         private DateTime updateDat;
         public int? missionWarning;
@@ -57,10 +56,7 @@ namespace EddiMissionMonitor
             return true;
         }
 
-        public MissionMonitor() : this(null)
-        { }
-
-        public MissionMonitor(IEdsmService edsmService)
+        public MissionMonitor()
         {
             missions = new ObservableCollection<Mission>();
             BindingOperations.CollectionRegistering += Missions_CollectionRegistering;
@@ -499,7 +495,7 @@ namespace EddiMissionMonitor
                 {
                     mission = missions.FirstOrDefault(m => m.missionid == goal.cgid);
                 }
-                if (mission == null && (!goal.iscomplete || goal.iscomplete && goal.contribution > 0))
+                if (mission == null && (!goal.iscomplete || (goal.iscomplete && goal.contribution > 0)))
                 {
                     mission = new Mission(goal.cgid, "MISSION_CommunityGoal", goal.expiryDateTime, MissionStatus.Active);
                     AddMission(mission);

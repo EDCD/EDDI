@@ -16,7 +16,7 @@ namespace EddiEvents
 
         /// <summary>The timestamp recorded for this event must be generated from game or server data.
         /// System time (e.g. DateTime.UtcNow) cannot be trusted for reporting to EDDN and may not be used.</summary>
-        public MarketInformationUpdatedEvent(DateTime timestamp, string starSystem, string stationName, long? marketId, HashSet<string> updates) : base(timestamp, NAME)
+        public MarketInformationUpdatedEvent(DateTime timestamp, HashSet<string> updates) : base(timestamp, NAME)
         {
             this.updates = updates;
         }

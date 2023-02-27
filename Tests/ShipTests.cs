@@ -1,5 +1,4 @@
-﻿using EddiConfigService;
-using EddiConfigService.Configurations;
+﻿using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
