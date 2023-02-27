@@ -12,6 +12,7 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechService;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace EddiSpeechResponder.Service
         internal readonly BgsService bgsService;
 
         // The file to log speech
-        public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
+        [UsedImplicitly] public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
         public ScriptResolver(Dictionary<string, Script> scripts)
         {
@@ -51,7 +52,7 @@ namespace EddiSpeechResponder.Service
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromName(string name, Dictionary<string, Cottle.Value> vars, bool isTopLevelScript)
+        public string resolveFromName(string name, Dictionary<string, object> vars, bool isTopLevelScript)
         {
             BuiltinStore store = buildStore(vars);
             return resolveFromName(name, store, isTopLevelScript);
@@ -78,7 +79,7 @@ namespace EddiSpeechResponder.Service
         /// <summary> From the default dictionary of variable values in the default store </summary>
         public string resolveFromValue(string scriptValue, bool isTopLevelScript)
         {
-            Dictionary<string, Value> vars = createVariables();
+            var vars = CompileVariables();
             BuiltinStore store = buildStore(vars);
             return resolveFromValue(scriptValue, store, isTopLevelScript);
         }
@@ -150,10 +151,10 @@ namespace EddiSpeechResponder.Service
                     .Replace("}", "closing curly bracket");
         }
 
-        // Create Cottle variables from the EDDI information
-        protected internal Dictionary<string, Cottle.Value> createVariables(Event theEvent = null)
+        // Compile variables from the EDDI information
+        protected internal Dictionary<string, object> CompileVariables(Event theEvent = null)
         {
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
+            var dict = new Dictionary<string, object>
             {
                 ["capi_active"] = CompanionAppService.Instance?.active ?? false,
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
@@ -165,85 +166,85 @@ namespace EddiSpeechResponder.Service
                 ["vehicle"] = EDDI.Instance.Vehicle,
                 ["icao_active"] = SpeechService.Instance.Configuration.EnableIcao,
                 ["ipa_active"] = !SpeechService.Instance.Configuration.DisableIpa,
-            };
 
-            // Boolean constants
-            dict["true"] = true;
-            dict["false"] = false;
+                // Boolean constants
+                ["true"] = true,
+                ["false"] = false
+            };
 
             if (EDDI.Instance.Cmdr != null)
             {
-                dict["cmdr"] = new ReflectionValue(EDDI.Instance.Cmdr);
+                dict["cmdr"] = EDDI.Instance.Cmdr;
             }
 
             if (EDDI.Instance.HomeStarSystem != null)
             {
-                dict["homesystem"] = new ReflectionValue(EDDI.Instance.HomeStarSystem);
+                dict["homesystem"] = EDDI.Instance.HomeStarSystem;
             }
 
             if (EDDI.Instance.HomeStation != null)
             {
-                dict["homestation"] = new ReflectionValue(EDDI.Instance.HomeStation);
+                dict["homestation"] = EDDI.Instance.HomeStation;
             }
 
             if (EDDI.Instance.SquadronStarSystem != null)
             {
-                dict["squadronsystem"] = new ReflectionValue(EDDI.Instance.SquadronStarSystem);
+                dict["squadronsystem"] = EDDI.Instance.SquadronStarSystem;
             }
 
             if (EDDI.Instance.CurrentStarSystem != null)
             {
-                dict["system"] = new ReflectionValue(EDDI.Instance.CurrentStarSystem);
+                dict["system"] = EDDI.Instance.CurrentStarSystem;
             }
 
             if (EDDI.Instance.LastStarSystem != null)
             {
-                dict["lastsystem"] = new ReflectionValue(EDDI.Instance.LastStarSystem);
+                dict["lastsystem"] = EDDI.Instance.LastStarSystem;
             }
 
             if (EDDI.Instance.NextStarSystem != null)
             {
-                dict["nextsystem"] = new ReflectionValue(EDDI.Instance.NextStarSystem);
+                dict["nextsystem"] = EDDI.Instance.NextStarSystem;
             }
 
             if (EDDI.Instance.DestinationStarSystem != null)
             {
-                dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
+                dict["destinationsystem"] = EDDI.Instance.DestinationStarSystem;
             }
 
             if (NavigationService.Instance.SearchStarSystem != null)
             {
-                dict["searchsystem"] = new ReflectionValue(NavigationService.Instance.SearchStarSystem);
+                dict["searchsystem"] = NavigationService.Instance.SearchStarSystem;
             }
 
             if (NavigationService.Instance.SearchStation != null)
             {
-                dict["searchstation"] = new ReflectionValue(NavigationService.Instance.SearchStation);
+                dict["searchstation"] = NavigationService.Instance.SearchStation;
             }
             
             if (EDDI.Instance.CurrentStation != null)
             {
-                dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
+                dict["station"] = EDDI.Instance.CurrentStation;
             }
 
             if (EDDI.Instance.CurrentStellarBody != null)
             {
-                dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
+                dict["body"] = EDDI.Instance.CurrentStellarBody;
             }
 
             if (EDDI.Instance.FleetCarrier != null)
             {
-                dict["carrier"] = new ReflectionValue(EDDI.Instance.FleetCarrier);
+                dict["carrier"] = EDDI.Instance.FleetCarrier;
             }
 
             if (theEvent != null)
             {
-                dict["event"] = new ReflectionValue(theEvent);
+                dict["event"] = theEvent;
             }
 
             if (EDDI.Instance.State != null)
             {
-                dict["state"] = ScriptResolver.buildState();
+                dict["state"] = EDDI.Instance.State;
                 Logging.Debug("State is: ", EDDI.Instance.State);
             }
 
@@ -273,7 +274,7 @@ namespace EddiSpeechResponder.Service
         /// <summary>
         /// Build a store from a list of variables
         /// </summary>
-        public BuiltinStore buildStore(Dictionary<string, Cottle.Value> vars = null)
+        public BuiltinStore buildStore(Dictionary<string, object> vars = null)
         {
             BuiltinStore store = new BuiltinStore();
             
@@ -292,9 +293,9 @@ namespace EddiSpeechResponder.Service
             // Variables
             if (vars != null)
             {
-                foreach (KeyValuePair<string, Cottle.Value> entry in vars)
+                foreach (var entry in vars)
                 {
-                    store[entry.Key] = entry.Value;
+                    store[entry.Key] = new ReflectionValue(entry.Value);
                 }
             }
 
@@ -308,7 +309,7 @@ namespace EddiSpeechResponder.Service
                 return null;
             }
 
-            Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
+            var state = new Dictionary<Cottle.Value, Cottle.Value>();
             foreach (string key in EDDI.Instance.State.Keys)
             {
                 object value = EDDI.Instance.State[key];

@@ -1,18 +1,20 @@
 ﻿using EddiConfigService;
 using EddiCore;
+using EddiEvents;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
+using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -31,20 +33,72 @@ namespace EddiSpeechResponder
             }
         }
 
-        public List<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
+        public IEnumerable<int?> Priorities => SpeechService.Instance.speechQueue.priorities;
 
         private SpeechResponder speechResponder { get; }
 
         private ICollectionView scriptsView;
         private static string filterTxt;
 
-        // we will use this in future to support custom user color schemes
-        [NotNull] private AvalonEdit.CottleHighlighting cottleHighlighting = new AvalonEdit.CottleHighlighting();
+        private static IEnumerable<string> customFunctions { get; set; }
+        private static IEnumerable<MetaVariable> standardMetaVariables { get; set; }
 
+        private static IEnumerable<string> GetCustomFunctions (ScriptResolver resolver = null)
+        {
+            if ( resolver == null ) { return new List<string>(); }
+
+            var functionsList = new List<string>();
+            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
+            foreach ( var type in assy.GetTypes()
+                         .Where( t => t.IsClass && t.GetInterface( nameof( ICustomFunction ) ) != null ) )
+            {
+                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
+                    ? Activator.CreateInstance(type) :
+                    Activator.CreateInstance(type, resolver, resolver.buildStore()));
+
+                if ( function != null )
+                {
+                    functionsList.Add( function.name );
+                }
+            }
+            return functionsList;
+        }
+
+        private IEnumerable<MetaVariable> GetMetaVariables ( string scriptName = null )
+        {
+            // Fetch our pre-loaded standard MetaVariables
+            var metaVars = new List<MetaVariable> (standardMetaVariables);
+
+            // Get any additional Event MetaVariables
+            if ( !string.IsNullOrEmpty(scriptName) )
+            {
+                var type = Events.TYPES.SingleOrDefault( t => t.Key == scriptName ).Value;
+                if ( type != null )
+                {
+                    metaVars.AddRange( new MetaVariables( type ).Results );
+                }
+            }
+
+            return metaVars;
+        }
+
+        // we may revise this in future to support custom user color schemes
+        private static AvalonEdit.CottleHighlighting GetHighlighting ( IEnumerable<MetaVariable> metaVars )
+        {
+            return new AvalonEdit.CottleHighlighting( customFunctions, metaVars
+                .SelectMany( v => v.keysPath )
+                .Where(v => !string.IsNullOrEmpty(v))
+                .Distinct()
+                .ToList() 
+            );
+        }
+        
         public ConfigurationWindow(SpeechResponder speechResponder)
         {
             if (speechResponder is null) { return; }
             this.speechResponder = speechResponder;
+            customFunctions = GetCustomFunctions(speechResponder.ScriptResolver);
+            standardMetaVariables = GetStandardVariables();
 
             InitializeComponent();
             DataContext = speechResponder;
@@ -68,12 +122,24 @@ namespace EddiSpeechResponder
                         Properties.SpeechResponder.messagebox_recoveredScript_title,
                         MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes,
                         MessageBoxOptions.DefaultDesktopOnly);
-                    if (messageBoxResult == MessageBoxResult.Yes && speechResponder?.CurrentPersonality?.Scripts != null)
+                    if (messageBoxResult == MessageBoxResult.Yes && speechResponder.CurrentPersonality?.Scripts != null)
                     {
                         OpenEditScriptWindow(recoveredScript, true);
                     }
                 }
             }), DispatcherPriority.ApplicationIdle);
+        }
+
+        private IEnumerable<MetaVariable> GetStandardVariables ()
+        {
+            // Get MetaVariables for standard object variables available from the script resolver
+            var metaVars = new HashSet<MetaVariable>();
+            var standardVars = speechResponder.ScriptResolver.CompileVariables();
+            standardVars.AsParallel().ForAll( kvp =>
+            {
+                metaVars.UnionWith( new MetaVariables( kvp.Value.GetType() ).Results );
+            });
+            return metaVars;
         }
 
         private void PersonalitiesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -106,7 +172,7 @@ namespace EddiSpeechResponder
             {
                 using (ScriptsView.DeferRefresh())
                 {
-                    ScriptsView.Filter = o => { return scriptsData_Filter(o); };
+                    ScriptsView.Filter = scriptsData_Filter;
                 }
             }
         }
@@ -153,7 +219,9 @@ namespace EddiSpeechResponder
         {
             if (speechResponder?.CurrentPersonality?.Scripts is null) { return; }
 
-            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, cottleHighlighting, isRecoveredScript);
+            var metaVars = GetMetaVariables( script.Name );
+            var highlighting = GetHighlighting( metaVars );
+            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, highlighting, isRecoveredScript);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
@@ -186,7 +254,7 @@ namespace EddiSpeechResponder
         private void viewScript(object sender, RoutedEventArgs e)
         {
             var script = getScriptFromContext(sender);
-            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(script, cottleHighlighting);
+            var viewScriptWindow = new ViewScriptWindow(script, GetHighlighting( GetMetaVariables( script.Name ) ));
             viewScriptWindow.Show();
         }
 
@@ -278,7 +346,8 @@ namespace EddiSpeechResponder
         {
             if (speechResponder?.CurrentPersonality?.Scripts is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
-            var editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, cottleHighlighting, true);
+            var highlighting = GetHighlighting( GetMetaVariables() );
+            var editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, highlighting, true);
             if (editScriptWindow.ShowDialog() == true)
             {
                 var newScript = editScriptWindow.script;
@@ -379,7 +448,7 @@ namespace EddiSpeechResponder
             using (ScriptsView.DeferRefresh())
             {
                 filterTxt = searchFilterText.Text;
-                ScriptsView.Filter = o => { return scriptsData_Filter(o); };
+                ScriptsView.Filter = scriptsData_Filter;
             }
         }
 
@@ -421,7 +490,7 @@ namespace EddiSpeechResponder
         {
             foreach (object value in values)
             {
-                if ((value is bool b) && b == false)
+                if (value is bool b && b == false)
                 {
                     return false;
                 }
