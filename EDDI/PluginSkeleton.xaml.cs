@@ -1,4 +1,5 @@
 ﻿using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiCore;
 using System.Windows;
 using System.Windows.Controls;

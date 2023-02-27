@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Utilities;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Storage for ship and shipyard information</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\shipmonitor.json")]

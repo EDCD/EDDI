@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Configuration for the EDDP monitor</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\eddpmonitor.json")]

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Storage for configuration of navigation details</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\navigationmonitor.json")]

@@ -19,7 +19,7 @@ namespace UnitTests
             MakeSafe();
         }
 
-        private string ResolveScript(string script, Dictionary<string, Value> vars = null)
+        private string ResolveScript(string script, Dictionary<string, object> vars = null)
         {
             return resolver.resolveFromValue(script, resolver.buildStore(vars), true);
         }

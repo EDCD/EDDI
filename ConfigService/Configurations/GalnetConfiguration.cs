@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Configuration for the Galnet monitor</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\galnetmonitor.json")]

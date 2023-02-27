@@ -1,4 +1,5 @@
 ﻿using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiInaraService;
 using System;
 using System.Collections;

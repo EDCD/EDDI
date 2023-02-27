@@ -1,4 +1,5 @@
 ﻿using EddiConfigService;
+using EddiConfigService.Configurations;
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serializers;

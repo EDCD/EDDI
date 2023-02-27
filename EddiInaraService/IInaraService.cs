@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+﻿using EddiConfigService.Configurations;
 using System.Collections.Generic;
 
 namespace EddiInaraService

@@ -2,6 +2,7 @@
 using EddiBgsService;
 using EddiCompanionAppService;
 using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;

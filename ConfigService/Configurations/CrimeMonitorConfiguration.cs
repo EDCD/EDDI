@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Storage for configuration of criminal record details</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\crimemonitor.json")]

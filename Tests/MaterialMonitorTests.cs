@@ -1,4 +1,5 @@
 ﻿using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;

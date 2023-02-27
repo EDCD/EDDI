@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Storage for configuration of material amounts</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\materialmonitor.json")]

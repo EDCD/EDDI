@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Windows;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Configuration for EDDI</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\eddi.json")]

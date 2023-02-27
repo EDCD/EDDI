@@ -42,23 +42,23 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CargoMonitorConfiguration.cs" />
+    <Compile Include="Configurations\CargoMonitorConfiguration.cs" />
     <Compile Include="ConfigWrite.cs" />
     <Compile Include="ConfigRead.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConfigService.cs" />
-    <Compile Include="CrimeMonitorConfiguration.cs" />
-    <Compile Include="EDDIConfiguration.cs" />
-    <Compile Include="EddpConfiguration.cs" />
-    <Compile Include="GalnetConfiguration.cs" />
-    <Compile Include="InaraConfiguration.cs" />
-    <Compile Include="MaterialMonitorConfiguration.cs" />
-    <Compile Include="MissionMonitorConfiguration.cs" />
-    <Compile Include="NavigationMonitorConfiguration.cs" />
+    <Compile Include="Configurations\CrimeMonitorConfiguration.cs" />
+    <Compile Include="Configurations\EDDIConfiguration.cs" />
+    <Compile Include="Configurations\EddpConfiguration.cs" />
+    <Compile Include="Configurations\GalnetConfiguration.cs" />
+    <Compile Include="Configurations\InaraConfiguration.cs" />
+    <Compile Include="Configurations\MaterialMonitorConfiguration.cs" />
+    <Compile Include="Configurations\MissionMonitorConfiguration.cs" />
+    <Compile Include="Configurations\NavigationMonitorConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShipMonitorConfiguration.cs" />
-    <Compile Include="SpeechResponderConfiguration.cs" />
-    <Compile Include="StarMapConfiguration.cs" />
+    <Compile Include="Configurations\ShipMonitorConfiguration.cs" />
+    <Compile Include="Configurations\SpeechResponderConfiguration.cs" />
+    <Compile Include="Configurations\StarMapConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
@@ -84,5 +84,6 @@
       <Version>4.3.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
 ﻿using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;

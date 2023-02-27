@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace EddiConfigService
+namespace EddiConfigService.Configurations
 {
     /// <summary>Storage of credentials for a single Elite: Dangerous user to access Inara</summary>
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\inara.json")]
