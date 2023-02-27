@@ -288,7 +288,7 @@ namespace EddiSpeechService
         }
 
         // Play a source
-        private void play(IWaveSource source, int priority)
+        private void play(IWaveSource source, int priority, bool useLegacySoundOut = false)
         {
             if (source == null || source.Length == 0)
             {
@@ -303,13 +303,22 @@ namespace EddiSpeechService
                 {
                     try
                     {
-                        soundOut.Initialize(source);
+                        soundOut.Initialize( source );
                     }
-                    catch (System.Runtime.InteropServices.COMException ce)
+                    catch ( System.Runtime.InteropServices.COMException ce )
                     {
-                        Logging.Warn($"Failed to speak; {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible.", ce);
-                        return;
+                        if ( soundOut is WasapiOut && !useLegacySoundOut )
+                        {
+                            Logging.Warn( $"Failed to speak; {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible. Falling back to legacy DirectSoundOut", ce );
+                            play(source, priority, true);
+                        }
+                        else
+                        {
+                            Logging.Warn( $"Failed to speak; {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible.", ce );
+                            return;
+                        }
                     }
+
                     // ReSharper disable once AccessToDisposedClosure
                     soundOut.Stopped += (s, e) => waitHandle.Set();
 
