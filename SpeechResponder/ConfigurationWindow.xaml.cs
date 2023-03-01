@@ -67,10 +67,10 @@ namespace EddiSpeechResponder
         private IEnumerable<MetaVariable> GetMetaVariables ( string scriptName = null )
         {
             // Fetch our pre-loaded standard MetaVariables
-            var metaVars = new List<MetaVariable> (standardMetaVariables);
+            var metaVars = new List<MetaVariable>( standardMetaVariables );
 
             // Get any additional Event MetaVariables
-            if ( !string.IsNullOrEmpty(scriptName) )
+            if ( !string.IsNullOrEmpty( scriptName ) )
             {
                 var type = Events.TYPES.SingleOrDefault( t => t.Key == scriptName ).Value;
                 if ( type != null )
@@ -78,10 +78,11 @@ namespace EddiSpeechResponder
                     var vars = new MetaVariables( type ).Results;
                     foreach ( var v in vars )
                     {
-                        v.keysPath = v.keysPath.Prepend ( "event" ).ToList ();
-                }
+                        v.keysPath = v.keysPath.Prepend( "event" ).ToList();
+                    }
+
                     metaVars.AddRange( vars );
-            }
+                }
             }
 
             return metaVars;
@@ -143,6 +144,7 @@ namespace EddiSpeechResponder
             var standardVars = speechResponder.ScriptResolver.CompileVariables();
             standardVars.AsParallel().ForAll( kvp =>
             {
+                if ( kvp.Value is null ) { return; }
                 var vars = new MetaVariables ( kvp.Value.GetType () ).Results;
                 foreach ( var v in vars )
                 {
@@ -235,7 +237,7 @@ namespace EddiSpeechResponder
 
             var metaVars = GetMetaVariables( script.Name ).ToList();
             var highlighting = GetHighlighting( metaVars );
-            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, highlighting, isRecoveredScript);
+            var editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, isRecoveredScript);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
@@ -362,8 +364,8 @@ namespace EddiSpeechResponder
             EDDI.Instance.SpeechResponderModalWait = true;
             var metaVars = GetMetaVariables ().ToList ();
             var highlighting = GetHighlighting( metaVars );
-            var editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, highlighting, true);
-            if (editScriptWindow.ShowDialog() == true)
+            var editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, true);
+            if ( editScriptWindow.ShowDialog() == true)
             {
                 var newScript = editScriptWindow.script;
                 speechResponder.CurrentPersonality.Scripts[newScript.Name] = newScript;

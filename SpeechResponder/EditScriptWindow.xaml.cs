@@ -1,14 +1,18 @@
 ﻿using EddiSpeechResponder.Service;
 using EddiSpeechService;
+using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Search;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
+using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -29,10 +33,14 @@ namespace EddiSpeechResponder
         private readonly DocumentHighlighter documentHighlighter;
 #pragma warning restore IDE0052 // Remove unused private members
 
+        private AvalonEdit.TextCompletionWindow completionWindow;
+
         private readonly AvalonEdit.FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
-        public EditScriptWindow(Script script, Dictionary<string, Script> scripts, [NotNull]AvalonEdit.CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript)
+        private readonly IEnumerable<MetaVariable> metaVars;
+
+        public EditScriptWindow ( Script script, Dictionary<string, Script> scripts, [NotNull][ItemNotNull] IEnumerable<MetaVariable> metaVars, [NotNull] AvalonEdit.CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript )
         {
             InitializeComponent();
             DataContext = this;
@@ -40,11 +48,12 @@ namespace EddiSpeechResponder
             this.isNewOrRecoveredScript = isNewOrRecoveredScript;
             this._scripts = scripts;
             this.script = script;
+            this.metaVars = metaVars;
 
-            if (script == null)
+            if ( script == null )
             {
                 // This is a new script
-                editorScript = new Script("New script", null, false, null);
+                editorScript = new Script( "New script", null, false, null );
             }
             else
             {
@@ -53,7 +62,7 @@ namespace EddiSpeechResponder
             }
 
             // See if there is the default value for this script is empty
-            if (string.IsNullOrWhiteSpace(editorScript.defaultValue))
+            if ( string.IsNullOrWhiteSpace( editorScript.defaultValue ) )
             {
                 // No default; disable reset and show
                 showDiffButton.IsEnabled = false;
@@ -64,21 +73,25 @@ namespace EddiSpeechResponder
             scriptView.Text = editorScript.Value;
 
             // Set up our Script Recovery Service
-            ScriptRecoveryService = new ScriptRecoveryService(this);
+            ScriptRecoveryService = new ScriptRecoveryService( this );
             ScriptRecoveryService.BeginScriptRecovery();
             scriptView.TextChanged += ScriptView_TextChanged;
 
             // Implement collapsible sections (called `Foldings`)
-            foldingStrategy = new AvalonEdit.FoldingStrategy('{', '}');
-            foldingStrategy.CreateNewFoldings(scriptView.Document);
+            foldingStrategy = new AvalonEdit.FoldingStrategy( '{', '}' );
+            foldingStrategy.CreateNewFoldings( scriptView.Document );
             InitializeOrUpdateFolding();
             scriptView.Options.AllowScrollBelowDocument = true;
 
             // Set up our search window
-            SearchPanel.Install(scriptView);
+            SearchPanel.Install( scriptView );
 
             // Set up our Cottle highlighter
-            documentHighlighter = new DocumentHighlighter(scriptView.Document, cottleHighlighting.Definition);
+            documentHighlighter = new DocumentHighlighter( scriptView.Document, cottleHighlighting.Definition );
+
+            // Implement text completion
+            scriptView.TextArea.TextEntering += ScriptView_TextArea_TextEntering;
+            scriptView.TextArea.TextEntered += ScriptView_TextArea_TextEntered;
 
             // Monitor window size and position
             WindowStartupLocation = WindowStartupLocation.Manual;
@@ -90,25 +103,25 @@ namespace EddiSpeechResponder
             StateChanged += EditScriptWindow_SaveWindowStatePosition;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded ( object sender, RoutedEventArgs e )
         {
             // Don't allow the window to start minimized
-            if (WindowState == WindowState.Minimized)
+            if ( WindowState == WindowState.Minimized )
             {
                 WindowState = WindowState.Normal;
                 Visibility = Visibility.Visible;
             }
         }
 
-        private void EditScriptWindow_SaveWindowStatePosition(object sender, EventArgs e)
+        private void EditScriptWindow_SaveWindowStatePosition ( object sender, EventArgs e )
         {
-            if (IsLoaded)
+            if ( IsLoaded )
             {
                 Properties.Settings.Default.Save();
             }
         }
 
-        private void EditScriptWindow_SourceInitialized(object sender, EventArgs e)
+        private void EditScriptWindow_SourceInitialized ( object sender, EventArgs e )
         {
             // Validate window position on opening
             int designedHeight = (int)MinHeight;
@@ -118,22 +131,22 @@ namespace EddiSpeechResponder
             // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
             var dpiScale = VisualTreeHelper.GetDpi(this);
             var windowPosition = new Rect(new Point(Properties.Settings.Default.Left, Properties.Settings.Default.Top), new Size(Properties.Settings.Default.Width, Properties.Settings.Default.Height));
-            if (windowPosition == Rect.Empty || !isWindowValid(windowPosition, dpiScale))
+            if ( windowPosition == Rect.Empty || !isWindowValid( windowPosition, dpiScale ) )
             {
                 // Revert to default values if the prior size and position are no longer valid
-                Left = centerWindow(applyDpiScale(Screen.PrimaryScreen.Bounds.Width, dpiScale.DpiScaleX),
-                    designedWidth);
-                Top = centerWindow(applyDpiScale(Screen.PrimaryScreen.Bounds.Height, dpiScale.DpiScaleY),
-                    designedHeight);
-                Width = Math.Min(Screen.PrimaryScreen.Bounds.Width / dpiScale.DpiScaleX, designedWidth);
-                Height = Math.Min(Screen.PrimaryScreen.Bounds.Height / dpiScale.DpiScaleY, designedHeight);
+                Left = centerWindow( applyDpiScale( Screen.PrimaryScreen.Bounds.Width, dpiScale.DpiScaleX ),
+                    designedWidth );
+                Top = centerWindow( applyDpiScale( Screen.PrimaryScreen.Bounds.Height, dpiScale.DpiScaleY ),
+                    designedHeight );
+                Width = Math.Min( Screen.PrimaryScreen.Bounds.Width / dpiScale.DpiScaleX, designedWidth );
+                Height = Math.Min( Screen.PrimaryScreen.Bounds.Height / dpiScale.DpiScaleY, designedHeight );
             }
 
             // Check detected monitors to see if the saved window size and location is valid
-            bool isWindowValid(Rect rect, DpiScale dpi)
+            bool isWindowValid ( Rect rect, DpiScale dpi )
             {
                 // Check for minimum window size
-                if ((int)rect.Width < designedWidth || (int)rect.Height < designedHeight)
+                if ( (int)rect.Width < designedWidth || (int)rect.Height < designedHeight )
                 {
                     return false;
                 }
@@ -141,53 +154,90 @@ namespace EddiSpeechResponder
                 // Check whether the rectangle is completely visible on-screen
                 bool testUpperLeft = false;
                 bool testLowerRight = false;
-                foreach (Screen screen in Screen.AllScreens)
+                foreach ( Screen screen in Screen.AllScreens )
                 {
-                    if (rect.X >= applyDpiScale(screen.Bounds.X, dpi.DpiScaleX) && rect.Y >= applyDpiScale(screen.Bounds.Y, dpi.DpiScaleY)) // The upper and left bounds fall on a valid screen
+                    if ( rect.X >= applyDpiScale( screen.Bounds.X, dpi.DpiScaleX ) && rect.Y >= applyDpiScale( screen.Bounds.Y, dpi.DpiScaleY ) ) // The upper and left bounds fall on a valid screen
                     {
                         testUpperLeft = true;
                     }
-                    if (applyDpiScale(screen.Bounds.Width, dpi.DpiScaleX) >= rect.X + rect.Width && applyDpiScale(screen.Bounds.Height, dpi.DpiScaleY) >= rect.Y + rect.Height) // The lower and right bounds fall on a valid screen 
+                    if ( applyDpiScale( screen.Bounds.Width, dpi.DpiScaleX ) >= rect.X + rect.Width && applyDpiScale( screen.Bounds.Height, dpi.DpiScaleY ) >= rect.Y + rect.Height ) // The lower and right bounds fall on a valid screen 
                     {
                         testLowerRight = true;
                     }
                 }
-                if (testUpperLeft && testLowerRight)
+                if ( testUpperLeft && testLowerRight )
                 {
                     return true;
                 }
                 return false;
             }
 
-            int centerWindow(int measure, int defaultValue)
+            int centerWindow ( int measure, int defaultValue )
             {
-                return (measure - Math.Min(measure, defaultValue)) / 2;
+                return ( measure - Math.Min( measure, defaultValue ) ) / 2;
             }
 
-            int applyDpiScale(int originalValue, double dpiScaleFactor)
+            int applyDpiScale ( int originalValue, double dpiScaleFactor )
             {
-                return (int)Math.Round(originalValue / dpiScaleFactor);
+                return (int)Math.Round( originalValue / dpiScaleFactor );
             }
         }
 
-        private void ScriptView_TextChanged(object sender, System.EventArgs e)
+        private void ScriptView_TextChanged ( object sender, System.EventArgs e )
         {
             editorScript.Value = scriptView.Text;
             InitializeOrUpdateFolding();
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void ScriptView_TextArea_TextEntered ( object sender, TextCompositionEventArgs e )
         {
-            base.OnClosed(e);
+            // open code completion after the user has pressed dot:
+            if ( e.Text == "." )
+            {
+                // Select the specific data we need to obtain
+                var lookupItem = string.Empty;
+                if ( sender is TextArea textArea )
+                {
+                    var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
+                    var lineTxt = textArea.Document.GetText(line.Offset, textArea.Caret.Offset - line.Offset);
+                    var regexMatch = Regex.Match(lineTxt, @"(?<={)(?>\w+\.)+");
+                    lookupItem = regexMatch.Value.TrimEnd( '.' );
+                }
+
+                if ( !string.IsNullOrEmpty( lookupItem ) )
+                {
+                    completionWindow = new AvalonEdit.TextCompletionWindow( scriptView.TextArea, lookupItem.Split( '.' ), metaVars );
+                    completionWindow.Closed += delegate { completionWindow = null; };
+                }
+            }
+        }
+
+        private void ScriptView_TextArea_TextEntering ( object sender, TextCompositionEventArgs e )
+        {
+            if ( e.Text.Length > 0 && completionWindow != null )
+            {
+                if ( !char.IsLetterOrDigit( e.Text[ 0 ] ) )
+                {
+                    // Whenever a non-letter is typed while the completion window is open,
+                    // insert the currently selected element.
+                    completionWindow.CompletionList.RequestInsertion( e );
+                }
+            }
+            // do not set e.Handled=true - we still want to insert the character that was typed
+        }
+
+        protected override void OnClosed ( EventArgs e )
+        {
+            base.OnClosed( e );
             ScriptRecoveryService.StopScriptRecovery();
         }
 
-        private void acceptButtonClick(object sender, RoutedEventArgs e)
+        private void acceptButtonClick ( object sender, RoutedEventArgs e )
         {
-            if (isNewOrRecoveredScript 
-                || script?.Name != editorScript.Name 
-                || script?.Description != editorScript.Description 
-                || script?.Value != editorScript.Value)
+            if ( isNewOrRecoveredScript
+                || script?.Name != editorScript.Name
+                || script?.Description != editorScript.Description
+                || script?.Value != editorScript.Value )
             {
                 // Update the output script
                 script = editorScript;
@@ -197,9 +247,9 @@ namespace EddiSpeechResponder
 #pragma warning disable IDE0018 // Inline variable declaration
                 Script defaultScript = null;
 #pragma warning restore IDE0018 // Inline variable declaration
-                if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
+                if ( Personality.Default().Scripts?.TryGetValue( script.Name, out defaultScript ) ?? false )
                 {
-                    script = Personality.UpgradeScript(script, defaultScript);
+                    script = Personality.UpgradeScript( script, defaultScript );
                 }
 
                 DialogResult = true;
@@ -211,53 +261,53 @@ namespace EddiSpeechResponder
             this.Close();
         }
 
-        private void cancelButtonClick(object sender, RoutedEventArgs e)
+        private void cancelButtonClick ( object sender, RoutedEventArgs e )
         {
             DialogResult = false;
             this.Close();
         }
 
-        private void helpButtonClick(object sender, RoutedEventArgs e)
+        private void helpButtonClick ( object sender, RoutedEventArgs e )
         {
             MarkdownWindow helpWindow = new MarkdownWindow("Help.md");
             helpWindow.Show();
         }
 
-        private void variablesButtonClick(object sender, RoutedEventArgs e)
+        private void variablesButtonClick ( object sender, RoutedEventArgs e )
         {
             VariablesWindow variablesWindow = new VariablesWindow(editorScript);
             variablesWindow.Show();
         }
 
-        private void resetButtonClick(object sender, RoutedEventArgs e)
+        private void resetButtonClick ( object sender, RoutedEventArgs e )
         {
             // Resetting the script resets it to its value in the default personality
             editorScript.Value = editorScript.defaultValue;
             scriptView.Text = editorScript.Value;
         }
 
-        private void testButtonClick(object sender, RoutedEventArgs e)
+        private void testButtonClick ( object sender, RoutedEventArgs e )
         {
-            if (SpeechService.Instance.eddiAudioPlaying & !SpeechService.Instance.eddiSpeaking)
+            if ( SpeechService.Instance.eddiAudioPlaying & !SpeechService.Instance.eddiSpeaking )
             {
                 SpeechService.Instance.StopAudio();
             }
             else
             {
-                if (!SpeechService.Instance.eddiSpeaking)
+                if ( !SpeechService.Instance.eddiSpeaking )
                 {
-                    ScriptRecoveryService.SaveRecoveryScript(editorScript);
+                    ScriptRecoveryService.SaveRecoveryScript( editorScript );
 
                     // Splice the new script in to the existing scripts
                     editorScript.Value = scriptView.Text;
                     Dictionary<string, Script> newScripts = new Dictionary<string, Script>(_scripts);
                     Script testScript = new Script(editorScript.Name, editorScript.Description, false, editorScript.Value);
-                    newScripts.Remove(editorScript.Name);
-                    newScripts.Add(editorScript.Name, testScript);
+                    newScripts.Remove( editorScript.Name );
+                    newScripts.Add( editorScript.Name, testScript );
 
                     SpeechResponder speechResponder = new SpeechResponder();
                     speechResponder.Start();
-                    speechResponder.TestScript(editorScript.Name, newScripts);
+                    speechResponder.TestScript( editorScript.Name, newScripts );
                 }
                 else
                 {
@@ -267,39 +317,39 @@ namespace EddiSpeechResponder
             }
         }
 
-        private void showDiffButtonClick(object sender, RoutedEventArgs e)
+        private void showDiffButtonClick ( object sender, RoutedEventArgs e )
         {
             editorScript.Value = scriptView.Text;
-            if (!string.IsNullOrWhiteSpace(editorScript.defaultValue))
+            if ( !string.IsNullOrWhiteSpace( editorScript.defaultValue ) )
             {
-                new ShowDiffWindow(editorScript.defaultValue, editorScript.Value).Show();
+                new ShowDiffWindow( editorScript.defaultValue, editorScript.Value ).Show();
             }
         }
 
-        private void foldingButtonClick(object sender, RoutedEventArgs e)
+        private void foldingButtonClick ( object sender, RoutedEventArgs e )
         {
-            if (sender is System.Windows.Controls.CheckBox)
+            if ( sender is System.Windows.Controls.CheckBox )
             {
                 InitializeOrUpdateFolding();
             }
         }
 
-        private void InitializeOrUpdateFolding()
+        private void InitializeOrUpdateFolding ()
         {
-            if (Folding.IsChecked ?? false)
+            if ( Folding.IsChecked ?? false )
             {
-                if (foldingMargin is null)
+                if ( foldingMargin is null )
                 {
-                    foldingMargin = new FoldingMargin { FoldingManager = FoldingManager.Install(scriptView.TextArea) };
+                    foldingMargin = new FoldingMargin { FoldingManager = FoldingManager.Install( scriptView.TextArea ) };
                 }
-                foldingStrategy.UpdateFoldings(foldingMargin.FoldingManager, scriptView.Document);
+                foldingStrategy.UpdateFoldings( foldingMargin.FoldingManager, scriptView.Document );
             }
             else
             {
-                if (foldingMargin != null)
+                if ( foldingMargin != null )
                 {
                     foldingMargin.FoldingManager.Clear();
-                    FoldingManager.Uninstall(foldingMargin.FoldingManager);
+                    FoldingManager.Uninstall( foldingMargin.FoldingManager );
                 }
                 foldingMargin = null;
             }

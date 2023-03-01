@@ -156,6 +156,11 @@ namespace EddiSpeechResponder.Service
         {
             var dict = new Dictionary<string, object>
             {
+                // Boolean constants
+                ["true"] = true,
+                ["false"] = false,
+
+                // Standard simple variables
                 ["capi_active"] = CompanionAppService.Instance?.active ?? false,
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
                 ["searchdistance"] = NavigationService.Instance.SearchDistanceLy,
@@ -167,98 +172,44 @@ namespace EddiSpeechResponder.Service
                 ["icao_active"] = SpeechService.Instance.Configuration.EnableIcao,
                 ["ipa_active"] = !SpeechService.Instance.Configuration.DisableIpa,
 
-                // Boolean constants
-                ["true"] = true,
-                ["false"] = false
+                // Standard objects
+                ["cmdr"] = EDDI.Instance.Cmdr,
+                ["homesystem"] = EDDI.Instance.HomeStarSystem,
+                ["homestation"] = EDDI.Instance.HomeStation,
+                ["squadronsystem"] = EDDI.Instance.SquadronStarSystem,
+                ["system"] = EDDI.Instance.CurrentStarSystem,
+                ["lastsystem"] = EDDI.Instance.LastStarSystem,
+                ["nextsystem"] = EDDI.Instance.NextStarSystem,
+                ["destinationsystem"] = EDDI.Instance.DestinationStarSystem,
+                ["searchsystem"] = NavigationService.Instance.SearchStarSystem,
+                ["searchstation"] = NavigationService.Instance.SearchStation,
+                ["station"] = EDDI.Instance.CurrentStation,
+                ["body"] = EDDI.Instance.CurrentStellarBody,
+                ["carrier"] = EDDI.Instance.FleetCarrier
             };
 
-            if (EDDI.Instance.Cmdr != null)
+            if ( theEvent != null )
             {
-                dict["cmdr"] = EDDI.Instance.Cmdr;
+                dict[ "event" ] = theEvent;
             }
 
-            if (EDDI.Instance.HomeStarSystem != null)
+            if ( EDDI.Instance.State != null )
             {
-                dict["homesystem"] = EDDI.Instance.HomeStarSystem;
-            }
-
-            if (EDDI.Instance.HomeStation != null)
-            {
-                dict["homestation"] = EDDI.Instance.HomeStation;
-            }
-
-            if (EDDI.Instance.SquadronStarSystem != null)
-            {
-                dict["squadronsystem"] = EDDI.Instance.SquadronStarSystem;
-            }
-
-            if (EDDI.Instance.CurrentStarSystem != null)
-            {
-                dict["system"] = EDDI.Instance.CurrentStarSystem;
-            }
-
-            if (EDDI.Instance.LastStarSystem != null)
-            {
-                dict["lastsystem"] = EDDI.Instance.LastStarSystem;
-            }
-
-            if (EDDI.Instance.NextStarSystem != null)
-            {
-                dict["nextsystem"] = EDDI.Instance.NextStarSystem;
-            }
-
-            if (EDDI.Instance.DestinationStarSystem != null)
-            {
-                dict["destinationsystem"] = EDDI.Instance.DestinationStarSystem;
-            }
-
-            if (NavigationService.Instance.SearchStarSystem != null)
-            {
-                dict["searchsystem"] = NavigationService.Instance.SearchStarSystem;
-            }
-
-            if (NavigationService.Instance.SearchStation != null)
-            {
-                dict["searchstation"] = NavigationService.Instance.SearchStation;
-            }
-            
-            if (EDDI.Instance.CurrentStation != null)
-            {
-                dict["station"] = EDDI.Instance.CurrentStation;
-            }
-
-            if (EDDI.Instance.CurrentStellarBody != null)
-            {
-                dict["body"] = EDDI.Instance.CurrentStellarBody;
-            }
-
-            if (EDDI.Instance.FleetCarrier != null)
-            {
-                dict["carrier"] = EDDI.Instance.FleetCarrier;
-            }
-
-            if (theEvent != null)
-            {
-                dict["event"] = theEvent;
-            }
-
-            if (EDDI.Instance.State != null)
-            {
-                dict["state"] = EDDI.Instance.State;
-                Logging.Debug("State is: ", EDDI.Instance.State);
+                dict[ "state" ] = EDDI.Instance.State;
+                Logging.Debug( "State is: ", EDDI.Instance.State );
             }
 
             // Obtain additional variables from each monitor
-            foreach (IEddiMonitor monitor in EDDI.Instance.monitors)
+            foreach ( IEddiMonitor monitor in EDDI.Instance.monitors )
             {
                 IDictionary<string, object> monitorVariables = monitor.GetVariables();
-                if (monitorVariables != null)
+                if ( monitorVariables != null )
                 {
-                    foreach (string key in monitorVariables.Keys)
+                    foreach ( string key in monitorVariables.Keys )
                     {
-                        if (monitorVariables[key] == null)
+                        if ( monitorVariables[ key ] == null )
                         {
-                            dict.Remove(key);
+                            dict.Remove( key );
                         }
                         else
                         {
