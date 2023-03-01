@@ -262,7 +262,7 @@ namespace EddiSpeechResponder.Service
                         }
                         else
                         {
-                            dict[key] = new ReflectionValue(monitorVariables[key]);
+                            dict[ key ] = monitorVariables[ key ];
                         }
                     }
                 }
@@ -295,7 +295,14 @@ namespace EddiSpeechResponder.Service
             {
                 foreach (var entry in vars)
                 {
-                    store[entry.Key] = new ReflectionValue(entry.Value);
+                    if ( entry.Value is null )
+                    {
+                        store[ entry.Key ] = new VoidValue();
+                    }
+                    else
+                    {
+                        store[ entry.Key ] = new ReflectionValue( entry.Value );
+                    }
                 }
             }
 

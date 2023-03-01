@@ -362,6 +362,7 @@ namespace EddiSpeechResponder
             EDDI.Instance.SpeechResponderModalWait = true;
             var metaVars = GetMetaVariables ().ToList ();
             var highlighting = GetHighlighting( metaVars );
+            var editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, highlighting, true);
             if (editScriptWindow.ShowDialog() == true)
             {
                 var newScript = editScriptWindow.script;
