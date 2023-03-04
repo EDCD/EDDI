@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-## 4.0.3
+## 4.0.3-b1
   * Core
     * Fixed a bug that prevented updating body data on nav beacon scans of fully discovered systems. #2505
     * Fixed a bug where bodies scanned from a nav beacon scan could be reported as previously undiscovered.
