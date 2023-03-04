@@ -26,6 +26,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Swapout check` updated to fix a bug that was causing false positives.
   * VoiceAttack Responder
     * Fixed a bug that prevented current ship variables from being updated properly on a ship change. #2482
+    * Fixed a bug that prevented a clean application shut-down from VoiceAttack.
 
 ## 4.0.2
   * Core
