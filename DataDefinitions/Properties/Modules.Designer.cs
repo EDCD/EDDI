@@ -223,6 +223,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caustic Sink Launcher.
+        /// </summary>
+        public static string Caustic_Sink_Launcher {
+            get {
+                return ResourceManager.GetString("Caustic_Sink_Launcher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chaff Launcher.
         /// </summary>
         public static string ChaffLauncher {
