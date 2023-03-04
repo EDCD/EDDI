@@ -61,11 +61,11 @@ namespace EddiDataDefinitions
 
         /// <summary>The number of credits the commander holds</summary>
         [PublicAPI]
-        public ulong credits { get; set; }
+        public ulong? credits { get; set; }
 
         /// <summary>The amount of debt the commander owes</summary>
         [PublicAPI]
-        public long debt { get; set; }
+        public ulong? debt { get; set; }
     }
 
     public class Commander : FrontierApiCommander, INotifyPropertyChanged
@@ -81,7 +81,7 @@ namespace EddiDataDefinitions
         /// <summary>The commander's phonetic name</summary>
         public string phoneticName
         {
-            get { return _phoneticName; }
+            get => _phoneticName;
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -247,8 +247,7 @@ namespace EddiDataDefinitions
             // Update our commander object with information exclusively available from the Frontier API
             Cmdr.crimerating = frontierApiCommander.crimerating;
             Cmdr.servicerating = frontierApiCommander.servicerating;
-            Cmdr.credits = frontierApiCommander.credits;
-            Cmdr.debt = frontierApiCommander.debt;
+            Cmdr.debt = frontierApiCommander.debt ?? Cmdr.debt ?? 0;
 
             // Update our commander object with information obtainable from the journal
             // Since the parameters below only increase, we will take any that are higher in rank than we had before
@@ -268,9 +267,10 @@ namespace EddiDataDefinitions
                 ? frontierApiCommander.mercenaryrating : Cmdr.mercenaryrating;
             Cmdr.exobiologistrating = (frontierApiCommander.exobiologistrating?.rank ?? 0) >= (Cmdr.exobiologistrating?.rank ?? 0)
                 ? frontierApiCommander.exobiologistrating : Cmdr.exobiologistrating;
-            // Power rating is also updated from the journal but may decrease so we check the timestamp
+            // A few items are also updated from the journal but may decrease so we check the timestamp
             if (apiTimeStamp > journalTimeStamp)
             {
+                Cmdr.credits = frontierApiCommander.credits ?? Cmdr.credits ?? 0;
                 Cmdr.powerrating = frontierApiCommander.powerrating;
             }
 

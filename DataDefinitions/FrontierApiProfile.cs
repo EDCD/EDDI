@@ -8,25 +8,25 @@ namespace EddiDataDefinitions
     public class FrontierApiProfile
     {
         /// <summary>The timestamp returned from the CAPI server</summary>
-        public DateTime timestamp { get; set; }
+        public DateTime timestamp { get; private set; }
 
         /// <summary>The JSON object</summary>
-        public JObject json { get; set; }
+        public JObject json { get; private set; }
 
         /// <summary>The commander</summary>
-        public FrontierApiCommander Cmdr { get; set; }
+        public FrontierApiCommander Cmdr { get; private set; }
 
         /// <summary>The current starsystem</summary>
-        public string currentStarSystem { get; set; }
+        public string currentStarSystem { get; private set; }
 
         /// <summary>The name of the last station the commander docked at</summary>
-        public string LastStationName { get; set; }
+        public string LastStationName { get; private set; }
 
         /// <summary>The market id of the last station the commander docked at</summary>
-        public long? LastStationMarketID { get; set; }
+        public long? LastStationMarketID { get; private set; }
 
         /// <summary>Whether this profile describes a docked commander</summary>
-        public bool docked { get; set; }
+        public bool docked { get; private set; }
 
         /// <summary>Whether this profile describes an on-foot commander</summary>
         public bool onFoot { get; set; }
@@ -67,8 +67,8 @@ namespace EddiDataDefinitions
                     servicerating = (int?)json["commander"]["rank"]?["service"] ?? 0,
                     powerrating = (int?)json["commander"]["rank"]?["power"] ?? 0,
 
-                    credits = (ulong?)json["commander"]["credits"] ?? 0,
-                    debt = (long?)json["commander"]["debt"] ?? 0
+                    credits = (ulong?)json["commander"]["credits"],
+                    debt = (ulong?)json["commander"]["debt"]
                 };
                 Profile.Cmdr = Commander;
                 Profile.docked = (bool)json["commander"]["docked"];
