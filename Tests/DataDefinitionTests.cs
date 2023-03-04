@@ -388,7 +388,7 @@ namespace UnitTests
             Assert.AreEqual("Marty McFly", test1.name);
             Assert.AreEqual("Serf", test1.title);
             Assert.AreEqual((ulong)246486105, test1.credits);
-            Assert.AreEqual(24684, test1.debt);
+            Assert.AreEqual((ulong)24684, test1.debt);
             Assert.AreEqual(2, test1.crimerating);
             Assert.AreEqual(3, test1.combatrating.rank);
             Assert.AreEqual(3, test1.traderating.rank);
