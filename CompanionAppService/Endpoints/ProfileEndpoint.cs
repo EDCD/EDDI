@@ -36,7 +36,11 @@ namespace EddiCompanionAppService.Endpoints
                 Logging.Debug($"Getting {PROFILE_URL} data");
                 var result = GetEndpoint(PROFILE_URL);
 
-                if (!result?.DeepEquals(cachedProfileJson) ?? false)
+                if ( result is null )
+                {
+                    return null;
+                }
+                if (!result.DeepEquals(cachedProfileJson))
                 {
                     cachedProfileJson = result;
                     cachedProfileTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;

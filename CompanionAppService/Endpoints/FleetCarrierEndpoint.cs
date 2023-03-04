@@ -36,7 +36,11 @@ namespace EddiCompanionAppService.Endpoints
                 Logging.Debug($"Getting {FLEETCARRIER_URL} data");
                 var result = GetEndpoint(FLEETCARRIER_URL);
 
-                if (!result?.DeepEquals(cachedFleetCarrierJson) ?? false)
+                if ( result is null )
+                {
+                    return null;
+                }
+                if (!result.DeepEquals(cachedFleetCarrierJson))
                 {
                     cachedFleetCarrierJson = result;
                     cachedFleetCarrierTimeStamp = result["timestamp"]?.ToObject<DateTime?>() ?? DateTime.MinValue;
