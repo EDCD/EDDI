@@ -171,32 +171,33 @@ namespace EddiNavigationService
 
             try
             {
-                Logging.Debug ( "Resolving navigation query.", query );
+                Logging.Debug( "Resolving navigation query.", query );
 
                 // Resolve the current search query
-                foreach ( var resolver in queryResolvers )
+                if ( queryResolvers.ContainsKey( queryType ) )
                 {
-                    if ( resolver.Key == queryType )
+                    foreach ( var resolver in queryResolvers
+                                 .Where( resolver => resolver.Key == queryType ) )
                     {
-                        result = resolver.Value.Resolve ( query );
+                        result = resolver.Value.Resolve( query );
                         break;
                     }
                 }
-                if ( result is null )
+                else
                 {
-                    IsWorking = false;
-                    throw new ArgumentOutOfRangeException (
+                    throw new ArgumentOutOfRangeException(
                         $"'{queryType}' queries have not been configured in NavigationService.cs" );
                 }
-            }
-            catch ( ArgumentOutOfRangeException outOfRangeException )
-            {
-                Logging.Error(outOfRangeException.Message, outOfRangeException);
+
             }
             catch ( Exception e )
             {
-                Logging.Warn ( "Nav query failed", e );
+                Logging.Warn( "Nav query failed", e );
                 return null;
+            }
+            finally
+            {
+                IsWorking = false;
             }
 
             // Keep track of the query (excluding route management queries)
@@ -236,7 +237,6 @@ namespace EddiNavigationService
                 }
             }
 
-            IsWorking = false;
             return result;
         }
 
