@@ -19,6 +19,27 @@ namespace EddiNavigationMonitor
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
         }
 
+        private static ConfigurationWindow _instance;
+        private static readonly object InstanceLock = new object();
+
+        public static ConfigurationWindow Instance
+        {
+            get
+            {
+                if ( _instance == null )
+                {
+                    lock ( InstanceLock )
+                    {
+                        if ( _instance == null )
+                        {
+                            _instance = new ConfigurationWindow();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
         public ConfigurationWindow()
         {
             InitializeComponent();

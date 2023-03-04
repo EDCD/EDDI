@@ -51,42 +51,47 @@ namespace EddiNavigationMonitor
         {
             if (e.PropertyName == nameof(FleetCarrier))
             {
-                var fleetCarrier = navigationMonitor().FleetCarrier;
-                LastCarrierOriginArg = fleetCarrier?.currentStarSystem;
-
-                NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke( () =>
                 {
-                    carrierNameTextBlock.Text = !string.IsNullOrEmpty(fleetCarrier?.name)
-                        ? $@"{fleetCarrier?.name} ({fleetCarrier?.callsign})"
-                        : fleetCarrier?.callsign ?? Properties.NavigationMonitor.carrier_err_frontier_api_connection_recommended;
-                    carrierOriginSystemDropDown.Text = fleetCarrier?.currentStarSystem 
-                        ?? LastCarrierOriginArg 
-                        ?? Properties.NavigationMonitor.carrier_err_frontier_api_connection_required;
-                    carrierCurrentLoad.Text = (fleetCarrier?.usedCapacity ?? 0).ToString();
+                    var fleetCarrier = navigationMonitor().FleetCarrier;
+                    LastCarrierOriginArg = fleetCarrier?.currentStarSystem;
 
-                    if (string.IsNullOrEmpty(fleetCarrier?.currentStarSystem))
+                    carrierNameTextBlock.Text = !string.IsNullOrEmpty( fleetCarrier?.name )
+                        ? $@"{fleetCarrier.name} ({fleetCarrier.callsign})"
+                        : fleetCarrier?.callsign ?? Properties.NavigationMonitor
+                            .carrier_err_frontier_api_connection_recommended;
+                    carrierOriginSystemDropDown.Text = fleetCarrier?.currentStarSystem
+                                                       ?? LastCarrierOriginArg
+                                                       ?? Properties.NavigationMonitor
+                                                           .carrier_err_frontier_api_connection_required;
+                    carrierCurrentLoad.Text = ( fleetCarrier?.usedCapacity ?? 0 ).ToString();
+
+                    if ( string.IsNullOrEmpty( fleetCarrier?.currentStarSystem ) )
                     {
                         SearchButton.IsEnabled = false;
                     }
+
                     SearchButton.IsEnabled = true;
-                });
+                } );
             }
         }
 
         private void OnCarrierPlottedRouteChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (sender is NavWaypointCollection navWaypointCollection)
+            if ( !( sender is NavWaypointCollection navWaypointCollection ) )
             {
-                switch (e.PropertyName)
+                return;
+            }
+
+            switch (e.PropertyName)
+            {
+                case nameof(NavWaypointCollection.Waypoints):
                 {
-                    case nameof(NavWaypointCollection.Waypoints):
-                        {
-                            NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
-                            {
-                                ClearRouteButton.IsEnabled = navWaypointCollection.Waypoints.Count > 0;
-                            });
-                            break;
-                        }
+                    Dispatcher.Invoke( () =>
+                    {
+                        ClearRouteButton.IsEnabled = navWaypointCollection.Waypoints.Count > 0;
+                    } );
+                    break;
                 }
             }
         }
@@ -96,23 +101,23 @@ namespace EddiNavigationMonitor
             switch (e.PropertyName)
             {
                 case nameof(NavigationService.Instance.IsWorking):
+                {
+                    if ( NavigationService.Instance.IsWorking )
                     {
-                        if (NavigationService.Instance.IsWorking)
+                        Dispatcher.Invoke( () =>
                         {
-                            NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
-                            {
-                                SearchProgressBar.Visibility = Visibility.Visible;
-                            });
-                        }
-                        else
-                        {
-                            NavigationMonitor.configWindow.Dispatcher.Invoke(() =>
-                            {
-                                SearchProgressBar.Visibility = Visibility.Collapsed;
-                            });
-                        }
-                        break;
+                            SearchProgressBar.Visibility = Visibility.Visible;
+                        } );
                     }
+                    else
+                    {
+                        Dispatcher.Invoke( () =>
+                        {
+                            SearchProgressBar.Visibility = Visibility.Collapsed;
+                        } );
+                    }
+                    break;
+                }
             }
         }
 

@@ -50,13 +50,6 @@ namespace EddiNavigationMonitor
 
         private DateTime updateDat;
 
-        public static ConfigurationWindow configWindow
-        {
-            get => _configWindow ?? new ConfigurationWindow(); 
-            private set => _configWindow = value;
-        }
-        private static ConfigurationWindow _configWindow;
-
         internal Status currentStatus { get; set; }
 
         public string MonitorName()
@@ -141,7 +134,7 @@ namespace EddiNavigationMonitor
 
         public UserControl ConfigurationTabItem()
         {
-            return configWindow;
+            return ConfigurationWindow.Instance;
         }
 
         public void HandleProfile(JObject profile)
@@ -717,14 +710,14 @@ namespace EddiNavigationMonitor
                         poiBookmark.visitLog.Add(timestamp);
                     }
                 }
-                
-                configWindow.Dispatcher.Invoke(() =>
+
+                Application.Current.Dispatcher.Invoke( () =>
                 {
-                    if (configWindow.TryFindResource(nameof(GalacticPOIControl.POIView)) is ICollectionView poiView)
+                    if ( ConfigurationWindow.Instance.TryFindResource( nameof( GalacticPOIControl.POIView ) ) is ICollectionView poiView )
                     {
                         poiView.Refresh();
                     }
-                });
+                } );
 
                 NavigationService.Instance.SearchDistanceLy = Functions.StellarDistanceLy(x, y, z,
                     NavigationService.Instance.SearchStarSystem?.x, NavigationService.Instance.SearchStarSystem?.y,
@@ -793,7 +786,7 @@ namespace EddiNavigationMonitor
                             EDDI.Instance.enqueueEvent(new NearBookmarkEvent(status.timestamp, true, bookmark));
                         }
                     }
-                    else if (bookmark.nearby && trueDistanceMeters >= bookmark.arrivalRadiusMeters * 1.1M)
+                    else if (bookmark.nearby && trueDistanceMeters >= (bookmark.arrivalRadiusMeters * 1.1M))
                     {
                         // We've left the nearby radius of the bookmark
                         // (calculated at 110% of the arrival radius to prevent bouncing between nearby and not)
@@ -816,33 +809,30 @@ namespace EddiNavigationMonitor
 
         private static decimal? SurfaceConstantHeadingDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+            var radiusMeters = curr.planetradius ?? (EDDI.Instance?.CurrentStarSystem?.bodies
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
-                ?.radius * 1000;
+                ?.radius * 1000);
             return Functions.SurfaceConstantHeadingDegrees(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
         private static decimal? SurfaceConstantHeadingDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+            var radiusMeters = curr.planetradius ?? (EDDI.Instance?.CurrentStarSystem?.bodies
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
-                ?.radius * 1000;
+                ?.radius * 1000);
             return Functions.SurfaceConstantHeadingDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
         private static decimal? SurfaceShortestPathDegrees(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
-                ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
-                ?.radius * 1000;
             return Functions.SurfaceHeadingDegrees(curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
         private static decimal? SurfaceShortestPathDistanceKm(Status curr, decimal? bookmarkLatitude, decimal? bookmarkLongitude)
         {
-            var radiusMeters = curr.planetradius ?? EDDI.Instance?.CurrentStarSystem?.bodies
+            var radiusMeters = curr.planetradius ?? (EDDI.Instance?.CurrentStarSystem?.bodies
                 ?.FirstOrDefault(b => b.bodyname == curr.bodyname)
-                ?.radius * 1000;
+                ?.radius * 1000);
             return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
