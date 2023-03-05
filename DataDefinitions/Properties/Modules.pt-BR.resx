@@ -629,5 +629,8 @@
     <value>Xeno Scanner Melhorado</value>
     <comment>Module Enhanced Xeno Scanner</comment>
   </data>
-  
+  <data name="Caustic_Sink_Launcher" xml:space="preserve">
+    <value>Lançador de Dissipador Cáustico</value>
+    <comment>Module Caustic Sink Launcher</comment>
+  </data>
 </root>
