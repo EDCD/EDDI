@@ -629,5 +629,8 @@
     <value>Scanner AX Avanzato</value>
     <comment>Module Enhanced Xeno Scanner</comment>
   </data>
-  
+  <data name="Caustic_Sink_Launcher" xml:space="preserve">
+    <value>Espulsore anticorrosione</value>
+    <comment>Module Caustic Sink Launcher</comment>
+  </data>
 </root>
