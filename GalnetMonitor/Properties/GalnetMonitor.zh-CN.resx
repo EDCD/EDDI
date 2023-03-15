@@ -148,7 +148,10 @@
     <value>一周回顾</value>
     <comment>Title filter for determining whether an item is a "Week in Review</comment>
   </data>
-  
+  <data name="sourceURL" xml:space="preserve">
+    <value>https://community.elitedangerous.com/en/galnet-rss</value>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
+  </data>
   <data name="contentFilterCgRegex" xml:space="preserve">
     <value>&gt;@"(承诺会奖励飞行员)|(行动.+会持续一周)|(组织已经制定了为期一周的行动)|(收集.+奖励)|(如果.+如果最终目标早于预期时间完成，行动会立即结束)"</value>
     <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
@@ -157,7 +160,10 @@
     <value>文章</value>
     <comment>Category (as seen by the user): Article</comment>
   </data>
-  
+  <data name="categoryPowerplay" xml:space="preserve">
+    <value>权力游戏</value>
+    <comment>Category (as seen by the user): Powerplay</comment>
+  </data>
   <data name="categoryCG" xml:space="preserve">
     <value>社区目标</value>
     <comment>Category (as seen by the user): Community Goal</comment>
@@ -170,5 +176,8 @@
     <value>一周回顾</value>
     <comment>Category (as seen by the user): Week in Review</comment>
   </data>
-  
+  <data name="alternateURL" xml:space="preserve">
+    <value>https://elitedangerous-website-backend-production.elitedangerous.com/galnet.rss</value>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items, should sourceURL be unavailable.</comment>
+  </data>
 </root>
