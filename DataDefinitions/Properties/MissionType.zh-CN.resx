@@ -117,20 +117,143 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Altruism" xml:space="preserve">
+    <value>捐赠</value>
+  </data>
+  <data name="Credits" xml:space="preserve">
+    <value>信用点</value>
+  </data>
+  <data name="Assassinate" xml:space="preserve">
+    <value>刺杀</value>
+  </data>
+  <data name="AssassinateWing" xml:space="preserve">
+    <value>组队刺杀</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>搜集</value>
+  </data>
+  <data name="CollectWing" xml:space="preserve">
+    <value>组队搜集</value>
+  </data>
+  <data name="CommunityGoal" xml:space="preserve">
+    <value>社区目标</value>
+  </data>
+  <data name="Courier" xml:space="preserve">
+    <value>数据信使</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>投递</value>
+  </data>
+  <data name="DeliveryWing" xml:space="preserve">
+    <value>组队投递</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>禁用地面站</value>
+  </data>
+  <data name="DisableWing" xml:space="preserve">
+    <value>禁用组队</value>
+  </data>
   <data name="GenericPermit1" xml:space="preserve">
     <value>Permit Aquisition</value>
+  </data>
+  <data name="Hack" xml:space="preserve">
+    <value>骇入</value>
+  </data>
+  <data name="LongDistanceExpedition" xml:space="preserve">
+    <value>远征</value>
+  </data>
+  <data name="Massacre" xml:space="preserve">
+    <value>屠戮</value>
+  </data>
+  <data name="MassacreThargoid" xml:space="preserve">
+    <value>八角屠戮</value>
+  </data>
+  <data name="MassacreWing" xml:space="preserve">
+    <value>组队屠戮</value>
+  </data>
+  <data name="Mining" xml:space="preserve">
+    <value>采矿</value>
+  </data>
+  <data name="MiningWing" xml:space="preserve">
+    <value>组队采矿</value>
+  </data>
+  <data name="PassengerBulk" xml:space="preserve">
+    <value>运输</value>
+  </data>
+  <data name="PassengerVIP" xml:space="preserve">
+    <value>运输</value>
+  </data>
+  <data name="Piracy" xml:space="preserve">
+    <value>海盗行为</value>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>救援</value>
+  </data>
+  <data name="Salvage" xml:space="preserve">
+    <value>打捞</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>行星表面扫描</value>
+  </data>
+  <data name="Sightseeing" xml:space="preserve">
+    <value>观光</value>
+  </data>
+  <data name="Smuggle" xml:space="preserve">
+    <value>走私</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>特别行动</value>
+  </data>
+  <data name="StartZone" xml:space="preserve">
+    <value>启动区</value>
+  </data>
+  <data name="OnFoot" xml:space="preserve">
+    <value>步行</value>
+  </data>
+  <data name="BlOps" xml:space="preserve">
+    <value>黑色行动</value>
+  </data>
+  <data name="Chain" xml:space="preserve">
+    <value>连锁</value>
+    <comment>Sequential chained (joined) mission</comment>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>欢迎</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>合法的</value>
+  </data>
+  <data name="Illegal" xml:space="preserve">
+    <value>非法的</value>
+  </data>
+  <data name="Planetary" xml:space="preserve">
+    <value>行星上的</value>
+  </data>
+  <data name="RankFed" xml:space="preserve">
+    <value>联邦海军合同</value>
+  </data>
+  <data name="RankEmp" xml:space="preserve">
+    <value>帝国海军合同</value>
+  </data>
+  <data name="DisableMegaship" xml:space="preserve">
+    <value>禁用巨舰</value>
+  </data>
+  <data name="Founder" xml:space="preserve">
+    <value>创始人</value>
+  </data>
+  <data name="HackMegaship" xml:space="preserve">
+    <value>骇入巨舰</value>
+  </data>
+  <data name="Skimmer" xml:space="preserve">
+    <value>Skimmer 目标</value>
+    <comment>Massacre type</comment>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>困难的</value>
+    <comment>Mission difficulty</comment>
+  </data>
+  <data name="Covert" xml:space="preserve">
+    <value>隐蔽的</value>
   </data>
   
   
@@ -140,45 +263,30 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Power" xml:space="preserve">
+    <value>关闭地面据点</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>破坏地面据点生产</value>
+    <comment>Sabotage type</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>行星上的</value>
+  </data>
+  <data name="PolPrisoner" xml:space="preserve">
+    <value>政治犯</value>
+    <comment>Bulk passenger type</comment>
+  </data>
+  <data name="Assassination" xml:space="preserve">
+    <value>刺杀</value>
+  </data>
+  <data name="Heist" xml:space="preserve">
+    <value>抢劫</value>
+  </data>
+  <data name="POI" xml:space="preserve">
+    <value>兴趣点</value>
+  </data>
   
   
   
