@@ -289,7 +289,9 @@
   <data name="header_refuel" xml:space="preserve">
     <value>可加油？</value>
   </data>
-  
+  <data name="tooltip_refuel_recommended" xml:space="preserve">
+    <value>推荐在此处加油。</value>
+  </data>
   <data name="search_err_mandatory_neutron_target_system" xml:space="preserve">
     <value>目标星系是绘制中子星航线的必填项。</value>
   </data>
