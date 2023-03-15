@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
+  <data name="Fixed" xml:space="preserve">
+    <value>固定式的</value>
+    <comment>Hardpoint fixed mount</comment>
+  </data>
+  <data name="Turreted" xml:space="preserve">
+    <value>炮塔版的</value>
+    <comment>Hardpoint turreted mount</comment>
+  </data>
+  <data name="Gimballed" xml:space="preserve">
+    <value>自稳定的</value>
+    <comment>Hardpoint gimballed mount</comment>
+  </data>
 </root>
