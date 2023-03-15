@@ -117,13 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Military_Empire" xml:space="preserve">
+    <value>帝国海军舰艇</value>
+    
+  </data>
+  <data name="Military_Independent" xml:space="preserve">
+    <value>星系防卫部队</value>
+    
+  </data>
+  <data name="Military_Alliance" xml:space="preserve">
+    <value>联盟防卫部队</value>
+    
+  </data>
+  <data name="Police_Empire" xml:space="preserve">
+    <value>内部安全单位</value>
+    
+  </data>
+  <data name="Police_Federation" xml:space="preserve">
+    <value>联邦安全单位</value>
+    
+  </data>
+  <data name="Police_Alliance" xml:space="preserve">
+    <value>盟友警察部队</value>
+    
+  </data>
+  <data name="Military_Federation" xml:space="preserve">
+    <value>联邦海军舰只</value>
+    
+  </data>
+  <data name="Police_Independent" xml:space="preserve">
+    <value>星系当局舰只</value>
+    
+  </data>
+  <data name="UNKNOWN" xml:space="preserve">
+    <value>未知船只</value>
+  </data>
 </root>
