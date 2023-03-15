@@ -117,17 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AislingDuval" xml:space="preserve">
+    <value>艾斯林·杜瓦尔</value>
+  </data>
+  <data name="ALavignyDuval" xml:space="preserve">
+    <value>阿里萨·拉维尼-杜瓦尔</value>
+  </data>
+  <data name="ArchonDelaine" xml:space="preserve">
+    <value>执政官德莱恩</value>
+  </data>
+  <data name="DentonPatreus" xml:space="preserve">
+    <value>丹顿·帕特鲁斯</value>
+  </data>
+  <data name="EdmundMahon" xml:space="preserve">
+    <value>埃德蒙·马洪</value>
+  </data>
+  <data name="FeliciaWinters" xml:space="preserve">
+    <value>费利西亚·温特斯</value>
+  </data>
+  <data name="LiYongRui" xml:space="preserve">
+    <value>李永锐</value>
+  </data>
+  <data name="PranavAntal" xml:space="preserve">
+    <value>普拉纳夫·安塔尔</value>
+  </data>
+  <data name="YuriGrom" xml:space="preserve">
+    <value>尤里·格罗姆</value>
+  </data>
+  <data name="ZacharyHudson" xml:space="preserve">
+    <value>扎卡里·哈德森</value>
+  </data>
+  <data name="ZeminaTorval" xml:space="preserve">
+    <value>泽米娜·托瓦尔</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>无</value>
   </data>
