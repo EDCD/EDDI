@@ -97,4 +97,80 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="query_group_galaxy" xml:space="preserve">
+    <value>银河系</value>
+    
+  </data>
+  <data name="query_group_missions" xml:space="preserve">
+    <value>任务</value>
+    
+  </data>
+  <data name="query_group_services" xml:space="preserve">
+    <value>服务</value>
+    
+  </data>
+  <data name="query_type_neutron" xml:space="preserve">
+    <value>脉冲星航线</value>
+    
+    <comment>RouteDetails `neutron` query description</comment>
+  </data>
+  <data name="query_type_scoop" xml:space="preserve">
+    <value>可加油恒星航线</value>
+    <comment>RouteDetails `scoop` query description</comment>
+  </data>
+  <data name="query_type_expiring" xml:space="preserve">
+    <value>过期任务航线</value>
+    <comment>RouteDetails `expiring` query description</comment>
+  </data>
+  <data name="query_type_farthest" xml:space="preserve">
+    <value>最远任务航线</value>
+    <comment>RouteDetails `farthest` query description</comment>
+  </data>
+  <data name="query_type_most" xml:space="preserve">
+    <value>最多任务航线</value>
+    <comment>RouteDetails `farthest` query description</comment>
+  </data>
+  <data name="query_type_nearest" xml:space="preserve">
+    <value>最近任务航线</value>
+    <comment>RouteDetails `nearest` query description</comment>
+  </data>
+  <data name="query_type_route" xml:space="preserve">
+    <value>最短任务航线</value>
+    <comment>RouteDetails `route` query description</comment>
+  </data>
+  <data name="query_type_source" xml:space="preserve">
+    <value>货源航线</value>
+    <comment>RouteDetails `source` query description</comment>
+  </data>
+  <data name="query_type_encoded" xml:space="preserve">
+    <value>数据材料交易商</value>
+    <comment>RouteDetails `encoded` query description</comment>
+  </data>
+  <data name="query_type_facilitator" xml:space="preserve">
+    <value>法务设施航线</value>
+    <comment>RouteDetails `facilitator` query description</comment>
+  </data>
+  <data name="query_type_guardian" xml:space="preserve">
+    <value>守卫者科技中介</value>
+    <comment>RouteDetails `guardian` query description</comment>
+  </data>
+  <data name="query_type_human" xml:space="preserve">
+    <value>人类科技中介</value>
+    <comment>RouteDetails `human` query description</comment>
+  </data>
+  <data name="query_type_manufactured" xml:space="preserve">
+    <value>人造材料交易商</value>
+    <comment>RouteDetails `manufactured` query description</comment>
+  </data>
+  <data name="query_type_raw" xml:space="preserve">
+    <value>天然材料交易商</value>
+    <comment>RouteDetails `raw` query description</comment>
+  </data>
+  <data name="query_type_carrier" xml:space="preserve">
+    <value>舰队航母航线</value>
+  </data>
+  <data name="query_type_scorpion" xml:space="preserve">
+    <value>天蝎SRV供应商</value>
+    <comment>RouteDetails `scorpion` query description</comment>
+  </data>
 </root>
