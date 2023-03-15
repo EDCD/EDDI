@@ -117,142 +117,556 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="carbon" xml:space="preserve">
+    <value>碳</value>
+    <comment>Material carbon</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>铁</value>
+    <comment>Material iron</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>镍</value>
+    <comment>Material nickel</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>磷</value>
+    <comment>Material phosphorus</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>硫磺</value>
+    <comment>Material sulphur</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>砷</value>
+    <comment>Material arsenic</comment>
+  </data>
+  <data name="chromium" xml:space="preserve">
+    <value>铬</value>
+    <comment>Material chromium</comment>
+  </data>
+  <data name="germanium" xml:space="preserve">
+    <value>锗</value>
+    <comment>Material germanium</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>锰</value>
+    <comment>Material manganese</comment>
+  </data>
+  <data name="vanadium" xml:space="preserve">
+    <value>钒</value>
+    <comment>Material vanadium</comment>
+  </data>
+  <data name="zinc" xml:space="preserve">
+    <value>锌</value>
+    <comment>Material zinc</comment>
+  </data>
+  <data name="cadmium" xml:space="preserve">
+    <value>镉</value>
+    <comment>Material cadmium</comment>
+  </data>
+  <data name="mercury" xml:space="preserve">
+    <value>汞</value>
+    <comment>Material mercury</comment>
+  </data>
+  <data name="molybdenum" xml:space="preserve">
+    <value>钼</value>
+    <comment>Material molybdenum</comment>
+  </data>
+  <data name="niobium" xml:space="preserve">
+    <value>铌</value>
+    <comment>Material niobium</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>锡</value>
+    <comment>Material tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>钨</value>
+    <comment>Material tungsten</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>钌</value>
+    <comment>Material ruthenium</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>硒</value>
+    <comment>Material selenium</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>锝</value>
+    <comment>Material technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>碲</value>
+    <comment>Material tellurium</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>钇</value>
+    <comment>Material yttrium</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>锆</value>
+    <comment>Material zirconium</comment>
+  </data>
+  <data name="antimony" xml:space="preserve">
+    <value>锑</value>
+    <comment>Material antimony</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>钋</value>
+    <comment>Material polonium</comment>
+  </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>异常批量扫描数据</value>
+    <comment>Material bulkscandata</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>非典型中断唤醒回声</value>
+    <comment>Material disruptedwakeechoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>扭曲的护盾循环记录</value>
+    <comment>Material shieldcyclerecordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>特殊的加扰排放数据</value>
+    <comment>Material scrambledemissiondata</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>专用旧版固件</value>
+    <comment>Material legacyfirmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>不寻常的加密文件</value>
+    <comment>Material encryptedfiles</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>伽玛方尖碑数据模式(历史)</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>异常 FSD 遥测</value>
+    <comment>Material fsdtelemetry</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>不一致的护盾浸润分析</value>
+    <comment>Material shieldsoakanalysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>不规则排放数据</value>
+    <comment>Material archivedemissiondata</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>被修改的消费级固件</value>
+    <comment>Material consumerfirmware</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>被标记的加密代码</value>
+    <comment>Material encryptioncodes</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>不明扫描档案</value>
+    <comment>Material scanarchives</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Beta 方尖碑数据模式(文化)</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>八角结构数据</value>
+    <comment>Material tg_structuraldata</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>分类扫描数据库</value>
+    <comment>Material scandatabanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>破解的工业固件</value>
+    <comment>Material industrialfirmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>开放对称密钥</value>
+    <comment>Material symmetrickeys</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>奇异的尾迹消融</value>
+    <comment>Material wakesolutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>意外排放数据</value>
+    <comment>Material emissiondata</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>非典型护盾扫描</value>
+    <comment>Material shielddensityreports</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Alpha 方尖碑数据模式(生物)</value>
+    <comment>Material ancientbiologicaldata</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>八角材料成分数据</value>
+    <comment>Material tg_compositiondata</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>八角飞船特征</value>
+    <comment>Material unknownshipsignature</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>异常护盾模式分析</value>
+    <comment>Material shieldpatternanalysis</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>非典型加密档案</value>
+    <comment>Material encryptionarchives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>被解码的排放数据</value>
+    <comment>Material decodedemissiondata</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>发散扫描数据</value>
+    <comment>Material encodedscandata</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>偏离的超空间轨迹</value>
+    <comment>Material hyperspacetrajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>安全固件补丁</value>
+    <comment>Material securityfirmware</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Delta 方尖碑数据模式(语言)</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Epsilon 方尖碑数据模式(技术)</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>八角残留数据</value>
+    <comment>Material tg_residuedata</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>八角尾迹数据</value>
+    <comment>Material unknownwakedata</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>异常紧凑排放数据</value>
+    <comment>Material compactemissionsdata</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>自适应加密记录</value>
+    <comment>Material adaptiveencryptors</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>分类扫描片段</value>
+    <comment>Material classifiedscandata</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>已获取数据的尾迹异常</value>
+    <comment>Material dataminedwake</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>被修改的嵌入式固件</value>
+    <comment>Material embeddedfirmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>特殊护盾频率数据</value>
+    <comment>Material shieldfrequencydata</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>基本导体</value>
+    <comment>Material basicconductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>化学品储存单元</value>
+    <comment>Material chemicalstorageunits</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>紧凑型复合材料</value>
+    <comment>Material compactcomposites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>晶体碎片</value>
+    <comment>Material crystalshards</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>栅极电阻器</value>
+    <comment>Material gridresistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>导热线</value>
+    <comment>Material heatconductionwiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>机械废料</value>
+    <comment>Material mechanicalscrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>回收合金</value>
+    <comment>Material salvagedalloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>回火合金</value>
+    <comment>Material temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>磨损的护盾发生器</value>
+    <comment>Material wornshieldemitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>化学处理器</value>
+    <comment>Material chemicalprocessors</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>导电元件</value>
+    <comment>Material conductivecomponents</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>长丝复合材料</value>
+    <comment>Material filamentcomposites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>有缺陷的聚焦晶体</value>
+    <comment>Material uncutfocuscrystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>镀锌合金</value>
+    <comment>Material galvanisingalloys</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>散热板</value>
+    <comment>Material heatdispersionplate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>耐热陶瓷</value>
+    <comment>Material heatresistantceramics</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>混合电容器</value>
+    <comment>Material hybridcapacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>机械设备</value>
+    <comment>Material mechanicalequipment</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>护盾发生器</value>
+    <comment>Material shieldemitters</comment>
+  </data>
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>八角甲壳</value>
+    <comment>Material unknowncarapace</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>化学分离器</value>
+    <comment>Material chemicaldistillery</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>导电陶瓷</value>
+    <comment>Material conductiveceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>电化学阵列</value>
+    <comment>Material electrochemicalarrays</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>聚焦晶体</value>
+    <comment>Material focuscrystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>热交换器</value>
+    <comment>Material heatexchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>高密度复合材料</value>
+    <comment>Material highdensitycomposites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>机械元件</value>
+    <comment>Material mechanicalcomponents</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>相合金</value>
+    <comment>Material phasealloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>沉淀合金</value>
+    <comment>Material precipitatedalloys</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>护盾传感器</value>
+    <comment>Material shieldingsensors</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>八角能量电池</value>
+    <comment>Material unknownenergycell</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>化学操纵器</value>
+    <comment>Material chemicalmanipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>复合护盾</value>
+    <comment>Material compoundshielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>导电聚合物</value>
+    <comment>Material conductivepolymers</comment>
+  </data>
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>可配置组件</value>
+    <comment>Material configurablecomponents</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>散热叶片</value>
+    <comment>Material heatvanes</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>聚合物电容器</value>
+    <comment>Material polymercapacitors</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>专有复合材料</value>
+    <comment>Material fedproprietarycomposites</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>原型轻合金</value>
+    <comment>Material protolightalloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>精制聚焦晶体</value>
+    <comment>Material refinedfocuscrystals</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>热合金</value>
+    <comment>Material thermicalloys</comment>
+  </data>
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>八角技术组件</value>
+    <comment>Material unknowntechnologycomponents</comment>
+  </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>生物技术导体</value>
+    <comment>Material biotechconductors</comment>
+  </data>
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>核心动力学复合材料</value>
+    <comment>Material fedcorecomposites</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>精致的聚焦晶体</value>
+    <comment>Material exquisitefocuscrystals</comment>
+  </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>帝国护盾</value>
+    <comment>Material imperialshielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>简易组件</value>
+    <comment>Material improvisedcomponents</comment>
+  </data>
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>军用级合金</value>
+    <comment>Material militarygradealloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>军用超级电容器</value>
+    <comment>Material militarysupercapacitors</comment>
+  </data>
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>药用隔离器</value>
+    <comment>Material pharmaceuticalisolators</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>原型热辐射器</value>
+    <comment>Material protoheatradiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>原型放射性合金</value>
+    <comment>Material protoradiolicalloys</comment>
+  </data>
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>传感器碎片</value>
+    <comment>Material unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>八角有机电路</value>
+    <comment>Material unknownorganiccircuitry</comment>
+  </data>
+  <data name="boron" xml:space="preserve">
+    <value>硼</value>
+    <comment>Material boron</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>守护者能量电池</value>
+    <comment>Material guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>守护者武器蓝图</value>
+    <comment>Material guardian_weaponblueprint</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>守护者飞船蓝图</value>
+    <comment>Material guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>守护者技术组件</value>
+    <comment>Material guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>守护者电力导管</value>
+    <comment>Material guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>守护者模块蓝图</value>
+    <comment>Material guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>守护者哨兵武器零件</value>
+    <comment>Material guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>守护者哨兵残骸组件</value>
+    <comment>Material guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>铅</value>
+    <comment>Material lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>铼</value>
+    <comment>Material rhenium</comment>
+  </data>
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>八角推进元件</value>
+    <comment>Material tg_propulsionelement</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>八角生物机械组件</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>八角武器零件</value>
+    <comment>Material tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>八角残骸组件</value>
+    <comment>Material tg_wreckagecomponents</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>八角飞船战斗数据</value>
+    <comment>Material tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>八角飞船系统数据</value>
+    <comment>Material tg_shipsystemsdata</comment>
+  </data>
+  <data name="tg_interdictiondata" xml:space="preserve">
+    <value>八角拦截遥测数据</value>
+    <comment>Material tg_interdictiondata</comment>
+  </data>
 </root>
