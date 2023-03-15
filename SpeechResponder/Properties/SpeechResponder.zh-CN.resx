@@ -132,7 +132,9 @@
   <data name="button_new" xml:space="preserve">
     <value>创建新脚本</value>
   </data>
-  
+  <data name="button_ok" xml:space="preserve">
+    <value>好的</value>
+  </data>
   <data name="compare_script_button" xml:space="preserve">
     <value>与默认脚本比较</value>
   </data>
@@ -225,7 +227,9 @@
   <data name="reset_script" xml:space="preserve">
     <value>重置</value>
   </data>
-  
+  <data name="reset_script_message" xml:space="preserve">
+    <value>您是否确定重置脚本"{0}"</value>
+  </data>
   <data name="messagebox_recoveredScript_title" xml:space="preserve">
     <value>被恢复的脚本</value>
   </data>
@@ -247,5 +251,8 @@
   <data name="context_menu_disable_all" xml:space="preserve">
     <value>停用所有基于事件的脚本</value>
   </data>
-  
+  <data name="search_filter_tooltip" xml:space="preserve">
+    <value>按脚本的名称、描述或全文筛选结果。</value>
+    <comment>tooltip that appears when the search filter textbox is selected</comment>
+  </data>
 </root>
