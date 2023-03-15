@@ -255,14 +255,36 @@
   <data name="Covert" xml:space="preserve">
     <value>隐蔽的</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Download" xml:space="preserve">
+    <value>下载</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>上传</value>
+    <comment>Hack type</comment>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>离线地面据点</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="Onslaught" xml:space="preserve">
+    <value>地面据点袭击</value>
+  </data>
+  <data name="ProductionHeist" xml:space="preserve">
+    <value>产品抢劫</value>
+    <comment>Heist type</comment>
+  </data>
+  <data name="NCD" xml:space="preserve">
+    <value>非暴力的</value>
+  </data>
+  <data name="Reboot" xml:space="preserve">
+    <value>激活地面据点</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
+  <data name="RebootRestore" xml:space="preserve">
+    <value>激活地面据点</value>
+    <comment>Odyssey settlement state</comment>
+  </data>
   <data name="Power" xml:space="preserve">
     <value>关闭地面据点</value>
     <comment>Sabotage type</comment>
@@ -287,8 +309,19 @@
   <data name="POI" xml:space="preserve">
     <value>兴趣点</value>
   </data>
-  
-  
-  
-  
+  <data name="Conflict" xml:space="preserve">
+    <value>冲突目标</value>
+  </data>
+  <data name="TheDead" xml:space="preserve">
+    <value>逝者</value>
+    <comment>Guardian Ruins type mission</comment>
+  </data>
+  <data name="TW" xml:space="preserve">
+    <value>八角战争</value>
+    <comment>Thargoid War mission</comment>
+  </data>
+  <data name="Burning" xml:space="preserve">
+    <value>失火</value>
+    <comment>e.g. rescue from a burning station</comment>
+  </data>
 </root>
