@@ -129,5 +129,9 @@
     <value>组队</value>
     
   </data>
-  
+  <data name="NPC" xml:space="preserve">
+    <value>NPC</value>
+    
+    
+  </data>
 </root>
