@@ -157,7 +157,10 @@
     <value>不可销售</value>
     <comment>Commodity category NonMarketable</comment>
   </data>
-  
+  <data name="Powerplay" xml:space="preserve">
+    <value>权力游戏</value>
+    <comment>Commodity category Powerplay</comment>
+  </data>
   <data name="Salvage" xml:space="preserve">
     <value>打捞</value>
     <comment>Commodity category Salvage</comment>
