@@ -163,7 +163,9 @@
   <data name="tab_frontier_desc" xml:space="preserve">
     <value>Frontier 提供一个 API，允许 EDDI 获取有关您的船只、当前站点的市场和各种其他项目的信息。这些数据仅可从Frontier第一方获得。 如果您希望 EDDI 获取和使用此信息，您需要单击登录按钮并授权 EDDI 使用 Frontier 服务器上的此数据。</value>
   </data>
-  
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
     <value>如果您的关联出现问题，您可以重置它并重新登录，这样可以解决问题。</value>
   </data>
