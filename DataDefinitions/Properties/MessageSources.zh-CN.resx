@@ -183,7 +183,9 @@ The Federation presidential flagship, like "Airforce One" in real life.</comment
   <data name="SearchandRescue" xml:space="preserve">
     <value>搜寻及救援</value>
   </data>
-  
+  <data name="NPC" xml:space="preserve">
+    <value>NPC</value>
+  </data>
   <data name="Station" xml:space="preserve">
     <value>站点</value>
   </data>
@@ -193,5 +195,7 @@ The Federation presidential flagship, like "Airforce One" in real life.</comment
   <data name="ConflictZone" xml:space="preserve">
     <value>冲突区</value>
   </data>
-  
+  <data name="AXPilot" xml:space="preserve">
+    <value>反八角飞行员</value>
+  </data>
 </root>
