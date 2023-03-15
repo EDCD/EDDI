@@ -169,9 +169,24 @@
     <value>贸易</value>
     <comment>Ship role Trading</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Stealth" xml:space="preserve">
+    <value>隐身</value>
+    <comment>Ship role Stealth</comment>
+  </data>
+  <data name="Tourism" xml:space="preserve">
+    <value>旅游</value>
+    <comment>Ship role Tourism</comment>
+  </data>
+  <data name="Evacuation" xml:space="preserve">
+    <value>撤离</value>
+    <comment>Ship role Evacuation</comment>
+  </data>
+  <data name="AXcombat" xml:space="preserve">
+    <value>反八角战斗</value>
+    <comment>Ship role Anti-Xeno Combat</comment>
+  </data>
+  <data name="AXcombatsupport" xml:space="preserve">
+    <value>反八角战斗支援</value>
+    <comment>Ship role Anti-Xeno Combat Support</comment>
+  </data>
 </root>
