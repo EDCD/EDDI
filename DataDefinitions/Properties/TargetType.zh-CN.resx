@@ -157,8 +157,20 @@
   <data name="TerroristLeader" xml:space="preserve">
     <value>恐怖分子头目</value>
   </data>
-  
-  
-  
-  
+  <data name="AIHumanoid" xml:space="preserve">
+    <value>派系成员</value>
+    <comment>Massacre Mission Target: Faction Members</comment>
+  </data>
+  <data name="GuardHumanoid" xml:space="preserve">
+    <value>派系守卫</value>
+    <comment>Massacre Mission Target: Faction Guards</comment>
+  </data>
+  <data name="Deserter" xml:space="preserve">
+    <value>逃兵</value>
+    <comment>Massacre Mission Target</comment>
+  </data>
+  <data name="CitizenHumanoid" xml:space="preserve">
+    <value>公民</value>
+    <comment>Massacre Mission Target: Citizens</comment>
+  </data>
 </root>
