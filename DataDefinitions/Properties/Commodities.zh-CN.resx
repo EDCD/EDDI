@@ -717,56 +717,206 @@
     <value>雅鲁瓦大米</value>
     <comment>Commodity JarouaRice</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="JotunMookah" xml:space="preserve">
+    <value>佐敦狇佧</value>
+    <comment>Commodity JotunMookah</comment>
+  </data>
+  <data name="KamitraCigars" xml:space="preserve">
+    <value>卡米特拉雪茄</value>
+    <comment>Commodity KamitraCigars</comment>
+  </data>
+  <data name="KamorinHistoricWeapons" xml:space="preserve">
+    <value>卡莫林史实武器</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+  </data>
+  <data name="KaretiiCouture" xml:space="preserve">
+    <value>卡雷蒂时装</value>
+    <comment>Commodity KaretiiCouture</comment>
+  </data>
+  <data name="KarsukiLocusts" xml:space="preserve">
+    <value>卡苏基蝗虫</value>
+    <comment>Commodity KarsukiLocusts</comment>
+  </data>
+  <data name="KonggaAle" xml:space="preserve">
+    <value>孔加艾尔啤酒</value>
+    <comment>Commodity KonggaAle</comment>
+  </data>
+  <data name="KorroKungPellets" xml:space="preserve">
+    <value>科罗贡肥料粒</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
+  <data name="Landmines" xml:space="preserve">
+    <value>地雷</value>
+    <comment>Commodity Landmines</comment>
+  </data>
+  <data name="Lanthanum" xml:space="preserve">
+    <value>镧</value>
+    <comment>Commodity Lanthanum</comment>
+  </data>
+  <data name="LargeExplorationDataCash" xml:space="preserve">
+    <value>大型调查数据缓存器</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+  </data>
+  <data name="LavianBrandy" xml:space="preserve">
+    <value>拉维安白兰地</value>
+    <comment>Commodity LavianBrandy</comment>
+  </data>
+  <data name="Leather" xml:space="preserve">
+    <value>皮革</value>
+    <comment>Commodity Leather</comment>
+  </data>
+  <data name="LeestianEvilJuice" xml:space="preserve">
+    <value>利斯特恶汁酒</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+  </data>
+  <data name="Lepidolite" xml:space="preserve">
+    <value>锂云母</value>
+    <comment>Commodity Lepidolite</comment>
+  </data>
+  <data name="LiquidOxygen" xml:space="preserve">
+    <value>液氢</value>
+    <comment>Commodity LiquidOxygen</comment>
+  </data>
+  <data name="Liquor" xml:space="preserve">
+    <value>烈酒</value>
+    <comment>Commodity Liquor</comment>
+  </data>
+  <data name="Lithium" xml:space="preserve">
+    <value>锂</value>
+    <comment>Commodity Lithium</comment>
+  </data>
+  <data name="LithiumHydroxide" xml:space="preserve">
+    <value>氢氧化锂</value>
+    <comment>Commodity LithiumHydroxide</comment>
+  </data>
+  <data name="LiveHecateSeaWorms" xml:space="preserve">
+    <value>活海卡特海虫</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+  </data>
+  <data name="LowTemperatureDiamond" xml:space="preserve">
+    <value>低温钻石</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+  </data>
+  <data name="LTTHypersweet" xml:space="preserve">
+    <value>LTT超甜糖精</value>
+    <comment>Commodity LTTHypersweet</comment>
+  </data>
+  <data name="LyraeWeed" xml:space="preserve">
+    <value>天琴草</value>
+    <comment>Commodity LyraeWeed</comment>
+  </data>
+  <data name="MagneticEmitterCoil" xml:space="preserve">
+    <value>磁发射线圈</value>
+    <comment>Commodity MagneticEmitterCoil</comment>
+  </data>
+  <data name="MarineSupplies" xml:space="preserve">
+    <value>船用设备</value>
+    <comment>Commodity MarineSupplies</comment>
+  </data>
+  <data name="MasterChefs" xml:space="preserve">
+    <value>主厨</value>
+    <comment>Commodity MasterChefs</comment>
+  </data>
+  <data name="MechucosHighTea" xml:space="preserve">
+    <value>迈楚科斯爽神茶</value>
+    <comment>Commodity MechucosHighTea</comment>
+  </data>
+  <data name="MedbStarlube" xml:space="preserve">
+    <value>美德星润滑油</value>
+    <comment>Commodity MedbStarlube</comment>
+  </data>
+  <data name="MedicalDiagnosticEquipment" xml:space="preserve">
+    <value>医疗诊断设备</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+  </data>
+  <data name="MetaAlloys" xml:space="preserve">
+    <value>超合金</value>
+    <comment>Commodity MetaAlloys</comment>
+  </data>
+  <data name="MethaneClathrate" xml:space="preserve">
+    <value>甲烷包合物</value>
+    <comment>Commodity MethaneClathrate</comment>
+  </data>
+  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
+    <value>一水甲醇</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+  </data>
+  <data name="MicroControllers" xml:space="preserve">
+    <value>微型控制器</value>
+    <comment>Commodity MicroControllers</comment>
+  </data>
+  <data name="MilitaryGradeFabrics" xml:space="preserve">
+    <value>军用级面料</value>
+    <comment>Commodity MilitaryGradeFabrics</comment>
+  </data>
+  <data name="MilitaryIntelligence" xml:space="preserve">
+    <value>军事情报</value>
+    <comment>Commodity MilitaryIntelligence</comment>
+  </data>
+  <data name="MineralExtractors" xml:space="preserve">
+    <value>矿物提取器</value>
+    <comment>Commodity MineralExtractors</comment>
+  </data>
+  <data name="MineralOil" xml:space="preserve">
+    <value>矿物油</value>
+    <comment>Commodity MineralOil</comment>
+  </data>
+  <data name="ModularTerminals" xml:space="preserve">
+    <value>模块化终端</value>
+    <comment>Commodity ModularTerminals</comment>
+  </data>
+  <data name="Moissanite" xml:space="preserve">
+    <value>莫桑石</value>
+    <comment>Commodity Moissanite</comment>
+  </data>
+  <data name="MokojingBeastFeast" xml:space="preserve">
+    <value>墨寇景野兽全席</value>
+    <comment>Commodity MokojingBeastFeast</comment>
+  </data>
+  <data name="MomusBogSpaniel" xml:space="preserve">
+    <value>莫马斯沼泽猎犬</value>
+    <comment>Commodity MomusBogSpaniel</comment>
+  </data>
+  <data name="MotronaExperienceJelly" xml:space="preserve">
+    <value>摩托罗纳体验果冻</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+  </data>
+  <data name="MukusubiiChitinOs" xml:space="preserve">
+    <value>椋鸟几丁质-Os</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+  </data>
+  <data name="MulachiGiantFungus" xml:space="preserve">
+    <value>木拉奇巨型真菌</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+  </data>
+  <data name="MuTomImager" xml:space="preserve">
+    <value>介子成像仪</value>
+    <comment>Commodity MuTomImager</comment>
+  </data>
+  <data name="MysteriousIdol" xml:space="preserve">
+    <value>神秘偶像</value>
+    <comment>Commodity MysteriousIdol</comment>
+  </data>
+  <data name="Nanobreakers" xml:space="preserve">
+    <value>纳米破碎机</value>
+    <comment>Commodity Nanobreakers</comment>
+  </data>
+  <data name="NaturalFabrics" xml:space="preserve">
+    <value>天然面料</value>
+    <comment>Commodity NaturalFabrics</comment>
+  </data>
+  <data name="NeofabricInsulation" xml:space="preserve">
+    <value>新面料绝缘材料</value>
+    <comment>Commodity NeofabricInsulation</comment>
+  </data>
+  <data name="NeritusBerries" xml:space="preserve">
+    <value>尼里图斯浆果</value>
+    <comment>Commodity NeritusBerries</comment>
+  </data>
+  <data name="NerveAgents" xml:space="preserve">
+    <value>神经毒剂</value>
+    <comment>Commodity NerveAgents</comment>
+  </data>
   <data name="NgadandariFireOpals" xml:space="preserve">
     <value>恩加丹达里火蛋白石</value>
     <comment>Commodity NgadandariFireOpals</comment>
@@ -1055,7 +1205,10 @@
     <value>土地富集系统</value>
     <comment>Commodity TerrainEnrichmentSystems</comment>
   </data>
-  
+  <data name="TerraMaterBloodBores" xml:space="preserve">
+    <value>泰拉梅特血孔兴奋剂</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
+  </data>
   <data name="Thallium" xml:space="preserve">
     <value>铊</value>
     <comment>Commodity Thallium</comment>
@@ -1364,59 +1517,206 @@
     <value>拉维尼野战补给</value>
     <comment>Commodity LavignyFieldSupplies</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="LiberalCampaignMaterials" xml:space="preserve">
+    <value>自由主义宣传</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+  </data>
+  <data name="LoanedArms" xml:space="preserve">
+    <value>被标记的军用武器</value>
+    <comment>Commodity LoanedArms</comment>
+  </data>
+  <data name="MarkedSlaves" xml:space="preserve">
+    <value>被标记的奴隶</value>
+    <comment>Commodity MarkedSlaves</comment>
+  </data>
+  <data name="OnionheadDerivatives" xml:space="preserve">
+    <value>洋葱头鸦片衍生物</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+  </data>
+  <data name="OnionheadSamples" xml:space="preserve">
+    <value>洋葱头鸦片样本</value>
+    <comment>Commodity OnionheadSamples</comment>
+  </data>
+  <data name="OutOfDateGoods" xml:space="preserve">
+    <value>过期商品</value>
+    <comment>Commodity OutOfDateGoods</comment>
+  </data>
+  <data name="PatreusFieldSupplies" xml:space="preserve">
+    <value>帕特鲁斯野战补给</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+  </data>
+  <data name="PatreusGarisonSupplies" xml:space="preserve">
+    <value>帕特鲁斯驻军补给</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+  </data>
+  <data name="PlatinumAloy" xml:space="preserve">
+    <value>铂合金</value>
+    <comment>Commodity PlatinumAloy</comment>
+  </data>
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>哈德森野战补给</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>哈德森驻军补给</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>哈德森机密情报</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
+  <data name="RestrictedPackage" xml:space="preserve">
+    <value>核心机密包裹</value>
+    <comment>Commodity RestrictedPackage</comment>
+  </data>
+  <data name="SiriusCommercialContracts" xml:space="preserve">
+    <value>天狼星公司合同</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+  </data>
+  <data name="SiriusFranchisePackage" xml:space="preserve">
+    <value>天狼星特许经营包裹</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+  </data>
+  <data name="SiriusIndustrialEquipment" xml:space="preserve">
+    <value>天狼星工业设备</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+  </data>
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>八角侦查器组织样本 </value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+  </data>
+  <data name="UnmarkedWeapons" xml:space="preserve">
+    <value>未标记的军用补给</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+  </data>
+  <data name="UtopianDissident" xml:space="preserve">
+    <value>乌托邦异见者</value>
+    <comment>Commodity UtopianDissident</comment>
+  </data>
+  <data name="UtopianFieldSupplies" xml:space="preserve">
+    <value>乌托邦补给</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+  </data>
+  <data name="UtopianPublicity" xml:space="preserve">
+    <value>乌托邦宣传</value>
+    <comment>Commodity UtopianPublicity</comment>
+  </data>
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>节日礼物</value>
+    <comment>Commodity.PersonalGifts</comment>
+  </data>
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>珊查理斯兰花</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+  </data>
+  <data name="ancientkey" xml:space="preserve">
+    <value>远古钥匙</value>
+    <comment>Commodity Ancient Key</comment>
+  </data>
+  <data name="ThargoidTissueSampleType1" xml:space="preserve">
+    <value>八角独眼巨人组织样本</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+  </data>
+  <data name="ThargoidTissueSampleType2" xml:space="preserve">
+    <value>八角蛇怪组织样本</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+  </data>
+  <data name="ThargoidTissueSampleType3" xml:space="preserve">
+    <value>八角美杜莎组织样本</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+  </data>
+  <data name="ThargoidTissueSampleType4" xml:space="preserve">
+    <value>八角九头蛇组织样本</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+  </data>
+  <data name="Nanomedicines" xml:space="preserve">
+    <value>纳米药品</value>
+    <comment>Commodity Nanomedicines</comment>
+  </data>
+  <data name="Rhodplumsite" xml:space="preserve">
+    <value>红铅矿</value>
+    <comment>Commodity Rhodplumsite</comment>
+  </data>
+  <data name="Serendibite" xml:space="preserve">
+    <value>蓝硅硼钙石</value>
+    <comment>Commodity Serendibite</comment>
+  </data>
+  <data name="Monazite" xml:space="preserve">
+    <value>独居石</value>
+    <comment>Commodity Monazite</comment>
+  </data>
+  <data name="Musgravite" xml:space="preserve">
+    <value>麝香石</value>
+    <comment>Commodity Musgravite</comment>
+  </data>
+  <data name="Benitoite" xml:space="preserve">
+    <value>膨润土</value>
+    <comment>Commodity Benitoite</comment>
+  </data>
+  <data name="Grandidierite" xml:space="preserve">
+    <value>硅硼镁铝石</value>
+    <comment>Commodity Grandidierite</comment>
+  </data>
+  <data name="Alexandrite" xml:space="preserve">
+    <value>亚历山大变石</value>
+    <comment>Commodity Alexandrite</comment>
+  </data>
   <data name="Opal" xml:space="preserve">
     <value>Void Opals</value>
     <comment>Commodity Opal</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="UnknownBiologicalMatter" xml:space="preserve">
+    <value>八角生物物质</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+  </data>
+  <data name="RockforthFertiliser" xml:space="preserve">
+    <value>洛克福斯肥料</value>
+    <comment>Commodity RockforthFertiliser</comment>
+  </data>
+  <data name="agronomictreatment" xml:space="preserve">
+    <value>抗枯萎病剂</value>
+    <comment>Commodity agronomictreatment</comment>
+  </data>
+  <data name="BakedGreebles" xml:space="preserve">
+    <value>烤格力布贝</value>
+    <comment>Commodity BakedGreebles</comment>
+  </data>
+  <data name="Advert1" xml:space="preserve">
+    <value>超紧凑型处理器原型</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+  </data>
+  <data name="AnimalEffigies" xml:space="preserve">
+    <value>克罗姆白银兴奋剂</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+  </data>
+  <data name="Tritium" xml:space="preserve">
+    <value>氚</value>
+    <comment>Commodity Tritium</comment>
+  </data>
+  <data name="M_TissueSample_Fluid" xml:space="preserve">
+    <value>软体动物液</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+  </data>
+  <data name="M_TissueSample_Soft" xml:space="preserve">
+    <value>软体动物软组织</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+  </data>
+  <data name="M_TissueSample_Nerves" xml:space="preserve">
+    <value>软体动物脑组织</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+  </data>
+  <data name="S_TissueSample_Cells" xml:space="preserve">
+    <value>太空豆荚核心样本</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+  </data>
+  <data name="S_TissueSample_Surface" xml:space="preserve">
+    <value>太空豆荚死亡样本</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+  </data>
+  <data name="S_TissueSample_Core" xml:space="preserve">
+    <value>太空豆荚表面样本</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+  </data>
   <data name="P_ParticulateSample" xml:space="preserve">
     <value>异常粒子</value>
     <comment>Commodity P_ParticulateSample</comment>
