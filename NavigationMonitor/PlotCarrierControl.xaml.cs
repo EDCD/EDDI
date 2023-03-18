@@ -142,23 +142,19 @@ namespace EddiNavigationMonitor
 
         private void DestinationSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is StarSystemComboBox starSystemComboBox)
-            {
-                if (!starSystemComboBox.IsLoaded) { return; }
-                destinationSystemDropDown.TextDidChange(sender, e, NavigationService.Instance.LastCarrierDestinationArg, null);
-                UpdateSearchButtonEnabled();
-            }
+            if ( !( sender is StarSystemComboBox starSystemComboBox ) || !starSystemComboBox.IsLoaded ) { return; }
+            destinationSystemDropDown.TextDidChange( sender, e, NavigationService.Instance.LastCarrierDestinationArg, null );
+            UpdateSearchButtonEnabled();
         }
 
         private void DestinationSystemText_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+            if ( !( sender is StarSystemComboBox starSystemComboBox ) || !starSystemComboBox.IsLoaded ) { return; }
 
-            void changeHandler(string newValue)
+            void changeHandler (string newValue)
             {
                 // Update to new destination system
                 NavigationService.Instance.LastCarrierDestinationArg = newValue;
-
                 UpdateSearchButtonEnabled();
             }
             destinationSystemDropDown.SelectionDidChange(changeHandler);
@@ -172,19 +168,16 @@ namespace EddiNavigationMonitor
 
         private void OriginSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is StarSystemComboBox starSystemComboBox)
-            {
-                if (!starSystemComboBox.IsLoaded) { return; }
-                carrierOriginSystemDropDown.TextDidChange(sender, e, LastCarrierOriginArg, null);
-                UpdateSearchButtonEnabled();
-            }
+            if ( !(sender is StarSystemComboBox starSystemComboBox) || !starSystemComboBox.IsLoaded ) { return; }
+            carrierOriginSystemDropDown.TextDidChange( sender, e, LastCarrierOriginArg, null );
+            UpdateSearchButtonEnabled();
         }
 
         private void OriginSystemText_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
+            if ( !( sender is StarSystemComboBox starSystemComboBox ) || !starSystemComboBox.IsLoaded ) { return; }
 
-            void changeHandler(string newValue)
+            void changeHandler (string newValue)
             {
                 // Update to new origin system
                 LastCarrierOriginArg = newValue;
@@ -196,7 +189,8 @@ namespace EddiNavigationMonitor
 
         private void OriginSystemText_LostFocus(object sender, RoutedEventArgs e)
         {
-            carrierOriginSystemDropDown.DidLoseFocus(LastCarrierOriginArg);
+            carrierOriginSystemDropDown.DidLoseFocus( LastCarrierOriginArg ?? 
+                                                      navigationMonitor().FleetCarrier?.currentStarSystem );
             UpdateSearchButtonEnabled();
         }
 
