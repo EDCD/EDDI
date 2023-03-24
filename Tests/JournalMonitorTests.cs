@@ -1,9 +1,7 @@
 ﻿using EddiCore;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
-using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -21,15 +19,11 @@ namespace UnitTests
     public class JournalMonitorTests : TestBase
     {
         FakeEdsmRestClient fakeEdsmRestClient;
-        StarMapService fakeEdsmService;
-        private DataProviderService dataProviderService;
 
         [TestInitialize]
         public void start()
         {
             fakeEdsmRestClient = new FakeEdsmRestClient();
-            fakeEdsmService = new StarMapService(fakeEdsmRestClient);
-            dataProviderService = new DataProviderService(fakeEdsmService);
             MakeSafe();
         }
 

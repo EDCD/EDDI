@@ -993,11 +993,8 @@ namespace EddiCrimeMonitor
                     body = EDDI.Instance?.CurrentStellarBody?.bodyname,
                 };
 
-                FactionRecord record = GetRecordWithFaction(mission.faction);
-                if (record == null)
-                {
-                    record = AddRecord(mission.faction);
-                }
+                var record = GetRecordWithFaction(mission.faction) ?? 
+                             AddRecord(mission.faction);
                 AddReportToRecord(record, report);
                 update = true;
             }

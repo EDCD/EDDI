@@ -19,12 +19,12 @@ namespace EddiCompanionAppService
                  UIntPtr dwData1,
                  UIntPtr dwData2);
 
-        private DdeDelegate ddeDelegate;
+        private readonly DdeDelegate ddeDelegate;
         private uint DdeInstance = 0;
         private IntPtr ServerNameHandle = new IntPtr(0);
         private IntPtr TopicHandle = new IntPtr(0);
-        private UrlHandler urlHandler;
-        private Logger logger;
+        private readonly UrlHandler urlHandler;
+        private readonly Logger logger;
 
         /// <summary>Class that implements a custom local URL protocol and reports and URLs received to the delegate method.</summary>
         /// <param name="name">The name of the custom URL protocol, e.g. "eddi". Typically lower case.</param>

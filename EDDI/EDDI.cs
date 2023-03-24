@@ -439,16 +439,16 @@ namespace EddiCore
                 Logging.Verbose = configuration.Debug;
 
                 // Retrieve commander data
-                Cmdr = new Commander();
-                Cmdr.name = configuration.CommanderName;
-                Cmdr.phoneticName = configuration.PhoneticName;
-                Cmdr.gender = configuration.Gender;
-                Cmdr.squadronname = configuration.SquadronName;
-                Cmdr.squadronid = configuration.SquadronID;
-                Cmdr.squadronrank = configuration.SquadronRank;
-                Cmdr.squadronallegiance = configuration.SquadronAllegiance;
-                Cmdr.squadronpower = configuration.SquadronPower;
-                Cmdr.squadronfaction = configuration.SquadronFaction;
+                Cmdr = new Commander
+                    {
+                        name = configuration.CommanderName, phoneticName = configuration.PhoneticName, gender = configuration.Gender,
+                        squadronname = configuration.SquadronName,
+                        squadronid = configuration.SquadronID,
+                        squadronrank = configuration.SquadronRank,
+                        squadronallegiance = configuration.SquadronAllegiance,
+                        squadronpower = configuration.SquadronPower,
+                        squadronfaction = configuration.SquadronFaction
+                    };
                 FleetCarrier = configuration.fleetCarrier;
 
                 // We always start in normal space
@@ -2559,19 +2559,16 @@ namespace EddiCore
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
-            if (theEvent.bodyType == BodyType.FromEDName("Station"))
+            if ( theEvent.bodyType == BodyType.FromEDName( "Station" ) )
             {
                 // In this case body == station
-                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.bodyname);
-                if (station == null)
-                {
-                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                    station = new Station
-                    {
-                        name = theEvent.bodyname,
-                        systemname = theEvent.systemname
-                    };
-                }
+                var station = CurrentStarSystem.stations.Find( s => s.name == theEvent.bodyname ) ??
+                              new Station
+                              {
+                                  // This station is unknown to us, might not be in our data source or we might not have connectivity.
+                                  // Use a placeholder
+                                  name = theEvent.bodyname, systemname = theEvent.systemname
+                              };
                 CurrentStation = station;
             }
             else if (theEvent.bodyname != null)
@@ -2885,19 +2882,17 @@ namespace EddiCore
             // We won't update CurrentStation with this event, as doing so triggers false / premature updates from the Frontier API
             CurrentStation = null;
 
-            if (theEvent.approaching_surface)
+            if ( theEvent.approaching_surface )
             {
                 // Update the body 
-                Body body = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
-                if (body == null)
-                {
-                    // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
-                    body = new Body
-                    {
-                        bodyname = theEvent.bodyname,
-                        systemname = theEvent.systemname
-                    };
-                }
+                var body = CurrentStarSystem?.bodies?.Find( s => s.bodyname == theEvent.bodyname ) ??
+                           new Body
+                           {
+                               // This body is unknown to us, might not be in our data source or we might not have connectivity.
+                               // Use a placeholder 
+                               bodyname = theEvent.bodyname, systemname = theEvent.systemname
+                           };
+
                 // System address may not be included in our data source, so we add it here. 
                 body.systemAddress = theEvent.systemAddress;
                 CurrentStellarBody = body;

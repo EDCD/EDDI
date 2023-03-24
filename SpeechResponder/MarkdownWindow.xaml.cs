@@ -19,9 +19,9 @@ namespace EddiSpeechResponder
             string markdown;
             try
             {
-                var filePath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                if (filePath is null) { throw new DirectoryNotFoundException(); }
-                DirectoryInfo dir = new DirectoryInfo(filePath);
+                var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? 
+                                     throw new DirectoryNotFoundException();
+                var dir = new DirectoryInfo(filePath);
                 markdown = Files.Read(dir.FullName + @"\" + fileName);
             }
             catch (Exception ex)

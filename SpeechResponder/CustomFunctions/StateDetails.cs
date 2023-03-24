@@ -14,11 +14,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.StateDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            FactionState result = FactionState.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = FactionState.FromName(values[0].AsString);
-            }
+            var result = FactionState.FromName(values[0].AsString) ?? 
+                                    FactionState.FromEDName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

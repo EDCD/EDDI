@@ -14,11 +14,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.EmpireRatingDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            EmpireRating result = EmpireRating.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = EmpireRating.FromEDName(values[0].AsString);
-            }
+            var result = EmpireRating.FromName(values[0].AsString) ?? 
+                                    EmpireRating.FromEDName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

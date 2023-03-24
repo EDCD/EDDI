@@ -26,7 +26,7 @@ namespace EddiJournalMonitor
 
         private enum ShipyardType { ShipsHere, ShipsRemote }
 
-        private static Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources = new Dictionary<long, CancellationTokenSource>();
+        private static readonly Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources = new Dictionary<long, CancellationTokenSource>();
 
         public static void ForwardJournalEntry(string line, Action<Event> callback, bool isLogLoadEvent)
         {
@@ -645,7 +645,7 @@ namespace EddiJournalMonitor
 
                                             // Engineering modifications
                                             moduleData.TryGetValue("Engineering", out object engineeringVal);
-                                            bool modified = engineeringVal != null ? true : false;
+                                            bool modified = engineeringVal != null;
                                             Dictionary<string, object> engineeringData = (Dictionary<string, object>)engineeringVal;
                                             string blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
                                             long blueprintId = modified ? JsonParsing.getLong(engineeringData, "BlueprintID") : 0;
@@ -4498,8 +4498,10 @@ namespace EddiJournalMonitor
                                         }
                                     }
                                     string content = JsonParsing.getString(data, "Content"); // (a string representing High/Medium/Low material content)
-                                    AsteroidMaterialContent materialContent = new AsteroidMaterialContent(content);
-                                    materialContent.fallbackLocalizedName = JsonParsing.getString(data, "Content_Localised")?.Replace("Material Content: ", "");
+                                    var materialContent = new AsteroidMaterialContent(content)
+                                    {
+                                        fallbackLocalizedName = JsonParsing.getString(data, "Content_Localised")?.Replace("Material Content: ", "")
+                                    };
                                     decimal remaining = JsonParsing.getDecimal(data, "Remaining"); // Out of 100
 
                                     // If a motherlode commodity is present

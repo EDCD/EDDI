@@ -14,11 +14,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.CombatRatingDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            CombatRating result = CombatRating.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = CombatRating.FromEDName(values[0].AsString);
-            }
+            var result = CombatRating.FromName(values[0].AsString) ?? 
+                                    CombatRating.FromEDName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

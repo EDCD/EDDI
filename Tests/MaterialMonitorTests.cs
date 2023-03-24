@@ -20,7 +20,7 @@ namespace UnitTests
             MakeSafe();
         }
 
-        string json = @"{
+        readonly string json = @"{
             ""materials"": [
             {
                 ""edname"": ""shieldpatternanalysis"",

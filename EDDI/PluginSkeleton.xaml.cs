@@ -11,7 +11,7 @@ namespace Eddi
     /// </summary>
     public partial class PluginSkeleton : UserControl
     {
-        string pluginName;
+        readonly string pluginName;
 
         public PluginSkeleton(string pluginName, bool isDisableable = true)
         {

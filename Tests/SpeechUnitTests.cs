@@ -63,7 +63,6 @@ namespace UnitTests
             speechQueue.Enqueue(speech1);
             speechQueue.Enqueue(speech2);
 
-            PrivateObject speechQueueObject = new PrivateObject(speechQueue);
             speechQueue.TryDequeue(out EddiSpeech result1);
             speechQueue.TryDequeue(out EddiSpeech result2);
 
@@ -220,7 +219,7 @@ namespace UnitTests
         public void TestPathingString4()
         {
             string pathingString = @";;;;;;Seven;;;";
-            List<string> pathingOptions = new List<string>() {
+            new List<string>() {
                 ""
                 , "Seven"
             };

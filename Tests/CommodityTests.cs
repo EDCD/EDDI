@@ -105,7 +105,6 @@ namespace UnitTests
             var quote = edQuote.ToCommodityMarketQuote();
             var oldDefinition = quote.definition.Copy();
             oldDefinition.avgprice = 99999999;
-            var oldQuote = new CommodityMarketQuote(oldDefinition);
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
             Assert.AreEqual(294, quote.avgprice);

@@ -14,11 +14,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.EconomyDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            Economy result = Economy.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = Economy.FromName(values[0].AsString);
-            }
+            var result = Economy.FromName(values[0].AsString) ?? 
+                                Economy.FromEDName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

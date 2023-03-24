@@ -14,11 +14,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.GovernmentDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            Government result = Government.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = Government.FromName(values[0].AsString);
-            }
+            var result = Government.FromName(values[0].AsString) ?? 
+                                  Government.FromEDName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

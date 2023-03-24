@@ -51,48 +51,54 @@ namespace UnitTests
                 {
                     case "Artemis":
                         {
-                            StarSystem result = new StarSystem();
-                            result.systemname = "Artemis";
-                            result.systemAddress = 3107509474002;
-                            result.x = 14.28125M;
-                            result.y = -63.1875M;
-                            result.z = -24.875M;
+                            var result = new StarSystem
+                                {
+                                    systemname = "Artemis", 
+                                    systemAddress = 3107509474002, 
+                                    x = 14.28125M,
+                                    y = -63.1875M,
+                                    z = -24.875M
+                                };
                             return result;
                         }
                     case "Diaguandri":
                         {
-                            StarSystem result = new StarSystem();
-                            result.systemname = "Diaguandri";
-                            result.systemAddress = 670417429889;
-                            result.x = -41.06250M;
-                            result.y = -62.15625M;
-                            result.z = -103.25000M;
+                            var result = new StarSystem
+                                {
+                                    systemname = "Diaguandri", 
+                                    systemAddress = 670417429889, 
+                                    x = -41.06250M,
+                                    y = -62.15625M,
+                                    z = -103.25000M
+                                };
 
-                            Station station = new Station();
-                            station.name = "Ray Gateway";
-                            station.marketId = 3223343616;
+                            var station = new Station { name = "Ray Gateway", marketId = 3223343616 };
                             result.stations.Add(station);
 
                             return result;
                         }
                     case "Sol":
                         {
-                            StarSystem result = new StarSystem();
-                            result.systemname = "Sol";
-                            result.systemAddress = 10477373803;
-                            result.x = 0.0M;
-                            result.y = 0.0M;
-                            result.z = 0.0M;
+                            var result = new StarSystem
+                                {
+                                    systemname = "Sol", 
+                                    systemAddress = 10477373803, 
+                                    x = 0.0M, 
+                                    y = 0.0M,
+                                    z = 0.0M
+                                };
                             return result;
                         }
                     case "Pleiades Sector HR-W d1-79":
                         {
-                            StarSystem result = new StarSystem();
-                            result.systemname = "Pleiades Sector HR-W d1-79";
-                            result.systemAddress = 2724879894859;
-                            result.x = -80.62500M;
-                            result.y = -146.65625M;
-                            result.z = -343.25000M;
+                            var result = new StarSystem
+                                {
+                                    systemname = "Pleiades Sector HR-W d1-79", 
+                                    systemAddress = 2724879894859,
+                                    x = -80.62500M,
+                                    y = -146.65625M,
+                                    z = -343.25000M
+                                };
                             return result;
                         }
                     default:

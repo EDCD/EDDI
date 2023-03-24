@@ -111,7 +111,7 @@ namespace EddiSpeechService
             // Don't clear system messages (priority 0)
             for (int i = 1; i < priorityQueues.Count; i++)
             {
-                while (priorityQueues[i].TryDequeue(out EddiSpeech speech)) { }
+                while (priorityQueues[i].TryDequeue(out _)) { }
             }
         }
 

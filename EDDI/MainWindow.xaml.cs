@@ -302,23 +302,23 @@ namespace Eddi
 
         private List<LanguageDef> GetAvailableLangs()
         {
-            List<LanguageDef> cultures = new List<LanguageDef>
+            var cultures = new List<LanguageDef>
             {
 
                 // Add the "Automatic" culture, we are using the InvariantCulture name "" to mean user's culture
                 new LanguageDef(CultureInfo.InvariantCulture, Properties.EddiResources.system_language)
             };
 
-            CultureInfo neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".
+            var neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".
             cultures.Add(new LanguageDef(neutralInfo));
 
             // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
-            List<LanguageDef> satelliteCultures = new List<LanguageDef>();
+            var satelliteCultures = new List<LanguageDef>();
             var fileInfo = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
             if (fileInfo is null) { throw new DirectoryNotFoundException(); }
-            DirectoryInfo rootInfo = new DirectoryInfo(fileInfo);
-            DirectoryInfo[] subDirs = rootInfo.GetDirectories();
-            foreach (DirectoryInfo dir in subDirs)
+            var rootInfo = new DirectoryInfo(fileInfo);
+            var subDirs = rootInfo.GetDirectories();
+            foreach (var dir in subDirs)
             {
                 string name = dir.Name;
                 if (
@@ -332,7 +332,7 @@ namespace Eddi
 
                 try
                 {
-                    CultureInfo cInfo = new CultureInfo(name);
+                    var cInfo = new CultureInfo(name);
                     satelliteCultures.Add(new LanguageDef(cInfo));
                 }
                 catch
@@ -348,12 +348,12 @@ namespace Eddi
 
         private List<TabItem> LoadMonitors(EDDIConfiguration eddiConfiguration)
         {
-            List<TabItem> result = new List<TabItem>();
-            foreach (IEddiMonitor monitor in EDDI.Instance.monitors)
+            var result = new List<TabItem>();
+            foreach (var monitor in EDDI.Instance.monitors)
             {
                 Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
 
-                System.Windows.Controls.UserControl monitorConfiguration = monitor.ConfigurationTabItem();
+                var monitorConfiguration = monitor.ConfigurationTabItem();
                 // Only show a tab if this can be turned off or has configuration elements
                 if (monitorConfiguration != null || !monitor.IsRequired())
                 {
@@ -377,8 +377,7 @@ namespace Eddi
                         skeleton.panel.Children.Add(monitorConfiguration);
                     }
 
-                    TabItem item = new TabItem { Header = monitor.LocalizedMonitorName() };
-                    item.Content = skeleton;
+                    var item = new TabItem { Header = monitor.LocalizedMonitorName(), Content = skeleton };
                     result.Add(item);
                 }
             }
@@ -387,12 +386,12 @@ namespace Eddi
 
         private List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
         {
-            List<TabItem> result = new List<TabItem>();
+            var result = new List<TabItem>();
             foreach (IEddiResponder responder in EDDI.Instance.responders)
             {
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
 
-                PluginSkeleton skeleton = new PluginSkeleton(responder.ResponderName());
+                var skeleton = new PluginSkeleton(responder.ResponderName());
                 skeleton.plugindescription.Text = responder.ResponderDescription();
 
                 if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
@@ -414,8 +413,7 @@ namespace Eddi
                     skeleton.panel.Children.Add(monitorConfiguration);
                 }
 
-                TabItem item = new TabItem { Header = responder.LocalizedResponderName() };
-                item.Content = skeleton;
+                var item = new TabItem { Header = responder.LocalizedResponderName(), Content = skeleton };
                 result.Add(item);
             }
             return result;
@@ -423,8 +421,8 @@ namespace Eddi
 
         public void ConfigureTTS()
         {
-            SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
-            List<string> speechOptions = new List<string>
+            var speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
+            var speechOptions = new List<string>
             {
                 "Windows TTS default"
             };

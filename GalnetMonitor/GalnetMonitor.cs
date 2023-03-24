@@ -335,8 +335,8 @@ namespace EddiGalnetMonitor
         {
             try
             {
-                CultureInfo ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
-                string res = resourceManager.GetString(basename, ci);
+                var ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
+                var res = resourceManager.GetString(basename, ci);
                 if (string.IsNullOrEmpty(res))
                 {
                     // Fallback to our invariant culture if the local language returns an empty result
@@ -353,18 +353,18 @@ namespace EddiGalnetMonitor
 
         public Dictionary<string, string> GetGalnetLocales()
         {
-            Dictionary<string, string> galnetLocales = new Dictionary<string, string>
+            var galnetLocales = new Dictionary<string, string>
             {
                 { "English", "en" } // Add our "neutral" language "en".
             };
 
             // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
-            Dictionary<string, string> satelliteLocales = new Dictionary<string, string>();
+            var satelliteLocales = new Dictionary<string, string>();
             var fileInfo = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
             if (fileInfo is null) { throw new DirectoryNotFoundException(); }
-            DirectoryInfo rootInfo = new DirectoryInfo(fileInfo);
-            DirectoryInfo[] subDirs = rootInfo.GetDirectories();
-            foreach (DirectoryInfo dir in subDirs)
+            var rootInfo = new DirectoryInfo(fileInfo);
+            var subDirs = rootInfo.GetDirectories();
+            foreach (var dir in subDirs)
             {
                 string name = dir.Name;
                 if (name == "x86" || 
@@ -381,8 +381,8 @@ namespace EddiGalnetMonitor
 
                 try
                 {
-                    CultureInfo cInfo = new CultureInfo(name);
-                    ResourceSet resourceSet = resourceManager.GetResourceSet(cInfo, true, true);
+                    var cInfo = new CultureInfo(name);
+                    var resourceSet = resourceManager.GetResourceSet(cInfo, true, true);
                     if (!string.IsNullOrEmpty(resourceSet.GetString("sourceURL")))
                     {
                         satelliteLocales.Add(cInfo.DisplayName, name);

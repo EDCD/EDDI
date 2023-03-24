@@ -14,11 +14,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.SecurityLevelDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            SecurityLevel result = SecurityLevel.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = SecurityLevel.FromName(values[0].AsString);
-            }
+            var result = SecurityLevel.FromName(values[0].AsString) ?? 
+                                     SecurityLevel.FromEDName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

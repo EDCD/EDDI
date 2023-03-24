@@ -31,8 +31,8 @@ namespace UnitTests
         {
             Event data = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
             Dictionary<string, object> result = PrepRollbarData(data);
-            Assert.IsFalse(result.TryGetValue("frontierID", out object frontierID), "'frontierID' property should have been removed");
-            Assert.IsTrue(result.TryGetValue("type", out object type));
+            Assert.IsFalse(result.TryGetValue("frontierID", out _), "'frontierID' property should have been removed");
+            Assert.IsTrue(result.TryGetValue("type", out _));
         }
 
         [TestMethod]

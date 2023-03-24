@@ -14,11 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.SuperpowerDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            Superpower result = Superpower.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = Superpower.FromNameOrEdName(values[0].AsString);
-            }
+            var result = Superpower.FromNameOrEdName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

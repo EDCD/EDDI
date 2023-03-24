@@ -53,11 +53,8 @@ namespace EddiSpeechResponder.AvalonEdit
         // Keep this: it will be used when we come to implement custom user color schemes
         public void SetBackgroundColor(string colorKey, Color newColor)
         {
-            HighlightingColor color = Definition.GetNamedColor(colorKey);
-            if (color == null)
-            {
-                throw new KeyNotFoundException($"Color key \"{colorKey}\" not found.");
-            }
+            var color = Definition.GetNamedColor(colorKey) ?? 
+                        throw new KeyNotFoundException($"Color key \"{colorKey}\" not found.");
             color.Background = new SimpleHighlightingBrush(newColor);
         }
     }

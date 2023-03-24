@@ -14,11 +14,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public string description => Properties.CustomFunctions_Untranslated.ExplorationRatingDetails;
         public NativeFunction function => new NativeFunction((values) =>
         {
-            ExplorationRating result = ExplorationRating.FromName(values[0].AsString);
-            if (result == null)
-            {
-                result = ExplorationRating.FromEDName(values[0].AsString);
-            }
+            var result = ExplorationRating.FromName(values[0].AsString) ?? 
+                                        ExplorationRating.FromEDName(values[0].AsString);
             return new ReflectionValue(result ?? new object());
         }, 1);
     }
