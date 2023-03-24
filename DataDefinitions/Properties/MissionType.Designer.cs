@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alert.
+        /// </summary>
+        internal static string Alert {
+            get {
+                return ResourceManager.GetString("Alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Donation.
         /// </summary>
         internal static string Altruism {
@@ -408,6 +417,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string PassengerBulk {
             get {
                 return ResourceManager.GetString("PassengerBulk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passenger Evacuation.
+        /// </summary>
+        internal static string PassengerEvacuation {
+            get {
+                return ResourceManager.GetString("PassengerEvacuation", resourceCulture);
             }
         }
         

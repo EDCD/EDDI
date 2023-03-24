@@ -265,4 +265,8 @@
     <value>Transferring illegal data</value>
     <comment>Crime onFoot_dataTransfer</comment>
   </data>
+  <data name="onFoot_overchargeIntent" xml:space="preserve">
+    <value>Attempting to discharge your Energylink in overload mode</value>
+    <comment>Crime onFoot_overchargeIntent</comment>
+  </data>
 </root>

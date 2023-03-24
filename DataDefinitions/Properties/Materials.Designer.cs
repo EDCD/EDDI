@@ -1069,6 +1069,33 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caustic Crystal.
+        /// </summary>
+        public static string tg_causticcrystal {
+            get {
+                return ResourceManager.GetString("tg_causticcrystal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corrosive Mechanisms.
+        /// </summary>
+        public static string tg_causticgeneratorparts {
+            get {
+                return ResourceManager.GetString("tg_causticgeneratorparts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caustic Shard.
+        /// </summary>
+        public static string tg_causticshard {
+            get {
+                return ResourceManager.GetString("tg_causticshard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Material Composition Data.
         /// </summary>
         public static string tg_compositiondata {

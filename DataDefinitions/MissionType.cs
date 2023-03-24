@@ -11,6 +11,7 @@
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new MissionType(edname);
 
+            _ = new MissionType("Alert");
             _ = new MissionType("Altruism");
             _ = new MissionType("Assassination", true);
             _ = new MissionType("Assassinate", true);
@@ -38,6 +39,7 @@
             _ = new MissionType("OnFoot", true);
             _ = new MissionType("Onslaught", true);
             _ = new MissionType("PassengerBulk", true);
+            _ = new MissionType("PassengerEvacuation", true);
             _ = new MissionType("PassengerVIP", true);
             _ = new MissionType("Piracy", true);
             _ = new MissionType("Planet", true);

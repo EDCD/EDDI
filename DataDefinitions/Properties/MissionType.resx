@@ -324,4 +324,10 @@
     <value>On Fire</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
+  <data name="PassengerEvacuation" xml:space="preserve">
+    <value>Passenger Evacuation</value>
+  </data>
+  <data name="Alert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
 </root>

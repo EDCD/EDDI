@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Crimes {
@@ -318,6 +318,15 @@ namespace EddiDataDefinitions.Properties {
         public static string onFoot_murder {
             get {
                 return ResourceManager.GetString("onFoot_murder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempting to discharge your Energylink in overload mode.
+        /// </summary>
+        public static string onFoot_overchargeIntent {
+            get {
+                return ResourceManager.GetString("onFoot_overchargeIntent", resourceCulture);
             }
         }
         
