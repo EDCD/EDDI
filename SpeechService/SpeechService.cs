@@ -326,7 +326,7 @@ namespace EddiSpeechService
 
                     Logging.Debug("Starting speech");
                     StartSpeech(ref soundOut, priority);
-                    Logging.Debug("Waiting for speech - " + waitTime);
+                    Logging.Debug($"Waiting for speech - {waitTime} ms" );
                     // Wait for the appropriate amount of time before stopping the speech.  This is belt-and-braces approach,
                     // as we should receive the stopped signal when the buffer runs out, but there is suspicion that the stopped
                     // signal does not show up at time
@@ -342,37 +342,41 @@ namespace EddiSpeechService
         }
 
         // Obtain the speech memory stream
-        public Stream getSpeechStream(string voice, string speech)
+        public Stream getSpeechStream(string requestedVoice, string speech)
         {
             try
             {
-                if (string.IsNullOrEmpty(voice))
+                if (string.IsNullOrEmpty(requestedVoice) || 
+                    string.Equals( requestedVoice, "Windows TTS default", StringComparison.InvariantCultureIgnoreCase ))
                 {
-                    voice = Configuration.StandardVoice;
+                    requestedVoice = Configuration.StandardVoice;
                 }
-
-                if (allVoices.All(v => v.name != voice))
+                else if (allVoices.All(v => !string.Equals(v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) ))
                 {
-                    voice = windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice;
-
                     // If the prior selected voice is no longer a valid option, we revert to the system default.
-                    Configuration.StandardVoice = null;
-                    Configuration.ToFile();
+                    var fallbackVoice = windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice;
+                    if ( !string.IsNullOrEmpty(fallbackVoice) )
+                    {
+                        Logging.Debug( $"Voice {requestedVoice} not found, reverting to voice {fallbackVoice}." );
+                        requestedVoice = fallbackVoice;
+                    }
+                    else
+                    {
+                        Logging.Error("Could not obtain a voice for speaking.");
+                    }
                 }
 
-                if (string.IsNullOrEmpty(voice))
+                if ( !string.IsNullOrEmpty( requestedVoice ) )
                 {
-                    Logging.Error("Could not obtain a voice for speaking.");
-                }
+                    var stream = speak(requestedVoice, speech, allVoices.Copy());
+                    if ( stream is null || stream.Length == 0 )
+                    {
+                        // Try again, with speech devoid of SSML
+                        stream = speak( requestedVoice, Regex.Replace( speech, "<.*?>", string.Empty ), allVoices.Copy() );
+                    }
 
-                var stream = speak(voice, speech, allVoices.Copy());
-                if (stream is null || stream.Length == 0)
-                {
-                    // Try again, with speech devoid of SSML
-                    stream = speak(voice, Regex.Replace(speech, "<.*?>", string.Empty), allVoices.Copy());
+                    return stream;
                 }
-
-                return stream;
             }
             catch (Exception ex)
             {
@@ -384,25 +388,13 @@ namespace EddiSpeechService
 
         private Stream speak(string requestedVoice, string speech, List<VoiceDetails> voiceList)
         {
-            // Get the voice we will use for speaking
+            // Get the voice details we will use for speaking
             var voiceDetails = voiceList.FirstOrDefault(v => string.Equals(v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase));
             if (voiceDetails != null)
             {
                 return speak(voiceDetails, speech, voiceList);
             }
-            if (voiceList.Count > 0)
-            {
-                voiceDetails = voiceList[new Random().Next(voiceList.Count - 1)];
-                if (voiceDetails != null)
-                {
-                    Logging.Warn($"Speech failed. Retrying with voice {voiceDetails.name}");
-                    return speak(voiceDetails, speech, voiceList);
-                }
-            }
-            else
-            {
-                Logging.Warn("No available voices.");
-            }
+            Logging.Warn( $"Something went wrong. Unable to obtain voice {requestedVoice}." );
             return null;
         }
 
@@ -422,7 +414,6 @@ namespace EddiSpeechService
             catch (Exception ex)
             {
                 Logging.Error(ex.Message, ex);
-
                 voiceList.Remove(voiceDetails);
                 if (voiceList.Any())
                 {
@@ -462,16 +453,15 @@ namespace EddiSpeechService
         {
             lock (activeSpeechLock)
             {
-                if (activeSpeech != null)
+                if ( activeSpeech == null ) { return; }
+                if ( activeSpeech.PlaybackState != PlaybackState.Stopped )
                 {
                     Logging.Debug("Stopping active speech");
-                    FadeOut(activeSpeech);
-                    activeSpeech.Stop();
-                    Logging.Debug("Disposing of active speech");
-                    activeSpeech.Dispose();
-                    activeSpeech = null;
-                    Logging.Debug("Stopped current speech");
                 }
+                FadeOut(activeSpeech);
+                activeSpeech.Stop();
+                activeSpeech.Dispose();
+                activeSpeech = null;
             }
         }
 

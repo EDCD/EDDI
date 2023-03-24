@@ -65,8 +65,8 @@ namespace EddiSpeechResponder
 
         public ScriptResolver ScriptResolver
         {
-            get => _scriptResolver ?? new ScriptResolver(CurrentPersonality.Scripts); 
-            set => _scriptResolver = value;
+            get => _scriptResolver ?? new ScriptResolver(CurrentPersonality.Scripts);
+            private set => _scriptResolver = value;
         }
 
         private Personality _personality;
@@ -93,7 +93,6 @@ namespace EddiSpeechResponder
             Configuration = ConfigService.Instance.speechResponderConfiguration;
             Personalities = GetPersonalities();
             SetPersonality(Configuration.Personality);
-            Logging.Info($"Initialized {ResponderName()}");
         }
 
         #region Personalities
@@ -223,6 +222,7 @@ namespace EddiSpeechResponder
         public bool Start()
         {
             EDDI.Instance.State["speechresponder_quiet"] = false;
+            Logging.Info( $"Initialized {ResponderName()}" );
             return true;
         }
 
@@ -285,7 +285,7 @@ namespace EddiSpeechResponder
             Say(ScriptResolver, ship, @event.type, @event, null, null, SayOutLoud());
         }
 
-        public bool SayOutLoud()
+        private static bool SayOutLoud()
         {
             // By default we say things unless we've been told not to
             bool sayOutLoud = true;
@@ -306,7 +306,7 @@ namespace EddiSpeechResponder
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
+        private void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
             var dict = resolver.CompileVariables(theEvent);
             string speech = resolver.resolveFromName(scriptName, dict, true);
@@ -323,7 +323,16 @@ namespace EddiSpeechResponder
                 }
                 if (sayOutLoud && !(Configuration.Subtitles && Configuration.SubtitlesOnly))
                 {
-                    SpeechService.Instance.Say(ship, speech, priority == null ? resolver.priority(scriptName) : (int)priority, voice, false, theEvent?.type, invokedFromVA);
+                    Logging.Debug($"Sending speach '{speech}' to SpeechService.", new Dictionary<string, object>()
+                    {
+                        { "Ship", ship },
+                        { "ScriptName", scriptName },
+                        { "Event", theEvent }, 
+                        { "Priority", priority }, 
+                        { "Voice", voice },
+                        { "InvokedFromVA", invokedFromVA }
+                    });
+                    SpeechService.Instance.Say(ship, speech, priority ?? resolver.priority(scriptName), voice, false, theEvent?.type, invokedFromVA);
                 }
             }
         }
