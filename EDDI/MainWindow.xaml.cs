@@ -1131,7 +1131,10 @@ namespace Eddi
         {
             SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration
             {
-                StandardVoice = ttsVoiceDropDown.SelectedItem == null || ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedItem.ToString(),
+                StandardVoice = ttsVoiceDropDown.SelectedItem == null || 
+                                ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" 
+                    ? null 
+                    : ttsVoiceDropDown.SelectedItem.ToString(),
                 Volume = (int)ttsVolumeSlider.Value,
                 Rate = (int)ttsRateSlider.Value,
                 EffectsLevel = (int)ttsEffectsLevelSlider.Value,
