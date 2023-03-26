@@ -53,6 +53,7 @@ namespace EddiDataDefinitions
 
         public void AddOrUpdateBody(Body body)
         {
+            if ( body is null ) { return; }
             var builder = bodies.ToBuilder();
             internalAddOrUpdateBody(body, builder);
             builder.Sort(Body.CompareById);
@@ -72,8 +73,10 @@ namespace EddiDataDefinitions
 
         private void internalAddOrUpdateBody(Body newOrUpdatedBody, ImmutableList<Body>.Builder builder)
         {
-            // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
-            int index = builder.FindIndex(b => b.bodyname == newOrUpdatedBody.bodyname || ((b.mainstar ?? false) && b.mainstar == newOrUpdatedBody.mainstar));
+            int index = builder.FindIndex(b =>
+                (b.bodyId != null && newOrUpdatedBody.bodyId != null && b.bodyId == newOrUpdatedBody.bodyId) || // Matching bodyId
+                (!string.IsNullOrEmpty(b.bodyname) && !string.IsNullOrEmpty(newOrUpdatedBody.bodyname) && b.bodyname == newOrUpdatedBody.bodyname) || // Matching bodyName
+                (b.distance == 0M && b.distance == newOrUpdatedBody.distance)); // Matching distance (for the main entry star only)
             if (index >= 0)
             {
                 builder[index] = PreserveBodyData(builder[index], newOrUpdatedBody);
@@ -88,6 +91,20 @@ namespace EddiDataDefinitions
             {
                 Reserve = newOrUpdatedBody.reserveLevel;
             }
+        }
+
+        public void ClearTemporaryBodies()
+        {
+            var builder = bodies.ToBuilder();
+            foreach ( var body in builder )
+            {
+                if ( body.bodyId is null || 
+                     string.IsNullOrEmpty(body.bodyname) )
+                {
+                    builder.Remove( body );
+                }
+            }
+            bodies = builder.ToImmutable();
         }
 
         public void PreserveBodyData(List<Body> oldBodies, ImmutableList<Body> newBodies)
