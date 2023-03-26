@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>API密钥：</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>将您的旅行信息传送至 Inara (https://inara.cz). Inara 是一个第三方工具，可提供飞行员联合会成员的信息并生成可共享的个人资料，详细说明您自己的状态和成就。</value>
   </data>

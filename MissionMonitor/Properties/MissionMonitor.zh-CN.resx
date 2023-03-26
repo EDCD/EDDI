@@ -156,7 +156,9 @@
   <data name="header_originstation" xml:space="preserve">
     <value>初始星系：</value>
   </data>
-  
+  <data name="header_faction" xml:space="preserve">
+    <value>任务提供人：</value>
+  </data>
   <data name="header_cg_tier" xml:space="preserve">
     <value>等级：</value>
   </data>
@@ -167,5 +169,7 @@
   <data name="header_cg_reward" xml:space="preserve">
     <value>奖励 (信用点)：</value>
   </data>
-  
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>显示或隐藏所选任务的额外细节</value>
+  </data>
 </root>

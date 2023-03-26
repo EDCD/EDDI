@@ -150,5 +150,7 @@
   <data name="word_wrap" xml:space="preserve">
     <value>自动换行</value>
   </data>
-  
+  <data name="folding" xml:space="preserve">
+    <value>分行</value>
+  </data>
 </root>

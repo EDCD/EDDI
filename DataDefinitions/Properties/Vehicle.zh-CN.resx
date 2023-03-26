@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="Empire" xml:space="preserve">
+    <value>GU-97 </value>
+  </data>
   <data name="Federation" xml:space="preserve">
     <value>F63 协和</value>
   </data>
@@ -136,5 +138,7 @@
   <data name="TestBuggy" xml:space="preserve">
     <value>SRV 圣甲虫</value>
   </data>
-  
+  <data name="CombatMulticrewSRV01" xml:space="preserve">
+    <value>天蝎武装SRV</value>
+  </data>
 </root>

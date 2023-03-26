@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>EDSM API 密钥：</value>
+  </data>
   <data name="cmd_name_label" xml:space="preserve">
     <value>EDSM 指挥官名称:</value>
   </data>
@@ -134,7 +136,7 @@
     <value>请输入 EDSM API key 以获取日志</value>
   </data>
   <data name="log_button_error_received" xml:space="preserve">
-    <value>EDSM 受到错误: </value>
+    <value>收到EDSM 错误： </value>
   </data>
   <data name="log_button_fetched" xml:space="preserve">
     <value>已获取日志</value>

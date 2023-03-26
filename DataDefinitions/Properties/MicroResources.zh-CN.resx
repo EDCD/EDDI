@@ -807,7 +807,10 @@
     <value>Нейтрализатор pH</value>
     <comment>A compound designed to neutralise the pH levels of acids and alkalis.</comment>
   </data>
-  
+  <data name="RDX" xml:space="preserve">
+    <value>RDX</value>
+    <comment>A highly explosive nitramide compound.</comment>
+  </data>
   <data name="ViscoelasticPolymer" xml:space="preserve">
     <value>Вязкоупругий полимер</value>
     <comment>An elastic material used in shock absorption and vibration dampening.</comment>

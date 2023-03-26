@@ -169,5 +169,8 @@
     <value>载有通缉犯</value>
     <comment>LegalStatus - PassengerWanted</comment>
   </data>
-  
+  <data name="Thargoid" xml:space="preserve">
+    <value>八角</value>
+    <comment>LegalState Thargoid</comment>
+  </data>
 </root>

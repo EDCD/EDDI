@@ -149,7 +149,10 @@
     <value>Станция</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
+  <data name="Null" xml:space="preserve">
+    <value>质心</value>
+    <comment>BodyType "Null" (a Barycenter)</comment>
+  </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Кольцо планеты</value>
     <comment>Body Type PlanetaryRing</comment>
@@ -162,5 +165,8 @@
     <value>Кольца</value>
     <comment>Body Type StellarRing</comment>
   </data>
-  
+  <data name="HyperbolicOrbiter" xml:space="preserve">
+    <value>双曲线轨道星体</value>
+    <comment>Body Type HyperbolicOrbiter</comment>
+  </data>
 </root>

@@ -178,5 +178,8 @@
     <value>双等离子机炮</value>
     <comment>Default loadout for a Scarab SRV</comment>
   </data>
-  
+  <data name="Default" xml:space="preserve">
+    <value>重型加农炮和一个导弹巢</value>
+    <comment>Default loadout for a Scorpion Combat SRV</comment>
+  </data>
 </root>
