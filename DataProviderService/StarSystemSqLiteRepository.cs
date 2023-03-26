@@ -17,6 +17,8 @@ namespace EddiDataProviderService
         private const string TABLE_GET_SCHEMA_VERSION_SQL = @"PRAGMA user_version;";
         private const string TABLE_SET_SCHEMA_VERSION_SQL = @"PRAGMA user_version = ";
 
+        public static bool unitTesting;
+
         public long SCHEMA_VERSION { get; private set; }
 
         // Append new table columns to the end of the list to maximize compatibility with schema version 0.
@@ -576,7 +578,7 @@ namespace EddiDataProviderService
 
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
-            if (!starSystems.Any()) { return; }
+            if (!starSystems.Any() || unitTesting) { return; }
 
             // Update any star systems in our short term star system cache to minimize repeat deserialization
             foreach (var starSystem in starSystems)

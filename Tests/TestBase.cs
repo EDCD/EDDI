@@ -1,6 +1,7 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
 using EddiCore;
+using EddiDataProviderService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,6 +29,7 @@ namespace UnitTests
             Utilities.Files.unitTesting = true;
             ConfigService.unitTesting = true;
             CompanionAppService.unitTesting = true;
+            StarSystemSqLiteRepository.unitTesting = true;
 
             // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
