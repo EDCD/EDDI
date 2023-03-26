@@ -98,7 +98,9 @@ namespace EddiDataDefinitions
         public void ClearTemporaryBodies()
         {
             var builder = bodies.ToBuilder();
-            var bodiesToRemove = builder.Where( b => b.bodyId is null || string.IsNullOrEmpty( b.bodyname ) );
+            var bodiesToRemove = builder
+                .Where( b => b.bodyId is null || string.IsNullOrEmpty( b.bodyname ) )
+                .ToList();
             builder.RemoveRange(  bodiesToRemove );
             builder.Sort( Body.CompareById );
             bodies = builder.ToImmutable();
