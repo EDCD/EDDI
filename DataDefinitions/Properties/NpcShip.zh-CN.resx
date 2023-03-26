@@ -97,4 +97,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="scout" xml:space="preserve">
+    <value>八角侦查兵</value>
+    <comment>Thargoid Scout</comment>
+  </data>
+  <data name="scout_hq" xml:space="preserve">
+    <value>八角侦查兵HQ型</value>
+    <comment>Thargoid Scout (variant HQ)</comment>
+  </data>
+  <data name="scout_q" xml:space="preserve">
+    <value>八角侦查兵Q型</value>
+    <comment>Thargoid Scout (variant Q)</comment>
+  </data>
+  <data name="scout_nq" xml:space="preserve">
+    <value>八角侦查兵NQ型</value>
+    <comment>Thargoid Scout (variant NQ)</comment>
+  </data>
+  <data name="unknownsaucer" xml:space="preserve">
+    <value>八角独眼巨人</value>
+    <comment>Thargoid Cyclops</comment>
+  </data>
+  <data name="unknownsaucer_e" xml:space="preserve">
+    <value>八角蛇怪</value>
+    <comment>Thargoid Basilisk</comment>
+  </data>
+  <data name="unknownsaucer_f" xml:space="preserve">
+    <value>八角美杜莎</value>
+    <comment>Thargoid Medusa</comment>
+  </data>
+  <data name="unknownsaucer_g" xml:space="preserve">
+    <value>八角双头犬</value>
+    <comment>Thargoid Orthrus (I think)</comment>
+  </data>
+  <data name="unknownsaucer_h" xml:space="preserve">
+    <value>八角九头蛇</value>
+    <comment>Thargoid Hydra</comment>
+  </data>
 </root>

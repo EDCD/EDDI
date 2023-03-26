@@ -129,8 +129,14 @@
     <value>战地修理单元</value>
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
-  
-  
+  <data name="AXMissileRack" xml:space="preserve">
+    <value>反八角导弹巢</value>
+    <comment>Module AXMissileRack</comment>
+  </data>
+  <data name="AXMulti_Cannon" xml:space="preserve">
+    <value>反八角多管炮</value>
+    <comment>Module AXMulti_Cannon</comment>
+  </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
     <value>基础探索扫描仪</value>
     <comment>Module BasicDiscoveryScanner</comment>
@@ -163,7 +169,10 @@
     <value>货仓架</value>
     <comment>Module CargoRack</comment>
   </data>
-  
+  <data name="VoicePack_Celeste" xml:space="preserve">
+    <value>科瓦斯</value>
+    <comment>Module Celeste</comment>
+  </data>
   <data name="ChaffLauncher" xml:space="preserve">
     <value>箔条发射器</value>
     <comment>Module ChaffLauncher</comment>
@@ -468,8 +477,14 @@
     <value>鱼雷发射架</value>
     <comment>Module TorpedoPylon</comment>
   </data>
-  
-  
+  <data name="VoicePack_Verity" xml:space="preserve">
+    <value>维里蒂</value>
+    <comment>Module Verity</comment>
+  </data>
+  <data name="VoicePack_Victor" xml:space="preserve">
+    <value>维克多</value>
+    <comment>Module Victor</comment>
+  </data>
   <data name="Whitestringlights" xml:space="preserve">
     <value>白色灯串</value>
     <comment>Module Whitestringlights</comment>
@@ -578,13 +593,44 @@
     <value>Retributor光束激光炮</value>
     <comment>Module RetributorBeamLaser</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MultiDroneControl_Mining" xml:space="preserve">
+    <value>挖矿任务无人机控制器</value>
+    <comment>Module MultiDroneControl_Mining</comment>
+  </data>
+  <data name="MultiDroneControl_Operations" xml:space="preserve">
+    <value>特种行动无人机控制器</value>
+    <comment>Module MultiDroneControl_Operations</comment>
+  </data>
+  <data name="MultiDroneControl_Rescue" xml:space="preserve">
+    <value>救援行动无人机控制器</value>
+    <comment>Module MultiDroneControl_Rescue</comment>
+  </data>
+  <data name="MultiDroneControl_Xeno" xml:space="preserve">
+    <value>反八角任务无人机控制器</value>
+    <comment>Module MultiDroneControl_Xeno</comment>
+  </data>
+  <data name="MultiDroneControl_Universal" xml:space="preserve">
+    <value>全功能无人机控制器</value>
+    <comment>Module MultiDroneControl_Universal</comment>
+  </data>
+  <data name="Enhanced_AXMissileRack" xml:space="preserve">
+    <value>增强型反八角导弹巢</value>
+    <comment>Module Enhanced AX Missile Rack</comment>
+  </data>
+  <data name="Enhanced_AXMulti_Cannon" xml:space="preserve">
+    <value>增强型反八角多管炮</value>
+    <comment>Module Enhanced AX Multi-Cannon</comment>
+  </data>
+  <data name="ExpModuleStabiliser" xml:space="preserve">
+    <value>实验性武器稳定器</value>
+    <comment>Module Experimental Weapon Stabilizer</comment>
+  </data>
+  <data name="XenoScannerMK2" xml:space="preserve">
+    <value>增强型八角扫描器</value>
+    <comment>Module Enhanced Xeno Scanner</comment>
+  </data>
+  <data name="Caustic_Sink_Launcher" xml:space="preserve">
+    <value>除酸器发射器</value>
+    <comment>Module Caustic Sink Launcher</comment>
+  </data>
 </root>

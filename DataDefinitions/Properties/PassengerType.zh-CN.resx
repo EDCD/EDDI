@@ -97,24 +97,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AidWorker" xml:space="preserve">
+    <value>救援人员乘客团体</value>
+  </data>
+  <data name="Business" xml:space="preserve">
+    <value>商人乘客团体</value>
+  </data>
+  <data name="Celebrity" xml:space="preserve">
+    <value>名流</value>
+  </data>
+  <data name="CEO" xml:space="preserve">
+    <value>CEO</value>
+  </data>
+  <data name="Criminal" xml:space="preserve">
+    <value>罪犯</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>医生</value>
+  </data>
+  <data name="Explorer" xml:space="preserve">
+    <value>探索家</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>将军</value>
+  </data>
+  <data name="HeadOfState" xml:space="preserve">
+    <value>首脑</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>医疗小队</value>
+  </data>
+  <data name="Politician" xml:space="preserve">
+    <value>政客团体</value>
+  </data>
+  <data name="PrisonerOfWar" xml:space="preserve">
+    <value>战俘</value>
+  </data>
+  <data name="Protestor" xml:space="preserve">
+    <value>抗议者乘客团体</value>
+  </data>
+  <data name="Rebel" xml:space="preserve">
+    <value>叛军团体</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>难民团体</value>
+  </data>
+  <data name="Scientist" xml:space="preserve">
+    <value>科研小队</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>安全小队</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>叛军头目</value>
+  </data>
+  <data name="Tourist" xml:space="preserve">
+    <value>有钱的游客</value>
+  </data>
+  <data name="Whistleblower" xml:space="preserve">
+    <value>政治犯</value>
+  </data>
 </root>

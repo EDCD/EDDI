@@ -117,79 +117,304 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>导航信标</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>受损的导航信标</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>未知信号源</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>高强度战斗区</value>
+    <comment>Conflict Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>中等强度战斗区</value>
+    <comment>Conflict Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>低强度战斗区</value>
+    <comment>Conflict Zone (Low Intensity)</comment>
+  </data>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>低级信号发射</value>
+    <comment>Salvage signal</comment>
+  </data>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>战斗余波</value>
+    <comment>Aftermatch signal</comment>
+  </data>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>异常事态</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>礼仪通讯</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>高级信号发射</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>编码信号发射</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>非人类信号源</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>武器开火</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>任务目标</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>运输队信号</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>呼救信号</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>贸易信标</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>高风险资源开采场</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>低风险资源开采场</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>资源开采场</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>危险资源开采场</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>未注册的通讯信标</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>反八角冲突区</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>监听站</value>
+    <comment>ListeningPost</comment>
+  </data>
+  <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
+    <value>值得注意的恒星现象</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>主力舰</value>
+    <comment>Capital Ship</comment>
+  </data>
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
+    <value>值得注意的恒星现象</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>海盗活动</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
+  <data name="SAA_SignalType_Biological" xml:space="preserve">
+    <value>地表生物信号</value>
+    <comment>Biological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Geological" xml:space="preserve">
+    <value>地表地质信号</value>
+    <comment>Geological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>地表人类信号</value>
+    <comment>Human Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>地表八角信号</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>八角藤壶</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>检查站</value>
+    <comment>Checkpoint</comment>
+  </data>
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>运输队信标</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>海盗活动</value>
+    <comment>Pirate Activity Detected [Threat 6]</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>海盗活动</value>
+    <comment>Pirate Activity Detected [Threat 7]</comment>
+  </data>
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>地表守护者信号</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
+  <data name="Ancient" xml:space="preserve">
+    <value>古代遗迹</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
+  <data name="Ancient_Small" xml:space="preserve">
+    <value>守护者建筑</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny" xml:space="preserve">
+    <value>守护者建筑</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium" xml:space="preserve">
+    <value>守护者建筑</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="FIXED_EVENT_DEBRIS" xml:space="preserve">
+    <value>残骸场</value>
+    <comment>Debris field</comment>
+  </data>
+  <data name="SAA_SignalType_Other" xml:space="preserve">
+    <value>其他地表信号</value>
+    <comment>Other Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_WreckedUnknown" xml:space="preserve">
+    <value>坠毁的八角飞船</value>
+    <comment>Thargoid crash site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO81_TITLE" xml:space="preserve">
+    <value>可回收残骸</value>
+    <comment>Salvageable Wreckage signal source</comment>
+  </data>
+  <data name="FIXED_EVENT_DISTRIBUTIONCENTRE" xml:space="preserve">
+    <value>分发中心</value>
+    <comment>Distribution Centre</comment>
+  </data>
+  <data name="Aftermath_Large" xml:space="preserve">
+    <value>呼救信号</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="AttackAftermath" xml:space="preserve">
+    <value>呼救信号</value>
+    <comment>Distress Call</comment>
+  </data>
+  <data name="Abandoned_Buggy" xml:space="preserve">
+    <value>求救信标</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Eagle_Assassination" xml:space="preserve">
+    <value>加密信号</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Sidewinder_Assassination" xml:space="preserve">
+    <value>加密信号</value>
+    <comment>ENCRYPTED SIGNAL</comment>
+  </data>
+  <data name="Damaged_Eagle" xml:space="preserve">
+    <value>求救信标</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Damaged_Sidewinder" xml:space="preserve">
+    <value>求救信标</value>
+    <comment>Distress Beacon</comment>
+  </data>
+  <data name="Smugglers_Cache" xml:space="preserve">
+    <value>不寻常标记</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Trap_Cargo" xml:space="preserve">
+    <value>不寻常标记</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Wreckage_Buggy" xml:space="preserve">
+    <value>小型残骸</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wreckage_Probe" xml:space="preserve">
+    <value>撞击点</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Satellite" xml:space="preserve">
+    <value>撞击点</value>
+    <comment>Impact Site</comment>
+  </data>
+  <data name="Wreckage_Cargo" xml:space="preserve">
+    <value>小型残骸</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Wrecks_Eagle" xml:space="preserve">
+    <value>坠毁地点</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="Wrecks_Sidewinder" xml:space="preserve">
+    <value>坠毁地点</value>
+    <comment>Crash Site</comment>
+  </data>
+  <data name="CrashedShip" xml:space="preserve">
+    <value>坠毁的飞船</value>
+    <comment>POI CrashedShip</comment>
+  </data>
+  <data name="Gro_controlScenarioTitle" xml:space="preserve">
+    <value>武装起义</value>
+    <comment>Gro_controlScenarioTitle</comment>
+  </data>
+  <data name="Trap_Data" xml:space="preserve">
+    <value>不寻常标记</value>
+    <comment>Irregular Markers</comment>
+  </data>
+  <data name="Perimeter" xml:space="preserve">
+    <value>启动的电源信号</value>
+    <comment>Active Power Source</comment>
+  </data>
+  <data name="GenericSignalSource" xml:space="preserve">
+    <value>信号源</value>
+    <comment>When the signal source may be one of several types</comment>
+  </data>
+  <data name="SAA_SignalType_PlanetAnomaly" xml:space="preserve">
+    <value>地表异常</value>
+    <comment>Planetary Anomaly Surface Signal</comment>
+  </data>
+  <data name="Cargo" xml:space="preserve">
+    <value>小型残骸</value>
+    <comment>Minor Wreckage</comment>
+  </data>
+  <data name="Warzone_TG_Med" xml:space="preserve">
+    <value>中等强度反八角战斗区</value>
+    <comment>Medium Intensity Thargoid Conflict Zone</comment>
+  </data>
+  <data name="Warzone_TG_Low" xml:space="preserve">
+    <value>低强度反八角战斗区</value>
+    <comment>Low Intensity Thargoind Conflict Zone</comment>
+  </data>
+  <data name="Warzone_TG_High" xml:space="preserve">
+    <value>高强度反八角战斗区</value>
+    <comment>High Intensity Thargoid Conflict Zone</comment>
+  </data>
+  <data name="Warzone_TG_VeryHigh" xml:space="preserve">
+    <value>极高强度反八角战斗区</value>
+    <comment>Very High Intensity AX Conflict Zone</comment>
+  </data>
+  <data name="Wreckage_AncientProbe" xml:space="preserve">
+    <value>小型残骸</value>
+    <comment>Minor Wreckage</comment>
+  </data>
 </root>

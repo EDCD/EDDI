@@ -97,36 +97,102 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="SquadronMate" xml:space="preserve">
+    <value>中队队友</value>
+  </data>
+  <data name="WingMate" xml:space="preserve">
+    <value>组队队友</value>
+  </data>
+  <data name="CrewMate" xml:space="preserve">
+    <value>船员</value>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>指挥官</value>
+  </data>
+  <data name="AmbushedPilot" xml:space="preserve">
+    <value>被伏击的飞行员</value>
+  </data>
+  <data name="BountyHunter" xml:space="preserve">
+    <value>赏金猎人</value>
+  </data>
+  <data name="CapShip" xml:space="preserve">
+    <value>主力舰</value>
+  </data>
+  <data name="CargoHunter" xml:space="preserve">
+    <value>货物猎人</value>
+  </data>
+  <data name="ConvoyExplorers" xml:space="preserve">
+    <value>勘探船队</value>
+  </data>
+  <data name="ConvoyWedding" xml:space="preserve">
+    <value>婚礼船队</value>
+  </data>
+  <data name="CruiseLiner" xml:space="preserve">
+    <value>游轮</value>
+  </data>
+  <data name="Escort" xml:space="preserve">
+    <value>护送</value>
+  </data>
+  <data name="Hitman" xml:space="preserve">
+    <value>杀手</value>
+  </data>
+  <data name="Messenger" xml:space="preserve">
+    <value>信使</value>
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>军队</value>
+  </data>
+  <data name="Miner" xml:space="preserve">
+    <value>矿工</value>
+  </data>
+  <data name="PassengerHunter" xml:space="preserve">
+    <value>乘客猎人</value>
+  </data>
+  <data name="PassengerLiner" xml:space="preserve">
+    <value>客轮</value>
+  </data>
+  <data name="Pirate" xml:space="preserve">
+    <value>海盗</value>
+  </data>
+  <data name="Police" xml:space="preserve">
+    <value>警察</value>
+  </data>
+  <data name="PowersAssassin" xml:space="preserve">
+    <value>敌对势力的刺客</value>
+  </data>
+  <data name="PowersPirate" xml:space="preserve">
+    <value>敌对势力的海盗</value>
+  </data>
+  <data name="PowersSecurity" xml:space="preserve">
+    <value>敌对势力的安全人员</value>
+  </data>
+  <data name="Propagandist" xml:space="preserve">
+    <value>宣传工作者</value>
+  </data>
+  <data name="Protester" xml:space="preserve">
+    <value>抗议者</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>难民</value>
+  </data>
+  <data name="StarshipOne" xml:space="preserve">
+    <value>联邦总统旗舰-星舰一号</value>
+    <comment>StarshipOne
+The Federation presidential flagship, like "Airforce One" in real life.</comment>
+  </data>
+  <data name="SearchandRescue" xml:space="preserve">
+    <value>搜寻及救援</value>
+  </data>
+  <data name="NPC" xml:space="preserve">
+    <value>NPC</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>站点</value>
+  </data>
+  <data name="CivilianPilot" xml:space="preserve">
+    <value>民用飞行员</value>
+  </data>
+  <data name="ConflictZone" xml:space="preserve">
+    <value>冲突区</value>
+  </data>
 </root>

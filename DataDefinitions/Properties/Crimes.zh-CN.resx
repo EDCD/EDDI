@@ -249,8 +249,21 @@
     <value>侵入</value>
     <comment>Crime onFoot_trespass</comment>
   </data>
-  
-  
-  
+  <data name="onFoot_carryingStolenGoods" xml:space="preserve">
+    <value>携带被盗物品</value>
+    <comment>Crime onFoot_carryingStolenGoods</comment>
+  </data>
+  <data name="onFoot_arcCutterUse" xml:space="preserve">
+    <value>使用切割器</value>
+    <comment>Crime onFoot_arcCutterUse</comment>
+  </data>
+  <data name="onFoot_carryingIllegalData" xml:space="preserve">
+    <value>携带非法数据</value>
+    <comment>Crime onFoot_carryingIllegalData</comment>
+  </data>
+  <data name="onFoot_dataTransfer" xml:space="preserve">
+    <value>输运非法数据</value>
+    <comment>Crime onFoot_dataTransfer</comment>
+  </data>
   
 </root>
