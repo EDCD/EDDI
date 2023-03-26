@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using Utilities;
@@ -72,8 +73,12 @@ namespace EddiDataDefinitions
 
         private void internalAddOrUpdateBody(Body newOrUpdatedBody, ImmutableList<Body>.Builder builder)
         {
-            // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
-            int index = builder.FindIndex(b => b.bodyname == newOrUpdatedBody.bodyname || ((b.mainstar ?? false) && b.mainstar == newOrUpdatedBody.mainstar));
+            if ( newOrUpdatedBody is null ) { return; }
+
+            int index = builder.FindIndex(b =>
+                (b.bodyId != null && newOrUpdatedBody.bodyId != null && b.bodyId == newOrUpdatedBody.bodyId) || // Matching bodyId
+                (!string.IsNullOrEmpty(b.bodyname) && !string.IsNullOrEmpty(newOrUpdatedBody.bodyname) && b.bodyname == newOrUpdatedBody.bodyname) || // Matching bodyName
+                (b.distance == 0M && b.distance == newOrUpdatedBody.distance)); // Matching distance (for the main entry star only)
             if (index >= 0)
             {
                 builder[index] = PreserveBodyData(builder[index], newOrUpdatedBody);
@@ -88,6 +93,15 @@ namespace EddiDataDefinitions
             {
                 Reserve = newOrUpdatedBody.reserveLevel;
             }
+        }
+
+        public void ClearTemporaryBodies()
+        {
+            var builder = bodies.ToBuilder();
+            var bodiesToRemove = builder.Where( b => b.bodyId is null || string.IsNullOrEmpty( b.bodyname ) );
+            builder.RemoveRange(  bodiesToRemove );
+            builder.Sort( Body.CompareById );
+            bodies = builder.ToImmutable();
         }
 
         public void PreserveBodyData(List<Body> oldBodies, ImmutableList<Body> newBodies)
@@ -351,7 +365,7 @@ namespace EddiDataDefinitions
 
         /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
         [PublicAPI, JsonIgnore]
-        public long? lastVisitSeconds => lastvisit > DateTime.MinValue ? (long?)Utilities.Dates.fromDateTimeToSeconds((DateTime)lastvisit) : null;
+        public long? lastVisitSeconds => lastvisit > DateTime.MinValue ? (long?)Dates.fromDateTimeToSeconds((DateTime)lastvisit) : null;
 
         /// <summary>comment on this starsystem</summary>
         [PublicAPI]
@@ -451,7 +465,7 @@ namespace EddiDataDefinitions
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
+        private void OnPropertyChanged([CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }

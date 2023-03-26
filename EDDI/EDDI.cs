@@ -2277,17 +2277,22 @@ namespace EddiCore
 
         private void updateCurrentSystem(string name)
         {
-            if (name == null || CurrentStarSystem?.systemname == name) { return; }
+            if ( string.IsNullOrEmpty(name) || 
+                 CurrentStarSystem?.systemname == name )
+            {
+                return;
+            }
 
-            // Discard any signal sources from the current star system
-            if (CurrentStarSystem != null)
+            // Discard signal sources from star system we are leaving
+            if ( CurrentStarSystem != null )
             {
                 CurrentStarSystem.signalSources = ImmutableList<SignalSource>.Empty;
             }
 
             // We have changed system so update the old one as to when we left
             StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
-
+            
+            // Update the CurrentStarSystem to the one we are entering
             LastStarSystem = CurrentStarSystem;
             if (NextStarSystem != null && NextStarSystem.systemname == name)
             {
@@ -2299,8 +2304,12 @@ namespace EddiCore
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
             }
 
-            // Clear our destination system once we arrive
-            if (destinationStarSystem?.systemname == currentStarSystem?.systemname)
+            // Clear any temporary / partially created bodies (e.g. from FSDTarget events)
+            // from the system we are entering
+            CurrentStarSystem.ClearTemporaryBodies();
+
+            // If we've arrived at our destination system then clear it
+            if (destinationStarSystem?.systemname == currentStarSystem.systemname)
             {
                 updateDestinationSystem(null);
             }
@@ -2336,7 +2345,8 @@ namespace EddiCore
                 }
                 if (body == null)
                 {
-                    // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                    // This body is unknown to us, might not be in our 3rd party API data,
+                    // or we might not have connectivity.  Use a placeholder 
                     body = new Body
                     {
                         bodyname = bodyName,
@@ -2494,14 +2504,13 @@ namespace EddiCore
                 }
 
                 // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
-                if ((CurrentStellarBody == null || string.IsNullOrEmpty(currentStellarBody.bodyname)) &&
-                    !string.IsNullOrEmpty(theEvent.star))
+                if (!string.IsNullOrEmpty(theEvent.star) && string.IsNullOrEmpty( CurrentStellarBody?.bodyname ))
                 {
                     CurrentStellarBody = new Body()
                     {
                         bodyname = theEvent.star,
                         bodyType = BodyType.FromEDName("Star"),
-                        stellarclass = (lastEvents.TryGetValue(nameof(FSDEngagedEvent), out Event ev)
+                        stellarclass = (lastEvents.TryGetValue(nameof(FSDEngagedEvent), out var ev)
                                 ? (FSDEngagedEvent)ev
                                 : null)
                             ?.stellarclass,
