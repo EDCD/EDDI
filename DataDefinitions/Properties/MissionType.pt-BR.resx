@@ -324,6 +324,10 @@
     <value>Em Chamas</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  
-  
+  <data name="PassengerEvacuation" xml:space="preserve">
+    <value>Evacuação de Passageiro</value>
+  </data>
+  <data name="Alert" xml:space="preserve">
+    <value>Alerta</value>
+  </data>
 </root>
