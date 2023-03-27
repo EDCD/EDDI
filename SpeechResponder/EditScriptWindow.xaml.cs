@@ -204,8 +204,11 @@ namespace EddiSpeechResponder
                 {
                     var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
                     var lineTxt = textArea.Document.GetText(line.Offset, textArea.Caret.Offset - line.Offset);
-                    var regexMatch = Regex.Match(lineTxt, @"(?<={)*(?=\b)(\S+\.)+$");
-                    lookupItem = regexMatch.Value.TrimEnd( '.' );
+                    var regexMatch = Regex.Match(lineTxt, @"{[^:}\v]*(?<=\b)(\S+\.)+$");
+                    if ( regexMatch.Success )
+                    {
+                        lookupItem = regexMatch.Groups[1].Value.TrimEnd( '.' );
+                    }
                 }
 
                 if ( !string.IsNullOrEmpty( lookupItem ) )
