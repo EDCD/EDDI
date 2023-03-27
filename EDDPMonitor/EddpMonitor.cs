@@ -309,7 +309,7 @@ namespace EddiEddpMonitor
         {
         }
 
-        public IDictionary<string, object> GetVariables()
+        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
         {
             return null;
         }

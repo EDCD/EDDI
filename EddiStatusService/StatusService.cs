@@ -33,6 +33,7 @@ namespace EddiStatusService
         // Other variables used by this service
         private static StatusService instance;
         private static readonly object instanceLock = new object();
+        public readonly object statusLock = new object();
         private bool running;
 
         public static StatusService Instance
@@ -330,14 +331,17 @@ namespace EddiStatusService
                 return;
             }
 
-            if (CurrentStatus != thisStatus)
+            lock ( statusLock )
             {
-                // Save our last status for reference and update our current status
-                LastStatus = CurrentStatus;
-                CurrentStatus = thisStatus;
+                if ( CurrentStatus != thisStatus )
+                {
+                    // Save our last status for reference and update our current status
+                    LastStatus = CurrentStatus;
+                    CurrentStatus = thisStatus;
 
-                // Pass the change in status to all subscribed processes
-                OnStatus(StatusUpdatedEvent, CurrentStatus);
+                    // Pass the change in status to all subscribed processes
+                    OnStatus( StatusUpdatedEvent, CurrentStatus );
+                }
             }
         }
 

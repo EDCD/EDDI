@@ -610,25 +610,27 @@ namespace EddiNavigationMonitor
 
         #endregion
 
-        public IDictionary<string, object> GetVariables()
+        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
         {
-            var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-            IDictionary<string, object> variables = new Dictionary<string, object>
+            lock ( navConfigLock )
             {
-                // Bookmark info
-                ["bookmarks"] = Bookmarks,
-                ["galacticPOIs"] = GalacticPOIs,
+                var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
+                return new Dictionary<string, KeyValuePair<Type, object>>
+                {
+                    // Bookmark info
+                    ["bookmarks"] = new KeyValuePair<Type, object>(typeof(List<NavBookmark>), Bookmarks.ToList() ),
+                    ["galacticPOIs"] = new KeyValuePair<Type, object>(typeof(NavBookmark), GalacticPOIs ),
 
-                // Route plotting info
-                ["navRoute"] = NavRoute,
-                ["carrierPlottedRoute"] = CarrierPlottedRoute,
-                ["shipPlottedRoute"] = PlottedRoute,
+                    // Route plotting info
+                    ["navRoute"] = new KeyValuePair<Type, object>(typeof(NavWaypointCollection), NavRoute ),
+                    ["carrierPlottedRoute"] = new KeyValuePair<Type, object>(typeof(NavWaypointCollection), CarrierPlottedRoute ),
+                    ["shipPlottedRoute"] = new KeyValuePair<Type, object>(typeof(NavWaypointCollection), PlottedRoute ),
 
-                // NavConfig info
-                ["orbitalpriority"] = navConfig.prioritizeOrbitalStations,
-                ["maxStationDistance"] = navConfig.maxSearchDistanceFromStarLs
-            };
-            return variables;
+                    // NavConfig info
+                    ["orbitalpriority"] = new KeyValuePair<Type, object>(typeof(bool), navConfig.prioritizeOrbitalStations ),
+                    ["maxStationDistance"] = new KeyValuePair<Type, object>(typeof(int?), navConfig.maxSearchDistanceFromStarLs )
+                };                
+            }
         }
 
         public void WriteNavConfig()

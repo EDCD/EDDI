@@ -3,6 +3,7 @@ using EddiSpeechResponder;
 using EddiSpeechResponder.CustomFunctions;
 using EddiSpeechResponder.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace UnitTests
@@ -18,7 +19,7 @@ namespace UnitTests
             MakeSafe();
         }
 
-        private string ResolveScript(string script, Dictionary<string, object> vars = null)
+        private string ResolveScript(string script, Dictionary<string, KeyValuePair<Type, object>> vars = null)
         {
             return resolver.resolveFromValue(script, resolver.buildStore(vars), true);
         }

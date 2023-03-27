@@ -1,5 +1,6 @@
 ﻿using EddiEvents;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
@@ -68,7 +69,7 @@ namespace EddiCore
         /// <summary>
         /// Provide any local variables
         /// </summary>
-        IDictionary<string, object> GetVariables();
+        IDictionary<string, KeyValuePair<Type, object>> GetVariables ();
 
         UserControl ConfigurationTabItem();
     }

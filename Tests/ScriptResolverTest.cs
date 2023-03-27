@@ -98,7 +98,7 @@ namespace UnitTests
                 {"test", new Script("test", null, false, "Hello {name}")}
             };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, object> { ["name"] = "world" };
+            var dict = new Dictionary<string, KeyValuePair<Type, object>> { ["name"] = new KeyValuePair<Type, object>(typeof(string), "world") };
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
         }
@@ -112,7 +112,7 @@ namespace UnitTests
                 {"test", new Script("test", null, false, "Well {F(\"func\")}")}
             };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, object> { ["name"] = "world" };
+            var dict = new Dictionary<string, KeyValuePair<Type, object>> { ["name"] = new KeyValuePair<Type, object>(typeof(string), "world") };
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Well Hello world", result);
         }
@@ -125,7 +125,7 @@ namespace UnitTests
                 {"test", new Script("test", null, false, "{set x to \"Hello\"} {OneOf(\"{x} world\")}")}
             };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, object>();
+            var dict = new Dictionary<string, KeyValuePair < Type, object >>();
             string result = resolver.resolveFromName("test", dict, true);
             Assert.AreEqual("Hello world", result);
         }
@@ -139,7 +139,7 @@ namespace UnitTests
                 {"func", new Script("func", null, false, "b")}
             };
             ScriptResolver resolver = new ScriptResolver(scripts);
-            var dict = new Dictionary<string, object> { ["c"] = "c" };
+            var dict = new Dictionary<string, KeyValuePair<Type, object>> { ["c"] = new KeyValuePair<Type, object>(typeof(string), "c") };
 
             List<string> results = new List<string>();
             for (int i = 0; i < 1000; i++)
@@ -225,7 +225,7 @@ namespace UnitTests
                     {"test3", new Script("test3", null, false, @"{SetClipboard(""C"")}")},
                 };
                 ScriptResolver resolver = new ScriptResolver(scripts);
-                var dict = new Dictionary<string, object>();
+                var dict = new Dictionary<string, KeyValuePair<Type, object>>();
 
                 resolver.resolveFromName("test1", dict, true);
                 Assert.AreEqual("A", Clipboard.GetText());

@@ -24,17 +24,16 @@ namespace EddiSpeechResponder.AvalonEdit
 
             foreach ( var item in filteredMetaVars.OrderBy( v => string.Concat( v.keysPath, '.' ) ) )
             {
-                if ( item.keysPath.Count > lookupKeys.Length &&
-                     data.All( d => d.Text != item.keysPath[ lookupKeys.Length ] ) )
+                if ( item.keysPath.Count <= lookupKeys.Length ) { continue; }
+                var itemKey = item.keysPath[ lookupKeys.Length ];
+                if ( data.All( d => d.Text != itemKey ) &&
+                     MetaVariables.indexMarker != itemKey )
                 {
-                    data.Add( new TextCompletionItem( item.keysPath[ lookupKeys.Length ], item.description ) );
+                    data.Add( new TextCompletionItem( itemKey, item.description ) );
                 }
             }
 
-            if ( data.Count > 0 )
-            {
-                Show();
-            }
+            if ( data.Any() ) { Show(); }
         }
     }
 }

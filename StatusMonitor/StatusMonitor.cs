@@ -323,14 +323,16 @@ namespace EddiStatusMonitor
         {
         }
 
-        public IDictionary<string, object> GetVariables()
+        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
         {
-            Dictionary<string, object> variables = new Dictionary<string, object>
+            lock ( StatusService.Instance.statusLock )
             {
-                { "status", StatusService.Instance.CurrentStatus },
-                { "lastStatus", StatusService.Instance.LastStatus }
-            };
-            return variables;
+                return new Dictionary<string, KeyValuePair<Type, object>>
+                {
+                    { "status", new KeyValuePair<Type, object>(typeof(Status), StatusService.Instance.CurrentStatus ) },
+                    { "lastStatus", new KeyValuePair < Type, object >(typeof(Status), StatusService.Instance.LastStatus) }
+                };
+            }
         }
     }
 }

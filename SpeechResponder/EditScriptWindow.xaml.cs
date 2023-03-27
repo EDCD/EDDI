@@ -200,12 +200,16 @@ namespace EddiSpeechResponder
                 {
                     var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
                     var lineTxt = textArea.Document.GetText(line.Offset, textArea.Caret.Offset - line.Offset);
-                    var regexMatch = Regex.Match(lineTxt, @"(?<={)(?>\w+\.)+");
+                    var regexMatch = Regex.Match(lineTxt, @"(?<={)*(?=\b)(\S+\.)+$");
                     lookupItem = regexMatch.Value.TrimEnd( '.' );
                 }
 
                 if ( !string.IsNullOrEmpty( lookupItem ) )
                 {
+                    // Replace any enumeration value for enumerable values (e.g. 'bodies[5]')
+                    lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
+
+                    // Send the result to the text completion window
                     completionWindow = new AvalonEdit.TextCompletionWindow( scriptView.TextArea, lookupItem.Split( '.' ), metaVars );
                     completionWindow.Closed += delegate { completionWindow = null; };
                 }

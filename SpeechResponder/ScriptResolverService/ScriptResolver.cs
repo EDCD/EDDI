@@ -8,6 +8,7 @@ using Eddi;
 using EddiBgsService;
 using EddiCompanionAppService;
 using EddiCore;
+using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
@@ -52,7 +53,7 @@ namespace EddiSpeechResponder.Service
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromName(string name, Dictionary<string, object> vars, bool isTopLevelScript)
+        public string resolveFromName(string name, Dictionary<string, KeyValuePair<Type, object>> vars, bool isTopLevelScript)
         {
             BuiltinStore store = buildStore(vars);
             return resolveFromName(name, store, isTopLevelScript);
@@ -152,62 +153,62 @@ namespace EddiSpeechResponder.Service
         }
 
         // Compile variables from the EDDI information
-        protected internal Dictionary<string, object> CompileVariables(Event theEvent = null)
+        protected internal Dictionary<string, KeyValuePair<Type, object>> CompileVariables(Event theEvent = null)
         {
-            var dict = new Dictionary<string, object>
+            var dict = new Dictionary<string, KeyValuePair<Type, object>>
             {
                 // Boolean constants
-                ["true"] = true,
-                ["false"] = false,
+                ["true"] = new KeyValuePair<Type, object>(typeof(bool), true),
+                ["false"] = new KeyValuePair<Type, object>(typeof(bool), false),
 
                 // Standard simple variables
-                ["capi_active"] = CompanionAppService.Instance?.active ?? false,
-                ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
-                ["searchdistance"] = NavigationService.Instance.SearchDistanceLy,
-                ["environment"] = EDDI.Instance.Environment,
-                ["horizons"] = EDDI.Instance.inHorizons,
-                ["odyssey"] = EDDI.Instance.inOdyssey,
-                ["va_active"] = App.FromVA,
-                ["vehicle"] = EDDI.Instance.Vehicle,
-                ["icao_active"] = SpeechService.Instance.Configuration.EnableIcao,
-                ["ipa_active"] = !SpeechService.Instance.Configuration.DisableIpa,
+                ["capi_active"] = new KeyValuePair<Type, object>(typeof(bool), CompanionAppService.Instance?.active ?? false),
+                ["destinationdistance"] = new KeyValuePair<Type, object>(typeof(decimal), EDDI.Instance.DestinationDistanceLy),
+                ["searchdistance"] = new KeyValuePair<Type, object>(typeof(decimal), NavigationService.Instance.SearchDistanceLy),
+                ["environment"] = new KeyValuePair<Type, object>(typeof(string), EDDI.Instance.Environment),
+                ["horizons"] = new KeyValuePair < Type, object >(typeof(bool), EDDI.Instance.inHorizons),
+                ["odyssey"] = new KeyValuePair<Type, object>(typeof(bool), EDDI.Instance.inOdyssey),
+                ["va_active"] = new KeyValuePair < Type, object >(typeof(bool), App.FromVA),
+                ["vehicle"] = new KeyValuePair < Type, object >(typeof(string), EDDI.Instance.Vehicle),
+                ["icao_active"] = new KeyValuePair<Type, object>(typeof(bool), SpeechService.Instance.Configuration.EnableIcao),
+                ["ipa_active"] = new KeyValuePair<Type, object>(typeof(bool), !SpeechService.Instance.Configuration.DisableIpa),
 
                 // Standard objects
-                ["cmdr"] = EDDI.Instance.Cmdr,
-                ["homesystem"] = EDDI.Instance.HomeStarSystem,
-                ["homestation"] = EDDI.Instance.HomeStation,
-                ["squadronsystem"] = EDDI.Instance.SquadronStarSystem,
-                ["system"] = EDDI.Instance.CurrentStarSystem,
-                ["lastsystem"] = EDDI.Instance.LastStarSystem,
-                ["nextsystem"] = EDDI.Instance.NextStarSystem,
-                ["destinationsystem"] = EDDI.Instance.DestinationStarSystem,
-                ["searchsystem"] = NavigationService.Instance.SearchStarSystem,
-                ["searchstation"] = NavigationService.Instance.SearchStation,
-                ["station"] = EDDI.Instance.CurrentStation,
-                ["body"] = EDDI.Instance.CurrentStellarBody,
-                ["carrier"] = EDDI.Instance.FleetCarrier
+                ["cmdr"] = new KeyValuePair<Type, object>(typeof(Commander), EDDI.Instance.Cmdr),
+                ["homesystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.HomeStarSystem),
+                ["homestation"] = new KeyValuePair<Type, object>(typeof(Station), EDDI.Instance.HomeStation),
+                ["squadronsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.SquadronStarSystem),
+                ["system"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.CurrentStarSystem),
+                ["lastsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.LastStarSystem),
+                ["nextsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.NextStarSystem),
+                ["destinationsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.DestinationStarSystem),
+                ["searchsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), NavigationService.Instance.SearchStarSystem),
+                ["searchstation"] = new KeyValuePair<Type, object>(typeof(Station), NavigationService.Instance.SearchStation),
+                ["station"] = new KeyValuePair<Type, object>(typeof(Station), EDDI.Instance.CurrentStation),
+                ["body"] = new KeyValuePair<Type, object>(typeof(Body), EDDI.Instance.CurrentStellarBody),
+                ["carrier"] = new KeyValuePair<Type, object>(typeof(FleetCarrier), EDDI.Instance.FleetCarrier)
             };
 
             if ( theEvent != null )
             {
-                dict[ "event" ] = theEvent;
+                dict[ "event" ] = new KeyValuePair<Type, object>( typeof( Event ), theEvent );
             }
 
             if ( EDDI.Instance.State != null )
             {
-                dict[ "state" ] = EDDI.Instance.State;
+                dict[ "state" ] = new KeyValuePair<Type, object>( typeof( IDictionary<string, object> ), EDDI.Instance.State);
                 Logging.Debug( "State is: ", EDDI.Instance.State );
             }
 
             // Obtain additional variables from each monitor
             foreach ( IEddiMonitor monitor in EDDI.Instance.monitors )
             {
-                IDictionary<string, object> monitorVariables = monitor.GetVariables();
+                var monitorVariables = monitor.GetVariables();
                 if ( monitorVariables != null )
                 {
                     foreach ( string key in monitorVariables.Keys )
                     {
-                        if ( monitorVariables[ key ] == null )
+                        if ( monitorVariables[ key ].Value == null )
                         {
                             dict.Remove( key );
                         }
@@ -225,7 +226,7 @@ namespace EddiSpeechResponder.Service
         /// <summary>
         /// Build a store from a list of variables
         /// </summary>
-        public BuiltinStore buildStore(Dictionary<string, object> vars = null)
+        public BuiltinStore buildStore(Dictionary<string, KeyValuePair<Type, object>> vars = null)
         {
             BuiltinStore store = new BuiltinStore();
             
@@ -246,13 +247,13 @@ namespace EddiSpeechResponder.Service
             {
                 foreach (var entry in vars)
                 {
-                    if ( entry.Value is null )
+                    if ( entry.Value.Value is null )
                     {
                         store[ entry.Key ] = new VoidValue();
                     }
                     else
                     {
-                        store[ entry.Key ] = new ReflectionValue( entry.Value );
+                        store[ entry.Key ] = new ReflectionValue( entry.Value.Value );
                     }
                 }
             }
