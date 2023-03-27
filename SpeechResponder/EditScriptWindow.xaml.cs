@@ -1,4 +1,6 @@
-﻿using EddiSpeechResponder.Service;
+﻿using EddiSpeechResponder.AvalonEdit;
+using EddiSpeechResponder.Properties;
+using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
@@ -33,22 +35,23 @@ namespace EddiSpeechResponder
         private readonly DocumentHighlighter documentHighlighter;
 #pragma warning restore IDE0052 // Remove unused private members
 
-        private AvalonEdit.TextCompletionWindow completionWindow;
+        private TextCompletionWindow completionWindow;
 
-        private readonly AvalonEdit.FoldingStrategy foldingStrategy;
+        private readonly FoldingStrategy foldingStrategy;
         private FoldingMargin foldingMargin;
 
-        private readonly IEnumerable<MetaVariable> metaVars;
+        private readonly List<MetaVariable> metaVars = new List<MetaVariable>();
+        private static readonly object metaVarLock = new object();
 
-        public EditScriptWindow ( Script script, Dictionary<string, Script> scripts, [NotNull][ItemNotNull] IEnumerable<MetaVariable> metaVars, [NotNull] AvalonEdit.CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript )
+        public EditScriptWindow ( Script script, Dictionary<string, Script> scripts, [NotNull][ItemNotNull] IEnumerable<MetaVariable> metaVars, [NotNull] CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript )
         {
             InitializeComponent();
             DataContext = this;
 
             this.isNewOrRecoveredScript = isNewOrRecoveredScript;
-            this._scripts = scripts;
+            _scripts = scripts;
             this.script = script;
-            this.metaVars = metaVars;
+            this.metaVars.AddRange(metaVars);
 
             if ( script == null )
             {
@@ -78,7 +81,7 @@ namespace EddiSpeechResponder
             scriptView.TextChanged += ScriptView_TextChanged;
 
             // Implement collapsible sections (called `Foldings`)
-            foldingStrategy = new AvalonEdit.FoldingStrategy( '{', '}' );
+            foldingStrategy = new FoldingStrategy( '{', '}' );
             foldingStrategy.CreateNewFoldings( scriptView.Document );
             InitializeOrUpdateFolding();
             scriptView.Options.AllowScrollBelowDocument = true;
@@ -117,7 +120,7 @@ namespace EddiSpeechResponder
         {
             if ( IsLoaded )
             {
-                Properties.Settings.Default.Save();
+                Settings.Default.Save();
             }
         }
 
@@ -130,7 +133,7 @@ namespace EddiSpeechResponder
             // WPF uses DPI scaled units rather than true pixels.
             // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
             var dpiScale = VisualTreeHelper.GetDpi(this);
-            var windowPosition = new Rect(new Point(Properties.Settings.Default.Left, Properties.Settings.Default.Top), new Size(Properties.Settings.Default.Width, Properties.Settings.Default.Height));
+            var windowPosition = new Rect(new Point(Settings.Default.Left, Settings.Default.Top), new Size(Settings.Default.Width, Settings.Default.Height));
             if ( windowPosition == Rect.Empty || !isWindowValid( windowPosition, dpiScale ) )
             {
                 // Revert to default values if the prior size and position are no longer valid
@@ -160,7 +163,8 @@ namespace EddiSpeechResponder
                     {
                         testUpperLeft = true;
                     }
-                    if ( applyDpiScale( screen.Bounds.Width, dpi.DpiScaleX ) >= rect.X + rect.Width && applyDpiScale( screen.Bounds.Height, dpi.DpiScaleY ) >= rect.Y + rect.Height ) // The lower and right bounds fall on a valid screen 
+                    if ( applyDpiScale( screen.Bounds.Width, dpi.DpiScaleX ) >= (rect.X + rect.Width) && 
+                         applyDpiScale( screen.Bounds.Height, dpi.DpiScaleY ) >= (rect.Y + rect.Height) ) // The lower and right bounds fall on a valid screen 
                     {
                         testLowerRight = true;
                     }
@@ -183,7 +187,7 @@ namespace EddiSpeechResponder
             }
         }
 
-        private void ScriptView_TextChanged ( object sender, System.EventArgs e )
+        private void ScriptView_TextChanged ( object sender, EventArgs e )
         {
             editorScript.Value = scriptView.Text;
             InitializeOrUpdateFolding();
@@ -210,7 +214,10 @@ namespace EddiSpeechResponder
                     lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
 
                     // Send the result to the text completion window
-                    completionWindow = new AvalonEdit.TextCompletionWindow( scriptView.TextArea, lookupItem.Split( '.' ), metaVars );
+                    lock ( metaVarLock )
+                    {
+                        completionWindow = new TextCompletionWindow( scriptView.TextArea,lookupItem.Split( '.' ), metaVars );
+                    }
                     completionWindow.Closed += delegate { completionWindow = null; };
                 }
             }
@@ -228,6 +235,14 @@ namespace EddiSpeechResponder
                 }
             }
             // do not set e.Handled=true - we still want to insert the character that was typed
+        }
+
+        public void AddStandardMetaVariables ( IEnumerable<MetaVariable> stdMetaVars )
+        {
+            lock ( metaVarLock )
+            {
+                metaVars.AddRange(stdMetaVars);
+            }
         }
 
         protected override void OnClosed ( EventArgs e )
@@ -262,13 +277,13 @@ namespace EddiSpeechResponder
             {
                 DialogResult = false;
             }
-            this.Close();
+            Close();
         }
 
         private void cancelButtonClick ( object sender, RoutedEventArgs e )
         {
             DialogResult = false;
-            this.Close();
+            Close();
         }
 
         private void helpButtonClick ( object sender, RoutedEventArgs e )
@@ -332,7 +347,7 @@ namespace EddiSpeechResponder
 
         private void foldingButtonClick ( object sender, RoutedEventArgs e )
         {
-            if ( sender is System.Windows.Controls.CheckBox )
+            if ( sender is CheckBox )
             {
                 InitializeOrUpdateFolding();
             }
