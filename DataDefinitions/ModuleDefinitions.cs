@@ -1077,7 +1077,7 @@ namespace EddiDataDefinitions
                 new Module(129001930, "Int_MultiDroneControl_Universal_Size7_Class5", 1825, "MultiDroneControl_Universal", 7, "A", 8000000),
                 new Module(129019260, "Int_ExpModuleStabiliser_Size3_Class3", -1, "ExpModuleStabiliser", 3, "F", 2000000),
                 new Module(129019261, "Int_ExpModuleStabiliser_Size5_Class3", -1, "ExpModuleStabiliser", 5, "F", 4000000),
-                new Module(129019262, "Hpt_CausticSinkLauncher_Turret_Tiny", -1, "Caustic_Sink_Launcher", 0, "I", 48750),
+                new Module(129019262, "Hpt_CausticSinkLauncher_Turret_Tiny", -1, "Caustic_Sink_Launcher", 0, "I", 50000),
                 new Module(129022079, "Hpt_ATDumbfireMissile_Fixed_Large_V2", 1832, "Enhanced_AXMissileRack", 3, "B", 1703836, ModuleMount.Fixed),
                 new Module(129022080, "Hpt_ATMultiCannon_Fixed_Medium_V2", 1828, "Enhanced_AXMulti_Cannon", 2, "D", 455078, ModuleMount.Fixed),
                 new Module(129022081, "Hpt_ATDumbfireMissile_Fixed_Medium_V2", 1833, "Enhanced_AXMissileRack", 2, "D", 681534, ModuleMount.Fixed),
