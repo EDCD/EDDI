@@ -26,7 +26,19 @@ namespace Utilities
         public List<MetaVariable> Results { get; private set; }
 
         // Some types don't need to be decomposed further - we'll stop reflecting when we hit these types
-        private static readonly Type[] undecomposedTypes = { typeof(string), typeof(DateTime), typeof(TimeSpan) };
+        private static readonly Type[] undecomposedTypes =
+        {
+            typeof(string), 
+            typeof(bool), 
+            typeof(int), 
+            typeof(decimal), 
+            typeof(long),
+            typeof(ulong),
+            typeof(double),
+            typeof(float),
+            typeof(DateTime), 
+            typeof(TimeSpan)
+        };
 
         // Apply a placeholder symbol for collection indices - to be formatted
         // differently according to the end variable type (Cottle or VoiceAttack) 
