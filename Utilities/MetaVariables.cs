@@ -320,6 +320,11 @@ namespace Utilities
                 this.value = null;
                 this.variableType = typeof(decimal);
             }
+            else if ( variableType == typeof( IList ) && value is int count )
+            {
+                this.value = count;
+                this.variableType = typeof( int );
+            }
             else if (value is double d)
             {
                 this.value = Convert.ToDecimal(d);
@@ -339,11 +344,6 @@ namespace Utilities
             {
                 this.value = Convert.ToDecimal(ul);
                 this.variableType = typeof(decimal);
-            }
-            else if ( value is IList iList )
-            {
-                this.value = iList.Count;
-                this.variableType = typeof(int);
             }
             else
             {
