@@ -669,7 +669,16 @@
     <value>Telemetria di interdizione Thargoid</value>
     <comment>Material tg_interdictiondata</comment>
   </data>
-  
-  
-  
+  <data name="tg_causticcrystal" xml:space="preserve">
+    <value>Cristallo Caustico</value>
+    <comment>Material tg_causticcrystal</comment>
+  </data>
+  <data name="tg_causticshard" xml:space="preserve">
+    <value>Frammento Caustico</value>
+    <comment>Material tg_causticshard</comment>
+  </data>
+  <data name="tg_causticgeneratorparts" xml:space="preserve">
+    <value>Meccanismi Corrosivi</value>
+    <comment>Material tg_causticgeneratorparts</comment>
+  </data>
 </root>
