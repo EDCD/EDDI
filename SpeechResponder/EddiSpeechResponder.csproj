@@ -53,6 +53,9 @@
     <Compile Include="AvalonEdit\FoldingStrategy.cs" />
     <Compile Include="AvalonEdit\TextCompletionItem.cs" />
     <Compile Include="AvalonEdit\TextCompletionWindow.cs" />
+    <Compile Include="AvalonEdit\TextCompletionControl.xaml.cs">
+      <DependentUpon>TextCompletionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
@@ -274,6 +277,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AvalonEdit\TextCompletionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CopyPersonalityWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

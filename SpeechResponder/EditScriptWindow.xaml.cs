@@ -8,6 +8,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Search;
 using JetBrains.Annotations;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -236,7 +237,31 @@ namespace EddiSpeechResponder
                     if ( textCompletionItems.All( d => d.Text != itemKey ) && 
                          MetaVariables.indexMarker != itemKey )
                     {
-                        textCompletionItems.Add( new TextCompletionItem( itemKey, item.type, item.description ) );
+                        if ( item.type == typeof( bool ) )
+                        {
+                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof( Cottle.Values.BooleanValue ), item.description ) );
+                        }
+                        else if ( item.type == typeof( int ) || 
+                                  item.type == typeof( double ) || 
+                                  item.type == typeof( float ) || 
+                                  item.type == typeof( long ) || 
+                                  item.type == typeof( ulong ) )
+                        {
+                            // Convert int, doubles, floats, and longs to number values
+                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof(Cottle.Values.NumberValue), item.description ) );
+                        }
+                        else if ( item.type == typeof( string ) )
+                        {
+                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof( Cottle.Values.StringValue ), item.description ) );
+                        }
+                        else if ( item.type == typeof( IList ) )
+                        {
+                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof( Cottle.Values.MapValue ), item.description ) );
+                        }
+                        else
+                        {
+                            textCompletionItems.Add( new TextCompletionItem( itemKey, item.type, item.description ) );
+                        }
                     }
                 }
                 
