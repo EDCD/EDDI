@@ -9,6 +9,7 @@ using ICSharpCode.AvalonEdit.Search;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
@@ -204,23 +205,45 @@ namespace EddiSpeechResponder
                 {
                     var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
                     var lineTxt = textArea.Document.GetText(line.Offset, textArea.Caret.Offset - line.Offset);
-                    var regexMatch = Regex.Match(lineTxt, @"{[^:}\v]*(?<=\b)(\S+\.)+$");
+                    var regexMatch = Regex.Match(lineTxt, @"(?<={)[^:}]*?(\w+(?>\[\d\])?\.)+$");
                     if ( regexMatch.Success )
                     {
-                        lookupItem = regexMatch.Groups[1].Value.TrimEnd( '.' );
+                        lookupItem = regexMatch.Groups[ 0 ].Value.TrimEnd( '.' );
                     }
                 }
+                if ( string.IsNullOrEmpty( lookupItem ) ) { return; }
 
-                if ( !string.IsNullOrEmpty( lookupItem ) )
+                // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
+                lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
+                var lookupKeys = lookupItem.Split( '.' );
+
+                var textCompletionItems = new List<TextCompletionItem>();
+
+                // Fetch applicable metavariables
+                List<MetaVariable> filteredMetaVars;
+                lock ( metaVarLock )
                 {
-                    // Replace any enumeration value for enumerable values (e.g. 'bodies[5]')
-                    lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
+                    filteredMetaVars = metaVars
+                        .Where( v => v.keysPath.Count == ( lookupKeys.Length + 1 ) )
+                        .Where( v => string.Join( ".", v.keysPath ).StartsWith( lookupItem ) )
+                        .ToList();
+                }
 
-                    // Send the result to the text completion window
-                    lock ( metaVarLock )
+                // Generate textCompletionItems
+                foreach ( var item in filteredMetaVars.OrderBy( v => string.Concat( v.keysPath, '.' ) ) )
+                {
+                    var itemKey = item.keysPath.Last();
+                    if ( textCompletionItems.All( d => d.Text != itemKey ) && 
+                         MetaVariables.indexMarker != itemKey )
                     {
-                        completionWindow = new TextCompletionWindow( scriptView.TextArea,lookupItem.Split( '.' ), metaVars );
+                        textCompletionItems.Add( new TextCompletionItem( itemKey, item.type, item.description ) );
                     }
+                }
+                
+                // Send the result to the text completion window
+                if ( textCompletionItems.Any() )
+                {
+                    completionWindow = new TextCompletionWindow( scriptView.TextArea, textCompletionItems );
                     completionWindow.Closed += delegate { completionWindow = null; };
                 }
             }
@@ -376,5 +399,22 @@ namespace EddiSpeechResponder
                 foldingMargin = null;
             }
         }
+
+        // TODO: Variable descriptions on mouse hover?
+        /*
+        private void ScriptView_OnMouseHover ( object sender, MouseEventArgs e )
+        {
+            if ( sender is TextEditor textEditor  )
+            {
+                var mousePoint = e.GetPosition( textEditor );
+                var textLocation = textEditor.GetPositionFromPoint( mousePoint )?.Location;
+                if ( textLocation != null )
+                {
+                    if ( !textLocation.Value.IsEmpty ) { return; }
+                    var line = textEditor.TextArea.TextView.Document.GetLineByNumber( textLocation.Value.Line );
+                }
+            }
+        }
+        */
     }
 }

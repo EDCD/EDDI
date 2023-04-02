@@ -85,7 +85,7 @@ namespace EddiSpeechResponder
                     {
                         v.keysPath = v.keysPath.Prepend( "event" ).ToList();
                     }
-                    vars.AddRange( vars );
+                    vars.AddRange( eventVars );
                 }
             }
 

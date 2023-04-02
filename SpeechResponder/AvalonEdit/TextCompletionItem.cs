@@ -2,18 +2,20 @@
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace EddiSpeechResponder.AvalonEdit
 {
     public class TextCompletionItem : ICompletionData
     {
-        public TextCompletionItem ( string text, string description = null )
+        public TextCompletionItem ( string text, Type type, string description = null )
         {
             this.Text = text;
             this.Description = description;
         }
 
-        public System.Windows.Media.ImageSource Image => null;
+        public ImageSource Image => null;
 
         public string Text { get; private set; }
 
