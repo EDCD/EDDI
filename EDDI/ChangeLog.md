@@ -16,6 +16,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * UI
       * Implemented text completion for available variables in the editor window.
+      * The Chinese translation of the default personality has been updated (primarily to improve grammar). #2524 Thanks @MemphyKitay!
     * Events
       * `Ship FSD` event now includes a new boolean `hyperdrive_charging`.
     * Changes to existing scripts
