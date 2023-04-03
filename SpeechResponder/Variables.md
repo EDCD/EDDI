@@ -147,7 +147,6 @@ Additional properties may become available in station, via *station.commodities.
   - *avgprice* - the average price offered for this commodity in a legal market
   - *stock* - the amount of the commodity available from the market 
   - *demand* - the demand for the commodity from the market
-  - *EDDBID* - the unique id number assigned to represent the commodity in EDDB
 
 ### Material
 

@@ -72,7 +72,6 @@ namespace UnitTests
             Assert.IsNotNull(faction);
 
             // Test The Dark Wheel core data
-            Assert.AreEqual(41917, faction.EDDBID);
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
             Assert.IsNull(faction.isplayer);
@@ -122,7 +121,6 @@ namespace UnitTests
             Assert.AreEqual("The Dark Wheel", faction1.name);
             Assert.AreEqual("Democracy", faction1.Government.invariantName);
             Assert.AreEqual("Independent", faction1.Allegiance.invariantName);
-            Assert.AreEqual(41917, faction1.EDDBID);
             Assert.AreNotEqual(DateTime.MinValue, faction1.updatedAt);
             Assert.AreEqual(14, faction1.presences.Count);
             var presence = faction1.presences.FirstOrDefault(p => p.systemName == "Shinrarta Dezhra");

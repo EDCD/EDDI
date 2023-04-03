@@ -12,30 +12,40 @@ namespace EddiInaraService
 
         // Returns basic information about commander from Inara like ranks, 
         // squadron, a link to the commander's Inara profile, etc. 
+        // If no cmdrName is given then the profile of the commander current user is returned.
 
-        public InaraCmdr GetCommanderProfile(string cmdrName)
+        public InaraCmdr GetCommanderProfile(string cmdrName = null)
         {
             if (currentGameVersion != null && currentGameVersion < minGameVersion) { return null; }
 
-            return GetCommanderProfiles(new[] { cmdrName })?.FirstOrDefault();
+            return string.IsNullOrEmpty(cmdrName) 
+                ? GetCommanderProfiles( null )?.FirstOrDefault() 
+                : GetCommanderProfiles( new[] { cmdrName } )?.FirstOrDefault();
         }
 
         public List<InaraCmdr> GetCommanderProfiles(IEnumerable<string> cmdrNames)
         {
-            List<InaraCmdr> cmdrs = new List<InaraCmdr>();
+            var cmdrs = new List<InaraCmdr>();
 
-            List<InaraAPIEvent> events = new List<InaraAPIEvent>();
-            foreach (string cmdrName in cmdrNames)
+            var events = new List<InaraAPIEvent>();
+            if ( cmdrNames is null )
             {
-                events.Add(new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>()
+                events.Add( new InaraAPIEvent( DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() ) );
+            }
+            else
+            {
+                foreach ( string cmdrName in cmdrNames )
                 {
-                    { "searchName", cmdrName }
-                }));
+                    events.Add( new InaraAPIEvent( DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>()
+                    {
+                        { "searchName", cmdrName }
+                    } ) );
+                }
             }
             var responses = SendEventBatch(events, ConfigService.Instance.inaraConfiguration);
-            foreach (InaraResponse inaraResponse in responses)
+            foreach (var inaraResponse in responses)
             {
-                string jsonCmdr = JsonConvert.SerializeObject(inaraResponse.eventData);
+                var jsonCmdr = JsonConvert.SerializeObject(inaraResponse.eventData);
                 cmdrs.Add(JsonConvert.DeserializeObject<InaraCmdr>(jsonCmdr));
             }
             return cmdrs;

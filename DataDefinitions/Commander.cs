@@ -76,6 +76,8 @@ namespace EddiDataDefinitions
         /// <summary>The commander's Frontier ID</summary>
         public string EDID { get; set; }
 
+        public int? InaraID { get; set; }
+
         [JsonIgnore]
         private string _phoneticName;
         /// <summary>The commander's phonetic name</summary>

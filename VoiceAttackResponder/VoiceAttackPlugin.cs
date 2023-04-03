@@ -387,11 +387,19 @@ namespace EddiVoiceAttackResponder
                     case "coriolis":
                         InvokeCoriolis(ref vaProxy);
                         break;
-                    case "eddbsystem":
-                        InvokeEDDBSystem(ref vaProxy);
+                    case "inaracarrier":
+                        InvokeInaraFleetCarrier( ref vaProxy );
                         break;
-                    case "eddbstation":
-                        InvokeEDDBStation(ref vaProxy);
+                    case "inaraprofile":
+                        InvokeInaraProfile( ref vaProxy );
+                        break;
+                    case "inarasystem":
+                    case "eddbsystem": // Redirect to Inara
+                        InvokeInaraSystem( ref vaProxy );
+                        break;
+                    case "inarastation":
+                    case "eddbstation": // Redirect to Inara
+                        InvokeInaraStation( ref vaProxy );
                         break;
                     case "edshipyard":
                         InvokeEDShipyard(ref vaProxy);
@@ -613,53 +621,94 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetText("EDDI uri", systemUri);
         }
 
-        public static void InvokeEDDBSystem(ref dynamic vaProxy)
+        public static void InvokeInaraSystem ( ref dynamic vaProxy )
         {
-            Logging.Debug("Entered");
+            Logging.Debug( "Entered" );
             try
             {
-                if (EDDI.Instance.CurrentStarSystem == null)
+                if ( EDDI.Instance.CurrentStarSystem == null )
                 {
-                    Logging.Debug("No information on current system");
+                    Logging.Debug( "No information on current system" );
                     return;
                 }
-                string systemUri = "https://eddb.io/system/ed-address/" + EDDI.Instance.CurrentStarSystem.systemAddress;
-                OpenOrStoreURI(ref vaProxy, systemUri);
-                setStatus(ref vaProxy, "Operational");
+                string systemUri = $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.CurrentStarSystem.systemAddress}";
+                OpenOrStoreURI( ref vaProxy, systemUri );
+                setStatus( ref vaProxy, "Operational" );
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
-                setStatus(ref vaProxy, "Failed to send system data to EDDB", e);
+                setStatus( ref vaProxy, "Failed to send system data to Inara", e );
             }
-            Logging.Debug("Leaving");
+            Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeEDDBStation(ref dynamic vaProxy)
+        public static void InvokeInaraStation ( ref dynamic vaProxy )
         {
-            Logging.Debug("Entered");
+            Logging.Debug( "Entered" );
             try
             {
-                if (EDDI.Instance.CurrentStarSystem == null)
+                if ( EDDI.Instance.CurrentStarSystem == null )
                 {
-                    Logging.Debug("No information on current station");
+                    Logging.Debug( "No information on current station" );
                     return;
                 }
-                Station thisStation = EDDI.Instance.CurrentStarSystem.stations.SingleOrDefault(s => s.name == (EDDI.Instance.CurrentStation?.name));
-                if (thisStation == null)
+                if ( EDDI.Instance.CurrentStation == null )
                 {
                     // Missing current star system information
-                    Logging.Debug("No information on current station");
+                    Logging.Debug( "No information on current station" );
                     return;
                 }
-                string stationUri = "https://eddb.io/station/market-id/" + thisStation.marketId;
-                OpenOrStoreURI(ref vaProxy, stationUri);
-                setStatus(ref vaProxy, "Operational");
+                string stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
+                OpenOrStoreURI( ref vaProxy, stationUri );
+                setStatus( ref vaProxy, "Operational" );
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
-                setStatus(ref vaProxy, "Failed to send station data to EDDB", e);
+                setStatus( ref vaProxy, "Failed to send station data to Inara", e );
             }
-            Logging.Debug("Leaving");
+            Logging.Debug( "Leaving" );
+        }
+
+        public static void InvokeInaraFleetCarrier ( ref dynamic vaProxy )
+        {
+            Logging.Debug( "Entered" );
+            try
+            {
+                if ( EDDI.Instance.FleetCarrier == null )
+                {
+                    Logging.Debug( "No information on fleet carrier" );
+                    return;
+                }
+                string carrierUri = $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.FleetCarrier.callsign}";
+                OpenOrStoreURI( ref vaProxy, carrierUri );
+                setStatus( ref vaProxy, "Operational" );
+            }
+            catch ( Exception e )
+            {
+                setStatus( ref vaProxy, "Failed to send fleet carrier data to Inara", e );
+            }
+            Logging.Debug( "Leaving" );
+        }
+
+        public static void InvokeInaraProfile ( ref dynamic vaProxy )
+        {
+            Logging.Debug( "Entered" );
+            try
+            {
+                if ( EDDI.Instance.Cmdr.InaraID == null )
+                {
+                    Logging.Debug( "No information on Inara commander" );
+                    return;
+                }
+                string cmdrUri = $"https://inara.cz/elite/cmdr/60531/{EDDI.Instance.Cmdr.InaraID}/";
+                OpenOrStoreURI( ref vaProxy, cmdrUri );
+                setStatus( ref vaProxy, "Operational" );
+            }
+            catch ( Exception e )
+            {
+                setStatus( ref vaProxy, "Failed to send Inara commander data to Inara", e );
+            }
+            Logging.Debug( "Leaving" );
         }
 
         public static void InvokeCoriolis(ref dynamic vaProxy)

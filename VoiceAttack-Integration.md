@@ -29,6 +29,7 @@ Where values are indexed (the compartments on a ship for example), the zero-base
 ## Commander Variables
 
   * {TXT:Name}: the name of the commander
+  * {INT:Inara id}: the Inara ID of the commander (if set)
   * {INT:Combat rating}: the combat rating of the commander, with 0 being Harmless and 8 being Elite
   * {TXT:Combat rank}: the combat rank of the commander, from Harmless to Elite
   * {INT:Trade rating}: the trade rating of the commander, with 0 being Penniless and 8 being Elite
@@ -456,7 +457,7 @@ To use this function in your own commands set the 'Volume' parameter then use th
 
 ## Information functions
 
-### coriolis, edshipyard, eddbsystem, or eddbstation
+### coriolis, edshipyard, inaracarrier, inaraprofile, inarasystem, or inarastation
 
 Looks up the current ship, the current starsystem, or the current station (as applicable). A web uri is written to '\{TXT: EDDI uri\}' and, unless '\{BOOL:EDDI open uri in browser\}' has been set to false, the uri is opened in the default browser.
 

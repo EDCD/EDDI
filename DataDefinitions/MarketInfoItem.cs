@@ -165,7 +165,7 @@ namespace EddiDataDefinitions
                 }
                 if (definition is null)
                 {
-                    definition = new CommodityDefinition(EliteID, -1, edName, CommodityCategory.FromEDName(category), meanPrice);
+                    definition = new CommodityDefinition(EliteID, edName, CommodityCategory.FromEDName(category), meanPrice);
                 }
                 var quote = new CommodityMarketQuote(definition)
                 {

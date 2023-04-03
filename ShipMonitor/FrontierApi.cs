@@ -255,7 +255,7 @@ namespace EddiShipMonitor
                 Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(json["module"]));
 
                 // Create a basic module & supplement from the info available
-                module = new Module(id, edName, -1, edName, -1, "", (long)json["module"]["value"]);
+                module = new Module(id, edName, edName, -1, "", (long)json["module"]["value"]);
             }
 
             module.fallbackLocalizedName = (string)json["module"]["locName"];

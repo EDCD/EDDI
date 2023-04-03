@@ -4413,7 +4413,6 @@
 	},
 	"Faction": {
 		"name": "Mother Gaia",
-		"EDDBID": null,
 		"EDSMID": null,
 		"Allegiance": {
 			"edname": "$faction_Federation;"
@@ -4447,7 +4446,6 @@
 	"factions": [
 		{
 			"name": "Mother Gaia",
-			"EDDBID": null,
 			"EDSMID": 1,
 			"Allegiance": {
 				"edname": "$faction_Federation;"
@@ -4484,7 +4482,6 @@
 		},
 		{
 			"name": "Sol Workers' Party",
-			"EDDBID": null,
 			"EDSMID": 223,
 			"Allegiance": {
 				"edname": "$faction_Federation;"
@@ -4517,7 +4514,6 @@
 		},
 		{
 			"name": "Federal Congress",
-			"EDDBID": null,
 			"EDSMID": 963,
 			"Allegiance": {
 				"edname": "$faction_Federation;"
@@ -4550,7 +4546,6 @@
 		},
 		{
 			"name": "Sol Nationalists",
-			"EDDBID": null,
 			"EDSMID": 6768,
 			"Allegiance": {
 				"edname": "$faction_Federation;"
@@ -4583,7 +4578,6 @@
 		},
 		{
 			"name": "Sol Constitution Party",
-			"EDDBID": null,
 			"EDSMID": 33141,
 			"Allegiance": {
 				"edname": "$faction_Federation;"
@@ -4616,7 +4610,6 @@
 		},
 		{
 			"name": "Aegis Core",
-			"EDDBID": null,
 			"EDSMID": 79985,
 			"Allegiance": {
 				"edname": "$faction_Independent;"
@@ -4649,7 +4642,6 @@
 		},
 		{
 			"name": "Pilots' Federation Local Branch",
-			"EDDBID": null,
 			"EDSMID": 81923,
 			"Allegiance": {
 				"edname": "$faction_PilotsFederation;"
@@ -4691,7 +4683,6 @@
 			"name": "Furukawa Enterprise",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -4810,7 +4801,6 @@
 			"name": "Ehrlich City",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -4932,7 +4922,6 @@
 			"name": "Walz Depot",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5051,7 +5040,6 @@
 			"name": "Daedalus",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5177,7 +5165,6 @@
 			"name": "Burnell Station",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5293,7 +5280,6 @@
 			"name": "Abraham Lincoln",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5419,7 +5405,6 @@
 			"name": "Li Qing Jao",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5541,7 +5526,6 @@
 			"name": "M.Gorbachev",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5667,7 +5651,6 @@
 			"name": "Galileo",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5793,7 +5776,6 @@
 			"name": "Rescue Ship - Li Qing Jao",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -5910,7 +5892,6 @@
 			"name": "Mars High",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6032,7 +6013,6 @@
 			"name": "Durrance Camp",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6151,7 +6131,6 @@
 			"name": "Malins's Camp",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6258,7 +6237,6 @@
 			"name": "Grebby Prospecting",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6366,7 +6344,6 @@
 			"name": "Bruno's Encampment",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6477,7 +6454,6 @@
 			"name": "Bourne Mining Installation",
 			"Faction": {
 				"name": "Sol Nationalists",
-				"EDDBID": null,
 				"EDSMID": 6768,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6581,7 +6557,6 @@
 			"name": "Alasa Industries",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6685,7 +6660,6 @@
 			"name": "Schottky Reformatory",
 			"Faction": {
 				"name": "Sol Nationalists",
-				"EDDBID": null,
 				"EDSMID": 6768,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6804,7 +6778,6 @@
 			"name": "Hidalgo's Slumber",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -6911,7 +6884,6 @@
 			"name": "Vadamootoo Mining Base",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7015,7 +6987,6 @@
 			"name": "Fraser Industrial Moulding",
 			"Faction": {
 				"name": "Sol Constitution Party",
-				"EDDBID": null,
 				"EDSMID": 33141,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7119,7 +7090,6 @@
 			"name": "Dewsnap Prospecting Station",
 			"Faction": {
 				"name": "Sol Constitution Party",
-				"EDDBID": null,
 				"EDSMID": 33141,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7223,7 +7193,6 @@
 			"name": "Columbus",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7349,7 +7318,6 @@
 			"name": "Majoro Entertainment Complex",
 			"Faction": {
 				"name": "Sol Constitution Party",
-				"EDDBID": null,
 				"EDSMID": 33141,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7456,7 +7424,6 @@
 			"name": "Haberlandt Survey",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7575,7 +7542,6 @@
 			"name": "Kvitka Dredging Enterprise",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7683,7 +7649,6 @@
 			"name": "Bibeau's Wandering",
 			"Faction": {
 				"name": "Sol Nationalists",
-				"EDDBID": null,
 				"EDSMID": 6768,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7790,7 +7755,6 @@
 			"name": "Kvitka's Origin",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -7901,7 +7865,6 @@
 			"name": "Ikeda Tourist Zone",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -8012,7 +7975,6 @@
 			"name": "Titan City",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -8138,7 +8100,6 @@
 			"name": "Ndiaye Hospitality Complex",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -8245,7 +8206,6 @@
 			"name": "Dekker's Yard",
 			"Faction": {
 				"name": "Colonel Bris Dekker",
-				"EDDBID": null,
 				"EDSMID": null,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -8333,7 +8293,6 @@
 			"name": "Mendy Excavation Site",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -8437,7 +8396,6 @@
 			"name": "Banyard Command Outpost",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -8544,7 +8502,6 @@
 			"name": "Mathibeli Excavation Station",
 			"Faction": {
 				"name": "Sol Constitution Party",
-				"EDDBID": null,
 				"EDSMID": 33141,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -8648,7 +8605,6 @@
 			"name": "Aithal Garrison",
 			"Faction": {
 				"name": "Aegis Core",
-				"EDDBID": null,
 				"EDSMID": 79985,
 				"Allegiance": {
 					"edname": "$faction_Independent;"
@@ -8755,7 +8711,6 @@
 			"name": "Deshpande Mining Exchange",
 			"Faction": {
 				"name": "Aegis Core",
-				"EDDBID": null,
 				"EDSMID": 79985,
 				"Allegiance": {
 					"edname": "$faction_Independent;"
@@ -8856,7 +8811,6 @@
 			"name": "Lamar's Prospect",
 			"Faction": {
 				"name": "Aegis Core",
-				"EDDBID": null,
 				"EDSMID": 79985,
 				"Allegiance": {
 					"edname": "$faction_Independent;"
@@ -8957,7 +8911,6 @@
 			"name": "Correa Entertainment Complex",
 			"Faction": {
 				"name": "Sol Nationalists",
-				"EDDBID": null,
 				"EDSMID": 6768,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9061,7 +9014,6 @@
 			"name": "Avery Manufacturing Hub",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9169,7 +9121,6 @@
 			"name": "Hirano Mineralogic Territory",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9273,7 +9224,6 @@
 			"name": "Abimbola Metallurgic Reserve",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9381,7 +9331,6 @@
 			"name": "Pavlenko's Reception",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9492,7 +9441,6 @@
 			"name": "Shen Extraction Rigs",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9600,7 +9548,6 @@
 			"name": "Amos Mining Hub",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9704,7 +9651,6 @@
 			"name": "Navarrete's Prospect",
 			"Faction": {
 				"name": "Sol Constitution Party",
-				"EDDBID": null,
 				"EDSMID": 33141,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9808,7 +9754,6 @@
 			"name": "Indongo Bay",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -9915,7 +9860,6 @@
 			"name": "Oshpak's House",
 			"Faction": {
 				"name": "Aegis Core",
-				"EDDBID": null,
 				"EDSMID": 79985,
 				"Allegiance": {
 					"edname": "$faction_Independent;"
@@ -10022,7 +9966,6 @@
 			"name": "Sakurai Tourism Complex",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10129,7 +10072,6 @@
 			"name": "Walachnia's Gate",
 			"Faction": {
 				"name": "Sol Nationalists",
-				"EDDBID": null,
 				"EDSMID": 6768,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10236,7 +10178,6 @@
 			"name": "Tsarenko Prospecting Exchange",
 			"Faction": {
 				"name": "Federal Congress",
-				"EDDBID": null,
 				"EDSMID": 963,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10340,7 +10281,6 @@
 			"name": "Uutoni Extraction Platform",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10441,7 +10381,6 @@
 			"name": "Fincham Drilling Hub",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10545,7 +10484,6 @@
 			"name": "Awolowo Mineralogic Base",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10653,7 +10591,6 @@
 			"name": "Yamashita Excavation Territory",
 			"Faction": {
 				"name": "Sol Nationalists",
-				"EDDBID": null,
 				"EDSMID": 6768,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10757,7 +10694,6 @@
 			"name": "Florianz Mining Prospect",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10861,7 +10797,6 @@
 			"name": "Seidel's Globe",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -10972,7 +10907,6 @@
 			"name": "Ji's Slumber",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -11083,7 +11017,6 @@
 			"name": "Avery Excavation Hub",
 			"Faction": {
 				"name": "Sol Nationalists",
-				"EDDBID": null,
 				"EDSMID": 6768,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -11187,7 +11120,6 @@
 			"name": "Beauchene's Horizon",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -11298,7 +11230,6 @@
 			"name": "Ponomarenko's Drilling",
 			"Faction": {
 				"name": "Mother Gaia",
-				"EDDBID": null,
 				"EDSMID": 1,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -11406,7 +11337,6 @@
 			"name": "Hao's Steal",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"
@@ -11513,7 +11443,6 @@
 			"name": "Adebisi Hospitality Zone",
 			"Faction": {
 				"name": "Sol Workers' Party",
-				"EDDBID": null,
 				"EDSMID": 223,
 				"Allegiance": {
 					"edname": "$faction_Federation;"

@@ -40,7 +40,6 @@ namespace UnitTests
                 ""demandbracket"": 1,
                 ""StatusFlags"": [],
                 ""EliteID"": 128049669,
-                ""EDDBID"": 36,
                 ""category"": ""Medicines"",
                 ""avgprice"": 6779,
                 ""rare"": false
@@ -57,7 +56,6 @@ namespace UnitTests
             Assert.AreEqual(56, commodity.demand);
             Assert.AreEqual(CommodityBracket.Low, commodity.demandbracket);
             Assert.AreEqual(128049669, commodity.EliteID);
-            Assert.AreEqual(36, commodity.EDDBID);
             Assert.AreEqual("Medicines", commodity.definition.Category.invariantName);
             Assert.AreEqual(6779, commodity.avgprice);
             Assert.IsFalse(commodity.rare);
@@ -152,7 +150,6 @@ namespace UnitTests
                 ""demand"": 17,
                 ""demandbracket"": null,
                 ""StatusFlags"": null,
-                ""EDDBID"": -1,
                 ""EDName"": null
             }";
 

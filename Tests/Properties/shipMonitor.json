@@ -72,8 +72,7 @@
         "priority": 4,
         "health": 100.0,
         "modified": false,
-        "EDID": 999999908,
-        "EDDBID": -1
+        "EDID": 999999908
       },
       "bulkheads": {
         "edname": "Krait_mkii_Armour_Reactive",
@@ -90,8 +89,7 @@
         "priority": 1,
         "health": 100.0,
         "modified": true,
-        "EDID": 128816573,
-        "EDDBID": -1
+        "EDID": 128816573
       },
       "canopy": {
         "edname": "Krait_MkII_Cockpit",
@@ -108,8 +106,7 @@
         "priority": 1,
         "health": 100.0,
         "modified": false,
-        "EDID": 999999946,
-        "EDDBID": -1
+        "EDID": 999999946
       },
       "powerplant": {
         "edname": "Int_Powerplant_Size6_Class5",
@@ -126,8 +123,7 @@
         "priority": 1,
         "health": 100.0,
         "modified": true,
-        "EDID": 128064057,
-        "EDDBID": 915
+        "EDID": 128064057
       },
       "thrusters": {
         "edname": "Int_Engine_Size6_Class5",
@@ -144,8 +140,7 @@
         "priority": 0,
         "health": 100.0,
         "modified": true,
-        "EDID": 128064092,
-        "EDDBID": 950
+        "EDID": 128064092
       },
       "frameshiftdrive": {
         "edname": "Int_Hyperdrive_Size5_Class5",
@@ -162,8 +157,7 @@
         "priority": 3,
         "health": 100.0,
         "modified": true,
-        "EDID": 128064122,
-        "EDDBID": 980
+        "EDID": 128064122
       },
       "lifesupport": {
         "edname": "Int_LifeSupport_Size4_Class5",
@@ -180,8 +174,7 @@
         "priority": 3,
         "health": 100.0,
         "modified": true,
-        "EDID": 128064157,
-        "EDDBID": 1015
+        "EDID": 128064157
       },
       "powerdistributor": {
         "edname": "Int_PowerDistributor_Size7_Class5",
@@ -198,8 +191,7 @@
         "priority": 1,
         "health": 100.0,
         "modified": true,
-        "EDID": 128064212,
-        "EDDBID": 1070
+        "EDID": 128064212
       },
       "sensors": {
         "edname": "Int_Sensors_Size6_Class5",
@@ -216,8 +208,7 @@
         "priority": 1,
         "health": 100.0,
         "modified": true,
-        "EDID": 128064247,
-        "EDDBID": 1105
+        "EDID": 128064247
       },
       "fueltank": {
         "edname": "Int_FuelTank_Size5_Class3",
@@ -234,8 +225,7 @@
         "priority": 1,
         "health": 100.0,
         "modified": false,
-        "EDID": 128064350,
-        "EDDBID": 1203
+        "EDID": 128064350
       },
       "datalinkscanner": null,
       "fueltankcapacity": 32.0,
@@ -259,8 +249,7 @@
             "priority": 2,
             "health": 100.0,
             "modified": false,
-            "EDID": 128833996,
-            "EDDBID": -1
+            "EDID": 128833996
           }
         },
         {
@@ -281,8 +270,7 @@
             "priority": 2,
             "health": 100.0,
             "modified": false,
-            "EDID": 128833687,
-            "EDDBID": -1
+            "EDID": 128833687
           }
         },
         {
@@ -303,8 +291,7 @@
             "priority": 2,
             "health": 100.0,
             "modified": false,
-            "EDID": 128833687,
-            "EDDBID": -1
+            "EDID": 128833687
           }
         },
         {
@@ -325,8 +312,7 @@
             "priority": 2,
             "health": 100.0,
             "modified": false,
-            "EDID": 128833687,
-            "EDDBID": -1
+            "EDID": 128833687
           }
         },
         {
@@ -347,8 +333,7 @@
             "priority": 2,
             "health": 100.0,
             "modified": false,
-            "EDID": 128833687,
-            "EDDBID": -1
+            "EDID": 128833687
           }
         },
         {
@@ -369,8 +354,7 @@
             "priority": 4,
             "health": 100.0,
             "modified": false,
-            "EDID": 128793115,
-            "EDDBID": 1616
+            "EDID": 128793115
           }
         },
         {
@@ -391,8 +375,7 @@
             "priority": 4,
             "health": 100.0,
             "modified": true,
-            "EDID": 128049519,
-            "EDDBID": 886
+            "EDID": 128049519
           }
         },
         {
@@ -413,8 +396,7 @@
             "priority": 4,
             "health": 100.0,
             "modified": true,
-            "EDID": 128049519,
-            "EDDBID": 886
+            "EDID": 128049519
           }
         },
         {
@@ -435,8 +417,7 @@
             "priority": 4,
             "health": 100.0,
             "modified": true,
-            "EDID": 128049519,
-            "EDDBID": 886
+            "EDID": 128049519
           }
         }
       ],
@@ -459,8 +440,7 @@
             "priority": 1,
             "health": 100.0,
             "modified": true,
-            "EDID": 128671336,
-            "EDDBID": 1535
+            "EDID": 128671336
           }
         },
         {
@@ -481,8 +461,7 @@
             "priority": 1,
             "health": 100.0,
             "modified": true,
-            "EDID": 128668546,
-            "EDDBID": 1382
+            "EDID": 128668546
           }
         },
         {
@@ -503,8 +482,7 @@
             "priority": 1,
             "health": 100.0,
             "modified": true,
-            "EDID": 128668546,
-            "EDDBID": 1382
+            "EDID": 128668546
           }
         },
         {
@@ -525,8 +503,7 @@
             "priority": 0,
             "health": 100.0,
             "modified": false,
-            "EDID": 128672291,
-            "EDDBID": 1527
+            "EDID": 128672291
           }
         },
         {
@@ -547,8 +524,7 @@
             "priority": 1,
             "health": 100.0,
             "modified": false,
-            "EDID": 128833944,
-            "EDDBID": -1
+            "EDID": 128833944
           }
         },
         {
@@ -569,8 +545,7 @@
             "priority": 0,
             "health": 100.0,
             "modified": false,
-            "EDID": 128833960,
-            "EDDBID": -1
+            "EDID": 128833960
           }
         },
         {
@@ -591,8 +566,7 @@
             "priority": 1,
             "health": 100.0,
             "modified": true,
-            "EDID": 128668542,
-            "EDDBID": 1378
+            "EDID": 128668542
           }
         },
         {
@@ -613,8 +587,7 @@
             "priority": 0,
             "health": 100.0,
             "modified": false,
-            "EDID": 128667623,
-            "EDDBID": 1353
+            "EDID": 128667623
           }
         }
       ],

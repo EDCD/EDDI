@@ -14,7 +14,7 @@ namespace EddiInaraService
         List<InaraResponse> SendEventBatch(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration = null);
 
         // Commander Profiles
-        InaraCmdr GetCommanderProfile(string cmdrName);
+        InaraCmdr GetCommanderProfile(string cmdrName = null);
         List<InaraCmdr> GetCommanderProfiles(IEnumerable<string> cmdrNames);
     }
 }

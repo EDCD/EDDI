@@ -182,6 +182,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 vaProxy.SetText("Name", cmdr?.name);
+                vaProxy.SetInt( "Inara id", cmdr?.InaraID );
                 vaProxy.SetInt("Combat rating", cmdr?.combatrating?.rank);
                 vaProxy.SetText("Combat rank", cmdr?.combatrating?.localizedName);
                 vaProxy.SetInt("Trade rating", cmdr?.traderating?.rank);

@@ -52,7 +52,7 @@ namespace EddiDataDefinitions
                 Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(this));
 
                 // Create a basic module & supplement from the info available
-                module = new Module(EliteID, edName, -1, edName, -1, "", buyPrice);
+                module = new Module(EliteID, edName, edName, -1, "", buyPrice);
             }
             else
             {

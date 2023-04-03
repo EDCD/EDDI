@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -67,6 +68,17 @@ namespace EddiInaraResponder
         {
             Stop();
             inaraService.Start(EDDI.Instance.EddiIsBeta());
+            Task.Run( FetchInaraCommanderID );
+        }
+
+        private async void FetchInaraCommanderID()
+        {
+            InaraCmdr cmdr = null;
+            await Task.Run( () =>
+            {
+                cmdr = inaraService.GetCommanderProfile();
+            } ).ConfigureAwait( false );
+            EDDI.Instance.Cmdr.InaraID = cmdr?.id;
         }
 
         public UserControl ConfigurationTabItem()

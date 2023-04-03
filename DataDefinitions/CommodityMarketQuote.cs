@@ -88,9 +88,6 @@ namespace EddiDataDefinitions
 
         public long? EliteID => definition?.EliteID;
 
-        [PublicAPI]
-        public long? EDDBID => definition?.EDDBID;
-
         [PublicAPI, Obsolete("Please use localizedName or InvariantName")]
         public string category => definition?.Category.localizedName;
 

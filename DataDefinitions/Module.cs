@@ -81,9 +81,6 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public long EDID { get; set; } // The ID in Elite: Dangerous' database
 
-        [JsonProperty]
-        public long EDDBID { get; set; } // The ID in eddb.io
-
         [JsonProperty("mount")]
         public ModuleMount Mount { get; set; } // Only for weapons
 
@@ -137,7 +134,6 @@ namespace EddiDataDefinitions
             this.priority = Module.priority;
             this.position = Module.position;
             this.EDID = Module.EDID;
-            this.EDDBID = Module.EDDBID;
             this.modified = Module.modified;
             this.engineermodification = Module.engineermodification;
             this.engineerlevel = Module.engineerlevel;
@@ -146,10 +142,9 @@ namespace EddiDataDefinitions
             this.modifiers = Module.modifiers;
         }
 
-        public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value) : base(edname, basename)
+        public Module(long EDID, string edname, string basename, int Class, string Grade, long Value) : base(edname, basename)
         {
             this.EDID = EDID;
-            this.EDDBID = EDDBID;
             this.@class = Class;
             this.grade = Grade;
             this.value = Value;
@@ -158,10 +153,9 @@ namespace EddiDataDefinitions
         }
 
         // Module definition for a bulkhead - requires ship ID
-        public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value, int ShipId) : base(edname, basename)
+        public Module(long EDID, string edname, string basename, int Class, string Grade, long Value, int ShipId) : base(edname, basename)
         {
             this.EDID = EDID;
-            this.EDDBID = EDDBID;
             this.@class = Class;
             this.grade = Grade;
             this.value = Value;
@@ -171,10 +165,9 @@ namespace EddiDataDefinitions
         }
 
         // Module definition for a weapon - requires mount and optional ammo
-        public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value, ModuleMount Mount, int? AmmoClipCapacity = null, int? AmmoHopperCapacity = null) : base(edname, basename)
+        public Module(long EDID, string edname, string basename, int Class, string Grade, long Value, ModuleMount Mount, int? AmmoClipCapacity = null, int? AmmoHopperCapacity = null) : base(edname, basename)
         {
             this.EDID = EDID;
-            this.EDDBID = EDDBID;
             this.@class = Class;
             this.grade = Grade;
             this.value = Value;

@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `scanned` and `mapped` body properties are now unix timestamps (seconds since Jan 01 1970 UTC) rather than DateTime objects. #2468   
     * Trim any pauses or breaks from the end of speech when that speech isn't followed by more speech.
     * Updated body mapping values (these were buffed slightly for Odyssey).
+    * Removed references to retired site EDDB.
   * Navigation Monitor
     * Fix `Shortest Missions Route` reports all distances as zero (0) light-years #2488
     * The `status` object now contains a new property `fsd_hyperdrive_charging` (`{BOOL:Status fsd hyperdrive charging}` in VoiceAttack), which contains a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
@@ -31,6 +32,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * VoiceAttack Responder
     * Fixed a bug that prevented current ship variables from being updated properly on a ship change. #2482
     * Fixed a bug that prevented a clean application shut-down from VoiceAttack.
+    * Added plugin commands to access Inara (inaracarrier, inaraprofile, inarasystem, and inarastation)
+    * Redirect plugin commands for accessing EDDB (eddbsystem and eddbstation) to instead reference Inara (inarasystem, and inarastation)
+    * Updated EDDI.vap to add new commands referencing Inara.cz.
+    * Updated EDDI.vap to remove commands referencing EDDB.
 
 ## 4.0.2
   * Core

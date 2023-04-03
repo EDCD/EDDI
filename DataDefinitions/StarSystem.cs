@@ -34,6 +34,7 @@ namespace EddiDataDefinitions
         public decimal? z { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
+        [PublicAPI, JsonProperty, JsonRequired]
         public ulong? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>

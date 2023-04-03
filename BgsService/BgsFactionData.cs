@@ -15,10 +15,7 @@ namespace EddiBgsService
         {
             /// <summary> Faction name. </summary>
             public const string factionName = "name";
-
-            /// <summary> Faction EDDB ID. </summary>
-            public const string eddbId = "eddbid";
-
+            
             /// <summary> Partial faction name begins with... (at least 1 additional parameter is required) </summary>
             public const string beginsWith = "beginsWith";
 
@@ -114,10 +111,7 @@ namespace EddiBgsService
                     name = (string)factionJson["name"],
                     updatedAt = (DateTime)factionJson["updated_at"],
                     Government = Government.FromName((string)factionJson["government"]),
-                    Allegiance = Superpower.FromName((string)factionJson["allegiance"]),
-
-                    // EDDB ID may not be present for new / unknown factions
-                    EDDBID = JsonParsing.getOptionalLong(factionJson, "eddb_id")
+                    Allegiance = Superpower.FromName((string)factionJson["allegiance"])
                 };
 
                 foreach (object presence in (List<object>)factionJson["faction_presence"])
