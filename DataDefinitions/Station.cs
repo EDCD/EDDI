@@ -60,7 +60,7 @@ namespace EddiDataDefinitions
         public string systemname { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
-        [PublicAPI, JsonProperty, JsonRequired]
+        [PublicAPI]
         public ulong? systemAddress { get; set; }
 
         /// <summary>Unique 64 bit id value for station</summary>

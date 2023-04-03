@@ -6,6 +6,7 @@
 	"updatedat": 1518192122,
 	"lastupdated": "2018-02-13T22:31:29.5868693-08:00",
 	"name": "Zhu Baba",
+	"systemAddress": 11666875688377,
 	"population": 159918,
 	"allegiance": "Empire",
 	"government": "Patronage",
@@ -18,1664 +19,1690 @@
 	"x": 57.375,
 	"y": -124.9375,
 	"z": 51.53125,
-	"bodies": [{
-		"temperature": 2757,
-		"rings": null,
-		"stellarclass": "M",
-		"solarmass": 0.324219,
-		"solarradius": 0.543056696852092,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Star",
-		"name": "Zhu Baba A",
-		"systemname": "Zhu Baba",
-		"age": 6954,
-		"distance": 0,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": true,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 98,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 346.483917,
-		"atmosphere": "Argon",
-		"tilt": null,
-		"earthmass": 0.077263,
-		"gravity": 0.30342349324183,
-		"eccentricity": 0.000047,
-		"inclination": -0.013674,
-		"orbitalperiod": 393.93615740740740740740740741,
-		"radius": 3217,
-		"rotationalperiod": 0.855402741608796,
-		"semimajoraxis": 0.722539974815296,
-		"pressure": 0.024229346893659,
-		"terraformstate": "Not terraformable",
-		"planettype": "Rocky ice world",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 1",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 361,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 80,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 206.172699,
-		"atmosphere": "Nitrogen",
-		"tilt": null,
-		"earthmass": 0.111674,
-		"gravity": 0.3230752601551,
-		"eccentricity": 0.001354,
-		"inclination": -0.010097,
-		"orbitalperiod": 750.38319444444444444444444444,
-		"radius": 3748,
-		"rotationalperiod": 0.961371075671296,
-		"semimajoraxis": 1.11028216275274,
-		"pressure": 0.0145374242980508,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 2",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 554,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 142,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 256.912506,
-		"atmosphere": "Methane",
-		"tilt": null,
-		"earthmass": 0.033623,
-		"gravity": 0.19133995808966,
-		"eccentricity": 0.001302,
-		"inclination": 0.001594,
-		"orbitalperiod": 1111.0752777777777777777777778,
-		"radius": 2672,
-		"rotationalperiod": 0.433060212314815,
-		"semimajoraxis": 1.4423597945502,
-		"pressure": 1.45450838884777,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 3",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 719,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 59,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 231.127747,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.038802,
-		"gravity": 0.201208465684,
-		"eccentricity": 0.006106,
-		"inclination": -0.68233,
-		"orbitalperiod": 2052.5172222222222222222222222,
-		"radius": 2800,
-		"rotationalperiod": 0.844538755069444,
-		"semimajoraxis": 2.17154655488021,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": [{
-			"material": "Sulphur",
-			"percentage": 23.180157
-		},
-		{
-			"material": "Carbon",
-			"percentage": 19.492111
-		},
-		{
-			"material": "Iron",
-			"percentage": 15.917831
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 12.479184
-		},
-		{
-			"material": "Nickel",
-			"percentage": 12.039581
-		},
-		{
-			"material": "Manganese",
-			"percentage": 6.573902
-		},
-		{
-			"material": "Zinc",
-			"percentage": 4.325871
-		},
-		{
-			"material": "Selenium",
-			"percentage": 3.62789
-		},
-		{
-			"material": "Molybdenum",
-			"percentage": 1.039425
-		},
-		{
-			"material": "Tungsten",
-			"percentage": 0.874049
-		},
-		{
-			"material": "Polonium",
-			"percentage": 0.449998
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 4",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 1081,
-		"landable": true,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 50,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 254.58606,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.071869,
-		"gravity": 0.25194128474046,
-		"eccentricity": 0.000545,
-		"inclination": -0.011955,
-		"orbitalperiod": 3479.0777777777777777777777778,
-		"radius": 3405,
-		"rotationalperiod": 1.80607801649306,
-		"semimajoraxis": 3.08712401008793,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": [{
-			"material": "Sulphur",
-			"percentage": 22.957724
-		},
-		{
-			"material": "Carbon",
-			"percentage": 19.305069
-		},
-		{
-			"material": "Iron",
-			"percentage": 15.982339
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 12.359436
-		},
-		{
-			"material": "Nickel",
-			"percentage": 12.08837
-		},
-		{
-			"material": "Chromium",
-			"percentage": 7.187788
-		},
-		{
-			"material": "Selenium",
-			"percentage": 3.593078
-		},
-		{
-			"material": "Germanium",
-			"percentage": 3.367791
-		},
-		{
-			"material": "Cadmium",
-			"percentage": 1.241101
-		},
-		{
-			"material": "Tin",
-			"percentage": 1.045034
-		},
-		{
-			"material": "Tellurium",
-			"percentage": 0.872265
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 5",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 1541,
-		"landable": true,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 50,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 270.303802,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.003839,
-		"gravity": 0.080390551309571,
-		"eccentricity": 0.0,
-		"inclination": 62.443062,
-		"orbitalperiod": 132.82686342592592592592592593,
-		"radius": 1393,
-		"rotationalperiod": 136.328657407407,
-		"semimajoraxis": 0.00310962586448097,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": [{
-			"material": "Sulphur",
-			"percentage": 27.178621
-		},
-		{
-			"material": "Carbon",
-			"percentage": 22.854406
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 14.631783
-		},
-		{
-			"material": "Iron",
-			"percentage": 11.766965
-		},
-		{
-			"material": "Nickel",
-			"percentage": 8.900038
-		},
-		{
-			"material": "Chromium",
-			"percentage": 5.291995
-		},
-		{
-			"material": "Selenium",
-			"percentage": 4.253685
-		},
-		{
-			"material": "Germanium",
-			"percentage": 3.137469
-		},
-		{
-			"material": "Molybdenum",
-			"percentage": 0.768376
-		},
-		{
-			"material": "Yttrium",
-			"percentage": 0.702827
-		},
-		{
-			"material": "Mercury",
-			"percentage": 0.513844
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 5 a",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 1542,
-		"landable": true,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 45,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 117.967941,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.046409,
-		"gravity": 0.21430539480862,
-		"eccentricity": 0.143319,
-		"inclination": -3.579142,
-		"orbitalperiod": 560.28046296296296296296296296,
-		"radius": 2967,
-		"rotationalperiod": 0.427256085428241,
-		"semimajoraxis": 0.00447202514895154,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": [{
-			"material": "Sulphur",
-			"percentage": 22.9743
-		},
-		{
-			"material": "Carbon",
-			"percentage": 19.319006
-		},
-		{
-			"material": "Iron",
-			"percentage": 15.776467
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 12.368361
-		},
-		{
-			"material": "Nickel",
-			"percentage": 11.932659
-		},
-		{
-			"material": "Manganese",
-			"percentage": 6.51552
-		},
-		{
-			"material": "Zinc",
-			"percentage": 4.287453
-		},
-		{
-			"material": "Selenium",
-			"percentage": 3.595672
-		},
-		{
-			"material": "Cadmium",
-			"percentage": 1.225114
-		},
-		{
-			"material": "Tin",
-			"percentage": 1.031144
-		},
-		{
-			"material": "Ruthenium",
-			"percentage": 0.974298
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 7",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 1992,
-		"landable": true,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 45,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 297.967957,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.048482,
-		"gravity": 0.21763711359129,
-		"eccentricity": 0.143319,
-		"inclination": -3.579142,
-		"orbitalperiod": 560.28046296296296296296296296,
-		"radius": 3009,
-		"rotationalperiod": 1.63073260271991,
-		"semimajoraxis": 0.0042808309837795,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": [{
-			"material": "Sulphur",
-			"percentage": 22.816116
-		},
-		{
-			"material": "Carbon",
-			"percentage": 19.185989
-		},
-		{
-			"material": "Iron",
-			"percentage": 15.667844
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 12.2832
-		},
-		{
-			"material": "Nickel",
-			"percentage": 11.8505
-		},
-		{
-			"material": "Chromium",
-			"percentage": 7.04635
-		},
-		{
-			"material": "Zinc",
-			"percentage": 4.257934
-		},
-		{
-			"material": "Vanadium",
-			"percentage": 3.847477
-		},
-		{
-			"material": "Cadmium",
-			"percentage": 1.216679
-		},
-		{
-			"material": "Ruthenium",
-			"percentage": 0.967589
-		},
-		{
-			"material": "Tungsten",
-			"percentage": 0.860322
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 6",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 1995,
-		"landable": true,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 39,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 295.519867,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.064528,
-		"gravity": 0.24279004553033,
-		"eccentricity": 0.016374,
-		"inclination": -0.025144,
-		"orbitalperiod": 8239.36962962962962962962963,
-		"radius": 3287,
-		"rotationalperiod": 1.27770326967593,
-		"semimajoraxis": 5.48496595787443,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": [{
-			"material": "Sulphur",
-			"percentage": 22.113516
-		},
-		{
-			"material": "Carbon",
-			"percentage": 18.595177
-		},
-		{
-			"material": "Iron",
-			"percentage": 15.437022
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 11.904951
-		},
-		{
-			"material": "Nickel",
-			"percentage": 11.675917
-		},
-		{
-			"material": "Chromium",
-			"percentage": 6.942541
-		},
-		{
-			"material": "Manganese",
-			"percentage": 6.375332
-		},
-		{
-			"material": "Zinc",
-			"percentage": 4.195205
-		},
-		{
-			"material": "Cadmium",
-			"percentage": 1.198755
-		},
-		{
-			"material": "Tin",
-			"percentage": 1.009459
-		},
-		{
-			"material": "Technetium",
-			"percentage": 0.55212
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 8",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 2693,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 39,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 21.203663,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.004152,
-		"gravity": 0.082563464587805,
-		"eccentricity": 0.0,
-		"inclination": 44.643383,
-		"orbitalperiod": 346.08050925925925925925925926,
-		"radius": 1430,
-		"rotationalperiod": 0.911152615023148,
-		"semimajoraxis": 0.00569987620819793,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": [{
-			"material": "Sulphur",
-			"percentage": 27.118683
-		},
-		{
-			"material": "Carbon",
-			"percentage": 22.804005
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 14.599514
-		},
-		{
-			"material": "Iron",
-			"percentage": 11.741015
-		},
-		{
-			"material": "Nickel",
-			"percentage": 8.880411
-		},
-		{
-			"material": "Chromium",
-			"percentage": 5.280324
-		},
-		{
-			"material": "Selenium",
-			"percentage": 4.244303
-		},
-		{
-			"material": "Germanium",
-			"percentage": 3.130551
-		},
-		{
-			"material": "Molybdenum",
-			"percentage": 0.766681
-		},
-		{
-			"material": "Tin",
-			"percentage": 0.733251
-		},
-		{
-			"material": "Yttrium",
-			"percentage": 0.701277
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba A 8 a",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 2694,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 31,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 305.424683,
-		"atmosphere": "Neon-rich",
-		"tilt": null,
-		"earthmass": 0.546706,
-		"gravity": 0.52906629684959,
-		"eccentricity": 0.000749,
-		"inclination": -3.959478,
-		"orbitalperiod": 6181.8081481481481481481481481,
-		"radius": 6481,
-		"rotationalperiod": 1.66567744502315,
-		"semimajoraxis": 4.17448051262938,
-		"pressure": 0.00731140332593141,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba BC 2",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28345,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 166,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 352.004852,
-		"atmosphere": "Ammonia",
-		"tilt": null,
-		"earthmass": 0.012275,
-		"gravity": 0.2183323561053,
-		"eccentricity": 0.000645,
-		"inclination": 0.410556,
-		"orbitalperiod": 33.044299768518518518518518519,
-		"radius": 1512,
-		"rotationalperiod": 33.044375,
-		"semimajoraxis": 0.111200247985883,
-		"pressure": 0.00217094204786578,
-		"terraformstate": "Not terraformable",
-		"planettype": "High metal content world",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B 4",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28603,
-		"landable": false,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 252,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 209.935532,
-		"atmosphere": "Carbon dioxide",
-		"tilt": null,
-		"earthmass": 0.018182,
-		"gravity": 0.25019369509466,
-		"eccentricity": 0.086454,
-		"inclination": 3.549086,
-		"orbitalperiod": 3.2874750434027777777777777778,
-		"radius": 1719,
-		"rotationalperiod": 4.79800202546296,
-		"semimajoraxis": 0.0000951975782366533,
-		"pressure": 1.62159573155687,
-		"terraformstate": "Not terraformable",
-		"planettype": "High metal content world",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B 5",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28612,
-		"landable": false,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 268,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 29.935532,
-		"atmosphere": "Carbon dioxide",
-		"tilt": null,
-		"earthmass": 0.016089,
-		"gravity": 0.23978524776555,
-		"eccentricity": 0.086454,
-		"inclination": 3.549086,
-		"orbitalperiod": 3.2874750434027777777777777778,
-		"radius": 1651,
-		"rotationalperiod": 4.51342122395833,
-		"semimajoraxis": 0.000107580815988178,
-		"pressure": 2.68501665433013,
-		"terraformstate": "Not terraformable",
-		"planettype": "High metal content world",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B 6",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28612,
-		"landable": false,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 202,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 74.480919,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.039785,
-		"gravity": 0.32915960088307,
-		"eccentricity": 0.00033,
-		"inclination": 0.022131,
-		"orbitalperiod": 15.436595775462962962962962963,
-		"radius": 2216,
-		"rotationalperiod": 15.4366290509259,
-		"semimajoraxis": 0.0669487312963472,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "High metal content world",
-		"volcanism": null,
-		"materials": [{
-			"material": "Iron",
-			"percentage": 22.774788
-		},
-		{
-			"material": "Nickel",
-			"percentage": 17.225893
-		},
-		{
-			"material": "Sulphur",
-			"percentage": 16.285351
-		},
-		{
-			"material": "Carbon",
-			"percentage": 13.694294
-		},
-		{
-			"material": "Manganese",
-			"percentage": 9.405754
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 8.767322
-		},
-		{
-			"material": "Vanadium",
-			"percentage": 5.592695
-		},
-		{
-			"material": "Arsenic",
-			"percentage": 2.154474
-		},
-		{
-			"material": "Tin",
-			"percentage": 1.488553
-		},
-		{
-			"material": "Yttrium",
-			"percentage": 1.360311
-		},
-		{
-			"material": "Tungsten",
-			"percentage": 1.250565
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B 3",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28618,
-		"landable": true,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 566,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 297.636047,
-		"atmosphere": "Water",
-		"tilt": null,
-		"earthmass": 0.009159,
-		"gravity": 0.19734486292465,
-		"eccentricity": 0.001774,
-		"inclination": -0.053187,
-		"orbitalperiod": 6.1408600983796296296296296296,
-		"radius": 1373,
-		"rotationalperiod": 6.14087384259259,
-		"semimajoraxis": 0.0362126942492638,
-		"pressure": 0.990252128053294,
-		"terraformstate": "Not terraformable",
-		"planettype": "High metal content world",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B 2",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28620,
-		"landable": false,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 314,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 200.185257,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.019642,
-		"gravity": 0.25746773872831,
-		"eccentricity": 0.000153,
-		"inclination": 0.085175,
-		"orbitalperiod": 3.3291341145833333333333333333,
-		"radius": 1761,
-		"rotationalperiod": 3.32914207175926,
-		"semimajoraxis": 0.0240766241868709,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "High metal content world",
-		"volcanism": null,
-		"materials": [{
-			"material": "Iron",
-			"percentage": 23.522673
-		},
-		{
-			"material": "Nickel",
-			"percentage": 17.791563
-		},
-		{
-			"material": "Sulphur",
-			"percentage": 16.764713
-		},
-		{
-			"material": "Carbon",
-			"percentage": 14.097388
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 9.025389
-		},
-		{
-			"material": "Zinc",
-			"percentage": 6.392582
-		},
-		{
-			"material": "Vanadium",
-			"percentage": 5.77635
-		},
-		{
-			"material": "Arsenic",
-			"percentage": 2.217891
-		},
-		{
-			"material": "Cadmium",
-			"percentage": 1.826642
-		},
-		{
-			"material": "Molybdenum",
-			"percentage": 1.536017
-		},
-		{
-			"material": "Antimony",
-			"percentage": 1.048776
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B 1",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28626,
-		"landable": true,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 314,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 221.221573,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.000336,
-		"gravity": 0.058238848128566,
-		"eccentricity": 0.0,
-		"inclination": 69.202728,
-		"orbitalperiod": 0.3325599274768518518518518519,
-		"radius": 484,
-		"rotationalperiod": 0.335395281759259,
-		"semimajoraxis": 0.0000367767433737946,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Rocky body",
-		"volcanism": {
-			"type": "Geysers",
-			"composition": "Silicate vapour",
-			"amount": "Major"
-		},
-		"materials": [{
-			"material": "Iron",
-			"percentage": 20.51087
-		},
-		{
-			"material": "Sulphur",
-			"percentage": 18.487118
-		},
-		{
-			"material": "Carbon",
-			"percentage": 15.545752
-		},
-		{
-			"material": "Nickel",
-			"percentage": 15.513563
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 9.952657
-		},
-		{
-			"material": "Manganese",
-			"percentage": 8.47078
-		},
-		{
-			"material": "Vanadium",
-			"percentage": 5.036756
-		},
-		{
-			"material": "Arsenic",
-			"percentage": 2.445757
-		},
-		{
-			"material": "Tellurium",
-			"percentage": 1.416451
-		},
-		{
-			"material": "Molybdenum",
-			"percentage": 1.339348
-		},
-		{
-			"material": "Tin",
-			"percentage": 1.280947
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B 1 a",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28626,
-		"landable": true,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": null,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B A Belt Cluster 1",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28631,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": null,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B A Belt Cluster 2",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28631,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 1741,
-		"rings": null,
-		"stellarclass": "L",
-		"solarmass": 0.167969,
-		"solarradius": 0.331935765416128,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Star",
-		"name": "Zhu Baba B",
-		"systemname": "Zhu Baba",
-		"age": 6954,
-		"distance": 28632,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": false,
-		"luminosityclass": null
-	},
-	{
-		"temperature": null,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba B A Belt Cluster 3",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 28632,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 165,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 178.579285,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.003111,
-		"gravity": 0.13673486868604,
-		"eccentricity": 0.000903,
-		"inclination": -0.077072,
-		"orbitalperiod": 13.814227430555555555555555556,
-		"radius": 962,
-		"rotationalperiod": 13.8142303240741,
-		"semimajoraxis": 0.0497252031542452,
-		"pressure": 0.00084509076733284,
-		"terraformstate": "Not terraformable",
-		"planettype": "High metal content world",
-		"volcanism": null,
-		"materials": [{
-			"material": "Iron",
-			"percentage": 21.054314
-		},
-		{
-			"material": "Nickel",
-			"percentage": 15.9246
-		},
-		{
-			"material": "Sulphur",
-			"percentage": 14.977349
-		},
-		{
-			"material": "Carbon",
-			"percentage": 12.5944
-		},
-		{
-			"material": "Chromium",
-			"percentage": 9.468824
-		},
-		{
-			"material": "Manganese",
-			"percentage": 8.695216
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 8.063151
-		},
-		{
-			"material": "Vanadium",
-			"percentage": 5.170207
-		},
-		{
-			"material": "Tin",
-			"percentage": 1.376872
-		},
-		{
-			"material": "Molybdenum",
-			"percentage": 1.374834
-		},
-		{
-			"material": "Ruthenium",
-			"percentage": 1.300238
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba C 1",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 29073,
-		"landable": true,
-		"tidallylocked": true,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": null,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba C A Belt Cluster 2",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 29077,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 1337,
-		"rings": null,
-		"stellarclass": "L",
-		"solarmass": 0.085938,
-		"solarradius": 0.197819082938048,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Star",
-		"name": "Zhu Baba C",
-		"systemname": "Zhu Baba",
-		"age": 6954,
-		"distance": 29079,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": false,
-		"luminosityclass": null
-	},
-	{
-		"temperature": null,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba C A Belt Cluster 1",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 29079,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": null,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": null,
-		"atmosphere": null,
-		"tilt": null,
-		"earthmass": null,
-		"gravity": null,
-		"eccentricity": null,
-		"inclination": null,
-		"orbitalperiod": null,
-		"radius": null,
-		"rotationalperiod": null,
-		"semimajoraxis": null,
-		"pressure": null,
-		"terraformstate": null,
-		"planettype": null,
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba C A Belt Cluster 3",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 29079,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 131,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 323.643036,
-		"atmosphere": "No atmosphere",
-		"tilt": null,
-		"earthmass": 0.005368,
-		"gravity": 0.14445962688584,
-		"eccentricity": 0.004947,
-		"inclination": 0.099067,
-		"orbitalperiod": 22.280130208333333333333333333,
-		"radius": 1229,
-		"rotationalperiod": 22.2801331018519,
-		"semimajoraxis": 0.068386540852015,
-		"pressure": 0.0,
-		"terraformstate": "Not terraformable",
-		"planettype": "Rocky ice world",
-		"volcanism": null,
-		"materials": [{
-			"material": "Iron",
-			"percentage": 20.321407
-		},
-		{
-			"material": "Sulphur",
-			"percentage": 18.142994
-		},
-		{
-			"material": "Nickel",
-			"percentage": 15.370258
-		},
-		{
-			"material": "Carbon",
-			"percentage": 15.256378
-		},
-		{
-			"material": "Phosphorus",
-			"percentage": 9.767396
-		},
-		{
-			"material": "Chromium",
-			"percentage": 9.139211
-		},
-		{
-			"material": "Zinc",
-			"percentage": 5.522597
-		},
-		{
-			"material": "Zirconium",
-			"percentage": 2.359734
-		},
-		{
-			"material": "Cadmium",
-			"percentage": 1.578049
-		},
-		{
-			"material": "Tin",
-			"percentage": 1.3282
-		},
-		{
-			"material": "Yttrium",
-			"percentage": 1.213773
-		}],
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba C 2",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 29129,
-		"landable": null,
-		"tidallylocked": null,
-		"mainstar": null,
-		"luminosityclass": null
-	},
-	{
-		"temperature": 34,
-		"rings": null,
-		"stellarclass": null,
-		"solarmass": null,
-		"solarradius": null,
-		"chromaticity": null,
-		"radiusprobability": null,
-		"massprobability": null,
-		"tempprobability": null,
-		"ageprobability": null,
-		"periapsis": 215.576889,
-		"atmosphere": "Neon",
-		"tilt": null,
-		"earthmass": 0.528185,
-		"gravity": 0.52209837202307,
-		"eccentricity": 0.00572,
-		"inclination": 0.035402,
-		"orbitalperiod": 3762.447037037037037037037037,
-		"radius": 6412,
-		"rotationalperiod": 1.66547417534722,
-		"semimajoraxis": 2.99805095105542,
-		"pressure": 0.00328091508512213,
-		"terraformstate": "Not terraformable",
-		"planettype": "Icy body",
-		"volcanism": null,
-		"materials": null,
-		"reserves": null,
-		"type": "Planet",
-		"name": "Zhu Baba BC 1",
-		"systemname": "Zhu Baba",
-		"age": null,
-		"distance": 29781,
-		"landable": false,
-		"tidallylocked": false,
-		"mainstar": null,
-		"luminosityclass": null
-	}]
+	"bodies": [
+		{
+			"temperature": 2757,
+			"rings": null,
+			"stellarclass": "M",
+			"solarmass": 0.324219,
+			"solarradius": 0.543056696852092,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Star",
+			"name": "Zhu Baba A",
+			"systemname": "Zhu Baba",
+			"age": 6954,
+			"distance": 0,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": true,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 98,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 346.483917,
+			"atmosphere": "Argon",
+			"tilt": null,
+			"earthmass": 0.077263,
+			"gravity": 0.30342349324183,
+			"eccentricity": 0.000047,
+			"inclination": -0.013674,
+			"orbitalperiod": 393.93615740740740740740740741,
+			"radius": 3217,
+			"rotationalperiod": 0.855402741608796,
+			"semimajoraxis": 0.722539974815296,
+			"pressure": 0.024229346893659,
+			"terraformstate": "Not terraformable",
+			"planettype": "Rocky ice world",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 1",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 361,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 80,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 206.172699,
+			"atmosphere": "Nitrogen",
+			"tilt": null,
+			"earthmass": 0.111674,
+			"gravity": 0.3230752601551,
+			"eccentricity": 0.001354,
+			"inclination": -0.010097,
+			"orbitalperiod": 750.38319444444444444444444444,
+			"radius": 3748,
+			"rotationalperiod": 0.961371075671296,
+			"semimajoraxis": 1.11028216275274,
+			"pressure": 0.0145374242980508,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 2",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 554,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 142,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 256.912506,
+			"atmosphere": "Methane",
+			"tilt": null,
+			"earthmass": 0.033623,
+			"gravity": 0.19133995808966,
+			"eccentricity": 0.001302,
+			"inclination": 0.001594,
+			"orbitalperiod": 1111.0752777777777777777777778,
+			"radius": 2672,
+			"rotationalperiod": 0.433060212314815,
+			"semimajoraxis": 1.4423597945502,
+			"pressure": 1.45450838884777,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 3",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 719,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 59,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 231.127747,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.038802,
+			"gravity": 0.201208465684,
+			"eccentricity": 0.006106,
+			"inclination": -0.68233,
+			"orbitalperiod": 2052.5172222222222222222222222,
+			"radius": 2800,
+			"rotationalperiod": 0.844538755069444,
+			"semimajoraxis": 2.17154655488021,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Sulphur",
+					"percentage": 23.180157
+				},
+				{
+					"material": "Carbon",
+					"percentage": 19.492111
+				},
+				{
+					"material": "Iron",
+					"percentage": 15.917831
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 12.479184
+				},
+				{
+					"material": "Nickel",
+					"percentage": 12.039581
+				},
+				{
+					"material": "Manganese",
+					"percentage": 6.573902
+				},
+				{
+					"material": "Zinc",
+					"percentage": 4.325871
+				},
+				{
+					"material": "Selenium",
+					"percentage": 3.62789
+				},
+				{
+					"material": "Molybdenum",
+					"percentage": 1.039425
+				},
+				{
+					"material": "Tungsten",
+					"percentage": 0.874049
+				},
+				{
+					"material": "Polonium",
+					"percentage": 0.449998
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 4",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 1081,
+			"landable": true,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 50,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 254.58606,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.071869,
+			"gravity": 0.25194128474046,
+			"eccentricity": 0.000545,
+			"inclination": -0.011955,
+			"orbitalperiod": 3479.0777777777777777777777778,
+			"radius": 3405,
+			"rotationalperiod": 1.80607801649306,
+			"semimajoraxis": 3.08712401008793,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Sulphur",
+					"percentage": 22.957724
+				},
+				{
+					"material": "Carbon",
+					"percentage": 19.305069
+				},
+				{
+					"material": "Iron",
+					"percentage": 15.982339
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 12.359436
+				},
+				{
+					"material": "Nickel",
+					"percentage": 12.08837
+				},
+				{
+					"material": "Chromium",
+					"percentage": 7.187788
+				},
+				{
+					"material": "Selenium",
+					"percentage": 3.593078
+				},
+				{
+					"material": "Germanium",
+					"percentage": 3.367791
+				},
+				{
+					"material": "Cadmium",
+					"percentage": 1.241101
+				},
+				{
+					"material": "Tin",
+					"percentage": 1.045034
+				},
+				{
+					"material": "Tellurium",
+					"percentage": 0.872265
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 5",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 1541,
+			"landable": true,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 50,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 270.303802,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.003839,
+			"gravity": 0.080390551309571,
+			"eccentricity": 0.0,
+			"inclination": 62.443062,
+			"orbitalperiod": 132.82686342592592592592592593,
+			"radius": 1393,
+			"rotationalperiod": 136.328657407407,
+			"semimajoraxis": 0.00310962586448097,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Sulphur",
+					"percentage": 27.178621
+				},
+				{
+					"material": "Carbon",
+					"percentage": 22.854406
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 14.631783
+				},
+				{
+					"material": "Iron",
+					"percentage": 11.766965
+				},
+				{
+					"material": "Nickel",
+					"percentage": 8.900038
+				},
+				{
+					"material": "Chromium",
+					"percentage": 5.291995
+				},
+				{
+					"material": "Selenium",
+					"percentage": 4.253685
+				},
+				{
+					"material": "Germanium",
+					"percentage": 3.137469
+				},
+				{
+					"material": "Molybdenum",
+					"percentage": 0.768376
+				},
+				{
+					"material": "Yttrium",
+					"percentage": 0.702827
+				},
+				{
+					"material": "Mercury",
+					"percentage": 0.513844
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 5 a",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 1542,
+			"landable": true,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 45,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 117.967941,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.046409,
+			"gravity": 0.21430539480862,
+			"eccentricity": 0.143319,
+			"inclination": -3.579142,
+			"orbitalperiod": 560.28046296296296296296296296,
+			"radius": 2967,
+			"rotationalperiod": 0.427256085428241,
+			"semimajoraxis": 0.00447202514895154,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Sulphur",
+					"percentage": 22.9743
+				},
+				{
+					"material": "Carbon",
+					"percentage": 19.319006
+				},
+				{
+					"material": "Iron",
+					"percentage": 15.776467
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 12.368361
+				},
+				{
+					"material": "Nickel",
+					"percentage": 11.932659
+				},
+				{
+					"material": "Manganese",
+					"percentage": 6.51552
+				},
+				{
+					"material": "Zinc",
+					"percentage": 4.287453
+				},
+				{
+					"material": "Selenium",
+					"percentage": 3.595672
+				},
+				{
+					"material": "Cadmium",
+					"percentage": 1.225114
+				},
+				{
+					"material": "Tin",
+					"percentage": 1.031144
+				},
+				{
+					"material": "Ruthenium",
+					"percentage": 0.974298
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 7",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 1992,
+			"landable": true,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 45,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 297.967957,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.048482,
+			"gravity": 0.21763711359129,
+			"eccentricity": 0.143319,
+			"inclination": -3.579142,
+			"orbitalperiod": 560.28046296296296296296296296,
+			"radius": 3009,
+			"rotationalperiod": 1.63073260271991,
+			"semimajoraxis": 0.0042808309837795,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Sulphur",
+					"percentage": 22.816116
+				},
+				{
+					"material": "Carbon",
+					"percentage": 19.185989
+				},
+				{
+					"material": "Iron",
+					"percentage": 15.667844
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 12.2832
+				},
+				{
+					"material": "Nickel",
+					"percentage": 11.8505
+				},
+				{
+					"material": "Chromium",
+					"percentage": 7.04635
+				},
+				{
+					"material": "Zinc",
+					"percentage": 4.257934
+				},
+				{
+					"material": "Vanadium",
+					"percentage": 3.847477
+				},
+				{
+					"material": "Cadmium",
+					"percentage": 1.216679
+				},
+				{
+					"material": "Ruthenium",
+					"percentage": 0.967589
+				},
+				{
+					"material": "Tungsten",
+					"percentage": 0.860322
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 6",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 1995,
+			"landable": true,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 39,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 295.519867,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.064528,
+			"gravity": 0.24279004553033,
+			"eccentricity": 0.016374,
+			"inclination": -0.025144,
+			"orbitalperiod": 8239.36962962962962962962963,
+			"radius": 3287,
+			"rotationalperiod": 1.27770326967593,
+			"semimajoraxis": 5.48496595787443,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Sulphur",
+					"percentage": 22.113516
+				},
+				{
+					"material": "Carbon",
+					"percentage": 18.595177
+				},
+				{
+					"material": "Iron",
+					"percentage": 15.437022
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 11.904951
+				},
+				{
+					"material": "Nickel",
+					"percentage": 11.675917
+				},
+				{
+					"material": "Chromium",
+					"percentage": 6.942541
+				},
+				{
+					"material": "Manganese",
+					"percentage": 6.375332
+				},
+				{
+					"material": "Zinc",
+					"percentage": 4.195205
+				},
+				{
+					"material": "Cadmium",
+					"percentage": 1.198755
+				},
+				{
+					"material": "Tin",
+					"percentage": 1.009459
+				},
+				{
+					"material": "Technetium",
+					"percentage": 0.55212
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 8",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 2693,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 39,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 21.203663,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.004152,
+			"gravity": 0.082563464587805,
+			"eccentricity": 0.0,
+			"inclination": 44.643383,
+			"orbitalperiod": 346.08050925925925925925925926,
+			"radius": 1430,
+			"rotationalperiod": 0.911152615023148,
+			"semimajoraxis": 0.00569987620819793,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Sulphur",
+					"percentage": 27.118683
+				},
+				{
+					"material": "Carbon",
+					"percentage": 22.804005
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 14.599514
+				},
+				{
+					"material": "Iron",
+					"percentage": 11.741015
+				},
+				{
+					"material": "Nickel",
+					"percentage": 8.880411
+				},
+				{
+					"material": "Chromium",
+					"percentage": 5.280324
+				},
+				{
+					"material": "Selenium",
+					"percentage": 4.244303
+				},
+				{
+					"material": "Germanium",
+					"percentage": 3.130551
+				},
+				{
+					"material": "Molybdenum",
+					"percentage": 0.766681
+				},
+				{
+					"material": "Tin",
+					"percentage": 0.733251
+				},
+				{
+					"material": "Yttrium",
+					"percentage": 0.701277
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba A 8 a",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 2694,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 31,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 305.424683,
+			"atmosphere": "Neon-rich",
+			"tilt": null,
+			"earthmass": 0.546706,
+			"gravity": 0.52906629684959,
+			"eccentricity": 0.000749,
+			"inclination": -3.959478,
+			"orbitalperiod": 6181.8081481481481481481481481,
+			"radius": 6481,
+			"rotationalperiod": 1.66567744502315,
+			"semimajoraxis": 4.17448051262938,
+			"pressure": 0.00731140332593141,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba BC 2",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28345,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 166,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 352.004852,
+			"atmosphere": "Ammonia",
+			"tilt": null,
+			"earthmass": 0.012275,
+			"gravity": 0.2183323561053,
+			"eccentricity": 0.000645,
+			"inclination": 0.410556,
+			"orbitalperiod": 33.044299768518518518518518519,
+			"radius": 1512,
+			"rotationalperiod": 33.044375,
+			"semimajoraxis": 0.111200247985883,
+			"pressure": 0.00217094204786578,
+			"terraformstate": "Not terraformable",
+			"planettype": "High metal content world",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B 4",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28603,
+			"landable": false,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 252,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 209.935532,
+			"atmosphere": "Carbon dioxide",
+			"tilt": null,
+			"earthmass": 0.018182,
+			"gravity": 0.25019369509466,
+			"eccentricity": 0.086454,
+			"inclination": 3.549086,
+			"orbitalperiod": 3.2874750434027777777777777778,
+			"radius": 1719,
+			"rotationalperiod": 4.79800202546296,
+			"semimajoraxis": 0.0000951975782366533,
+			"pressure": 1.62159573155687,
+			"terraformstate": "Not terraformable",
+			"planettype": "High metal content world",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B 5",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28612,
+			"landable": false,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 268,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 29.935532,
+			"atmosphere": "Carbon dioxide",
+			"tilt": null,
+			"earthmass": 0.016089,
+			"gravity": 0.23978524776555,
+			"eccentricity": 0.086454,
+			"inclination": 3.549086,
+			"orbitalperiod": 3.2874750434027777777777777778,
+			"radius": 1651,
+			"rotationalperiod": 4.51342122395833,
+			"semimajoraxis": 0.000107580815988178,
+			"pressure": 2.68501665433013,
+			"terraformstate": "Not terraformable",
+			"planettype": "High metal content world",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B 6",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28612,
+			"landable": false,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 202,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 74.480919,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.039785,
+			"gravity": 0.32915960088307,
+			"eccentricity": 0.00033,
+			"inclination": 0.022131,
+			"orbitalperiod": 15.436595775462962962962962963,
+			"radius": 2216,
+			"rotationalperiod": 15.4366290509259,
+			"semimajoraxis": 0.0669487312963472,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "High metal content world",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Iron",
+					"percentage": 22.774788
+				},
+				{
+					"material": "Nickel",
+					"percentage": 17.225893
+				},
+				{
+					"material": "Sulphur",
+					"percentage": 16.285351
+				},
+				{
+					"material": "Carbon",
+					"percentage": 13.694294
+				},
+				{
+					"material": "Manganese",
+					"percentage": 9.405754
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 8.767322
+				},
+				{
+					"material": "Vanadium",
+					"percentage": 5.592695
+				},
+				{
+					"material": "Arsenic",
+					"percentage": 2.154474
+				},
+				{
+					"material": "Tin",
+					"percentage": 1.488553
+				},
+				{
+					"material": "Yttrium",
+					"percentage": 1.360311
+				},
+				{
+					"material": "Tungsten",
+					"percentage": 1.250565
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B 3",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28618,
+			"landable": true,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 566,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 297.636047,
+			"atmosphere": "Water",
+			"tilt": null,
+			"earthmass": 0.009159,
+			"gravity": 0.19734486292465,
+			"eccentricity": 0.001774,
+			"inclination": -0.053187,
+			"orbitalperiod": 6.1408600983796296296296296296,
+			"radius": 1373,
+			"rotationalperiod": 6.14087384259259,
+			"semimajoraxis": 0.0362126942492638,
+			"pressure": 0.990252128053294,
+			"terraformstate": "Not terraformable",
+			"planettype": "High metal content world",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B 2",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28620,
+			"landable": false,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 314,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 200.185257,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.019642,
+			"gravity": 0.25746773872831,
+			"eccentricity": 0.000153,
+			"inclination": 0.085175,
+			"orbitalperiod": 3.3291341145833333333333333333,
+			"radius": 1761,
+			"rotationalperiod": 3.32914207175926,
+			"semimajoraxis": 0.0240766241868709,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "High metal content world",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Iron",
+					"percentage": 23.522673
+				},
+				{
+					"material": "Nickel",
+					"percentage": 17.791563
+				},
+				{
+					"material": "Sulphur",
+					"percentage": 16.764713
+				},
+				{
+					"material": "Carbon",
+					"percentage": 14.097388
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 9.025389
+				},
+				{
+					"material": "Zinc",
+					"percentage": 6.392582
+				},
+				{
+					"material": "Vanadium",
+					"percentage": 5.77635
+				},
+				{
+					"material": "Arsenic",
+					"percentage": 2.217891
+				},
+				{
+					"material": "Cadmium",
+					"percentage": 1.826642
+				},
+				{
+					"material": "Molybdenum",
+					"percentage": 1.536017
+				},
+				{
+					"material": "Antimony",
+					"percentage": 1.048776
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B 1",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28626,
+			"landable": true,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 314,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 221.221573,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.000336,
+			"gravity": 0.058238848128566,
+			"eccentricity": 0.0,
+			"inclination": 69.202728,
+			"orbitalperiod": 0.3325599274768518518518518519,
+			"radius": 484,
+			"rotationalperiod": 0.335395281759259,
+			"semimajoraxis": 0.0000367767433737946,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Rocky body",
+			"volcanism": {
+				"type": "Geysers",
+				"composition": "Silicate vapour",
+				"amount": "Major"
+			},
+			"materials": [
+				{
+					"material": "Iron",
+					"percentage": 20.51087
+				},
+				{
+					"material": "Sulphur",
+					"percentage": 18.487118
+				},
+				{
+					"material": "Carbon",
+					"percentage": 15.545752
+				},
+				{
+					"material": "Nickel",
+					"percentage": 15.513563
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 9.952657
+				},
+				{
+					"material": "Manganese",
+					"percentage": 8.47078
+				},
+				{
+					"material": "Vanadium",
+					"percentage": 5.036756
+				},
+				{
+					"material": "Arsenic",
+					"percentage": 2.445757
+				},
+				{
+					"material": "Tellurium",
+					"percentage": 1.416451
+				},
+				{
+					"material": "Molybdenum",
+					"percentage": 1.339348
+				},
+				{
+					"material": "Tin",
+					"percentage": 1.280947
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B 1 a",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28626,
+			"landable": true,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": null,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B A Belt Cluster 1",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28631,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": null,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B A Belt Cluster 2",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28631,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 1741,
+			"rings": null,
+			"stellarclass": "L",
+			"solarmass": 0.167969,
+			"solarradius": 0.331935765416128,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Star",
+			"name": "Zhu Baba B",
+			"systemname": "Zhu Baba",
+			"age": 6954,
+			"distance": 28632,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": false,
+			"luminosityclass": null
+		},
+		{
+			"temperature": null,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba B A Belt Cluster 3",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 28632,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 165,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 178.579285,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.003111,
+			"gravity": 0.13673486868604,
+			"eccentricity": 0.000903,
+			"inclination": -0.077072,
+			"orbitalperiod": 13.814227430555555555555555556,
+			"radius": 962,
+			"rotationalperiod": 13.8142303240741,
+			"semimajoraxis": 0.0497252031542452,
+			"pressure": 0.00084509076733284,
+			"terraformstate": "Not terraformable",
+			"planettype": "High metal content world",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Iron",
+					"percentage": 21.054314
+				},
+				{
+					"material": "Nickel",
+					"percentage": 15.9246
+				},
+				{
+					"material": "Sulphur",
+					"percentage": 14.977349
+				},
+				{
+					"material": "Carbon",
+					"percentage": 12.5944
+				},
+				{
+					"material": "Chromium",
+					"percentage": 9.468824
+				},
+				{
+					"material": "Manganese",
+					"percentage": 8.695216
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 8.063151
+				},
+				{
+					"material": "Vanadium",
+					"percentage": 5.170207
+				},
+				{
+					"material": "Tin",
+					"percentage": 1.376872
+				},
+				{
+					"material": "Molybdenum",
+					"percentage": 1.374834
+				},
+				{
+					"material": "Ruthenium",
+					"percentage": 1.300238
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba C 1",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 29073,
+			"landable": true,
+			"tidallylocked": true,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": null,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba C A Belt Cluster 2",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 29077,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 1337,
+			"rings": null,
+			"stellarclass": "L",
+			"solarmass": 0.085938,
+			"solarradius": 0.197819082938048,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Star",
+			"name": "Zhu Baba C",
+			"systemname": "Zhu Baba",
+			"age": 6954,
+			"distance": 29079,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": false,
+			"luminosityclass": null
+		},
+		{
+			"temperature": null,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba C A Belt Cluster 1",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 29079,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": null,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": null,
+			"atmosphere": null,
+			"tilt": null,
+			"earthmass": null,
+			"gravity": null,
+			"eccentricity": null,
+			"inclination": null,
+			"orbitalperiod": null,
+			"radius": null,
+			"rotationalperiod": null,
+			"semimajoraxis": null,
+			"pressure": null,
+			"terraformstate": null,
+			"planettype": null,
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba C A Belt Cluster 3",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 29079,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 131,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 323.643036,
+			"atmosphere": "No atmosphere",
+			"tilt": null,
+			"earthmass": 0.005368,
+			"gravity": 0.14445962688584,
+			"eccentricity": 0.004947,
+			"inclination": 0.099067,
+			"orbitalperiod": 22.280130208333333333333333333,
+			"radius": 1229,
+			"rotationalperiod": 22.2801331018519,
+			"semimajoraxis": 0.068386540852015,
+			"pressure": 0.0,
+			"terraformstate": "Not terraformable",
+			"planettype": "Rocky ice world",
+			"volcanism": null,
+			"materials": [
+				{
+					"material": "Iron",
+					"percentage": 20.321407
+				},
+				{
+					"material": "Sulphur",
+					"percentage": 18.142994
+				},
+				{
+					"material": "Nickel",
+					"percentage": 15.370258
+				},
+				{
+					"material": "Carbon",
+					"percentage": 15.256378
+				},
+				{
+					"material": "Phosphorus",
+					"percentage": 9.767396
+				},
+				{
+					"material": "Chromium",
+					"percentage": 9.139211
+				},
+				{
+					"material": "Zinc",
+					"percentage": 5.522597
+				},
+				{
+					"material": "Zirconium",
+					"percentage": 2.359734
+				},
+				{
+					"material": "Cadmium",
+					"percentage": 1.578049
+				},
+				{
+					"material": "Tin",
+					"percentage": 1.3282
+				},
+				{
+					"material": "Yttrium",
+					"percentage": 1.213773
+				}
+			],
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba C 2",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 29129,
+			"landable": null,
+			"tidallylocked": null,
+			"mainstar": null,
+			"luminosityclass": null
+		},
+		{
+			"temperature": 34,
+			"rings": null,
+			"stellarclass": null,
+			"solarmass": null,
+			"solarradius": null,
+			"chromaticity": null,
+			"radiusprobability": null,
+			"massprobability": null,
+			"tempprobability": null,
+			"ageprobability": null,
+			"periapsis": 215.576889,
+			"atmosphere": "Neon",
+			"tilt": null,
+			"earthmass": 0.528185,
+			"gravity": 0.52209837202307,
+			"eccentricity": 0.00572,
+			"inclination": 0.035402,
+			"orbitalperiod": 3762.447037037037037037037037,
+			"radius": 6412,
+			"rotationalperiod": 1.66547417534722,
+			"semimajoraxis": 2.99805095105542,
+			"pressure": 0.00328091508512213,
+			"terraformstate": "Not terraformable",
+			"planettype": "Icy body",
+			"volcanism": null,
+			"materials": null,
+			"reserves": null,
+			"type": "Planet",
+			"name": "Zhu Baba BC 1",
+			"systemname": "Zhu Baba",
+			"age": null,
+			"distance": 29781,
+			"landable": false,
+			"tidallylocked": false,
+			"mainstar": null,
+			"luminosityclass": null
+		}
+	]
 }

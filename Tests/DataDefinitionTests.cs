@@ -792,7 +792,7 @@ namespace UnitTests
             // `bodyname` should be considered a required serialization attribute
             // except in the case of a main star (where the `bodyname` might still be unknown)
 
-            var starsystem = new StarSystem() { systemname = "Test System" };
+            var starsystem = new StarSystem() { systemname = "Test System", systemAddress = 999999999 };
             var body = new Body();
             starsystem.AddOrUpdateBody(body);
             Assert.AreEqual(1, starsystem.bodies.Count);
