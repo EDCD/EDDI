@@ -265,5 +265,8 @@
     <value>Übertragen illegaler Daten</value>
     <comment>Crime onFoot_dataTransfer</comment>
   </data>
-  
+  <data name="onFoot_overchargeIntent" xml:space="preserve">
+    <value>Versuche Deinen Energylink im Überlastmodus zu entladen</value>
+    <comment>Crime onFoot_overchargeIntent</comment>
+  </data>
 </root>
