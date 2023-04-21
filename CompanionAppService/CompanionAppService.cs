@@ -26,8 +26,8 @@ namespace EddiCompanionAppService
         private static readonly string AUTH_URL = "/auth";
         private static readonly string DECODE_URL = "/decode";
         private static readonly string TOKEN_URL = "/token";
-        private static readonly string AUDIENCE = "audience=steam,frontier,epic";
-        private static readonly string SCOPE = "scope=capi";
+        private static readonly string AUDIENCE = "audience=all";
+        private static readonly string SCOPE = "scope=capi auth";
 
         // This API uses different endpoints for the "live" galaxy (currently game version 4.0 or later) or "legacy" galaxy.
         private static readonly System.Version minLiveGameVersion = new System.Version(4, 0);
