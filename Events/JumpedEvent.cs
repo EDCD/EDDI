@@ -77,8 +77,8 @@ namespace EddiEvents
 
         // Powerplay properties (only when pledged)
 
-        [PublicAPI("(Only when pledged) The powerplay power exerting influence over the star system. If the star system is `Contested`, this will be empty")]
-        public string power => (Power ?? Power.None).localizedName;
+        [ PublicAPI( "(Only when pledged) The powerplay power exerting influence over the star system. If the star system is `Contested`, this will be empty" ) ]
+        public string power => ( Power ?? Power.None ).localizedName;
 
         [PublicAPI("(Only when pledged) The state of powerplay efforts within the star system")]
         public string powerstate => (powerState ?? PowerplayState.None).localizedName;
