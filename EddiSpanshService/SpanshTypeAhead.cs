@@ -17,14 +17,14 @@ namespace EddiSpanshService
             var request = TypeAheadRequest(partialSystemName);
             var clientResponse = spanshRestClient.Get(request);
 
-            if (string.IsNullOrEmpty(clientResponse.Content))
-            {
-                Logging.Warn("Spansh API is not responding");
-                return null;
-            }
-
             if (clientResponse.IsSuccessful)
             {
+                if ( string.IsNullOrEmpty( clientResponse.Content ) )
+                {
+                    Logging.Warn( "Unable to handle server response." );
+                    return null;
+                }
+
                 Logging.Debug("Spansh responded with " + clientResponse.Content);
                 var response = JToken.Parse(clientResponse.Content);
                 if (response is JObject responses && 

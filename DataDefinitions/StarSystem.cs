@@ -446,9 +446,9 @@ namespace EddiDataDefinitions
             if (factionPresence.FactionState == null)
             {
                 // Convert legacy data
-                if (additionalJsonData.ContainsKey("state"))
+                if (additionalJsonData.TryGetValue("state", out var fState))
                 {
-                    string factionState = (string)additionalJsonData?["state"];
+                    string factionState = (string)fState;
                     if (factionState != null)
                     {
                         factionPresence.FactionState = FactionState.FromEDName(factionState) ?? FactionState.None;

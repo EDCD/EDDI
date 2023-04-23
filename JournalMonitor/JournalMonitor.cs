@@ -3301,9 +3301,15 @@ namespace EddiJournalMonitor
                                             var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
                                             foreach ( var system in starSystems )
                                             {
-                                                var dest = new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0);
-                                                dest.missionids.Add(mission.missionid);
-                                                mission.destinationsystems.Add(dest);
+                                                if ( !string.IsNullOrEmpty(system.systemname) &&
+                                                     system.x is decimal sx && 
+                                                     system.y is decimal sy &&
+                                                     system.z is decimal sz )
+                                            {
+                                                    var dest = new NavWaypoint( system.systemname, sx, sy, sz );
+                                                    dest.missionids.Add( mission.missionid );
+                                                    mission.destinationsystems.Add( dest );
+                                                }
                                             }
 
                                             // Load the first destination system.
@@ -3621,7 +3627,7 @@ namespace EddiJournalMonitor
                                 {
                                     // This event returns a list of slots rather than actual module ednames.
                                     data.TryGetValue("Modules", out object val);
-                                    List<object> slotsJson = (List<object>)val;
+                                    var slotsJson = (List<string>)val;
 
                                     var ship = EDDI.Instance.CurrentShip;
                                     List<Module> modules = new List<Module>();

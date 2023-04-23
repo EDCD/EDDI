@@ -20,9 +20,9 @@ namespace EddiDataDefinitions
                 string _name = null;
                 if (additionalJsonData != null)
                 {
-                    if (additionalJsonData.ContainsKey("EDName"))
+                    if (additionalJsonData.TryGetValue("EDName", out var edName))
                     {
-                        _name = (string)additionalJsonData?["EDName"];
+                        _name = (string)edName;
                     }
                     if (_name == null && (additionalJsonData?.ContainsKey("name") ?? false))
                     {

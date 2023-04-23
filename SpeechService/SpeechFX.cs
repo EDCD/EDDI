@@ -12,7 +12,7 @@ namespace EddiSpeechService
         private IWaveSource addEffectsToSource(IWaveSource source, int chorusLevel, int reverbLevel, int echoDelay, int distortionLevel, bool radio)
         {
             // Effects level is increased by damage if distortion is enabled
-            int effectsLevel = fxLevel(distortionLevel);
+            decimal effectsLevel = fxLevel(distortionLevel);
 
             // Add various effects...
             Logging.Debug("Effects level is " + effectsLevel + ", chorus level is " + chorusLevel + ", reverb level is " + reverbLevel + ", echo delay is " + echoDelay);
@@ -21,7 +21,7 @@ namespace EddiSpeechService
             if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
             {
                 // Add a base of 500ms plus 10ms per effect level over 50
-                int extMs = 500 + Math.Max(0, (effectsLevel - 50) * 10);
+                int extMs = Convert.ToInt32( 500 + Math.Max(0, (effectsLevel - 50) * 10) );
                 Logging.Debug("Extending duration by " + extMs + "ms");
                 source = source.AppendSource(x => new ExtendedDurationWaveSource(x, extMs));
             }
@@ -32,7 +32,7 @@ namespace EddiSpeechService
                 // The "wetDryMix" mix is the percent of added chorus, with 0 indicating no added chorus.
                 const int delay = 16;
                 const int feedback = 25;
-                float wetDryMix = Math.Min(100, (int)(180 * effectsLevel / (decimal)100));
+                float wetDryMix = Math.Min(100, (int)(180 * effectsLevel / 100));
                 float frequency = ((float)effectsLevel / 10);
                 source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = wetDryMix, Delay = delay, Frequency = frequency, Feedback = feedback });
             }
@@ -49,7 +49,7 @@ namespace EddiSpeechService
             {
                 if (reverbLevel != 0 && effectsLevel != 0)
                 {
-                    float reverbTime = (int)(1 + (999 * effectsLevel / (decimal)100));
+                    float reverbTime = (int)(1 + (999 * effectsLevel / 100));
                     float reverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100));
                     source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = reverbTime, ReverbMix = reverbMix });
                 }
@@ -58,7 +58,7 @@ namespace EddiSpeechService
                 {
                     // The "wetDryMix" mix is the percent of added echo, with 0 indicating no added echo.
                     const int feedback = 0;
-                    float wetDryMix = Math.Max(5, (int)(10 * effectsLevel / (decimal)100));
+                    float wetDryMix = Math.Max(5, (int)(10 * effectsLevel / 100));
                     source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = wetDryMix, Feedback = feedback });
                 }
             }
@@ -66,7 +66,7 @@ namespace EddiSpeechService
             // Adjust gain
             const int standardGain = 10;
             int radioGain = radio ? 7 : 0;
-            source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = (effectsLevel / 15) + radioGain + standardGain });
+            source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = Convert.ToInt32( (effectsLevel / 15) + radioGain + standardGain ) });
 
             return source;
         }

@@ -36,7 +36,7 @@ namespace EddiDataDefinitions
         private StationModel(string edname) : base(edname, edname.Replace(" Starport", ""))
         { }
 
-        new public static StationModel FromName(string from)
+        public static new StationModel FromName(string from)
         {
             if (from == null)
             {

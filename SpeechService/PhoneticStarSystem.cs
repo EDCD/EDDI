@@ -146,15 +146,15 @@ namespace EddiSpeechService
             }
 
             // Specific fixing of names to avoid later confusion
-            if (STAR_SYSTEM_FIXES.ContainsKey(starSystem))
+            if (STAR_SYSTEM_FIXES.TryGetValue(starSystem, out var phoneticStarSystem))
             {
-                return STAR_SYSTEM_FIXES[starSystem];
+                return phoneticStarSystem;
             }
 
             // Specific translations
-            if (STAR_SYSTEM_PRONUNCIATIONS.ContainsKey(starSystem))
+            if (STAR_SYSTEM_PRONUNCIATIONS.TryGetValue(starSystem, out var starSystemPronunciation))
             {
-                return replaceWithPronunciation(starSystem, STAR_SYSTEM_PRONUNCIATIONS[starSystem]);
+                return replaceWithPronunciation(starSystem, starSystemPronunciation);
             }
 
             // Match procedurally generated star systems, breaking apart systems and bodies wherever we can

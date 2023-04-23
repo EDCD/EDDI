@@ -76,10 +76,10 @@ namespace EddiVoiceAttackResponder
                     VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
                     {
                         if (theEvent is null) { return; }
-                        if (eventQueues.ContainsKey(theEvent.type))
+                        if (eventQueues.TryGetValue(theEvent.type, out var eventQueue))
                         {
                             // Add our event to an existing blocking collection for that event type.
-                            eventQueues[theEvent.type].Add(theEvent);
+                            eventQueue.Add(theEvent);
                         }
                         else
                         {

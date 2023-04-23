@@ -40,7 +40,7 @@ namespace EddiDataDefinitions
             get => _stock;
             set
             {
-                if (value > 0 && !statusFlags.Contains("Producer"))
+                if (value > 0)
                 {
                     statusFlags.Add("Producer");
                 }
@@ -61,7 +61,7 @@ namespace EddiDataDefinitions
             get => _demand;
             set
             {
-                if (value > 1 && !statusFlags.Contains("Consumer"))
+                if (value > 1)
                 {
                     statusFlags.Add("Consumer");
                 }
@@ -104,7 +104,7 @@ namespace EddiDataDefinitions
             get => _rare;
             set
             {
-                if (value && !statusFlags.Contains("Rare"))
+                if (value)
                 {
                     statusFlags.Add("Rare");
                 }

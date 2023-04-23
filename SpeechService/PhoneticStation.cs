@@ -21,9 +21,9 @@ namespace EddiSpeechService
         private static string getPhoneticStation(string station)
         {
             // Specific translations
-            if (STATION_PRONUNCIATIONS.ContainsKey(station))
+            if (STATION_PRONUNCIATIONS.TryGetValue(station, out var stationPronunciation))
             {
-                return replaceWithPronunciation(station, STATION_PRONUNCIATIONS[station]);
+                return replaceWithPronunciation(station, stationPronunciation);
             }
 
             // Specific fixing of station model pronunciations

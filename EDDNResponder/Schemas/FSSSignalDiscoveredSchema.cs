@@ -98,33 +98,33 @@ namespace EddiEddnResponder.Schemas
                 var handledSignal = new Dictionary<string, object>();
                 try
                 {
-                    if (retrievedSignal.ContainsKey("timestamp"))
+                    if (retrievedSignal.TryGetValue("timestamp", out var timestamp))
                     {
-                        handledSignal["timestamp"] = retrievedSignal["timestamp"];
+                        handledSignal["timestamp"] = timestamp;
                     }
-                    if (retrievedSignal.ContainsKey("SignalName"))
+                    if (retrievedSignal.TryGetValue("SignalName", out var signalName))
                     {
-                        handledSignal["SignalName"] = retrievedSignal["SignalName"];
+                        handledSignal["SignalName"] = signalName;
                     }
-                    if (retrievedSignal.ContainsKey("IsStation"))
+                    if (retrievedSignal.TryGetValue("IsStation", out var isStation))
                     {
-                        handledSignal["IsStation"] = retrievedSignal["IsStation"];
+                        handledSignal["IsStation"] = isStation;
                     }
-                    if (retrievedSignal.ContainsKey("USSType"))
+                    if (retrievedSignal.TryGetValue("USSType", out var ussType))
                     {
-                        handledSignal["USSType"] = retrievedSignal["USSType"];
+                        handledSignal["USSType"] = ussType;
                     }
-                    if (retrievedSignal.ContainsKey("SpawningState"))
+                    if (retrievedSignal.TryGetValue("SpawningState", out var spawningState))
                     {
-                        handledSignal["SpawningState"] = retrievedSignal["SpawningState"];
+                        handledSignal["SpawningState"] = spawningState;
                     }
-                    if (retrievedSignal.ContainsKey("SpawningFaction"))
+                    if (retrievedSignal.TryGetValue("SpawningFaction", out var spawningFaction))
                     {
-                        handledSignal["SpawningFaction"] = retrievedSignal["SpawningFaction"];
+                        handledSignal["SpawningFaction"] = spawningFaction;
                     }
-                    if (retrievedSignal.ContainsKey("ThreatLevel"))
+                    if (retrievedSignal.TryGetValue("ThreatLevel", out var threatLevel))
                     {
-                        handledSignal["ThreatLevel"] = retrievedSignal["ThreatLevel"];
+                        handledSignal["ThreatLevel"] = threatLevel;
                     }
                 }
                 catch (Exception e)
