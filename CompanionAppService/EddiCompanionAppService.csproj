@@ -108,9 +108,6 @@
     <EmbeddedResource Include="Properties\CapiResources.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CredentialManagement">
-      <Version>1.0.2</Version>
-    </PackageReference>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2022.3.1</Version>
     </PackageReference>
