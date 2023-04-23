@@ -178,5 +178,8 @@
     <value>Doppel-Plasmawerfer</value>
     <comment>Default loadout for a Scarab SRV</comment>
   </data>
-  
+  <data name="Default" xml:space="preserve">
+    <value>schwere Kanone und ein Raketenwerfer</value>
+    <comment>Default loadout for a Scorpion Combat SRV</comment>
+  </data>
 </root>

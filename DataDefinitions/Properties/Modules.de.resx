@@ -621,7 +621,16 @@
     <value>Fortschrittliches AX Mehrfachgeschütz</value>
     <comment>Module Enhanced AX Multi-Cannon</comment>
   </data>
-  
-  
-  
+  <data name="ExpModuleStabiliser" xml:space="preserve">
+    <value>Experimenteller Waffenstabilisator</value>
+    <comment>Module Experimental Weapon Stabilizer</comment>
+  </data>
+  <data name="XenoScannerMK2" xml:space="preserve">
+    <value>Verbesserter Xeno-Scanner</value>
+    <comment>Module Enhanced Xeno Scanner</comment>
+  </data>
+  <data name="Caustic_Sink_Launcher" xml:space="preserve">
+    <value>Säurekörperabwurf</value>
+    <comment>Module Caustic Sink Launcher</comment>
+  </data>
 </root>

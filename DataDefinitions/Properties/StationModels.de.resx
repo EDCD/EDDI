@@ -154,7 +154,7 @@
     <comment>A Surface Port</comment>
   </data>
   <data name="CraterOutpost" xml:space="preserve">
-    <value>Planetarer Außenposten</value>
+    <value>Planetenhafen</value>
     <comment>A Surface Outpost</comment>
   </data>
   <data name="MegaShipCivilian" xml:space="preserve">

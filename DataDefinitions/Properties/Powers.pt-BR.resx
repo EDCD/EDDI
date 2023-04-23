@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AislingDuval" xml:space="preserve">
-    <value>Aisling Duval</value>
+    <value>Aisling Duvál</value>
   </data>
   <data name="ALavignyDuval" xml:space="preserve">
-    <value>Arissa Lavigny-Duval</value>
+    <value>Arissa Lavíni-Duvál</value>
   </data>
   <data name="ArchonDelaine" xml:space="preserve">
     <value>Árcon Delêine</value>
@@ -130,7 +130,7 @@
     <value>Denton Patreus</value>
   </data>
   <data name="EdmundMahon" xml:space="preserve">
-    <value>Edmund Mahon</value>
+    <value>Édmund Márron</value>
   </data>
   <data name="FeliciaWinters" xml:space="preserve">
     <value>Felicia Winters</value>
