@@ -1,5 +1,4 @@
-﻿using EddiBgsService;
-using EddiConfigService;
+﻿using EddiConfigService;
 using EddiDataDefinitions;
 using EddiStarMapService;
 using System;
@@ -225,9 +224,9 @@ namespace EddiDataProviderService
                             }
                         }
                         starSystem.visitLog.Add(flightLog.date);
-                        if (comments.ContainsKey(flightLog.system))
+                        if (comments.TryGetValue(flightLog.system, out var comment))
                         {
-                            starSystem.comment = comments[flightLog.system];
+                            starSystem.comment = comment;
                         }
                     }
                 }
