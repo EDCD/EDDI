@@ -97,11 +97,13 @@ namespace EddiEvents
 
         public SecurityLevel securityLevel { get; private set; }
 
-        public Power Power { get; private set; }
+        public Power Power => Powers.Count > 1 ? null : Powers.FirstOrDefault();
+
+        public List<Power> Powers { get; set; }
 
         public PowerplayState powerState { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, ulong systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, Power powerplayPower, PowerplayState powerplayState, bool? taxi, bool? multicrew) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, ulong systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Power> powerplayPowers, PowerplayState powerplayState, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -120,7 +122,7 @@ namespace EddiEvents
             this.Economy2 = (economy2 ?? Economy.None);
             this.securityLevel = (security ?? SecurityLevel.None);
             this.population = population;
-            this.Power = powerplayPower;
+            this.Powers = powerplayPowers;
             this.powerState = powerplayState;
             this.taxi = taxi;
             this.multicrew = multicrew;

@@ -412,8 +412,8 @@ namespace EddiNavigationService.QueryResolvers
                 if ( CalculateRepetiveNearestNeighbor ( navWaypoints, missions, out var sortedRoute, homeSystemWaypoint ) )
                 {
                     // Prepend our current system to the route if it is not already present
-                    if ( ( EDDI.Instance?.CurrentStarSystem != null )
-                        && ( sortedRoute.FirstOrDefault ()?.systemAddress != ( EDDI.Instance.CurrentStarSystem.systemAddress ?? 0 ) ) )
+                    if ( EDDI.Instance?.CurrentStarSystem != null && 
+                         sortedRoute.FirstOrDefault ()?.systemAddress != EDDI.Instance.CurrentStarSystem.systemAddress )
                     {
                         sortedRoute = sortedRoute.Prepend ( new NavWaypoint ( EDDI.Instance.CurrentStarSystem ) ).ToList ();
                         sortedRoute[ 0 ].visited = true;

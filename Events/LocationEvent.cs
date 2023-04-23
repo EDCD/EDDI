@@ -147,7 +147,9 @@ namespace EddiEvents
 
         public long? bodyId { get; private set; }
 
-        public Power Power { get; private set; }
+        public Power Power => Powers.Count > 1 ? null : Powers.FirstOrDefault();
+
+        public List<Power> Powers { get; set; }
 
         public PowerplayState powerState { get; private set; }
         public bool taxi { get; private set; }
@@ -160,7 +162,7 @@ namespace EddiEvents
             bool docked, string station, StationModel stationtype, long? marketId, List<StationService> stationServices,
             Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy economy, Economy economy2, SecurityLevel security, long? population, 
-            Power powerplayPower, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
+            List<Power> powerplayPowers, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.x = x;
@@ -187,7 +189,7 @@ namespace EddiEvents
             this.latitude = latitude;
             this.factions = factions ?? new List<Faction>();
             this.conflicts = conflicts ?? new List<Conflict>();
-            this.Power = powerplayPower;
+            this.Powers = powerplayPowers;
             this.powerState = powerplayState;
             this.taxi = taxi;
             this.multicrew = multicrew;

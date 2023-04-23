@@ -50,15 +50,13 @@ namespace UnitTests
     public class BgsDataTests : TestBase
     {
         FakeBgsRestClient fakeBgsRestClient;
-        FakeBgsRestClient fakeEddbRestClient;
         BgsService fakeBgsService;
 
         [TestInitialize]
         public void start()
         {
             fakeBgsRestClient = new FakeBgsRestClient();
-            fakeEddbRestClient = new FakeBgsRestClient();
-            fakeBgsService = new BgsService(fakeBgsRestClient, fakeEddbRestClient);
+            fakeBgsService = new BgsService(fakeBgsRestClient);
             MakeSafe();
         }
 
@@ -161,77 +159,6 @@ namespace UnitTests
 
             // Assert
             Assert.IsNull(factions);
-        }
-
-        [TestMethod]
-        public void TestEddbSystem()
-        {
-            // Test faction data
-            JObject response = DeserializeJsonResource<JObject>(Resources.bgsEddbSystem);
-            StarSystem system = fakeBgsService.ParseSystem(response);
-
-            Assert.IsNotNull(system);
-
-            // Test the star system core data
-            Assert.AreEqual((ulong)10477373803, system.systemAddress);
-            Assert.AreEqual("Sol", system.systemname);
-            Assert.AreEqual(27, system.EDSMID);
-            Assert.AreEqual(1599446773, system.updatedat);
-
-            // Test powerplay data
-            Assert.AreEqual("Zachary Hudson", system.Power?.invariantName);
-            Assert.AreEqual("Control", system.powerState?.invariantName);
-        }
-
-        [TestMethod]
-        public void TestEddbGetSystem()
-        {
-            // Setup
-            string resource = "v4/populatedsystems?";
-            string json = Encoding.UTF8.GetString(Resources.bgsEddbSystemResponse);
-            RestRequest data = new RestRequest();
-
-            StarSystem expectedSol = new StarSystem()
-            {
-                systemAddress = 10477373803,
-                systemname = "Sol",
-                EDSMID = 27,
-                Power = Power.FromEDName("ZacharyHudson"),
-                powerState = PowerplayState.FromEDName("Controlled"),
-                updatedat = 1599446773
-            };
-
-            // Act
-            fakeEddbRestClient.Expect(resource, json, data);
-            StarSystem solByName = fakeBgsService.GetSystemByName("Sol");
-            StarSystem solByAddress = fakeBgsService.GetSystemBySystemAddress(10477373803);
-            fakeEddbRestClient.Expect(resource, "", data);
-            StarSystem nonExistentSystem = fakeBgsService.GetSystemByName("No such system");
-
-            // Assert
-            Assert.IsTrue(solByName.DeepEquals(expectedSol));
-            Assert.IsTrue(solByAddress.DeepEquals(expectedSol));
-            Assert.IsNull(nonExistentSystem);
-        }
-
-        [TestMethod]
-        public void TestParseNoSystems()
-        {
-            // Setup
-            string endpoint = "v4/populatedsystems?";
-            string json = "";
-            RestRequest data = new RestRequest();
-            fakeEddbRestClient.Expect(endpoint, json, data);
-            var queryList = new List<KeyValuePair<string, object>>()
-            {
-                new KeyValuePair<string, object>(BgsService.SystemParameters.systemName, "")
-            };
-
-            // Act
-            List<StarSystem> systems = fakeBgsService.GetSystems(endpoint, queryList);
-
-            // Assert
-            Assert.IsNull(systems);
         }
     }
 }

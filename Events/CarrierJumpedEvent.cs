@@ -100,7 +100,9 @@ namespace EddiEvents
 
         public long? bodyId { get; private set; }
 
-        public Power Power { get; private set; }
+        public Power Power => Powers.Count > 1 ? null : Powers.FirstOrDefault();
+
+        public List<Power> Powers { get; set; }
 
         public PowerplayState powerState { get; private set; }
 
@@ -117,7 +119,7 @@ namespace EddiEvents
             string carrierName, StationModel carrierType, long? carrierId, List<StationService> stationServices,
             Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy systemEconomy, Economy systemEconomy2, SecurityLevel systemSecurity, long? systemPopulation, 
-            Power powerplayPower, PowerplayState powerplayState) : base(timestamp, NAME)
+            List<Power> powerplayPowers, PowerplayState powerplayState) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
@@ -132,7 +134,7 @@ namespace EddiEvents
             this.population = systemPopulation;
             this.factions = factions ?? new List<Faction>();
             this.conflicts = conflicts ?? new List<Conflict>();
-            this.Power = powerplayPower;
+            this.Powers = powerplayPowers;
             this.powerState = powerplayState ?? PowerplayState.None;
 
             // Body

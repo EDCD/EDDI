@@ -47,12 +47,12 @@ namespace EddiDataDefinitions
     public class MissionInfluence
     {
         [PublicAPI("The system address of the influenced system")]
-        public long? systemAddress { get; }
+        public ulong systemAddress { get; }
 
         [PublicAPI("The influence impact (in plusses)")]
         public string influence { get; } // e.g. "++"
 
-        public MissionInfluence(long? systemAddress, string influence)
+        public MissionInfluence(ulong systemAddress, string influence)
         {
             this.systemAddress = systemAddress;
             this.influence = influence;

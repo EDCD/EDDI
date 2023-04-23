@@ -25,7 +25,7 @@ namespace EddiDataDefinitions
         }
         [JsonIgnore] private string _systemname;
 
-        public ulong? systemAddress { get; set; }
+        public ulong systemAddress { get; set; }
 
         public decimal? x { get; set; }
         public decimal? y { get; set; }
@@ -191,7 +191,7 @@ namespace EddiDataDefinitions
         public NavBookmark() { }
 
         [JsonConstructor]
-        public NavBookmark(string systemname, ulong? systemAddress, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool nearby)
+        public NavBookmark(string systemname, ulong systemAddress, decimal? x, decimal? y, decimal? z, string bodyname, string poi, bool isstation, decimal? latitude, decimal? longitude, bool nearby)
         {
             this.systemname = systemname;
             this.systemAddress = systemAddress;

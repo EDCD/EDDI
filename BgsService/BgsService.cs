@@ -21,10 +21,8 @@ namespace EddiBgsService
         private static System.Version currentGameVersion { get; set; }
 
         public readonly IBgsRestClient bgsRestClient;
-        public readonly IBgsRestClient eddbRestClient;
 
         private const string bgsBaseUrl = "https://elitebgs.app/api/ebgs/";
-        private const string eddbBaseUrl = "https://eddbapi.elitebgs.app/api/";
 
         private class BgsRestClient : IBgsRestClient
         {
@@ -39,10 +37,9 @@ namespace EddiBgsService
             IRestResponse<T> IBgsRestClient.Execute<T>(IRestRequest request) => restClient.Execute<T>(request);
         }
 
-        public BgsService(IBgsRestClient bgsRestClient = null, IBgsRestClient eddbRestClient = null)
+        public BgsService(IBgsRestClient bgsRestClient = null)
         {
             this.bgsRestClient = bgsRestClient ?? new BgsRestClient(bgsBaseUrl);
-            this.eddbRestClient = eddbRestClient ?? new BgsRestClient(eddbBaseUrl);
         }
 
         /// <summary> Specify the endpoint (e.g. EddiBgsService.Endpoint.factions) and a list of queries as KeyValuePairs </summary>

@@ -18,11 +18,11 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public long systemAddress { get; }
+        public ulong systemAddress { get; }
 
         public int? bodyId { get; }
 
-        public DropshipDeploymentEvent(DateTime timestamp, string system, long systemAddress, string body, int? bodyId) : base(timestamp, NAME)
+        public DropshipDeploymentEvent(DateTime timestamp, string system, ulong systemAddress, string body, int? bodyId) : base(timestamp, NAME)
         {
             this.systemname = system;
             this.systemAddress = systemAddress;

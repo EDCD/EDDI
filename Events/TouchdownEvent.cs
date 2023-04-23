@@ -39,7 +39,7 @@ namespace EddiEvents
 
         public SignalSource nearestDestination { get; private set; }
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         public long? bodyId { get; private set; }
 
@@ -47,7 +47,7 @@ namespace EddiEvents
 
         public bool? onplanet { get; private set; } // Always true, since `Touchdown` is currently only ever triggered when touching down on a body
 
-        public TouchdownEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, ulong? systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
+        public TouchdownEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, ulong systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;

@@ -19,10 +19,14 @@ namespace EddiEvents
         [PublicAPI("The destination system (only if type is Hyperspace)")]
         public string system { get; private set; }
 
-        public FSDEngagedEvent(DateTime timestamp, string jumptype, string system, string stellarclass) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public ulong systemAddress { get; private set; }
+
+        public FSDEngagedEvent(DateTime timestamp, string jumptype, string systemName, ulong systemAddress, string stellarclass) : base(timestamp, NAME)
         {
             this.target = jumptype;
-            this.system = system;
+            this.system = systemName;
+            this.systemAddress = systemAddress;
             this.stellarclass = stellarclass;
         }
     }

@@ -85,7 +85,7 @@ namespace EddiEddnResponder.Toolkit
 
                     // Some events are bugged and return a SystemAddress of 1, regardless of the system we are in.
                     // We need to ignore data that matches this pattern.
-                    ulong? SystemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                    ulong SystemAddress = JsonParsing.getULong(data, "SystemAddress");
                     systemAddress = (SystemAddress > 1 ? SystemAddress : systemAddress);
 
                     data.TryGetValue("StarPos", out object starpos);

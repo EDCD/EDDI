@@ -39,9 +39,9 @@ namespace EddiEvents
         
         public string originSystemName { get; private set; }
         
-        public ulong? originSystemAddress { get; private set; }
+        public ulong originSystemAddress { get; private set; }
 
-        public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, ulong systemAddress, string originSystemName, ulong? originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
+        public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, ulong systemAddress, string originSystemName, ulong originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

@@ -315,10 +315,7 @@ namespace EddiDataDefinitions
 
         private bool _hot = false;
 
-        // <summary>the location where this ship is stored; null if the commander is in this ship</summary>
-
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
-
         [PublicAPI]
         public string starsystem
         {

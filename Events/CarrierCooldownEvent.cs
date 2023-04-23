@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Carrier cooldown";
         public const string DESCRIPTION = "Triggered when you either were docked at a fleet carrier during a jump or are the fleet carrier owner and it completes its cooldown";
-        public static CarrierCooldownEvent SAMPLE = new CarrierCooldownEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Aparctias", 0, BodyType.FromEDName("Star"), "G53-K3Q", StationModel.FromEDName("FleetCarrier"), 3700571136);
+        public static CarrierCooldownEvent SAMPLE = new CarrierCooldownEvent(DateTime.UtcNow, 3700571136, "Aparctias", 358797513434, "Aparctias", 0, BodyType.FromEDName("Star"), "G53-K3Q", StationModel.FromEDName("FleetCarrier"));
 
         // System variables
 
@@ -34,7 +34,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         public BodyType bodyType { get; private set; }
 
@@ -44,7 +44,7 @@ namespace EddiEvents
 
         public StationModel carrierType { get; private set; }
 
-        public CarrierCooldownEvent(DateTime timestamp, string systemName, ulong? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType, long? carrierId) : base(timestamp, NAME)
+        public CarrierCooldownEvent(DateTime timestamp, long? carrierId, string systemName, ulong systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

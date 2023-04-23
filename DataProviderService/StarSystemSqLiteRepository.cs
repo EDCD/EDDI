@@ -226,7 +226,7 @@ namespace EddiDataProviderService
                         // Data is stale or we have no record of ever updating this star system
                         needToUpdate = true;
                     }
-                    else if (SCHEMA_VERSION >= 2 && dbStarSystem.systemAddress is null)
+                    else if (SCHEMA_VERSION >= 2 && dbStarSystem.systemAddress is 0)
                     {
                         // Obtain data for optimized data searches starting with schema version 2
                         needToUpdate = true;
@@ -264,7 +264,7 @@ namespace EddiDataProviderService
                 List<string> systemsToRevert = new List<string>();
                 foreach (StarSystem starSystem in updatedSystems)
                 {
-                    if (starSystem.systemAddress == null)
+                    if (starSystem.x == null || starSystem.y == null || starSystem.z == null )
                     {
                         systemsToRevert.Add(starSystem.systemname);
                     }
@@ -412,7 +412,7 @@ namespace EddiDataProviderService
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", name);
                                 cmd.CommandText = SELECT_SQL + WHERE_NAME;
-                                results.Add(ReadStarSystemEntry(cmd) ?? new DatabaseStarSystem(name, null, string.Empty));
+                                results.Add(ReadStarSystemEntry(cmd) ?? new DatabaseStarSystem(name, 0, string.Empty));
                             }
                             catch (SQLiteException)
                             {
@@ -443,16 +443,8 @@ namespace EddiDataProviderService
                             try
                             {
                                 cmd.Prepare();
-                                if (starSystem.systemAddress != null)
-                                {
                                     cmd.Parameters.AddWithValue("@systemaddress", starSystem.systemAddress);
                                     cmd.CommandText = SELECT_SQL + WHERE_SYSTEMADDRESS;
-                                }
-                                else
-                                {
-                                    cmd.Parameters.AddWithValue("@name", starSystem.systemname);
-                                    cmd.CommandText = SELECT_SQL + WHERE_NAME;
-                                }
                                 results.Add(ReadStarSystemEntry(cmd) ?? new DatabaseStarSystem(starSystem.systemname, starSystem.systemAddress, string.Empty));
                             }
                             catch (SQLiteException)
@@ -471,7 +463,7 @@ namespace EddiDataProviderService
         private DatabaseStarSystem ReadStarSystemEntry(SQLiteCommand cmd)
         {
             string systemName = string.Empty;
-            ulong? systemAddress = null;
+            ulong systemAddress = 0;
             string starSystemJson = string.Empty;
             string comment = string.Empty;
             DateTime lastUpdated = DateTime.MinValue;
@@ -486,7 +478,7 @@ namespace EddiDataProviderService
                     {
                         if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "systemaddress")
                         {
-                            systemAddress = rdr.IsDBNull(i) ? null : (ulong?)rdr.GetInt64(i);
+                            systemAddress = (ulong)rdr.GetInt64( i );
                         }
                         if (rdr.GetName(i) == "name")
                         {
@@ -596,11 +588,11 @@ namespace EddiDataProviderService
             foreach (StarSystem system in starSystems)
             {
                 DatabaseStarSystem dbSystem = dbSystems.FirstOrDefault(s =>
-                    (s.systemAddress != null && s.systemAddress == system.systemAddress) ||
+                    s.systemAddress == system.systemAddress ||
                     s.systemName == system.systemname);
 
                 if (dbSystem?.systemJson is null ||
-                    dbSystem?.systemAddress is null)
+                    dbSystem.systemAddress is 0)
                 {
                     // Use our delete method to purge all obsolete copies of the star system from the database,
                     // then re-add the star system.
@@ -695,7 +687,7 @@ namespace EddiDataProviderService
                                     serializedSystem = JsonConvert.SerializeObject(system);
                                 });
                                 if (string.IsNullOrEmpty(serializedSystem)) { continue; }
-                                if (system.systemAddress != null)
+                                if (system.systemAddress != 0)
                                 {
                                     cmd.CommandText = UPDATE_SQL + WHERE_SYSTEMADDRESS;
                                 }
@@ -743,7 +735,7 @@ namespace EddiDataProviderService
                             foreach (StarSystem system in systems)
                             {
                                 // Delete all possible variations of this data from the database.
-                                if (system.systemAddress != null)
+                                if (system.systemAddress != 0)
                                 {
                                     cmd.CommandText = DELETE_SQL + WHERE_SYSTEMADDRESS;
                                     cmd.Prepare();

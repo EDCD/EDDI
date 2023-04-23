@@ -21,9 +21,9 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public long systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
-        public FSDTargetEvent(DateTime timestamp, string system, long systemAddress, int remainingjumpsinroute, string starclass) : base(timestamp, NAME)
+        public FSDTargetEvent(DateTime timestamp, string system, ulong systemAddress, int remainingjumpsinroute, string starclass) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;

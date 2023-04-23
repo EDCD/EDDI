@@ -35,7 +35,7 @@ namespace EddiDataDefinitions
 
         /// <summary>Unique 64 bit id value for system</summary>
         [PublicAPI, JsonProperty, JsonRequired]
-        public ulong? systemAddress { get; set; }
+        public ulong systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
         [PublicAPI, JsonProperty] // Required to deserialize to the private setter
@@ -231,7 +231,11 @@ namespace EddiDataDefinitions
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
         /// <summary> The powerplay power exerting influence within the system (null if contested)</summary>
-        public Power Power { get; set; }
+        [JsonIgnore]
+        public Power Power => Powers.Count > 1 ? null : Powers.FirstOrDefault();
+
+        /// <summary> The powerplay powers exerting influence within the system (may include multiple when the system is contested) </summary>
+        public List<Power> Powers { get; set; } = new List<Power>();
 
         [PublicAPI, JsonIgnore]
         public string power => (Power ?? Power.None).localizedName;

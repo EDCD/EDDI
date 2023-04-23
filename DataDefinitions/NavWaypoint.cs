@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         private bool _hasNeutronStar;
 
         public string systemName { get; set; }
-        public ulong? systemAddress { get; set; }
+        public ulong systemAddress { get; set; }
         public decimal? x { get; set; }
         public decimal? y { get; set; }
         public decimal? z { get; set; }

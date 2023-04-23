@@ -41,9 +41,10 @@ namespace EddiNavigationService
                     try
                     {
                         var obj = jToken.ToObject<JObject>();
+                        if ( obj[ "id64" ] is null ) { continue; }
 
                         var systemName = obj["galMapSearch"].ToString();
-                        var systemAddress = obj["id64"]?.ToObject<ulong?>();
+                        var systemAddress = obj["id64"].ToObject<ulong>();
                         var poiName = WebUtility.HtmlDecode(obj["name"].ToString());
 
                         // Skip any items without a system name

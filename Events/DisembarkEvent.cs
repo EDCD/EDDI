@@ -44,7 +44,7 @@ namespace EddiEvents
         // Not intended to be user facing
         public int? fromLocalId { get; }
 
-        public long systemAddress { get; }
+        public ulong systemAddress { get; }
 
         public int? bodyId { get; }
 
@@ -52,7 +52,7 @@ namespace EddiEvents
 
         public StationModel stationModel { get; }
 
-        public DisembarkEvent(DateTime timestamp, bool fromSRV, bool fromTransport, bool fromMultiCrew, int? fromLocalId, string system, long systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, string station = null, long? marketId = null, StationModel stationModel = null) : base(timestamp, NAME)
+        public DisembarkEvent(DateTime timestamp, bool fromSRV, bool fromTransport, bool fromMultiCrew, int? fromLocalId, string system, ulong systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, string station = null, long? marketId = null, StationModel stationModel = null) : base(timestamp, NAME)
         {
             this.fromsrv = fromSRV;
             this.fromtransport = fromTransport;

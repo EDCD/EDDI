@@ -117,7 +117,7 @@ namespace UnitTests
         [TestMethod]
         public void TestBodyScannedEventHandler()
         {
-            string line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
+            string line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""StarSystem"":""Grea Bloae HH-T d4-44"", ""SystemAddress"":1520309296811, ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
             BodyScannedEvent @event = (BodyScannedEvent)events[0];
@@ -125,7 +125,7 @@ namespace UnitTests
             Assert.IsInstanceOfType(@event, typeof(BodyScannedEvent));
 
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            privateObject.Invoke("updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44" });
+            privateObject.Invoke( "updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44", 1520309296811UL } );
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
 
             // Set up conditions to test the first scan of the body
@@ -143,7 +143,7 @@ namespace UnitTests
         [TestMethod]
         public void TestBodyMappedEventHandler()
         {
-            string line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
+            string line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""StarSystem"":""Grea Bloae HH-T d4-44"", ""SystemAddress"":1520309296811, ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
             BodyScannedEvent @event = (BodyScannedEvent)events[0];
@@ -151,7 +151,7 @@ namespace UnitTests
             Assert.IsInstanceOfType(@event, typeof(BodyScannedEvent));
 
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            privateObject.Invoke("updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44" });
+            privateObject.Invoke( "updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44", 1520309296811UL } );
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
 
             // Set up conditions to test the first scan of the body
@@ -162,7 +162,7 @@ namespace UnitTests
             long? event1EstimatedValue = EDDI.Instance.CurrentStarSystem?.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue;
 
             // Map the body
-            string line2 = @"{ ""timestamp"":""2016 - 11 - 01T18: 59:07Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
+            string line2 = @"{ ""timestamp"":""2016 - 11 - 01T18: 59:07Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""StarSystem"":""Grea Bloae HH-T d4-44"", ""SystemAddress"":1520309296811, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
             events = JournalMonitor.ParseJournalEntry(line2);
             Assert.AreEqual(1, events.Count);
             BodyMappedEvent @event2 = (BodyMappedEvent)events[0];
@@ -195,7 +195,7 @@ namespace UnitTests
             string line = @"{ ""timestamp"":""2018-12-16T23:04:38Z"", ""event"":""SAAScanComplete"", ""BodyName"":""BD-01 2784 10 A Ring"", ""SystemAddress"":2282942960346, ""BodyID"":42, ""ProbesUsed"":1, ""EfficiencyTarget"":0 }";
 
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            privateObject.Invoke("updateCurrentSystem", new object[] { "BD-01 2784" });
+            privateObject.Invoke( "updateCurrentSystem", new object[] { "BD-01 2784", 2282942960346UL } );
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);

@@ -138,13 +138,13 @@ namespace EddiStarMapService
             var starSystem = new StarSystem
             {
                 systemname = (string)response["name"],
-                systemAddress = (ulong?)response["id64"],
+                systemAddress = (ulong)response["id64"],
                 EDSMID = (long?)response["id"]
             };
 
             if (response["coords"] is JObject)
             {
-                var coords = response["coords"]?.ToObject<Dictionary<string, decimal?>>() ?? new Dictionary<string, decimal?>();
+                var coords = response["coords"].ToObject<Dictionary<string, decimal?>>() ?? new Dictionary<string, decimal?>();
                 starSystem.x = coords["x"];
                 starSystem.y = coords["y"];
                 starSystem.z = coords["z"];

@@ -21,9 +21,9 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
-        public EnteredSupercruiseEvent(DateTime timestamp, string system, ulong? systemAddress, bool? taxi, bool? multicrew) : base(timestamp, NAME)
+        public EnteredSupercruiseEvent(DateTime timestamp, string system, ulong systemAddress, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;

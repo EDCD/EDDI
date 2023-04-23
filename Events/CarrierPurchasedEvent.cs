@@ -25,11 +25,11 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         public long? carrierId { get; private set; }
 
-        public CarrierPurchasedEvent(DateTime timestamp, long? carrierId, string carrierCallsign, string systemName, ulong? systemAddress, long? price) : base(timestamp, NAME)
+        public CarrierPurchasedEvent(DateTime timestamp, long? carrierId, string carrierCallsign, string systemName, ulong systemAddress, long? price) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

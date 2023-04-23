@@ -168,9 +168,9 @@ namespace EddiEvents
 
         public Body body { get; private set; }
         
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
-        public BodyMappedEvent(DateTime timestamp, string bodyName, Body body, ulong? systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
+        public BodyMappedEvent(DateTime timestamp, string bodyName, Body body, ulong systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
             this.bodyName = bodyName;
             this.body = body;

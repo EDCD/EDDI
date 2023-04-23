@@ -79,7 +79,6 @@ namespace EddiDataProviderService
                         starSystem.stations = SetStationFactionData(stations, factions);
                         starSystem.stations = stations;
                     }
-                    starSystem = new BgsService().GetSystemPowerplay(starSystem);
                 }
             }
             return starSystem;
@@ -177,21 +176,8 @@ namespace EddiDataProviderService
                                 {
                                     if (flightLog.system == starSystem.systemname)
                                     {
-                                        if (starSystem.EDSMID == null)
-                                        {
-                                            starSystem.EDSMID = flightLog.systemId;
-                                        }
-                                        if (starSystem.systemAddress == null)
-                                        {
-                                            starSystem.systemAddress = flightLog.systemId64;
-                                        }
-                                        else
-                                        {
-                                            if (starSystem.EDSMID != flightLog.systemId)
-                                            {
-                                                continue;
-                                            }
-                                        }
+                                        starSystem.EDSMID = starSystem.EDSMID ?? flightLog.systemId;
+                                        if (starSystem.EDSMID != flightLog.systemId) { continue; }
                                         starSystem.visitLog.Add(flightLog.date);
                                     }
                                 }

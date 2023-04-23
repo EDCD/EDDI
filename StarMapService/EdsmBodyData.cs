@@ -42,7 +42,7 @@ namespace EddiStarMapService
             if (response != null)
             {
                 string system = (string)response["name"];
-                ulong? systemAddress = (ulong?) response["id64"];
+                ulong systemAddress = (ulong) response["id64"];
                 JArray bodies = (JArray)response["bodies"];
 
                 if (bodies != null)
@@ -58,7 +58,7 @@ namespace EddiStarMapService
         }
 
         [UsedImplicitly]
-        private Body ParseStarMapBody(JObject body, string systemName, ulong? systemAddress)
+        private Body ParseStarMapBody(JObject body, string systemName, ulong systemAddress)
         {
             try
             {
@@ -126,10 +126,10 @@ namespace EddiStarMapService
                     decimal? solarradius = (decimal?)body["solarRadius"];
                     decimal radiusKm = (decimal)(solarradius != null ? solarradius * Constants.solarRadiusMeters / 1000 : null);
 
-                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass,
+                    Body Body = new Body(bodyname, bodyId, systemName, systemAddress, parents, distanceLs, stellarclass, stellarsubclass, stellarMass,
                         radiusKm, absolutemagnitude, ageMegaYears, temperatureKelvin, luminosityclass, semimajoraxisLs,
                         eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays,
-                        axialTiltDegrees, rings, true, false, systemName, null)
+                        axialTiltDegrees, rings, true, false)
                     { EDSMID = EDSMID };
                     DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
                     Body.updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt);
@@ -228,7 +228,7 @@ namespace EddiStarMapService
                     ReserveLevel reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
                     DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
-                    Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, null, systemName, systemAddress)
+                    Body Body = new Body(bodyname, bodyId, systemName, systemAddress, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, null)
                     {
                         EDSMID = EDSMID,
                         updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt)

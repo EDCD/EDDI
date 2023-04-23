@@ -167,7 +167,7 @@ namespace EddiJournalMonitor
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var body = JsonParsing.getString(data, "Body");
                                     var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
@@ -195,7 +195,7 @@ namespace EddiJournalMonitor
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var body = JsonParsing.getString(data, "Body");
                                     var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
@@ -278,13 +278,12 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Powerplay data (if pledged)
-                                    Power powerplayPower = new Power();
-                                    getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
+                                    getPowerplayData(data, out List<Power> powerplayPowers, out PowerplayState powerplayState);
 
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -367,8 +366,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Powerplay data (if pledged)
-                                    Power powerplayPower = new Power();
-                                    getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
+                                    getPowerplayData( data, out List<Power> powerplayPowers, out PowerplayState powerplayState );
 
                                     bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
                                     bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
@@ -378,11 +376,11 @@ namespace EddiJournalMonitor
                                     // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
-                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
-                                        events.Add(new LocationEvent(timestamp, systemName, systemAddress, x, y, z, distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPower, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new LocationEvent(timestamp, systemName, systemAddress, x, y, z, distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -900,7 +898,7 @@ namespace EddiJournalMonitor
                                     string scantype = JsonParsing.getString(data, "ScanType");
 
                                     string systemName = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
                                     // Belt
                                     if (name.Contains("Belt Cluster"))
@@ -978,7 +976,7 @@ namespace EddiJournalMonitor
                                         data.TryGetValue("Age_MY", out val);
                                         long ageMegaYears = (long)val;
 
-                                        Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped, systemName, systemAddress)
+                                        Body star = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped)
                                         {
                                             scannedDateTime = (DateTime?)timestamp
                                         };
@@ -1087,7 +1085,7 @@ namespace EddiJournalMonitor
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, systemName, systemAddress)
+                                        Body body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped)
                                         {
                                             scannedDateTime = (DateTime?)timestamp
                                         };
@@ -1892,7 +1890,8 @@ namespace EddiJournalMonitor
                                     string target = JsonParsing.getString(data, "JumpType");
                                     string stellarclass = JsonParsing.getString(data, "StarClass");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    events.Add(new FSDEngagedEvent(timestamp, target, system, stellarclass) { raw = line, fromLoad = fromLogLoad });
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    events.Add(new FSDEngagedEvent(timestamp, target, system, systemAddress, stellarclass) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }
                                 break;
@@ -2226,7 +2225,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "NavBeaconScan":
                                 {
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     data.TryGetValue("NumBodies", out object val);
                                     int numbodies = (int)(long)val;
                                     events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line, fromLoad = fromLogLoad });
@@ -2296,7 +2295,7 @@ namespace EddiJournalMonitor
                                 {
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
 
@@ -3300,7 +3299,7 @@ namespace EddiJournalMonitor
                                                 .Split('#');
 
                                             var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
-                                            foreach (var system in starSystems)
+                                            foreach ( var system in starSystems )
                                             {
                                                 var dest = new NavWaypoint(system.systemname, system.x ?? 0, system.y ?? 0, system.z ?? 0);
                                                 dest.missionids.Add(mission.missionid);
@@ -3464,7 +3463,7 @@ namespace EddiJournalMonitor
                                             {
                                                 foreach (Dictionary<string, object> influenceData in influencesData)
                                                 {
-                                                    var influencedSystemAddress = JsonParsing.getOptionalLong(influenceData, "SystemAddress");
+                                                    var influencedSystemAddress = JsonParsing.getULong(influenceData, "SystemAddress");
                                                     var influencePlusses = JsonParsing.getString(influenceData, "Influence");
                                                     influences.Add(new MissionInfluence(influencedSystemAddress, influencePlusses));
                                                 }
@@ -3953,7 +3952,7 @@ namespace EddiJournalMonitor
                             case "FSDTarget":
                                 {
                                     string systemName = JsonParsing.getString(data, "Name");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     int remainingJumpsInRoute = JsonParsing.getOptionalInt(data, "RemainingJumpsInRoute") ?? 0;
                                     string starclass = JsonParsing.getString(data, "StarClass");
                                     events.Add(new FSDTargetEvent(timestamp, systemName, systemAddress, remainingJumpsInRoute, starclass) { raw = line, fromLoad = fromLogLoad });
@@ -4342,14 +4341,14 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Powerplay data (if pledged)
-                                    getPowerplayData(data, out Power powerplayPower, out PowerplayState powerplayState);
+                                    getPowerplayData( data, out List<Power> powerplayPowers, out PowerplayState powerplayState );
 
                                     bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
                                     bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
                                     bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
-                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPowers, powerplayState) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the carrier jump cooldown completes
                                     if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
@@ -4363,7 +4362,7 @@ namespace EddiJournalMonitor
                                         {
                                             int timeMs = (Constants.carrierPostJumpSeconds - Constants.carrierJumpSeconds) * 1000; // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
                                             await Task.Delay(timeMs);
-                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, bodyType, carrierName, carrierType, carrierId) { fromLoad = fromLogLoad });
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, systemName, systemAddress, bodyName, bodyId, bodyType, carrierName, carrierType) { fromLoad = fromLogLoad });
                                         }).ConfigureAwait(false);
                                     }
                                 }
@@ -4378,7 +4377,7 @@ namespace EddiJournalMonitor
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
 
                                     // There is a bug in the journal output where "Body" can be missing but "BodyID" can be present. Try to Work around that here.
-                                    if (string.IsNullOrEmpty(bodyName) && !string.IsNullOrEmpty(systemName))
+                                    if (string.IsNullOrEmpty(bodyName) && systemAddress > 0)
                                     {
                                         StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemName);
                                         bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
@@ -4415,16 +4414,19 @@ namespace EddiJournalMonitor
                                             {
                                                 int timeMs = (Constants.carrierPreJumpSeconds + varSeconds) * 1000;
                                                 await Task.Delay(timeMs, carrierJumpCancellationTS.Token);
-                                                string originStarSystem = EDDI.Instance.CurrentStarSystem?.systemname;
-                                                var originSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
+                                                if ( EDDI.Instance.CurrentStarSystem != null )
+                                                {
+                                                    string originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
+                                                    var originSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
                                                 EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
+                                                }
                                             }, carrierJumpCancellationTS.Token),
                                             Task.Run(async () =>
                                             {
                                                 // This event will be canceled and replaced by an updated `CarrierCooldownEvent` if the owner is aboard the fleet carrier and sees the `CarrierJumpedEvent`.
                                                 int timeMs = (Constants.carrierPreJumpSeconds + varSeconds + Constants.carrierPostJumpSeconds) * 1000; // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
                                                 await Task.Delay(timeMs, carrierJumpCancellationTS.Token);
-                                                EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), systemName, systemAddress, bodyName, bodyId, null, null, null, carrierId) { fromLoad = fromLogLoad });
+                                                EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, systemName, systemAddress, bodyName, bodyId, null, null, null) { fromLoad = fromLogLoad });
                                             }, carrierJumpCancellationTS.Token)
                                         };
 
@@ -4463,7 +4465,7 @@ namespace EddiJournalMonitor
                                         {
                                             int timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
                                             await Task.Delay(timeMs);
-                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), null, null, null, null, null, null, null, carrierId) { fromLoad = fromLogLoad });
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, EDDI.Instance.FleetCarrier.currentStarSystem, 0, null, null, null, EDDI.Instance.FleetCarrier.callsign, StationModel.FleetCarrier ) { fromLoad = fromLogLoad });
                                         }).ConfigureAwait(false);
                                     }
                                 }
@@ -4524,7 +4526,7 @@ namespace EddiJournalMonitor
                                     int? fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
@@ -4546,7 +4548,7 @@ namespace EddiJournalMonitor
                                     int? toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
@@ -4583,7 +4585,7 @@ namespace EddiJournalMonitor
                             case "DropshipDeploy":
                                 {
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     // There are `OnStation` and `OnPlanet` properties, but these are
@@ -4674,7 +4676,7 @@ namespace EddiJournalMonitor
                                     var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
                                     var carrierCallsign = JsonParsing.getString(data, "Callsign");
                                     var carrierStarSystem = JsonParsing.getString(data, "Location");
-                                    var carrierSystemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
+                                    var carrierSystemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var price = JsonParsing.getOptionalLong(data, "Price");
                                     events.Add(new CarrierPurchasedEvent(timestamp, carrierID, carrierCallsign, carrierStarSystem, carrierSystemAddress, price) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -4915,17 +4917,16 @@ namespace EddiJournalMonitor
             return events;
         }
 
-        private static void getPowerplayData(IDictionary<string, object> data, out Power powerplayPower, out PowerplayState powerplayState)
+        private static void getPowerplayData(IDictionary<string, object> data, out List<Power> powerplayPowers, out PowerplayState powerplayState)
         {
-            powerplayPower = new Power();
+            powerplayPowers = new List<Power>();
             data.TryGetValue("Powers", out object powersVal);
             // There can be more than one power listed for a system when the system is being contested
-            // If so, the power state will be `Contested` and the power name will be null.
             if (powersVal is List<object> powerNames)
             {
-                if (powerNames.Count == 1)
+                foreach ( var powerName in powerNames )
                 {
-                    powerplayPower = Power.FromEDName((string)powerNames[0]);
+                    powerplayPowers.Add(Power.FromEDName((string)powerName));
                 }
             }
             powerplayState = PowerplayState.FromEDName(JsonParsing.getString(data, "PowerplayState")) ?? PowerplayState.None;

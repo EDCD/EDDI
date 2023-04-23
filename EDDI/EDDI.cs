@@ -1383,7 +1383,7 @@ namespace EddiCore
                 CurrentStarSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
 
                 // Set the destination system as the current star system
-                updateCurrentSystem(@event.systemname);
+                updateCurrentSystem(@event.systemname, @event.systemAddress);
 
                 // Update our station information
                 CurrentStation = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId) ?? new Station();
@@ -1479,7 +1479,7 @@ namespace EddiCore
                 CurrentStation.stationServices = @event.carrierServices;
 
                 // Update our current star system and carrier location
-                updateCurrentSystem(@event.systemname);
+                updateCurrentSystem(@event.systemname, @event.systemAddress );
 
                 // Update our system properties
                 if (CurrentStarSystem != null)
@@ -1542,12 +1542,10 @@ namespace EddiCore
                     }
 
                     // (When pledged) Powerplay information
-                    CurrentStarSystem.Power = @event.Power != null && @event.Power != Power.None
-                        ? @event.Power
-                        : CurrentStarSystem.Power;
-                    CurrentStarSystem.powerState = @event.powerState != null && @event.powerState != PowerplayState.None
-                        ? @event.powerState
-                        : CurrentStarSystem.powerState;
+                    CurrentStarSystem.Powers = @event.Powers != null && @event.Powers.Any()
+                        ? @event.Powers
+                        : CurrentStarSystem.Powers;
+                    CurrentStarSystem.powerState = @event.powerState ?? CurrentStarSystem.powerState;
 
                     // Update to most recent information
                     CurrentStarSystem.visitLog.Add(@event.timestamp);
@@ -1857,7 +1855,7 @@ namespace EddiCore
             // If none of these are true we may either be in our ship or in a fighter.
             Logging.Info($"Vehicle mode is {Vehicle}");
 
-            updateCurrentSystem(theEvent.systemname);
+            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
             // Our data source may not include the system address
             CurrentStarSystem.systemAddress = theEvent.systemAddress;
             // Always update the current system with the current co-ordinates, just in case things have changed
@@ -1899,8 +1897,10 @@ namespace EddiCore
             }
 
             // (When pledged) Powerplay information
-            CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
-            CurrentStarSystem.powerState = theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
+            CurrentStarSystem.Powers = theEvent.Powers != null && theEvent.Powers.Any() 
+                ? theEvent.Powers 
+                : CurrentStarSystem.Powers;
+            CurrentStarSystem.powerState = theEvent.powerState ?? CurrentStarSystem.powerState;
 
             if (theEvent.docked || theEvent.bodytype.ToLowerInvariant() == "station")
             {
@@ -2007,7 +2007,7 @@ namespace EddiCore
         private bool eventDocked(DockedEvent theEvent)
         {
             bool passEvent = !string.IsNullOrEmpty(theEvent.station);
-            updateCurrentSystem(theEvent.system);
+            updateCurrentSystem(theEvent.system, theEvent.systemAddress );
 
             Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
             if (Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId)
@@ -2081,7 +2081,7 @@ namespace EddiCore
 
         private bool eventTouchdown(TouchdownEvent theEvent)
         {
-            updateCurrentSystem(theEvent.systemname);
+            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
             updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
 
             if (theEvent.taxi != null && theEvent.taxi == true)
@@ -2123,7 +2123,7 @@ namespace EddiCore
 
         private bool eventLiftoff(LiftoffEvent theEvent)
         {
-            updateCurrentSystem(theEvent.systemname);
+            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
             updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
 
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
@@ -2275,33 +2275,33 @@ namespace EddiCore
             return false;
         }
 
-        private void updateCurrentSystem(string name)
+        private void updateCurrentSystem(string systemName, ulong systemAddress)
         {
-            if ( string.IsNullOrEmpty(name) || 
-                 CurrentStarSystem?.systemname == name )
+            if ( string.IsNullOrEmpty(systemName) || CurrentStarSystem?.systemname == systemName )
             {
                 return;
             }
 
-            // Discard signal sources from star system we are leaving
             if ( CurrentStarSystem != null )
             {
+                // Discard signal sources from star system we are leaving
                 CurrentStarSystem.signalSources = ImmutableList<SignalSource>.Empty;
-            }
 
             // We have changed system so update the old one as to when we left
-            StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
+                StarSystemSqLiteRepository.Instance.LeaveStarSystem( CurrentStarSystem );
             
+            }
+
             // Update the CurrentStarSystem to the one we are entering
             LastStarSystem = CurrentStarSystem;
-            if (NextStarSystem != null && NextStarSystem.systemname == name)
+            if (NextStarSystem != null && NextStarSystem.systemAddress == systemAddress )
             {
                 CurrentStarSystem = NextStarSystem;
                 NextStarSystem = null;
             }
             else
             {
-                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
+                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem( systemName );
             }
 
             // Clear any temporary / partially created bodies (e.g. from FSDTarget events)
@@ -2317,12 +2317,12 @@ namespace EddiCore
             setCommanderTitle();
         }
 
-        private void updateCurrentStellarBody(string bodyName, string systemName, ulong? systemAddress = null)
+        private void updateCurrentStellarBody(string bodyName, string systemName, ulong systemAddress)
         {
             // Make sure our system information is up to date
             if (CurrentStarSystem == null || CurrentStarSystem.systemname != systemName)
             {
-                updateCurrentSystem(systemName);
+                updateCurrentSystem(systemName, systemAddress);
             }
             // Update the body 
             if (CurrentStarSystem != null)
@@ -2376,7 +2376,7 @@ namespace EddiCore
             CurrentStellarBody = null;
 
             // Set the destination system as the current star system
-            updateCurrentSystem(@event.system);
+            updateCurrentSystem(@event.system, @event.systemAddress);
 
             // Save a copy of this event for later reference
             lastEvents[nameof(FSDEngagedEvent)] = @event;;
@@ -2442,7 +2442,7 @@ namespace EddiCore
             if (CurrentStarSystem == null || CurrentStarSystem.systemname != theEvent.system)
             {
                 // The 'StartJump' event must have been missed
-                updateCurrentSystem(theEvent.system);
+                updateCurrentSystem(theEvent.system, theEvent.systemAddress );
             }
 
             passEvent = true;
@@ -2519,9 +2519,10 @@ namespace EddiCore
                 }
 
                 // (When pledged) Powerplay information
-                CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
-                CurrentStarSystem.powerState =
-                    theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
+                CurrentStarSystem.Powers = theEvent.Powers != null && theEvent.Powers.Any()
+                    ? theEvent.Powers
+                    : CurrentStarSystem.Powers;
+                CurrentStarSystem.powerState = theEvent.powerState ?? CurrentStarSystem.powerState;
 
                 // Update to most recent information
                 CurrentStarSystem.visitLog.Add(theEvent.timestamp);
@@ -2541,9 +2542,9 @@ namespace EddiCore
         private bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
         {
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-            updateCurrentSystem(theEvent.system);
+            updateCurrentSystem(theEvent.system, theEvent.systemAddress );
 
-            if (theEvent.systemAddress != null) { CurrentStarSystem.systemAddress = theEvent.systemAddress; }
+            CurrentStarSystem.systemAddress = theEvent.systemAddress;
 
             // No longer in 'station instance'
             CurrentStation = null;
@@ -2584,7 +2585,7 @@ namespace EddiCore
             {
                 updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
             }
-            updateCurrentSystem(theEvent.systemname);
+            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
 
             if (theEvent.taxi is true)
             {
@@ -2911,14 +2912,14 @@ namespace EddiCore
                 // Clear the body we are leaving 
                 CurrentStellarBody = null;
             }
-            updateCurrentSystem(theEvent.systemname);
+            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
             return true;
         }
 
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can only proceed if we know our current star system
-            updateCurrentSystem(theEvent.star?.systemname);
+            updateCurrentSystem(theEvent.star.systemname, theEvent.star.systemAddress);
             if (CurrentStarSystem == null) { return false; }
 
             // We use an un-named temporary star at distance 0M during the FSD Target event.
@@ -2940,7 +2941,7 @@ namespace EddiCore
         private bool eventBodyScanned(BodyScannedEvent theEvent)
         {
             // We just scanned a body.  We can only proceed if we know our current star system
-            updateCurrentSystem(theEvent.body?.systemname);
+            updateCurrentSystem(theEvent.body.systemname, theEvent.body.systemAddress);
             if (CurrentStarSystem == null) { return false; }
 
             CurrentStarSystem.AddOrUpdateBody(theEvent.body);
@@ -2953,21 +2954,21 @@ namespace EddiCore
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)
         {
-            if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem?.systemAddress)
+            if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem.systemAddress)
             {
                 // We've already updated the body (via the journal monitor) if the CurrentStarSystem isn't null
                 // Here, we just need to save the data and update our current stellar body
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+                updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem.systemname, CurrentStarSystem.systemAddress);
             }
             return true;
         }
 
         private bool eventRingMapped(RingMappedEvent theEvent)
         {
-            if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem?.systemAddress)
+            if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem.systemAddress)
             {
-                updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+                updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem.systemname, CurrentStarSystem.systemAddress);
             }
             return true;
         }
@@ -2995,10 +2996,8 @@ namespace EddiCore
 
                         bool updatedCurrentStarSystem = false;
 
-                        // Only set the current star system if it is not present, otherwise we leave it to events
                         if (CurrentStarSystem == null)
                         {
-                            updateCurrentSystem(profile.currentStarSystem);
                             setCommanderTitle();
 
                             if (profile.docked && profile.currentStarSystem == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)

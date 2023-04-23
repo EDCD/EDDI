@@ -41,9 +41,9 @@ namespace EddiEvents
 
         public Body body { get; private set; }
 
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
-        public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, ulong? systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
+        public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, ulong systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
             this.ringname = ringName;
             this.ring = ring;
