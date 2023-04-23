@@ -241,7 +241,10 @@
     <value>Fabrikatoren</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
-  
+  <data name="AzCancriFormula42" xml:space="preserve">
+    <value>AZ Krebs Formel 42</value>
+    <comment>Commodity AzCancriFormula42</comment>
+  </data>
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
     <value>Baltah Sine Weltraumkrill</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
