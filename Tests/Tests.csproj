@@ -36,7 +36,6 @@
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
     <ProjectReference Include="..\EDDNResponder\EddiEddnResponder.csproj" />
     <ProjectReference Include="..\Events\EddiEvents.csproj" />
-    <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj" />
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
     <ProjectReference Include="..\MaterialMonitor\EddiMaterialMonitor.csproj" />
     <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj" />

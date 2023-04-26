@@ -1,5 +1,4 @@
-﻿using Eddi;
-using EddiSpeechResponder;
+﻿using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
@@ -9,7 +8,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 
 namespace UnitTests
 {
@@ -352,7 +350,7 @@ namespace UnitTests
 
             Assert.IsNotNull(@default);
             var missingScripts = new Dictionary<string, List<string>>();
-            foreach (var fileInfo in dirInfo?.GetFiles()?.Where(f => f.Name.StartsWith("eddi") && f.Name != "eddi.json") ?? new List<FileInfo>())
+            foreach (var fileInfo in dirInfo.GetFiles().Where(f => f.Name.StartsWith("eddi") && f.Name != "eddi.json"))
             {
                 var localizedDefaultPersonality = Personality.FromFile(fileInfo.FullName);
 
