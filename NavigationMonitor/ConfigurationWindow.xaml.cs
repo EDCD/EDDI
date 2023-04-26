@@ -51,7 +51,7 @@ namespace EddiNavigationMonitor
             int index = 0;
             for (int i = 0; i < tabControl.Items.Count; i++)
             {
-                if ((TabItem)tabControl.Items[i] is TabItem tabItem
+                if (tabControl.Items[i] is TabItem tabItem
                     && tabItem.Header.Equals(tabHeader))
                 {
                     index = i;

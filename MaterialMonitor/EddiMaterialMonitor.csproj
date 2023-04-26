@@ -1,145 +1,48 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A2401E3A-586A-41FF-8237-3FB598C5FCF9}</ProjectGuid>
-    <OutputType>library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EddiMaterialMonitor</RootNamespace>
-    <AssemblyName>EddiMaterialMonitor</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
+    <TargetFramework>net48</TargetFramework>
+    <PlatformName>windows</PlatformName>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MaterialMonitor.cs" />
-    <Page Include="ConfigurationWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="ConfigurationWindow.xaml.cs">
-      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\MaterialMonitor.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MaterialMonitor.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\MaterialMonitor.cs.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.de.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.es.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.fr.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.hu.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.it.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.ja.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.pt-BR.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MaterialMonitor.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\MaterialMonitor.ru.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.zh-CN.resx" />
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
-      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
-      <Name>EddiConfigService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDDI\Eddi.csproj">
-      <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
-      <Name>Eddi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Events\EddiEvents.csproj">
-      <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
-      <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
+    <ProjectReference Include="..\EDDI\Eddi.csproj" />
+    <ProjectReference Include="..\Events\EddiEvents.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2022.3.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable">
       <Version>7.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime">
-      <Version>4.3.1</Version>
+        <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

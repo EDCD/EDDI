@@ -11,7 +11,6 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Threading;
-using System.Web;
 using Utilities;
 
 namespace EddiEddnResponder.Sender
@@ -114,7 +113,7 @@ namespace EddiEddnResponder.Sender
                         // Invalid status codes are defined at https://github.com/EDCD/EDDN/blob/master/docs/Developers.md#server-responses
                         case HttpStatusCode.BadRequest: // Code 400
                             {
-                                throw new HttpException(400, response.Content);
+                                throw new HttpListenerException(400, response.Content);
                             }
                         case HttpStatusCode.RequestTimeout: // Code 408
                         case HttpStatusCode.GatewayTimeout: // Code 504
@@ -136,14 +135,17 @@ namespace EddiEddnResponder.Sender
                                 var messageConverterStream = new MemoryStream(byte.Parse(msgBody));
                                 using (GZipStream compressionStream = new GZipStream(messageConverterStream, CompressionMode.Compress))
                                 {
-                                    request.AddParameter("application/json", compressionStream.AsOutputStream(), ParameterType.RequestBody);
+                                    using ( var outputStream = new MemoryStream() )
+                                    {
+                                        compressionStream.CopyTo(outputStream);
+                                        request.AddParameter("application/json", outputStream, ParameterType.RequestBody);
+                                    }
                                 }
                                 response = client.Execute(request);
                                 Logging.Debug("Response content is " + response.Content);
                                 if (response.StatusCode != HttpStatusCode.Accepted)
                                 {
-                                    var iex = new Exception(response.Content);
-                                    throw new HttpException(413, "Failed to resend to EDDN service with compressed data.", iex);
+                                    throw new HttpListenerException(413, "Failed to resend to EDDN service with compressed data.");
                                 }
                                 break;
                             }
@@ -152,7 +154,7 @@ namespace EddiEddnResponder.Sender
                                 // Note that this deviates from the typical usage of code 426
                                 // (which typically indicates that this client is using an obsolete security protocol.
                                 invalidSchemas.Add(body.schemaRef);
-                                throw new HttpException(426, $"Schema {body.schemaRef} is obsolete.");
+                                throw new HttpListenerException(426, $"Schema {body.schemaRef} is obsolete.");
                             }
                         case HttpStatusCode.ServiceUnavailable: // Code 503
                             {
@@ -168,7 +170,7 @@ namespace EddiEddnResponder.Sender
                             {
                                 if ((int)response.StatusCode >= 400)
                                 {
-                                    throw new HttpException((int)response.StatusCode, "Unexpected EDDN service response");
+                                    throw new HttpListenerException((int)response.StatusCode, "Unexpected EDDN service response");
                                 }
                                 break;
                             }

@@ -175,13 +175,17 @@ namespace Utilities
                 else
                 {
                     if (undecomposedTypes.Contains(type)) { return; }
-                    else if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) || type.GetInterfaces().Contains(typeof(IDictionary)))
+                    else if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) || 
+                             type.GetInterfaces().Contains(typeof(IDictionary)))
                     {
                         if (value != null)
                         {
                             foreach (DictionaryEntry kvp in (IDictionary)value)
                             {
-                                GetVariable(oldKeysPath, kvp.Key.ToString(), kvp.Value.GetType(), description, kvp.Value);
+                                if ( kvp.Value != null )
+                                {
+                                    GetVariable( oldKeysPath, kvp.Key.ToString(), kvp.Value.GetType(), description, kvp.Value );
+                                }
                             }
                         }
                     }

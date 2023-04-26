@@ -81,12 +81,18 @@ namespace EddiEddnResponder.Toolkit
                 // Ignore any events that we've blacklisted for contaminating our location data
                 if (!starSystemIgnoredEvents.Contains(edType))
                 {
-                    systemName = JsonParsing.getString(data, "StarSystem") ?? systemName;
+                    if ( data.ContainsKey( "StarSystem" ) )
+                    {
+                        systemName = JsonParsing.getString( data, "StarSystem" ) ?? systemName;
+                    }
 
-                    // Some events are bugged and return a SystemAddress of 1, regardless of the system we are in.
-                    // We need to ignore data that matches this pattern.
-                    ulong SystemAddress = JsonParsing.getULong(data, "SystemAddress");
-                    systemAddress = (SystemAddress > 1 ? SystemAddress : systemAddress);
+                    if ( data.ContainsKey( "SystemAddress" ) )
+                    {
+                        ulong SystemAddress = JsonParsing.getULong(data, "SystemAddress");
+                        // Some events are bugged and return a SystemAddress of 1, regardless of the system we are in.
+                        // We need to ignore data that matches this pattern.
+                        systemAddress = ( SystemAddress > 1 ? SystemAddress : systemAddress );
+                    }
 
                     data.TryGetValue("StarPos", out object starpos);
                     if (starpos != null)

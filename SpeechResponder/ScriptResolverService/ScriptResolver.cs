@@ -238,8 +238,11 @@ namespace EddiSpeechResponder.Service
                 // either with no .ctor or passing data to a .ctor as required (for classes implementing `CustomNestingFunction`).
                 var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null 
                     ? Activator.CreateInstance(type) : 
-                    Activator.CreateInstance(type, this, store)); 
-                store.Set(function.name, function.function, StoreMode.Global);
+                    Activator.CreateInstance(type, this, store));
+                if ( function != null )
+                {
+                    store.Set( function.name, function.function, StoreMode.Global );
+                }
             }
 
             // Variables

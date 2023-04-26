@@ -17,48 +17,39 @@ namespace EddiEvents
             {
                 try
                 {
-                    foreach (Type type in typeof(Event).Assembly.GetTypes())
+                    foreach (var type in typeof(Event).Assembly.GetTypes())
                     {
-                        if (!type.IsInterface && !type.IsAbstract)
+                        if ( type.IsInterface ||
+                             type.IsAbstract ||
+                             !type.IsSubclassOf( typeof(Event) ) )
                         {
-                            if (type.IsSubclassOf(typeof(Event)))
+                            continue;
+                        }
+
+                        // Ensure that the static constructor of the class has been run
+                        System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+
+                        if (type.GetField("NAME") is var nameField && 
+                            nameField?.GetValue( null ) is string eventName)
+                        {
+                            TYPES.Add(eventName, type);
+
+                            if (type.GetField("DESCRIPTION") is var descriptionField && 
+                                descriptionField?.GetValue(null) is string eventDescription)
                             {
-                                // Ensure that the static constructor of the class has been run
-                                System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+                                DESCRIPTIONS.Add(eventName, eventDescription);
+                            }
 
-                                if (type.GetField("NAME") != null)
-                                {
-                                    string eventName = (string)type.GetField("NAME").GetValue(null);
+                            if (type.GetField("DEFAULT") is var defaultField &&
+                                defaultField?.GetValue(null) is string eventDefault)
+                            {
+                                DEFAULTS.Add(eventName, eventDefault);
+                            }
 
-                                    TYPES.Add(eventName, type);
-
-                                    if (type.GetField("DESCRIPTION") != null)
-                                    {
-                                        string eventDescription = (string)type.GetField("DESCRIPTION").GetValue(null);
-                                        if (eventDescription != null)
-                                        {
-                                            DESCRIPTIONS.Add(eventName, eventDescription);
-                                        }
-                                    }
-
-                                    if (type.GetField("DEFAULT") != null)
-                                    {
-                                        string eventDefault = (string)type.GetField("DEFAULT").GetValue(null);
-                                        if (eventDefault != null)
-                                        {
-                                            DEFAULTS.Add(eventName, eventDefault);
-                                        }
-                                    }
-
-                                    if (type.GetField("SAMPLE") != null)
-                                    {
-                                        object eventSample = type.GetField("SAMPLE").GetValue(null);
-                                        if (eventSample != null)
-                                        {
-                                            SAMPLES.Add(eventName, eventSample);
-                                        }
-                                    }
-                                }
+                            if (type.GetField("SAMPLE") is var sampleField &&
+                                sampleField?.GetValue(null) is var eventSample )
+                            {
+                                SAMPLES.Add(eventName, eventSample);
                             }
                         }
                     }

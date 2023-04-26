@@ -1,59 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{28758371-6B62-47B6-B2CB-7103833BEECF}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformName>windows</PlatformName>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Speech" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -64,155 +23,33 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="CapiTests.cs" />
-    <Compile Include="BgsDataTests.cs" />
-    <Compile Include="MetaVariablesTests.cs" />
-    <Compile Include="HumanizeTests.cs" />
-    <Compile Include="CustomFunctions.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="SpanshServiceTests.cs" />
-    <Compile Include="CottleHighlightingTests.cs" />
-    <Compile Include="UtilityTests.cs" />
-    <Compile Include="InaraTests.cs" />
-    <Compile Include="CrimeMonitorTests.cs" />
-    <Compile Include="NavigationServiceTests.cs" />
-    <Compile Include="TelemetryTests.cs" />
-    <Compile Include="RedactionTests.cs" />
-    <Compile Include="TestBase.cs" />
-    <Compile Include="EdsmDataTests.cs" />
-    <Compile Include="CommodityTests.cs" />
-    <Compile Include="DiffTests.cs" />
-    <Compile Include="EddnTests.cs" />
-    <Compile Include="DataDefinitionTests.cs" />
-    <Compile Include="GeneratorTests.cs" />
-    <Compile Include="MissionMonitorTests.cs" />
-    <Compile Include="SpeechUnitTests.cs" />
-    <Compile Include="StatusMonitorTests.cs" />
-    <Compile Include="JournalMonitorTests.cs" />
-    <Compile Include="BodyScanTests.cs" />
-    <Compile Include="ShipTests.cs" />
-    <Compile Include="PromotionTests.cs" />
-    <Compile Include="EddiCoreTests.cs" />
-    <Compile Include="CargoMonitorTests.cs" />
-    <Compile Include="MaterialMonitorTests.cs" />
-    <Compile Include="OAuthClientIDTests.cs" />
-    <Compile Include="VersioningTests.cs" />
-    <Compile Include="DataProviderTests.cs" />
-    <Compile Include="SpeechTests.cs" />
-    <Compile Include="CommanderDataTests.cs" />
-    <Compile Include="CoriolisTests.cs" />
-    <Compile Include="ScriptResolverTest.cs" />
-    <Compile Include="TranslationTests.cs" />
-    <Compile Include="VoiceAttackPluginTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BgsService\EddiBgsService.csproj">
-      <Project>{962f6d23-d9d8-44bf-8a65-516889190944}</Project>
-      <Name>EddiBgsService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
-      <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
-      <Name>EddiCargoMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
-      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
-      <Name>EddiConfigService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
-      <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
-      <Name>EddiCrimeMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
-      <Project>{19ab6841-aa93-4d23-be6d-4cb6883cdf62}</Project>
-      <Name>EddiInaraService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj">
-      <Project>{eeb0110f-5abf-466b-be85-d5bd21a57cd5}</Project>
-      <Name>EddiSpanshService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj">
-      <Project>{7d25af37-6ef2-4210-b079-14672becdbb0}</Project>
-      <Name>EddiStatusService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDDI\Eddi.csproj">
-      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
-      <Name>Eddi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
-      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EddiCompanionAppService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
-      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EddiDataProviderService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDDNResponder\EddiEddnResponder.csproj">
-      <Project>{9aba5418-95bb-40db-b4bc-71698a37066d}</Project>
-      <Name>EddiEddnResponder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Events\EddiEvents.csproj">
-      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
-      <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj">
-      <Project>{93b946c8-3f78-465a-8cc4-c0fc4127b762}</Project>
-      <Name>EddiGalnetMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
-      <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
-      <Name>EddiJournalMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MaterialMonitor\EddiMaterialMonitor.csproj">
-      <Project>{a2401e3a-586a-41ff-8237-3fb598c5fcf9}</Project>
-      <Name>EddiMaterialMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
-      <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
-      <Name>EddiMissionMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj">
-      <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
-      <Name>EddiNavigationService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
-      <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
-      <Name>EddiShipMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj">
-      <Project>{b164baec-9d66-4846-b152-2f8914406b89}</Project>
-      <Name>EddiSpeechResponder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
-      <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
-      <Name>EddiSpeechService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
-      <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
-      <Name>EddiStarMapService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj">
-      <Project>{8cfe0309-d2cb-4ff3-9a30-6c52a1345d08}</Project>
-      <Name>EddiVoiceAttackResponder</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\BgsService\EddiBgsService.csproj" />
+    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj" />
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+    <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj" />
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
+    <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
+    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
+    <ProjectReference Include="..\EDDI\Eddi.csproj" />
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+    <ProjectReference Include="..\EDDNResponder\EddiEddnResponder.csproj" />
+    <ProjectReference Include="..\Events\EddiEvents.csproj" />
+    <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj" />
+    <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
+    <ProjectReference Include="..\MaterialMonitor\EddiMaterialMonitor.csproj" />
+    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj" />
+    <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
+    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj" />
+    <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj" />
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
+    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\capi-shipyard-Abasheli Barracks.json" />
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
     <EmbeddedResource Include="Properties\bgsFaction.json" />
     <EmbeddedResource Include="Properties\edsmBodies.json" />
     <EmbeddedResource Include="Properties\edsmDeaths.json" />
@@ -228,36 +65,14 @@
     <EmbeddedResource Include="Properties\sqlStarSystem3.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem4.json" />
     <EmbeddedResource Include="Properties\vehicle.json" />
-    <None Include="Properties\bgsFactionResponse.json" />
-    <None Include="Properties\capi-market-fleet_carrier.json" />
-    <None Include="Properties\CapitalSystems.json" />
-    <None Include="Properties\cubeSystemsAroundSol.json" />
-    <None Include="Properties\FCMaterials.json" />
-    <None Include="Properties\inaraCmdrs.json" />
     <EmbeddedResource Include="Properties\market.json" />
-    <None Include="Properties\capi-market-Libby Horizons.json" />
-    <None Include="Properties\Outfitting.json" />
-    <None Include="Properties\shipLocker.json" />
-    <None Include="Properties\Shipyard.json" />
-    <None Include="Properties\Sol.json" />
-    <None Include="Properties\SolBodies.json" />
-    <None Include="Properties\SolFactions.json" />
-    <None Include="Properties\SolStations.json" />
     <EmbeddedResource Include="Properties\SpanshCarrierResult.json" />
     <EmbeddedResource Include="Properties\SpanshGalaxyResult.json" />
-    <None Include="Properties\sphereAroundSol.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem5.json" />
     <EmbeddedResource Include="Properties\sqlStarSystem6.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\starsystems.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cottle">
@@ -272,6 +87,7 @@
     <PackageReference Include="MathNet.Numerics">
       <Version>5.0.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms">
       <Version>7.0.0</Version>
     </PackageReference>
@@ -282,7 +98,7 @@
       <Version>2.2.10</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="OpenCover">
       <Version>4.6.519</Version>
@@ -399,17 +215,7 @@
       </ItemGroup>
     </When>
   </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

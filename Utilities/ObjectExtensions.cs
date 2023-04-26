@@ -54,7 +54,7 @@ namespace System
                 if (IsPrimitive(arrayType) == false)
                 {
                     Array clonedArray = (Array)cloneObject;
-                    clonedArray.ForEach((array, indices) => array.SetValue(InternalCopy(clonedArray.GetValue(indices), visited), indices));
+                    clonedArray?.ForEach((array, indices) => array.SetValue(InternalCopy(clonedArray.GetValue(indices), visited), indices));
                 }
 
             }

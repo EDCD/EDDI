@@ -1,4 +1,5 @@
-﻿using EddiSpeechResponder;
+﻿using Eddi;
+using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
@@ -8,6 +9,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace UnitTests
 {
@@ -345,8 +347,7 @@ namespace UnitTests
         public void TestPersonalityLocalizedScriptsAreComplete()
         {
             // Make sure that all default scripts in our invariant personality also exist in localized default personalities
-            var baseDirInfo = new DirectoryInfo(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) ?? string.Empty);
-            var dirInfo = baseDirInfo.Parent?.Parent?.EnumerateDirectories().FirstOrDefault(d => d.Name == "SpeechResponder");
+            var dirInfo = new DirectoryInfo(AppContext.BaseDirectory);
             var @default = Personality.FromFile(dirInfo?.FullName + "\\eddi.json", true);
 
             Assert.IsNotNull(@default);

@@ -159,7 +159,7 @@ namespace EddiEddnResponder
                         // Ensure that the static constructor of the class has been run
                         System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
-                        var schema = type.InvokeMember(null,
+                        var schema = type.InvokeMember(type.Name,
                             BindingFlags.CreateInstance,
                             null, null, null) as ISchema;
                         schemas.Add(schema);
@@ -169,7 +169,7 @@ namespace EddiEddnResponder
                         // Ensure that the static constructor of the class has been run
                         System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
-                        var capiSchema = type.InvokeMember(null,
+                        var capiSchema = type.InvokeMember(type.Name,
                             BindingFlags.CreateInstance,
                             null, null, null) as ICapiSchema;
                         capiSchemas.Add(capiSchema);

@@ -1,20 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformName>windows</PlatformName>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Eddi</RootNamespace>
-    <AssemblyName>EDDI</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -30,26 +18,18 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
@@ -59,173 +39,30 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>Eddi.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.AddIn.Contract" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Speech" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EddiUpgrader.cs" />
-    <Compile Include="StarSystemComboBox.cs" />
-    <Page Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="EDDI.cs" />
-    <Compile Include="IEddiMonitor.cs" />
-    <Compile Include="IEddiResponder.cs" />
-    <Page Include="ChangeLog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ChangeLog.xaml.cs">
-      <DependentUpon>ChangeLog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="PluginSkeleton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="PluginSkeleton.xaml.cs">
-      <DependentUpon>PluginSkeleton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\MainWindow.Designer.cs">
-      <DependentUpon>MainWindow.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\EddiResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EddiResources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Properties\EddiResources.cs.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.de.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.hu.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.it.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.ja.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.pt-BR.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.ru.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.zh-CN.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.cs.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.de.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.es.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.fr.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.hu.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.it.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.ja.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.pt-BR.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EddiResources.es.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.fr.resx" />
-    <EmbeddedResource Include="Properties\EddiResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddiResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\MainWindow.ru.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.zh-CN.resx" />
-    <None Include="ChangeLog.md">
+    <None Update="ChangeLog.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BgsService\EddiBgsService.csproj">
-      <Project>{962F6D23-D9D8-44BF-8A65-516889190944}</Project>
-      <Name>EddiBgsService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
-      <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
-      <Name>EddiCompanionAppService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj">
-      <Project>{1af3fe80-a671-463e-b2a2-c8d4d148efd4}</Project>
-      <Name>EddiConfigService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
-      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EddiDataProviderService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
-      <Project>{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}</Project>
-      <Name>EddiInaraService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj">
-      <Project>{eeb0110f-5abf-466b-be85-d5bd21a57cd5}</Project>
-      <Name>EddiSpanshService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj">
-      <Project>{7d25af37-6ef2-4210-b079-14672becdbb0}</Project>
-      <Name>EddiStatusService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Events\EddiEvents.csproj">
-      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
-      <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
-      <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
-      <Name>EddiSpeechService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
-      <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
-      <Name>EddiStarMapService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\BgsService\EddiBgsService.csproj" />
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
+    <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
+    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
+    <ProjectReference Include="..\Events\EddiEvents.csproj" />
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
+    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="EDDI.ico" />
@@ -243,6 +80,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\graphics\logo-with-alpha.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <SplashScreen Include="..\graphics\logo-with-alpha.png" />
   </ItemGroup>
   <ItemGroup>
@@ -252,29 +99,30 @@
     <PackageReference Include="JetBrains.Annotations">
       <Version>2022.3.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable">
       <Version>7.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime">
-      <Version>4.3.1</Version>
+        <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/EDCD/EDDI</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>Copyright ©  2016</Copyright>
+    <PackageProjectUrl>https://github.com/EDCD/EDDI</PackageProjectUrl>
+    <Product>EDDI</Product>
+    <Authors />
+    <Company />
+    <PackageIcon>logo-with-alpha.png</PackageIcon>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

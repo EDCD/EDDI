@@ -1,42 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{482C4303-056C-47BE-95A8-48C47E31E7AD}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformName>windows</PlatformName>
     <OutputType>Library</OutputType>
-    <RootNamespace>BuildInstaller</RootNamespace>
-    <AssemblyName>BuildInstaller</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <PropertyGroup>
+  <PropertyGroup>
     <PostBuildEvent>:: Skip our post-build events when running continuous integration
 IF DEFINED CI (
   GOTO :EOF :: Set to TRUE in Github Actions
@@ -65,17 +41,8 @@ xcopy /y "$(SolutionDir)SpeechResponder\Variables.md" "$(SolutionDir)$(OutDir)\W
 xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)$(OutDir)\Wiki\"
 xcopy /y "$(SolutionDir)VoiceAttack-Integration.md" "$(SolutionDir)$(OutDir)\Wiki\"
 xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)$(OutDir)\Wiki\images\"</PreBuildEvent>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2022.3.1</Version>

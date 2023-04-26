@@ -116,7 +116,10 @@ namespace EddiSpeechService
             if (disposing)
             {
                 systemSpeechSynth?.Dispose();
-                windowsMediaSynth?.Dispose();
+                if ( IsWindowsMediaSynthesizerSupported() )
+                {
+                    windowsMediaSynth?.Dispose();
+                }
             }
         }
 
@@ -128,7 +131,7 @@ namespace EddiSpeechService
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
             try
             {
-                if (OSInfo.TryGetWindowsVersion(out var osVersion) && osVersion.Major >= 10)
+                if (IsWindowsMediaSynthesizerSupported())
                 {
                     // Prep the Windows.Media.SpeechSynthesis synthesizer
                     windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
@@ -147,6 +150,12 @@ namespace EddiSpeechService
 
             // Monitor and respond appropriately to changes in the state of the CompanionAppService
             CompanionAppService.Instance.StateChanged += CompanionAppService_StateChanged;
+        }
+
+        private static bool IsWindowsMediaSynthesizerSupported()
+        {
+            return OSInfo.TryGetWindowsVersion( out var osVersion ) &&
+                   osVersion >= new System.Version( 10, 0, 16299, 0 );
         }
 
         private void CompanionAppService_StateChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
@@ -354,7 +363,9 @@ namespace EddiSpeechService
                 else if (allVoices.All(v => !string.Equals(v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) ))
                 {
                     // If the prior selected voice is no longer a valid option, we revert to the system default.
-                    var fallbackVoice = windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice;
+                    var fallbackVoice = IsWindowsMediaSynthesizerSupported() 
+                        ? windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice 
+                        : systemSpeechSynth?.currentVoice;
                     if ( !string.IsNullOrEmpty(fallbackVoice) )
                     {
                         Logging.Debug( $"Voice {requestedVoice} not found, reverting to voice {fallbackVoice}." );
@@ -406,7 +417,7 @@ namespace EddiSpeechService
                 {
                     return systemSpeechSynth?.Speak(voiceDetails, speech, Configuration);
                 }
-                else if (voiceDetails.synthType is nameof(Windows.Media))
+                else if (voiceDetails.synthType is nameof(Windows.Media) && IsWindowsMediaSynthesizerSupported())
                 {
                     return windowsMediaSynth?.Speak(voiceDetails, speech, Configuration);
                 }

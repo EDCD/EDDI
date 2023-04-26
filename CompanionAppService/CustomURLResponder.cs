@@ -76,31 +76,33 @@ namespace EddiCompanionAppService
             try
             {
                 RegistryKey currentUser = Registry.CurrentUser;
-                RegistryKey baseKey = currentUser.CreateSubKey($"Software\\Classes\\{name}");
-                using (baseKey)
+                RegistryKey baseKey = currentUser.CreateSubKey( $"Software\\Classes\\{name}" );
+                using ( baseKey )
                 {
-                    baseKey?.SetValue("", $"URL Protocol {name}");
-                    baseKey?.SetValue("URL Protocol", "");
-                    RegistryKey defaultIcon = baseKey?.CreateSubKey("Default Icon");
-                    using (defaultIcon)
+                    baseKey?.SetValue( "", $"URL Protocol {name}" );
+                    baseKey?.SetValue( "URL Protocol", "" );
+                    RegistryKey defaultIcon = baseKey?.CreateSubKey( "Default Icon" );
+                    using ( defaultIcon )
                     {
-                        defaultIcon?.SetValue("", $"{absoluteAppPath},0");
+                        defaultIcon?.SetValue( "", $"{absoluteAppPath},0" );
                     }
-                    RegistryKey open = baseKey?.CreateSubKey("shell\\open\\command");
-                    using (open)
+
+                    RegistryKey open = baseKey?.CreateSubKey( "shell\\open\\command" );
+                    using ( open )
                     {
-                        open?.SetValue("", $"\"{absoluteAppPath}\" \"%1\"");
+                        open?.SetValue( "", $"\"{absoluteAppPath}\" \"%1\"" );
                     }
-                    RegistryKey ddeexec = baseKey?.CreateSubKey("shell\\open\\ddeexec");
-                    using (ddeexec)
+
+                    RegistryKey ddeexec = baseKey?.CreateSubKey( "shell\\open\\ddeexec" );
+                    using ( ddeexec )
                     {
-                        ddeexec?.SetValue("", "%1");
+                        ddeexec?.SetValue( "", "%1" );
                     }
                 }
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                logger?.Invoke($"There was an error [{ex.Message}] registering the path to EDDI for the URL protocol [{absoluteAppPath}].");
+                logger?.Invoke( $"There was an error [{ex.Message}] registering the path to EDDI for the URL protocol [{absoluteAppPath}]." );
             }
         }
 

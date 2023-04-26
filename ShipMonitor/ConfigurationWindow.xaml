@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p1}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:ShipMonitor.p1}" VerticalAlignment="Top"/>
         <RichTextBox DockPanel.Dock="Top" Margin="0"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
                 <Paragraph >
@@ -23,7 +23,7 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p4}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:ShipMonitor.p4}" VerticalAlignment="Top"/>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />

@@ -1,5 +1,4 @@
 ﻿using EddiEvents;
-using System.AddIn.Pipeline;
 using System.Windows.Controls;
 
 namespace EddiCore
@@ -7,7 +6,6 @@ namespace EddiCore
     /// <summary>
     /// The methods required for an EDDI responder.
     /// </summary>
-    [AddInContract]
     public interface IEddiResponder
     {
         /// <summary>
