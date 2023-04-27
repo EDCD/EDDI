@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <PlatformName>windows</PlatformName>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -26,7 +25,7 @@ IF DEFINED APPVEYOR (
 cd "$(SolutionDir)"
 if exist $(SolutionDir)postBuildTests.bat (
   @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
-  call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
+  call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(SolutionDir)" "bin\$(Configuration)\$(TargetFramework)\"
 )
 
 if "$(ConfigurationName)" == "Release" (
@@ -35,12 +34,11 @@ if "$(ConfigurationName)" == "Release" (
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>xcopy /y "$(SolutionDir)SpeechResponder\EDDI.json" "$(SolutionDir)$(OutDir)"
-xcopy /y "$(SolutionDir)SpeechResponder\Help.md" "$(SolutionDir)$(OutDir)\Wiki\"
-xcopy /y "$(SolutionDir)SpeechResponder\Variables.md" "$(SolutionDir)$(OutDir)\Wiki\"
-xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)$(OutDir)\Wiki\"
-xcopy /y "$(SolutionDir)VoiceAttack-Integration.md" "$(SolutionDir)$(OutDir)\Wiki\"
-xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)$(OutDir)\Wiki\images\"</PreBuildEvent>
+    <PreBuildEvent>xcopy /y "$(SolutionDir)SpeechResponder\Help.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
+xcopy /y "$(SolutionDir)SpeechResponder\Variables.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
+xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
+xcopy /y "$(SolutionDir)VoiceAttack-Integration.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
+xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\Wiki\images\"</PreBuildEvent>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
