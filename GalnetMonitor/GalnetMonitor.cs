@@ -383,7 +383,7 @@ namespace EddiGalnetMonitor
                 {
                     var cInfo = new CultureInfo(name);
                     var resourceSet = resourceManager.GetResourceSet(cInfo, true, true);
-                    if (!string.IsNullOrEmpty(resourceSet.GetString("sourceURL")))
+                    if (!string.IsNullOrEmpty(resourceSet?.GetString("sourceURL")))
                     {
                         satelliteLocales.Add(cInfo.DisplayName, name);
                     }

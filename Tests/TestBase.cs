@@ -14,7 +14,7 @@ using System.IO;
 // (2) MethodLevel – each thread executes a TestMethod.
 // (3) Custom – the user can provide a plugin implementing the required execution semantics. 
 // source: https://devblogs.microsoft.com/devops/mstest-v2-in-assembly-parallel-test-execution/
-[assembly: Parallelize ( Workers = 0, Scope = ExecutionScope.ClassLevel )]
+[assembly: Parallelize( Workers = 0, Scope = ExecutionScope.ClassLevel )]
 
 namespace UnitTests
 {

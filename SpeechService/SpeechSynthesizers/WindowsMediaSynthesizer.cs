@@ -29,7 +29,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        public WindowsMediaSynthesizer(ref HashSet<VoiceDetails> voiceStore)
+        public WindowsMediaSynthesizer (ref HashSet<VoiceDetails> voiceStore)
         {
             bool TryOneCoreVoice(VoiceDetails voiceDetails)
             {
@@ -43,7 +43,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                     {
                         var voiceKey =
                             Registry.LocalMachine.OpenSubKey($@"{oneCoreVoicesRegistryDir}\{subKeyName}");
-                        var voiceName = voiceKey?.GetValue("").ToString();
+                        var voiceName = voiceKey?.GetValue("")?.ToString();
                         if (voiceName?.Contains(voiceDetails.name) ?? false)
                         {
                             return true;

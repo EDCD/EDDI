@@ -1,120 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utilities</RootNamespace>
-    <AssemblyName>Utilities</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="OSInfo.cs" />
-    <Compile Include="MetaVariables.cs" />
-    <Compile Include="CustomAttributes.cs" />
-    <Compile Include="Functions.cs" />
-    <Compile Include="LockManager.cs" />
-    <Compile Include="Processes.cs" />
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="IPA.cs" />
-    <Compile Include="IpaResources.xaml.cs">
-      <DependentUpon>IpaResources.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ObjectExtensions.cs" />
-    <Compile Include="Probability.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="DataGridNumericColumn.cs" />
-    <Compile Include="JsonParsing.cs" />
-    <Compile Include="Dates.cs" />
-    <Compile Include="Deserializtion.cs" />
-    <Compile Include="Diff.cs" />
-    <Compile Include="Files.cs" />
-    <Compile Include="Logging.cs" />
-    <Compile Include="Net.cs" />
-    <Compile Include="ObservableConcurrentDictionary.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="InstanceInfo.cs" />
-    <Compile Include="Properties\IPA.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IPA.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Redaction.cs" />
-    <Compile Include="Translation.cs" />
-    <Compile Include="ServerInfo.cs" />
-    <Compile Include="Versioning.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="IpaResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\IPA.cs.resx" />
-    <EmbeddedResource Include="Properties\IPA.de.resx" />
-    <EmbeddedResource Include="Properties\IPA.es.resx" />
-    <EmbeddedResource Include="Properties\IPA.fr.resx" />
-    <EmbeddedResource Include="Properties\IPA.hu.resx" />
-    <EmbeddedResource Include="Properties\IPA.it.resx" />
-    <EmbeddedResource Include="Properties\IPA.ja.resx" />
-    <EmbeddedResource Include="Properties\IPA.pt-BR.resx" />
-    <EmbeddedResource Include="Properties\IPA.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>IPA.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\IPA.ru.resx" />
-    <EmbeddedResource Include="Properties\IPA.zh-CN.resx" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GitInfo">
       <Version>2.3.0</Version>
@@ -127,8 +27,9 @@
     <PackageReference Include="MathNet.Numerics">
       <Version>5.0.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="RestSharp">
       <Version>106.13.0</Version>
@@ -166,16 +67,5 @@
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Threading">
-      <Version>4.3.0</Version>
-    </PackageReference>
   </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

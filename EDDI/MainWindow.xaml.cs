@@ -1047,7 +1047,7 @@ namespace Eddi
             }
         }
 
-        public static bool IsAdministrator()
+        private static bool IsAdministrator()
         {
             var identity = WindowsIdentity.GetCurrent();
             var principal = new WindowsPrincipal(identity);

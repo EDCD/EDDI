@@ -157,7 +157,7 @@ namespace Utilities
                 else
                 {
                     // user defined browser choice was found
-                    string progId = (userChoiceKey.GetValue("ProgId").ToString());
+                    string progId = (userChoiceKey.GetValue("ProgId")?.ToString());
                     userChoiceKey.Close();
 
                     // now look up the path of the executable

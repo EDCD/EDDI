@@ -52,18 +52,22 @@ namespace EddiSpeechResponder
 
             var functionsList = new List<string>();
             var assy = Assembly.GetAssembly(typeof(ScriptResolver));
-            foreach ( var type in assy.GetTypes()
-                         .Where( t => t.IsClass && t.GetInterface( nameof( ICustomFunction ) ) != null ) )
+            if ( assy != null )
             {
-                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
-                    ? Activator.CreateInstance(type) :
-                    Activator.CreateInstance(type, resolver, resolver.buildStore()));
-
-                if ( function != null )
+                foreach ( var type in assy.GetTypes()
+                             .Where( t => t.IsClass && t.GetInterface( nameof(ICustomFunction) ) != null ) )
                 {
-                    functionsList.Add( function.name );
+                    var function = (ICustomFunction)( type.GetConstructor( Type.EmptyTypes ) != null
+                        ? Activator.CreateInstance( type )
+                        : Activator.CreateInstance( type, resolver, resolver.buildStore() ) );
+
+                    if ( function != null )
+                    {
+                        functionsList.Add( function.name );
+                    }
                 }
             }
+
             return functionsList;
         }
 

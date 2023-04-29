@@ -22,7 +22,7 @@
                 <ComboBox x:Name="languageComboBox" Background="#FFE5E5E5" SelectionChanged="onLanguageChanged" SelectedValue="Key"/>
             </StackPanel>
             <TextBlock Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Margin="5,5,5,0" TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.p1}" VerticalAlignment="Top" Height="32"/>
-            <CheckBox x:Name="galnetAlwaysOn" Grid.Row="2" Grid.Column="0" Margin="5,26" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="galnetAlwaysOnChecked" Unchecked="galnetAlwaysOnUnchecked" Height="14"/>
+            <CheckBox x:Name="galnetAlwaysOnCheckBox" Grid.Row="2" Grid.Column="0" Margin="5,26" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="galnetAlwaysOnChecked" Unchecked="galnetAlwaysOnUnchecked" Height="14"/>
             <TextBlock Grid.Row="2"  Grid.Column="1" Margin="5,25,5,0" TextWrapping="Wrap" Text="{x:Static resx:GalnetMonitor.p2}" VerticalAlignment="Top" Height="16"/>
         </Grid>
     </DockPanel>

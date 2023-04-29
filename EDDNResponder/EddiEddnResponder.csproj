@@ -1,135 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9ABA5418-95BB-40DB-B4BC-71698A37066D}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EddiEddnResponder</RootNamespace>
-    <AssemblyName>EddiEddnResponder</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Schemas\FSSSignalDiscoveredSchema.cs" />
-    <Compile Include="Schemas\FSSBodySignalsSchema.cs" />
-    <Compile Include="Schemas\FSSAllBodiesFoundSchema.cs" />
-    <Compile Include="Schemas\FCMaterialsSchema.cs" />
-    <Compile Include="Schemas\OutfittingSchema.cs" />
-    <Compile Include="Schemas\ShipyardSchema.cs" />
-    <Compile Include="Schemas\CommoditySchema.cs" />
-    <Compile Include="Schemas\ApproachSettlementSchema.cs" />
-    <Compile Include="EDDNState.cs" />
-    <Compile Include="Schemas\CodexEntrySchema.cs" />
-    <Compile Include="Toolkit\PersonalDataStripper.cs" />
-    <Compile Include="Sender\EDDNBody.cs" />
-    <Compile Include="EDDNEconomy.cs" />
-    <Compile Include="Toolkit\GameVersionAugmenter.cs" />
-    <Compile Include="Sender\EDDNHeader.cs" />
-    <Compile Include="Toolkit\LocationAugmenter.cs" />
-    <Compile Include="EDDNResponder.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\EddnResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EddnResources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="ISchema.cs" />
-    <Compile Include="Schemas\JournalSchema.cs" />
-    <Compile Include="Schemas\NavBeaconScanSchema.cs" />
-    <Compile Include="Schemas\FSSDiscoveryScanSchema.cs" />
-    <Compile Include="Schemas\NavRouteSchema.cs" />
-    <Compile Include="Schemas\ScanBaryCentreSchema.cs" />
-    <Compile Include="Sender\EDDNSender.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
-      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EddiCompanionAppService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
-      <Project>{C5F48807-921B-456D-A9E4-A0282E5E8CF1}</Project>
-      <Name>EddiDataProviderService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj">
-      <Project>{7d25af37-6ef2-4210-b079-14672becdbb0}</Project>
-      <Name>EddiStatusService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDDI\Eddi.csproj">
-      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
-      <Name>Eddi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Events\EddiEvents.csproj">
-      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
-      <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\EddnResources.cs.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.de.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.es.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.fr.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.hu.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.it.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.ja.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.pt-BR.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddnResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EddnResources.ru.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.zh-CN.resx" />
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
+    <ProjectReference Include="..\EDDI\Eddi.csproj" />
+    <ProjectReference Include="..\Events\EddiEvents.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2022.3.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="RestSharp">
       <Version>106.13.0</Version>
@@ -138,19 +39,10 @@
       <Version>7.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime">
-      <Version>4.3.1</Version>
+        <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

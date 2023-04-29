@@ -131,8 +131,8 @@ namespace EddiStarMapService
                         eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays,
                         axialTiltDegrees, rings, true, false)
                     { EDSMID = EDSMID };
-                    DateTime updatedAt = JsonParsing.getDateTime("updateTime", body);
-                    Body.updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt);
+                    var updatedAt = JsonParsing.getDateTime("updateTime", body);
+                    Body.updatedat = updatedAt == DateTime.MinValue ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt);
 
                     return Body;
                 }
@@ -231,7 +231,7 @@ namespace EddiStarMapService
                     Body Body = new Body(bodyname, bodyId, systemName, systemAddress, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, null)
                     {
                         EDSMID = EDSMID,
-                        updatedat = updatedAt == null ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt)
+                        updatedat = updatedAt == DateTime.MinValue ? null : (long?)Dates.fromDateTimeToSeconds(updatedAt)
                     };
 
                     return Body;

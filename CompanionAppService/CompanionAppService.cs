@@ -193,14 +193,17 @@ namespace EddiCompanionAppService
 
         private string createAndRememberChallenge()
         {
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            byte[] rawVerifier = new byte[32];
-            rng.GetBytes(rawVerifier);
-            verifier = base64UrlEncode(rawVerifier);
+            var rawVerifier = new byte[32];
+            using ( var rng = RandomNumberGenerator.Create() )
+            {
+                rng.GetBytes( rawVerifier );
+                verifier = base64UrlEncode( rawVerifier );
 
-            byte[] rawAuthSessionID = new byte[8];
-            rng.GetBytes(rawAuthSessionID);
-            authSessionID = base64UrlEncode(rawAuthSessionID);
+                var rawAuthSessionID = new byte[8];
+                rng.GetBytes( rawAuthSessionID );
+
+                authSessionID = base64UrlEncode( rawAuthSessionID );
+            }
 
             byte[] byteVerifier = Encoding.ASCII.GetBytes(verifier);
             byte[] hash = SHA256.Create().ComputeHash(byteVerifier);
@@ -435,7 +438,7 @@ namespace EddiCompanionAppService
                     }
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var timestamp = DateTime.Parse(response.Headers.Get("date")).ToUniversalTime();
+                        var timestamp = DateTime.Parse(response.Headers.Get("date") ?? string.Empty).ToUniversalTime();
                         return new Tuple<string, DateTime>(getResponseData(response), timestamp);
                     }
                 }

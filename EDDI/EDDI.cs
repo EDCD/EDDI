@@ -3249,7 +3249,7 @@ namespace EddiCore
                     Assembly assembly = Assembly.LoadFrom(file.FullName);
                     foreach (Type type in assembly.GetTypes())
                     {
-                        if (type.IsInterface || type.IsAbstract)
+                        if (type.IsInterface || type.IsAbstract || pluginType.FullName is null )
                         {
                             continue;
                         }
@@ -3258,7 +3258,7 @@ namespace EddiCore
                             if (type.GetInterface(pluginType.FullName) != null)
                             {
                                 Logging.Debug("Instantiating responder plugin at " + file.FullName);
-                                IEddiResponder responder = type.InvokeMember(null,
+                                IEddiResponder responder = type.InvokeMember(type.Name,
                                                            BindingFlags.CreateInstance,
                                                            null, null, null) as IEddiResponder;
                                 foundResponders.Add(responder);
@@ -3275,6 +3275,7 @@ namespace EddiCore
                     StringBuilder sb = new StringBuilder();
                     foreach (Exception exSub in ex.LoaderExceptions)
                     {
+                        if ( exSub is null ) { continue; }
                         sb.AppendLine(exSub.Message);
                         if (exSub is FileNotFoundException exFileNotFound)
                         {

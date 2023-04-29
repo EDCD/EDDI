@@ -24,7 +24,7 @@ namespace EddiGalnetMonitor
             Dictionary<string, string> langs = galnetMonitor()?.GetGalnetLocales();
             languageComboBox.ItemsSource = langs?.Keys ?? new Dictionary<string, string>().Keys;
             languageComboBox.SelectedValue = configuration.language;
-            galnetAlwaysOn.IsChecked = configuration.galnetAlwaysOn;
+            galnetAlwaysOnCheckBox.IsChecked = configuration.galnetAlwaysOn;
         }
 
         private void onLanguageChanged(object sender, SelectionChangedEventArgs e)
@@ -45,7 +45,7 @@ namespace EddiGalnetMonitor
         private void galnetAlwaysOnChecked(object sender, RoutedEventArgs e)
         {
             var configuration = ConfigService.Instance.galnetConfiguration;
-            configuration.galnetAlwaysOn = galnetAlwaysOn.IsChecked ?? false;
+            configuration.galnetAlwaysOn = galnetAlwaysOnCheckBox.IsChecked ?? false;
             ConfigService.Instance.galnetConfiguration = configuration;
             galnetMonitor()?.Reload();
         }
@@ -53,7 +53,7 @@ namespace EddiGalnetMonitor
         private void galnetAlwaysOnUnchecked(object sender, RoutedEventArgs e)
         {
             var configuration = ConfigService.Instance.galnetConfiguration;
-            configuration.galnetAlwaysOn = galnetAlwaysOn.IsChecked ?? false;
+            configuration.galnetAlwaysOn = galnetAlwaysOnCheckBox.IsChecked ?? false;
             ConfigService.Instance.galnetConfiguration = configuration;
             galnetMonitor()?.Reload();
         }

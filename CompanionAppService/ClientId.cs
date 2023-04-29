@@ -1,9 +1,9 @@
 ﻿
 namespace EddiCompanionAppService
 {
-    class ClientId
+    public class ClientId
     {
         // replace with official FDev Client ID. We don't need the Client Secret for PKCE authentication
-        internal static string ID = null;
+        public static string ID = null;
     }
 }

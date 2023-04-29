@@ -118,9 +118,7 @@ namespace EddiNavigationService
                     // Ensure that the static constructor of the class has been run
                     RuntimeHelpers.RunClassConstructor ( type.TypeHandle );
 
-                    if ( type.InvokeMember ( null,
-                            BindingFlags.CreateInstance,
-                            null, null, null ) is IQueryResolver queryResolver )
+                    if ( type.InvokeMember ( type.Name, BindingFlags.CreateInstance, null, null, null ) is IQueryResolver queryResolver )
                     {
                         try
                         {

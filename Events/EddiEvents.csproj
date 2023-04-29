@@ -1,325 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EddiEvents</RootNamespace>
-    <AssemblyName>EddiEvents</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>embedded</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackpackChangedEvent.cs" />
-    <Compile Include="BondAwardedEvent.cs" />
-    <Compile Include="BondRedeemedEvent.cs" />
-    <Compile Include="BountyAwardedEvent.cs" />
-    <Compile Include="BountyIncurredEvent .cs" />
-    <Compile Include="BountyPaidEvent.cs" />
-    <Compile Include="BountyRedeemedEvent.cs" />
-    <Compile Include="CargoEvent.cs" />
-    <Compile Include="CarrierDockingPermissionEvent.cs" />
-    <Compile Include="CarrierFinanceEvent.cs" />
-    <Compile Include="CarrierNameChangeEvent.cs" />
-    <Compile Include="CarrierFuelDepositEvent.cs" />
-    <Compile Include="CarrierServiceChangedEvent.cs" />
-    <Compile Include="CarrierDecommissionCancelledEvent.cs" />
-    <Compile Include="CarrierDecommissionScheduledEvent.cs" />
-    <Compile Include="CarrierBankTransferEvent.cs" />
-    <Compile Include="CarrierStatsEvent.cs" />
-    <Compile Include="CarrierPurchasedEvent.cs" />
-    <Compile Include="CommodityCollectedEvent.cs" />
-    <Compile Include="CommodityEjectedEvent.cs" />
-    <Compile Include="CommodityPurchasedEvent.cs" />
-    <Compile Include="CommodityRefinedEvent.cs" />
-    <Compile Include="CommoditySoldEvent.cs" />
-    <Compile Include="CommunityGoalEvent.cs" />
-    <Compile Include="CommunityGoalsEvent.cs" />
-    <Compile Include="CrewSessionEndedEvent.cs" />
-    <Compile Include="FineIncurredEvent.cs" />
-    <Compile Include="FinePaidEvent.cs" />
-    <Compile Include="FlightAssistEvent.cs" />
-    <Compile Include="FleetCarrierMaterialsEvent.cs" />
-    <Compile Include="LowFuelEvent.cs" />
-    <Compile Include="PermitAcquiredEvent.cs" />
-    <Compile Include="NearBookmarkEvent.cs" />
-    <Compile Include="NextDestinationEvent.cs" />
-    <Compile Include="GalnetNewsPublishedEvent.cs" />
-    <Compile Include="GlideEvent.cs" />
-    <Compile Include="LimpetLaunchedEvent.cs" />
-    <Compile Include="LimpetPurchasedEvent.cs" />
-    <Compile Include="LimpetSoldEvent.cs" />
-    <Compile Include="MaterialThresholdEvent.cs" />
-    <Compile Include="MissionAbandonedEvent.cs" />
-    <Compile Include="MissionAcceptedEvent.cs" />
-    <Compile Include="MissionCompletedEvent.cs" />
-    <Compile Include="MissionExpiredEvent.cs" />
-    <Compile Include="MissionFailedEvent.cs" />
-    <Compile Include="MissionRedirectedEvent.cs" />
-    <Compile Include="MissionsEvent.cs" />
-    <Compile Include="MissionWarningEvent.cs" />
-    <Compile Include="ModuleArrivedEvent.cs" />
-    <Compile Include="ModuleInfoEvent.cs" />
-    <Compile Include="ModulePurchasedEvent.cs" />
-    <Compile Include="ModuleRetrievedEvent.cs" />
-    <Compile Include="ModuleSoldEvent.cs" />
-    <Compile Include="ModuleSoldFromStorageEvent.cs" />
-    <Compile Include="ModulesStoredEvent.cs" />
-    <Compile Include="ModuleStoredEvent.cs" />
-    <Compile Include="ModuleSwappedEvent.cs" />
-    <Compile Include="ModuleTransferEvent.cs" />
-    <Compile Include="NavRouteEvent.cs" />
-    <Compile Include="PassengersEvent.cs" />
-    <Compile Include="PowerCommodityDeliveredEvent.cs" />
-    <Compile Include="PowerCommodityFastTrackedEvent.cs" />
-    <Compile Include="PowerCommodityObtainedEvent.cs" />
-    <Compile Include="SafeEvent.cs" />
-    <Compile Include="ShipAFMURepairedEvent.cs" />
-    <Compile Include="ShipArrivedEvent.cs" />
-    <Compile Include="ShipCargoScoopEvent.cs" />
-    <Compile Include="ShipDeliveredEvent.cs" />
-    <Compile Include="ShipFsdEvent.cs" />
-    <Compile Include="ShipHardpointsEvent.cs" />
-    <Compile Include="ShipLandingGearEvent.cs" />
-    <Compile Include="ShipLightsEvent.cs" />
-    <Compile Include="ShipLoadoutEvent.cs" />
-    <Compile Include="ShipLockerEvent.cs" />
-    <Compile Include="CancelTransportEvent.cs" />
-    <Compile Include="BookTransportEvent.cs" />
-    <Compile Include="BackpackEvent.cs" />
-    <Compile Include="AsteroidProspectedEvent.cs" />
-    <Compile Include="AsteroidCrackedEvent.cs" />
-    <Compile Include="BookmarkDetailsEvent.cs" />
-    <Compile Include="CarrierJumpCancelledEvent.cs" />
-    <Compile Include="CarrierJumpRequestEvent.cs" />
-    <Compile Include="CarrierPadsLockedEvent.cs" />
-    <Compile Include="CarrierJumpEngagedEvent.cs" />
-    <Compile Include="CarrierCooldownEvent.cs" />
-    <Compile Include="CommanderPromotionEvent.cs" />
-    <Compile Include="DropshipDeploymentEvent.cs" />
-    <Compile Include="RespawnedEvent.cs" />
-    <Compile Include="ShipPurchasedEvent.cs" />
-    <Compile Include="ShipRebootedEvent.cs" />
-    <Compile Include="ShipRefuelledEvent.cs" />
-    <Compile Include="ShipRenamedEvent.cs" />
-    <Compile Include="ShipRepairDroneEvent.cs" />
-    <Compile Include="ShipRepairedEvent.cs" />
-    <Compile Include="ShipRestockedEvent.cs" />
-    <Compile Include="ShipShutdownEvent.cs" />
-    <Compile Include="ShipSoldEvent.cs" />
-    <Compile Include="ShipSoldOnRebuyEvent.cs" />
-    <Compile Include="ShipSwappedEvent.cs" />
-    <Compile Include="ShipTransferInitiatedEvent.cs" />
-    <Compile Include="SilentRunningEvent.cs" />
-    <Compile Include="SRVTurretDeployableEvent.cs" />
-    <Compile Include="SrvTurretEvent.cs" />
-    <Compile Include="StoredModulesEvent.cs" />
-    <Compile Include="StoredShipsEvent.cs" />
-    <Compile Include="SuitPurchasedEvent.cs" />
-    <Compile Include="MicroResourcesPurchasedEvent.cs" />
-    <Compile Include="DisembarkEvent.cs" />
-    <Compile Include="EmbarkEvent.cs" />
-    <Compile Include="CommanderReputationEvent.cs" />
-    <Compile Include="CarrierJumpedEvent.cs" />
-    <Compile Include="PowerplayEvent.cs" />
-    <Compile Include="CommanderLoadingEvent.cs" />
-    <Compile Include="RingMappedEvent.cs" />
-    <Compile Include="BodyMappedEvent.cs" />
-    <Compile Include="CargoDepotEvent.cs" />
-    <Compile Include="CargoWingUpdateEvent.cs" />
-    <Compile Include="CrewPaidWageEvent.cs" />
-    <Compile Include="CrewPromotionEvent.cs" />
-    <Compile Include="EngineerContributionEvent.cs" />
-    <Compile Include="FSDTargetEvent.cs" />
-    <Compile Include="MarketEvent.cs" />
-    <Compile Include="OutfittingEvent.cs" />
-    <Compile Include="RouteDetailsEvent.cs" />
-    <Compile Include="ShipyardEvent.cs" />
-    <Compile Include="RingHotspotsEvent.cs" />
-    <Compile Include="SurfaceSignalsEvent.cs" />
-    <Compile Include="SignalDetectedEvent.cs" />
-    <Compile Include="FSSDiscoveryScanEvent.cs" />
-    <Compile Include="SquadronRankEvent.cs" />
-    <Compile Include="SquadronStartupEvent.cs" />
-    <Compile Include="SquadronStatusEvent.cs" />
-    <Compile Include="StatisticsEvent.cs" />
-    <Compile Include="SystemFactionChangedEvent.cs" />
-    <Compile Include="SystemStateChangedEvent.cs" />
-    <Compile Include="UnhandledEvent.cs" />
-    <Compile Include="FighterRebuiltEvent.cs" />
-    <Compile Include="JetConeDamageEvent.cs" />
-    <Compile Include="MaterialTradedEvent.cs" />
-    <Compile Include="ShipTargetedEvent.cs" />
-    <Compile Include="ShutdownEvent.cs" />
-    <Compile Include="TechnologyBrokerEvent.cs" />
-    <Compile Include="VAInitialized.cs" />
-    <Compile Include="NearSurfaceEvent.cs" />
-    <Compile Include="UnderAttackEvent.cs" />
-    <Compile Include="VehicleDestroyedEvent.cs" />
-    <Compile Include="DatalinkMessageEvent.cs" />
-    <Compile Include="DataVoucherAwardedEvent.cs" />
-    <Compile Include="JetConeBoostEvent.cs" />
-    <Compile Include="NavBeaconScanEvent.cs" />
-    <Compile Include="CrewMemberRoleChangedEvent.cs" />
-    <Compile Include="CrewMemberLaunchedEvent.cs" />
-    <Compile Include="DataScannedEvent.cs" />
-    <Compile Include="FileHeaderEvent.cs" />
-    <Compile Include="CrewMemberRemovedEvent.cs" />
-    <Compile Include="CrewMemberLeftEvent.cs" />
-    <Compile Include="CrewMemberJoinedEvent.cs" />
-    <Compile Include="FriendsEvent.cs" />
-    <Compile Include="CrewRoleChanged.cs" />
-    <Compile Include="CrewLeftEvent.cs" />
-    <Compile Include="CrewJoinedEvent.cs" />
-    <Compile Include="DataVoucherRedeemedEvent.cs" />
-    <Compile Include="MaterialInventoryEvent.cs" />
-    <Compile Include="FSDEngagedEvent.cs" />
-    <Compile Include="TradeVoucherRedeemedEvent.cs" />
-    <Compile Include="SettlementApproachedEvent.cs" />
-    <Compile Include="EnteredCQCEvent.cs" />
-    <Compile Include="NPCCargoScanCommencedEvent.cs" />
-    <Compile Include="NPCAttackCommencedEvent.cs" />
-    <Compile Include="NPCInterdictionCommencedEvent.cs" />
-    <Compile Include="PowerVoucherReceivedEvent.cs" />
-    <Compile Include="StationNoFireZoneExitedEvent.cs" />
-    <Compile Include="StationNoFireZoneEnteredEvent.cs" />
-    <Compile Include="PowerSalaryClaimedEvent.cs" />
-    <Compile Include="PowerPreparationVoteCastEvent.cs" />
-    <Compile Include="PowerDefectedEvent.cs" />
-    <Compile Include="PowerLeftEvent.cs" />
-    <Compile Include="PowerJoinedEvent.cs" />
-    <Compile Include="MarketInformationUpdatedEvent.cs" />
-    <Compile Include="EngineerProgressedEvent.cs" />
-    <Compile Include="ModificationCraftedEvent.cs" />
-    <Compile Include="MaterialDonatedEvent.cs" />
-    <Compile Include="SynthesisedEvent.cs" />
-    <Compile Include="SearchAndRescueEvent.cs" />
-    <Compile Include="JumpingEvent.cs" />
-    <Compile Include="ExplorationDataSoldEvent.cs" />
-    <Compile Include="ExplorationDataPurchasedEvent.cs" />
-    <Compile Include="MaterialDiscoveredEvent.cs" />
-    <Compile Include="MaterialDiscardedEvent.cs" />
-    <Compile Include="MaterialCollectedEvent.cs" />
-    <Compile Include="KilledEvent.cs" />
-    <Compile Include="ShipInterdictionEvent.cs" />
-    <Compile Include="ShipInterdictedEvent.cs" />
-    <Compile Include="CommanderRanksEvent.cs" />
-    <Compile Include="CommanderProgressEvent.cs" />
-    <Compile Include="CommanderStartedEvent.cs" />
-    <Compile Include="ControllingShipEvent.cs" />
-    <Compile Include="CrewAssignedEvent.cs" />
-    <Compile Include="CrewFiredEvent.cs" />
-    <Compile Include="CrewHiredEvent.cs" />
-    <Compile Include="DiedEvent.cs" />
-    <Compile Include="ClearSaveEvent.cs" />
-    <Compile Include="TradeDataPurchasedEvent.cs" />
-    <Compile Include="HullDamageEvent.cs" />
-    <Compile Include="EnteredSignalSourceEvent.cs" />
-    <Compile Include="MessageSentEvent.cs" />
-    <Compile Include="MessageReceivedEvent.cs" />
-    <Compile Include="ControllingFighterEvent.cs" />
-    <Compile Include="SelfDestructEvent.cs" />
-    <Compile Include="SRVLaunchedEvent.cs" />
-    <Compile Include="SRVDockedEvent.cs" />
-    <Compile Include="FighterDockedEvent.cs" />
-    <Compile Include="FighterLaunchedEvent.cs" />
-    <Compile Include="DockingTimedOutEvent.cs" />
-    <Compile Include="DockingDeniedEvent.cs" />
-    <Compile Include="DockingGrantedEvent.cs" />
-    <Compile Include="DockingCancelledEvent.cs" />
-    <Compile Include="DockingRequestedEvent.cs" />
-    <Compile Include="Events.cs" />
-    <Compile Include="HeatDamageEvent.cs" />
-    <Compile Include="HeatWarningEvent.cs" />
-    <Compile Include="LocationEvent.cs" />
-    <Compile Include="ShieldsDownEvent.cs" />
-    <Compile Include="ShieldsUpEvent.cs" />
-    <Compile Include="BodyScannedEvent.cs" />
-    <Compile Include="StarScannedEvent.cs" />
-    <Compile Include="CockpitBreachedEvent.cs" />
-    <Compile Include="ScreenshotEvent.cs" />
-    <Compile Include="MusicEvent.cs" />
-    <Compile Include="EnteredNormalSpaceEvent.cs" />
-    <Compile Include="EnteredSupercruiseEvent.cs" />
-    <Compile Include="CommanderContinuedEvent.cs" />
-    <Compile Include="LiftoffEvent.cs" />
-    <Compile Include="TouchdownEvent.cs" />
-    <Compile Include="UndockedEvent.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="DockedEvent.cs" />
-    <Compile Include="JumpedEvent.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemScanComplete.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EddiDataDefinitions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2022.3.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable">
       <Version>7.0.0</Version>
@@ -331,12 +48,4 @@
       <Version>4.3.1</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
