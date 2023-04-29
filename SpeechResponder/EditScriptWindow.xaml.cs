@@ -202,21 +202,52 @@ namespace EddiSpeechResponder
             {
                 // Select the specific data we need to obtain
                 var lookupItem = string.Empty;
-                if ( sender is TextArea textArea )
+                if ( !( sender is TextArea textArea ) ) { return; }
+
+                var line = textArea.Document.GetLineByOffset( textArea.Caret.Offset );
+                var lineTxt = textArea.Document.GetText( line.Offset, textArea.Caret.Offset - line.Offset );
+                var lineMatch = Regex.Match( lineTxt, @"(?<={)[^:}]*?(\w+(?>\[\d\])?\.)+$" );
+                if ( lineMatch.Success )
                 {
-                    var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
-                    var lineTxt = textArea.Document.GetText(line.Offset, textArea.Caret.Offset - line.Offset);
-                    var regexMatch = Regex.Match(lineTxt, @"(?<={)[^:}]*?(\w+(?>\[\d\])?\.)+$");
-                    if ( regexMatch.Success )
+                    lookupItem = lineMatch.Groups[ 0 ].Value.TrimEnd( '.' );
+                    if ( string.IsNullOrEmpty( lookupItem ) ) { return; }
+
+                    // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
+                    lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
+                }
+
+                // Split our lookup item into its constituent parts / objects
+                var lookupKeys = lookupItem.Split( '.' );
+                if ( !lookupKeys.Any() ) { return; }
+
+                // Resolve any aliases / "set" commands and account for them in our lookup keys
+                var priorText = textArea.Document.GetText( 0, textArea.Caret.Offset );
+
+                // Resolve any simple text aliases (e.g. {set a to b}
+                var simpleAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<value>\w*)}" );
+                foreach ( var obj in simpleAliases )
+                {
+                    if ( obj is Match match )
                     {
-                        lookupItem = regexMatch.Groups[ 0 ].Value.TrimEnd( '.' );
+                        if ( lookupKeys[0] == match.Groups["key"].Value )
+                        {
+                            lookupKeys[0] = match.Groups["value"].Value;
+                        }
                     }
                 }
-                if ( string.IsNullOrEmpty( lookupItem ) ) { return; }
 
-                // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
-                lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
-                var lookupKeys = lookupItem.Split( '.' );
+                // Resolve any function aliases (e.g. {set a to b()}
+                var functionAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<value>\w*\(.*\))}" );
+                foreach ( var obj in functionAliases )
+                {
+                    if ( obj is Match match )
+                    {
+                        if ( lookupKeys[ 0 ] == match.Groups[ "key" ].Value )
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                }
 
                 var textCompletionItems = new List<TextCompletionItem>();
 
@@ -226,7 +257,7 @@ namespace EddiSpeechResponder
                 {
                     filteredMetaVars = metaVars
                         .Where( v => v.keysPath.Count == ( lookupKeys.Length + 1 ) )
-                        .Where( v => string.Join( ".", v.keysPath ).StartsWith( lookupItem ) )
+                        .Where( v => string.Join( ".", v.keysPath ).StartsWith( lookupKeys[0] ) )
                         .ToList();
                 }
 
