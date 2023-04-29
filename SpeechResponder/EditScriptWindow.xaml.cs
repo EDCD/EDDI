@@ -220,13 +220,13 @@ namespace EddiSpeechResponder
             }
         }
 
-        private static string GetTextCompletionLookupItem(string lineTxt)
+        public static string GetTextCompletionLookupItem(string lineTxt)
         {
             var lookupItem = string.Empty;
-            var lineMatch = Regex.Match(lineTxt, @"(?<={)[^:}]*?(\w+(?>\[\d\])?\.)+$");
+            var lineMatch = Regex.Match(lineTxt, @"(?<={)[^:}]*?(\S+(?>\[\d\])?\.)+$");
             if (lineMatch.Success)
             {
-                lookupItem = lineMatch.Groups[0].Value.TrimEnd('.');
+                lookupItem = lineMatch.Groups[lineMatch.Groups.Count - 1].Value.TrimEnd('.');
                 if (!string.IsNullOrEmpty(lookupItem))
                 {
                     // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
@@ -266,10 +266,7 @@ namespace EddiSpeechResponder
 
             var filteredMetaVars = new List<MetaVariable>();
 
-            // Resolve any function aliases (e.g. {set a to function()}.
-            var functionAliases = Regex.Matches(priorText, @"{set (?<key>\w*) to (?<function>\w*(?=\(.*\).*}))");
-
-            List<MetaVariable> FilterMetaVars(List<MetaVariable> metaVariables)
+            List<MetaVariable> FilterMetaVars ( List<MetaVariable> metaVariables )
             {
                 // Remove any nested keys or keys that don't match our lookup value
                 var filteredMetaVariables = metaVariables
@@ -279,9 +276,9 @@ namespace EddiSpeechResponder
 
                 // Remove any redundant localized names
                 var localizedNameVar = filteredMetaVars.FirstOrDefault( v => v.keysPath.Last() == "localizedName" );
-                if ( filteredMetaVars.Any( v => localizedNameVar != null && 
-                                                           v.keysPath.Last() == "name" && 
-                                                           v.value == localizedNameVar.value ) )
+                if ( filteredMetaVars.Any( v => localizedNameVar != null &&
+                                                v.keysPath.Last() == "name" &&
+                                                v.value == localizedNameVar.value ) )
                 {
                     filteredMetaVars.Remove( localizedNameVar );
                 }
@@ -289,27 +286,53 @@ namespace EddiSpeechResponder
                 return filteredMetaVariables;
             }
 
-            foreach (var obj in functionAliases)
+            // Resolve any direct function invocations (e.g. `{function(x).`)
+            if ( !filteredMetaVars.Any() )
             {
-                if (obj is Match match)
+                if ( lookupKeys[0].Contains("(") )
                 {
-                    if (lookupKeys[0] == match.Groups["key"].Value)
+                    var functionKey = Regex.Replace( lookupKeys[ 0 ], @"(?=\().*", "" );
+                    // If a match is found then we won't need to search our metavariables for a match.
+                    var customFunction = customFunctions.FirstOrDefault( f => f.name == functionKey );
+                    if ( customFunction != null )
                     {
-                        // If a match is found then we won't need to search our metavariables for a match.
-                        var customFunction = customFunctions.FirstOrDefault(f => f.name == match.Groups["function"].Value);
-                        if (customFunction != null)
+                        var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType ).Results;
+                        unfilteredMetaVars.ForEach( mV =>
+                            mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
+                        filteredMetaVars = FilterMetaVars( unfilteredMetaVars );
+                    }
+                }
+            }
+            
+            // Resolve any function aliases (e.g. `{set a to function()} {a.`).
+            if ( !filteredMetaVars.Any() )
+            {
+                var functionAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<function>\w*(?=\(.*\).*}))" );
+
+                foreach ( var obj in functionAliases )
+                {
+                    if ( obj is Match match )
+                    {
+                        if ( lookupKeys[ 0 ] == match.Groups[ "key" ].Value )
                         {
-                            var unfilteredMetaVars = new MetaVariables(customFunction.ReturnType).Results;
-                            unfilteredMetaVars.ForEach(mV => mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
-                            filteredMetaVars = FilterMetaVars(unfilteredMetaVars);
+                            // If a match is found then we won't need to search our metavariables for a match.
+                            var customFunction =
+                                customFunctions.FirstOrDefault( f => f.name == match.Groups[ "function" ].Value );
+                            if ( customFunction != null )
+                            {
+                                var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType ).Results;
+                                unfilteredMetaVars.ForEach( mV =>
+                                    mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
+                                filteredMetaVars = FilterMetaVars( unfilteredMetaVars );
+                            }
                         }
                     }
                 }
             }
 
+            // Search our compiled metavariables list for a matching key.
             if ( !filteredMetaVars.Any() )
             {
-                // Search our metavariables for a matching key.
                 lock ( metaVarLock )
                 {
                     filteredMetaVars = FilterMetaVars(metaVars);

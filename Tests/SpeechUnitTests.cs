@@ -218,17 +218,19 @@ namespace UnitTests
         [TestMethod]
         public void TestPathingString4()
         {
-            string pathingString = @";;;;;;Seven;;;";
-            new List<string>() {
+            var pathingString = @";;;;;;Seven;;;";
+            var pathingOptions = new List<string>() {
                 ""
                 , "Seven"
             };
 
             int sevenCount = 0;
-            for (int i = 0; i < 10000; i++)
+            var pathingResults = new HashSet<string>();
+            for ( int i = 0; i < 10000; i++)
             {
-                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
-                if (pathedString == "Seven")
+                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                pathingResults.Add( pathedString );
+                if ( pathedString == "Seven")
                 {
                     sevenCount++;
                 }
@@ -236,6 +238,9 @@ namespace UnitTests
 
             Assert.IsTrue(sevenCount > 750);
             Assert.IsTrue(sevenCount < 1500);
+
+            var expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            Assert.IsTrue( pathingResults.SetEquals( expectedHashSet ) );
         }
 
         [TestMethod]
@@ -381,6 +386,17 @@ namespace UnitTests
         public void TestSpeechServiceTrimming(string input, string output)
         {
             Assert.AreEqual(output, SpeechFormatter.TrimSpeech(input));
+        }
+
+        [DataTestMethod]
+        [DataRow( "{body.", "body" ) ]
+        [DataRow( "{set test to body.", "body" ) ]
+        [DataRow( "{set test to body.materials[0].", @"body.materials.<index\>" ) ]
+        [DataRow( "{set test to body.materials[0].Category.", @"body.materials.<index\>.Category" ) ]
+        [DataRow( "{StationDetails().", "StationDetails()" )]
+        public void TestSpeechResponderTextCompletionLookupItem ( string lineTxt, string result )
+        {
+            Assert.AreEqual(result, EditScriptWindow.GetTextCompletionLookupItem(lineTxt));
         }
     }
 }
