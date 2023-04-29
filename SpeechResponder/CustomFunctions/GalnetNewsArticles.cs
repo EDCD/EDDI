@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiGalnetMonitor;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -14,6 +15,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "GalnetNewsArticles";
         public FunctionCategory Category => FunctionCategory.Galnet;
         public string description => Properties.CustomFunctions_Untranslated.GalnetNewsArticles;
+        public Type ReturnType => typeof( List<News> );
         public NativeFunction function => new NativeFunction((values) =>
         {
             List<News> results = null;

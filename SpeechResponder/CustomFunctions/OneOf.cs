@@ -2,6 +2,7 @@
 using Cottle.Stores;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -11,6 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "OneOf";
         public FunctionCategory Category => FunctionCategory.Dynamic;
         public string description => Properties.CustomFunctions_Untranslated.OneOf;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             return resolver?.resolveFromValue(values[resolver.random.Next(values.Count)].AsString, store, false);

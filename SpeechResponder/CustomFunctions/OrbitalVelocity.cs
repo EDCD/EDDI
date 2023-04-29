@@ -5,6 +5,7 @@ using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using EddiStatusService;
 using JetBrains.Annotations;
+using System;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -15,6 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "OrbitalVelocity";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.OrbitalVelocity;
+        public Type ReturnType => typeof( decimal? );
         public NativeFunction function => new NativeFunction((values) =>
         {
             Body body;

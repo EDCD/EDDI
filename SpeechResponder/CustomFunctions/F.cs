@@ -2,6 +2,7 @@
 using Cottle.Stores;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -11,6 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "F";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.F;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             return resolver.resolveFromName(values[0].AsString, store, false)?.Trim();

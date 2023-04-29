@@ -2,6 +2,7 @@
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -11,6 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "P";
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.P;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             string val = values[0].AsString;

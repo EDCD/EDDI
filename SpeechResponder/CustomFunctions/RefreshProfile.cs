@@ -2,6 +2,7 @@
 using EddiCore;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -12,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         // This is a developer tool - FDev have asked us not to abuse their server with too many requests and we respect that request.
         public FunctionCategory Category => FunctionCategory.Hidden;
         public string description => Properties.CustomFunctions_Untranslated.RefreshProfile;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             bool stationRefresh = (values.Count != 0 && values[0].AsBoolean);

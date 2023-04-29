@@ -3,6 +3,7 @@ using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -12,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "EmpireRatingDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.EmpireRatingDetails;
+        public Type ReturnType => typeof( EmpireRating );
         public NativeFunction function => new NativeFunction((values) =>
         {
             var result = EmpireRating.FromName(values[0].AsString) ?? 

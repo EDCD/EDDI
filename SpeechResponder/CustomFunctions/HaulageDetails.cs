@@ -1,8 +1,11 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
 using EddiConfigService;
+using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -13,6 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "HaulageDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.HaulageDetails;
+        public Type ReturnType => typeof( List<Haulage> );
         public NativeFunction function => new NativeFunction((values) =>
         {
             var cargo = ConfigService.Instance.cargoMonitorConfiguration?.cargo;

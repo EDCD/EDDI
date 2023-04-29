@@ -5,6 +5,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -14,6 +15,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "BodyDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.BodyDetails;
+        public Type ReturnType => typeof( Body );
         public NativeFunction function => new NativeFunction((values) =>
         {
             StarSystem system;

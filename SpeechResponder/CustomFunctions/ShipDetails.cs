@@ -3,6 +3,7 @@ using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using System.Text.RegularExpressions;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -13,6 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "ShipDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.ShipDetails;
+        public Type ReturnType => typeof( Ship );
         public NativeFunction function => new NativeFunction((values) =>
         {
             // The inputs to this function might include phonetic SSML tags

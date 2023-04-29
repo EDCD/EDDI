@@ -4,6 +4,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using System.Linq;
 using Utilities;
 
@@ -15,7 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "ShipName";
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.ShipName;
-
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             int? localId = (values.Count == 0 ? (int?) null : (int) values[0].AsNumber);

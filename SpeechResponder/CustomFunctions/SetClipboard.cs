@@ -1,6 +1,7 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using System.Threading;
 using System.Windows;
 
@@ -12,7 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "SetClipboard";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.SetClipboard;
-
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             var text = values[0].AsString;

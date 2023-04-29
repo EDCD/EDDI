@@ -6,6 +6,7 @@ using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,6 +20,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "ShipCallsign";
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.ShipCallsign;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             // The game provides three options for callsigns used by in-game ATC:

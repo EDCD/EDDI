@@ -1,6 +1,7 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "List";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.List;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             string output = string.Empty;

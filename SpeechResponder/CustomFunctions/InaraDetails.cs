@@ -1,7 +1,9 @@
 ﻿using Cottle.Functions;
 using Cottle.Values;
+using EddiInaraService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -11,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "InaraDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.InaraDetails;
+        public Type ReturnType => typeof( InaraCmdr );
         public NativeFunction function => new NativeFunction((values) =>
         {
             if (values[0].AsString is string commanderName)

@@ -3,6 +3,7 @@ using Cottle.Stores;
 using EddiCore;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -12,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "SetState";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.SetState;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             string varName = values[0].AsString.ToLowerInvariant().Replace(" ", "_");

@@ -13,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "Voice";
         public FunctionCategory Category => FunctionCategory.Voice;
         public string description => Properties.CustomFunctions_Untranslated.Voice;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString ?? string.Empty;

@@ -3,6 +3,7 @@ using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -12,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "EngineerDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.EngineerDetails;
+        public Type ReturnType => typeof( Engineer );
         public NativeFunction function => new NativeFunction((values) =>
         {
             Engineer result = Engineer.FromName(values[0].AsString) ?? Engineer.FromSystemName(values[0].AsString);

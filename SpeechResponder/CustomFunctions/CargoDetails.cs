@@ -4,6 +4,7 @@ using EddiConfigService;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -14,6 +15,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "CargoDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.CargoDetails;
+        public Type ReturnType => typeof( Cargo );
         public NativeFunction function => new NativeFunction((values) =>
         {
             var cargoInventory = ConfigService.Instance.cargoMonitorConfiguration?.cargo;

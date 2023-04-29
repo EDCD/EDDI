@@ -16,6 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "RouteDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.RouteDetails;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             try

@@ -4,6 +4,7 @@ using Cottle.Values;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -13,6 +14,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "TrafficDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.TrafficDetails;
+        public Type ReturnType => typeof( Traffic );
         public NativeFunction function => new NativeFunction((values) =>
         {
             Traffic result = null;

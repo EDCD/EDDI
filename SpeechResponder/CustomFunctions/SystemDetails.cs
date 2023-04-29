@@ -16,6 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "SystemDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.SystemDetails;
+        public Type ReturnType => typeof( StarSystem );
         public NativeFunction function => new NativeFunction((values) =>
         {
             try

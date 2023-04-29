@@ -5,6 +5,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -15,6 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "CommodityMarketDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.CommodityMarketDetails;
+        public Type ReturnType => typeof( CommodityMarketQuote );
         public NativeFunction function => new NativeFunction((values) =>
         {
             CommodityMarketQuote result = null;

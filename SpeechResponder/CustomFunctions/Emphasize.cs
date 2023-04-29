@@ -1,6 +1,7 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -10,6 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "Emphasize";
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.Emphasize;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             // We use prosody rather than emphasis so that we can tune the output.

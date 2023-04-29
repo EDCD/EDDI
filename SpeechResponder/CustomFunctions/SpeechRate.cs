@@ -1,6 +1,7 @@
 ﻿using Cottle.Functions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -10,6 +11,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "SpeechRate";
         public FunctionCategory Category => FunctionCategory.Tempo;
         public string description => Properties.CustomFunctions_Untranslated.SpeechRate;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             string text = values[0].AsString;

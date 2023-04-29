@@ -2,6 +2,7 @@
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
+using System;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -12,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "ICAO";
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.ICAO;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             // Turn a string in to an ICAO definition

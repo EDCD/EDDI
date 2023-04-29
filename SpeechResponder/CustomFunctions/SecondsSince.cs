@@ -13,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "SecondsSince";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.SecondsSince;
+        public Type ReturnType => typeof( long? );
         public NativeFunction function => new NativeFunction((values) =>
         {
             long? date = (long?)values[0].AsNumber;

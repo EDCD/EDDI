@@ -12,7 +12,8 @@ namespace EddiSpeechResponder.CustomFunctions
     {
         public string name => "BlueprintDetails";
         public FunctionCategory Category => FunctionCategory.Details;
-        public string description => Properties.CustomFunctions_Untranslated.BlueprintDetails; 
+        public string description => Properties.CustomFunctions_Untranslated.BlueprintDetails;
+        public Type ReturnType => typeof(Blueprint);
         public NativeFunction function => new NativeFunction((values) =>
         {
             string blueprintName = values[0].AsString;

@@ -2,6 +2,7 @@
 using Cottle.Values;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
+using System;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -12,7 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "VoiceDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.VoiceDetails;
-
+        public Type ReturnType => typeof( VoiceDetails );
         public NativeFunction function => new NativeFunction((values) =>
         {
             if (values.Count == 0)

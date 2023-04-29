@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiGalnetMonitor;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -12,6 +13,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "GalnetNewsMarkRead";
         public FunctionCategory Category => FunctionCategory.Galnet;
         public string description => Properties.CustomFunctions_Untranslated.GalnetNewsMarkRead;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);

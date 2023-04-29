@@ -5,6 +5,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -15,6 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "Distance";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.Distance;
+        public Type ReturnType => typeof( decimal? );
         public NativeFunction function => new NativeFunction((values) =>
         {
             bool numVal = values[0].Type == Cottle.ValueContent.Number;

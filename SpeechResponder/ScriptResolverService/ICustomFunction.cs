@@ -1,5 +1,6 @@
 ﻿using Cottle.Functions;
 using Cottle.Stores;
+using System;
 
 namespace EddiSpeechResponder.Service
 {
@@ -8,6 +9,7 @@ namespace EddiSpeechResponder.Service
         string name { get; }
         FunctionCategory Category { get; }
         string description { get; }
+        Type ReturnType { get; }
         NativeFunction function { get; }
     }
 

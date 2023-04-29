@@ -1,6 +1,7 @@
 ﻿using Cottle;
 using Cottle.Builtins;
 using Cottle.Documents;
+using Cottle.Exceptions;
 using Cottle.Settings;
 using Cottle.Stores;
 using Cottle.Values;
@@ -118,7 +119,7 @@ namespace EddiSpeechResponder.Service
 
                 return result;
             }
-            catch (Cottle.Exceptions.ParseException e)
+            catch (ParseException e)
             {
                 // Report the failing the script name, if it is available
                 string scriptName;
@@ -166,10 +167,10 @@ namespace EddiSpeechResponder.Service
                 ["destinationdistance"] = new KeyValuePair<Type, object>(typeof(decimal), EDDI.Instance.DestinationDistanceLy),
                 ["searchdistance"] = new KeyValuePair<Type, object>(typeof(decimal), NavigationService.Instance.SearchDistanceLy),
                 ["environment"] = new KeyValuePair<Type, object>(typeof(string), EDDI.Instance.Environment),
-                ["horizons"] = new KeyValuePair < Type, object >(typeof(bool), EDDI.Instance.inHorizons),
+                ["horizons"] = new KeyValuePair<Type, object>(typeof(bool), EDDI.Instance.inHorizons),
                 ["odyssey"] = new KeyValuePair<Type, object>(typeof(bool), EDDI.Instance.inOdyssey),
-                ["va_active"] = new KeyValuePair < Type, object >(typeof(bool), App.FromVA),
-                ["vehicle"] = new KeyValuePair < Type, object >(typeof(string), EDDI.Instance.Vehicle),
+                ["va_active"] = new KeyValuePair<Type, object>(typeof(bool), App.FromVA),
+                ["vehicle"] = new KeyValuePair<Type, object>(typeof(string), EDDI.Instance.Vehicle),
                 ["icao_active"] = new KeyValuePair<Type, object>(typeof(bool), SpeechService.Instance.Configuration.EnableIcao),
                 ["ipa_active"] = new KeyValuePair<Type, object>(typeof(bool), !SpeechService.Instance.Configuration.DisableIpa),
 
@@ -196,7 +197,7 @@ namespace EddiSpeechResponder.Service
 
             if ( EDDI.Instance.State != null )
             {
-                dict[ "state" ] = new KeyValuePair<Type, object>( typeof( IDictionary<string, object> ), EDDI.Instance.State);
+                dict[ "state" ] = new KeyValuePair<Type, object>( typeof( IDictionary<string, object>), EDDI.Instance.State);
                 Logging.Debug( "State is: ", EDDI.Instance.State );
             }
 
@@ -264,14 +265,14 @@ namespace EddiSpeechResponder.Service
             return store;
         }
 
-        public static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        public static Dictionary<Value, Value> buildState()
         {
             if (EDDI.Instance.State == null)
             {
                 return null;
             }
 
-            var state = new Dictionary<Cottle.Value, Cottle.Value>();
+            var state = new Dictionary<Value, Value>();
             foreach (string key in EDDI.Instance.State.Keys)
             {
                 object value = EDDI.Instance.State[key];
@@ -299,6 +300,29 @@ namespace EddiSpeechResponder.Service
                 }
             }
             return state;
+        }
+
+        internal List<ICustomFunction> GetCustomFunctions ()
+        {
+            var functionsList = new List<ICustomFunction>();
+            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
+            if ( assy != null )
+            {
+                foreach ( var type in assy.GetTypes()
+                             .Where( t => t.IsClass && t.GetInterface( nameof( ICustomFunction ) ) != null ) )
+                {
+                    var function = (ICustomFunction)( type.GetConstructor( Type.EmptyTypes ) != null
+                        ? Activator.CreateInstance( type )
+                        : Activator.CreateInstance( type, this, buildStore() ) );
+
+                    if ( function != null )
+                    {
+                        functionsList.Add( function );
+                    }
+                }
+            }
+
+            return functionsList;
         }
     }
 }

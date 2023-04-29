@@ -2,6 +2,7 @@
 using Cottle.Stores;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
+using System;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -11,6 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "Transmit";
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.Transmit;
+        public Type ReturnType => typeof( string );
         public NativeFunction function => new NativeFunction((values) =>
         {
             if (values.Count == 1)

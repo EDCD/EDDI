@@ -43,13 +43,15 @@ namespace EddiSpeechResponder
         private FoldingMargin foldingMargin;
 
         private readonly List<MetaVariable> metaVars = new List<MetaVariable>();
+        private readonly List<ICustomFunction> customFunctions;
         private static readonly object metaVarLock = new object();
 
-        public EditScriptWindow ( Script script, Dictionary<string, Script> scripts, [NotNull][ItemNotNull] IEnumerable<MetaVariable> metaVars, [NotNull] CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript )
+        public EditScriptWindow ( ScriptResolver scriptResolver, Script script, Dictionary<string, Script> scripts, [NotNull][ItemNotNull] IEnumerable<MetaVariable> metaVars, [NotNull] CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript )
         {
             InitializeComponent();
             DataContext = this;
 
+            this.customFunctions = scriptResolver.GetCustomFunctions();
             this.isNewOrRecoveredScript = isNewOrRecoveredScript;
             _scripts = scripts;
             this.script = script;
@@ -200,102 +202,15 @@ namespace EddiSpeechResponder
             // open code completion after the user has pressed dot:
             if ( e.Text == "." )
             {
-                // Select the specific data we need to obtain
-                var lookupItem = string.Empty;
                 if ( !( sender is TextArea textArea ) ) { return; }
 
-                var line = textArea.Document.GetLineByOffset( textArea.Caret.Offset );
-                var lineTxt = textArea.Document.GetText( line.Offset, textArea.Caret.Offset - line.Offset );
-                var lineMatch = Regex.Match( lineTxt, @"(?<={)[^:}]*?(\w+(?>\[\d\])?\.)+$" );
-                if ( lineMatch.Success )
-                {
-                    lookupItem = lineMatch.Groups[ 0 ].Value.TrimEnd( '.' );
-                    if ( string.IsNullOrEmpty( lookupItem ) ) { return; }
+                // Select the specific data we need to obtain
+                var line = textArea.Document.GetLineByOffset(textArea.Caret.Offset);
+                var lineTxt = textArea.Document.GetText(line.Offset, textArea.Caret.Offset - line.Offset);
+                var lookupItem = GetTextCompletionLookupItem(lineTxt);
+                var priorText = textArea.Document.GetText(0, textArea.Caret.Offset);
+                var textCompletionItems = GetCompletionItems(lookupItem, priorText);
 
-                    // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
-                    lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
-                }
-
-                // Split our lookup item into its constituent parts / objects
-                var lookupKeys = lookupItem.Split( '.' );
-                if ( !lookupKeys.Any() ) { return; }
-
-                // Resolve any aliases / "set" commands and account for them in our lookup keys
-                var priorText = textArea.Document.GetText( 0, textArea.Caret.Offset );
-
-                // Resolve any simple text aliases (e.g. {set a to b}
-                var simpleAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<value>\w*)}" );
-                foreach ( var obj in simpleAliases )
-                {
-                    if ( obj is Match match )
-                    {
-                        if ( lookupKeys[0] == match.Groups["key"].Value )
-                        {
-                            lookupKeys[0] = match.Groups["value"].Value;
-                        }
-                    }
-                }
-
-                // Resolve any function aliases (e.g. {set a to b()}
-                var functionAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<value>\w*\(.*\))}" );
-                foreach ( var obj in functionAliases )
-                {
-                    if ( obj is Match match )
-                    {
-                        if ( lookupKeys[ 0 ] == match.Groups[ "key" ].Value )
-                        {
-                            throw new NotImplementedException();
-                        }
-                    }
-                }
-
-                var textCompletionItems = new List<TextCompletionItem>();
-
-                // Fetch applicable metavariables
-                List<MetaVariable> filteredMetaVars;
-                lock ( metaVarLock )
-                {
-                    filteredMetaVars = metaVars
-                        .Where( v => v.keysPath.Count == ( lookupKeys.Length + 1 ) )
-                        .Where( v => string.Join( ".", v.keysPath ).StartsWith( lookupKeys[0] ) )
-                        .ToList();
-                }
-
-                // Generate textCompletionItems
-                foreach ( var item in filteredMetaVars.OrderBy( v => string.Concat( v.keysPath, '.' ) ) )
-                {
-                    var itemKey = item.keysPath.Last();
-                    if ( textCompletionItems.All( d => d.Text != itemKey ) && 
-                         MetaVariables.indexMarker != itemKey )
-                    {
-                        if ( item.type == typeof( bool ) )
-                        {
-                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof( Cottle.Values.BooleanValue ), item.description ) );
-                        }
-                        else if ( item.type == typeof( int ) || 
-                                  item.type == typeof( double ) || 
-                                  item.type == typeof( float ) || 
-                                  item.type == typeof( long ) || 
-                                  item.type == typeof( ulong ) )
-                        {
-                            // Convert int, doubles, floats, and longs to number values
-                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof(Cottle.Values.NumberValue), item.description ) );
-                        }
-                        else if ( item.type == typeof( string ) )
-                        {
-                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof( Cottle.Values.StringValue ), item.description ) );
-                        }
-                        else if ( item.type == typeof( IList ) )
-                        {
-                            textCompletionItems.Add( new TextCompletionItem( itemKey, typeof( Cottle.Values.MapValue ), item.description ) );
-                        }
-                        else
-                        {
-                            textCompletionItems.Add( new TextCompletionItem( itemKey, item.type, item.description ) );
-                        }
-                    }
-                }
-                
                 // Send the result to the text completion window
                 if ( textCompletionItems.Any() )
                 {
@@ -303,6 +218,133 @@ namespace EddiSpeechResponder
                     completionWindow.Closed += delegate { completionWindow = null; };
                 }
             }
+        }
+
+        private static string GetTextCompletionLookupItem(string lineTxt)
+        {
+            var lookupItem = string.Empty;
+            var lineMatch = Regex.Match(lineTxt, @"(?<={)[^:}]*?(\w+(?>\[\d\])?\.)+$");
+            if (lineMatch.Success)
+            {
+                lookupItem = lineMatch.Groups[0].Value.TrimEnd('.');
+                if (!string.IsNullOrEmpty(lookupItem))
+                {
+                    // Replace any enumeration value for enumerable values (e.g. 'bodies[5]') with a standard index marker
+                    lookupItem = Regex.Replace( lookupItem, @"(?<=\S)+\[\d+\]", $".{MetaVariables.indexMarker}" );
+                }
+            }
+            return lookupItem;
+        }
+
+        private List<TextCompletionItem> GetCompletionItems(string lookupItem, string priorText)
+        {
+            var textCompletionItems = new List<TextCompletionItem>();
+            if ( string.IsNullOrEmpty( lookupItem ) || string.IsNullOrEmpty( priorText ) )
+            {
+                return textCompletionItems;
+            }
+
+            // Split our lookup item into its constituent parts / objects
+            var lookupKeys = lookupItem.Split('.');
+            if (!lookupKeys.Any())
+            {
+                return textCompletionItems;
+            }
+
+            // Resolve any simple text aliases (e.g. {set a to b}).
+            var simpleAliases = Regex.Matches( priorText, @"{set (?<key>\w*) to (?<value>\w*)}" );
+            foreach ( var obj in simpleAliases )
+            {
+                if ( obj is Match match )
+                {
+                    if ( lookupKeys[ 0 ] == match.Groups[ "key" ].Value )
+                    {
+                        lookupKeys[ 0 ] = match.Groups[ "value" ].Value;
+                    }
+                }
+            }
+
+            var filteredMetaVars = new List<MetaVariable>();
+
+            // Resolve any function aliases (e.g. {set a to function()}.
+            var functionAliases = Regex.Matches(priorText, @"{set (?<key>\w*) to (?<function>\w*(?=\(.*\).*}))");
+
+            List<MetaVariable> FilterMetaVars(List<MetaVariable> metaVariables)
+            {
+                return metaVariables
+                    .Where( v => v.keysPath.Count == ( lookupKeys.Length + 1 ) )
+                    .Where( v => string.Join( ".", v.keysPath ).StartsWith( lookupKeys[ 0 ] ) )
+                    .ToList();
+            }
+
+            foreach (var obj in functionAliases)
+            {
+                if (obj is Match match)
+                {
+                    if (lookupKeys[0] == match.Groups["key"].Value)
+                    {
+                        // If a match is found then we won't need to search our metavariables for a match.
+                        var customFunction = customFunctions.FirstOrDefault(f => f.name == match.Groups["function"].Value);
+                        if (customFunction != null)
+                        {
+                            var unfilteredMetaVars = new MetaVariables(customFunction.ReturnType).Results;
+                            unfilteredMetaVars.ForEach(mV => mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
+                            filteredMetaVars = FilterMetaVars(unfilteredMetaVars);
+                        }
+                    }
+                }
+            }
+
+            if ( !filteredMetaVars.Any() )
+            {
+                // Search our metavariables for a matching key.
+                lock ( metaVarLock )
+                {
+                    filteredMetaVars = FilterMetaVars(metaVars);
+                }
+            }
+
+            // Generate textCompletionItems
+            foreach ( var item in filteredMetaVars.OrderBy(v => string.Concat(v.keysPath, '.')))
+            {
+                var itemKey = item.keysPath.Last();
+                if (!string.IsNullOrEmpty(itemKey) &&
+                    textCompletionItems.All(d => d.Text != itemKey) &&
+                    MetaVariables.indexMarker != itemKey)
+                {
+                    if (item.type == typeof(bool))
+                    {
+                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.BooleanValue),
+                            item.description));
+                    }
+                    else if (item.type == typeof(int) ||
+                             item.type == typeof(double) ||
+                             item.type == typeof(float) ||
+                             item.type == typeof(long) ||
+                             item.type == typeof(ulong))
+                    {
+                        // Convert int, doubles, floats, and longs to number values
+                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.NumberValue),
+                            item.description));
+                    }
+                    else if (item.type == typeof(string))
+                    {
+                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.StringValue),
+                            item.description));
+                    }
+                    else if (item.type == typeof(IList))
+                    {
+                        textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.MapValue),
+                            item.description));
+                    }
+                    else
+                    {
+                        textCompletionItems.Add(new TextCompletionItem(itemKey, item.type, item.description));
+                    }
+                }
+            }
+
+            return textCompletionItems;
         }
 
         private void ScriptView_TextArea_TextEntering ( object sender, TextCompositionEventArgs e )

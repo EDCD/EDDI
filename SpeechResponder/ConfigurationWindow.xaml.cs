@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,33 +42,8 @@ namespace EddiSpeechResponder
         private ICollectionView scriptsView;
         private static string filterTxt;
 
-        private static IEnumerable<string> customFunctions { get; set; }
+        private static IEnumerable<string> customFunctionNames { get; set; }
         private static IEnumerable<MetaVariable> standardMetaVariables { get; set; } = new List<MetaVariable>();
-
-        private static IEnumerable<string> GetCustomFunctions (ScriptResolver resolver = null)
-        {
-            if ( resolver == null ) { return new List<string>(); }
-
-            var functionsList = new List<string>();
-            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
-            if ( assy != null )
-            {
-                foreach ( var type in assy.GetTypes()
-                             .Where( t => t.IsClass && t.GetInterface( nameof(ICustomFunction) ) != null ) )
-                {
-                    var function = (ICustomFunction)( type.GetConstructor( Type.EmptyTypes ) != null
-                        ? Activator.CreateInstance( type )
-                        : Activator.CreateInstance( type, resolver, resolver.buildStore() ) );
-
-                    if ( function != null )
-                    {
-                        functionsList.Add( function.name );
-                    }
-                }
-            }
-
-            return functionsList;
-        }
 
         private IEnumerable<MetaVariable> GetMetaVariables ( string scriptName = null )
         {
@@ -99,7 +73,7 @@ namespace EddiSpeechResponder
         // we may revise this in future to support custom user color schemes
         private static AvalonEdit.CottleHighlighting GetHighlighting ( IEnumerable<MetaVariable> metaVars )
         {
-            return new AvalonEdit.CottleHighlighting( customFunctions, metaVars
+            return new AvalonEdit.CottleHighlighting( customFunctionNames, metaVars
                 .SelectMany( v => v.keysPath )
                 .Where(v => !string.IsNullOrEmpty(v))
                 .Distinct()
@@ -111,7 +85,7 @@ namespace EddiSpeechResponder
         {
             if (speechResponder is null) { return; }
             this.speechResponder = speechResponder;
-            customFunctions = GetCustomFunctions(speechResponder.ScriptResolver);
+            customFunctionNames = speechResponder.ScriptResolver.GetCustomFunctions().Select(f => f.name);
             Task.Run( GetStandardVariables );
 
             InitializeComponent();
@@ -138,7 +112,7 @@ namespace EddiSpeechResponder
                         MessageBoxOptions.DefaultDesktopOnly);
                     if (messageBoxResult == MessageBoxResult.Yes && speechResponder.CurrentPersonality?.Scripts != null)
                     {
-                        OpenEditScriptWindow(recoveredScript, true);
+                        OpenEditScriptWindow(speechResponder.ScriptResolver, recoveredScript, true);
                     }
                 }
             }), DispatcherPriority.ApplicationIdle);
@@ -244,16 +218,16 @@ namespace EddiSpeechResponder
         private void editScript(object sender, RoutedEventArgs e)
         {
             var script = getScriptFromContext(sender);
-            OpenEditScriptWindow(script);
+            OpenEditScriptWindow( speechResponder.ScriptResolver, script );
         }
 
-        private void OpenEditScriptWindow(Script script, bool isRecoveredScript = false)
+        private void OpenEditScriptWindow(ScriptResolver scriptResolver, Script script, bool isRecoveredScript = false)
         {
             if (speechResponder?.CurrentPersonality?.Scripts is null) { return; }
 
             var metaVars = GetMetaVariables( script.Name ).ToList();
             var highlighting = GetHighlighting( metaVars );
-            editScriptWindow = new EditScriptWindow(script, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, isRecoveredScript);
+            editScriptWindow = new EditScriptWindow(scriptResolver, script, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, isRecoveredScript);
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
@@ -380,7 +354,7 @@ namespace EddiSpeechResponder
             EDDI.Instance.SpeechResponderModalWait = true;
             var metaVars = GetMetaVariables ().ToList ();
             var highlighting = GetHighlighting( metaVars );
-            editScriptWindow = new EditScriptWindow(null, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, true);
+            editScriptWindow = new EditScriptWindow( speechResponder.ScriptResolver, null, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, true);
             if ( editScriptWindow.ShowDialog() == true)
             {
                 var newScript = editScriptWindow.script;
