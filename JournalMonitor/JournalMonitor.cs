@@ -1890,7 +1890,7 @@ namespace EddiJournalMonitor
                                     string target = JsonParsing.getString(data, "JumpType");
                                     string stellarclass = JsonParsing.getString(data, "StarClass");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
                                     events.Add(new FSDEngagedEvent(timestamp, target, system, systemAddress, stellarclass) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }

@@ -20,9 +20,9 @@ namespace EddiEvents
         public string system { get; private set; }
 
         // Not intended to be user facing
-        public ulong systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; } // Only set when the fsd target is hyperspace
 
-        public FSDEngagedEvent(DateTime timestamp, string jumptype, string systemName, ulong systemAddress, string stellarclass) : base(timestamp, NAME)
+        public FSDEngagedEvent(DateTime timestamp, string jumptype, string systemName, ulong? systemAddress, string stellarclass) : base(timestamp, NAME)
         {
             this.target = jumptype;
             this.system = systemName;

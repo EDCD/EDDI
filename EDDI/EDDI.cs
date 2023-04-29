@@ -2376,7 +2376,10 @@ namespace EddiCore
             CurrentStellarBody = null;
 
             // Set the destination system as the current star system
-            updateCurrentSystem(@event.system, @event.systemAddress);
+            if ( @event.systemAddress != null )
+            {
+                updateCurrentSystem( @event.system, (ulong)@event.systemAddress );
+            }
 
             // Save a copy of this event for later reference
             lastEvents[nameof(FSDEngagedEvent)] = @event;;
