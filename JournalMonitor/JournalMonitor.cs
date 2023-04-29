@@ -2097,9 +2097,20 @@ namespace EddiJournalMonitor
                                     bool? fighter = JsonParsing.getOptionalBool(data, "Fighter");
 
                                     string vehicle = EDDI.Instance.Vehicle;
-                                    if (fighter == true && piloted == false)
+                                    if ( piloted == false )
                                     {
-                                        vehicle = Constants.VEHICLE_FIGHTER;
+                                        if ( fighter == true )
+                                        {
+                                            vehicle = Constants.VEHICLE_FIGHTER;
+                                        }
+                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SRV )
+                                        {
+                                            vehicle = Constants.VEHICLE_SHIP;
+                                        }
+                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
+                                        {
+                                            vehicle = Constants.VEHICLE_SRV;
+                                        }
                                     }
 
                                     events.Add(new HullDamagedEvent(timestamp, vehicle, piloted, health) { raw = line, fromLoad = fromLogLoad });

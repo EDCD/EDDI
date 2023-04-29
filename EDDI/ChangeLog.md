@@ -20,6 +20,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Implemented text completion for available variables in the editor window.
       * The Chinese translation of the default personality has been updated (primarily to improve grammar). #2524 Thanks @MemphyKitay!
     * Events
+      * `Hull damaged` fixed a bug with the `vehicle` property where EDDI might be confused as to whether the ship or SRV was being damaged.
       * `Ship FSD` event now includes a new boolean `hyperdrive_charging`.
     * Changes to existing scripts
       * `Bodies to map` updated to add a preference for recommending already mapped bodies and to include terraforming bodies. #2490, #2527
