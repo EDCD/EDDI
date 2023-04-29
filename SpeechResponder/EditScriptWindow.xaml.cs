@@ -271,10 +271,22 @@ namespace EddiSpeechResponder
 
             List<MetaVariable> FilterMetaVars(List<MetaVariable> metaVariables)
             {
-                return metaVariables
+                // Remove any nested keys or keys that don't match our lookup value
+                var filteredMetaVariables = metaVariables
                     .Where( v => v.keysPath.Count == ( lookupKeys.Length + 1 ) )
                     .Where( v => string.Join( ".", v.keysPath ).StartsWith( lookupKeys[ 0 ] ) )
                     .ToList();
+
+                // Remove any redundant localized names
+                var localizedNameVar = filteredMetaVars.FirstOrDefault( v => v.keysPath.Last() == "localizedName" );
+                if ( filteredMetaVars.Any( v => localizedNameVar != null && 
+                                                           v.keysPath.Last() == "name" && 
+                                                           v.value == localizedNameVar.value ) )
+                {
+                    filteredMetaVars.Remove( localizedNameVar );
+                }
+
+                return filteredMetaVariables;
             }
 
             foreach (var obj in functionAliases)
