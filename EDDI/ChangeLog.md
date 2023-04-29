@@ -29,7 +29,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Fsd engaged` (triggered after the FSD is engaged) no longer warns about hazardous or non-scoopable arrival stars.
       * `Ship FSD` (triggered before the FSD is engaged) now warns about nearby hazardous stars or no charted scoopable stars in your arrival system. 
       * `Ship refuelled` revised to prevent adding pauses when there is no other speech.
-      * `Swapout check` updated to fix a bug that was causing false positives.
+      * `Swapout check` updated to fix a bug that was causing false positives and to exclude Guardian modules.
   * VoiceAttack Responder
     * Fixed a bug that prevented current ship variables from being updated properly on a ship change. #2482
     * Fixed a bug that prevented a clean application shut-down from VoiceAttack.
