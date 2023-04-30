@@ -15,7 +15,7 @@
                    Grid.Column="0" 
                    Text="{Binding keyword, RelativeSource={RelativeSource AncestorType=local:TextCompletionControl} }" 
                    TextAlignment="Left" 
-                   Margin="0, 0, 10, 0"
+                   Margin="0, 0, 5, 0"
                    />
         <TextBlock x:Name="typeTextBlock"
                    Grid.Column="1" 
@@ -23,7 +23,7 @@
                    Foreground="DarkGray"
                    TextAlignment="Right"
                    FontStyle="Italic"
-                   Margin="0, 0, 10, 0"
+                   Margin="5, 0, 0, 0"
         />
     </Grid>
 </UserControl>

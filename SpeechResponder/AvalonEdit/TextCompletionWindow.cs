@@ -27,7 +27,7 @@ namespace EddiSpeechResponder.AvalonEdit
                         i.Width = longestControl.CalculatedMinWidth;
                     }
                 );
-                Width = longestControl.CalculatedMinWidth + 40;
+                Width = longestControl.CalculatedMinWidth + 50;
             }
 
             // Add items to the completion list
