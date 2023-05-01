@@ -64,7 +64,7 @@ namespace EddiDataDefinitions
         public ulong? systemAddress { get; set; }
 
         /// <summary>Unique 64 bit id value for station</summary>
-        [PublicAPI, JsonProperty, JsonRequired]
+        [PublicAPI]
         public long? marketId { get; set; }
 
         /// <summary>A list of the services offered by this station</summary>
