@@ -355,84 +355,105 @@ namespace EddiSpeechService
         {
             try
             {
-                if (string.IsNullOrEmpty(requestedVoice) || 
-                    string.Equals( requestedVoice, "Windows TTS default", StringComparison.InvariantCultureIgnoreCase ))
+                var stream = speak(requestedVoice, speech);
+                if ( stream is null || stream.Length == 0 )
                 {
-                    requestedVoice = Configuration.StandardVoice;
+                    // Try again, with speech devoid of SSML
+                    stream = speak( requestedVoice, Regex.Replace( speech, "<.*?>", string.Empty ) );
                 }
-                else if (allVoices.All(v => !string.Equals(v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) ))
-                {
-                    // If the prior selected voice is no longer a valid option, we revert to the system default.
-                    var fallbackVoice = IsWindowsMediaSynthesizerSupported() 
-                        ? windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice 
-                        : systemSpeechSynth?.currentVoice;
-                    if ( !string.IsNullOrEmpty(fallbackVoice) )
-                    {
-                        Logging.Debug( $"Voice {requestedVoice} not found, reverting to voice {fallbackVoice}." );
-                        requestedVoice = fallbackVoice;
-                    }
-                    else
-                    {
-                        Logging.Error("Could not obtain a voice for speaking.");
-                    }
-                }
-
-                if ( !string.IsNullOrEmpty( requestedVoice ) )
-                {
-                    var stream = speak(requestedVoice, speech, allVoices.Copy());
-                    if ( stream is null || stream.Length == 0 )
-                    {
-                        // Try again, with speech devoid of SSML
-                        stream = speak( requestedVoice, Regex.Replace( speech, "<.*?>", string.Empty ), allVoices.Copy() );
-                    }
-
-                    return stream;
-                }
+                return stream;
             }
             catch (Exception ex)
             {
                 Logging.Warn("Speech failed (" + Encoding.Default.EncodingName + ")", ex);
             }
-
             return null;
         }
 
-        private Stream speak(string requestedVoice, string speech, List<VoiceDetails> voiceList)
+        private Stream speak ( string requestedVoice, string speech )
         {
             // Get the voice details we will use for speaking
-            var voiceDetails = voiceList.FirstOrDefault(v => string.Equals(v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase));
-            if (voiceDetails != null)
+            if ( TryResolveVoice( requestedVoice, out var voiceDetails ) )
             {
-                return speak(voiceDetails, speech, voiceList);
+                try
+                {
+                    return speak( voiceDetails, speech );
+                }
+                catch ( Exception ex )
+                {
+                    if ( !string.IsNullOrEmpty( requestedVoice ) )
+                    {
+                        Logging.Error( ex.Message, ex );
+                    }
+                    else
+                    {
+                        // Try falling back to our default voice.
+                        Logging.Error( $"{ex.Message}, retrying with default voice.", ex );
+                        return speak( string.Empty, speech );
+                    }
+                }
             }
-            Logging.Warn( $"Something went wrong. Unable to obtain voice {requestedVoice}." );
+            else
+            {
+                Logging.Warn( $"Something went wrong. Unable to obtain voice {requestedVoice}." );
+            }
             return null;
         }
 
-        private Stream speak([NotNull] VoiceDetails voiceDetails, string speech, List<VoiceDetails> voiceList)
+        private Stream speak ( [ NotNull ] VoiceDetails voiceDetails, string speech )
         {
-            try
+            if ( voiceDetails.synthType is nameof( System ) )
             {
-                if (voiceDetails.synthType is nameof(System))
+                return systemSpeechSynth?.Speak( voiceDetails, speech, Configuration );
+            }
+            if ( voiceDetails.synthType is nameof( Windows.Media ) && IsWindowsMediaSynthesizerSupported() )
+            {
+                return windowsMediaSynth?.Speak( voiceDetails, speech, Configuration );
+            }
+            throw new NotImplementedException($"{nameof(voiceDetails)} is referencing a synthType which has not been configured.");
+        }
+
+        /// <summary>
+        /// Match and normalize the requested voice against one from our speech synthesizers.
+        /// </summary>
+        /// <param name="requestedVoice"></param>
+        /// <param name="voiceDetails"></param>
+        /// <returns>Returns true if we were able to resolve synthesizer voice details for the requested voice</returns>
+        private bool TryResolveVoice ( string requestedVoice, out VoiceDetails voiceDetails )
+        {
+            // If the requestedVoice is null and the saved configuration's standard voice is not null,
+            // try to re-resolve this once using the voice saved to the configuration.
+            if ( string.IsNullOrEmpty( requestedVoice ) && !string.IsNullOrEmpty( Configuration.StandardVoice ) )
+            {
+                return TryResolveVoice( Configuration.StandardVoice, out voiceDetails );
+            }
+
+            // If the requested voice is not null and matches one we've previously found, return that voice.
+            if ( !string.IsNullOrEmpty(requestedVoice) )
+            {
+                var foundVoice = allVoices
+                    .FirstOrDefault( v => string.Equals( v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) );
+                if ( foundVoice != null )
                 {
-                    return systemSpeechSynth?.Speak(voiceDetails, speech, Configuration);
-                }
-                else if (voiceDetails.synthType is nameof(Windows.Media) && IsWindowsMediaSynthesizerSupported())
-                {
-                    return windowsMediaSynth?.Speak(voiceDetails, speech, Configuration);
+                    voiceDetails = foundVoice;
+                    return true;
                 }
             }
-            catch (Exception ex)
+
+            // If the requested voice was not found, try to re-resolve this once using the synthesizer's default voice.
+            var synthDefaultVoice = IsWindowsMediaSynthesizerSupported()
+                ? windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice
+                : systemSpeechSynth?.currentVoice;
+            if ( !string.IsNullOrEmpty( synthDefaultVoice ) &&
+                 !string.Equals( synthDefaultVoice, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) )
             {
-                Logging.Error(ex.Message, ex);
-                voiceList.Remove(voiceDetails);
-                if (voiceList.Any())
-                {
-                    // Fall back to another voice from the voice list
-                    return speak(string.Empty, speech, voiceList);
-                }
+                Logging.Debug( $"Voice '{requestedVoice}' not found, falling back to voice '{synthDefaultVoice}'." );
+                return TryResolveVoice( synthDefaultVoice, out voiceDetails );
             }
-            return null;
+
+            // If none of the above then we've failed to select a voice from our voice list
+            voiceDetails = null;
+            return false;
         }
 
         private void StartSpeech(ref ISoundOut soundout, int priority)
