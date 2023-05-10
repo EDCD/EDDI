@@ -657,14 +657,9 @@
     <value>Débris d'épave Thargoïds</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
-  <data name="tg_shipflightdata" xml:space="preserve">
-    <value>Données de vol de vaisseau Thargoïdes</value>
-    <comment>Material tg_shipflightdata</comment>
-  </data>
-  <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>Données de systèmes de vaisseau Thargoïdes</value>
-    <comment>Material tg_shipsystemsdata</comment>
-  </data>
+  
+  
+  
   
   
   
