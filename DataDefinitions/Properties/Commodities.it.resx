@@ -1793,11 +1793,32 @@
     <value>Capsula di Salvataggio vuota</value>
     <comment>Commodity UnocuppiedEscapePod</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType6" xml:space="preserve">
+    <value>Campione di tessuto di Glaive Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType6</comment>
+  </data>
+  <data name="ThargoidTissueSampleType9a" xml:space="preserve">
+    <value>Campione di tessuto interno di Titano Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType9a</comment>
+  </data>
+  <data name="ThargoidTissueSampleType9b" xml:space="preserve">
+    <value>Campione di tessuto di Titano Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType9b</comment>
+  </data>
+  <data name="ThargoidTissueSampleType9c" xml:space="preserve">
+    <value>Campione parziale di tessuto di Titano Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType9c</comment>
+  </data>
+  <data name="ThargoidTissueSampleType10a" xml:space="preserve">
+    <value>Campione di stomaco interno di Titano Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType10a</comment>
+  </data>
+  <data name="ThargoidTissueSampleType10b" xml:space="preserve">
+    <value>Campione di stomaco di Titano Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType10b</comment>
+  </data>
+  <data name="ThargoidTissueSampleType10c" xml:space="preserve">
+    <value>Campione parziale di stomaco di Titano Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType10c</comment>
+  </data>
 </root>
