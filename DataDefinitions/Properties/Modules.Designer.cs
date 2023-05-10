@@ -1141,6 +1141,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Pulse Neutraliser.
+        /// </summary>
+        public static string Thargoid_Pulse_Neutraliser {
+            get {
+                return ResourceManager.GetString("Thargoid_Pulse_Neutraliser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thrusters.
         /// </summary>
         public static string Thrusters {
