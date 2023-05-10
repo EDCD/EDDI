@@ -657,14 +657,8 @@
     <value>八角残骸组件</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
-  <data name="tg_shipflightdata" xml:space="preserve">
-    <value>八角飞船战斗数据</value>
-    <comment>Material tg_shipflightdata</comment>
-  </data>
-  <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>八角飞船系统数据</value>
-    <comment>Material tg_shipsystemsdata</comment>
-  </data>
+  
+  
   <data name="tg_interdictiondata" xml:space="preserve">
     <value>八角拦截遥测数据</value>
     <comment>Material tg_interdictiondata</comment>
@@ -681,6 +675,7 @@
     <value>有腐蚀性的装置</value>
     <comment>Material tg_causticgeneratorparts</comment>
   </data>
+  
   
   
   
