@@ -374,6 +374,7 @@ namespace EddiJournalMonitor
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
                                     // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
+                                    // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
                                         events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState) { raw = line, fromLoad = fromLogLoad });
