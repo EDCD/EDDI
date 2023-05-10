@@ -669,6 +669,18 @@
     <value>八角拦截遥测数据</value>
     <comment>Material tg_interdictiondata</comment>
   </data>
+  <data name="tg_causticcrystal" xml:space="preserve">
+    <value>腐蚀性晶体</value>
+    <comment>Material tg_causticcrystal</comment>
+  </data>
+  <data name="tg_causticshard" xml:space="preserve">
+    <value>腐蚀性碎片</value>
+    <comment>Material tg_causticshard</comment>
+  </data>
+  <data name="tg_causticgeneratorparts" xml:space="preserve">
+    <value>有腐蚀性的装置</value>
+    <comment>Material tg_causticgeneratorparts</comment>
+  </data>
   
   
   
