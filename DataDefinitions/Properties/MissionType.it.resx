@@ -327,5 +327,7 @@
   <data name="PassengerEvacuation" xml:space="preserve">
     <value>Evacuazione dei Passeggeri</value>
   </data>
-  
+  <data name="Alert" xml:space="preserve">
+    <value>Allarme</value>
+  </data>
 </root>
