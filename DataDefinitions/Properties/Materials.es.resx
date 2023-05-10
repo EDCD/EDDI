@@ -658,14 +658,9 @@
     <value>Restos de Accidente Thargoide</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
-  <data name="tg_shipflightdata" xml:space="preserve">
-    <value>Datos de vuelo de Nave Thargoide</value>
-    <comment>Material tg_shipflightdata</comment>
-  </data>
-  <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>Datos de Sistemas de Nave Thargoide</value>
-    <comment>Material tg_shipsystemsdata</comment>
-  </data>
+  
+  
+  
   
   
   
