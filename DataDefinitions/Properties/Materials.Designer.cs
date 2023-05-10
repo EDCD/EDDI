@@ -1159,7 +1159,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thargoid Ship Flight Data.
+        ///   Looks up a localized string similar to Ship Flight Data.
         /// </summary>
         public static string tg_shipflightdata {
             get {
@@ -1168,11 +1168,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thargoid Ship Systems Data.
+        ///   Looks up a localized string similar to Ship Systems Data.
         /// </summary>
         public static string tg_shipsystemsdata {
             get {
                 return ResourceManager.GetString("tg_shipsystemsdata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Massive Energy Surge Analytics.
+        /// </summary>
+        public static string tg_shutdowndata {
+            get {
+                return ResourceManager.GetString("tg_shutdowndata", resourceCulture);
             }
         }
         

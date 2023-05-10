@@ -658,11 +658,11 @@
     <comment>Material tg_wreckagecomponents</comment>
   </data>
   <data name="tg_shipflightdata" xml:space="preserve">
-    <value>Thargoid Ship Flight Data</value>
+    <value>Ship Flight Data</value>
     <comment>Material tg_shipflightdata</comment>
   </data>
   <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>Thargoid Ship Systems Data</value>
+    <value>Ship Systems Data</value>
     <comment>Material tg_shipsystemsdata</comment>
   </data>
   <data name="tg_interdictiondata" xml:space="preserve">
@@ -692,5 +692,9 @@
   <data name="tg_abrasion03" xml:space="preserve">
     <value>Hardened Surface Fragments</value>
     <comment>Material tg_abrasion03</comment>
+  </data>
+  <data name="tg_shutdowndata" xml:space="preserve">
+    <value>Massive Energy Surge Analytics</value>
+    <comment>Material tg_shutdowndata</comment>
   </data>
 </root>

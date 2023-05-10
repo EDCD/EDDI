@@ -232,6 +232,9 @@ namespace EddiDataDefinitions
         public static readonly Material SensorFragment = new Material("unknownenergysource", Manufactured, VeryRare);
         public static readonly Material ThargoidOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
 
+        // Unknown Rarity
+        public static readonly Material MassiveEnergySurgeAnalytics = new Material("tg_shutdowndata", Manufactured, Rarity.Unknown);
+        
         #endregion
 
         [PublicAPI]
