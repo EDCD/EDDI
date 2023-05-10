@@ -681,4 +681,16 @@
     <value>Corrosive Mechanisms</value>
     <comment>Material tg_causticgeneratorparts</comment>
   </data>
+  <data name="tg_abrasion01" xml:space="preserve">
+    <value>Heat Exposure Specimen</value>
+    <comment>Material tg_abrasion01</comment>
+  </data>
+  <data name="tg_abrasion02" xml:space="preserve">
+    <value>Phasing Membrane Residue</value>
+    <comment>Material tg_abrasion02</comment>
+  </data>
+  <data name="tg_abrasion03" xml:space="preserve">
+    <value>Hardened Surface Fragments</value>
+    <comment>Material tg_abrasion03</comment>
+  </data>
 </root>

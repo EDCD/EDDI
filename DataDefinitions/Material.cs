@@ -35,6 +35,8 @@ namespace EddiDataDefinitions
             );
         }
 
+        #region Elements
+
         // The below percentages are calculated by finding the top percentage ever found on a body for a given material, 
         // then taking 90% of that value as a definition for a `great` percentage and by taking 75% of that value as a `good` percentage.
         // The data used to generate the current values are located at https://docs.google.com/spreadsheets/d/1UcgHvnDF-lYYPD7PNkT_g7B1dr9lBBkVPPlL51ITrz4
@@ -75,7 +77,9 @@ namespace EddiDataDefinitions
         public static readonly Material Antimony = new Material("antimony", Element, Rare, "Sb", 1.4M, 1.6M); // Rare per Material Trader UI and FDev spreadsheet but very rare per in-game right panel description.
         public static readonly Material Polonium = new Material("polonium", Element, Rare, "Po", 1.1M, 1.3M); // Rare per Material Trader UI and FDev spreadsheet but very rare per in-game right panel description.
 
-        ///<summary>Data</summary>
+        #endregion
+
+        #region Data
 
         // Grade 1, Very Common
         public static readonly Material AnomalousBulkScanData = new Material("bulkscandata", Data, VeryCommon);
@@ -136,7 +140,12 @@ namespace EddiDataDefinitions
         // Grade 5 Xeno
         public static readonly Material Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", Data, VeryRare);
 
-        ///<summary>Manufactured</summary>
+        // Unknown rarity
+        public static readonly Material Tg_InterdictionData = new Material("tg_interdictiondata", Encoded, Rarity.Unknown);
+
+        #endregion
+
+        #region Manufactured
 
         // Grade 1, Very Common
         public static readonly Material BasicConductors = new Material("basicconductors", Manufactured, VeryCommon);
@@ -220,8 +229,12 @@ namespace EddiDataDefinitions
         public static readonly Material UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
         public static readonly Material Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
 
-        // Unknown rarity
-        public static readonly Material Tg_InterdictionData = new Material("tg_interdictiondata", Encoded, Rarity.Unknown);
+        // Unknown Rarity
+        public static readonly Material TG_Abrasion01 = new Material( "tg_abrasion01", Manufactured, Rarity.Unknown );
+        public static readonly Material TG_Abrasion02 = new Material( "tg_abrasion02", Manufactured, Rarity.Unknown );
+        public static readonly Material TG_Abrasion03 = new Material( "tg_abrasion03", Manufactured, Rarity.Unknown );
+
+        #endregion
 
         [PublicAPI]
         public string category => Category.localizedName;

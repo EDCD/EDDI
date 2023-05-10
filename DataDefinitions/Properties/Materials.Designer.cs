@@ -1060,6 +1060,33 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Heat Exposure Specimen.
+        /// </summary>
+        public static string tg_abrasion01 {
+            get {
+                return ResourceManager.GetString("tg_abrasion01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phasing Membrane Residue.
+        /// </summary>
+        public static string tg_abrasion02 {
+            get {
+                return ResourceManager.GetString("tg_abrasion02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hardened Surface Fragments.
+        /// </summary>
+        public static string tg_abrasion03 {
+            get {
+                return ResourceManager.GetString("tg_abrasion03", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Bio-Mechanical Components.
         /// </summary>
         public static string tg_biomechanicalconduits {
