@@ -441,6 +441,15 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(129019259, "ThargoidGeneratorTissueSample", Salvage, 67680, false),
                 new CommodityDefinition(129022087, "UnocuppiedEscapePod", Salvage, 3900, false),
 
+                // Items for which we do not have pricing
+                new CommodityDefinition(129022395, "ThargoidTissueSampleType6", Salvage, 0, false),
+                new CommodityDefinition(129022398, "ThargoidTissueSampleType9a", Salvage, 0, false),
+                new CommodityDefinition(129022399, "ThargoidTissueSampleType9b", Salvage, 0, false),
+                new CommodityDefinition(129022400, "ThargoidTissueSampleType9c", Salvage, 0, false),
+                new CommodityDefinition(129022402, "ThargoidTissueSampleType10a", Salvage, 0, false),
+                new CommodityDefinition(129022403, "ThargoidTissueSampleType10b", Salvage, 0, false),
+                new CommodityDefinition(129022404, "ThargoidTissueSampleType10c", Salvage, 0, false),
+                
                 // Items for which we do not have Elite IDs
             };
         }

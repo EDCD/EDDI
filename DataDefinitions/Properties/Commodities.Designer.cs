@@ -3229,6 +3229,33 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Titan Maw Deep Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType10a {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType10a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titan Maw Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType10b {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType10b", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titan Maw Partial Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType10c {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType10c", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Basilisk Tissue Sample.
         /// </summary>
         public static string ThargoidTissueSampleType2 {
@@ -3261,6 +3288,42 @@ namespace EddiDataDefinitions.Properties {
         public static string ThargoidTissueSampleType5 {
             get {
                 return ResourceManager.GetString("ThargoidTissueSampleType5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Glaive Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType6 {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titan Deep Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType9a {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType9a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titan Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType9b {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType9b", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titan Partial Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType9c {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType9c", resourceCulture);
             }
         }
         
