@@ -22,8 +22,8 @@ namespace EddiEvents
         [PublicAPI("The market ID of station at which the commander has docked")]
         public long? marketId { get; private set; }
 
-        [PublicAPI("The special state of the station, if applicable (e.g. \"Damaged\", \"UnderAttack\", \"UnderRepairs\")")]
-        public string state { get; private set; }
+        [ PublicAPI( "The special state of the station, if applicable (e.g. \"Abandoned\", \"Damaged\", \"UnderAttack\", \"UnderRepairs\")" ) ]
+        public string state => stationState.localizedName;
 
         [PublicAPI("The model of the station at which the commander has docked (Orbis, Coriolis, etc)")]
         public string model => stationModel?.localizedName;
@@ -80,19 +80,21 @@ namespace EddiEvents
 
         public StationModel stationModel { get; private set; }
 
+        public StationState stationState { get; private set; }
+
         public Faction controllingfaction { get; private set; }
 
         public List<StationService> stationServices { get; private set; }
 
         public List<EconomyShare> economyShares { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, ulong systemAddress, long? marketId, string station, string state, StationModel stationModel, Faction controllingfaction, List<EconomyShare> Economies, decimal? distancefromstar, List<StationService> stationServices, bool cockpitBreach, bool wanted, bool activeFine) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, ulong systemAddress, long? marketId, string station, StationState stationState, StationModel stationModel, Faction controllingfaction, List<EconomyShare> Economies, decimal? distancefromstar, List<StationService> stationServices, bool cockpitBreach, bool wanted, bool activeFine) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
             this.marketId = marketId;
             this.station = station;
-            this.state = state;
+            this.stationState = stationState;
             this.stationModel = stationModel ?? StationModel.None;
             this.controllingfaction = controllingfaction;
             this.economyShares = Economies ?? new List<EconomyShare>() { new EconomyShare(Economy.None, 0M), new EconomyShare(Economy.None, 0M) };

@@ -380,12 +380,13 @@ namespace UnitTests
             Assert.AreEqual(0.7M, theEvent.economyShares[0].proportion);
             Assert.AreEqual("Extraction", theEvent.economyShares[1].economy.invariantName);
             Assert.AreEqual(0.3M, theEvent.economyShares[1].proportion);
+            Assert.AreEqual(StationState.NormalOperation, theEvent.stationState);
         }
 
         [TestMethod]
         public void TestJournalDocked2()
         {
-            string line = @"{ ""timestamp"":""2018-04-01T05:21:24Z"", ""event"":""Docked"", ""StationName"":""Donaldson"", ""StationType"":""Orbis"", ""StarSystem"":""Alioth"", ""SystemAddress"":1109989017963, ""MarketID"":128141048, ""StationFaction"":{ ""Name"":""Alioth Pro-Alliance Grou"", ""FactionState"":""Boom"" }, ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Alliance"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"" ], ""StationEconomy"":""$economy_Service;"", ""StationEconomy_Localised"":""Service"", ""StationEconomies"":[ { ""Name"":""$economy_Service;"", ""Name_Localised"":""Service"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":4632.417480 }";
+            string line = @"{ ""timestamp"":""2018-04-01T05:21:24Z"", ""event"":""Docked"", ""StationName"":""Donaldson"", ""StationState"":""UnderRepairs"", ""StationType"":""Orbis"", ""StarSystem"":""Alioth"", ""SystemAddress"":1109989017963, ""MarketID"":128141048, ""StationFaction"":{ ""Name"":""Alioth Pro-Alliance Grou"", ""FactionState"":""Boom"" }, ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Alliance"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"" ], ""StationEconomy"":""$economy_Service;"", ""StationEconomy_Localised"":""Service"", ""StationEconomies"":[ { ""Name"":""$economy_Service;"", ""Name_Localised"":""Service"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":4632.417480 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
@@ -401,6 +402,7 @@ namespace UnitTests
             Assert.AreEqual(1, theEvent.economyShares.Count);
             Assert.AreEqual("Service", theEvent.economyShares[0].economy.invariantName);
             Assert.AreEqual(1.0M, theEvent.economyShares[0].proportion);
+            Assert.AreEqual(StationState.UnderRepairs, theEvent.stationState);
         }
 
         [TestMethod]

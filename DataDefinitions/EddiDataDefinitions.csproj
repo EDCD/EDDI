@@ -54,6 +54,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NpcShip.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\StationState.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StationState.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Suit.Designer.cs">
       <DependentUpon>Suit.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -390,6 +395,10 @@
     <EmbeddedResource Update="Properties\NpcShip.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NpcShip.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\StationState.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StationState.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Suit.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

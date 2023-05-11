@@ -117,7 +117,6 @@ namespace EddiJournalMonitor
                                     ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
-                                    string stationState = JsonParsing.getString(data, "StationState");
                                     StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
                                     Faction controllingfaction = getFaction(data, "Station", systemName);
                                     decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
@@ -149,6 +148,11 @@ namespace EddiJournalMonitor
                                     bool cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
                                     bool wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
                                     bool activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
+
+                                    var stationStateEdName = JsonParsing.getString( data, "StationState" );
+                                    var stationState = string.IsNullOrEmpty( stationStateEdName )
+                                        ? StationState.NormalOperation
+                                        : StationState.FromEDName( stationStateEdName );
 
                                     events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, controllingfaction, Economies, distancefromstar, stationServices, cockpitBreach, wanted, activeFine) { raw = line, fromLoad = fromLogLoad });
                                 }
