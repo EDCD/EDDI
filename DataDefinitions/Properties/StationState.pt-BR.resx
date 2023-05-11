@@ -117,4 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Abandoned" xml:space="preserve">
+    <value>Abandonada</value>
+    <comment>StationState Abandoned</comment>
+  </data>
+  <data name="Damaged" xml:space="preserve">
+    <value>Danificada</value>
+    <comment>StationState Damaged</comment>
+  </data>
+  <data name="NormalOperation" xml:space="preserve">
+    <value>Operação normal</value>
+    <comment>StationState NormalOperation</comment>
+  </data>
+  <data name="UnderAttack" xml:space="preserve">
+    <value>Sob Ataque</value>
+    <comment>StationState UnderAttack</comment>
+  </data>
+  <data name="UnderRepairs" xml:space="preserve">
+    <value>Em Reparo</value>
+    <comment>StationState UnderRepairs</comment>
+  </data>
 </root>
