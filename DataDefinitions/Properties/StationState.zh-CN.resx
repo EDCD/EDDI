@@ -117,4 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Abandoned" xml:space="preserve">
+    <value>被废弃</value>
+    <comment>StationState Abandoned</comment>
+  </data>
+  <data name="Damaged" xml:space="preserve">
+    <value>已损坏</value>
+    <comment>StationState Damaged</comment>
+  </data>
+  <data name="NormalOperation" xml:space="preserve">
+    <value>正常运转</value>
+    <comment>StationState NormalOperation</comment>
+  </data>
+  <data name="UnderAttack" xml:space="preserve">
+    <value>受到攻击</value>
+    <comment>StationState UnderAttack</comment>
+  </data>
+  <data name="UnderRepairs" xml:space="preserve">
+    <value>维修中</value>
+    <comment>StationState UnderRepairs</comment>
+  </data>
 </root>
