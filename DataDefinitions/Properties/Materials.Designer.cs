@@ -1258,6 +1258,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tactical Core Chip.
+        /// </summary>
+        public static string unknowncorechip {
+            get {
+                return ResourceManager.GetString("unknowncorechip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Energy Cell.
         /// </summary>
         public static string unknownenergycell {

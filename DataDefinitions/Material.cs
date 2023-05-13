@@ -234,7 +234,8 @@ namespace EddiDataDefinitions
 
         // Unknown Rarity
         public static readonly Material MassiveEnergySurgeAnalytics = new Material("tg_shutdowndata", Manufactured, Rarity.Unknown);
-        
+        public static readonly Material TacticalCoreChip = new Material("unknowncorechip", Manufactured, Rarity.Unknown);
+
         #endregion
 
         [PublicAPI]
