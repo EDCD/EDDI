@@ -1785,7 +1785,7 @@ namespace EddiJournalMonitor
                                         interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
                                     }
 
-                                    events.Add(new ShipInterdictedEvent(timestamp, false, false, iscommander, interdictor, null, null, null) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new ShipInterdictedEvent(timestamp, false, false, iscommander, isThargoid, interdictor, null, null, null) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }
                                 break;
@@ -1896,7 +1896,8 @@ namespace EddiJournalMonitor
                                     string stellarclass = JsonParsing.getString(data, "StarClass");
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress");
-                                    events.Add(new FSDEngagedEvent(timestamp, target, system, systemAddress, stellarclass) { raw = line, fromLoad = fromLogLoad });
+                                    var isTaxi = JsonParsing.getOptionalBool( data, "Taxi" ) ?? false;
+                                    events.Add(new FSDEngagedEvent(timestamp, target, system, systemAddress, stellarclass, isTaxi) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }
                                 break;

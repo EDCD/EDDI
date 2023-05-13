@@ -20,8 +20,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Implemented text completion for available variables in the editor window.
       * The Chinese translation of the default personality has been updated (primarily to improve grammar). #2524 Thanks @MemphyKitay!
     * Events
-      * `Hull damaged` fixed a bug with the `vehicle` property where EDDI might be confused as to whether the ship or SRV was being damaged.
-      * `Ship FSD` event now includes a new boolean `hyperdrive_charging`.
+      * `Docked` updated to revise the `state` property to be translatable and include a default value (Normal Operation).
+      * `FSD engaged` now includes a new `taxijump` boolean property.
+      * `Hull damaged` updated to fix a bug with the `vehicle` property where EDDI might be confused as to whether the ship or SRV was being damaged.
+      * `Ship interdicted` updated to include a new `isthargoid` boolean property and report the interdictor as "Thargoid Vessel" (or its localized equivalent) rather than "Unknown Vessel" (or its localized equivalent) when interdicted by Thargoids.
+      * `Ship FSD` event now includes a new `hyperdrive_charging` boolean property.
     * Changes to existing scripts
       * `Bodies to map` updated to add a preference for recommending already mapped bodies and to include terraforming bodies. #2490, #2527
       * `Docked` updated to add the `Limpet Check` script.
