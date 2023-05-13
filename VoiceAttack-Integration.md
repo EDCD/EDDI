@@ -14,9 +14,9 @@ If EDDI is installed in the correct location and plugin support is enabled you s
 
 ## EDDI's VoiceAttack Profile
 
-EDDI provides a VoiceAttack profile with some basic commands.  This is not a control profile, in that it does not provide you with the ability to control the ship, it does allow the user to interact with EDDI with phrases such as "please could you repeat that" and questions such as "what use is decoded emission data?"  It also allows you to bring up EDDI's configuration UI with the "Configure EDDI" command.
+EDDI provides a VoiceAttack profile with some basic commands to get you started.  This is not a control profile in that it does not provide you with the ability to control the ship.  It allows you to display and manipulate EDDI's User Interface with commands like "Configure EDDI" and demonstrates how you can interact with EDDI via the plugin using command phrases such as "please could you repeat that" and questions such as "what use is decoded emission data?"
 
-The profile is available in the EDDI installation directory as EDDI.vap.
+The profile is available in the EDDI installation directory (normally "C:\Program Files (x86)\Steam\steamapps\common\VoiceAttack\Apps\EDDI" or "C:\Program Files (x86)\VoiceAttack\Apps\EDDI") as EDDI.vap. To make the commands in this profile both available and easily updateable, we recommend [importing the profile into VoiceAttack](https://voiceattack.com/VoiceAttackHelp.pdf#page=134) and supplementing your base profile with EDDI profile commands via the ['Include commands from other profiles'](https://voiceattack.com/VoiceAttackHelp.pdf#page=8) profile option.
 
 **_Disclaimer: We recommend that users check the terms and conditions of third party licensing agreements prior to linking or using EDDI's VoiceAttack profile with any licensed third party product. We shall not be held responsible for any third party licensing claims that arise from breaches of third party licensing agreements._**
 
