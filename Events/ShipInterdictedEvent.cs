@@ -20,6 +20,9 @@ namespace EddiEvents
         [PublicAPI("If the player carrying out the interdiction is a commander (as opposed to an NPC)")]
         public bool iscommander { get; private set; }
 
+        [PublicAPI( "If a Thargoid is carrying out the interdiction" )]
+        public bool isthargoid { get; private set; }
+
         [PublicAPI("The name of the commander or NPC carrying out the interdiction")]
         public string interdictor { get; private set; }
 
@@ -32,11 +35,12 @@ namespace EddiEvents
         [PublicAPI("The power of the NPC carrying out the interdiction")]
         public string power { get; private set; }
 
-        public ShipInterdictedEvent(DateTime timestamp, bool succeeded, bool submitted, bool iscommander, string interdictor, CombatRating rating, string faction, string power) : base(timestamp, NAME)
+        public ShipInterdictedEvent(DateTime timestamp, bool succeeded, bool submitted, bool iscommander, bool isThargoid, string interdictor, CombatRating rating, string faction, string power) : base(timestamp, NAME)
         {
             this.succeeded = succeeded;
             this.submitted = submitted;
             this.iscommander = iscommander;
+            this.isthargoid = isThargoid;
             this.interdictor = interdictor;
             this.rating = rating?.localizedName;
             this.faction = faction;

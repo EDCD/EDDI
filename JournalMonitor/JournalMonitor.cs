@@ -1744,7 +1744,8 @@ namespace EddiJournalMonitor
                                 {
                                     bool submitted = JsonParsing.getBool(data, "Submitted");
                                     string interdictor = JsonParsing.getString(data, "Interdictor");
-                                    bool iscommander = JsonParsing.getBool(data, "IsPlayer");
+                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
+                                    var isThargoid = JsonParsing.getOptionalBool(data, "isThargoid") ?? false;
                                     data.TryGetValue("CombatRank", out object val);
                                     CombatRating rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
                                     string faction = getFactionName(data, "Faction");
@@ -1757,20 +1758,25 @@ namespace EddiJournalMonitor
                                             ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
                                             : JsonParsing.getString(data, "Interdictor_Localised");
                                     }
-                                    if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor") && string.IsNullOrEmpty(faction))
+                                    else if ( isThargoid )
                                     {
-                                        // This matches the pattern for a Thargoid interdiction
+                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
+                                    }
+                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor") && string.IsNullOrEmpty(faction))
+                                    {
+                                        // This matches the pattern for an unknown ship interdiction attempt
                                         interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
                                     }
 
-                                    events.Add(new ShipInterdictedEvent(timestamp, true, submitted, iscommander, interdictor, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new ShipInterdictedEvent(timestamp, true, submitted, iscommander, isThargoid, interdictor, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }
                                 break;
                             case "EscapeInterdiction":
                                 {
                                     string interdictor = JsonParsing.getString(data, "Interdictor");
-                                    bool iscommander = JsonParsing.getBool(data, "IsPlayer");
+                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
+                                    var isThargoid = JsonParsing.getOptionalBool(data, "isThargoid") ?? false;
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
                                     {
@@ -1779,9 +1785,13 @@ namespace EddiJournalMonitor
                                             ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
                                             : JsonParsing.getString(data, "Interdictor_Localised");
                                     }
-                                    if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor"))
+                                    else if ( isThargoid )
                                     {
-                                        // This matches the pattern for a Thargoid interdiction attempt
+                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
+                                    }
+                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor"))
+                                    {
+                                        // This matches the pattern for an unknown ship interdiction attempt
                                         interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
                                     }
 

@@ -133,6 +133,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Vessel.
+        /// </summary>
+        public static string Thargoid {
+            get {
+                return ResourceManager.GetString("Thargoid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown Vessel.
         /// </summary>
         public static string UNKNOWN {
