@@ -8,7 +8,7 @@ namespace EddiEvents
     public class ShipTargetedEvent : Event
     {
         public const string NAME = "Ship targeted";
-        public const string DESCRIPTION = "Triggered when the player selects a target";
+        public const string DESCRIPTION = "Triggered when the player selects a non-Thargoid target";
         public const string SAMPLE = "{\"timestamp\":\"2018-05-09T23:19:49Z\",\"event\":\"ShipTargeted\",\"TargetLocked\":true,\"Ship\":\"adder\",\"ScanStage\":3,\"PilotName\":\"$npc_name_decorate:#name=Phoenix;\",\"PilotName_Localised\":\"Phoenix\",\"PilotRank\":\"Competent\",\"ShieldHealth\":100.000000,\"HullHealth\":100.000000,\"Faction\":\"Union Cosmos\",\"LegalStatus\":\"Lawless\",\"Subsystem\":\"$int_powerplant_size3_class3_name;\",\"Subsystem_Localised\":\"Power Plant\",\"SubsystemHealth\":100.000000}";
 
         [PublicAPI("True when a ship has been targeted. False when a target has been lost/deselected")]
