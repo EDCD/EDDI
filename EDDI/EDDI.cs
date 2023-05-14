@@ -588,6 +588,12 @@ namespace EddiCore
 
                 foreach (IEddiResponder responder in responders)
                 {
+                    if ( !App.FromVA && responder.ResponderName() == "VoiceAttack responder" )
+                    {
+                        // When we are not running from VoiceAttack then we skip starting the VoiceAttack responder.
+                        continue;
+                    }
+
                     if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
                     {
                         // No information; default to enabled
