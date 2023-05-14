@@ -2150,12 +2150,21 @@
     },
     "Ship shutdown": {
       "enabled": true,
-      "priority": 3,
+      "priority": 1,
       "responder": true,
       "script": null,
       "default": true,
       "name": "Ship shutdown",
-      "description": "Triggered when your ship's system are shutdown"
+      "description": "Triggered when your ship's system is forced to shutdown"
+    },
+    "Ship shutdown reboot": {
+      "enabled": true,
+      "priority": 2,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship shutdown reboot",
+      "description": "Triggered when your ship's system reboots after a forced shutdown"
     },
     "Ship sold": {
       "enabled": true,

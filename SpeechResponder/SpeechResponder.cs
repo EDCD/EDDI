@@ -72,6 +72,8 @@ namespace EddiSpeechResponder
         private SpeechResponderConfiguration _configuration;
         private ScriptResolver _scriptResolver;
 
+        object speechresponder_quiet_was;
+
         public string ResponderName()
         {
             return "Speech responder";
@@ -269,6 +271,22 @@ namespace EddiSpeechResponder
                     // Suppress voicing new scans after the first scan occurrence
                     return;
                 }
+            }
+
+            // Simulate a forced shutdown effect affecting the speech responder until the ship's system is rebooted
+            if ( @event is ShipShutdownEvent )
+            {
+                if ( EDDI.Instance.State.TryGetValue( "speechresponder_quiet", out var stateObj ) && stateObj is bool state )
+                {
+                    speechresponder_quiet_was = state;
+                }
+                EDDI.Instance.State[ "speechresponder_quiet" ] = true;
+                SpeechService.Instance.speechQueue.DequeueAllSpeech();
+                SpeechService.Instance.StopCurrentSpeech();
+            }
+            else if ( @event is ShipShutdownRebootEvent )
+            {
+                EDDI.Instance.State[ "speechresponder_quiet" ] = speechresponder_quiet_was;
             }
 
             Say(@event);

@@ -2137,11 +2137,19 @@
     },
     "Ship shutdown": {
       "enabled": true,
-      "priority": 2,
+      "priority": 1,
       "responder": true,
       "script": null,
       "name": "Ship shutdown",
       "description": "Se activa cuando se desconectan los sistemas de su nave"
+    },
+    "Ship shutdown reboot": {
+      "enabled": true,
+      "priority": 2,
+      "responder": true,
+      "script": null,
+      "name": "Ship shutdown reboot",
+      "description": "Triggered when your ship's system reboots after a forced shutdown"
     },
     "Ship sold": {
       "enabled": true,

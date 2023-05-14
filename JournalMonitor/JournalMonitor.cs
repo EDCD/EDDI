@@ -3962,7 +3962,16 @@ namespace EddiJournalMonitor
                                 break;
                             case "SystemsShutdown":
                                 {
-                                    events.Add(new ShipShutdownEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                    if ( !fromLogLoad )
+                                    {
+                                        events.Add(new ShipShutdownEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                        Task.Run( async () =>
+                                        {
+                                            // The ship shall reboot about 15 seconds after the shutdown occurs
+                                            await Task.Delay( TimeSpan.FromSeconds( 15 ) );
+                                            events.Add( new ShipShutdownRebootEvent( timestamp ) { fromLoad = fromLogLoad } );
+                                        } ).ConfigureAwait(false);                                        
+                                    }
                                 }
                                 handled = true;
                                 break;

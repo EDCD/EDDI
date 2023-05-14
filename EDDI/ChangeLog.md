@@ -9,6 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug where partial star data created by `Next system` events wasn't properly being replaced by actual star data after scanning. #2522
     * Restored access to the Frontier API.
     * `scanned` and `mapped` body properties are now unix timestamps (seconds since Jan 01 1970 UTC) rather than DateTime objects. #2468   
+    * `Ship shutdown` events now temporarily disrupt the speech responder (for greater immersion when ship systems are forced offline).
     * Trim any pauses or breaks from the end of speech when that speech isn't followed by more speech.
     * Updated body mapping values (these were buffed slightly for Odyssey).
     * Removed references to retired site EDDB.
@@ -25,6 +26,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Hull damaged` updated to fix a bug with the `vehicle` property where EDDI might be confused as to whether the ship or SRV was being damaged.
       * `Ship interdicted` updated to include a new `isthargoid` boolean property and report the interdictor as "Thargoid Vessel" (or its localized equivalent) rather than "Unknown Vessel" (or its localized equivalent) when interdicted by Thargoids.
       * `Ship FSD` event now includes a new `hyperdrive_charging` boolean property.
+      * `Ship shutdown reboot` event added, triggered after the ship's systems were forced into shutdown and have rebooted.
     * Changes to existing scripts
       * `Bodies to map` updated to add a preference for recommending already mapped bodies and to include terraforming bodies. #2490, #2527
       * `Docked` updated to add the `Limpet Check` script.
