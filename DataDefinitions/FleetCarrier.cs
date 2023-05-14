@@ -265,9 +265,9 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        
-        // Station properties
 
+        // Station properties
+        [PublicAPI("Market details for this fleet carrier")]
         public FrontierApiStation Market
         {
             get => _market;
