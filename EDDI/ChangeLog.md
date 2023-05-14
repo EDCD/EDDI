@@ -30,7 +30,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Changes to existing scripts
       * `Bodies to map` updated to add a preference for recommending already mapped bodies and to include terraforming bodies. #2490, #2527
       * `Carrier jump engaged` updated to more gracefully handle jumps where the commander is on-foot on the carrier
-      * `Docked` updated to add the `Limpet Check` script.
+      * `Docked` updated to add the `Limpet Check` script and incorporate the updated `state` property.
       * `Low fuel`, which normally triggers at about 25%, now re-triggers at 5%, 10%, 15%, and 20%. It also now triggers whether in your ship or an SRV. #2462
       * `Market Information Updated` updated to remove the `Limpet Check` script.
       * `Message received` updated to improve localization of AX pilot messages, add randomized voices for player messages, suppress highly repetitious military speech, and allow setting the gender of the voice based on the name of the sender.

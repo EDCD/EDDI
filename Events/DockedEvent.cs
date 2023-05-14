@@ -22,7 +22,7 @@ namespace EddiEvents
         [PublicAPI("The market ID of station at which the commander has docked")]
         public long? marketId { get; private set; }
 
-        [ PublicAPI( "The special state of the station, if applicable (e.g. \"Abandoned\", \"Damaged\", \"UnderAttack\", \"UnderRepairs\")" ) ]
+        [ PublicAPI( "The state of the station (e.g. \"Abandoned\", \"Damaged\", \"Normal Operation\", \"Under Attack\", \"Under Repairs\")" ) ]
         public string state => stationState.localizedName;
 
         [PublicAPI("The model of the station at which the commander has docked (Orbis, Coriolis, etc)")]

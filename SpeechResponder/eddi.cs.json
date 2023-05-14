@@ -813,7 +813,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.state = \"Damaged\": Emergency}\r\nDocking complete.\r\n\r\n{if event.activefine || event.wanted:\r\n    Anonymous protocols are in effect.\r\n}\r\n\r\n{if event.cockpitbreached:\r\n    Canopy repair highly recommended.\r\n}\r\n\r\n{F(\"Limpet check\")}",
+      "script": "{if event.state = \"Damaged\": Emergency}\r\nDocking complete.\r\n\r\n{if event.state = \"Abandoned\" || event.state = \"Under Attack\" || event.state = \"Under Repairs\": \r\n    This station is {event.state}.\r\n}\r\n\r\n{if event.activefine || event.wanted:\r\n    Anonymous protocols are in effect.\r\n}\r\n\r\n{if event.cockpitbreached:\r\n    Canopy repair highly recommended.\r\n}\r\n\r\n{F(\"Limpet check\")}",
       "default": true,
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
