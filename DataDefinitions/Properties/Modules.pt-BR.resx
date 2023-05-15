@@ -633,5 +633,8 @@
     <value>Lançador de Dissipador Cáustico</value>
     <comment>Module Caustic Sink Launcher</comment>
   </data>
-  
+  <data name="Thargoid_Pulse_Neutraliser" xml:space="preserve">
+    <value>Neutralizador de Pulso Thargoid</value>
+    <comment>Module Thargoid Pulse Neutraliser</comment>
+  </data>
 </root>
