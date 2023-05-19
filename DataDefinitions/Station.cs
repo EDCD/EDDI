@@ -158,6 +158,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore, Obsolete("Please use Model instead")]
         public string model => (Model ?? StationModel.None).localizedName;
 
+        [PublicAPI]
         public StationModel Model { get; set; } = StationModel.None;
 
         /// <summary>What is the largest ship that can land here?</summary>
