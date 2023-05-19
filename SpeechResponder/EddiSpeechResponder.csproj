@@ -17,6 +17,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="2ziiwxwv.wui~" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Speech" />
   </ItemGroup>
   <ItemGroup>
