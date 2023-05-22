@@ -1490,7 +1490,7 @@ namespace UnitTests
             fakeEdsmRestClient.Expect(bodiesResource, bodiesJson, bodiesData);
 
             // Parse the event
-            string line = "{ \"timestamp\":\"2020-06-12T11:01:40Z\", \"event\":\"CarrierJumpRequest\", \"CarrierID\":3701442048, \"SystemName\":\"Shinrarta Dezhra\", \"SystemAddress\":3932277478106, \"BodyID\":16 }";
+            string line = "{ \"timestamp\":\"2020-06-12T11:01:40Z\", \"event\":\"CarrierJumpRequest\", \"CarrierID\":3701442048, \"SystemName\":\"Shinrarta Dezhra\", \"SystemAddress\":3932277478106, \"BodyID\":16, \"DepartureTime\":\"2023-05-22T09:09:57Z\" }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             CarrierJumpRequestEvent @event = (CarrierJumpRequestEvent)events[0];
 
