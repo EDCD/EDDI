@@ -272,7 +272,7 @@ namespace EddiNavigationService.QueryResolvers
                                 cubeSystems.Select(s => s.systemname).Except(checkedSystems).ToList();
                             if ( systemNames.Count > 0 )
                             {
-                                var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, true);
+                                var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, true, false, true, false);
                                 checkedSystems.AddRange ( systemNames );
 
                                 var nearestList = new SortedList<decimal, string> ();

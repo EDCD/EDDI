@@ -25,22 +25,22 @@ namespace UnitTests
 
         class MockStarService : IStarSystemRepository
         {
-            public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+            public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
             {
                 return GetStarSystem(name, refreshIfOutdated);
             }
 
-            public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+            public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
             {
                 throw new NotImplementedException();
             }
 
-            public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+            public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
             {
                 return GetStarSystem(name, fetchIfMissing);
             }
 
-            public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+            public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
             {
                 throw new NotImplementedException();
             }

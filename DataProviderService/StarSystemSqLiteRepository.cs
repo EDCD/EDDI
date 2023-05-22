@@ -134,16 +134,16 @@ namespace EddiDataProviderService
             }
         }
 
-        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
         {
             if (name == string.Empty) { return null; }
-            return GetOrCreateStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
+            return GetOrCreateStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated, showBodies, showStations, showFactions).FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
         {
             if (!names.Any()) { return new List<StarSystem>(); }
-            List<StarSystem> systems = GetOrFetchStarSystems(names, fetchIfMissing, refreshIfOutdated) ?? new List<StarSystem>();
+            List<StarSystem> systems = GetOrFetchStarSystems(names, fetchIfMissing, refreshIfOutdated, showBodies, showStations, showFactions) ?? new List<StarSystem>();
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             foreach (string name in names)
@@ -157,13 +157,13 @@ namespace EddiDataProviderService
             return systems;
         }
 
-        public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+        public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
         {
             if (name == string.Empty) { return null; }
-            return GetOrFetchStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated)?.FirstOrDefault();
+            return GetOrFetchStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated, showBodies, showStations, showFactions)?.FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
+        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showBodies = true, bool showStations = true, bool showFactions = true )
         {
             if (!names.Any()) { return new List<StarSystem>(); }
             List<StarSystem> systems = GetStarSystems(names, refreshIfOutdated) ?? new List<StarSystem>();
@@ -178,7 +178,7 @@ namespace EddiDataProviderService
                 }
             }
 
-            List<StarSystem> fetchedSystems = dataProviderService.GetSystemsData(fetchSystems.ToArray());
+            List<StarSystem> fetchedSystems = dataProviderService.GetSystemsData(fetchSystems.ToArray(), showBodies, showStations, showFactions);
             if (fetchedSystems?.Count > 0)
             {
                 Instance.SaveStarSystems(fetchedSystems);
