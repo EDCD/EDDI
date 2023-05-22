@@ -1478,8 +1478,8 @@ namespace EddiJournalMonitor
                                             string engineerModifications = JsonParsing.getString(item, "EngineerModifications");
                                             module.modified = engineerModifications != null;
                                             module.engineerlevel = JsonParsing.getOptionalInt(item, "Level") ?? 0;
-                                            module.engineermodification = Blueprint.FromEDName(engineerModifications) ?? Blueprint.None;
                                             module.engineerquality = JsonParsing.getOptionalDecimal(item, "Quality") ?? 0;
+                                            module.engineermodification = Blueprint.FromEDNameAndGrade( engineerModifications, Convert.ToInt32(Math.Floor(module.engineerquality)) );
                                             modules.Add(module);
                                         }
                                     }
@@ -4909,6 +4909,7 @@ namespace EddiJournalMonitor
                             case "ScanBaryCentre": // We do not do anything with scanned barycentres at this time (though the raw event is still passed to the EDDN responder)
                             case "Scanned": // Written at the end of a successful scan, too late to react to this.
                             case "SharedBookmarkToSquadron": // Unnecessary.
+                            case "SupercruiseDestinationDrop": // Unnecessary. The same information is available from the `SupercruiseExit` and `USSDrop` events.
                             case "TradeMicroResources": // This is always followed by `ShipLocker`, which we can use to keep our inventory up to date
                             case "TransferMicroResources": // Removed, no longer written
                             case "UseConsumable": // Seems to include only medkits and energy cells (grenades not included) and it's not needed. The `BackpackChange` event keeps us up to date.

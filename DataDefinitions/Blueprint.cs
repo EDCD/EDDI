@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
@@ -893,7 +894,7 @@ namespace EddiDataDefinitions
             else
             {
                 // Might be a blueprint template
-                if (BlueprintTemplate.FromEDName(tidiedEdName) != null)
+                if (BlueprintTemplate.AllOfThem.Any(t => string.Equals(t.edname, tidiedEdName, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return new Blueprint(null, tidiedEdName, tidiedEdName, grade);
                 }
