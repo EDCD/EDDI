@@ -12,7 +12,7 @@ namespace EddiCompanionAppService.Endpoints
         // We cache the profile to avoid spamming the service
         private JObject cachedStationJson;
         private DateTime cachedStationTimeStamp;
-        private DateTime cachedStationExpires => cachedStationTimeStamp.AddSeconds(30);
+        public DateTime cachedStationExpires => cachedStationTimeStamp.AddSeconds(30);
 
         private static int retries;
 

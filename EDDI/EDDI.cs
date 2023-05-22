@@ -2158,11 +2158,18 @@ namespace EddiCore
 
         private bool eventMarket(MarketEvent theEvent)
         {
-            // Don't proceed if we've already viewed the market while docked or when loading pre-existing logs
+            // Don't proceed if loading pre-existing logs
             if (theEvent.fromLoad) { return false; }
 
+            // Don't proceed if the CompanionAppService is active and its data has not yet expired
+            if ( CompanionAppService.Instance.active &&
+                 DateTime.UtcNow < CompanionAppService.Instance.CombinedStationEndpoints.cachedStationExpires )
+            {
+                return false;
+            }
+
             // Don't proceed if the event data isn't what we expect
-            if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
+            if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
             var items = theEvent.info.Items?
                 .Select(q => q.ToCommodityMarketQuote())
@@ -2173,7 +2180,7 @@ namespace EddiCore
                 // Update the current station commodities
                 if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
                 {
-                    CurrentStation.commodities = theEvent.info.Items.Select(q => q.ToCommodityMarketQuote()).ToList();
+                    CurrentStation.commodities = items;
                     CurrentStation.commoditiesupdatedat = Dates.fromDateTimeToSeconds(theEvent.timestamp);
 
                     // Update the current station information in our backend DB
@@ -2200,14 +2207,21 @@ namespace EddiCore
 
         private bool eventOutfitting(OutfittingEvent theEvent)
         {
-            // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
+            // Don't proceed when loading pre-existing logs
             if (theEvent.fromLoad) { return false; }
 
+            // Don't proceed if the CompanionAppService is active and its data has not yet expired
+            if ( CompanionAppService.Instance.active &&
+                 DateTime.UtcNow < CompanionAppService.Instance.CombinedStationEndpoints.cachedStationExpires )
+            {
+                return false;
+            }
+
             // Don't proceed if the event data isn't what we expect
-            if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
+            if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
             var modules = theEvent.info.Items?
-                .Select(i => EddiDataDefinitions.Module.FromOutfittingInfo(i))
+                .Select(EddiDataDefinitions.Module.FromOutfittingInfo)
                 .Where(i => i != null)
                 .ToList();
 
@@ -2243,14 +2257,21 @@ namespace EddiCore
 
         private bool eventShipyard(ShipyardEvent theEvent)
         {
-            // Don't proceed if we've already viewed outfitting while docked or when loading pre-existing logs
+            // Don't proceed when loading pre-existing logs
             if (theEvent.fromLoad) { return false; }
+
+            // Don't proceed if the CompanionAppService is active and its data has not yet expired
+            if ( CompanionAppService.Instance.active &&
+                 DateTime.UtcNow < CompanionAppService.Instance.CombinedStationEndpoints.cachedStationExpires )
+            {
+                return false;
+            }
 
             // Don't proceed if the event data isn't what we expect
             if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
             var ships = theEvent.info.PriceList?
-                .Select(s => Ship.FromShipyardInfo(s))
+                .Select(Ship.FromShipyardInfo)
                 .Where(s => s != null)
                 .ToList();
 
@@ -3320,6 +3341,19 @@ namespace EddiCore
                     if (CurrentStarSystem is null || string.IsNullOrEmpty(CurrentStarSystem.systemname))
                     {
                         return;
+                    }
+
+                    // Make sure that our endpoints have not been recently updated (within the last 300 seconds)
+                    if ( CurrentStation != null )
+                    {
+                        var lastCommodityUpdateSeconds = Convert.ToInt64( CurrentStation.commoditiesupdatedat ?? 0 );
+                        var lastOutfittingUpdateSeconds = Convert.ToInt64( CurrentStation.outfittingupdatedat ?? 0 );
+                        var lastShipyardUpdateSeconds = Convert.ToInt64( CurrentStation.shipyardupdatedat ?? 0 );
+                        var mostRecentMarketUpdateSeconds = Math.Max( Math.Max( lastCommodityUpdateSeconds, lastOutfittingUpdateSeconds ), lastShipyardUpdateSeconds );
+                        if ( ( Dates.fromDateTimeToSeconds( DateTime.UtcNow ) - mostRecentMarketUpdateSeconds ) < 300 )
+                        {
+                            return;
+                        }
                     }
 
                     // We do need to fetch an updated station profile; do so
