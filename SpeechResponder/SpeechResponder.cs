@@ -8,6 +8,7 @@ using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -76,7 +77,7 @@ namespace EddiSpeechResponder
 
         public string ResponderName()
         {
-            return "Speech responder";
+            return Properties.SpeechResponder.ResourceManager.GetString( "name", CultureInfo.InvariantCulture );
         }
 
         public string LocalizedResponderName()

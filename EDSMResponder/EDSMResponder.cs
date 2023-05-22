@@ -5,6 +5,7 @@ using EddiEvents;
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Windows.Controls;
 using Utilities;
@@ -23,7 +24,7 @@ namespace EddiEdsmResponder
 
         public string ResponderName()
         {
-            return "EDSM responder";
+            return Properties.EDSMResources.ResourceManager.GetString( "name", CultureInfo.InvariantCulture );
         }
 
         public string LocalizedResponderName()

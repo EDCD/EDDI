@@ -1117,7 +1117,7 @@ namespace EddiCore
                         passEvent = eventSettlementApproached(settlementApproachedEvent);
                     }
 
-                    // Additional processing is over, send to the event responders if required
+                    // Additional processing is over, send to the event monitors and responders if required
                     if (passEvent)
                     {
                         OnEvent(@event);
@@ -1128,8 +1128,10 @@ namespace EddiCore
                     Logging.Error($"EDDI core failed to handle {@event.type} event {@event.raw}.", ex);
 
                     // Even if an error occurs, we still need to pass the raw data 
-                    // to the EDDN responder to maintain it's integrity.
-                    Instance.ObtainResponder("EDDN responder").Handle(@event);
+                    // to the EDDN responder to maintain it's integrity and to the Inara / EDSM reponders to keep external services up-to-date.
+                    Instance.ObtainResponder("EDDN Responder").Handle(@event);
+                    Instance.ObtainResponder( "EDSM Responder" ).Handle( @event );
+                    Instance.ObtainResponder( "Inara Responder" ).Handle( @event );
                 }
             }
         }

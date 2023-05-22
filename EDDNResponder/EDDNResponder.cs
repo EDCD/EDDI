@@ -9,6 +9,7 @@ using EddiStatusService;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
@@ -29,7 +30,7 @@ namespace EddiEddnResponder
 
         public string ResponderName()
         {
-            return "EDDN responder";
+            return EddnResources.ResourceManager.GetString( "name", CultureInfo.InvariantCulture );
         }
 
         public string LocalizedResponderName()
