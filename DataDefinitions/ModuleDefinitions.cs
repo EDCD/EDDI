@@ -517,6 +517,7 @@ namespace EddiDataDefinitions
                 new Module(128064351, "Int_FuelTank_Size6_Class3", "FuelTank", 6, "C", 341580),
                 new Module(128064352, "Int_FuelTank_Size7_Class3", "FuelTank", 7, "C", 1780910),
                 new Module(128064353, "Int_FuelTank_Size8_Class3", "FuelTank", 8, "C", 5428400),
+                new Module(128066402, "Int_DroneControl_ResourceSiphon", "HatchBreakerLimpetController", 1, "I", 18317),
                 new Module(128066532, "Int_DroneControl_ResourceSiphon_Size1_Class1", "HatchBreakerLimpetController", 1, "E", 600),
                 new Module(128066533, "Int_DroneControl_ResourceSiphon_Size1_Class2", "HatchBreakerLimpetController", 1, "D", 1200),
                 new Module(128066534, "Int_DroneControl_ResourceSiphon_Size1_Class3", "HatchBreakerLimpetController", 1, "C", 2400),
@@ -1086,6 +1087,7 @@ namespace EddiDataDefinitions
                 new Module(129022086, "Hpt_ATMultiCannon_Turret_Medium_V2", "Enhanced_AXMulti_Cannon", 2, "E", 2193197, ModuleMount.Turreted),
                 new Module(129022088, "Hpt_ATMultiCannon_Gimbal_Large", "Enhanced_AXMulti_Cannon", 3, "C", 2390461, ModuleMount.Gimballed),
                 new Module(129022089, "Hpt_ATMultiCannon_Gimbal_Medium", "Enhanced_AXMulti_Cannon", 2, "E", 1197344, ModuleMount.Gimballed),
+                new Module(129022952, "Hpt_XenoScanner_Advanced_Tiny", "PulseWaveXenoScanner", 0, "C", 850000),
                 new Module(129022663, "Hpt_AntiUnknownShutdown_Tiny_V2", "Thargoid_Pulse_Neutraliser", 0, "E", 0),
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
@@ -1195,7 +1197,6 @@ namespace EddiDataDefinitions
                 new Module(899990050, "hpt_guardianshard_fixed_gdn_fighter", "ShardCannon", 1, "I", 0, -1),
 
                 // Needs pricing
-                new Module(128066402, "Int_DroneControl_ResourceSiphon", "HatchBreakerLimpetController", 1, "I", 0),
             };
         }
 

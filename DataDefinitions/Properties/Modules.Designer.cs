@@ -943,6 +943,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pulse Wave Xeno Scanner.
+        /// </summary>
+        public static string PulseWaveXenoScanner {
+            get {
+                return ResourceManager.GetString("PulseWaveXenoScanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rail Gun.
         /// </summary>
         public static string RailGun {

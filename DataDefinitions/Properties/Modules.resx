@@ -637,4 +637,8 @@
     <value>Thargoid Pulse Neutraliser</value>
     <comment>Module Thargoid Pulse Neutraliser</comment>
   </data>
+  <data name="PulseWaveXenoScanner" xml:space="preserve">
+    <value>Pulse Wave Xeno Scanner</value>
+    <comment>Module PulseWaveXenoScanner</comment>
+  </data>
 </root>
