@@ -79,6 +79,9 @@ namespace EddiSpeechResponder
             // Set our editor content
             scriptView.Text = editorScript.Value;
 
+            // Convert tabs to spaces
+            scriptView.Options.ConvertTabsToSpaces = true;
+
             // Set up our Script Recovery Service
             ScriptRecoveryService = new ScriptRecoveryService( this );
             ScriptRecoveryService.BeginScriptRecovery();
