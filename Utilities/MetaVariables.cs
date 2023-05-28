@@ -11,7 +11,7 @@ namespace Utilities
 {
     public class MetaVariables
     {
-        public MetaVariables(Type reflectionObjectType, object reflectionObject = null)
+        public MetaVariables(Type reflectionObjectType, object reflectionObject = null, int? maxRecursionLevel = null)
         {
             if (reflectionObjectType is null) 
             { 
@@ -19,7 +19,7 @@ namespace Utilities
             }
             else
             {
-                Results = GetVariables(reflectionObjectType, reflectionObject);
+                Results = GetVariables(reflectionObjectType, maxRecursionLevel, reflectionObject);
             }
         }
 
@@ -46,9 +46,10 @@ namespace Utilities
 
         /// <summary> Walk an object and write out all of the possible fields </summary>
         /// <param name="reflectionObjectType">The Type property of the object that we're walking, specified independent from the actual object in case the actual object value is null</param>
+        /// <param name="maxRecursionLevel">The maximum number of recursion levels to walk while obtaining our metavariables</param>
         /// <param name="reflectionObject">(Optional) The object that we're walking to obtain values. At the top level, this should be an `Event` class object</param>
         /// <param name="keysPath">(Used internally, do not set) The path to the specific key</param>
-        private List<MetaVariable> GetVariables(Type reflectionObjectType, object reflectionObject = null, List<string> keysPath = null)
+        private List<MetaVariable> GetVariables(Type reflectionObjectType, int? maxRecursionLevel, object reflectionObject = null, List<string> keysPath = null)
         {
             if (keysPath is null) { keysPath = new List<string>(); }
             if (Results is null) { Results = new List<MetaVariable>(); }
@@ -56,7 +57,7 @@ namespace Utilities
             // Some types don't need to be decomposed further.
             if (undecomposedTypes.Contains(reflectionObjectType))
             {
-                GetVariable(keysPath.Copy(), "", reflectionObjectType, string.Empty, reflectionObject);
+                GetVariable(keysPath.Copy(), "", reflectionObjectType, string.Empty, reflectionObject, maxRecursionLevel );
                 return Results;
             }
 
@@ -72,7 +73,7 @@ namespace Utilities
                     if (attribute is PublicAPIAttribute publicAPIAttribute)
                     {
                         passProperty = true;
-                        GetVariable(keysPath.Copy(), eventProperty.Name, eventProperty.PropertyType, publicAPIAttribute.Description, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null);
+                        GetVariable(keysPath.Copy(), eventProperty.Name, eventProperty.PropertyType, publicAPIAttribute.Description, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, maxRecursionLevel );
                         break;
                     }
                 }
@@ -91,7 +92,7 @@ namespace Utilities
                     if (attribute is PublicAPIAttribute publicAPIAttribute)
                     {
                         passField = true;
-                        GetVariable(keysPath.Copy(), eventField.Name, eventField.FieldType, publicAPIAttribute.Description, reflectionObject != null ? eventField.GetValue(reflectionObject) : null);
+                        GetVariable(keysPath.Copy(), eventField.Name, eventField.FieldType, publicAPIAttribute.Description, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, maxRecursionLevel );
                         break;
                     }
                 }
@@ -104,7 +105,7 @@ namespace Utilities
             return Results;
         }
 
-        private void GetVariable(List<string> keysPath, string key, Type type, string description, object value)
+        private void GetVariable(List<string> keysPath, string key, Type type, string description, object value, int? maxRecursionLevel )
         {
             try
             {
@@ -184,7 +185,7 @@ namespace Utilities
                             {
                                 if ( kvp.Value != null )
                                 {
-                                    GetVariable( oldKeysPath, kvp.Key.ToString(), kvp.Value.GetType(), description, kvp.Value );
+                                    GetVariable( oldKeysPath, kvp.Key.ToString(), kvp.Value.GetType(), description, kvp.Value, maxRecursionLevel );
                                 }
                             }
                         }
@@ -205,7 +206,10 @@ namespace Utilities
                                 Logging.Debug("Handling element " + i++);
                                 var elementKeysPath = keysPath.Copy();
                                 elementKeysPath.Add(i.ToString());
-                                GetVariables(underlyingType, item, elementKeysPath);
+                                if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
+                                {
+                                    GetVariables( underlyingType, maxRecursionLevel, item, elementKeysPath );
+                                }
                             }
                         }
                         else
@@ -215,7 +219,10 @@ namespace Utilities
                             // Get the current list element's underlying variable data
                             var elementKeysPath = keysPath.Copy();
                             elementKeysPath.Add(indexMarker);
-                            GetVariables(underlyingType, null, elementKeysPath);
+                            if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
+                            {
+                                GetVariables( underlyingType, maxRecursionLevel, null, elementKeysPath );
+                            }
 
                             // Set i to null so that no value is written to the wiki documentation
                             i = null;
@@ -230,10 +237,13 @@ namespace Utilities
                         Logging.Debug($"Found object '{type.Name}'");
 
                         // Add an object to represent the root name for the object in our docs
-                        Results.Add(new MetaVariable(keysPath, typeof(object), description));
+                        Results.Add(new MetaVariable(keysPath, type, description));
 
                         // Get the object's child properties
-                        GetVariables(type, value, keysPath);
+                        if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
+                        {
+                            GetVariables( type, maxRecursionLevel, value, keysPath );
+                        }
                     }
                     else
                     {

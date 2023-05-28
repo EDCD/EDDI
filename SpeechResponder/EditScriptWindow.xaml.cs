@@ -244,8 +244,8 @@ namespace EddiSpeechResponder
                 return textCompletionItems;
             }
 
-            // Split our lookup item into its constituent parts / objects
-            var lookupKeys = lookupItem.Split('.');
+            // Remove any leading "!" and split our lookup item into its constituent parts / objects
+            var lookupKeys = lookupItem.Replace("!", "").Split('.');
             if (!lookupKeys.Any())
             {
                 return textCompletionItems;
@@ -271,7 +271,7 @@ namespace EddiSpeechResponder
                 // Remove any nested keys or keys that don't match our lookup value
                 var filteredMetaVariables = metaVariables
                     .Where( v => v.keysPath.Count == ( lookupKeys.Length + 1 ) )
-                    .Where( v => string.Join( ".", v.keysPath ).StartsWith( lookupKeys[ 0 ] ) )
+                    .Where( v => string.Join( ".", v.keysPath ).StartsWith( string.Join( ".", lookupKeys ) ) )
                     .ToList();
 
                 // Remove any redundant localized names
@@ -289,21 +289,21 @@ namespace EddiSpeechResponder
             // Resolve any direct function invocations (e.g. `{function(x).`)
             if ( !filteredMetaVars.Any() )
             {
-                if ( lookupKeys[0].Contains("(") )
+                if ( lookupKeys[ 0 ].Contains( "(" ) )
                 {
                     var functionKey = Regex.Replace( lookupKeys[ 0 ], @"(?=\().*", "" );
                     // If a match is found then we won't need to search our metavariables for a match.
                     var customFunction = customFunctions.FirstOrDefault( f => f.name == functionKey );
                     if ( customFunction != null )
                     {
-                        var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType ).Results;
+                        var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType, null, lookupKeys.Length + 1 ).Results;
                         unfilteredMetaVars.ForEach( mV =>
                             mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
                         filteredMetaVars = FilterMetaVars( unfilteredMetaVars );
                     }
                 }
             }
-            
+
             // Resolve any function aliases (e.g. `{set a to function()} {a.`).
             if ( !filteredMetaVars.Any() )
             {
@@ -320,7 +320,7 @@ namespace EddiSpeechResponder
                                 customFunctions.FirstOrDefault( f => f.name == match.Groups[ "function" ].Value );
                             if ( customFunction != null )
                             {
-                                var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType ).Results;
+                                var unfilteredMetaVars = new MetaVariables( customFunction.ReturnType, null, lookupKeys.Length + 1 ).Results;
                                 unfilteredMetaVars.ForEach( mV =>
                                     mV.keysPath = mV.keysPath.Prepend( lookupKeys[ 0 ] ).ToList() );
                                 filteredMetaVars = FilterMetaVars( unfilteredMetaVars );
