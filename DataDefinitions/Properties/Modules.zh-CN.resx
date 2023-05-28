@@ -633,4 +633,9 @@
     <value>除酸器发射器</value>
     <comment>Module Caustic Sink Launcher</comment>
   </data>
+  <data name="Thargoid_Pulse_Neutraliser" xml:space="preserve">
+    <value>八角脉冲中和器</value>
+    <comment>Module Thargoid Pulse Neutraliser</comment>
+  </data>
+  
 </root>
