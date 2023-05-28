@@ -637,5 +637,8 @@
     <value>八角脉冲中和器</value>
     <comment>Module Thargoid Pulse Neutraliser</comment>
   </data>
-  
+  <data name="PulseWaveXenoScanner" xml:space="preserve">
+    <value>脉冲波八角扫描器</value>
+    <comment>Module PulseWaveXenoScanner</comment>
+  </data>
 </root>
