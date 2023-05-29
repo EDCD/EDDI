@@ -237,7 +237,7 @@ namespace Utilities
                         Logging.Debug($"Found object '{type.Name}'");
 
                         // Add an object to represent the root name for the object in our docs
-                        Results.Add(new MetaVariable(keysPath, type, description));
+                        Results.Add(new MetaVariable(keysPath, typeof(object), description));
 
                         // Get the object's child properties
                         if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
