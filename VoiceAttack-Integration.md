@@ -298,24 +298,24 @@ Note: "Tiny" hardpoints are utility slots.
   * {DEC:Ship compartment *\<index\>* module station cost}: the purchase cost of this module at this station (not set if not for sale at the station)
   * {DEC:Ship compartment *\<index\>* module station discount}: the number of credits discount of the module over that currently fitted (not set if no additional discount)
   * {TXT:Ship compartment *\<index\>* module station discount (spoken)}: the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
-  * {TXT:Last station name}: the name of the last station the commander docked at
-  * {TXT:Last station faction}: the name of the controlling faction of the last station
-  * {TXT:Last station government}: the name of the government of the last station
-  * {TXT:Last station allegiance}: the name of the allegiance of the last station (Federation, Empire, etc.)
-  * {TXT:Last station state}: the name of the state of the last station (boom, outbreak, etc.)
-  * {DEC:Last station distance from star}: the distance from the primary star to this station, in light seconds
-  * {TXT:Last station primary economy}: the primary economy of this station (extraction, prison colony, etc.)
-  * {BOOL:Last station has refuel}: true if this station has refuel capability
-  * {BOOL:Last station has rearm}: true if this station has rearm capability
-  * {BOOL:Last station has repair}: true if this station has repair capability
-  * {BOOL:Last station has market}: true if this station has a commodities market
-  * {BOOL:Last station has black market}: true if this station has a black market
-  * {BOOL:Last station has outfitting}: true if this station has outfitting
-  * {BOOL:Last station has shipyard}: true if this station has a shipyard
+  * {TXT:Current station name}: the name of the current station where the commander is docked
+  * {TXT:Current station faction}: the name of the controlling faction of the current station
+  * {TXT:Current station government}: the name of the government of the current station
+  * {TXT:Current station allegiance}: the name of the allegiance of the current station (Federation, Empire, etc.)
+  * {TXT:Current station state}: the name of the state of the current station (boom, outbreak, etc.)
+  * {DEC:Current station distance from star}: the distance from the primary star to this station, in light seconds
+  * {TXT:Current station primary economy}: the primary economy of this station (extraction, prison colony, etc.)
+  * {BOOL:Current station has refuel}: true if this station has refuel capability
+  * {BOOL:Current station has rearm}: true if this station has rearm capability
+  * {BOOL:Current station has repair}: true if this station has repair capability
+  * {BOOL:Current station has market}: true if this station has a commodities market
+  * {BOOL:Current station has black market}: true if this station has a black market
+  * {BOOL:Current station has outfitting}: true if this station has outfitting
+  * {BOOL:Current station has shipyard}: true if this station has a shipyard
 
 ### Home Station Variables
 
-  * Like "Current Station Variables", except prefixed with `Home station` rather than `Last station`
+  * Like "Current Station Variables", except prefixed with `Home station` rather than `Current station`
 
 ## Shipyard Variables
 

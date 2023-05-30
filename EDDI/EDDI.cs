@@ -2413,7 +2413,6 @@ namespace EddiCore
             }
             
             // Remove information about the current station and stellar body 
-            CurrentStation = null;
             CurrentStellarBody = null;
 
             // Set the destination system as the current star system
@@ -2578,9 +2577,6 @@ namespace EddiCore
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
 
-            // No longer in 'station instance'
-            CurrentStation = null;
-
             return passEvent;
         }
 
@@ -2590,10 +2586,7 @@ namespace EddiCore
             updateCurrentSystem(theEvent.system, theEvent.systemAddress );
 
             CurrentStarSystem.systemAddress = theEvent.systemAddress;
-
-            // No longer in 'station instance'
-            CurrentStation = null;
-
+            
             if (theEvent.taxi is true)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
@@ -2614,19 +2607,7 @@ namespace EddiCore
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
-            if ( theEvent.bodyType == BodyType.FromEDName( "Station" ) )
-            {
-                // In this case body == station
-                var station = CurrentStarSystem.stations.Find( s => s.name == theEvent.bodyname ) ??
-                              new Station
-                              {
-                                  // This station is unknown to us, might not be in our data source or we might not have connectivity.
-                                  // Use a placeholder
-                                  name = theEvent.bodyname, systemname = theEvent.systemname
-                              };
-                CurrentStation = station;
-            }
-            else if (theEvent.bodyname != null)
+            if (theEvent.bodyname != null)
             {
                 updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
             }
@@ -2934,9 +2915,6 @@ namespace EddiCore
 
         private bool eventNearSurface(NearSurfaceEvent theEvent)
         {
-            // We won't update CurrentStation with this event, as doing so triggers false / premature updates from the Frontier API
-            CurrentStation = null;
-
             if ( theEvent.approaching_surface )
             {
                 // Update the body 
@@ -3405,7 +3383,6 @@ namespace EddiCore
 
                         // Update the current station information in our backend DB
                         Logging.Debug("Star system information updated from Frontier API server; updating local copy");
-                        CurrentStation = station;
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                     }
                 }

@@ -50,6 +50,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Redirect plugin commands for accessing EDDB (eddbsystem and eddbstation) to instead reference Inara (inarasystem, and inarastation)
     * Updated EDDI.vap to add new commands referencing Inara.cz.
     * Updated EDDI.vap to remove commands referencing EDDB.
+    * Renamed `Last station ...` variables to `Current station ...`, updated EDDI.vap, and updated docs.
 
 ## 4.0.2
   * Core
