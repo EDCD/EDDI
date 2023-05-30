@@ -633,4 +633,12 @@
     <value>Espulsore anticorrosione</value>
     <comment>Module Caustic Sink Launcher</comment>
   </data>
+  <data name="Thargoid_Pulse_Neutraliser" xml:space="preserve">
+    <value>Neutralizzatore d'impulsi Thargoid</value>
+    <comment>Module Thargoid Pulse Neutraliser</comment>
+  </data>
+  <data name="PulseWaveXenoScanner" xml:space="preserve">
+    <value>Xeno scanner a onde pulsate</value>
+    <comment>Module PulseWaveXenoScanner</comment>
+  </data>
 </root>
