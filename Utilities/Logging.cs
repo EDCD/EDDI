@@ -365,29 +365,80 @@ namespace Utilities
             try
             {
                 TelemetryEnabled = true;
-                var config = new RollbarInfrastructureConfig(rollbarWriteToken, Constants.EDDI_VERSION.ToString());
-                config.RollbarTelemetryOptions.Reconfigure(new RollbarTelemetryOptions(true, 250));
-                config.RollbarInfrastructureOptions.Reconfigure(new RollbarInfrastructureOptions(1, TimeSpan.FromSeconds(10)));
-                config.RollbarLoggerConfig.Reconfigure(new RollbarLoggerConfig(rollbarWriteToken, Constants.EDDI_VERSION.ToString()));
-                config.RollbarLoggerConfig.RollbarDataSecurityOptions.Reconfigure(
-                    new RollbarDataSecurityOptions(PersonDataCollectionPolicies.None,
-                        IpAddressCollectionPolicy.DoNotCollect,
-                        new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID" }));
-                config.RollbarLoggerConfig.RollbarPayloadAdditionOptions.Reconfigure(
-                    new RollbarPayloadAdditionOptions(
-                            new Person(uniqueId + (fromVA ? " VA" : "")),
-                            new Server() { Root = "/" }
-                        )
-                        { CodeVersion = ThisAssembly.Git.Sha }
-                );
-                RollbarInfrastructure.Instance.Init(config);
-                RollbarLocator.RollbarInstance.Configure(config.RollbarLoggerConfig);
-                Thread.Sleep(100); // Give some space for Rollbar to initialize before we begin sending data
+
+                var config = new RollbarInfrastructureConfig( rollbarWriteToken, Constants.EDDI_VERSION.ToString() );
+
+                // Configure telemetry
+                var telemetryOptions = new RollbarTelemetryOptions( true, 250 );
+                config.RollbarTelemetryOptions.Reconfigure( telemetryOptions );
+
+                // Configure Infrastructure Options
+                var infrastructureOptions = new RollbarInfrastructureOptions
+                {
+                    MaxReportsPerMinute = 1,
+                    PayloadPostTimeout = TimeSpan.FromSeconds( 10 ),
+                    CaptureUncaughtExceptions = true
+                };
+                config.RollbarInfrastructureOptions.Reconfigure( infrastructureOptions );
+
+                // Configure Logger Options
+                var loggerOptions = new RollbarLoggerConfig( rollbarWriteToken, Constants.EDDI_VERSION.ToString() );
+                var loggerDataSecurityOptions = new RollbarDataSecurityOptions(
+                    PersonDataCollectionPolicies.None,
+                    IpAddressCollectionPolicy.DoNotCollect,
+                    new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID" } );
+                var loggerPayloadOptions = new RollbarPayloadAdditionOptions()
+                {
+                    Person = new Person( uniqueId + ( fromVA ? " VA" : "" ) ),
+                    Server = new Server { Root = "/" },
+                    CodeVersion = ThisAssembly.Git.Sha
+                };
+                loggerOptions.RollbarDataSecurityOptions.Reconfigure( loggerDataSecurityOptions );
+                loggerOptions.RollbarPayloadAdditionOptions.Reconfigure( loggerPayloadOptions );
+                config.RollbarLoggerConfig.Reconfigure( loggerOptions );
+
+                // Initialize our configured client
+                RollbarInfrastructure.Instance.Init( config );
+                RollbarLocator.RollbarInstance.Configure( config.RollbarLoggerConfig );
+                RollbarLocator.RollbarInstance.InternalEvent += OnRollbarInternalEvent;
+                Thread.Sleep( 100 ); // Give some space for Rollbar to initialize before we begin sending data
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
                 TelemetryEnabled = false;
-                Logging.Warn("Telemetry process has failed", e);
+                Logging.Warn( "Telemetry process has failed", e );
+            }
+        }
+
+        /// <summary>
+        /// Called when rollbar internal event is detected.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RollbarEventArgs"/> instance containing the event data.</param>
+        private static void OnRollbarInternalEvent ( object sender, RollbarEventArgs e )
+        {
+            if ( e is RollbarApiErrorEventArgs apiErrorEvent )
+            {
+                Logging.Warn(apiErrorEvent.ErrorDescription, apiErrorEvent);
+                return;
+            }
+
+            if ( e is CommunicationEventArgs commEvent )
+            {
+                //TODO: handle/report Rollbar API communication event as needed...
+                return;
+            }
+
+            if ( e is CommunicationErrorEventArgs commErrorEvent )
+            {
+                Logging.Warn( commErrorEvent.Error.Message, commErrorEvent );
+                return;
+            }
+
+            if ( e is InternalErrorEventArgs internalErrorEvent )
+            {
+                Logging.Warn( internalErrorEvent.Details, internalErrorEvent );
+                return;
             }
         }
     }
