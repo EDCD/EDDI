@@ -328,6 +328,10 @@ namespace EddiCore
         }
         private StarSystem nextStarSystem;
 
+        /// <summary>
+        /// The currently docked station, if any
+        /// </summary>
+        [CanBeNull]
         public Station CurrentStation
         {
             get => currentStation;
@@ -345,6 +349,10 @@ namespace EddiCore
         }
         private Station currentStation;
 
+        /// <summary>
+        /// The currently nearby star system (within the gravity well), if any
+        /// </summary>
+        [CanBeNull]
         public Body CurrentStellarBody 
         {
             get => currentStellarBody;
@@ -984,10 +992,6 @@ namespace EddiCore
                     {
                         passEvent = eventBodyMapped(bodyMappedEvent);
                     }
-                    else if (@event is RingMappedEvent ringMappedEvent)
-                    {
-                        passEvent = eventRingMapped(ringMappedEvent);
-                    }
                     else if (@event is VehicleDestroyedEvent vehicleDestroyedEvent)
                     {
                         passEvent = eventVehicleDestroyed(vehicleDestroyedEvent);
@@ -1401,13 +1405,6 @@ namespace EddiCore
 
                 // Add the carrier to the destination system
                 CurrentStarSystem?.stations.Add(CurrentStation);
-
-                // (When jumping near a body) Set the destination body as the current stellar body
-                if (@event.bodyname != null)
-                {
-                    updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
-                    CurrentStellarBody.bodyId = @event.bodyId;
-                }
             }
             else if (!string.IsNullOrEmpty(@event.originSystemName))
             {
@@ -1539,17 +1536,6 @@ namespace EddiCore
                         if (squadronFaction != null)
                         {
                             updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
-                        }
-                    }
-
-                    // (When near a body) Update the body
-                    if (@event.bodyname != null && CurrentStellarBody?.bodyname != @event.bodyname)
-                    {
-                        updateCurrentStellarBody(@event.bodyname, @event.systemname, @event.systemAddress);
-                        if (CurrentStellarBody != null)
-                        {
-                            CurrentStellarBody.bodyId = @event.bodyId;
-                            CurrentStellarBody.bodyType = @event.bodyType;                            
                         }
                     }
 
@@ -1918,35 +1904,25 @@ namespace EddiCore
                 : CurrentStarSystem.Powers;
             CurrentStarSystem.powerState = theEvent.powerState ?? CurrentStarSystem.powerState;
 
-            if (theEvent.docked || theEvent.bodytype.ToLowerInvariant() == "station")
+            if ( theEvent.docked )
             {
-                // In this case body = station and our body information is invalid
-                CurrentStellarBody = null;
-
                 // Update the station
-                string stationName = theEvent.docked ? theEvent.station : theEvent.bodyname;
+                string stationName = theEvent.station;
 
-                Logging.Debug("Now at station " + stationName);
-                Station station = CurrentStarSystem.stations.Find(s => s.name == stationName);
-                if (station == null)
+                Logging.Debug( "Now at station " + stationName );
+                Station station = CurrentStarSystem.stations.Find( s => s.name == stationName );
+                if ( station == null )
                 {
                     // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                    station = new Station
-                    {
-                        name = stationName,
-                        systemname = theEvent.systemname
-                    };
-                    CurrentStarSystem.stations.Add(station);
+                    station = new Station { name = stationName, systemname = theEvent.systemname };
+                    CurrentStarSystem.stations.Add( station );
                 }
-                CurrentStation = station;
 
-                if (theEvent.docked)
-                {
                     // We are docked
                     Environment = Constants.ENVIRONMENT_DOCKED;
 
                     // If we're not in a taxi or multicrew then we're in our own ship.
-                    if (!theEvent.taxi && !theEvent.multicrew) { Vehicle = Constants.VEHICLE_SHIP; }
+                if ( !theEvent.taxi && !theEvent.multicrew ) { Vehicle = Constants.VEHICLE_SHIP; }
 
                     // Update station properties known from this event
                     station.marketId = theEvent.marketId;
@@ -1955,33 +1931,34 @@ namespace EddiCore
                     station.Model = theEvent.stationModel;
                     station.distancefromstar = theEvent.distancefromstar;
 
+                CurrentStation = station;
+
                     // Kick off the profile refresh if the companion API is available
-                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+                if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized )
                     {
                         // Refresh station data
-                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Thread updateThread = new Thread(() => conditionallyRefreshStationProfile())
+                    if ( theEvent.fromLoad )
                         {
+                        return true;
+                    } // Don't fire this event when loading pre-existing logs
+
+                    Thread updateThread = new Thread( conditionallyRefreshStationProfile )
+                    {
                             IsBackground = true
                         };
                         updateThread.Start();
                     }
                 }
-                else
+            
+            if (theEvent.bodyname != null && ( theEvent.bodyType == BodyType.Moon || 
+                                               theEvent.bodyType == BodyType.Planet ) )
                 {
-                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-                }
-            }
-            else if (theEvent.bodyname != null)
-            {
-                // If we are not at a station then our station information is invalid 
-                CurrentStation = null;
-
                 // Update the body 
                 Logging.Debug("Now at body " + theEvent.bodyname);
                 updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
+            }
 
-                if (theEvent.latitude != null && theEvent.longitude != null)
+            if ( theEvent.latitude != null && theEvent.longitude != null )
                 {
                     Environment = Constants.ENVIRONMENT_LANDED;
                 }
@@ -1989,13 +1966,6 @@ namespace EddiCore
                 {
                     Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
                 }
-            }
-            else
-            {
-                // We are near neither a stellar body nor a station. 
-                CurrentStellarBody = null;
-                CurrentStation = null;
-            }
 
             // Update to most recent information
             CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
@@ -2072,14 +2042,13 @@ namespace EddiCore
                 station.distancefromstar = theEvent.distancefromstar;
 
                 CurrentStation = station;
-                CurrentStellarBody = null;
 
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                 {
                     // Refresh station data
                     if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
-                    Thread updateThread = new Thread(() => conditionallyRefreshStationProfile())
+                    Thread updateThread = new Thread(conditionallyRefreshStationProfile)
                     {
                         IsBackground = true
                     };
@@ -2372,21 +2341,6 @@ namespace EddiCore
                 var body = CurrentStarSystem.bodies?.Find(s => s.bodyname == bodyName);
                 if (body == null)
                 {
-                    // We may be near a ring. For rings, we want to select the parent body
-                    var ringedBodies = CurrentStarSystem.bodies?
-                        .Where(b => b?.rings?.Count > 0).ToList() ?? new List<Body>();
-                    foreach (var ringedBody in ringedBodies)
-                    {
-                        var ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
-                        if (ring != null)
-                        {
-                            body = ringedBody;
-                            break;
-                        }
-                    }
-                }
-                if (body == null)
-                {
                     // This body is unknown to us, might not be in our 3rd party API data,
                     // or we might not have connectivity.  Use a placeholder 
                     body = new Body
@@ -2414,6 +2368,7 @@ namespace EddiCore
             }
             
             // Remove information about the current station and stellar body 
+            CurrentStation = null;
             CurrentStellarBody = null;
 
             // Set the destination system as the current star system
@@ -2511,8 +2466,6 @@ namespace EddiCore
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
                 CurrentStarSystem.Faction = theEvent.controllingfaction;
-                CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star)
-                                     ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
                 CurrentStarSystem.conflicts = theEvent.conflicts;
                 CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
 
@@ -2549,9 +2502,9 @@ namespace EddiCore
                 }
 
                 // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
-                if (!string.IsNullOrEmpty(theEvent.star) && string.IsNullOrEmpty( CurrentStellarBody?.bodyname ))
+                if (!string.IsNullOrEmpty(theEvent.star))
                 {
-                    CurrentStellarBody = new Body()
+                    var body = new Body()
                     {
                         bodyname = theEvent.star,
                         bodyType = BodyType.FromEDName("Star"),
@@ -2560,7 +2513,7 @@ namespace EddiCore
                                 : null)
                             ?.stellarclass,
                     };
-                    CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
+                    CurrentStarSystem.AddOrUpdateBody(body);
                 }
 
                 // (When pledged) Powerplay information
@@ -2608,7 +2561,7 @@ namespace EddiCore
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
-            if (theEvent.bodyname != null)
+            if (theEvent.bodyname != null && (theEvent.bodyType == BodyType.Moon || theEvent.bodyType == BodyType.Planet) )
             {
                 updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
             }
@@ -2981,18 +2934,8 @@ namespace EddiCore
             if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem.systemAddress)
             {
                 // We've already updated the body (via the journal monitor) if the CurrentStarSystem isn't null
-                // Here, we just need to save the data and update our current stellar body
+                // Here, we just need to save the data.
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem.systemname, CurrentStarSystem.systemAddress);
-            }
-            return true;
-        }
-
-        private bool eventRingMapped(RingMappedEvent theEvent)
-        {
-            if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem.systemAddress)
-            {
-                updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem.systemname, CurrentStarSystem.systemAddress);
             }
             return true;
         }
