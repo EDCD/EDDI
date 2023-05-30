@@ -2092,7 +2092,8 @@ namespace EddiCore
         private bool eventUndocked(UndockedEvent theEvent)
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-
+            CurrentStation = null;
+            
             // Call refreshProfile() to ensure that our ship is up-to-date
             refreshProfile();
 
