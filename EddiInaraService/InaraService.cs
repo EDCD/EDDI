@@ -26,7 +26,7 @@ namespace EddiInaraService
 
         // Variables
         private static bool tooManyRequests; // This must be static so that it is visible to child threads and tasks
-        private BlockingCollection<InaraAPIEvent> queuedAPIEvents;
+        private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
         private readonly List<string> invalidAPIEvents = new List<string>();
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
         private bool eddiIsBeta;
@@ -36,30 +36,29 @@ namespace EddiInaraService
         private static readonly System.Version minGameVersion = new System.Version(4, 0);
         private static System.Version currentGameVersion { get; set; }
 
-        public void Start(bool _eddiIsBeta = false)
+        public void Start ( bool _eddiIsBeta = false )
         {
-            if (syncCancellationTS is null || syncCancellationTS.IsCancellationRequested)
+            if ( syncCancellationTS is null || syncCancellationTS.IsCancellationRequested )
             {
-                Logging.Debug("Starting Inara service background sync.");
+                Logging.Debug( "Starting Inara service background sync." );
                 eddiIsBeta = _eddiIsBeta;
-                Task.Run(BackgroundSync);
+                Task.Run( BackgroundSync ).ConfigureAwait( false );
             }
         }
 
-        public void Stop()
+        public void Stop ()
         {
-            if (syncCancellationTS != null && !syncCancellationTS.IsCancellationRequested)
+            if ( syncCancellationTS != null && !syncCancellationTS.IsCancellationRequested )
             {
-                Logging.Debug("Stopping Inara service background sync.");
+                Logging.Debug( "Stopping Inara service background sync." );
                 syncCancellationTS.Cancel();
                 // Clean up by sending anything left in the queue.
-                SendAPIEvents(queuedAPIEvents.ToList());
+                SendAPIEvents( queuedAPIEvents.ToList() );
             }
         }
 
         private async void BackgroundSync()
         {
-            queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
             using (syncCancellationTS = new CancellationTokenSource())
             {
                 try 

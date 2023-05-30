@@ -42,7 +42,7 @@ namespace EddiStarMapService
         private string commanderName { get; set; }
         private string apiKey { get; set; }
         private readonly IEdsmRestClient restClient;
-        private BlockingCollection<IDictionary<string, object>> queuedEvents;
+        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
@@ -133,34 +133,32 @@ namespace EddiStarMapService
             return !string.IsNullOrEmpty(commanderName) && !string.IsNullOrEmpty(apiKey);
         }
 
-        public void StartJournalSync()
+        public void StartJournalSync ()
         {
-            if (syncCancellationTS is null || syncCancellationTS.IsCancellationRequested)
+            if ( syncCancellationTS is null || syncCancellationTS.IsCancellationRequested )
             {
-                Logging.Debug("Enabling EDSM Responder event sync.");
-                Task.Run(() => BackgroundJournalSync()).ConfigureAwait(false);
+                Logging.Debug( "Enabling EDSM Responder event sync." );
+                Task.Run( BackgroundJournalSync ).ConfigureAwait( false );
             }
         }
 
-        public void StopJournalSync()
+        public void StopJournalSync ()
         {
-            if (syncCancellationTS != null && !syncCancellationTS.IsCancellationRequested)
+            if ( syncCancellationTS != null && !syncCancellationTS.IsCancellationRequested )
             {
-                Logging.Debug("Stopping EDSM Responder event sync.");
+                Logging.Debug( "Stopping EDSM Responder event sync." );
                 syncCancellationTS.Cancel();
                 // Clean up by sending anything left in the queue.
-                SendEvents(queuedEvents.ToList());
+                SendEvents( queuedEvents.ToList() );
             }
         }
 
         private async void BackgroundJournalSync()
         {
-            queuedEvents = new BlockingCollection<IDictionary<string, object>>();
             using (syncCancellationTS = new CancellationTokenSource())
             {
                 try
                 {
-
                     // Pause a short time to allow any initial events to build in the queue before our first sync
                     await Task.Delay(startupDelayMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
                     await Task.Run(async () =>
@@ -388,7 +386,7 @@ namespace EddiStarMapService
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("showId", 1); // Obtain EDSM IDs
-            if (systemNames?.Count() == 1)
+            if (systemNames?.Length == 1)
             {
                 // When a single system name is provided, the api responds with 
                 // the complete flight logs for that star system
