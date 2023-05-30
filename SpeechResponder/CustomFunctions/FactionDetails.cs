@@ -21,7 +21,7 @@ namespace EddiSpeechResponder.CustomFunctions
             Faction result;
             if (values.Count == 0)
             {
-                result = EDDI.Instance.CurrentStarSystem.Faction;
+                result = EDDI.Instance.CurrentStarSystem?.Faction;
             }
             else if (values.Count == 1)
             {

@@ -51,7 +51,7 @@ namespace EddiJournalMonitor
                             await Task.Delay(1500);
                             timeout++;
                         }
-                        while (EDDI.Instance.CurrentStarSystem.bodies.Count == 0 && timeout < 3);
+                        while (EDDI.Instance.CurrentStarSystem?.bodies.Count == 0 && timeout < 3);
                         callback(@event);
                     });
                     continue;
@@ -4516,7 +4516,7 @@ namespace EddiJournalMonitor
                                         {
                                             int timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
                                             await Task.Delay(timeMs);
-                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, EDDI.Instance.FleetCarrier.currentStarSystem, 0, null, null, null, EDDI.Instance.FleetCarrier.callsign, StationModel.FleetCarrier ) { fromLoad = fromLogLoad });
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, EDDI.Instance.FleetCarrier?.currentStarSystem, 0, null, null, null, EDDI.Instance.FleetCarrier?.callsign, StationModel.FleetCarrier ) { fromLoad = fromLogLoad });
                                         }).ConfigureAwait(false);
                                     }
                                 }

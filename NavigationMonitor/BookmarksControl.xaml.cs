@@ -290,7 +290,7 @@ namespace EddiNavigationMonitor
                 var navBookmark = (NavBookmark)button.DataContext;
 
                 // Update only if current system matches the bookmarked system
-                if (navBookmark != null && navBookmark.systemname == currentSystem.systemname)
+                if (navBookmark != null && navBookmark.systemname == currentSystem?.systemname)
                 {
                     // Update latitude & longitude if current body matches the bookmarked body
                     if (currentBody?.bodyname == navBookmark.bodyname || currentStation?.name == navBookmark.poi)

@@ -622,7 +622,7 @@ namespace UnitTests
 
             // Setup
             EDDI eddiInstance = EDDI.Instance;
-            Friend[] preexistingFriends = eddiInstance.Cmdr.friends.ToArray();
+            Friend[] preexistingFriends = eddiInstance.Cmdr?.friends.ToArray() ?? Array.Empty<Friend>();
             PrivateObject privateEddiInstance = new PrivateObject(eddiInstance);
             bool eventFriends(FriendsEvent friendsEvent)
             {
@@ -648,6 +648,7 @@ namespace UnitTests
             Assert.IsTrue(passEvent2);
 
             // Clean up
+            Assert.IsNotNull( eddiInstance.Cmdr );
             eddiInstance.Cmdr.friends = new List<Friend>(preexistingFriends);
         }
 

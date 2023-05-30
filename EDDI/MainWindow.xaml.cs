@@ -563,7 +563,6 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             eddiConfiguration.Gender = "Male";
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            EDDI.Instance.Cmdr.gender = "Male";
         }
 
         private void isFemale_Checked(object sender, RoutedEventArgs e)
@@ -571,7 +570,10 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             eddiConfiguration.Gender = "Female";
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            EDDI.Instance.Cmdr.gender = "Female";
+            if ( EDDI.Instance.Cmdr != null )
+            {
+                EDDI.Instance.Cmdr.gender = "Female";
+            }
         }
 
         private void isNeitherGender_Checked(object sender, RoutedEventArgs e)
@@ -579,7 +581,10 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             eddiConfiguration.Gender = "Neither";
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            EDDI.Instance.Cmdr.gender = "Neither";
+            if ( EDDI.Instance.Cmdr != null )
+            {
+                EDDI.Instance.Cmdr.gender = "Neither";
+            }
         }
 
         private void commanderPhoneticNameChanged(object sender, TextChangedEventArgs e)
@@ -603,7 +608,7 @@ namespace Eddi
 
         private void eddiCmdrPhoneticNameTestButtonClicked(object sender, RoutedEventArgs e)
         {
-            SpeechService.Instance.Say(null, EDDI.Instance.Cmdr.SpokenName(), 0);
+            SpeechService.Instance.Say(null, EDDI.Instance.Cmdr?.SpokenName(), 0);
         }
 
         private void ipaClicked(object sender, RoutedEventArgs e)
@@ -628,7 +633,10 @@ namespace Eddi
                 eddiConfiguration = resetSquadronRank(eddiConfiguration);
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
-                EDDI.Instance.Cmdr.squadronname = eddiConfiguration.SquadronName;
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.squadronname = eddiConfiguration.SquadronName;
+                }
             }
         }
 
@@ -640,7 +648,10 @@ namespace Eddi
                 EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
                 eddiConfiguration.PhoneticName = null;
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-                EDDI.Instance.Cmdr.phoneticName = string.Empty;
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.phoneticName = string.Empty;
+                }
             }
         }
 
@@ -665,7 +676,10 @@ namespace Eddi
                 EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
                 eddiConfiguration.SquadronName = null;
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-                EDDI.Instance.Cmdr.squadronname = string.Empty;
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.squadronname = string.Empty;
+                }
             }
         }
 
@@ -677,7 +691,10 @@ namespace Eddi
                 eddiConfiguration.SquadronID = string.IsNullOrWhiteSpace(eddiSquadronIDText.Text) ? null : eddiSquadronIDText.Text.Trim();
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
-                EDDI.Instance.Cmdr.squadronid = eddiConfiguration.SquadronID;
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.squadronid = eddiConfiguration.SquadronID;
+                }
             }
         }
 
@@ -706,7 +723,10 @@ namespace Eddi
                 eddiConfiguration.SquadronRank = SquadronRank.FromName(squadronRank);
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
-                EDDI.Instance.Cmdr.squadronrank = eddiConfiguration.SquadronRank;
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.squadronrank = eddiConfiguration.SquadronRank;
+                }
             }
         }
 
@@ -731,8 +751,12 @@ namespace Eddi
                     squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower.localizedName;
                     ConfigureSquadronPowerOptions(eddiConfiguration);
 
-                    EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
-                    EDDI.Instance.Cmdr.squadronpower = Power.None;
+                    if ( EDDI.Instance.Cmdr != null )
+                    {
+                        EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
+                        EDDI.Instance.Cmdr.squadronpower = Power.None;
+                    }
+
                     ConfigService.Instance.eddiConfiguration = eddiConfiguration;
                 }
             }
@@ -769,8 +793,12 @@ namespace Eddi
             if (eddiConfiguration.SquadronFaction != squadronFaction)
             {
                 eddiConfiguration.SquadronFaction = squadronFaction == Power.None.localizedName ? null : squadronFaction;
-                EDDI.Instance.Cmdr.squadronfaction = eddiConfiguration.SquadronFaction;
 
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.squadronfaction = eddiConfiguration.SquadronFaction;
+                }
+                
                 if (squadronFaction != Power.None.localizedName)
                 {
                     StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(eddiConfiguration.SquadronSystem, true);
@@ -781,7 +809,10 @@ namespace Eddi
                         eddiConfiguration.SquadronAllegiance = faction.Allegiance;
                         ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
-                        EDDI.Instance.Cmdr.squadronallegiance = faction.Allegiance;
+                        if ( EDDI.Instance.Cmdr != null )
+                        {
+                            EDDI.Instance.Cmdr.squadronallegiance = faction.Allegiance;
+                        }
 
                         squadronPowerDropDown.SelectedItem = Power.None.localizedName;
                         ConfigureSquadronPowerOptions(eddiConfiguration);
@@ -792,7 +823,10 @@ namespace Eddi
                     eddiConfiguration.SquadronAllegiance = Superpower.None;
                     ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
-                    EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
+                    if ( EDDI.Instance.Cmdr != null )
+                    {
+                        EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
+                    }
 
                     squadronPowerDropDown.SelectedItem = Power.None.localizedName;
                     ConfigureSquadronPowerOptions(eddiConfiguration);
@@ -811,7 +845,10 @@ namespace Eddi
                 eddiConfiguration.SquadronPower = Power.FromName(squadronPower);
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
-                EDDI.Instance.Cmdr.squadronpower = eddiConfiguration.SquadronPower;
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.squadronpower = eddiConfiguration.SquadronPower;
+                }
             }
         }
 
@@ -949,7 +986,7 @@ namespace Eddi
             if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {
-                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.phoneticname), 0);
+                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr?.phoneticname), 0);
                 SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_close_browser, 0);
             }
             else if (oldState == CompanionAppService.State.LoggedOut &&

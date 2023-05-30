@@ -73,7 +73,7 @@ namespace EddiEdsmResponder
             if (edsmService != null)
             {
                 // Renew our credentials for the EDSM API
-                StarMapService.inGameCommanderName = EDDI.Instance.Cmdr.name;
+                StarMapService.inGameCommanderName = EDDI.Instance.Cmdr?.name;
                 edsmService.SetEdsmCredentials();
 
                 if (updateThread == null && edsmService.EdsmCredentialsSet())

@@ -93,7 +93,7 @@ namespace EddiNavigationService.QueryResolvers
         private RouteDetailsEvent GetNeutronRoute ( string targetSystemName, bool isSupercharged = false, bool useSupercharge = true, bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
         {
             var plottedRouteList = new NavWaypointCollection();
-            var currentSystemName = EDDI.Instance.CurrentStarSystem.systemname;
+            var currentSystemName = EDDI.Instance.CurrentStarSystem?.systemname;
             if ( EDDI.Instance.CurrentStarSystem == null )
             {
                 Logging.Debug ( "Neutron route plotting is not available, current star system is unknown." );

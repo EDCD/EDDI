@@ -78,7 +78,10 @@ namespace EddiInaraResponder
             {
                 cmdr = inaraService.GetCommanderProfile();
             } ).ConfigureAwait( false );
-            EDDI.Instance.Cmdr.InaraID = cmdr?.id;
+            if ( EDDI.Instance.Cmdr != null )
+            {
+                EDDI.Instance.Cmdr.InaraID = cmdr?.id;
+            }
         }
 
         public UserControl ConfigurationTabItem()
@@ -383,8 +386,8 @@ namespace EddiInaraResponder
         {
             var eventData = new Dictionary<string, object>()
             {
-                { "starsystemName", !string.IsNullOrEmpty(@event.systemname) ? @event.systemname : EDDI.Instance.CurrentStarSystem.systemname },
-                { "starsystemBodyName", !string.IsNullOrEmpty(@event.bodyname) ? @event.bodyname : EDDI.Instance.CurrentStellarBody.bodyname },
+                { "starsystemName", !string.IsNullOrEmpty(@event.systemname) ? @event.systemname : EDDI.Instance.CurrentStarSystem?.systemname },
+                { "starsystemBodyName", !string.IsNullOrEmpty(@event.bodyname) ? @event.bodyname : EDDI.Instance.CurrentStellarBody?.bodyname },
                 { "starsystemBodyCoords", new [] { @event.latitude, @event.longitude } }
             };
             if (string.IsNullOrEmpty(eventData["starsystemName"]?.ToString())) { return; }
@@ -460,7 +463,7 @@ namespace EddiInaraResponder
         {
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatKill", new Dictionary<string, object>()
             {
-                { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname },
+                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
                 { "opponentName", @event.victim }
             }));
         }
@@ -471,7 +474,7 @@ namespace EddiInaraResponder
             // opponentName: Name of the target (commander or NPC). If there is no 'Inderticted' property in the journal event, use just 'Power' or 'Faction' property instead. 
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdiction", new Dictionary<string, object>()
             {
-                { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname },
+                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
                 { "opponentName", @event.interdictee ?? @event.faction ?? @event.power }, // Ordered from more precise to less precise
                 { "isPlayer", @event.iscommander },
                 { "isSuccess", @event.succeeded }
@@ -1050,7 +1053,7 @@ namespace EddiInaraResponder
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventoryCargo", new List<Dictionary<string, object>>()));
             Dictionary<string, object> diedEventData = new Dictionary<string, object>()
             {
-                { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname }
+                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname }
             };
             if (@event.killers?.Count > 1)
             {

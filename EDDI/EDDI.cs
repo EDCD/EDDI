@@ -162,6 +162,7 @@ namespace EddiCore
         public string vaVersion { get; set; }
 
         // Information obtained from the configuration
+        [CanBeNull]
         public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
         {
             get => homeStarSystem;
@@ -178,7 +179,8 @@ namespace EddiCore
             }
         }
         private StarSystem homeStarSystem;
-        
+
+        [CanBeNull]
         public Station HomeStation
         {
             get => homeStation;
@@ -196,6 +198,7 @@ namespace EddiCore
         }
         private Station homeStation;
 
+        [CanBeNull]
         public StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
         {
             get => squadronStarSystem;
@@ -214,6 +217,7 @@ namespace EddiCore
         private StarSystem squadronStarSystem;
 
         // Destination variables
+        [CanBeNull]
         public StarSystem DestinationStarSystem
         {
             get => destinationStarSystem;
@@ -244,6 +248,7 @@ namespace EddiCore
         private decimal destinationDistanceLy;
 
         // Information obtained from the player journal
+        [CanBeNull]
         public Commander Cmdr // Also includes information from the configuration and companion app service
         {
             get => cmdr;
@@ -273,6 +278,7 @@ namespace EddiCore
         }
         private string environment;
 
+        [CanBeNull]
         public StarSystem CurrentStarSystem 
         { 
             get => currentStarSystem; 
@@ -292,6 +298,7 @@ namespace EddiCore
         }
         private StarSystem currentStarSystem;
 
+        [CanBeNull]
         public StarSystem LastStarSystem
         {
             get => lastStarSystem;
@@ -310,6 +317,7 @@ namespace EddiCore
         }
         private StarSystem lastStarSystem;
 
+        [CanBeNull]
         public StarSystem NextStarSystem
         {
             get => nextStarSystem;
@@ -370,6 +378,7 @@ namespace EddiCore
         }
         private Body currentStellarBody;
 
+        [CanBeNull]
         public FleetCarrier FleetCarrier
         {
             get => fleetCarrier;
@@ -388,6 +397,7 @@ namespace EddiCore
         }
         private FleetCarrier fleetCarrier;
 
+        [CanBeNull]
         public Ship CurrentShip
         {
             get => _currentShip;
@@ -1240,8 +1250,13 @@ namespace EddiCore
             {
                 FleetCarrier = new FleetCarrier(carrierBankTransferEvent.carrierID);
             }
-            Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
             FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
+
+            if ( Cmdr != null )
+            {
+                Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
+            }
+
             UpdateFleetCarrierConfig();
             return true;
         }
@@ -1455,11 +1470,11 @@ namespace EddiCore
                 }
                 else
                 {
-                    CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
+                    CurrentStation = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
                     if (CurrentStation is null)
                     {
-                        CurrentStation = LastStarSystem.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
-                        if (CurrentStation != null)
+                        CurrentStation = LastStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
+                        if (CurrentStation != null && LastStarSystem != null)
                         {
                             LastStarSystem.stations.RemoveAll(s => s.marketId == @event.carrierId);
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(LastStarSystem);
@@ -1580,87 +1595,108 @@ namespace EddiCore
 
         private bool eventPowerVoucherReceived(PowerVoucherReceivedEvent @event)
         {
-            Cmdr.Power = @event.Power;
+            if ( Cmdr != null )
+            {
+                Cmdr.Power = @event.Power;
+            }
             return true;
         }
 
         private bool eventPowerSalaryClaimed(PowerSalaryClaimedEvent @event)
         {
-            Cmdr.Power = @event.Power;
+            if ( Cmdr != null )
+            {
+                Cmdr.Power = @event.Power;
+            }
             return true;
         }
 
         private bool eventPowerPreparationVoteCast(PowerPreparationVoteCast @event)
         {
-            Cmdr.Power = @event.Power;
+            if ( Cmdr != null )
+            {
+                Cmdr.Power = @event.Power;
+            }
             return true;
         }
 
         private bool eventPowerLeft(PowerLeftEvent @event)
         {
-            Cmdr.Power = Power.None;
-            Cmdr.powermerits = null;
-            Cmdr.powerrating = 0;
+            if ( Cmdr != null )
+            {
+                Cmdr.Power = Power.None;
+                Cmdr.powermerits = null;
+                Cmdr.powerrating = 0;
 
-            // Store power merits
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            configuration.powerMerits = Cmdr.powermerits;
-            ConfigService.Instance.eddiConfiguration = configuration;
+                // Store power merits
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                configuration.powerMerits = Cmdr.powermerits;
+                ConfigService.Instance.eddiConfiguration = configuration;
+            }
 
             return true;
         }
 
         private bool eventPowerJoined(PowerJoinedEvent @event)
         {
-            Cmdr.Power = @event.Power;
-            Cmdr.powermerits = 0;
-            Cmdr.powerrating = 1;
+            if ( Cmdr != null )
+            {
+                Cmdr.Power = @event.Power;
+                Cmdr.powermerits = 0;
+                Cmdr.powerrating = 1;
 
-            // Store power merits
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            configuration.powerMerits = Cmdr.powermerits;
-            ConfigService.Instance.eddiConfiguration = configuration;
+                // Store power merits
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                configuration.powerMerits = Cmdr.powermerits;
+                ConfigService.Instance.eddiConfiguration = configuration;
+            }
 
             return true;
         }
 
         private bool eventPowerDefected(PowerDefectedEvent @event)
         {
-            Cmdr.Power = @event.toPower;
-            // Merits are halved upon defection
-            Cmdr.powermerits = (int)Math.Round((double)(Cmdr.powermerits ?? 0) / 2, 0);
-            if (Cmdr.powermerits > 10000)
+            if ( Cmdr != null )
             {
-                Cmdr.powerrating = 4;
-            }
-            if (Cmdr.powermerits > 1500)
-            {
-                Cmdr.powerrating = 3;
-            }
-            if (Cmdr.powermerits > 750)
-            {
-                Cmdr.powerrating = 2;
-            }
-            if (Cmdr.powermerits > 100)
-            {
-                Cmdr.powerrating = 1;
-            }
-            else
-            {
-                Cmdr.powerrating = 0;
-            }
+                Cmdr.Power = @event.toPower;
+                // Merits are halved upon defection
+                Cmdr.powermerits = (int)Math.Round( (double)( Cmdr.powermerits ?? 0 ) / 2, 0 );
+                if ( Cmdr.powermerits > 10000 )
+                {
+                    Cmdr.powerrating = 4;
+                }
 
-            // Store power merits
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            configuration.powerMerits = Cmdr.powermerits;
-            ConfigService.Instance.eddiConfiguration = configuration;
+                if ( Cmdr.powermerits > 1500 )
+                {
+                    Cmdr.powerrating = 3;
+                }
+
+                if ( Cmdr.powermerits > 750 )
+                {
+                    Cmdr.powerrating = 2;
+                }
+
+                if ( Cmdr.powermerits > 100 )
+                {
+                    Cmdr.powerrating = 1;
+                }
+                else
+                {
+                    Cmdr.powerrating = 0;
+                }
+
+                // Store power merits
+                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                configuration.powerMerits = Cmdr.powermerits;
+                ConfigService.Instance.eddiConfiguration = configuration;
+            }
 
             return true;
         }
 
         private bool eventPowerplay(PowerplayEvent @event)
         {
-            if (Cmdr.powermerits is null)
+            if (Cmdr != null && Cmdr.powermerits is null)
             {
                 // Per the journal, this is written at startup. In actuality, it can also be written whenever switching FSD states
                 // and needs to be filtered to prevent redundant outputs.
@@ -1740,21 +1776,25 @@ namespace EddiCore
             };
 
             // Does this friend exist in our friends list?
-            int index = Cmdr.friends.FindIndex(f => f.name == @event.name);
-            if (index >= 0)
+            if ( Cmdr != null )
             {
-                if (Cmdr.friends[index].status != @event.status)
+                int index = Cmdr.friends.FindIndex( f => f.name == @event.name );
+                if ( index >= 0 )
                 {
-                    // This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
-                    Cmdr.friends[index] = friend;
-                    passEvent = true;
+                    if ( Cmdr.friends[ index ].status != @event.status )
+                    {
+                        // This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
+                        Cmdr.friends[ index ] = friend;
+                        passEvent = true;
+                    }
+                }
+                else
+                {
+                    // This is a new friend, add them to the list
+                    Cmdr.friends.Add( friend );
                 }
             }
-            else
-            {
-                // This is a new friend, add them to the list
-                Cmdr.friends.Add(friend);
-            }
+
             return passEvent;
         }
 
@@ -1854,75 +1894,79 @@ namespace EddiCore
             Logging.Info($"Vehicle mode is {Vehicle}");
 
             updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
-            // Our data source may not include the system address
-            CurrentStarSystem.systemAddress = theEvent.systemAddress;
-            // Always update the current system with the current co-ordinates, just in case things have changed
-            CurrentStarSystem.x = theEvent.x;
-            CurrentStarSystem.y = theEvent.y;
-            CurrentStarSystem.z = theEvent.z;
-
-            // Update Thargoid war data, as applicable
-            CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
-
-            // Update the mutable system data from the journal
-            if (theEvent.population != null)
+            if ( CurrentStarSystem != null )
             {
-                CurrentStarSystem.population = theEvent.population;
-                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
-                CurrentStarSystem.securityLevel = theEvent.securityLevel;
-                CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
-            }
+                // Our data source may not include the system address
+                CurrentStarSystem.systemAddress = theEvent.systemAddress;
+                // Always update the current system with the current co-ordinates, just in case things have changed
+                CurrentStarSystem.x = theEvent.x;
+                CurrentStarSystem.y = theEvent.y;
+                CurrentStarSystem.z = theEvent.z;
 
-            // Update system faction data if available
-            if (theEvent.factions != null)
-            {
-                CurrentStarSystem.factions = theEvent.factions;
-                CurrentStarSystem.conflicts = theEvent.conflicts;
+                // Update Thargoid war data, as applicable
+                CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
 
-                // Update station controlling faction data
-                foreach ( Station station in CurrentStarSystem.stations)
+                // Update the mutable system data from the journal
+                if ( theEvent.population != null )
                 {
-                    Faction stationFaction = theEvent.factions.FirstOrDefault(f => f.name == station.Faction.name);
-                    if (stationFaction != null)
+                    CurrentStarSystem.population = theEvent.population;
+                    CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+                    CurrentStarSystem.securityLevel = theEvent.securityLevel;
+                    CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
+                }
+
+                // Update system faction data if available
+                if ( theEvent.factions != null )
+                {
+                    CurrentStarSystem.factions = theEvent.factions;
+                    CurrentStarSystem.conflicts = theEvent.conflicts;
+
+                    // Update station controlling faction data
+                    foreach ( Station station in CurrentStarSystem.stations )
                     {
-                        station.Faction = stationFaction;
+                        Faction stationFaction =
+                            theEvent.factions.FirstOrDefault( f => f.name == station.Faction.name );
+                        if ( stationFaction != null )
+                        {
+                            station.Faction = stationFaction;
+                        }
+                    }
+
+                    // Check if current system is inhabited by or HQ for squadron faction
+                    Faction squadronFaction = theEvent.factions.FirstOrDefault( f =>
+                        ( f.presences.FirstOrDefault( p => p.systemName == CurrentStarSystem.systemname )
+                            ?.squadronhomesystem ?? false ) || f.squadronfaction );
+                    if ( squadronFaction != null )
+                    {
+                        updateSquadronData( squadronFaction, CurrentStarSystem.systemname );
                     }
                 }
 
-                // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (f.presences.
-                    FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem ?? false) || f.squadronfaction);
-                if (squadronFaction != null)
+                // (When pledged) Powerplay information
+                CurrentStarSystem.Powers = theEvent.Powers != null && theEvent.Powers.Any()
+                    ? theEvent.Powers
+                    : CurrentStarSystem.Powers;
+                CurrentStarSystem.powerState = theEvent.powerState ?? CurrentStarSystem.powerState;
+
+                if ( theEvent.docked )
                 {
-                    updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
-                }
-            }
+                    // Update the station
+                    string stationName = theEvent.station;
 
-            // (When pledged) Powerplay information
-            CurrentStarSystem.Powers = theEvent.Powers != null && theEvent.Powers.Any() 
-                ? theEvent.Powers 
-                : CurrentStarSystem.Powers;
-            CurrentStarSystem.powerState = theEvent.powerState ?? CurrentStarSystem.powerState;
-
-            if ( theEvent.docked )
-            {
-                // Update the station
-                string stationName = theEvent.station;
-
-                Logging.Debug( "Now at station " + stationName );
-                Station station = CurrentStarSystem.stations.Find( s => s.name == stationName );
-                if ( station == null )
-                {
-                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                    station = new Station { name = stationName, systemname = theEvent.systemname };
-                    CurrentStarSystem.stations.Add( station );
-                }
+                    Logging.Debug( "Now at station " + stationName );
+                    Station station = CurrentStarSystem.stations.Find( s => s.name == stationName );
+                    if ( station == null )
+                    {
+                        // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                        station = new Station { name = stationName, systemname = theEvent.systemname };
+                        CurrentStarSystem.stations.Add( station );
+                    }
 
                     // We are docked
                     Environment = Constants.ENVIRONMENT_DOCKED;
 
                     // If we're not in a taxi or multicrew then we're in our own ship.
-                if ( !theEvent.taxi && !theEvent.multicrew ) { Vehicle = Constants.VEHICLE_SHIP; }
+                    if ( !theEvent.taxi && !theEvent.multicrew ) { Vehicle = Constants.VEHICLE_SHIP; }
 
                     // Update station properties known from this event
                     station.marketId = theEvent.marketId;
@@ -1931,34 +1975,31 @@ namespace EddiCore
                     station.Model = theEvent.stationModel;
                     station.distancefromstar = theEvent.distancefromstar;
 
-                CurrentStation = station;
+                    CurrentStation = station;
 
                     // Kick off the profile refresh if the companion API is available
-                if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized )
+                    if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized )
                     {
                         // Refresh station data
-                    if ( theEvent.fromLoad )
+                        if ( theEvent.fromLoad )
                         {
-                        return true;
-                    } // Don't fire this event when loading pre-existing logs
+                            return true;
+                        } // Don't fire this event when loading pre-existing logs
 
-                    Thread updateThread = new Thread( conditionallyRefreshStationProfile )
-                    {
-                            IsBackground = true
-                        };
+                        Thread updateThread = new Thread( conditionallyRefreshStationProfile ) { IsBackground = true };
                         updateThread.Start();
                     }
                 }
-            
-            if (theEvent.bodyname != null && ( theEvent.bodyType == BodyType.Moon || 
-                                               theEvent.bodyType == BodyType.Planet ) )
-                {
-                // Update the body 
-                Logging.Debug("Now at body " + theEvent.bodyname);
-                updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
-            }
 
-            if ( theEvent.latitude != null && theEvent.longitude != null )
+                if ( theEvent.bodyname != null && ( theEvent.bodyType == BodyType.Moon ||
+                                                    theEvent.bodyType == BodyType.Planet ) )
+                {
+                    // Update the body 
+                    Logging.Debug( "Now at body " + theEvent.bodyname );
+                    updateCurrentStellarBody( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
+                }
+
+                if ( theEvent.latitude != null && theEvent.longitude != null )
                 {
                     Environment = Constants.ENVIRONMENT_LANDED;
                 }
@@ -1967,9 +2008,10 @@ namespace EddiCore
                     Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
                 }
 
-            // Update to most recent information
-            CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
-            StarSystemSqLiteRepository.Instance.SaveStarSystem( CurrentStarSystem );
+                // Update to most recent information
+                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
+                StarSystemSqLiteRepository.Instance.SaveStarSystem( CurrentStarSystem );
+            }
 
             return true;
         }
@@ -1977,8 +2019,8 @@ namespace EddiCore
         private bool eventDockingRequested(DockingRequestedEvent theEvent)
         {
             bool passEvent = !string.IsNullOrEmpty(theEvent.station);
-            Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
-            if (station == null)
+            Station station = CurrentStarSystem?.stations.Find(s => s.name == theEvent.station);
+            if (station == null && CurrentStarSystem != null)
             {
                 // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
                 station = new Station
@@ -1990,7 +2032,12 @@ namespace EddiCore
                 };
                 CurrentStarSystem.stations.Add(station);
             }
-            station.Model = theEvent.stationDefinition;
+
+            if ( station != null )
+            {
+                station.Model = theEvent.stationDefinition;
+            }
+
             return passEvent;
         }
 
@@ -1999,62 +2046,66 @@ namespace EddiCore
             bool passEvent = !string.IsNullOrEmpty(theEvent.station);
             updateCurrentSystem(theEvent.system, theEvent.systemAddress );
 
-            Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
-            if (Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId)
+            if (CurrentStarSystem != null)
             {
-                // We are already at this station
-                Logging.Debug("Already at station " + theEvent.station);
-                passEvent = false;
-            }
-            else
-            {
-                // Update the station
-                Logging.Debug("Now at station " + theEvent.station);
-                if (station == null)
+                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
+                if (Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId)
                 {
-                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                    station = new Station
+                    // We are already at this station
+                    Logging.Debug("Already at station " + theEvent.station);
+                    passEvent = false;
+                }
+                else
+                {
+                    // Update the station
+                    Logging.Debug("Now at station " + theEvent.station);
+                    if (station == null)
                     {
-                        name = theEvent.station,
-                        systemname = theEvent.system
-                    };
-                    CurrentStarSystem.stations.Add(station);
+                        // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                        station = new Station
+                        {
+                            name = theEvent.station,
+                            systemname = theEvent.system
+                        };
+                        CurrentStarSystem.stations.Add(station);
+                    }
+                }
+
+                // We are docked
+                if (station != null)
+                {
+                    Environment = Constants.ENVIRONMENT_DOCKED;
+
+                    // Not all stations in our database will have a system address or market id, so we set them here
+                    station.systemAddress = theEvent.systemAddress;
+                    station.marketId = theEvent.marketId;
+
+                    // Information from the event might be more current than our data source so use it in preference
+                    station.Faction = theEvent.controllingfaction;
+                    station.stationServices = theEvent.stationServices;
+                    station.economyShares = theEvent.economyShares;
+
+                    // Update other station information available from the event
+                    station.Model = theEvent.stationModel;
+                    station.stationServices = theEvent.stationServices;
+                    station.distancefromstar = theEvent.distancefromstar;
+
+                    CurrentStation = station;
+
+                    // Kick off the profile refresh if the companion API is available
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+                    {
+                        // Refresh station data
+                        if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
+                        Thread updateThread = new Thread(conditionallyRefreshStationProfile)
+                        {
+                            IsBackground = true
+                        };
+                        updateThread.Start();
+                    }
                 }
             }
 
-            // We are docked
-            if (station != null)
-            {
-                Environment = Constants.ENVIRONMENT_DOCKED;
-
-                // Not all stations in our database will have a system address or market id, so we set them here
-                station.systemAddress = theEvent.systemAddress;
-                station.marketId = theEvent.marketId;
-
-                // Information from the event might be more current than our data source so use it in preference
-                station.Faction = theEvent.controllingfaction;
-                station.stationServices = theEvent.stationServices;
-                station.economyShares = theEvent.economyShares;
-
-                // Update other station information available from the event
-                station.Model = theEvent.stationModel;
-                station.stationServices = theEvent.stationServices;
-                station.distancefromstar = theEvent.distancefromstar;
-
-                CurrentStation = station;
-
-                // Kick off the profile refresh if the companion API is available
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
-                {
-                    // Refresh station data
-                    if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
-                    Thread updateThread = new Thread(conditionallyRefreshStationProfile)
-                    {
-                        IsBackground = true
-                    };
-                    updateThread.Start();
-                }
-            }
             return passEvent;
         }
 
@@ -2298,7 +2349,7 @@ namespace EddiCore
                 // Discard signal sources from star system we are leaving
                 CurrentStarSystem.signalSources = ImmutableList<SignalSource>.Empty;
 
-            // We have changed system so update the old one as to when we left
+                // We have changed system so update the old one as to when we left
                 StarSystemSqLiteRepository.Instance.LeaveStarSystem( CurrentStarSystem );
             
             }
@@ -2317,7 +2368,7 @@ namespace EddiCore
 
             // Clear any temporary / partially created bodies (e.g. from FSDTarget events)
             // from the system we are entering
-            CurrentStarSystem.ClearTemporaryBodies();
+            CurrentStarSystem?.ClearTemporaryBodies();
 
             // If we've arrived at our destination system then clear it
             if (destinationStarSystem?.systemname == currentStarSystem.systemname)
@@ -2468,7 +2519,7 @@ namespace EddiCore
                 CurrentStarSystem.Faction = theEvent.controllingfaction;
                 CurrentStarSystem.conflicts = theEvent.conflicts;
                 CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
-
+                
                 // Update system faction data if available
                 if ( theEvent.factions != null)
                 {
@@ -2539,8 +2590,11 @@ namespace EddiCore
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             updateCurrentSystem(theEvent.system, theEvent.systemAddress );
 
-            CurrentStarSystem.systemAddress = theEvent.systemAddress;
-            
+            if ( CurrentStarSystem != null )
+            {
+                CurrentStarSystem.systemAddress = theEvent.systemAddress;
+            }
+
             if (theEvent.taxi is true)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
@@ -2603,12 +2657,15 @@ namespace EddiCore
         private bool eventCommanderLoading(CommanderLoadingEvent theEvent)
         {
             // Set our commander name and ID
-            if (Cmdr.name != theEvent.name)
+            if ( Cmdr != null )
             {
-                Cmdr.name = theEvent.name;
-                ObtainResponder("EDSM Responder").Reload();
+                if ( Cmdr.name != theEvent.name )
+                {
+                    Cmdr.name = theEvent.name;
+                    ObtainResponder( "EDSM Responder" ).Reload();
+                }
+                Cmdr.EDID = theEvent.frontierID;
             }
-            Cmdr.EDID = theEvent.frontierID;
             return true;
         }
 
@@ -2643,12 +2700,15 @@ namespace EddiCore
             inTelepresence = false;
 
             // Set our commander name and ID
-            if (Cmdr.name != theEvent.commander)
+            if ( Cmdr != null )
             {
-                Cmdr.name = theEvent.commander;
-                ObtainResponder("EDSM Responder").Reload();
+                if ( Cmdr.name != theEvent.commander )
+                {
+                    Cmdr.name = theEvent.commander;
+                    ObtainResponder( "EDSM Responder" ).Reload();
+                }
+                Cmdr.EDID = theEvent.frontierID;
             }
-            Cmdr.EDID = theEvent.frontierID;
 
             // Identify active game version
             inHorizons = theEvent.horizons;
@@ -3480,14 +3540,17 @@ namespace EddiCore
                         }
                     });
 
-                    Cmdr.squadronfaction = faction.name;
+                    if ( Cmdr != null )
+                    {
+                        Cmdr.squadronfaction = faction.name;
+                    }
                 }
 
                 // Update system, allegiance, & power when in squadron home system
                 if ((faction.presences.FirstOrDefault(p => p.systemName == systemName)?.squadronhomesystem ?? false))
                 {
                     // Update the squadron system data, if changed
-                    string system = CurrentStarSystem.systemname;
+                    string system = CurrentStarSystem?.systemname;
                     if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
                     {
                         configuration.SquadronSystem = system;
@@ -3514,7 +3577,10 @@ namespace EddiCore
                         if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
                         {
                             configuration.SquadronAllegiance = allegiance;
-                            Cmdr.squadronallegiance = allegiance;
+                            if ( Cmdr != null )
+                            {
+                                Cmdr.squadronallegiance = allegiance;
+                            }
                         }
                     }
 

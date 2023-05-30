@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Tests.Properties;
 using UnitTests;
 
 namespace IntegrationTests
@@ -218,21 +217,21 @@ namespace UnitTests
 
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
             privateObject.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "TestSystem" });
-            Assert.IsFalse(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+            Assert.IsFalse(EDDI.Instance.CurrentStarSystem?.systemScanCompleted);
 
             // Test whether the first `SystemScanCompleted` event is accepted and passed to monitors / responders
             var eventPassed = (bool)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
-            Assert.IsTrue(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+            Assert.IsTrue(EDDI.Instance.CurrentStarSystem?.systemScanCompleted);
             Assert.IsTrue(eventPassed);
 
             // Test a second `SystemScanCompleted` event to make sure the repetition is surpressed and not passed to monitors / responders
             eventPassed = (bool)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
-            Assert.IsTrue(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+            Assert.IsTrue(EDDI.Instance.CurrentStarSystem?.systemScanCompleted);
             Assert.IsFalse(eventPassed);
 
             // Switch systems and verify that the `systemScanCompleted` bool returns to it's default state
             privateObject.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "TestSystem2" });
-            Assert.IsFalse(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+            Assert.IsFalse(EDDI.Instance.CurrentStarSystem?.systemScanCompleted);
         }
     }
 }

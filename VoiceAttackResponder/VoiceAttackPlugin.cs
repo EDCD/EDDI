@@ -695,7 +695,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Entered" );
             try
             {
-                if ( EDDI.Instance.Cmdr.InaraID == null )
+                if ( EDDI.Instance.Cmdr?.InaraID == null )
                 {
                     Logging.Debug( "No information on Inara commander" );
                     return;
