@@ -1497,6 +1497,9 @@ namespace EddiCore
                     CurrentStarSystem.y = @event.y;
                     CurrentStarSystem.z = @event.z;
 
+                    // Update Thargoid war data, when available
+                    CurrentStarSystem.ThargoidWar = @event.ThargoidWar;
+                    
                     // Add our carrier to the new current star system
                     CurrentStarSystem.stations.Add(CurrentStation);
 
@@ -1513,6 +1516,7 @@ namespace EddiCore
                     if (@event.factions != null)
                     {
                         CurrentStarSystem.factions = @event.factions;
+                        CurrentStarSystem.conflicts = @event.conflicts;
 
                         // Update station controlling faction data
                         foreach (Station station in CurrentStarSystem.stations)
@@ -1871,6 +1875,9 @@ namespace EddiCore
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
 
+            // Update Thargoid war data, as applicable
+            CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
+
             // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
@@ -1884,9 +1891,10 @@ namespace EddiCore
             if (theEvent.factions != null)
             {
                 CurrentStarSystem.factions = theEvent.factions;
+                CurrentStarSystem.conflicts = theEvent.conflicts;
 
                 // Update station controlling faction data
-                foreach (Station station in CurrentStarSystem.stations)
+                foreach ( Station station in CurrentStarSystem.stations)
                 {
                     Faction stationFaction = theEvent.factions.FirstOrDefault(f => f.name == station.Faction.name);
                     if (stationFaction != null)
@@ -1988,6 +1996,10 @@ namespace EddiCore
                 CurrentStellarBody = null;
                 CurrentStation = null;
             }
+
+            // Update to most recent information
+            CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
+            StarSystemSqLiteRepository.Instance.SaveStarSystem( CurrentStarSystem );
 
             return true;
         }
@@ -2502,9 +2514,10 @@ namespace EddiCore
                 CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star)
                                      ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
                 CurrentStarSystem.conflicts = theEvent.conflicts;
+                CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
 
                 // Update system faction data if available
-                if (theEvent.factions != null)
+                if ( theEvent.factions != null)
                 {
                     CurrentStarSystem.factions = theEvent.factions;
 

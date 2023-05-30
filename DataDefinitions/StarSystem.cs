@@ -274,13 +274,21 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction.Government instead")]
         public string government => Faction.government;
 
-        [JsonIgnore]
+        [PublicAPI( "Faction conflicts data. Currently only available for recently visited star systems." ), JsonIgnore]
         public List<Conflict> conflicts
         {
             get => _conflicts;
-            set { _conflicts = value; OnPropertyChanged();}
+            set { _conflicts = value; OnPropertyChanged(); }
         }
         private List<Conflict> _conflicts;
+
+        [ PublicAPI("Thargoid war data. Currently only available for recently visited star systems." ), JsonIgnore ]
+        public ThargoidWar ThargoidWar
+        {
+            get => _thargoidWar;
+            set { _thargoidWar = value; OnPropertyChanged(); }
+        }
+        private ThargoidWar _thargoidWar;
 
         /// <summary>Details of stations</summary>
         [PublicAPI]

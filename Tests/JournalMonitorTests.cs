@@ -1063,6 +1063,40 @@ namespace UnitTests
             Assert.AreEqual("Thargoid", @event.controllingfaction.Allegiance.invariantName);
         }
 
+        [ TestMethod ]
+        public void TestJumpedEventThargoidProbing ()
+        {
+            string line = @"{ ""timestamp"":""2023-05-29T03:02:54Z"", ""event"":""FSDJump"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""Cephei Sector ZZ-Y b3"", ""SystemAddress"":7266682283401, ""StarPos"":[-99.09375,58.71875,-80.09375], ""SystemAllegiance"":"""", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""Body"":""Cephei Sector ZZ-Y b3"", ""BodyID"":0, ""BodyType"":""Star"", ""ThargoidWar"":{ ""CurrentState"":""Thargoid_Probing"", ""NextStateSuccess"":"""", ""NextStateFailure"":""Thargoid_Controlled"", ""SuccessStateReached"":true, ""WarProgress"":1.291010, ""RemainingPorts"":0 }, ""JumpDist"":14.317, ""FuelUsed"":1.420634, ""FuelLevel"":11.538357 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry( line );
+            JumpedEvent @event = (JumpedEvent)events[ 0 ];
+
+            Assert.IsNotNull( @event.ThargoidWar );
+            Assert.AreEqual( FactionState.ThargoidProbing, @event.ThargoidWar.CurrentState );
+            Assert.AreEqual( FactionState.None, @event.ThargoidWar.SuccessState );
+            Assert.AreEqual( FactionState.ThargoidControlled, @event.ThargoidWar.FailureState );
+            Assert.IsTrue( @event.ThargoidWar.succeeded );
+            Assert.AreEqual( 100M, @event.ThargoidWar.progress );
+            Assert.AreEqual( 0, @event.ThargoidWar.remainingDays );
+            Assert.IsNull( @event.ThargoidWar.remainingPorts );
+        }
+
+        [TestMethod]
+        public void TestJumpedEventThargoidStronghold ()
+        {
+            string line = @"{ ""timestamp"":""2023-05-29T03:07:18Z"", ""event"":""FSDJump"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""Cephei Sector BV-Y b4"", ""SystemAddress"":9465705473417, ""StarPos"":[-97.81250,44.31250,-83.84375], ""SystemAllegiance"":""Thargoid"", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""Body"":""Cephei Sector BV-Y b4 A"", ""BodyID"":1, ""BodyType"":""Star"", ""ThargoidWar"":{ ""CurrentState"":""Thargoid_Stronghold"", ""NextStateSuccess"":"""", ""NextStateFailure"":"""", ""SuccessStateReached"":false, ""WarProgress"":0.000000, ""RemainingPorts"":0, ""EstimatedRemainingTime"":""0 Days"" }, ""JumpDist"":14.941, ""FuelUsed"":1.576375, ""FuelLevel"":10.872703 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            JumpedEvent @event = (JumpedEvent)events[0];
+
+            Assert.IsNotNull( @event.ThargoidWar );
+            Assert.AreEqual( FactionState.ThargoidStronghold, @event.ThargoidWar.CurrentState );
+            Assert.AreEqual( FactionState.None, @event.ThargoidWar.SuccessState );
+            Assert.AreEqual( FactionState.None, @event.ThargoidWar.FailureState );
+            Assert.IsFalse( @event.ThargoidWar.succeeded );
+            Assert.AreEqual( 0M, @event.ThargoidWar.progress );
+            Assert.AreEqual( 0, @event.ThargoidWar.remainingDays );
+            Assert.AreEqual( 0, @event.ThargoidWar.remainingPorts );
+        }
+
         [TestMethod]
         public void TestJumpedEventAllegianceGuardian()
         {

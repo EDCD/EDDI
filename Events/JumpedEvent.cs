@@ -83,6 +83,10 @@ namespace EddiEvents
         [PublicAPI("(Only when pledged) The state of powerplay efforts within the star system")]
         public string powerstate => (powerState ?? PowerplayState.None).localizedName;
 
+        // Thargoid War
+        [PublicAPI("Thargoid war data, when applicable")]
+        public ThargoidWar ThargoidWar { get; private set; }
+
         // These properties are not intended to be user facing
 
         public int? boostused { get; private set; }
@@ -103,7 +107,7 @@ namespace EddiEvents
 
         public PowerplayState powerState { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, ulong systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Power> powerplayPowers, PowerplayState powerplayState, bool? taxi, bool? multicrew) : base(timestamp, NAME)
+        public JumpedEvent (DateTime timestamp, string system, ulong systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Power> powerplayPowers, PowerplayState powerplayState, bool? taxi, bool? multicrew, ThargoidWar thargoidWar) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -126,6 +130,7 @@ namespace EddiEvents
             this.powerState = powerplayState;
             this.taxi = taxi;
             this.multicrew = multicrew;
+            this.ThargoidWar = thargoidWar;
         }
     }
 }

@@ -21,6 +21,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Implemented text completion for available variables in the editor window.
       * The Chinese translation of the default personality has been updated (primarily to improve grammar). #2524 Thanks @MemphyKitay!
     * Events
+      * `Carrier jumped`, `Jumped`, and `Location` events updated to add Thargoid war data.
       * `Docked` updated to revise the `state` property to be translatable and include a default value (Normal Operation).
       * `FSD engaged` now includes a new `taxijump` boolean property.
       * `Hull damaged` updated to fix a bug with the `vehicle` property where EDDI might be confused as to whether the ship or SRV was being damaged.
@@ -39,6 +40,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship FSD` (triggered before the FSD is engaged) now warns about nearby hazardous stars or no charted scoopable stars in your arrival system. 
       * `Ship interdicted` updated to use new `isthargoid` property.
       * `Ship refuelled` revised to prevent adding pauses when there is no other speech.
+      * `System state report` updated to report Thargoid war data, when applicable.
       * `Swapout check` updated to fix a bug that was causing false positives and to exclude Guardian modules.
   * VoiceAttack Responder
     * Fixed a bug that prevented current ship variables from being updated properly on a ship change. #2482

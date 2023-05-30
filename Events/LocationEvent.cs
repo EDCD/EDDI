@@ -123,6 +123,10 @@ namespace EddiEvents
         [Obsolete("Use systemallegiance instead")]
         public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
+        // Thargoid War
+        [PublicAPI( "Thargoid war data, when applicable" )]
+        public ThargoidWar ThargoidWar { get; private set; }
+
         // These properties are not intended to be user facing
 
         public ulong systemAddress { get; private set; }
@@ -152,17 +156,21 @@ namespace EddiEvents
         public List<Power> Powers { get; set; }
 
         public PowerplayState powerState { get; private set; }
-        public bool taxi { get; private set; }
-        public bool multicrew { get; private set; }
-        public bool inSRV { get; private set; }
-        public bool onFoot { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string systemName, ulong systemAddress, decimal x, decimal y, decimal z, 
+        public bool taxi { get; private set; }
+        
+        public bool multicrew { get; private set; }
+        
+        public bool inSRV { get; private set; }
+        
+        public bool onFoot { get; private set; }
+        
+        public LocationEvent (DateTime timestamp, string systemName, ulong systemAddress, decimal x, decimal y, decimal z, 
             decimal? distancefromstar, string bodyName, long? bodyId, BodyType bodytype, decimal? longitude, decimal? latitude, 
             bool docked, string station, StationModel stationtype, long? marketId, List<StationService> stationServices,
             Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy economy, Economy economy2, SecurityLevel security, long? population, 
-            List<Power> powerplayPowers, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot) : base(timestamp, NAME)
+            List<Power> powerplayPowers, PowerplayState powerplayState, bool taxi, bool multicrew, bool inSRV, bool onFoot, ThargoidWar thargoidWar) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.x = x;
@@ -195,6 +203,7 @@ namespace EddiEvents
             this.multicrew = multicrew;
             this.inSRV = inSRV;
             this.onFoot = onFoot;
+            this.ThargoidWar = thargoidWar;
         }
     }
 }

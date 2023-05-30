@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class FactionStates {
@@ -291,6 +291,51 @@ namespace EddiDataDefinitions.Properties {
         public static string Terrorism {
             get {
                 return ResourceManager.GetString("Terrorism", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Controlled.
+        /// </summary>
+        public static string Thargoid_Controlled {
+            get {
+                return ResourceManager.GetString("Thargoid_Controlled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Invasion.
+        /// </summary>
+        public static string Thargoid_Harvest {
+            get {
+                return ResourceManager.GetString("Thargoid_Harvest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Alert.
+        /// </summary>
+        public static string Thargoid_Probing {
+            get {
+                return ResourceManager.GetString("Thargoid_Probing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post-Thargoid Recovery.
+        /// </summary>
+        public static string Thargoid_Recovery {
+            get {
+                return ResourceManager.GetString("Thargoid_Recovery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Maelstrom.
+        /// </summary>
+        public static string Thargoid_Stronghold {
+            get {
+                return ResourceManager.GetString("Thargoid_Stronghold", resourceCulture);
             }
         }
         

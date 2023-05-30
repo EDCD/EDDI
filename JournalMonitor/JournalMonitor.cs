@@ -118,7 +118,7 @@ namespace EddiJournalMonitor
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType")) ?? StationModel.None;
-                                    Faction controllingfaction = getFaction(data, "Station", systemName);
+                                    Faction controllingfaction = GetFaction(data, "Station", systemName);
                                     decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                     // Get station services data
@@ -259,7 +259,7 @@ namespace EddiJournalMonitor
                                     decimal fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
                                     int? boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
                                     decimal distance = JsonParsing.getDecimal(data, "JumpDist");
-                                    Faction controllingfaction = getFaction(data, "System", systemName);
+                                    Faction controllingfaction = GetFaction(data, "System", systemName);
                                     Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy")) ?? Economy.None;
                                     Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy")) ?? Economy.None;
                                     SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity")) ?? SecurityLevel.None;
@@ -270,7 +270,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Factions", out object factionsVal);
                                     if (factionsVal != null)
                                     {
-                                        factions = getFactions(factionsVal, systemName);
+                                        factions = GetFactions(factionsVal, systemName);
                                     }
 
                                     // Parse conflicts array data
@@ -278,16 +278,19 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Conflicts", out object conflictsVal);
                                     if (conflictsVal != null)
                                     {
-                                        conflicts = getConflicts(conflictsVal, factions);
+                                        conflicts = GetConflicts(conflictsVal, factions);
                                     }
 
                                     // Powerplay data (if pledged)
-                                    getPowerplayData(data, out List<Power> powerplayPowers, out PowerplayState powerplayState);
+                                    GetPowerplayData(data, out List<Power> powerplayPowers, out PowerplayState powerplayState);
+
+                                    // Thargoid war data (if any)
+                                    GetThargoidWarData( data, out ThargoidWar thargoidWar );
 
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, thargoidWar) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -313,8 +316,8 @@ namespace EddiJournalMonitor
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType"));
                                     bool docked = JsonParsing.getBool(data, "Docked");
-                                    Faction systemfaction = getFaction(data, "System", systemName);
-                                    Faction stationfaction = getFaction(data, "Station", systemName);
+                                    Faction systemfaction = GetFaction(data, "System", systemName);
+                                    Faction stationfaction = GetFaction(data, "Station", systemName);
                                     Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                     Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                     SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
@@ -358,7 +361,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Factions", out object factionsVal);
                                     if (factionsVal != null)
                                     {
-                                        factions = getFactions(factionsVal, systemName);
+                                        factions = GetFactions(factionsVal, systemName);
                                     }
 
                                     // Parse conflicts array data
@@ -366,26 +369,29 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Conflicts", out object conflictsVal);
                                     if (conflictsVal != null)
                                     {
-                                        conflicts = getConflicts(conflictsVal, factions);
+                                        conflicts = GetConflicts(conflictsVal, factions);
                                     }
 
                                     // Powerplay data (if pledged)
-                                    getPowerplayData( data, out List<Power> powerplayPowers, out PowerplayState powerplayState );
+                                    GetPowerplayData( data, out List<Power> powerplayPowers, out PowerplayState powerplayState );
 
                                     bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
                                     bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
                                     bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
+                                    // Thargoid war data (if any)
+                                    GetThargoidWarData( data, out ThargoidWar thargoidWar );
+
                                     // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
                                     // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
-                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
-                                        events.Add(new LocationEvent(timestamp, systemName, systemAddress, x, y, z, distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, inSRV, onFoot) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new LocationEvent(timestamp, systemName, systemAddress, x, y, z, distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, inSRV, onFoot, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
@@ -415,7 +421,7 @@ namespace EddiJournalMonitor
                                             ;
                                     }
 
-                                    string victimFaction = getFactionName(data, "VictimFaction");
+                                    string victimFaction = GetFactionName(data, "VictimFaction");
 
                                     data.TryGetValue("SharedWithOthers", out object val);
                                     bool shared = false;
@@ -437,7 +443,7 @@ namespace EddiJournalMonitor
                                             // 0-credit reward; ignore
                                             break;
                                         }
-                                        string factionName = getFactionName(data, "Faction");
+                                        string factionName = GetFactionName(data, "Faction");
                                         rewards.Add(new Reward(factionName, reward));
                                     }
                                     else
@@ -456,7 +462,7 @@ namespace EddiJournalMonitor
                                         {
                                             foreach (Dictionary<string, object> rewardData in rewardsData)
                                             {
-                                                string factionName = getFactionName(rewardData, "Faction");
+                                                string factionName = GetFactionName(rewardData, "Faction");
                                                 rewardData.TryGetValue("Reward", out val);
                                                 long factionReward = (long)val;
 
@@ -475,16 +481,16 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("Reward", out object val);
                                     long reward = (long)val;
-                                    string victimFaction = getFactionName(data, "VictimFaction");
+                                    string victimFaction = GetFactionName(data, "VictimFaction");
 
                                     if (data.ContainsKey("AwardingFaction"))
                                     {
-                                        string awardingFaction = getFactionName(data, "AwardingFaction");
+                                        string awardingFaction = GetFactionName(data, "AwardingFaction");
                                         events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else if (data.ContainsKey("PayeeFaction"))
                                     {
-                                        string payeeFaction = getFactionName(data, "PayeeFaction");
+                                        string payeeFaction = GetFactionName(data, "PayeeFaction");
                                         events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
@@ -494,7 +500,7 @@ namespace EddiJournalMonitor
                                 {
                                     object val;
                                     string crimetype = JsonParsing.getString(data, "CrimeType");
-                                    string faction = getFactionName(data, "Faction");
+                                    string faction = GetFactionName(data, "Faction");
                                     string victim = JsonParsing.getString(data, "Victim");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Victim_Localised")))
@@ -1745,10 +1751,10 @@ namespace EddiJournalMonitor
                                     bool submitted = JsonParsing.getBool(data, "Submitted");
                                     string interdictor = JsonParsing.getString(data, "Interdictor");
                                     var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
-                                    var isThargoid = JsonParsing.getOptionalBool(data, "isThargoid") ?? false;
+                                    var isThargoid = JsonParsing.getOptionalBool(data, "IsThargoid") ?? false;
                                     data.TryGetValue("CombatRank", out object val);
                                     CombatRating rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
-                                    string faction = getFactionName(data, "Faction");
+                                    string faction = GetFactionName(data, "Faction");
                                     string power = JsonParsing.getString(data, "Power");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
@@ -1806,7 +1812,7 @@ namespace EddiJournalMonitor
                                     bool iscommander = JsonParsing.getBool(data, "IsPlayer");
                                     data.TryGetValue("CombatRank", out object val);
                                     CombatRating rating = (val == null ? null : CombatRating.FromRank((int)val));
-                                    string faction = getFactionName(data, "Faction");
+                                    string faction = GetFactionName(data, "Faction");
                                     string power = JsonParsing.getString(data, "Power");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")))
@@ -2273,7 +2279,7 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
                                     SignalSource source = GetSignalSourceName(data);
-                                    source.spawningFaction = getFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
+                                    source.spawningFaction = GetFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
                                     source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)(secondsRemaining));
 
@@ -2649,7 +2655,7 @@ namespace EddiJournalMonitor
                                 {
                                     string name = JsonParsing.getString(data, "Name");
                                     long crewid = JsonParsing.getLong(data, "CrewID");
-                                    string faction = getFactionName(data, "Faction");
+                                    string faction = GetFactionName(data, "Faction");
                                     long price = JsonParsing.getLong(data, "Cost");
                                     CombatRating rating = CombatRating.FromRank(JsonParsing.getInt(data, "CombatRank"));
                                     events.Add(new CrewHiredEvent(timestamp, name, crewid, faction, price, rating) { raw = line, fromLoad = fromLogLoad });
@@ -2902,7 +2908,7 @@ namespace EddiJournalMonitor
                                     long amount = (long)val;
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     bool allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    string faction = getFactionName(data, "Faction");
+                                    string faction = GetFactionName(data, "Faction");
                                     int shipId = 0;
                                     var shipIdLong = JsonParsing.getLong(data, "ShipID");
                                     if (shipIdLong > 4293000000)
@@ -2925,7 +2931,7 @@ namespace EddiJournalMonitor
                                     long amount = (long)val;
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     bool allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    string faction = getFactionName(data, "Faction");
+                                    string faction = GetFactionName(data, "Faction");
                                     int shipId = 0;
                                     var shipIdLong = JsonParsing.getLong(data, "ShipID");
                                     if (shipIdLong >= 4293000000)
@@ -3021,7 +3027,7 @@ namespace EddiJournalMonitor
                                     {
                                         foreach (Dictionary<string, object> rewardData in factionsData)
                                         {
-                                            string factionName = getFactionName(rewardData, "Faction");
+                                            string factionName = GetFactionName(rewardData, "Faction");
                                             rewardData.TryGetValue("Amount", out val);
                                             long factionReward = (long)val;
 
@@ -3030,7 +3036,7 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        string factionName = getFactionName(data, "Faction");
+                                        string factionName = GetFactionName(data, "Faction");
                                         data.TryGetValue("Amount", out val);
                                         long factionReward = (long)val;
 
@@ -3218,7 +3224,7 @@ namespace EddiJournalMonitor
                                     {
                                         localisedname = Regex.Replace(localisedname, @"<.*?>", ""); // Mission localized names may have embedded HTML tags. If so then remove them.
                                     }
-                                    var faction = getFactionName(data, "Faction");
+                                    var faction = GetFactionName(data, "Faction");
                                     var reward = JsonParsing.getOptionalInt(data, "Reward");
                                     var wing = JsonParsing.getBool(data, "Wing");
 
@@ -3262,7 +3268,7 @@ namespace EddiJournalMonitor
                                         // Missions with targets
                                         var target = JsonParsing.getString(data, "Target");
                                         var targettype = JsonParsing.getString(data, "TargetType");
-                                        var targetfaction = getFactionName(data, "TargetFaction");
+                                        var targetfaction = GetFactionName(data, "TargetFaction");
                                         data.TryGetValue("KillCount", out val);
                                         if (val != null)
                                         {
@@ -3383,7 +3389,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Reward", out val);
                                     var reward = (val == null ? 0 : (long)val);
                                     var donation = JsonParsing.getOptionalLong(data, "Donated") ?? 0;
-                                    var faction = getFactionName(data, "Faction");
+                                    var faction = GetFactionName(data, "Faction");
 
                                     // Missions with commodities (which may include on-foot micro-resources)
                                     var c = JsonParsing.getString(data, "Commodity");
@@ -4325,7 +4331,7 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     Economy systemEconomy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                     Economy systemEconomy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
-                                    Faction systemfaction = getFaction(data, "System", systemName);
+                                    Faction systemfaction = GetFaction(data, "System", systemName);
                                     SecurityLevel systemSecurity = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
                                     systemSecurity.fallbackLocalizedName = JsonParsing.getString(data, "SystemSecurity_Localised");
                                     long? systemPopulation = JsonParsing.getOptionalLong(data, "Population");
@@ -4340,7 +4346,7 @@ namespace EddiJournalMonitor
                                     string carrierName = JsonParsing.getString(data, "StationName");
                                     StationModel carrierType = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                     long carrierId = JsonParsing.getLong(data, "MarketID");
-                                    Faction stationFaction = getFaction(data, "Station", systemName);
+                                    Faction stationFaction = GetFaction(data, "Station", systemName);
 
                                     // Get carrier services data
                                     List<StationService> stationServices = new List<StationService>();
@@ -4371,7 +4377,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Factions", out object factionsVal);
                                     if (factionsVal != null)
                                     {
-                                        factions = getFactions(factionsVal, systemName);
+                                        factions = GetFactions(factionsVal, systemName);
                                     }
 
                                     // Parse conflicts array data
@@ -4379,18 +4385,21 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Conflicts", out object conflictsVal);
                                     if (conflictsVal != null)
                                     {
-                                        conflicts = getConflicts(conflictsVal, factions);
+                                        conflicts = GetConflicts(conflictsVal, factions);
                                     }
 
                                     // Powerplay data (if pledged)
-                                    getPowerplayData( data, out List<Power> powerplayPowers, out PowerplayState powerplayState );
+                                    GetPowerplayData( data, out List<Power> powerplayPowers, out PowerplayState powerplayState );
+
+                                    // Thargoid war data (if any)
+                                    GetThargoidWarData( data, out ThargoidWar thargoidWar );
 
                                     bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
                                     bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
                                     bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
-                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPowers, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPowers, powerplayState, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the carrier jump cooldown completes
                                     if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
@@ -4960,7 +4969,57 @@ namespace EddiJournalMonitor
             return events;
         }
 
-        private static void getPowerplayData(IDictionary<string, object> data, out List<Power> powerplayPowers, out PowerplayState powerplayState)
+        private static void GetThargoidWarData ( IDictionary<string, object> data, out ThargoidWar thargoidWar )
+        {
+            thargoidWar = null;
+
+            if ( data.TryGetValue( "ThargoidWar", out object thargoidWarObj ) &&
+                 thargoidWarObj is IDictionary<string, object> thargoidWarData )
+            {
+                try
+                {
+                    var currentState = JsonParsing.getString( thargoidWarData, "CurrentState" );
+                    if ( string.IsNullOrEmpty( currentState ) )
+                    {
+                        return; 
+                    }
+                    var successState = JsonParsing.getString( thargoidWarData, "NextStateSuccess" );
+                    var failureState = JsonParsing.getString( thargoidWarData, "NextStateFailure" );
+
+                    thargoidWar = new ThargoidWar()
+                    {
+                        CurrentState = FactionState.FromEDName( currentState ) ?? FactionState.None,
+                        SuccessState = FactionState.FromEDName( successState ) ?? FactionState.None,
+                        FailureState = FactionState.FromEDName( failureState ) ?? FactionState.None,
+                        succeeded = JsonParsing.getBool( thargoidWarData, "SuccessStateReached" ),
+                        progress =
+                            Math.Min( JsonParsing.getDecimal( thargoidWarData, "WarProgress" ), 1 ) *
+                            100, // Multiply by 100 to convert from 0-1 scale to percentage, don't report values greater than 100%
+                    };
+                    
+                    // Remaining days is not always present
+                    var remainingDaysString = JsonParsing.getString( thargoidWarData, "EstimatedRemainingTime" );
+                    if ( !string.IsNullOrEmpty(remainingDaysString) )
+                    {
+                        thargoidWar.remainingDays = Convert.ToInt32( remainingDaysString
+                            .Replace( " Days", "" )
+                            .Replace( " Day", "" ) );
+                    }
+
+                    thargoidWar.remainingPorts = ( thargoidWar.CurrentState == FactionState.ThargoidProbing ||
+                                                   thargoidWar.CurrentState == FactionState.ThargoidRecovery )
+                        ? null
+                        : JsonParsing.getOptionalInt( thargoidWarData, "RemainingPorts" );
+                }
+                catch ( Exception e )
+                {
+                    Logging.Error(
+                        $"Failed to parse Thargoid war data: {JsonConvert.SerializeObject( thargoidWarData )}", e );
+                }
+            }
+        }
+
+        private static void GetPowerplayData(IDictionary<string, object> data, out List<Power> powerplayPowers, out PowerplayState powerplayState)
         {
             powerplayPowers = new List<Power>();
             data.TryGetValue("Powers", out object powersVal);
@@ -4975,7 +5034,7 @@ namespace EddiJournalMonitor
             powerplayState = PowerplayState.FromEDName(JsonParsing.getString(data, "PowerplayState")) ?? PowerplayState.None;
         }
 
-        private static Superpower getAllegiance(IDictionary<string, object> data, string key)
+        private static Superpower GetAllegiance(IDictionary<string, object> data, string key)
         {
             data.TryGetValue(key, out object val);
             // FD sends "" rather than null; fix that here
@@ -4983,39 +5042,45 @@ namespace EddiJournalMonitor
             return Superpower.FromNameOrEdName((string)val);
         }
 
-        private static List<Conflict> getConflicts(object conflictsVal, List<Faction> factions)
+        private static List<Conflict> GetConflicts(object conflictsVal, List<Faction> factions)
         {
             if (conflictsVal is null || factions is null) { return null; }
 
             List<Conflict> conflicts = new List<Conflict>();
-            var conflictsList = conflictsVal as List<object>;
-            foreach (IDictionary<string, object> conflictDetail in conflictsList)
+            if ( conflictsVal is List<object> conflictsList )
             {
-                FactionState conflictType = FactionState.FromEDName(JsonParsing.getString(conflictDetail, "WarType")) ?? FactionState.None;
-                string status = JsonParsing.getString(conflictDetail, "Status");
+                foreach ( IDictionary<string, object> conflictDetail in conflictsList )
+                {
+                    FactionState conflictType =
+                        FactionState.FromEDName( JsonParsing.getString( conflictDetail, "WarType" ) ) ??
+                        FactionState.None;
+                    string status = JsonParsing.getString( conflictDetail, "Status" );
 
-                // Faction 1
-                conflictDetail.TryGetValue("Faction1", out object faction1Val);
-                Dictionary<string, object> faction1Detail = (Dictionary<string, object>)faction1Val;
-                string faction1Name = JsonParsing.getString(faction1Detail, "Name");
-                Faction faction1 = factions.Find(f => f.name == faction1Name);
-                string faction1Stake = JsonParsing.getString(faction1Detail, "Stake");
-                int faction1DaysWon = JsonParsing.getInt(faction1Detail, "WonDays");
+                    // Faction 1
+                    conflictDetail.TryGetValue( "Faction1", out object faction1Val );
+                    Dictionary<string, object> faction1Detail = (Dictionary<string, object>)faction1Val;
+                    string faction1Name = JsonParsing.getString( faction1Detail, "Name" );
+                    Faction faction1 = factions.Find( f => f.name == faction1Name );
+                    string faction1Stake = JsonParsing.getString( faction1Detail, "Stake" );
+                    int faction1DaysWon = JsonParsing.getInt( faction1Detail, "WonDays" );
 
-                // Faction 2
-                conflictDetail.TryGetValue("Faction2", out object faction2Val);
-                Dictionary<string, object> faction2Detail = (Dictionary<string, object>)faction2Val;
-                string faction2Name = JsonParsing.getString(faction2Detail, "Name");
-                Faction faction2 = factions.Find(f => f.name == faction2Name);
-                string faction2Stake = JsonParsing.getString(faction2Detail, "Stake");
-                int faction2DaysWon = JsonParsing.getInt(faction2Detail, "WonDays");
+                    // Faction 2
+                    conflictDetail.TryGetValue( "Faction2", out object faction2Val );
+                    Dictionary<string, object> faction2Detail = (Dictionary<string, object>)faction2Val;
+                    string faction2Name = JsonParsing.getString( faction2Detail, "Name" );
+                    Faction faction2 = factions.Find( f => f.name == faction2Name );
+                    string faction2Stake = JsonParsing.getString( faction2Detail, "Stake" );
+                    int faction2DaysWon = JsonParsing.getInt( faction2Detail, "WonDays" );
 
-                conflicts.Add(new Conflict(conflictType, status, faction1, faction1Stake, faction1DaysWon, faction2, faction2Stake, faction2DaysWon));
+                    conflicts.Add( new Conflict( conflictType, status, faction1, faction1Stake, faction1DaysWon,
+                        faction2, faction2Stake, faction2DaysWon ) );
+                }
             }
+
             return conflicts;
         }
 
-        private static string getFactionName(IDictionary<string, object> data, string key)
+        private static string GetFactionName(IDictionary<string, object> data, string key)
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
@@ -5023,7 +5088,7 @@ namespace EddiJournalMonitor
             return superpowerFaction?.invariantName ?? faction;
         }
 
-        private static Faction getFaction(IDictionary<string, object> data, string type, string systemName)
+        private static Faction GetFaction(IDictionary<string, object> data, string type, string systemName)
         {
             Faction faction = new Faction();
 
@@ -5051,19 +5116,21 @@ namespace EddiJournalMonitor
             // Get the faction allegiance
             if (data.TryGetValue(type + "Allegiance", out _))
             {
-                faction.Allegiance = getAllegiance(data, type + "Allegiance");
+                faction.Allegiance = GetAllegiance(data, type + "Allegiance");
             }
             else if (data.TryGetValue("Factions", out object val))
             {
                 // Station controlling faction government not discretely available in 'Location' event
-                var factionsList = val as List<object>;
-                foreach (IDictionary<string, object> factionDetail in factionsList)
+                if ( val is List<object> factionsList )
                 {
-                    string fName = JsonParsing.getString(factionDetail, "Name");
-                    if (fName == faction.name)
+                    foreach ( IDictionary<string, object> factionDetail in factionsList )
                     {
-                        faction.Allegiance = getAllegiance(factionDetail, "Allegiance");
-                        break;
+                        string fName = JsonParsing.getString( factionDetail, "Name" );
+                        if ( fName == faction.name )
+                        {
+                            faction.Allegiance = GetAllegiance( factionDetail, "Allegiance" );
+                            break;
+                        }
                     }
                 }
             }
@@ -5074,89 +5141,93 @@ namespace EddiJournalMonitor
             return faction;
         }
 
-        private static List<Faction> getFactions(object factionsVal, string systemName)
+        private static List<Faction> GetFactions(object factionsVal, string systemName)
         {
             List<Faction> factions = new List<Faction>();
-            var factionsList = factionsVal as List<object>;
-            foreach (IDictionary<string, object> factionDetail in factionsList)
+            if ( factionsVal is List<object> factionsList )
             {
-                // Core data
-                string fName = JsonParsing.getString(factionDetail, "Name");
-                FactionState fState = FactionState.FromEDName(JsonParsing.getString(factionDetail, "FactionState")) ?? FactionState.None;
-                Government fGov = Government.FromEDName(JsonParsing.getString(factionDetail, "SystemGovernment")) ?? Government.None;
-                decimal influence = JsonParsing.getDecimal(factionDetail, "Influence") * 100; // Convert from a 0-1 scale to 0-100
-                Superpower fAllegiance = getAllegiance(factionDetail, "Allegiance");
-                Happiness happiness = Happiness.FromEDName(JsonParsing.getString(factionDetail, "Happiness") ?? string.Empty);
-                decimal myReputation = JsonParsing.getOptionalDecimal(factionDetail, "MyReputation") ?? 0;
-
-                Faction fFaction = new Faction()
+                foreach ( IDictionary<string, object> factionDetail in factionsList )
                 {
-                    name = fName,
-                    Government = fGov,
-                    Allegiance = fAllegiance,
-                    myreputation = myReputation
-                };
+                    // Core data
+                    string fName = JsonParsing.getString( factionDetail, "Name" );
+                    FactionState fState =
+                        FactionState.FromEDName( JsonParsing.getString( factionDetail, "FactionState" ) ) ??
+                        FactionState.None;
+                    Government fGov =
+                        Government.FromEDName( JsonParsing.getString( factionDetail, "SystemGovernment" ) ) ??
+                        Government.None;
+                    decimal influence =
+                        JsonParsing.getDecimal( factionDetail, "Influence" ) * 100; // Convert from a 0-1 scale to 0-100
+                    Superpower fAllegiance = GetAllegiance( factionDetail, "Allegiance" );
+                    Happiness happiness =
+                        Happiness.FromEDName( JsonParsing.getString( factionDetail, "Happiness" ) ?? string.Empty );
+                    decimal myReputation = JsonParsing.getOptionalDecimal( factionDetail, "MyReputation" ) ?? 0;
 
-                FactionPresence factionPresense = new FactionPresence()
-                {
-                    systemName = systemName,
-                    FactionState = fState,
-                    influence = influence,
-                    Happiness = happiness,
-                };
-
-                // Active states
-                factionDetail.TryGetValue("ActiveStates", out object activeStatesVal);
-                if (activeStatesVal != null)
-                {
-                    var activeStatesList = (List<object>)activeStatesVal;
-                    foreach (IDictionary<string, object> activeState in activeStatesList)
+                    Faction fFaction = new Faction()
                     {
-                        factionPresense.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "State")) ?? FactionState.None);
-                    }
-                }
+                        name = fName, Government = fGov, Allegiance = fAllegiance, myreputation = myReputation
+                    };
 
-                // Pending states
-                factionDetail.TryGetValue("PendingStates", out object pendingStatesVal);
-                if (pendingStatesVal != null)
-                {
-                    var pendingStatesList = (List<object>)pendingStatesVal;
-                    foreach (IDictionary<string, object> pendingState in pendingStatesList)
+                    FactionPresence factionPresense = new FactionPresence()
                     {
-                        FactionTrendingState pTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(pendingState, "State")) ?? FactionState.None,
-                            JsonParsing.getOptionalInt(pendingState, "Trend")
-                        );
-                        factionPresense.PendingStates.Add(pTrendingState);
-                    }
-                }
+                        systemName = systemName, FactionState = fState, influence = influence, Happiness = happiness,
+                    };
 
-                // Recovering states
-                factionDetail.TryGetValue("RecoveringStates", out object recoveringStatesVal);
-                if (recoveringStatesVal != null)
-                {
-                    var recoveringStatesList = (List<object>)recoveringStatesVal;
-                    foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
+                    // Active states
+                    factionDetail.TryGetValue( "ActiveStates", out object activeStatesVal );
+                    if ( activeStatesVal != null )
                     {
-                        FactionTrendingState rTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "State")) ?? FactionState.None,
-                            JsonParsing.getOptionalInt(recoveringState, "Trend")
-                        );
-                        factionPresense.RecoveringStates.Add(rTrendingState);
+                        var activeStatesList = (List<object>)activeStatesVal;
+                        foreach ( IDictionary<string, object> activeState in activeStatesList )
+                        {
+                            factionPresense.ActiveStates.Add(
+                                FactionState.FromEDName( JsonParsing.getString( activeState, "State" ) ) ??
+                                FactionState.None );
+                        }
                     }
+
+                    // Pending states
+                    factionDetail.TryGetValue( "PendingStates", out object pendingStatesVal );
+                    if ( pendingStatesVal != null )
+                    {
+                        var pendingStatesList = (List<object>)pendingStatesVal;
+                        foreach ( IDictionary<string, object> pendingState in pendingStatesList )
+                        {
+                            FactionTrendingState pTrendingState = new FactionTrendingState(
+                                FactionState.FromEDName( JsonParsing.getString( pendingState, "State" ) ) ??
+                                FactionState.None,
+                                JsonParsing.getOptionalInt( pendingState, "Trend" )
+                            );
+                            factionPresense.PendingStates.Add( pTrendingState );
+                        }
+                    }
+
+                    // Recovering states
+                    factionDetail.TryGetValue( "RecoveringStates", out object recoveringStatesVal );
+                    if ( recoveringStatesVal != null )
+                    {
+                        var recoveringStatesList = (List<object>)recoveringStatesVal;
+                        foreach ( IDictionary<string, object> recoveringState in recoveringStatesList )
+                        {
+                            FactionTrendingState rTrendingState = new FactionTrendingState(
+                                FactionState.FromEDName( JsonParsing.getString( recoveringState, "State" ) ) ??
+                                FactionState.None,
+                                JsonParsing.getOptionalInt( recoveringState, "Trend" )
+                            );
+                            factionPresense.RecoveringStates.Add( rTrendingState );
+                        }
+                    }
+
+                    // Squadron data
+                    fFaction.squadronfaction = JsonParsing.getOptionalBool( factionDetail, "SquadronFaction" ) ?? false;
+                    factionPresense.squadronhappiestsystem =
+                        JsonParsing.getOptionalBool( factionDetail, "HappiestSystem" ) ?? false;
+                    factionPresense.squadronhomesystem =
+                        JsonParsing.getOptionalBool( factionDetail, "HomeSystem" ) ?? false;
+
+                    fFaction.presences.Add( factionPresense );
+                    factions.Add( fFaction );
                 }
-
-                // Squadron data
-                fFaction.squadronfaction = JsonParsing.getOptionalBool(factionDetail, "SquadronFaction") ?? false;
-                factionPresense.squadronhappiestsystem = JsonParsing.getOptionalBool(factionDetail, "HappiestSystem") ?? false;
-                factionPresense.squadronhomesystem = JsonParsing.getOptionalBool(factionDetail, "HomeSystem") ?? false;
-
-                if (fFaction != null)
-                {
-                    fFaction.presences.Add(factionPresense);
-                    factions.Add(fFaction);
-                }
-
             }
 
             return factions;

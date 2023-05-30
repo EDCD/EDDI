@@ -81,6 +81,10 @@ namespace EddiEvents
         [PublicAPI("The name of the carrier")]
         public string carriername { get; private set; }
 
+        // Thargoid War
+        [PublicAPI( "Thargoid war data, when applicable" )]
+        public ThargoidWar ThargoidWar { get; private set; }
+
         // These properties are not intended to be user facing
         public bool docked { get; private set; }
 
@@ -119,7 +123,7 @@ namespace EddiEvents
             string carrierName, StationModel carrierType, long? carrierId, List<StationService> stationServices,
             Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy systemEconomy, Economy systemEconomy2, SecurityLevel systemSecurity, long? systemPopulation, 
-            List<Power> powerplayPowers, PowerplayState powerplayState) : base(timestamp, NAME)
+            List<Power> powerplayPowers, PowerplayState powerplayState, ThargoidWar thargoidWar ) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
@@ -136,6 +140,7 @@ namespace EddiEvents
             this.conflicts = conflicts ?? new List<Conflict>();
             this.Powers = powerplayPowers;
             this.powerState = powerplayState ?? PowerplayState.None;
+            this.ThargoidWar = thargoidWar;
 
             // Body
             this.bodyname = bodyName;
