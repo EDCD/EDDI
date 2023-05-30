@@ -32,11 +32,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Bodies to map` updated to add a preference for recommending already mapped bodies and to include terraforming bodies. #2490, #2527
       * `Carrier jump engaged` updated to more gracefully handle jumps where the commander is on-foot on the carrier
       * `Docked` updated to add the `Limpet Check` script and incorporate the updated `state` property.
+      * `Fsd engaged` (triggered after the FSD is engaged) no longer warns about hazardous or non-scoopable arrival stars.
       * `Low fuel`, which normally triggers at about 25%, now re-triggers at 5%, 10%, 15%, and 20%. It also now triggers whether in your ship or an SRV. #2462
       * `Market Information Updated` updated to remove the `Limpet Check` script.
       * `Message received` updated to improve localization of AX pilot messages, add randomized voices for player messages, suppress highly repetitious military speech, and allow setting the gender of the voice based on the name of the sender.
       * `Next jump` updated to add context.
-      * `Fsd engaged` (triggered after the FSD is engaged) no longer warns about hazardous or non-scoopable arrival stars.
+      * `Route details` updated to add search for scorpion SRV.
       * `Ship FSD` (triggered before the FSD is engaged) now warns about nearby hazardous stars or no charted scoopable stars in your arrival system. 
       * `Ship interdicted` updated to use new `isthargoid` property.
       * `Ship refuelled` revised to prevent adding pauses when there is no other speech.
