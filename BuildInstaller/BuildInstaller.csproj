@@ -28,7 +28,7 @@ if exist $(SolutionDir)postBuildTests.bat (
   call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(SolutionDir)" "bin\$(Configuration)\$(TargetFramework)\"
 )
 
-if "$(ConfigurationName)" == "Release" (
+if "$(Configuration)" == "Release" (
   build-installer
 )
 </PostBuildEvent>
