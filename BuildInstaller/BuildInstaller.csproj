@@ -25,7 +25,7 @@ IF DEFINED APPVEYOR (
 cd "$(SolutionDir)"
 if exist $(SolutionDir)postBuildTests.bat (
   @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
-  call $(SolutionDir)postBuildTests.bat "$(ConfigurationName)" "$(SolutionDir)" "bin\$(Configuration)\$(TargetFramework)\"
+  call $(SolutionDir)postBuildTests.bat "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\$(TargetFramework)\"
 )
 
 if "$(Configuration)" == "Release" (
