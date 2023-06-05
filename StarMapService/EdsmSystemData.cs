@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
@@ -133,73 +134,86 @@ namespace EddiStarMapService
             return new List<StarSystem>();
         }
 
-        public StarSystem ParseStarMapSystem(JObject response)
+        public StarSystem ParseStarMapSystem ( JObject response )
         {
-            var starSystem = new StarSystem
+            try
             {
-                systemname = (string)response["name"],
-                systemAddress = (ulong)response["id64"],
-                EDSMID = (long?)response["id"]
-            };
-
-            if (response["coords"] is JObject)
-            {
-                var coords = response["coords"].ToObject<Dictionary<string, decimal?>>() ?? new Dictionary<string, decimal?>();
-                starSystem.x = coords["x"];
-                starSystem.y = coords["y"];
-                starSystem.z = coords["z"];
-            }
-
-            if (response["primaryStar"] is JObject primarystar)
-            {
-                Body primaryStar = new Body()
+                var starSystem = new StarSystem
                 {
-                    bodyname = (string)primarystar["name"],
-                    bodyType = BodyType.FromEDName("Star"),
-                    distance = 0,
-                    stellarclass = ((string)primarystar["type"])?.Split(' ')[0]
+                    systemname = (string)response[ "name" ],
+                    systemAddress = (ulong)response[ "id64" ],
+                    EDSMID = (long?)response[ "id" ]
                 };
-                starSystem.AddOrUpdateBody(primaryStar);
-            }
 
-            if ((bool?)response["requirePermit"] is true)
-            {
-                starSystem.requirespermit = true;
-                starSystem.permitname = (string)response["permitName"];
-            }
-
-            if (response["information"] is JObject information)
-            {
-                starSystem.Reserve = ReserveLevel.FromName((string)information["reserve"]) ?? ReserveLevel.None;
-                starSystem.population = (long?)information["population"] ?? 0;
-
-                // Populated system data
-                if (starSystem.population > 0)
+                if ( response[ "coords" ] is JObject )
                 {
-                    Faction controllingFaction = new Faction
-                    {
-                        name = (string)information["faction"],
-                        Allegiance = Superpower.FromName((string)information["allegiance"]) ?? Superpower.None,
-                        Government = Government.FromName((string)information["government"]) ?? Government.None,
-                    };
-                    controllingFaction.presences.Add(new FactionPresence()
-                    {
-                        systemName = starSystem.systemname,
-                        FactionState = FactionState.FromName((string)information["factionState"]) ?? FactionState.None,
-                    });
-                    starSystem.Faction = controllingFaction;
-
-                    starSystem.securityLevel = SecurityLevel.FromName((string)information["security"]) ?? SecurityLevel.None;
-                    starSystem.Economies = new List<Economy>()
-                    {
-                        Economy.FromName((string)information["economy"]) ?? Economy.None,
-                        Economy.FromName((string)information["secondEconomy"]) ?? Economy.None
-                    };
+                    var coords = response[ "coords" ].ToObject<Dictionary<string, decimal?>>() ??
+                                 new Dictionary<string, decimal?>();
+                    starSystem.x = coords[ "x" ];
+                    starSystem.y = coords[ "y" ];
+                    starSystem.z = coords[ "z" ];
                 }
-            }
 
-            starSystem.lastupdated = DateTime.UtcNow;
-            return starSystem;
+                if ( response[ "primaryStar" ] is JObject primarystar )
+                {
+                    Body primaryStar = new Body()
+                    {
+                        bodyname = (string)primarystar[ "name" ],
+                        bodyType = BodyType.FromEDName( "Star" ),
+                        distance = 0,
+                        stellarclass = ( (string)primarystar[ "type" ] )?.Split( ' ' )[ 0 ]
+                    };
+                    starSystem.AddOrUpdateBody( primaryStar );
+                }
+
+                if ( (bool?)response[ "requirePermit" ] is true )
+                {
+                    starSystem.requirespermit = true;
+                    starSystem.permitname = (string)response[ "permitName" ];
+                }
+
+                if ( response[ "information" ] is JObject information )
+                {
+                    starSystem.Reserve = ReserveLevel.FromName( (string)information[ "reserve" ] ) ?? ReserveLevel.None;
+                    starSystem.population = (long?)information[ "population" ] ?? 0;
+
+                    // Populated system data
+                    if ( starSystem.population > 0 )
+                    {
+                        Faction controllingFaction = new Faction
+                        {
+                            name = (string)information[ "faction" ],
+                            Allegiance =
+                                Superpower.FromName( (string)information[ "allegiance" ] ) ?? Superpower.None,
+                            Government = Government.FromName( (string)information[ "government" ] ) ??
+                                         Government.None,
+                        };
+                        controllingFaction.presences.Add( new FactionPresence()
+                        {
+                            systemName = starSystem.systemname,
+                            FactionState = FactionState.FromName( (string)information[ "factionState" ] ) ??
+                                           FactionState.None,
+                        } );
+                        starSystem.Faction = controllingFaction;
+
+                        starSystem.securityLevel = SecurityLevel.FromName( (string)information[ "security" ] ) ??
+                                                   SecurityLevel.None;
+                        starSystem.Economies = new List<Economy>()
+                        {
+                            Economy.FromName( (string)information[ "economy" ] ) ?? Economy.None,
+                            Economy.FromName( (string)information[ "secondEconomy" ] ) ?? Economy.None
+                        };
+                    }
+                }
+
+                starSystem.lastupdated = DateTime.UtcNow;
+                return starSystem;
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( $@"{e.Message}: {JsonConvert.SerializeObject( response )}", e );
+                return null;
+            }
         }
     }
 }
