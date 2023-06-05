@@ -42,7 +42,7 @@ namespace UnitTests
             Assert.AreEqual(typeof(DateTime), vaVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items \<index\> published")?.variableType);
             Assert.AreEqual(typeof(bool), vaVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items \<index\> read")?.variableType);
             Assert.AreEqual(typeof(string), vaVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items \<index\> title")?.variableType);
-            Assert.AreEqual(typeof(IList), vaVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items")?.variableType);
+            Assert.AreEqual(typeof( IEnumerable<> ), vaVars.FirstOrDefault(k => k.key == @"EDDI galnet news published items")?.variableType);
             Assert.IsTrue(vaVars.TrueForAll(v => v.value == null));
         }
 
@@ -80,7 +80,7 @@ namespace UnitTests
             var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
             Assert.AreEqual(5, vaVars.Count);
             Assert.AreEqual(typeof(string), vaVars.FirstOrDefault(k => k.key == "EDDI exploration data sold systems \\<index\\>")?.variableType);
-            Assert.AreEqual(typeof(IList), vaVars.FirstOrDefault(k => k.key == "EDDI exploration data sold systems")?.variableType);
+            Assert.AreEqual(typeof( IEnumerable<> ), vaVars.FirstOrDefault(k => k.key == "EDDI exploration data sold systems")?.variableType);
             Assert.AreEqual(typeof(decimal), vaVars.FirstOrDefault(k => k.key == "EDDI exploration data sold reward")?.variableType);
             Assert.AreEqual(typeof(decimal), vaVars.FirstOrDefault(k => k.key == "EDDI exploration data sold bonus")?.variableType);
             Assert.AreEqual(typeof(decimal), vaVars.FirstOrDefault(k => k.key == "EDDI exploration data sold total")?.variableType);
@@ -125,7 +125,7 @@ namespace UnitTests
             Assert.AreEqual(6, vaVars.Count);
             Assert.AreEqual(typeof(string), vaVars.FirstOrDefault(k => k.key == "EDDI asteroid prospected commodities \\<index\\> commodity")?.variableType);
             Assert.AreEqual(typeof(decimal), vaVars.FirstOrDefault(k => k.key == "EDDI asteroid prospected commodities \\<index\\> percentage")?.variableType);
-            Assert.AreEqual(typeof(IList), vaVars.FirstOrDefault(k => k.key == "EDDI asteroid prospected commodities")?.variableType);
+            Assert.AreEqual(typeof(IEnumerable<>), vaVars.FirstOrDefault(k => k.key == "EDDI asteroid prospected commodities")?.variableType);
             Assert.AreEqual(typeof(string), vaVars.FirstOrDefault(k => k.key == "EDDI asteroid prospected materialcontent")?.variableType);
             Assert.AreEqual(typeof(decimal), vaVars.FirstOrDefault(k => k.key == "EDDI asteroid prospected remaining")?.variableType);
             Assert.AreEqual(typeof(string), vaVars.FirstOrDefault(k => k.key == "EDDI asteroid prospected motherlode")?.variableType);

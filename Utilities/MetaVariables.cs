@@ -230,7 +230,7 @@ namespace Utilities
 
                         // Write the root element name with (if available) the number of associated entries from the collection
                         var entriesPath = keysPath.Copy();
-                        Results.Add(new MetaVariable(entriesPath, typeof( IList ), description, i));
+                        Results.Add(new MetaVariable(entriesPath, typeof( IEnumerable<> ), description, i));
                     }
                     else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
                     {
@@ -346,7 +346,7 @@ namespace Utilities
                 this.value = null;
                 this.variableType = typeof(decimal);
             }
-            else if ( variableType == typeof( IList ) && value is int count )
+            else if ( variableType == typeof( IEnumerable<> ) && value is int count )
             {
                 this.value = count;
                 this.variableType = typeof( int );

@@ -108,6 +108,10 @@ namespace GeneratorTests
                         {
                             output.Add($"  - *{{DATE:{variable.key}}}* {description}");
                         }
+                        else if ( variable.variableType == typeof( IEnumerable<>) )
+                        {
+                            output.Add( $"  - *{{INT:{variable.key}}}* {description}" );
+                        }
                         output.Add("");
                     }
 
