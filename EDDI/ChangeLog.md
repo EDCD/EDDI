@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.3-b2
+  * Core
+    * Fixed an exception that could be thrown when obtaining old EDSM logs via the EDSM responder. (#2544)
+
 ## 4.0.3-b1
   * Core
     * Fixed a bug that prevented updating body data on nav beacon scans of fully discovered systems. #2505
