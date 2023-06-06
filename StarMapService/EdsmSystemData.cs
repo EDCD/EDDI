@@ -138,10 +138,18 @@ namespace EddiStarMapService
         {
             try
             {
+                var systemAddress = (ulong?)response[ "id64" ];
+
+                // Skip parsing star systems lacking essential data - a system address
+                if ( systemAddress is null )
+                {
+                    return null;
+                }
+
                 var starSystem = new StarSystem
                 {
                     systemname = (string)response[ "name" ],
-                    systemAddress = (ulong)response[ "id64" ],
+                    systemAddress = (ulong)systemAddress,
                     EDSMID = (long?)response[ "id" ]
                 };
 
