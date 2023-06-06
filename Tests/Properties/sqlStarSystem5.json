@@ -95,7 +95,7 @@
 			"scanned": "2017-12-11T06:17:06Z",
 			"alreadymapped": true,
 			"mapped": "2017-12-11T06:17:06Z",
-			"mappedEfficiently": false,
+			"mappedEfficiently": true,
 			"periapsis": 324.741974,
 			"tilt": 0.315668,
 			"eccentricity": 0.0,

@@ -254,6 +254,17 @@ namespace UnitTests
             Assert.AreEqual(8557, result.bodies?.FirstOrDefault(b => b?.bodyId == 0)?.EDSMID);
             Assert.AreEqual(17, result.visits);
             Assert.AreEqual("2017-12-11T06:17:06Z", Dates.FromDateTimeToString(result.lastvisit));
+
+            var body1 = result.bodies?.FirstOrDefault( b => b.bodyname == "HR 6421 1" );
+            Assert.AreEqual( "2017-12-11T06:17:06Z", Dates.FromDateTimeToString( body1?.scannedDateTime ) );
+            Assert.AreEqual( "2017-12-11T06:17:06Z", Dates.FromDateTimeToString( body1?.mappedDateTime ) );
+            Assert.AreEqual( true, body1?.mappedEfficiently ?? false);
+
+            var body2 = result.bodies?.FirstOrDefault( b => b.bodyname == "HR 6421 2" );
+            Assert.AreEqual( "2017-12-11T06:17:06Z", Dates.FromDateTimeToString( body2?.scannedDateTime ) );
+            Assert.AreEqual( string.Empty, Dates.FromDateTimeToString( body2?.mappedDateTime ) );
+            Assert.AreEqual( false, body2?.mappedEfficiently ?? false );
+
         }
     }
 }
