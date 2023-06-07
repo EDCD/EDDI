@@ -229,10 +229,22 @@
     <value>Handelskrieg</value>
     <comment>Faction state TradeWar</comment>
   </data>
-  
-  
-  
-  
+  <data name="Thargoid_Probing" xml:space="preserve">
+    <value>Thargoiden-Alarm</value>
+    <comment>Faction state Thargoid_Probing</comment>
+  </data>
+  <data name="Thargoid_Harvest" xml:space="preserve">
+    <value>Thargoideninvasion</value>
+    <comment>Faction state Thargoid_Harvest</comment>
+  </data>
+  <data name="Thargoid_Controlled" xml:space="preserve">
+    <value>Thargoiden kontrolliert</value>
+    <comment>Faction state Thargoid_Controlled</comment>
+  </data>
+  <data name="Thargoid_Stronghold" xml:space="preserve">
+    <value>Thargoid-Maelstrom</value>
+    <comment>Faction state Thargoid_Stronghold</comment>
+  </data>
   <data name="Thargoid_Recovery" xml:space="preserve">
     <value>Nach Thargoid-Wiederherstellung</value>
     <comment>Faction state Thargoid_Recovery</comment>
