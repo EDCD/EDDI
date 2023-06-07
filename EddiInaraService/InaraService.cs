@@ -257,7 +257,11 @@ namespace EddiInaraService
                         // There may be an issue with a specific API event.
                         // We'll add that API event to a list and omit sending that event again in this instance.
                         Logging.Error("Inara event error: " + inaraResponse.eventStatusText, data);
-                        invalidAPIEvents.Add(indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID).eventName);
+                        var eventName = indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID)?.eventName;
+                        if ( !string.IsNullOrEmpty( eventName ) )
+                        {
+                            invalidAPIEvents.Add( eventName );
+                        }
                     }
                 }
                 return false;
