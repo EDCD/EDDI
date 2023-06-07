@@ -152,4 +152,7 @@
   <data name="UNKNOWN" xml:space="preserve">
     <value>Unbekanntes Schiff</value>
   </data>
+  <data name="Thargoid" xml:space="preserve">
+    <value>Thargoiden Schiff</value>
+  </data>
 </root>
