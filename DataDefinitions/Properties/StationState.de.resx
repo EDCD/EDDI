@@ -125,4 +125,16 @@
     <value>Beschädigt</value>
     <comment>StationState Damaged</comment>
   </data>
+  <data name="NormalOperation" xml:space="preserve">
+    <value>Normalbetrieb</value>
+    <comment>StationState NormalOperation</comment>
+  </data>
+  <data name="UnderAttack" xml:space="preserve">
+    <value>Wird angegriffen</value>
+    <comment>StationState UnderAttack</comment>
+  </data>
+  <data name="UnderRepairs" xml:space="preserve">
+    <value>Wird repariert</value>
+    <comment>StationState UnderRepairs</comment>
+  </data>
 </root>
