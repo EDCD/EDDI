@@ -404,7 +404,7 @@ namespace Utilities
             var skip = 0;
             if (!prefix.EndsWith(" ")) { prefix += " "; }
             while (skip < childKey.Length
-                || prefix.Skip(skip).Count() - 1 > childKey.Length
+                || (prefix.Skip(skip).Count() - 1) > childKey.Length
                 || (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length))
             {
                 skip++;
@@ -473,7 +473,7 @@ namespace Utilities
         public static List<VoiceAttackVariable> AsVoiceAttackVariables(this List<MetaVariable> source, string startingPrefix, string eventType = null)
         {
             return source
-                .Where(v => v.type != typeof(object))
+                .Where(v => ( v.type != typeof(object) ) )
                 .Select(v => new VoiceAttackVariable(startingPrefix, eventType, v.keysPath, v.type, v.description, v.value))
                 .ToList();
         }

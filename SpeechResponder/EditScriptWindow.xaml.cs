@@ -371,7 +371,7 @@ namespace EddiSpeechResponder
                         textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.StringValue),
                             item.description));
                     }
-                    else if (item.type == typeof(IList))
+                    else if ( item.type == typeof( IEnumerable<>) )
                     {
                         textCompletionItems.Add(new TextCompletionItem(itemKey, typeof(Cottle.Values.MapValue),
                             item.description));
