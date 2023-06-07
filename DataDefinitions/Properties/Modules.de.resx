@@ -633,6 +633,12 @@
     <value>Säurekörperabwurf</value>
     <comment>Module Caustic Sink Launcher</comment>
   </data>
-  
-  
+  <data name="Thargoid_Pulse_Neutraliser" xml:space="preserve">
+    <value>Thargoiden-Impuls-Neutralisator</value>
+    <comment>Module Thargoid Pulse Neutraliser</comment>
+  </data>
+  <data name="PulseWaveXenoScanner" xml:space="preserve">
+    <value>Impulswellen-Xeno-Scanner</value>
+    <comment>Module PulseWaveXenoScanner</comment>
+  </data>
 </root>
