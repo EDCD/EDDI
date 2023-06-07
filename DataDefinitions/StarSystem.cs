@@ -134,8 +134,7 @@ namespace EddiDataDefinitions
 
         private static Body PreserveBodyData(Body oldBody, Body updatedBody)
         {
-            if (oldBody.scannedDateTime != null &&
-                oldBody.scannedDateTime < updatedBody.scannedDateTime)
+            if ( ( oldBody.scannedDateTime ?? DateTime.MinValue) > ( updatedBody.scannedDateTime ?? DateTime.MinValue ) )
             {
                 updatedBody.scannedDateTime = oldBody.scannedDateTime;
             }
@@ -146,8 +145,7 @@ namespace EddiDataDefinitions
                 updatedBody.alreadydiscovered = oldBody.alreadydiscovered;
             }
 
-            if (oldBody.mappedDateTime != null &&
-                oldBody.mappedDateTime < updatedBody.mappedDateTime)
+            if ( ( oldBody.mappedDateTime ?? DateTime.MinValue ) > ( updatedBody.mappedDateTime ?? DateTime.MinValue ) )
             {
                 updatedBody.mappedDateTime = oldBody.mappedDateTime;
             }

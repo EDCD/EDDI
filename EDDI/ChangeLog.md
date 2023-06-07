@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.3-b2
   * Core
     * Fixed an exception that could be thrown when obtaining old EDSM logs via the EDSM responder. (#2544)
+    * Fixed a loss of `scanned` and `mapped` values for explored bodies.
+    * Various other minor bug fixes.
 
 ## 4.0.3-b1
   * Core
