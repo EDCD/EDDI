@@ -233,5 +233,8 @@
   
   
   
-  
+  <data name="Thargoid_Recovery" xml:space="preserve">
+    <value>Nach Thargoid-Wiederherstellung</value>
+    <comment>Faction state Thargoid_Recovery</comment>
+  </data>
 </root>
