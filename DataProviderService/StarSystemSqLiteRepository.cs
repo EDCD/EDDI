@@ -463,7 +463,7 @@ namespace EddiDataProviderService
         private DatabaseStarSystem ReadStarSystemEntry(SQLiteCommand cmd)
         {
             string systemName = string.Empty;
-            ulong systemAddress = 0;
+            ulong? systemAddress = null;
             string starSystemJson = string.Empty;
             string comment = string.Empty;
             DateTime lastUpdated = DateTime.MinValue;
@@ -478,7 +478,11 @@ namespace EddiDataProviderService
                     {
                         if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "systemaddress")
                         {
-                            systemAddress = (ulong)rdr.GetInt64( i );
+                            systemAddress = rdr.IsDBNull( i ) ? null : (ulong?)rdr.GetInt64( i );
+
+                            // Skip legacy entries with a null systemAddress for now
+                            // Eventually, we want to make this a non-null key field
+                            if ( systemAddress is null ) { continue; }
                         }
                         if (rdr.GetName(i) == "name")
                         {
@@ -507,7 +511,7 @@ namespace EddiDataProviderService
                     }
                 }
             }
-            return new DatabaseStarSystem(systemName, systemAddress,  starSystemJson)
+            return new DatabaseStarSystem(systemName, systemAddress ?? 0,  starSystemJson)
             {
                 comment = comment,
                 lastUpdated = lastUpdated,
