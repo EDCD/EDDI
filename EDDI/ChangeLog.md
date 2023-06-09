@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed an exception that could be thrown when obtaining old EDSM logs via the EDSM responder. (#2544)
     * Fixed a loss of `scanned` and `mapped` values for explored bodies.
     * Various other minor bug fixes.
+  * VoiceAttack
+    * Fixed a bug where compartment module variables might not be cleared when swapping to a smaller ship. (#2547)
 
 ## 4.0.3-b1
   * Core

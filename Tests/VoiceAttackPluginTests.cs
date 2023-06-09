@@ -1,11 +1,14 @@
-﻿using EddiDataDefinitions;
+﻿using EddiConfigService.Configurations;
+using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
+using EddiVoiceAttackResponder;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tests.Properties;
 using Utilities;
 
 namespace UnitTests
@@ -23,27 +26,27 @@ namespace UnitTests
 
         public void SetText(string varName, string value)
         {
-            vaVars.Add(varName, value);
+            vaVars[ varName ] = value;
         }
 
         public void SetInt(string varName, int? value)
         {
-            vaVars.Add(varName, value);
+            vaVars[ varName ] = value;
         }
 
         public void SetBoolean(string varName, bool? value)
         {
-            vaVars.Add(varName, value);
+            vaVars[ varName ] = value;
         }
 
         public void SetDecimal(string varName, decimal? value)
         {
-            vaVars.Add(varName, value);
+            vaVars[ varName ] = value;
         }
 
         public void SetDate(string varName, DateTime? value)
         {
-            vaVars.Add(varName, value);
+            vaVars[ varName ] = value;
         }
     }
 
@@ -197,6 +200,79 @@ namespace UnitTests
             {
                 Assert.IsTrue(vaProxy.vaVars.ContainsKey(variable.key), "Unmatched key");
             }
+        }
+
+        [ TestMethod ]
+        public void TestVAShip ()
+        {
+            // Read from our test item "shipMonitor.json"
+            var configuration = new ShipMonitorConfiguration();
+            try
+            {
+                configuration = DeserializeJsonResource<ShipMonitorConfiguration>( Resources.shipMonitor );
+            }
+            catch ( Exception )
+            {
+                Assert.Fail( "Failed to read ship configuration" );
+            }
+
+            dynamic mockVaProxy = new MockVAProxy();
+            var varVars = ( (MockVAProxy)mockVaProxy ).vaVars;
+
+            var krait = configuration.shipyard.FirstOrDefault( s => s.LocalId == 81 );
+            var cobraMk3 = configuration.shipyard.FirstOrDefault( s => s.LocalId == 0 );
+            Assert.IsNotNull( krait );
+            Assert.IsNotNull( cobraMk3 );
+
+            VoiceAttackVariables.setShipValues( krait, "Ship", ref mockVaProxy );
+            Assert.AreEqual( "Krait Mk. II", (string)varVars[ "Ship model" ] );
+            Assert.AreEqual( "The Impact Kraiter", (string)varVars[ "Ship name" ] );
+            Assert.AreEqual( "TK-29K", (string)varVars[ "Ship ident" ] );
+            Assert.AreEqual( "Combat", (string)varVars[ "Ship role" ] );
+            Assert.AreEqual( 201065994, (decimal?)varVars[ "Ship value" ] );
+            Assert.AreEqual( 10053299, (decimal?)varVars[ "Ship rebuy" ] );
+            Assert.AreEqual( 100M, (decimal?)varVars[ "Ship health" ] );
+            Assert.AreEqual( 16, (int?)varVars[ "Ship cargo capacity" ] );
+            Assert.AreEqual( 8, (int?)varVars[ "Ship compartments" ] );
+            Assert.AreEqual( 6, (int?)varVars[ "Ship compartment 1 size" ] );
+            Assert.AreEqual( true, (bool?)varVars[ "Ship compartment 1 occupied" ] );
+            Assert.AreEqual( 6, (int?)varVars[ "Ship compartment 1 module class" ] );
+            Assert.AreEqual( "C", (string)varVars[ "Ship compartment 1 module grade" ] );
+            Assert.AreEqual( 100M, (decimal?)varVars[ "Ship compartment 1 module health" ] );
+            Assert.AreEqual( 2234799, (decimal?)varVars[ "Ship compartment 1 module cost" ] );
+            Assert.AreEqual( 2696600, (decimal?)varVars[ "Ship compartment 1 module value" ] );
+            Assert.AreEqual( 9, (int?)varVars[ "Ship hardpoints" ] );
+            Assert.AreEqual( true, (bool?)varVars[ "Ship large hardpoint 1 occupied" ] );
+            Assert.AreEqual( 2, (int?)varVars[ "Ship large hardpoint 1 module class" ] );
+            Assert.AreEqual( "B", (string)varVars[ "Ship large hardpoint 1 module grade" ] );
+            Assert.AreEqual( 100M, (decimal?)varVars[ "Ship large hardpoint 1 module health" ] );
+            Assert.AreEqual( 310425, (decimal?)varVars[ "Ship large hardpoint 1 module cost" ] );
+            Assert.AreEqual( 344916, (decimal?)varVars[ "Ship large hardpoint 1 module value" ] );
+
+            VoiceAttackVariables.setShipValues( cobraMk3, "Ship", ref mockVaProxy );
+            Assert.AreEqual( "Cobra Mk. III", (string)varVars[ "Ship model" ] );
+            Assert.AreEqual( "The Dynamo", (string)varVars[ "Ship name" ] );
+            Assert.AreEqual( "TK-20C", (string)varVars[ "Ship ident" ] );
+            Assert.AreEqual( "Multipurpose", (string)varVars[ "Ship role" ] );
+            Assert.AreEqual( 8605684, (decimal?)varVars[ "Ship value" ] );
+            Assert.AreEqual( 0, (decimal?)varVars[ "Ship rebuy" ] );
+            Assert.AreEqual( 100M, (decimal?)varVars[ "Ship health" ] );
+            Assert.AreEqual( 0, (int?)varVars[ "Ship cargo capacity" ] );
+            Assert.AreEqual( 0, (int?)varVars[ "Ship compartments" ] );
+            Assert.AreEqual( null, (int?)varVars[ "Ship compartment 1 size" ] );
+            Assert.AreEqual( false, (bool?)varVars[ "Ship compartment 1 occupied" ] );
+            Assert.AreEqual( null, (int?)varVars[ "Ship compartment 1 module class" ] );
+            Assert.AreEqual( null, (string)varVars[ "Ship compartment 1 module grade" ] );
+            Assert.AreEqual( null, (decimal?)varVars[ "Ship compartment 1 module health" ] );
+            Assert.AreEqual( null, (decimal?)varVars[ "Ship compartment 1 module cost" ] );
+            Assert.AreEqual( null, (decimal?)varVars[ "Ship compartment 1 module value" ] );
+            Assert.AreEqual( 0, (int?)varVars[ "Ship hardpoints" ] );
+            Assert.AreEqual( false, (bool?)varVars[ "Ship large hardpoint 1 occupied" ] );
+            Assert.AreEqual( null, (int?)varVars[ "Ship large hardpoint 1 module class" ] );
+            Assert.AreEqual( null, (string)varVars[ "Ship large hardpoint 1 module grade" ] );
+            Assert.AreEqual( null, (decimal?)varVars[ "Ship large hardpoint 1 module health" ] );
+            Assert.AreEqual( null, (decimal?)varVars[ "Ship large hardpoint 1 module cost" ] );
+            Assert.AreEqual( null, (decimal?)varVars[ "Ship large hardpoint 1 module value" ] );
         }
     }
 }

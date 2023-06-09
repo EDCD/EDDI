@@ -225,7 +225,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set commander information");
         }
 
-        protected static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
+        public static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting ship information (" + prefix + ")");
             try
@@ -299,59 +299,13 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " max fuel per jump", ship?.maxfuelperjump);
 
                 // Hardpoints
-                int numTinyHardpoints = 0;
-                int numSmallHardpoints = 0;
-                int numMediumHardpoints = 0;
-                int numLargeHardpoints = 0;
-                int numHugeHardpoints = 0;
-                foreach (Hardpoint Hardpoint in ship?.hardpoints ?? new List<Hardpoint>())
-                {
-                    string baseHardpointName = prefix;
-                    switch (Hardpoint.size)
-                    {
-                        case 0:
-                            baseHardpointName = prefix + " tiny hardpoint " + ++numTinyHardpoints;
-                            break;
-                        case 1:
-                            baseHardpointName = prefix + " small hardpoint " + ++numSmallHardpoints;
-                            break;
-                        case 2:
-                            baseHardpointName = prefix + " medium hardpoint " + ++numMediumHardpoints;
-                            break;
-                        case 3:
-                            baseHardpointName = prefix + " large hardpoint " + ++numLargeHardpoints;
-                            break;
-                        case 4:
-                            baseHardpointName = prefix + " huge hardpoint " + ++numHugeHardpoints;
-                            break;
-                    }
-
-                    vaProxy.SetBoolean(baseHardpointName + " occupied", Hardpoint.module != null);
-                    setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
-                    setShipModuleOutfittingValues(Hardpoint.module, EDDI.Instance.CurrentStation?.outfitting,
-                        baseHardpointName + " module", ref vaProxy);
-                }
-
-                vaProxy.SetInt(prefix + " hardpoints",
-                    numTinyHardpoints + numSmallHardpoints + numMediumHardpoints + numLargeHardpoints +
-                    numHugeHardpoints);
-
+                SetShipHardpoints( ship, prefix, ref vaProxy );
+                
                 // Compartments
-                int curCompartment = 0;
-                foreach (Compartment Compartment in ship?.compartments ?? new List<Compartment>())
-                {
-                    string baseCompartmentName = prefix + " compartment " + ++curCompartment;
-                    vaProxy.SetInt(baseCompartmentName + " size", Compartment.size);
-                    vaProxy.SetBoolean(baseCompartmentName + " occupied", Compartment.module != null);
-                    setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref vaProxy);
-                    setShipModuleOutfittingValues(Compartment.module, EDDI.Instance.CurrentStation?.outfitting,
-                        baseCompartmentName + " module", ref vaProxy);
-                }
-
-                vaProxy.SetInt(prefix + " compartments", curCompartment);
+                SetShipCompartments( ship, prefix, ref vaProxy);
 
                 // Fetch the star system in which the ship is stored
-                if (ship?.starsystem != null)
+                if ( ship?.starsystem != null)
                 {
                     vaProxy.SetText(prefix + " system", ship.starsystem);
                     vaProxy.SetText(prefix + " station", ship.station);
@@ -366,6 +320,48 @@ namespace EddiVoiceAttackResponder
             }
 
             Logging.Debug("Set ship information");
+        }
+
+        private static void SetShipCompartments ( Ship ship, string prefix, ref dynamic vaProxy )
+        {
+            var filledCompartments = ship?.compartments.Count ?? 0;
+            // We want to overshoot the maximum number of compartments for any ship in the game
+            // and overwrite any previously written values with null values
+            for ( int i = 0; i < 16; i++ ) 
+            {
+                var Compartment = i <= (filledCompartments - 1) ? ship?.compartments[i] : null;
+                string baseCompartmentName = $"{prefix} compartment {i + 1}";
+                vaProxy.SetInt( baseCompartmentName + " size", Compartment?.size );
+                vaProxy.SetBoolean( baseCompartmentName + " occupied", Compartment?.module != null );
+                setShipModuleValues( Compartment?.module, baseCompartmentName + " module", ref vaProxy );
+                setShipModuleOutfittingValues( Compartment?.module, EDDI.Instance.CurrentStation?.outfitting,
+                    baseCompartmentName + " module", ref vaProxy );
+            }
+            vaProxy.SetInt( prefix + " compartments", filledCompartments );
+        }
+
+        private static void SetShipHardpoints ( Ship ship, string prefix, ref dynamic vaProxy )
+        {
+            var invariantSizeNames = new List<string> { "tiny", "small", "medium", "large", "huge" };
+            var totalHardpointsCount = 0;
+            for ( int i = 0; i < (invariantSizeNames.Count - 1); i++ ) // Hardpoint Size
+            {
+                var hardpointsAtSize = ship?.hardpoints.Where( h => h.size == i ).ToList() ?? new List<Hardpoint>();
+                for ( int j = 0; j < 12; j++ ) // Hardpoint Slots at Size
+                    // We want to overshoot the maximum number of hardpoints for each hardpoint size
+                    // and overwrite any previously written values with null values
+                {
+                    var baseHardpointName = $"{prefix} {invariantSizeNames[i]} hardpoint {j + 1}";
+                    var Hardpoint = j <= (hardpointsAtSize.Count - 1) ? hardpointsAtSize[j] : null;
+                    vaProxy.SetBoolean( baseHardpointName + " occupied", Hardpoint?.module != null );
+                    setShipModuleValues( Hardpoint?.module, baseHardpointName + " module", ref vaProxy );
+                    setShipModuleOutfittingValues( Hardpoint?.module, EDDI.Instance.CurrentStation?.outfitting,
+                        baseHardpointName + " module", ref vaProxy );
+                }
+                vaProxy.SetInt( $"{prefix} {invariantSizeNames[ i ]} hardpoints", hardpointsAtSize.Count );
+                totalHardpointsCount += hardpointsAtSize.Count;
+            }
+            vaProxy.SetInt( prefix + " hardpoints", totalHardpointsCount );
         }
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
@@ -410,9 +406,9 @@ namespace EddiVoiceAttackResponder
                 }
             }
             // Not found so remove any existing
-            vaProxy.SetDecimal("Ship " + name + " station cost", (decimal?)null);
-            vaProxy.SetDecimal("Ship " + name + " station discount", (decimal?)null);
-            vaProxy.SetText("Ship " + name + " station discount (spoken)", (string)null);
+            vaProxy.SetDecimal(name + " station cost", (decimal?)null);
+            vaProxy.SetDecimal(name + " station discount", (decimal?)null);
+            vaProxy.SetText(name + " station discount (spoken)", (string)null);
         }
 
         protected static void setShipyardValues(List<Ship> shipyard, ref dynamic vaProxy)
