@@ -697,5 +697,8 @@
     <value>Analisi di variazioni energetiche massive</value>
     <comment>Material tg_shutdowndata</comment>
   </data>
-  
+  <data name="unknowncorechip" xml:space="preserve">
+    <value>Chip del nucleo tattico</value>
+    <comment>Material unknowncorechip</comment>
+  </data>
 </root>

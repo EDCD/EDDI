@@ -146,10 +146,10 @@
     <comment>A hyperlink to the troubleshooting URL (in english)</comment>
   </data>
   <data name="verbose_logging_checkbox" xml:space="preserve">
-    <value>Abilita connessione dettagliata (solo nel caso in cui questa sia stata richiesta dagli sviluppatori di EDDI)</value>
+    <value>Abilitare log esteso (solo se è stato richiesto dagli sviluppatori di EDDI)</value>
   </data>
   <data name="verbose_logging_desc" xml:space="preserve">
-    <value>Se la connessione dettagliata è abilitata verrà creato sul desktop un archivio .zip della connessione. questo archivio andrà incollato nel rapporto di problema su GitHub. Tale archivio non contiene alcuna informazione che consenta l'identificazione personale.</value>
+    <value>Se il log esteso è abilitato, verrà creato un file. zip del vostro log sul desktop, pronto per essere incollato in un Issue Report su GitHub. Nessuna informazione personale è inclusa nel file di log.</value>
   </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Versione:</value>
