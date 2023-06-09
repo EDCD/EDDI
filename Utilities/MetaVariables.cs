@@ -325,7 +325,7 @@ namespace Utilities
             // Build the full key
             this.key = startingPrefix; // Set our starting prefix
             keysPath = keysPath.Prepend(eventType?.ToLowerInvariant()).ToList();
-            keysPath.RemoveAll(k => string.IsNullOrEmpty(k)); // Remove any empty keys from the path
+            keysPath.RemoveAll(string.IsNullOrEmpty); // Remove any empty keys from the path
             foreach (var keySegment in keysPath)
             {
                 // Generate a variable name from the prefix and key. 
@@ -346,10 +346,18 @@ namespace Utilities
                 this.value = null;
                 this.variableType = typeof(decimal);
             }
-            else if ( variableType == typeof( IEnumerable<> ) && value is int count )
+            else if ( variableType == typeof( IEnumerable<> ))
             {
-                this.value = count;
-                this.variableType = typeof( int );
+                if ( value is null )
+                {
+                    this.value = null;
+                    this.variableType = typeof( int );
+                }
+                if ( value is int count )
+                {
+                    this.value = count;
+                    this.variableType = typeof( int );
+                }
             }
             else if (value is double d)
             {

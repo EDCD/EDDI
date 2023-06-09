@@ -1,5 +1,7 @@
-﻿using EddiEvents;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -179,6 +181,24 @@ namespace UnitTests
             Assert.AreEqual("The amount of commodity ejected", vaVars.FirstOrDefault(k => k.key == "EDDI commodity ejected amount")?.description);
             Assert.AreEqual("ID of the mission-related commodity, if applicable", vaVars.FirstOrDefault(k => k.key == "EDDI commodity ejected missionid")?.description);
             Assert.AreEqual("True if the cargo has been abandoned", vaVars.FirstOrDefault(k => k.key == "EDDI commodity ejected abandoned")?.description);
+        }
+
+        [ TestMethod ]
+        public void TestRouteDetailsEvent ()
+        {
+            dynamic mockVaProxy = new MockVAProxy();
+            var entry = new KeyValuePair<string, Type>( "Route details", typeof(RouteDetailsEvent) );
+            var vars = new MetaVariables( entry.Value, new RouteDetailsEvent(DateTime.MinValue, "set", "Shinrarta Dezhra", "Jameson Memorial", new NavWaypointCollection(), 0, null ) ).Results;
+            var vaVars = vars.AsVoiceAttackVariables( string.Empty, entry.Key );
+            try
+            {
+                vaVars.ForEach( v => v.Set( mockVaProxy ) );
+            }
+            catch ( Exception e )
+            {
+                Assert.Fail($"{e.Message}: {JsonConvert.SerializeObject(e)}");
+                throw;
+            }
         }
     }
 }

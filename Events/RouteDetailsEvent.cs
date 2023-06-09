@@ -50,7 +50,7 @@ namespace EddiEvents
             this.station = station;
             this.Route = route;
             this.count = count;
-            this.missionids = missionids;
+            this.missionids = missionids ?? new List<long>();
         }
     }
 }
