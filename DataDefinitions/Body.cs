@@ -289,7 +289,7 @@ namespace EddiDataDefinitions
             this.bodyname = bodyName;
             this.radius = radiusKm;
             this.bodyType = BodyType.FromEDName("Star");
-            this.rings = rings;
+            this.rings = rings ?? new List<Ring>();
             this.temperature = temperatureKelvin;
             this.bodyId = bodyId;
 
@@ -440,7 +440,7 @@ namespace EddiDataDefinitions
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
                         ? BodyType.FromEDName("Moon") : BodyType.FromEDName("Planet");
-            this.rings = rings;
+            this.rings = rings ?? new List<Ring>();
             this.temperature = temperature;
             this.bodyId = bodyId;
 
