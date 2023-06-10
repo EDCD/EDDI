@@ -31,7 +31,7 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         public WindowsMediaSynthesizer (ref HashSet<VoiceDetails> voiceStore)
         {
-            bool TryOneCoreVoice(VoiceDetails voiceDetails)
+            bool TryOneCoreVoiceRegistry( VoiceDetails voiceDetails )
             {
                 // Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices can pick up voices we've previously uninstalled,
                 // so we test the registry entries for each voice to see if it is really fully registered.
@@ -51,7 +51,28 @@ namespace EddiSpeechService.SpeechSynthesizers
                     }
                 }
 
+                Logging.Warn( $"{voiceDetails.name} is missing registry keys (may have been uninstalled?), skipping." );
                 return false;
+            }
+
+            bool TryOneCoreVoiceSpeech ( VoiceDetails voiceDetails )
+            {
+                // Text that the voice can render a simple text string.
+                try
+                {
+                    lock ( synthLock )
+                    {
+                        synth.Voice = SpeechSynthesizer.AllVoices.FirstOrDefault( v =>
+                            v.DisplayName == voiceDetails.name );
+                        _ = synth.SynthesizeTextToStreamAsync( "" ).AsTask().Result;
+                    }
+                    return true;
+                }
+                catch ( Exception e )
+                {
+                    Logging.Warn( $"{voiceDetails.name} failed a speech test, skipping.", e );
+                    return false;
+                }
             }
 
             // Get all available voices from Windows.Media.SpeechSynthesis
@@ -65,9 +86,8 @@ namespace EddiSpeechService.SpeechSynthesizers
                         CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
 
                     // Skip voices which are not fully registered
-                    if (!TryOneCoreVoice(voiceDetails))
+                    if (!TryOneCoreVoiceRegistry(voiceDetails) || !TryOneCoreVoiceSpeech(voiceDetails))
                     {
-                        Logging.Debug($"{voice.DisplayName} is missing registry keys (may have been uninstalled?), skipping.");
                         continue;
                     }
 
@@ -125,49 +145,45 @@ namespace EddiSpeechService.SpeechSynthesizers
 
                         synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
                         synth.Options.AudioVolume = (double)Configuration.Volume / 100;
-                    }
-                    Logging.Debug("Configuration is: ", Configuration);
+                        Logging.Debug("Configuration is: ", Configuration);
 
-                    SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
-                    if (useSSML)
-                    {
-                        try
+                        SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
+                        if (useSSML)
                         {
-                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                            lock (synthLock)
+                            try
                             {
+                                Logging.Debug("Feeding SSML to synthesizer: " + speech);
                                 stream = synth.SynthesizeSsmlToStreamAsync(speech).AsTask().Result;
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            var badSpeech = new Dictionary<string, object>
+                            catch (Exception ex)
                             {
-                                { "voice", voice },
-                                { "speech", speech },
-                                { "exception", ex }
-                            };
-                            if ( speech.Contains("<phoneme") )
-                            {
-                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                                lock (synthLock)
+                                var badSpeech = new Dictionary<string, object>
                                 {
-                                    stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech))
-                                        .AsTask()
-                                        .Result;
+                                    { "voice", voice },
+                                    { "speech", speech },
+                                    { "exception", ex }
+                                };
+                                if ( speech.Contains("<phoneme") )
+                                {
+                                    Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                                    lock (synthLock)
+                                    {
+                                        stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech))
+                                            .AsTask()
+                                            .Result;
+                                    }
+                                }
+                                else
+                                {
+                                    Logging.Warn("Speech failed. Stripping all SSML tags and re-trying.", badSpeech);
+                                    speech = SpeechFormatter.StripSSML( speech );
+                                    stream = synth.SynthesizeTextToStreamAsync(speech).AsTask().Result;
                                 }
                             }
-                            else
-                            {
-                                Logging.Warn("Speech failed.", badSpeech);
-                            }
                         }
-                    }
-                    else
-                    {
-                        Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                        lock (synthLock)
+                        else
                         {
+                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
                             stream = synth.SynthesizeTextToStreamAsync(speech).AsTask().Result;
                         }
                     }
@@ -198,9 +214,9 @@ namespace EddiSpeechService.SpeechSynthesizers
         public void Dispose()
         {
             lock ( synthLock )
-                {
-                    synth?.Dispose();
-                }
+            {
+                synth?.Dispose();
             }
         }
     }
+}
