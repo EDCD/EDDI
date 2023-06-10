@@ -365,7 +365,20 @@ namespace EddiSpeechService
             }
             catch (Exception ex)
             {
-                Logging.Warn("Speech failed (" + Encoding.Default.EncodingName + ")", ex);
+                Logging.Warn( "Speech failed (" + Encoding.Default.EncodingName + ")", ex );
+                var voiceDetails = allVoices.FirstOrDefault( v => v.name == requestedVoice );
+                if ( voiceDetails?.synthType is nameof(Windows.Media) && requestedVoice != windowsMediaSynth.currentVoice )
+                {
+                    // Try falling back to our Windows Media default voice.
+                    Logging.Warn( $"{ex.Message}, retrying with Windows Media Synthesizer default voice.", ex );
+                    return getSpeechStream( windowsMediaSynth.currentVoice, speech );
+                }
+                if ( requestedVoice != systemSpeechSynth.currentVoice )
+                {
+                    // Try falling back to our System Speech default voice.
+                    Logging.Warn( $"{ex.Message}, retrying with System Speech Synthesizer default voice.", ex );
+                    return getSpeechStream( systemSpeechSynth.currentVoice, speech );
+                }
             }
             return null;
         }
@@ -375,28 +388,9 @@ namespace EddiSpeechService
             // Get the voice details we will use for speaking
             if ( TryResolveVoice( requestedVoice, out var voiceDetails ) )
             {
-                try
-                {
-                    return speak( voiceDetails, speech );
-                }
-                catch ( Exception ex )
-                {
-                    if ( !string.IsNullOrEmpty( requestedVoice ) )
-                    {
-                        Logging.Error( ex.Message, ex );
-                    }
-                    else
-                    {
-                        // Try falling back to our default voice.
-                        Logging.Error( $"{ex.Message}, retrying with default voice.", ex );
-                        return speak( string.Empty, speech );
-                    }
-                }
+                return speak( voiceDetails, speech );
             }
-            else
-            {
-                Logging.Warn( $"Something went wrong. Unable to obtain voice {requestedVoice}." );
-            }
+            Logging.Warn( $"Something went wrong. Unable to obtain voice {requestedVoice}." );
             return null;
         }
 
