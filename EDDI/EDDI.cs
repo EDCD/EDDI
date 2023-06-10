@@ -2957,7 +2957,6 @@ namespace EddiCore
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can only proceed if we know our current star system
-            updateCurrentSystem(theEvent.star.systemname, theEvent.star.systemAddress);
             if (CurrentStarSystem == null) { return false; }
 
             // We use an un-named temporary star at distance 0M during the FSD Target event.
@@ -2979,7 +2978,6 @@ namespace EddiCore
         private bool eventBodyScanned(BodyScannedEvent theEvent)
         {
             // We just scanned a body.  We can only proceed if we know our current star system
-            updateCurrentSystem(theEvent.body.systemname, theEvent.body.systemAddress);
             if (CurrentStarSystem == null) { return false; }
 
             CurrentStarSystem.AddOrUpdateBody(theEvent.body);

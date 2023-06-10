@@ -40,7 +40,7 @@ namespace EddiDataDefinitions
         public string systemname { get; set; }
 
         /// <summary>Unique 64 bit id value for system</summary>
-        public ulong systemAddress { get; set; }
+        public ulong? systemAddress { get; set; }
 
         /// <summary>The distance of the body from the arrival star, in light seconds </summary>
         [PublicAPI]
