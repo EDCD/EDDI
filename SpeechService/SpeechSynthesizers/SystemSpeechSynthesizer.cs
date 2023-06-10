@@ -10,7 +10,7 @@ using Utilities;
 
 namespace EddiSpeechService.SpeechSynthesizers
 {
-    public class SystemSpeechSynthesizer : IDisposable
+    public sealed class SystemSpeechSynthesizer : IDisposable
     {
         private readonly SpeechSynthesizer synth = new SpeechSynthesizer();
 
@@ -206,18 +206,9 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
+            lock ( synthLock )
             {
-                lock (synthLock)
-                {
-                    synth?.Dispose();
-                }
+                synth?.Dispose();
             }
         }
     }

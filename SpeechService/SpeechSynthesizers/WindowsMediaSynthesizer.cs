@@ -12,7 +12,7 @@ using Windows.Media.SpeechSynthesis;
 
 namespace EddiSpeechService.SpeechSynthesizers
 {
-    public class WindowsMediaSynthesizer : IDisposable
+    public sealed class WindowsMediaSynthesizer : IDisposable
     {
         private readonly SpeechSynthesizer synth = new SpeechSynthesizer();
 
@@ -197,19 +197,10 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                lock (synthLock)
+            lock ( synthLock )
                 {
                     synth?.Dispose();
                 }
             }
         }
     }
-}
