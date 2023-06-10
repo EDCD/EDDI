@@ -164,6 +164,13 @@ namespace EddiSpeechService.SpeechPreparation
             statement = statement.Replace("</transmit>", "");
             return statement;
         }
+
+        public static string StripSSML ( string speech )
+        {
+            speech = Regex.Replace( speech, @"<.*?>", string.Empty );
+            return speech;
+        }
+
         public static void UnpackAudioTags(string inputStatement, out string fileName, out bool async, out decimal? volumeOverride)
         {
             fileName = string.Empty;
