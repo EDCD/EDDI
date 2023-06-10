@@ -205,7 +205,7 @@ namespace EddiDataProviderService
         {
             List<StarSystem> syncedSystems = new List<StarSystem>();
             string[] systemNames = flightLogBatch.Select(x => x.system).Distinct().ToArray();
-            List<StarSystem> batchSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(systemNames, false, false);
+            List<StarSystem> batchSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames, true, false, false, false, false);
             foreach (StarSystem starSystem in batchSystems)
             {
                 if (starSystem != null)
