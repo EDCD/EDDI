@@ -75,7 +75,7 @@ namespace EddiStarMapService
                     response.Headers.FirstOrDefault(h => h.Name == "X-Rate-Limit-Remaining")?.Value as string,
                     out int requestsRemaining))
                 {
-                    if (requestsRemaining == 0)
+                    if (requestsRemaining == 1)
                     {
                         // We've exceeded our rate limit. A new request can be made after a short time has passed.
                         if (int.TryParse(
