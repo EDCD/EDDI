@@ -147,12 +147,19 @@ namespace EddiSpeechService.SpeechSynthesizers
                                 { "speech", speech },
                                 { "exception", ex }
                             };
-                            Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                            lock (synthLock)
+                            if ( speech.Contains("<phoneme") )
                             {
-                                stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech))
-                                    .AsTask()
-                                    .Result;
+                                Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
+                                lock (synthLock)
+                                {
+                                    stream = synth.SynthesizeSsmlToStreamAsync(SpeechFormatter.DisableIPA(speech))
+                                        .AsTask()
+                                        .Result;
+                                }
+                            }
+                            else
+                            {
+                                Logging.Warn("Speech failed.", badSpeech);
                             }
                         }
                     }
