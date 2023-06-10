@@ -13,22 +13,30 @@ namespace Utilities
     {
         public static string DownloadString(string uri)
         {
-            HttpWebRequest request = GetRequest(uri);
-            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-            using (HttpWebResponse response = GetResponse(request))
+            try
             {
-                if (response == null) // Means that the system was not found
+                HttpWebRequest request = GetRequest(uri);
+                request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+                using ( HttpWebResponse response = GetResponse( request ) )
                 {
-                    return null;
-                }
+                    if ( response == null ) // Means that the system was not found
+                    {
+                        return null;
+                    }
 
-                // Obtain and parse our response
-                var encoding = string.IsNullOrEmpty(response.CharacterSet)
+                    // Obtain and parse our response
+                    var encoding = string.IsNullOrEmpty(response.CharacterSet)
                         ? Encoding.UTF8
                         : Encoding.GetEncoding(response.CharacterSet);
 
-                Logging.Debug("Reading response from " + uri);
-                return ReadResponseString(response, encoding);
+                    Logging.Debug( "Reading response from " + uri );
+                    return ReadResponseString( response, encoding );
+                }
+            }
+            catch ( Exception e )
+            {
+                Logging.Error($"Error obtaining string response from {uri}: {e.Message}", e);
+                return null;
             }
         }
 
