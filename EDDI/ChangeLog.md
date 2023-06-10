@@ -4,8 +4,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.3-b3
   * Core
-    * Revised speech error handling to prevent a loop when handling failed speech.
     * Fixed another exception that could be thrown when obtaining old EDSM logs via the EDSM responder. (#2544)
+    * Refined handling of EDSM API rate limits.
+    * Revised speech error handling to prevent a loop when handling failed speech.
 
 ## 4.0.3-b2
   * Core

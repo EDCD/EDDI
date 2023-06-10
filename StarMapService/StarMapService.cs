@@ -44,7 +44,8 @@ namespace EddiStarMapService
         private readonly IEdsmRestClient restClient;
         private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
         private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
-
+        private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new ConcurrentDictionary<string, ResourceRateLimit>();
+        
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
@@ -68,28 +69,34 @@ namespace EddiStarMapService
             }
 
             public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);
-            IRestResponse<T> IEdsmRestClient.Execute<T>(IRestRequest request)
+
+            IRestResponse<T> IEdsmRestClient.Execute<T> ( IRestRequest request )
             {
-                var response = restClient.Execute<T>(request);
-                if (int.TryParse(
-                    response.Headers.FirstOrDefault(h => h.Name == "X-Rate-Limit-Remaining")?.Value as string,
-                    out int requestsRemaining))
+                if ( resourceRateLimits.TryGetValue( request.Resource, out ResourceRateLimit rateLimit ) )
                 {
-                    if (requestsRemaining == 1)
+                    if ( rateLimit.remaining < 5 && rateLimit.resetTime > DateTime.UtcNow )
                     {
-                        // We've exceeded our rate limit. A new request can be made after a short time has passed.
-                        if (int.TryParse(
-                            response.Headers.FirstOrDefault(h => h.Name == "X-Rate-Limit-Reset")?.Value as string,
-                            out var resetSeconds)) { }
-                        else
-                        {
-                            resetSeconds = 10;
-                        }
-                        Logging.Warn($"EDSM rate limit exceeded. Waiting {resetSeconds} seconds for server cool-down.");
-                        Thread.Sleep(TimeSpan.FromSeconds(resetSeconds));
-                        ((IEdsmRestClient) this).Execute<T>(request);
+                        // We're close to our rate limit. Allow it to reset before we continue.
+                        var waitSeconds = Math.Ceiling( ( rateLimit.resetTime - DateTime.UtcNow ).TotalSeconds + 1 );
+                        Logging.Warn( $"EDSM rate limit {( rateLimit.remaining > 0 ? "almost " : "" )}exceeded." );
+                        Logging.Warn( $"Waiting {waitSeconds} seconds for EDSM server cool-down." );
+                        Thread.Sleep( TimeSpan.FromSeconds( waitSeconds ) );
                     }
                 }
+
+                var response = restClient.Execute<T>( request );
+
+                // Update our rate limit data
+                int.TryParse( response.Headers.FirstOrDefault( h => h.Name == "X-Rate-Limit-Remaining" )?.Value as string,
+                    out int requestsRemaining );
+                int.TryParse( response.Headers.FirstOrDefault( h => h.Name == "X-Rate-Limit-Reset" )?.Value as string,
+                    out var resetSeconds );
+                resourceRateLimits[ request.Resource ] = new ResourceRateLimit
+                {
+                    remaining = requestsRemaining,
+                    resetTime = DateTime.UtcNow + TimeSpan.FromSeconds( resetSeconds )
+                };
+
                 return response;
             }
         }
@@ -499,6 +506,15 @@ namespace EddiStarMapService
             this.LastVisited = lastVisited;
             this.Comment = comment;
         }
+    }
+
+    public class ResourceRateLimit
+    {
+        // The number of requests remaining in the period prior to the rate reset
+        public int remaining { get; set; }
+
+        // The duration in seconds before the rate reset
+        public DateTime resetTime { get; set; }
     }
 
     // Custom serializer for REST requests
