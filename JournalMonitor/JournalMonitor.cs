@@ -2301,7 +2301,7 @@ namespace EddiJournalMonitor
                                             // Add station signals to the current star system if they are not already present.
                                             if (EDDI.Instance.CurrentStarSystem.stations.All(s => s.name != source.edname))
                                             {
-                                                var station = new Station { name = source.edname };
+                                                var station = new Station { name = source.edname, systemAddress = systemAddress };
                                                 if (!string.IsNullOrEmpty(source.localizedName) && source.edname != source.localizedName)
                                                 {
                                                     // At present, fleet carriers are the only station model which may have a localized signal name

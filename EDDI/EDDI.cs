@@ -1958,7 +1958,7 @@ namespace EddiCore
                     if ( station == null )
                     {
                         // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                        station = new Station { name = stationName, systemname = theEvent.systemname };
+                        station = new Station { name = stationName, systemname = theEvent.systemname, systemAddress = theEvent.systemAddress };
                         CurrentStarSystem.stations.Add( station );
                     }
 
@@ -2065,7 +2065,8 @@ namespace EddiCore
                         station = new Station
                         {
                             name = theEvent.station,
-                            systemname = theEvent.system
+                            systemname = theEvent.system,
+                            systemAddress = theEvent.systemAddress
                         };
                         CurrentStarSystem.stations.Add(station);
                     }
