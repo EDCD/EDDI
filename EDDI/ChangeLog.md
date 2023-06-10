@@ -6,7 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Fixed another exception that could be thrown when obtaining old EDSM logs via the EDSM responder. (#2544)
     * Refined handling of EDSM API rate limits.
-    * Revised speech service to adjust thread locking controls, add a simple render test for Windows.Media speech, and improve error handling for failed speech.
+    * Revised speech service to adjust exclusive locking statements, add a simple render test for Windows.Media speech, and improve error handling for failed speech.
 
 ## 4.0.3-b2
   * Core

@@ -29,94 +29,87 @@ namespace EddiSpeechService.SpeechSynthesizers
 
         public SystemSpeechSynthesizer(ref HashSet<VoiceDetails> voiceStore)
         {
-            bool TrySystemVoice(VoiceDetails voiceDetails)
+            lock ( synthLock )
             {
-                // System.Speech.Synthesis.SpeechSynthesizer.GetInstalledVoices() can pick up voices which
-                // cannot be selected successfully (e.g. if the user has modified their registry).
-                // Test each voice to make sure it is selectable.
-                try
+                bool TrySystemVoice ( VoiceDetails voiceDetails )
                 {
-                    lock (synthLock)
+                    // System.Speech.Synthesis.SpeechSynthesizer.GetInstalledVoices() can pick up voices which
+                    // cannot be selected successfully (e.g. if the user has modified their registry).
+                    // Test each voice to make sure it is selectable.
+                    try
                     {
-                        synth.SelectVoice(voiceDetails.name);
+                        synth.SelectVoice( voiceDetails.name );
+                        return true;
                     }
-                    return true;
+                    catch
+                    {
+                        return false;
+                    }
                 }
-                catch
-                {
-                    return false;
-                }
-            }
 
-            VoiceInfo selectedVoice;
-            List<InstalledVoice> systemSpeechVoices; 
-            lock (synthLock)
-            {
-                selectedVoice = synth.Voice;
-                systemSpeechVoices = synth
+                var selectedVoice = synth.Voice;
+                var systemSpeechVoices = synth
                     .GetInstalledVoices()
-                    .Where(v => v.Enabled &&
-                                !v.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                    .Where( v => v.Enabled && 
+                                 !v.VoiceInfo.Name.Contains( "Microsoft Server Speech Text to Speech Voice" ) )
                     .ToList();
-            }
-            foreach (var voice in systemSpeechVoices)
-            {
-                try
+
+                foreach ( var voice in systemSpeechVoices )
                 {
-                    Logging.Debug($"Found voice: {voice.VoiceInfo.Name}", voice.VoiceInfo);
-
-                    var voiceDetails = new VoiceDetails(voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                        voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System));
-
-                    // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
-                    // (for example, if OneCore voices have been added to System.Speech with a registry edit)
-                    if (voiceStore.Any(v => v.name == voiceDetails.name))
+                    try
                     {
-                        Logging.Debug($"{voice.VoiceInfo.Name} has already been added to the voice list, skipping.");
-                        continue;
-                    }
+                        Logging.Debug( $"Found voice: {voice.VoiceInfo.Name}", voice.VoiceInfo );
 
-                    // Skip voices which are not selectable
-                    if (!TrySystemVoice(voiceDetails))
+                        var voiceDetails = new VoiceDetails( voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
+                            voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System) );
+
+                        // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
+                        // (for example, if OneCore voices have been added to System.Speech with a registry edit)
+                        if ( voiceStore.Any( v => v.name == voiceDetails.name ) )
+                        {
+                            Logging.Debug(
+                                $"{voice.VoiceInfo.Name} has already been added to the voice list, skipping." );
+                            continue;
+                        }
+
+                        // Skip voices which are not selectable
+                        if ( !TrySystemVoice( voiceDetails ) )
+                        {
+                            Logging.Debug( $"{voice.VoiceInfo.Name} is not selectable, skipping." );
+                            continue;
+                        }
+
+                        // Suppress voices "Desktop" variant voices from System.Speech.Synthesis
+                        // where we already have a (newer) OneCore version (without disabling manual invocation of those voices)
+                        if ( voiceStore.Any( v => $"{v.name} Desktop" == voiceDetails.name ) )
+                        {
+                            voiceDetails.hideVoice = true;
+                        }
+
+                        // Skip Amazon Polly voices - these tend to throw various internal errors (cause unknown)
+                        // and are not currently reliable, particularly in VoiceAttack.
+                        if ( !string.IsNullOrEmpty( voiceDetails.name ) &&
+                             voiceDetails.name.StartsWith( "Amazon Polly" ) )
+                        {
+                            continue;
+                        }
+
+                        voiceStore.Add( voiceDetails );
+                        Logging.Debug( $"Loaded voice: {voice.VoiceInfo.Name}", voiceDetails );
+                    }
+                    catch ( Exception e )
                     {
-                        Logging.Debug($"{voice.VoiceInfo.Name} is not selectable, skipping.");
-                        continue;
+                        if ( voice.VoiceInfo.Culture is null )
+                        {
+                            Logging.Warn( $"Failed to load {voice.VoiceInfo.Name}, voice culture is not set.", e );
+                        }
+                        else
+                        {
+                            Logging.Error( $"Failed to load {voice.VoiceInfo.Name}", e );
+                        }
                     }
-
-                    // Suppress voices "Desktop" variant voices from System.Speech.Synthesis
-                    // where we already have a (newer) OneCore version (without disabling manual invocation of those voices)
-                    if (voiceStore.Any(v => v.name + " Desktop" == voiceDetails.name))
-                    {
-                        voiceDetails.hideVoice = true;
-                    }
-
-                    // Skip Amazon Polly voices - these tend to throw various internal errors (cause unknown)
-                    // and are not currently reliable, particularly in VoiceAttack.
-                    if (!string.IsNullOrEmpty(voiceDetails.name) &&
-                        voiceDetails.name.StartsWith("Amazon Polly"))
-                    {
-                        continue;
-                    }
-
-                    voiceStore.Add(voiceDetails);
-                    Logging.Debug($"Loaded voice: {voice.VoiceInfo.Name}", voiceDetails);
                 }
-                catch (Exception e)
-                {
-                    if (voice.VoiceInfo.Culture is null)
-                    {
-                        Logging.Warn($"Failed to load {voice.VoiceInfo.Name}, voice culture is not set.", e);
-                    }
-                    else
-                    {
-                        Logging.Error($"Failed to load {voice.VoiceInfo.Name}", e);
-                    }
-                }
-            }
-
-            lock (synthLock)
-            {
-                synth.SelectVoice(selectedVoice.Name);
+                synth.SelectVoice( selectedVoice.Name );
             }
         }
 
@@ -138,51 +131,41 @@ namespace EddiSpeechService.SpeechSynthesizers
             var stream = new MemoryStream();
             var synthTask = Task.Run(() =>
             {
-                lock (synthLock)
+                lock ( synthLock )
                 {
-                    if (!voice.name.Equals(synth.Voice.Name))
+                    if ( !voice.name.Equals( synth.Voice.Name ) )
                     {
-                        Logging.Debug("Selecting voice " + voice);
-                        synth.SelectVoice(voice.name);
+                        Logging.Debug( "Selecting voice " + voice );
+                        synth.SelectVoice( voice.name );
                     }
 
                     synth.Rate = Configuration.Rate;
                     synth.Volume = Configuration.Volume;
-                    synth.SetOutputToWaveStream(stream);
-                }
-                Logging.Debug("Speech configuration is: ", Configuration);
-                SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);
-                if (useSSML)
-                {
-                    try
+                    synth.SetOutputToWaveStream( stream );
+
+                    Logging.Debug( "Speech configuration is: ", Configuration );
+                    SpeechFormatter.PrepareSpeech( voice, ref speech, out var useSSML );
+                    if ( useSSML )
                     {
-                        Logging.Debug("Feeding SSML to synthesizer: " + speech);
-                        lock (synthLock)
+                        try
                         {
-                            synth.SpeakSsml(speech);
+                            Logging.Debug( "Feeding SSML to synthesizer: " + speech );
+                            synth.SpeakSsml( speech );
+                        }
+                        catch ( Exception ex )
+                        {
+                            var badSpeech = new Dictionary<string, object>
+                            {
+                                { "voice", voice }, { "speech", speech }, { "exception", ex }
+                            };
+                            Logging.Warn( "Speech failed. Stripping IPA tags and re-trying.", badSpeech );
+                            synth.SpeakSsml( SpeechFormatter.DisableIPA( speech ) );
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        var badSpeech = new Dictionary<string, object>
-                        {
-                            { "voice", voice },
-                            { "speech", speech },
-                            { "exception", ex }
-                        };
-                        Logging.Warn("Speech failed. Stripping IPA tags and re-trying.", badSpeech);
-                        lock (synthLock)
-                        {
-                            synth.SpeakSsml(SpeechFormatter.DisableIPA(speech));
-                        }
-                    }
-                }
-                else
-                {
-                    Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                    lock (synthLock)
-                    {
-                        synth.Speak(speech);
+                        Logging.Debug( "Feeding normal text to synthesizer: " + speech );
+                        synth.Speak( speech );
                     }
                 }
 
