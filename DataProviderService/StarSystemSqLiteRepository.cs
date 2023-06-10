@@ -178,7 +178,7 @@ namespace EddiDataProviderService
                 }
             }
 
-            List<StarSystem> fetchedSystems = dataProviderService.GetSystemsData(fetchSystems.ToArray(), showBodies, showStations, showFactions);
+            List<StarSystem> fetchedSystems = dataProviderService.GetSystemsData(fetchSystems.ToArray(), true, showBodies, showStations, showFactions);
             if (fetchedSystems?.Count > 0)
             {
                 Instance.SaveStarSystems(fetchedSystems);
