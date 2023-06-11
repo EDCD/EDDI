@@ -315,17 +315,16 @@ namespace Eddi
             // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
             var satelliteCultures = new List<LanguageDef>();
             var fileInfo = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
-            if (fileInfo is null) { throw new DirectoryNotFoundException(); }
+            if ( fileInfo == null ) { return cultures; }
             var rootInfo = new DirectoryInfo(fileInfo);
             var subDirs = rootInfo.GetDirectories();
-            foreach (var dir in subDirs)
+            foreach ( var dir in subDirs )
             {
                 string name = dir.Name;
-                if (
-                    name == "x86"
-                    || name == "x64"
-                    || !dir.GetFiles().Any(f => f.Extension.Equals(".dll"))
-                    )
+                if ( name == "x86" || 
+                     name == "x64" || 
+                     !dir.GetFiles().Any( f => f.Extension.Equals( ".dll" ) )
+                )
                 {
                     continue;
                 }
@@ -333,7 +332,7 @@ namespace Eddi
                 try
                 {
                     var cInfo = new CultureInfo(name);
-                    satelliteCultures.Add(new LanguageDef(cInfo));
+                    satelliteCultures.Add( new LanguageDef( cInfo ) );
                 }
                 catch
                 {
@@ -341,7 +340,7 @@ namespace Eddi
                 }
             }
             satelliteCultures.Sort();
-            cultures.AddRange(satelliteCultures);
+            cultures.AddRange( satelliteCultures );
 
             return cultures;
         }

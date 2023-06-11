@@ -361,7 +361,7 @@ namespace EddiGalnetMonitor
             // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
             var satelliteLocales = new Dictionary<string, string>();
             var fileInfo = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
-            if (fileInfo is null) { throw new DirectoryNotFoundException(); }
+            if (fileInfo is null) { return galnetLocales; }
             var rootInfo = new DirectoryInfo(fileInfo);
             var subDirs = rootInfo.GetDirectories();
             foreach (var dir in subDirs)

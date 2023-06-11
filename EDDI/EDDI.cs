@@ -916,7 +916,7 @@ namespace EddiCore
                     }
                     else if (@event is UndockedEvent undockedEvent)
                     {
-                        passEvent = eventUndocked(undockedEvent);
+                        passEvent = eventUndocked();
                     }
                     else if (@event is DockingRequestedEvent dockingRequestedEvent)
                     {
@@ -964,23 +964,23 @@ namespace EddiCore
                     }
                     else if (@event is CrewJoinedEvent crewJoinedEvent)
                     {
-                        passEvent = eventCrewJoined(crewJoinedEvent);
+                        passEvent = eventCrewJoined();
                     }
                     else if (@event is CrewLeftEvent crewLeftEvent)
                     {
-                        passEvent = eventCrewLeft(crewLeftEvent);
+                        passEvent = eventCrewLeft();
                     }
                     else if (@event is EnteredCQCEvent enteredCqcEvent)
                     {
-                        passEvent = eventEnteredCQC(enteredCqcEvent);
+                        passEvent = eventEnteredCQC();
                     }
                     else if (@event is SRVLaunchedEvent srvLaunchedEvent)
                     {
-                        passEvent = eventSRVLaunched(srvLaunchedEvent);
+                        passEvent = eventSRVLaunched();
                     }
                     else if (@event is SRVDockedEvent srvDockedEvent)
                     {
-                        passEvent = eventSRVDocked(srvDockedEvent);
+                        passEvent = eventSRVDocked();
                     }
                     else if (@event is FighterLaunchedEvent fighterLaunchedEvent)
                     {
@@ -988,7 +988,7 @@ namespace EddiCore
                     }
                     else if (@event is FighterDockedEvent fighterDockedEvent)
                     {
-                        passEvent = eventFighterDocked(fighterDockedEvent);
+                        passEvent = eventFighterDocked();
                     }
                     else if (@event is StarScannedEvent starScannedEvent)
                     {
@@ -1004,7 +1004,7 @@ namespace EddiCore
                     }
                     else if (@event is VehicleDestroyedEvent vehicleDestroyedEvent)
                     {
-                        passEvent = eventVehicleDestroyed(vehicleDestroyedEvent);
+                        passEvent = eventVehicleDestroyed();
                     }
                     else if (@event is NearSurfaceEvent nearSurfaceEvent)
                     {
@@ -1056,7 +1056,7 @@ namespace EddiCore
                     }
                     else if (@event is PowerLeftEvent powerLeftEvent)
                     {
-                        passEvent = eventPowerLeft(powerLeftEvent);
+                        passEvent = eventPowerLeft();
                     }
                     else if (@event is PowerPreparationVoteCast powerPreparationVoteCast)
                     {
@@ -1112,7 +1112,7 @@ namespace EddiCore
                     }
                     else if (@event is DisembarkEvent disembarkEvent)
                     {
-                        passEvent = eventDisembark(disembarkEvent);
+                        passEvent = eventDisembark();
                     }
                     else if (@event is EmbarkEvent embarkEvent)
                     {
@@ -1357,7 +1357,7 @@ namespace EddiCore
             return false;
         }
 
-        private bool eventDisembark(DisembarkEvent disembarkEvent) 
+        private bool eventDisembark() 
         {
             Vehicle = Constants.VEHICLE_LEGS;
             Logging.Info($"Disembarked to {Vehicle}");
@@ -1620,7 +1620,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventPowerLeft(PowerLeftEvent @event)
+        private bool eventPowerLeft()
         {
             if ( Cmdr != null )
             {
@@ -2110,7 +2110,7 @@ namespace EddiCore
             return passEvent;
         }
 
-        private bool eventUndocked(UndockedEvent theEvent)
+        private bool eventUndocked()
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             CurrentStation = null;
@@ -2638,7 +2638,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCrewJoined(CrewJoinedEvent theEvent)
+        private bool eventCrewJoined()
         {
             inTelepresence = true;
             multicrewVehicleHolder = Vehicle;
@@ -2647,7 +2647,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCrewLeft(CrewLeftEvent theEvent)
+        private bool eventCrewLeft()
         {
             inTelepresence = false;
             Vehicle = multicrewVehicleHolder;
@@ -2878,21 +2878,21 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventEnteredCQC(EnteredCQCEvent theEvent)
+        private bool eventEnteredCQC()
         {
             // In CQC we don't want to report anything, so set our Telepresence flag
             inTelepresence = true;
             return true;
         }
 
-        private bool eventSRVLaunched(SRVLaunchedEvent theEvent)
+        private bool eventSRVLaunched()
         {
             // SRV is always player-controlled, so we are in the SRV
             Vehicle = Constants.VEHICLE_SRV;
             return true;
         }
 
-        private bool eventSRVDocked(SRVDockedEvent theEvent)
+        private bool eventSRVDocked()
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
@@ -2914,14 +2914,14 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventFighterDocked(FighterDockedEvent theEvent)
+        private bool eventFighterDocked()
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
             return true;
         }
 
-        private bool eventVehicleDestroyed(VehicleDestroyedEvent theEvent)
+        private bool eventVehicleDestroyed()
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;

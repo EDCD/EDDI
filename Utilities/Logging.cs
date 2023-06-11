@@ -423,7 +423,7 @@ namespace Utilities
                 return;
             }
 
-            if ( e is CommunicationEventArgs commEvent )
+            if ( e is CommunicationEventArgs )
             {
                 //TODO: handle/report Rollbar API communication event as needed...
                 return;

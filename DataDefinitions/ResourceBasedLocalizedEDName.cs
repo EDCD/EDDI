@@ -91,10 +91,11 @@ namespace EddiDataDefinitions
                 AllOfThem = new List<T>();
             }
         }
+
         public static List<T> AllOfThem
         {
             get { EnsureSubClassStaticConstructorHasRun(); return allOfThem; }
-            private set { allOfThem = value; }
+            private set => allOfThem = value;
         }
         private static List<T> allOfThem;
 
