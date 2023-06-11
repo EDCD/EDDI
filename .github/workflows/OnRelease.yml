@@ -3,7 +3,7 @@
 # Build and Test (ref. https://docs.github.com/en/actions/guides/building-and-testing-net)
 # Note: Github recommends using full commit SHAs when using 3rd party actions
 
-name: On Release
+name: "On Release"
 concurrency:
   group: ${{ github.workflow }}-${{ github.sha }}
   cancel-in-progress: true
