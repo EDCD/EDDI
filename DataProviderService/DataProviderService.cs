@@ -67,7 +67,7 @@ namespace EddiDataProviderService
                 {
                     List<Faction> factions = new List<Faction>();
                     List<Station> stations = new List<Station>();
-                    if (showFactions || showStations)
+                    if (showFactions)
                     {
                         factions = edsmService.GetStarMapFactions(starSystem.systemname) ?? factions;
                         starSystem.factions = factions;
@@ -75,8 +75,9 @@ namespace EddiDataProviderService
                     if (showStations)
                     {
                         stations = edsmService.GetStarMapStations(starSystem.systemname) ?? stations;
-                        starSystem.stations = SetStationFactionData(stations, factions);
-                        starSystem.stations = stations;
+                        starSystem.stations = showFactions 
+                            ? SetStationFactionData( stations, factions ) 
+                            : stations;
                     }
                 }
             }
