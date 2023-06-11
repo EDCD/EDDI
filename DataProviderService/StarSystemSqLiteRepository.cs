@@ -412,7 +412,11 @@ namespace EddiDataProviderService
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", name);
                                 cmd.CommandText = SELECT_SQL + WHERE_NAME;
-                                results.Add(ReadStarSystemEntry(cmd) ?? new DatabaseStarSystem(name, 0, string.Empty));
+                                var result = ReadStarSystemEntry( cmd );
+                                if ( result != null )
+                                {
+                                    results.Add(result);
+                                }
                             }
                             catch (SQLiteException)
                             {
