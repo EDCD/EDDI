@@ -33,19 +33,8 @@ namespace EddiEddnResponder.Sender
                     schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                     message = data
                 };
-                if (invalidSchemas.Contains(body.schemaRef))
-                {
-                    Logging.Warn($"EDDN schema {body.schemaRef} is obsolete, data not sent.", data);
-                }
-                else if (string.IsNullOrEmpty(eddnState.GameVersion.gameVersion))
-                {
-                    Logging.Warn("Message could not be sent, game version has not been set.", data);
-                }
-                else
-                {
-                    Logging.Debug($"EDDN schema {schema} message is: ", body);
-                    sendMessage(body);
-                }
+                Logging.Debug( $"EDDN schema {schema} message is: ", body );
+                sendMessage( body );
             }
             catch (ArgumentException ae)
             {
@@ -93,15 +82,27 @@ namespace EddiEddnResponder.Sender
 
         private static void sendMessage(EDDNBody body)
         {
+            if ( unitTesting )
+            {
+                return;
+            }
+            if ( invalidSchemas.Contains( body.schemaRef ) )
+            {
+                Logging.Warn( $"EDDN schema {body.schemaRef} is obsolete, data not sent.", body );
+                return;
+            }
+            if ( string.IsNullOrEmpty( body.header.gameversion ) )
+            {
+                Logging.Warn( "Message could not be sent, game version has not been set.", body );
+                return;
+            }
+
             var client = new RestClient("https://eddn.edcd.io:4430/");
             var request = new RestRequest("upload/", Method.POST);
             var msgBody = JsonConvert.SerializeObject(body, new JsonSerializerSettings { ContractResolver = new EDDNContractResolver() });
             request.AddParameter("application/json", msgBody, ParameterType.RequestBody);
-
             Logging.Debug("Sending " + msgBody);
-
-            if (unitTesting) { return; }
-
+            
             Thread thread = new Thread(() =>
             {
                 try
