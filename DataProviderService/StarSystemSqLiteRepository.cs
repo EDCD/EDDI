@@ -172,7 +172,7 @@ namespace EddiDataProviderService
             List<string> fetchSystems = new List<string>();
             foreach (string name in names)
             {
-                if (fetchIfMissing && systems.FirstOrDefault(s => s.systemname == name) == null)
+                if (fetchIfMissing && systems.All( s => s.systemname != name ) )
                 {
                     fetchSystems.Add(name);
                 }

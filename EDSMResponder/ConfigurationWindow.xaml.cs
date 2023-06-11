@@ -98,7 +98,6 @@ namespace EddiEdsmResponder
                     while (i < total)
                     {
                         int batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                        List<StarMapResponseLogEntry> flightLogBatch = flightLogs.Skip(i).Take(batchSize).ToList();
                         dataProviderService.syncEdsmLogBatch(flightLogs.Skip(i).Take(batchSize).ToList(), comments);
                         i += batchSize;
                         progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
