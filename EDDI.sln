@@ -37,7 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		images\ProfileOptionsOnLoad.jpg = images\ProfileOptionsOnLoad.jpg
 		README.md = README.md
 		TROUBLESHOOTING.md = TROUBLESHOOTING.md
-		VoiceAttack.md = VoiceAttack.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EddiStarMapService", "StarMapService\EddiStarMapService.csproj", "{6614E6AD-65AE-49FC-850B-9DF79D1CC998}"
@@ -297,9 +296,9 @@ Global
 		{7D25AF37-6EF2-4210-B079-14672BECDBB0} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TaskErrorCategory = Message
-		RESX_AutoCreateNewLanguageFiles = True
-		RESX_ShowErrorsInErrorList = False
 		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
+		RESX_ShowErrorsInErrorList = False
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_TaskErrorCategory = Message
 	EndGlobalSection
 EndGlobal
