@@ -34,11 +34,8 @@ if "$(Configuration)" == "Release" (
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>xcopy /y "$(SolutionDir)SpeechResponder\Help.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-xcopy /y "$(SolutionDir)SpeechResponder\Variables.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-xcopy /y "$(SolutionDir)VoiceAttack-Integration.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\Wiki\images\"</PreBuildEvent>
+    <PreBuildEvent>xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\$(TargetFramework)\Wiki\"
+xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\$(TargetFramework)\Wiki\images\"</PreBuildEvent>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>

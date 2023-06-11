@@ -31,7 +31,9 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\VoiceAttack-Integration.md" />
+    <None Include="..\VoiceAttack-Integration.md">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -62,4 +64,7 @@
   <PropertyGroup>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy /y &quot;$(SolutionDir)VoiceAttack-Integration.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\$(TargetFramework)\Wiki\&quot;" />
+  </Target>
 </Project>
