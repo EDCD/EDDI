@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.3-b3
   * Core
+    * Fixed a crash that can occur if you go click-crazy testing scripts containing the `Play()` function. (#2549)
     * Fixed another exception that could be thrown when obtaining old EDSM logs via the EDSM responder. (#2544)
     * Refined handling of EDSM API rate limits.
     * Revised speech service to adjust exclusive locking statements, add a simple render test for Windows.Media speech, and improve error handling for failed speech.

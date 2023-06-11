@@ -9,6 +9,7 @@ using EddiSpeechService.SpeechSynthesizers;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -53,6 +54,7 @@ namespace EddiSpeechService
             .ToList();
 
         private static readonly object activeSpeechLock = new object();
+
         private ISoundOut _activeSpeech;
         private ISoundOut activeSpeech
         {
@@ -64,7 +66,7 @@ namespace EddiSpeechService
             }
         }
         private int activeSpeechPriority;
-        private ISoundOut activeAudio;
+        private static readonly ConcurrentQueue<ISoundOut> activeAudio = new ConcurrentQueue<ISoundOut>();
 
         public readonly SpeechQueue speechQueue = SpeechQueue.Instance;
 
@@ -82,7 +84,7 @@ namespace EddiSpeechService
             }
         }
 
-        public bool eddiAudioPlaying => activeAudio != null;
+        public bool eddiAudioPlaying => activeAudio.Any();
 
         private static SpeechService instance;
         private static readonly object instanceLock = new object();
@@ -483,9 +485,9 @@ namespace EddiSpeechService
                 if ( activeSpeech.PlaybackState != PlaybackState.Stopped )
                 {
                     Logging.Debug("Stopping active speech");
+                    FadeOut( activeSpeech );
+                    activeSpeech.Stop();
                 }
-                FadeOut(activeSpeech);
-                activeSpeech.Stop();
                 activeSpeech.Dispose();
                 activeSpeech = null;
             }
@@ -496,7 +498,7 @@ namespace EddiSpeechService
             if (soundOut?.PlaybackState == PlaybackState.Playing)
             {
                 float fadePer10Milliseconds = soundOut.Volume / ActiveSpeechFadeOutMilliseconds * 10;
-                while (soundOut.Volume > 0)
+                while ( soundOut.Volume > 0)
                 {
                     soundOut.Volume -= fadePer10Milliseconds;
                     Thread.Sleep(10);
@@ -566,35 +568,60 @@ namespace EddiSpeechService
             }
             return false;
         }
-        
-        public void PlayAudio(string fileName, decimal? volumeOverride)
+
+        public void PlayAudio ( string fileName, decimal? volumeOverride )
         {
-            using (EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
-            using (var soundOut = GetSoundOut())
+            var audioSource = CodecFactory.Instance.GetCodec( fileName );
+            var waitTime = audioSource.GetTime( audioSource.Length );
+            using ( var soundOut = GetSoundOut() )
             {
-                var audioSource = CodecFactory.Instance.GetCodec(fileName);
-                var waitTime = audioSource.GetTime(audioSource.Length);
-                activeAudio = soundOut;
-                soundOut.Initialize(audioSource);
-                if (volumeOverride != null)
+                using ( var waitHandle = new EventWaitHandle( false, EventResetMode.AutoReset ) )
                 {
-                    soundOut.Volume = (float)volumeOverride / 100;
+                    soundOut.Initialize( audioSource );
+                    if ( volumeOverride != null )
+                    {
+                        soundOut.Volume = Math.Max(Math.Min((float)volumeOverride / 100, 1), 0);
+                    }
+
+                    soundOut.Play();
+                    activeAudio.Enqueue( soundOut );
+                    waitHandle.WaitOne( waitTime );
                 }
-                soundOut.Play();
-                waitHandle.WaitOne(waitTime);
-                StopAudio();
+
+                while ( !activeAudio.IsEmpty && 
+                        activeAudio.TryDequeue( out ISoundOut dequeued ) )
+                {
+                    if ( Equals( dequeued, soundOut ) )
+                    {
+                        soundOut.Dispose();
+                    }
+                    else
+                    {
+                        activeAudio.Enqueue( dequeued );
+                    }
+                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                }
             }
         }
 
-        public void StopAudio()
+        public void StopAudio ()
         {
-            if (eddiAudioPlaying)
+            var dequeuedAudio = new List<ISoundOut>();
+            while ( !activeAudio.IsEmpty &&
+                    activeAudio.TryDequeue( out ISoundOut soundOut ) )
             {
-                FadeOut(activeAudio);
-                activeAudio.Stop();
-                activeAudio.Dispose();
-                activeAudio = null;
+                dequeuedAudio.Add( soundOut );
             }
+            dequeuedAudio.AsParallel().ForAll( soundOut =>
+            {
+                if ( soundOut.PlaybackState != PlaybackState.Stopped )
+                {
+                    Logging.Debug( "Stopping active audio" );
+                    FadeOut( soundOut );
+                    soundOut.Stop();
+                }
+                soundOut.Dispose();
+            } );
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

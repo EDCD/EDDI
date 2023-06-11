@@ -277,9 +277,8 @@ namespace EddiSpeechResponder
                 if (!SpeechService.Instance.eddiSpeaking)
                 {
                     var script = getScriptFromContext(sender);
-                    SpeechResponder responder = new SpeechResponder();
-                    responder.Start();
-                    responder.TestScript(script.Name, speechResponder.CurrentPersonality.Scripts);
+                    SpeechResponder responder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech Responder");
+                    responder?.TestScript( script.Name, speechResponder.CurrentPersonality.Scripts );
                 }
                 else
                 {
