@@ -1,0 +1,32 @@
+# Workflow Syntax: https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+# Example: https://github.com/github/VisualStudio/blob/263aac11f57d53c5f9fe64ba9916f77c058974d7/.github/workflows/main.yml
+# Build and Test (ref. https://docs.github.com/en/actions/guides/building-and-testing-net)
+# Note: Github recommends using full commit SHAs when using 3rd party actions
+
+name: On Release
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+  cancel-in-progress: true
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notifyRollbarOfRelease:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get released version number
+    - id: get-released-version
+      run: |
+        version=$(echo ${{ github.ref_name }} | cut -d "/" -f 2)
+        echo "version=$version" >> $GITHUB_OUTPUT
+    - name: Notify the Rollbar telemetry service of our latest release
+      uses: rollbar/github-deploy-action@eaf2a60ea238bd273226eee0ddceecfe5611964d
+      id: rollbar_deploy
+      with:
+        environment: ${{ steps.get-released-version.outputs.version }}
+        version: ${{ github.sha }}
+        local_username: ${{ github.actor }}
+      env:
+        ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}  
