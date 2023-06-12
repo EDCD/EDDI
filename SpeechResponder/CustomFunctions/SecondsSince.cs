@@ -16,10 +16,12 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( long? );
         public NativeFunction function => new NativeFunction((values) =>
         {
-            long? date = (long?)values[0].AsNumber;
+            long? date = values.Count == 1 
+                ? (long?)values[0].AsNumber 
+                : 0;
             long? now = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
 
             return new ReflectionValue(now - date);
-        }, 1);
+        }, 0, 1);
     }
 }
