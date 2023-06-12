@@ -15,27 +15,6 @@ namespace EddiSpeechService
             PrepareSpeechQueues();
         }
 
-        private static SpeechQueue instance;
-        private static readonly object instanceLock = new object();
-        public static SpeechQueue Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No Speech queue instance: creating one");
-                            instance = new SpeechQueue();
-                        }
-                    }
-                }
-                return instance;
-            }
-        }
-
         public List<int?> priorities => PreparePrioritiesList();
 
         private List<int?> PreparePrioritiesList()

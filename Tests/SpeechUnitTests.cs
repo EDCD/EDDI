@@ -295,7 +295,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechQueue_DequeueSpeechOfType()
         {
-            PrivateObject privateObject = new PrivateObject(SpeechQueue.Instance);
+            PrivateObject privateObject = new PrivateObject(new SpeechQueue());
             privateObject.Invoke("DequeueAllSpeech", System.Array.Empty<object>());
             privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 1", null, 3, null, false, null) });
             privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 2", null, 4, null, false, "Hull damaged") });

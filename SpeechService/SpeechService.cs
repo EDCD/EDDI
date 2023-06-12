@@ -56,13 +56,13 @@ namespace EddiSpeechService
         private static readonly object activeAudioLock = new object();
         private static readonly object activeSpeechLock = new object();
 
-        private static int activeSpeechPriority;
+        private int activeSpeechPriority;
         private static bool discardPendingSegments;
 
         private readonly ConcurrentDictionary<ISoundOut, CancellationTokenSource> activeSpeechTS = new ConcurrentDictionary<ISoundOut, CancellationTokenSource>();
         private readonly ConcurrentDictionary<ISoundOut, CancellationTokenSource> activeAudioTS = new ConcurrentDictionary<ISoundOut, CancellationTokenSource>();
 
-        public readonly SpeechQueue speechQueue = SpeechQueue.Instance;
+        public readonly SpeechQueue speechQueue = new SpeechQueue();
 
         public bool eddiSpeaking
         {
