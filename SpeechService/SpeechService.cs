@@ -53,38 +53,38 @@ namespace EddiSpeechService
             .Select(v => v.name)
             .ToList();
 
+        private static readonly object activeAudioLock = new object();
         private static readonly object activeSpeechLock = new object();
 
-        private ISoundOut _activeSpeech;
-        private ISoundOut activeSpeech
-        {
-            get => _activeSpeech;
-            set
-            {
-                eddiSpeaking = value != null;
-                _activeSpeech = value;
-            }
-        }
-        private int activeSpeechPriority;
-        private static readonly ConcurrentQueue<ISoundOut> activeAudio = new ConcurrentQueue<ISoundOut>();
+        private static int activeSpeechPriority;
+        private static bool discardPendingSegments;
+
+        private readonly ConcurrentDictionary<ISoundOut, CancellationTokenSource> activeSpeechTS = new ConcurrentDictionary<ISoundOut, CancellationTokenSource>();
+        private readonly ConcurrentDictionary<ISoundOut, CancellationTokenSource> activeAudioTS = new ConcurrentDictionary<ISoundOut, CancellationTokenSource>();
 
         public readonly SpeechQueue speechQueue = SpeechQueue.Instance;
 
-        private static bool _eddiSpeaking;
         public bool eddiSpeaking
         {
-            get => _eddiSpeaking;
-            set
+            get
             {
-                if (_eddiSpeaking != value)
+                lock ( activeSpeechLock )
                 {
-                    _eddiSpeaking = value;
-                    OnPropertyChanged();
+                    return !activeSpeechTS.IsEmpty;
                 }
             }
         }
 
-        public bool eddiAudioPlaying => activeAudio.Any();
+        public bool eddiAudioPlaying
+        {
+            get
+            {
+                lock ( activeAudioLock )
+                {
+                    return !activeAudioTS.IsEmpty;
+                }
+            }
+        }
 
         private static SpeechService instance;
         private static readonly object instanceLock = new object();
@@ -206,321 +206,9 @@ namespace EddiSpeechService
             }
         }
 
-        public void ShutUp()
+        private void StartOrContinueSpeaking ()
         {
-            StopCurrentSpeech();
-        }
-
-        public static void Speak(EddiSpeech speech)
-        {
-            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority);
-        }
-
-        public void Speak(string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3)
-        {
-            if (speech == null || speech.Trim() == "") { return; }
-
-            // If the user wants to disable IPA then we remove any IPA phoneme tags here
-            if (Configuration.DisableIpa && speech.Contains("<phoneme"))
-            {
-                speech = SpeechFormatter.DisableIPA(speech);
-            }
-
-            List<string> statements = SpeechFormatter.SeparateSpeechStatements(speech);
-
-            foreach (string Statement in statements)
-            {
-                string voice = null;
-                string statement = null;
-
-                bool isAudio = Statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
-                if (isAudio)
-                {
-                    SpeechFormatter.UnpackAudioTags(Statement, out string fileName, out bool async, out decimal? volumeOverride);
-                    try
-                    {
-                        // Play the audio, waiting for the audio to complete unless we're in async mode
-                        if (async)
-                        {
-                            Task.Run(() => PlayAudio(fileName, volumeOverride));
-                        }
-                        else
-                        {
-                            PlayAudio(fileName, volumeOverride);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.Warn(e.Message, e);
-                    }
-                    continue;
-                }
-
-                bool isRadio = Statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
-                if (isRadio)
-                {
-                    statement = SpeechFormatter.StripRadioTags(Statement);
-                }
-
-                bool isVoice = Statement.Contains("<voice") || radio; // This is a voice override
-                if (isVoice)
-                {
-                    SpeechFormatter.UnpackVoiceTags(Statement, out voice, out statement);
-                }
-
-                using (Stream stream = getSpeechStream(voice ?? defaultVoice, statement ?? Statement))
-                {
-                    if (stream == null)
-                    {
-                        Logging.Debug("getSpeechStream() returned null; nothing to say");
-                        return;
-                    }
-                    if (stream.Length < 50)
-                    {
-                        Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
-                        return;
-                    }
-                    else
-                    {
-                        Logging.Debug("Stream length is " + stream.Length);
-                    }
-                    Logging.Debug("Seeking back to the beginning of the stream");
-                    stream.Seek(0, SeekOrigin.Begin);
-
-                    IWaveSource source = new WaveFileReader(stream);
-                    if (!isAudio)
-                    {
-                        source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
-                    }
-
-                    play(source, priority);
-                }
-            }
-        }
-
-        // Play a source
-        private void play(IWaveSource source, int priority, bool useLegacySoundOut = false)
-        {
-            if (source == null || source.Length == 0)
-            {
-                Logging.Debug("Source is null; skipping");
-                return;
-            }
-
-            using (EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
-            {
-                ISoundOut soundOut = GetSoundOut();
-                try
-                {
-                    try
-                    {
-                        soundOut.Initialize( source );
-                    }
-                    catch ( System.Runtime.InteropServices.COMException ce )
-                    {
-                        if ( soundOut is WasapiOut && !useLegacySoundOut )
-                        {
-                            Logging.Warn( $"Failed to speak; {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible. Falling back to legacy DirectSoundOut", ce );
-                            play(source, priority, true);
-                        }
-                        else
-                        {
-                            Logging.Warn( $"Failed to speak; {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible.", ce );
-                            return;
-                        }
-                    }
-
-                    // ReSharper disable once AccessToDisposedClosure
-                    soundOut.Stopped += (s, e) => waitHandle.Set();
-
-                    TimeSpan waitTime = source.GetTime(source.Length);
-
-                    Logging.Debug("Starting speech");
-                    StartSpeech(ref soundOut, priority);
-                    Logging.Debug($"Waiting for speech - {waitTime} ms" );
-                    // Wait for the appropriate amount of time before stopping the speech.  This is belt-and-braces approach,
-                    // as we should receive the stopped signal when the buffer runs out, but there is suspicion that the stopped
-                    // signal does not show up at time
-                    waitHandle.WaitOne(waitTime);
-                    Logging.Debug("Finished waiting for speech");
-                    StopCurrentSpeech();
-                }
-                finally
-                {
-                    soundOut?.Dispose();
-                }
-            }
-        }
-
-        // Obtain the speech memory stream
-        public Stream getSpeechStream(string requestedVoice, string speech)
-        {
-            try
-            {
-                var stream = speak(requestedVoice, speech);
-                if ( stream is null || stream.Length == 0 )
-                {
-                    // Try again, with speech devoid of SSML
-                    stream = speak( requestedVoice, Regex.Replace( speech, "<.*?>", string.Empty ) );
-                }
-                return stream;
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn( "Speech failed (" + Encoding.Default.EncodingName + ")", ex );
-                var voiceDetails = allVoices.FirstOrDefault( v => v.name == requestedVoice );
-                if ( voiceDetails?.synthType is nameof(Windows.Media) && requestedVoice != windowsMediaSynth.currentVoice )
-                {
-                    // Try falling back to our Windows Media default voice.
-                    Logging.Warn( $"{ex.Message}, retrying with Windows Media Synthesizer default voice.", ex );
-                    return getSpeechStream( windowsMediaSynth.currentVoice, speech );
-                }
-                if ( requestedVoice != systemSpeechSynth.currentVoice )
-                {
-                    // Try falling back to our System Speech default voice.
-                    Logging.Warn( $"{ex.Message}, retrying with System Speech Synthesizer default voice.", ex );
-                    return getSpeechStream( systemSpeechSynth.currentVoice, speech );
-                }
-            }
-            return null;
-        }
-
-        private Stream speak ( string requestedVoice, string speech )
-        {
-            // Get the voice details we will use for speaking
-            if ( TryResolveVoice( requestedVoice, out var voiceDetails ) )
-            {
-                return speak( voiceDetails, speech );
-            }
-            Logging.Warn( $"Something went wrong. Unable to obtain voice {requestedVoice}." );
-            return null;
-        }
-
-        private Stream speak ( [ NotNull ] VoiceDetails voiceDetails, string speech )
-        {
-            if ( voiceDetails.synthType is nameof( System ) )
-            {
-                return systemSpeechSynth?.Speak( voiceDetails, speech, Configuration );
-            }
-            if ( voiceDetails.synthType is nameof( Windows.Media ) && IsWindowsMediaSynthesizerSupported() )
-            {
-                return windowsMediaSynth?.Speak( voiceDetails, speech, Configuration );
-            }
-            throw new NotImplementedException($"{nameof(voiceDetails)} is referencing a synthType which has not been configured.");
-        }
-
-        /// <summary>
-        /// Match and normalize the requested voice against one from our speech synthesizers.
-        /// </summary>
-        /// <param name="requestedVoice"></param>
-        /// <param name="voiceDetails"></param>
-        /// <returns>Returns true if we were able to resolve synthesizer voice details for the requested voice</returns>
-        private bool TryResolveVoice ( string requestedVoice, out VoiceDetails voiceDetails )
-        {
-            // If the requestedVoice is null and the saved configuration's standard voice is not null,
-            // try to re-resolve this once using the voice saved to the configuration.
-            if ( string.IsNullOrEmpty( requestedVoice ) && !string.IsNullOrEmpty( Configuration.StandardVoice ) )
-            {
-                return TryResolveVoice( Configuration.StandardVoice, out voiceDetails );
-            }
-
-            // If the requested voice is not null and matches one we've previously found, return that voice.
-            if ( !string.IsNullOrEmpty(requestedVoice) )
-            {
-                var foundVoice = allVoices
-                    .FirstOrDefault( v => string.Equals( v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) );
-                if ( foundVoice != null )
-                {
-                    voiceDetails = foundVoice;
-                    return true;
-                }
-            }
-
-            // If the requested voice was not found, try to re-resolve this once using the synthesizer's default voice.
-            var synthDefaultVoice = IsWindowsMediaSynthesizerSupported()
-                ? windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice
-                : systemSpeechSynth?.currentVoice;
-            if ( !string.IsNullOrEmpty( synthDefaultVoice ) &&
-                 !string.Equals( synthDefaultVoice, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) )
-            {
-                Logging.Debug( $"Voice '{requestedVoice}' not found, falling back to voice '{synthDefaultVoice}'." );
-                return TryResolveVoice( synthDefaultVoice, out voiceDetails );
-            }
-
-            // If none of the above then we've failed to select a voice from our voice list
-            voiceDetails = null;
-            return false;
-        }
-
-        private void StartSpeech(ref ISoundOut soundout, int priority)
-        {
-            bool started = false;
-            while (!started)
-            {
-                if (activeSpeech == null)
-                {
-                    lock (activeSpeechLock)
-                    {
-                        Logging.Debug("Checking to see if we can start speech");
-                        if (activeSpeech == null)
-                        {
-                            Logging.Debug("We can - setting active speech");
-                            activeSpeech = soundout;
-                            activeSpeechPriority = priority;
-                            started = true;
-                            Logging.Debug("Playing sound buffer");
-                            soundout.Play();
-                        }
-                    }
-                }
-                Thread.Sleep(10);
-            }
-        }
-
-        public void StopCurrentSpeech()
-        {
-            lock (activeSpeechLock)
-            {
-                if ( activeSpeech == null ) { return; }
-                if ( activeSpeech.PlaybackState != PlaybackState.Stopped )
-                {
-                    Logging.Debug("Stopping active speech");
-                    FadeOut( activeSpeech );
-                    activeSpeech.Stop();
-                }
-                activeSpeech.Dispose();
-                activeSpeech = null;
-            }
-        }
-
-        private void FadeOut(ISoundOut soundOut)
-        {
-            if (soundOut?.PlaybackState == PlaybackState.Playing)
-            {
-                float fadePer10Milliseconds = soundOut.Volume / ActiveSpeechFadeOutMilliseconds * 10;
-                while ( soundOut.Volume > 0)
-                {
-                    soundOut.Volume -= fadePer10Milliseconds;
-                    Thread.Sleep(10);
-                }
-            }
-        }
-
-        private ISoundOut GetSoundOut()
-        {
-            if (WasapiOut.IsSupportedOnCurrentPlatform)
-            {
-                return new WasapiOut();
-            }
-            else
-            {
-                return new DirectSoundOut();
-            }
-        }
-
-        private void StartOrContinueSpeaking()
-        {
-            if (!eddiSpeaking)
+            if ( !eddiSpeaking )
             {
                 // Put everything in a thread
                 Thread speechThread = new Thread(() =>
@@ -550,79 +238,458 @@ namespace EddiSpeechService
                     speechThread.Start();
                     speechThread.Join();
                 }
-                catch (ThreadAbortException tax)
+                catch ( ThreadAbortException tax )
                 {
-                    Logging.Debug("Thread aborted", tax);
+                    Logging.Debug( "Thread aborted", tax );
                     Thread.ResetAbort();
                 }
             }
         }
 
-        private bool checkSpeechInterrupt(int priority)
+        private bool checkSpeechInterrupt ( int priority )
         {
             // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
             // Priority 5 speech in interruptable by any higher priority speech. 
-            if (priority <= 1 || (activeSpeechPriority >= 5 && priority < 5))
+            if ( priority <= 1 || ( activeSpeechPriority >= 5 && priority < 5 ) )
             {
                 return true;
             }
             return false;
         }
 
-        public void PlayAudio ( string fileName, decimal? volumeOverride )
+        public static void Speak(EddiSpeech speech)
         {
-            var audioSource = CodecFactory.Instance.GetCodec( fileName );
-            var waitTime = audioSource.GetTime( audioSource.Length );
-            using ( var soundOut = GetSoundOut() )
-            {
-                using ( var waitHandle = new EventWaitHandle( false, EventResetMode.AutoReset ) )
-                {
-                    soundOut.Initialize( audioSource );
-                    if ( volumeOverride != null )
-                    {
-                        soundOut.Volume = Math.Max(Math.Min((float)volumeOverride / 100, 1), 0);
-                    }
+            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority);
+        }
 
-                    soundOut.Play();
-                    activeAudio.Enqueue( soundOut );
-                    waitHandle.WaitOne( waitTime );
+        public void Speak(string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3)
+        {
+            if (speech == null || speech.Trim() == "") { return; }
+
+            // If the user wants to disable IPA then we remove any IPA phoneme tags here
+            if (Configuration.DisableIpa && speech.Contains("<phoneme"))
+            {
+                speech = SpeechFormatter.DisableIPA(speech);
+            }
+
+            discardPendingSegments = false;
+            List<string> segments = SpeechFormatter.SeparateSpeechSegments(speech);
+
+            foreach (string segment in segments)
+            {
+                if ( discardPendingSegments )  { continue; }
+
+                string voice = null;
+                string statement = null;
+
+                bool isAudio = segment.Contains("<audio"); // This is an audio file, we will disable voice effects processing
+                if (isAudio)
+                {
+                    SpeechFormatter.UnpackAudioTags(segment, out string fileName, out bool async, out decimal? volumeOverride);
+                    try
+                    {
+                        // Play the audio, waiting for the audio to complete unless we're in async mode
+                        if (async)
+                        {
+                            Task.Run(() => PlayAudio(fileName, volumeOverride));
+                        }
+                        else
+                        {
+                            try
+                            {
+                                Task.Run( () => PlayAudio( fileName, volumeOverride ) ).GetAwaiter().GetResult();
+                            }
+                            catch ( OperationCanceledException )
+                            {
+                                // If cancelled, discard any pending speech segments.
+                                discardPendingSegments = true;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.Warn(e.Message, e);
+                    }
+                    continue;
                 }
 
-                while ( !activeAudio.IsEmpty && 
-                        activeAudio.TryDequeue( out ISoundOut dequeued ) )
+                bool isRadio = segment.Contains("<transmit") || radio; 
+                if (isRadio)
                 {
-                    if ( Equals( dequeued, soundOut ) )
+                    // This is a radio transmission, we will enable radio voice effects processing
+                    statement = SpeechFormatter.StripRadioTags(segment);
+                }
+
+                bool isVoice = segment.Contains("<voice") || radio; 
+                if (isVoice)
+                {
+                    // This is a voice override
+                    SpeechFormatter.UnpackVoiceTags(segment, out voice, out statement);
+                }
+
+                using (Stream stream = getSpeechStream(voice ?? defaultVoice, statement ?? segment))
+                {
+                    if (stream == null)
                     {
-                        soundOut.Dispose();
+                        Logging.Debug("getSpeechStream() returned null; nothing to say");
+                        return;
+                    }
+                    if (stream.Length < 50)
+                    {
+                        Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
+                        return;
                     }
                     else
                     {
-                        activeAudio.Enqueue( dequeued );
+                        Logging.Debug("Stream length is " + stream.Length);
                     }
-                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                    Logging.Debug("Seeking back to the beginning of the stream");
+                    stream.Seek(0, SeekOrigin.Begin);
+
+                    IWaveSource source = new WaveFileReader(stream);
+                    source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
+
+                    PlaySpeechStream(source, priority);
                 }
+            }
+        }
+        
+        // Obtain the speech memory stream
+        public Stream getSpeechStream ( string requestedVoice, string speech )
+        {
+            try
+            {
+                var stream = speak(requestedVoice, speech);
+                if ( stream is null || stream.Length == 0 )
+                {
+                    // Try again, with speech devoid of SSML
+                    stream = speak( requestedVoice, Regex.Replace( speech, "<.*?>", string.Empty ) );
+                }
+                return stream;
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( "Speech failed (" + Encoding.Default.EncodingName + ")", ex );
+                var voiceDetails = allVoices.FirstOrDefault( v => v.name == requestedVoice );
+                if ( voiceDetails?.synthType is nameof( Windows.Media ) && requestedVoice != windowsMediaSynth.currentVoice )
+                {
+                    // Try falling back to our Windows Media default voice.
+                    Logging.Warn( $"{ex.Message}, retrying with Windows Media Synthesizer default voice.", ex );
+                    return getSpeechStream( windowsMediaSynth.currentVoice, speech );
+                }
+                if ( requestedVoice != systemSpeechSynth.currentVoice )
+                {
+                    // Try falling back to our System Speech default voice.
+                    Logging.Warn( $"{ex.Message}, retrying with System Speech Synthesizer default voice.", ex );
+                    return getSpeechStream( systemSpeechSynth.currentVoice, speech );
+                }
+            }
+            return null;
+        }
+
+        private Stream speak ( [NotNull] VoiceDetails voiceDetails, string speech )
+        {
+            if ( voiceDetails.synthType is nameof( System ) )
+            {
+                return systemSpeechSynth?.Speak( voiceDetails, speech, Configuration );
+            }
+            if ( voiceDetails.synthType is nameof( Windows.Media ) && IsWindowsMediaSynthesizerSupported() )
+            {
+                return windowsMediaSynth?.Speak( voiceDetails, speech, Configuration );
+            }
+            throw new NotImplementedException( $"{nameof( voiceDetails )} is referencing a synthType which has not been configured." );
+        }
+
+        private Stream speak ( string requestedVoice, string speech )
+        {
+            // Get the voice details we will use for speaking
+            if ( TryResolveVoice( requestedVoice, out var voiceDetails ) )
+            {
+                try
+                {
+                    return speak( voiceDetails, speech );
+                }
+                catch ( Exception e )
+                {
+                    Logging.Error( e.Message, e );
+                }
+            }
+            Logging.Warn( $"Something went wrong. Unable to obtain voice {requestedVoice}." );
+            return null;
+        }
+
+        /// <summary>
+        /// Match and normalize the requested voice against one from our speech synthesizers.
+        /// </summary>
+        /// <param name="requestedVoice"></param>
+        /// <param name="voiceDetails"></param>
+        /// <returns>Returns true if we were able to resolve synthesizer voice details for the requested voice</returns>
+        private bool TryResolveVoice ( string requestedVoice, out VoiceDetails voiceDetails )
+        {
+            // If the requestedVoice is null and the saved configuration's standard voice is not null,
+            // try to re-resolve this once using the voice saved to the configuration.
+            if ( string.IsNullOrEmpty( requestedVoice ) && !string.IsNullOrEmpty( Configuration.StandardVoice ) )
+            {
+                return TryResolveVoice( Configuration.StandardVoice, out voiceDetails );
+            }
+
+            // If the requested voice is not null and matches one we've previously found, return that voice.
+            if ( !string.IsNullOrEmpty( requestedVoice ) )
+            {
+                var foundVoice = allVoices
+                    .FirstOrDefault( v => string.Equals( v.name, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) );
+                if ( foundVoice != null )
+                {
+                    voiceDetails = foundVoice;
+                    return true;
+                }
+            }
+
+            // If the requested voice was not found, try to re-resolve this once using the synthesizer's default voice.
+            var synthDefaultVoice = IsWindowsMediaSynthesizerSupported()
+                ? windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice
+                : systemSpeechSynth?.currentVoice;
+            if ( !string.IsNullOrEmpty( synthDefaultVoice ) &&
+                 !string.Equals( synthDefaultVoice, requestedVoice, StringComparison.InvariantCultureIgnoreCase ) )
+            {
+                Logging.Debug( $"Voice '{requestedVoice}' not found, falling back to voice '{synthDefaultVoice}'." );
+                return TryResolveVoice( synthDefaultVoice, out voiceDetails );
+            }
+
+            // If none of the above then we've failed to select a voice from our voice list
+            voiceDetails = null;
+            return false;
+        }
+
+        private ISoundOut GetSoundOut ()
+        {
+            if ( WasapiOut.IsSupportedOnCurrentPlatform )
+            {
+                return new WasapiOut();
+            }
+            else
+            {
+                return new DirectSoundOut();
+            }
+        }
+
+        private static bool TryInitializeSoundOut ( ISoundOut soundOut, IWaveSource source )
+        {
+            try
+            {
+                soundOut.Initialize( source );
+            }
+            catch ( COMException ce )
+            {
+                Logging.Warn( $"Failed to initialize. {ce.Source} not registered. Installation may be corrupt or Windows version may be incompatible. ", ce );
+                return false;
+            }
+            return true;
+        }
+
+        private static void FadeOut ( ISoundOut soundOut )
+        {
+            if ( soundOut?.PlaybackState == PlaybackState.Playing )
+            {
+                float fadePer10Milliseconds = soundOut.Volume / ActiveSpeechFadeOutMilliseconds * 10;
+                while ( soundOut.Volume > 0 )
+                {
+                    soundOut.Volume -= fadePer10Milliseconds;
+                    Thread.Sleep( 10 );
+                }
+            }
+            soundOut?.Stop();
+        }
+
+        #region Speech
+
+        private void PlaySpeechStream(IWaveSource source, int priority, bool useLegacySoundOut = false)
+        {
+            try
+            {
+                if ( !( source?.Length > 0 ) )
+                {
+                    Logging.Debug( "Skipping empty speech." );
+                    return;
+                }
+
+                var waitTime = source.GetTime(source.Length);
+
+                using ( var soundOut = GetSoundOut() )
+                {
+                    if ( !TryInitializeSoundOut( soundOut, source ) )
+                    {
+                        if ( soundOut is WasapiOut && !useLegacySoundOut )
+                        {
+                            Logging.Warn( "Falling back to legacy DirectSoundOut." );
+                            PlaySpeechStream( source, priority, true );
+                        }
+                    }
+
+                    var cancellationTokenSource = new CancellationTokenSource();
+                    StartSpeech( soundOut, priority, cancellationTokenSource );
+
+                    // Fade out and stop the speech once it completes. Complete early if cancellation is requested.
+                    try
+                    {
+                        Logging.Debug( $"Waiting for speech - {waitTime.Milliseconds} ms (unless ended early)" );
+                        Task.Delay( waitTime, cancellationTokenSource.Token ).GetAwaiter().GetResult();
+                    }
+                    catch ( OperationCanceledException )
+                    {
+                        // Nothing to do here, we're just making sure that speech completed early is handled gracefully.
+                    }
+
+                    Logging.Debug( "Finished waiting for speech" );
+                    FadeOut( soundOut );
+                    lock ( activeSpeechLock )
+                    {
+                        if ( activeSpeechTS.TryRemove( soundOut, out var ts ) )
+                        {
+                            ts.Dispose();
+                        }
+                    }
+                }
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( "Speech playback failed.", e );
+            }
+        }
+
+        private void StartSpeech ( ISoundOut soundout, int priority, CancellationTokenSource cancellationTokenSource )
+        {
+            while ( eddiSpeaking ) { Thread.Sleep( 10 ); }
+            lock ( activeSpeechLock )
+            {
+                activeSpeechTS.TryAdd( soundout, cancellationTokenSource );
+                OnPropertyChanged( nameof( eddiSpeaking ) );
+                Logging.Debug( "Setting active speech and playing sound buffer" );
+                activeSpeechPriority = priority;
+                soundout.Play();
+            }
+        }
+
+        public void StopCurrentSpeech()
+        {
+            lock ( activeSpeechLock )
+            {
+                Logging.Debug( "Ending active speech." );
+                discardPendingSegments = true;
+                var keysToRemove = activeSpeechTS.Keys;
+                keysToRemove.AsParallel().ForAll(key =>
+                {
+                    if ( activeSpeechTS.TryRemove( key, out var tokenSource ) )
+                    {
+                        tokenSource.Cancel();
+                        tokenSource.Token.WaitHandle.WaitOne( TimeSpan.FromSeconds( 5 ) );
+                        tokenSource.Dispose();
+                    }
+                } );
+                OnPropertyChanged( nameof( eddiSpeaking ) );
+            }
+        }
+
+        public void ShutUp ()
+        {
+            speechQueue.DequeueAllSpeech();
+            StopCurrentSpeech();
+        }
+
+        #endregion
+
+        #region Audio
+
+        public void PlayAudio ( string fileName, decimal? volumeOverride, bool useLegacySoundOut = false )
+        {
+            try
+            {
+                IWaveSource audioSource;
+                try
+                {
+                    audioSource = CodecFactory.Instance.GetCodec( fileName );
+                }
+                catch ( NotSupportedException e )
+                {
+                    Logging.Debug( $"Skipping unsupported audio file {fileName}.", e );
+                    throw;
+                }
+                if ( !( audioSource?.Length > 0 ) ) { return; }
+
+                var waitTime = audioSource.GetTime( audioSource.Length );
+
+                using ( var soundOut = GetSoundOut() )
+                {
+                    Logging.Debug($"Beginning audio playback for {fileName}.");
+                    if ( !TryInitializeSoundOut( soundOut, audioSource ) )
+                    {
+                        if ( soundOut is WasapiOut && !useLegacySoundOut )
+                        {
+                            Logging.Warn( "Falling back to legacy DirectSoundOut." );
+                            PlayAudio( fileName, volumeOverride, true );
+                        }
+                    }
+
+                    if ( volumeOverride != null )
+                    {
+                        soundOut.Volume = Math.Max( Math.Min( (float)volumeOverride / 100, 1 ), 0 );
+                    }
+
+                    soundOut.Play();
+
+                    // Fade out and stop the audio once it completes. Complete early if cancellation is requested.
+                    var cancellationTokenSource = new CancellationTokenSource();
+                    lock ( activeAudioLock )
+                    {
+                        activeAudioTS.TryAdd(soundOut, cancellationTokenSource );
+                    }
+                    try
+                    {
+                        Logging.Debug( $"Waiting for audio - {waitTime.Milliseconds} ms (unless ended early)." );
+                        Task.Delay( waitTime, cancellationTokenSource.Token ).GetAwaiter().GetResult();
+                    }
+                    catch ( OperationCanceledException )
+                    {
+                        // Nothing to do here, we're just making sure that audio completed early is handled gracefully.
+                    }
+
+                    Logging.Debug( $"Ending audio playback for {fileName}." );
+                    FadeOut( soundOut );
+                    lock ( activeAudioLock )
+                    {
+                        if ( activeAudioTS.TryRemove( soundOut, out var ts ) )
+                        {
+                            ts.Dispose();
+                        }
+                    }
+                }
+            }
+            catch ( Exception e )
+            {
+                Logging.Error("Audio playback failed.", e);            
             }
         }
 
         public void StopAudio ()
         {
-            var dequeuedAudio = new List<ISoundOut>();
-            while ( !activeAudio.IsEmpty &&
-                    activeAudio.TryDequeue( out ISoundOut soundOut ) )
+            Logging.Debug( $"Ending all audio playback." );
+            discardPendingSegments = true;
+            lock ( activeAudioLock )
             {
-                dequeuedAudio.Add( soundOut );
-            }
-            dequeuedAudio.AsParallel().ForAll( soundOut =>
-            {
-                if ( soundOut.PlaybackState != PlaybackState.Stopped )
+                var keysToRemove = activeAudioTS.Keys;
+                keysToRemove.AsParallel().ForAll( key =>
                 {
-                    Logging.Debug( "Stopping active audio" );
-                    FadeOut( soundOut );
-                    soundOut.Stop();
-                }
-                soundOut.Dispose();
-            } );
+                    if ( activeAudioTS.TryRemove( key, out var tokenSource ) )
+                    {
+                        tokenSource.Cancel();
+                        tokenSource.Token.WaitHandle.WaitOne( TimeSpan.FromSeconds( 5 ) );
+                        tokenSource.Dispose();
+                    }
+                } );
+            }
         }
+
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

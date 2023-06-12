@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.3-b4
+  * Core
+    * Revised speech service to make rendering even more thread-safe when transitioning between the `Play()` function and normal speech (#2549).
+
 ## 4.0.3-b3
   * Core
     * Fixed a crash that can occur if you go click-crazy testing scripts containing the `Play()` function. (#2549)

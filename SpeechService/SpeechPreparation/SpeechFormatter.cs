@@ -133,7 +133,7 @@ namespace EddiSpeechService.SpeechPreparation
             return result;
         }
 
-        public static List<string> SeparateSpeechStatements(string speech)
+        public static List<string> SeparateSpeechSegments(string speech)
         {
             // Separate speech into statements that can be handled differently & sequentially by the speech service
             var statements = new List<string>();
