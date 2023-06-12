@@ -1,0 +1,13 @@
+﻿<Project>
+
+	<!-- Set our source revision ID equal to our latest git commit ID -->
+	<Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
+		<Exec Command="git rev-parse HEAD" ConsoleToMSBuild="True" IgnoreExitCode="False">
+			<Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
+		</Exec>
+		<ItemGroup>
+			<AssemblyMetadata Include="SourceRevisionId" Value="$(SourceRevisionId)" />
+		</ItemGroup>
+	</Target>
+
+</Project>
