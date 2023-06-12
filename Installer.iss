@@ -3,7 +3,6 @@
 
 #define MyAppName "EDDI"
 #define MyAppVersion "4.0.3-b4"
-#define MyAppFrameworkVersion "net48"
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
@@ -29,7 +28,7 @@ LicenseFile="{#SourcePath}\LicenseFile.txt"
 OutputBaseFilename={#MyAppName}-{#MyAppVersion}
 OutputDir="{#SourcePath}\bin\Installer"
 SolidCompression=yes
-SourceDir="{#SourcePath}\bin\Release\{#MyAppFrameworkVersion}"
+SourceDir="{#SourcePath}\bin\Release"
 UninstallDisplayIcon={app}\{#MyAppExeName}
 UsePreviousTasks=no
 WizardImageFile={#SourcePath}\graphics\logo.bmp
