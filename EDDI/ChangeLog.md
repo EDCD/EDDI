@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.3-b4
   * Core
+    * Re-enabled the "Prefer 32 bit" build flag to allow commanders, wherever possible, to use voices which are not supported in 64 bit mode.
     * Revised speech service to make rendering even more thread-safe when transitioning between the `Play()` function and normal speech (#2549).
 
 ## 4.0.3-b3
