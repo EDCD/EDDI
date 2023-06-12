@@ -126,6 +126,6 @@
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy /y &quot;$(SolutionDir)SpeechResponder\Variables.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\$(TargetFramework)\Wiki\&quot;" />
+    <Exec Command="xcopy /y &quot;$(SolutionDir)SpeechResponder\Variables.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
   </Target>
 </Project>

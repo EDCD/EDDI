@@ -1,13 +1,22 @@
 <Project>
-  <PropertyGroup>
-    <!-- Normalize embedded stacktrace paths, make them relative rather than absolute -->
-    <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
-  </PropertyGroup>
-  <ItemGroup>
-    <!---Set up localization to fallback to the main assembly and en neutra language-->
-    <AssemblyAttribute Include="System.Resources.NeutralResourcesLanguageAttribute">
-      <_Parameter1>en</_Parameter1>
-      <_Parameter2>MainAssembly</_Parameter2>
-    </AssemblyAttribute>
-  </ItemGroup>
+
+	<!-- Normalize embedded stacktrace paths, make them relative rather than absolute -->
+	<PropertyGroup>
+		<PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+	</PropertyGroup>
+
+	<!-- Don't append the target framework or a runtime identifier to the output path -->
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	</PropertyGroup>
+
+	<!-- Set up localization to fallback to the main assembly and en neutral language -->
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Resources.NeutralResourcesLanguageAttribute">
+			<_Parameter1>en</_Parameter1>
+			<_Parameter2>MainAssembly</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+
 </Project>
