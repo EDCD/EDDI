@@ -158,8 +158,17 @@ namespace EddiSpeechService.SpeechSynthesizers
                             {
                                 { "voice", voice }, { "speech", speech }, { "exception", ex }
                             };
-                            Logging.Warn( "Speech failed. Stripping IPA tags and re-trying.", badSpeech );
-                            synth.SpeakSsml( SpeechFormatter.DisableIPA( speech ) );
+                            if ( speech.Contains( "<phoneme" ) )
+                            {
+                                Logging.Warn( "Speech failed. Stripping IPA tags and re-trying.", badSpeech );
+                                synth.SpeakSsml( SpeechFormatter.DisableIPA( speech ) );
+                            }
+                            else
+                            {
+                                Logging.Warn("Speech failed. Stripping all SSML tags and re-trying.", badSpeech);
+                                speech = SpeechFormatter.StripSSML( speech );
+                                synth.Speak( speech );
+                            }
                         }
                     }
                     else

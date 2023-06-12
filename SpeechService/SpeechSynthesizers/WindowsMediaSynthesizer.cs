@@ -137,7 +137,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                     {
                         if (!voice.name.Equals(synth.Voice.DisplayName))
                         {
-                            Logging.Debug("Selecting voice " + voice);
+                            Logging.Debug("Selecting voice " + voice.name);
                             synth.Voice =
                                 SpeechSynthesizer.AllVoices.FirstOrDefault(v =>
                                     v.DisplayName == voice.name);
