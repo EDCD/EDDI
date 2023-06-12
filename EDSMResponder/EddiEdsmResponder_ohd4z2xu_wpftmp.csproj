@@ -1,0 +1,319 @@
+<Project>
+  <PropertyGroup>
+    <AssemblyName>EddiEdsmResponder</AssemblyName>
+    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>H:\Brian\source\repos\EDDI\EDSMResponder\obj\</MSBuildProjectExtensionsPath>
+    <_TargetAssemblyProjectName>EddiEdsmResponder</_TargetAssemblyProjectName>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>embedded</DebugType>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\EDDI\Eddi.csproj" />
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+    <ProjectReference Include="..\Events\EddiEvents.csproj" />
+    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations">
+      <Version>2022.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Immutable">
+      <Version>7.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Extensions">
+      <Version>4.3.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.runtime.windowsruntime\4.6.0\buildTransitive\net461\..\..\ref\netstandard2.0\System.Runtime.WindowsRuntime.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\commonmark.net\0.15.1\lib\net45\CommonMark.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\cscore\1.2.1.2\lib\net35-client\CSCore.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\Eddi.exe" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiBgsService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiCompanionAppService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiConfigService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiDataDefinitions.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiDataProviderService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiEvents.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiInaraService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiSpanshService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiSpeechService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiStarMapService.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\EddiStatusService.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\entityframework\6.4.4\lib\net45\EntityFramework.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\entityframework\6.4.4\lib\net45\EntityFramework.SqlServer.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\jetbrains.annotations\2022.3.1\lib\net20\JetBrains.Annotations.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\mathnet.numerics\5.0.0\lib\net48\MathNet.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\mscorlib.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\newtonsoft.json\13.0.3\lib\net45\Newtonsoft.Json.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\restsharp\106.13.0\lib\net452\RestSharp.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\rollbar\5.2.0\lib\net48\Rollbar.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.buffers\4.5.1\ref\net45\System.Buffers.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.collections.immutable\7.0.0\lib\net462\System.Collections.Immutable.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.ComponentModel.Composition.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.ComponentModel.DataAnnotations.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.configuration.configurationmanager\7.0.0\lib\net462\System.Configuration.ConfigurationManager.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Configuration.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.OracleClient.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\stub.system.data.sqlite.core.netframework\1.0.117\lib\net46\System.Data.SQLite.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.data.sqlite.ef6\1.0.117\lib\net46\System.Data.SQLite.EF6.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.data.sqlite.linq\1.0.117\lib\net46\System.Data.SQLite.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Drawing.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.IO.Compression.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.Expressions.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.memory\4.5.5\lib\net461\System.Memory.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Net.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Net.Http.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Numerics.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.numerics.vectors\4.5.0\ref\net46\System.Numerics.Vectors.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Runtime.Caching.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.runtime.compilerservices.unsafe\6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Runtime.Serialization.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.security.accesscontrol\6.0.0\lib\net461\System.Security.AccessControl.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Security.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.security.permissions\7.0.0\lib\net462\System.Security.Permissions.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\system.security.principal.windows\5.0.0\ref\net461\System.Security.Principal.Windows.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.ServiceModel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.ServiceProcess.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Transactions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Controls.Ribbon.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationClient.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationClientsideProviders.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationProvider.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationTypes.dll" />
+    <ReferencePath Include="H:\Brian\source\repos\EDDI\bin\Debug\Utilities.dll" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.AI.MachineLearning.MachineLearningContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.AI.MachineLearning.Preview.MachineLearningPreviewContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Activation.ActivatedEventsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Activation.ActivationCameraSettingsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Activation.ContactActivatedEventsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Calls.Background.CallsBackgroundContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Calls.CallsPhoneContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Calls.CallsVoipContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Calls.LockScreenCallContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.FullTrustAppContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Preview.InkWorkspace.PreviewInkWorkspaceContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Preview.Notes.PreviewNotesContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Resources.Management.ResourceIndexerContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Search.Core.SearchCoreContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Search.SearchContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.SocialInfo.SocialInfoContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.StartupTaskContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.ApplicationModel.Wallet.WalletContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.Custom.CustomDeviceContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.DevicesLowLevelContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.Portable.PortableDeviceContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.Printers.Extensions.ExtensionsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.Printers.PrintersContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.Scanners.ScannerDeviceContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.SmartCards.SmartCardBackgroundTriggerContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.SmartCards.SmartCardEmulatorContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Devices.Sms.LegacySmsApiContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Embedded.DeviceLockdown.DeviceLockdownContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Foundation.FoundationContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Foundation.UniversalApiContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Gaming.Input.GamingInputPreviewContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Gaming.Preview.GamesEnumerationContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Gaming.UI.GameChatOverlayContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Gaming.UI.GamingUIProviderContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Gaming.XboxLive.StorageApiContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Graphics.Printing3D.Printing3DContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Management.Deployment.Preview.DeploymentPreviewContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Management.Deployment.SharedPackageContainerContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Management.Update.WindowsUpdateContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Management.Workplace.WorkplaceSettingsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.AppBroadcasting.AppBroadcastingContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.AppRecording.AppRecordingContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Capture.AppBroadcastContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Capture.AppCaptureContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Capture.AppCaptureMetadataContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Capture.CameraCaptureUIContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Capture.GameBarContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Devices.CallControlContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.MediaControlContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Playlists.PlaylistsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Media.Protection.ProtectionRenewalContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Networking.Connectivity.WwanContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Networking.NetworkOperators.LegacyNetworkOperatorsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Networking.NetworkOperators.NetworkOperatorsFdnContract.WinMD" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Networking.Sockets.ControlChannelTriggerContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Networking.XboxLive.XboxLiveSecureSocketsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Perception.Automation.Core.PerceptionAutomationCoreContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Phone.PhoneContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Phone.StartScreen.DualSimTileContract.WinMD" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Security.EnterpriseData.EnterpriseDataContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Security.ExchangeActiveSyncProvisioning.EasContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Security.Isolation.Isolatedwindowsenvironmentcontract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Services.Maps.GuidanceContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Services.Maps.LocalSearchContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Services.Store.StoreContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Services.TargetedContent.TargetedContentContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Storage.Provider.CloudFilesContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.System.Profile.ProfileHardwareTokenContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.System.Profile.ProfileRetailInfoContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.System.Profile.ProfileSharedModeContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.System.Profile.SystemManufacturers.SystemManufacturersContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.System.SystemManagementContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.System.UserProfile.UserProfileContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.System.UserProfile.UserProfileLockScreenContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.ApplicationSettings.ApplicationsSettingsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.Core.AnimationMetrics.AnimationMetricsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.Core.CoreWindowDialogsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.Shell.SecurityAppManagerContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.UIAutomation.UIAutomationContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.ViewManagement.ViewManagementViewScalingContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.WebUI.Core.WebUICommandBarContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.Xaml.Core.Direct.XamlDirectContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.UI.Xaml.Hosting.HostingContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.Web.Http.Diagnostics.HttpDiagnosticsContract.winmd" />
+    <ReferencePath Include="C:\Users\Brian\.nuget\packages\microsoft.windows.sdk.contracts\10.0.22621.755\ref\netstandard2.0\Windows.WinMD" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\WindowsBase.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\Microsoft.Win32.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\netstandard.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.AppContext.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.Concurrent.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.NonGeneric.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.Specialized.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.Annotations.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.EventBasedAsync.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.TypeConverter.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Console.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Data.Common.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Contracts.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Debug.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.FileVersionInfo.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Process.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.StackTrace.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.TextWriterTraceListener.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Tools.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.TraceSource.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Drawing.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Dynamic.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Globalization.Calendars.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Globalization.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Globalization.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.Compression.ZipFile.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.DriveInfo.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.Watcher.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.IsolatedStorage.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.MemoryMappedFiles.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.Pipes.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.UnmanagedMemoryStream.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.Queryable.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Http.Rtc.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.NameResolution.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.NetworkInformation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Ping.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Requests.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Security.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Sockets.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.WebHeaderCollection.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.WebSockets.Client.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.WebSockets.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ObjectModel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Emit.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Emit.ILGeneration.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Emit.Lightweight.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Resources.Reader.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Resources.ResourceManager.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Resources.Writer.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.CompilerServices.VisualC.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Handles.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Formatters.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Json.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Claims.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Algorithms.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Csp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.X509Certificates.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Principal.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.SecureString.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Duplex.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Http.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.NetTcp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Security.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Text.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Text.Encoding.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Text.RegularExpressions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Overlapped.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Tasks.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Tasks.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Thread.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.ThreadPool.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Timer.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ValueTuple.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.ReaderWriter.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XDocument.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XmlDocument.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XmlSerializer.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XPath.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XPath.XDocument.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="H:\Brian\source\repos\EDDI\EDSMResponder\obj\Debug\ConfigurationWindow.g.cs" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

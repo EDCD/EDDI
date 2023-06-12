@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Utilities;
 
 namespace EddiSpeechService
 {
@@ -20,7 +19,7 @@ namespace EddiSpeechService
         private List<int?> PreparePrioritiesList()
         {
             List<int?> result = new List<int?>();
-            for (int i = 1; i <= priorityQueues.Count - 1; i++)
+            for (int i = 1; i <= (priorityQueues.Count - 1); i++)
             {
                 if (i > 0)
                 {
