@@ -10,4 +10,14 @@
 		</ItemGroup>
 	</Target>
 
+	<!-- Set our source branch -->
+	<Target Name="SetSourceBranch" BeforeTargets="InitializeSourceControlInformation">
+		<Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="True" IgnoreExitCode="False">
+			<Output PropertyName="SourceBranch" TaskParameter="ConsoleOutput" />
+		</Exec>
+		<ItemGroup>
+			<AssemblyMetadata Include="SourceBranch" Value="$(SourceBranch)" />
+		</ItemGroup>
+	</Target>
+
 </Project>

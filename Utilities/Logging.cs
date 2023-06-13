@@ -388,14 +388,16 @@ namespace Utilities
                     PersonDataCollectionPolicies.None,
                     IpAddressCollectionPolicy.DoNotCollect,
                     new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID" } );
-                var sourceRevision = Assembly.GetExecutingAssembly()?
-                    .GetCustomAttributes<AssemblyMetadataAttribute>()
-                    .SingleOrDefault( a => a.Key == "SourceRevisionId" )?.Value;
+                var assyMetadataAttributes = Assembly.GetExecutingAssembly()?.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
                 var loggerPayloadOptions = new RollbarPayloadAdditionOptions()
                 {
                     Person = new Person( uniqueId + ( fromVA ? " VA" : "" ) ),
-                    Server = new Server { Root = "/" },
-                    CodeVersion = sourceRevision
+                    Server = new Server
+                    {
+                        Root = "https://github.com/EDCD/EDDI",
+                        Branch = assyMetadataAttributes.SingleOrDefault( a => a.Key == "SourceBranch")?.Value
+                    },
+                    CodeVersion = assyMetadataAttributes.SingleOrDefault( a => a.Key == "SourceRevisionId" )?.Value
                 };
                 loggerOptions.RollbarDataSecurityOptions.Reconfigure( loggerDataSecurityOptions );
                 loggerOptions.RollbarPayloadAdditionOptions.Reconfigure( loggerPayloadOptions );
