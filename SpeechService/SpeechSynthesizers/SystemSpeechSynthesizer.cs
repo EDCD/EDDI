@@ -139,8 +139,8 @@ namespace EddiSpeechService.SpeechSynthesizers
                         synth.SelectVoice( voice.name );
                     }
 
-                    synth.Rate = Configuration.Rate;
-                    synth.Volume = Configuration.Volume;
+                    synth.Rate = Math.Min( Math.Max( Configuration.Rate, -10 ), 10); // Rate must be an integer between -10 and 10
+                    synth.Volume = Configuration.Volume;                             // Volume must be a percentage between 0 and 100
                     synth.SetOutputToWaveStream( stream );
 
                     Logging.Debug( "Speech configuration is: ", Configuration );
