@@ -16,7 +16,7 @@ namespace EddiConfigService
             if (directory == null) { directory = Constants.DATA_DIR; }
             var filename = directory + (value.GetType().GetCustomAttribute(typeof(RelativePathAttribute)) as RelativePathAttribute)?.relativePath;
             var json = JsonConvert.SerializeObject(value, Formatting.Indented);
-            Logging.Debug($"{value.GetType()} to file: " + json);
+            Logging.Debug($"{value.GetType()} to file.", json);
             LockManager.GetLock(value.GetType().Name, () =>
             {
                 Files.Write(filename, json);
