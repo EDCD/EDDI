@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -288,7 +289,7 @@ namespace EddiDataProviderService
                 results.AddRange(updatedSystems);
 
                 // Save changes to our star systems
-                Instance.updateStarSystems(updatedSystems);
+                Instance.updateStarSystems(updatedSystems.ToImmutableList());
             }
             return results;
         }
@@ -614,13 +615,13 @@ namespace EddiDataProviderService
             }
 
             // Delete applicable systems
-            Instance.deleteStarSystems(delete);
+            Instance.deleteStarSystems(delete.ToImmutableList());
 
             // Insert applicable systems
-            Instance.insertStarSystems(insert);
+            Instance.insertStarSystems(insert.ToImmutableList() );
 
             // Update applicable systems
-            Instance.updateStarSystems(update);
+            Instance.updateStarSystems(update.ToImmutableList() );
         }
 
         // Triggered when leaving a starsystem - just save the star system
@@ -630,7 +631,7 @@ namespace EddiDataProviderService
             SaveStarSystem(system);
         }
 
-        private void insertStarSystems(List<StarSystem> systems)
+        private void insertStarSystems(ImmutableList<StarSystem> systems)
         {
             if (systems.Count == 0)
             {
@@ -671,7 +672,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private void updateStarSystems(List<StarSystem> systems)
+        private void updateStarSystems(ImmutableList<StarSystem> systems)
         {
             if (systems.Count == 0)
             {
@@ -687,13 +688,9 @@ namespace EddiDataProviderService
                     {
                         using (var transaction = con.BeginTransaction())
                         {
-                            foreach (StarSystem system in systems)
+                            foreach ( var system in systems.ToList())
                             {
-                                var serializedSystem = string.Empty;
-                                LockManager.GetLock(system.systemname, () =>
-                                {
-                                    serializedSystem = JsonConvert.SerializeObject(system);
-                                });
+                                var serializedSystem = JsonConvert.SerializeObject( system );
                                 if (string.IsNullOrEmpty(serializedSystem)) { continue; }
                                 if (system.systemAddress != 0)
                                 {
@@ -724,7 +721,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private void deleteStarSystems(List<StarSystem> systems)
+        private void deleteStarSystems(ImmutableList<StarSystem> systems)
         {
             if (systems.Count == 0)
             {
@@ -740,7 +737,7 @@ namespace EddiDataProviderService
                     {
                         using (var transaction = con.BeginTransaction())
                         {
-                            foreach (StarSystem system in systems)
+                            foreach (var system in systems)
                             {
                                 // Delete all possible variations of this data from the database.
                                 if (system.systemAddress != 0)
