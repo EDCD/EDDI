@@ -250,7 +250,6 @@ namespace Utilities
                     // Strip sensitive or personal data like "apiKey" or "frontierID"
                     string[] filterProperties =
                     {
-                        "on",
                         "priority",
                         "health",
                         "buyprice",
