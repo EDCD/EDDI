@@ -229,9 +229,24 @@
     <value>贸易战</value>
     <comment>Faction state TradeWar</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Thargoid_Probing" xml:space="preserve">
+    <value>八角入侵警戒</value>
+    <comment>Faction state Thargoid_Probing</comment>
+  </data>
+  <data name="Thargoid_Harvest" xml:space="preserve">
+    <value>八角入侵</value>
+    <comment>Faction state Thargoid_Harvest</comment>
+  </data>
+  <data name="Thargoid_Controlled" xml:space="preserve">
+    <value>八角实控</value>
+    <comment>Faction state Thargoid_Controlled</comment>
+  </data>
+  <data name="Thargoid_Stronghold" xml:space="preserve">
+    <value>八角涡旋空间站</value>
+    <comment>Faction state Thargoid_Stronghold</comment>
+  </data>
+  <data name="Thargoid_Recovery" xml:space="preserve">
+    <value>后八角恢复中</value>
+    <comment>Faction state Thargoid_Recovery</comment>
+  </data>
 </root>
