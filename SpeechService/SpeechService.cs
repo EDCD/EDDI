@@ -21,6 +21,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
 using Utilities;
 
 namespace EddiSpeechService
@@ -769,7 +772,7 @@ namespace EddiSpeechService
 
             void CheckAndAdd(FileInfo file)
             {
-                if (IsValidXML(file.FullName))
+                if (IsValidXML(file.FullName, out _))
                 {
                     result.Add(file.FullName);
                 }
@@ -790,17 +793,44 @@ namespace EddiSpeechService
             return result;
         }
 
-        private bool IsValidXML(string filename)
+        private bool IsValidXML(string filename, out XDocument xml)
         {
             // Check whether the file is valid .xml (.pls is an xml-based format)
+            xml = null;
             try
             {
-                var _ = System.Xml.Linq.XDocument.Load(filename);
+                // Try to load the file as xml
+                xml = XDocument.Load(filename);
+
+                // Validate the xml against the schema
+                var schemas = new XmlSchemaSet();
+                schemas.Add( "http://www.w3.org/XML/1998/namespace", "http://www.w3.org/2001/xml.xsd" );
+                schemas.Add( "http://www.w3.org/2005/01/pronunciation-lexicon", "http://www.w3.org/TR/pronunciation-lexicon/pls.xsd" );
+                xml.Validate(schemas, ( o, e ) =>
+                {
+                    if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
+                    {
+                        throw new XmlSchemaValidationException( e.Message, e.Exception );
+                    }
+                } );
+                var reader = xml.CreateReader();
+                var lastNodeName = string.Empty;
+                while ( reader.Read() )
+                {
+                    if ( reader.HasValue && 
+                         reader.NodeType is XmlNodeType.Text && 
+                         lastNodeName == "phoneme" && 
+                         !IPA.IsValid( reader.Value ) )
+                    {
+                        throw new ArgumentException( $"Invalid phoneme found in lexicon file: {reader.Value}" );
+                    }
+                    lastNodeName = reader.Name;
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                Logging.Warn($"Could not load .pls file from {filename}.", ex);
+                Logging.Warn($"Could not load lexicon file '{filename}', please review.", ex);
                 return false;
             }
         }
