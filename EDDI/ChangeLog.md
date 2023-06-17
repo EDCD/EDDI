@@ -8,6 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Re-enabled the "Prefer 32 bit" build flag to allow commanders, wherever possible, to use voices which are not supported in 64 bit mode.
     * Revised speech service to make rendering even more thread-safe when transitioning between the `Play()` function and normal speech (#2549).
     * Revised speech service to retry using speech stripped of SSML tags when speech fails using the System.Speech synthesizer.
+    * Worked around a journal bug when `HullHealth` is not written to the player journal `Loadout` event. (#2552)
 
 ## 4.0.3-b3
   * Core

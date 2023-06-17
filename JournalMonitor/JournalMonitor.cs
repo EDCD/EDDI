@@ -609,7 +609,7 @@ namespace EddiJournalMonitor
 
                                     long? hullValue = JsonParsing.getOptionalLong(data, "HullValue");
                                     long? modulesValue = JsonParsing.getOptionalLong(data, "ModulesValue");
-                                    decimal hullHealth = sensibleHealth(JsonParsing.getDecimal(data, "HullHealth") * 100);
+                                    decimal hullHealth = sensibleHealth((JsonParsing.getOptionalDecimal(data, "HullHealth") ?? 1) * 100);
                                     decimal unladenMass = JsonParsing.getOptionalDecimal(data, "UnladenMass") ?? 0;
                                     decimal maxJumpRange = JsonParsing.getOptionalDecimal(data, "MaxJumpRange") ?? 0;
                                     decimal optimalMass = 0;
