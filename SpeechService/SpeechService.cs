@@ -21,6 +21,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
@@ -735,7 +736,27 @@ namespace EddiSpeechService
             this.synthType = synthType;
 
             culturecode = BestGuessCulture();
+
+            // Try to obtian and load lexicon related schemas for lexicon schema validation
+            try
+            {
+                schemas.Add( "http://www.w3.org/XML/1998/namespace", "http://www.w3.org/2001/xml.xsd" );
+                schemas.Add( "http://www.w3.org/2005/01/pronunciation-lexicon",
+                    "http://www.w3.org/TR/pronunciation-lexicon/pls.xsd" );
+            }
+            catch ( ArgumentException ae )
+            {
+                Logging.Warn( $"Unable to obtain lexicon validation schemas.", ae );
+            }
+            catch ( XmlSchemaException xmle )
+            {
+                Logging.Warn($"Problem with lexicon validation schema at {xmle.SourceUri}", xmle);
+            }
         }
+
+        #region Lexicons
+
+        private XmlSchemaSet schemas = new XmlSchemaSet();
 
         public HashSet<string> GetLexicons()
         {
@@ -803,9 +824,6 @@ namespace EddiSpeechService
                 xml = XDocument.Load(filename);
 
                 // Validate the xml against the schema
-                var schemas = new XmlSchemaSet();
-                schemas.Add( "http://www.w3.org/XML/1998/namespace", "http://www.w3.org/2001/xml.xsd" );
-                schemas.Add( "http://www.w3.org/2005/01/pronunciation-lexicon", "http://www.w3.org/TR/pronunciation-lexicon/pls.xsd" );
                 xml.Validate(schemas, ( o, e ) =>
                 {
                     if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
@@ -834,6 +852,8 @@ namespace EddiSpeechService
                 return false;
             }
         }
+
+        #endregion
 
         private string BestGuessCulture()
         {
