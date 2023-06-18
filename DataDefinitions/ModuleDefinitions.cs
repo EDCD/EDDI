@@ -1063,6 +1063,7 @@ namespace EddiDataDefinitions
                 new Module(128935981, "Hpt_MultiCannon_Fixed_Small_Advanced", "AdvancedMultiCannon", 1, "F", 9500, ModuleMount.Fixed),
                 new Module(128935982, "Hpt_DumbfireMissileRack_Fixed_Small_Advanced", "AdvancedMissileRack", 1, "B", 32175, ModuleMount.Fixed),
                 new Module(128935983, "Hpt_DumbfireMissileRack_Fixed_Medium_Advanced", "AdvancedMissileRack", 2, "B", 240000, ModuleMount.Fixed),
+                new Module(128957069, "Int_CorrosionProofCargoRack_Size5_Class1", "CorrosionResistantCargoRack", 5, "E", 0),
                 new Module(128975719, "Int_PlanetApproachSuite_Advanced", "PlanetaryApproachSuite", 1, "I", 500),
                 new Module(129001921, "Int_MultiDroneControl_Mining_Size3_Class1", "MultiDroneControl_Mining", 3, "E", 15000),
                 new Module(129001922, "Int_MultiDroneControl_Mining_Size3_Class3", "MultiDroneControl_Mining", 3, "C", 50000),
@@ -1107,7 +1108,6 @@ namespace EddiDataDefinitions
                 new Module(999999901, "VoicePack_Verity", "Verity", 1, "I", 0),
                 new Module(999999902, "VoicePack_Victor", "Victor", 1, "I", 0),
                 new Module(999999904, "VoicePack_Celeste", "Celeste", 1, "I", 0),
-                new Module(999999905, "Int_CorrosionProofCargoRack_Size5_Class1", "CorrosionResistantCargoRack", 5, "E", 0),
                 new Module(999999906, "Int_CorrosionProofCargoRack_Size6_Class1", "CorrosionResistantCargoRack", 6, "E", 0),
 
                 // The FDL has its own cargo bay door.  The FDL is like that (now the Mamba uses it too!)
