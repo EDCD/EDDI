@@ -4,6 +4,7 @@ using EddiCore;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -149,6 +150,14 @@ namespace Eddi
 
         private static void CrashLogger(Exception ex)
         {
+            // Suppress uncaught Rollbar internal HTTP exceptions
+            if ( ex is AggregateException aex && 
+                 aex.InnerException is HttpRequestException hre && 
+                 hre.StackTrace.Contains("Rollbar") )
+            {
+                return;
+            }
+
             Logging.Error($"Unhandled exception: {ex.Message}.", ex);
         }
 
