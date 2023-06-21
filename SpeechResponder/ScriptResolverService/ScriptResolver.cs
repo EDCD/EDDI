@@ -135,9 +135,14 @@ namespace EddiSpeechResponder.Service
                 Logging.Warn($"Failed to resolve {scriptName} at line {e.Line}. {e}");
                 return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation(e.Message)}";
             }
-            catch (Exception e)
+            catch ( TargetParameterCountException tpce )
             {
-                Logging.Error(e.Message, e);
+                Logging.Warn( tpce.Message, tpce );
+                return $"Error with {scriptObject?.Name ?? "this"} script: {tpce.Message}";
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( e.Message, e );
                 return $"Error with {scriptObject?.Name ?? "this"} script: {e.Message}";
             }
         }
