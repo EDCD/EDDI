@@ -377,7 +377,7 @@ namespace Utilities
                 {
                     MaxReportsPerMinute = 1,
                     PayloadPostTimeout = TimeSpan.FromSeconds( 10 ),
-                    CaptureUncaughtExceptions = true
+                    CaptureUncaughtExceptions = false
                 };
                 config.RollbarInfrastructureOptions.Reconfigure( infrastructureOptions );
 
