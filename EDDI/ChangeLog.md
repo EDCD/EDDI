@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.0.3-b4
   * Core
-    * Fixed a bug with retrieving values set with `SetState()` (#2554)
+    * Fixed a bug with retrieving values previously set with `SetState()` (#2554)
     * Improved quality checks applied prior to using custom lexicons. 
     * Re-enabled the "Prefer 32 bit" build flag to allow commanders, wherever possible, to use voices which are not supported in 64 bit mode.
     * Revised speech service to make rendering even more thread-safe when transitioning between the `Play()` function and normal speech (#2549).
