@@ -610,25 +610,25 @@ namespace EddiNavigationMonitor
 
         #endregion
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
+        public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock ( navConfigLock )
             {
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
-                return new Dictionary<string, KeyValuePair<Type, object>>
+                return new Dictionary<string, Tuple<Type, object>>
                 {
                     // Bookmark info
-                    ["bookmarks"] = new KeyValuePair<Type, object>(typeof(List<NavBookmark>), Bookmarks.ToList() ),
-                    ["galacticPOIs"] = new KeyValuePair<Type, object>(typeof(NavBookmark), GalacticPOIs ),
+                    ["bookmarks"] = new Tuple<Type, object>(typeof(List<NavBookmark>), Bookmarks.ToList() ),
+                    ["galacticPOIs"] = new Tuple<Type, object>(typeof(NavBookmark), GalacticPOIs ),
 
                     // Route plotting info
-                    ["navRoute"] = new KeyValuePair<Type, object>(typeof(NavWaypointCollection), NavRoute ),
-                    ["carrierPlottedRoute"] = new KeyValuePair<Type, object>(typeof(NavWaypointCollection), CarrierPlottedRoute ),
-                    ["shipPlottedRoute"] = new KeyValuePair<Type, object>(typeof(NavWaypointCollection), PlottedRoute ),
+                    ["navRoute"] = new Tuple<Type, object>(typeof(NavWaypointCollection), NavRoute ),
+                    ["carrierPlottedRoute"] = new Tuple<Type, object>(typeof(NavWaypointCollection), CarrierPlottedRoute ),
+                    ["shipPlottedRoute"] = new Tuple<Type, object>(typeof(NavWaypointCollection), PlottedRoute ),
 
                     // NavConfig info
-                    ["orbitalpriority"] = new KeyValuePair<Type, object>(typeof(bool), navConfig.prioritizeOrbitalStations ),
-                    ["maxStationDistance"] = new KeyValuePair<Type, object>(typeof(int?), navConfig.maxSearchDistanceFromStarLs )
+                    ["orbitalpriority"] = new Tuple<Type, object>(typeof(bool), navConfig.prioritizeOrbitalStations ),
+                    ["maxStationDistance"] = new Tuple<Type, object>(typeof(int?), navConfig.maxSearchDistanceFromStarLs )
                 };                
             }
         }

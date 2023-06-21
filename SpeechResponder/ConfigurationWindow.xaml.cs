@@ -126,8 +126,8 @@ namespace EddiSpeechResponder
             var standardVars = speechResponder.ScriptResolver.CompileVariables();
             standardVars.AsParallel().ForAll( kvp =>
             {
-                if ( kvp.Value.Key is null ) { return; }
-                var vars = new MetaVariables ( kvp.Value.Key ).Results;
+                if ( kvp.Value.Item1 is null ) { return; }
+                var vars = new MetaVariables ( kvp.Value.Item1 ).Results;
                 foreach ( var v in vars )
                 {
                     v.keysPath = v.keysPath.Prepend ( kvp.Key ).ToList ();

@@ -941,14 +941,14 @@ namespace EddiCargoMonitor
             return false;
         }
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables ()
+        public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {
             lock ( inventoryLock )
             {
-                return new Dictionary<string, KeyValuePair<Type, object>>
+                return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["inventory"] = new KeyValuePair<Type, object>(typeof(List<Cargo>), inventory.ToList() ),
-                    ["cargoCarried"] = new KeyValuePair<Type, object>(typeof(int), cargoCarried)
+                    ["inventory"] = new Tuple<Type, object>(typeof(List<Cargo>), inventory.ToList() ),
+                    ["cargoCarried"] = new Tuple<Type, object>(typeof(int), cargoCarried)
                 };                
             }
         }

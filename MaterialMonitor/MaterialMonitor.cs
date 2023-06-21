@@ -416,13 +416,13 @@ namespace EddiMaterialMonitor
             }
         }
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
+        public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock ( inventoryLock )
             {
-                return new Dictionary<string, KeyValuePair<Type, object>>
+                return new Dictionary<string, Tuple<Type, object>>
                 {
-                    [ "materials" ] = new KeyValuePair<Type, object>(typeof(List<MaterialAmount>), inventory.ToList() )
+                    [ "materials" ] = new Tuple<Type, object>(typeof(List<MaterialAmount>), inventory.ToList() )
                 };
             }
         }

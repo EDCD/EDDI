@@ -858,16 +858,16 @@ namespace EddiMissionMonitor
             return update;
         }
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
+        public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock (missionsLock)
             {
-                return new Dictionary<string, KeyValuePair<Type, object>>
+                return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["goalsCount"] = new KeyValuePair<Type, object>(typeof(int), missions.Count(m => m.communal)),
-                    ["missions"] = new KeyValuePair<Type, object>(typeof(List<Mission>), missions.ToList()),
-                    ["missionsCount"] = new KeyValuePair<Type, object>(typeof(int), missions.Count(m => !m.shared && !m.communal)),
-                    ["missionWarning"] = new KeyValuePair<Type, object>(typeof(int), missionWarning)
+                    ["goalsCount"] = new Tuple<Type, object>(typeof(int), missions.Count(m => m.communal)),
+                    ["missions"] = new Tuple<Type, object>(typeof(List<Mission>), missions.ToList()),
+                    ["missionsCount"] = new Tuple<Type, object>(typeof(int), missions.Count(m => !m.shared && !m.communal)),
+                    ["missionWarning"] = new Tuple<Type, object>(typeof(int), missionWarning)
                 };
             }
         }

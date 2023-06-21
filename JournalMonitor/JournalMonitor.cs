@@ -5349,7 +5349,7 @@ namespace EddiJournalMonitor
         {
         }
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
+        public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             return null;
         }

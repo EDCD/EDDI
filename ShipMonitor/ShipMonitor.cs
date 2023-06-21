@@ -1241,15 +1241,15 @@ namespace EddiShipMonitor
             writeShips();
         }
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
+        public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock ( shipyardLock )
             {
-                return new Dictionary<string, KeyValuePair<Type, object>>
+                return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["ship"] = new KeyValuePair<Type, object>(typeof(Ship), GetCurrentShip() ),
-                    ["storedmodules"] = new KeyValuePair<Type, object>(typeof(List<StoredModule>), storedmodules.ToList() ),
-                    ["shipyard"] = new KeyValuePair<Type, object>( typeof( List<Ship> ), shipyard.ToList() )
+                    ["ship"] = new Tuple<Type, object>(typeof(Ship), GetCurrentShip() ),
+                    ["storedmodules"] = new Tuple<Type, object>(typeof(List<StoredModule>), storedmodules.ToList() ),
+                    ["shipyard"] = new Tuple<Type, object>( typeof( List<Ship> ), shipyard.ToList() )
                 };
             }
         }

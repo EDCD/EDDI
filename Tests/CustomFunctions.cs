@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using Cottle;
+using EddiDataDefinitions;
 using EddiSpeechResponder;
 using EddiSpeechResponder.CustomFunctions;
 using EddiSpeechResponder.Service;
@@ -19,7 +20,7 @@ namespace UnitTests
             MakeSafe();
         }
 
-        private string ResolveScript(string script, Dictionary<string, KeyValuePair<Type, object>> vars = null)
+        private string ResolveScript(string script, Dictionary<string, Tuple<Type, Value>> vars = null)
         {
             return resolver.resolveFromValue(script, resolver.buildStore(vars), true);
         }

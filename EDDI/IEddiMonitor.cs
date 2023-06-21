@@ -69,7 +69,7 @@ namespace EddiCore
         /// <summary>
         /// Provide any local variables
         /// </summary>
-        IDictionary<string, KeyValuePair<Type, object>> GetVariables ();
+        IDictionary<string, Tuple<Type, object>> GetVariables ();
 
         UserControl ConfigurationTabItem();
     }

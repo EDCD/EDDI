@@ -795,17 +795,17 @@ namespace EddiCrimeMonitor
             }
         }
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
+        public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock (recordLock)
             {
-                return new Dictionary<string, KeyValuePair<Type, object>>
+                return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["criminalrecord"] = new KeyValuePair<Type, object>(typeof(List<FactionRecord>), criminalrecord.ToList()),
-                    ["claims"] = new KeyValuePair<Type, object>(typeof(long), claims),
-                    ["fines"] = new KeyValuePair<Type, object>(typeof(long), fines),
-                    ["bounties"] = new KeyValuePair<Type, object>(typeof(long), bounties ),
-                    ["shiptargets"] = new KeyValuePair<Type, object>(typeof(List<Target>), shipTargets.ToList())
+                    ["criminalrecord"] = new Tuple<Type, object>(typeof(List<FactionRecord>), criminalrecord.ToList()),
+                    ["claims"] = new Tuple<Type, object>(typeof(long), claims),
+                    ["fines"] = new Tuple<Type, object>(typeof(long), fines),
+                    ["bounties"] = new Tuple<Type, object>(typeof(long), bounties ),
+                    ["shiptargets"] = new Tuple<Type, object>(typeof(List<Target>), shipTargets.ToList())
                 };
             }
         }

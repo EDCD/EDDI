@@ -323,14 +323,14 @@ namespace EddiStatusMonitor
         {
         }
 
-        public IDictionary<string, KeyValuePair<Type, object>> GetVariables()
+        public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock ( StatusService.Instance.statusLock )
             {
-                return new Dictionary<string, KeyValuePair<Type, object>>
+                return new Dictionary<string, Tuple<Type, object>>
                 {
-                    { "status", new KeyValuePair<Type, object>(typeof(Status), StatusService.Instance.CurrentStatus ) },
-                    { "lastStatus", new KeyValuePair < Type, object >(typeof(Status), StatusService.Instance.LastStatus) }
+                    { "status", new Tuple<Type, object>(typeof(Status), StatusService.Instance.CurrentStatus ) },
+                    { "lastStatus", new Tuple < Type, object >(typeof(Status), StatusService.Instance.LastStatus) }
                 };
             }
         }

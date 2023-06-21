@@ -54,7 +54,7 @@ namespace EddiSpeechResponder.Service
         }
 
         /// <summary> From a custom dictionary of variable values in the default store </summary>
-        public string resolveFromName(string name, Dictionary<string, KeyValuePair<Type, object>> vars, bool isTopLevelScript)
+        public string resolveFromName(string name, Dictionary<string, Tuple<Type, Value>> vars, bool isTopLevelScript)
         {
             BuiltinStore store = buildStore(vars);
             return resolveFromName(name, store, isTopLevelScript);
@@ -91,39 +91,40 @@ namespace EddiSpeechResponder.Service
         {
             try
             {
-                Logging.Debug($"Resolving {(isTopLevelScript ? "top level " : "")}script {scriptObject?.Name}: {script}", store);
+                Logging.Debug( $"Resolving {( isTopLevelScript ? "top level " : "" )}script {scriptObject?.Name}: {script}", store );
 
-                var document = new SimpleDocument(script, setting);
-                var result = document.Render(store);
+                var document = new SimpleDocument( script, setting );
+                var result = document.Render( store );
                 // Tidy up the output script
-                if (isTopLevelScript)
+                if ( isTopLevelScript )
                 {
-                    result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
-                    Logging.Debug($"Turned {scriptObject?.Name} script into speech '{result}'");
+                    result = Regex.Replace( result, " +", " " ).Replace( " ,", "," ).Replace( " .", "." ).Trim();
+                    Logging.Debug( $"Turned {scriptObject?.Name} script into speech '{result}'" );
                     result = result.Trim() == "" ? null : result.Trim();
                 }
 
-                if (isTopLevelScript && result != null)
+                if ( isTopLevelScript && result != null )
                 {
                     string stored = result;
                     // Remove any leading pause
-                    if (stored.StartsWith("<break"))
+                    if ( stored.StartsWith( "<break" ) )
                     {
                         string pattern = "^<break[^>]*>";
                         string replacement = "";
-                        Regex rgx = new Regex(pattern);
-                        stored = rgx.Replace(stored, replacement);
+                        Regex rgx = new Regex( pattern );
+                        stored = rgx.Replace( stored, replacement );
                     }
-                    EDDI.Instance.State["eddi_context_last_speech"] = stored;
+
+                    EDDI.Instance.State[ "eddi_context_last_speech" ] = stored;
                 }
 
                 return result;
             }
-            catch (ParseException e)
+            catch ( ParseException e )
             {
                 // Report the failing the script name, if it is available
                 string scriptName;
-                if (scriptObject != null)
+                if ( scriptObject != null )
                 {
                     scriptName = "the script \"" + scriptObject.Name + "\"";
                 }
@@ -132,8 +133,8 @@ namespace EddiSpeechResponder.Service
                     scriptName = "this script";
                 }
 
-                Logging.Warn($"Failed to resolve {scriptName} at line {e.Line}. {e}");
-                return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation(e.Message)}";
+                Logging.Warn( $"Failed to resolve {scriptName} at line {e.Line}. {e}" );
+                return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation( e.Message )}";
             }
             catch ( TargetParameterCountException tpce )
             {
@@ -159,50 +160,102 @@ namespace EddiSpeechResponder.Service
         }
 
         // Compile variables from the EDDI information
-        protected internal Dictionary<string, KeyValuePair<Type, object>> CompileVariables(Event theEvent = null)
+        protected internal Dictionary<string, Tuple<Type, Value>> CompileVariables(Event theEvent = null)
         {
-            var dict = new Dictionary<string, KeyValuePair<Type, object>>
+            var dict = new Dictionary<string, Tuple<Type, Value>>
             {
                 // Boolean constants
-                ["true"] = new KeyValuePair<Type, object>(typeof(bool), true),
-                ["false"] = new KeyValuePair<Type, object>(typeof(bool), false),
+                ["true"] = new Tuple<Type, Value>(typeof(bool), true),
+                ["false"] = new Tuple<Type, Value>(typeof(bool), false),
 
                 // Standard simple variables
-                ["capi_active"] = new KeyValuePair<Type, object>(typeof(bool), CompanionAppService.Instance?.active ?? false),
-                ["destinationdistance"] = new KeyValuePair<Type, object>(typeof(decimal), EDDI.Instance.DestinationDistanceLy),
-                ["searchdistance"] = new KeyValuePair<Type, object>(typeof(decimal), NavigationService.Instance.SearchDistanceLy),
-                ["environment"] = new KeyValuePair<Type, object>(typeof(string), EDDI.Instance.Environment),
-                ["horizons"] = new KeyValuePair<Type, object>(typeof(bool), EDDI.Instance.inHorizons),
-                ["odyssey"] = new KeyValuePair<Type, object>(typeof(bool), EDDI.Instance.inOdyssey),
-                ["va_active"] = new KeyValuePair<Type, object>(typeof(bool), App.FromVA),
-                ["vehicle"] = new KeyValuePair<Type, object>(typeof(string), EDDI.Instance.Vehicle),
-                ["icao_active"] = new KeyValuePair<Type, object>(typeof(bool), SpeechService.Instance.Configuration.EnableIcao),
-                ["ipa_active"] = new KeyValuePair<Type, object>(typeof(bool), !SpeechService.Instance.Configuration.DisableIpa),
+                ["capi_active"] = new Tuple<Type, Value>(typeof(bool), CompanionAppService.Instance?.active ?? false),
+                ["destinationdistance"] = new Tuple<Type, Value>(typeof(decimal), EDDI.Instance.DestinationDistanceLy),
+                ["searchdistance"] = new Tuple<Type, Value>(typeof(decimal), NavigationService.Instance.SearchDistanceLy),
+                ["environment"] = new Tuple<Type, Value>(typeof(string), EDDI.Instance.Environment),
+                ["horizons"] = new Tuple<Type, Value>(typeof(bool), EDDI.Instance.inHorizons),
+                ["odyssey"] = new Tuple<Type, Value>(typeof(bool), EDDI.Instance.inOdyssey),
+                ["va_active"] = new Tuple<Type, Value>(typeof(bool), App.FromVA),
+                ["vehicle"] = new Tuple<Type, Value>(typeof(string), EDDI.Instance.Vehicle),
+                ["icao_active"] = new Tuple<Type, Value>(typeof(bool), SpeechService.Instance.Configuration.EnableIcao),
+                ["ipa_active"] = new Tuple<Type, Value>(typeof(bool), !SpeechService.Instance.Configuration.DisableIpa)
 
-                // Standard objects
-                ["cmdr"] = new KeyValuePair<Type, object>(typeof(Commander), EDDI.Instance.Cmdr),
-                ["homesystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.HomeStarSystem),
-                ["homestation"] = new KeyValuePair<Type, object>(typeof(Station), EDDI.Instance.HomeStation),
-                ["squadronsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.SquadronStarSystem),
-                ["system"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.CurrentStarSystem),
-                ["lastsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.LastStarSystem),
-                ["nextsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.NextStarSystem),
-                ["destinationsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), EDDI.Instance.DestinationStarSystem),
-                ["searchsystem"] = new KeyValuePair<Type, object>(typeof(StarSystem), NavigationService.Instance.SearchStarSystem),
-                ["searchstation"] = new KeyValuePair<Type, object>(typeof(Station), NavigationService.Instance.SearchStation),
-                ["station"] = new KeyValuePair<Type, object>(typeof(Station), EDDI.Instance.CurrentStation),
-                ["body"] = new KeyValuePair<Type, object>(typeof(Body), EDDI.Instance.CurrentStellarBody),
-                ["carrier"] = new KeyValuePair<Type, object>(typeof(FleetCarrier), EDDI.Instance.FleetCarrier)
             };
+
+            // Standard objects
+            if ( EDDI.Instance.Cmdr != null )
+            {
+                dict[ "cmdr" ] = new Tuple<Type, Value>( typeof( Commander ), new ReflectionValue( EDDI.Instance.Cmdr ) );
+            }
+
+            if ( EDDI.Instance.HomeStarSystem != null )
+            {
+                dict[ "homesystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.HomeStarSystem ) );
+            }
+
+            if ( EDDI.Instance.HomeStation != null )
+            {
+                dict[ "homestation" ] = new Tuple<Type, Value>( typeof( Station ), new ReflectionValue( EDDI.Instance.HomeStation ) );
+            }
+
+            if ( EDDI.Instance.SquadronStarSystem != null )
+            {
+                dict[ "squadronsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.SquadronStarSystem ) );
+            }
+
+            if ( EDDI.Instance.CurrentStarSystem != null )
+            {
+                dict[ "system" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.CurrentStarSystem ) );
+            }
+
+            if ( EDDI.Instance.LastStarSystem != null )
+            {
+                dict[ "lastsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.LastStarSystem ) );
+            }
+
+            if ( EDDI.Instance.NextStarSystem != null )
+            {
+                dict[ "nextsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.NextStarSystem ) );
+            }
+
+            if ( EDDI.Instance.DestinationStarSystem != null )
+            {
+                dict[ "destinationsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.DestinationStarSystem ) );
+            }
+
+            if ( NavigationService.Instance.SearchStarSystem != null )
+            {
+                dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( NavigationService.Instance.SearchStarSystem ) );
+            }
+
+            if ( NavigationService.Instance.SearchStation != null )
+            {
+                dict[ "searchstation" ] = new Tuple<Type, Value>( typeof( Station ), new ReflectionValue( NavigationService.Instance.SearchStation ) );
+            }
+
+            if ( EDDI.Instance.CurrentStation != null )
+            {
+                dict[ "station" ] = new Tuple<Type, Value>( typeof( Station ), new ReflectionValue( EDDI.Instance.CurrentStation ) );
+            }
+
+            if ( EDDI.Instance.CurrentStellarBody != null )
+            {
+                dict[ "body" ] = new Tuple<Type, Value>( typeof( Body ), new ReflectionValue( EDDI.Instance.CurrentStellarBody ) );
+            }
+
+            if ( EDDI.Instance.FleetCarrier != null )
+            {
+                dict[ "carrier" ] = new Tuple<Type, Value>( typeof( FleetCarrier ), new ReflectionValue( EDDI.Instance.FleetCarrier ) );
+            }
 
             if ( theEvent != null )
             {
-                dict[ "event" ] = new KeyValuePair<Type, object>( typeof( Event ), theEvent );
+                dict[ "event" ] = new Tuple<Type, Value>( typeof( Event ), new ReflectionValue( theEvent ) );
             }
 
             if ( EDDI.Instance.State != null )
             {
-                dict[ "state" ] = new KeyValuePair<Type, object>( typeof( IDictionary<string, object>), EDDI.Instance.State);
+                dict[ "state" ] = new Tuple<Type, Value>( typeof( IDictionary<string, object>), buildState() );
                 Logging.Debug( "State is: ", EDDI.Instance.State );
             }
 
@@ -214,13 +267,13 @@ namespace EddiSpeechResponder.Service
                 {
                     foreach ( string key in monitorVariables.Keys )
                     {
-                        if ( monitorVariables[ key ].Value == null )
+                        if ( monitorVariables[ key ].Item2 == null )
                         {
                             dict.Remove( key );
                         }
                         else
                         {
-                            dict[ key ] = monitorVariables[ key ];
+                            dict[ key ] = new Tuple<Type, Value>( monitorVariables[ key ].Item1, new ReflectionValue( monitorVariables[ key ]?.Item2 ) );
                         }
                     }
                 }
@@ -232,7 +285,7 @@ namespace EddiSpeechResponder.Service
         /// <summary>
         /// Build a store from a list of variables
         /// </summary>
-        public BuiltinStore buildStore(Dictionary<string, KeyValuePair<Type, object>> vars = null)
+        public BuiltinStore buildStore(Dictionary<string, Tuple<Type, Value>> vars = null)
         {
             BuiltinStore store = new BuiltinStore();
             
@@ -256,14 +309,7 @@ namespace EddiSpeechResponder.Service
             {
                 foreach (var entry in vars)
                 {
-                    if ( entry.Value.Value is null )
-                    {
-                        store[ entry.Key ] = new VoidValue();
-                    }
-                    else
-                    {
-                        store[ entry.Key ] = new ReflectionValue( entry.Value.Value );
-                    }
+                    store[ entry.Key ] = entry.Value.Item2;
                 }
             }
 
@@ -280,13 +326,13 @@ namespace EddiSpeechResponder.Service
             var state = new Dictionary<Value, Value>();
             foreach (string key in EDDI.Instance.State.Keys)
             {
-                object value = EDDI.Instance.State[key];
+                var value = EDDI.Instance.State[key];
                 if (value == null)
                 {
                     // Null values should not be included in our Cottle state
                     continue;
                 }
-                Type valueType = value.GetType();
+                var valueType = value.GetType();
                 if (valueType == typeof(string))
                 {
                     state[key] = (string)value;
