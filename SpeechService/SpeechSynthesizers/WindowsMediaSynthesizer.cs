@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using Utilities;
 using Windows.Media.SpeechSynthesis;
 
@@ -29,7 +30,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        public WindowsMediaSynthesizer (ref HashSet<VoiceDetails> voiceStore)
+        public WindowsMediaSynthesizer (ref HashSet<VoiceDetails> voiceStore, XmlSchemaSet lexiconSchemas)
         {
             bool TryOneCoreVoiceRegistry( VoiceDetails voiceDetails )
             {
@@ -83,7 +84,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                     Logging.Debug($"Found voice: {voice.DisplayName}", voice);
 
                     var voiceDetails = new VoiceDetails(voice.DisplayName, voice.Gender.ToString(),
-                        CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media));
+                        CultureInfo.GetCultureInfo(voice.Language), nameof(Windows.Media), lexiconSchemas);
 
                     // Skip voices which are not fully registered
                     if (!TryOneCoreVoiceRegistry(voiceDetails) || !TryOneCoreVoiceSpeech(voiceDetails))

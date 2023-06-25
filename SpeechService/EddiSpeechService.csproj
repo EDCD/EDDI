@@ -15,6 +15,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\pls.xsd" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Speech" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using Utilities;
 
 namespace EddiSpeechService.SpeechSynthesizers
@@ -27,7 +28,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        public SystemSpeechSynthesizer(ref HashSet<VoiceDetails> voiceStore)
+        public SystemSpeechSynthesizer(ref HashSet<VoiceDetails> voiceStore, XmlSchemaSet lexiconSchemas )
         {
             lock ( synthLock )
             {
@@ -61,7 +62,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                         Logging.Debug( $"Found voice: {voice.VoiceInfo.Name}", voice.VoiceInfo );
 
                         var voiceDetails = new VoiceDetails( voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                            voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System) );
+                            voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System), lexiconSchemas );
 
                         // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
                         // (for example, if OneCore voices have been added to System.Speech with a registry edit)

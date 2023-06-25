@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -55,6 +56,8 @@ namespace EddiSpeechService
             .Where(v => !v.hideVoice)
             .Select(v => v.name)
             .ToList();
+
+        private readonly XmlSchemaSet lexiconSchemas = new XmlSchemaSet();
 
         private static readonly object activeAudioLock = new object();
         private static readonly object activeSpeechLock = new object();
@@ -133,13 +136,15 @@ namespace EddiSpeechService
             Configuration = SpeechServiceConfiguration.FromFile();
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
 
+            FetchLexiconSchemas();
+
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
             try
             {
                 if (IsWindowsMediaSynthesizerSupported())
                 {
                     // Prep the Windows.Media.SpeechSynthesis synthesizer
-                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
+                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore, lexiconSchemas);
                 }
             }
             catch (Exception e)
@@ -148,13 +153,44 @@ namespace EddiSpeechService
             }
             
             // Prep the System.Speech synthesizer
-            systemSpeechSynth = new SystemSpeechSynthesizer(ref voiceStore);
+            systemSpeechSynth = new SystemSpeechSynthesizer(ref voiceStore, lexiconSchemas);
             
             // Sort results alphabetically by voice name
             allVoices = voiceStore.OrderBy(v => v.name).ToList();
 
             // Monitor and respond appropriately to changes in the state of the CompanionAppService
             CompanionAppService.Instance.StateChanged += CompanionAppService_StateChanged;
+        }
+
+        private void FetchLexiconSchemas()
+        {
+            // Try to obtain and load lexicon related schemas for lexicon schema validation
+            try
+            {
+                var thisAssembly = Assembly.GetExecutingAssembly();
+
+                void FetchSchemasFromResource ( string resourceName )
+                {
+                    using ( var resourceStream = thisAssembly.GetManifestResourceStream( resourceName ) )
+                    {
+                        if ( resourceStream != null )
+                        {
+                            var schema = XmlSchema.Read( resourceStream, null );
+                            lexiconSchemas.Add( schema );
+                        }
+                    }
+                }
+
+                FetchSchemasFromResource( "EddiSpeechService.Properties.pls.xsd" );
+            }
+            catch ( ArgumentException ae )
+            {
+                Logging.Warn( "Unable to load lexicon validation schema.", ae );
+            }
+            catch ( XmlSchemaException xmle )
+            {
+                Logging.Warn( $"Problem with lexicon validation schema at {xmle.SourceUri}", xmle );
+            }
         }
 
         private static bool IsWindowsMediaSynthesizerSupported()
@@ -727,7 +763,7 @@ namespace EddiSpeechService
 
         public bool hideVoice { get; set; }
 
-        internal VoiceDetails(string displayName, string gender, CultureInfo Culture, string synthType)
+        internal VoiceDetails( string displayName, string gender, CultureInfo Culture, string synthType, XmlSchemaSet lexiconSchemas )
         {
             this.name = displayName;
             this.gender = gender;
@@ -735,27 +771,12 @@ namespace EddiSpeechService
             this.synthType = synthType;
 
             culturecode = BestGuessCulture();
-
-            // Try to obtian and load lexicon related schemas for lexicon schema validation
-            try
-            {
-                schemas.Add( "http://www.w3.org/XML/1998/namespace", "http://www.w3.org/2001/xml.xsd" );
-                schemas.Add( "http://www.w3.org/2005/01/pronunciation-lexicon",
-                    "http://www.w3.org/TR/pronunciation-lexicon/pls.xsd" );
-            }
-            catch ( ArgumentException ae )
-            {
-                Logging.Warn( $"Unable to obtain lexicon validation schemas.", ae );
-            }
-            catch ( XmlSchemaException xmle )
-            {
-                Logging.Warn($"Problem with lexicon validation schema at {xmle.SourceUri}", xmle);
-            }
+            this.lexiconSchemas = lexiconSchemas;
         }
 
         #region Lexicons
 
-        private XmlSchemaSet schemas = new XmlSchemaSet();
+        private XmlSchemaSet lexiconSchemas;
 
         public HashSet<string> GetLexicons()
         {
@@ -822,8 +843,8 @@ namespace EddiSpeechService
                 // Try to load the file as xml
                 xml = XDocument.Load(filename);
 
-                // Validate the xml against the schema
-                xml.Validate(schemas, ( o, e ) =>
+                // Validate the lexicon xml against the schema
+                xml.Validate(lexiconSchemas, ( o, e ) =>
                 {
                     if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
                     {

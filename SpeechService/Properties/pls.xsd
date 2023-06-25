@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This is a draft schema for the XML language defined in the 
+    Pronunciation Lexicon Specification 
+    (latest version at <http://www.w3.org/TR/pronunciation-lexicon/>)
+    At the time of writing, the specification as well as this schema are
+    subject to change, and no guarantee is made on their accuracy or the fact
+    that they are in sync.
+    Last modified: $Date: 2008/10/13 14:03:02 $
+    
+    Copyright &#251; 2006 World Wide Web Consortium, (Massachusetts Institute
+    of Technology, ERCIM, Keio University). All Rights Reserved. See
+    http://www.w3.org/Consortium/Legal/.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:p="http://www.w3.org/2005/01/pronunciation-lexicon" targetNamespace="http://www.w3.org/2005/01/pronunciation-lexicon" elementFormDefault="qualified" version="1.0">
+    <xs:annotation>
+        <xs:documentation>Importing dependent namespaces</xs:documentation>
+    </xs:annotation>
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+    <xs:annotation>
+        <xs:documentation>General Datatypes</xs:documentation>
+        
+    </xs:annotation>
+    <xs:simpleType name="nonemptystring.datatype">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="alphabet.datatype">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="ipa|(x-.*)"/>
+            
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="role.datatype">
+        <xs:restriction>
+            <xs:simpleType>
+                <xs:list itemType="xs:QName"/>
+            </xs:simpleType>
+            <xs:minLength value="1"/>
+        </xs:restriction>
+        
+    </xs:simpleType>
+    <xs:simpleType name="prefer.datatype">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="true"/>
+            <xs:enumeration value="false"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:annotation>
+        <xs:documentation>PLS Elements</xs:documentation>
+        
+    </xs:annotation>
+    <xs:element name="lexicon">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="p:meta" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="p:metadata" minOccurs="0"/>
+                <xs:element ref="p:lexeme" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="version" use="required">
+                
+                <xs:simpleType>
+                    <xs:restriction base="xs:token">
+                        <xs:enumeration value="1.0"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute ref="xml:base"/>
+            <xs:attribute ref="xml:lang" use="required"/>
+            <xs:attribute name="alphabet" type="p:alphabet.datatype" use="required"/>
+            <xs:anyAttribute processContents="lax" namespace="##other"/> 
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="meta">
+        <xs:complexType>
+            <xs:attribute name="name"/>
+            <xs:attribute name="http-equiv"/>
+            <xs:attribute name="content" use="required"/>
+            <xs:anyAttribute processContents="lax" namespace="##other"/> 
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="metadata">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:group name="anything">
+        <xs:sequence>
+            
+            <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:group>
+    <xs:attributeGroup name="anything">
+        <xs:anyAttribute processContents="skip"/>
+    </xs:attributeGroup>
+    <xs:element name="lexeme">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                
+                <xs:element ref="p:grapheme"/>
+                <xs:choice>
+                    <xs:element ref="p:phoneme"/>
+                    <xs:element ref="p:alias"/>
+                </xs:choice>
+                <xs:element ref="p:example"/>
+            </xs:choice>
+            <xs:attribute ref="xml:id"/>
+            <xs:attribute name="role" type="p:role.datatype"/>
+            <xs:anyAttribute processContents="lax" namespace="##other"/> 
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="grapheme">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="p:nonemptystring.datatype">
+                    <xs:anyAttribute namespace="##other" processContents="lax"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>        
+    </xs:element>
+    <xs:element name="phoneme">
+        <xs:complexType mixed="true">
+            <xs:attribute name="prefer" type="p:prefer.datatype" default="false"/>
+            <xs:attribute name="alphabet" type="p:alphabet.datatype"/>
+            <xs:anyAttribute processContents="lax" namespace="##other"/> 
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="alias">
+        <xs:complexType mixed="true">
+            <xs:attribute name="prefer" type="p:prefer.datatype" default="false"/>
+            <xs:anyAttribute processContents="lax" namespace="##other"/> 
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="example">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="p:nonemptystring.datatype">
+                    <xs:anyAttribute namespace="##other" processContents="lax"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>        
+    </xs:element>
+</xs:schema>
