@@ -146,9 +146,9 @@ namespace UnitTests
             Assert.IsNotNull(ev);
             Assert.AreEqual("Planet", ev.body.bodyType.invariantName);
             Debug.Assert(ev.alreadydiscovered != null, "ev.alreadydiscovered != null");
-            Assert.IsTrue((bool)ev.alreadydiscovered);
+            Assert.IsTrue(ev.alreadydiscovered ?? false);
             Debug.Assert(ev.alreadymapped != null, "ev.alreadymapped != null");
-            Assert.IsTrue((bool)ev.alreadymapped);
+            Assert.IsTrue(ev.alreadymapped ?? false);
         }
 
         [TestMethod]
@@ -243,9 +243,9 @@ namespace UnitTests
             Assert.IsNotNull(ev);
             Assert.AreEqual("Moon", ev.body.bodyType.invariantName);
             Debug.Assert(ev.alreadydiscovered != null, "ev.alreadydiscovered != null");
-            Assert.IsTrue((bool)ev.alreadydiscovered);
+            Assert.IsTrue(ev.alreadydiscovered ?? false );
             Debug.Assert(ev.alreadymapped != null, "ev.alreadymapped != null");
-            Assert.IsTrue((bool)ev.alreadymapped);
+            Assert.IsTrue(ev.alreadymapped ?? false);
         }
 
         [TestMethod]
@@ -305,7 +305,7 @@ namespace UnitTests
             StarScannedEvent theEvent = (StarScannedEvent)events[0];
             Assert.AreEqual(8, theEvent.stellarsubclass);
             Debug.Assert(theEvent.alreadydiscovered != null, "theEvent.alreadydiscovered != null");
-            Assert.IsTrue((bool)theEvent.alreadydiscovered);
+            Assert.IsTrue(theEvent.alreadydiscovered ?? false);
             Assert.AreEqual(3687.497842466M, theEvent.density);
             Assert.AreEqual(1204, theEvent.estimatedvalue);
             Assert.AreEqual(0.00456994738549848M, theEvent.luminosity);
@@ -315,7 +315,7 @@ namespace UnitTests
             Assert.IsTrue(theEvent.scoopable);
             Assert.AreEqual(0M, theEvent.tilt);
             Debug.Assert(theEvent.alreadymapped != null, "theEvent.alreadymapped != null");
-            Assert.IsFalse((bool)theEvent.alreadymapped);
+            Assert.IsFalse(theEvent.alreadymapped ?? false);
             Assert.AreEqual(2, theEvent.bodyId);
             Assert.IsNull(theEvent.mapped);
             Assert.IsInstanceOfType(theEvent.scanned, typeof(System.DateTime));
