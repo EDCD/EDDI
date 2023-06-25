@@ -204,31 +204,45 @@ namespace EddiDataProviderService
 
         public void syncEdsmLogBatch(List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments)
         {
-            List<StarSystem> syncedSystems = new List<StarSystem>();
-            string[] systemNames = flightLogBatch.Select(x => x.system).Distinct().ToArray();
-            List<StarSystem> batchSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames, true, false, false, false, false);
+            var syncedSystems = new List<StarSystem>();
+            var systemNames = flightLogBatch.Select(x => x.system).Distinct().ToArray();
+            var batchSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames, true, false, false, false, false);
             foreach (StarSystem starSystem in batchSystems)
             {
                 if (starSystem != null)
                 {
-                    foreach (StarMapResponseLogEntry flightLog in flightLogBatch.Where(log => log.system == starSystem.systemname))
+                    foreach (var flightLog in flightLogBatch.Where(log => log.system == starSystem.systemname))
                     {
-                        if (starSystem.EDSMID == null)
+                        // Fill missing SystemAddresses
+                        if ( starSystem.systemAddress == 0 && flightLog.systemId64 > 0)
+                        {
+                            starSystem.systemAddress = flightLog.systemId64;
+                            var bodies = starSystem.bodies.Where(b => b.systemAddress is null).ToList();
+                            bodies.AsParallel().ForAll( b =>
+                            {
+                                b.systemAddress = flightLog.systemId64;
+                            } );
+                            foreach ( var body in starSystem.bodies )
+                            {
+                                body.systemAddress = flightLog.systemId64;
+                            }
+                            starSystem.AddOrUpdateBodies( bodies );
+                        }
+
+                        // Fill missing EDSMIDs
+                        if ( starSystem.EDSMID == null )
                         {
                             starSystem.EDSMID = flightLog.systemId;
                         }
-                        else
-                        {
-                            if (starSystem.EDSMID != flightLog.systemId)
-                            {
-                                continue;
-                            }
-                        }
-                        starSystem.visitLog.Add(flightLog.date);
-                        if (comments.TryGetValue(flightLog.system, out var comment))
+
+                        // Update Comments
+                        if ( comments.TryGetValue( flightLog.system, out var comment ) )
                         {
                             starSystem.comment = comment;
                         }
+
+                        // Update Visit Log
+                        starSystem.visitLog.Add(flightLog.date);
                     }
                 }
                 syncedSystems.Add(starSystem);
@@ -236,7 +250,7 @@ namespace EddiDataProviderService
             saveFromStarMapService(syncedSystems);
         }
 
-        public void saveFromStarMapService(List<StarSystem> syncSystems)
+        private void saveFromStarMapService(List<StarSystem> syncSystems)
         {
             StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
             var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
