@@ -167,9 +167,11 @@ namespace EddiStarMapService
                     Body primaryStar = new Body()
                     {
                         bodyname = (string)primarystar[ "name" ],
-                        bodyType = BodyType.FromEDName( "Star" ),
+                        bodyType = BodyType.Star,
                         distance = 0,
-                        stellarclass = ( (string)primarystar[ "type" ] )?.Split( ' ' )[ 0 ]
+                        stellarclass = ( (string)primarystar[ "type" ] )?.Split( ' ' )[ 0 ],
+                        systemname = starSystem.systemname,
+                        systemAddress = starSystem.systemAddress
                     };
                     starSystem.AddOrUpdateBody( primaryStar );
                 }
