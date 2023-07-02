@@ -17,5 +17,12 @@ namespace EddiEddnResponder
             Location = new LocationAugmenter(starSystemRepository);
             PersonalData = new PersonalDataStripper();
         }
+
+        public EDDNState ( GameVersionAugmenter gameVersion, LocationAugmenter locationAugmenter, PersonalDataStripper personalDataStripper )
+        {
+            GameVersion = gameVersion;
+            Location = locationAugmenter;
+            PersonalData = personalDataStripper;
+        }
     }
 }

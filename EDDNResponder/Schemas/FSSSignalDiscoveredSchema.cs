@@ -30,7 +30,7 @@ namespace EddiEddnResponder.Schemas
                 if (eddnStates.All(s => s.Location?.systemAddress != eddnState.Location?.systemAddress) &&
                     eddnState.Location.StarSystemLocationIsSet())
                 {
-                    eddnStates.Add(eddnState.Copy());
+                    eddnStates.Add( new EDDNState( eddnState.GameVersion, eddnState.Location, eddnState.PersonalData ) );
                 }
             }
 
