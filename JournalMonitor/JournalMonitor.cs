@@ -4337,9 +4337,9 @@ namespace EddiJournalMonitor
                                     string systemName = JsonParsing.getString(data, "StarSystem");
                                     data.TryGetValue("StarPos", out object starposVal);
                                     List<object> starPos = (List<object>)starposVal;
-                                    decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
-                                    decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
-                                    decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
+                                    decimal x = Math.Round(JsonParsing.getDecimal("X", starPos?[0]) * 32) / (decimal)32.0;
+                                    decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos?[1]) * 32) / (decimal)32.0;
+                                    decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos?[2]) * 32) / (decimal)32.0;
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     Economy systemEconomy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                     Economy systemEconomy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
@@ -4669,6 +4669,8 @@ namespace EddiJournalMonitor
                                 {
                                     if (MicroResourceInfo.TryFromFile(timestamp, out var info, out line, $"{edType}.json"))
                                     {
+                                        if ( info is null ) { break; }
+
                                         // Flatten the list
                                         var inventory = new List<MicroResourceAmount>();
                                         inventory.AddRange(info.Components);
