@@ -238,9 +238,12 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var bodyType = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId)?.bodyType ?? 
-                                                        BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? 
-                                                        BodyType.None;
+                                    var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
+                                    if ( bodyType == BodyType.Planet )
+                                    {
+                                        bodyType = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
+                                                   bodyType;
+                                    }
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
                                     events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
@@ -316,10 +319,14 @@ namespace EddiJournalMonitor
 
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var locationSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( systemName );
-                                    var bodyType = locationSystem?.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId)?.bodyType ??
-                                                   BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ??
-                                                   BodyType.None;
+                                    var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
+                                    if ( bodyType == BodyType.Planet )
+                                    {
+                                        bodyType = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( systemName )?
+                                                       .bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
+                                                   bodyType;
+                                    }
+
                                     bool docked = JsonParsing.getBool(data, "Docked");
                                     Faction systemfaction = GetFaction(data, "System", systemName);
                                     Faction stationfaction = GetFaction(data, "Station", systemName);
@@ -4344,10 +4351,13 @@ namespace EddiJournalMonitor
                                     // Get destination body data (if any)
                                     string bodyName = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var destinationStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( systemName );
-                                    var bodyType = destinationStarSystem?.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId)?.bodyType ??
-                                                   BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ??
-                                                   BodyType.None;
+                                    var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
+                                    if ( bodyType == BodyType.Planet )
+                                    {
+                                        bodyType = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( systemName )?
+                                                       .bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
+                                                   bodyType;
+                                    }
 
                                     // Get carrier data
                                     bool docked = JsonParsing.getBool(data, "Docked");
