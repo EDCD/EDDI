@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Tests.Properties;
@@ -145,9 +144,7 @@ namespace UnitTests
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
             Assert.AreEqual("Planet", ev.body.bodyType.invariantName);
-            Debug.Assert(ev.alreadydiscovered != null, "ev.alreadydiscovered != null");
             Assert.IsTrue(ev.alreadydiscovered ?? false);
-            Debug.Assert(ev.alreadymapped != null, "ev.alreadymapped != null");
             Assert.IsTrue(ev.alreadymapped ?? false);
         }
 
@@ -242,9 +239,7 @@ namespace UnitTests
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
             Assert.AreEqual("Moon", ev.body.bodyType.invariantName);
-            Debug.Assert(ev.alreadydiscovered != null, "ev.alreadydiscovered != null");
             Assert.IsTrue(ev.alreadydiscovered ?? false );
-            Debug.Assert(ev.alreadymapped != null, "ev.alreadymapped != null");
             Assert.IsTrue(ev.alreadymapped ?? false);
         }
 
@@ -304,7 +299,6 @@ namespace UnitTests
 
             StarScannedEvent theEvent = (StarScannedEvent)events[0];
             Assert.AreEqual(8, theEvent.stellarsubclass);
-            Debug.Assert(theEvent.alreadydiscovered != null, "theEvent.alreadydiscovered != null");
             Assert.IsTrue(theEvent.alreadydiscovered ?? false);
             Assert.AreEqual(3687.497842466M, theEvent.density);
             Assert.AreEqual(1204, theEvent.estimatedvalue);
@@ -314,7 +308,6 @@ namespace UnitTests
             Assert.AreEqual(32.983871M, theEvent.periapsis);
             Assert.IsTrue(theEvent.scoopable);
             Assert.AreEqual(0M, theEvent.tilt);
-            Debug.Assert(theEvent.alreadymapped != null, "theEvent.alreadymapped != null");
             Assert.IsFalse(theEvent.alreadymapped ?? false);
             Assert.AreEqual(2, theEvent.bodyId);
             Assert.IsNull(theEvent.mapped);
