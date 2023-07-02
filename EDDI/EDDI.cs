@@ -2366,10 +2366,6 @@ namespace EddiCore
                                     new StarSystem { systemname = systemName, systemAddress = systemAddress};
             }
 
-            // Clear any temporary / partially created bodies (e.g. from FSDTarget events)
-            // from the system we are entering
-            CurrentStarSystem?.ClearTemporaryBodies();
-
             // If we've arrived at our destination system then clear it
             if (destinationStarSystem?.systemname == currentStarSystem.systemname)
             {
@@ -2942,6 +2938,12 @@ namespace EddiCore
         {
             // We just scanned a star.  We can only proceed if we know our current star system
             if (CurrentStarSystem == null) { return false; }
+
+            // Clear any temporary / placeholder stars (e.g. from FSDTarget events)
+            if ( theEvent.star.mainstar ?? false )
+            {
+                CurrentStarSystem.ClearTemporaryStars();
+            }
 
             // We use an un-named temporary star at distance 0M during the FSD Target event.
             // Try to match and replace that temporary star if it exists. Otherwise, match by body name.

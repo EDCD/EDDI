@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public void ClearTemporaryBodies()
+        public void ClearTemporaryStars()
         {
             var builder = bodies.ToBuilder();
             var bodiesToRemove = builder
