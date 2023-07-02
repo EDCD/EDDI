@@ -68,7 +68,6 @@ namespace EddiStarMapService
                 long? bodyId = (long?)body["bodyId"];
                 long? EDSMID = (long?)body["id"];
                 string bodyname = (string)body["name"];
-                var bodyType = BodyType.FromName((string)body["type"]) ?? BodyType.None;
                 decimal? distanceLs = (decimal?)body["distanceToArrival"]; // Light Seconds
                 decimal? temperatureKelvin = (long?)body["surfaceTemperature"]; // Kelvin
 
