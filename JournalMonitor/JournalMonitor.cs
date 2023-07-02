@@ -238,7 +238,7 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var bodyType = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId).bodyType ?? 
+                                    var bodyType = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId)?.bodyType ?? 
                                                         BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? 
                                                         BodyType.None;
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
@@ -317,7 +317,7 @@ namespace EddiJournalMonitor
                                     string body = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     var locationSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( systemName );
-                                    var bodyType = locationSystem?.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId).bodyType ??
+                                    var bodyType = locationSystem?.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId)?.bodyType ??
                                                    BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ??
                                                    BodyType.None;
                                     bool docked = JsonParsing.getBool(data, "Docked");
@@ -4345,7 +4345,7 @@ namespace EddiJournalMonitor
                                     string bodyName = JsonParsing.getString(data, "Body");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     var destinationStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( systemName );
-                                    var bodyType = destinationStarSystem?.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId).bodyType ??
+                                    var bodyType = destinationStarSystem?.bodies.FirstOrDefault(b => b.bodyId != null && b.bodyId == bodyId)?.bodyType ??
                                                    BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ??
                                                    BodyType.None;
 
