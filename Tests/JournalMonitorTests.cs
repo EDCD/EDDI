@@ -2065,7 +2065,7 @@ namespace UnitTests
             // Test the temporary star we create for targeted systems
             var nextSystemStar = new Body()
             {
-                bodyType = BodyType.FromEDName( "Star" ),
+                bodyType = BodyType.Star,
                 systemname = "TestSystem",
                 systemAddress = 9999999999999,
                 distance = 0M,
@@ -2097,7 +2097,7 @@ namespace UnitTests
             Assert.AreEqual(1, currentStarSystem.bodies.Count);
             var mainStar = currentStarSystem.bodies.FirstOrDefault();
             Assert.IsNotNull( mainStar );
-            Assert.AreEqual( BodyType.FromEDName( "Star" ), mainStar.bodyType );
+            Assert.AreEqual( BodyType.Star, mainStar.bodyType );
             Assert.AreEqual( "TestSystem", mainStar.systemname );
             Assert.AreEqual( (ulong)9999999999999, mainStar.systemAddress );
             Assert.AreEqual( 0M, mainStar.distance );

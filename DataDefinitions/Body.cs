@@ -165,16 +165,16 @@ namespace EddiDataDefinitions
                     {
                         if (value.Exists(p => p.ContainsKey("Planet")))
                         {
-                            bodyType = BodyType.FromEDName("Moon");
+                            bodyType = BodyType.Moon;
                         }
                         else if (value.Exists(p => p.ContainsKey("Star")))
                         {
-                            bodyType = BodyType.FromEDName("Planet");
+                            bodyType = BodyType.Planet;
                         }
                     }
                     else
                     {
-                        bodyType = BodyType.FromEDName("Star");
+                        bodyType = BodyType.Star;
                     }
                 }
                 _parents = value;
@@ -288,7 +288,7 @@ namespace EddiDataDefinitions
         {
             this.bodyname = bodyName;
             this.radius = radiusKm;
-            this.bodyType = BodyType.FromEDName("Star");
+            this.bodyType = BodyType.Star;
             this.rings = rings ?? new List<Ring>();
             this.temperature = temperatureKelvin;
             this.bodyId = bodyId;
@@ -439,7 +439,7 @@ namespace EddiDataDefinitions
         {
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
-                        ? BodyType.FromEDName("Moon") : BodyType.FromEDName("Planet");
+                        ? BodyType.Moon : BodyType.Planet;
             this.rings = rings ?? new List<Ring>();
             this.temperature = temperature;
             this.bodyId = bodyId;

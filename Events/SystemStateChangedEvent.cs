@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "System state changed";
         public const string DESCRIPTION = "Triggered when there is a change in the state of a watched system";
-        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", FactionState.FromEDName("CivilUnrest"), FactionState.FromEDName("CivilWar"));
+        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", FactionState.CivilUnrest, FactionState.CivilWar);
 
         [PublicAPI("The name of the pattern that this event matched")]
         public string match { get; private set; }

@@ -177,7 +177,7 @@ namespace UnitTests
             Assert.AreEqual(105168, report.amount);
             report = record.factionReports[1];
             Assert.IsFalse(report.bounty);
-            Assert.AreEqual(Crime.FromEDName("dockingMinorTresspass"), report.crimeDef);
+            Assert.AreEqual(Crime.TrespassMinor, report.crimeDef);
             Assert.AreEqual("Fabian City", report.station);
 
             // Restore original data
@@ -283,7 +283,7 @@ namespace UnitTests
             Assert.AreEqual(1, crimeMonitor.shipTargets.Count);
             Target target = crimeMonitor.shipTargets.FirstOrDefault(t => t.name == "Kurt Pettersen");
             Assert.IsNotNull(target);
-            Assert.AreEqual(CombatRating.FromEDName("Deadly"), target.CombatRank);
+            Assert.AreEqual(CombatRating.Deadly, target.CombatRank);
             Assert.AreEqual("Calennero Crew", target.faction);
             Assert.AreEqual(Superpower.Independent, target.Allegiance);
             Assert.AreEqual(295785, target.bounty);

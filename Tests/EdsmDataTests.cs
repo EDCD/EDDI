@@ -374,7 +374,7 @@ namespace UnitTests
             Assert.AreEqual(3, presence?.ActiveStates.Count);
             Assert.AreEqual(0, presence?.RecoveringStates.Count);
             Assert.AreEqual(0, presence?.PendingStates.Count);
-            Assert.IsTrue(new List<FactionState>() { FactionState.FromEDName("Boom"), FactionState.FromName("Civil liberty"), FactionState.FromName("Election") }.DeepEquals(presence?.ActiveStates));
+            Assert.IsTrue(new List<FactionState>() { FactionState.Boom, FactionState.CivilLiberty, FactionState.Election }.DeepEquals(presence?.ActiveStates));
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse(Convert.ToBoolean(faction.isplayer));
             Assert.AreEqual(1539928089, faction.updatedat);

@@ -983,10 +983,9 @@ namespace EddiCrimeMonitor
 
             if (mission?.faction != null)
             {
-                Crime crime = Crime.FromEDName("missionFine");
                 string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
 
-                FactionReport report = new FactionReport(timestamp, false, crime, currentSystem, fine)
+                FactionReport report = new FactionReport(timestamp, false, Crime.MissionFine, currentSystem, fine)
                 {
                     station = EDDI.Instance?.CurrentStation?.name,
                     body = EDDI.Instance?.CurrentStellarBody?.bodyname,

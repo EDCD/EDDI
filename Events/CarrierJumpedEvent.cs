@@ -151,7 +151,7 @@ namespace EddiEvents
             this.docked = docked;
             this.carrierId = carrierId;
             this.carriername = carrierName;
-            this.carrierType = carrierType ?? StationModel.FromEDName("FleetCarrier");
+            this.carrierType = carrierType ?? StationModel.FleetCarrier;
             this.carrierFaction = stationFaction;
             this.carrierServices = stationServices ?? new List<StationService>();
             this.carrierEconomies = stationEconomies ?? new List<EconomyShare>();

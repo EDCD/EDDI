@@ -270,7 +270,7 @@ namespace UnitTests
             FactionRecord record = crimeMonitor.criminalrecord.ToList().FirstOrDefault(r => r.faction == mission?.faction);
             Assert.IsNotNull(record);
             Assert.AreEqual(50000, record.fines);
-            FactionReport report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.FromEDName("missionFine"));
+            FactionReport report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.MissionFine);
             Assert.IsNotNull(report);
             Assert.AreEqual(50000, report.amount);
             ConfigService.Instance.crimeMonitorConfiguration = crimeData;

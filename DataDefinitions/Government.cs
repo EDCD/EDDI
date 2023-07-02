@@ -13,29 +13,46 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new Government(edname);
 
             None = new Government("$government_None;");
-            var Anarchy = new Government("$government_Anarchy;");
-            var Colony = new Government("$government_Colony;");
-            var Communism = new Government("$government_Communism;");
-            var Confederacy = new Government("$government_Confederacy;");
-            var Cooperative = new Government("$government_Cooperative;");
-            var Corporate = new Government("$government_Corporate;");
-            var Democracy = new Government("$government_Democracy;");
-            var Dictatorship = new Government("$government_Dictatorship;");
-            var Feudal = new Government("$government_Feudal;");
-            var Imperial = new Government("$government_Imperial;");
-            var Patronage = new Government("$government_Patronage;");
-            var Prison = new Government("$government_Prison;");
-            var PrisonColony = new Government("$government_PrisonColony;");
-            var Theocracy = new Government("$government_Theocracy;");
-            var Workshop = new Government("$government_Workshop;");
-            var Engineer = new Government("$government_engineer;");
-            var Carrier = new Government("$government_Carrier;");
+            Anarchy = new Government("$government_Anarchy;");
+            Carrier = new Government( "$government_Carrier;" );
+            Colony = new Government("$government_Colony;");
+            Communism = new Government("$government_Communism;");
+            Confederacy = new Government("$government_Confederacy;");
+            Cooperative = new Government("$government_Cooperative;");
+            Corporate = new Government("$government_Corporate;");
+            Democracy = new Government("$government_Democracy;");
+            Dictatorship = new Government("$government_Dictatorship;");
+            Feudal = new Government("$government_Feudal;");
+            Imperial = new Government("$government_Imperial;");
+            Patronage = new Government("$government_Patronage;");
+            Prison = new Government("$government_Prison;");
+            PrisonColony = new Government("$government_PrisonColony;");
+            Theocracy = new Government("$government_Theocracy;");
+            Workshop = new Government("$government_Workshop;");
+            Engineer = new Government("$government_engineer;");
         }
 
         public static readonly Government None;
+        public static readonly Government Anarchy;
+        public static readonly Government Colony;
+        public static readonly Government Communism;
+        public static readonly Government Confederacy;
+        public static readonly Government Cooperative;
+        public static readonly Government Corporate;
+        public static readonly Government Democracy;
+        public static readonly Government Dictatorship;
+        public static readonly Government Feudal;
+        public static readonly Government Imperial;
+        public static readonly Government Patronage;
+        public static readonly Government Prison;
+        public static readonly Government PrisonColony;
+        public static readonly Government Theocracy;
+        public static readonly Government Workshop;
+        public static readonly Government Engineer;
+        public static readonly Government Carrier;
 
         // dummy used to ensure that the static constructor has run
-        public Government() : this("")
+        public Government () : this("")
         { }
 
         private Government(string edname) : base(edname, edname.Replace("$government_", "").Replace(";", ""))

@@ -89,7 +89,7 @@ namespace EddiDataDefinitions
             this.x = starSystem.x;
             this.y = starSystem.y;
             this.z = starSystem.z;
-            var closeStars = starSystem.bodies.Where(b => b.bodyType == BodyType.FromEDName("Star") && b.distance < 100).ToList();
+            var closeStars = starSystem.bodies.Where(b => b.bodyType == BodyType.Star && b.distance < 100).ToList();
             stellarclass = closeStars.FirstOrDefault(b => b.mainstar ?? false)?.stellarclass;
             isScoopable = closeStars.Any(b => !string.IsNullOrEmpty(b.stellarclass) && "KGBFOAM".Contains(b.stellarclass));
             hasNeutronStar = closeStars.Any(b => !string.IsNullOrEmpty(b.stellarclass) && "N".Contains(b.stellarclass));

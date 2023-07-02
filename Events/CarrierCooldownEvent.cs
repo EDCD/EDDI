@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Carrier cooldown";
         public const string DESCRIPTION = "Triggered when you either were docked at a fleet carrier during a jump or are the fleet carrier owner and it completes its cooldown";
-        public static CarrierCooldownEvent SAMPLE = new CarrierCooldownEvent(DateTime.UtcNow, 3700571136, "Aparctias", 358797513434, "Aparctias", 0, BodyType.FromEDName("Star"), "G53-K3Q", StationModel.FromEDName("FleetCarrier"));
+        public static CarrierCooldownEvent SAMPLE = new CarrierCooldownEvent(DateTime.UtcNow, 3700571136, "Aparctias", 358797513434, "Aparctias", 0, BodyType.Star, "G53-K3Q", StationModel.FleetCarrier);
 
         // System variables
 

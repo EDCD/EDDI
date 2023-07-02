@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Material threshold";
         public const string DESCRIPTION = "Triggered when a material reaches a threshold";
-        public static MaterialThresholdEvent SAMPLE = new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName("carbon"), "Minimum", 6, 5, "Reduction");
+        public static MaterialThresholdEvent SAMPLE = new MaterialThresholdEvent(DateTime.UtcNow, Material.Carbon, "Minimum", 6, 5, "Reduction");
 
         [PublicAPI("The material (as an object)")]
         public Material material { get; private set; }

@@ -73,7 +73,7 @@ namespace UnitTests
         [TestMethod]
         public void TestMaterialsExquisiteFocusCrystals()
         {
-            Material efc = Material.FromName("Exquisite Focus Crystals");
+            Material efc = Material.ExquisiteFocusCrystals;
             Assert.AreEqual("exquisitefocuscrystals", efc.basename);
             Assert.AreEqual("Exquisite Focus Crystals", efc.localizedName);
             Assert.AreEqual("very rare", efc.Rarity.invariantName);
@@ -109,11 +109,11 @@ namespace UnitTests
         {
             // The same station may use the model "Ocellus" for one event and "Bernal" for another. 
 
-            StationModel model = StationModel.FromEDName("Ocellus");
+            StationModel model = StationModel.Ocellus;
             Assert.AreEqual("Ocellus", model.basename);
             Assert.AreEqual("Ocellus", model.edname);
 
-            StationModel model2 = StationModel.FromEDName("Bernal");
+            StationModel model2 = StationModel.Bernal;
             Assert.AreEqual("Bernal", model2.basename);
             Assert.AreEqual("Bernal", model2.edname);
 
@@ -190,15 +190,14 @@ namespace UnitTests
             StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
             Body body = new Body() { bodyname = "testSystem 1" };
             starSystem.AddOrUpdateBody(body);
-            BodyType moon = BodyType.FromEDName("Moon");
-            Body updatedBody = new Body() { bodyname = "testSystem 1", bodyType = moon };
+            Body updatedBody = new Body() { bodyname = "testSystem 1", bodyType = BodyType.Moon };
 
             starSystem.AddOrUpdateBody(updatedBody);
 
             Assert.AreEqual(1, starSystem.bodies.Count);
             Body actualBody = starSystem.bodies[0];
             Assert.AreEqual("testSystem 1", actualBody.bodyname);
-            Assert.AreEqual(moon, actualBody.bodyType);
+            Assert.AreEqual(BodyType.Moon, actualBody.bodyType);
         }
 
         [TestMethod]
@@ -546,13 +545,13 @@ namespace UnitTests
             {
                 name = "Cooper Research Associates",
                 Allegiance = Superpower.Alliance,
-                Government = Government.FromEDName("$government_Democracy;"),
+                Government = Government.Democracy,
                 presences = new List<FactionPresence> 
                 { 
                     new FactionPresence 
                     { 
                         systemName = "HIP 19072", 
-                        FactionState = FactionState.FromEDName("Boom")
+                        FactionState = FactionState.Boom
                     } 
                 },
             };

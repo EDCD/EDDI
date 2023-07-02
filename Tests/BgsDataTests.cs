@@ -123,11 +123,11 @@ namespace UnitTests
             Assert.AreEqual(14, faction1.presences.Count);
             var presence = faction1.presences.FirstOrDefault(p => p.systemName == "Shinrarta Dezhra");
             Assert.IsNotNull(presence);
-            Assert.AreEqual(FactionState.FromEDName("civilunrest"), presence.FactionState);
+            Assert.AreEqual(FactionState.CivilUnrest, presence.FactionState);
             Assert.AreEqual(28.0719M, presence.influence);
-            Assert.AreEqual(Happiness.FromEDName("$Faction_HappinessBand1"), presence.Happiness);
+            Assert.AreEqual(Happiness.HappinessBand1, presence.Happiness);
             Assert.AreEqual(1, presence.ActiveStates.Count);
-            Assert.AreEqual(FactionState.FromEDName("civilunrest"), presence.ActiveStates[0]);
+            Assert.AreEqual(FactionState.CivilUnrest, presence.ActiveStates[0]);
             Assert.AreEqual(0, presence.PendingStates.Count);
             Assert.AreEqual(0, presence.RecoveringStates.Count);
 
