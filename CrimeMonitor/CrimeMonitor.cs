@@ -1083,7 +1083,7 @@ namespace EddiCrimeMonitor
         public string GetFactionStation(string factionSystem)
         {
             if (factionSystem == null) { return null; }
-            StarSystem factionStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(factionSystem);
+            StarSystem factionStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(factionSystem, true, true, false, true, false);
 
             if (factionStarSystem != null)
             {

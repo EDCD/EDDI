@@ -531,7 +531,7 @@ namespace Eddi
 
             if (system != null)
             {
-                StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
+                StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true, true, false, true, false);
                 if (HomeSystem?.stations != null)
                 {
                     foreach (Station station in HomeSystem.stations)
@@ -876,7 +876,7 @@ namespace Eddi
 
             if (configuration.SquadronSystem != null)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem, false);
+                var system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem, true, true, false, false, true );
                 if (system?.factions != null)
                 {
                     foreach (Faction faction in system.factions)

@@ -52,7 +52,7 @@ namespace EddiNavigationService.QueryResolvers
                                 break;
                             }
 
-                            var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(haulage.sourcesystem);
+                            var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(haulage.sourcesystem, true, false, true, false, false);
                             long distance = (long)(Functions.StellarDistanceLy(curr.x, curr.y, curr.z, dest.x, dest.y, dest.z) ?? (0 * 100));
                             if ( !sourceList.TryGetValue ( distance, out var _ ) )
                             {
@@ -113,7 +113,7 @@ namespace EddiNavigationService.QueryResolvers
                 if ( !string.IsNullOrEmpty ( searchSystem ) )
                 {
                     var curr = EDDI.Instance?.CurrentStarSystem;
-                    var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem); // Destination star system
+                    var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true, false, true, false, false); // Destination star system
 
                     navRouteList.Waypoints.Add ( new NavWaypoint ( curr ) { visited = true } );
                     if ( curr?.systemname != dest?.systemname )
@@ -155,7 +155,7 @@ namespace EddiNavigationService.QueryResolvers
                     {
                         foreach ( var system in mission.destinationsystems )
                         {
-                            var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system.systemName); // Destination star system
+                            var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system.systemName, true, false, true, false, false); // Destination star system
                             decimal distance = NavigationService.CalculateDistance(curr, dest);
                             if ( !farthestList.ContainsKey ( distance ) )
                             {
@@ -166,7 +166,7 @@ namespace EddiNavigationService.QueryResolvers
                     }
                     else if ( !string.IsNullOrEmpty ( mission.destinationsystem ) )
                     {
-                        var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(mission.destinationsystem); // Destination star system
+                        var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(mission.destinationsystem, true, false, true, false, false); // Destination star system
                         decimal distance = NavigationService.CalculateDistance(curr, dest);
                         if ( !farthestList.ContainsKey ( distance ) )
                         {
@@ -249,13 +249,13 @@ namespace EddiNavigationService.QueryResolvers
                 var mostList = new SortedList<decimal, StarSystem>();   // List of 'most' systems, sorted by distance
                 mostCount = systemsCount.Max ();
                 var curr = !string.IsNullOrEmpty(targetSystemName)
-                    ? StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(targetSystemName, true, false)
+                    ? StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(targetSystemName, true, false, true, false, false)
                     : EDDI.Instance?.CurrentStarSystem;
                 for ( int i = 0; i < systems.Count; i++ )
                 {
                     if ( systemsCount[ i ] == mostCount )
                     {
-                        var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systems[i]); // Destination star system
+                        var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systems[i], true, false, true, false, false); // Destination star system
                         if ( dest?.x != null )
                         {
                             mostList.Add ( NavigationService.CalculateDistance( curr, dest ), dest );
@@ -305,7 +305,7 @@ namespace EddiNavigationService.QueryResolvers
                     {
                         foreach ( var system in mission.destinationsystems )
                         {
-                            var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system.systemName); // Destination star system
+                            var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system.systemName, true, false, true, false, false); // Destination star system
                             decimal distance = NavigationService.CalculateDistance(curr, dest);
                             if ( !nearestList.ContainsKey ( distance ) )
                             {
@@ -316,7 +316,7 @@ namespace EddiNavigationService.QueryResolvers
                     }
                     else if ( !string.IsNullOrEmpty ( mission.destinationsystem ) )
                     {
-                        var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(mission.destinationsystem); // Destination star system
+                        var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(mission.destinationsystem, true, false, true, false, false); // Destination star system
                         decimal distance = NavigationService.CalculateDistance(curr, dest);
                         if ( !nearestList.ContainsKey ( distance ) )
                         {

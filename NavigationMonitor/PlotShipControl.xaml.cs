@@ -413,7 +413,7 @@ namespace EddiNavigationMonitor
 
             if (searchStationDropDown.Visibility == Visibility.Visible && !string.IsNullOrEmpty(system))
             {
-                StarSystem SearchSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, false);
+                StarSystem SearchSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true, true, false, true, false);
                 if (SearchSystem?.stations != null)
                 {
                     foreach (Station station in SearchSystem.stations.Where(s => !s.IsCarrier() && !s.IsMegaShip()))

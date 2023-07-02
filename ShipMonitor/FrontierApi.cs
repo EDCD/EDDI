@@ -41,7 +41,7 @@ namespace EddiShipMonitor
                                 ship.station = (string)shipObj["station"]?["name"];
 
                                 // Get the ship's coordinates for distance calculations
-                                StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(ship.starsystem);
+                                var StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(ship.starsystem, true, false, false, false, false);
                                 ship.x = StoredShipStarSystem.x;
                                 ship.y = StoredShipStarSystem.y;
                                 ship.z = StoredShipStarSystem.z;
