@@ -1397,14 +1397,12 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
 
                 // Make sure we have at least basic information about the destination star system
-                if (NextStarSystem is null)
+                NextStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( @event.systemname ) ?? 
+                                 new StarSystem()
                 {
-                    NextStarSystem = new StarSystem()
-                    {
-                        systemname = @event.systemname,
-                        systemAddress = @event.systemAddress
-                    };
-                }
+                    systemname = @event.systemname,
+                    systemAddress = @event.systemAddress
+                };
 
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 CurrentStarSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
@@ -2364,7 +2362,8 @@ namespace EddiCore
             }
             else
             {
-                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem( systemName );
+                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( systemName ) ?? 
+                                    new StarSystem { systemname = systemName, systemAddress = systemAddress};
             }
 
             // Clear any temporary / partially created bodies (e.g. from FSDTarget events)
@@ -2444,7 +2443,7 @@ namespace EddiCore
                 // This system is unknown to us, might not be recorded, or we might not have connectivity.  Use a placeholder main star
                 var mainStar = new Body
                 {
-                    bodyType = BodyType.FromEDName("Star"),
+                    bodyType = BodyType.Star,
                     systemname = NextStarSystem.systemname,
                     systemAddress = nextStarSystem.systemAddress,
                     distance = 0M,
@@ -2551,21 +2550,6 @@ namespace EddiCore
                 if (theEvent.population != null)
                 {
                     CurrentStarSystem.population = theEvent.population;
-                }
-
-                // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
-                if (!string.IsNullOrEmpty(theEvent.star))
-                {
-                    var body = new Body()
-                    {
-                        bodyname = theEvent.star,
-                        bodyType = BodyType.FromEDName("Star"),
-                        stellarclass = (lastEvents.TryGetValue(nameof(FSDEngagedEvent), out var ev)
-                                ? (FSDEngagedEvent)ev
-                                : null)
-                            ?.stellarclass,
-                    };
-                    CurrentStarSystem.AddOrUpdateBody(body);
                 }
 
                 // (When pledged) Powerplay information
@@ -2962,7 +2946,7 @@ namespace EddiCore
             // We use an un-named temporary star at distance 0M during the FSD Target event.
             // Try to match and replace that temporary star if it exists. Otherwise, match by body name.
             Body star = CurrentStarSystem.bodies?
-                .Where(s => s.bodyType == BodyType.FromEDName("Star")).ToList()
+                .Where(s => s.bodyType == BodyType.Star).ToList()
                 .Find(s => 
                     (string.IsNullOrEmpty(s.bodyname) && s.distance == 0M && s.distance == theEvent.distance) || 
                     s.bodyname == theEvent.bodyname);
