@@ -3324,7 +3324,8 @@ namespace EddiJournalMonitor
                                             MicroResourceDefinition = microResource,
 
                                             // Missions with targets
-                                            targetTypeEDName = targettype?.Split('_').ElementAtOrDefault(2),
+                                            targetTypeEDName = targettype?.Split('_')?
+                                                .ElementAtOrDefault(2)?.Replace(";", ""),
                                             target = target,
                                             targetfaction = targetfaction,
 
