@@ -658,18 +658,44 @@
     <comment>Material tg_wreckagecomponents</comment>
   </data>
   <data name="tg_shipflightdata" xml:space="preserve">
-    <value>八角飞船战斗数据</value>
+    <value>飞船飞行数据</value>
     <comment>Material tg_shipflightdata</comment>
   </data>
   <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>八角飞船系统数据</value>
+    <value>飞船系统数据</value>
     <comment>Material tg_shipsystemsdata</comment>
   </data>
   <data name="tg_interdictiondata" xml:space="preserve">
     <value>八角拦截遥测数据</value>
     <comment>Material tg_interdictiondata</comment>
   </data>
-  
-  
+  <data name="tg_causticcrystal" xml:space="preserve">
+    <value>腐蚀性晶体</value>
+    <comment>Material tg_causticcrystal</comment>
+  </data>
+  <data name="tg_causticshard" xml:space="preserve">
+    <value>腐蚀性碎片</value>
+    <comment>Material tg_causticshard</comment>
+  </data>
+  <data name="tg_causticgeneratorparts" xml:space="preserve">
+    <value>有腐蚀性的装置</value>
+    <comment>Material tg_causticgeneratorparts</comment>
+  </data>
+  <data name="tg_abrasion01" xml:space="preserve">
+    <value>热暴露试样</value>
+    <comment>Material tg_abrasion01</comment>
+  </data>
+  <data name="tg_abrasion02" xml:space="preserve">
+    <value>定相膜残留物</value>
+    <comment>Material tg_abrasion02</comment>
+  </data>
+  <data name="tg_abrasion03" xml:space="preserve">
+    <value>硬化表面碎片</value>
+    <comment>Material tg_abrasion03</comment>
+  </data>
+  <data name="tg_shutdowndata" xml:space="preserve">
+    <value>大规模能量浪涌分析</value>
+    <comment>Material tg_shutdowndata</comment>
+  </data>
   
 </root>
