@@ -265,5 +265,8 @@
     <value>输运非法数据</value>
     <comment>Crime onFoot_dataTransfer</comment>
   </data>
-  
+  <data name="onFoot_overchargeIntent" xml:space="preserve">
+    <value>涉嫌过载使用能量链接枪</value>
+    <comment>Crime onFoot_overchargeIntent</comment>
+  </data>
 </root>
