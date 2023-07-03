@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
         public FactionState CurrentState { get; set; }
 
         [PublicAPI( "The number of remaining days in the current phase of the Thargoid war." )]
-        public int remainingDays { get; set; }
+        public int? remainingDays { get; set; }
 
         [PublicAPI( "The next phase of the Thargoid war, if success is not achieved, as a localizable object." )]
         public FactionState FailureState { get; set; }

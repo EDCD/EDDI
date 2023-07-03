@@ -12,6 +12,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised speech service to make rendering even more thread-safe when transitioning between the `Play()` function and normal speech (#2549).
     * Revised speech service to retry using speech stripped of SSML tags when speech fails using the System.Speech synthesizer.
     * Worked around a journal bug when `HullHealth` is not written to the player journal `Loadout` event. (#2552)
+  * Speech Responder
+    * Changes to existing scripts
+      * `System state report` updated to allow thargoid war `remainingDays` to be null (since for some states it is not present in the journal output).
 
 ## 4.0.3-b3
   * Core

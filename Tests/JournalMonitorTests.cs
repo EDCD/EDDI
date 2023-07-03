@@ -1070,7 +1070,7 @@ namespace UnitTests
             Assert.AreEqual( FactionState.ThargoidControlled, @event.ThargoidWar.FailureState );
             Assert.IsTrue( @event.ThargoidWar.succeeded );
             Assert.AreEqual( 100M, @event.ThargoidWar.progress );
-            Assert.AreEqual( 0, @event.ThargoidWar.remainingDays );
+            Assert.AreEqual( null, @event.ThargoidWar.remainingDays );
             Assert.IsNull( @event.ThargoidWar.remainingPorts );
         }
 
