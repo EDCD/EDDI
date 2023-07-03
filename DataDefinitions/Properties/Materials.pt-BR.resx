@@ -658,11 +658,11 @@
     <comment>Material tg_wreckagecomponents</comment>
   </data>
   <data name="tg_shipflightdata" xml:space="preserve">
-    <value>Dados de Voo de Nave Thargoid</value>
+    <value>Dados do voo da nave</value>
     <comment>Material tg_shipflightdata</comment>
   </data>
   <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>Dados de Sistemas de Nave Thargoid</value>
+    <value>Dados de Sistemas da Nave</value>
     <comment>Material tg_shipsystemsdata</comment>
   </data>
   <data name="tg_interdictiondata" xml:space="preserve">
@@ -680,5 +680,25 @@
   <data name="tg_causticgeneratorparts" xml:space="preserve">
     <value>Mecanismos corrosivos</value>
     <comment>Material tg_causticgeneratorparts</comment>
+  </data>
+  <data name="tg_abrasion01" xml:space="preserve">
+    <value>Espécime da Exposição de Calor</value>
+    <comment>Material tg_abrasion01</comment>
+  </data>
+  <data name="tg_abrasion02" xml:space="preserve">
+    <value>Resíduo de Membrana de Faseamento</value>
+    <comment>Material tg_abrasion02</comment>
+  </data>
+  <data name="tg_abrasion03" xml:space="preserve">
+    <value>Fragmentos de superfície reforçada</value>
+    <comment>Material tg_abrasion03</comment>
+  </data>
+  <data name="tg_shutdowndata" xml:space="preserve">
+    <value>Análise de Surto de Energia Massiva</value>
+    <comment>Material tg_shutdowndata</comment>
+  </data>
+  <data name="unknowncorechip" xml:space="preserve">
+    <value>Chip de Núcleo Tático</value>
+    <comment>Material unknowncorechip</comment>
   </data>
 </root>
