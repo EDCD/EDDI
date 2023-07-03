@@ -574,6 +574,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Scout Targets.
+        /// </summary>
+        internal static string Scout {
+            get {
+                return ResourceManager.GetString("Scout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sightseeing.
         /// </summary>
         internal static string Sightseeing {

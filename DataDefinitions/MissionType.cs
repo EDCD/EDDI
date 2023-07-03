@@ -61,8 +61,9 @@
             _ = new MissionType("ProductionHeist", true);
 
             // Massacre target types
-            _ = new MissionType("Skimmer", true);
-            _ = new MissionType("Conflict", true);
+            _ = new MissionType( "Scout", true );
+            _ = new MissionType( "Skimmer", true );
+            _ = new MissionType( "Conflict", true );
 
             // Mission difficulty types
             _ = new MissionType("Covert");
