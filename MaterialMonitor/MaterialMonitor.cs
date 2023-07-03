@@ -455,7 +455,7 @@ namespace EddiMaterialMonitor
                 // Start with the materials we have in the log
                 foreach (MaterialAmount ma in configuration.materials)
                 {
-                    MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.Rarity, ma.amount, ma.minimum, ma.desired, ma.maximum);
+                    MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
                     // Make sure the edname is unique before adding the material to the new inventory 
                     if (newInventory.All(inv => inv.edname != ma2.edname))
                     {

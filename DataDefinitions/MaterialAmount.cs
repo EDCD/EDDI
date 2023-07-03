@@ -18,10 +18,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public string material
         {
-            get
-            {
-                return _material;
-            }
+            get => _material;
             set
             {
                 if (_material != value)
@@ -41,10 +38,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public int amount
         {
-            get
-            {
-                return _amount;
-            }
+            get => _amount;
             set
             {
                 if (_amount != value)
@@ -61,10 +55,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public int? minimum
         {
-            get
-            {
-                return _minimum;
-            }
+            get => _minimum;
             set
             {
                 if (_minimum != value)
@@ -81,10 +72,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public int? desired
         {
-            get
-            {
-                return _desired;
-            }
+            get => _desired;
             set
             {
                 if (_desired != value)
@@ -101,10 +89,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public int? maximum
         {
-            get
-            {
-                return _maximum;
-            }
+            get => _maximum;
             set
             {
                 if (_maximum != value)
@@ -121,10 +106,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public string category
         {
-            get
-            {
-                return _Category;
-            }
+            get => _Category;
             set
             {
                 if (_Category != value)
@@ -138,14 +120,17 @@ namespace EddiDataDefinitions
         [JsonIgnore] 
         private Rarity _Rarity;
 
-        [PublicAPI]
+        [PublicAPI, JsonIgnore]
         public Rarity Rarity
         {
             get => _Rarity;
             set
             {
-                _Rarity = value;
-                NotifyPropertyChanged("Rarity");
+                if ( _Rarity != value )
+                {
+                    _Rarity = value;
+                    NotifyPropertyChanged( "Rarity" );
+                }
             }
         }
 
@@ -161,24 +146,19 @@ namespace EddiDataDefinitions
                 material = materialName;
             }
 
-            if (_Rarity is null)
-            {
-                _Rarity = Material.FromEDName(edname)?.Rarity ?? Rarity.Unknown;
-            }
-
             _additionalData = null;
         }
 
         public MaterialAmount(Material material, int amount)
-            : this(material.edname, material.Rarity, amount, null, null, null)
+            : this(material.edname, amount, null, null, null)
         { }
 
         public MaterialAmount(Material material, int amount, int? minimum, int? desired, int? maximum)
-            : this(material.edname, material.Rarity, amount, minimum, desired, maximum)
+            : this(material.edname, amount, minimum, desired, maximum)
         { }
 
         [JsonConstructor]
-        public MaterialAmount(string edname, Rarity Rarity, int amount, int? minimum, int? desired, int? maximum)
+        public MaterialAmount(string edname, int amount, int? minimum, int? desired, int? maximum)
         {
             Material My_material = Material.FromEDName(edname);
             this.material = My_material?.localizedName;
@@ -188,12 +168,12 @@ namespace EddiDataDefinitions
             this.desired = desired;
             this.maximum = maximum;
             this.category = My_material?.Category.localizedName;
-            this.Rarity = Rarity;
+            this.Rarity = My_material?.Rarity ?? Rarity.Unknown;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        private void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
