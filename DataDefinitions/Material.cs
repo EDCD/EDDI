@@ -161,6 +161,7 @@ namespace EddiDataDefinitions
         // Grade 1 Xeno
         public static readonly Material GuardianPowerCell = new Material("guardian_powercell", Manufactured, VeryCommon);
         public static readonly Material GuardianSentinelWreckageComponents = new Material("guardian_sentinel_wreckagecomponents", Manufactured, VeryCommon);
+        public static readonly Material HardenedSurfaceFragments = new Material( "tg_abrasion03", Manufactured, VeryCommon );
 
         // Grade 2, Common
         public static readonly Material ChemicalProcessors = new Material("chemicalprocessors", Manufactured, Common);
@@ -195,6 +196,7 @@ namespace EddiDataDefinitions
         public static readonly Material GuardianSentinelWeaponParts = new Material("guardian_sentinel_weaponparts", Manufactured, Standard);
         public static readonly Material GuardianTechnologyComponent = new Material("guardian_techcomponent", Manufactured, Standard);
         public static readonly Material MassiveEnergySurgeAnalytics = new Material("tg_shutdowndata", Manufactured, Standard);
+        public static readonly Material PhasingMembraneResidue = new Material( "tg_abrasion02", Manufactured, Standard );
         public static readonly Material ThargoidBiomechanicalConduits = new Material("tg_biomechanicalconduits", Manufactured, Standard);
         public static readonly Material ThargoidEnergyCell = new Material("unknownenergycell", Manufactured, Standard);
         public static readonly Material ThargoidWreckageComponents = new Material("tg_wreckagecomponents", Manufactured, Standard);
@@ -211,6 +213,7 @@ namespace EddiDataDefinitions
         public static readonly Material RefinedFocusCrystals = new Material("refinedfocuscrystals", Manufactured, Rare);
         public static readonly Material ThermicAlloys = new Material("thermicalloys", Manufactured, Rare);
         // Grade 4 Xeno
+        public static readonly Material CausticCrystal = new Material("tg_causticcrystal", Manufactured, Rare);
         public static readonly Material ThargoidTechnologyComponents = new Material("unknowntechnologycomponents", Manufactured, Rare);
         public static readonly Material ThargoidWeaponParts = new Material("tg_weaponparts", Manufactured, Rare);
 
@@ -226,10 +229,7 @@ namespace EddiDataDefinitions
         public static readonly Material ProtoHeatRadiators = new Material("protoheatradiators", Manufactured, VeryRare);
         public static readonly Material ProtoRadiolicAlloys = new Material("protoradiolicalloys", Manufactured, VeryRare);
         // Grade 5 Xeno
-        public static readonly Material CausticCrystal = new Material("tg_causticcrystal", Manufactured, VeryRare);
-        public static readonly Material HardenedSurfaceFragments = new Material( "tg_abrasion03", Manufactured, VeryRare );
         public static readonly Material HeatExposureSpecimen = new Material( "tg_abrasion01", Manufactured, VeryRare );
-        public static readonly Material PhasingMembraneResidue = new Material( "tg_abrasion02", Manufactured, VeryRare );
         public static readonly Material PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
         public static readonly Material SensorFragment = new Material("unknownenergysource", Manufactured, VeryRare);
         public static readonly Material ThargoidOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
