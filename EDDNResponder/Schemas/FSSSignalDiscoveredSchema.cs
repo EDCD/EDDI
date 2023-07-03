@@ -25,46 +25,48 @@ namespace EddiEddnResponder.Schemas
             if (eddnState?.Location is null || eddnState.GameVersion is null) { return false; }
 
             // Capture any changes to eddnState systemAddress after confirming that the star system location data (name, system address, and star pos) is fully set.
-            lock (stateLock)
+            lock ( stateLock )
             {
-                if (eddnStates.All(s => s.Location?.systemAddress != eddnState.Location?.systemAddress) &&
-                    eddnState.Location.StarSystemLocationIsSet())
+                if ( eddnStates.All( s => s.Location?.systemAddress != eddnState.Location?.systemAddress ) &&
+                     eddnState.Location.StarSystemLocationIsSet() )
                 {
-                    eddnStates.Add( new EDDNState( eddnState.GameVersion, eddnState.Location, eddnState.PersonalData ) );
+                    eddnStates.Add( new EDDNState( eddnState.GameVersion, eddnState.Location,
+                        eddnState.PersonalData ) );
                 }
-            }
 
-            if (!edTypes.Contains(edType))
-            {
-                // Send any signals with a systemAddress matching a saved good eddnState
-                lock (signalsLock)
+                if ( !edTypes.Contains( edType ) )
                 {
-                    if (signals.Any())
+                    // Send any signals with a systemAddress matching a saved good eddnState
+                    lock ( signalsLock )
                     {
-                        lock (stateLock)
+                        if ( signals.Any() )
                         {
-                            foreach (var state in eddnStates)
+                            foreach ( var state in eddnStates )
                             {
                                 try
                                 {
                                     var retrievedSignals = signals
-                                        .Where(s => JsonParsing.getULong(s, "SystemAddress") == state.Location.systemAddress)
+                                        .Where( s =>
+                                            JsonParsing.getULong( s, "SystemAddress" ) == state.Location.systemAddress )
                                         .ToList();
-                                    if (!retrievedSignals.Any()) { continue; }
-                                    var handledData = PrepareSignalsData(retrievedSignals, state);
-                                    handledData = state.GameVersion.AugmentVersion(handledData);
-                                    EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/fsssignaldiscovered/1", handledData, state);
-                                    signals.RemoveAll(s => retrievedSignals.Contains(s));
+                                    if ( !retrievedSignals.Any() ) { continue; }
+
+                                    var handledData = PrepareSignalsData( retrievedSignals, state );
+                                    handledData = state.GameVersion.AugmentVersion( handledData );
+                                    EDDNSender.SendToEDDN( "https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
+                                        handledData, state );
+                                    signals.RemoveAll( s => retrievedSignals.Contains( s ) );
                                 }
-                                catch (NullReferenceException nre)
+                                catch ( NullReferenceException nre )
                                 {
-                                    Logging.Error("Failed to prepare signals for sending to EDDN", nre);
+                                    Logging.Error( "Failed to prepare signals for sending to EDDN", nre );
                                 }
                             }
                         }
                     }
+
+                    return false;
                 }
-                return false;
             }
 
             try
