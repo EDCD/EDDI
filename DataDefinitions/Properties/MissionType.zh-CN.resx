@@ -330,5 +330,8 @@
   <data name="Alert" xml:space="preserve">
     <value>警报</value>
   </data>
-  
+  <data name="Scout" xml:space="preserve">
+    <value>八角侦查兵目标</value>
+    <comment>Massacre type</comment>
+  </data>
 </root>
