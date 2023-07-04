@@ -330,5 +330,8 @@
   <data name="Alert" xml:space="preserve">
     <value>Allarme</value>
   </data>
-  
+  <data name="Scout" xml:space="preserve">
+    <value>Obiettivi dell'esploratore Thargoid</value>
+    <comment>Massacre type</comment>
+  </data>
 </root>
