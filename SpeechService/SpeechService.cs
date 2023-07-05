@@ -328,9 +328,9 @@ namespace EddiSpeechService
                     try
                     {
                         // Play the audio, waiting for the audio to complete unless we're in async mode
-                        if (async)
+                        if ( async )
                         {
-                            Task.Run(() => PlayAudio(fileName, volumeOverride));
+                            Task.Run( () => PlayAudio( fileName, volumeOverride ) );
                         }
                         else
                         {
@@ -345,10 +345,11 @@ namespace EddiSpeechService
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch ( Exception e )
                     {
-                        Logging.Warn(e.Message, e);
+                        Logging.Warn( e.Message, e );
                     }
+
                     continue;
                 }
 
@@ -648,9 +649,16 @@ namespace EddiSpeechService
                 {
                     audioSource = CodecFactory.Instance.GetCodec( fileName );
                 }
+                catch ( FileNotFoundException fnfe )
+                {
+                    Say( null, $"Audio file not found at {fileName}.", 0 );
+                    Logging.Warn( fnfe.Message, fnfe );
+                    throw;
+                }
                 catch ( NotSupportedException e )
                 {
-                    Logging.Debug( $"Skipping unsupported audio file {fileName}.", e );
+                    Say( null, "Audio file format not supported.", 0 );
+                    Logging.Warn( $"Skipping unsupported audio file {fileName}.", e );
                     throw;
                 }
                 if ( !( audioSource?.Length > 0 ) ) { return; }
