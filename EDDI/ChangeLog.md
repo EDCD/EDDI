@@ -2,6 +2,13 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.0.3
+  * EDSM Responder
+    * Reverted a change that had inadvertantly slowed the EDSM sync.
+  * Speech Responder
+    * UI
+      * Fixed `Edit` & `Delete` buttons being greyed out on new scripts. (#2562)
+
 ## 4.0.3-b4
   * Core
     * Fixed a bug with retrieving values previously set with `SetState()`. (#2554)

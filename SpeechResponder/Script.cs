@@ -98,8 +98,8 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private bool resettableOrDeletable;
 
-        [JsonIgnore] 
-        public bool PersonalityIsCustom { get; set; }
+        [ JsonIgnore ] 
+        public bool PersonalityIsCustom { get; set; } = true;
 
         public Script(string name, string description, bool responder, string script, int? priority = 3, string defaultScript = null)
         {
