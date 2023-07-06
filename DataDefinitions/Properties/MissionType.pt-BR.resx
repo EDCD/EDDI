@@ -330,4 +330,8 @@
   <data name="Alert" xml:space="preserve">
     <value>Alerta</value>
   </data>
+  <data name="Scout" xml:space="preserve">
+    <value>Alvos de Espionagem Thargoid</value>
+    <comment>Massacre type</comment>
+  </data>
 </root>

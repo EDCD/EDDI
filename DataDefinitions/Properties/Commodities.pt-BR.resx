@@ -1614,19 +1614,19 @@
     <comment>Commodity Ancient Key</comment>
   </data>
   <data name="ThargoidTissueSampleType1" xml:space="preserve">
-    <value>Amostra de Tecido Thargoid Cyclops</value>
+    <value>Amostra de Tecido de Thargoid Cyclops</value>
     <comment>Commodity ThargoidTissueSampleType1</comment>
   </data>
   <data name="ThargoidTissueSampleType2" xml:space="preserve">
-    <value>Amostra de Tecido Thargoid Basilisk</value>
+    <value>Amostra de Tecido de Thargoid Basilisk</value>
     <comment>Commodity ThargoidTissueSampleType2</comment>
   </data>
   <data name="ThargoidTissueSampleType3" xml:space="preserve">
-    <value>Amostra de Tecido Thargoid Medusa</value>
+    <value>Amostra de Tecido de Thargoid Medusa</value>
     <comment>Commodity ThargoidTissueSampleType3</comment>
   </data>
   <data name="ThargoidTissueSampleType4" xml:space="preserve">
-    <value>Amostra de Tecido Thargoid Hydra</value>
+    <value>Amostra de Tecido de Thargoid Hydra</value>
     <comment>Commodity ThargoidTissueSampleType4</comment>
   </data>
   <data name="Nanomedicines" xml:space="preserve">
@@ -1782,7 +1782,7 @@
     <comment>Commodity AncientRelicTG</comment>
   </data>
   <data name="ThargoidTissueSampleType5" xml:space="preserve">
-    <value>Amostra de Tecido Thargoid Orthrus</value>
+    <value>Amostra de Tecido de Thargoid Orthrus</value>
     <comment>Commodity ThargoidTissueSampleType5</comment>
   </data>
   <data name="ThargoidGeneratorTissueSample" xml:space="preserve">
@@ -1792,5 +1792,33 @@
   <data name="UnocuppiedEscapePod" xml:space="preserve">
     <value>Cápsula de Escape Desocupada</value>
     <comment>Commodity UnocuppiedEscapePod</comment>
+  </data>
+  <data name="ThargoidTissueSampleType6" xml:space="preserve">
+    <value>Amostra de Tecido de Thargoid Glaive</value>
+    <comment>Commodity ThargoidTissueSampleType6</comment>
+  </data>
+  <data name="ThargoidTissueSampleType9a" xml:space="preserve">
+    <value>Amostra Profunda de Tecido de Titã</value>
+    <comment>Commodity ThargoidTissueSampleType9a</comment>
+  </data>
+  <data name="ThargoidTissueSampleType9b" xml:space="preserve">
+    <value>Amostra de Tecido de Titã</value>
+    <comment>Commodity ThargoidTissueSampleType9b</comment>
+  </data>
+  <data name="ThargoidTissueSampleType9c" xml:space="preserve">
+    <value>Amostra Parcial de Tecido de Titã</value>
+    <comment>Commodity ThargoidTissueSampleType9c</comment>
+  </data>
+  <data name="ThargoidTissueSampleType10a" xml:space="preserve">
+    <value>Amostra Profunda de Tecido da Boca do Titã</value>
+    <comment>Commodity ThargoidTissueSampleType10a</comment>
+  </data>
+  <data name="ThargoidTissueSampleType10b" xml:space="preserve">
+    <value>Amostra de Tecido da Boca do Titã</value>
+    <comment>Commodity ThargoidTissueSampleType10b</comment>
+  </data>
+  <data name="ThargoidTissueSampleType10c" xml:space="preserve">
+    <value>Amostra Parcial de Tecido da Boca do Titã</value>
+    <comment>Commodity ThargoidTissueSampleType10c</comment>
   </data>
 </root>

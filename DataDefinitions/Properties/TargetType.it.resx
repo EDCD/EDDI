@@ -173,4 +173,8 @@
     <value>Cittadini</value>
     <comment>Massacre Mission Target: Citizens</comment>
   </data>
+  <data name="Scout" xml:space="preserve">
+    <value>Esploratore Thargoid</value>
+    <comment>Massacre mission target - Thargoid scout</comment>
+  </data>
 </root>

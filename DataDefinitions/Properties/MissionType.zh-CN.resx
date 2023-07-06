@@ -324,6 +324,14 @@
     <value>失火</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  
-  
+  <data name="PassengerEvacuation" xml:space="preserve">
+    <value>疏散乘客</value>
+  </data>
+  <data name="Alert" xml:space="preserve">
+    <value>警报</value>
+  </data>
+  <data name="Scout" xml:space="preserve">
+    <value>八角侦查兵目标</value>
+    <comment>Massacre type</comment>
+  </data>
 </root>
