@@ -79,6 +79,12 @@ Then confirm that plugin support is enabled.
 
 ![](images/OptionsPluginSupport.jpg)
 
+## Administrator mode
+
+We recommend against using VoiceAttack in administrator mode whenever possible.
+While there are narrow circumstances where administrator mode may be required if VoiceAttack fails to recognize key presses, VoiceAttack normally does not need to be run in administrator mode to function. 
+If you are running EDDI as a VoiceAttack plugin in administrator mode and you encounter an issue, please try running VoiceAttack without administrator mode and check whether the problem repeats.
+
 ## Further questions about integration with VoiceAttack?
 
 Read the wiki entry describing [VoiceAttack Integration](https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration) with EDDI.
