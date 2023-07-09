@@ -614,29 +614,29 @@ namespace UnitTests
             string line2 = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Offline\", \"Name\":\"_Testy_McTest_\" }";
 
             // Setup
-            EDDI eddiInstance = EDDI.Instance;
-            Friend[] preexistingFriends = eddiInstance.Cmdr?.friends.ToArray() ?? Array.Empty<Friend>();
-            PrivateObject privateEddiInstance = new PrivateObject(eddiInstance);
-            bool eventFriends(FriendsEvent friendsEvent)
+            var eddiInstance = EDDI.Instance;
+            var preexistingFriends = eddiInstance.Cmdr?.friends.ToArray() ?? Array.Empty<Friend>();
+            var privateEddiInstance = new PrivateObject(eddiInstance);
+            bool? eventFriends(FriendsEvent friendsEvent)
             {
-                return (bool)privateEddiInstance.Invoke("eventFriends", new object[] { friendsEvent });
+                return (bool?)privateEddiInstance.Invoke("eventFriends", new object[] { friendsEvent });
             }
 
             // Act
-            List<Event> events1 = JournalMonitor.ParseJournalEntry(line1);
-            List<Event> events2 = JournalMonitor.ParseJournalEntry(line2);
+            var events1 = JournalMonitor.ParseJournalEntry(line1);
+            var events2 = JournalMonitor.ParseJournalEntry(line2);
 
             // Both should generate one event
             Assert.AreEqual(1, events1.Count);
             Assert.AreEqual(1, events2.Count);
-            FriendsEvent event1 = (FriendsEvent)events1[0];
-            FriendsEvent event2 = (FriendsEvent)events2[0];
+            var event1 = (FriendsEvent)events1[0];
+            var event2 = (FriendsEvent)events2[0];
             Assert.AreEqual("Online", event1.status);
             Assert.AreEqual("Offline", event2.status);
 
             // The first event should be suppressed at the EDDI level
-            bool passEvent1 = eventFriends(event1);
-            bool passEvent2 = eventFriends(event2);
+            var passEvent1 = eventFriends(event1);
+            var passEvent2 = eventFriends(event2);
             Assert.IsFalse(passEvent1);
             Assert.IsTrue(passEvent2);
 
@@ -1173,7 +1173,7 @@ namespace UnitTests
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            var result = (bool)privateObject.Invoke("eventJumped", new object[] { @event });
+            var result = (bool?)privateObject.Invoke("eventJumped", new object[] { @event });
             Assert.IsTrue(result);
         }
 
@@ -2086,7 +2086,7 @@ namespace UnitTests
 
             // Test that the current star system has been updated
             var currentStarSystem = (StarSystem)eddiPrivateObject.GetFieldOrProperty( "CurrentStarSystem" );
-            Assert.AreEqual( 1, currentStarSystem.bodies.Count );
+            Assert.AreEqual( 1, currentStarSystem?.bodies.Count );
 
             // Scan 1
             events = JournalMonitor.ParseJournalEntry(scan1);
@@ -2094,8 +2094,8 @@ namespace UnitTests
             eddiPrivateObject.Invoke( "eventHandler", (StarScannedEvent)events[ 0 ] );
 
             // Test that the temporary star has been replaced by the main star
-            Assert.AreEqual(1, currentStarSystem.bodies.Count);
-            var mainStar = currentStarSystem.bodies.FirstOrDefault();
+            Assert.AreEqual(1, currentStarSystem?.bodies.Count);
+            var mainStar = currentStarSystem?.bodies.FirstOrDefault();
             Assert.IsNotNull( mainStar );
             Assert.AreEqual( BodyType.Star, mainStar.bodyType );
             Assert.AreEqual( "TestSystem", mainStar.systemname );

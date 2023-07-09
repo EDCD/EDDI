@@ -25,34 +25,42 @@ namespace IntegrationTests
         {
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
             IEddiMonitor monitor = ((List<IEddiMonitor>)privateObject
-                .GetFieldOrProperty("monitors"))
+                .GetFieldOrProperty("monitors"))?
                 .FirstOrDefault(m => m.MonitorName() == "Journal monitor");
 
             Assert.IsNotNull(monitor);
             privateObject.Invoke("EnableMonitor", new object[] { monitor.MonitorName() });
             monitor.Stop();
-            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors"))?.Count());
 
             privateObject.Invoke("DisableMonitor", new object[] { monitor.MonitorName() });
-            Assert.AreEqual(0, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(0, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors"))?.Count());
 
             privateObject.Invoke("EnableMonitor", new object[] { monitor.MonitorName() });
             monitor.Stop();
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ( (ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty( "activeMonitors" ) )?.Count() );
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ( (ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty( "activeMonitors" ) )?.Count() );
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ( (ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty( "activeMonitors" ) )?.Count() );
 
             Thread.Sleep(3000);
-            Assert.AreEqual(1, ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
+            Assert.AreEqual(1, ( (ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty( "activeMonitors" ) )?.Count() );
 
-            ((ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).TryTake(out IEddiMonitor activeMonitor);
-            Assert.AreEqual(monitor, activeMonitor);
+            var activeMonitors = (ConcurrentBag<IEddiMonitor>)privateObject.GetFieldOrProperty( "activeMonitors" );
+            if ( activeMonitors == null )
+            {
+                Assert.Fail();
+            }
+            else
+            {
+                activeMonitors.TryTake( out IEddiMonitor activeMonitor );
+                Assert.AreEqual( monitor, activeMonitor );
+            }
         }
 
     }
@@ -94,7 +102,7 @@ namespace UnitTests
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            var result = (bool)privateObject.Invoke("eventJumped", new object[] { @event });
+            var result = (bool?)privateObject.Invoke("eventJumped", new object[] { @event });
             Assert.IsTrue(result);
         }
 
@@ -109,7 +117,7 @@ namespace UnitTests
             Assert.IsInstanceOfType(@event, typeof(LocationEvent));
 
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
-            var result = (bool)privateObject.Invoke("eventLocation", new object[] { @event });
+            var result = (bool?)privateObject.Invoke("eventLocation", new object[] { @event });
             Assert.IsTrue(result);
         }
 
@@ -186,21 +194,21 @@ namespace UnitTests
             string line4 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
 
             JournalMonitor.ParseJournalEntry(line0);
-            Assert.AreEqual(1, currentStarSystem.signalsources.Count());
-            Assert.AreEqual("Unregistered Comms Beacon", currentStarSystem.signalsources[0]);
+            Assert.AreEqual(1, currentStarSystem?.signalsources.Count());
+            Assert.AreEqual("Unregistered Comms Beacon", currentStarSystem?.signalsources[0]);
 
             JournalMonitor.ParseJournalEntry(line1);
-            Assert.AreEqual(1, currentStarSystem.signalsources.Count());
+            Assert.AreEqual(1, currentStarSystem?.signalsources.Count() );
 
             JournalMonitor.ParseJournalEntry(line2);
-            Assert.AreEqual(2, currentStarSystem.signalsources.Count());
-            Assert.AreEqual("Notable Stellar Phenomena", currentStarSystem.signalsources[1]);
+            Assert.AreEqual(2, currentStarSystem?.signalsources.Count() );
+            Assert.AreEqual("Notable Stellar Phenomena", currentStarSystem?.signalsources[1]);
 
             JournalMonitor.ParseJournalEntry(line3);
-            Assert.AreEqual(2, currentStarSystem.signalsources.Count());
+            Assert.AreEqual(2, currentStarSystem?.signalsources.Count() );
 
             JournalMonitor.ParseJournalEntry(line4);
-            Assert.AreEqual(2, currentStarSystem.signalsources.Count());
+            Assert.AreEqual(2, currentStarSystem?.signalsources.Count() );
         }
 
         [TestMethod]
@@ -220,12 +228,12 @@ namespace UnitTests
             Assert.IsFalse(EDDI.Instance.CurrentStarSystem?.systemScanCompleted);
 
             // Test whether the first `SystemScanCompleted` event is accepted and passed to monitors / responders
-            var eventPassed = (bool)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
+            var eventPassed = (bool?)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
             Assert.IsTrue(EDDI.Instance.CurrentStarSystem?.systemScanCompleted);
             Assert.IsTrue(eventPassed);
 
             // Test a second `SystemScanCompleted` event to make sure the repetition is surpressed and not passed to monitors / responders
-            eventPassed = (bool)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
+            eventPassed = (bool?)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
             Assert.IsTrue(EDDI.Instance.CurrentStarSystem?.systemScanCompleted);
             Assert.IsFalse(eventPassed);
 

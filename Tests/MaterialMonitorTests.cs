@@ -84,9 +84,9 @@ namespace UnitTests
         {
             var privateObject = new PrivateObject(new MaterialMonitor());
 
-            bool TestIncThreshold(int previous, int amount, int? target)
+            bool? TestIncThreshold(int previous, int amount, int? target)
             {
-                return (bool)privateObject.Invoke("incMaterialThreshold", previous, amount, target);
+                return (bool?)privateObject.Invoke("incMaterialThreshold", previous, amount, target);
             }
 
             // If no threshold target is specified, the result must be false
@@ -101,9 +101,9 @@ namespace UnitTests
             // If we're already beyond our target, the result must be false
             Assert.IsFalse(TestIncThreshold(149, 150, 100));
 
-            bool TestDecThreshold(int previous, int amount, int? target)
+            bool? TestDecThreshold(int previous, int amount, int? target)
             {
-                return (bool)privateObject.Invoke("decMaterialThreshold", previous, amount, target);
+                return (bool?)privateObject.Invoke("decMaterialThreshold", previous, amount, target);
             }
 
             // If no threshold target is specified, the result must be false

@@ -470,8 +470,8 @@ namespace UnitTests
             // we still want to track the ship we launched from as our current ship.
             Assert.IsNotNull(loadoutEvent);
             Assert.IsNotNull(fighterLoadoutEvent);
-            Assert.AreEqual(loadoutEvent.shipid, currentShip.LocalId);
-            Assert.AreNotEqual(fighterLoadoutEvent.shipid, currentShip.LocalId);
+            Assert.AreEqual(loadoutEvent.shipid, currentShip?.LocalId);
+            Assert.AreNotEqual(fighterLoadoutEvent.shipid, currentShip?.LocalId);
         }
 
         [TestMethod]

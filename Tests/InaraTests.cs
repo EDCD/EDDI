@@ -30,7 +30,7 @@ namespace UnitTests
             var privateInaraService = new PrivateObject(typeof(InaraService));
             var results = (List<InaraAPIEvent>)privateInaraService.Invoke("IndexAndFilterAPIEvents", new object[] { inaraAPIEvents, new InaraConfiguration() });
 
-            if (results.Count == 2)
+            if (results?.Count == 2)
             {
                 // Check that appropriate response IDs were assigned to each API event
                 Assert.AreEqual(0, results[0].eventCustomID);

@@ -142,8 +142,8 @@ namespace UnitTests
             var schemas = (IEnumerable<object>)privateObject.GetField("schemas");
             var capiSchemas = (IEnumerable<object>)privateObject.GetField("capiSchemas");
 
-            Assert.IsTrue(schemas.Any());
-            Assert.IsTrue(capiSchemas.Any());
+            Assert.IsTrue(schemas?.Any());
+            Assert.IsTrue(capiSchemas?.Any());
         }
 
         [TestMethod()]
@@ -157,7 +157,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates");
+            var confirmed = (bool?)privateObject.Invoke("ConfirmAddressAndCoordinates");
 
             Assert.IsTrue(confirmed);
             Assert.AreEqual("Sol", responder.eddnState.Location.systemName);
@@ -180,7 +180,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates");
+            var confirmed = (bool?)privateObject.Invoke("ConfirmAddressAndCoordinates");
 
             Assert.IsFalse(confirmed);
             Assert.AreEqual("Artemis", responder.eddnState.Location.systemName);
@@ -202,7 +202,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates");
+            var confirmed =(bool?) privateObject.Invoke("ConfirmAddressAndCoordinates");
 
             Assert.IsFalse(confirmed);
             Assert.AreEqual("Sol", responder.eddnState.Location.systemName);
@@ -224,7 +224,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", -146.65625M);
             privateObject.SetFieldOrProperty("systemZ", -343.25000M);
 
-            bool confirmed = (bool)privateObject.Invoke("ConfirmScan", new object[] { "Hyades Sector DL-X b1-2 A 1" });
+            var confirmed = (bool?)privateObject.Invoke("ConfirmScan", new object[] { "Hyades Sector DL-X b1-2 A 1" });
 
             Assert.IsFalse(confirmed);
             Assert.IsNull(responder.eddnState.Location.systemName);
@@ -515,18 +515,25 @@ namespace UnitTests
             var privateObject = new PrivateObject(responder.eddnState.PersonalData);
             data = (IDictionary<string, object>)privateObject.Invoke("Strip", new object[] { data, "Location" });
 
-            data.TryGetValue("Factions", out object factionsVal);
-            if (factionsVal != null)
+            if ( data == null )
             {
-                var factions = (List<object>)factionsVal;
-                foreach (object faction in factions)
-                {
-                    Assert.IsFalse(((IDictionary<string, object>)faction).ContainsKey("MyReputation"));
-                }
+                Assert.Fail();
             }
             else
             {
-                Assert.Fail();
+                data.TryGetValue( "Factions", out object factionsVal );
+                if ( factionsVal == null )
+                {
+                    Assert.Fail();
+                }
+                else
+                {
+                    var factions = (List<object>)factionsVal;
+                    foreach ( object faction in factions )
+                    {
+                        Assert.IsFalse( ( (IDictionary<string, object>)faction ).ContainsKey( "MyReputation" ) );
+                    }
+                }
             }
         }
 
