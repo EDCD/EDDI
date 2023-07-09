@@ -111,7 +111,7 @@ namespace EddiDataProviderService
         {
             this.edsmService = edsmService;
             dataProviderService = new DataProviderService(edsmService);
-            starSystemCache = new StarSystemCache(30);
+            starSystemCache = new StarSystemCache(300); // Keep a cache of star systems for 5 minutes
         }
 
         private static readonly object instanceLock = new object();
