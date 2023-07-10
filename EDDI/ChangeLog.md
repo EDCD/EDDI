@@ -8,6 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * UI
       * Fixed `Edit` & `Delete` buttons being greyed out on new scripts. (#2562)
+  * VoiceAttack
+    * Fixed a bug with `{BOOL:EDDI speaking}` remaining true even after speech was ended. (#2563)
 
 ## 4.0.3-b4
   * Core

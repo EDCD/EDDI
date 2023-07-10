@@ -588,6 +588,7 @@ namespace EddiSpeechService
                         {
                             ts.Dispose();
                         }
+                        OnPropertyChanged( nameof( eddiSpeaking ) );
                     }
                 }
             }
