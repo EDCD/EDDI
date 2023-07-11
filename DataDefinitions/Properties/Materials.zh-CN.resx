@@ -290,7 +290,7 @@
     <comment>Material symmetrickeys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>奇异的尾迹消融</value>
+    <value>奇异的尾迹消融状态</value>
     <comment>Material wakesolutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
