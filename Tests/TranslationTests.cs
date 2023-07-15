@@ -168,6 +168,8 @@ namespace UnitTests
         [DataRow("9 G. Carinae", @"9 <say-as interpret-as=""characters"">G</say-as> <phoneme alphabet=""ipa"" ph=""kəˈriːniː"">Carinae</phoneme>")]
         [DataRow("LP 355-64", @"<say-as interpret-as=""characters"">L</say-as> <say-as interpret-as=""characters"">P</say-as> 3 5 5 dash 64")]
         [DataRow("Llyr", @"Llyr")]
+        [DataRow( "Achelous", "Achelous" )]
+        [DataRow( "ADS 9338 AC", @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">D</say-as> <say-as interpret-as=""characters"">S</say-as> 9 3 3 8 <say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">C</say-as>" )]
         public void TestTranslateStarSystems(string source, string expected)
         {
             Assert.AreEqual(expected, Translations.GetTranslation(source));

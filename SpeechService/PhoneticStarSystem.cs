@@ -129,7 +129,7 @@ namespace EddiSpeechService
 
         private static readonly Dictionary<string, string[]> CATALOG_FIXUPS = new Dictionary<string, string[]>()
         {
-            { "Ac" , new[] { @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">C</say-as>" } },
+            { "AC " , new[] { @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">C</say-as> " } },
             { "Gl " , new[] { $@"<phoneme alphabet=""ipa"" ph=""{Phonetics.Gliese}"">Gliese</phoneme> " } }, // Abbreviation for "Gliese"
             { "Gliese" , new[] { $@"<phoneme alphabet=""ipa"" ph=""{Phonetics.Gliese}"">Gliese</phoneme>" } }, // Gliese Catalogue of Nearby Stars
             { "Lalande" , new[] { $@"<phoneme alphabet=""ipa"" ph=""{Phonetics.Lalande}"">Lalande</phoneme>" } }, // Histoire Céleste Française, e.g. "Lalande 1234"
