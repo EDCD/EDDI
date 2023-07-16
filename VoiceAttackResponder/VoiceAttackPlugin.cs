@@ -700,7 +700,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug( "No information on Inara commander" );
                     return;
                 }
-                string cmdrUri = $"https://inara.cz/elite/cmdr/60531/{EDDI.Instance.Cmdr.InaraID}/";
+                string cmdrUri = $"https://inara.cz/elite/cmdr/{EDDI.Instance.Cmdr.InaraID}/";
                 OpenOrStoreURI( ref vaProxy, cmdrUri );
                 setStatus( ref vaProxy, "Operational" );
             }
