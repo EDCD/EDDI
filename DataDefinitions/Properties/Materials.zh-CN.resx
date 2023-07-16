@@ -222,7 +222,7 @@
     <comment>Material bulkscandata</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>非典型中断唤醒回声</value>
+    <value>非典型被扰乱的尾迹回声</value>
     <comment>Material disruptedwakeechoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
@@ -250,7 +250,7 @@
     <comment>Material fsdtelemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
-    <value>不一致的护盾浸润分析</value>
+    <value>不协调护盾浸润情况分析</value>
     <comment>Material shieldsoakanalysis</comment>
   </data>
   <data name="archivedemissiondata" xml:space="preserve">
@@ -290,7 +290,7 @@
     <comment>Material symmetrickeys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>奇异的尾迹消融</value>
+    <value>奇异的尾迹消融状态</value>
     <comment>Material wakesolutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
@@ -697,5 +697,8 @@
     <value>大规模能量浪涌分析</value>
     <comment>Material tg_shutdowndata</comment>
   </data>
-  
+  <data name="unknowncorechip" xml:space="preserve">
+    <value>战术核心芯片</value>
+    <comment>Material unknowncorechip</comment>
+  </data>
 </root>
