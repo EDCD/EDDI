@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.3
   * EDSM Responder
     * Reverted a change that had inadvertantly slowed the EDSM sync.
+  * Inara Responder
+    * Fixed a bug with profile retrieval.
   * Speech Responder
     * UI
       * Fixed `Edit` & `Delete` buttons being greyed out on new scripts. (#2562)
