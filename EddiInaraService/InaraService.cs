@@ -111,67 +111,76 @@ namespace EddiInaraService
         }
 
         // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
-        public List<InaraResponse> SendEventBatch(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
+        public List<InaraResponse> SendEventBatch ( List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration )
         {
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
-            List<InaraResponse> inaraResponses = new List<InaraResponse>();
-            if (events is null) { return inaraResponses; }
+            var inaraResponses = new List<InaraResponse>();
+            if ( events is null ) { return inaraResponses; }
 
-            try
+            if ( inaraConfiguration is null ) { inaraConfiguration = ConfigService.Instance.inaraConfiguration; }
+            if ( inaraConfiguration != null && checkAPIcredentialsOk( inaraConfiguration ) )
             {
-                if (inaraConfiguration is null) { inaraConfiguration = ConfigService.Instance.inaraConfiguration; }
-                List<InaraAPIEvent> indexedEvents = IndexAndFilterAPIEvents(events, inaraConfiguration);
-                if (indexedEvents.Count > 0)
+                try
                 {
-                    var client = new RestClient("https://inara.cz/inapi/v1/");
-                    var request = new RestRequest(Method.POST);
-                    var inaraRequest = new InaraSendJson()
+                    var indexedEvents = IndexAndFilterAPIEvents( events, inaraConfiguration );
+                    if ( indexedEvents.Count > 0 )
                     {
-                        header = new Dictionary<string, object>()
+                        var client = new RestClient( "https://inara.cz/inapi/v1/" );
+                        var request = new RestRequest( Method.POST );
+                        var inaraRequest = new InaraSendJson()
                         {
-                            { "appName", "EDDI" },
-                            { "appVersion", Constants.EDDI_VERSION.ToString() },
-                            { "isBeingDeveloped", eddiIsBeta },
-                            { "commanderName", inaraConfiguration.commanderName },
-                            { "commanderFrontierID", inaraConfiguration.commanderFrontierID },
-                            { "APIkey", !string.IsNullOrEmpty(inaraConfiguration.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
-                        },
-                        events = indexedEvents
-                    };
-                    request.RequestFormat = DataFormat.Json;
-                    request.AddJsonBody(inaraRequest); // uses JsonSerializer
-
-                    Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
-                    var clientResponse = client.Execute<InaraResponses>(request);
-                    if (clientResponse.IsSuccessful)
-                    {
-                        Logging.Debug("Inara responded with: ", clientResponse.Data);
-
-                        InaraResponses response = clientResponse.Data;
-                        if (validateResponse(response.header, indexedEvents, true))
-                        {
-                            foreach (InaraResponse inaraResponse in response.events)
+                            header = new Dictionary<string, object>()
                             {
-                                if (validateResponse(inaraResponse, indexedEvents))
+                                { "appName", "EDDI" },
+                                { "appVersion", Constants.EDDI_VERSION.ToString() },
+                                { "isBeingDeveloped", eddiIsBeta },
+                                { "commanderName", inaraConfiguration.commanderName },
+                                { "commanderFrontierID", inaraConfiguration.commanderFrontierID },
+                                { "APIkey", !string.IsNullOrEmpty(inaraConfiguration.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
+                            },
+                            events = indexedEvents
+                        };
+                        request.RequestFormat = DataFormat.Json;
+                        request.AddJsonBody( inaraRequest ); // uses JsonSerializer
+
+                        Logging.Debug( "Sending to Inara: " + client.BuildUri( request ).AbsoluteUri );
+                        var clientResponse = client.Execute<InaraResponses>( request );
+                        if ( clientResponse.IsSuccessful )
+                        {
+                            Logging.Debug( "Inara responded with: ", clientResponse.Content );
+
+                            var response = clientResponse.Data;
+                            if ( validateResponse( response.header, indexedEvents, true ) )
+                            {
+                                foreach ( var inaraResponse in response.events )
                                 {
-                                    inaraResponses.Add(inaraResponse);
+                                    if ( validateResponse( inaraResponse, indexedEvents ) )
+                                    {
+                                        inaraResponses.Add( inaraResponse );
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
-                        Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
-                        ReEnqueueAPIEvents(events);
+                        else
+                        {
+                            // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
+                            Logging.Warn( "Unable to connect to the Inara server.", clientResponse.ErrorMessage );
+                            ReEnqueueAPIEvents( events );
+                        }
                     }
                 }
+                catch ( Exception ex )
+                {
+                    Logging.Error( "Sending data to the Inara server failed.", ex );
+                    ReEnqueueAPIEvents( events );
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Logging.Error("Sending data to the Inara server failed.", ex);
-                ReEnqueueAPIEvents(events);
+                ReEnqueueAPIEvents( events );
+                return inaraResponses;
             }
+
             return inaraResponses;
         }
 
@@ -275,36 +284,33 @@ namespace EddiInaraService
 
         private bool checkAPIcredentialsOk(InaraConfiguration inaraConfiguration)
         {
-            if (!inaraConfiguration.isAPIkeyValid)
+            if ( !inaraConfiguration.isAPIkeyValid )
             {
-                Logging.Warn("Background sync skipped: API key is invalid.");
-                invalidAPIkey?.Invoke(inaraConfiguration, EventArgs.Empty);
+                Logging.Warn( "Background sync skipped: API key is invalid." );
+                invalidAPIkey?.Invoke( inaraConfiguration, EventArgs.Empty );
                 return false;
             }
-            if (string.IsNullOrEmpty(inaraConfiguration.apiKey))
+            if ( string.IsNullOrEmpty( inaraConfiguration.apiKey ) )
             {
-                Logging.Info("Background sync skipped: API key not set.");
+                Logging.Info( "Background sync skipped: API key not set." );
                 return false;
             }
-            if (string.IsNullOrEmpty(inaraConfiguration.commanderName))
+            if ( string.IsNullOrEmpty( inaraConfiguration.commanderName ) )
             {
-                Logging.Debug("Background sync skipped: Commander name not set.");
+                Logging.Debug( "Background sync skipped: Commander name not set." );
                 return false;
             }
             return true;
         }
 
-        private void SendAPIEvents(List<InaraAPIEvent> queue)
+        private void SendAPIEvents ( List<InaraAPIEvent> queue )
         {
             var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
-            if (checkAPIcredentialsOk(inaraConfiguration))
+            var responses = SendEventBatch( queue, inaraConfiguration );
+            if ( responses != null && responses.Count > 0 )
             {
-                var responses = SendEventBatch(queue, inaraConfiguration);
-                if (responses != null && responses.Count > 0)
-                {
-                    inaraConfiguration.lastSync = queue.Max(e => e.eventTimestamp);
-                    ConfigService.Instance.inaraConfiguration = inaraConfiguration;
-                }
+                inaraConfiguration.lastSync = queue.Max( e => e.eventTimestamp );
+                ConfigService.Instance.inaraConfiguration = inaraConfiguration;
             }
         }
 
