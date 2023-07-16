@@ -361,10 +361,10 @@ namespace EddiInaraService
     {
         [UsedImplicitly] public int eventStatus { get; set; }
 
-        [UsedImplicitly] public string eventStatusText { get; set; }
+        [UsedImplicitly] public string eventStatusText { get; set; } // Optional status text. Typically not set unless there was a problem.
 
-        [UsedImplicitly] public object eventData { get; }
+        [UsedImplicitly] public object eventData { get; set; }
 
-        [UsedImplicitly] public int eventCustomID { get; } // Optional index. Used to match outgoing API events to responses.
+        [UsedImplicitly] public int eventCustomID { get; set; } // Optional index. Used to match outgoing API events to responses.
     }
 }
