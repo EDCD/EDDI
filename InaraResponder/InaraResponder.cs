@@ -71,16 +71,25 @@ namespace EddiInaraResponder
             Task.Run( FetchInaraCommanderID );
         }
 
-        private async void FetchInaraCommanderID()
+        private async void FetchInaraCommanderID ()
         {
-            InaraCmdr cmdr = null;
-            await Task.Run( () =>
+            var config = ConfigService.Instance.inaraConfiguration;
+            if ( config.inaraID is null )
             {
-                cmdr = inaraService.GetCommanderProfile();
-            } ).ConfigureAwait( false );
+                InaraCmdr cmdr = null;
+                await Task.Run( () =>
+                {
+                    cmdr = inaraService.GetCommanderProfile();
+                } ).ConfigureAwait( false );
+                if ( cmdr is null ) { return; }
+                config.inaraID = cmdr.id;
+                ConfigService.Instance.inaraConfiguration = config;
+            }
+
             if ( EDDI.Instance.Cmdr != null )
             {
-                EDDI.Instance.Cmdr.InaraID = cmdr?.id;
+                // Also write the Inara ID to the commander so that it can be used to construct custom profile lookups in VoiceAttack.
+                EDDI.Instance.Cmdr.InaraID = config.inaraID;
             }
         }
 

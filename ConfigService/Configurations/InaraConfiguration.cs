@@ -16,6 +16,9 @@ namespace EddiConfigService.Configurations
         [JsonProperty("commanderFrontierID")]
         public string commanderFrontierID { get; set; }
 
+        [JsonProperty( "inaraID" )]
+        public int? inaraID { get; set; }
+
         [JsonProperty("lastSync")]
         public DateTime lastSync { get; set; }
 
