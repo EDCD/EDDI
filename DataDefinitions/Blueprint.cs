@@ -826,6 +826,7 @@ namespace EddiDataDefinitions
             _ = new Blueprint(128740154, "SensorSurfaceScannerFastScan3", "SensorFastScan", 3);
             _ = new Blueprint(128740155, "SensorSurfaceScannerFastScan4", "SensorFastScan", 4);
             _ = new Blueprint(128740156, "SensorSurfaceScannerFastScan5", "SensorFastScan", 5);
+            _ = new Blueprint(129012366, "PowerPlantBoosted5", "PowerPlantBoosted", 5); // Pre-engineered overcharged power plant from Colonia Bridge Project Phase 4
             _ = new Blueprint(129015432, "WeaponHighCapacity", "WeaponHighCapacity", 5); // AX Missile Rack
         }
         public static readonly Blueprint None;
