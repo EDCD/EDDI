@@ -1246,7 +1246,7 @@
 			"responder": true,
 			"script": "{Occasionally(2, \"Perigo:\")}\r\nDano por calor.",
 			"name": "Heat damage",
-			"description": "Triggered when your ship is taking damage from excessive heat",
+			"description": "Triggered when your ship begins to take hull damage due to excessive heat.",
 			"default": true
 		},
 		"Heat warning": {
@@ -1255,7 +1255,7 @@
 			"responder": true,
 			"script": "{Occasionally(2, \"Aviso:\")}\r\nNíveis de calor acima da tolerância operacional.\r\n",
 			"name": "Heat warning",
-			"description": "Triggered when your ship's heat exceeds 100%",
+			"description": "Triggered when your ship's heat exceeds 100% and you begin to take module damage.",
 			"default": true
 		},
 		"Honorific": {
