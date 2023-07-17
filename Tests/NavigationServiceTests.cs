@@ -55,8 +55,8 @@ namespace IntegrationTests
             var privateObject = new PrivateObject(EDDI.Instance);
             var sol = new StarSystem { systemname = "Sol", systemAddress = 10477373803, x = 0.0M, y = 0.0M, z = 0.0M };
             privateObject.SetFieldOrProperty(nameof(EDDI.Instance.CurrentStarSystem), sol);
+            privateObject.SetFieldOrProperty( nameof( EDDI.Instance.CurrentShip ), ShipDefinitions.FromEDModel( "Anaconda" ) );
 
-            Assert.IsNull( privateObject.GetFieldOrProperty( nameof( EDDI.Instance.CurrentShip ) ) ); // Test using the default ship size (large landing pad)
             var result = navigationService.NavQuery(query, stringArg0, stringArg1, Convert.ToDecimal(numericArg), prioritizeOrbitalStations);
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedStarSystem, result.system);

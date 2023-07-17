@@ -633,7 +633,7 @@ namespace EddiDataProviderService
 
         private void insertStarSystems(ImmutableList<StarSystem> systems)
         {
-            if (systems.Count == 0)
+            if ( systems.Count == 0)
             {
                 return;
             }
