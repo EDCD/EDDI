@@ -382,7 +382,7 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                switch ((string)vaProxy.Context)
+                switch (((string)vaProxy.Context)?.ToLowerInvariant())
                 {
                     case "coriolis":
                         InvokeCoriolis(ref vaProxy);
