@@ -241,7 +241,7 @@ namespace EddiJournalMonitor
                                     var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
                                     if ( bodyType == BodyType.Planet )
                                     {
-                                        bodyType = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
+                                        bodyType = EDDI.Instance.CurrentStarSystem?.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
                                                    bodyType;
                                     }
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
