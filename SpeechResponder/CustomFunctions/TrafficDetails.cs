@@ -1,7 +1,7 @@
 ﻿using Cottle.Functions;
-using Cottle.Stores;
 using Cottle.Values;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -9,12 +9,15 @@ using System;
 namespace EddiSpeechResponder.CustomFunctions
 {
     [UsedImplicitly]
-    public class TrafficDetails : ResolverInstance<ScriptResolver, BuiltinStore>, ICustomFunction
+    public class TrafficDetails : ICustomFunction
     {
         public string name => "TrafficDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.TrafficDetails;
         public Type ReturnType => typeof( Traffic );
+
+        private static readonly DataProviderService dataProviderService = new DataProviderService();
+
         public NativeFunction function => new NativeFunction((values) =>
         {
             Traffic result = null;
@@ -25,27 +28,23 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     if (values[1].AsString == "traffic")
                     {
-                        result = resolver.dataProviderService.GetSystemTraffic(systemName);
+                        result = dataProviderService.GetSystemTraffic(systemName);
                     }
                     if (values[1].AsString == "deaths")
                     {
-                        result = resolver.dataProviderService.GetSystemDeaths(systemName);
+                        result = dataProviderService.GetSystemDeaths(systemName);
                     }
                     else if (values[1].AsString == "hostility")
                     {
-                        result = resolver.dataProviderService.GetSystemHostility(systemName);
+                        result = dataProviderService.GetSystemHostility(systemName);
                     }
                 }
                 if (result == null)
                 {
-                    result = resolver.dataProviderService.GetSystemTraffic(systemName);
+                    result = dataProviderService.GetSystemTraffic(systemName);
                 }
             }
             return new ReflectionValue(result ?? new object());
         }, 1, 2);
-
-        // Obtain the resolver
-        public TrafficDetails(ScriptResolver resolver, BuiltinStore store) : base(resolver, store)
-        { }
     }
 }

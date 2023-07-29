@@ -9,7 +9,6 @@ using Eddi;
 using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechService;
@@ -27,14 +26,12 @@ namespace EddiSpeechResponder.Service
     {
         private readonly Dictionary<string, Script> scripts;
         private readonly CustomSetting setting;
-        internal readonly DataProviderService dataProviderService;
 
         // The file to log speech
         [UsedImplicitly] public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
         public ScriptResolver(Dictionary<string, Script> scripts)
         {
-            dataProviderService = new DataProviderService();
             this.scripts = scripts ?? new Dictionary<string, Script>();
             setting = new CustomSetting
             {
