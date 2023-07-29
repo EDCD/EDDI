@@ -1,6 +1,6 @@
 ﻿using Cottle.Functions;
-using Cottle.Stores;
 using Cottle.Values;
+using EddiBgsService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
@@ -10,12 +10,15 @@ using System;
 namespace EddiSpeechResponder.CustomFunctions
 {
     [UsedImplicitly]
-    public class FactionDetails : ResolverInstance<ScriptResolver, BuiltinStore>, ICustomFunction
+    public class FactionDetails : ICustomFunction
     {
         public string name => "FactionDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.FactionDetails;
         public Type ReturnType => typeof( Faction );
+
+        private static readonly BgsService bgsService = new BgsService();
+
         public NativeFunction function => new NativeFunction((values) =>
         {
             Faction result;
@@ -25,17 +28,13 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             else if (values.Count == 1)
             {
-                result = resolver.bgsService.GetFactionByName(values[0].AsString);
+                result = bgsService.GetFactionByName(values[0].AsString);
             }
             else
             {
-                result = resolver.bgsService.GetFactionByName(values[0].AsString, values[1].AsString);
+                result = bgsService.GetFactionByName(values[0].AsString, values[1].AsString);
             }
             return new ReflectionValue(result ?? new object());
         }, 1, 2);
-
-        // Implement nesting
-        public FactionDetails(ScriptResolver resolver, BuiltinStore store) : base(resolver, store)
-        { }
     }
 }

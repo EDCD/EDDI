@@ -6,7 +6,6 @@ using Cottle.Settings;
 using Cottle.Stores;
 using Cottle.Values;
 using Eddi;
-using EddiBgsService;
 using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
@@ -30,7 +29,6 @@ namespace EddiSpeechResponder.Service
         private readonly CustomSetting setting;
         internal readonly Random random;
         internal readonly DataProviderService dataProviderService;
-        internal readonly BgsService bgsService;
 
         // The file to log speech
         [UsedImplicitly] public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
@@ -38,7 +36,6 @@ namespace EddiSpeechResponder.Service
         public ScriptResolver(Dictionary<string, Script> scripts)
         {
             dataProviderService = new DataProviderService();
-            bgsService = new BgsService();
             random = new Random();
             this.scripts = scripts ?? new Dictionary<string, Script>();
             setting = new CustomSetting
