@@ -1,4 +1,5 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
+using Cottle.Functions;
 using Cottle.Stores;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
@@ -13,10 +14,23 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Dynamic;
         public string description => Properties.CustomFunctions_Untranslated.OneOf;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        private static readonly Random random = new Random();
+
+        public NativeFunction function => new NativeFunction( ( values ) =>
         {
-            return resolver?.resolveFromValue(values[resolver.random.Next(values.Count)].AsString, store, false);
-        });
+            lock ( random )
+            {
+                if ( values.Count == 1 && values[ 0 ].Type == ValueContent.Map )
+                {
+                    values[ 0 ].Fields.TryGet( random.Next( values[ 0 ].Fields.Count ), out var result );
+                    return result;
+                }
+                else
+                {
+                    return values[ random.Next( values.Count ) ];
+                }
+            }
+        } );
 
         // Implement nesting
         public OneOf(ScriptResolver resolver, BuiltinStore store) : base(resolver, store)

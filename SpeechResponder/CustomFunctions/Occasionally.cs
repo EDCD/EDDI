@@ -13,15 +13,21 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Dynamic;
         public string description => Properties.CustomFunctions_Untranslated.Occasionally;
         public Type ReturnType => typeof( string );
+
+        private static readonly Random random = new Random();
+
         public NativeFunction function => new NativeFunction((values) =>
         {
-            if (resolver.random.Next((int)values[0].AsNumber) == 0)
+            lock ( random )
             {
-                return resolver.resolveFromValue(values[1].AsString, store, false);
-            }
-            else
-            {
-                return "";
+                if ( random.Next( (int)values[ 0 ].AsNumber ) == 0 )
+                {
+                    return values[ 1 ];
+                }
+                else
+                {
+                    return "";
+                }
             }
         }, 2);
 

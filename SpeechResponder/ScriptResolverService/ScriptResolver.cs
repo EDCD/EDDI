@@ -27,7 +27,6 @@ namespace EddiSpeechResponder.Service
     {
         private readonly Dictionary<string, Script> scripts;
         private readonly CustomSetting setting;
-        internal readonly Random random;
         internal readonly DataProviderService dataProviderService;
 
         // The file to log speech
@@ -36,7 +35,6 @@ namespace EddiSpeechResponder.Service
         public ScriptResolver(Dictionary<string, Script> scripts)
         {
             dataProviderService = new DataProviderService();
-            random = new Random();
             this.scripts = scripts ?? new Dictionary<string, Script>();
             setting = new CustomSetting
             {
@@ -291,7 +289,7 @@ namespace EddiSpeechResponder.Service
                 .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
             {
                 // Create an instance of the function and add it to the store,
-                // either with no .ctor or passing data to a .ctor as required (for classes implementing `CustomNestingFunction`).
+                // either with no .ctor or passing data to a .ctor as required (for classes implementing `ResolverInstance`).
                 var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null 
                     ? Activator.CreateInstance(type) : 
                     Activator.CreateInstance(type, this, store));
