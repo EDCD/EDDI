@@ -264,6 +264,14 @@ namespace EddiStatusMonitor
                     {
                         EDDI.Instance.enqueueEvent(new SafeEvent(DateTime.UtcNow) { fromLoad = false });
                     }
+
+                    // Check if planetary coordinates are available and updating
+                    // Send hyperspace data as well to be used as a reset condition for planetary exobiology
+                    //  - There must be a better way to do this, maybe with Body biologicals implementation
+                    if ( ( thisStatus.latitude != lastStatus.latitude ) || ( thisStatus.longitude != lastStatus.longitude ) || ( thisStatus.near_surface != lastStatus.near_surface ) || (thisStatus.hyperspace != lastStatus.hyperspace ) )
+                    {
+                        EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, thisStatus.near_surface, thisStatus.supercruise, thisStatus.hyperspace, thisStatus.latitude, thisStatus.longitude ) { fromLoad = false } );
+                    }
                 }
             }
             catch (Exception exception)
