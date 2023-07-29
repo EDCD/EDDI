@@ -216,26 +216,29 @@ namespace EddiGalnetMonitor
                 {
                     Logging.Debug("Creating new news" + news.title);
 
-                    using (var con = SimpleDbConnection())
+                    lock ( nameof(SimpleDbConnection) )
                     {
-                        con.Open();
-
-                        using (var cmd = new SQLiteCommand(con))
+                        using ( var con = SimpleDbConnection() )
                         {
-                            try
+                            con.Open();
+
+                            using ( var cmd = new SQLiteCommand( con ) )
                             {
-                                cmd.CommandText = INSERT_SQL;
-                                cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@uuid", news.id);
-                                cmd.Parameters.AddWithValue("@published", news.published);
-                                cmd.Parameters.AddWithValue("@category", news.category);
-                                cmd.Parameters.AddWithValue("@title", news.title);
-                                cmd.Parameters.AddWithValue("@content", news.content);
-                                cmd.ExecuteNonQuery();
-                            }
-                            catch (SQLiteException sle)
-                            {
-                                Logging.Warn("Failed to insert news", sle);
+                                try
+                                {
+                                    cmd.CommandText = INSERT_SQL;
+                                    cmd.Prepare();
+                                    cmd.Parameters.AddWithValue( "@uuid", news.id );
+                                    cmd.Parameters.AddWithValue( "@published", news.published );
+                                    cmd.Parameters.AddWithValue( "@category", news.category );
+                                    cmd.Parameters.AddWithValue( "@title", news.title );
+                                    cmd.Parameters.AddWithValue( "@content", news.content );
+                                    cmd.ExecuteNonQuery();
+                                }
+                                catch ( SQLiteException sle )
+                                {
+                                    Logging.Warn( "Failed to insert news", sle );
+                                }
                             }
                         }
                     }
@@ -245,82 +248,97 @@ namespace EddiGalnetMonitor
 
         public void DeleteNews()
         {
-            using (var con = SimpleDbConnection())
+            lock ( nameof(SimpleDbConnection) )
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                using ( var con = SimpleDbConnection() )
                 {
-                    cmd.CommandText = TRUNCATE_SQL;
-                    cmd.Prepare();
-                    cmd.ExecuteNonQuery();
+                    con.Open();
+                    using ( var cmd = new SQLiteCommand( con ) )
+                    {
+                        cmd.CommandText = TRUNCATE_SQL;
+                        cmd.Prepare();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
 
         public void DeleteNews(News news)
         {
-            using (var con = SimpleDbConnection())
+            lock ( nameof(SimpleDbConnection) )
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                using ( var con = SimpleDbConnection() )
                 {
-                    cmd.CommandText = DELETE_SQL;
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@uuid", news.id);
-                    cmd.ExecuteNonQuery();
+                    con.Open();
+                    using ( var cmd = new SQLiteCommand( con ) )
+                    {
+                        cmd.CommandText = DELETE_SQL;
+                        cmd.Prepare();
+                        cmd.Parameters.AddWithValue( "@uuid", news.id );
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
 
         public void MarkRead(News news)
         {
-            using (var con = SimpleDbConnection())
+            lock ( nameof(SimpleDbConnection) )
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                using ( var con = SimpleDbConnection() )
                 {
-                    cmd.CommandText = MARK_READ_SQL;
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@read", 1);
-                    cmd.Parameters.AddWithValue("@uuid", news.id);
-                    cmd.ExecuteNonQuery();
+                    con.Open();
+                    using ( var cmd = new SQLiteCommand( con ) )
+                    {
+                        cmd.CommandText = MARK_READ_SQL;
+                        cmd.Prepare();
+                        cmd.Parameters.AddWithValue( "@read", 1 );
+                        cmd.Parameters.AddWithValue( "@uuid", news.id );
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
 
         public void MarkUnread(News news)
         {
-            using (var con = SimpleDbConnection())
+            lock ( nameof(SimpleDbConnection) )
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                using ( var con = SimpleDbConnection() )
                 {
-                    cmd.CommandText = MARK_READ_SQL;
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@read", 0);
-                    cmd.Parameters.AddWithValue("@uuid", news.id);
-                    cmd.ExecuteNonQuery();
+                    con.Open();
+                    using ( var cmd = new SQLiteCommand( con ) )
+                    {
+                        cmd.CommandText = MARK_READ_SQL;
+                        cmd.Prepare();
+                        cmd.Parameters.AddWithValue( "@read", 0 );
+                        cmd.Parameters.AddWithValue( "@uuid", news.id );
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
 
         private static void CreateDatabase()
         {
-            using (var con = SimpleDbConnection())
+            lock ( nameof(SimpleDbConnection) )
             {
-                con.Open();
-
-                using (var cmd = new SQLiteCommand(CREATE_SQL, con))
+                using ( var con = SimpleDbConnection() )
                 {
-                    Logging.Debug("Creating galnet repository");
-                    cmd.ExecuteNonQuery();
-                }
+                    con.Open();
 
-                // Add an index
-                using (var cmd = new SQLiteCommand(CREATE_INDEX_SQL, con))
-                {
-                    Logging.Debug("Creating galnet index");
-                    cmd.ExecuteNonQuery();
+                    using ( var cmd = new SQLiteCommand( CREATE_SQL, con ) )
+                    {
+                        Logging.Debug( "Creating galnet repository" );
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Add an index
+                    using ( var cmd = new SQLiteCommand( CREATE_INDEX_SQL, con ) )
+                    {
+                        Logging.Debug( "Creating galnet index" );
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             Logging.Debug("Created galnet repository");
