@@ -23,11 +23,11 @@ namespace EddiSpeechResponder.CustomFunctions
                 if ( values.Count == 1 && values[ 0 ].Type == ValueContent.Map )
                 {
                     values[ 0 ].Fields.TryGet( random.Next( values[ 0 ].Fields.Count ), out var result );
-                    return result;
+                    return resolver?.resolveFromValue( result?.AsString, store, false );
                 }
                 else
                 {
-                    return values[ random.Next( values.Count ) ];
+                    return resolver?.resolveFromValue( values[ random.Next( values.Count ) ]?.AsString, store, false );
                 }
             }
         } );

@@ -22,7 +22,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 if ( random.Next( (int)values[ 0 ].AsNumber ) == 0 )
                 {
-                    return values[ 1 ];
+                    return resolver?.resolveFromValue( values[ 1 ].AsString, store, false );
                 }
                 else
                 {
