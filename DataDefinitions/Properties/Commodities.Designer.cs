@@ -907,6 +907,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coral Sap.
+        /// </summary>
+        public static string CoralSap {
+            get {
+                return ResourceManager.GetString("CoralSap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Revolutionary supplies.
         /// </summary>
         public static string CounterCultureSupport {
@@ -3211,6 +3220,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xenobiological Prison Pod.
+        /// </summary>
+        public static string ThargoidPod {
+            get {
+                return ResourceManager.GetString("ThargoidPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Scout Tissue Sample .
         /// </summary>
         public static string ThargoidScoutTissueSample {
@@ -3297,6 +3315,15 @@ namespace EddiDataDefinitions.Properties {
         public static string ThargoidTissueSampleType6 {
             get {
                 return ResourceManager.GetString("ThargoidTissueSampleType6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Scythe Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType7 {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType7", resourceCulture);
             }
         }
         
@@ -3531,6 +3558,15 @@ namespace EddiDataDefinitions.Properties {
         public static string UnknownResin {
             get {
                 return ResourceManager.GetString("UnknownResin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protective Membrane Scrap.
+        /// </summary>
+        public static string UnknownSack {
+            get {
+                return ResourceManager.GetString("UnknownSack", resourceCulture);
             }
         }
         

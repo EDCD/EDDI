@@ -443,13 +443,17 @@ namespace EddiDataDefinitions
 
                 // Items for which we do not have pricing
                 new CommodityDefinition(129022395, "ThargoidTissueSampleType6", Salvage, 0, false),
+                new CommodityDefinition(129022396, "ThargoidTissueSampleType7", Salvage, 0, false),
                 new CommodityDefinition(129022398, "ThargoidTissueSampleType9a", Salvage, 0, false),
                 new CommodityDefinition(129022399, "ThargoidTissueSampleType9b", Salvage, 0, false),
                 new CommodityDefinition(129022400, "ThargoidTissueSampleType9c", Salvage, 0, false),
                 new CommodityDefinition(129022402, "ThargoidTissueSampleType10a", Salvage, 0, false),
                 new CommodityDefinition(129022403, "ThargoidTissueSampleType10b", Salvage, 0, false),
                 new CommodityDefinition(129022404, "ThargoidTissueSampleType10c", Salvage, 0, false),
-                
+                new CommodityDefinition(129022405, "UnknownSack", Salvage, 0, false),
+                new CommodityDefinition(129022406, "ThargoidPod", Salvage, 0, false),
+                new CommodityDefinition(129022407, "CoralSap", Salvage, 0, false),
+
                 // Items for which we do not have Elite IDs
             };
         }

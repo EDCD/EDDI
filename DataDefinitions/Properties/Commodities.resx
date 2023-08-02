@@ -1821,4 +1821,20 @@
     <value>Titan Maw Partial Tissue Sample</value>
     <comment>Commodity ThargoidTissueSampleType10c</comment>
   </data>
+  <data name="ThargoidTissueSampleType7" xml:space="preserve">
+    <value>Thargoid Scythe Tissue Sample</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+  </data>
+  <data name="UnknownSack" xml:space="preserve">
+    <value>Protective Membrane Scrap</value>
+    <comment>Commodity UnknownSack</comment>
+  </data>
+  <data name="ThargoidPod" xml:space="preserve">
+    <value>Xenobiological Prison Pod</value>
+    <comment>Commodity ThargoidPod</comment>
+  </data>
+  <data name="CoralSap" xml:space="preserve">
+    <value>Coral Sap</value>
+    <comment>Commodity CoralSap</comment>
+  </data>
 </root>
