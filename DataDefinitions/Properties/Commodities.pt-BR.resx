@@ -1821,8 +1821,20 @@
     <value>Amostra Parcial de Tecido da Boca do Titã</value>
     <comment>Commodity ThargoidTissueSampleType10c</comment>
   </data>
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType7" xml:space="preserve">
+    <value>Amostra de Tecido de Thargoid Scythe</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+  </data>
+  <data name="UnknownSack" xml:space="preserve">
+    <value>Sucata de Membrana Protetora</value>
+    <comment>Commodity UnknownSack</comment>
+  </data>
+  <data name="ThargoidPod" xml:space="preserve">
+    <value>Cápsula de Pisão Xenobiológica</value>
+    <comment>Commodity ThargoidPod</comment>
+  </data>
+  <data name="CoralSap" xml:space="preserve">
+    <value>Seiva de Coral</value>
+    <comment>Commodity CoralSap</comment>
+  </data>
 </root>
