@@ -1,67 +1,63 @@
-﻿using JetBrains.Annotations;
+﻿using EddiDataDefinitions.Properties;
+using JetBrains.Annotations;
 using MathNet.Numerics;
 using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Utilities;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
+    //public class OrganicSpeciesBase
+    //{
+    //    public string name;
+    //    public string description;
 
-    public class OrganicSpeciesBase
+    //    public OrganicSpeciesBase ()
+    //    {
+    //        this.name = "";
+    //        this.description = "";
+    //    }
+    //};
+
+    public class OrganicSpecies
     {
         public string name;
-        public int value;
         public string description;
-        public string conditions;
 
-        public OrganicSpeciesBase ()
-        {
-            this.name = "";
-            this.value = 0;
-            this.description = "";
-            this.conditions = "";
-        }
-    };
-
-    public class OrganicSpecies : OrganicSpeciesBase
-    {
         public OrganicSpecies ()
         {
             this.name = "Invalid";
-            this.value = 0;
             this.description = "Invalid species";
-            this.conditions = "";
         }
 
-        public OrganicSpecies ( string species, int value, string desc, string conditions )
+        public OrganicSpecies ( string species, string desc )
         {
             this.name = species;
-            this.value = value;
             this.description = desc;
-            this.conditions = conditions;
         }
     };
 
-    public class OrganicGenusBase
+    public class OrganicGenus
     {
+
         public string name;
         public int distance;
         public string description;
+        //public Dictionary<string, OrganicSpecies> species = new Dictionary<string, OrganicSpecies>();
 
-        public OrganicGenusBase()
+        public OrganicGenus ()
         {
             this.name = "";
             this.distance = 0;
             this.description = "";
         }
-    };
-
-    public class OrganicGenus : OrganicGenusBase
-    {
-        public Dictionary<string, OrganicSpecies> species = new Dictionary<string, OrganicSpecies>();
 
         public OrganicGenus ( string genus, int distance, string desc )
         {
@@ -69,946 +65,2194 @@ namespace EddiDataDefinitions
             this.distance = distance;
             this.description = desc;
         }
-
-        public void Add ( string species, int distance, string desc, string conditions )
-        {
-            OrganicSpecies myData = new OrganicSpecies(species, distance, desc, conditions);
-            this.species.Add( species, myData );
-        }
     };
 
-    public class OrganicData
+    public class OrganicItem
     {
-        public OrganicGenusBase genus;
-        public OrganicSpeciesBase species;
+        public bool exists;   // This item exists and has been populated with information
+        public string variant;
+        public OrganicGenus genus;
+        public OrganicSpecies species;
+        public OrganicInfo.VariantExtraData variantData;
+
+        public OrganicItem ()
+        {
+            exists = false;
+            variant = "";
+            genus = new OrganicGenus();
+            species = new OrganicSpecies();
+            variantData = new OrganicInfo.VariantExtraData();
+        }
+
+        public void SetExists ( bool exists )
+        {
+            this.exists = exists;
+        }
+
     }
 
-    public class OrganicInfo
+    public static class OrganicInfo /* : ResourceBasedLocalizedEDName<OrganicInfo>*/
     {
+        // Resources managers
+        public static ResourceManager rmOrganicGenusName = new ResourceManager("EddiDataDefinitions.Properties.OrganicGenusName", Assembly.GetExecutingAssembly());
+        public static ResourceManager rmOrganicGenusDesc = new ResourceManager("EddiDataDefinitions.Properties.OrganicGenusDesc", Assembly.GetExecutingAssembly());
+        public static ResourceManager rmOrganicSpeciesName = new ResourceManager("EddiDataDefinitions.Properties.OrganicSpeciesName", Assembly.GetExecutingAssembly());
+        public static ResourceManager rmOrganicSpeciesDesc = new ResourceManager("EddiDataDefinitions.Properties.OrganicSpeciesDesc", Assembly.GetExecutingAssembly());
+        public static ResourceManager rmOrganicVariantName = new ResourceManager("EddiDataDefinitions.Properties.OrganicVariantName", Assembly.GetExecutingAssembly());
 
-        // Exobiology
-        private static OrganicGenus Aleoida           = new OrganicGenus("Aleoida",             150, "These are extremely hardy photosynthetic organisms that thrive in arid environments. " +
-                                                                                                        "Thick, waxy leaf structures protect them from extreme surroundings. When " +
-                                                                                                        "gaseous exchange becomes unfavourable.the leaves can completely shut off " +
-                                                                                                        "the organism from the atmosphere causing a state of hibernation. The " +
-                                                                                                        "pointed leaves create precipitation slopes, which draw liquids to the heart " +
-                                                                                                        "of the organism.Here they are absorbed through a series of specialised cells, " +
-                                                                                                        "and stored in the root structure until needed.");
-        private static OrganicGenus Amphora           = new OrganicGenus("Amphora",             100, "These organic structures take their name from a type of container dating from " +
-                                                                                                        "Earth’s Neolithic period.");
-        private static OrganicGenus Anemone           = new OrganicGenus("Anemone",             100, "Despite their name, these organic structures more closely resemble the shells " +
-                                                                                                        "of sea urchins.These organic structures can tolerate a wide range of temperatures " +
-                                                                                                        "and are able to absorb energy from nearby stars.");
-        private static OrganicGenus Bacterium         = new OrganicGenus("Bacterium",           500, "These are true unicellular extremophiles capable of living in the full spectrum of temperatures, " +
-                                                                                                        "chemical soups and atmospheres. They form a kaleidoscopic range of patterns and " +
-                                                                                                        "colours based on their method of metabolism.They derive energy from photosynthetic " +
-                                                                                                        "chemosynthetic or thermosynthetic processes.These are believed to be the precursors " +
-                                                                                                        "for many life forms, and are often found in conjunction with other species. Links " +
-                                                                                                        "between the biochemistry of bacterial colonies and neighbouring organisms are " +
-                                                                                                        "likely but as yet unproven.");
-        private static OrganicGenus BarkMounds        = new OrganicGenus("Bark Mounds",         100, "These organic structures survive by absorbing elements from nova and supernova, " +
-                                                                                                        "with the dense outer layer protecting them from the severest radiation.");
-        private static OrganicGenus BrainTree         = new OrganicGenus("Brain Tree",          100, "These organic structures are so called because of the vaguely brain-like growths " +
-                                                                                                        "on the ends of their branches. These resilient organic structures absorb minerals " +
-                                                                                                        "via their subsurface roots and energy via their outer skin.");
-        private static OrganicGenus Cactoida          = new OrganicGenus("Cactoida",            300, "These are photosynthetic organisms that have adapted to extreme conditions by reducing their " +
-                                                                                                        "surface area to volume ratio, thereby protecting more sensitive tissues from " +
-                                                                                                        "exposure.The outer layer is formed from specialised light-transmitting cells. " +
-                                                                                                        "These are filled with an insulating hydrophobic layer, which helps to maintain " +
-                                                                                                        "core temperature and liquid retention.Deep, extensive root structures hold the " +
-                                                                                                        "organisms in place, and facilitate the extraction of trace minerals.Some cactoida " +
-                                                                                                        "species feature explosive seed distribution as a method of reproduction.");
-        private static OrganicGenus Clypeus           = new OrganicGenus("Clypeus",             150, "These are extremophile organisms that have evolved to create hard shield structures, primarily " +
-                                                                                                        "to protect against stellar radiation. They also collect and condense traces of " +
-                                                                                                        "liquid material in the atmosphere, allowing the organisms to flourish in extremely " +
-                                                                                                        "arid environments.The shields are typically synthesised from surrounding inorganic " +
-                                                                                                        "material.which will frequently define their shape and colouration.");
-        private static OrganicGenus Concha            = new OrganicGenus("Concha",              150, "These are highly specialised complex extremophiles that have developed protective and sturdy " +
-                                                                                                        "motile shell structures.These open and close based on the suitability of the " +
-                                                                                                        "current environmental conditions.The shells are an organic structure with an " +
-                                                                                                        "excreted inorganic insulated and sometimes reﬂective casing that help the organism " +
-                                                                                                        "maintain homeostasis.The internal organisms, which are remarkably tough in their " +
-                                                                                                        "own right, are only exposed for metabolic and reproductive purposes.");
-        private static OrganicGenus CrystallineShards = new OrganicGenus("Crystalline Shards",  100,  "These crystalline structures are created by large colonies of microorganisms.");
-        private static OrganicGenus Electricae        = new OrganicGenus("Electricae",          1000, "These are organisms found exclusively on extremely cold ice worlds in the vicinity of frozen " +
-                                                                                                        "lakes.The visible tips can be observed protruding from the ice, often near fissures " +
-                                                                                                        "where it is thinnest.The bulk of the organisms extend down through the ice into " +
-                                                                                                        "subsurface melt potentially for several kilometres. Electricae are superconductive " +
-                                                                                                        "in nature.utilising the thermal circulation of the surrounding fluid to drive an " +
-                                                                                                        "electrochemical process.This is probably why they are limited to planets with " +
-                                                                                                        "atmospheres dominated by noble gases.The surface structure exists to provide a " +
-                                                                                                        "connection to the atmosphere, which in turn creates a point of electrical potential " +
-                                                                                                        "difference. A by-product of this is the bioluminescent display that runs through " +
-                                                                                                        "the organism. Although never witnessed, reproduction presumably occurs below the " +
-                                                                                                        "surface by some unidentified process.");
-        private static OrganicGenus Fonticulua         = new OrganicGenus("Fonticula",          500,  "These are photosynthetic colony organisms found exclusively on ice worlds, where they have " +
-                                                                                                        "embraced the surrounding frozen material as a form of protection. As the fonticulus " +
-                                                                                                        "develop they melt ice from around them, absorbing the liquid through tiny cellular " +
-                                                                                                        "pores and passing it to the colony’s reproductive edge.Here the liquid is excreted " +
-                                                                                                        "and immediately refreezes, creating hard translucent exoskeletons that provide " +
-                                                                                                        "protection for the organisms. Frond structures create a wide flat space that expose " +
-                                                                                                        "internal photosynthetic cells to as much light as possible. Reproduction appears to " +
-                                                                                                        "occur by colony division, most likely when a shard of the structure collapses under " +
-                                                                                                        "its own weight and the smaller shard creates a new colony.");
-        private static OrganicGenus Frutexa           = new OrganicGenus("Frutexa",             150, "These are robust woody plants with deep rooting structures to gather liquids and hold themselves " +
-                                                                                                        "in place where the ground may be unstable. They are photosynthetic organisms with " +
-                                                                                                        "specialised photoreceptors that work even in low light conditions. As such they are " +
-                                                                                                        "highly successful, and are widespread and diverse in nature. Their small leaf " +
-                                                                                                        "structures protect them against extremely low temperatures and liquid loss in " +
-                                                                                                        "higher temperatures.");
-        private static OrganicGenus Fumerola          = new OrganicGenus("Fumerola",            100, "These are extremophile organisms located in regions with active fumaroles. Their metabolism is " +
-                                                                                                        "driven exclusively through chemosynthetic and thermosynthetic mechanisms based on " +
-                                                                                                        "nearby volcanic activity. Proximity to volcanic heat allows them to survive in " +
-                                                                                                        "environments where the ambient temperature is naturally too cold for them.They " +
-                                                                                                        "frequently incorporate minerals from the fumaroles’ ejecta, meaning they can appear " +
-                                                                                                        "inorganic at first glance and may sport exotic colours.");
-        private static OrganicGenus Fungoida          = new OrganicGenus("Fungoida",            300, "These are organisms that live deep inside a planetary substrate. They share similar morphology to " +
-                                                                                                        "fungi but are not saprophytic, instead their mycelial body drives its metabolism " +
-                                                                                                        "through chemosynthetic and thermosynthetic processes. These are facilitated by the " +
-                                                                                                        "substrate which also protects the organism from environmental extremes. The exposed " +
-                                                                                                        "aspects of the organisms are primarily involved in reproduction.This is frequently " +
-                                                                                                        "through spore ejection, but certain species also support gaseous exchange with the " +
-                                                                                                        "atmosphere. Some fungoicla exhibit bioluminescent behaviours as part of a metabolic " +
-                                                                                                        "process involved in the breakdown of accumulated toxins.");
-        private static OrganicGenus Osseus            = new OrganicGenus("Osseus",              800, "These are slow-growing organisms that can be found exclusively on rocky areas of planets. They " +
-                                                                                                        "are defined by a symbiotic relationship that has evolved between two unicellular " +
-                                                                                                        "organisms. which are now inseparable. One cell type is solely responsible for energy " +
-                                                                                                        "production by either photosynthetic.chemosynthetic or thermosynthetic processes. " +
-                                                                                                        "The symbiotic cells harvest some of this energy, and in turn deposit a hard rock-like " +
-                                                                                                        "substance extracted from the local geology to create a rigid endoskeleton. This " +
-                                                                                                        "structure provides a solid base for the organism to exist. It features complex folds " +
-                                                                                                        "that help increase available surface area for metabolic interactions. Osseus have " +
-                                                                                                        "been observed to create callus-like cell coverings, and withdraw themselves into " +
-                                                                                                        "the endoskeleton for protection.");
-        private static OrganicGenus Recepta           = new OrganicGenus("Recepta",             150, "These are extremophiles that are found exclusively on planets wlth atmospheres dominated by " +
-                                                                                                        "sulphur dioxide.Using a combination of inorganic and hydrocarbon materials, they " +
-                                                                                                        "build a shielding bubble.This allows them to create an isolated biome with regulated " +
-                                                                                                        "temperature and chemical composition. Growth is a difﬁcult and complex process " +
-                                                                                                        "that requires careful melting, regrowing and freezing of the external shell so that " +
-                                                                                                        "the internal organism can develop.This is a gradual process meaning that larger " +
-                                                                                                        "recepta are of significant age.Reproduction is also similarly complex and revolves " +
-                                                                                                        "around a budding process, which creates a smaller version of the adult.Once detached, " +
-                                                                                                        "it can roll under the action of gravity and air currents before coming to rest, where " +
-                                                                                                        "it will deploy a holdfast marking its final position.");
-        private static OrganicGenus SinuousTuber      = new OrganicGenus("Sinuous Tuber",       100, "These organic structures are distinguished by their tubular shape and vivid colouration. " +
-                                                                                                        "These organic structures are merely the above-ground portion of a much larger " +
-                                                                                                        "subterranean organism.");
-        private static OrganicGenus Stratum           = new OrganicGenus("Stratum",             500, "These are Low-lying photosynthetic organisms that bond tightly to the surface of rocks.The body " +
-                                                                                                        "of the organism may be embedded in the rock subsurface to provide protection from " +
-                                                                                                        "the elements, leaving the tough photosynthetic proto-leaves exposed. Their simple " +
-                                                                                                        "proto-evolutionary nature means that they are a common sight on rocky worlds. " +
-                                                                                                        "Colouration is driven by a mixture of the mineral content of the attached rock and " +
-                                                                                                        "the absorption spectral of the nearby stellar body.");
-        private static OrganicGenus Tubus             = new OrganicGenus("Tubus",               800, "These are highly specialised organisms that can grow to extreme heights, which peak when in a " +
-                                                                                                        "mature state.The organisms’ height and ability to survive is largely constrained by " +
-                                                                                                        "gravity. The lack of any real atmospheric weather has not put evolutionaly pressure " +
-                                                                                                        "on the towers to be strong, so they form tall but thin structures which cannot be " +
-                                                                                                        "supported in high-gravity environments. The tower is formed from wrapped leaf-like " +
-                                                                                                        "structures, which create a regulated chimney void. This is used by the organism to " +
-                                                                                                        "create and maintain an artificial internal atmosphere, where discrete chemical " +
-                                                                                                        "processes can be undertaken along the length of the tower. Waste gases and other " +
-                                                                                                        "material may he released from the top of the tower.Some species feature external " +
-                                                                                                        "rings that can be used to gauge an organism’s age.");
-        private static OrganicGenus Tussock           = new OrganicGenus("Tussock",             200, "These are robust photosynthetic plants similar in appearance to clump grasses. They have " +
-                                                                                                        "a shallow but complex root structure, which requires a solid surface to produce " +
-                                                                                                        "structural stability. Clumps may form through tillering or wider dispersal through " +
-                                                                                                        "a variety of seeding mechanisms. Some species have adapted cellular structures " +
-                                                                                                        "containing high sugar concentrations to protect against freezing damage.");
+        // ( <species>, <base value>, <maxG>, <minK>, <maxK>, <parent star>, <planet type>, <atmosphere>, <volcanism> )
+        public class LookupEntryId
+        {
+            public string genus;
+            public string species;
+            public string variant;
 
-        // Other Organics
-        //  - Sample distance not used
-        private static OrganicGenus MineralSpheres    = new OrganicGenus( "Mineral Spheres",    0, "These mineral structures are created by large colonies of ancient microorganisms." );
-        private static OrganicGenus MetallicCrystals  = new OrganicGenus( "Metallic Crystals",  0, "These crystalline structures are created by huge numbers of primordial microorganisms." );
-        private static OrganicGenus SilicateCrystals  = new OrganicGenus( "Silicate Crystals",  0, "These dense crystalline structures are created by large colonies of ancient microorganisms." );
-        private static OrganicGenus IceCrystals       = new OrganicGenus( "Ice Crystals",       0, "These crystalline structures are created by microorganisms believed to be some of the oldest life forms in the galaxy." );
-        private static OrganicGenus ReelMolluscs      = new OrganicGenus( "Reel Molluscs",      0, "This organism is protected by a reel-shaped husk, allowing it to survive for millennia in the vacuum of space." );
-        private static OrganicGenus GlobeMolluscs     = new OrganicGenus( "Globe Molluscs",     0, "These organisms are so called because of their spherical shell. Despite being animals, they generate chemical energy through a process similar to photosynthesis, using their tentacles to absorb starlight." );
-        private static OrganicGenus BellMolluscs      = new OrganicGenus( "Bell Molluscs",      0, "A bell-shaped organism with distinctive linear patterns on its underside, which feeds off starlight converted into chemical energy." );
-        private static OrganicGenus UmbrellaMolluscs  = new OrganicGenus( "Umbrella Molluscs",  0, "This organism is protected by a umbrella-shaped husk, allowing it to survive for millennia in the vacuum of space." );
-        private static OrganicGenus GourdMollusc      = new OrganicGenus( "Gourd Mollusc",      0, "A gourd-shaped organism that feeds off starlight converted into chemical energy." );
-        private static OrganicGenus TorusMolluscs     = new OrganicGenus( "Torus Molluscs",     0, "A ring-shaped organism with a twin set of tentacles, which feeds off starlight converted into chemical energy." );
-        private static OrganicGenus BulbMolluscs      = new OrganicGenus( "Bulb Molluscs",      0, "This organism is protected by a bulb-shaped husk, allowing it to survive for millennia in the vacuum of space." );
-        private static OrganicGenus ParasolMolluscs   = new OrganicGenus( "Parasol Molluscs",   0, "This organism is protected by a parasol-shaped husk, allowing it to survive for millennia in the vacuum of space." );
-        private static OrganicGenus SquidMolluscs     = new OrganicGenus( "Squid Molluscs",     0, "A squid-shaped organism with tentacles and an extended head, which feeds off starlight converted into chemical energy." );
-        private static OrganicGenus BulletMolluscs    = new OrganicGenus( "Bullet Molluscs",    0, "A bullet-shaped orgamism that feeds off starlight converted into chemical energy." );
-        private static OrganicGenus CapsuleMolluscs   = new OrganicGenus( "Capsule Molluscs",   0, "This organism is protected by a capsule-shaped husk, allowing it to survive for millennia in the vacuum of space." );
-        private static OrganicGenus CollaredPod       = new OrganicGenus( "Collared Pod",       0, "These organisms absorb energy through their distinctive collar." );
-        private static OrganicGenus StolonPod         = new OrganicGenus( "Stolon Pod",         0, "These seed pods are colloquially known as space oysters due to the pearlescent object sometimes found at the centre of the pod." );
-        private static OrganicGenus StolonTree        = new OrganicGenus( "Stolon Tree",        0, "These organic structures are incredibly long lived, enduring for millennia in the vacuum of space." );
-        private static OrganicGenus AsterPods         = new OrganicGenus( "Aster Pods",         0, "These robust seed pods will drift through space for thousands of years before finding a suitable place to release their seeds and spores." );
-        private static OrganicGenus ChalicePods       = new OrganicGenus( "Chalice Pods",       0, "These robust seed pods are able to survive indefinitely in the vacuum of space." );
-        private static OrganicGenus PedunclePods      = new OrganicGenus( "Peduncle Pods",      0, "These robust seed pods contain both seeds and spores." );
-        private static OrganicGenus RhizomePods       = new OrganicGenus( "Rhizome Pods",       0, "The parent organism of these seed pods has not been identified, and it is possible that they are entirely self-contained." );
-        private static OrganicGenus QuadripartitePods = new OrganicGenus( "Quadripartite Pods", 0, "These seed pods have a thick husk that protects the fleshy interior from the vacuum of space." );
-        private static OrganicGenus OctahedralPods    = new OrganicGenus( "Octahedral Pods",    0, "These seed pods are distinguished by their leathery exterior and colourful bioluminescence." );
-        private static OrganicGenus AsterTrees        = new OrganicGenus( "Aster Trees",        0, "These organic structures are not trees in the traditional sense, but long-lived and extremely hardy space-based organisms." );
-        private static OrganicGenus PeduncleTrees     = new OrganicGenus( "Peduncle Trees",     0, "These organic structures are able to survive and propagate in the vacuum of space." );
-        private static OrganicGenus GyreTrees         = new OrganicGenus( "Gyre Trees",         0, "These organisms are characterised by their long, slender limbs, which often terminate in a large seed pod." );
-        private static OrganicGenus GyrePods          = new OrganicGenus( "Gyre Pods",          0, "These seed pods are unusual in that they are covered in a fine layer of living tissue." );
-        private static OrganicGenus VoidHearts        = new OrganicGenus( "Void Hearts",        0, "These organic structures, sometimes called barbed knots, are noted for periodically emitting tremendous bursts of heat and light." );
-        private static OrganicGenus CalcitePlates     = new OrganicGenus( "Calcite Plates",     0, "These calcium-carbonate structures are created by vast numbers of tiny polyp-like creatures." );
-        private static OrganicGenus ThargoidBarnacles = new OrganicGenus( "Thargoid Barnacles", 0, "" );
+            public LookupEntryId ( string genus, string species, string variant )
+            {
+                this.genus = genus;
+                this.species = species;
+                this.variant = variant;
+            }
+        }
 
+        public class LookupVariant : LookupEntryId
+        {
+            public long? entryId;
 
-        // For easier reverse lookups
-        public static Dictionary<string, string> Species = new Dictionary<string, string>();
+            public LookupVariant ( long? entryId, string genus, string species, string variant ) : base(genus, species, variant)
+            {
+                this.entryId = entryId;
+            }
+        }
 
+        public class VariantExtraData
+        {
+            public int? value;
+            public decimal? maxG;
+            public string minK;
+            public string maxK;
+            public string parentStar;
+            public string planetClass;
+            public string atmosphereClass;
+            public string volcanism;
+
+            public VariantExtraData ()
+            {
+                this.value = null;
+                this.maxG = null;
+                this.minK = "";
+                this.maxK = "";
+                this.parentStar = "";
+                this.planetClass = "";
+                this.atmosphereClass = "";
+                this.volcanism = "";
+            }
+
+            public VariantExtraData ( int? value, decimal? maxG, string minK, string maxK, string parentStar, string planetClass, string atmosphereClass, string volcanism )
+            {
+                this.value = value;
+                this.maxG = maxG;
+                this.minK = minK;
+                this.maxK = maxK;
+                this.parentStar = parentStar;
+                this.planetClass = planetClass;
+                this.atmosphereClass = atmosphereClass;
+                this.volcanism = volcanism;
+            }
+        }
+
+        // Codex EntryId/Variant mapped to genus
+        public static Dictionary<long, LookupEntryId> EntryIdData = new Dictionary<long, LookupEntryId>();
+        public static Dictionary<string, LookupVariant> VariantData = new Dictionary<string, LookupVariant>();
+
+        // Sample distance and Variant data (value and conditions)
+        public static Dictionary<string, int> SampleDistance = new Dictionary<string, int>();
+        public static Dictionary<string, VariantExtraData> SpeciesData = new Dictionary<string, VariantExtraData>();
+
+        /// <summary>
+        /// Static constructor, we only need to initialize this data once.
+        /// </summary>
         static OrganicInfo ()
         {
-            // Exobiology
-            Aleoida.Add( "Aleoida Arcus", 7252500, "This aleoida species has upright clumps of long serrated leaves, which can open up to expose a reproductive organ containing tiny round seeds.", "This species requires a planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and Carbon Dioxide atmosphere." );
-            Aleoida.Add( "Aleoida Coronamus", 6284600, "This interleaved crown of mottled leaves can grow to head height, with explosive seed pods emerging on long protruding stalks.", "This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and Carbon Dioxide atmosphere." );
-            Aleoida.Add( "Aleoida Gravis", 12934900, "These aleoida’s wide flat leaves on a heavy bark base can reach huge sizes. and sprout a dome-shaped reproductive organ at their peak.", "This species requires a planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and Carbon Dioxide atmosphere." );
-            Aleoida.Add( "Aleoida Laminiae", 3385200, "These aleoida have a circle of upturned leaves marked with patterns, surrounding a bright fleshy pod with darker markings which matures in their centre.", "This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Aleoida.Add( "Aleoida Spica", 3385200, "An aleoida species with long spiky leaves that can reach over two metres high surrounding a single reproductive organ on a long central stalk.", "This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Amphora.Add( "Amphora Plant", 1628800, "", "This species requires a Metal Rich planet with an A type star, and No atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system.." );
-            Anemone.Add( "Blatteum Bioluminescent Anemone", 1499900, "", "This species requires a planet with an O, B and sometimes A type star, and Sulfur Dioxide or No atmosphere." );
-            Anemone.Add( "Croceum Anemone", 1499900, "", "This species requires a planet with an O, B and sometimes A type star, and Sulfur Dioxide or No atmosphere." );
-            Anemone.Add( "Luteolum Anemone", 1499900, "", "This species requires a planet with an O, B and sometimes A type star, and Sulfur Dioxide or No atmosphere." );
-            Anemone.Add( "Prasinum Bioluminescent Anemone", 1499900, "", "This species requires a planet with an O, B and sometimes A type star, and Sulfur Dioxide or No atmosphere." );
-            Anemone.Add( "Puniceum Anemone", 1499900, "", "This species requires a planet with an O, B and sometimes A type star, and Sulfur Dioxide or No atmosphere." );
-            Anemone.Add( "Roseum Anemone", 1499900, "", "This species requires a planet with an O, B and sometimes A type star, and Sulfur Dioxide or No atmosphere." );
-            Anemone.Add( "Roseum Bioluminescent Anemone", 1499900, "", "This species requires a planet with an O, B and sometimes A type star, and Sulfur Dioxide or No atmosphere." );
-            Anemone.Add( "Rubeum Bioluminescent Anemone", 1499900, "", "This species requires a planet with an  type star, and Sulfur Dioxide or No atmosphere." );
-            Bacterium.Add( "Bacterium Acies", 1000000, "A bacterial species that converts energy from neon-based atmospheres, creating looping whirls of bright colour.", "This species requires a planet with a Neon or Neon-rich atmosphere." );
-            Bacterium.Add( "Bacterium Alcyoneum", 1658500, "A bacterial species found in ammonia-based atmospheres that lives in sunlight. A colony’s appearance resembles an intricate maze.", "This species requires a planet with a Ammonia atmosphere." );
-            Bacterium.Add( "Bacterium Aurasus", 1000000, "These bacteria thrive on sunlight in atmospheres rich with carbon clioxicle. They cause blanket coloration across a planetary surface.", "This species requires a planet with a Carbon Dioxide atmosphere." );
-            Bacterium.Add( "Bacterium Bullaris", 1152500, "This species of bacteria thrives on atmospheric methane, appearing as a network of linked bubble paiterns.", "This species requires a planet with a Methane or Methane-rich atmosphere." );
-            Bacterium.Add( "Bacterium Cerbrus", 1689800, "A sunlight-converting bacterial species on worlds with atmospheres dominated by water and sulphur dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells.", "This species requires a planet with a Water or Sulfur Dioxide atmosphere." );
-            Bacterium.Add( "Bacterium Informem", 8418000, "These bacteria can be found in nitrogen atmospheres, and form a shapeless mass across the surface.", "This species requires a planet with a Nitrogen atmosphere." );
-            Bacterium.Add( "Bacterium Nebulus", 5289900, "A bacterial species that survives exclusively on atmospheric helium. They are distinguished by a radial pattern extending outward from the colony’s centre.", "This species requires a planet with a Helium atmosphere." );
-            Bacterium.Add( "Bacterium Omentum", 4638900, "These bacteria convert geothermal heat from nitrogen-based volcanic sites into energy. They appear as long interlinked strands across the surface.", "This species requires a planet with a Neon or Neon-rich atmosphere and Nitrogen or Ammonia volcanism." );
-            Bacterium.Add( "Bacterium Scopulum", 4934500, "These bacteria thrive on the heat generated by carbon-based volcanic activity and appear as long swirling ridges on the surface.", "This species requires a planet with a Neon or Neon-rich atmosphere and Carbon or Methane volcanism." );
-            Bacterium.Add( "Bacterium Tela", 1949000, "These bacteria appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites.", "This species requires a planet with Helium, Iron, Silicate or Ammonia volcanism." );
-            Bacterium.Add( "Bacterium Verrata", 3897000, "These bacteria appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites.", "This species requires a planet with a Neon or Neon-rich atmosphere and Water volcanism." );
-            Bacterium.Add( "Bacterium Vesicula", 1000000, "These bacteria survive on worlds with argon—based atmospheres, and appear as a collection of tight loops on the ground.", "This species requires a planet with a Argon atmosphere." );
-            Bacterium.Add( "Bacterium Volu", 7774700, "A bacterial species dependent upon oxygen atmospheres, which creates random swirling patterns across the ground.", "This species requires a planet with a Oxygen atmosphere." );
-            BarkMounds.Add( "Bark Mounds", 1471900, "", "This species requires a planet with a No Atmosphere atmosphere, and In or <150 light years from a nebula." );
-            BrainTree.Add( "Aureum Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            BrainTree.Add( "Gypseeum Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            BrainTree.Add( "Lindigoticum Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            BrainTree.Add( "Lividum Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            BrainTree.Add( "Ostrinum Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            BrainTree.Add( "Puniceum Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            BrainTree.Add( "Roseum Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            BrainTree.Add( "Viride Brain Tree", 1593700, "", "This species requires a planet with a No atmosphere and Any volcanism, and near system with Guardian ruins." );
-            Cactoida.Add( "Cactoida Cortexum", 3667600, "A species of cactoid that can reach over three metres in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds.", "This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Carbon Dioxide atmosphere." );
-            Cactoida.Add( "Cactoida Lapis", 2483600, "This cactoid species appears as a squat growth with a latficecl upper surface, which eventually produces a cluster of seed pods.", "This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere. Unofficially, additional sources say  this is also known as Tetonus aymericus." );
-            Cactoida.Add( "Cactoida Peperatis", 2483600, "A cactoid species appearing as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown.", "This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Cactoida.Add( "Cactoida Pullulanta", 3667600, "This species of cactoid has a globular base, from which extend vertical cylinders that can reach over four metres. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds.", "This species requires a planet with a maximum gravity of 0.27, and a temperature range of 180 to 195." );
-            Cactoida.Add( "Cactoida Vermis", 16202800, "These cactoids appear as a tall collection of cylinders linked by an undulating membrane and topped with a spiky crown. They often have a spiny life-form attached that is thought to form a symbiotic relationship with the larger organism, although the nature of this is not understood.", "This species requires a planet with a maximum gravity of 0.27, and Water atmosphere." );
-            Clypeus.Add( "Clypeus Lacrimam", 8418000, "A species of clypeus that grows a broad, tear-shaped shield to protect the sensitive organism from extreme sunlight. The shield’s ridges help to direct Water droplets down into the soil.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water or Carbon Dioxide atmosphere." );
-            Clypeus.Add( "Clypeus Margaritus", 11873200, "This clypeus species produces a curved shield that resembles a large pearl in shape and texture. Up to three central organisms grow within it upon a supporting bed of leaves.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water or Carbon Dioxide atmosphere." );
-            Clypeus.Add( "Clypeus Speculumi", 16202800, "A clypeus species that grows an angular shield with a mirrored exterior to protect the spiky organisms. This species can be found on planets orbiting their parent star at a distance of 5 AU or greater.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water or Carbon Dioxide atmosphere." );
-            Concha.Add( "Concha Aureolas", 7774700, "These concha are found on worlds with nitrogen-based atmospheres. Their rounded rock-like structure splits part to extend long stalks topped with loops.", "This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Concha.Add( "Concha Biconcavis", 19010800, "This concha species resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with cloughnut—shaped pods that create locations for chemical exchange.", "This species requires a planet with a maximum gravity of 0.27, and Nitrogen atmosphere." );
-            Concha.Add( "Concha Labiata", 2352400, "A concha species that thrives in atmospheres rich with carbon dioxide. The lip-like upper opening cracks apart to allow a vertical growth of spiky leaves and bright seeds to stretch upward.", "This species requires a planet with a maximum gravity of 0.27, and Carbon Dioxide atmosphere." );
-            Concha.Add( "Concha Renibus", 4572400, "A species of concha that relies on heat sources to survive. As the bisected growth increases in size. it sprouts a single stalk topped with an array of luminous fronds that facilitate metabolism.", "This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Water or Carbon Dioxide atmosphere." );
-            CrystallineShards.Add( "Crystalline Shards", 1628800, "", "This species requires a planet with an A or Neutron type star, a temperature range of 0 to 273 kelvin, and No atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system and must be >12000 light seconds from the nearest star." );
-            Electricae.Add( "Electricae Pluma", 6284600, "A species of electricae that extends a tip of four connected loops above the ice, each covered with brightly luminous fronds. This species is typically found on planets orbiting bright white stars.", "This species requires a Icy planet with a maximum gravity of 0.27, an A or Neutron type star, and Helium, Neon or Argon atmosphere." );
-            Electricae.Add( "Electricae Radialem", 6284600, "These electricae species protrude bioluminescent stalks that radiate out in all directions. It is thought that this species may have an unspecified link with the proximity of nebulae to its host planet.", "This species requires a Icy planet with a maximum gravity of 0.27, an A or Neutron type star, and Helium, Neon or Argon atmosphere." );
-            Fonticulua.Add( "Fonticulua Campestris", 1000000, "These fonticulua thrive in argon atmospheres, and can reach four metres in height. They feature huge leaf-like structures to capture sunlight for conversion to energy.", "This species requires a Icy or Rocky planet with a maximum gravity of 0.27, and Argon atmosphere." );
-            Fonticulua.Add( "Fonticulua Digitos", 1804100, "A fonticulua species that thrives in methane—based atmospheres, sprouting a cluster of cylindrical tubes directly from the ice.", "This species requires a Icy or Rocky planet with a maximum gravity of 0.27, and Methane or Methane-rich atmosphere." );
-            Fonticulua.Add( "Fonticulua Fluctus", 20000000, "A species of fonticulua that exists on worlds with oxygen atmospheres. They produce coiling wave-shaped structures which tilt toward sunlight.", "This species requires a Icy or Rocky planet with a maximum gravity of 0.27, and Oxygen atmosphere." );
-            Fonticulua.Add( "Fonticulua Lapida", 3111000, "A fonticulua species that exists in atmospheres with a heavy concentration of nitrogen. Growing up along the main stalk are bright gem-like pods. which can break off and create new colonies.", "This species requires a Icy or Rocky planet with a maximum gravity of 0.27, and Nitrogen atmosphere." );
-            Fonticulua.Add( "Fonticulua Segmentatus", 19010800, "A species of fonticulua found in atmospheres dominated by neon, appearing as a pyramid—shaped cluster of frilled sections.", "This species requires a Icy or Rocky planet with a maximum gravity of 0.27, and Neon or Neon-rich atmosphere." );
-            Fonticulua.Add( "Fonticulua Upupam", 5727600, "This fonticulua species can he found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis.", "This species requires a Icy or Rocky planet with a maximum gravity of 0.27, and Argon-Rich atmosphere." );
-            Frutexa.Add( "Frutexa Acus", 7774700, "This frutexa species has vivid colouration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and Carbon Dioxide atmosphere." );
-            Frutexa.Add( "Frutexa Collum", 1639800, "A species of frutexa characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Sulfur Dioxide atmosphere." );
-            Frutexa.Add( "Frutexa Fera", 1632500, "This species of frutexa combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scaitered by light winds.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and Carbon Dioxide atmosphere." );
-            Frutexa.Add( "Frutexa Flabellum", 1808900, "A species of frutexa that appears as a bush of leaves with a similar texture to seaweed. Seeds are extended on long stalks and protected by a cage formation until ready to germinate.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Frutexa.Add( "Frutexa Flammasis", 10326000, "A frutexa species that gives the appearance of flames, with vivid upright fronds extended from multiple stalks. The fronds are dotted with disc-sha ped spores that are distributed by the wind.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Frutexa.Add( "Frutexa Metallicum", 1632500, "This species of frutexa has an almost metallic shine to its small leaves. Along its upper branches grow spherical spores, which each have a star-shaped opening to increase germination.", "This species requires a High Metal Content planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and Carbon Dioxide or Ammonia atmosphere." );
-            Frutexa.Add( "Frutexa Sponsae", 5988000, "A frutexa species that produces clusters of upright intertwining branches, which are crowned with bright seed sacks.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere." );
-            Fumerola.Add( "Fumerola Aquatis", 6284600, "A species of fumerola that can be found near sites of water-based volcanic activity. They appear as small dark clusters with ridged folds that trap heat within.", "This species requires a Icy or Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Water volcanism." );
-            Fumerola.Add( "Fumerola Carbosis", 6284600, "A fumerola species found near sites of carbon—based volcanism, appearing as a thin upright tube. An inner organism protrudes from an opening at its peak to increase heat absorption.", "This species requires a Icy or Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Carbon or Methane volcanism." );
-            Fumerola.Add( "Fumerola Extremus", 16202800, "An exception among its kin. this fumerola species seems to have an arbitrary preference of specific volcanism types which have yet to be explicitly linked in any way. They appear as long vertical stalks with smaller fronds that can stretch out.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, Any atmosphere, and Silicate, Iron or Rocky volcanism." );
-            Fumerola.Add( "Fumerola Nitris", 7500900, "This species of fumerola prefers nitrogen-based volcanism. They produce an ovoid organism with dotted markings, which sits on top of a thin stalk.", "This species requires a Icy or Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Nitrogen or Ammonia volcanism." );
-            Fungoida.Add( "Fungoida Bullarum", 3703200, "A fungoida that features clusters of mottled bubble-shaped growths atop a central stalk. These contain spores that can be exposed to the winds to facilitate distribution.", "This species requires a planet with a maximum gravity of 0.27, and Argon or Argon-rich atmosphere." );
-            Fungoida.Add( "Fungoida Gelata", 3330300, "This fungoida species resembles an upturned jellyfish, emerging from a solid base buried within the substrate. The exposed part is dominated by fleshy reproductive organisms that shed organic tissue. This tissue can float on the light breeze and form a new organism if it lands in the right location.", "This species requires a planet with a maximum gravity of 0.27, and Water or Carbon Dioxide atmosphere. Additionally, Carbon Dioxide atmospheres requires a temperature range of 180 to 195 kelvin." );
-            Fungoida.Add( "Fungoida Setisis", 1670100, "This fungoida species produces vertical clusters interspersed with spore pods atop thin stalks. allowing them to break off and scatter to reproduce elsewhere.", "This species requires a planet with a maximum gravity of 0.27, and Ammonia or Methane atmosphere." );
-            Fungoida.Add( "Fungoida Stabitis", 2680300, "A species of fungoida that thrives on geothermal energy. and can produce two-metre high tower structures composed of tightly clustered cylinders.", "This species requires a planet with a maximum gravity of 0.27, and Water or Carbon Dioxide atmosphere." );
-            Osseus.Add( "Osseus Cornibus", 1483000, "An osseus species that produces a stacked series of spiral structures up to about three metres. These ridged features are upturned to better absorb sunlight for photosynthesis.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Carbon Dioxide atmosphere." );
-            Osseus.Add( "Osseus Discus", 12934900, "An osseus that appears as half-buried discs with radial patterns, which may resemble natural rook formations from a distance. They absorb geothermal energy from below the surface as well as available heat sources above ground.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, and Water atmosphere." );
-            Osseus.Add( "Osseus Fractus", 4027800, "This osseus species can grow to over six metres across. They produce wide ridged frills for metabolic interactions including aosorbing sunlight for energy production.", "This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Carbon Dioxide atmosphere." );
-            Osseus.Add( "Osseus Pellebantus", 9739000, "A species of osseus with a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption.", "This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Carbon Dioxide atmosphere." );
-            Osseus.Add( "Osseus Pumice", 3156300, "This osseus species grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume ofthe organism, facilitating chemical capture and chemosynthesis on its catalytically active surface.", "This species requires a Rocky, High Metal Content or Rocky Ice planet with a maximum gravity of 0.27, and Argon, Methane or Nitrogen atmosphere." );
-            Osseus.Add( "Osseus Spiralis", 2404700, "A species of osseus that produces coiling spiral structures up to six metres wide. There are ridged folds on their upturned surfaces designed to capture sunlight.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Recepta.Add( "Recepta Conditivus", 14313700, "A recepta species where the body of the organism is suspended above ground inside a sphere-shaped translucent membrane. This is filled with chemical-rich ﬂuid that both protects the organism and provides the chemical soup needed for metabolism. Chemical exchange is controlled actively through the membrane and passively through the extensive root structure.", "This species requires a Icy or Rocky Ice planet with a maximum gravity of 0.27, and Sulfur Dioxide atmosphere." );
-            Recepta.Add( "Recepta Deltahedronix", 16202800, "This species of recepta produces a thick lattice of trunks in a deltahedron shape. This grows around and above the globular central organism, and helps to capture, retain and focus geothermal heat for thermosynthesis.", "This species requires a Rocky or High Metal Content planet with a maximum gravity of 0.27, and Sulfur Dioxide atmosphere." );
-            Recepta.Add( "Recepta Umbrux", 12934900, "A recepta species that grows a thick latticed structure for protection. A fine translucent membrane stretches between its gaps, allowing sunlight to penetrate and reach the inner organism for photosynthesis.", "This species requires a planet with a maximum gravity of 0.27, and Sulfur Dioxide atmosphere." );
-            SinuousTuber.Add( "Albidum Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            SinuousTuber.Add( "Blatteum Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            SinuousTuber.Add( "Caeruleum Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            SinuousTuber.Add( "Lindigoticum Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            SinuousTuber.Add( "Prasinum Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            SinuousTuber.Add( "Roseum Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            SinuousTuber.Add( "Violaceum Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            SinuousTuber.Add( "Viride Sinuous Tubers", 1514500, "", "This species requires a planet with a No atmosphere and Any volcanism, and Seemingly more common near galactic core." );
-            Stratum.Add( "Stratum Araneamus", 2448900, "A stratum species that has a vaguely octopoid shape. Their pale semi-translucent upper domes can reveal colourful inner organisms, which contrast with their darker outstretched tentacles.", "This species requires a Rocky planet with a temperature greater than 165 kelvin, and Sulfur Dioxide atmosphere." );
-            Stratum.Add( "Stratum Cucumisis", 16202800, "A species of stratum that displays fleshy ovoid shapes that are connected in a narrow pattern across the ground. These are covered with streaks of round photosynthetic cells that absorb sunlight.", "This species requires a Rocky planet with a temperature greater than 190 kelvin, and Sulfur Dioxide or Carbon Dioxide atmosphere." );
-            Stratum.Add( "Stratum Excutitus", 2448900, "This stratum species appears as a mixture of tight concentric ring patterns and mottled proto-leaves in a mixture of dark hues.", "This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and Sulfur Dioxide or Carbon Dioxide atmosphere." );
-            Stratum.Add( "Stratum Frigus", 2637500, "This species of stratum forms broad interconnected ring structures, which are composed of narrow ridges to capture sunlight.", "This species requires a Rocky planet with a temperature greater than 190 kelvin, and Sulfur Dioxide or Carbon Dioxide atmosphere." );
-            Stratum.Add( "Stratum Laminamus", 2788300, "This particular stratum species gives the appearance of overlapping rock plateaus, each with narrow bands of colouration.", "This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia atmosphere." );
-            Stratum.Add( "Stratum Limaxus", 1362000, "This species of stratum appears as a series of unconnected ovoid sha pes across the ground, which are the protruding tips of the larger subterranean organism.", "This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and Sulfur Dioxide or Carbon Dioxide atmosphere." );
-            Stratum.Add( "Stratum Paleas", 1362000, "A stratum that blends thick overlapping vines with irregular growths. with varying colours appearing in bands or streaks.  ", "This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia, Water or Carbon Dioxide atmosphere." );
-            Stratum.Add( "Stratum Tectonicas", 19010800, "A stratum species with a thick rock-like outer shell, covered with an irregular lattice of brighter cells that absorb sunlight for photosynthesis.", "This species requires a High Metal Content planet with a temperature greater than 165 kelvin, and Any Thin atmosphere." );
-            Tubus.Add( "Tubus Cavas", 11873200, "A tubus species that extends pale vertical stalks composed of rigid modules. Colourful fronds frequently appear in the gaps between segments and aid with controlling gaseous exchange.", "This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and Carbon Dioxide atmosphere." );
-            Tubus.Add( "Tubus Compagibus", 7774700, "A tubus species with narrow pale segments and fronds growing between each module. A wide crown of leaves at the peak hold spores on their undersides, to germinate across a wide area.", "This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and Carbon Dioxide atmosphere." );
-            Tubus.Add( "Tubus Conifer", 2415500, "A tubus species formed from hollow vertical cylinders that can reach heights of six metres. Mature specimens are capped with a downtu rned crown that can distribute seeds on the wind across a wide area.", "This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and Carbon Dioxide atmosphere." );
-            Tubus.Add( "Tubus Rosarium", 2637500, "This tubus species is composed of squat tubes growing into a vertical spire. The upper pods of mature specimens produce explosive seed pods on their outer skin.", "This species requires a Rocky planet with a maximum gravity of 0.15, a temperature greater than 160 kelvin, and Ammonia atmosphere." );
-            Tubus.Add( "Tubus Sororibus", 5727600, "This species of tubus grows a cluster of hollow stalks composed of rigid segments. Over time these become capped with a growth that flowers and produces seeds.", "This species requires a High Metal Content planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and Carbon Dioxide or Ammonia atmosphere." );
-            Tussock.Add( "Tussock Albata", 3252500, "A tussock species characterised by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Capillum", 7025800, "This tussock species is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carw a number of round beans.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Argon or Methane atmosphere." );
-            Tussock.Add( "Tussock Caputus", 3472400, "A tussock species with leaves that have a thick segmented lower half and a willowy upper half. Mature versions produce separate stalks that carry ovoid organisms clotted with spores.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Catena", 1766600, "This species of tussock has very thin stalks carrying twin sets of seed sacks along their entire length, resembling links on a chain.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Tussock.Add( "Tussock Cultro", 1766600, "A tussock species with tall sharp reeds reaching about two metres, characterised by narrow markings along their length.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Tussock.Add( "Tussock Divisa", 1766600, "This tussock species blends thick segmented lower growths with longer. narrower leaves. Mature versions have pale spores along the upper branches.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere." );
-            Tussock.Add( "Tussock Ignis", 1849000, "This tussock species produces thick intertwined leaves, above which sprout narrow stems crowned with seed pods.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 160 to 170 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Pennata", 5853800, "A tussock species that extends large seed pods on thin stems above a cluster of bright leaves.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 145 to 155 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Pennatis", 1000000, "A tussock species with feather-shaped growths surrounding a single segmented stem which when mature is crowned with colourful seeds.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Propagito", 1000000, "A species of tussock that sprouts tapering leaves, with tips covered with colourful seed pods.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Serrati", 4447100, "This tussock species sprouts serrated leaves around thick stalks that produce dark seed pods.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 170 to 175 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Stigmasis", 19010800, "This tussock species resembles a patch of tough. wiry grasses. Taller stalks carrying disc-shaped seed pods rise above the main organism when mature.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Sulfur Dioxide atmosphere." );
-            Tussock.Add( "Tussock Triticum", 7774700, "A species of tussock with thin tough leaves marked with dark stripes. From these sprout taller stalks with small leaves, from which seeds are released to the winds.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Ventusa", 3227700, "A species of tussock that blends tough lower stalks with taller willowy reeds, which produce small pale spores.", "This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 155 to 160 kelvin, and Carbon Dioxide atmosphere." );
-            Tussock.Add( "Tussock Virgam", 14313700, "A species of tussock with thin reeds clustered around a central stalk. which is eventually crowned with spores.", "This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere." );
 
-            // Other Organics
-            //  - Value is for a new codex entry voucher
-            MineralSpheres.Add( "Solid Mineral Spheres", 50000, "", "" );
-            MineralSpheres.Add( "Lattice Mineral Spheres", 50000, "", "" );
-            MetallicCrystals.Add( "Prasinum Metallic Crystals", 50000, "", "" );
-            MetallicCrystals.Add( "Purpureum Metallic Crystals", 50000, "", "" );
-            MetallicCrystals.Add( "Rubeum Metallic Crystals", 50000, "", "" );
-            MetallicCrystals.Add( "Flavum Metallic Crystals", 50000, "", "" );
-            SilicateCrystals.Add( "Lindigoticum Silicate Crystals", 50000, "", "" );
-            SilicateCrystals.Add( "Prasinum Silicate Crystals", 50000, "", "" );
-            SilicateCrystals.Add( "Roseum Silicate Crystals", 50000, "", "" );
-            SilicateCrystals.Add( "Purpureum Silicate Crystals", 50000, "", "" );
-            SilicateCrystals.Add( "Albidium Silicate Crystals", 50000, "", "" );
-            SilicateCrystals.Add( "Rubeum Silicate Crystals", 50000, "", "" );
-            SilicateCrystals.Add( "Flavum Silicate Crystals", 50000, "", "" );
-            IceCrystals.Add( "Lindigoticum Ice Crystals", 50000, "", "" );
-            IceCrystals.Add( "Prasinum Ice Crystals", 50000, "", "" );
-            IceCrystals.Add( "Roseum Ice Crystals", 50000, "", "" );
-            IceCrystals.Add( "Purpureum Ice Crystals", 50000, "", "" );
-            IceCrystals.Add( "Rubeum Ice Crystals", 50000, "", "" );
-            IceCrystals.Add( "Albidium Ice Crystals", 50000, "", "" );
-            IceCrystals.Add( "Flavum Ice Crystals", 50000, "", "" );
-            ReelMolluscs.Add( "Luteolum Reel Mollusc", 50000, "", "" );
-            ReelMolluscs.Add( "Lindigoticum Reel Mollusc", 50000, "", "" );
-            ReelMolluscs.Add( "Viride Reel Mollusc", 50000, "", "" );
-            GlobeMolluscs.Add( "Niveum Globe Molluscs", 50000, "", "" );
-            BellMolluscs.Add( "Albens Bell Mollusc", 50000, "", "" );
-            BellMolluscs.Add( "Blatteum Bell Mollusc", 50000, "", "" );
-            BellMolluscs.Add( "Lindigoticum Bell Mollusc", 50000, "", "" );
-            UmbrellaMolluscs.Add( "Luteolum Umbrella Mollusc", 50000, "", "" );
-            UmbrellaMolluscs.Add( "Lindigoticum Umbrella Mollusc", 50000, "", "" );
-            UmbrellaMolluscs.Add( "Viride Umbrella Mollusc", 50000, "", "" );
-            GourdMollusc.Add( "Albulum Gourd Mollusc", 50000, "", "" );
-            GourdMollusc.Add( "Caeruleum Gourd Mollusc", 50000, "", "" );
-            GourdMollusc.Add( "Viride Gourd Mollusc", 50000, "", "" );
-            GourdMollusc.Add( "Phoeniceum Gourd Mollusc", 50000, "", "" );
-            GourdMollusc.Add( "Purpureum Gourd Mollusc", 50000, "", "" );
-            GourdMollusc.Add( "Rufum Gourd Mollusc", 50000, "", "" );
-            GourdMollusc.Add( "Croceum Gourd Mollusc", 50000, "", "" );
-            TorusMolluscs.Add( "Caeruleum Torus Mollusc", 50000, "", "" );
-            TorusMolluscs.Add( "Rubellum Torus Mollusc", 50000, "", "" );
-            BulbMolluscs.Add( "Luteolum Bulb Mollusc", 50000, "", "" );
-            BulbMolluscs.Add( "Lindigoticum Bulb Mollusc", 50000, "", "" );
-            BulbMolluscs.Add( "Viride Bulb Mollusc", 50000, "", "" );
-            ParasolMolluscs.Add( "Luteolum Parasol Mollusc", 50000, "", "" );
-            ParasolMolluscs.Add( "Lindigoticum Parasol Mollusc", 50000, "", "" );
-            ParasolMolluscs.Add( "Viride Parasol Mollusc", 50000, "", "" );
-            SquidMolluscs.Add( "Albulum Squid Mollusc", 50000, "", "" );
-            SquidMolluscs.Add( "Caeruleum Squid Mollusc", 50000, "", "" );
-            SquidMolluscs.Add( "Puniceum Squid Mollusc", 50000, "", "" );
-            SquidMolluscs.Add( "Rubeum Squid Mollusc", 50000, "", "" );
-            SquidMolluscs.Add( "Roseum Squid Mollusc", 50000, "", "" );
-            BulletMolluscs.Add( "Cereum Bullet Mollusc", 50000, "", "" );
-            BulletMolluscs.Add( "Lividum Bullet Mollusc", 50000, "", "" );
-            BulletMolluscs.Add( "Viride Bullet Mollusc", 50000, "", "" );
-            BulletMolluscs.Add( "Rubeum Bullet Mollusc", 50000, "", "" );
-            BulletMolluscs.Add( "Flavum Bullet Mollusc", 50000, "", "" );
-            CapsuleMolluscs.Add( "Luteolum Capsule Mollusc", 50000, "", "" );
-            CapsuleMolluscs.Add( "Lindigoticum Capsule Mollusc", 50000, "", "" );
-            CollaredPod.Add( "Albidum Collared Pod", 50000, "", "" );
-            CollaredPod.Add( "Lividum Collared Pod", 50000, "", "" );
-            CollaredPod.Add( "Blatteum Collared Pod", 50000, "", "" );
-            CollaredPod.Add( "Rubicundum Collared Pod", 50000, "", "" );
-            StolonPod.Add( "Stolon Pod", 50000, "", "" );
-            StolonTree.Add( "Stolon Tree", 50000, "", "" );
-            AsterPods.Add( "Cereum Aster Pod", 50000, "", "" );
-            AsterPods.Add( "Lindigoticum Aster Pod", 50000, "", "" );
-            AsterPods.Add( "Prasinum Aster Pod", 50000, "", "" );
-            AsterPods.Add( "Puniceum Aster Pod", 50000, "", "" );
-            AsterPods.Add( "Rubellum Aster Pod", 50000, "", "" );
-            ChalicePods.Add( "Albidum Chalice Pod", 50000, "", "" );
-            ChalicePods.Add( "Ostrinum Chalice Pod", 50000, "", "" );
-            PedunclePods.Add( "Candidum peduncle Pod", 50000, "", "" );
-            PedunclePods.Add( "Caeruleum peduncle Pod", 50000, "", "" );
-            PedunclePods.Add( "Gypseeum peduncle Pod", 50000, "", "" );
-            PedunclePods.Add( "Purpureum peduncle Pod", 50000, "", "" );
-            PedunclePods.Add( "Rufum peduncle Pod", 50000, "", "" );
-            RhizomePods.Add( "Candidum Rhizome Pod", 50000, "", "" );
-            RhizomePods.Add( "Cobalteum Rhizome Pod", 50000, "", "" );
-            RhizomePods.Add( "Gypseeum Rhizome Pod", 50000, "", "" );
-            RhizomePods.Add( "Purpureum Rhizome Pod", 50000, "", "" );
-            RhizomePods.Add( "Rubeum Rhizome Pod", 50000, "", "" );
-            QuadripartitePods.Add( "Albidum Quadripartite Pod", 50000, "", "" );
-            QuadripartitePods.Add( "Caeruleum Quadripartite Pod", 50000, "", "" );
-            QuadripartitePods.Add( "Viride Quadripartite Pod", 50000, "", "" );
-            QuadripartitePods.Add( "Blatteum Quadripartite Pod", 50000, "", "" );
-            OctahedralPods.Add( "Niveus Octahedral Pod", 50000, "", "" );
-            OctahedralPods.Add( "Caeruleum Octahedral Pod", 50000, "", "" );
-            OctahedralPods.Add( "Viride Octahedral Pod", 50000, "", "" );
-            OctahedralPods.Add( "Rubeum Octahedral Pod", 50000, "", "" );
-            AsterTrees.Add( "Cereum Aster Tree", 50000, "", "" );
-            AsterTrees.Add( "Prasinum Aster Tree", 50000, "", "" );
-            AsterTrees.Add( "Rubellum Aster Tree", 50000, "", "" );
-            PeduncleTrees.Add( "Albidum Peduncle Tree", 50000, "", "" );
-            PeduncleTrees.Add( "Caeruleum Peduncle Tree", 50000, "", "" );
-            PeduncleTrees.Add( "Viride Peduncle Tree", 50000, "", "" );
-            PeduncleTrees.Add( "Ostrinum Peduncle Tree", 50000, "", "" );
-            PeduncleTrees.Add( "Rubellum Peduncle Tree", 50000, "", "" );
-            GyreTrees.Add( "Viridis Gyre Tree", 50000, "", "" );
-            GyrePods.Add( "", 50000, "", "" );
-            VoidHearts.Add( "Chryseum Void Heart", 50000, "", "" );
-            CalcitePlates.Add( "Luteolum Calcite Plates", 50000, "", "" );
-            CalcitePlates.Add( "Lindigoticum Calcite Plates", 50000, "", "" );
-            CalcitePlates.Add( "Viride Calcite Plates", 50000, "", "" );
-            ThargoidBarnacles.Add( "Common Thargoid Barnacle", 50000, "These biological structures extract resources from a planet and convert them into meta-alloys, a key component in the creation of Thargoid ships and technologies.", "" );
-            ThargoidBarnacles.Add( "Large Thargoid Barnacle", 50000, "These biological structures extract resources from a planet and convert them into meta-alloys, a key component in the creation of Thargoid ships and technologies.", "" );
-            ThargoidBarnacles.Add( "Thargoid Barnacle Barbs", 50000, "These biological structures are typically found near Thargoid barnacles. Smaller ones contain rare elements, while larger ones contain meta-alloys.", "" );
+            // Create the lookup tables 
+
+            // Data from EntryID (This is the preferred method)
+            // ( <entryid>, <genus>, <species>, <variant> )
+            EntryIdData.Add( 2320609, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Green" ) );
+            EntryIdData.Add( 2320610, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Yellow" ) );
+            EntryIdData.Add( 2320613, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Indigo" ) );
+            EntryIdData.Add( 2320612, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Teal" ) );
+            EntryIdData.Add( 2320706, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Turquoise" ) );
+            EntryIdData.Add( 2320701, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Lime" ) );
+            EntryIdData.Add( 2320705, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Emerald" ) );
+            EntryIdData.Add( 2320702, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Ocher" ) );
+            EntryIdData.Add( 2320703, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Sage" ) );
+            EntryIdData.Add( 2320704, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Mauve" ) );
+            EntryIdData.Add( 2320805, new LookupEntryId( "Aleoids", "AleoidaArcus", "AleoidaArcus_Grey" ) );
+            EntryIdData.Add( 2320803, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Green" ) );
+            EntryIdData.Add( 2320804, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Yellow" ) );
+            EntryIdData.Add( 2320801, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Indigo" ) );
+            EntryIdData.Add( 2320802, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Teal" ) );
+            EntryIdData.Add( 2320806, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Turquoise" ) );
+            EntryIdData.Add( 2320905, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Lime" ) );
+            EntryIdData.Add( 2320903, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Emerald" ) );
+            EntryIdData.Add( 2320904, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Ocher" ) );
+            EntryIdData.Add( 2320901, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Sage" ) );
+            EntryIdData.Add( 2320902, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Mauve" ) );
+            EntryIdData.Add( 2320906, new LookupEntryId( "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Amethyst" ) );
+            EntryIdData.Add( 2321005, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Green" ) );
+            EntryIdData.Add( 2321003, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Yellow" ) );
+            EntryIdData.Add( 2321004, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Indigo" ) );
+            EntryIdData.Add( 2321001, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Teal" ) );
+            EntryIdData.Add( 2321002, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Turquoise" ) );
+            EntryIdData.Add( 2321006, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Lime" ) );
+            EntryIdData.Add( 2321106, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Emerald" ) );
+            EntryIdData.Add( 2321101, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Ocher" ) );
+            EntryIdData.Add( 2321105, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Sage" ) );
+            EntryIdData.Add( 2321102, new LookupEntryId( "Aleoids", "AleoidaSpica", "AleoidaSpica_Mauve" ) );
+            EntryIdData.Add( 2321103, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Green" ) );
+            EntryIdData.Add( 2321104, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Yellow" ) );
+            EntryIdData.Add( 2321203, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Teal" ) );
+            EntryIdData.Add( 2321211, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Turquoise" ) );
+            EntryIdData.Add( 2321202, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Lime" ) );
+            EntryIdData.Add( 2321214, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Emerald" ) );
+            EntryIdData.Add( 2321204, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Ocher" ) );
+            EntryIdData.Add( 2321205, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Sage" ) );
+            EntryIdData.Add( 2321206, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Mauve" ) );
+            EntryIdData.Add( 2321208, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Grey" ) );
+            EntryIdData.Add( 2321207, new LookupEntryId( "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Amethyst" ) );
+            EntryIdData.Add( 2321215, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Green" ) );
+            EntryIdData.Add( 2321201, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Yellow" ) );
+            EntryIdData.Add( 2321209, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Teal" ) );
+            EntryIdData.Add( 2321210, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Turquoise" ) );
+            EntryIdData.Add( 2321213, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Lime" ) );
+            EntryIdData.Add( 2321212, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Emerald" ) );
+            EntryIdData.Add( 2321306, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Ocher" ) );
+            EntryIdData.Add( 2321301, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Sage" ) );
+            EntryIdData.Add( 2321305, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Mauve" ) );
+            EntryIdData.Add( 2321302, new LookupEntryId( "Aleoids", "AleoidaGravis", "AleoidaGravis_Amethyst" ) );
+            EntryIdData.Add( 2321303, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Yellow" ) );
+            EntryIdData.Add( 2321304, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Orange" ) );
+            EntryIdData.Add( 3100402, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Grey" ) );
+            EntryIdData.Add( 3100802, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Ocher" ) );
+            EntryIdData.Add( 2330103, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Lime" ) );
+            EntryIdData.Add( 2330114, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Emerald" ) );
+            EntryIdData.Add( 2330104, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Green" ) );
+            EntryIdData.Add( 2330105, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Sage" ) );
+            EntryIdData.Add( 2330108, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Teal" ) );
+            EntryIdData.Add( 2330107, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Indigo" ) );
+            EntryIdData.Add( 2330115, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Turquoise" ) );
+            EntryIdData.Add( 2330109, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Red" ) );
+            EntryIdData.Add( 2330110, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Maroon" ) );
+            EntryIdData.Add( 2330112, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Amethyst" ) );
+            EntryIdData.Add( 2330203, new LookupEntryId( "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Mauve" ) );
+            EntryIdData.Add( 2330214, new LookupEntryId( "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Magenta" ) );
+            EntryIdData.Add( 2330204, new LookupEntryId( "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Gold" ) );
+            EntryIdData.Add( 2330205, new LookupEntryId( "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Orange" ) );
+            EntryIdData.Add( 2330208, new LookupEntryId( "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Cyan" ) );
+            EntryIdData.Add( 2330207, new LookupEntryId( "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Green" ) );
+            EntryIdData.Add( 2330215, new LookupEntryId( "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Cobalt" ) );
+            EntryIdData.Add( 2330201, new LookupEntryId( "Bacterial", "BacteriumScopulum", "BacteriumScopulum_White" ) );
+            EntryIdData.Add( 2330209, new LookupEntryId( "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Peach" ) );
+            EntryIdData.Add( 2330210, new LookupEntryId( "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Lime" ) );
+            EntryIdData.Add( 2330213, new LookupEntryId( "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Red" ) );
+            EntryIdData.Add( 2330212, new LookupEntryId( "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Mulberry" ) );
+            EntryIdData.Add( 2330303, new LookupEntryId( "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Aquamarine" ) );
+            EntryIdData.Add( 2330304, new LookupEntryId( "Bacterial", "BacteriumAcies", "BacteriumAcies_Cyan" ) );
+            EntryIdData.Add( 2330305, new LookupEntryId( "Bacterial", "BacteriumAcies", "BacteriumAcies_Magenta" ) );
+            EntryIdData.Add( 2330308, new LookupEntryId( "Bacterial", "BacteriumAcies", "BacteriumAcies_Cobalt" ) );
+            EntryIdData.Add( 2330307, new LookupEntryId( "Bacterial", "BacteriumAcies", "BacteriumAcies_Lime" ) );
+            EntryIdData.Add( 2330315, new LookupEntryId( "Bacterial", "BacteriumAcies", "BacteriumAcies_White" ) );
+            EntryIdData.Add( 2330309, new LookupEntryId( "Bacterial", "BacteriumAcies", "BacteriumAcies_Aquamarine" ) );
+            EntryIdData.Add( 2330310, new LookupEntryId( "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Cyan" ) );
+            EntryIdData.Add( 2330403, new LookupEntryId( "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Orange" ) );
+            EntryIdData.Add( 2330414, new LookupEntryId( "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Mulberry" ) );
+            EntryIdData.Add( 2330404, new LookupEntryId( "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Gold" ) );
+            EntryIdData.Add( 2330405, new LookupEntryId( "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Red" ) );
+            EntryIdData.Add( 2330408, new LookupEntryId( "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Lime" ) );
+            EntryIdData.Add( 2330407, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Yellow" ) );
+            EntryIdData.Add( 2330415, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Grey" ) );
+            EntryIdData.Add( 2330409, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Ocher" ) );
+            EntryIdData.Add( 2330410, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Lime" ) );
+            EntryIdData.Add( 2330503, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Emerald" ) );
+            EntryIdData.Add( 2330514, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Green" ) );
+            EntryIdData.Add( 2330504, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Sage" ) );
+            EntryIdData.Add( 2330505, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Teal" ) );
+            EntryIdData.Add( 2330508, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Indigo" ) );
+            EntryIdData.Add( 2330507, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Turquoise" ) );
+            EntryIdData.Add( 2330515, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Red" ) );
+            EntryIdData.Add( 2330509, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Maroon" ) );
+            EntryIdData.Add( 2330510, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Amethyst" ) );
+            EntryIdData.Add( 2330512, new LookupEntryId( "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Mauve" ) );
+            EntryIdData.Add( 3101300, new LookupEntryId( "Bacterial", "BacteriumTela", "BacteriumTela_Gold" ) );
+            EntryIdData.Add( 2340103, new LookupEntryId( "Bacterial", "BacteriumTela", "BacteriumTela_Orange" ) );
+            EntryIdData.Add( 2340102, new LookupEntryId( "Bacterial", "BacteriumTela", "BacteriumTela_Yellow" ) );
+            EntryIdData.Add( 2340112, new LookupEntryId( "Bacterial", "BacteriumTela", "BacteriumTela_Magenta" ) );
+            EntryIdData.Add( 2340104, new LookupEntryId( "Bacterial", "BacteriumTela", "BacteriumTela_Cobalt" ) );
+            EntryIdData.Add( 2340105, new LookupEntryId( "Bacterial", "BacteriumTela", "BacteriumTela_Green" ) );
+            EntryIdData.Add( 2340106, new LookupEntryId( "Bacterial", "BacteriumInformem", "BacteriumInformem_Red" ) );
+            EntryIdData.Add( 2340108, new LookupEntryId( "Bacterial", "BacteriumInformem", "BacteriumInformem_Lime" ) );
+            EntryIdData.Add( 2340107, new LookupEntryId( "Bacterial", "BacteriumInformem", "BacteriumInformem_Gold" ) );
+            EntryIdData.Add( 2340113, new LookupEntryId( "Bacterial", "BacteriumInformem", "BacteriumInformem_Aquamarine" ) );
+            EntryIdData.Add( 2340110, new LookupEntryId( "Bacterial", "BacteriumInformem", "BacteriumInformem_Yellow" ) );
+            EntryIdData.Add( 2340203, new LookupEntryId( "Bacterial", "BacteriumInformem", "BacteriumInformem_Cobalt" ) );
+            EntryIdData.Add( 2340202, new LookupEntryId( "Bacterial", "BacteriumVolu", "BacteriumVolu_Red" ) );
+            EntryIdData.Add( 2340204, new LookupEntryId( "Bacterial", "BacteriumVolu", "BacteriumVolu_Aquamarine" ) );
+            EntryIdData.Add( 2340205, new LookupEntryId( "Bacterial", "BacteriumVolu", "BacteriumVolu_Cobalt" ) );
+            EntryIdData.Add( 2340206, new LookupEntryId( "Bacterial", "BacteriumVolu", "BacteriumVolu_Lime" ) );
+            EntryIdData.Add( 2340208, new LookupEntryId( "Bacterial", "BacteriumVolu", "BacteriumVolu_Cyan" ) );
+            EntryIdData.Add( 2340207, new LookupEntryId( "Bacterial", "BacteriumVolu", "BacteriumVolu_Gold" ) );
+            EntryIdData.Add( 2340213, new LookupEntryId( "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Cobalt" ) );
+            EntryIdData.Add( 2340210, new LookupEntryId( "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Yellow" ) );
+            EntryIdData.Add( 2340303, new LookupEntryId( "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Aquamarine" ) );
+            EntryIdData.Add( 2340302, new LookupEntryId( "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Gold" ) );
+            EntryIdData.Add( 2340304, new LookupEntryId( "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Lime" ) );
+            EntryIdData.Add( 2340305, new LookupEntryId( "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Red" ) );
+            EntryIdData.Add( 2340306, new LookupEntryId( "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Lime" ) );
+            EntryIdData.Add( 2340307, new LookupEntryId( "Bacterial", "BacteriumOmentum", "BacteriumOmentum_White" ) );
+            EntryIdData.Add( 2340313, new LookupEntryId( "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Aquamarine" ) );
+            EntryIdData.Add( 2350106, new LookupEntryId( "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Peach" ) );
+            EntryIdData.Add( 2350101, new LookupEntryId( "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Red" ) );
+            EntryIdData.Add( 2350105, new LookupEntryId( "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Blue" ) );
+            EntryIdData.Add( 2350102, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Yellow" ) );
+            EntryIdData.Add( 2350103, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Orange" ) );
+            EntryIdData.Add( 2350104, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Grey" ) );
+            EntryIdData.Add( 2350202, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Ocher" ) );
+            EntryIdData.Add( 2350201, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Lime" ) );
+            EntryIdData.Add( 2350209, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Emerald" ) );
+            EntryIdData.Add( 2350203, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Green" ) );
+            EntryIdData.Add( 2350204, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Sage" ) );
+            EntryIdData.Add( 2350205, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Teal" ) );
+            EntryIdData.Add( 2350206, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Indigo" ) );
+            EntryIdData.Add( 2350210, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Turquoise" ) );
+            EntryIdData.Add( 2350207, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Red" ) );
+            EntryIdData.Add( 2350302, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Maroon" ) );
+            EntryIdData.Add( 2350301, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Amethyst" ) );
+            EntryIdData.Add( 2350309, new LookupEntryId( "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Mauve" ) );
+            EntryIdData.Add( 2350303, new LookupEntryId( "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Peach" ) );
+            EntryIdData.Add( 2350304, new LookupEntryId( "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Red" ) );
+            EntryIdData.Add( 2350305, new LookupEntryId( "Bacterial", "BacteriumVerrata", "BacteriumVerrata_White" ) );
+            EntryIdData.Add( 2350306, new LookupEntryId( "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Mulberry" ) );
+            EntryIdData.Add( 2350310, new LookupEntryId( "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Blue" ) );
+            EntryIdData.Add( 2350308, new LookupEntryId( "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Lime" ) );
+            EntryIdData.Add( 2350307, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Green" ) );
+            EntryIdData.Add( 2350405, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Turquoise" ) );
+            EntryIdData.Add( 2350403, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Yellow" ) );
+            EntryIdData.Add( 2350404, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Teal" ) );
+            EntryIdData.Add( 2350401, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Mauve" ) );
+            EntryIdData.Add( 2350402, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Amethyst" ) );
+            EntryIdData.Add( 2350406, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Sage" ) );
+            EntryIdData.Add( 2100301, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Orange" ) );
+            EntryIdData.Add( 3100401, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Red" ) );
+            EntryIdData.Add( 2360105, new LookupEntryId( "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Ocher" ) );
+            EntryIdData.Add( 2360103, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Green" ) );
+            EntryIdData.Add( 2360104, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Turquoise" ) );
+            EntryIdData.Add( 2360101, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Yellow" ) );
+            EntryIdData.Add( 2360102, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Teal" ) );
+            EntryIdData.Add( 2360106, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Mauve" ) );
+            EntryIdData.Add( 2360205, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Amethyst" ) );
+            EntryIdData.Add( 2360203, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Sage" ) );
+            EntryIdData.Add( 2360204, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Grey" ) );
+            EntryIdData.Add( 2360201, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Orange" ) );
+            EntryIdData.Add( 2360202, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Red" ) );
+            EntryIdData.Add( 2360206, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Indigo" ) );
+            EntryIdData.Add( 2370103, new LookupEntryId( "Cactoid", "CactoidaLapis", "CactoidaLapis_Ocher" ) );
+            EntryIdData.Add( 2370111, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Green" ) );
+            EntryIdData.Add( 2370102, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Yellow" ) );
+            EntryIdData.Add( 2370114, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Teal" ) );
+            EntryIdData.Add( 2370104, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Mauve" ) );
+            EntryIdData.Add( 2370105, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Amethyst" ) );
+            EntryIdData.Add( 2370106, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Sage" ) );
+            EntryIdData.Add( 2370108, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Orange" ) );
+            EntryIdData.Add( 2370107, new LookupEntryId( "Cactoid", "CactoidaVermis", "CactoidaVermis_Red" ) );
+            EntryIdData.Add( 2370115, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Green" ) );
+            EntryIdData.Add( 2370109, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Turquoise" ) );
+            EntryIdData.Add( 2370110, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Yellow" ) );
+            EntryIdData.Add( 2370112, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Teal" ) );
+            EntryIdData.Add( 2370203, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Mauve" ) );
+            EntryIdData.Add( 2370211, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Amethyst" ) );
+            EntryIdData.Add( 2370202, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Sage" ) );
+            EntryIdData.Add( 2370214, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Orange" ) );
+            EntryIdData.Add( 2370204, new LookupEntryId( "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Red" ) );
+            EntryIdData.Add( 2370205, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Green" ) );
+            EntryIdData.Add( 2370206, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Turquoise" ) );
+            EntryIdData.Add( 2370208, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Yellow" ) );
+            EntryIdData.Add( 2370207, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Teal" ) );
+            EntryIdData.Add( 2370215, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Mauve" ) );
+            EntryIdData.Add( 2370201, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Amethyst" ) );
+            EntryIdData.Add( 2370209, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Sage" ) );
+            EntryIdData.Add( 2370210, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Orange" ) );
+            EntryIdData.Add( 2370212, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Red" ) );
+            EntryIdData.Add( 2370303, new LookupEntryId( "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Ocher" ) );
+            EntryIdData.Add( 2370311, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Orange" ) );
+            EntryIdData.Add( 2370302, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Maroon" ) );
+            EntryIdData.Add( 2370314, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Lime" ) );
+            EntryIdData.Add( 2370304, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Mauve" ) );
+            EntryIdData.Add( 2370305, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Amethyst" ) );
+            EntryIdData.Add( 2370306, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Grey" ) );
+            EntryIdData.Add( 2370308, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Teal" ) );
+            EntryIdData.Add( 2370307, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Turquoise" ) );
+            EntryIdData.Add( 2370315, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Yellow" ) );
+            EntryIdData.Add( 2370309, new LookupEntryId( "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Green" ) );
+            EntryIdData.Add( 2370310, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Orange" ) );
+            EntryIdData.Add( 2370313, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Maroon" ) );
+            EntryIdData.Add( 2370312, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Mauve" ) );
+            EntryIdData.Add( 2370403, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Amethyst" ) );
+            EntryIdData.Add( 2370411, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Grey" ) );
+            EntryIdData.Add( 2370402, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Teal" ) );
+            EntryIdData.Add( 2370414, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Turquoise" ) );
+            EntryIdData.Add( 2370404, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Yellow" ) );
+            EntryIdData.Add( 2370405, new LookupEntryId( "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Green" ) );
+            EntryIdData.Add( 2370406, new LookupEntryId( "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Orange" ) );
+            EntryIdData.Add( 2370408, new LookupEntryId( "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Maroon" ) );
+            EntryIdData.Add( 2370407, new LookupEntryId( "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Mauve" ) );
+            EntryIdData.Add( 2370415, new LookupEntryId( "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Amethyst" ) );
+            EntryIdData.Add( 2370401, new LookupEntryId( "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Grey" ) );
+            EntryIdData.Add( 2370409, new LookupEntryId( "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Turquoise" ) );
+            EntryIdData.Add( 2370410, new LookupEntryId( "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Yellow" ) );
+            EntryIdData.Add( 2370412, new LookupEntryId( "Conchas", "ConchaRenibus", "ConchaRenibus_Red" ) );
+            EntryIdData.Add( 2370503, new LookupEntryId( "Conchas", "ConchaRenibus", "ConchaRenibus_Mulberry" ) );
+            EntryIdData.Add( 2370502, new LookupEntryId( "Conchas", "ConchaRenibus", "ConchaRenibus_Peach" ) );
+            EntryIdData.Add( 2370504, new LookupEntryId( "Conchas", "ConchaRenibus", "ConchaRenibus_Blue" ) );
+            EntryIdData.Add( 2370505, new LookupEntryId( "Conchas", "ConchaRenibus", "ConchaRenibus_Aquamarine" ) );
+            EntryIdData.Add( 2370506, new LookupEntryId( "Conchas", "ConchaRenibus", "ConchaRenibus_White" ) );
+            EntryIdData.Add( 2370508, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Teal" ) );
+            EntryIdData.Add( 2370507, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Indigo" ) );
+            EntryIdData.Add( 2370515, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Green" ) );
+            EntryIdData.Add( 2370509, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Grey" ) );
+            EntryIdData.Add( 2370510, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Turquoise" ) );
+            EntryIdData.Add( 2370603, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Red" ) );
+            EntryIdData.Add( 2370602, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Orange" ) );
+            EntryIdData.Add( 2370614, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Emerald" ) );
+            EntryIdData.Add( 2370604, new LookupEntryId( "Conchas", "ConchaAureolas", "ConchaAureolas_Yellow" ) );
+            EntryIdData.Add( 2370605, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Teal" ) );
+            EntryIdData.Add( 2370606, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Indigo" ) );
+            EntryIdData.Add( 2370608, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Green" ) );
+            EntryIdData.Add( 2370607, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Grey" ) );
+            EntryIdData.Add( 2370615, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Turquoise" ) );
+            EntryIdData.Add( 2370609, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Red" ) );
+            EntryIdData.Add( 2370610, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Orange" ) );
+            EntryIdData.Add( 2370612, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Emerald" ) );
+            EntryIdData.Add( 1400109, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Lime" ) );
+            EntryIdData.Add( 1400114, new LookupEntryId( "Conchas", "ConchaLabiata", "ConchaLabiata_Yellow" ) );
+            EntryIdData.Add( 1400102, new LookupEntryId( "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Peach" ) );
+            EntryIdData.Add( 1400108, new LookupEntryId( "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Red" ) );
+            EntryIdData.Add( 2380106, new LookupEntryId( "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Orange" ) );
+            EntryIdData.Add( 2380101, new LookupEntryId( "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_White" ) );
+            EntryIdData.Add( 2380105, new LookupEntryId( "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Yellow" ) );
+            EntryIdData.Add( 2380102, new LookupEntryId( "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Gold" ) );
+            EntryIdData.Add( 2380103, new LookupEntryId( "Cone", "BarkMounds", "BarkMounds" ) );
+            EntryIdData.Add( 2380104, new LookupEntryId( "Electricae", "ElectricaePluma", "ElectricaePluma_Cobalt" ) );
+            EntryIdData.Add( 2380206, new LookupEntryId( "Electricae", "ElectricaePluma", "ElectricaePluma_Cyan" ) );
+            EntryIdData.Add( 2380201, new LookupEntryId( "Electricae", "ElectricaePluma", "ElectricaePluma_Blue" ) );
+            EntryIdData.Add( 2380205, new LookupEntryId( "Electricae", "ElectricaePluma", "ElectricaePluma_Magenta" ) );
+            EntryIdData.Add( 2380202, new LookupEntryId( "Electricae", "ElectricaePluma", "ElectricaePluma_Red" ) );
+            EntryIdData.Add( 2380203, new LookupEntryId( "Electricae", "ElectricaePluma", "ElectricaePluma_Mulberry" ) );
+            EntryIdData.Add( 2380204, new LookupEntryId( "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Cyan" ) );
+            EntryIdData.Add( 2380306, new LookupEntryId( "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Cobalt" ) );
+            EntryIdData.Add( 2380301, new LookupEntryId( "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Blue" ) );
+            EntryIdData.Add( 2380305, new LookupEntryId( "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Aquamarine" ) );
+            EntryIdData.Add( 2380302, new LookupEntryId( "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Magenta" ) );
+            EntryIdData.Add( 2380303, new LookupEntryId( "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Green" ) );
+            EntryIdData.Add( 2380304, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Green" ) );
+            EntryIdData.Add( 2380406, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Maroon" ) );
+            EntryIdData.Add( 2380401, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Lime" ) );
+            EntryIdData.Add( 2380405, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Turquoise" ) );
+            EntryIdData.Add( 2380402, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Yellow" ) );
+            EntryIdData.Add( 2380403, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Teal" ) );
+            EntryIdData.Add( 2380404, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Emerald" ) );
+            EntryIdData.Add( 2390105, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Mauve" ) );
+            EntryIdData.Add( 2390103, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Amethyst" ) );
+            EntryIdData.Add( 2390104, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Sage" ) );
+            EntryIdData.Add( 2390101, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Orange" ) );
+            EntryIdData.Add( 2390102, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Red" ) );
+            EntryIdData.Add( 2390106, new LookupEntryId( "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Ocher" ) );
+            EntryIdData.Add( 2390206, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Green" ) );
+            EntryIdData.Add( 2390201, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Maroon" ) );
+            EntryIdData.Add( 2390205, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Lime" ) );
+            EntryIdData.Add( 2390202, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Turquoise" ) );
+            EntryIdData.Add( 2390203, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Yellow" ) );
+            EntryIdData.Add( 2390204, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Teal" ) );
+            EntryIdData.Add( 2390305, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Emerald" ) );
+            EntryIdData.Add( 2390303, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Mauve" ) );
+            EntryIdData.Add( 2390304, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Amethyst" ) );
+            EntryIdData.Add( 2390301, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Sage" ) );
+            EntryIdData.Add( 2390302, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Grey" ) );
+            EntryIdData.Add( 2390306, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Orange" ) );
+            EntryIdData.Add( 2390406, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Red" ) );
+            EntryIdData.Add( 2390401, new LookupEntryId( "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Ocher" ) );
+            EntryIdData.Add( 2390405, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Green" ) );
+            EntryIdData.Add( 2390402, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Maroon" ) );
+            EntryIdData.Add( 2390403, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Lime" ) );
+            EntryIdData.Add( 2390404, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Turquoise" ) );
+            EntryIdData.Add( 1400601, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Yellow" ) );
+            EntryIdData.Add( 1400701, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Teal" ) );
+            EntryIdData.Add( 1400702, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Emerald" ) );
+            EntryIdData.Add( 1401300, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Mauve" ) );
+            EntryIdData.Add( 1400801, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Amethyst" ) );
+            EntryIdData.Add( 1400802, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Sage" ) );
+            EntryIdData.Add( 1400901, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Orange" ) );
+            EntryIdData.Add( 1400902, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Red" ) );
+            EntryIdData.Add( 1401001, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Indigo" ) );
+            EntryIdData.Add( 1401002, new LookupEntryId( "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Ocher" ) );
+            EntryIdData.Add( 1401101, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Green" ) );
+            EntryIdData.Add( 1401102, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Maroon" ) );
+            EntryIdData.Add( 1400409, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Lime" ) );
+            EntryIdData.Add( 1400414, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Turquoise" ) );
+            EntryIdData.Add( 1400402, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Yellow" ) );
+            EntryIdData.Add( 1400408, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Teal" ) );
+            EntryIdData.Add( 1400208, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Emerald" ) );
+            EntryIdData.Add( 1200402, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Mauve" ) );
+            EntryIdData.Add( 1200302, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Amethyst" ) );
+            EntryIdData.Add( 1200502, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Sage" ) );
+            EntryIdData.Add( 1200602, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Grey" ) );
+            EntryIdData.Add( 1200702, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Orange" ) );
+            EntryIdData.Add( 1200802, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Red" ) );
+            EntryIdData.Add( 1200902, new LookupEntryId( "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Ocher" ) );
+            EntryIdData.Add( 1200102, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Green" ) );
+            EntryIdData.Add( 2101500, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Lime" ) );
+            EntryIdData.Add( 3200800, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Yellow" ) );
+            EntryIdData.Add( 3200200, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Teal" ) );
+            EntryIdData.Add( 3200400, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Emerald" ) );
+            EntryIdData.Add( 3200600, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Mauve" ) );
+            EntryIdData.Add( 3200300, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Amethyst" ) );
+            EntryIdData.Add( 3100404, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Sage" ) );
+            EntryIdData.Add( 1400160, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Orange" ) );
+            EntryIdData.Add( 1400159, new LookupEntryId( "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Red" ) );
+            EntryIdData.Add( 1400161, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Green" ) );
+            EntryIdData.Add( 1400162, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Lime" ) );
+            EntryIdData.Add( 1400164, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Turquoise" ) );
+            EntryIdData.Add( 1400152, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Yellow" ) );
+            EntryIdData.Add( 1400158, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Teal" ) );
+            EntryIdData.Add( 1400260, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Emerald" ) );
+            EntryIdData.Add( 1400259, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Mauve" ) );
+            EntryIdData.Add( 1400261, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Amethyst" ) );
+            EntryIdData.Add( 1400262, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Sage" ) );
+            EntryIdData.Add( 1400258, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Orange" ) );
+            EntryIdData.Add( 3100803, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Red" ) );
+            EntryIdData.Add( 2100601, new LookupEntryId( "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Ocher" ) );
+            EntryIdData.Add( 2100602, new LookupEntryId( "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Orange" ) );
+            EntryIdData.Add( 2100603, new LookupEntryId( "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Magenta" ) );
+            EntryIdData.Add( 2100604, new LookupEntryId( "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Gold" ) );
+            EntryIdData.Add( 2100605, new LookupEntryId( "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Cobalt" ) );
+            EntryIdData.Add( 2100606, new LookupEntryId( "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Cyan" ) );
+            EntryIdData.Add( 2100607, new LookupEntryId( "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Yellow" ) );
+            EntryIdData.Add( 2100801, new LookupEntryId( "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Aquamarine" ) );
+            EntryIdData.Add( 2100802, new LookupEntryId( "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Lime" ) );
+            EntryIdData.Add( 2100803, new LookupEntryId( "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Blue" ) );
+            EntryIdData.Add( 2100804, new LookupEntryId( "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_White" ) );
+            EntryIdData.Add( 2100701, new LookupEntryId( "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Peach" ) );
+            EntryIdData.Add( 2100702, new LookupEntryId( "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Mulberry" ) );
+            EntryIdData.Add( 2100703, new LookupEntryId( "Fumerolas", "FumerolaNitris", "FumerolaNitris_White" ) );
+            EntryIdData.Add( 2100704, new LookupEntryId( "Fumerolas", "FumerolaNitris", "FumerolaNitris_Peach" ) );
+            EntryIdData.Add( 2100705, new LookupEntryId( "Fumerolas", "FumerolaNitris", "FumerolaNitris_Lime" ) );
+            EntryIdData.Add( 2100706, new LookupEntryId( "Fumerolas", "FumerolaNitris", "FumerolaNitris_Red" ) );
+            EntryIdData.Add( 2100707, new LookupEntryId( "Fumerolas", "FumerolaNitris", "FumerolaNitris_Mulberry" ) );
+            EntryIdData.Add( 2301602, new LookupEntryId( "Fumerolas", "FumerolaNitris", "FumerolaNitris_Aquamarine" ) );
+            EntryIdData.Add( 2301601, new LookupEntryId( "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Green" ) );
+            EntryIdData.Add( 2301603, new LookupEntryId( "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Yellow" ) );
+            EntryIdData.Add( 2301702, new LookupEntryId( "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Cyan" ) );
+            EntryIdData.Add( 2301701, new LookupEntryId( "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Gold" ) );
+            EntryIdData.Add( 2301703, new LookupEntryId( "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Orange" ) );
+            EntryIdData.Add( 2301802, new LookupEntryId( "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Cobalt" ) );
+            EntryIdData.Add( 2301801, new LookupEntryId( "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Peach" ) );
+            EntryIdData.Add( 2301803, new LookupEntryId( "Fungoids", "FungoidaSetisis", "FungoidaSetisis_White" ) );
+            EntryIdData.Add( 2301902, new LookupEntryId( "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Gold" ) );
+            EntryIdData.Add( 2301901, new LookupEntryId( "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Lime" ) );
+            EntryIdData.Add( 2301903, new LookupEntryId( "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Yellow" ) );
+            EntryIdData.Add( 2302102, new LookupEntryId( "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Orange" ) );
+            EntryIdData.Add( 2302101, new LookupEntryId( "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Blue" ) );
+            EntryIdData.Add( 2302103, new LookupEntryId( "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Green" ) );
+            EntryIdData.Add( 2101002, new LookupEntryId( "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Magenta" ) );
+            EntryIdData.Add( 2101001, new LookupEntryId( "Fungoids", "FungoidaStabitis", "FungoidaStabitis_White" ) );
+            EntryIdData.Add( 2101003, new LookupEntryId( "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Orange" ) );
+            EntryIdData.Add( 2101004, new LookupEntryId( "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Peach" ) );
+            EntryIdData.Add( 2401001, new LookupEntryId( "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Red" ) );
+            EntryIdData.Add( 2401002, new LookupEntryId( "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Mulberry" ) );
+            EntryIdData.Add( 2401003, new LookupEntryId( "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Magenta" ) );
+            EntryIdData.Add( 2401004, new LookupEntryId( "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Peach" ) );
+            EntryIdData.Add( 2401005, new LookupEntryId( "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Gold" ) );
+            EntryIdData.Add( 2401006, new LookupEntryId( "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Orange" ) );
+            EntryIdData.Add( 2401007, new LookupEntryId( "Fungoids", "FungoidaGelata", "FungoidaGelata_Cyan" ) );
+            EntryIdData.Add( 2401008, new LookupEntryId( "Fungoids", "FungoidaGelata", "FungoidaGelata_Lime" ) );
+            EntryIdData.Add( 2401009, new LookupEntryId( "Fungoids", "FungoidaGelata", "FungoidaGelata_Mulberry" ) );
+            EntryIdData.Add( 2401010, new LookupEntryId( "Fungoids", "FungoidaGelata", "FungoidaGelata_Green" ) );
+            EntryIdData.Add( 2401011, new LookupEntryId( "Fungoids", "FungoidaGelata", "FungoidaGelata_Red" ) );
+            EntryIdData.Add( 2401012, new LookupEntryId( "Fungoids", "FungoidaGelata", "FungoidaGelata_Orange" ) );
+            EntryIdData.Add( 2401013, new LookupEntryId( "GroundStructIce", "CrystallineShards", "CrystallineShards" ) );
+            EntryIdData.Add( 2401014, new LookupEntryId( "IceCrystals", "LindigoticumIceCrystals", "LindigoticumIceCrystals" ) );
+            EntryIdData.Add( 2401015, new LookupEntryId( "IceCrystals", "PrasinumIceCrystals", "PrasinumIceCrystals" ) );
+            EntryIdData.Add( 2401016, new LookupEntryId( "IceCrystals", "RoseumIceCrystals", "RoseumIceCrystals" ) );
+            EntryIdData.Add( 2401017, new LookupEntryId( "IceCrystals", "PurpureumIceCrystals", "PurpureumIceCrystals" ) );
+            EntryIdData.Add( 2402001, new LookupEntryId( "IceCrystals", "RubeumIceCrystals", "RubeumIceCrystals" ) );
+            EntryIdData.Add( 2402002, new LookupEntryId( "IceCrystals", "AlbidumIceCrystals", "AlbidumIceCrystals" ) );
+            EntryIdData.Add( 2402003, new LookupEntryId( "IceCrystals", "FlavumIceCrystals", "FlavumIceCrystals" ) );
+            EntryIdData.Add( 2402004, new LookupEntryId( "MetallicCrystals", "PrasinumMetallicCrystals", "PrasinumMetallicCrystals" ) );
+            EntryIdData.Add( 2402005, new LookupEntryId( "MetallicCrystals", "PurpureumMetallicCrystals", "PurpureumMetallicCrystals" ) );
+            EntryIdData.Add( 2402007, new LookupEntryId( "MetallicCrystals", "RubeumMetallicCrystals", "RubeumMetallicCrystals" ) );
+            EntryIdData.Add( 2402008, new LookupEntryId( "MetallicCrystals", "FlavumMetallicCrystals", "FlavumMetallicCrystals" ) );
+            EntryIdData.Add( 24020009, new LookupEntryId( "SilicateCrystals", "LindigoticumSilicateCrystals", "LindigoticumSilicateCrystals" ) );
+            EntryIdData.Add( 24020010, new LookupEntryId( "SilicateCrystals", "PrasinumSilicateCrystals", "PrasinumSilicateCrystals" ) );
+            EntryIdData.Add( 2402011, new LookupEntryId( "SilicateCrystals", "RoseumSilicateCrystals", "RoseumSilicateCrystals" ) );
+            EntryIdData.Add( 2402012, new LookupEntryId( "SilicateCrystals", "PurpureumSilicateCrystals", "PurpureumSilicateCrystals" ) );
+            EntryIdData.Add( 24020013, new LookupEntryId( "SilicateCrystals", "RubeumSilicateCrystals", "RubeumSilicateCrystals" ) );
+            EntryIdData.Add( 2403002, new LookupEntryId( "SilicateCrystals", "AlbidumSilicateCrystals", "AlbidumSilicateCrystals" ) );
+            EntryIdData.Add( 2403003, new LookupEntryId( "SilicateCrystals", "FlavumSilicateCrystals", "FlavumSilicateCrystals" ) );
+            EntryIdData.Add( 2403004, new LookupEntryId( "MolluscParasol", "LindigoticumParasolMollusc", "LindigoticumParasolMollusc" ) );
+            EntryIdData.Add( 2403005, new LookupEntryId( "MolluscParasol", "LuteolumParasolMollusc", "LuteolumParasolMollusc" ) );
+            EntryIdData.Add( 2403006, new LookupEntryId( "MolluscParasol", "VirideParasolMollusc", "VirideParasolMollusc" ) );
+            EntryIdData.Add( 2403007, new LookupEntryId( "MolluscBulb", "LindigoticumBulbMollusc", "LindigoticumBulbMollusc" ) );
+            EntryIdData.Add( 2403008, new LookupEntryId( "MolluscBulb", "LuteolumBulbMollusc", "LuteolumBulbMollusc" ) );
+            EntryIdData.Add( 2403009, new LookupEntryId( "MolluscBulb", "VirideBulbMollusc", "VirideBulbMollusc" ) );
+            EntryIdData.Add( 2403010, new LookupEntryId( "MolluscUmbrella", "LindigoticumUmbrellaMollusc", "LindigoticumUmbrellaMollusc" ) );
+            EntryIdData.Add( 2403011, new LookupEntryId( "MolluscUmbrella", "LuteolumUmbrellaMollusc", "LuteolumUmbrellaMollusc" ) );
+            EntryIdData.Add( 2403012, new LookupEntryId( "MolluscUmbrella", "VirideUmbrellaMollusc", "VirideUmbrellaMollusc" ) );
+            EntryIdData.Add( 2403013, new LookupEntryId( "MolluscCapsule", "LindigoticumCapsuleMollusc", "LindigoticumCapsuleMollusc" ) );
+            EntryIdData.Add( 2403014, new LookupEntryId( "MolluscCapsule", "LuteolumCapsuleMollusc", "LuteolumCapsuleMollusc" ) );
+            EntryIdData.Add( 2403015, new LookupEntryId( "MolluscCapsule", "VirideCapsuleMollusc", "VirideCapsuleMollusc" ) );
+            EntryIdData.Add( 2403016, new LookupEntryId( "MolluscReel", "LindigoticumReelMollusc", "LindigoticumReelMollusc" ) );
+            EntryIdData.Add( 2406001, new LookupEntryId( "MolluscReel", "LuteolumReelMollusc", "LuteolumReelMollusc" ) );
+            EntryIdData.Add( 2406002, new LookupEntryId( "MolluscReel", "VirideReelMollusc", "VirideReelMollusc" ) );
+            EntryIdData.Add( 2406003, new LookupEntryId( "CalcitePlates", "LindigoticumCalcitePlates", "LindigoticumCalcitePlates" ) );
+            EntryIdData.Add( 2406004, new LookupEntryId( "CalcitePlates", "LuteolumCalcitePlates", "LuteolumCalcitePlates" ) );
+            EntryIdData.Add( 2406005, new LookupEntryId( "CalcitePlates", "VirideCalcitePlates", "VirideCalcitePlates" ) );
+            EntryIdData.Add( 2406006, new LookupEntryId( "CalcitePlates", "RutulumCalcitePlates", "RutulumCalcitePlates" ) );
+            EntryIdData.Add( 2406007, new LookupEntryId( "PeduncleTree", "CaeruleumPeduncleTree", "CaeruleumPeduncleTree" ) );
+            EntryIdData.Add( 2406008, new LookupEntryId( "PeduncleTree", "AlbidumPeduncleTree", "AlbidumPeduncleTree" ) );
+            EntryIdData.Add( 2406009, new LookupEntryId( "PeduncleTree", "ViridePeduncleTree", "ViridePeduncleTree" ) );
+            EntryIdData.Add( 2208002, new LookupEntryId( "PeduncleTree", "OstrinumPeduncleTree", "OstrinumPeduncleTree" ) );
+            EntryIdData.Add( 2208001, new LookupEntryId( "PeduncleTree", "RubellumPeduncleTree", "RubellumPeduncleTree" ) );
+            EntryIdData.Add( 2208003, new LookupEntryId( "AsterTree", "CereumAsterTree", "CereumAsterTree" ) );
+            EntryIdData.Add( 2208004, new LookupEntryId( "AsterTree", "PrasinumAsterTree", "PrasinumAsterTree" ) );
+            EntryIdData.Add( 2208005, new LookupEntryId( "AsterTree", "RubellumAsterTree", "RubellumAsterTree" ) );
+            EntryIdData.Add( 2208101, new LookupEntryId( "StolonTree", "StolonTree", "StolonTree" ) );
+            EntryIdData.Add( 2208103, new LookupEntryId( "Osseus", "OsseusFractus", "OsseusFractus_Lime" ) );
+            EntryIdData.Add( 2208105, new LookupEntryId( "Osseus", "OsseusFractus", "OsseusFractus_Turquoise" ) );
+            EntryIdData.Add( 2209021, new LookupEntryId( "Osseus", "OsseusFractus", "OsseusFractus_Grey" ) );
+            EntryIdData.Add( 1400307, new LookupEntryId( "Osseus", "OsseusFractus", "OsseusFractus_Indigo" ) );
+            EntryIdData.Add( 1400306, new LookupEntryId( "Osseus", "OsseusFractus", "OsseusFractus_Emerald" ) );
+            EntryIdData.Add( 3100801, new LookupEntryId( "Osseus", "OsseusFractus", "OsseusFractus_Green" ) );
+            EntryIdData.Add( 3100403, new LookupEntryId( "Osseus", "OsseusFractus", "OsseusFractus_Maroon" ) );
+            EntryIdData.Add( 3100406, new LookupEntryId( "Osseus", "OsseusDiscus", "OsseusDiscus_White" ) );
+            EntryIdData.Add( 2400102, new LookupEntryId( "Osseus", "OsseusDiscus", "OsseusDiscus_Lime" ) );
+            EntryIdData.Add( 2400103, new LookupEntryId( "Osseus", "OsseusDiscus", "OsseusDiscus_Peach" ) );
+            EntryIdData.Add( 2400104, new LookupEntryId( "Osseus", "OsseusDiscus", "OsseusDiscus_Aquamarine" ) );
+            EntryIdData.Add( 2400105, new LookupEntryId( "Osseus", "OsseusDiscus", "OsseusDiscus_Blue" ) );
+            EntryIdData.Add( 2400106, new LookupEntryId( "Osseus", "OsseusDiscus", "OsseusDiscus_Red" ) );
+            EntryIdData.Add( 2400107, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Lime" ) );
+            EntryIdData.Add( 2400109, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Turquoise" ) );
+            EntryIdData.Add( 2400206, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Grey" ) );
+            EntryIdData.Add( 2400201, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Indigo" ) );
+            EntryIdData.Add( 2400205, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Yellow" ) );
+            EntryIdData.Add( 2400202, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Emerald" ) );
+            EntryIdData.Add( 2400203, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Green" ) );
+            EntryIdData.Add( 2400204, new LookupEntryId( "Osseus", "OsseusSpiralis", "OsseusSpiralis_Maroon" ) );
+            EntryIdData.Add( 2400302, new LookupEntryId( "Osseus", "OsseusPumice", "OsseusPumice_White" ) );
+            EntryIdData.Add( 2400303, new LookupEntryId( "Osseus", "OsseusPumice", "OsseusPumice_Peach" ) );
+            EntryIdData.Add( 2400304, new LookupEntryId( "Osseus", "OsseusPumice", "OsseusPumice_Gold" ) );
+            EntryIdData.Add( 2400305, new LookupEntryId( "Osseus", "OsseusPumice", "OsseusPumice_Lime" ) );
+            EntryIdData.Add( 2400301, new LookupEntryId( "Osseus", "OsseusPumice", "OsseusPumice_Green" ) );
+            EntryIdData.Add( 2400306, new LookupEntryId( "Osseus", "OsseusPumice", "OsseusPumice_Yellow" ) );
+            EntryIdData.Add( 2400307, new LookupEntryId( "Osseus", "OsseusCornibus", "OsseusCornibus_Lime" ) );
+            EntryIdData.Add( 2400309, new LookupEntryId( "Osseus", "OsseusCornibus", "OsseusCornibus_Turquoise" ) );
+            EntryIdData.Add( 2400405, new LookupEntryId( "Osseus", "OsseusCornibus", "OsseusCornibus_Grey" ) );
+            EntryIdData.Add( 2400403, new LookupEntryId( "Osseus", "OsseusCornibus", "OsseusCornibus_Indigo" ) );
+            EntryIdData.Add( 2400404, new LookupEntryId( "Osseus", "OsseusCornibus", "OsseusCornibus_Emerald" ) );
+            EntryIdData.Add( 2400401, new LookupEntryId( "Osseus", "OsseusCornibus", "OsseusCornibus_Green" ) );
+            EntryIdData.Add( 2400402, new LookupEntryId( "Osseus", "OsseusCornibus", "OsseusCornibus_Maroon" ) );
+            EntryIdData.Add( 2400406, new LookupEntryId( "Osseus", "OsseusPellebantus", "OsseusPellebantus_Lime" ) );
+            EntryIdData.Add( 2400502, new LookupEntryId( "Osseus", "OsseusPellebantus", "OsseusPellebantus_Turquoise" ) );
+            EntryIdData.Add( 2400503, new LookupEntryId( "Osseus", "OsseusPellebantus", "OsseusPellebantus_Grey" ) );
+            EntryIdData.Add( 2400504, new LookupEntryId( "Osseus", "OsseusPellebantus", "OsseusPellebantus_Indigo" ) );
+            EntryIdData.Add( 2400505, new LookupEntryId( "Osseus", "OsseusPellebantus", "OsseusPellebantus_Emerald" ) );
+            EntryIdData.Add( 2400506, new LookupEntryId( "Osseus", "OsseusPellebantus", "OsseusPellebantus_Green" ) );
+            EntryIdData.Add( 2400507, new LookupEntryId( "Osseus", "OsseusPellebantus", "OsseusPellebantus_Maroon" ) );
+            EntryIdData.Add( 2400509, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Amethyst" ) );
+            EntryIdData.Add( 2400602, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Grey" ) );
+            EntryIdData.Add( 2400603, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Turquoise" ) );
+            EntryIdData.Add( 2400604, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Yellow" ) );
+            EntryIdData.Add( 2400605, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Mauve" ) );
+            EntryIdData.Add( 2400606, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Orange" ) );
+            EntryIdData.Add( 2400607, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Red" ) );
+            EntryIdData.Add( 2400609, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Ocher" ) );
+            EntryIdData.Add( 2410103, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Maroon" ) );
+            EntryIdData.Add( 2410111, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Emerald" ) );
+            EntryIdData.Add( 2410102, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Teal" ) );
+            EntryIdData.Add( 2410114, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Sage" ) );
+            EntryIdData.Add( 2410104, new LookupEntryId( "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Lime" ) );
+            EntryIdData.Add( 2410105, new LookupEntryId( "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Lime" ) );
+            EntryIdData.Add( 2410106, new LookupEntryId( "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Cyan" ) );
+            EntryIdData.Add( 2410108, new LookupEntryId( "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Gold" ) );
+            EntryIdData.Add( 2410107, new LookupEntryId( "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Mulberry" ) );
+            EntryIdData.Add( 2410115, new LookupEntryId( "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Orange" ) );
+            EntryIdData.Add( 2410109, new LookupEntryId( "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Red" ) );
+            EntryIdData.Add( 2410110, new LookupEntryId( "Recepta", "ReceptaConditivus", "ReceptaConditivus_Lime" ) );
+            EntryIdData.Add( 2410112, new LookupEntryId( "Recepta", "ReceptaConditivus", "ReceptaConditivus_White" ) );
+            EntryIdData.Add( 2410206, new LookupEntryId( "Recepta", "ReceptaConditivus", "ReceptaConditivus_Yellow" ) );
+            EntryIdData.Add( 2410201, new LookupEntryId( "Recepta", "ReceptaConditivus", "ReceptaConditivus_Aquamarine" ) );
+            EntryIdData.Add( 2410205, new LookupEntryId( "Recepta", "ReceptaConditivus", "ReceptaConditivus_Cyan" ) );
+            EntryIdData.Add( 2410202, new LookupEntryId( "Recepta", "ReceptaConditivus", "ReceptaConditivus_Green" ) );
+            EntryIdData.Add( 2410203, new LookupEntryId( "PedunclePod", "CaeruleumPedunclePod", "CaeruleumPedunclePod" ) );
+            EntryIdData.Add( 2410204, new LookupEntryId( "PedunclePod", "CandidumPedunclePod", "CandidumPedunclePod" ) );
+            EntryIdData.Add( 2410305, new LookupEntryId( "PedunclePod", "GypseeumPedunclePod", "GypseeumPedunclePod" ) );
+            EntryIdData.Add( 2410303, new LookupEntryId( "PedunclePod", "PurpureumPedunclePod", "PurpureumPedunclePod" ) );
+            EntryIdData.Add( 2410304, new LookupEntryId( "PedunclePod", "RufumPedunclePod", "RufumPedunclePod" ) );
+            EntryIdData.Add( 2410301, new LookupEntryId( "AsterPod", "LindigoticumAsterPod", "LindigoticumAsterPod" ) );
+            EntryIdData.Add( 2410302, new LookupEntryId( "AsterPod", "CereumAsterPod", "CereumAsterPod" ) );
+            EntryIdData.Add( 2410306, new LookupEntryId( "AsterPod", "PrasinumAsterPod", "PrasinumAsterPod" ) );
+            EntryIdData.Add( 3100804, new LookupEntryId( "AsterPod", "PuniceumAsterPod", "PuniceumAsterPod" ) );
+            EntryIdData.Add( 3200500, new LookupEntryId( "AsterPod", "RubellumAsterPod", "RubellumAsterPod" ) );
+            EntryIdData.Add( 2201002, new LookupEntryId( "VoidPod", "CaeruleumOctahedralPod", "CaeruleumOctahedralPod" ) );
+            EntryIdData.Add( 2201001, new LookupEntryId( "VoidPod", "NiveumOctahedralPod", "NiveumOctahedralPod" ) );
+            EntryIdData.Add( 2201003, new LookupEntryId( "VoidPod", "VirideOctahedralPod", "VirideOctahedralPod" ) );
+            EntryIdData.Add( 2201004, new LookupEntryId( "VoidPod", "BlatteumOctahedralPod", "BlatteumOctahedralPod" ) );
+            EntryIdData.Add( 2201005, new LookupEntryId( "VoidPod", "RubeumOctahedralPod", "RubeumOctahedralPod" ) );
+            EntryIdData.Add( 2202002, new LookupEntryId( "CollaredPod", "LividumCollaredPod", "LividumCollaredPod" ) );
+            EntryIdData.Add( 2202001, new LookupEntryId( "CollaredPod", "AlbidumCollaredPod", "AlbidumCollaredPod" ) );
+            EntryIdData.Add( 2202003, new LookupEntryId( "CollaredPod", "BlatteumCollaredPod", "BlatteumCollaredPod" ) );
+            EntryIdData.Add( 2202004, new LookupEntryId( "CollaredPod", "RubicundumCollaredPod", "RubicundumCollaredPod" ) );
+            EntryIdData.Add( 2202005, new LookupEntryId( "ChalicePod", "CaeruleumChalicePod", "CaeruleumChalicePod" ) );
+            EntryIdData.Add( 2203002, new LookupEntryId( "ChalicePod", "AlbidumChalicePod", "AlbidumChalicePod" ) );
+            EntryIdData.Add( 2203001, new LookupEntryId( "ChalicePod", "VirideChalicePod", "VirideChalicePod" ) );
+            EntryIdData.Add( 2203003, new LookupEntryId( "ChalicePod", "OstrinumChalicePod", "OstrinumChalicePod" ) );
+            EntryIdData.Add( 2203004, new LookupEntryId( "ChalicePod", "RubellumChalicePod", "RubellumChalicePod" ) );
+            EntryIdData.Add( 2203005, new LookupEntryId( "GyrePod", "RoseumGyrePod", "RoseumGyrePod" ) );
+            EntryIdData.Add( 2204002, new LookupEntryId( "GyrePod", "AurariumGyrePod", "AurariumGyrePod" ) );
+            EntryIdData.Add( 2204001, new LookupEntryId( "RhizomePod", "CobalteumRhizomePod", "CobalteumRhizomePod" ) );
+            EntryIdData.Add( 2204004, new LookupEntryId( "RhizomePod", "CandidumRhizomePod", "CandidumRhizomePod" ) );
+            EntryIdData.Add( 2204005, new LookupEntryId( "RhizomePod", "GypseeumRhizomePod", "GypseeumRhizomePod" ) );
+            EntryIdData.Add( 2205002, new LookupEntryId( "RhizomePod", "PurpureumRhizomePod", "PurpureumRhizomePod" ) );
+            EntryIdData.Add( 2205001, new LookupEntryId( "RhizomePod", "RubeumRhizomePod", "RubeumRhizomePod" ) );
+            EntryIdData.Add( 2205003, new LookupEntryId( "QuadripartitePod", "CaeruleumQuadripartitePod", "CaeruleumQuadripartitePod" ) );
+            EntryIdData.Add( 2205004, new LookupEntryId( "QuadripartitePod", "AlbidumQuadripartitePod", "AlbidumQuadripartitePod" ) );
+            EntryIdData.Add( 2205005, new LookupEntryId( "QuadripartitePod", "VirideQuadripartitePod", "VirideQuadripartitePod" ) );
+            EntryIdData.Add( 2206001, new LookupEntryId( "QuadripartitePod", "BlatteumQuadripartitePod", "BlatteumQuadripartitePod" ) );
+            EntryIdData.Add( 2206002, new LookupEntryId( "Brancae", "RoseumBrainTree", "RoseumBrainTree" ) );
+            EntryIdData.Add( 2207002, new LookupEntryId( "Brancae", "GypseeumBrainTree", "GypseeumBrainTree" ) );
+            EntryIdData.Add( 2207001, new LookupEntryId( "Brancae", "OstrinumBrainTree", "OstrinumBrainTree" ) );
+            EntryIdData.Add( 2207003, new LookupEntryId( "Brancae", "VirideBrainTree", "VirideBrainTree" ) );
+            EntryIdData.Add( 2207004, new LookupEntryId( "Brancae", "AureumBrainTree", "AureumBrainTree" ) );
+            EntryIdData.Add( 2207005, new LookupEntryId( "Brancae", "PuniceumBrainTree", "PuniceumBrainTree" ) );
+            EntryIdData.Add( 2207102, new LookupEntryId( "Brancae", "LindigoticumBrainTree", "LindigoticumBrainTree" ) );
+            EntryIdData.Add( 2207101, new LookupEntryId( "Brancae", "LividumBrainTree", "LividumBrainTree" ) );
+            EntryIdData.Add( 2207103, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Lime" ) );
+            EntryIdData.Add( 2207104, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Indigo" ) );
+            EntryIdData.Add( 3100700, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Green" ) );
+            EntryIdData.Add( 2100201, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Emerald" ) );
+            EntryIdData.Add( 2100202, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Teal" ) );
+            EntryIdData.Add( 2100203, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Grey" ) );
+            EntryIdData.Add( 2100204, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Red" ) );
+            EntryIdData.Add( 2100206, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Yellow" ) );
+            EntryIdData.Add( 2100207, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Mauve" ) );
+            EntryIdData.Add( 2100208, new LookupEntryId( "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Orange" ) );
+            EntryIdData.Add( 2100205, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Lime" ) );
+            EntryIdData.Add( 2440102, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Indigo" ) );
+            EntryIdData.Add( 2440110, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Green" ) );
+            EntryIdData.Add( 2440103, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Emerald" ) );
+            EntryIdData.Add( 2440104, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Teal" ) );
+            EntryIdData.Add( 2440106, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Grey" ) );
+            EntryIdData.Add( 2440105, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Red" ) );
+            EntryIdData.Add( 2440111, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Mauve" ) );
+            EntryIdData.Add( 2440101, new LookupEntryId( "Shrubs", "FrutexaAcus", "FrutexaAcus_Orange" ) );
+            EntryIdData.Add( 2440107, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Lime" ) );
+            EntryIdData.Add( 2440109, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Indigo" ) );
+            EntryIdData.Add( 2440202, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Green" ) );
+            EntryIdData.Add( 2440210, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Emerald" ) );
+            EntryIdData.Add( 2440203, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Teal" ) );
+            EntryIdData.Add( 2440204, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Grey" ) );
+            EntryIdData.Add( 2440206, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Red" ) );
+            EntryIdData.Add( 2440205, new LookupEntryId( "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Mauve" ) );
+            EntryIdData.Add( 2440211, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Lime" ) );
+            EntryIdData.Add( 2440207, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Indigo" ) );
+            EntryIdData.Add( 2440209, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Green" ) );
+            EntryIdData.Add( 2440302, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Emerald" ) );
+            EntryIdData.Add( 2440310, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Teal" ) );
+            EntryIdData.Add( 2440303, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Grey" ) );
+            EntryIdData.Add( 2440304, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Red" ) );
+            EntryIdData.Add( 2440306, new LookupEntryId( "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Mauve" ) );
+            EntryIdData.Add( 2440305, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Lime" ) );
+            EntryIdData.Add( 2440311, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Indigo" ) );
+            EntryIdData.Add( 2440307, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Green" ) );
+            EntryIdData.Add( 2440402, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Emerald" ) );
+            EntryIdData.Add( 2440410, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Teal" ) );
+            EntryIdData.Add( 2440403, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Grey" ) );
+            EntryIdData.Add( 2440404, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Red" ) );
+            EntryIdData.Add( 2440406, new LookupEntryId( "Shrubs", "FrutexaFera", "FrutexaFera_Mauve" ) );
+            EntryIdData.Add( 2440405, new LookupEntryId( "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Lime" ) );
+            EntryIdData.Add( 2440411, new LookupEntryId( "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Green" ) );
+            EntryIdData.Add( 2440407, new LookupEntryId( "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Emerald" ) );
+            EntryIdData.Add( 2440502, new LookupEntryId( "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Teal" ) );
+            EntryIdData.Add( 2440510, new LookupEntryId( "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Grey" ) );
+            EntryIdData.Add( 2440503, new LookupEntryId( "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Red" ) );
+            EntryIdData.Add( 2440504, new LookupEntryId( "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Mauve" ) );
+            EntryIdData.Add( 2440506, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Lime" ) );
+            EntryIdData.Add( 2440505, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Indigo" ) );
+            EntryIdData.Add( 2440511, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Green" ) );
+            EntryIdData.Add( 2440507, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Emerald" ) );
+            EntryIdData.Add( 2440602, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Teal" ) );
+            EntryIdData.Add( 2440603, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Grey" ) );
+            EntryIdData.Add( 2440604, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Red" ) );
+            EntryIdData.Add( 2440606, new LookupEntryId( "Shrubs", "FrutexaCollum", "FrutexaCollum_Mauve" ) );
+            EntryIdData.Add( 2440605, new LookupEntryId( "MolluscGourd", "CaeruleumGourdMollusc", "CaeruleumGourdMollusc" ) );
+            EntryIdData.Add( 2440611, new LookupEntryId( "MolluscGourd", "AlbulumGourdMollusc", "AlbulumGourdMollusc" ) );
+            EntryIdData.Add( 2440607, new LookupEntryId( "MolluscGourd", "VirideGourdMollusc", "VirideGourdMollusc" ) );
+            EntryIdData.Add( 2440702, new LookupEntryId( "MolluscGourd", "PhoeniceumGourdMollusc", "PhoeniceumGourdMollusc" ) );
+            EntryIdData.Add( 2440710, new LookupEntryId( "MolluscGourd", "PurpureumGourdMollusc", "PurpureumGourdMollusc" ) );
+            EntryIdData.Add( 2440703, new LookupEntryId( "MolluscGourd", "RufumGourdMollusc", "RufumGourdMollusc" ) );
+            EntryIdData.Add( 2440704, new LookupEntryId( "MolluscGourd", "CroceumGourdMollusc", "CroceumGourdMollusc" ) );
+            EntryIdData.Add( 2440706, new LookupEntryId( "MolluscTorus", "CaeruleumTorusMollusc", "CaeruleumTorusMollusc" ) );
+            EntryIdData.Add( 2440705, new LookupEntryId( "MolluscTorus", "VirideTorusMollusc", "VirideTorusMollusc" ) );
+            EntryIdData.Add( 2440711, new LookupEntryId( "MolluscTorus", "BlatteumTorusMollusc", "BlatteumTorusMollusc" ) );
+            EntryIdData.Add( 2440707, new LookupEntryId( "MolluscTorus", "RubellumTorusMollusc", "RubellumTorusMollusc" ) );
+            EntryIdData.Add( 2300102, new LookupEntryId( "MolluscTorus", "FlavumTorusMollusc", "FlavumTorusMollusc" ) );
+            EntryIdData.Add( 2300101, new LookupEntryId( "MolluscSquid", "CaeruleumSquidMollusc", "CaeruleumSquidMollusc" ) );
+            EntryIdData.Add( 2300103, new LookupEntryId( "MolluscSquid", "AlbulumSquidMollusc", "AlbulumSquidMollusc" ) );
+            EntryIdData.Add( 2300104, new LookupEntryId( "MolluscSquid", "RoseumSquidMollusc", "RoseumSquidMollusc" ) );
+            EntryIdData.Add( 2300105, new LookupEntryId( "MolluscSquid", "PuniceumSquidMollusc", "PuniceumSquidMollusc" ) );
+            EntryIdData.Add( 2300106, new LookupEntryId( "MolluscSquid", "RubeumSquidMollusc", "RubeumSquidMollusc" ) );
+            EntryIdData.Add( 2300107, new LookupEntryId( "MolluscBullet", "LividumBulletMollusc", "LividumBulletMollusc" ) );
+            EntryIdData.Add( 2300202, new LookupEntryId( "MolluscBullet", "CereumBulletMollusc", "CereumBulletMollusc" ) );
+            EntryIdData.Add( 2300203, new LookupEntryId( "MolluscBullet", "VirideBulletMollusc", "VirideBulletMollusc" ) );
+            EntryIdData.Add( 2300205, new LookupEntryId( "MolluscBullet", "RubeumBulletMollusc", "RubeumBulletMollusc" ) );
+            EntryIdData.Add( 2300206, new LookupEntryId( "MolluscBullet", "FlavumBulletMollusc", "FlavumBulletMollusc" ) );
+            EntryIdData.Add( 2300207, new LookupEntryId( "MolluscGlobe", "CobalteumGlobeMollusc", "CobalteumGlobeMollusc" ) );
+            EntryIdData.Add( 2300302, new LookupEntryId( "MolluscGlobe", "NiveumGlobeMollusc", "NiveumGlobeMollusc" ) );
+            EntryIdData.Add( 2300301, new LookupEntryId( "MolluscGlobe", "PrasinumGlobeMollusc", "PrasinumGlobeMollusc" ) );
+            EntryIdData.Add( 2300304, new LookupEntryId( "MolluscGlobe", "RoseumGlobeMollusc", "RoseumGlobeMollusc" ) );
+            EntryIdData.Add( 2300305, new LookupEntryId( "MolluscGlobe", "OstrinumGlobeMollusc", "OstrinumGlobeMollusc" ) );
+            EntryIdData.Add( 2300306, new LookupEntryId( "MolluscGlobe", "RutulumGlobeMollusc", "RutulumGlobeMollusc" ) );
+            EntryIdData.Add( 2300402, new LookupEntryId( "MolluscGlobe", "CroceumGlobeMollusc", "CroceumGlobeMollusc" ) );
+            EntryIdData.Add( 2300401, new LookupEntryId( "MolluscBell", "LindigoticumBellMollusc", "LindigoticumBellMollusc" ) );
+            EntryIdData.Add( 2300403, new LookupEntryId( "MolluscBell", "AlbensBellMollusc", "AlbensBellMollusc" ) );
+            EntryIdData.Add( 2300406, new LookupEntryId( "MolluscBell", "GypseeumBellMollusc", "GypseeumBellMollusc" ) );
+            EntryIdData.Add( 2300407, new LookupEntryId( "MolluscBell", "BlatteumBellMollusc", "BlatteumBellMollusc" ) );
+            EntryIdData.Add( 2300502, new LookupEntryId( "MolluscBell", "LuteolumBellMollusc", "LuteolumBellMollusc" ) );
+            EntryIdData.Add( 2300501, new LookupEntryId( "Anemone", "LuteolumAnemone", "LuteolumAnemone" ) );
+            EntryIdData.Add( 2300503, new LookupEntryId( "Anemone", "CroceumAnemone", "CroceumAnemone" ) );
+            EntryIdData.Add( 2300504, new LookupEntryId( "Anemone", "PuniceumAnemone", "PuniceumAnemone" ) );
+            EntryIdData.Add( 2300505, new LookupEntryId( "Anemone", "RoseumAnemone", "RoseumAnemone" ) );
+            EntryIdData.Add( 2300506, new LookupEntryId( "Anemone", "RubeumBioluminescentAnemone", "RubeumBioluminescentAnemone" ) );
+            EntryIdData.Add( 2300507, new LookupEntryId( "Anemone", "PrasinumBioluminescentAnemone", "PrasinumBioluminescentAnemone" ) );
+            EntryIdData.Add( 2300602, new LookupEntryId( "Anemone", "RoseumBioluminescentAnemone", "RoseumBioluminescentAnemone" ) );
+            EntryIdData.Add( 2300601, new LookupEntryId( "Anemone", "BlatteumBioluminescentAnemone", "BlatteumBioluminescentAnemone" ) );
+            EntryIdData.Add( 2300603, new LookupEntryId( "MineralSpheres", "LatticeMineralSpheres", "LatticeMineralSpheres" ) );
+            EntryIdData.Add( 2300605, new LookupEntryId( "MineralSpheres", "SolidMineralSpheres", "SolidMineralSpheres" ) );
+            EntryIdData.Add( 2300607, new LookupEntryId( "StolonPod", "StolonPod", "StolonPod" ) );
+            EntryIdData.Add( 2100401, new LookupEntryId( "GyreTree", "AurariumGyreTree", "AurariumGyreTree" ) );
+            EntryIdData.Add( 2100402, new LookupEntryId( "GyreTree", "VirideGyreTree", "VirideGyreTree" ) );
+            EntryIdData.Add( 2100403, new LookupEntryId( "VoidHeart", "ChryseumVoidHeart", "ChryseumVoidHeart" ) );
+            EntryIdData.Add( 2100404, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Teal" ) );
+            EntryIdData.Add( 2100406, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Mauve" ) );
+            EntryIdData.Add( 2100407, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Emerald" ) );
+            EntryIdData.Add( 2100408, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Lime" ) );
+            EntryIdData.Add( 2100405, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Turquoise" ) );
+            EntryIdData.Add( 1410110, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Green" ) );
+            EntryIdData.Add( 1410100, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Grey" ) );
+            EntryIdData.Add( 2207200, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Amethyst" ) );
+            EntryIdData.Add( 2210011, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Red" ) );
+            EntryIdData.Add( 2210001, new LookupEntryId( "Stratum", "StratumExcutitus", "StratumExcutitus_Indigo" ) );
+            EntryIdData.Add( 2210101, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Teal" ) );
+            EntryIdData.Add( 2420107, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Mauve" ) );
+            EntryIdData.Add( 2420110, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Emerald" ) );
+            EntryIdData.Add( 2420101, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Lime" ) );
+            EntryIdData.Add( 2420102, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Turquoise" ) );
+            EntryIdData.Add( 2420104, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Green" ) );
+            EntryIdData.Add( 2420103, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Grey" ) );
+            EntryIdData.Add( 2420105, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Amethyst" ) );
+            EntryIdData.Add( 2420106, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Red" ) );
+            EntryIdData.Add( 2420109, new LookupEntryId( "Stratum", "StratumPaleas", "StratumPaleas_Indigo" ) );
+            EntryIdData.Add( 2420108, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Emerald" ) );
+            EntryIdData.Add( 2420207, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Lime" ) );
+            EntryIdData.Add( 2420210, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Turquoise" ) );
+            EntryIdData.Add( 2420201, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Green" ) );
+            EntryIdData.Add( 2420202, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Grey" ) );
+            EntryIdData.Add( 2420204, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Amethyst" ) );
+            EntryIdData.Add( 2420203, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Red" ) );
+            EntryIdData.Add( 2420205, new LookupEntryId( "Stratum", "StratumLaminamus", "StratumLaminamus_Indigo" ) );
+            EntryIdData.Add( 2420206, new LookupEntryId( "Stratum", "StratumAraneamus", "StratumAraneamus_Emerald" ) );
+            EntryIdData.Add( 2420209, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Teal" ) );
+            EntryIdData.Add( 2420208, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Mauve" ) );
+            EntryIdData.Add( 2420301, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Emerald" ) );
+            EntryIdData.Add( 2420302, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Lime" ) );
+            EntryIdData.Add( 2420304, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Turquoise" ) );
+            EntryIdData.Add( 2420303, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Green" ) );
+            EntryIdData.Add( 2420305, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Grey" ) );
+            EntryIdData.Add( 2420306, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Amethyst" ) );
+            EntryIdData.Add( 2420309, new LookupEntryId( "Stratum", "StratumLimaxus", "StratumLimaxus_Indigo" ) );
+            EntryIdData.Add( 2420308, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Teal" ) );
+            EntryIdData.Add( 2420401, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Mauve" ) );
+            EntryIdData.Add( 2420507, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Emerald" ) );
+            EntryIdData.Add( 2420510, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Lime" ) );
+            EntryIdData.Add( 2420501, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Turquoise" ) );
+            EntryIdData.Add( 2420502, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Green" ) );
+            EntryIdData.Add( 2420504, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Grey" ) );
+            EntryIdData.Add( 2420503, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Amethyst" ) );
+            EntryIdData.Add( 2420505, new LookupEntryId( "Stratum", "StratumCucumisis", "StratumCucumisis_Indigo" ) );
+            EntryIdData.Add( 2420506, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Mauve" ) );
+            EntryIdData.Add( 2420508, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Emerald" ) );
+            EntryIdData.Add( 2420607, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Lime" ) );
+            EntryIdData.Add( 2420610, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Turquoise" ) );
+            EntryIdData.Add( 2420601, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Green" ) );
+            EntryIdData.Add( 2420602, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Grey" ) );
+            EntryIdData.Add( 2420604, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Amethyst" ) );
+            EntryIdData.Add( 2420603, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Red" ) );
+            EntryIdData.Add( 2420605, new LookupEntryId( "Stratum", "StratumTectonicas", "StratumTectonicas_Indigo" ) );
+            EntryIdData.Add( 2420606, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Teal" ) );
+            EntryIdData.Add( 2420608, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Emerald" ) );
+            EntryIdData.Add( 2420710, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Lime" ) );
+            EntryIdData.Add( 2420701, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Turquoise" ) );
+            EntryIdData.Add( 2420702, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Green" ) );
+            EntryIdData.Add( 2420704, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Grey" ) );
+            EntryIdData.Add( 2420703, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Amethyst" ) );
+            EntryIdData.Add( 2420705, new LookupEntryId( "Stratum", "StratumFrigus", "StratumFrigus_Indigo" ) );
+            EntryIdData.Add( 2420706, new LookupEntryId( "ThargoidBarnacle", "CommonThargoidBarnacle", "CommonThargoidBarnacle" ) );
+            EntryIdData.Add( 2420709, new LookupEntryId( "ThargoidBarnacle", "LargeThargoidBarnacle", "LargeThargoidBarnacle" ) );
+            EntryIdData.Add( 2420708, new LookupEntryId( "ThargoidBarnacle", "ThargoidBarnacleBarbs", "ThargoidBarnacleBarbs" ) );
+            EntryIdData.Add( 2420807, new LookupEntryId( "Tubers", "RoseumSinuousTubers", "RoseumSinuousTubers" ) );
+            EntryIdData.Add( 2420801, new LookupEntryId( "Tubers", "PrasinumSinuousTubers", "PrasinumSinuousTubers" ) );
+            EntryIdData.Add( 2420802, new LookupEntryId( "Tubers", "AlbidumSinuousTubers", "AlbidumSinuousTubers" ) );
+            EntryIdData.Add( 2420804, new LookupEntryId( "Tubers", "CaeruleumSinuousTubers", "CaeruleumSinuousTubers" ) );
+            EntryIdData.Add( 2420803, new LookupEntryId( "Tubers", "LindigoticumSinuousTubers", "LindigoticumSinuousTubers" ) );
+            EntryIdData.Add( 2420805, new LookupEntryId( "Tubers", "ViolaceumSinuousTubers", "ViolaceumSinuousTubers" ) );
+            EntryIdData.Add( 2420806, new LookupEntryId( "Tubers", "VirideSinuousTubers", "VirideSinuousTubers" ) );
+            EntryIdData.Add( 2420808, new LookupEntryId( "Tubers", "BlatteumSinuousTubers", "BlatteumSinuousTubers" ) );
+            EntryIdData.Add( 3101000, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Indigo" ) );
+            EntryIdData.Add( 3101100, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Emerald" ) );
+            EntryIdData.Add( 3101200, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Yellow" ) );
+            EntryIdData.Add( 2100101, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Grey" ) );
+            EntryIdData.Add( 2100102, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Red" ) );
+            EntryIdData.Add( 2100103, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Maroon" ) );
+            EntryIdData.Add( 2100501, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Turquoise" ) );
+            EntryIdData.Add( 2100502, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Teal" ) );
+            EntryIdData.Add( 2100503, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Amethyst" ) );
+            EntryIdData.Add( 2100504, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Mauve" ) );
+            EntryIdData.Add( 2100506, new LookupEntryId( "Tubus", "TubusConifer", "TubusConifer_Ocher" ) );
+            EntryIdData.Add( 2100507, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Indigo" ) );
+            EntryIdData.Add( 2100508, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Emerald" ) );
+            EntryIdData.Add( 2100505, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Grey" ) );
+            EntryIdData.Add( 2430103, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Red" ) );
+            EntryIdData.Add( 2430102, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Maroon" ) );
+            EntryIdData.Add( 2430112, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Turquoise" ) );
+            EntryIdData.Add( 2430104, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Teal" ) );
+            EntryIdData.Add( 2430105, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Amethyst" ) );
+            EntryIdData.Add( 2430106, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Mauve" ) );
+            EntryIdData.Add( 2430108, new LookupEntryId( "Tubus", "TubusSororibus", "TubusSororibus_Ocher" ) );
+            EntryIdData.Add( 2430107, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Indigo" ) );
+            EntryIdData.Add( 2430113, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Emerald" ) );
+            EntryIdData.Add( 2430109, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Yellow" ) );
+            EntryIdData.Add( 2430110, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Grey" ) );
+            EntryIdData.Add( 2430203, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Red" ) );
+            EntryIdData.Add( 2430202, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Maroon" ) );
+            EntryIdData.Add( 2430204, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Turquoise" ) );
+            EntryIdData.Add( 2430205, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Teal" ) );
+            EntryIdData.Add( 2430206, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Amethyst" ) );
+            EntryIdData.Add( 2430208, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Mauve" ) );
+            EntryIdData.Add( 2430207, new LookupEntryId( "Tubus", "TubusCavas", "TubusCavas_Ocher" ) );
+            EntryIdData.Add( 2430213, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Indigo" ) );
+            EntryIdData.Add( 2430209, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Emerald" ) );
+            EntryIdData.Add( 2430210, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Grey" ) );
+            EntryIdData.Add( 2430303, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Red" ) );
+            EntryIdData.Add( 2430302, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Maroon" ) );
+            EntryIdData.Add( 2430312, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Turquoise" ) );
+            EntryIdData.Add( 2430304, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Teal" ) );
+            EntryIdData.Add( 2430305, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Amethyst" ) );
+            EntryIdData.Add( 2430306, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Green" ) );
+            EntryIdData.Add( 2430308, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Mauve" ) );
+            EntryIdData.Add( 2430307, new LookupEntryId( "Tubus", "TubusRosarium", "TubusRosarium_Ocher" ) );
+            EntryIdData.Add( 2430313, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Indigo" ) );
+            EntryIdData.Add( 2430309, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Emerald" ) );
+            EntryIdData.Add( 2430310, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Yellow" ) );
+            EntryIdData.Add( 2430403, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Grey" ) );
+            EntryIdData.Add( 2430402, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Red" ) );
+            EntryIdData.Add( 2430404, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Maroon" ) );
+            EntryIdData.Add( 2430405, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Turquoise" ) );
+            EntryIdData.Add( 2430406, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Teal" ) );
+            EntryIdData.Add( 2430408, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Amethyst" ) );
+            EntryIdData.Add( 2430407, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Mauve" ) );
+            EntryIdData.Add( 2430413, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Ocher" ) );
+            EntryIdData.Add( 2430401, new LookupEntryId( "Tubus", "TubusCompagibus", "TubusCompagibus_Lime" ) );
+            EntryIdData.Add( 2430409, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Yellow" ) );
+            EntryIdData.Add( 2430410, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Lime" ) );
+            EntryIdData.Add( 2430503, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Green" ) );
+            EntryIdData.Add( 2430502, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Sage" ) );
+            EntryIdData.Add( 2430512, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Emerald" ) );
+            EntryIdData.Add( 2430504, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Teal" ) );
+            EntryIdData.Add( 2430505, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Orange" ) );
+            EntryIdData.Add( 2430506, new LookupEntryId( "Tussocks", "TussockPennata", "TussockPennata_Red" ) );
+            EntryIdData.Add( 2430508, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Maroon" ) );
+            EntryIdData.Add( 2430507, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Yellow" ) );
+            EntryIdData.Add( 2430513, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Lime" ) );
+            EntryIdData.Add( 2430509, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Green" ) );
+            EntryIdData.Add( 2430510, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Sage" ) );
+            EntryIdData.Add( 2430511, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Emerald" ) );
+            EntryIdData.Add( 2450101, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Teal" ) );
+            EntryIdData.Add( 2450102, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Orange" ) );
+            EntryIdData.Add( 2450103, new LookupEntryId( "Tussocks", "TussockVentusa", "TussockVentusa_Red" ) );
+            EntryIdData.Add( 2450105, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Maroon" ) );
+            EntryIdData.Add( 2450104, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Yellow" ) );
+            EntryIdData.Add( 2450106, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Lime" ) );
+            EntryIdData.Add( 2450110, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Green" ) );
+            EntryIdData.Add( 2450109, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Sage" ) );
+            EntryIdData.Add( 2450211, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Emerald" ) );
+            EntryIdData.Add( 2450201, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Teal" ) );
+            EntryIdData.Add( 2450202, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Orange" ) );
+            EntryIdData.Add( 2450203, new LookupEntryId( "Tussocks", "TussockIgnis", "TussockIgnis_Red" ) );
+            EntryIdData.Add( 2450205, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Maroon" ) );
+            EntryIdData.Add( 2450204, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Yellow" ) );
+            EntryIdData.Add( 2450206, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Lime" ) );
+            EntryIdData.Add( 2450210, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Green" ) );
+            EntryIdData.Add( 2450209, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Sage" ) );
+            EntryIdData.Add( 2450311, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Emerald" ) );
+            EntryIdData.Add( 2450301, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Teal" ) );
+            EntryIdData.Add( 2450302, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Orange" ) );
+            EntryIdData.Add( 2450303, new LookupEntryId( "Tussocks", "TussockCultro", "TussockCultro_Red" ) );
+            EntryIdData.Add( 2450305, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Maroon" ) );
+            EntryIdData.Add( 2450304, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Yellow" ) );
+            EntryIdData.Add( 2450306, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Lime" ) );
+            EntryIdData.Add( 2450310, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Green" ) );
+            EntryIdData.Add( 2450309, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Sage" ) );
+            EntryIdData.Add( 2450411, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Emerald" ) );
+            EntryIdData.Add( 2450401, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Teal" ) );
+            EntryIdData.Add( 2450402, new LookupEntryId( "Tussocks", "TussockCatena", "TussockCatena_Red" ) );
+            EntryIdData.Add( 2450403, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Maroon" ) );
+            EntryIdData.Add( 2450405, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Yellow" ) );
+            EntryIdData.Add( 2450404, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Lime" ) );
+            EntryIdData.Add( 2450406, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Green" ) );
+            EntryIdData.Add( 2450410, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Sage" ) );
+            EntryIdData.Add( 2450409, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Emerald" ) );
+            EntryIdData.Add( 2450511, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Teal" ) );
+            EntryIdData.Add( 2450501, new LookupEntryId( "Tussocks", "TussockPennatis", "TussockPennatis_Red" ) );
+            EntryIdData.Add( 2450502, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Maroon" ) );
+            EntryIdData.Add( 2450503, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Yellow" ) );
+            EntryIdData.Add( 2450505, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Lime" ) );
+            EntryIdData.Add( 2450504, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Green" ) );
+            EntryIdData.Add( 2450506, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Sage" ) );
+            EntryIdData.Add( 2450509, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Emerald" ) );
+            EntryIdData.Add( 2450611, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Teal" ) );
+            EntryIdData.Add( 2450601, new LookupEntryId( "Tussocks", "TussockSerrati", "TussockSerrati_Red" ) );
+            EntryIdData.Add( 2450602, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Maroon" ) );
+            EntryIdData.Add( 2450603, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Yellow" ) );
+            EntryIdData.Add( 2450605, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Lime" ) );
+            EntryIdData.Add( 2450604, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Green" ) );
+            EntryIdData.Add( 2450606, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Sage" ) );
+            EntryIdData.Add( 2450609, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Emerald" ) );
+            EntryIdData.Add( 2450711, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Teal" ) );
+            EntryIdData.Add( 2450701, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Orange" ) );
+            EntryIdData.Add( 2450702, new LookupEntryId( "Tussocks", "TussockAlbata", "TussockAlbata_Red" ) );
+            EntryIdData.Add( 2450703, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Maroon" ) );
+            EntryIdData.Add( 2450705, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Yellow" ) );
+            EntryIdData.Add( 2450704, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Lime" ) );
+            EntryIdData.Add( 2450706, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Green" ) );
+            EntryIdData.Add( 2450709, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Sage" ) );
+            EntryIdData.Add( 2450811, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Emerald" ) );
+            EntryIdData.Add( 2450801, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Teal" ) );
+            EntryIdData.Add( 2450802, new LookupEntryId( "Tussocks", "TussockPropagito", "TussockPropagito_Red" ) );
+            EntryIdData.Add( 2450803, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Maroon" ) );
+            EntryIdData.Add( 2450805, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Yellow" ) );
+            EntryIdData.Add( 2450804, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Lime" ) );
+            EntryIdData.Add( 2450806, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Green" ) );
+            EntryIdData.Add( 2450810, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Sage" ) );
+            EntryIdData.Add( 2450809, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Emerald" ) );
+            EntryIdData.Add( 2450911, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Teal" ) );
+            EntryIdData.Add( 2450901, new LookupEntryId( "Tussocks", "TussockDivisa", "TussockDivisa_Red" ) );
+            EntryIdData.Add( 2450902, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Maroon" ) );
+            EntryIdData.Add( 2450903, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Yellow" ) );
+            EntryIdData.Add( 2450905, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Lime" ) );
+            EntryIdData.Add( 2450904, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Green" ) );
+            EntryIdData.Add( 2450906, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Sage" ) );
+            EntryIdData.Add( 2450909, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Emerald" ) );
+            EntryIdData.Add( 2451011, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Teal" ) );
+            EntryIdData.Add( 2451001, new LookupEntryId( "Tussocks", "TussockCaputus", "TussockCaputus_Red" ) );
+            EntryIdData.Add( 2451002, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Maroon" ) );
+            EntryIdData.Add( 2451003, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Yellow" ) );
+            EntryIdData.Add( 2451005, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Lime" ) );
+            EntryIdData.Add( 2451004, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Green" ) );
+            EntryIdData.Add( 2451006, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Sage" ) );
+            EntryIdData.Add( 2451009, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Emerald" ) );
+            EntryIdData.Add( 2451111, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Teal" ) );
+            EntryIdData.Add( 2451101, new LookupEntryId( "Tussocks", "TussockTriticum", "TussockTriticum_Red" ) );
+            EntryIdData.Add( 2451102, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Maroon" ) );
+            EntryIdData.Add( 2451103, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Yellow" ) );
+            EntryIdData.Add( 2451105, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Lime" ) );
+            EntryIdData.Add( 2451104, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Green" ) );
+            EntryIdData.Add( 2451106, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Sage" ) );
+            EntryIdData.Add( 2451109, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Emerald" ) );
+            EntryIdData.Add( 2451211, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Teal" ) );
+            EntryIdData.Add( 2451201, new LookupEntryId( "Tussocks", "TussockStigmasis", "TussockStigmasis_Red" ) );
+            EntryIdData.Add( 2451202, new LookupEntryId( "Tussocks", "TussockVirgam", "TussockVirgam_Yellow" ) );
+            EntryIdData.Add( 2451203, new LookupEntryId( "Tussocks", "TussockVirgam", "TussockVirgam_Lime" ) );
+            EntryIdData.Add( 2451205, new LookupEntryId( "Tussocks", "TussockVirgam", "TussockVirgam_Green" ) );
+            EntryIdData.Add( 2451204, new LookupEntryId( "Tussocks", "TussockVirgam", "TussockVirgam_Sage" ) );
+            EntryIdData.Add( 2451206, new LookupEntryId( "Tussocks", "TussockVirgam", "TussockVirgam_Emerald" ) );
+            EntryIdData.Add( 2451209, new LookupEntryId( "Tussocks", "TussockVirgam", "TussockVirgam_Teal" ) );
+            EntryIdData.Add( 2451311, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Maroon" ) );
+            EntryIdData.Add( 2451301, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Yellow" ) );
+            EntryIdData.Add( 2451302, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Lime" ) );
+            EntryIdData.Add( 2451303, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Green" ) );
+            EntryIdData.Add( 2451305, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Sage" ) );
+            EntryIdData.Add( 2451304, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Emerald" ) );
+            EntryIdData.Add( 2451306, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Teal" ) );
+            EntryIdData.Add( 2451309, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Red" ) );
+            EntryIdData.Add( 2451401, new LookupEntryId( "Vents", "AmphoraPlant", "AmphoraPlant" ) );
 
 
-            // Exobiology - Reverse Lookup
-            Species.Add( "Aleoida Arcus", "Aleoida" );
-            Species.Add( "Aleoida Coronamus", "Aleoida" );
-            Species.Add( "Aleoida Gravis", "Aleoida" );
-            Species.Add( "Aleoida Laminiae", "Aleoida" );
-            Species.Add( "Aleoida Spica", "Aleoida" );
-            Species.Add( "Amphora Plant", "Amphora" );
-            Species.Add( "Blatteum Bioluminescent Anemone", "Anemone" );
-            Species.Add( "Croceum Anemone", "Anemone" );
-            Species.Add( "Luteolum Anemone", "Anemone" );
-            Species.Add( "Prasinum Bioluminescent Anemone", "Anemone" );
-            Species.Add( "Puniceum Anemone", "Anemone" );
-            Species.Add( "Roseum Anemone", "Anemone" );
-            Species.Add( "Roseum Bioluminescent Anemone", "Anemone" );
-            Species.Add( "Rubeum Bioluminescent Anemone", "Anemone" );
-            Species.Add( "Bacterium Acies", "Bacterium" );
-            Species.Add( "Bacterium Alcyoneum", "Bacterium" );
-            Species.Add( "Bacterium Aurasus", "Bacterium" );
-            Species.Add( "Bacterium Bullaris", "Bacterium" );
-            Species.Add( "Bacterium Cerbrus", "Bacterium" );
-            Species.Add( "Bacterium Informem", "Bacterium" );
-            Species.Add( "Bacterium Nebulus", "Bacterium" );
-            Species.Add( "Bacterium Omentum", "Bacterium" );
-            Species.Add( "Bacterium Scopulum", "Bacterium" );
-            Species.Add( "Bacterium Tela", "Bacterium" );
-            Species.Add( "Bacterium Verrata", "Bacterium" );
-            Species.Add( "Bacterium Vesicula", "Bacterium" );
-            Species.Add( "Bacterium Volu", "Bacterium" );
-            Species.Add( "Bark Mounds", "Bark Mounds" );
-            Species.Add( "Aureum Brain Tree", "Brain Tree" );
-            Species.Add( "Gypseeum Brain Tree", "Brain Tree" );
-            Species.Add( "Lindigoticum Brain Tree", "Brain Tree" );
-            Species.Add( "Lividum Brain Tree", "Brain Tree" );
-            Species.Add( "Ostrinum Brain Tree", "Brain Tree" );
-            Species.Add( "Puniceum Brain Tree", "Brain Tree" );
-            Species.Add( "Roseum Brain Tree", "Brain Tree" );
-            Species.Add( "Viride Brain Tree", "Brain Tree" );
-            Species.Add( "Cactoida Cortexum", "Cactoida" );
-            Species.Add( "Cactoida Lapis", "Cactoida" );
-            Species.Add( "Cactoida Peperatis", "Cactoida" );
-            Species.Add( "Cactoida Pullulanta", "Cactoida" );
-            Species.Add( "Cactoida Vermis", "Cactoida" );
-            Species.Add( "Clypeus Lacrimam", "Clypeus" );
-            Species.Add( "Clypeus Margaritus", "Clypeus" );
-            Species.Add( "Clypeus Speculumi", "Clypeus" );
-            Species.Add( "Concha Aureolas", "Concha" );
-            Species.Add( "Concha Biconcavis", "Concha" );
-            Species.Add( "Concha Labiata", "Concha" );
-            Species.Add( "Concha Renibus", "Concha" );
-            Species.Add( "Crystalline Shards", "Crystalline Shards" );
-            Species.Add( "Electricae Pluma", "Electricae" );
-            Species.Add( "Electricae Radialem", "Electricae" );
-            Species.Add( "Fonticulua Campestris", "Fonticulua" );
-            Species.Add( "Fonticulua Digitos", "Fonticulua" );
-            Species.Add( "Fonticulua Fluctus", "Fonticulua" );
-            Species.Add( "Fonticulua Lapida", "Fonticulua" );
-            Species.Add( "Fonticulua Segmentatus", "Fonticulua" );
-            Species.Add( "Fonticulua Upupam", "Fonticulua" );
-            Species.Add( "Frutexa Acus", "Frutexa" );
-            Species.Add( "Frutexa Collum", "Frutexa" );
-            Species.Add( "Frutexa Fera", "Frutexa" );
-            Species.Add( "Frutexa Flabellum", "Frutexa" );
-            Species.Add( "Frutexa Flammasis", "Frutexa" );
-            Species.Add( "Frutexa Metallicum", "Frutexa" );
-            Species.Add( "Frutexa Sponsae", "Frutexa" );
-            Species.Add( "Fumerola Aquatis", "Fumerola" );
-            Species.Add( "Fumerola Carbosis", "Fumerola" );
-            Species.Add( "Fumerola Extremus", "Fumerola" );
-            Species.Add( "Fumerola Nitris", "Fumerola" );
-            Species.Add( "Fungoida Bullarum", "Fungoida" );
-            Species.Add( "Fungoida Gelata", "Fungoida" );
-            Species.Add( "Fungoida Setisis", "Fungoida" );
-            Species.Add( "Fungoida Stabitis", "Fungoida" );
-            Species.Add( "Osseus Cornibus", "Osseus" );
-            Species.Add( "Osseus Discus", "Osseus" );
-            Species.Add( "Osseus Fractus", "Osseus" );
-            Species.Add( "Osseus Pellebantus", "Osseus" );
-            Species.Add( "Osseus Pumice", "Osseus" );
-            Species.Add( "Osseus Spiralis", "Osseus" );
-            Species.Add( "Recepta Conditivus", "Recepta" );
-            Species.Add( "Recepta Deltahedronix", "Recepta" );
-            Species.Add( "Recepta Umbrux", "Recepta" );
-            Species.Add( "Albidum Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Blatteum Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Caeruleum Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Lindigoticum Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Prasinum Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Roseum Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Violaceum Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Viride Sinuous Tubers", "Sinuous Tubers" );
-            Species.Add( "Stratum Araneamus", "Stratum" );
-            Species.Add( "Stratum Cucumisis", "Stratum" );
-            Species.Add( "Stratum Excutitus", "Stratum" );
-            Species.Add( "Stratum Frigus", "Stratum" );
-            Species.Add( "Stratum Laminamus", "Stratum" );
-            Species.Add( "Stratum Limaxus", "Stratum" );
-            Species.Add( "Stratum Paleas", "Stratum" );
-            Species.Add( "Stratum Tectonicas", "Stratum" );
-            Species.Add( "Tubus Cavas", "Tubus" );
-            Species.Add( "Tubus Compagibus", "Tubus" );
-            Species.Add( "Tubus Conifer", "Tubus" );
-            Species.Add( "Tubus Rosarium", "Tubus" );
-            Species.Add( "Tubus Sororibus", "Tubus" );
-            Species.Add( "Tussock Albata", "Tussock" );
-            Species.Add( "Tussock Capillum", "Tussock" );
-            Species.Add( "Tussock Caputus", "Tussock" );
-            Species.Add( "Tussock Catena", "Tussock" );
-            Species.Add( "Tussock Cultro", "Tussock" );
-            Species.Add( "Tussock Divisa", "Tussock" );
-            Species.Add( "Tussock Ignis", "Tussock" );
-            Species.Add( "Tussock Pennata", "Tussock" );
-            Species.Add( "Tussock Pennatis", "Tussock" );
-            Species.Add( "Tussock Propagito", "Tussock" );
-            Species.Add( "Tussock Serrati", "Tussock" );
-            Species.Add( "Tussock Stigmasis", "Tussock" );
-            Species.Add( "Tussock Triticum", "Tussock" );
-            Species.Add( "Tussock Ventusa", "Tussock" );
-            Species.Add( "Tussock Virgam", "Tussock" );
 
-            // Other Organics - Reverse Lookup
-            Species.Add( "Solid Mineral Spheres", "MineralSpheres" );
-            Species.Add( "Lattice Mineral Spheres", "MineralSpheres" );
-            Species.Add( "Prasinum Metallic Crystals", "MetallicCrystals" );
-            Species.Add( "Purpureum Metallic Crystals", "MetallicCrystals" );
-            Species.Add( "Rubeum Metallic Crystals", "MetallicCrystals" );
-            Species.Add( "Flavum Metallic Crystals", "MetallicCrystals" );
-            Species.Add( "Lindigoticum Silicate Crystals", "SilicateCrystals" );
-            Species.Add( "Prasinum Silicate Crystals", "SilicateCrystals" );
-            Species.Add( "Roseum Silicate Crystals", "SilicateCrystals" );
-            Species.Add( "Purpureum Silicate Crystals", "SilicateCrystals" );
-            Species.Add( "Albidium Silicate Crystals", "SilicateCrystals" );
-            Species.Add( "Rubeum Silicate Crystals", "SilicateCrystals" );
-            Species.Add( "Flavum Silicate Crystals", "SilicateCrystals" );
-            Species.Add( "Lindigoticum Ice Crystals", "IceCrystals" );
-            Species.Add( "Prasinum Ice Crystals", "IceCrystals" );
-            Species.Add( "Roseum Ice Crystals", "IceCrystals" );
-            Species.Add( "Purpureum Ice Crystals", "IceCrystals" );
-            Species.Add( "Rubeum Ice Crystals", "IceCrystals" );
-            Species.Add( "Albidium Ice Crystals", "IceCrystals" );
-            Species.Add( "Flavum Ice Crystals", "IceCrystals" );
-            Species.Add( "Luteolum Reel Mollusc", "ReelMolluscs" );
-            Species.Add( "Lindigoticum Reel Mollusc", "ReelMolluscs" );
-            Species.Add( "Viride Reel Mollusc", "ReelMolluscs" );
-            Species.Add( "Niveum Globe Molluscs", "GlobeMolluscs" );
-            Species.Add( "Albens Bell Mollusc", "BellMolluscs" );
-            Species.Add( "Blatteum Bell Mollusc", "BellMolluscs" );
-            Species.Add( "Lindigoticum Bell Mollusc", "BellMolluscs" );
-            Species.Add( "Luteolum Umbrella Mollusc", "UmbrellaMolluscs" );
-            Species.Add( "Lindigoticum Umbrella Mollusc", "UmbrellaMolluscs" );
-            Species.Add( "Viride Umbrella Mollusc", "UmbrellaMolluscs" );
-            Species.Add( "Albulum Gourd Mollusc", "GourdMollusc" );
-            Species.Add( "Caeruleum Gourd Mollusc", "GourdMollusc" );
-            Species.Add( "Viride Gourd Mollusc", "GourdMollusc" );
-            Species.Add( "Phoeniceum Gourd Mollusc", "GourdMollusc" );
-            Species.Add( "Purpureum Gourd Mollusc", "GourdMollusc" );
-            Species.Add( "Rufum Gourd Mollusc", "GourdMollusc" );
-            Species.Add( "Croceum Gourd Mollusc", "GourdMollusc" );
-            Species.Add( "Caeruleum Torus Mollusc", "TorusMolluscs" );
-            Species.Add( "Rubellum Torus Mollusc", "TorusMolluscs" );
-            Species.Add( "Luteolum Bulb Mollusc", "BulbMolluscs" );
-            Species.Add( "Lindigoticum Bulb Mollusc", "BulbMolluscs" );
-            Species.Add( "Viride Bulb Mollusc", "BulbMolluscs" );
-            Species.Add( "Luteolum Parasol Mollusc", "ParasolMolluscs" );
-            Species.Add( "Lindigoticum Parasol Mollusc", "ParasolMolluscs" );
-            Species.Add( "Viride Parasol Mollusc", "ParasolMolluscs" );
-            Species.Add( "Albulum Squid Mollusc", "SquidMolluscs" );
-            Species.Add( "Caeruleum Squid Mollusc", "SquidMolluscs" );
-            Species.Add( "Puniceum Squid Mollusc", "SquidMolluscs" );
-            Species.Add( "Rubeum Squid Mollusc", "SquidMolluscs" );
-            Species.Add( "Roseum Squid Mollusc", "SquidMolluscs" );
-            Species.Add( "Cereum Bullet Mollusc", "BulletMolluscs" );
-            Species.Add( "Lividum Bullet Mollusc", "BulletMolluscs" );
-            Species.Add( "Viride Bullet Mollusc", "BulletMolluscs" );
-            Species.Add( "Rubeum Bullet Mollusc", "BulletMolluscs" );
-            Species.Add( "Flavum Bullet Mollusc", "BulletMolluscs" );
-            Species.Add( "Luteolum Capsule Mollusc", "CapsuleMolluscs" );
-            Species.Add( "Lindigoticum Capsule Mollusc", "CapsuleMolluscs" );
-            Species.Add( "Albidum Collared Pod", "CollaredPod" );
-            Species.Add( "Lividum Collared Pod", "CollaredPod" );
-            Species.Add( "Blatteum Collared Pod", "CollaredPod" );
-            Species.Add( "Rubicundum Collared Pod", "CollaredPod" );
-            Species.Add( "Stolon Pod", "StolonPod" );
-            Species.Add( "Stolon Tree", "StolonTree" );
-            Species.Add( "Cereum Aster Pod", "AsterPods" );
-            Species.Add( "Lindigoticum Aster Pod", "AsterPods" );
-            Species.Add( "Prasinum Aster Pod", "AsterPods" );
-            Species.Add( "Puniceum Aster Pod", "AsterPods" );
-            Species.Add( "Rubellum Aster Pod", "AsterPods" );
-            Species.Add( "Albidum Chalice Pod", "ChalicePods" );
-            Species.Add( "Ostrinum Chalice Pod", "ChalicePods" );
-            Species.Add( "Candidum peduncle Pod", "PedunclePods" );
-            Species.Add( "Caeruleum peduncle Pod", "PedunclePods" );
-            Species.Add( "Gypseeum peduncle Pod", "PedunclePods" );
-            Species.Add( "Purpureum peduncle Pod", "PedunclePods" );
-            Species.Add( "Rufum peduncle Pod", "PedunclePods" );
-            Species.Add( "Candidum Rhizome Pod", "RhizomePods" );
-            Species.Add( "Cobalteum Rhizome Pod", "RhizomePods" );
-            Species.Add( "Gypseeum Rhizome Pod", "RhizomePods" );
-            Species.Add( "Purpureum Rhizome Pod", "RhizomePods" );
-            Species.Add( "Rubeum Rhizome Pod", "RhizomePods" );
-            Species.Add( "Albidum Quadripartite Pod", "QuadripartitePods" );
-            Species.Add( "Caeruleum Quadripartite Pod", "QuadripartitePods" );
-            Species.Add( "Viride Quadripartite Pod", "QuadripartitePods" );
-            Species.Add( "Blatteum Quadripartite Pod", "QuadripartitePods" );
-            Species.Add( "Niveus Octahedral Pod", "OctahedralPods" );
-            Species.Add( "Caeruleum Octahedral Pod", "OctahedralPods" );
-            Species.Add( "Viride Octahedral Pod", "OctahedralPods" );
-            Species.Add( "Rubeum Octahedral Pod", "OctahedralPods" );
-            Species.Add( "Cereum Aster Tree", "AsterTrees" );
-            Species.Add( "Prasinum Aster Tree", "AsterTrees" );
-            Species.Add( "Rubellum Aster Tree", "AsterTrees" );
-            Species.Add( "Albidum Peduncle Tree", "PeduncleTrees" );
-            Species.Add( "Caeruleum Peduncle Tree", "PeduncleTrees" );
-            Species.Add( "Viride Peduncle Tree", "PeduncleTrees" );
-            Species.Add( "Ostrinum Peduncle Tree", "PeduncleTrees" );
-            Species.Add( "Rubellum Peduncle Tree", "PeduncleTrees" );
-            Species.Add( "Viridis Gyre Tree", "GyreTrees" );
-            Species.Add( "", "GyrePods" );
-            Species.Add( "Chryseum Void Heart", "VoidHearts" );
-            Species.Add( "Luteolum Calcite Plates", "CalcitePlates" );
-            Species.Add( "Lindigoticum Calcite Plates", "CalcitePlates" );
-            Species.Add( "Viride Calcite Plates", "CalcitePlates" );
-            Species.Add( "Common Thargoid Barnacle", "ThargoidBarnacles" );
-            Species.Add( "Large Thargoid Barnacle", "ThargoidBarnacles" );
-            Species.Add( "Thargoid Barnacle Barbs", "ThargoidBarnacles" );
+            // Data from variant edname (This is a semi-reliable backup to EntryId)
+            // We want to provide as much data as possible here as future items may not intially have an entryid
+            // ( <edname>, <entryid>, <genus>, <species>, <variant> )
+            VariantData.Add( "Aleoids_01_A", new LookupVariant( (long?)2320609, "Aleoids", "AleoidaArcus", "AleoidaArcus_Green" ) );
+            VariantData.Add( "Aleoids_01_B", new LookupVariant( (long?)2320610, "Aleoids", "AleoidaArcus", "AleoidaArcus_Yellow" ) );
+            VariantData.Add( "Aleoids_01_D", new LookupVariant( (long?)2320613, "Aleoids", "AleoidaArcus", "AleoidaArcus_Indigo" ) );
+            VariantData.Add( "Aleoids_01_F", new LookupVariant( (long?)2320612, "Aleoids", "AleoidaArcus", "AleoidaArcus_Teal" ) );
+            VariantData.Add( "Aleoids_01_K", new LookupVariant( (long?)2320706, "Aleoids", "AleoidaArcus", "AleoidaArcus_Turquoise" ) );
+            VariantData.Add( "Aleoids_01_L", new LookupVariant( (long?)2320701, "Aleoids", "AleoidaArcus", "AleoidaArcus_Lime" ) );
+            VariantData.Add( "Aleoids_01_M", new LookupVariant( (long?)2320705, "Aleoids", "AleoidaArcus", "AleoidaArcus_Emerald" ) );
+            VariantData.Add( "Aleoids_01_N", new LookupVariant( (long?)2320702, "Aleoids", "AleoidaArcus", "AleoidaArcus_Ocher" ) );
+            VariantData.Add( "Aleoids_01_T", new LookupVariant( (long?)2320703, "Aleoids", "AleoidaArcus", "AleoidaArcus_Sage" ) );
+            VariantData.Add( "Aleoids_01_TTS", new LookupVariant( (long?)2320704, "Aleoids", "AleoidaArcus", "AleoidaArcus_Mauve" ) );
+            VariantData.Add( "Aleoids_01_W", new LookupVariant( (long?)2320805, "Aleoids", "AleoidaArcus", "AleoidaArcus_Grey" ) );
+            VariantData.Add( "Aleoids_02_A", new LookupVariant( (long?)2320803, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Green" ) );
+            VariantData.Add( "Aleoids_02_B", new LookupVariant( (long?)2320804, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Yellow" ) );
+            VariantData.Add( "Aleoids_02_D", new LookupVariant( (long?)2320801, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Indigo" ) );
+            VariantData.Add( "Aleoids_02_F", new LookupVariant( (long?)2320802, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Teal" ) );
+            VariantData.Add( "Aleoids_02_K", new LookupVariant( (long?)2320806, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Turquoise" ) );
+            VariantData.Add( "Aleoids_02_L", new LookupVariant( (long?)2320905, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Lime" ) );
+            VariantData.Add( "Aleoids_02_M", new LookupVariant( (long?)2320903, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Emerald" ) );
+            VariantData.Add( "Aleoids_02_N", new LookupVariant( (long?)2320904, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Ocher" ) );
+            VariantData.Add( "Aleoids_02_T", new LookupVariant( (long?)2320901, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Sage" ) );
+            VariantData.Add( "Aleoids_02_TTS", new LookupVariant( (long?)2320902, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Mauve" ) );
+            VariantData.Add( "Aleoids_02_Y", new LookupVariant( (long?)2320906, "Aleoids", "AleoidaCoronamus", "AleoidaCoronamus_Amethyst" ) );
+            VariantData.Add( "Aleoids_03_A", new LookupVariant( (long?)2321005, "Aleoids", "AleoidaSpica", "AleoidaSpica_Green" ) );
+            VariantData.Add( "Aleoids_03_B", new LookupVariant( (long?)2321003, "Aleoids", "AleoidaSpica", "AleoidaSpica_Yellow" ) );
+            VariantData.Add( "Aleoids_03_D", new LookupVariant( (long?)2321004, "Aleoids", "AleoidaSpica", "AleoidaSpica_Indigo" ) );
+            VariantData.Add( "Aleoids_03_F", new LookupVariant( (long?)2321001, "Aleoids", "AleoidaSpica", "AleoidaSpica_Teal" ) );
+            VariantData.Add( "Aleoids_03_K", new LookupVariant( (long?)2321002, "Aleoids", "AleoidaSpica", "AleoidaSpica_Turquoise" ) );
+            VariantData.Add( "Aleoids_03_L", new LookupVariant( (long?)2321006, "Aleoids", "AleoidaSpica", "AleoidaSpica_Lime" ) );
+            VariantData.Add( "Aleoids_03_M", new LookupVariant( (long?)2321106, "Aleoids", "AleoidaSpica", "AleoidaSpica_Emerald" ) );
+            VariantData.Add( "Aleoids_03_N", new LookupVariant( (long?)2321101, "Aleoids", "AleoidaSpica", "AleoidaSpica_Ocher" ) );
+            VariantData.Add( "Aleoids_03_T", new LookupVariant( (long?)2321105, "Aleoids", "AleoidaSpica", "AleoidaSpica_Sage" ) );
+            VariantData.Add( "Aleoids_03_TTS", new LookupVariant( (long?)2321102, "Aleoids", "AleoidaSpica", "AleoidaSpica_Mauve" ) );
+            VariantData.Add( "Aleoids_04_A", new LookupVariant( (long?)2321103, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Green" ) );
+            VariantData.Add( "Aleoids_04_B", new LookupVariant( (long?)2321104, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Yellow" ) );
+            VariantData.Add( "Aleoids_04_F", new LookupVariant( (long?)2321203, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Teal" ) );
+            VariantData.Add( "Aleoids_04_K", new LookupVariant( (long?)2321211, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Turquoise" ) );
+            VariantData.Add( "Aleoids_04_L", new LookupVariant( (long?)2321202, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Lime" ) );
+            VariantData.Add( "Aleoids_04_M", new LookupVariant( (long?)2321214, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Emerald" ) );
+            VariantData.Add( "Aleoids_04_N", new LookupVariant( (long?)2321204, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Ocher" ) );
+            VariantData.Add( "Aleoids_04_T", new LookupVariant( (long?)2321205, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Sage" ) );
+            VariantData.Add( "Aleoids_04_TTS", new LookupVariant( (long?)2321206, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Mauve" ) );
+            VariantData.Add( "Aleoids_04_W", new LookupVariant( (long?)2321208, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Grey" ) );
+            VariantData.Add( "Aleoids_04_Y", new LookupVariant( (long?)2321207, "Aleoids", "AleoidaLaminiae", "AleoidaLaminiae_Amethyst" ) );
+            VariantData.Add( "Aleoids_05_A", new LookupVariant( (long?)2321215, "Aleoids", "AleoidaGravis", "AleoidaGravis_Green" ) );
+            VariantData.Add( "Aleoids_05_B", new LookupVariant( (long?)2321201, "Aleoids", "AleoidaGravis", "AleoidaGravis_Yellow" ) );
+            VariantData.Add( "Aleoids_05_F", new LookupVariant( (long?)2321209, "Aleoids", "AleoidaGravis", "AleoidaGravis_Teal" ) );
+            VariantData.Add( "Aleoids_05_K", new LookupVariant( (long?)2321210, "Aleoids", "AleoidaGravis", "AleoidaGravis_Turquoise" ) );
+            VariantData.Add( "Aleoids_05_L", new LookupVariant( (long?)2321213, "Aleoids", "AleoidaGravis", "AleoidaGravis_Lime" ) );
+            VariantData.Add( "Aleoids_05_M", new LookupVariant( (long?)2321212, "Aleoids", "AleoidaGravis", "AleoidaGravis_Emerald" ) );
+            VariantData.Add( "Aleoids_05_N", new LookupVariant( (long?)2321306, "Aleoids", "AleoidaGravis", "AleoidaGravis_Ocher" ) );
+            VariantData.Add( "Aleoids_05_T", new LookupVariant( (long?)2321301, "Aleoids", "AleoidaGravis", "AleoidaGravis_Sage" ) );
+            VariantData.Add( "Aleoids_05_TTS", new LookupVariant( (long?)2321305, "Aleoids", "AleoidaGravis", "AleoidaGravis_Mauve" ) );
+            VariantData.Add( "Aleoids_05_Y", new LookupVariant( (long?)2321302, "Aleoids", "AleoidaGravis", "AleoidaGravis_Amethyst" ) );
+            VariantData.Add( "Bacterial_01_A", new LookupVariant( (long?)2321303, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Yellow" ) );
+            VariantData.Add( "Bacterial_01_Ae", new LookupVariant( (long?)2321304, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Orange" ) );
+            VariantData.Add( "Bacterial_01_B", new LookupVariant( (long?)3100402, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Grey" ) );
+            VariantData.Add( "Bacterial_01_D", new LookupVariant( (long?)3100802, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Ocher" ) );
+            VariantData.Add( "Bacterial_01_F", new LookupVariant( (long?)2330103, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Lime" ) );
+            VariantData.Add( "Bacterial_01_G", new LookupVariant( (long?)2330114, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Emerald" ) );
+            VariantData.Add( "Bacterial_01_K", new LookupVariant( (long?)2330104, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Green" ) );
+            VariantData.Add( "Bacterial_01_L", new LookupVariant( (long?)2330105, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Sage" ) );
+            VariantData.Add( "Bacterial_01_M", new LookupVariant( (long?)2330108, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Teal" ) );
+            VariantData.Add( "Bacterial_01_N", new LookupVariant( (long?)2330107, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Indigo" ) );
+            VariantData.Add( "Bacterial_01_O", new LookupVariant( (long?)2330115, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Turquoise" ) );
+            VariantData.Add( "Bacterial_01_T", new LookupVariant( (long?)2330109, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Red" ) );
+            VariantData.Add( "Bacterial_01_TTS", new LookupVariant( (long?)2330110, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Maroon" ) );
+            VariantData.Add( "Bacterial_01_W", new LookupVariant( (long?)2330112, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Amethyst" ) );
+            VariantData.Add( "Bacterial_01_Y", new LookupVariant( (long?)2330203, "Bacterial", "BacteriumAurasus", "BacteriumAurasus_Mauve" ) );
+            VariantData.Add( "Bacterial_02_Antimony", new LookupVariant( (long?)2330214, "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Magenta" ) );
+            VariantData.Add( "Bacterial_02_Polonium", new LookupVariant( (long?)2330204, "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Gold" ) );
+            VariantData.Add( "Bacterial_02_Ruthenium", new LookupVariant( (long?)2330205, "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Orange" ) );
+            VariantData.Add( "Bacterial_02_Technetium", new LookupVariant( (long?)2330208, "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Cyan" ) );
+            VariantData.Add( "Bacterial_02_Tellurium", new LookupVariant( (long?)2330207, "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Green" ) );
+            VariantData.Add( "Bacterial_02_Yttrium", new LookupVariant( (long?)2330215, "Bacterial", "BacteriumNebulus", "BacteriumNebulus_Cobalt" ) );
+            VariantData.Add( "Bacterial_03_Cadmium", new LookupVariant( (long?)2330201, "Bacterial", "BacteriumScopulum", "BacteriumScopulum_White" ) );
+            VariantData.Add( "Bacterial_03_Mercury", new LookupVariant( (long?)2330209, "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Peach" ) );
+            VariantData.Add( "Bacterial_03_Molybdenum", new LookupVariant( (long?)2330210, "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Lime" ) );
+            VariantData.Add( "Bacterial_03_Niobium", new LookupVariant( (long?)2330213, "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Red" ) );
+            VariantData.Add( "Bacterial_03_Tin", new LookupVariant( (long?)2330212, "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Mulberry" ) );
+            VariantData.Add( "Bacterial_03_Tungsten", new LookupVariant( (long?)2330303, "Bacterial", "BacteriumScopulum", "BacteriumScopulum_Aquamarine" ) );
+            VariantData.Add( "Bacterial_04_Antimony", new LookupVariant( (long?)2330304, "Bacterial", "BacteriumAcies", "BacteriumAcies_Cyan" ) );
+            VariantData.Add( "Bacterial_04_Polonium", new LookupVariant( (long?)2330305, "Bacterial", "BacteriumAcies", "BacteriumAcies_Magenta" ) );
+            VariantData.Add( "Bacterial_04_Ruthenium", new LookupVariant( (long?)2330308, "Bacterial", "BacteriumAcies", "BacteriumAcies_Cobalt" ) );
+            VariantData.Add( "Bacterial_04_Technetium", new LookupVariant( (long?)2330307, "Bacterial", "BacteriumAcies", "BacteriumAcies_Lime" ) );
+            VariantData.Add( "Bacterial_04_Tellurium", new LookupVariant( (long?)2330315, "Bacterial", "BacteriumAcies", "BacteriumAcies_White" ) );
+            VariantData.Add( "Bacterial_04_Yttrium", new LookupVariant( (long?)2330309, "Bacterial", "BacteriumAcies", "BacteriumAcies_Aquamarine" ) );
+            VariantData.Add( "Bacterial_05_Antimony", new LookupVariant( (long?)2330310, "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Cyan" ) );
+            VariantData.Add( "Bacterial_05_Polonium", new LookupVariant( (long?)2330403, "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Orange" ) );
+            VariantData.Add( "Bacterial_05_Ruthenium", new LookupVariant( (long?)2330414, "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Mulberry" ) );
+            VariantData.Add( "Bacterial_05_Technetium", new LookupVariant( (long?)2330404, "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Gold" ) );
+            VariantData.Add( "Bacterial_05_Tellurium", new LookupVariant( (long?)2330405, "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Red" ) );
+            VariantData.Add( "Bacterial_05_Yttrium", new LookupVariant( (long?)2330408, "Bacterial", "BacteriumVesicula", "BacteriumVesicula_Lime" ) );
+            VariantData.Add( "Bacterial_06_A", new LookupVariant( (long?)2330407, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Yellow" ) );
+            VariantData.Add( "Bacterial_06_B", new LookupVariant( (long?)2330415, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Grey" ) );
+            VariantData.Add( "Bacterial_06_D", new LookupVariant( (long?)2330409, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Ocher" ) );
+            VariantData.Add( "Bacterial_06_F", new LookupVariant( (long?)2330410, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Lime" ) );
+            VariantData.Add( "Bacterial_06_G", new LookupVariant( (long?)2330503, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Emerald" ) );
+            VariantData.Add( "Bacterial_06_K", new LookupVariant( (long?)2330514, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Green" ) );
+            VariantData.Add( "Bacterial_06_L", new LookupVariant( (long?)2330504, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Sage" ) );
+            VariantData.Add( "Bacterial_06_M", new LookupVariant( (long?)2330505, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Teal" ) );
+            VariantData.Add( "Bacterial_06_N", new LookupVariant( (long?)2330508, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Indigo" ) );
+            VariantData.Add( "Bacterial_06_O", new LookupVariant( (long?)2330507, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Turquoise" ) );
+            VariantData.Add( "Bacterial_06_T", new LookupVariant( (long?)2330515, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Red" ) );
+            VariantData.Add( "Bacterial_06_TTS", new LookupVariant( (long?)2330509, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Maroon" ) );
+            VariantData.Add( "Bacterial_06_W", new LookupVariant( (long?)2330510, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Amethyst" ) );
+            VariantData.Add( "Bacterial_06_Y", new LookupVariant( (long?)2330512, "Bacterial", "BacteriumAlcyoneum", "BacteriumAlcyoneum_Mauve" ) );
+            VariantData.Add( "Bacterial_07_Cadmium", new LookupVariant( (long?)3101300, "Bacterial", "BacteriumTela", "BacteriumTela_Gold" ) );
+            VariantData.Add( "Bacterial_07_Mercury", new LookupVariant( (long?)2340103, "Bacterial", "BacteriumTela", "BacteriumTela_Orange" ) );
+            VariantData.Add( "Bacterial_07_Molybdenum", new LookupVariant( (long?)2340102, "Bacterial", "BacteriumTela", "BacteriumTela_Yellow" ) );
+            VariantData.Add( "Bacterial_07_Niobium", new LookupVariant( (long?)2340112, "Bacterial", "BacteriumTela", "BacteriumTela_Magenta" ) );
+            VariantData.Add( "Bacterial_07_Tin", new LookupVariant( (long?)2340104, "Bacterial", "BacteriumTela", "BacteriumTela_Cobalt" ) );
+            VariantData.Add( "Bacterial_07_Tungsten", new LookupVariant( (long?)2340105, "Bacterial", "BacteriumTela", "BacteriumTela_Green" ) );
+            VariantData.Add( "Bacterial_08_Antimony", new LookupVariant( (long?)2340106, "Bacterial", "BacteriumInformem", "BacteriumInformem_Red" ) );
+            VariantData.Add( "Bacterial_08_Polonium", new LookupVariant( (long?)2340108, "Bacterial", "BacteriumInformem", "BacteriumInformem_Lime" ) );
+            VariantData.Add( "Bacterial_08_Ruthenium", new LookupVariant( (long?)2340107, "Bacterial", "BacteriumInformem", "BacteriumInformem_Gold" ) );
+            VariantData.Add( "Bacterial_08_Technetium", new LookupVariant( (long?)2340113, "Bacterial", "BacteriumInformem", "BacteriumInformem_Aquamarine" ) );
+            VariantData.Add( "Bacterial_08_Tellurium", new LookupVariant( (long?)2340110, "Bacterial", "BacteriumInformem", "BacteriumInformem_Yellow" ) );
+            VariantData.Add( "Bacterial_08_Yttrium", new LookupVariant( (long?)2340203, "Bacterial", "BacteriumInformem", "BacteriumInformem_Cobalt" ) );
+            VariantData.Add( "Bacterial_09_Antimony", new LookupVariant( (long?)2340202, "Bacterial", "BacteriumVolu", "BacteriumVolu_Red" ) );
+            VariantData.Add( "Bacterial_09_Polonium", new LookupVariant( (long?)2340204, "Bacterial", "BacteriumVolu", "BacteriumVolu_Aquamarine" ) );
+            VariantData.Add( "Bacterial_09_Ruthenium", new LookupVariant( (long?)2340205, "Bacterial", "BacteriumVolu", "BacteriumVolu_Cobalt" ) );
+            VariantData.Add( "Bacterial_09_Technetium", new LookupVariant( (long?)2340206, "Bacterial", "BacteriumVolu", "BacteriumVolu_Lime" ) );
+            VariantData.Add( "Bacterial_09_Tellurium", new LookupVariant( (long?)2340208, "Bacterial", "BacteriumVolu", "BacteriumVolu_Cyan" ) );
+            VariantData.Add( "Bacterial_09_Yttrium", new LookupVariant( (long?)2340207, "Bacterial", "BacteriumVolu", "BacteriumVolu_Gold" ) );
+            VariantData.Add( "Bacterial_10_Antimony", new LookupVariant( (long?)2340213, "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Cobalt" ) );
+            VariantData.Add( "Bacterial_10_Polonium", new LookupVariant( (long?)2340210, "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Yellow" ) );
+            VariantData.Add( "Bacterial_10_Ruthenium", new LookupVariant( (long?)2340303, "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Aquamarine" ) );
+            VariantData.Add( "Bacterial_10_Technetium", new LookupVariant( (long?)2340302, "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Gold" ) );
+            VariantData.Add( "Bacterial_10_Tellurium", new LookupVariant( (long?)2340304, "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Lime" ) );
+            VariantData.Add( "Bacterial_10_Yttrium", new LookupVariant( (long?)2340305, "Bacterial", "BacteriumBullaris", "BacteriumBullaris_Red" ) );
+            VariantData.Add( "Bacterial_11_Cadmium", new LookupVariant( (long?)2340306, "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Lime" ) );
+            VariantData.Add( "Bacterial_11_Mercury", new LookupVariant( (long?)2340307, "Bacterial", "BacteriumOmentum", "BacteriumOmentum_White" ) );
+            VariantData.Add( "Bacterial_11_Molybdenum", new LookupVariant( (long?)2340313, "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Aquamarine" ) );
+            VariantData.Add( "Bacterial_11_Niobium", new LookupVariant( (long?)2350106, "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Peach" ) );
+            VariantData.Add( "Bacterial_11_Tin", new LookupVariant( (long?)2350101, "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Red" ) );
+            VariantData.Add( "Bacterial_11_Tungsten", new LookupVariant( (long?)2350105, "Bacterial", "BacteriumOmentum", "BacteriumOmentum_Blue" ) );
+            VariantData.Add( "Bacterial_12_A", new LookupVariant( (long?)2350102, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Yellow" ) );
+            VariantData.Add( "Bacterial_12_Ae", new LookupVariant( (long?)2350103, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Orange" ) );
+            VariantData.Add( "Bacterial_12_B", new LookupVariant( (long?)2350104, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Grey" ) );
+            VariantData.Add( "Bacterial_12_D", new LookupVariant( (long?)2350202, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Ocher" ) );
+            VariantData.Add( "Bacterial_12_F", new LookupVariant( (long?)2350201, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Lime" ) );
+            VariantData.Add( "Bacterial_12_G", new LookupVariant( (long?)2350209, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Emerald" ) );
+            VariantData.Add( "Bacterial_12_K", new LookupVariant( (long?)2350203, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Green" ) );
+            VariantData.Add( "Bacterial_12_L", new LookupVariant( (long?)2350204, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Sage" ) );
+            VariantData.Add( "Bacterial_12_M", new LookupVariant( (long?)2350205, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Teal" ) );
+            VariantData.Add( "Bacterial_12_N", new LookupVariant( (long?)2350206, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Indigo" ) );
+            VariantData.Add( "Bacterial_12_O", new LookupVariant( (long?)2350210, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Turquoise" ) );
+            VariantData.Add( "Bacterial_12_T", new LookupVariant( (long?)2350207, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Red" ) );
+            VariantData.Add( "Bacterial_12_TTS", new LookupVariant( (long?)2350302, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Maroon" ) );
+            VariantData.Add( "Bacterial_12_W", new LookupVariant( (long?)2350301, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Amethyst" ) );
+            VariantData.Add( "Bacterial_12_Y", new LookupVariant( (long?)2350309, "Bacterial", "BacteriumCerbrus", "BacteriumCerbrus_Mauve" ) );
+            VariantData.Add( "Bacterial_13_Cadmium", new LookupVariant( (long?)2350303, "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Peach" ) );
+            VariantData.Add( "Bacterial_13_Mercury", new LookupVariant( (long?)2350304, "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Red" ) );
+            VariantData.Add( "Bacterial_13_Molybdenum", new LookupVariant( (long?)2350305, "Bacterial", "BacteriumVerrata", "BacteriumVerrata_White" ) );
+            VariantData.Add( "Bacterial_13_Niobium", new LookupVariant( (long?)2350306, "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Mulberry" ) );
+            VariantData.Add( "Bacterial_13_Tin", new LookupVariant( (long?)2350310, "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Blue" ) );
+            VariantData.Add( "Bacterial_13_Tungsten", new LookupVariant( (long?)2350308, "Bacterial", "BacteriumVerrata", "BacteriumVerrata_Lime" ) );
+            VariantData.Add( "Cactoid_01_A", new LookupVariant( (long?)2350307, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Green" ) );
+            VariantData.Add( "Cactoid_01_D", new LookupVariant( (long?)2350405, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Turquoise" ) );
+            VariantData.Add( "Cactoid_01_F", new LookupVariant( (long?)2350403, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Yellow" ) );
+            VariantData.Add( "Cactoid_01_G", new LookupVariant( (long?)2350404, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Teal" ) );
+            VariantData.Add( "Cactoid_01_L", new LookupVariant( (long?)2350401, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Mauve" ) );
+            VariantData.Add( "Cactoid_01_M", new LookupVariant( (long?)2350402, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Amethyst" ) );
+            VariantData.Add( "Cactoid_01_N", new LookupVariant( (long?)2350406, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Sage" ) );
+            VariantData.Add( "Cactoid_01_T", new LookupVariant( (long?)2100301, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Orange" ) );
+            VariantData.Add( "Cactoid_01_TTS", new LookupVariant( (long?)3100401, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Red" ) );
+            VariantData.Add( "Cactoid_01_Y", new LookupVariant( (long?)2360105, "Cactoid", "CactoidaCortexum", "CactoidaCortexum_Ocher" ) );
+            VariantData.Add( "Cactoid_02_A", new LookupVariant( (long?)2360103, "Cactoid", "CactoidaLapis", "CactoidaLapis_Green" ) );
+            VariantData.Add( "Cactoid_02_D", new LookupVariant( (long?)2360104, "Cactoid", "CactoidaLapis", "CactoidaLapis_Turquoise" ) );
+            VariantData.Add( "Cactoid_02_F", new LookupVariant( (long?)2360101, "Cactoid", "CactoidaLapis", "CactoidaLapis_Yellow" ) );
+            VariantData.Add( "Cactoid_02_G", new LookupVariant( (long?)2360102, "Cactoid", "CactoidaLapis", "CactoidaLapis_Teal" ) );
+            VariantData.Add( "Cactoid_02_L", new LookupVariant( (long?)2360106, "Cactoid", "CactoidaLapis", "CactoidaLapis_Mauve" ) );
+            VariantData.Add( "Cactoid_02_M", new LookupVariant( (long?)2360205, "Cactoid", "CactoidaLapis", "CactoidaLapis_Amethyst" ) );
+            VariantData.Add( "Cactoid_02_N", new LookupVariant( (long?)2360203, "Cactoid", "CactoidaLapis", "CactoidaLapis_Sage" ) );
+            VariantData.Add( "Cactoid_02_O", new LookupVariant( (long?)2360204, "Cactoid", "CactoidaLapis", "CactoidaLapis_Grey" ) );
+            VariantData.Add( "Cactoid_02_T", new LookupVariant( (long?)2360201, "Cactoid", "CactoidaLapis", "CactoidaLapis_Orange" ) );
+            VariantData.Add( "Cactoid_02_TTS", new LookupVariant( (long?)2360202, "Cactoid", "CactoidaLapis", "CactoidaLapis_Red" ) );
+            VariantData.Add( "Cactoid_02_W", new LookupVariant( (long?)2360206, "Cactoid", "CactoidaLapis", "CactoidaLapis_Indigo" ) );
+            VariantData.Add( "Cactoid_02_Y", new LookupVariant( (long?)2370103, "Cactoid", "CactoidaLapis", "CactoidaLapis_Ocher" ) );
+            VariantData.Add( "Cactoid_03_A", new LookupVariant( (long?)2370111, "Cactoid", "CactoidaVermis", "CactoidaVermis_Green" ) );
+            VariantData.Add( "Cactoid_03_F", new LookupVariant( (long?)2370102, "Cactoid", "CactoidaVermis", "CactoidaVermis_Yellow" ) );
+            VariantData.Add( "Cactoid_03_G", new LookupVariant( (long?)2370114, "Cactoid", "CactoidaVermis", "CactoidaVermis_Teal" ) );
+            VariantData.Add( "Cactoid_03_L", new LookupVariant( (long?)2370104, "Cactoid", "CactoidaVermis", "CactoidaVermis_Mauve" ) );
+            VariantData.Add( "Cactoid_03_M", new LookupVariant( (long?)2370105, "Cactoid", "CactoidaVermis", "CactoidaVermis_Amethyst" ) );
+            VariantData.Add( "Cactoid_03_N", new LookupVariant( (long?)2370106, "Cactoid", "CactoidaVermis", "CactoidaVermis_Sage" ) );
+            VariantData.Add( "Cactoid_03_T", new LookupVariant( (long?)2370108, "Cactoid", "CactoidaVermis", "CactoidaVermis_Orange" ) );
+            VariantData.Add( "Cactoid_03_TTS", new LookupVariant( (long?)2370107, "Cactoid", "CactoidaVermis", "CactoidaVermis_Red" ) );
+            VariantData.Add( "Cactoid_04_A", new LookupVariant( (long?)2370115, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Green" ) );
+            VariantData.Add( "Cactoid_04_D", new LookupVariant( (long?)2370109, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Turquoise" ) );
+            VariantData.Add( "Cactoid_04_F", new LookupVariant( (long?)2370110, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Yellow" ) );
+            VariantData.Add( "Cactoid_04_G", new LookupVariant( (long?)2370112, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Teal" ) );
+            VariantData.Add( "Cactoid_04_L", new LookupVariant( (long?)2370203, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Mauve" ) );
+            VariantData.Add( "Cactoid_04_M", new LookupVariant( (long?)2370211, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Amethyst" ) );
+            VariantData.Add( "Cactoid_04_N", new LookupVariant( (long?)2370202, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Sage" ) );
+            VariantData.Add( "Cactoid_04_T", new LookupVariant( (long?)2370214, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Orange" ) );
+            VariantData.Add( "Cactoid_04_TTS", new LookupVariant( (long?)2370204, "Cactoid", "CactoidaPullulanta", "CactoidaPullulanta_Red" ) );
+            VariantData.Add( "Cactoid_05_A", new LookupVariant( (long?)2370205, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Green" ) );
+            VariantData.Add( "Cactoid_05_D", new LookupVariant( (long?)2370206, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Turquoise" ) );
+            VariantData.Add( "Cactoid_05_F", new LookupVariant( (long?)2370208, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Yellow" ) );
+            VariantData.Add( "Cactoid_05_G", new LookupVariant( (long?)2370207, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Teal" ) );
+            VariantData.Add( "Cactoid_05_L", new LookupVariant( (long?)2370215, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Mauve" ) );
+            VariantData.Add( "Cactoid_05_M", new LookupVariant( (long?)2370201, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Amethyst" ) );
+            VariantData.Add( "Cactoid_05_N", new LookupVariant( (long?)2370209, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Sage" ) );
+            VariantData.Add( "Cactoid_05_T", new LookupVariant( (long?)2370210, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Orange" ) );
+            VariantData.Add( "Cactoid_05_TTS", new LookupVariant( (long?)2370212, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Red" ) );
+            VariantData.Add( "Cactoid_05_Y", new LookupVariant( (long?)2370303, "Cactoid", "CactoidaPeperatis", "CactoidaPeperatis_Ocher" ) );
+            VariantData.Add( "Clypeus_01_A", new LookupVariant( (long?)2370311, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Orange" ) );
+            VariantData.Add( "Clypeus_01_B", new LookupVariant( (long?)2370302, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Maroon" ) );
+            VariantData.Add( "Clypeus_01_D", new LookupVariant( (long?)2370314, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Lime" ) );
+            VariantData.Add( "Clypeus_01_F", new LookupVariant( (long?)2370304, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Mauve" ) );
+            VariantData.Add( "Clypeus_01_G", new LookupVariant( (long?)2370305, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Amethyst" ) );
+            VariantData.Add( "Clypeus_01_K", new LookupVariant( (long?)2370306, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Grey" ) );
+            VariantData.Add( "Clypeus_01_L", new LookupVariant( (long?)2370308, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Teal" ) );
+            VariantData.Add( "Clypeus_01_M", new LookupVariant( (long?)2370307, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Turquoise" ) );
+            VariantData.Add( "Clypeus_01_N", new LookupVariant( (long?)2370315, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Yellow" ) );
+            VariantData.Add( "Clypeus_01_Y", new LookupVariant( (long?)2370309, "Clypeus", "ClypeusLacrimam", "ClypeusLacrimam_Green" ) );
+            VariantData.Add( "Clypeus_02_A", new LookupVariant( (long?)2370310, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Orange" ) );
+            VariantData.Add( "Clypeus_02_B", new LookupVariant( (long?)2370313, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Maroon" ) );
+            VariantData.Add( "Clypeus_02_F", new LookupVariant( (long?)2370312, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Mauve" ) );
+            VariantData.Add( "Clypeus_02_G", new LookupVariant( (long?)2370403, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Amethyst" ) );
+            VariantData.Add( "Clypeus_02_K", new LookupVariant( (long?)2370411, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Grey" ) );
+            VariantData.Add( "Clypeus_02_L", new LookupVariant( (long?)2370402, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Teal" ) );
+            VariantData.Add( "Clypeus_02_M", new LookupVariant( (long?)2370414, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Turquoise" ) );
+            VariantData.Add( "Clypeus_02_N", new LookupVariant( (long?)2370404, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Yellow" ) );
+            VariantData.Add( "Clypeus_02_Y", new LookupVariant( (long?)2370405, "Clypeus", "ClypeusMargaritus", "ClypeusMargaritus_Green" ) );
+            VariantData.Add( "Clypeus_03_A", new LookupVariant( (long?)2370406, "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Orange" ) );
+            VariantData.Add( "Clypeus_03_B", new LookupVariant( (long?)2370408, "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Maroon" ) );
+            VariantData.Add( "Clypeus_03_F", new LookupVariant( (long?)2370407, "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Mauve" ) );
+            VariantData.Add( "Clypeus_03_G", new LookupVariant( (long?)2370415, "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Amethyst" ) );
+            VariantData.Add( "Clypeus_03_K", new LookupVariant( (long?)2370401, "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Grey" ) );
+            VariantData.Add( "Clypeus_03_M", new LookupVariant( (long?)2370409, "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Turquoise" ) );
+            VariantData.Add( "Clypeus_03_N", new LookupVariant( (long?)2370410, "Clypeus", "ClypeusSpeculumi", "ClypeusSpeculumi_Yellow" ) );
+            VariantData.Add( "Conchas_01_Cadmium", new LookupVariant( (long?)2370412, "Conchas", "ConchaRenibus", "ConchaRenibus_Red" ) );
+            VariantData.Add( "Conchas_01_Mercury", new LookupVariant( (long?)2370503, "Conchas", "ConchaRenibus", "ConchaRenibus_Mulberry" ) );
+            VariantData.Add( "Conchas_01_Molybdenum", new LookupVariant( (long?)2370502, "Conchas", "ConchaRenibus", "ConchaRenibus_Peach" ) );
+            VariantData.Add( "Conchas_01_Niobium", new LookupVariant( (long?)2370504, "Conchas", "ConchaRenibus", "ConchaRenibus_Blue" ) );
+            VariantData.Add( "Conchas_01_Tin", new LookupVariant( (long?)2370505, "Conchas", "ConchaRenibus", "ConchaRenibus_Aquamarine" ) );
+            VariantData.Add( "Conchas_01_Tungsten", new LookupVariant( (long?)2370506, "Conchas", "ConchaRenibus", "ConchaRenibus_White" ) );
+            VariantData.Add( "Conchas_02_A", new LookupVariant( (long?)2370508, "Conchas", "ConchaAureolas", "ConchaAureolas_Teal" ) );
+            VariantData.Add( "Conchas_02_B", new LookupVariant( (long?)2370507, "Conchas", "ConchaAureolas", "ConchaAureolas_Indigo" ) );
+            VariantData.Add( "Conchas_02_D", new LookupVariant( (long?)2370515, "Conchas", "ConchaAureolas", "ConchaAureolas_Green" ) );
+            VariantData.Add( "Conchas_02_F", new LookupVariant( (long?)2370509, "Conchas", "ConchaAureolas", "ConchaAureolas_Grey" ) );
+            VariantData.Add( "Conchas_02_G", new LookupVariant( (long?)2370510, "Conchas", "ConchaAureolas", "ConchaAureolas_Turquoise" ) );
+            VariantData.Add( "Conchas_02_K", new LookupVariant( (long?)2370603, "Conchas", "ConchaAureolas", "ConchaAureolas_Red" ) );
+            VariantData.Add( "Conchas_02_L", new LookupVariant( (long?)2370602, "Conchas", "ConchaAureolas", "ConchaAureolas_Orange" ) );
+            VariantData.Add( "Conchas_02_N", new LookupVariant( (long?)2370614, "Conchas", "ConchaAureolas", "ConchaAureolas_Emerald" ) );
+            VariantData.Add( "Conchas_02_Y", new LookupVariant( (long?)2370604, "Conchas", "ConchaAureolas", "ConchaAureolas_Yellow" ) );
+            VariantData.Add( "Conchas_03_A", new LookupVariant( (long?)2370605, "Conchas", "ConchaLabiata", "ConchaLabiata_Teal" ) );
+            VariantData.Add( "Conchas_03_B", new LookupVariant( (long?)2370606, "Conchas", "ConchaLabiata", "ConchaLabiata_Indigo" ) );
+            VariantData.Add( "Conchas_03_D", new LookupVariant( (long?)2370608, "Conchas", "ConchaLabiata", "ConchaLabiata_Green" ) );
+            VariantData.Add( "Conchas_03_F", new LookupVariant( (long?)2370607, "Conchas", "ConchaLabiata", "ConchaLabiata_Grey" ) );
+            VariantData.Add( "Conchas_03_G", new LookupVariant( (long?)2370615, "Conchas", "ConchaLabiata", "ConchaLabiata_Turquoise" ) );
+            VariantData.Add( "Conchas_03_K", new LookupVariant( (long?)2370609, "Conchas", "ConchaLabiata", "ConchaLabiata_Red" ) );
+            VariantData.Add( "Conchas_03_L", new LookupVariant( (long?)2370610, "Conchas", "ConchaLabiata", "ConchaLabiata_Orange" ) );
+            VariantData.Add( "Conchas_03_N", new LookupVariant( (long?)2370612, "Conchas", "ConchaLabiata", "ConchaLabiata_Emerald" ) );
+            VariantData.Add( "Conchas_03_W", new LookupVariant( (long?)1400109, "Conchas", "ConchaLabiata", "ConchaLabiata_Lime" ) );
+            VariantData.Add( "Conchas_03_Y", new LookupVariant( (long?)1400114, "Conchas", "ConchaLabiata", "ConchaLabiata_Yellow" ) );
+            VariantData.Add( "Conchas_04_Antimony", new LookupVariant( (long?)1400102, "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Peach" ) );
+            VariantData.Add( "Conchas_04_Polonium", new LookupVariant( (long?)1400108, "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Red" ) );
+            VariantData.Add( "Conchas_04_Ruthenium", new LookupVariant( (long?)2380106, "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Orange" ) );
+            VariantData.Add( "Conchas_04_Technetium", new LookupVariant( (long?)2380101, "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_White" ) );
+            VariantData.Add( "Conchas_04_Tellurium", new LookupVariant( (long?)2380105, "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Yellow" ) );
+            VariantData.Add( "Conchas_04_Yttrium", new LookupVariant( (long?)2380102, "Conchas", "ConchaBiconcavis", "ConchaBiconcavis_Gold" ) );
+            VariantData.Add( "Cone", new LookupVariant( (long?)2380103, "Cone", "BarkMounds", "BarkMounds" ) );
+            VariantData.Add( "Electricae_01_Antimony", new LookupVariant( (long?)2380104, "Electricae", "ElectricaePluma", "ElectricaePluma_Cobalt" ) );
+            VariantData.Add( "Electricae_01_Polonium", new LookupVariant( (long?)2380206, "Electricae", "ElectricaePluma", "ElectricaePluma_Cyan" ) );
+            VariantData.Add( "Electricae_01_Ruthenium", new LookupVariant( (long?)2380201, "Electricae", "ElectricaePluma", "ElectricaePluma_Blue" ) );
+            VariantData.Add( "Electricae_01_Technetium", new LookupVariant( (long?)2380205, "Electricae", "ElectricaePluma", "ElectricaePluma_Magenta" ) );
+            VariantData.Add( "Electricae_01_Tellurium", new LookupVariant( (long?)2380202, "Electricae", "ElectricaePluma", "ElectricaePluma_Red" ) );
+            VariantData.Add( "Electricae_01_Yttrium", new LookupVariant( (long?)2380203, "Electricae", "ElectricaePluma", "ElectricaePluma_Mulberry" ) );
+            VariantData.Add( "Electricae_02_Antimony", new LookupVariant( (long?)2380204, "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Cyan" ) );
+            VariantData.Add( "Electricae_02_Polonium", new LookupVariant( (long?)2380306, "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Cobalt" ) );
+            VariantData.Add( "Electricae_02_Ruthenium", new LookupVariant( (long?)2380301, "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Blue" ) );
+            VariantData.Add( "Electricae_02_Technetium", new LookupVariant( (long?)2380305, "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Aquamarine" ) );
+            VariantData.Add( "Electricae_02_Tellurium", new LookupVariant( (long?)2380302, "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Magenta" ) );
+            VariantData.Add( "Electricae_02_Yttrium", new LookupVariant( (long?)2380303, "Electricae", "ElectricaeRadialem", "ElectricaeRadialem_Green" ) );
+            VariantData.Add( "Fonticulus_01_A", new LookupVariant( (long?)2380304, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Green" ) );
+            VariantData.Add( "Fonticulus_01_Ae", new LookupVariant( (long?)2380406, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Maroon" ) );
+            VariantData.Add( "Fonticulus_01_B", new LookupVariant( (long?)2380401, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Lime" ) );
+            VariantData.Add( "Fonticulus_01_D", new LookupVariant( (long?)2380405, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Turquoise" ) );
+            VariantData.Add( "Fonticulus_01_F", new LookupVariant( (long?)2380402, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Yellow" ) );
+            VariantData.Add( "Fonticulus_01_G", new LookupVariant( (long?)2380403, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Teal" ) );
+            VariantData.Add( "Fonticulus_01_K", new LookupVariant( (long?)2380404, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Emerald" ) );
+            VariantData.Add( "Fonticulus_01_L", new LookupVariant( (long?)2390105, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Mauve" ) );
+            VariantData.Add( "Fonticulus_01_M", new LookupVariant( (long?)2390103, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Amethyst" ) );
+            VariantData.Add( "Fonticulus_01_N", new LookupVariant( (long?)2390104, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Sage" ) );
+            VariantData.Add( "Fonticulus_01_T", new LookupVariant( (long?)2390101, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Orange" ) );
+            VariantData.Add( "Fonticulus_01_TTS", new LookupVariant( (long?)2390102, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Red" ) );
+            VariantData.Add( "Fonticulus_01_Y", new LookupVariant( (long?)2390106, "Fonticulus", "FonticuluaSegmentatus", "FonticuluaSegmentatus_Ocher" ) );
+            VariantData.Add( "Fonticulus_02_A", new LookupVariant( (long?)2390206, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Green" ) );
+            VariantData.Add( "Fonticulus_02_Ae", new LookupVariant( (long?)2390201, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Maroon" ) );
+            VariantData.Add( "Fonticulus_02_B", new LookupVariant( (long?)2390205, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Lime" ) );
+            VariantData.Add( "Fonticulus_02_D", new LookupVariant( (long?)2390202, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Turquoise" ) );
+            VariantData.Add( "Fonticulus_02_F", new LookupVariant( (long?)2390203, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Yellow" ) );
+            VariantData.Add( "Fonticulus_02_G", new LookupVariant( (long?)2390204, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Teal" ) );
+            VariantData.Add( "Fonticulus_02_K", new LookupVariant( (long?)2390305, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Emerald" ) );
+            VariantData.Add( "Fonticulus_02_L", new LookupVariant( (long?)2390303, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Mauve" ) );
+            VariantData.Add( "Fonticulus_02_M", new LookupVariant( (long?)2390304, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Amethyst" ) );
+            VariantData.Add( "Fonticulus_02_N", new LookupVariant( (long?)2390301, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Sage" ) );
+            VariantData.Add( "Fonticulus_02_O", new LookupVariant( (long?)2390302, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Grey" ) );
+            VariantData.Add( "Fonticulus_02_T", new LookupVariant( (long?)2390306, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Orange" ) );
+            VariantData.Add( "Fonticulus_02_TTS", new LookupVariant( (long?)2390406, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Red" ) );
+            VariantData.Add( "Fonticulus_02_Y", new LookupVariant( (long?)2390401, "Fonticulus", "FonticuluaCampestris", "FonticuluaCampestris_Ocher" ) );
+            VariantData.Add( "Fonticulus_03_A", new LookupVariant( (long?)2390405, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Green" ) );
+            VariantData.Add( "Fonticulus_03_Ae", new LookupVariant( (long?)2390402, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Maroon" ) );
+            VariantData.Add( "Fonticulus_03_B", new LookupVariant( (long?)2390403, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Lime" ) );
+            VariantData.Add( "Fonticulus_03_D", new LookupVariant( (long?)2390404, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Turquoise" ) );
+            VariantData.Add( "Fonticulus_03_F", new LookupVariant( (long?)1400601, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Yellow" ) );
+            VariantData.Add( "Fonticulus_03_G", new LookupVariant( (long?)1400701, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Teal" ) );
+            VariantData.Add( "Fonticulus_03_K", new LookupVariant( (long?)1400702, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Emerald" ) );
+            VariantData.Add( "Fonticulus_03_L", new LookupVariant( (long?)1401300, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Mauve" ) );
+            VariantData.Add( "Fonticulus_03_M", new LookupVariant( (long?)1400801, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Amethyst" ) );
+            VariantData.Add( "Fonticulus_03_N", new LookupVariant( (long?)1400802, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Sage" ) );
+            VariantData.Add( "Fonticulus_03_T", new LookupVariant( (long?)1400901, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Orange" ) );
+            VariantData.Add( "Fonticulus_03_TTS", new LookupVariant( (long?)1400902, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Red" ) );
+            VariantData.Add( "Fonticulus_03_W", new LookupVariant( (long?)1401001, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Indigo" ) );
+            VariantData.Add( "Fonticulus_03_Y", new LookupVariant( (long?)1401002, "Fonticulus", "FonticuluaUpupam", "FonticuluaUpupam_Ocher" ) );
+            VariantData.Add( "Fonticulus_04_A", new LookupVariant( (long?)1401101, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Green" ) );
+            VariantData.Add( "Fonticulus_04_Ae", new LookupVariant( (long?)1401102, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Maroon" ) );
+            VariantData.Add( "Fonticulus_04_B", new LookupVariant( (long?)1400409, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Lime" ) );
+            VariantData.Add( "Fonticulus_04_D", new LookupVariant( (long?)1400414, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Turquoise" ) );
+            VariantData.Add( "Fonticulus_04_F", new LookupVariant( (long?)1400402, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Yellow" ) );
+            VariantData.Add( "Fonticulus_04_G", new LookupVariant( (long?)1400408, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Teal" ) );
+            VariantData.Add( "Fonticulus_04_K", new LookupVariant( (long?)1400208, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Emerald" ) );
+            VariantData.Add( "Fonticulus_04_L", new LookupVariant( (long?)1200402, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Mauve" ) );
+            VariantData.Add( "Fonticulus_04_M", new LookupVariant( (long?)1200302, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Amethyst" ) );
+            VariantData.Add( "Fonticulus_04_N", new LookupVariant( (long?)1200502, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Sage" ) );
+            VariantData.Add( "Fonticulus_04_O", new LookupVariant( (long?)1200602, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Grey" ) );
+            VariantData.Add( "Fonticulus_04_T", new LookupVariant( (long?)1200702, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Orange" ) );
+            VariantData.Add( "Fonticulus_04_TTS", new LookupVariant( (long?)1200802, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Red" ) );
+            VariantData.Add( "Fonticulus_04_Y", new LookupVariant( (long?)1200902, "Fonticulus", "FonticuluaLapida", "FonticuluaLapida_Ocher" ) );
+            VariantData.Add( "Fonticulus_05_A", new LookupVariant( (long?)1200102, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Green" ) );
+            VariantData.Add( "Fonticulus_05_B", new LookupVariant( (long?)2101500, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Lime" ) );
+            VariantData.Add( "Fonticulus_05_F", new LookupVariant( (long?)3200800, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Yellow" ) );
+            VariantData.Add( "Fonticulus_05_G", new LookupVariant( (long?)3200200, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Teal" ) );
+            VariantData.Add( "Fonticulus_05_K", new LookupVariant( (long?)3200400, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Emerald" ) );
+            VariantData.Add( "Fonticulus_05_L", new LookupVariant( (long?)3200600, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Mauve" ) );
+            VariantData.Add( "Fonticulus_05_M", new LookupVariant( (long?)3200300, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Amethyst" ) );
+            VariantData.Add( "Fonticulus_05_N", new LookupVariant( (long?)3100404, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Sage" ) );
+            VariantData.Add( "Fonticulus_05_T", new LookupVariant( (long?)1400160, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Orange" ) );
+            VariantData.Add( "Fonticulus_05_TTS", new LookupVariant( (long?)1400159, "Fonticulus", "FonticuluaFluctus", "FonticuluaFluctus_Red" ) );
+            VariantData.Add( "Fonticulus_06_A", new LookupVariant( (long?)1400161, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Green" ) );
+            VariantData.Add( "Fonticulus_06_B", new LookupVariant( (long?)1400162, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Lime" ) );
+            VariantData.Add( "Fonticulus_06_D", new LookupVariant( (long?)1400164, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Turquoise" ) );
+            VariantData.Add( "Fonticulus_06_F", new LookupVariant( (long?)1400152, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Yellow" ) );
+            VariantData.Add( "Fonticulus_06_G", new LookupVariant( (long?)1400158, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Teal" ) );
+            VariantData.Add( "Fonticulus_06_K", new LookupVariant( (long?)1400260, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Emerald" ) );
+            VariantData.Add( "Fonticulus_06_L", new LookupVariant( (long?)1400259, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Mauve" ) );
+            VariantData.Add( "Fonticulus_06_M", new LookupVariant( (long?)1400261, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Amethyst" ) );
+            VariantData.Add( "Fonticulus_06_N", new LookupVariant( (long?)1400262, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Sage" ) );
+            VariantData.Add( "Fonticulus_06_T", new LookupVariant( (long?)1400258, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Orange" ) );
+            VariantData.Add( "Fonticulus_06_TTS", new LookupVariant( (long?)3100803, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Red" ) );
+            VariantData.Add( "Fonticulus_06_Y", new LookupVariant( (long?)2100601, "Fonticulus", "FonticuluaDigitos", "FonticuluaDigitos_Ocher" ) );
+            VariantData.Add( "Fumerolas_01_Cadmium", new LookupVariant( (long?)2100602, "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Orange" ) );
+            VariantData.Add( "Fumerolas_01_Mercury", new LookupVariant( (long?)2100603, "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Magenta" ) );
+            VariantData.Add( "Fumerolas_01_Molybdenum", new LookupVariant( (long?)2100604, "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Gold" ) );
+            VariantData.Add( "Fumerolas_01_Niobium", new LookupVariant( (long?)2100605, "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Cobalt" ) );
+            VariantData.Add( "Fumerolas_01_Tin", new LookupVariant( (long?)2100606, "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Cyan" ) );
+            VariantData.Add( "Fumerolas_01_Tungsten", new LookupVariant( (long?)2100607, "Fumerolas", "FumerolaCarbosis", "FumerolaCarbosis_Yellow" ) );
+            VariantData.Add( "Fumerolas_02_Cadmium", new LookupVariant( (long?)2100801, "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Aquamarine" ) );
+            VariantData.Add( "Fumerolas_02_Mercury", new LookupVariant( (long?)2100802, "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Lime" ) );
+            VariantData.Add( "Fumerolas_02_Molybdenum", new LookupVariant( (long?)2100803, "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Blue" ) );
+            VariantData.Add( "Fumerolas_02_Niobium", new LookupVariant( (long?)2100804, "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_White" ) );
+            VariantData.Add( "Fumerolas_02_Tin", new LookupVariant( (long?)2100701, "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Peach" ) );
+            VariantData.Add( "Fumerolas_02_Tungsten", new LookupVariant( (long?)2100702, "Fumerolas", "FumerolaExtremus", "FumerolaExtremus_Mulberry" ) );
+            VariantData.Add( "Fumerolas_03_Cadmium", new LookupVariant( (long?)2100703, "Fumerolas", "FumerolaNitris", "FumerolaNitris_White" ) );
+            VariantData.Add( "Fumerolas_03_Mercury", new LookupVariant( (long?)2100704, "Fumerolas", "FumerolaNitris", "FumerolaNitris_Peach" ) );
+            VariantData.Add( "Fumerolas_03_Molybdenum", new LookupVariant( (long?)2100705, "Fumerolas", "FumerolaNitris", "FumerolaNitris_Lime" ) );
+            VariantData.Add( "Fumerolas_03_Niobium", new LookupVariant( (long?)2100706, "Fumerolas", "FumerolaNitris", "FumerolaNitris_Red" ) );
+            VariantData.Add( "Fumerolas_03_Tin", new LookupVariant( (long?)2100707, "Fumerolas", "FumerolaNitris", "FumerolaNitris_Mulberry" ) );
+            VariantData.Add( "Fumerolas_03_Tungsten", new LookupVariant( (long?)2301602, "Fumerolas", "FumerolaNitris", "FumerolaNitris_Aquamarine" ) );
+            VariantData.Add( "Fumerolas_04_Cadmium", new LookupVariant( (long?)2301601, "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Green" ) );
+            VariantData.Add( "Fumerolas_04_Mercury", new LookupVariant( (long?)2301603, "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Yellow" ) );
+            VariantData.Add( "Fumerolas_04_Molybdenum", new LookupVariant( (long?)2301702, "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Cyan" ) );
+            VariantData.Add( "Fumerolas_04_Niobium", new LookupVariant( (long?)2301701, "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Gold" ) );
+            VariantData.Add( "Fumerolas_04_Tin", new LookupVariant( (long?)2301703, "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Orange" ) );
+            VariantData.Add( "Fumerolas_04_Tungsten", new LookupVariant( (long?)2301802, "Fumerolas", "FumerolaAquatis", "FumerolaAquatis_Cobalt" ) );
+            VariantData.Add( "Fungoids_01_Antimony", new LookupVariant( (long?)2301801, "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Peach" ) );
+            VariantData.Add( "Fungoids_01_Polonium", new LookupVariant( (long?)2301803, "Fungoids", "FungoidaSetisis", "FungoidaSetisis_White" ) );
+            VariantData.Add( "Fungoids_01_Ruthenium", new LookupVariant( (long?)2301902, "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Gold" ) );
+            VariantData.Add( "Fungoids_01_Technetium", new LookupVariant( (long?)2301901, "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Lime" ) );
+            VariantData.Add( "Fungoids_01_Tellurium", new LookupVariant( (long?)2301903, "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Yellow" ) );
+            VariantData.Add( "Fungoids_01_Yttrium", new LookupVariant( (long?)2302102, "Fungoids", "FungoidaSetisis", "FungoidaSetisis_Orange" ) );
+            VariantData.Add( "Fungoids_02_Cadmium", new LookupVariant( (long?)2302101, "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Blue" ) );
+            VariantData.Add( "Fungoids_02_Mercury", new LookupVariant( (long?)2302103, "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Green" ) );
+            VariantData.Add( "Fungoids_02_Molybdenum", new LookupVariant( (long?)2101002, "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Magenta" ) );
+            VariantData.Add( "Fungoids_02_Niobium", new LookupVariant( (long?)2101001, "Fungoids", "FungoidaStabitis", "FungoidaStabitis_White" ) );
+            VariantData.Add( "Fungoids_02_Tin", new LookupVariant( (long?)2101003, "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Orange" ) );
+            VariantData.Add( "Fungoids_02_Tungsten", new LookupVariant( (long?)2101004, "Fungoids", "FungoidaStabitis", "FungoidaStabitis_Peach" ) );
+            VariantData.Add( "Fungoids_03_Antimony", new LookupVariant( (long?)2401001, "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Red" ) );
+            VariantData.Add( "Fungoids_03_Polonium", new LookupVariant( (long?)2401002, "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Mulberry" ) );
+            VariantData.Add( "Fungoids_03_Ruthenium", new LookupVariant( (long?)2401003, "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Magenta" ) );
+            VariantData.Add( "Fungoids_03_Technetium", new LookupVariant( (long?)2401004, "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Peach" ) );
+            VariantData.Add( "Fungoids_03_Tellurium", new LookupVariant( (long?)2401005, "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Gold" ) );
+            VariantData.Add( "Fungoids_03_Yttrium", new LookupVariant( (long?)2401006, "Fungoids", "FungoidaBullarum", "FungoidaBullarum_Orange" ) );
+            VariantData.Add( "Fungoids_04_Cadmium", new LookupVariant( (long?)2401007, "Fungoids", "FungoidaGelata", "FungoidaGelata_Cyan" ) );
+            VariantData.Add( "Fungoids_04_Mercury", new LookupVariant( (long?)2401008, "Fungoids", "FungoidaGelata", "FungoidaGelata_Lime" ) );
+            VariantData.Add( "Fungoids_04_Molybdenum", new LookupVariant( (long?)2401009, "Fungoids", "FungoidaGelata", "FungoidaGelata_Mulberry" ) );
+            VariantData.Add( "Fungoids_04_Niobium", new LookupVariant( (long?)2401010, "Fungoids", "FungoidaGelata", "FungoidaGelata_Green" ) );
+            VariantData.Add( "Fungoids_04_Tin", new LookupVariant( (long?)2401011, "Fungoids", "FungoidaGelata", "FungoidaGelata_Red" ) );
+            VariantData.Add( "Fungoids_04_Tungsten", new LookupVariant( (long?)2401012, "Fungoids", "FungoidaGelata", "FungoidaGelata_Orange" ) );
+            VariantData.Add( "Ground_Struct_Ice", new LookupVariant( (long?)2401013, "GroundStructIce", "CrystallineShards", "CrystallineShards" ) );
+            VariantData.Add( "L_Cry_IcCry_Bl", new LookupVariant( (long?)2401014, "IceCrystals", "LindigoticumIceCrystals", "LindigoticumIceCrystals" ) );
+            VariantData.Add( "L_Cry_IcCry_Gr", new LookupVariant( (long?)2401015, "IceCrystals", "PrasinumIceCrystals", "PrasinumIceCrystals" ) );
+            VariantData.Add( "L_Cry_IcCry_Pk", new LookupVariant( (long?)2401016, "IceCrystals", "RoseumIceCrystals", "RoseumIceCrystals" ) );
+            VariantData.Add( "L_Cry_IcCry_Pur", new LookupVariant( (long?)2401017, "IceCrystals", "PurpureumIceCrystals", "PurpureumIceCrystals" ) );
+            VariantData.Add( "L_Cry_IcCry_Red", new LookupVariant( (long?)2402001, "IceCrystals", "RubeumIceCrystals", "RubeumIceCrystals" ) );
+            VariantData.Add( "L_Cry_IcCry_Wte", new LookupVariant( (long?)2402002, "IceCrystals", "AlbidumIceCrystals", "AlbidumIceCrystals" ) );
+            VariantData.Add( "L_Cry_IcCry_Yw", new LookupVariant( (long?)2402003, "IceCrystals", "FlavumIceCrystals", "FlavumIceCrystals" ) );
+            VariantData.Add( "L_Cry_MetCry_Gr", new LookupVariant( (long?)2402004, "MetallicCrystals", "PrasinumMetallicCrystals", "PrasinumMetallicCrystals" ) );
+            VariantData.Add( "L_Cry_MetCry_Pur", new LookupVariant( (long?)2402005, "MetallicCrystals", "PurpureumMetallicCrystals", "PurpureumMetallicCrystals" ) );
+            VariantData.Add( "L_Cry_MetCry_Red", new LookupVariant( (long?)2402007, "MetallicCrystals", "RubeumMetallicCrystals", "RubeumMetallicCrystals" ) );
+            VariantData.Add( "L_Cry_MetCry_Yw", new LookupVariant( (long?)2402008, "MetallicCrystals", "FlavumMetallicCrystals", "FlavumMetallicCrystals" ) );
+            VariantData.Add( "L_Cry_QtzCry_Bl", new LookupVariant( (long?)24020009, "SilicateCrystals", "LindigoticumSilicateCrystals", "LindigoticumSilicateCrystals" ) );
+            VariantData.Add( "L_Cry_QtzCry_Gr", new LookupVariant( (long?)24020010, "SilicateCrystals", "PrasinumSilicateCrystals", "PrasinumSilicateCrystals" ) );
+            VariantData.Add( "L_Cry_QtzCry_Pk", new LookupVariant( (long?)2402011, "SilicateCrystals", "RoseumSilicateCrystals", "RoseumSilicateCrystals" ) );
+            VariantData.Add( "L_Cry_QtzCry_Pur", new LookupVariant( (long?)2402012, "SilicateCrystals", "PurpureumSilicateCrystals", "PurpureumSilicateCrystals" ) );
+            VariantData.Add( "L_Cry_QtzCry_Red", new LookupVariant( (long?)24020013, "SilicateCrystals", "RubeumSilicateCrystals", "RubeumSilicateCrystals" ) );
+            VariantData.Add( "L_Cry_QtzCry_Wte", new LookupVariant( (long?)2403002, "SilicateCrystals", "AlbidumSilicateCrystals", "AlbidumSilicateCrystals" ) );
+            VariantData.Add( "L_Cry_QtzCry_Yw", new LookupVariant( (long?)2403003, "SilicateCrystals", "FlavumSilicateCrystals", "FlavumSilicateCrystals" ) );
+            VariantData.Add( "L_Org_Moll03_V1_Dark", new LookupVariant( (long?)2403004, "MolluscParasol", "LindigoticumParasolMollusc", "LindigoticumParasolMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V1_Def", new LookupVariant( (long?)2403005, "MolluscParasol", "LuteolumParasolMollusc", "LuteolumParasolMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V1_Earth", new LookupVariant( (long?)2403006, "MolluscParasol", "VirideParasolMollusc", "VirideParasolMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V2_Dark", new LookupVariant( (long?)2403007, "MolluscBulb", "LindigoticumBulbMollusc", "LindigoticumBulbMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V2_Def", new LookupVariant( (long?)2403008, "MolluscBulb", "LuteolumBulbMollusc", "LuteolumBulbMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V2_Earth", new LookupVariant( (long?)2403009, "MolluscBulb", "VirideBulbMollusc", "VirideBulbMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V3_Dark", new LookupVariant( (long?)2403010, "MolluscUmbrella", "LindigoticumUmbrellaMollusc", "LindigoticumUmbrellaMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V3_Def", new LookupVariant( (long?)2403011, "MolluscUmbrella", "LuteolumUmbrellaMollusc", "LuteolumUmbrellaMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V3_Earth", new LookupVariant( (long?)2403012, "MolluscUmbrella", "VirideUmbrellaMollusc", "VirideUmbrellaMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V4_Dark", new LookupVariant( (long?)2403013, "MolluscCapsule", "LindigoticumCapsuleMollusc", "LindigoticumCapsuleMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V4_Def", new LookupVariant( (long?)2403014, "MolluscCapsule", "LuteolumCapsuleMollusc", "LuteolumCapsuleMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V4_Earth", new LookupVariant( (long?)2403015, "MolluscCapsule", "VirideCapsuleMollusc", "VirideCapsuleMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V6_Dark", new LookupVariant( (long?)2403016, "MolluscReel", "LindigoticumReelMollusc", "LindigoticumReelMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V6_Def", new LookupVariant( (long?)2406001, "MolluscReel", "LuteolumReelMollusc", "LuteolumReelMollusc" ) );
+            VariantData.Add( "L_Org_Moll03_V6_Earth", new LookupVariant( (long?)2406002, "MolluscReel", "VirideReelMollusc", "VirideReelMollusc" ) );
+            VariantData.Add( "L_Org_PltFun_V1_Bl", new LookupVariant( (long?)2406003, "CalcitePlates", "LindigoticumCalcitePlates", "LindigoticumCalcitePlates" ) );
+            VariantData.Add( "L_Org_PltFun_V1_Def", new LookupVariant( (long?)2406004, "CalcitePlates", "LuteolumCalcitePlates", "LuteolumCalcitePlates" ) );
+            VariantData.Add( "L_Org_PltFun_V1_Gr", new LookupVariant( (long?)2406005, "CalcitePlates", "VirideCalcitePlates", "VirideCalcitePlates" ) );
+            VariantData.Add( "L_Org_PltFun_V1_Red", new LookupVariant( (long?)2406006, "CalcitePlates", "RutulumCalcitePlates", "RutulumCalcitePlates" ) );
+            VariantData.Add( "L_Seed_Pln01_V1_Bl", new LookupVariant( (long?)2406007, "PeduncleTree", "CaeruleumPeduncleTree", "CaeruleumPeduncleTree" ) );
+            VariantData.Add( "L_Seed_Pln01_V1_Def", new LookupVariant( (long?)2406008, "PeduncleTree", "AlbidumPeduncleTree", "AlbidumPeduncleTree" ) );
+            VariantData.Add( "L_Seed_Pln01_V1_Gr", new LookupVariant( (long?)2406009, "PeduncleTree", "ViridePeduncleTree", "ViridePeduncleTree" ) );
+            VariantData.Add( "L_Seed_Pln01_V1_Pur", new LookupVariant( (long?)2208002, "PeduncleTree", "OstrinumPeduncleTree", "OstrinumPeduncleTree" ) );
+            VariantData.Add( "L_Seed_Pln01_V1_Red", new LookupVariant( (long?)2208001, "PeduncleTree", "RubellumPeduncleTree", "RubellumPeduncleTree" ) );
+            VariantData.Add( "L_Seed_Pln02_V3_Def", new LookupVariant( (long?)2208003, "AsterTree", "CereumAsterTree", "CereumAsterTree" ) );
+            VariantData.Add( "L_Seed_Pln02_V3_Gr", new LookupVariant( (long?)2208004, "AsterTree", "PrasinumAsterTree", "PrasinumAsterTree" ) );
+            VariantData.Add( "L_Seed_Pln02_V3_Red", new LookupVariant( (long?)2208005, "AsterTree", "RubellumAsterTree", "RubellumAsterTree" ) );
+            VariantData.Add( "L_Seed_SdRt02_V3", new LookupVariant( (long?)2208101, "StolonTree", "StolonTree", "StolonTree" ) );
+            VariantData.Add( "Osseus_01_A", new LookupVariant( (long?)2208103, "Osseus", "OsseusFractus", "OsseusFractus_Lime" ) );
+            VariantData.Add( "Osseus_01_F", new LookupVariant( (long?)2208105, "Osseus", "OsseusFractus", "OsseusFractus_Turquoise" ) );
+            VariantData.Add( "Osseus_01_G", new LookupVariant( (long?)2209021, "Osseus", "OsseusFractus", "OsseusFractus_Grey" ) );
+            VariantData.Add( "Osseus_01_K", new LookupVariant( (long?)1400307, "Osseus", "OsseusFractus", "OsseusFractus_Indigo" ) );
+            VariantData.Add( "Osseus_01_T", new LookupVariant( (long?)1400306, "Osseus", "OsseusFractus", "OsseusFractus_Emerald" ) );
+            VariantData.Add( "Osseus_01_TTS", new LookupVariant( (long?)3100801, "Osseus", "OsseusFractus", "OsseusFractus_Green" ) );
+            VariantData.Add( "Osseus_01_Y", new LookupVariant( (long?)3100403, "Osseus", "OsseusFractus", "OsseusFractus_Maroon" ) );
+            VariantData.Add( "Osseus_02_Cadmium", new LookupVariant( (long?)3100406, "Osseus", "OsseusDiscus", "OsseusDiscus_White" ) );
+            VariantData.Add( "Osseus_02_Mercury", new LookupVariant( (long?)2400102, "Osseus", "OsseusDiscus", "OsseusDiscus_Lime" ) );
+            VariantData.Add( "Osseus_02_Molybdenum", new LookupVariant( (long?)2400103, "Osseus", "OsseusDiscus", "OsseusDiscus_Peach" ) );
+            VariantData.Add( "Osseus_02_Niobium", new LookupVariant( (long?)2400104, "Osseus", "OsseusDiscus", "OsseusDiscus_Aquamarine" ) );
+            VariantData.Add( "Osseus_02_Tin", new LookupVariant( (long?)2400105, "Osseus", "OsseusDiscus", "OsseusDiscus_Blue" ) );
+            VariantData.Add( "Osseus_02_Tungsten", new LookupVariant( (long?)2400106, "Osseus", "OsseusDiscus", "OsseusDiscus_Red" ) );
+            VariantData.Add( "Osseus_03_A", new LookupVariant( (long?)2400107, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Lime" ) );
+            VariantData.Add( "Osseus_03_F", new LookupVariant( (long?)2400109, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Turquoise" ) );
+            VariantData.Add( "Osseus_03_G", new LookupVariant( (long?)2400206, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Grey" ) );
+            VariantData.Add( "Osseus_03_K", new LookupVariant( (long?)2400201, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Indigo" ) );
+            VariantData.Add( "Osseus_03_O", new LookupVariant( (long?)2400205, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Yellow" ) );
+            VariantData.Add( "Osseus_03_T", new LookupVariant( (long?)2400202, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Emerald" ) );
+            VariantData.Add( "Osseus_03_TTS", new LookupVariant( (long?)2400203, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Green" ) );
+            VariantData.Add( "Osseus_03_Y", new LookupVariant( (long?)2400204, "Osseus", "OsseusSpiralis", "OsseusSpiralis_Maroon" ) );
+            VariantData.Add( "Osseus_04_Antimony", new LookupVariant( (long?)2400302, "Osseus", "OsseusPumice", "OsseusPumice_White" ) );
+            VariantData.Add( "Osseus_04_Polonium", new LookupVariant( (long?)2400303, "Osseus", "OsseusPumice", "OsseusPumice_Peach" ) );
+            VariantData.Add( "Osseus_04_Ruthenium", new LookupVariant( (long?)2400304, "Osseus", "OsseusPumice", "OsseusPumice_Gold" ) );
+            VariantData.Add( "Osseus_04_Technetium", new LookupVariant( (long?)2400305, "Osseus", "OsseusPumice", "OsseusPumice_Lime" ) );
+            VariantData.Add( "Osseus_04_Tellurium", new LookupVariant( (long?)2400301, "Osseus", "OsseusPumice", "OsseusPumice_Green" ) );
+            VariantData.Add( "Osseus_04_Yttrium", new LookupVariant( (long?)2400306, "Osseus", "OsseusPumice", "OsseusPumice_Yellow" ) );
+            VariantData.Add( "Osseus_05_A", new LookupVariant( (long?)2400307, "Osseus", "OsseusCornibus", "OsseusCornibus_Lime" ) );
+            VariantData.Add( "Osseus_05_F", new LookupVariant( (long?)2400309, "Osseus", "OsseusCornibus", "OsseusCornibus_Turquoise" ) );
+            VariantData.Add( "Osseus_05_G", new LookupVariant( (long?)2400405, "Osseus", "OsseusCornibus", "OsseusCornibus_Grey" ) );
+            VariantData.Add( "Osseus_05_K", new LookupVariant( (long?)2400403, "Osseus", "OsseusCornibus", "OsseusCornibus_Indigo" ) );
+            VariantData.Add( "Osseus_05_T", new LookupVariant( (long?)2400404, "Osseus", "OsseusCornibus", "OsseusCornibus_Emerald" ) );
+            VariantData.Add( "Osseus_05_TTS", new LookupVariant( (long?)2400401, "Osseus", "OsseusCornibus", "OsseusCornibus_Green" ) );
+            VariantData.Add( "Osseus_05_Y", new LookupVariant( (long?)2400402, "Osseus", "OsseusCornibus", "OsseusCornibus_Maroon" ) );
+            VariantData.Add( "Osseus_06_A", new LookupVariant( (long?)2400406, "Osseus", "OsseusPellebantus", "OsseusPellebantus_Lime" ) );
+            VariantData.Add( "Osseus_06_F", new LookupVariant( (long?)2400502, "Osseus", "OsseusPellebantus", "OsseusPellebantus_Turquoise" ) );
+            VariantData.Add( "Osseus_06_G", new LookupVariant( (long?)2400503, "Osseus", "OsseusPellebantus", "OsseusPellebantus_Grey" ) );
+            VariantData.Add( "Osseus_06_K", new LookupVariant( (long?)2400504, "Osseus", "OsseusPellebantus", "OsseusPellebantus_Indigo" ) );
+            VariantData.Add( "Osseus_06_T", new LookupVariant( (long?)2400505, "Osseus", "OsseusPellebantus", "OsseusPellebantus_Emerald" ) );
+            VariantData.Add( "Osseus_06_TTS", new LookupVariant( (long?)2400506, "Osseus", "OsseusPellebantus", "OsseusPellebantus_Green" ) );
+            VariantData.Add( "Osseus_06_Y", new LookupVariant( (long?)2400507, "Osseus", "OsseusPellebantus", "OsseusPellebantus_Maroon" ) );
+            VariantData.Add( "Recepta_01_A", new LookupVariant( (long?)2400509, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Amethyst" ) );
+            VariantData.Add( "Recepta_01_Ae", new LookupVariant( (long?)2400602, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Grey" ) );
+            VariantData.Add( "Recepta_01_B", new LookupVariant( (long?)2400603, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Turquoise" ) );
+            VariantData.Add( "Recepta_01_D", new LookupVariant( (long?)2400604, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Yellow" ) );
+            VariantData.Add( "Recepta_01_F", new LookupVariant( (long?)2400605, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Mauve" ) );
+            VariantData.Add( "Recepta_01_G", new LookupVariant( (long?)2400606, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Orange" ) );
+            VariantData.Add( "Recepta_01_K", new LookupVariant( (long?)2400607, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Red" ) );
+            VariantData.Add( "Recepta_01_L", new LookupVariant( (long?)2400609, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Ocher" ) );
+            VariantData.Add( "Recepta_01_M", new LookupVariant( (long?)2410103, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Maroon" ) );
+            VariantData.Add( "Recepta_01_N", new LookupVariant( (long?)2410111, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Emerald" ) );
+            VariantData.Add( "Recepta_01_T", new LookupVariant( (long?)2410102, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Teal" ) );
+            VariantData.Add( "Recepta_01_TTS", new LookupVariant( (long?)2410114, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Sage" ) );
+            VariantData.Add( "Recepta_01_Y", new LookupVariant( (long?)2410104, "Recepta", "ReceptaUmbrux", "ReceptaUmbrux_Lime" ) );
+            VariantData.Add( "Recepta_02_Cadmium", new LookupVariant( (long?)2410105, "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Lime" ) );
+            VariantData.Add( "Recepta_02_Mercury", new LookupVariant( (long?)2410106, "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Cyan" ) );
+            VariantData.Add( "Recepta_02_Molybdenum", new LookupVariant( (long?)2410108, "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Gold" ) );
+            VariantData.Add( "Recepta_02_Niobium", new LookupVariant( (long?)2410107, "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Mulberry" ) );
+            VariantData.Add( "Recepta_02_Tin", new LookupVariant( (long?)2410115, "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Orange" ) );
+            VariantData.Add( "Recepta_02_Tungsten", new LookupVariant( (long?)2410109, "Recepta", "ReceptaDeltahedronix", "ReceptaDeltahedronix_Red" ) );
+            VariantData.Add( "Recepta_03_Antimony", new LookupVariant( (long?)2410110, "Recepta", "ReceptaConditivus", "ReceptaConditivus_Lime" ) );
+            VariantData.Add( "Recepta_03_Polonium", new LookupVariant( (long?)2410112, "Recepta", "ReceptaConditivus", "ReceptaConditivus_White" ) );
+            VariantData.Add( "Recepta_03_Ruthenium", new LookupVariant( (long?)2410206, "Recepta", "ReceptaConditivus", "ReceptaConditivus_Yellow" ) );
+            VariantData.Add( "Recepta_03_Technetium", new LookupVariant( (long?)2410201, "Recepta", "ReceptaConditivus", "ReceptaConditivus_Aquamarine" ) );
+            VariantData.Add( "Recepta_03_Tellurium", new LookupVariant( (long?)2410205, "Recepta", "ReceptaConditivus", "ReceptaConditivus_Cyan" ) );
+            VariantData.Add( "Recepta_03_Yttrium", new LookupVariant( (long?)2410202, "Recepta", "ReceptaConditivus", "ReceptaConditivus_Green" ) );
+            VariantData.Add( "S_Seed_SdTp01_Bl", new LookupVariant( (long?)2410203, "PedunclePod", "CaeruleumPedunclePod", "CaeruleumPedunclePod" ) );
+            VariantData.Add( "S_Seed_SdTp01_Def", new LookupVariant( (long?)2410204, "PedunclePod", "CandidumPedunclePod", "CandidumPedunclePod" ) );
+            VariantData.Add( "S_Seed_SdTp01_Gr", new LookupVariant( (long?)2410305, "PedunclePod", "GypseeumPedunclePod", "GypseeumPedunclePod" ) );
+            VariantData.Add( "S_Seed_SdTp01_Pur", new LookupVariant( (long?)2410303, "PedunclePod", "PurpureumPedunclePod", "PurpureumPedunclePod" ) );
+            VariantData.Add( "S_Seed_SdTp01_Red", new LookupVariant( (long?)2410304, "PedunclePod", "RufumPedunclePod", "RufumPedunclePod" ) );
+            VariantData.Add( "S_Seed_SdTp02_Bl", new LookupVariant( (long?)2410301, "AsterPod", "LindigoticumAsterPod", "LindigoticumAsterPod" ) );
+            VariantData.Add( "S_Seed_SdTp02_Def", new LookupVariant( (long?)2410302, "AsterPod", "CereumAsterPod", "CereumAsterPod" ) );
+            VariantData.Add( "S_Seed_SdTp02_Gr", new LookupVariant( (long?)2410306, "AsterPod", "PrasinumAsterPod", "PrasinumAsterPod" ) );
+            VariantData.Add( "S_Seed_SdTp02_Pur", new LookupVariant( (long?)3100804, "AsterPod", "PuniceumAsterPod", "PuniceumAsterPod" ) );
+            VariantData.Add( "S_Seed_SdTp02_Red", new LookupVariant( (long?)3200500, "AsterPod", "RubellumAsterPod", "RubellumAsterPod" ) );
+            VariantData.Add( "S_Seed_SdTp03_Bl", new LookupVariant( (long?)2201002, "VoidPod", "CaeruleumOctahedralPod", "CaeruleumOctahedralPod" ) );
+            VariantData.Add( "S_Seed_SdTp03_Def", new LookupVariant( (long?)2201001, "VoidPod", "NiveumOctahedralPod", "NiveumOctahedralPod" ) );
+            VariantData.Add( "S_Seed_SdTp03_Gr", new LookupVariant( (long?)2201003, "VoidPod", "VirideOctahedralPod", "VirideOctahedralPod" ) );
+            VariantData.Add( "S_Seed_SdTp03_Pur", new LookupVariant( (long?)2201004, "VoidPod", "BlatteumOctahedralPod", "BlatteumOctahedralPod" ) );
+            VariantData.Add( "S_Seed_SdTp03_Red", new LookupVariant( (long?)2201005, "VoidPod", "RubeumOctahedralPod", "RubeumOctahedralPod" ) );
+            VariantData.Add( "S_Seed_SdTp04_Bl", new LookupVariant( (long?)2202002, "CollaredPod", "LividumCollaredPod", "LividumCollaredPod" ) );
+            VariantData.Add( "S_Seed_SdTp04_Def", new LookupVariant( (long?)2202001, "CollaredPod", "AlbidumCollaredPod", "AlbidumCollaredPod" ) );
+            VariantData.Add( "S_Seed_SdTp04_Pur", new LookupVariant( (long?)2202003, "CollaredPod", "BlatteumCollaredPod", "BlatteumCollaredPod" ) );
+            VariantData.Add( "S_Seed_SdTp04_Red", new LookupVariant( (long?)2202004, "CollaredPod", "RubicundumCollaredPod", "RubicundumCollaredPod" ) );
+            VariantData.Add( "S_Seed_SdTp05_Bl", new LookupVariant( (long?)2202005, "ChalicePod", "CaeruleumChalicePod", "CaeruleumChalicePod" ) );
+            VariantData.Add( "S_Seed_SdTp05_Def", new LookupVariant( (long?)2203002, "ChalicePod", "AlbidumChalicePod", "AlbidumChalicePod" ) );
+            VariantData.Add( "S_Seed_SdTp05_Gr", new LookupVariant( (long?)2203001, "ChalicePod", "VirideChalicePod", "VirideChalicePod" ) );
+            VariantData.Add( "S_Seed_SdTp05_Pur", new LookupVariant( (long?)2203003, "ChalicePod", "OstrinumChalicePod", "OstrinumChalicePod" ) );
+            VariantData.Add( "S_Seed_SdTp05_Red", new LookupVariant( (long?)2203004, "ChalicePod", "RubellumChalicePod", "RubellumChalicePod" ) );
+            VariantData.Add( "S_Seed_SdTp06_Def", new LookupVariant( (long?)2203005, "GyrePod", "RoseumGyrePod", "RoseumGyrePod" ) );
+            VariantData.Add( "S_Seed_SdTp06_Gd", new LookupVariant( (long?)2204002, "GyrePod", "AurariumGyrePod", "AurariumGyrePod" ) );
+            VariantData.Add( "S_Seed_SdTp07_Bl", new LookupVariant( (long?)2204001, "RhizomePod", "CobalteumRhizomePod", "CobalteumRhizomePod" ) );
+            VariantData.Add( "S_Seed_SdTp07_Def", new LookupVariant( (long?)2204004, "RhizomePod", "CandidumRhizomePod", "CandidumRhizomePod" ) );
+            VariantData.Add( "S_Seed_SdTp07_Gr", new LookupVariant( (long?)2204005, "RhizomePod", "GypseeumRhizomePod", "GypseeumRhizomePod" ) );
+            VariantData.Add( "S_Seed_SdTp07_Pur", new LookupVariant( (long?)2205002, "RhizomePod", "PurpureumRhizomePod", "PurpureumRhizomePod" ) );
+            VariantData.Add( "S_Seed_SdTp07_Red", new LookupVariant( (long?)2205001, "RhizomePod", "RubeumRhizomePod", "RubeumRhizomePod" ) );
+            VariantData.Add( "S_Seed_SdTp08_Bl", new LookupVariant( (long?)2205003, "QuadripartitePod", "CaeruleumQuadripartitePod", "CaeruleumQuadripartitePod" ) );
+            VariantData.Add( "S_Seed_SdTp08_Def", new LookupVariant( (long?)2205004, "QuadripartitePod", "AlbidumQuadripartitePod", "AlbidumQuadripartitePod" ) );
+            VariantData.Add( "S_Seed_SdTp08_Gr", new LookupVariant( (long?)2205005, "QuadripartitePod", "VirideQuadripartitePod", "VirideQuadripartitePod" ) );
+            VariantData.Add( "S_Seed_SdTp08_Pur", new LookupVariant( (long?)2206001, "QuadripartitePod", "BlatteumQuadripartitePod", "BlatteumQuadripartitePod" ) );
+            VariantData.Add( "Seed", new LookupVariant( (long?)2206002, "Brancae", "RoseumBrainTree", "RoseumBrainTree" ) );
+            VariantData.Add( "SeedABCD_01", new LookupVariant( (long?)2207002, "Brancae", "GypseeumBrainTree", "GypseeumBrainTree" ) );
+            VariantData.Add( "SeedABCD_02", new LookupVariant( (long?)2207001, "Brancae", "OstrinumBrainTree", "OstrinumBrainTree" ) );
+            VariantData.Add( "SeedABCD_03", new LookupVariant( (long?)2207003, "Brancae", "VirideBrainTree", "VirideBrainTree" ) );
+            VariantData.Add( "SeedEFGH_01", new LookupVariant( (long?)2207004, "Brancae", "AureumBrainTree", "AureumBrainTree" ) );
+            VariantData.Add( "SeedEFGH_02", new LookupVariant( (long?)2207005, "Brancae", "PuniceumBrainTree", "PuniceumBrainTree" ) );
+            VariantData.Add( "SeedEFGH_03", new LookupVariant( (long?)2207102, "Brancae", "LindigoticumBrainTree", "LindigoticumBrainTree" ) );
+            VariantData.Add( "SeedEFGH", new LookupVariant( (long?)2207101, "Brancae", "LividumBrainTree", "LividumBrainTree" ) );
+            VariantData.Add( "Shrubs_01_B", new LookupVariant( (long?)2207103, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Lime" ) );
+            VariantData.Add( "Shrubs_01_D", new LookupVariant( (long?)2207104, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Indigo" ) );
+            VariantData.Add( "Shrubs_01_F", new LookupVariant( (long?)3100700, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Green" ) );
+            VariantData.Add( "Shrubs_01_G", new LookupVariant( (long?)2100201, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Emerald" ) );
+            VariantData.Add( "Shrubs_01_L", new LookupVariant( (long?)2100202, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Teal" ) );
+            VariantData.Add( "Shrubs_01_M", new LookupVariant( (long?)2100203, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Grey" ) );
+            VariantData.Add( "Shrubs_01_N", new LookupVariant( (long?)2100204, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Red" ) );
+            VariantData.Add( "Shrubs_01_O", new LookupVariant( (long?)2100206, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Yellow" ) );
+            VariantData.Add( "Shrubs_01_TTS", new LookupVariant( (long?)2100207, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Mauve" ) );
+            VariantData.Add( "Shrubs_01_W", new LookupVariant( (long?)2100208, "Shrubs", "FrutexaFlabellum", "FrutexaFlabellum_Orange" ) );
+            VariantData.Add( "Shrubs_02_B", new LookupVariant( (long?)2100205, "Shrubs", "FrutexaAcus", "FrutexaAcus_Lime" ) );
+            VariantData.Add( "Shrubs_02_D", new LookupVariant( (long?)2440102, "Shrubs", "FrutexaAcus", "FrutexaAcus_Indigo" ) );
+            VariantData.Add( "Shrubs_02_F", new LookupVariant( (long?)2440110, "Shrubs", "FrutexaAcus", "FrutexaAcus_Green" ) );
+            VariantData.Add( "Shrubs_02_G", new LookupVariant( (long?)2440103, "Shrubs", "FrutexaAcus", "FrutexaAcus_Emerald" ) );
+            VariantData.Add( "Shrubs_02_L", new LookupVariant( (long?)2440104, "Shrubs", "FrutexaAcus", "FrutexaAcus_Teal" ) );
+            VariantData.Add( "Shrubs_02_M", new LookupVariant( (long?)2440106, "Shrubs", "FrutexaAcus", "FrutexaAcus_Grey" ) );
+            VariantData.Add( "Shrubs_02_N", new LookupVariant( (long?)2440105, "Shrubs", "FrutexaAcus", "FrutexaAcus_Red" ) );
+            VariantData.Add( "Shrubs_02_TTS", new LookupVariant( (long?)2440111, "Shrubs", "FrutexaAcus", "FrutexaAcus_Mauve" ) );
+            VariantData.Add( "Shrubs_02_W", new LookupVariant( (long?)2440101, "Shrubs", "FrutexaAcus", "FrutexaAcus_Orange" ) );
+            VariantData.Add( "Shrubs_03_B", new LookupVariant( (long?)2440107, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Lime" ) );
+            VariantData.Add( "Shrubs_03_D", new LookupVariant( (long?)2440109, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Indigo" ) );
+            VariantData.Add( "Shrubs_03_F", new LookupVariant( (long?)2440202, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Green" ) );
+            VariantData.Add( "Shrubs_03_G", new LookupVariant( (long?)2440210, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Emerald" ) );
+            VariantData.Add( "Shrubs_03_L", new LookupVariant( (long?)2440203, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Teal" ) );
+            VariantData.Add( "Shrubs_03_M", new LookupVariant( (long?)2440204, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Grey" ) );
+            VariantData.Add( "Shrubs_03_N", new LookupVariant( (long?)2440206, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Red" ) );
+            VariantData.Add( "Shrubs_03_TTS", new LookupVariant( (long?)2440205, "Shrubs", "FrutexaMetallicum", "FrutexaMetallicum_Mauve" ) );
+            VariantData.Add( "Shrubs_04_B", new LookupVariant( (long?)2440211, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Lime" ) );
+            VariantData.Add( "Shrubs_04_D", new LookupVariant( (long?)2440207, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Indigo" ) );
+            VariantData.Add( "Shrubs_04_F", new LookupVariant( (long?)2440209, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Green" ) );
+            VariantData.Add( "Shrubs_04_G", new LookupVariant( (long?)2440302, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Emerald" ) );
+            VariantData.Add( "Shrubs_04_L", new LookupVariant( (long?)2440310, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Teal" ) );
+            VariantData.Add( "Shrubs_04_M", new LookupVariant( (long?)2440303, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Grey" ) );
+            VariantData.Add( "Shrubs_04_N", new LookupVariant( (long?)2440304, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Red" ) );
+            VariantData.Add( "Shrubs_04_TTS", new LookupVariant( (long?)2440306, "Shrubs", "FrutexaFlammasis", "FrutexaFlammasis_Mauve" ) );
+            VariantData.Add( "Shrubs_05_B", new LookupVariant( (long?)2440305, "Shrubs", "FrutexaFera", "FrutexaFera_Lime" ) );
+            VariantData.Add( "Shrubs_05_D", new LookupVariant( (long?)2440311, "Shrubs", "FrutexaFera", "FrutexaFera_Indigo" ) );
+            VariantData.Add( "Shrubs_05_F", new LookupVariant( (long?)2440307, "Shrubs", "FrutexaFera", "FrutexaFera_Green" ) );
+            VariantData.Add( "Shrubs_05_G", new LookupVariant( (long?)2440402, "Shrubs", "FrutexaFera", "FrutexaFera_Emerald" ) );
+            VariantData.Add( "Shrubs_05_L", new LookupVariant( (long?)2440410, "Shrubs", "FrutexaFera", "FrutexaFera_Teal" ) );
+            VariantData.Add( "Shrubs_05_M", new LookupVariant( (long?)2440403, "Shrubs", "FrutexaFera", "FrutexaFera_Grey" ) );
+            VariantData.Add( "Shrubs_05_N", new LookupVariant( (long?)2440404, "Shrubs", "FrutexaFera", "FrutexaFera_Red" ) );
+            VariantData.Add( "Shrubs_05_TTS", new LookupVariant( (long?)2440406, "Shrubs", "FrutexaFera", "FrutexaFera_Mauve" ) );
+            VariantData.Add( "Shrubs_06_B", new LookupVariant( (long?)2440405, "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Lime" ) );
+            VariantData.Add( "Shrubs_06_F", new LookupVariant( (long?)2440411, "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Green" ) );
+            VariantData.Add( "Shrubs_06_G", new LookupVariant( (long?)2440407, "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Emerald" ) );
+            VariantData.Add( "Shrubs_06_L", new LookupVariant( (long?)2440502, "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Teal" ) );
+            VariantData.Add( "Shrubs_06_M", new LookupVariant( (long?)2440510, "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Grey" ) );
+            VariantData.Add( "Shrubs_06_N", new LookupVariant( (long?)2440503, "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Red" ) );
+            VariantData.Add( "Shrubs_06_TTS", new LookupVariant( (long?)2440504, "Shrubs", "FrutexaSponsae", "FrutexaSponsae_Mauve" ) );
+            VariantData.Add( "Shrubs_07_B", new LookupVariant( (long?)2440506, "Shrubs", "FrutexaCollum", "FrutexaCollum_Lime" ) );
+            VariantData.Add( "Shrubs_07_D", new LookupVariant( (long?)2440505, "Shrubs", "FrutexaCollum", "FrutexaCollum_Indigo" ) );
+            VariantData.Add( "Shrubs_07_F", new LookupVariant( (long?)2440511, "Shrubs", "FrutexaCollum", "FrutexaCollum_Green" ) );
+            VariantData.Add( "Shrubs_07_G", new LookupVariant( (long?)2440507, "Shrubs", "FrutexaCollum", "FrutexaCollum_Emerald" ) );
+            VariantData.Add( "Shrubs_07_L", new LookupVariant( (long?)2440602, "Shrubs", "FrutexaCollum", "FrutexaCollum_Teal" ) );
+            VariantData.Add( "Shrubs_07_M", new LookupVariant( (long?)2440603, "Shrubs", "FrutexaCollum", "FrutexaCollum_Grey" ) );
+            VariantData.Add( "Shrubs_07_N", new LookupVariant( (long?)2440604, "Shrubs", "FrutexaCollum", "FrutexaCollum_Red" ) );
+            VariantData.Add( "Shrubs_07_TTS", new LookupVariant( (long?)2440606, "Shrubs", "FrutexaCollum", "FrutexaCollum_Mauve" ) );
+            VariantData.Add( "Small_Org_Moll01_V1_Bl", new LookupVariant( (long?)2440605, "MolluscGourd", "CaeruleumGourdMollusc", "CaeruleumGourdMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V1_Def", new LookupVariant( (long?)2440611, "MolluscGourd", "AlbulumGourdMollusc", "AlbulumGourdMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V1_Gr", new LookupVariant( (long?)2440607, "MolluscGourd", "VirideGourdMollusc", "VirideGourdMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V1_Pnk", new LookupVariant( (long?)2440702, "MolluscGourd", "PhoeniceumGourdMollusc", "PhoeniceumGourdMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V1_Pur", new LookupVariant( (long?)2440710, "MolluscGourd", "PurpureumGourdMollusc", "PurpureumGourdMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V1_Red", new LookupVariant( (long?)2440703, "MolluscGourd", "RufumGourdMollusc", "RufumGourdMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V1_Y", new LookupVariant( (long?)2440704, "MolluscGourd", "CroceumGourdMollusc", "CroceumGourdMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V2_Bl", new LookupVariant( (long?)2440706, "MolluscTorus", "CaeruleumTorusMollusc", "CaeruleumTorusMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V2_Gr", new LookupVariant( (long?)2440705, "MolluscTorus", "VirideTorusMollusc", "VirideTorusMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V2_Pur", new LookupVariant( (long?)2440711, "MolluscTorus", "BlatteumTorusMollusc", "BlatteumTorusMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V2_Red", new LookupVariant( (long?)2440707, "MolluscTorus", "RubellumTorusMollusc", "RubellumTorusMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V2_Y", new LookupVariant( (long?)2300102, "MolluscTorus", "FlavumTorusMollusc", "FlavumTorusMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V3_Bl", new LookupVariant( (long?)2300101, "MolluscSquid", "CaeruleumSquidMollusc", "CaeruleumSquidMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V3_Def", new LookupVariant( (long?)2300103, "MolluscSquid", "AlbulumSquidMollusc", "AlbulumSquidMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V3_Pnk", new LookupVariant( (long?)2300104, "MolluscSquid", "RoseumSquidMollusc", "RoseumSquidMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V3_Pur", new LookupVariant( (long?)2300105, "MolluscSquid", "PuniceumSquidMollusc", "PuniceumSquidMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V3_Red", new LookupVariant( (long?)2300106, "MolluscSquid", "RubeumSquidMollusc", "RubeumSquidMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V4_Bl", new LookupVariant( (long?)2300107, "MolluscBullet", "LividumBulletMollusc", "LividumBulletMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V4_Def", new LookupVariant( (long?)2300202, "MolluscBullet", "CereumBulletMollusc", "CereumBulletMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V4_Gr", new LookupVariant( (long?)2300203, "MolluscBullet", "VirideBulletMollusc", "VirideBulletMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V4_Red", new LookupVariant( (long?)2300205, "MolluscBullet", "RubeumBulletMollusc", "RubeumBulletMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V4_Y", new LookupVariant( (long?)2300206, "MolluscBullet", "FlavumBulletMollusc", "FlavumBulletMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V5_Bl", new LookupVariant( (long?)2300207, "MolluscGlobe", "CobalteumGlobeMollusc", "CobalteumGlobeMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V5_Def", new LookupVariant( (long?)2300302, "MolluscGlobe", "NiveumGlobeMollusc", "NiveumGlobeMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V5_Gr", new LookupVariant( (long?)2300301, "MolluscGlobe", "PrasinumGlobeMollusc", "PrasinumGlobeMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V5_Pnk", new LookupVariant( (long?)2300304, "MolluscGlobe", "RoseumGlobeMollusc", "RoseumGlobeMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V5_Pur", new LookupVariant( (long?)2300305, "MolluscGlobe", "OstrinumGlobeMollusc", "OstrinumGlobeMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V5_Red", new LookupVariant( (long?)2300306, "MolluscGlobe", "RutulumGlobeMollusc", "RutulumGlobeMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V5_Y", new LookupVariant( (long?)2300402, "MolluscGlobe", "CroceumGlobeMollusc", "CroceumGlobeMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V6_Bl", new LookupVariant( (long?)2300401, "MolluscBell", "LindigoticumBellMollusc", "LindigoticumBellMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V6_Def", new LookupVariant( (long?)2300403, "MolluscBell", "AlbensBellMollusc", "AlbensBellMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V6_Gr", new LookupVariant( (long?)2300406, "MolluscBell", "GypseeumBellMollusc", "GypseeumBellMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V6_Pur", new LookupVariant( (long?)2300407, "MolluscBell", "BlatteumBellMollusc", "BlatteumBellMollusc" ) );
+            VariantData.Add( "Small_Org_Moll01_V6_Y", new LookupVariant( (long?)2300502, "MolluscBell", "LuteolumBellMollusc", "LuteolumBellMollusc" ) );
+            VariantData.Add( "Sphere", new LookupVariant( (long?)2300501, "Anemone", "LuteolumAnemone", "LuteolumAnemone" ) );
+            VariantData.Add( "SphereABCD_01", new LookupVariant( (long?)2300503, "Anemone", "CroceumAnemone", "CroceumAnemone" ) );
+            VariantData.Add( "SphereABCD_02", new LookupVariant( (long?)2300504, "Anemone", "PuniceumAnemone", "PuniceumAnemone" ) );
+            VariantData.Add( "SphereABCD_03", new LookupVariant( (long?)2300505, "Anemone", "RoseumAnemone", "RoseumAnemone" ) );
+            VariantData.Add( "SphereEFGH_01", new LookupVariant( (long?)2300506, "Anemone", "RubeumBioluminescentAnemone", "RubeumBioluminescentAnemone" ) );
+            VariantData.Add( "SphereEFGH_02", new LookupVariant( (long?)2300507, "Anemone", "PrasinumBioluminescentAnemone", "PrasinumBioluminescentAnemone" ) );
+            VariantData.Add( "SphereEFGH_03", new LookupVariant( (long?)2300602, "Anemone", "RoseumBioluminescentAnemone", "RoseumBioluminescentAnemone" ) );
+            VariantData.Add( "SphereEFGH", new LookupVariant( (long?)2300601, "Anemone", "BlatteumBioluminescentAnemone", "BlatteumBioluminescentAnemone" ) );
+            VariantData.Add( "SPOI_Ball_Lattice", new LookupVariant( (long?)2300603, "MineralSpheres", "LatticeMineralSpheres", "LatticeMineralSpheres" ) );
+            VariantData.Add( "SPOI_Ball", new LookupVariant( (long?)2300605, "MineralSpheres", "SolidMineralSpheres", "SolidMineralSpheres" ) );
+            VariantData.Add( "SPOI_Root_Seeds", new LookupVariant( (long?)2300607, "StolonPod", "StolonPod", "StolonPod" ) );
+            VariantData.Add( "SPOI_SeedPolyp01_V1_Gld", new LookupVariant( (long?)2100401, "GyreTree", "AurariumGyreTree", "AurariumGyreTree" ) );
+            VariantData.Add( "SPOI_SeedPolyp01_V1", new LookupVariant( (long?)2100402, "GyreTree", "VirideGyreTree", "VirideGyreTree" ) );
+            VariantData.Add( "SPOI_SeedWeed01_V1", new LookupVariant( (long?)2100403, "VoidHeart", "ChryseumVoidHeart", "ChryseumVoidHeart" ) );
+            VariantData.Add( "Stratum_01_Ae", new LookupVariant( (long?)2100404, "Stratum", "StratumExcutitus", "StratumExcutitus_Teal" ) );
+            VariantData.Add( "Stratum_01_D", new LookupVariant( (long?)2100406, "Stratum", "StratumExcutitus", "StratumExcutitus_Mauve" ) );
+            VariantData.Add( "Stratum_01_F", new LookupVariant( (long?)2100407, "Stratum", "StratumExcutitus", "StratumExcutitus_Emerald" ) );
+            VariantData.Add( "Stratum_01_K", new LookupVariant( (long?)2100408, "Stratum", "StratumExcutitus", "StratumExcutitus_Lime" ) );
+            VariantData.Add( "Stratum_01_L", new LookupVariant( (long?)2100405, "Stratum", "StratumExcutitus", "StratumExcutitus_Turquoise" ) );
+            VariantData.Add( "Stratum_01_M", new LookupVariant( (long?)1410110, "Stratum", "StratumExcutitus", "StratumExcutitus_Green" ) );
+            VariantData.Add( "Stratum_01_T", new LookupVariant( (long?)1410100, "Stratum", "StratumExcutitus", "StratumExcutitus_Grey" ) );
+            VariantData.Add( "Stratum_01_TTS", new LookupVariant( (long?)2207200, "Stratum", "StratumExcutitus", "StratumExcutitus_Amethyst" ) );
+            VariantData.Add( "Stratum_01_W", new LookupVariant( (long?)2210011, "Stratum", "StratumExcutitus", "StratumExcutitus_Red" ) );
+            VariantData.Add( "Stratum_01_Y", new LookupVariant( (long?)2210001, "Stratum", "StratumExcutitus", "StratumExcutitus_Indigo" ) );
+            VariantData.Add( "Stratum_02_Ae", new LookupVariant( (long?)2210101, "Stratum", "StratumPaleas", "StratumPaleas_Teal" ) );
+            VariantData.Add( "Stratum_02_D", new LookupVariant( (long?)2420107, "Stratum", "StratumPaleas", "StratumPaleas_Mauve" ) );
+            VariantData.Add( "Stratum_02_F", new LookupVariant( (long?)2420110, "Stratum", "StratumPaleas", "StratumPaleas_Emerald" ) );
+            VariantData.Add( "Stratum_02_K", new LookupVariant( (long?)2420101, "Stratum", "StratumPaleas", "StratumPaleas_Lime" ) );
+            VariantData.Add( "Stratum_02_L", new LookupVariant( (long?)2420102, "Stratum", "StratumPaleas", "StratumPaleas_Turquoise" ) );
+            VariantData.Add( "Stratum_02_M", new LookupVariant( (long?)2420104, "Stratum", "StratumPaleas", "StratumPaleas_Green" ) );
+            VariantData.Add( "Stratum_02_T", new LookupVariant( (long?)2420103, "Stratum", "StratumPaleas", "StratumPaleas_Grey" ) );
+            VariantData.Add( "Stratum_02_TTS", new LookupVariant( (long?)2420105, "Stratum", "StratumPaleas", "StratumPaleas_Amethyst" ) );
+            VariantData.Add( "Stratum_02_W", new LookupVariant( (long?)2420106, "Stratum", "StratumPaleas", "StratumPaleas_Red" ) );
+            VariantData.Add( "Stratum_02_Y", new LookupVariant( (long?)2420109, "Stratum", "StratumPaleas", "StratumPaleas_Indigo" ) );
+            VariantData.Add( "Stratum_03_F", new LookupVariant( (long?)2420108, "Stratum", "StratumLaminamus", "StratumLaminamus_Emerald" ) );
+            VariantData.Add( "Stratum_03_K", new LookupVariant( (long?)2420207, "Stratum", "StratumLaminamus", "StratumLaminamus_Lime" ) );
+            VariantData.Add( "Stratum_03_L", new LookupVariant( (long?)2420210, "Stratum", "StratumLaminamus", "StratumLaminamus_Turquoise" ) );
+            VariantData.Add( "Stratum_03_M", new LookupVariant( (long?)2420201, "Stratum", "StratumLaminamus", "StratumLaminamus_Green" ) );
+            VariantData.Add( "Stratum_03_T", new LookupVariant( (long?)2420202, "Stratum", "StratumLaminamus", "StratumLaminamus_Grey" ) );
+            VariantData.Add( "Stratum_03_TTS", new LookupVariant( (long?)2420204, "Stratum", "StratumLaminamus", "StratumLaminamus_Amethyst" ) );
+            VariantData.Add( "Stratum_03_W", new LookupVariant( (long?)2420203, "Stratum", "StratumLaminamus", "StratumLaminamus_Red" ) );
+            VariantData.Add( "Stratum_03_Y", new LookupVariant( (long?)2420205, "Stratum", "StratumLaminamus", "StratumLaminamus_Indigo" ) );
+            VariantData.Add( "Stratum_04_F", new LookupVariant( (long?)2420206, "Stratum", "StratumAraneamus", "StratumAraneamus_Emerald" ) );
+            VariantData.Add( "Stratum_05_Ae", new LookupVariant( (long?)2420209, "Stratum", "StratumLimaxus", "StratumLimaxus_Teal" ) );
+            VariantData.Add( "Stratum_05_D", new LookupVariant( (long?)2420208, "Stratum", "StratumLimaxus", "StratumLimaxus_Mauve" ) );
+            VariantData.Add( "Stratum_05_F", new LookupVariant( (long?)2420301, "Stratum", "StratumLimaxus", "StratumLimaxus_Emerald" ) );
+            VariantData.Add( "Stratum_05_K", new LookupVariant( (long?)2420302, "Stratum", "StratumLimaxus", "StratumLimaxus_Lime" ) );
+            VariantData.Add( "Stratum_05_L", new LookupVariant( (long?)2420304, "Stratum", "StratumLimaxus", "StratumLimaxus_Turquoise" ) );
+            VariantData.Add( "Stratum_05_M", new LookupVariant( (long?)2420303, "Stratum", "StratumLimaxus", "StratumLimaxus_Green" ) );
+            VariantData.Add( "Stratum_05_T", new LookupVariant( (long?)2420305, "Stratum", "StratumLimaxus", "StratumLimaxus_Grey" ) );
+            VariantData.Add( "Stratum_05_TTS", new LookupVariant( (long?)2420306, "Stratum", "StratumLimaxus", "StratumLimaxus_Amethyst" ) );
+            VariantData.Add( "Stratum_05_Y", new LookupVariant( (long?)2420309, "Stratum", "StratumLimaxus", "StratumLimaxus_Indigo" ) );
+            VariantData.Add( "Stratum_06_Ae", new LookupVariant( (long?)2420308, "Stratum", "StratumCucumisis", "StratumCucumisis_Teal" ) );
+            VariantData.Add( "Stratum_06_D", new LookupVariant( (long?)2420401, "Stratum", "StratumCucumisis", "StratumCucumisis_Mauve" ) );
+            VariantData.Add( "Stratum_06_F", new LookupVariant( (long?)2420507, "Stratum", "StratumCucumisis", "StratumCucumisis_Emerald" ) );
+            VariantData.Add( "Stratum_06_K", new LookupVariant( (long?)2420510, "Stratum", "StratumCucumisis", "StratumCucumisis_Lime" ) );
+            VariantData.Add( "Stratum_06_L", new LookupVariant( (long?)2420501, "Stratum", "StratumCucumisis", "StratumCucumisis_Turquoise" ) );
+            VariantData.Add( "Stratum_06_M", new LookupVariant( (long?)2420502, "Stratum", "StratumCucumisis", "StratumCucumisis_Green" ) );
+            VariantData.Add( "Stratum_06_T", new LookupVariant( (long?)2420504, "Stratum", "StratumCucumisis", "StratumCucumisis_Grey" ) );
+            VariantData.Add( "Stratum_06_TTS", new LookupVariant( (long?)2420503, "Stratum", "StratumCucumisis", "StratumCucumisis_Amethyst" ) );
+            VariantData.Add( "Stratum_06_Y", new LookupVariant( (long?)2420505, "Stratum", "StratumCucumisis", "StratumCucumisis_Indigo" ) );
+            VariantData.Add( "Stratum_07_D", new LookupVariant( (long?)2420506, "Stratum", "StratumTectonicas", "StratumTectonicas_Mauve" ) );
+            VariantData.Add( "Stratum_07_F", new LookupVariant( (long?)2420508, "Stratum", "StratumTectonicas", "StratumTectonicas_Emerald" ) );
+            VariantData.Add( "Stratum_07_K", new LookupVariant( (long?)2420607, "Stratum", "StratumTectonicas", "StratumTectonicas_Lime" ) );
+            VariantData.Add( "Stratum_07_L", new LookupVariant( (long?)2420610, "Stratum", "StratumTectonicas", "StratumTectonicas_Turquoise" ) );
+            VariantData.Add( "Stratum_07_M", new LookupVariant( (long?)2420601, "Stratum", "StratumTectonicas", "StratumTectonicas_Green" ) );
+            VariantData.Add( "Stratum_07_T", new LookupVariant( (long?)2420602, "Stratum", "StratumTectonicas", "StratumTectonicas_Grey" ) );
+            VariantData.Add( "Stratum_07_TTS", new LookupVariant( (long?)2420604, "Stratum", "StratumTectonicas", "StratumTectonicas_Amethyst" ) );
+            VariantData.Add( "Stratum_07_W", new LookupVariant( (long?)2420603, "Stratum", "StratumTectonicas", "StratumTectonicas_Red" ) );
+            VariantData.Add( "Stratum_07_Y", new LookupVariant( (long?)2420605, "Stratum", "StratumTectonicas", "StratumTectonicas_Indigo" ) );
+            VariantData.Add( "Stratum_08_Ae", new LookupVariant( (long?)2420606, "Stratum", "StratumFrigus", "StratumFrigus_Teal" ) );
+            VariantData.Add( "Stratum_08_F", new LookupVariant( (long?)2420608, "Stratum", "StratumFrigus", "StratumFrigus_Emerald" ) );
+            VariantData.Add( "Stratum_08_K", new LookupVariant( (long?)2420710, "Stratum", "StratumFrigus", "StratumFrigus_Lime" ) );
+            VariantData.Add( "Stratum_08_L", new LookupVariant( (long?)2420701, "Stratum", "StratumFrigus", "StratumFrigus_Turquoise" ) );
+            VariantData.Add( "Stratum_08_M", new LookupVariant( (long?)2420702, "Stratum", "StratumFrigus", "StratumFrigus_Green" ) );
+            VariantData.Add( "Stratum_08_T", new LookupVariant( (long?)2420704, "Stratum", "StratumFrigus", "StratumFrigus_Grey" ) );
+            VariantData.Add( "Stratum_08_TTS", new LookupVariant( (long?)2420703, "Stratum", "StratumFrigus", "StratumFrigus_Amethyst" ) );
+            VariantData.Add( "Stratum_08_Y", new LookupVariant( (long?)2420705, "Stratum", "StratumFrigus", "StratumFrigus_Indigo" ) );
+            VariantData.Add( "Thargoid_Barnacle_01", new LookupVariant( (long?)2420706, "ThargoidBarnacle", "CommonThargoidBarnacle", "CommonThargoidBarnacle" ) );
+            VariantData.Add( "Thargoid_Barnacle_02", new LookupVariant( (long?)2420709, "ThargoidBarnacle", "LargeThargoidBarnacle", "LargeThargoidBarnacle" ) );
+            VariantData.Add( "Thargoid_Barnacle_Spikes", new LookupVariant( (long?)2420708, "ThargoidBarnacle", "ThargoidBarnacleBarbs", "ThargoidBarnacleBarbs" ) );
+            VariantData.Add( "Tube", new LookupVariant( (long?)2420807, "Tubers", "RoseumSinuousTubers", "RoseumSinuousTubers" ) );
+            VariantData.Add( "TubeABCD_01", new LookupVariant( (long?)2420801, "Tubers", "PrasinumSinuousTubers", "PrasinumSinuousTubers" ) );
+            VariantData.Add( "TubeABCD_02", new LookupVariant( (long?)2420802, "Tubers", "AlbidumSinuousTubers", "AlbidumSinuousTubers" ) );
+            VariantData.Add( "TubeABCD_03", new LookupVariant( (long?)2420804, "Tubers", "CaeruleumSinuousTubers", "CaeruleumSinuousTubers" ) );
+            VariantData.Add( "TubeEFGH_01", new LookupVariant( (long?)2420803, "Tubers", "LindigoticumSinuousTubers", "LindigoticumSinuousTubers" ) );
+            VariantData.Add( "TubeEFGH_02", new LookupVariant( (long?)2420805, "Tubers", "ViolaceumSinuousTubers", "ViolaceumSinuousTubers" ) );
+            VariantData.Add( "TubeEFGH_03", new LookupVariant( (long?)2420806, "Tubers", "VirideSinuousTubers", "VirideSinuousTubers" ) );
+            VariantData.Add( "TubeEFGH", new LookupVariant( (long?)2420808, "Tubers", "BlatteumSinuousTubers", "BlatteumSinuousTubers" ) );
+            VariantData.Add( "Tubus_01_A", new LookupVariant( (long?)3101000, "Tubus", "TubusConifer", "TubusConifer_Indigo" ) );
+            VariantData.Add( "Tubus_01_B", new LookupVariant( (long?)3101100, "Tubus", "TubusConifer", "TubusConifer_Emerald" ) );
+            VariantData.Add( "Tubus_01_D", new LookupVariant( (long?)3101200, "Tubus", "TubusConifer", "TubusConifer_Yellow" ) );
+            VariantData.Add( "Tubus_01_F", new LookupVariant( (long?)2100101, "Tubus", "TubusConifer", "TubusConifer_Grey" ) );
+            VariantData.Add( "Tubus_01_G", new LookupVariant( (long?)2100102, "Tubus", "TubusConifer", "TubusConifer_Red" ) );
+            VariantData.Add( "Tubus_01_K", new LookupVariant( (long?)2100103, "Tubus", "TubusConifer", "TubusConifer_Maroon" ) );
+            VariantData.Add( "Tubus_01_L", new LookupVariant( (long?)2100501, "Tubus", "TubusConifer", "TubusConifer_Turquoise" ) );
+            VariantData.Add( "Tubus_01_M", new LookupVariant( (long?)2100502, "Tubus", "TubusConifer", "TubusConifer_Teal" ) );
+            VariantData.Add( "Tubus_01_N", new LookupVariant( (long?)2100503, "Tubus", "TubusConifer", "TubusConifer_Amethyst" ) );
+            VariantData.Add( "Tubus_01_T", new LookupVariant( (long?)2100504, "Tubus", "TubusConifer", "TubusConifer_Mauve" ) );
+            VariantData.Add( "Tubus_01_TTS", new LookupVariant( (long?)2100506, "Tubus", "TubusConifer", "TubusConifer_Ocher" ) );
+            VariantData.Add( "Tubus_02_A", new LookupVariant( (long?)2100507, "Tubus", "TubusSororibus", "TubusSororibus_Indigo" ) );
+            VariantData.Add( "Tubus_02_B", new LookupVariant( (long?)2100508, "Tubus", "TubusSororibus", "TubusSororibus_Emerald" ) );
+            VariantData.Add( "Tubus_02_F", new LookupVariant( (long?)2100505, "Tubus", "TubusSororibus", "TubusSororibus_Grey" ) );
+            VariantData.Add( "Tubus_02_G", new LookupVariant( (long?)2430103, "Tubus", "TubusSororibus", "TubusSororibus_Red" ) );
+            VariantData.Add( "Tubus_02_K", new LookupVariant( (long?)2430102, "Tubus", "TubusSororibus", "TubusSororibus_Maroon" ) );
+            VariantData.Add( "Tubus_02_L", new LookupVariant( (long?)2430112, "Tubus", "TubusSororibus", "TubusSororibus_Turquoise" ) );
+            VariantData.Add( "Tubus_02_M", new LookupVariant( (long?)2430104, "Tubus", "TubusSororibus", "TubusSororibus_Teal" ) );
+            VariantData.Add( "Tubus_02_N", new LookupVariant( (long?)2430105, "Tubus", "TubusSororibus", "TubusSororibus_Amethyst" ) );
+            VariantData.Add( "Tubus_02_T", new LookupVariant( (long?)2430106, "Tubus", "TubusSororibus", "TubusSororibus_Mauve" ) );
+            VariantData.Add( "Tubus_02_TTS", new LookupVariant( (long?)2430108, "Tubus", "TubusSororibus", "TubusSororibus_Ocher" ) );
+            VariantData.Add( "Tubus_03_A", new LookupVariant( (long?)2430107, "Tubus", "TubusCavas", "TubusCavas_Indigo" ) );
+            VariantData.Add( "Tubus_03_B", new LookupVariant( (long?)2430113, "Tubus", "TubusCavas", "TubusCavas_Emerald" ) );
+            VariantData.Add( "Tubus_03_D", new LookupVariant( (long?)2430109, "Tubus", "TubusCavas", "TubusCavas_Yellow" ) );
+            VariantData.Add( "Tubus_03_F", new LookupVariant( (long?)2430110, "Tubus", "TubusCavas", "TubusCavas_Grey" ) );
+            VariantData.Add( "Tubus_03_G", new LookupVariant( (long?)2430203, "Tubus", "TubusCavas", "TubusCavas_Red" ) );
+            VariantData.Add( "Tubus_03_K", new LookupVariant( (long?)2430202, "Tubus", "TubusCavas", "TubusCavas_Maroon" ) );
+            VariantData.Add( "Tubus_03_L", new LookupVariant( (long?)2430204, "Tubus", "TubusCavas", "TubusCavas_Turquoise" ) );
+            VariantData.Add( "Tubus_03_M", new LookupVariant( (long?)2430205, "Tubus", "TubusCavas", "TubusCavas_Teal" ) );
+            VariantData.Add( "Tubus_03_N", new LookupVariant( (long?)2430206, "Tubus", "TubusCavas", "TubusCavas_Amethyst" ) );
+            VariantData.Add( "Tubus_03_T", new LookupVariant( (long?)2430208, "Tubus", "TubusCavas", "TubusCavas_Mauve" ) );
+            VariantData.Add( "Tubus_03_TTS", new LookupVariant( (long?)2430207, "Tubus", "TubusCavas", "TubusCavas_Ocher" ) );
+            VariantData.Add( "Tubus_04_A", new LookupVariant( (long?)2430213, "Tubus", "TubusRosarium", "TubusRosarium_Indigo" ) );
+            VariantData.Add( "Tubus_04_B", new LookupVariant( (long?)2430209, "Tubus", "TubusRosarium", "TubusRosarium_Emerald" ) );
+            VariantData.Add( "Tubus_04_F", new LookupVariant( (long?)2430210, "Tubus", "TubusRosarium", "TubusRosarium_Grey" ) );
+            VariantData.Add( "Tubus_04_G", new LookupVariant( (long?)2430303, "Tubus", "TubusRosarium", "TubusRosarium_Red" ) );
+            VariantData.Add( "Tubus_04_K", new LookupVariant( (long?)2430302, "Tubus", "TubusRosarium", "TubusRosarium_Maroon" ) );
+            VariantData.Add( "Tubus_04_L", new LookupVariant( (long?)2430312, "Tubus", "TubusRosarium", "TubusRosarium_Turquoise" ) );
+            VariantData.Add( "Tubus_04_M", new LookupVariant( (long?)2430304, "Tubus", "TubusRosarium", "TubusRosarium_Teal" ) );
+            VariantData.Add( "Tubus_04_N", new LookupVariant( (long?)2430305, "Tubus", "TubusRosarium", "TubusRosarium_Amethyst" ) );
+            VariantData.Add( "Tubus_04_O", new LookupVariant( (long?)2430306, "Tubus", "TubusRosarium", "TubusRosarium_Green" ) );
+            VariantData.Add( "Tubus_04_T", new LookupVariant( (long?)2430308, "Tubus", "TubusRosarium", "TubusRosarium_Mauve" ) );
+            VariantData.Add( "Tubus_04_TTS", new LookupVariant( (long?)2430307, "Tubus", "TubusRosarium", "TubusRosarium_Ocher" ) );
+            VariantData.Add( "Tubus_05_A", new LookupVariant( (long?)2430313, "Tubus", "TubusCompagibus", "TubusCompagibus_Indigo" ) );
+            VariantData.Add( "Tubus_05_B", new LookupVariant( (long?)2430309, "Tubus", "TubusCompagibus", "TubusCompagibus_Emerald" ) );
+            VariantData.Add( "Tubus_05_D", new LookupVariant( (long?)2430310, "Tubus", "TubusCompagibus", "TubusCompagibus_Yellow" ) );
+            VariantData.Add( "Tubus_05_F", new LookupVariant( (long?)2430403, "Tubus", "TubusCompagibus", "TubusCompagibus_Grey" ) );
+            VariantData.Add( "Tubus_05_G", new LookupVariant( (long?)2430402, "Tubus", "TubusCompagibus", "TubusCompagibus_Red" ) );
+            VariantData.Add( "Tubus_05_K", new LookupVariant( (long?)2430404, "Tubus", "TubusCompagibus", "TubusCompagibus_Maroon" ) );
+            VariantData.Add( "Tubus_05_L", new LookupVariant( (long?)2430405, "Tubus", "TubusCompagibus", "TubusCompagibus_Turquoise" ) );
+            VariantData.Add( "Tubus_05_M", new LookupVariant( (long?)2430406, "Tubus", "TubusCompagibus", "TubusCompagibus_Teal" ) );
+            VariantData.Add( "Tubus_05_N", new LookupVariant( (long?)2430408, "Tubus", "TubusCompagibus", "TubusCompagibus_Amethyst" ) );
+            VariantData.Add( "Tubus_05_T", new LookupVariant( (long?)2430407, "Tubus", "TubusCompagibus", "TubusCompagibus_Mauve" ) );
+            VariantData.Add( "Tubus_05_TTS", new LookupVariant( (long?)2430413, "Tubus", "TubusCompagibus", "TubusCompagibus_Ocher" ) );
+            VariantData.Add( "Tubus_05_W", new LookupVariant( (long?)2430401, "Tubus", "TubusCompagibus", "TubusCompagibus_Lime" ) );
+            VariantData.Add( "Tussocks_01_F", new LookupVariant( (long?)2430409, "Tussocks", "TussockPennata", "TussockPennata_Yellow" ) );
+            VariantData.Add( "Tussocks_01_G", new LookupVariant( (long?)2430410, "Tussocks", "TussockPennata", "TussockPennata_Lime" ) );
+            VariantData.Add( "Tussocks_01_K", new LookupVariant( (long?)2430503, "Tussocks", "TussockPennata", "TussockPennata_Green" ) );
+            VariantData.Add( "Tussocks_01_L", new LookupVariant( (long?)2430502, "Tussocks", "TussockPennata", "TussockPennata_Sage" ) );
+            VariantData.Add( "Tussocks_01_M", new LookupVariant( (long?)2430512, "Tussocks", "TussockPennata", "TussockPennata_Emerald" ) );
+            VariantData.Add( "Tussocks_01_T", new LookupVariant( (long?)2430504, "Tussocks", "TussockPennata", "TussockPennata_Teal" ) );
+            VariantData.Add( "Tussocks_01_W", new LookupVariant( (long?)2430505, "Tussocks", "TussockPennata", "TussockPennata_Orange" ) );
+            VariantData.Add( "Tussocks_01_Y", new LookupVariant( (long?)2430506, "Tussocks", "TussockPennata", "TussockPennata_Red" ) );
+            VariantData.Add( "Tussocks_02_D", new LookupVariant( (long?)2430508, "Tussocks", "TussockVentusa", "TussockVentusa_Maroon" ) );
+            VariantData.Add( "Tussocks_02_F", new LookupVariant( (long?)2430507, "Tussocks", "TussockVentusa", "TussockVentusa_Yellow" ) );
+            VariantData.Add( "Tussocks_02_G", new LookupVariant( (long?)2430513, "Tussocks", "TussockVentusa", "TussockVentusa_Lime" ) );
+            VariantData.Add( "Tussocks_02_K", new LookupVariant( (long?)2430509, "Tussocks", "TussockVentusa", "TussockVentusa_Green" ) );
+            VariantData.Add( "Tussocks_02_L", new LookupVariant( (long?)2430510, "Tussocks", "TussockVentusa", "TussockVentusa_Sage" ) );
+            VariantData.Add( "Tussocks_02_M", new LookupVariant( (long?)2430511, "Tussocks", "TussockVentusa", "TussockVentusa_Emerald" ) );
+            VariantData.Add( "Tussocks_02_T", new LookupVariant( (long?)2450101, "Tussocks", "TussockVentusa", "TussockVentusa_Teal" ) );
+            VariantData.Add( "Tussocks_02_W", new LookupVariant( (long?)2450102, "Tussocks", "TussockVentusa", "TussockVentusa_Orange" ) );
+            VariantData.Add( "Tussocks_02_Y", new LookupVariant( (long?)2450103, "Tussocks", "TussockVentusa", "TussockVentusa_Red" ) );
+            VariantData.Add( "Tussocks_03_D", new LookupVariant( (long?)2450105, "Tussocks", "TussockIgnis", "TussockIgnis_Maroon" ) );
+            VariantData.Add( "Tussocks_03_F", new LookupVariant( (long?)2450104, "Tussocks", "TussockIgnis", "TussockIgnis_Yellow" ) );
+            VariantData.Add( "Tussocks_03_G", new LookupVariant( (long?)2450106, "Tussocks", "TussockIgnis", "TussockIgnis_Lime" ) );
+            VariantData.Add( "Tussocks_03_K", new LookupVariant( (long?)2450110, "Tussocks", "TussockIgnis", "TussockIgnis_Green" ) );
+            VariantData.Add( "Tussocks_03_L", new LookupVariant( (long?)2450109, "Tussocks", "TussockIgnis", "TussockIgnis_Sage" ) );
+            VariantData.Add( "Tussocks_03_M", new LookupVariant( (long?)2450211, "Tussocks", "TussockIgnis", "TussockIgnis_Emerald" ) );
+            VariantData.Add( "Tussocks_03_T", new LookupVariant( (long?)2450201, "Tussocks", "TussockIgnis", "TussockIgnis_Teal" ) );
+            VariantData.Add( "Tussocks_03_W", new LookupVariant( (long?)2450202, "Tussocks", "TussockIgnis", "TussockIgnis_Orange" ) );
+            VariantData.Add( "Tussocks_03_Y", new LookupVariant( (long?)2450203, "Tussocks", "TussockIgnis", "TussockIgnis_Red" ) );
+            VariantData.Add( "Tussocks_04_D", new LookupVariant( (long?)2450205, "Tussocks", "TussockCultro", "TussockCultro_Maroon" ) );
+            VariantData.Add( "Tussocks_04_F", new LookupVariant( (long?)2450204, "Tussocks", "TussockCultro", "TussockCultro_Yellow" ) );
+            VariantData.Add( "Tussocks_04_G", new LookupVariant( (long?)2450206, "Tussocks", "TussockCultro", "TussockCultro_Lime" ) );
+            VariantData.Add( "Tussocks_04_K", new LookupVariant( (long?)2450210, "Tussocks", "TussockCultro", "TussockCultro_Green" ) );
+            VariantData.Add( "Tussocks_04_L", new LookupVariant( (long?)2450209, "Tussocks", "TussockCultro", "TussockCultro_Sage" ) );
+            VariantData.Add( "Tussocks_04_M", new LookupVariant( (long?)2450311, "Tussocks", "TussockCultro", "TussockCultro_Emerald" ) );
+            VariantData.Add( "Tussocks_04_T", new LookupVariant( (long?)2450301, "Tussocks", "TussockCultro", "TussockCultro_Teal" ) );
+            VariantData.Add( "Tussocks_04_W", new LookupVariant( (long?)2450302, "Tussocks", "TussockCultro", "TussockCultro_Orange" ) );
+            VariantData.Add( "Tussocks_04_Y", new LookupVariant( (long?)2450303, "Tussocks", "TussockCultro", "TussockCultro_Red" ) );
+            VariantData.Add( "Tussocks_05_D", new LookupVariant( (long?)2450305, "Tussocks", "TussockCatena", "TussockCatena_Maroon" ) );
+            VariantData.Add( "Tussocks_05_F", new LookupVariant( (long?)2450304, "Tussocks", "TussockCatena", "TussockCatena_Yellow" ) );
+            VariantData.Add( "Tussocks_05_G", new LookupVariant( (long?)2450306, "Tussocks", "TussockCatena", "TussockCatena_Lime" ) );
+            VariantData.Add( "Tussocks_05_K", new LookupVariant( (long?)2450310, "Tussocks", "TussockCatena", "TussockCatena_Green" ) );
+            VariantData.Add( "Tussocks_05_L", new LookupVariant( (long?)2450309, "Tussocks", "TussockCatena", "TussockCatena_Sage" ) );
+            VariantData.Add( "Tussocks_05_M", new LookupVariant( (long?)2450411, "Tussocks", "TussockCatena", "TussockCatena_Emerald" ) );
+            VariantData.Add( "Tussocks_05_T", new LookupVariant( (long?)2450401, "Tussocks", "TussockCatena", "TussockCatena_Teal" ) );
+            VariantData.Add( "Tussocks_05_Y", new LookupVariant( (long?)2450402, "Tussocks", "TussockCatena", "TussockCatena_Red" ) );
+            VariantData.Add( "Tussocks_06_D", new LookupVariant( (long?)2450403, "Tussocks", "TussockPennatis", "TussockPennatis_Maroon" ) );
+            VariantData.Add( "Tussocks_06_F", new LookupVariant( (long?)2450405, "Tussocks", "TussockPennatis", "TussockPennatis_Yellow" ) );
+            VariantData.Add( "Tussocks_06_G", new LookupVariant( (long?)2450404, "Tussocks", "TussockPennatis", "TussockPennatis_Lime" ) );
+            VariantData.Add( "Tussocks_06_K", new LookupVariant( (long?)2450406, "Tussocks", "TussockPennatis", "TussockPennatis_Green" ) );
+            VariantData.Add( "Tussocks_06_L", new LookupVariant( (long?)2450410, "Tussocks", "TussockPennatis", "TussockPennatis_Sage" ) );
+            VariantData.Add( "Tussocks_06_M", new LookupVariant( (long?)2450409, "Tussocks", "TussockPennatis", "TussockPennatis_Emerald" ) );
+            VariantData.Add( "Tussocks_06_T", new LookupVariant( (long?)2450511, "Tussocks", "TussockPennatis", "TussockPennatis_Teal" ) );
+            VariantData.Add( "Tussocks_06_Y", new LookupVariant( (long?)2450501, "Tussocks", "TussockPennatis", "TussockPennatis_Red" ) );
+            VariantData.Add( "Tussocks_07_D", new LookupVariant( (long?)2450502, "Tussocks", "TussockSerrati", "TussockSerrati_Maroon" ) );
+            VariantData.Add( "Tussocks_07_F", new LookupVariant( (long?)2450503, "Tussocks", "TussockSerrati", "TussockSerrati_Yellow" ) );
+            VariantData.Add( "Tussocks_07_G", new LookupVariant( (long?)2450505, "Tussocks", "TussockSerrati", "TussockSerrati_Lime" ) );
+            VariantData.Add( "Tussocks_07_K", new LookupVariant( (long?)2450504, "Tussocks", "TussockSerrati", "TussockSerrati_Green" ) );
+            VariantData.Add( "Tussocks_07_L", new LookupVariant( (long?)2450506, "Tussocks", "TussockSerrati", "TussockSerrati_Sage" ) );
+            VariantData.Add( "Tussocks_07_M", new LookupVariant( (long?)2450509, "Tussocks", "TussockSerrati", "TussockSerrati_Emerald" ) );
+            VariantData.Add( "Tussocks_07_T", new LookupVariant( (long?)2450611, "Tussocks", "TussockSerrati", "TussockSerrati_Teal" ) );
+            VariantData.Add( "Tussocks_07_Y", new LookupVariant( (long?)2450601, "Tussocks", "TussockSerrati", "TussockSerrati_Red" ) );
+            VariantData.Add( "Tussocks_08_D", new LookupVariant( (long?)2450602, "Tussocks", "TussockAlbata", "TussockAlbata_Maroon" ) );
+            VariantData.Add( "Tussocks_08_F", new LookupVariant( (long?)2450603, "Tussocks", "TussockAlbata", "TussockAlbata_Yellow" ) );
+            VariantData.Add( "Tussocks_08_G", new LookupVariant( (long?)2450605, "Tussocks", "TussockAlbata", "TussockAlbata_Lime" ) );
+            VariantData.Add( "Tussocks_08_K", new LookupVariant( (long?)2450604, "Tussocks", "TussockAlbata", "TussockAlbata_Green" ) );
+            VariantData.Add( "Tussocks_08_L", new LookupVariant( (long?)2450606, "Tussocks", "TussockAlbata", "TussockAlbata_Sage" ) );
+            VariantData.Add( "Tussocks_08_M", new LookupVariant( (long?)2450609, "Tussocks", "TussockAlbata", "TussockAlbata_Emerald" ) );
+            VariantData.Add( "Tussocks_08_T", new LookupVariant( (long?)2450711, "Tussocks", "TussockAlbata", "TussockAlbata_Teal" ) );
+            VariantData.Add( "Tussocks_08_W", new LookupVariant( (long?)2450701, "Tussocks", "TussockAlbata", "TussockAlbata_Orange" ) );
+            VariantData.Add( "Tussocks_08_Y", new LookupVariant( (long?)2450702, "Tussocks", "TussockAlbata", "TussockAlbata_Red" ) );
+            VariantData.Add( "Tussocks_09_D", new LookupVariant( (long?)2450703, "Tussocks", "TussockPropagito", "TussockPropagito_Maroon" ) );
+            VariantData.Add( "Tussocks_09_F", new LookupVariant( (long?)2450705, "Tussocks", "TussockPropagito", "TussockPropagito_Yellow" ) );
+            VariantData.Add( "Tussocks_09_G", new LookupVariant( (long?)2450704, "Tussocks", "TussockPropagito", "TussockPropagito_Lime" ) );
+            VariantData.Add( "Tussocks_09_K", new LookupVariant( (long?)2450706, "Tussocks", "TussockPropagito", "TussockPropagito_Green" ) );
+            VariantData.Add( "Tussocks_09_L", new LookupVariant( (long?)2450709, "Tussocks", "TussockPropagito", "TussockPropagito_Sage" ) );
+            VariantData.Add( "Tussocks_09_M", new LookupVariant( (long?)2450811, "Tussocks", "TussockPropagito", "TussockPropagito_Emerald" ) );
+            VariantData.Add( "Tussocks_09_T", new LookupVariant( (long?)2450801, "Tussocks", "TussockPropagito", "TussockPropagito_Teal" ) );
+            VariantData.Add( "Tussocks_09_Y", new LookupVariant( (long?)2450802, "Tussocks", "TussockPropagito", "TussockPropagito_Red" ) );
+            VariantData.Add( "Tussocks_10_D", new LookupVariant( (long?)2450803, "Tussocks", "TussockDivisa", "TussockDivisa_Maroon" ) );
+            VariantData.Add( "Tussocks_10_F", new LookupVariant( (long?)2450805, "Tussocks", "TussockDivisa", "TussockDivisa_Yellow" ) );
+            VariantData.Add( "Tussocks_10_G", new LookupVariant( (long?)2450804, "Tussocks", "TussockDivisa", "TussockDivisa_Lime" ) );
+            VariantData.Add( "Tussocks_10_K", new LookupVariant( (long?)2450806, "Tussocks", "TussockDivisa", "TussockDivisa_Green" ) );
+            VariantData.Add( "Tussocks_10_L", new LookupVariant( (long?)2450810, "Tussocks", "TussockDivisa", "TussockDivisa_Sage" ) );
+            VariantData.Add( "Tussocks_10_M", new LookupVariant( (long?)2450809, "Tussocks", "TussockDivisa", "TussockDivisa_Emerald" ) );
+            VariantData.Add( "Tussocks_10_T", new LookupVariant( (long?)2450911, "Tussocks", "TussockDivisa", "TussockDivisa_Teal" ) );
+            VariantData.Add( "Tussocks_10_Y", new LookupVariant( (long?)2450901, "Tussocks", "TussockDivisa", "TussockDivisa_Red" ) );
+            VariantData.Add( "Tussocks_11_D", new LookupVariant( (long?)2450902, "Tussocks", "TussockCaputus", "TussockCaputus_Maroon" ) );
+            VariantData.Add( "Tussocks_11_F", new LookupVariant( (long?)2450903, "Tussocks", "TussockCaputus", "TussockCaputus_Yellow" ) );
+            VariantData.Add( "Tussocks_11_G", new LookupVariant( (long?)2450905, "Tussocks", "TussockCaputus", "TussockCaputus_Lime" ) );
+            VariantData.Add( "Tussocks_11_K", new LookupVariant( (long?)2450904, "Tussocks", "TussockCaputus", "TussockCaputus_Green" ) );
+            VariantData.Add( "Tussocks_11_L", new LookupVariant( (long?)2450906, "Tussocks", "TussockCaputus", "TussockCaputus_Sage" ) );
+            VariantData.Add( "Tussocks_11_M", new LookupVariant( (long?)2450909, "Tussocks", "TussockCaputus", "TussockCaputus_Emerald" ) );
+            VariantData.Add( "Tussocks_11_T", new LookupVariant( (long?)2451011, "Tussocks", "TussockCaputus", "TussockCaputus_Teal" ) );
+            VariantData.Add( "Tussocks_11_Y", new LookupVariant( (long?)2451001, "Tussocks", "TussockCaputus", "TussockCaputus_Red" ) );
+            VariantData.Add( "Tussocks_12_D", new LookupVariant( (long?)2451002, "Tussocks", "TussockTriticum", "TussockTriticum_Maroon" ) );
+            VariantData.Add( "Tussocks_12_F", new LookupVariant( (long?)2451003, "Tussocks", "TussockTriticum", "TussockTriticum_Yellow" ) );
+            VariantData.Add( "Tussocks_12_G", new LookupVariant( (long?)2451005, "Tussocks", "TussockTriticum", "TussockTriticum_Lime" ) );
+            VariantData.Add( "Tussocks_12_K", new LookupVariant( (long?)2451004, "Tussocks", "TussockTriticum", "TussockTriticum_Green" ) );
+            VariantData.Add( "Tussocks_12_L", new LookupVariant( (long?)2451006, "Tussocks", "TussockTriticum", "TussockTriticum_Sage" ) );
+            VariantData.Add( "Tussocks_12_M", new LookupVariant( (long?)2451009, "Tussocks", "TussockTriticum", "TussockTriticum_Emerald" ) );
+            VariantData.Add( "Tussocks_12_T", new LookupVariant( (long?)2451111, "Tussocks", "TussockTriticum", "TussockTriticum_Teal" ) );
+            VariantData.Add( "Tussocks_12_Y", new LookupVariant( (long?)2451101, "Tussocks", "TussockTriticum", "TussockTriticum_Red" ) );
+            VariantData.Add( "Tussocks_13_D", new LookupVariant( (long?)2451102, "Tussocks", "TussockStigmasis", "TussockStigmasis_Maroon" ) );
+            VariantData.Add( "Tussocks_13_F", new LookupVariant( (long?)2451103, "Tussocks", "TussockStigmasis", "TussockStigmasis_Yellow" ) );
+            VariantData.Add( "Tussocks_13_G", new LookupVariant( (long?)2451105, "Tussocks", "TussockStigmasis", "TussockStigmasis_Lime" ) );
+            VariantData.Add( "Tussocks_13_K", new LookupVariant( (long?)2451104, "Tussocks", "TussockStigmasis", "TussockStigmasis_Green" ) );
+            VariantData.Add( "Tussocks_13_L", new LookupVariant( (long?)2451106, "Tussocks", "TussockStigmasis", "TussockStigmasis_Sage" ) );
+            VariantData.Add( "Tussocks_13_M", new LookupVariant( (long?)2451109, "Tussocks", "TussockStigmasis", "TussockStigmasis_Emerald" ) );
+            VariantData.Add( "Tussocks_13_T", new LookupVariant( (long?)2451211, "Tussocks", "TussockStigmasis", "TussockStigmasis_Teal" ) );
+            VariantData.Add( "Tussocks_13_Y", new LookupVariant( (long?)2451201, "Tussocks", "TussockStigmasis", "TussockStigmasis_Red" ) );
+            VariantData.Add( "Tussocks_14_F", new LookupVariant( (long?)2451202, "Tussocks", "TussockVirgam", "TussockVirgam_Yellow" ) );
+            VariantData.Add( "Tussocks_14_G", new LookupVariant( (long?)2451203, "Tussocks", "TussockVirgam", "TussockVirgam_Lime" ) );
+            VariantData.Add( "Tussocks_14_K", new LookupVariant( (long?)2451205, "Tussocks", "TussockVirgam", "TussockVirgam_Green" ) );
+            VariantData.Add( "Tussocks_14_L", new LookupVariant( (long?)2451204, "Tussocks", "TussockVirgam", "TussockVirgam_Sage" ) );
+            VariantData.Add( "Tussocks_14_M", new LookupVariant( (long?)2451206, "Tussocks", "TussockVirgam", "TussockVirgam_Emerald" ) );
+            VariantData.Add( "Tussocks_14_T", new LookupVariant( (long?)2451209, "Tussocks", "TussockVirgam", "TussockVirgam_Teal" ) );
+            VariantData.Add( "Tussocks_15_D", new LookupVariant( (long?)2451311, "Tussocks", "TussockCapillum", "TussockCapillum_Maroon" ) );
+            VariantData.Add( "Tussocks_15_F", new LookupVariant( (long?)2451301, "Tussocks", "TussockCapillum", "TussockCapillum_Yellow" ) );
+            VariantData.Add( "Tussocks_15_G", new LookupVariant( (long?)2451302, "Tussocks", "TussockCapillum", "TussockCapillum_Lime" ) );
+            VariantData.Add( "Tussocks_15_K", new LookupVariant( (long?)2451303, "Tussocks", "TussockCapillum", "TussockCapillum_Green" ) );
+            VariantData.Add( "Tussocks_15_L", new LookupVariant( (long?)2451305, "Tussocks", "TussockCapillum", "TussockCapillum_Sage" ) );
+            VariantData.Add( "Tussocks_15_M", new LookupVariant( (long?)2451304, "Tussocks", "TussockCapillum", "TussockCapillum_Emerald" ) );
+            VariantData.Add( "Tussocks_15_T", new LookupVariant( (long?)2451306, "Tussocks", "TussockCapillum", "TussockCapillum_Teal" ) );
+            VariantData.Add( "Tussocks_15_Y", new LookupVariant( (long?)2451309, "Tussocks", "TussockCapillum", "TussockCapillum_Red" ) );
+            VariantData.Add( "Vents", new LookupVariant( (long?)2451401, "Vents", "AmphoraPlant", "AmphoraPlant" ) );
 
+
+            // Sample distances for exobiology
+            SampleDistance.Add( "Aleoids", 150 );
+            SampleDistance.Add( "Vents", 100 );
+            SampleDistance.Add( "Anemone", 100 );
+            SampleDistance.Add( "Bacterial", 500 );
+            SampleDistance.Add( "Cone", 100 );
+            SampleDistance.Add( "Brancae", 100 );
+            SampleDistance.Add( "Cactoid", 300 );
+            SampleDistance.Add( "Clypeus", 150 );
+            SampleDistance.Add( "Conchas", 150 );
+            SampleDistance.Add( "GroundStructIce", 100 );
+            SampleDistance.Add( "Electricae", 1000 );
+            SampleDistance.Add( "Fonticulus", 500 );
+            SampleDistance.Add( "Shrubs", 150 );
+            SampleDistance.Add( "Fumerolas", 100 );
+            SampleDistance.Add( "Fungoids", 300 );
+            SampleDistance.Add( "Osseus", 800 );
+            SampleDistance.Add( "Recepta", 150 );
+            SampleDistance.Add( "Tubers", 100 );
+            SampleDistance.Add( "Stratum", 500 );
+            SampleDistance.Add( "Tubus", 800 );
+            SampleDistance.Add( "Tussocks", 200 );
+            SampleDistance.Add( "MineralSpheres", 0 );
+            SampleDistance.Add( "MetallicCrystals", 0 );
+            SampleDistance.Add( "SilicateCrystals", 0 );
+            SampleDistance.Add( "IceCrystals", 0 );
+            SampleDistance.Add( "MolluscReel", 0 );
+            SampleDistance.Add( "MolluscGlobe", 0 );
+            SampleDistance.Add( "MolluscBell", 0 );
+            SampleDistance.Add( "MolluscUmbrella", 0 );
+            SampleDistance.Add( "MolluscGourd", 0 );
+            SampleDistance.Add( "MolluscTorus", 0 );
+            SampleDistance.Add( "MolluscBulb", 0 );
+            SampleDistance.Add( "MolluscParasol", 0 );
+            SampleDistance.Add( "MolluscSquid", 0 );
+            SampleDistance.Add( "MolluscBullet", 0 );
+            SampleDistance.Add( "MolluscCapsule", 0 );
+            SampleDistance.Add( "CollaredPod", 0 );
+            SampleDistance.Add( "StolonPod", 0 );
+            SampleDistance.Add( "StolonTree", 0 );
+            SampleDistance.Add( "AsterPod", 0 );
+            SampleDistance.Add( "ChalicePod", 0 );
+            SampleDistance.Add( "PedunclePod", 0 );
+            SampleDistance.Add( "RhizomePod", 0 );
+            SampleDistance.Add( "QuadripartitePod", 0 );
+            SampleDistance.Add( "VoidPod", 0 );
+            SampleDistance.Add( "AsterTree", 0 );
+            SampleDistance.Add( "PeduncleTree", 0 );
+            SampleDistance.Add( "GyreTree", 0 );
+            SampleDistance.Add( "GyrePod", 0 );
+            SampleDistance.Add( "VoidHeart", 0 );
+            SampleDistance.Add( "CalcitePlates", 0 );
+            SampleDistance.Add( "ThargoidBarnacle", 0 );
+
+
+
+            // Species specific data and conditions
+            // Possible future use for biological predictions
+            // ( <species>, <base value>, <maxG>, <minK>, <maxK>, <parent star>, <planet type>, <atmosphere>, <volcanism> )
+            SpeciesData.Add( "AleoidaArcus", new VariantExtraData( (int?)7252500, (decimal?)0.27, "175", "180", "", "", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "AleoidaCoronamus", new VariantExtraData( (int?)6284600, (decimal?)0.27, "180", "190", "", "", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "AleoidaGravis", new VariantExtraData( (int?)12934900, (decimal?)0.27, "190", "195", "", "", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "AleoidaLaminiae", new VariantExtraData( (int?)3385200, (decimal?)0.27, "", "", "", "", "Ammonia", "" ) );
+            SpeciesData.Add( "AleoidaSpica", new VariantExtraData( (int?)3385200, (decimal?)0.27, "", "", "", "", "Ammonia", "" ) );
+            SpeciesData.Add( "AmphoraPlant", new VariantExtraData( (int?)1628800, null, "", "", "A", "Metal Rich", "None", "" ) );
+            SpeciesData.Add( "BlatteumBioluminescentAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "CroceumAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "LuteolumAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "PrasinumBioluminescentAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "PuniceumAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "RoseumAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "RoseumBioluminescentAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "RubeumBioluminescentAnemone", new VariantExtraData( (int?)1499900, null, "", "", "O,B,A", "", "SulphurDioxide,None", "" ) );
+            SpeciesData.Add( "BacteriumAcies", new VariantExtraData( (int?)1000000, null, "", "", "", "", "Neon,NeonRich", "" ) );
+            SpeciesData.Add( "BacteriumAlcyoneum", new VariantExtraData( (int?)1658500, null, "", "", "", "", "Ammonia", "" ) );
+            SpeciesData.Add( "BacteriumAurasus", new VariantExtraData( (int?)1000000, null, "", "", "", "", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "BacteriumBullaris", new VariantExtraData( (int?)1152500, null, "", "", "", "", "Methane,MethaneRich", "" ) );
+            SpeciesData.Add( "BacteriumCerbrus", new VariantExtraData( (int?)1689800, null, "", "", "", "", "Water,SulphurDioxide", "" ) );
+            SpeciesData.Add( "BacteriumInformem", new VariantExtraData( (int?)8418000, null, "", "", "", "", "Nitrogen", "" ) );
+            SpeciesData.Add( "BacteriumNebulus", new VariantExtraData( (int?)5289900, null, "", "", "", "", "Helium", "" ) );
+            SpeciesData.Add( "BacteriumOmentum", new VariantExtraData( (int?)4638900, null, "", "", "", "", "Neon,NeonRich", "Nitrogen,Ammonia" ) );
+            SpeciesData.Add( "BacteriumScopulum", new VariantExtraData( (int?)4934500, null, "", "", "", "", "Neon,NeonRich", "Carbon,Methane" ) );
+            SpeciesData.Add( "BacteriumTela", new VariantExtraData( (int?)1949000, null, "", "", "", "", "", "Helium,Iron,Silicate,Ammonia" ) );
+            SpeciesData.Add( "BacteriumVerrata", new VariantExtraData( (int?)3897000, null, "", "", "", "", "Neon,NeonRich", "Water" ) );
+            SpeciesData.Add( "BacteriumVesicula", new VariantExtraData( (int?)1000000, null, "", "", "", "", "Argon", "" ) );
+            SpeciesData.Add( "BacteriumVolu", new VariantExtraData( (int?)7774700, null, "", "", "", "", "Oxygen", "" ) );
+            SpeciesData.Add( "BarkMounds", new VariantExtraData( (int?)1471900, null, "", "", "", "", "None", "" ) );
+            SpeciesData.Add( "AureumBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "GypseeumBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "LindigoticumBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "LividumBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "OstrinumBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "PuniceumBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "RoseumBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "VirideBrainTree", new VariantExtraData( (int?)1593700, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "CactoidaCortexum", new VariantExtraData( (int?)3667600, (decimal?)0.27, "180", "195", "", "", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "CactoidaLapis", new VariantExtraData( (int?)2483600, (decimal?)0.27, "", "", "", "", "Ammonia", "" ) );
+            SpeciesData.Add( "CactoidaPeperatis", new VariantExtraData( (int?)2483600, (decimal?)0.27, "", "", "", "", "Ammonia", "" ) );
+            SpeciesData.Add( "CactoidaPullulanta", new VariantExtraData( (int?)3667600, (decimal?)0.27, "180", "195", "", "", "", "" ) );
+            SpeciesData.Add( "CactoidaVermis", new VariantExtraData( (int?)16202800, (decimal?)0.27, "", "", "", "", "Water", "" ) );
+            SpeciesData.Add( "ClypeusLacrimam", new VariantExtraData( (int?)8418000, (decimal?)0.27, ">190", "", "", "Rocky,High Metal Content", "Water,CarbonDioxide", "" ) );
+            SpeciesData.Add( "ClypeusMargaritus", new VariantExtraData( (int?)11873200, (decimal?)0.27, ">190", "", "", "Rocky,High Metal Content", "Water,CarbonDioxide", "" ) );
+            SpeciesData.Add( "ClypeusSpeculumi", new VariantExtraData( (int?)16202800, (decimal?)0.27, ">190", "", "", "Rocky,High Metal Content", "Water,CarbonDioxide", "" ) );
+            SpeciesData.Add( "ConchaAureolas", new VariantExtraData( (int?)7774700, (decimal?)0.27, "", "", "", "", "Ammonia", "" ) );
+            SpeciesData.Add( "ConchaBiconcavis", new VariantExtraData( (int?)19010800, (decimal?)0.27, "", "", "", "", "Nitrogen", "" ) );
+            SpeciesData.Add( "ConchaLabiata", new VariantExtraData( (int?)2352400, (decimal?)0.27, "", "", "", "", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "ConchaRenibus", new VariantExtraData( (int?)4572400, (decimal?)0.27, "180", "195", "", "", "Water,CarbonDioxide", "" ) );
+            SpeciesData.Add( "CrystallineShards", new VariantExtraData( (int?)1628800, null, "0", "273", "A,F,G,K,M,S", "", "None", "" ) );
+            SpeciesData.Add( "ElectricaePluma", new VariantExtraData( (int?)6284600, (decimal?)0.27, "", "", "A,Neutron", "Icy", "Helium,Neon,Argon", "" ) );
+            SpeciesData.Add( "ElectricaeRadialem", new VariantExtraData( (int?)6284600, (decimal?)0.27, "", "", "A,Neutron", "Icy", "Helium,Neon,Argon", "" ) );
+            SpeciesData.Add( "FonticuluaCampestris", new VariantExtraData( (int?)1000000, (decimal?)0.27, "", "", "", "Icy,Rocky", "Argon", "" ) );
+            SpeciesData.Add( "FonticuluaDigitos", new VariantExtraData( (int?)1804100, (decimal?)0.27, "", "", "", "Icy,Rocky", "Methane,MethaneRich", "" ) );
+            SpeciesData.Add( "FonticuluaFluctus", new VariantExtraData( (int?)20000000, (decimal?)0.27, "", "", "", "Icy,Rocky", "Oxygen", "" ) );
+            SpeciesData.Add( "FonticuluaLapida", new VariantExtraData( (int?)3111000, (decimal?)0.27, "", "", "", "Icy,Rocky", "Nitrogen", "" ) );
+            SpeciesData.Add( "FonticuluaSegmentatus", new VariantExtraData( (int?)19010800, (decimal?)0.27, "", "", "", "Icy,Rocky", "Neon,NeonRich", "" ) );
+            SpeciesData.Add( "FonticuluaUpupam", new VariantExtraData( (int?)5727600, (decimal?)0.27, "", "", "", "Icy,Rocky", "ArgonRich", "" ) );
+            SpeciesData.Add( "FrutexaAcus", new VariantExtraData( (int?)7774700, (decimal?)0.27, "", "<195", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "FrutexaCollum", new VariantExtraData( (int?)1639800, (decimal?)0.27, "", "", "", "Rocky", "SulphurDioxide", "" ) );
+            SpeciesData.Add( "FrutexaFera", new VariantExtraData( (int?)1632500, (decimal?)0.27, "", "<195", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "FrutexaFlabellum", new VariantExtraData( (int?)1808900, (decimal?)0.27, "", "", "", "Rocky", "Ammonia", "" ) );
+            SpeciesData.Add( "FrutexaFlammasis", new VariantExtraData( (int?)10326000, (decimal?)0.27, "", "", "", "Rocky", "Ammonia", "" ) );
+            SpeciesData.Add( "FrutexaMetallicum", new VariantExtraData( (int?)1632500, (decimal?)0.27, "", "<195", "", "High Metal Content", "CarbonDioxide,Ammonia", "" ) );
+            SpeciesData.Add( "FrutexaSponsae", new VariantExtraData( (int?)5988000, (decimal?)0.27, "", "", "", "Rocky", "Water", "" ) );
+            SpeciesData.Add( "FumerolaAquatis", new VariantExtraData( (int?)6284600, (decimal?)0.27, "", "", "", "Icy,Rocky Ice", "Any", "Water" ) );
+            SpeciesData.Add( "FumerolaCarbosis", new VariantExtraData( (int?)6284600, (decimal?)0.27, "", "", "", "Icy,Rocky Ice", "Any", "Carbon,Methane" ) );
+            SpeciesData.Add( "FumerolaExtremus", new VariantExtraData( (int?)16202800, (decimal?)0.27, "", "", "", "Rocky,High Metal Content", "Any", "Silicate,Iron,Rocky" ) );
+            SpeciesData.Add( "FumerolaNitris", new VariantExtraData( (int?)7500900, (decimal?)0.27, "", "", "", "Icy,Rocky Ice", "Any", "Nitrogen,Ammonia" ) );
+            SpeciesData.Add( "FungoidaBullarum", new VariantExtraData( (int?)3703200, (decimal?)0.27, "", "", "", "", "Argon,ArgonRich", "" ) );
+            SpeciesData.Add( "FungoidaGelata", new VariantExtraData( (int?)3330300, (decimal?)0.27, "180", "195", "", "", "Water,CarbonDioxide", "" ) );
+            SpeciesData.Add( "FungoidaSetisis", new VariantExtraData( (int?)1670100, (decimal?)0.27, "", "", "", "", "Ammonia,Methane", "" ) );
+            SpeciesData.Add( "FungoidaStabitis", new VariantExtraData( (int?)2680300, (decimal?)0.27, "", "", "", "", "Water,CarbonDioxide", "" ) );
+            SpeciesData.Add( "OsseusCornibus", new VariantExtraData( (int?)1483000, (decimal?)0.27, "180", "195", "", "Rocky,High Metal Content", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "OsseusDiscus", new VariantExtraData( (int?)12934900, (decimal?)0.27, "", "", "", "Rocky,High Metal Content", "Water", "" ) );
+            SpeciesData.Add( "OsseusFractus", new VariantExtraData( (int?)4027800, (decimal?)0.27, "180", "195", "", "Rocky,High Metal Content", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "OsseusPellebantus", new VariantExtraData( (int?)9739000, (decimal?)0.27, "180", "195", "", "Rocky,High Metal Content", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "OsseusPumice", new VariantExtraData( (int?)3156300, (decimal?)0.27, "", "", "", "Rocky,High Metal Content,Rocky Ice", "Argon,Methane,Nitrogen", "" ) );
+            SpeciesData.Add( "OsseusSpiralis", new VariantExtraData( (int?)2404700, (decimal?)0.27, "", "", "", "Rocky,High Metal Content", "Ammonia", "" ) );
+            SpeciesData.Add( "ReceptaConditivus", new VariantExtraData( (int?)14313700, (decimal?)0.27, "", "", "", "Icy,Rocky Ice", "SulphurDioxide", "" ) );
+            SpeciesData.Add( "ReceptaDeltahedronix", new VariantExtraData( (int?)16202800, (decimal?)0.27, "", "", "", "Rocky,High Metal Content", "SulphurDioxide", "" ) );
+            SpeciesData.Add( "ReceptaUmbrux", new VariantExtraData( (int?)12934900, (decimal?)0.27, "", "", "", "", "SulphurDioxide", "" ) );
+            SpeciesData.Add( "AlbidumSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "BlatteumSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "CaeruleumSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "LindigoticumSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "PrasinumSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "RoseumSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "ViolaceumSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "VirideSinuousTubers", new VariantExtraData( (int?)1514500, null, "", "", "", "", "None", "Any" ) );
+            SpeciesData.Add( "StratumAraneamus", new VariantExtraData( (int?)2448900, null, ">165", "", "", "Rocky", "SulphurDioxide", "" ) );
+            SpeciesData.Add( "StratumCucumisis", new VariantExtraData( (int?)16202800, null, ">190", "", "", "Rocky", "SulphurDioxide,CarbonDioxide", "" ) );
+            SpeciesData.Add( "StratumExcutitus", new VariantExtraData( (int?)2448900, null, "165", "190", "", "Rocky", "SulphurDioxide,CarbonDioxide", "" ) );
+            SpeciesData.Add( "StratumFrigus", new VariantExtraData( (int?)2637500, null, ">190", "", "", "Rocky", "SulphurDioxide,CarbonDioxide", "" ) );
+            SpeciesData.Add( "StratumLaminamus", new VariantExtraData( (int?)2788300, null, ">165", "", "", "Rocky", "Ammonia", "" ) );
+            SpeciesData.Add( "StratumLimaxus", new VariantExtraData( (int?)1362000, null, "165", "190", "", "Rocky", "SulphurDioxide,CarbonDioxide", "" ) );
+            SpeciesData.Add( "StratumPaleas", new VariantExtraData( (int?)1362000, null, ">165", "", "", "Rocky", "Ammonia,Water,CarbonDioxide", "" ) );
+            SpeciesData.Add( "StratumTectonicas", new VariantExtraData( (int?)19010800, null, ">165", "", "", "High Metal Content", "AnyThin", "" ) );
+            SpeciesData.Add( "TubusCavas", new VariantExtraData( (int?)11873200, (decimal?)0.15, "160", "190", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TubusCompagibus", new VariantExtraData( (int?)7774700, (decimal?)0.15, "160", "190", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TubusConifer", new VariantExtraData( (int?)2415500, (decimal?)0.15, "160", "190", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TubusRosarium", new VariantExtraData( (int?)2637500, (decimal?)0.15, ">160", "", "", "Rocky", "Ammonia", "" ) );
+            SpeciesData.Add( "TubusSororibus", new VariantExtraData( (int?)5727600, (decimal?)0.15, "160", "190", "", "High Metal Content", "CarbonDioxide,Ammonia", "" ) );
+            SpeciesData.Add( "TussockAlbata", new VariantExtraData( (int?)3252500, (decimal?)0.27, "175", "180", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockCapillum", new VariantExtraData( (int?)7025800, (decimal?)0.27, "", "", "", "Rocky", "Argon,Methane", "" ) );
+            SpeciesData.Add( "TussockCaputus", new VariantExtraData( (int?)3472400, (decimal?)0.27, "180", "190", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockCatena", new VariantExtraData( (int?)1766600, (decimal?)0.27, "", "", "", "Rocky", "Ammonia", "" ) );
+            SpeciesData.Add( "TussockCultro", new VariantExtraData( (int?)1766600, (decimal?)0.27, "", "", "", "Rocky", "Ammonia", "" ) );
+            SpeciesData.Add( "TussockDivisa", new VariantExtraData( (int?)1766600, (decimal?)0.27, "", "", "", "Rocky", "Ammonia", "" ) );
+            SpeciesData.Add( "TussockIgnis", new VariantExtraData( (int?)1849000, (decimal?)0.27, "160", "170", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockPennata", new VariantExtraData( (int?)5853800, (decimal?)0.27, "145", "155", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockPennatis", new VariantExtraData( (int?)1000000, (decimal?)0.27, "", "<195", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockPropagito", new VariantExtraData( (int?)1000000, (decimal?)0.27, "", "<195", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockSerrati", new VariantExtraData( (int?)4447100, (decimal?)0.27, "170", "175", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockStigmasis", new VariantExtraData( (int?)19010800, (decimal?)0.27, "", "", "", "Rocky", "SulphurDioxide", "" ) );
+            SpeciesData.Add( "TussockTriticum", new VariantExtraData( (int?)7774700, (decimal?)0.27, "190", "195", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockVentusa", new VariantExtraData( (int?)3227700, (decimal?)0.27, "155", "160", "", "Rocky", "CarbonDioxide", "" ) );
+            SpeciesData.Add( "TussockVirgam", new VariantExtraData( (int?)14313700, (decimal?)0.27, "", "", "", "Rocky", "Water", "" ) );
         }
 
-        public static OrganicData LookupByVariant ( string localisedVariant )
+        /// <summary>
+        /// This was initially the preferred method but found that there
+        ///     are multiple entry IDs for the same variant or they have
+        ///     been changed so out lookup table may be innacurate.
+        /// </summary>
+        public static OrganicItem LookupByEntryId ( long? entryId )
         {
-            bool found = false;
-            string genus = "";
-            string species = "";
-
-            string[] variantSplit = localisedVariant.Split( '-' );
-            if (variantSplit != null)
+            OrganicItem item = new OrganicItem();
+            if ( entryId != null )
             {
-                species = variantSplit[ 0 ];
-                species = species.Trim();
+                LookupEntryId data = EntryIdData[ (long)entryId ];
+                if ( data != null )
+                {
+                    item.variant = data.variant;
+                    //item.genus.name = data.genus;
+                    item.genus.name = rmOrganicGenusName.GetString( data.genus );
+                    //    item.genus.description = data.genus;
+                    item.genus.description = rmOrganicGenusDesc.GetString( data.genus );
+                    //    item.genus.distance = SampleDistance[ data.variant ];
+                    item.species.name = data.species;
+                    //    //item.species.name = rmOrganicSpeciesName.GetString( data.species );
+                    //    item.species.description = data.species;
+                    //    //item.species.description = rmOrganicSpeciesDesc.GetString( data.species );
+
+                    item.SetExists( true );
+                }
             }
-
-            found = Species.TryGetValue( species, out genus );
-
-            if (found)
-            {
-                return GetData( genus, species );
-            }
-
-            return null;
+            return item;
         }
 
-        public static OrganicData GetData ( string localisedGenus, string localisedSpecies )
+        public static OrganicItem LookupByVariant ( string variant )
         {
-            OrganicData myData = new OrganicData();
-            OrganicSpecies val = new OrganicSpecies();
+            OrganicItem item = new OrganicItem();
+            if ( variant != "" )
+            {
+                LookupVariant vData = VariantData[ variant ];
+                if ( vData != null )
+                {
+                    item.genus.name = rmOrganicGenusName.GetString( vData.genus );
+                    item.genus.description = rmOrganicGenusDesc.GetString( vData.genus );
+                    item.species.name = rmOrganicSpeciesName.GetString( vData.species );
+                    item.species.description = rmOrganicSpeciesDesc.GetString( vData.species );
+                    item.variant = rmOrganicVariantName.GetString( vData.variant );
 
-            if ( localisedGenus == "Aleoida" )
-            {
-                myData.genus = Aleoida;
-                Aleoida.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Amphora" )
-            {
-                myData.genus = Amphora;
-                Amphora.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Anemone" )
-            {
-                myData.genus = Anemone;
-                Anemone.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Bacterium" )
-            {
-                myData.genus = Bacterium;
-                Bacterium.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Bark Mounds" )
-            {
-                myData.genus = BarkMounds;
-                BarkMounds.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Brain Tree" )
-            {
-                myData.genus = BrainTree;
-                BrainTree.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Cactoida" )
-            {
-                myData.genus = Cactoida;
-                Cactoida.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Clypeus" )
-            {
-                myData.genus = Clypeus;
-                Clypeus.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Concha" )
-            {
-                myData.genus = Concha;
-                Concha.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Crystalline Shards" )
-            {
-                myData.genus = CrystallineShards;
-                CrystallineShards.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Electricae" )
-            {
-                myData.genus = Electricae;
-                Electricae.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Fonticulua" )
-            {
-                myData.genus = Fonticulua;
-                Fonticulua.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Frutexa" )
-            {
-                myData.genus = Frutexa;
-                Frutexa.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Fumerola" )
-            {
-                myData.genus = Fumerola;
-                Fumerola.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Fungoida" )
-            {
-                myData.genus = Fungoida;
-                Fungoida.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Osseus" )
-            {
-                myData.genus = Osseus;
-                Osseus.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Recepta" )
-            {
-                myData.genus = Recepta;
-                Recepta.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Sinuous Tuber" )
-            {
-                myData.genus = SinuousTuber;
-                SinuousTuber.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Stratum" )
-            {
-                myData.genus = Stratum;
-                Stratum.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Tubus" )
-            {
-                myData.genus = Tubus;
-                Tubus.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Tussock" )
-            {
-                myData.genus = Tussock;
-                Tussock.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Mineral Spheres")
-            {
-                myData.genus = MineralSpheres;
-                MineralSpheres.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Metallic Crystals" )
-            {
-                myData.genus = MetallicCrystals;
-                MetallicCrystals.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Silicate Crystals" )
-            {
-                myData.genus = SilicateCrystals;
-                SilicateCrystals.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Ice Crystals" )
-            {
-                myData.genus = IceCrystals;
-                IceCrystals.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Reel Molluscs" )
-            {
-                myData.genus = ReelMolluscs;
-                ReelMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Globe Molluscs" )
-            {
-                myData.genus = GlobeMolluscs;
-                GlobeMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Bell Molluscs" )
-            {
-                myData.genus = BellMolluscs;
-                BellMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Umbrella Molluscs" )
-            {
-                myData.genus = UmbrellaMolluscs;
-                UmbrellaMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Gourd Mollusc" )
-            {
-                myData.genus = GourdMollusc;
-                GourdMollusc.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Torus Molluscs" )
-            {
-                myData.genus = TorusMolluscs;
-                TorusMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Bulb Molluscs" )
-            {
-                myData.genus = BulbMolluscs;
-                BulbMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Parasol Molluscs" )
-            {
-                myData.genus = ParasolMolluscs;
-                ParasolMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Squid Molluscs" )
-            {
-                myData.genus = SquidMolluscs;
-                SquidMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Bullet Molluscs" )
-            {
-                myData.genus = BulletMolluscs;
-                BulletMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Capsule Molluscs" )
-            {
-                myData.genus = CapsuleMolluscs;
-                CapsuleMolluscs.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Collared Pod" )
-            {
-                myData.genus = CollaredPod;
-                CollaredPod.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Stolon Pod" )
-            {
-                myData.genus = StolonPod;
-                StolonPod.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Stolon Tree" )
-            {
-                myData.genus = StolonTree;
-                StolonTree.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Aster Pods" )
-            {
-                myData.genus = AsterPods;
-                AsterPods.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Chalice Pods" )
-            {
-                myData.genus = ChalicePods;
-                ChalicePods.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Peduncle Pods" )
-            {
-                myData.genus = PedunclePods;
-                PedunclePods.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Rhizome Pods" )
-            {
-                myData.genus = RhizomePods;
-                RhizomePods.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Quadripartite Pods" )
-            {
-                myData.genus = QuadripartitePods;
-                QuadripartitePods.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Octahedral Pods" )
-            {
-                myData.genus = OctahedralPods;
-                OctahedralPods.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Aster Trees" )
-            {
-                myData.genus = AsterTrees;
-                AsterTrees.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Peduncle Trees" )
-            {
-                myData.genus = PeduncleTrees;
-                PeduncleTrees.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Gyre Trees" )
-            {
-                myData.genus = GyreTrees;
-                GyreTrees.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Gyre Pods" )
-            {
-                myData.genus = GyrePods;
-                GyrePods.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Void Hearts" )
-            {
-                myData.genus = VoidHearts;
-                VoidHearts.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if (localisedGenus == "Calcite Plates" )
-            {
-                myData.genus = CalcitePlates;
-                CalcitePlates.species.TryGetValue( localisedSpecies, out val );
-            }
-            else if ( localisedGenus == "Thargoid Barnacles" )
-            {
-                myData.genus = ThargoidBarnacles;
-                ThargoidBarnacles.species.TryGetValue( localisedSpecies, out val );
-            }
+                    SampleDistance.TryGetValue( vData.genus, out item.genus.distance );
+                    //item.genus.distance = SampleDistance[ vData.genus ];
 
-            if ( val != null ) { myData.species = val; }
-            else
-            {
-                myData.species.name = "Invalid";
-                myData.species.value = 0;
-                myData.species.description = "Invalid, species not found.";
-            }
+                    SpeciesData.TryGetValue( vData.variant, out item.variantData );
+                    //item.variantData = SpeciesData[ vData.variant ];
 
-            return myData;
+                    item.SetExists( true );
+                }
+
+            }
+            return item;
         }
+
     }
 }

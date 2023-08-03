@@ -4057,15 +4057,18 @@ namespace EddiJournalMonitor
                                     }
                                     surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
 
-                                    events.Add( new SurfaceSignalsEvent( timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals ) { raw = line, fromLoad = fromLogLoad } );
+                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
+                                    Body body = null;
+                                    if ( system != null )
+                                    {
+                                        body = system.BodyWithID( bodyId );
+                                    }
+
+                                            events.Add( new SurfaceSignalsEvent( timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals, body ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
-                            case "SAASignalsFound":
-                                // TODO: Future, implement biologicals into body
-                                //  - See ticket #2455
-                                //  - When SAASignalsFound is triggered, add list of biologicals (genus) to body
-                                //
+                            case "SAASignalsFound":         // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                                 // { "timestamp":"2023-07-22T03:54:46Z", "event":"SAASignalsFound",
                                 //      "BodyName":"Greae Phio FO-G d11-1005 AB 5 a",
                                 //      "SystemAddress":34542299533283,
@@ -4080,6 +4083,8 @@ namespace EddiJournalMonitor
                                 //          { "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa" },
                                 //          { "Genus":"$Codex_Ent_Tussocks_Genus_Name;", "Genus_Localised":"Tussock" } ] }                                
                                 //
+                                //StarSystem system = EDDI.Instance?.CurrentStarSystem;
+                                //Body body = null;
                                 //body = system?.BodyWithID( bodyId );
                                 //if ( !( body is null ) )
                                 //{
@@ -4094,6 +4099,9 @@ namespace EddiJournalMonitor
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
                                     data.TryGetValue("Signals", out object signalsVal);
                                     data.TryGetValue( "Genuses", out object genusesVal );
+
+                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
+                                    Body body = null;
 
                                     if (bodyName.EndsWith(" Ring"))
                                     {
@@ -4124,6 +4132,8 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
+                                        //body = system?.BodyWithID( bodyId );
+
                                         // This is surface signal sources from a body that we've mapped
                                         List<SignalAmount> surfaceSignals = new List<SignalAmount>();
                                         foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
@@ -4141,27 +4151,23 @@ namespace EddiJournalMonitor
                                         }
                                         surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
 
-                                        // This is biological signal sources from a body that we've mapped
-                                        List<string> bioSignals = new List<string>();
-                                        foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
+                                        if ( system != null )
                                         {
-                                            string localizedName = JsonParsing.getString(signal, "Genus_Localised");
-                                            bioSignals.Add( localizedName.ToString() );
+                                            body = system.BodyWithID( bodyId );
+
+                                            if ( body != null )
+                                            {
+                                                // This is biological signal sources from a body that we've mapped
+                                                //List<string> bioSignals = new List<string>();
+                                                foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
+                                                {
+                                                    string bio_edname = JsonParsing.getString(signal, "Genus");
+                                                    body.bio.Add( bio_edname );
+                                                }
+                                            }
                                         }
 
-                                        // TODO: Future, implement biologicals into body
-                                        //  - See ticket #2455
-                                        //
-                                        //body = system?.BodyWithID( bodyId );
-                                        //if ( !( body is null ) )
-                                        //{
-                                        //    body.scannedDateTime = body.scannedDateTime ?? timestamp;
-                                        //    body.mappedDateTime = timestamp;
-                                        //    body.mappedEfficiently = probesUsed <= efficiencyTarget;
-                                        //    events.Add( new BodyMappedEvent( timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget ) { raw = line, fromLoad = fromLogLoad } );
-                                        //}
-
-                                        events.Add( new SurfaceSignalsEvent( timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals, bioSignals ) { raw = line, fromLoad = fromLogLoad } );
+                                        events.Add( new SurfaceSignalsEvent( timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals, body ) { raw = line, fromLoad = fromLogLoad } );
                                     }
                                 }
                                 handled = true;
@@ -4947,64 +4953,66 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-
-                            // we silently ignore these, but forward them to the responders
-                            case "CodexDiscovery":
-                            case "CodexEntry":
+                            case "CodexEntry":              // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                                 {
-                                    string systemName = JsonParsing.getString(data, "System");
-                                    string localisedName = JsonParsing.getString(data, "Name_Localised");
+                                    // { "timestamp":"2023-07-28T05:10:25Z",
+                                    //      "event":"CodexEntry",
+                                    //*     "EntryID":2440103,
+                                    //      "Name":"$Codex_Ent_Shrubs_01_F_Name;",
+                                    //      "Name_Localised":"Frutexa Flabellum - Green",
+                                    //      "SubCategory":"$Codex_SubCategory_Organic_Structures;",
+                                    //      "SubCategory_Localised":"Organic structures",
+                                    //      "Category":"$Codex_Category_Biology;",
+                                    //      "Category_Localised":"Biological and Geological",
+                                    //      "Region":"$Codex_RegionName_5;",
+                                    //      "Region_Localised":"Norma Arm",
+                                    //      "System":"Boeft TO-G d11-2612",
+                                    //      "SystemAddress":89758365536227,
+                                    //      "BodyID":28,
+                                    //      "Latitude":23.507593,
+                                    //      "Longitude":109.069504,
+                                    //      "IsNewEntry":true,
+                                    //      "VoucherAmount":50000
+                                    // }
+
+                                    long entryId = JsonParsing.getLong(data, "EntryID");
+                                    string edname = JsonParsing.getString(data, "Name");
+                                    string codexName = JsonParsing.getString(data, "Name").Replace("$", "").Replace(";", "").Replace("Codex_Ent_", "").Replace("_Name", "");
+                                    //string localisedName = JsonParsing.getString(data, "Name_Localised");
+                                    string subCategoryName = JsonParsing.getString(data, "SubCategory").Replace("$", "").Replace(";", "").Replace("Codex_SubCategory_", "");
+                                    string categoryName = JsonParsing.getString(data, "Category").Replace("$", "").Replace(";", "").Replace("Codex_Category_", "");
                                     string regionName = JsonParsing.getString(data, "Region_Localised");
-
-                                    // Category
-                                    //  - SubCategory
-                                    //
-                                    // Biological and Geological
-                                    //  - Organic Structures
-                                    //  - Geology and anomalies
-                                    // Astronomical Bodies
-                                    //  - Stars
-                                    //  - Terrestrial planets
-                                    //  - Gas giant planets
-                                    //  - more?
-
-                                    string categoryName = JsonParsing.getString(data, "Category_Localised");
-                                    string codexName = JsonParsing.getString(data, "Name").Replace("$", "").Replace(";", "");
-                                    string subCategoryName = JsonParsing.getString(data, "SubCategory_Localised");
+                                    string systemName = JsonParsing.getString(data, "System");
 
                                     bool newEntry = false;
-                                    try { newEntry = JsonParsing.getBool( data, "IsNewEntry" ); }
+                                    try
+                                    { newEntry = JsonParsing.getBool( data, "IsNewEntry" ); }
                                     catch { newEntry = false; }
 
                                     bool newTrait = false;
-                                    try { newTrait = JsonParsing.getBool( data, "IsNewEntry" ); }
+                                    try
+                                    { newTrait = JsonParsing.getBool( data, "IsNewEntry" ); }
                                     catch { newTrait = false; }
 
                                     int voucherAmount = 0;
-                                    try { voucherAmount = JsonParsing.getInt( data, "VoucherAmount" ); }
+                                    try
+                                    { voucherAmount = JsonParsing.getInt( data, "VoucherAmount" ); }
                                     catch { voucherAmount = 0; }
 
                                     events.Add( new CodexEntryEvent( timestamp,
-                                                                     systemName,
-                                                                     categoryName,
-                                                                     subCategoryName,
+                                                                     entryId,
                                                                      codexName,
-                                                                     localisedName,
+                                                                     subCategoryName,
+                                                                     categoryName,
                                                                      regionName,
+                                                                     systemName,
                                                                      newEntry,
                                                                      newTrait,
                                                                      voucherAmount ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
-                            case "ModuleBuyAndStore":
-                            case "RestockVehicle":
-                            case "ScanOrganic":
-                                // { "timestamp":"2023-07-22T04:01:18Z", "event":"ScanOrganic", "ScanType":"Log",     "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa", "Species":"$Codex_Ent_Shrubs_05_Name;", "Species_Localised":"Frutexa Fera", "Variant":"$Codex_Ent_Shrubs_05_F_Name;", "Variant_Localised":"Frutexa Fera - Green", "SystemAddress":34542299533283, "Body":42 }
-                                // { "timestamp":"2023-07-22T04:02:18Z", "event":"ScanOrganic", "ScanType":"Sample",  "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa", "Species":"$Codex_Ent_Shrubs_05_Name;", "Species_Localised":"Frutexa Fera", "Variant":"$Codex_Ent_Shrubs_05_F_Name;", "Variant_Localised":"Frutexa Fera - Green", "SystemAddress":34542299533283, "Body":42 }
-                                // { "timestamp":"2023-07-22T04:03:03Z", "event":"ScanOrganic", "ScanType":"Sample",  "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa", "Species":"$Codex_Ent_Shrubs_05_Name;", "Species_Localised":"Frutexa Fera", "Variant":"$Codex_Ent_Shrubs_05_F_Name;", "Variant_Localised":"Frutexa Fera - Green", "SystemAddress":34542299533283, "Body":42 }
-                                // { "timestamp":"2023-07-22T04:03:08Z", "event":"ScanOrganic", "ScanType":"Analyse", "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa", "Species":"$Codex_Ent_Shrubs_05_Name;", "Species_Localised":"Frutexa Fera", "Variant":"$Codex_Ent_Shrubs_05_F_Name;", "Variant_Localised":"Frutexa Fera - Green", "SystemAddress":34542299533283, "Body":42 }
-
+                            case "ScanOrganic":             // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                                 // { "timestamp":"2023-07-22T04:01:18Z",
                                 //      "event":"ScanOrganic",
                                 //*     "ScanType":"Log",
@@ -5016,31 +5024,51 @@ namespace EddiJournalMonitor
                                 //*     "Variant_Localised":"Frutexa Fera - Green",
                                 //      "SystemAddress":34542299533283,
                                 //      "Body":42 }
-                                //
-                                // ------------------------
-                                //      Sample Parsing
-                                // ------------------------
-                                //string bodyName = JsonParsing.getString(data, "Body");
-                                //data.TryGetValue("Signals", out object signalsVal);
-                                //foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+
+                                //StarSystem system = EDDI.Instance?.CurrentStarSystem;
+                                //Body body = null;
+                                //body = system?.BodyWithID( bodyId );
+                                //if ( !( body is null ) )
                                 //{
-                                //    string commodityEdName = JsonParsing.getString(signal, "Type");
-                                //    CommodityDefinition type = CommodityDefinition.FromEDName(commodityEdName);
-                                //    type.fallbackLocalizedName = JsonParsing.getString( signal, "Type_Localised" );
-                                //    int amount = JsonParsing.getInt(signal, "Count");
-                                //    hotspots.Add( new CommodityAmount( type, amount ) );
+                                //    body.scannedDateTime = body.scannedDateTime ?? timestamp;
+                                //    body.mappedDateTime = timestamp;
+                                //    body.mappedEfficiently = probesUsed <= efficiencyTarget;
+                                //    events.Add( new BodyMappedEvent( timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget ) { raw = line, fromLoad = fromLogLoad } );
                                 //}
-                                //hotspots = hotspots.OrderByDescending( h => h.amount ).ToList();
+                                //decimal? lat = EddiStatusService.StatusService.Instance.CurrentStatus.latitude;
+
                                 {
-                                    string scanType = JsonParsing.getString(data, "ScanType");
-                                    string localisedGenus = JsonParsing.getString(data, "Genus_Localised");
-                                    string localisedSpecies = JsonParsing.getString(data, "Species_Localised");
-                                    string localisedVariant = JsonParsing.getString(data, "Variant_Localised");
+                                    // TODO:#2212........[update to use edname ("genus") instead of localised]
+
+                                    // System address identifier
+                                    ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
+
+                                    // This is in fact the BodyID, not the body name
                                     int bodyID = JsonParsing.getInt(data, "Body");
+
+                                    // Log, Sample, Analyse
+                                    string scanType = JsonParsing.getString(data, "ScanType");
+                                    
+                                    // i.e. Frutexa
+                                    string genus = JsonParsing.getString(data, "Genus");
+                                    string localisedGenus = JsonParsing.getString(data, "Genus_Localised");
+                                    
+                                    // i.e. Flabellum
+                                    string species = JsonParsing.getString(data, "Species");
+                                    string localisedSpecies = JsonParsing.getString(data, "Species_Localised");
+                                    
+                                    // i.e. Green
+                                    string variant = JsonParsing.getString(data, "Variant");
+                                    string localisedVariant = JsonParsing.getString(data, "Variant_Localised");
+
                                     events.Add( new ScanOrganicEvent( timestamp, bodyID, scanType, localisedGenus, localisedSpecies, localisedVariant ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
+
+                            // we silently ignore these, but forward them to the responders
+                            case "ModuleBuyAndStore":
+                            case "RestockVehicle":
                             case "SellMicroResources":
                             case "SellOrganicData":
 
@@ -5069,6 +5097,7 @@ namespace EddiJournalMonitor
                             case "WingLeave":
 
                             // No plans to support
+                            case "CodexDiscovery":  // This doesn't appear to exist in logs anymore and may be deprecated by CodexEntry.
                             case "CollectItems": // The `BackpackChange` event keeps us up to date.
                             case "CrimeVictim": // No need to track crimes committed by other cmdrs. If added, filter out events where the current player is listed as the offender.
                             case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`

@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Aleoids" xml:space="preserve">
+    <value>Aleoida</value>
+  </data>
+  <data name="Anemone" xml:space="preserve">
+    <value>Anemone</value>
+  </data>
+  <data name="AsterPod" xml:space="preserve">
+    <value>Aster Pod</value>
+  </data>
+  <data name="AsterTree" xml:space="preserve">
+    <value>Aster Tree</value>
+  </data>
+  <data name="Bacterial" xml:space="preserve">
+    <value>Bacterium</value>
+  </data>
+  <data name="Brancae" xml:space="preserve">
+    <value>Brain Tree</value>
+  </data>
+  <data name="Cactoid" xml:space="preserve">
+    <value>Cactoida</value>
+  </data>
+  <data name="CalcitePlates" xml:space="preserve">
+    <value>Calcite Plates</value>
+  </data>
+  <data name="ChalicePod" xml:space="preserve">
+    <value>Chalice Pod</value>
+  </data>
+  <data name="Clypeus" xml:space="preserve">
+    <value>Clypeus</value>
+  </data>
+  <data name="CollaredPod" xml:space="preserve">
+    <value>Collared Pod</value>
+  </data>
+  <data name="Conchas" xml:space="preserve">
+    <value>Concha</value>
+  </data>
+  <data name="Cone" xml:space="preserve">
+    <value>Bark Mounds</value>
+  </data>
+  <data name="Electricae" xml:space="preserve">
+    <value>Electricae</value>
+  </data>
+  <data name="Fonticulus" xml:space="preserve">
+    <value>Fonticulua</value>
+  </data>
+  <data name="Fumerolas" xml:space="preserve">
+    <value>Fumerola</value>
+  </data>
+  <data name="Fungoids" xml:space="preserve">
+    <value>Fungoida</value>
+  </data>
+  <data name="GroundStructIce" xml:space="preserve">
+    <value>Crystalline Shards</value>
+  </data>
+  <data name="GyrePod" xml:space="preserve">
+    <value>Gyre Pod</value>
+  </data>
+  <data name="GyreTree" xml:space="preserve">
+    <value>Gyre Tree</value>
+  </data>
+  <data name="IceCrystals" xml:space="preserve">
+    <value>Ice Crystals</value>
+  </data>
+  <data name="MetallicCrystals" xml:space="preserve">
+    <value>Metallic Crystals</value>
+  </data>
+  <data name="MineralSpheres" xml:space="preserve">
+    <value>Mineral Spheres</value>
+  </data>
+  <data name="MolluscBell" xml:space="preserve">
+    <value>Mollusc Bell</value>
+  </data>
+  <data name="MolluscBulb" xml:space="preserve">
+    <value>Mollusc Bulb</value>
+  </data>
+  <data name="MolluscBullet" xml:space="preserve">
+    <value>Mollusc Bullet</value>
+  </data>
+  <data name="MolluscCapsule" xml:space="preserve">
+    <value>Mollusc Capsule</value>
+  </data>
+  <data name="MolluscGlobe" xml:space="preserve">
+    <value>Mollusc Globe</value>
+  </data>
+  <data name="MolluscGourd" xml:space="preserve">
+    <value>Mollusc Gourd</value>
+  </data>
+  <data name="MolluscParasol" xml:space="preserve">
+    <value>Mollusc Parasol</value>
+  </data>
+  <data name="MolluscReel" xml:space="preserve">
+    <value>Mollusc Reel</value>
+  </data>
+  <data name="MolluscSquid" xml:space="preserve">
+    <value>Mollusc Squid</value>
+  </data>
+  <data name="MolluscTorus" xml:space="preserve">
+    <value>Mollusc Torus</value>
+  </data>
+  <data name="MolluscUmbrella" xml:space="preserve">
+    <value>Mollusc Umbrella</value>
+  </data>
+  <data name="Osseus" xml:space="preserve">
+    <value>Osseus</value>
+  </data>
+  <data name="PedunclePod" xml:space="preserve">
+    <value>Peduncle Pod</value>
+  </data>
+  <data name="PeduncleTree" xml:space="preserve">
+    <value>Peduncle Tree</value>
+  </data>
+  <data name="QuadripartitePod" xml:space="preserve">
+    <value>Quadripartite Pod</value>
+  </data>
+  <data name="Recepta" xml:space="preserve">
+    <value>Recepta</value>
+  </data>
+  <data name="RhizomePod" xml:space="preserve">
+    <value>Rhizome Pod</value>
+  </data>
+  <data name="Shrubs" xml:space="preserve">
+    <value>Frutexa</value>
+  </data>
+  <data name="SilicateCrystals" xml:space="preserve">
+    <value>Silicate Crystals</value>
+  </data>
+  <data name="StolonPod" xml:space="preserve">
+    <value>Stolon Pod</value>
+  </data>
+  <data name="StolonTree" xml:space="preserve">
+    <value>Stolon Tree</value>
+  </data>
+  <data name="Stratum" xml:space="preserve">
+    <value>Stratum</value>
+  </data>
+  <data name="ThargoidBarnacle" xml:space="preserve">
+    <value>Thargoid Barnacle</value>
+  </data>
+  <data name="Tubers" xml:space="preserve">
+    <value>Sinuous Tuber</value>
+  </data>
+  <data name="Tubus" xml:space="preserve">
+    <value>Tubus</value>
+  </data>
+  <data name="Tussocks" xml:space="preserve">
+    <value>Tussock</value>
+  </data>
+  <data name="Vents" xml:space="preserve">
+    <value>Amphora</value>
+  </data>
+  <data name="VoidHeart" xml:space="preserve">
+    <value>Void Heart</value>
+  </data>
+  <data name="VoidPod" xml:space="preserve">
+    <value>Octahedral Pod</value>
+  </data>
+</root>

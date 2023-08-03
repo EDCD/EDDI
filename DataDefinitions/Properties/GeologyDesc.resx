@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Fumarole_CarbonDioxideGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with carbon dioxide geysers.</value>
+  </data>
+  <data name="Fumarole_SilicateVapourGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with silicate vapour geysers.</value>
+  </data>
+  <data name="Fumarole_SulphurDioxideMagma" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with sulphur dioxide magma.</value>
+  </data>
+  <data name="Fumarole_WaterGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with water geysers.</value>
+  </data>
+  <data name="Gas_Clds_Blue" xml:space="preserve">
+    <value>This variation has a blue cloud.</value>
+  </data>
+  <data name="Gas_Clds_Green" xml:space="preserve">
+    <value>This variation has a green cloud.</value>
+  </data>
+  <data name="Gas_Clds_Green_Storm" xml:space="preserve">
+    <value>This variation has a green cloud that produces irregular electrical discharges.</value>
+  </data>
+  <data name="Gas_Clds_Light" xml:space="preserve">
+    <value>This variation is a light accumulation of gas.</value>
+  </data>
+  <data name="Gas_Clds_Orange" xml:space="preserve">
+    <value>This variation has a orange cloud.</value>
+  </data>
+  <data name="Gas_Clds_Orange_Storm" xml:space="preserve">
+    <value>This variation has a orange cloud that produces irregular electrical discharges.</value>
+  </data>
+  <data name="Gas_Clds_Pink" xml:space="preserve">
+    <value>This variation has a pink cloud.</value>
+  </data>
+  <data name="Gas_Clds_Pink_Storm" xml:space="preserve">
+    <value>This variation has a pink cloud that produces irregular electrical discharges.</value>
+  </data>
+  <data name="Gas_Clds_Red" xml:space="preserve">
+    <value>This variation has a red cloud.</value>
+  </data>
+  <data name="Gas_Clds_Red_Storm" xml:space="preserve">
+    <value>This variation has a red cloud that produces irregular electrical discharges.</value>
+  </data>
+  <data name="Gas_Clds_Yellow" xml:space="preserve">
+    <value>This variation has a yellow cloud.</value>
+  </data>
+  <data name="Gas_Clds_Yellow_Storm" xml:space="preserve">
+    <value>This variation has a yellow cloud that produces irregular electrical discharges.</value>
+  </data>
+  <data name="Gas_Vents_CarbonDioxideGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with carbon dioxide geysers.</value>
+  </data>
+  <data name="Gas_Vents_SilicateVapourGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with silicate vapour geysers.</value>
+  </data>
+  <data name="Gas_Vents_SulphurDioxideMagma" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with sulphur dioxide magma.</value>
+  </data>
+  <data name="Gas_Vents_WaterGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with water geysers.</value>
+  </data>
+  <data name="Geysers_WaterGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with water geysers.</value>
+  </data>
+  <data name="IceFumarole_AmmoniaGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with ammonia geysers.</value>
+  </data>
+  <data name="IceFumarole_CarbonDioxideGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with carbon dioxide geysers.</value>
+  </data>
+  <data name="IceFumarole_MethaneGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with methane geysers.</value>
+  </data>
+  <data name="IceFumarole_NitrogenGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with nitrogen geysers.</value>
+  </data>
+  <data name="IceFumarole_SilicateVapourGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with silicate vapour geysers.</value>
+  </data>
+  <data name="IceFumarole_SulphurDioxideMagma" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with sulphur dioxide magma.</value>
+  </data>
+  <data name="IceFumarole_WaterGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with water geysers.</value>
+  </data>
+  <data name="IceGeysers_AmmoniaGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with ammonia geysers.</value>
+  </data>
+  <data name="IceGeysers_CarbonDioxideGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with carbon dioxide geysers.</value>
+  </data>
+  <data name="IceGeysers_MethaneGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with methane geysers.</value>
+  </data>
+  <data name="IceGeysers_NitrogenGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with helium geysers.</value>
+  </data>
+  <data name="IceGeysers_WaterGeysers" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with water geysers.</value>
+  </data>
+  <data name="Lava_Spouts_IronMagma" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with iron magma.</value>
+  </data>
+  <data name="Lava_Spouts_SilicateMagma" xml:space="preserve">
+    <value>This variation is found on terrestrial planets with silicate magma.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_001" xml:space="preserve">
+    <value>This variation is comprised of wispy blue cloud patterns.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_002" xml:space="preserve">
+    <value>This variation is comprised of slow-moving clumps of drifting particles.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_003" xml:space="preserve">
+    <value>This variation is comprised of billowing multicoloured cloud patterns.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_004" xml:space="preserve">
+    <value>This variation is comprised of wispy blue cloud patterns around a denser core.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_005" xml:space="preserve">
+    <value>This variation is comprised of a slow-moving bright core trailing multicoloured rings.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_006" xml:space="preserve">
+    <value>This variation is comprised of a billowing multicoloured cloud surrounded by scattered streaks.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_007" xml:space="preserve">
+    <value>This variation is comprised of a bright blue-white core emitting scattered particles.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_008" xml:space="preserve">
+    <value>This variation is comprised of a bright red core emitting rapid pulsing clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_009" xml:space="preserve">
+    <value>This variation is comprised of a dull red core emitting slow pulsing clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_010" xml:space="preserve">
+    <value>This variation is comprised of a dull red core emitting rapid pulsing clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_011" xml:space="preserve">
+    <value>This variation is comprised of multiple bright blue-green cores emitting slow-moving clouds. </value>
+  </data>
+  <data name="L_Phn_Part_Cld_012" xml:space="preserve">
+    <value>This variation is comprised of a hazy red core emitting rapid pulsing clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_013" xml:space="preserve">
+    <value>This variation is comprised of a slow-moving ring of red clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_014" xml:space="preserve">
+    <value>This variation is comprised of a slow-moving collection of bright blue clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_015" xml:space="preserve">
+    <value>This variation is comprised of scattered pale blue cloud patterns.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_016" xml:space="preserve">
+    <value>This variation is comprised of a wispy blue core emitting slow-moving pulsing clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Cld_017" xml:space="preserve">
+    <value>This variation is Unknown to me</value>
+  </data>
+  <data name="L_Phn_Part_Clus_001" xml:space="preserve">
+    <value>This variation is comprised of a bright pulsing sphere surrounded by scattered particles.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_002" xml:space="preserve">
+    <value>This variation is comprised of a bright pulsing sphere surrounded by clusters of particles.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_003" xml:space="preserve">
+    <value>This variation is comprised of a bright pulsing sphere surrounded by particles with a billowing cloud trail.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_004" xml:space="preserve">
+    <value>This variation is comprised of a bright pulsing sphere surrounded by fast-moving clusters of particles.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_005" xml:space="preserve">
+    <value>This variation is comprised of a bright pulsing sphere surrounded by smaller slow-moving spheres.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_007" xml:space="preserve">
+    <value>This variation is comprised of a bright cloud surrounded by slow-moving clusters of particles.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_008" xml:space="preserve">
+    <value>This variation is comprised of a bright slow-moving core with a cloud trail.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_009" xml:space="preserve">
+    <value>This variation is comprised of a group of bright clusters bursting into smaller particles.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_010" xml:space="preserve">
+    <value>This variation is comprised of a bright hazy core surrounded by swirling cloud rings.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_011" xml:space="preserve">
+    <value>This variation is comprised of a bright hazy core with wispy swirling edges.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_012" xml:space="preserve">
+    <value>This variation is comprised of a bright circular core surrounded by swirling particles.</value>
+  </data>
+  <data name="L_Phn_Part_Clus_013" xml:space="preserve">
+    <value>This variation is comprised of a bright cloudy core surrounded by scattered streaks.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_002" xml:space="preserve">
+    <value>This variation is comprised of a dark core with a bright halo and ring of clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_003" xml:space="preserve">
+    <value>This variation is comprised of a rotating bright core emitting spiraling cloud trails.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_004" xml:space="preserve">
+    <value>This variation is comprised of a rotating bright core surrounded by a spiralling ring of clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_005" xml:space="preserve">
+    <value>This variation is comprised of a bright hazy core with a ring of thick glowing bands.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_006" xml:space="preserve">
+    <value>This variation is comprised of a bright core surrounded by slow-moving rotating clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_007" xml:space="preserve">
+    <value>This variation is comprised of a bright core with a cloudy halo emitting fast-moving pulses.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_008" xml:space="preserve">
+    <value>This variation is comprised of a bright cluster emitting green strings of wispy cloud.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_009" xml:space="preserve">
+    <value>This variation is comprised of a bright cluster emitting white strings of wispy cloud.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_010" xml:space="preserve">
+    <value>This variation is comprised of a bright hazy core emitting regular bursts of lightning.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_011" xml:space="preserve">
+    <value>This variation is comprised of bright fragments surrounded by a ring of clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_012" xml:space="preserve">
+    <value>This variation is comprised of an intensely bright core emitting fast-moving clouds and particles.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_013" xml:space="preserve">
+    <value>This variation is comprised of an intensely bright core emitting fast-moving clusters of particles.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_014" xml:space="preserve">
+    <value>This variation is comprised of a bright circular core emitting slow-moving particles.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_015" xml:space="preserve">
+    <value>This variation is comprised of a rotating group of bright clusters emitting fast-moving clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Eng_016" xml:space="preserve">
+    <value>This variation is comprised of a bright core emitting cloud rings and regular bursts of lightning.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_001" xml:space="preserve">
+    <value>This variation is comprised of a bright core emitting slow-moving hazy clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_002" xml:space="preserve">
+    <value>This variation is comprised of a bright hazy core pulsing fast-moving rings of clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_003" xml:space="preserve">
+    <value>This variation is comprised of a bright core emitting slow-moving cloud rings and regular bursts of lightning.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_004" xml:space="preserve">
+    <value>This variation is comprised of a pulsing irregular core with a halo of clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_005" xml:space="preserve">
+    <value>This variation is comprised of a pulsing irregular core with a ring of clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_006" xml:space="preserve">
+    <value>This variation is comprised of a bright core radiating intense light.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_007" xml:space="preserve">
+    <value>This variation is comprised of a bright core with a circular halo radiating intense light.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_008" xml:space="preserve">
+    <value>This variation is comprised of a bright core radiating intense light with a ring of clouds.</value>
+  </data>
+  <data name="L_Phn_Part_Orb_009" xml:space="preserve">
+    <value>This variation is comprised of a bright core radiating hazy light with a ring of clouds.</value>
+  </data>
+</root>

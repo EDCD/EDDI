@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlbidumSinuousTubers" xml:space="preserve">
+    <value>Albidum Sinuous Tubers</value>
+  </data>
+  <data name="AleoidaArcus" xml:space="preserve">
+    <value>Aleoida Arcus</value>
+  </data>
+  <data name="AleoidaCoronamus" xml:space="preserve">
+    <value>Aleoida Coronamus</value>
+  </data>
+  <data name="AleoidaGravis" xml:space="preserve">
+    <value>Aleoida Gravis</value>
+  </data>
+  <data name="AleoidaLaminiae" xml:space="preserve">
+    <value>Aleoida Laminiae</value>
+  </data>
+  <data name="AleoidaSpica" xml:space="preserve">
+    <value>Aleoida Spica</value>
+  </data>
+  <data name="AmphoraPlant" xml:space="preserve">
+    <value>Amphora Plant</value>
+  </data>
+  <data name="AureumBrainTree" xml:space="preserve">
+    <value>Aureum Brain Tree</value>
+  </data>
+  <data name="BacteriumAcies" xml:space="preserve">
+    <value>Bacterium Acies</value>
+  </data>
+  <data name="BacteriumAlcyoneum" xml:space="preserve">
+    <value>Bacterium Alcyoneum</value>
+  </data>
+  <data name="BacteriumAurasus" xml:space="preserve">
+    <value>Bacterium Aurasus</value>
+  </data>
+  <data name="BacteriumBullaris" xml:space="preserve">
+    <value>Bacterium Bullaris</value>
+  </data>
+  <data name="BacteriumCerbrus" xml:space="preserve">
+    <value>Bacterium Cerbrus</value>
+  </data>
+  <data name="BacteriumInformem" xml:space="preserve">
+    <value>Bacterium Informem</value>
+  </data>
+  <data name="BacteriumNebulus" xml:space="preserve">
+    <value>Bacterium Nebulus</value>
+  </data>
+  <data name="BacteriumOmentum" xml:space="preserve">
+    <value>Bacterium Omentum</value>
+  </data>
+  <data name="BacteriumScopulum" xml:space="preserve">
+    <value>Bacterium Scopulum</value>
+  </data>
+  <data name="BacteriumTela" xml:space="preserve">
+    <value>Bacterium Tela</value>
+  </data>
+  <data name="BacteriumVerrata" xml:space="preserve">
+    <value>Bacterium Verrata</value>
+  </data>
+  <data name="BacteriumVesicula" xml:space="preserve">
+    <value>Bacterium Vesicula</value>
+  </data>
+  <data name="BacteriumVolu" xml:space="preserve">
+    <value>Bacterium Volu</value>
+  </data>
+  <data name="BarkMounds" xml:space="preserve">
+    <value>Bark Mounds</value>
+  </data>
+  <data name="BlatteumBioluminescentAnemone" xml:space="preserve">
+    <value>Blatteum Bioluminescent Anemone</value>
+  </data>
+  <data name="BlatteumSinuousTubers" xml:space="preserve">
+    <value>Blatteum Sinuous Tubers</value>
+  </data>
+  <data name="CactoidaCortexum" xml:space="preserve">
+    <value>Cactoida Cortexum</value>
+  </data>
+  <data name="CactoidaLapis" xml:space="preserve">
+    <value>Cactoida Lapis</value>
+  </data>
+  <data name="CactoidaPeperatis" xml:space="preserve">
+    <value>Cactoida Peperatis</value>
+  </data>
+  <data name="CactoidaPullulanta" xml:space="preserve">
+    <value>Cactoida Pullulanta</value>
+  </data>
+  <data name="CactoidaVermis" xml:space="preserve">
+    <value>Cactoida Vermis</value>
+  </data>
+  <data name="CaeruleumSinuousTubers" xml:space="preserve">
+    <value>Caeruleum Sinuous Tubers</value>
+  </data>
+  <data name="ClypeusLacrimam" xml:space="preserve">
+    <value>Clypeus Lacrimam</value>
+  </data>
+  <data name="ClypeusMargaritus" xml:space="preserve">
+    <value>Clypeus Margaritus</value>
+  </data>
+  <data name="ClypeusSpeculumi" xml:space="preserve">
+    <value>Clypeus Speculumi</value>
+  </data>
+  <data name="ConchaAureolas" xml:space="preserve">
+    <value>Concha Aureolas</value>
+  </data>
+  <data name="ConchaBiconcavis" xml:space="preserve">
+    <value>Concha Biconcavis</value>
+  </data>
+  <data name="ConchaLabiata" xml:space="preserve">
+    <value>Concha Labiata</value>
+  </data>
+  <data name="ConchaRenibus" xml:space="preserve">
+    <value>Concha Renibus</value>
+  </data>
+  <data name="CroceumAnemone" xml:space="preserve">
+    <value>Croceum Anemone</value>
+  </data>
+  <data name="CrystallineShards" xml:space="preserve">
+    <value>Crystalline Shards</value>
+  </data>
+  <data name="ElectricaePluma" xml:space="preserve">
+    <value>Electricae Pluma</value>
+  </data>
+  <data name="ElectricaeRadialem" xml:space="preserve">
+    <value>Electricae Radialem</value>
+  </data>
+  <data name="FonticuluaCampestris" xml:space="preserve">
+    <value>Fonticulua Campestris</value>
+  </data>
+  <data name="FonticuluaDigitos" xml:space="preserve">
+    <value>Fonticulua Digitos</value>
+  </data>
+  <data name="FonticuluaFluctus" xml:space="preserve">
+    <value>Fonticulua Fluctus</value>
+  </data>
+  <data name="FonticuluaLapida" xml:space="preserve">
+    <value>Fonticulua Lapida</value>
+  </data>
+  <data name="FonticuluaSegmentatus" xml:space="preserve">
+    <value>Fonticulua Segmentatus</value>
+  </data>
+  <data name="FonticuluaUpupam" xml:space="preserve">
+    <value>Fonticulua Upupam</value>
+  </data>
+  <data name="FrutexaAcus" xml:space="preserve">
+    <value>Frutexa Acus</value>
+  </data>
+  <data name="FrutexaCollum" xml:space="preserve">
+    <value>Frutexa Collum</value>
+  </data>
+  <data name="FrutexaFera" xml:space="preserve">
+    <value>Frutexa Fera</value>
+  </data>
+  <data name="FrutexaFlabellum" xml:space="preserve">
+    <value>Frutexa Flabellum</value>
+  </data>
+  <data name="FrutexaFlammasis" xml:space="preserve">
+    <value>Frutexa Flammasis</value>
+  </data>
+  <data name="FrutexaMetallicum" xml:space="preserve">
+    <value>Frutexa Metallicum</value>
+  </data>
+  <data name="FrutexaSponsae" xml:space="preserve">
+    <value>Frutexa Sponsae</value>
+  </data>
+  <data name="FumerolaAquatis" xml:space="preserve">
+    <value>Fumerola Aquatis</value>
+  </data>
+  <data name="FumerolaCarbosis" xml:space="preserve">
+    <value>Fumerola Carbosis</value>
+  </data>
+  <data name="FumerolaExtremus" xml:space="preserve">
+    <value>Fumerola Extremus</value>
+  </data>
+  <data name="FumerolaNitris" xml:space="preserve">
+    <value>Fumerola Nitris</value>
+  </data>
+  <data name="FungoidaBullarum" xml:space="preserve">
+    <value>Fungoida Bullarum</value>
+  </data>
+  <data name="FungoidaGelata" xml:space="preserve">
+    <value>Fungoida Gelata</value>
+  </data>
+  <data name="FungoidaSetisis" xml:space="preserve">
+    <value>Fungoida Setisis</value>
+  </data>
+  <data name="FungoidaStabitis" xml:space="preserve">
+    <value>Fungoida Stabitis</value>
+  </data>
+  <data name="GypseeumBrainTree" xml:space="preserve">
+    <value>Gypseeum Brain Tree</value>
+  </data>
+  <data name="LindigoticumBrainTree" xml:space="preserve">
+    <value>Lindigoticum Brain Tree</value>
+  </data>
+  <data name="LindigoticumSinuousTubers" xml:space="preserve">
+    <value>Lindigoticum Sinuous Tubers</value>
+  </data>
+  <data name="LividumBrainTree" xml:space="preserve">
+    <value>Lividum Brain Tree</value>
+  </data>
+  <data name="LuteolumAnemone" xml:space="preserve">
+    <value>Luteolum Anemone</value>
+  </data>
+  <data name="OsseusCornibus" xml:space="preserve">
+    <value>Osseus Cornibus</value>
+  </data>
+  <data name="OsseusDiscus" xml:space="preserve">
+    <value>Osseus Discus</value>
+  </data>
+  <data name="OsseusFractus" xml:space="preserve">
+    <value>Osseus Fractus</value>
+  </data>
+  <data name="OsseusPellebantus" xml:space="preserve">
+    <value>Osseus Pellebantus</value>
+  </data>
+  <data name="OsseusPumice" xml:space="preserve">
+    <value>Osseus Pumice</value>
+  </data>
+  <data name="OsseusSpiralis" xml:space="preserve">
+    <value>Osseus Spiralis</value>
+  </data>
+  <data name="OstrinumBrainTree" xml:space="preserve">
+    <value>Ostrinum Brain Tree</value>
+  </data>
+  <data name="PrasinumBioluminescentAnemone" xml:space="preserve">
+    <value>Prasinum Bioluminescent Anemone</value>
+  </data>
+  <data name="PrasinumSinuousTubers" xml:space="preserve">
+    <value>Prasinum Sinuous Tubers</value>
+  </data>
+  <data name="PuniceumAnemone" xml:space="preserve">
+    <value>Puniceum Anemone</value>
+  </data>
+  <data name="PuniceumBrainTree" xml:space="preserve">
+    <value>Puniceum Brain Tree</value>
+  </data>
+  <data name="ReceptaConditivus" xml:space="preserve">
+    <value>Recepta Conditivus</value>
+  </data>
+  <data name="ReceptaDeltahedronix" xml:space="preserve">
+    <value>Recepta Deltahedronix</value>
+  </data>
+  <data name="ReceptaUmbrux" xml:space="preserve">
+    <value>Recepta Umbrux</value>
+  </data>
+  <data name="RoseumAnemone" xml:space="preserve">
+    <value>Roseum Anemone</value>
+  </data>
+  <data name="RoseumBioluminescentAnemone" xml:space="preserve">
+    <value>Roseum Bioluminescent Anemone</value>
+  </data>
+  <data name="RoseumBrainTree" xml:space="preserve">
+    <value>Roseum Brain Tree</value>
+  </data>
+  <data name="RoseumSinuousTubers" xml:space="preserve">
+    <value>Roseum Sinuous Tubers</value>
+  </data>
+  <data name="RubeumBioluminescentAnemone" xml:space="preserve">
+    <value>Rubeum Bioluminescent Anemone</value>
+  </data>
+  <data name="StratumAraneamus" xml:space="preserve">
+    <value>Stratum Araneamus</value>
+  </data>
+  <data name="StratumCucumisis" xml:space="preserve">
+    <value>Stratum Cucumisis</value>
+  </data>
+  <data name="StratumExcutitus" xml:space="preserve">
+    <value>Stratum Excutitus</value>
+  </data>
+  <data name="StratumFrigus" xml:space="preserve">
+    <value>Stratum Frigus</value>
+  </data>
+  <data name="StratumLaminamus" xml:space="preserve">
+    <value>Stratum Laminamus</value>
+  </data>
+  <data name="StratumLimaxus" xml:space="preserve">
+    <value>Stratum Limaxus</value>
+  </data>
+  <data name="StratumPaleas" xml:space="preserve">
+    <value>Stratum Paleas</value>
+  </data>
+  <data name="StratumTectonicas" xml:space="preserve">
+    <value>Stratum Tectonicas</value>
+  </data>
+  <data name="TubusCavas" xml:space="preserve">
+    <value>Tubus Cavas</value>
+  </data>
+  <data name="TubusCompagibus" xml:space="preserve">
+    <value>Tubus Compagibus</value>
+  </data>
+  <data name="TubusConifer" xml:space="preserve">
+    <value>Tubus Conifer</value>
+  </data>
+  <data name="TubusRosarium" xml:space="preserve">
+    <value>Tubus Rosarium</value>
+  </data>
+  <data name="TubusSororibus" xml:space="preserve">
+    <value>Tubus Sororibus</value>
+  </data>
+  <data name="TussockAlbata" xml:space="preserve">
+    <value>Tussock Albata</value>
+  </data>
+  <data name="TussockCapillum" xml:space="preserve">
+    <value>Tussock Capillum</value>
+  </data>
+  <data name="TussockCaputus" xml:space="preserve">
+    <value>Tussock Caputus</value>
+  </data>
+  <data name="TussockCatena" xml:space="preserve">
+    <value>Tussock Catena</value>
+  </data>
+  <data name="TussockCultro" xml:space="preserve">
+    <value>Tussock Cultro</value>
+  </data>
+  <data name="TussockDivisa" xml:space="preserve">
+    <value>Tussock Divisa</value>
+  </data>
+  <data name="TussockIgnis" xml:space="preserve">
+    <value>Tussock Ignis</value>
+  </data>
+  <data name="TussockPennata" xml:space="preserve">
+    <value>Tussock Pennata</value>
+  </data>
+  <data name="TussockPennatis" xml:space="preserve">
+    <value>Tussock Pennatis</value>
+  </data>
+  <data name="TussockPropagito" xml:space="preserve">
+    <value>Tussock Propagito</value>
+  </data>
+  <data name="TussockSerrati" xml:space="preserve">
+    <value>Tussock Serrati</value>
+  </data>
+  <data name="TussockStigmasis" xml:space="preserve">
+    <value>Tussock Stigmasis</value>
+  </data>
+  <data name="TussockTriticum" xml:space="preserve">
+    <value>Tussock Triticum</value>
+  </data>
+  <data name="TussockVentusa" xml:space="preserve">
+    <value>Tussock Ventusa</value>
+  </data>
+  <data name="TussockVirgam" xml:space="preserve">
+    <value>Tussock Virgam</value>
+  </data>
+  <data name="ViolaceumSinuousTubers" xml:space="preserve">
+    <value>Violaceum Sinuous Tubers</value>
+  </data>
+  <data name="VirideBrainTree" xml:space="preserve">
+    <value>Viride Brain Tree</value>
+  </data>
+  <data name="VirideSinuousTubers" xml:space="preserve">
+    <value>Viride Sinuous Tubers</value>
+  </data>
+</root>
