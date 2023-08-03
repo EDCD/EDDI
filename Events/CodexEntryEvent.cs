@@ -43,55 +43,92 @@ namespace EddiEvents
         [PublicAPI( "What is the codex entry worth?" )]
         public int voucherAmount { get; private set; }
 
-        [PublicAPI( "The detailed data for the biological object" )]
-        public OrganicData organicData { get; private set; }
+        //[PublicAPI( "The detailed data for the biological object" )]
+        //public OrganicItem organicData { get; private set; }
 
-        [PublicAPI( "The detailed data for the astrological object" )]
-        public AstrometricData astrometricData { get; private set; }
+        //[PublicAPI( "The detailed data for the astrological object" )]
+        //public AstrometricItem astrometricData { get; private set; }
 
-        [PublicAPI( "The detailed data for the geology object" )]
-        public GeologyData geologyData { get; private set; }
+        //[PublicAPI( "The detailed data for the geology object" )]
+        //public GeologyItem geologyData { get; private set; }
+
+        [PublicAPI("Get simple codex entry data")]
+        public CodexEntry codexEntry { get; private set; }
 
         // Not intended to be user facing
 
-        public CodexEntryEvent ( DateTime timestamp, string systemName, string categoryName, string subCategoryName, string codexName, string localisedName, string regionName, bool newEntry, bool newTrait, int voucherAmount ) : base(timestamp, NAME)
+        //public CodexEntryEvent ( DateTime timestamp, string systemName, string categoryName, string subCategoryName, string codexName, string localisedName, string regionName, bool newEntry, bool newTrait, int voucherAmount ) : base(timestamp, NAME)
+        public CodexEntryEvent ( DateTime timestamp, long entryId, string codexName, string subCategoryName, string categoryName, string regionName, string systemName, bool newEntry, bool newTrait, int voucherAmount ) : base( timestamp, NAME )
         {
-            this.systemName = systemName;
-            this.codexName = codexName;
-            this.categoryName = categoryName;
-            this.subCategoryName = subCategoryName;
-            this.entryName = localisedName;
-            this.regionName = regionName;
-            this.newEntry = newEntry;
-            this.newTrait = newTrait;
-            this.voucherAmount = voucherAmount;
-
-            switch ( subCategoryName )
+            if ( !fromLoad )
             {
-                case "Organic structures":
-                    this.organicData = OrganicInfo.LookupByVariant( localisedName );
-                    if (this.organicData == null )
-                    {
-                        this.organicData = new OrganicData();
-                    }
-                    break;
-                case "Stars":
-                case "Gas giant planets":
-                case "Terrestrial planets":
-                    this.astrometricData = AstrometricInfo.GetData( subCategoryName, codexName );
-                    if ( this.astrometricData == null )
-                    {
-                        this.astrometricData = new AstrometricData();
-                    }
-                    break;
-                case "Geology and anomalies":
-                    this.geologyData = GeologyInfo.LookupByVariant( localisedName );
-                    if ( this.geologyData == null )
-                    {
-                        this.geologyData = new GeologyData();
-                    }
-                    break;
+                this.systemName = systemName;
+                this.codexName = codexName;
+                this.categoryName = categoryName;
+                this.subCategoryName = subCategoryName;
+                //this.entryName = localisedName;
+                this.regionName = regionName;
+                this.newEntry = newEntry;
+                this.newTrait = newTrait;
+                this.voucherAmount = voucherAmount;
+
+                codexEntry = new CodexEntry( entryId, codexName, subCategoryName, categoryName, regionName, systemName );
             }
+
+            // TODO:#2212........[Get codex data. From here or within DiscoveryMonitor?]
+            //switch ( subCategoryName )
+            //{
+            //    case "Organic structures":
+            //        this.organicData = OrganicInfo.LookupByVariant( localisedName );
+            //        if ( this.organicData == null )
+            //        {
+            //            this.organicData = new OrganicItem();
+            //        }
+            //        break;
+            //    case "Stars":
+            //    case "Gas giant planets":
+            //    case "Terrestrial planets":
+            //        this.astrometricData = AstrometricInfo.GetData( subCategoryName, codexName );
+            //        if ( this.astrometricData == null )
+            //        {
+            //            this.astrometricData = new AstrometricItem();
+            //        }
+            //        break;
+            //    case "Geology and anomalies":
+            //        this.geologyData = GeologyInfo.LookupByVariant( localisedName );
+            //        if ( this.geologyData == null )
+            //        {
+            //            this.geologyData = new GeologyItem();
+            //        }
+            //        break;
+            //}
+
+            //switch ( subCategoryName )
+            //{
+            //    case "Organic structures":
+            //        this.organicData = OrganicInfo.LookupByVariant( localisedName );
+            //        if (this.organicData == null )
+            //        {
+            //            this.organicData = new OrganicItem();
+            //        }
+            //        break;
+            //    case "Stars":
+            //    case "Gas giant planets":
+            //    case "Terrestrial planets":
+            //        this.astrometricData = AstrometricInfo.GetData( subCategoryName, codexName );
+            //        if ( this.astrometricData == null )
+            //        {
+            //            this.astrometricData = new AstrometricData();
+            //        }
+            //        break;
+            //    case "Geology and anomalies":
+            //        this.geologyData = GeologyInfo.LookupByVariant( localisedName );
+            //        if ( this.geologyData == null )
+            //        {
+            //            this.geologyData = new GeologyData();
+            //        }
+            //        break;
+            //}
         }
     }
 }

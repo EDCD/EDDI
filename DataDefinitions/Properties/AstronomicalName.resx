@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AEBE_Type" xml:space="preserve">
+    <value>A-E-B-E-Type Star</value>
+  </data>
+  <data name="A_Type" xml:space="preserve">
+    <value>A-Type Star</value>
+  </data>
+  <data name="A_TypeGiant" xml:space="preserve">
+    <value>A-Type Giant</value>
+  </data>
+  <data name="A_TypeSuperGiant" xml:space="preserve">
+    <value>A-Type SuperGiant</value>
+  </data>
+  <data name="Black_Holes" xml:space="preserve">
+    <value>Black Hole</value>
+  </data>
+  <data name="B_Type" xml:space="preserve">
+    <value>B-Type Star</value>
+  </data>
+  <data name="B_TypeGiant" xml:space="preserve">
+    <value>B-Type Giant</value>
+  </data>
+  <data name="B_TypeSuperGiant" xml:space="preserve">
+    <value>B-Type SuperGiant</value>
+  </data>
+  <data name="CJ_Type" xml:space="preserve">
+    <value>C-J-Type Star</value>
+  </data>
+  <data name="CN_Type" xml:space="preserve">
+    <value>C-N-Type Star</value>
+  </data>
+  <data name="C_Type" xml:space="preserve">
+    <value>C-Type Star</value>
+  </data>
+  <data name="C_TypeGiant" xml:space="preserve">
+    <value>C-Type Giant</value>
+  </data>
+  <data name="C_TypeHyperGiant" xml:space="preserve">
+    <value>C-Type HyperGiant</value>
+  </data>
+  <data name="C_TypeSuperGiant" xml:space="preserve">
+    <value>C-Type SuperGiant</value>
+  </data>
+  <data name="DAB_Type" xml:space="preserve">
+    <value>D-A-B-Type Star</value>
+  </data>
+  <data name="DAV_Type" xml:space="preserve">
+    <value>D-A-V-Type Star</value>
+  </data>
+  <data name="DAZ_Type" xml:space="preserve">
+    <value>D-A-Z-Type Star</value>
+  </data>
+  <data name="DA_Type" xml:space="preserve">
+    <value>D-A-Type Star</value>
+  </data>
+  <data name="DBV_Type" xml:space="preserve">
+    <value>D-B-V-Type Star</value>
+  </data>
+  <data name="DBZ_Type" xml:space="preserve">
+    <value>D-B-Z-Type Star</value>
+  </data>
+  <data name="DB_Type" xml:space="preserve">
+    <value>D-B-Type Star</value>
+  </data>
+  <data name="DCV" xml:space="preserve">
+    <value>D-C-V-Type Star</value>
+  </data>
+  <data name="DC_Type" xml:space="preserve">
+    <value>D-C-Type Star</value>
+  </data>
+  <data name="DDQ" xml:space="preserve">
+    <value>D-Q-Type Star</value>
+  </data>
+  <data name="D_Type" xml:space="preserve">
+    <value>D-Type Star</value>
+  </data>
+  <data name="Earth_Likes" xml:space="preserve">
+    <value>Earth-Like Planet</value>
+  </data>
+  <data name="F_Type" xml:space="preserve">
+    <value>F-Type Star</value>
+  </data>
+  <data name="F_TypeGiant" xml:space="preserve">
+    <value>F-Type Giant</value>
+  </data>
+  <data name="F_TypeSuperGiant" xml:space="preserve">
+    <value>F-Type SuperGiant</value>
+  </data>
+  <data name="Green_Giant_With_Ammonia_Life" xml:space="preserve">
+    <value>Green Gas Giant</value>
+  </data>
+  <data name="Green_Giant_With_Water_Life" xml:space="preserve">
+    <value>Green Gas Giant with Ammonia Life</value>
+  </data>
+  <data name="Green_Sudarsky_Class_I" xml:space="preserve">
+    <value>Green Class I Gas Giant</value>
+  </data>
+  <data name="Green_Sudarsky_Class_II" xml:space="preserve">
+    <value>Green Class II Gas Giant</value>
+  </data>
+  <data name="Green_Sudarsky_Class_III" xml:space="preserve">
+    <value>Green Class III Gas Giant</value>
+  </data>
+  <data name="Green_Sudarsky_Class_IV" xml:space="preserve">
+    <value>Green Class IV Gas Giant</value>
+  </data>
+  <data name="Green_Sudarsky_Class_V" xml:space="preserve">
+    <value>Green Class V Gas Giant</value>
+  </data>
+  <data name="Green_Water_Giant" xml:space="preserve">
+    <value>Green Water Giant</value>
+  </data>
+  <data name="G_Type" xml:space="preserve">
+    <value>G-Type Star</value>
+  </data>
+  <data name="G_TypeGiant" xml:space="preserve">
+    <value>G-Type Giant</value>
+  </data>
+  <data name="G_TypeSuperGiant" xml:space="preserve">
+    <value>G-Type SuperGiant</value>
+  </data>
+  <data name="K_Type" xml:space="preserve">
+    <value>K-Type Star</value>
+  </data>
+  <data name="K_TypeGiant" xml:space="preserve">
+    <value>K-Type Giant</value>
+  </data>
+  <data name="K_TypeSuperGiant" xml:space="preserve">
+    <value>K-Type SuperGiant</value>
+  </data>
+  <data name="L_Type" xml:space="preserve">
+    <value>L-Type Star</value>
+  </data>
+  <data name="MS_Type" xml:space="preserve">
+    <value>M-S-Type Star</value>
+  </data>
+  <data name="M_Type" xml:space="preserve">
+    <value>M-Type Star</value>
+  </data>
+  <data name="M_TypeGiant" xml:space="preserve">
+    <value>M-Type Giant</value>
+  </data>
+  <data name="M_TypeSuperGiant" xml:space="preserve">
+    <value>M-Type SuperGiant</value>
+  </data>
+  <data name="Neutron_Stars" xml:space="preserve">
+    <value>Neutron Star</value>
+  </data>
+  <data name="O_Type" xml:space="preserve">
+    <value>O-Type Star</value>
+  </data>
+  <data name="O_TypeGiant" xml:space="preserve">
+    <value>O-Type Giant</value>
+  </data>
+  <data name="O_TypeSuperGiant" xml:space="preserve">
+    <value>O-Type SuperGiant</value>
+  </data>
+  <data name="Standard_Ammonia_Worlds" xml:space="preserve">
+    <value>Ammonia Planet</value>
+  </data>
+  <data name="Standard_Giant_With_Ammonia_Life" xml:space="preserve">
+    <value>Standard Gas Giant Planet with Ammonia-Based Life</value>
+  </data>
+  <data name="Standard_Giant_With_Water_Life" xml:space="preserve">
+    <value>Standard Gas Giant Planet with Water-Based Life</value>
+  </data>
+  <data name="Standard_Helium" xml:space="preserve">
+    <value>Standard Helium Gas Giant</value>
+  </data>
+  <data name="Standard_Helium_Rich" xml:space="preserve">
+    <value>Standard Helium-Rich Gas Giant</value>
+  </data>
+  <data name="Standard_High_Metal_Content_No_Atmos" xml:space="preserve">
+    <value>High Metal Content Planet</value>
+  </data>
+  <data name="Standard_Ice_No_Atmos" xml:space="preserve">
+    <value>Ice Planet</value>
+  </data>
+  <data name="Standard_Metal_Rich_No_Atmos" xml:space="preserve">
+    <value>Metal-Rich Planet</value>
+  </data>
+  <data name="Standard_Rocky_Ice_No_Atmos" xml:space="preserve">
+    <value>Rocky Ice Planet</value>
+  </data>
+  <data name="Standard_Rocky_No_Atmos" xml:space="preserve">
+    <value>Rocky Planet</value>
+  </data>
+  <data name="Standard_Sudarsky_Class_I" xml:space="preserve">
+    <value>Standard Class I Gas Giant</value>
+  </data>
+  <data name="Standard_Sudarsky_Class_II" xml:space="preserve">
+    <value>Standard Class II Gas Giant</value>
+  </data>
+  <data name="Standard_Sudarsky_Class_III" xml:space="preserve">
+    <value>Standard Class III Gas Giant</value>
+  </data>
+  <data name="Standard_Sudarsky_Class_IV" xml:space="preserve">
+    <value>Standard Class IV Gas Giant</value>
+  </data>
+  <data name="Standard_Sudarsky_Class_V" xml:space="preserve">
+    <value>Standard Class V Gas Giant</value>
+  </data>
+  <data name="Standard_Ter_High_Metal_Content" xml:space="preserve">
+    <value>High Metal Content Planet</value>
+  </data>
+  <data name="Standard_Ter_Ice" xml:space="preserve">
+    <value>Ice Planet</value>
+  </data>
+  <data name="Standard_Ter_Metal_Rich" xml:space="preserve">
+    <value>Metal-Rich Planet</value>
+  </data>
+  <data name="Standard_Ter_Rocky" xml:space="preserve">
+    <value>Rocky Planet</value>
+  </data>
+  <data name="Standard_Ter_Rocky_Ice" xml:space="preserve">
+    <value>Rocky Ice Planet</value>
+  </data>
+  <data name="Standard_Water_Giant" xml:space="preserve">
+    <value>Standard Water Giant</value>
+  </data>
+  <data name="Standard_Water_Worlds" xml:space="preserve">
+    <value>Water Planet</value>
+  </data>
+  <data name="SupermassiveBlack_Holes" xml:space="preserve">
+    <value>Supermassive Black Hole</value>
+  </data>
+  <data name="S_Type" xml:space="preserve">
+    <value>S-Type Star</value>
+  </data>
+  <data name="S_TypeGiant" xml:space="preserve">
+    <value>S-Type Giant</value>
+  </data>
+  <data name="TRF_Ammonia_Worlds" xml:space="preserve">
+    <value>Ammonia Planet</value>
+  </data>
+  <data name="TRF_High_Metal_Content_No_Atmos" xml:space="preserve">
+    <value>High Metal Content Planet</value>
+  </data>
+  <data name="TRF_Rocky_No_Atmos" xml:space="preserve">
+    <value>Rocky Planet</value>
+  </data>
+  <data name="TRF_Ter_High_Metal_Content" xml:space="preserve">
+    <value>High Metal Content Planet</value>
+  </data>
+  <data name="TRF_Ter_Metal_Rich" xml:space="preserve">
+    <value>Metal-Rich Planet</value>
+  </data>
+  <data name="TRF_Ter_Rocky" xml:space="preserve">
+    <value>Rocky Planet</value>
+  </data>
+  <data name="TRF_Water_Worlds" xml:space="preserve">
+    <value>Water Planet</value>
+  </data>
+  <data name="TTS_Type" xml:space="preserve">
+    <value>T-Tauri Star</value>
+  </data>
+  <data name="T_Type" xml:space="preserve">
+    <value>T-Type Star</value>
+  </data>
+  <data name="WC_Type" xml:space="preserve">
+    <value>W-C-Type Star</value>
+  </data>
+  <data name="WNC_Type" xml:space="preserve">
+    <value>W-N-C-Type Star</value>
+  </data>
+  <data name="WN_Type" xml:space="preserve">
+    <value>W-N-Type Star</value>
+  </data>
+  <data name="WO_Type" xml:space="preserve">
+    <value>W-O-Type Star</value>
+  </data>
+  <data name="W_Type" xml:space="preserve">
+    <value>W-Type Star</value>
+  </data>
+  <data name="Y_Type" xml:space="preserve">
+    <value>Y-Type Star</value>
+  </data>
+</root>
