@@ -180,13 +180,13 @@
   <data name="DB_Type" xml:space="preserve">
     <value>D-B-type stars are white dwarfs with a helium-rich atmosphere with neutral helium emission lines.</value>
   </data>
-  <data name="DCV" xml:space="preserve">
+  <data name="DCV_Type" xml:space="preserve">
     <value>D-C-V-type stars are white dwarfs with varying luminosity.</value>
   </data>
   <data name="DC_Type" xml:space="preserve">
     <value>D-C-type stars are white dwarfs without spectral lines strong enough to classify their atmospheres.</value>
   </data>
-  <data name="DDQ" xml:space="preserve">
+  <data name="DQ_Type" xml:space="preserve">
     <value>D-Q-type stars are white dwarfs with a carbon-rich atmosphere.</value>
   </data>
   <data name="D_Type" xml:space="preserve">

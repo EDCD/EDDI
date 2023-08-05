@@ -180,13 +180,13 @@
   <data name="DB_Type" xml:space="preserve">
     <value>D-B-Type Star</value>
   </data>
-  <data name="DCV" xml:space="preserve">
+  <data name="DCV_Type" xml:space="preserve">
     <value>D-C-V-Type Star</value>
   </data>
   <data name="DC_Type" xml:space="preserve">
     <value>D-C-Type Star</value>
   </data>
-  <data name="DDQ" xml:space="preserve">
+  <data name="DQ_Type" xml:space="preserve">
     <value>D-Q-Type Star</value>
   </data>
   <data name="D_Type" xml:space="preserve">

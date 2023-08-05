@@ -13,8 +13,8 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Body : INotifyPropertyChanged
     {
-        /// <summary>Information for exobiology</summary>
-        public Exobiology bio { get; set; }
+        /// <summary>Information for Surface Signals (biology/geology)</summary>
+        public SurfaceSignals surfaceSignals { get; set; }
 
         /// <summary>The ID of this body in the star system</summary>
         public long? bodyId { get; set; }

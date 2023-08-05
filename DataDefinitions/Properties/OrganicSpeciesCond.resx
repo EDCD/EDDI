@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlbidumSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+  <data name="AleoidaArcus" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="AleoidaCoronamus" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="AleoidaGravis" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="AleoidaLaminiae" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="AleoidaSpica" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="AmphoraPlant" xml:space="preserve">
+    <value>This species requires a Metal Rich planet with an A type star, and None atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system..</value>
+  </data>
+  <data name="AureumBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="BacteriumAcies" xml:space="preserve">
+    <value>This species requires a planet with a Neon,NeonRich atmosphere.</value>
+  </data>
+  <data name="BacteriumAlcyoneum" xml:space="preserve">
+    <value>This species requires a planet with a Ammonia atmosphere.</value>
+  </data>
+  <data name="BacteriumAurasus" xml:space="preserve">
+    <value>This species requires a planet with a CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="BacteriumBullaris" xml:space="preserve">
+    <value>This species requires a planet with a Methane,MethaneRich atmosphere.</value>
+  </data>
+  <data name="BacteriumCerbrus" xml:space="preserve">
+    <value>This species requires a planet with a Water,SulphurDioxide atmosphere.</value>
+  </data>
+  <data name="BacteriumInformem" xml:space="preserve">
+    <value>This species requires a planet with a Nitrogen atmosphere.</value>
+  </data>
+  <data name="BacteriumNebulus" xml:space="preserve">
+    <value>This species requires a planet with a Helium atmosphere.</value>
+  </data>
+  <data name="BacteriumOmentum" xml:space="preserve">
+    <value>This species requires a planet with a Neon,NeonRich atmosphere and Nitrogen,Ammonia volcanism.</value>
+  </data>
+  <data name="BacteriumScopulum" xml:space="preserve">
+    <value>This species requires a planet with a Neon,NeonRich atmosphere and Carbon,Methane volcanism.</value>
+  </data>
+  <data name="BacteriumTela" xml:space="preserve">
+    <value>This species requires a planet with Helium,Iron,Silicate,Ammonia volcanism.</value>
+  </data>
+  <data name="BacteriumVerrata" xml:space="preserve">
+    <value>This species requires a planet with a Neon,NeonRich atmosphere and Water volcanism.</value>
+  </data>
+  <data name="BacteriumVesicula" xml:space="preserve">
+    <value>This species requires a planet with a Argon atmosphere.</value>
+  </data>
+  <data name="BacteriumVolu" xml:space="preserve">
+    <value>This species requires a planet with a Oxygen atmosphere.</value>
+  </data>
+  <data name="BarkMounds" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere, and In or &lt;150 light years from a nebula.</value>
+  </data>
+  <data name="BlatteumBioluminescentAnemone" xml:space="preserve">
+    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="BlatteumSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+  <data name="CactoidaCortexum" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="CactoidaLapis" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere. Unofficially, additional sources say  this is also known as Tetonus aymericus.</value>
+  </data>
+  <data name="CactoidaPeperatis" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="CactoidaPullulanta" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and a temperature range of 180 to 195.</value>
+  </data>
+  <data name="CactoidaVermis" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+  </data>
+  <data name="CaeruleumSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+  <data name="ClypeusLacrimam" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="ClypeusMargaritus" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="ClypeusSpeculumi" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="ConchaAureolas" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="ConchaBiconcavis" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Nitrogen atmosphere.</value>
+  </data>
+  <data name="ConchaLabiata" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="ConchaRenibus" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Water,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="CroceumAnemone" xml:space="preserve">
+    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="CrystallineShards" xml:space="preserve">
+    <value>This species requires a planet with an A,Neutron type star, a temperature range of 0 to 273 kelvin, and None atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system and must be &gt;12000 light seconds from the nearest star.</value>
+  </data>
+  <data name="ElectricaePluma" xml:space="preserve">
+    <value>This species requires a Icy planet with a maximum gravity of 0.27, an A,Neutron type star, and Helium,Neon,Argon atmosphere.</value>
+  </data>
+  <data name="ElectricaeRadialem" xml:space="preserve">
+    <value>This species requires a Icy planet with a maximum gravity of 0.27, an A,Neutron type star, and Helium,Neon,Argon atmosphere.</value>
+  </data>
+  <data name="FonticuluaCampestris" xml:space="preserve">
+    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Argon atmosphere.</value>
+  </data>
+  <data name="FonticuluaDigitos" xml:space="preserve">
+    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Methane,MethaneRich atmosphere.</value>
+  </data>
+  <data name="FonticuluaFluctus" xml:space="preserve">
+    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Oxygen atmosphere.</value>
+  </data>
+  <data name="FonticuluaLapida" xml:space="preserve">
+    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Nitrogen atmosphere.</value>
+  </data>
+  <data name="FonticuluaSegmentatus" xml:space="preserve">
+    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Neon,NeonRich atmosphere.</value>
+  </data>
+  <data name="FonticuluaUpupam" xml:space="preserve">
+    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and ArgonRich atmosphere.</value>
+  </data>
+  <data name="FrutexaAcus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="FrutexaCollum" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+  </data>
+  <data name="FrutexaFera" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="FrutexaFlabellum" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="FrutexaFlammasis" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="FrutexaMetallicum" xml:space="preserve">
+    <value>This species requires a High Metal Content planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide,Ammonia atmosphere.</value>
+  </data>
+  <data name="FrutexaSponsae" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+  </data>
+  <data name="FumerolaAquatis" xml:space="preserve">
+    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Water volcanism.</value>
+  </data>
+  <data name="FumerolaCarbosis" xml:space="preserve">
+    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Carbon,Methane volcanism.</value>
+  </data>
+  <data name="FumerolaExtremus" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, Any atmosphere, and Silicate,Iron,Rocky volcanism.</value>
+  </data>
+  <data name="FumerolaNitris" xml:space="preserve">
+    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Nitrogen,Ammonia volcanism.</value>
+  </data>
+  <data name="FungoidaBullarum" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Argon,ArgonRich atmosphere.</value>
+  </data>
+  <data name="FungoidaGelata" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Water,CarbonDioxide atmosphere. Additionally, Carbon Dioxide atmospheres requires a temperature range of 180 to 195 kelvin.</value>
+  </data>
+  <data name="FungoidaSetisis" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia,Methane atmosphere.</value>
+  </data>
+  <data name="FungoidaStabitis" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and Water,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="GypseeumBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="LindigoticumBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="LindigoticumSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+  <data name="LividumBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="LuteolumAnemone" xml:space="preserve">
+    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="OsseusCornibus" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="OsseusDiscus" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+  </data>
+  <data name="OsseusFractus" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="OsseusPellebantus" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="OsseusPumice" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content,Rocky Ice planet with a maximum gravity of 0.27, and Argon,Methane,Nitrogen atmosphere.</value>
+  </data>
+  <data name="OsseusSpiralis" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="OstrinumBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="PrasinumBioluminescentAnemone" xml:space="preserve">
+    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="PrasinumSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+  <data name="PuniceumAnemone" xml:space="preserve">
+    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="PuniceumBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="ReceptaConditivus" xml:space="preserve">
+    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+  </data>
+  <data name="ReceptaDeltahedronix" xml:space="preserve">
+    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+  </data>
+  <data name="ReceptaUmbrux" xml:space="preserve">
+    <value>This species requires a planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+  </data>
+  <data name="RoseumAnemone" xml:space="preserve">
+    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="RoseumBioluminescentAnemone" xml:space="preserve">
+    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="RoseumBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="RoseumSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+  <data name="RubeumBioluminescentAnemone" xml:space="preserve">
+    <value>This species requires a planet with an  type star, and SulphurDioxide,None atmosphere.</value>
+  </data>
+  <data name="StratumAraneamus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a temperature greater than 165 kelvin, and SulphurDioxide atmosphere.</value>
+  </data>
+  <data name="StratumCucumisis" xml:space="preserve">
+    <value>This species requires a Rocky planet with a temperature greater than 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="StratumExcutitus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="StratumFrigus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a temperature greater than 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="StratumLaminamus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia atmosphere.</value>
+  </data>
+  <data name="StratumLimaxus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="StratumPaleas" xml:space="preserve">
+    <value>This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia,Water,CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="StratumTectonicas" xml:space="preserve">
+    <value>This species requires a High Metal Content planet with a temperature greater than 165 kelvin, and AnyThin atmosphere.</value>
+  </data>
+  <data name="TubusCavas" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TubusCompagibus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TubusConifer" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TubusRosarium" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature greater than 160 kelvin, and Ammonia atmosphere.</value>
+  </data>
+  <data name="TubusSororibus" xml:space="preserve">
+    <value>This species requires a High Metal Content planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide,Ammonia atmosphere.</value>
+  </data>
+  <data name="TussockAlbata" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockCapillum" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Argon,Methane atmosphere.</value>
+  </data>
+  <data name="TussockCaputus" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockCatena" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="TussockCultro" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="TussockDivisa" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+  </data>
+  <data name="TussockIgnis" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 160 to 170 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockPennata" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 145 to 155 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockPennatis" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockPropagito" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockSerrati" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 170 to 175 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockStigmasis" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+  </data>
+  <data name="TussockTriticum" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockVentusa" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 155 to 160 kelvin, and CarbonDioxide atmosphere.</value>
+  </data>
+  <data name="TussockVirgam" xml:space="preserve">
+    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+  </data>
+  <data name="ViolaceumSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+  <data name="VirideBrainTree" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+  </data>
+  <data name="VirideSinuousTubers" xml:space="preserve">
+    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+  </data>
+</root>

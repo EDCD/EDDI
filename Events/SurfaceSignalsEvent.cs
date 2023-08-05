@@ -21,8 +21,11 @@ namespace EddiEvents
         [PublicAPI("A list of signals (as objects)")]
         public List<SignalAmount> surfacesignals { get; private set; }
 
-        [PublicAPI( "The biological information" )]
-        public Exobiology bio { get; private set; }
+        //[PublicAPI( "The biological information" )]
+        //public Exobiology bio { get; private set; }
+
+        [PublicAPI( "The body that the surface signals are on" )]
+        public Body body { get; private set; }
 
         // Not intended to be user facing
 
@@ -39,15 +42,7 @@ namespace EddiEvents
             this.bodyname = bodyName;
             this.bodyId = bodyId;
             this.surfacesignals = surfaceSignals;
-
-            if ( body != null )
-            {
-                this.bio = body.bio;
-            }
-            else
-            {
-                this.bio = new Exobiology();
-            }
+            this.body = body;
         }
     }
 }

@@ -270,18 +270,18 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to D-C-V-type stars are white dwarfs with varying luminosity..
         /// </summary>
-        public static string DCV {
+        public static string DCV_Type {
             get {
-                return ResourceManager.GetString("DCV", resourceCulture);
+                return ResourceManager.GetString("DCV_Type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to D-Q-type stars are white dwarfs with a carbon-rich atmosphere..
         /// </summary>
-        public static string DDQ {
+        public static string DQ_Type {
             get {
-                return ResourceManager.GetString("DDQ", resourceCulture);
+                return ResourceManager.GetString("DQ_Type", resourceCulture);
             }
         }
         

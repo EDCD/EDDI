@@ -15,11 +15,11 @@ namespace EddiDataDefinitions
 {
     public class CodexEntry
     {
-        public OrganicItem organic;            // TODO:#2212........[Change to CodexOrganicItem?]
-        public AstrometricItem astrology;    // TODO:#2212........[Change to CodexAstrometricItem?]
-        public GeologyItem geology;            // TODO:#2212........[Change to CodexGeologyItem?]
-        //public GuardianItem guardian;        // TODO:#2212........[Add Guardian codex entries]
-        //public ThargoidItem thargoid;        // TODO:#2212........[Add Thargoid codex entries]
+        public OrganicItem organic;             // TODO:#2212........[Change to CodexOrganicItem?]
+        public AstrometricItem astrology;       // TODO:#2212........[Change to CodexAstrometricItem?]
+        public GeologyItem geology;             // TODO:#2212........[Change to CodexGeologyItem?]
+        //public GuardianItem guardian;         // TODO:#2212........[Add Guardian codex entries]
+        //public ThargoidItem thargoid;         // TODO:#2212........[Add Thargoid codex entries]
 
         public long entryId;
         public string edname;
@@ -46,22 +46,22 @@ namespace EddiDataDefinitions
             if ( category == "Biology" ) {
                 if ( subCategory == "Organic_Structures" )
                 {
-                    // TODO:#2212........[Move these to 'organic' object]
-
                     // Intended primary source (EntryIds have changed?)
                     //OrganicItem organicItem = OrganicInfo.LookupByEntryId (entryId);
 
                     // Fallback
-                    organic = OrganicInfo.LookupByVariant( edname );
+                    //organic = OrganicInfo.LookupByVariant( edname );
+                    organic = OrganicInfo.Lookup( entryId, edname );
                 }
                 else if ( subCategory == "Geology_and_Anomalies" ) {
-                    // TODO:#2212........[Add Geology codex entries]
-                    geology = GeologyInfo.LookupByName( edname );
+                    //geology = GeologyInfo.LookupByName( edname );
+                    geology = GeologyInfo.Lookup( entryId, edname );
                 }
             }
             else if ( category == "StellarBodies" )
             {
-                astrology = AstrometricInfo.LookupByName( edname );
+                //astrology = AstrometricInfo.LookupByName( edname );
+                astrology = AstrometricInfo.Lookup( entryId, edname );
             }
             else if ( category == "Civilisations" ) {
                 // TODO:#2212........[Possibly combine Thargoid and Guardian?]
@@ -74,6 +74,35 @@ namespace EddiDataDefinitions
                     // TODO:#2212........[Add Thargoid codex entries]
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string NormalizedName ( string rawName )
+        {
+            return rawName
+                ?.Replace( "Codex_Ent_", "" )
+                ?.Replace( "$", "" )
+                ?.Replace( "_Name;", "" )
+                ?.Replace( "_name;", "" )
+                ?.Replace( ";", "" );
+        }
+
+        public static string NormalizedSubCategory ( string rawName )
+        {
+            return rawName
+                ?.Replace( "Codex_SubCategory_", "" )
+                ?.Replace( "$", "" )
+                ?.Replace( ";", "" );
+        }
+
+        public static string NormalizedCategory ( string rawName )
+        {
+            return rawName
+                ?.Replace( "Codex_Category_", "" )
+                ?.Replace( "$", "" )
+                ?.Replace( ";", "" );
         }
     }
 }
