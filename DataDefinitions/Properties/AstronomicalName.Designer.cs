@@ -270,18 +270,18 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to D-C-V-Type Star.
         /// </summary>
-        public static string DCV {
+        public static string DCV_Type {
             get {
-                return ResourceManager.GetString("DCV", resourceCulture);
+                return ResourceManager.GetString("DCV_Type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to D-Q-Type Star.
         /// </summary>
-        public static string DDQ {
+        public static string DQ_Type {
             get {
-                return ResourceManager.GetString("DDQ", resourceCulture);
+                return ResourceManager.GetString("DQ_Type", resourceCulture);
             }
         }
         

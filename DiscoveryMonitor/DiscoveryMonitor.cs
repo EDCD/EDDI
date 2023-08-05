@@ -1,14 +1,23 @@
-﻿using EddiCore;
+﻿using Eddi;
+using EddiConfigService;
+using EddiConfigService.Configurations;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiStatusService;
-using MathNet.Numerics.RootFinding;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Threading;
 using Utilities;
+using EddiStatusService;
+using MathNet.Numerics.RootFinding;
 
 namespace EddiDiscoveryMonitor
 {
@@ -31,7 +40,7 @@ namespace EddiDiscoveryMonitor
 
         public Body currentBody => currentSystem?.BodyWithID( currentBodyId );
 
-        public Exobiology currentBios => currentBody.bio;
+        //public Exobiology currentBios => currentBody.bio;
 
         //OrganicItem currentOrganicData;
 
@@ -68,7 +77,6 @@ namespace EddiDiscoveryMonitor
 
         public void Start()
         {
-            //Logging.Info( $"{MonitorName()}: Started" );
         }
 
         public void Stop()
@@ -79,9 +87,9 @@ namespace EddiDiscoveryMonitor
         {
         }
 
-        public UserControl ConfigurationTabItem()
+        public UserControl ConfigurationTabItem ()
         {
-            return null;
+            return new ConfigurationWindow();
         }
 
         //private void HandleStatus ( object sender, EventArgs e )
@@ -134,9 +142,8 @@ namespace EddiDiscoveryMonitor
         }
 
         private void handleCodexEntryEvent ( CodexEntryEvent @event )
-        {
-            Logging.Info( $"\t{MonitorName()}: Handling Event: {@event.ToString()}\n" );
-            // TODO:#2212........[Get codex entry information]
+        {            
+            // Not sure if we have anything to do here with this yet
         }
 
         /// <summary>
@@ -146,14 +153,18 @@ namespace EddiDiscoveryMonitor
         {
             Logging.Info( $"\t{MonitorName()}: Handling Event: {@event.ToString()}\n" );
 
-            // TODO:#2212........Make biological predictions
-
             if ( CheckSafe( @event.bodyId) )
             {
-                //currentBody.bio.GetBio(
-                //currentBody
+                // TODO:#2212........[Call biological prediction routine]
+                @event.body.surfaceSignals.Predict( @event.body );
+
+                // TODO:#2212........Add geologicals to body.surfaceSignals
+                // TODO:#2212........Make biological predictions
+                //@event.body
                 //currentSystem.PreserveBodyData
                 //currentSystem.AddOrUpdateBody
+
+
             }
         }
 

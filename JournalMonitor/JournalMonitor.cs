@@ -4069,30 +4069,6 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "SAASignalsFound":         // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-                                // { "timestamp":"2023-07-22T03:54:46Z", "event":"SAASignalsFound",
-                                //      "BodyName":"Greae Phio FO-G d11-1005 AB 5 a",
-                                //      "SystemAddress":34542299533283,
-                                //      "BodyID":42,
-                                //      "Signals":[ {
-                                //          "Type":"$SAA_SignalType_Biological;",
-                                //          "Type_Localised":"Biological",
-                                //          "Count":4 } ],
-                                //      "Genuses":[
-                                //          { "Genus":"$Codex_Ent_Bacterial_Genus_Name;", "Genus_Localised":"Bacterium" },
-                                //          { "Genus":"$Codex_Ent_Conchas_Genus_Name;", "Genus_Localised":"Concha" },
-                                //          { "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa" },
-                                //          { "Genus":"$Codex_Ent_Tussocks_Genus_Name;", "Genus_Localised":"Tussock" } ] }                                
-                                //
-                                //StarSystem system = EDDI.Instance?.CurrentStarSystem;
-                                //Body body = null;
-                                //body = system?.BodyWithID( bodyId );
-                                //if ( !( body is null ) )
-                                //{
-                                //    body.scannedDateTime = body.scannedDateTime ?? timestamp;
-                                //    body.mappedDateTime = timestamp;
-                                //    body.mappedEfficiently = probesUsed <= efficiencyTarget;
-                                //    events.Add( new BodyMappedEvent( timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget ) { raw = line, fromLoad = fromLogLoad } );
-                                //}
                                 {
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
@@ -4132,8 +4108,6 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        //body = system?.BodyWithID( bodyId );
-
                                         // This is surface signal sources from a body that we've mapped
                                         List<SignalAmount> surfaceSignals = new List<SignalAmount>();
                                         foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
@@ -4158,11 +4132,12 @@ namespace EddiJournalMonitor
                                             if ( body != null )
                                             {
                                                 // This is biological signal sources from a body that we've mapped
-                                                //List<string> bioSignals = new List<string>();
+                                                // We only know the Genus at this point, although we could use prediction
                                                 foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
                                                 {
-                                                    string bio_edname = JsonParsing.getString(signal, "Genus");
-                                                    body.bio.Add( bio_edname );
+                                                    string edname_genus = JsonParsing.getString(signal, "Genus");
+                                                    //body.surfaceSignals.AddBio( edname_genus, body, true );
+                                                    body.surfaceSignals.AddBio( edname_genus );
                                                 }
                                             }
                                         }
@@ -4955,32 +4930,17 @@ namespace EddiJournalMonitor
                                 break;
                             case "CodexEntry":              // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                                 {
-                                    // { "timestamp":"2023-07-28T05:10:25Z",
-                                    //      "event":"CodexEntry",
-                                    //*     "EntryID":2440103,
-                                    //      "Name":"$Codex_Ent_Shrubs_01_F_Name;",
-                                    //      "Name_Localised":"Frutexa Flabellum - Green",
-                                    //      "SubCategory":"$Codex_SubCategory_Organic_Structures;",
-                                    //      "SubCategory_Localised":"Organic structures",
-                                    //      "Category":"$Codex_Category_Biology;",
-                                    //      "Category_Localised":"Biological and Geological",
-                                    //      "Region":"$Codex_RegionName_5;",
-                                    //      "Region_Localised":"Norma Arm",
-                                    //      "System":"Boeft TO-G d11-2612",
-                                    //      "SystemAddress":89758365536227,
-                                    //      "BodyID":28,
-                                    //      "Latitude":23.507593,
-                                    //      "Longitude":109.069504,
-                                    //      "IsNewEntry":true,
-                                    //      "VoucherAmount":50000
-                                    // }
-
                                     long entryId = JsonParsing.getLong(data, "EntryID");
                                     string edname = JsonParsing.getString(data, "Name");
-                                    string codexName = JsonParsing.getString(data, "Name").Replace("$", "").Replace(";", "").Replace("Codex_Ent_", "").Replace("_Name", "");
-                                    //string localisedName = JsonParsing.getString(data, "Name_Localised");
-                                    string subCategoryName = JsonParsing.getString(data, "SubCategory").Replace("$", "").Replace(";", "").Replace("Codex_SubCategory_", "");
-                                    string categoryName = JsonParsing.getString(data, "Category").Replace("$", "").Replace(";", "").Replace("Codex_Category_", "");
+                                    //string codexName = JsonParsing.getString(data, "Name").Replace("$", "").Replace(";", "").Replace("Codex_Ent_", "").Replace("_Name", "");
+                                    string codexName = JsonParsing.getString(data, "Name");
+                                    codexName = CodexEntry.NormalizedName( codexName );
+                                    //string subCategoryName = JsonParsing.getString(data, "SubCategory").Replace("$", "").Replace(";", "").Replace("Codex_SubCategory_", "");
+                                    string subCategoryName = JsonParsing.getString(data, "SubCategory");
+                                    subCategoryName = CodexEntry.NormalizedSubCategory( subCategoryName );
+                                    //string categoryName = JsonParsing.getString(data, "Category").Replace("$", "").Replace(";", "").Replace("Codex_Category_", "");
+                                    string categoryName = JsonParsing.getString(data, "Category");
+                                    categoryName = CodexEntry.NormalizedCategory( categoryName );
                                     string regionName = JsonParsing.getString(data, "Region_Localised");
                                     string systemName = JsonParsing.getString(data, "System");
 
@@ -4991,7 +4951,7 @@ namespace EddiJournalMonitor
 
                                     bool newTrait = false;
                                     try
-                                    { newTrait = JsonParsing.getBool( data, "IsNewEntry" ); }
+                                    { newTrait = JsonParsing.getBool( data, "NewTraitsDiscovered" ); }
                                     catch { newTrait = false; }
 
                                     int voucherAmount = 0;
