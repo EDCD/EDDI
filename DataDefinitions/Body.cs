@@ -191,7 +191,10 @@ namespace EddiDataDefinitions
         public decimal? density => GetDensity();
 
         public Body()
-        { }
+        {
+            // TODO:#2212........[Temporary initialization of SurfaceSignals]
+            surfaceSignals = new SurfaceSignals();
+        }
 
         // Additional calculated statistics
 
@@ -289,6 +292,9 @@ namespace EddiDataDefinitions
         /// <summary> Star definition </summary>
         public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped)
         {
+            // TODO:#2212........[temporary initialization of SurfaceSignals]
+            surfaceSignals = new SurfaceSignals();
+
             this.bodyname = bodyName;
             this.radius = radiusKm;
             this.bodyType = BodyType.Star;

@@ -1,20 +1,6 @@
-﻿using JetBrains.Annotations;
-using MathNet.Numerics;
-using MathNet.Numerics.Distributions;
-using Newtonsoft.Json;
-using System;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Net.NetworkInformation;
-using System.Net.PeerToPeer;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Threading;
-using Utilities;
-using Rollbar.Common;
 
 namespace EddiDataDefinitions
 {

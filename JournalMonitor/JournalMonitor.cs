@@ -7,16 +7,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Security;
 using System.Windows.Controls;
 using Utilities;
-using Windows.UI.Composition;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace EddiJournalMonitor
 {
@@ -4932,13 +4930,10 @@ namespace EddiJournalMonitor
                                 {
                                     long entryId = JsonParsing.getLong(data, "EntryID");
                                     string edname = JsonParsing.getString(data, "Name");
-                                    //string codexName = JsonParsing.getString(data, "Name").Replace("$", "").Replace(";", "").Replace("Codex_Ent_", "").Replace("_Name", "");
                                     string codexName = JsonParsing.getString(data, "Name");
                                     codexName = CodexEntry.NormalizedName( codexName );
-                                    //string subCategoryName = JsonParsing.getString(data, "SubCategory").Replace("$", "").Replace(";", "").Replace("Codex_SubCategory_", "");
                                     string subCategoryName = JsonParsing.getString(data, "SubCategory");
                                     subCategoryName = CodexEntry.NormalizedSubCategory( subCategoryName );
-                                    //string categoryName = JsonParsing.getString(data, "Category").Replace("$", "").Replace(";", "").Replace("Codex_Category_", "");
                                     string categoryName = JsonParsing.getString(data, "Category");
                                     categoryName = CodexEntry.NormalizedCategory( categoryName );
                                     string regionName = JsonParsing.getString(data, "Region_Localised");
@@ -5004,24 +4999,56 @@ namespace EddiJournalMonitor
                                     ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
                                     // This is in fact the BodyID, not the body name
-                                    int bodyID = JsonParsing.getInt(data, "Body");
+                                    int bodyId = JsonParsing.getInt(data, "Body");
 
                                     // Log, Sample, Analyse
                                     string scanType = JsonParsing.getString(data, "ScanType");
                                     
                                     // i.e. Frutexa
                                     string genus = JsonParsing.getString(data, "Genus");
-                                    string localisedGenus = JsonParsing.getString(data, "Genus_Localised");
+                                    genus = ScanOrganic.NormalizedGenus( genus );
+                                    //string localisedGenus = JsonParsing.getString(data, "Genus_Localised");
                                     
                                     // i.e. Flabellum
                                     string species = JsonParsing.getString(data, "Species");
-                                    string localisedSpecies = JsonParsing.getString(data, "Species_Localised");
+                                    species = ScanOrganic.NormalizedSpecies( species );
+                                    //string localisedSpecies = JsonParsing.getString(data, "Species_Localised");
                                     
                                     // i.e. Green
                                     string variant = JsonParsing.getString(data, "Variant");
-                                    string localisedVariant = JsonParsing.getString(data, "Variant_Localised");
+                                    variant = ScanOrganic.NormalizedVariant( variant );
+                                    //string localisedVariant = JsonParsing.getString(data, "Variant_Localised");
 
-                                    events.Add( new ScanOrganicEvent( timestamp, bodyID, scanType, localisedGenus, localisedSpecies, localisedVariant ) { raw = line, fromLoad = fromLogLoad } );
+
+                                    StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
+
+                                    //Logging.Info( ">....................Start Checks" );
+                                    if ( !fromLogLoad )
+                                    {
+                                        //System.Windows.Forms.MessageBox.Show( "Not from Log Load" );
+                                        //Logging.Info( ">....................Not from Log Load" );
+                                        if ( currentSystem != null )
+                                        {
+                                            //System.Windows.Forms.MessageBox.Show( "Current System exists" );
+                                            //Logging.Info( ">....................Current System exists" );
+                                            Body body = currentSystem.BodyWithID( bodyId );
+
+                                            if ( body != null )
+                                            {
+                                                //System.Windows.Forms.MessageBox.Show( "Body exists" );
+                                                //Logging.Info( ">....................Body exists" );
+                                                events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, body, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
+                                            }
+                                            else
+                                            {
+                                                //Logging.Info( ">....................Body Missing!" );
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //Logging.Info( ">....................System Missing!" );
+                                        }
+                                    }
                                 }
                                 handled = true;
                                 break;

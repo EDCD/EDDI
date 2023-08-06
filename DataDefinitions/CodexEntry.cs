@@ -1,17 +1,4 @@
-﻿using EddiDataDefinitions.Properties;
-using JetBrains.Annotations;
-using MathNet.Numerics;
-using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Reflection;
-using System.Collections.Generic;
-using System.Resources;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using Utilities;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public class CodexEntry
     {
