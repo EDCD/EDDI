@@ -1821,8 +1821,20 @@
     <value>泰坦巨口局部组织样本</value>
     <comment>Commodity ThargoidTissueSampleType10c</comment>
   </data>
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType7" xml:space="preserve">
+    <value>八角战车镰组织样本</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+  </data>
+  <data name="UnknownSack" xml:space="preserve">
+    <value>保护膜废料</value>
+    <comment>Commodity UnknownSack</comment>
+  </data>
+  <data name="ThargoidPod" xml:space="preserve">
+    <value>外星生物押解舱</value>
+    <comment>Commodity ThargoidPod</comment>
+  </data>
+  <data name="CoralSap" xml:space="preserve">
+    <value>珊瑚树树液</value>
+    <comment>Commodity CoralSap</comment>
+  </data>
 </root>
