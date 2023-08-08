@@ -2,11 +2,11 @@
 {
     public class CodexEntry
     {
-        public OrganicItem organic;             // TODO:#2212........[Change to CodexOrganicItem?]
-        public AstrometricItem astrology;       // TODO:#2212........[Change to CodexAstrometricItem?]
-        public GeologyItem geology;             // TODO:#2212........[Change to CodexGeologyItem?]
-        //public GuardianItem guardian;         // TODO:#2212........[Add Guardian codex entries]
-        //public ThargoidItem thargoid;         // TODO:#2212........[Add Thargoid codex entries]
+        public OrganicItem organic;
+        public AstrometricItem astrology;
+        public GeologyItem geology;
+        public GuardianItem guardian;
+        public ThargoidItem thargoid;
 
         public long entryId;
         public string edname;
@@ -33,32 +33,24 @@
             if ( category == "Biology" ) {
                 if ( subCategory == "Organic_Structures" )
                 {
-                    // Intended primary source (EntryIds have changed?)
-                    //OrganicItem organicItem = OrganicInfo.LookupByEntryId (entryId);
-
-                    // Fallback
-                    //organic = OrganicInfo.LookupByVariant( edname );
                     organic = OrganicInfo.Lookup( entryId, edname );
                 }
                 else if ( subCategory == "Geology_and_Anomalies" ) {
-                    //geology = GeologyInfo.LookupByName( edname );
                     geology = GeologyInfo.Lookup( entryId, edname );
                 }
             }
             else if ( category == "StellarBodies" )
             {
-                //astrology = AstrometricInfo.LookupByName( edname );
                 astrology = AstrometricInfo.Lookup( entryId, edname );
             }
             else if ( category == "Civilisations" ) {
-                // TODO:#2212........[Possibly combine Thargoid and Guardian?]
                 if ( subCategory == "Guardian" )
                 {
-                    // TODO:#2212........[Add Guardian codex entries]
+                    guardian = GuardianInfo.Lookup( entryId, edname );
                 }
                 else if ( subCategory == "Thargoid" )
                 {
-                    // TODO:#2212........[Add Thargoid codex entries]
+                    thargoid = ThargoidInfo.Lookup( entryId, edname );
                 }
             }
         }

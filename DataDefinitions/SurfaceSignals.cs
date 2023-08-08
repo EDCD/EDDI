@@ -13,12 +13,8 @@ namespace EddiDataDefinitions
         /// </summary>
         public IDictionary<string, Exobiology> bioList;
         public IDictionary<string, GeologyItem> geoList;
-        //public List<Exobiology> exobiologyList;
-        //public List<GeologyItem> geologyList;
 
         string currentGenus;
-        //[PublicAPI("The currently active biological")]
-        //public Exobiology current Bio(string genus) => bioList[ genus ];
 
 
         public SurfaceSignals ()
@@ -39,11 +35,9 @@ namespace EddiDataDefinitions
 
         public Exobiology GetBio ( string edname_genus )
         {
-            //System.Windows.Forms.MessageBox.Show("GetBio: "+edname_genus);
             currentGenus = edname_genus;
             if ( bioList.ContainsKey( edname_genus ) )
             {
-                //System.Windows.Forms.MessageBox.Show( "Exists, returning" );
                 return bioList[ edname_genus ];
             }
             return new Exobiology();
@@ -78,7 +72,7 @@ namespace EddiDataDefinitions
 
         public void Predict ( Body body )
         {
-            // TODO:#2212........[Iterate through genus list and call predictions]
+            // TODO:#2212........[Use body data to predict what genus' might be present.]
         }
 
         public void AddGeo ( string edname )
@@ -89,14 +83,19 @@ namespace EddiDataDefinitions
             }
         }
 
-        //public void Add ( string genus )
-        //{
-        //    // If the key exists don't add but set to current genus
-        //    if ( !bioItems.ContainsKey( genus ) )
-        //    {
-        //        bioItems.Add( genus, new BioItem() );
-        //    }
-        //    currentGenus = genus;
-        //}
+        public List<string> GetBios ()
+        {
+            List<string> list = new List<string>();
+
+            if ( bioList != null )
+            {
+                foreach ( string key in bioList.Keys )
+                {
+                    list.Add( bioList[ key ].genus.name );
+                }
+            }
+
+            return list;
+        }
     }
 }

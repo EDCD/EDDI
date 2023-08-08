@@ -21,15 +21,14 @@ namespace EddiEvents
         [PublicAPI("A list of signals (as objects)")]
         public List<SignalAmount> surfacesignals { get; private set; }
 
-        //[PublicAPI( "The biological information" )]
+        [PublicAPI( "A list of the biologicals present on the body after an SAA (map) of body." )]
+        public List<string> biosignals { get; private set; }
         //public Exobiology bio { get; private set; }
 
         [PublicAPI( "The body that the surface signals are on" )]
         public Body body { get; private set; }
 
         // Not intended to be user facing
-
-        //public List<string> biosignals { get; private set; }
 
         public ulong? systemAddress { get; private set; }
         
@@ -43,6 +42,8 @@ namespace EddiEvents
             this.bodyId = bodyId;
             this.surfacesignals = surfaceSignals;
             this.body = body;
+
+            this.biosignals = body.surfaceSignals.GetBios();
         }
     }
 }

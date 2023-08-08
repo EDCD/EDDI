@@ -21,20 +21,15 @@ namespace EddiDataDefinitions
         }
 
         // The genus is the dictionary key for this item
-        //public bool prediction;                       // Is this a prediction? Should be set to false after proven to exist; object deleted if proven not to exist
         public IDictionary<string, string> predictions; // List of predicted variants. <edname_variant, localised_name>
         public int samples;                             // 0=none, 1=Log, 2=Sample 1, 3=Sample 2, 4=Analyse
         public bool complete;                           // Sampling of this biological is complete
-        //public decimal?[] latitude;                     // [n]=latitude of scan n-1 (only Log and Sample 1 matter)
-        //public decimal?[] longitude;                    // [n]=longitude of scan n-1 (only Log and Sample 1 matter)
         public Coordinates[] coords;                    // coordinates of scan [n-1]. Only Log and Sample are stored.
 
         public Exobiology () : base ()
         {
             predictions = null;
             this.samples = 0;
-            //this.latitude = new decimal?[ 2 ];      // TODO:#2212........[deprecate]
-            //this.longitude = new decimal?[ 2 ];     // TODO:#2212........[deprecate]
             coords = new Coordinates [ 2 ];
             for ( int i = 0; i < 2; i++ )
             {
@@ -45,8 +40,6 @@ namespace EddiDataDefinitions
         public Exobiology ( string edname_genus, bool predict=false ) : base()
         {
             this.samples = 0;
-            //this.latitude = new decimal?[ 2 ];      // TODO:#2212........[deprecate]
-            //this.longitude = new decimal?[ 2 ];     // TODO:#2212........[deprecate]
             coords = new Coordinates[ 2 ];
             for ( int i = 0; i < 2; i++ )
             {
@@ -88,17 +81,12 @@ namespace EddiDataDefinitions
                 complete = false;
             }
 
-            //new Thread( () => System.Windows.Forms.MessageBox.Show( $"Data Set" ) ).Start();
-
             // Check for sample type and update sample numbers
             if ( scanType == "Log" )
             {
                 try
                 {
-                    //new Thread( () => System.Windows.Forms.MessageBox.Show( $"Log" ) ).Start();
                     samples = 1;
-                    //this.latitude[ samples - 1 ] = latitude;        // TODO:#2212........[deprecate]
-                    //this.longitude[ samples - 1 ] = longitude;      // TODO:#2212........[deprecate]
 
                     if ( coords[ samples - 1 ].latitude == null )
                     {
@@ -117,19 +105,16 @@ namespace EddiDataDefinitions
 
                     complete = false;
                 }
-                catch
+                catch(System.Exception e )
                 {
-                    new Thread( () => System.Windows.Forms.MessageBox.Show( $"Log Failed" ) ).Start();
+                    Logging.Error( $"Exobiology: Log Failed [{e}]" );
                 }
             }
             else if ( scanType == "Sample" && samples==1 )
             {
                 try
                 {
-                    //new Thread( () => System.Windows.Forms.MessageBox.Show( $"Sample 1" ) ).Start();
                     samples = 2;
-                    //this.latitude[ samples - 1 ] = latitude;        // TODO:#2212........[deprecate]
-                    //this.longitude[ samples - 1 ] = longitude;      // TODO:#2212........[deprecate]
 
                     if ( coords[ samples - 1 ].latitude == null )
                     {
@@ -143,26 +128,24 @@ namespace EddiDataDefinitions
                     coords[ samples - 1 ].latitude = latitude;
                     coords[ samples - 1 ].longitude = longitude;
                 }
-                catch
+                catch ( System.Exception e )
                 {
-                    new Thread( () => System.Windows.Forms.MessageBox.Show( $"Sample 1 Failed" ) ).Start();
+                    Logging.Error( $"Exobiology: Sample 1 Failed [{e}]" );
                 }
             }
             else if ( scanType == "Sample" && samples == 2 )
             {
                 try
                 {
-                    //new Thread( () => System.Windows.Forms.MessageBox.Show( $"Sample 2" ) ).Start();
                     samples = 3;
                 }
-                catch
+                catch ( System.Exception e )
                 {
-                    new Thread( () => System.Windows.Forms.MessageBox.Show( $"Sample 2 Failed" ) ).Start();
+                    Logging.Error( $"Exobiology: Sample 2 Failed [{e}]" );
                 }
             }
             else if ( scanType == "Analyse" )
             {
-                //new Thread( () => System.Windows.Forms.MessageBox.Show( $"Analyse" ) ).Start();
                 complete = true;
                 samples = 4;
             }
