@@ -7,22 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using Utilities;
-using System.Threading;
 
 namespace EddiDiscoveryMonitor
 {
     public class DiscoveryMonitor : IEddiMonitor
     {
-        //--------------
-        //    Notes
-        //--------------
-        // StarSystem.AddOrUpdateBodies()
-        // StarSystem.PreserveBodyData
-        // StarSystemSqLiteRepository.Instance.SaveStarSystem(currentSystem);
-        // EDDI.Instance.enqueueEvent( new ShipFsdEvent( DateTime.UtcNow, "charging complete" ) { fromLoad = @event.fromLoad } );
-        // EddiStatusService.StatusService.Instance.CurrentStatus.latitude
-        // EddiStatusService.StatusService.Instance.CurrentStatus.longitude
-
         private string currentGenus;
         private long currentBodyId;
         private StarSystem currentSystem => EDDI.Instance?.CurrentStarSystem;
@@ -35,17 +24,17 @@ namespace EddiDiscoveryMonitor
         public DiscoveryMonitor ()
         {
             StatusService.StatusUpdatedEvent += HandleStatus;
-            //Logging.Info($"Initialized {MonitorName()}");
+            Logging.Info($"Initialized {MonitorName()}");
         }
 
         public string MonitorName()
         {
-            return "Discovery monitor";
+            return "Discovery Monitor";
         }
 
         public string LocalizedMonitorName()
         {
-            return "Discovery monitor";
+            return "Discovery Monitor";
         }
 
         public string MonitorDescription()
@@ -94,8 +83,6 @@ namespace EddiDiscoveryMonitor
         /// </summary>
         private void UpdateScanDistance( Status status )
         {
-            // TODO:#2212........[Update biological scan distances and enqueue event]
-            //EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, "charging complete" ) { fromLoad = @event.fromLoad } );
             if ( CheckSafe() )
             {
                 if ( currentBio != null ) {
@@ -104,13 +91,6 @@ namespace EddiDiscoveryMonitor
                     {
                         if ( status.latitude != null && status.longitude != null )
                         {
-                            //currentBio.
-                            //System.Windows.Forms.MessageBox.Show( $"UpdateScanDistance:\n\tlatitude={status.latitude}\n\tlongitude={status.longitude}" );
-
-                            //Exobiology.Coordinates coords0 = new Exobiology.Coordinates();
-                            //coords0.latitude = status.latitude;
-                            //coords0.longitude = status.longitude;
-
                             // Is the current location status not equal to the last status (0=no change), and if the distance is less than (1) or greater than (2) the sample range.
                             int status1 = 0;
                             int status2 = 0;
@@ -127,7 +107,6 @@ namespace EddiDiscoveryMonitor
                                 if ( distance1 != null )
                                 {
                                     // convert Km to m
-                                    //decimal distance0 = (decimal)distance1;
                                     distance1 *= (decimal)1000.0;
 
                                     //new Thread( () => System.Windows.MessageBox.Show( $"Distance Update, Samples >=1.\n\n" +
@@ -168,7 +147,6 @@ namespace EddiDiscoveryMonitor
                                 coords2.lastStatus = coords2.status;
                                 decimal? distance2 = Utilities.Functions.SurfaceDistanceKm(currentBody.radius*1000, status.latitude, status.longitude, coords2.latitude, coords2.longitude);
 
-                                //new Thread( () => System.Windows.MessageBox.Show( $"Distance Update, Samples >=2.\n\nDistance2 = {distance2}" ) ).Start();
 
                                 if ( distance2 != null )
                                 {
@@ -201,9 +179,9 @@ namespace EddiDiscoveryMonitor
                                 {
                                     EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, currentBio.genus.distance, status1, status2 ) );
                                 }
-                                catch
+                                catch ( System.Exception e )
                                 {
-                                    new Thread( () => System.Windows.MessageBox.Show( "Failed to Enqueue 'ScanOrganicDistanceEvent'" ) ).Start();
+                                    Logging.Error( $"Exobiology: Failed to Enqueue 'ScanOrganicDistanceEvent' [{e}]" );
                                 }
                             }
                             
@@ -214,35 +192,14 @@ namespace EddiDiscoveryMonitor
 
         }
 
-        /// <summary>
-        /// https://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters
-        /// </summary>
-        //private long CalculatePlanetaryDistance ( double radius, decimal? lat1, decimal? lon1, decimal? lat2, decimal? lon2 )
-        //{
-        //    // TODO:#2212........[Replace call with Utilities.Functions.SurfaceDistanceKm]
-        //    //radius = 6378.137; // Radius of earth in KM
-
-        //    double dLat = (double)lat2 * Math.PI / 180 - (double)lat1 * Math.PI / 180;
-        //    double dLon = (double)lon2 * Math.PI / 180 - (double)lon1 * Math.PI / 180;
-
-        //    double a = Math.Sin(dLat/2) * Math.Sin(dLat/2) +
-        //               Math.Cos((double)lat1 * Math.PI / 180) * Math.Cos((double)lat2 * Math.PI / 180) *
-        //               Math.Sin(dLon/2) * Math.Sin(dLon/2);
-
-        //    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1-a));
-        //    double d = radius * c;
-        //    return (long)(d * 1000); // meters
-        //}
-
         public void PreHandle(Event @event)
         {
-            // TODO:#2212........[handle fromLoad events]
-            if ( !@event.fromLoad )
-            {
+            //if ( !@event.fromLoad )
+            //{
                 if ( @event is CodexEntryEvent )            { handleCodexEntryEvent( (CodexEntryEvent)@event ); }
                 else if ( @event is SurfaceSignalsEvent )   { handleSurfaceSignalsEvent( (SurfaceSignalsEvent)@event ); }
                 else if ( @event is ScanOrganicEvent )      { handleScanOrganicEvent( (ScanOrganicEvent)@event ); }
-            }
+            //}
         }
 
         private void handleCodexEntryEvent ( CodexEntryEvent @event )
@@ -251,15 +208,14 @@ namespace EddiDiscoveryMonitor
         }
 
         /// <summary>
-        ///  When a planet is mapped add the biological data to the planet.
+        /// Triggered when a planet is scanned (FSS) and mapped (SAA).
+        /// For FSS, predict genus that will be present
         /// </summary>
         private void handleSurfaceSignalsEvent ( SurfaceSignalsEvent @event )
         {
-            //Logging.Info( $"\t{MonitorName()}: Handling Event: {@event.ToString()}\n" );
-
             currentBodyId = @event.bodyId;
 
-            if ( CheckSafe( @event.bodyId) )
+            if ( CheckSafe( @event.bodyId ) )
             {
                 @event.body.surfaceSignals.Predict( @event.body );
 
@@ -271,8 +227,6 @@ namespace EddiDiscoveryMonitor
 
         private void handleScanOrganicEvent ( ScanOrganicEvent @event )
         {
-            // TODO:#2212........[Handle fromLoad events, they may already exist in database but lets make sure]
-
             currentBodyId = @event.bodyId;
 
             if ( CheckSafe() )
@@ -296,31 +250,18 @@ namespace EddiDiscoveryMonitor
 
                     currentBody.surfaceSignals.bioList[ @event.genus ].SetData( @event.variant );
                 }
-
-                //try
-                //{
-                //new Thread( () => System.Windows.Forms.MessageBox.Show( $"Sample:\n\tscanType = {@event.scanType}\n" +
-                //                                        $"\tvariant = {@event.variant}\n" +
-                //                                        $"\tlatitude = {StatusService.Instance.CurrentStatus.latitude}\n" +
-                //                                        $"\tlongitude = {StatusService.Instance.CurrentStatus.longitude}" ) ).Start();
                 
-                // TODO:#2212........[Edge case where lat/lon don't exist yet just after starting EDDI? Needs more testing to be sure.]
-
+                // TODO:#2212........[Possible edge case where lat/lon don't exist yet just after starting EDDI? Needs more testing to be sure.]
                 currentBody.surfaceSignals.bioList[ @event.genus ].Sample( @event.scanType,
-                                                                               @event.variant,
-                                                                               StatusService.Instance.CurrentStatus.latitude,
-                                                                               StatusService.Instance.CurrentStatus.longitude );
+                                                                           @event.variant,
+                                                                           StatusService.Instance.CurrentStatus.latitude,
+                                                                           StatusService.Instance.CurrentStatus.longitude );
 
-                //}
-                //catch {
-                //    System.Windows.Forms.MessageBox.Show( $"Failed to update sample:\n\tscanType = {@event.scanType}\n" +
-                //                                            $"\tvariant = {@event.variant}\n" +
-                //                                            $"\tlatitude = {EddiStatusService.StatusService.Instance.CurrentStatus.latitude}\n" +
-                //                                            $"\tlongitude = {EddiStatusService.StatusService.Instance.CurrentStatus.longitude}" );
-                //}
+                // TODO:#2212........[Save/Update Body data?]
+                //currentSystem.PreserveBodyData
+                //currentSystem.AddOrUpdateBody
 
-                // TODO:#2212........[Return bio status to Event]
-                @event.bio = currentBio;
+                //@event.bio = currentBio;
             }
         }
 

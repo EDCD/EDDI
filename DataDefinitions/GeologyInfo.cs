@@ -4,61 +4,27 @@ using System.Resources;
 
 namespace EddiDataDefinitions
 {
-    public class GeologyClass
+    public class GeologyItem
     {
-        public string name;
-        public string description;
-
-        public GeologyClass ()
-        {
-            this.name = "";
-            this.description = "";
-        }
-
-        public GeologyClass ( string genus, string desc )
-        {
-            this.name = genus;
-            this.description = desc;
-        }
-    };
-
-    public class GeologyObject
-    {
+        public bool exists;                 // This item exists and has been populated with information
+        public string class_name;
+        public string class_description;
         public string name;
         public long? value;
         public string description;
 
-        public GeologyObject ()
+        public GeologyItem ()
         {
+            exists = false;
+            this.class_name = "";
+            this.class_description = "";
             this.name = "";
             this.value = 0;
             this.description = "";
         }
 
-        public GeologyObject ( string genus, long? value, string desc )
+        public bool Exists ()
         {
-            this.name = genus;
-            this.value = value;
-            this.description = desc;
-        }
-    };
-
-    public class GeologyItem
-    {
-        // TODO:#2212........[Simplify this class so it's easier to use in scripts]
-
-        public bool exists;   // This item exists and has been populated with information
-        public GeologyClass geoClass;
-        public GeologyObject geoObject;
-
-        public GeologyItem ()
-        {
-            exists = false;
-            geoClass = new GeologyClass();
-            geoObject = new GeologyObject();
-        }
-
-        public bool Exists() {
             return exists;
         }
 
@@ -319,12 +285,12 @@ namespace EddiDataDefinitions
 
                     LookupEntryId data = EntryIdData[ (long)entryId ];
 
-                    item.geoClass.name = rmGeoClassName.GetString( data.geoClass );
-                    item.geoClass.description = rmGeoClassDesc.GetString( data.geoClass );
+                    item.class_name = rmGeoClassName.GetString( data.geoClass );
+                    item.class_description = rmGeoClassDesc.GetString( data.geoClass );
 
-                    item.geoObject.name = rmGeoName.GetString( data.name );
-                    item.geoObject.value = data.value;
-                    item.geoObject.description = rmGeoDesc.GetString( data.name );
+                    item.name = rmGeoName.GetString( data.name );
+                    item.value = data.value;
+                    item.description = rmGeoDesc.GetString( data.name );
 
                     item.SetExists( true );
                 }
@@ -343,12 +309,12 @@ namespace EddiDataDefinitions
                 {
                     LookupName data = NameData[ edname ];
 
-                    item.geoClass.name = rmGeoClassName.GetString( data.geoClass );
-                    item.geoClass.description = rmGeoClassDesc.GetString( data.geoClass );
+                    item.class_name = rmGeoClassName.GetString( data.geoClass );
+                    item.class_description = rmGeoClassDesc.GetString( data.geoClass );
 
-                    item.geoObject.name = rmGeoName.GetString( edname );
-                    item.geoObject.value = data.value;
-                    item.geoObject.description = rmGeoDesc.GetString( edname );
+                    item.name = rmGeoName.GetString( edname );
+                    item.value = data.value;
+                    item.description = rmGeoDesc.GetString( edname );
 
                     item.SetExists( true );
                 }

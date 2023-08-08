@@ -14,6 +14,26 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Properties\GuardianDesc.Designer.cs">
+      <DependentUpon>GuardianDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\ThargoidDesc.Designer.cs">
+      <DependentUpon>ThargoidDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\GuardianName.Designer.cs">
+      <DependentUpon>GuardianName.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\ThargoidName.Designer.cs">
+      <DependentUpon>ThargoidName.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Properties\GeologyDesc.Designer.cs">
       <DependentUpon>GeologyDesc.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -404,6 +424,22 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Properties\GuardianDesc.resx">
+      <LastGenOutput>GuardianDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\ThargoidDesc.resx">
+      <LastGenOutput>ThargoidDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\GuardianName.resx">
+      <LastGenOutput>GuardianName.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\ThargoidName.resx">
+      <LastGenOutput>ThargoidName.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\GeologyDesc.resx">
       <LastGenOutput>GeologyDesc.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -745,8 +781,5 @@
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>

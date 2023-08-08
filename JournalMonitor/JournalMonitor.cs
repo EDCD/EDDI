@@ -4926,7 +4926,7 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "CodexEntry":              // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                            case "CodexEntry":
                                 {
                                     long entryId = JsonParsing.getLong(data, "EntryID");
                                     string edname = JsonParsing.getString(data, "Name");
@@ -4967,34 +4967,9 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "ScanOrganic":             // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-                                // { "timestamp":"2023-07-22T04:01:18Z",
-                                //      "event":"ScanOrganic",
-                                //*     "ScanType":"Log",
-                                //      "Genus":"$Codex_Ent_Shrubs_Genus_Name;",
-                                //*     "Genus_Localised":"Frutexa",
-                                //      "Species":"$Codex_Ent_Shrubs_05_Name;",
-                                //*     "Species_Localised":"Frutexa Fera",
-                                //      "Variant":"$Codex_Ent_Shrubs_05_F_Name;",
-                                //*     "Variant_Localised":"Frutexa Fera - Green",
-                                //      "SystemAddress":34542299533283,
-                                //      "Body":42 }
-
-                                //StarSystem system = EDDI.Instance?.CurrentStarSystem;
-                                //Body body = null;
-                                //body = system?.BodyWithID( bodyId );
-                                //if ( !( body is null ) )
-                                //{
-                                //    body.scannedDateTime = body.scannedDateTime ?? timestamp;
-                                //    body.mappedDateTime = timestamp;
-                                //    body.mappedEfficiently = probesUsed <= efficiencyTarget;
-                                //    events.Add( new BodyMappedEvent( timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget ) { raw = line, fromLoad = fromLogLoad } );
-                                //}
-                                //decimal? lat = EddiStatusService.StatusService.Instance.CurrentStatus.latitude;
+                            case "ScanOrganic":
 
                                 {
-                                    // TODO:#2212........[update to use edname ("genus") instead of localised]
-
                                     // System address identifier
                                     ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
@@ -5007,46 +4982,28 @@ namespace EddiJournalMonitor
                                     // i.e. Frutexa
                                     string genus = JsonParsing.getString(data, "Genus");
                                     genus = ScanOrganic.NormalizedGenus( genus );
-                                    //string localisedGenus = JsonParsing.getString(data, "Genus_Localised");
                                     
                                     // i.e. Flabellum
                                     string species = JsonParsing.getString(data, "Species");
                                     species = ScanOrganic.NormalizedSpecies( species );
-                                    //string localisedSpecies = JsonParsing.getString(data, "Species_Localised");
                                     
                                     // i.e. Green
                                     string variant = JsonParsing.getString(data, "Variant");
                                     variant = ScanOrganic.NormalizedVariant( variant );
-                                    //string localisedVariant = JsonParsing.getString(data, "Variant_Localised");
 
 
                                     StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
 
-                                    //Logging.Info( ">....................Start Checks" );
                                     if ( !fromLogLoad )
                                     {
-                                        //System.Windows.Forms.MessageBox.Show( "Not from Log Load" );
-                                        //Logging.Info( ">....................Not from Log Load" );
                                         if ( currentSystem != null )
                                         {
-                                            //System.Windows.Forms.MessageBox.Show( "Current System exists" );
-                                            //Logging.Info( ">....................Current System exists" );
                                             Body body = currentSystem.BodyWithID( bodyId );
 
                                             if ( body != null )
                                             {
-                                                //System.Windows.Forms.MessageBox.Show( "Body exists" );
-                                                //Logging.Info( ">....................Body exists" );
                                                 events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, body, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
                                             }
-                                            else
-                                            {
-                                                //Logging.Info( ">....................Body Missing!" );
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //Logging.Info( ">....................System Missing!" );
                                         }
                                     }
                                 }

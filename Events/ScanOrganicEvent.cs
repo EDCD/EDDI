@@ -1,8 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
-using System.Collections.Generic;
 using Utilities;
-using System.Threading;
 
 namespace EddiEvents
 {
@@ -15,24 +13,6 @@ namespace EddiEvents
 
         [PublicAPI( "The type of scan which can be Log, Sample or Analyse" )]
         public string scanType { get; private set; }
-
-        //[PublicAPI( "Simple biologic name, such as 'Frutexa'" )]
-        //public string localisedGenus { get; private set; }
-        //public string genus { get; private set; }
-
-        //[PublicAPI( "Species of the genus, such as 'Frutexa Fera'" )]
-        //public string localisedSpecies { get; private set; }
-        //public string species { get; private set; }
-
-        //[PublicAPI( "The full type of the biolocal, such as 'Frutexa Fera - Green'")]
-        //public string localisedVariant { get; private set; }
-        //public string variant { get; private set; }
-
-        //[PublicAPI( "The detailed data for the biological" )]
-        //public OrganicItem data { get; private set; }
-
-        //[PublicAPI( "The detailed data for the biological, set from DiscoveryMonitor" )]
-        //public OrganicItem data_new { get; set; }
 
         [PublicAPI( "Test variable" )]
         public string currentSystem;
@@ -55,43 +35,39 @@ namespace EddiEvents
 
         public ScanOrganicEvent ( DateTime timestamp, ulong systemAddress, int bodyId, Body body, string scanType, string genus, string species, string variant ) : base(timestamp, NAME)
         {
-            // TODO:#2212........[Handle fromLoad events?]
-            if ( !fromLoad )
-            {
-                this.bodyId = bodyId;
-                this.scanType = scanType;
-                this.genus = genus;
-                this.species = species;
-                this.variant = variant;
+            this.bodyId = bodyId;
+            this.scanType = scanType;
+            this.genus = genus;
+            this.species = species;
+            this.variant = variant;
 
-                // bio is set by DiscoveryMonitor, we don't have access to the currentSystem or Body from here.
-                // ^This doesn't seem to work
+            // bio is set by DiscoveryMonitor, we don't have access to the currentSystem or Body from here.
+            // ^This doesn't seem to work
+            try
+            {
+                this.bio = new Exobiology();
                 try
                 {
-                    this.bio = new Exobiology();
-                    try
+                    if ( body.surfaceSignals == null )
                     {
-                        if ( body.surfaceSignals == null )
-                        {
-                            body.surfaceSignals = new SurfaceSignals();
-                        }
-
-                        if ( !body.surfaceSignals.bioList.ContainsKey( genus ) )
-                        {
-                            body.surfaceSignals.AddBio( genus );
-                        }
-
-                        this.bio = body.surfaceSignals.GetBio( genus );
+                        body.surfaceSignals = new SurfaceSignals();
                     }
-                    catch
+
+                    if ( !body.surfaceSignals.bioList.ContainsKey( genus ) )
                     {
-                        new Thread( () => System.Windows.Forms.MessageBox.Show( "Failed to set 'this.bio = body.surfaceSignals.GetBio( genus )'" ) ).Start();
+                        body.surfaceSignals.AddBio( genus );
                     }
+
+                    this.bio = body.surfaceSignals.GetBio( genus );
                 }
-                catch
+                catch ( System.Exception e )
                 {
-                    new Thread( () => System.Windows.Forms.MessageBox.Show( "Failed to get Surface Signals" ) ).Start();
+                    Logging.Error( $"ScanOrganicEvent: Failed to set 'this.bio = body.surfaceSignals.GetBio( genus )' [{e}]" );
                 }
+            }
+            catch
+            {
+                Logging.Error( "ScanOrganicEvent: Failed to get Surface Signals" );
             }
         }
     }
