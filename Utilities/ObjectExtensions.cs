@@ -84,9 +84,16 @@ namespace System
                 fieldInfo.SetValue(cloneObject, clonedFieldValue);
             }
         }
+
+        /// <summary>
+        /// Create a deep copy of an object. Not recommended for use with enumerable types.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="original"></param>
+        /// <returns></returns>
         public static T Copy<T>(this T original)
         {
-            return (T)Copy((Object)original);
+            return (T)Copy((object)original);
         }
     }
 

@@ -271,7 +271,7 @@ namespace EddiVoiceAttackResponder
 
                 if (EDDI.Instance.CurrentStation?.outfitting?.Any() ?? false)
                 {
-                    var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.Copy();
+                    var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.ToList();
                     setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, prefix + " life support",
                         ref vaProxy);
                     setShipModuleOutfittingValues(ship?.bulkheads, stationOutfitting, prefix + " bulkheads",

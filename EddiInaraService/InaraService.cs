@@ -84,7 +84,7 @@ namespace EddiInaraService
                                     // No additional events registered, send any events we have in our holding queue
                                     if (holdingQueue.Count > 0)
                                     {
-                                        var sendingQueue = holdingQueue.Copy();
+                                        var sendingQueue = holdingQueue.ToList();
                                         holdingQueue = new List<InaraAPIEvent>();
                                         await Task.Run(() => SendAPIEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
                                         await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);

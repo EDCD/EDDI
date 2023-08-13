@@ -57,7 +57,7 @@ namespace Utilities
             // Some types don't need to be decomposed further.
             if (undecomposedTypes.Contains(reflectionObjectType))
             {
-                GetVariable(keysPath.Copy(), "", reflectionObjectType, string.Empty, reflectionObject, maxRecursionLevel );
+                GetVariable(keysPath.ToList(), "", reflectionObjectType, string.Empty, reflectionObject, maxRecursionLevel );
                 return Results;
             }
 
@@ -73,7 +73,7 @@ namespace Utilities
                     if (attribute is PublicAPIAttribute publicAPIAttribute)
                     {
                         passProperty = true;
-                        GetVariable(keysPath.Copy(), eventProperty.Name, eventProperty.PropertyType, publicAPIAttribute.Description, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, maxRecursionLevel );
+                        GetVariable(keysPath.ToList(), eventProperty.Name, eventProperty.PropertyType, publicAPIAttribute.Description, eventProperty.CanRead && reflectionObject != null ? eventProperty.GetValue(reflectionObject) : null, maxRecursionLevel );
                         break;
                     }
                 }
@@ -92,7 +92,7 @@ namespace Utilities
                     if (attribute is PublicAPIAttribute publicAPIAttribute)
                     {
                         passField = true;
-                        GetVariable(keysPath.Copy(), eventField.Name, eventField.FieldType, publicAPIAttribute.Description, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, maxRecursionLevel );
+                        GetVariable(keysPath.ToList(), eventField.Name, eventField.FieldType, publicAPIAttribute.Description, reflectionObject != null ? eventField.GetValue(reflectionObject) : null, maxRecursionLevel );
                         break;
                     }
                 }
@@ -109,7 +109,7 @@ namespace Utilities
         {
             try
             {
-                var oldKeysPath = keysPath.Copy();
+                var oldKeysPath = keysPath.ToList();
                 keysPath.Add(key);
 
                 // We ignore any key paths that we have already set elsewhere
@@ -204,7 +204,7 @@ namespace Utilities
                             {
                                 // Handle filled collections
                                 Logging.Debug("Handling element " + i++);
-                                var elementKeysPath = keysPath.Copy();
+                                var elementKeysPath = keysPath.ToList();
                                 elementKeysPath.Add(i.ToString());
                                 if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
                                 {
@@ -217,7 +217,7 @@ namespace Utilities
                             // Handle empty collections (for example when we're generating wiki documentation)
 
                             // Get the current list element's underlying variable data
-                            var elementKeysPath = keysPath.Copy();
+                            var elementKeysPath = keysPath.ToList();
                             elementKeysPath.Add(indexMarker);
                             if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
                             {
@@ -229,7 +229,7 @@ namespace Utilities
                         }
 
                         // Write the root element name with (if available) the number of associated entries from the collection
-                        var entriesPath = keysPath.Copy();
+                        var entriesPath = keysPath.ToList();
                         Results.Add(new MetaVariable(entriesPath, typeof( IEnumerable<> ), description, i));
                     }
                     else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)

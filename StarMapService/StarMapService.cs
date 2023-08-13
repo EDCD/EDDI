@@ -192,7 +192,7 @@ namespace EddiStarMapService
                                     // No additional events registered, send any events we have in our holding queue
                                     if (holdingQueue.Count > 0)
                                     {
-                                        var sendingQueue = holdingQueue.Copy();
+                                        var sendingQueue = holdingQueue.ToList();
                                         await Task.Run(() => SendEvents(sendingQueue), syncCancellationTS.Token)
                                             .ConfigureAwait(false);
                                         await Task.Delay(syncIntervalMilliSeconds, syncCancellationTS.Token)
