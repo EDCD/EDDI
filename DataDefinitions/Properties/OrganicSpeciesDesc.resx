@@ -175,7 +175,7 @@
     <value>This is a bacterial species found in ammonia-based atmospheres that lives in sunlight. A colony’s appearance resembles an intricate maze.</value>
   </data>
   <data name="BacteriumAurasus" xml:space="preserve">
-    <value>These bacteria thrive on sunlight in atmospheres rich with carbon clioxicle. They cause blanket coloration across a planetary surface.</value>
+    <value>These bacteria thrive on sunlight in atmospheres rich with carbon dioxide. They cause blanket coloration across a planetary surface.</value>
   </data>
   <data name="BacteriumBullaris" xml:space="preserve">
     <value>This species of bacteria thrives on atmospheric methane, appearing as a network of linked bubble paiterns.</value>

@@ -10,6 +10,8 @@
             return rawName
                 ?.Replace( "Codex_Ent_", "" )
                 ?.Replace( "$", "" )
+                ?.Replace( "_Genus_Name", "" )
+                ?.Replace( "_Genus", "" )
                 ?.Replace( "_Name;", "" )
                 ?.Replace( "_name;", "" )
                 ?.Replace( ";", "" );

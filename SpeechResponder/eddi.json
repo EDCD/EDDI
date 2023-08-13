@@ -1788,6 +1788,15 @@
       "name": "NPC interdiction commenced",
       "description": "Triggered when an interdiction attempt on your ship by an NPC is detected"
     },
+    "Organic Surface Signals Prediction": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "",
+      "default": true,
+      "name": "Organic Surface Signals Prediction",
+      "description": "Triggered when surface signal sources are detected during FSS"
+    },
     "Passengers": {
       "enabled": true,
       "priority": 3,
