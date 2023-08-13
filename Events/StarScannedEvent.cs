@@ -89,7 +89,7 @@ namespace EddiEvents
         [PublicAPI("The cumulative probability describing the stars's argument of periapsis, relative to other stars of the same stellar class")]
         public decimal? periapsisprobability => star.periapsisprobability;
 
-        [PublicAPI("The radius of the star that has been scanned, in metres")]
+        [PublicAPI("The radius of the star that has been scanned, in kilometres")]
         public decimal? radius => star.radius;
 
         [PublicAPI("The probablility of finding a star of this class with this radius")]
