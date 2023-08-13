@@ -449,7 +449,7 @@ namespace EddiDataDefinitions
             // Replace chained mission types with conventional equivalents
             elements.ForEach(e =>
             {
-                if (CHAINED.ContainsKey(e)) { e = CHAINED[e]; }
+                if (CHAINED.TryGetValue(e, out var value)) { e = value; }
             });
 
             foreach (var element in elements)

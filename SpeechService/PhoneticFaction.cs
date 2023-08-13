@@ -23,9 +23,9 @@ namespace EddiSpeechService
             }
 
             // Specific fixing of names to avoid later confusion
-            if (FACTION_FIXES.ContainsKey(faction))
+            if (FACTION_FIXES.TryGetValue(faction, out var value))
             {
-                faction = FACTION_FIXES[faction];
+                faction = value;
             }
 
             // Faction names can contain system names; hunt them down and change them

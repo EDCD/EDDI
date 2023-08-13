@@ -127,9 +127,9 @@ namespace EddiDataDefinitions
 
             // Remaining is composition
             string composition = from;
-            if (COMPOSITIONS.ContainsKey(composition))
+            if (COMPOSITIONS.TryGetValue(composition, out var value))
             {
-                composition = COMPOSITIONS[composition];
+                composition = value;
             }
 
             return new Volcanism(type, composition, amount);

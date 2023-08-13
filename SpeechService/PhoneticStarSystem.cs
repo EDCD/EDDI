@@ -187,9 +187,9 @@ namespace EddiSpeechService
                 }
 
                 // There might be a constellation name that we need to translate
-                if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(sectorNamePart1))
+                if (CONSTELLATION_PRONUNCIATIONS.TryGetValue(sectorNamePart1, out var value))
                 {
-                    sectorNamePart1 = replaceWithPronunciation(sectorNamePart1, CONSTELLATION_PRONUNCIATIONS[sectorNamePart1]);
+                    sectorNamePart1 = replaceWithPronunciation(sectorNamePart1, value);
                 }
 
                 // The sector name might include digits. Break up any group of three or more.

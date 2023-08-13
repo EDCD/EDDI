@@ -27,9 +27,9 @@ namespace EddiSpeechService
             }
 
             // Specific fixing of station model pronunciations
-            if (STATION_MODEL_FIXES.ContainsKey(station))
+            if (STATION_MODEL_FIXES.TryGetValue(station, out var value))
             {
-                station = STATION_MODEL_FIXES[station];
+                station = value;
             }
             // Strip plus signs and spaces from station name suffixes
             if (station.EndsWith("+"))
