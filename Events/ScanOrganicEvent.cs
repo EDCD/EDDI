@@ -1,6 +1,9 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Utilities;
+using System.Threading;
 
 namespace EddiEvents
 {
@@ -14,23 +17,33 @@ namespace EddiEvents
         [PublicAPI( "The type of scan which can be Log, Sample or Analyse" )]
         public string scanType { get; private set; }
 
-        [PublicAPI( "Test variable" )]
-        public string currentSystem;
+        //[PublicAPI( "Test variable" )]
+        //public string currentSystem;
 
-        [PublicAPI( "Test variable" )]
-        public string currentBody;
+        //[PublicAPI( "Test variable" )]
+        //public string currentBody;
 
         [PublicAPI( "The object holding all the data about the current biological." )]
         public Exobiology bio { get; set; }
+
+        [PublicAPI]
+        public int numTotal { get; set; }
+
+        [PublicAPI]
+        public int numComplete { get; set; }
+
+        [PublicAPI]
+        public int numRemaining { get; set; }
+
+        [PublicAPI]
+        public List<string> listRemaining { get; set; }
 
         // Not intended to be user facing
 
         public string genus;
         public string species;
         public string variant;
-
         public ulong systemAddress { get; private set; }
-
         public int bodyId { get; private set; }
 
         public ScanOrganicEvent ( DateTime timestamp, ulong systemAddress, int bodyId, Body body, string scanType, string genus, string species, string variant ) : base(timestamp, NAME)
@@ -41,24 +54,31 @@ namespace EddiEvents
             this.species = species;
             this.variant = variant;
 
-            // bio is set by DiscoveryMonitor, we don't have access to the currentSystem or Body from here.
-            // ^This doesn't seem to work
             try
             {
-                this.bio = new Exobiology();
+                this.bio = new Exobiology( genus );
                 try
                 {
-                    if ( body.surfaceSignals == null )
-                    {
-                        body.surfaceSignals = new SurfaceSignals();
-                    }
-
-                    if ( !body.surfaceSignals.bioList.ContainsKey( genus ) )
-                    {
-                        body.surfaceSignals.AddBio( genus );
-                    }
-
                     this.bio = body.surfaceSignals.GetBio( genus );
+                    Logging.Debug( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
+                    Thread.Sleep( 10 );
+                    Logging.Debug( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
+                    Thread.Sleep( 10 );
+                    Logging.Debug( $"[ScanOrganicEvent] GetBio:  Species = '{this.bio.species.name}'" );
+                    Thread.Sleep( 10 );
+                    Logging.Debug( $"[ScanOrganicEvent] GetBio:  Variant = '{this.bio.variant}'" );
+                    Thread.Sleep( 10 );
+                    Logging.Debug( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
+                    Thread.Sleep( 10 );
+                    Logging.Debug( $"[ScanOrganicEvent] GetBio: Distance = '{this.bio.genus.distance}'" );
+                    Thread.Sleep( 10 );
+                    Logging.Debug( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
+                    Thread.Sleep( 10 );
+
+                    // TODO:#2212........[These are lagged by one sample, not updated until after Sample() is called by DiscoveryMonitor]
+                    //this.total = body.surfaceSignals.bio.total;
+                    //this.complete = body.surfaceSignals.bio.complete;
+                    //this.remaining = body.surfaceSignals.bio.remaining;
                 }
                 catch ( System.Exception e )
                 {

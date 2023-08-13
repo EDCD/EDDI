@@ -232,7 +232,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria thrive on sunlight in atmospheres rich with carbon clioxicle. They cause blanket coloration across a planetary surface..
+        ///   Looks up a localized string similar to These bacteria thrive on sunlight in atmospheres rich with carbon dioxide. They cause blanket coloration across a planetary surface..
         /// </summary>
         public static string BacteriumAurasus {
             get {

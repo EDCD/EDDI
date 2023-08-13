@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -134,6 +135,26 @@ namespace EddiDataDefinitions
 
         private static Body PreserveBodyData(Body oldBody, Body updatedBody)
         {
+            Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}:     Total old:({oldBody.surfaceSignals.bio.numTotal}), new:({updatedBody.surfaceSignals.bio.numTotal})" );
+            Thread.Sleep( 10 );
+            Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}:  Complete old:({oldBody.surfaceSignals.bio.numComplete}), new:({updatedBody.surfaceSignals.bio.numComplete})" );
+            Thread.Sleep( 10 );
+            Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}: Remaining old:({oldBody.surfaceSignals.bio.numRemaining}), new:({updatedBody.surfaceSignals.bio.numRemaining})" );
+            Thread.Sleep( 10 );
+
+            foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
+            {
+                Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}: bios old: {item.genus.name} ({item.samples} samples) ({item.complete}) ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude}) ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})" );
+                Thread.Sleep( 10 );
+            }
+
+            foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
+            {
+                Logging.Debug( $"[PreserveBodyData] Body {updatedBody.shortname}: bios new: {item.genus.name} ({item.samples} samples) ({item.complete}) ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude}) ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})" );
+                Thread.Sleep( 10 );
+            }
+
+
             if ( ( oldBody.scannedDateTime ?? DateTime.MinValue) > ( updatedBody.scannedDateTime ?? DateTime.MinValue ) )
             {
                 updatedBody.scannedDateTime = oldBody.scannedDateTime;
@@ -188,6 +209,22 @@ namespace EddiDataDefinitions
                     }
                 }
             }
+
+            // Third party sites do not have biological data (currently)
+            // Assume that any bio or geo object with a higher numTotal is accurate
+            if ( updatedBody.surfaceSignals != null && oldBody.surfaceSignals != null )
+            {
+                if ( updatedBody.surfaceSignals.bio.numTotal < oldBody.surfaceSignals.bio.numTotal )
+                {
+                    updatedBody.surfaceSignals.bio = oldBody.surfaceSignals.bio;
+                }
+
+                if ( updatedBody.surfaceSignals.geo.numTotal < oldBody.surfaceSignals.geo.numTotal )
+                {
+                    updatedBody.surfaceSignals.geo = oldBody.surfaceSignals.geo;
+                }
+            }
+
             return updatedBody;
         }
 
