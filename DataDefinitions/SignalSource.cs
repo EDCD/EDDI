@@ -125,7 +125,7 @@ namespace EddiDataDefinitions
             this.altEdName = altEdName;
         }
 
-        public new static SignalSource FromEDName(string from)
+        public static new SignalSource FromEDName(string from)
         {
             if (from == null) return null;
 
@@ -160,7 +160,8 @@ namespace EddiDataDefinitions
             {
                 string tidiedFrom = from
                     .Replace("$", "")
-                    .Replace(";", "");
+                    .Replace(";", "")
+                    .Replace("_name", "");
 
                 // Remove various prefix and suffix tags from non-USS sources
                 if (!tidiedFrom.StartsWith("USS_"))
