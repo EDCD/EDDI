@@ -61,7 +61,7 @@ namespace EddiEvents
                 this.newTrait = newTrait;
                 this.voucherAmount = voucherAmount;
 
-                codexEntry = new CodexEntry( entryId, codexName, subCategoryName, categoryName, regionName, systemName );
+                this.codexEntry = new CodexEntry( entryId, codexName, subCategoryName, categoryName, regionName, systemName );
             }
         }
     }

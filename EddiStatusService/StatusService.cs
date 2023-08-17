@@ -15,7 +15,9 @@ namespace EddiStatusService
     public class StatusService
     {
         // Declare our constants
-        private const int pollingIntervalActiveMs = 500;
+        // TODO:#2212........[Revert before release]
+        //private const int pollingIntervalActiveMs = 500;
+        private const int pollingIntervalActiveMs = 100;
         private const int pollingIntervalRelaxedMs = 5000;
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
         private static readonly string Directory = GetSavedGamesDir();

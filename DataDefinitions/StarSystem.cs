@@ -22,6 +22,9 @@ namespace EddiDataDefinitions
 
         public long? EDSMID { get; set; } // The ID in EDSM
 
+        /// <summary>List of BaryCentre IDs with list of child BodyIds</summary>
+        public BaryCentre baryCentre { get; set; }
+
         /// <summary>X co-ordinate for this system</summary>
         [PublicAPI]
         public decimal? x { get; set; }
@@ -135,24 +138,29 @@ namespace EddiDataDefinitions
 
         private static Body PreserveBodyData(Body oldBody, Body updatedBody)
         {
-            Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}:     Total old:({oldBody.surfaceSignals.bio.numTotal}), new:({updatedBody.surfaceSignals.bio.numTotal})" );
-            Thread.Sleep( 10 );
-            Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}:  Complete old:({oldBody.surfaceSignals.bio.numComplete}), new:({updatedBody.surfaceSignals.bio.numComplete})" );
-            Thread.Sleep( 10 );
-            Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}: Remaining old:({oldBody.surfaceSignals.bio.numRemaining}), new:({updatedBody.surfaceSignals.bio.numRemaining})" );
-            Thread.Sleep( 10 );
+            // TODO:#2212........[Remove]
+            //Logging.Info( $"[PreserveBodyData] Body {oldBody.shortname}:  Reported old:({oldBody.surfaceSignals.bio.reportedTotal}), new:({updatedBody.surfaceSignals.bio.reportedTotal})" );
+            //Thread.Sleep( 10 );
+            //Logging.Info( $"[PreserveBodyData] Body {oldBody.shortname}:     Total old:({oldBody.surfaceSignals.bio.numTotal}), new:({updatedBody.surfaceSignals.bio.numTotal})" );
+            //Thread.Sleep( 10 );
+            //Logging.Info( $"[PreserveBodyData] Body {oldBody.shortname}:  Complete old:({oldBody.surfaceSignals.bio.numComplete}), new:({updatedBody.surfaceSignals.bio.numComplete})" );
+            //Thread.Sleep( 10 );
+            //Logging.Info( $"[PreserveBodyData] Body {oldBody.shortname}: Remaining old:({oldBody.surfaceSignals.bio.numRemaining}), new:({updatedBody.surfaceSignals.bio.numRemaining})" );
+            //Thread.Sleep( 10 );
 
-            foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
-            {
-                Logging.Debug( $"[PreserveBodyData] Body {oldBody.shortname}: bios old: {item.genus.name} ({item.samples} samples) ({item.complete}) ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude}) ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})" );
-                Thread.Sleep( 10 );
-            }
+            // TODO:#2212........[Remove]
+            //foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
+            //{
+            //    Logging.Info( $"[PreserveBodyData] Body {oldBody.shortname}: bios old: {item.genus.name} ({item.samples} samples) ({item.complete}) ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude}) ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})" );
+            //    Thread.Sleep( 10 );
+            //}
 
-            foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
-            {
-                Logging.Debug( $"[PreserveBodyData] Body {updatedBody.shortname}: bios new: {item.genus.name} ({item.samples} samples) ({item.complete}) ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude}) ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})" );
-                Thread.Sleep( 10 );
-            }
+            // TODO:#2212........[Remove]
+            //foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
+            //{
+            //    Logging.Info( $"[PreserveBodyData] Body {updatedBody.shortname}: bios new: {item.genus.name} ({item.samples} samples) ({item.complete}) ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude}) ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})" );
+            //    Thread.Sleep( 10 );
+            //}
 
 
             if ( ( oldBody.scannedDateTime ?? DateTime.MinValue) > ( updatedBody.scannedDateTime ?? DateTime.MinValue ) )
@@ -214,12 +222,12 @@ namespace EddiDataDefinitions
             // Assume that any bio or geo object with a higher numTotal is accurate
             if ( updatedBody.surfaceSignals != null && oldBody.surfaceSignals != null )
             {
-                if ( updatedBody.surfaceSignals.bio.numTotal < oldBody.surfaceSignals.bio.numTotal )
+                if ( updatedBody.surfaceSignals.bio.reportedTotal < oldBody.surfaceSignals.bio.reportedTotal )
                 {
                     updatedBody.surfaceSignals.bio = oldBody.surfaceSignals.bio;
                 }
 
-                if ( updatedBody.surfaceSignals.geo.numTotal < oldBody.surfaceSignals.geo.numTotal )
+                if ( updatedBody.surfaceSignals.geo.reportedTotal < oldBody.surfaceSignals.geo.reportedTotal )
                 {
                     updatedBody.surfaceSignals.geo = oldBody.surfaceSignals.geo;
                 }
@@ -511,6 +519,7 @@ namespace EddiDataDefinitions
             bodies = ImmutableList.Create<Body>();
             factions = new List<Faction>();
             stations = new List<Station>();
+            baryCentre = new BaryCentre();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

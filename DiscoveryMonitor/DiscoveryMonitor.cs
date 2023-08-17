@@ -6,28 +6,27 @@ using EddiStatusService;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Controls;
 using Utilities;
-using System.Threading;
 
 namespace EddiDiscoveryMonitor
 {
     public class DiscoveryMonitor : IEddiMonitor
     {
-
         private class FSSBioSignals
         {
-            public long systemAddress;
-            public long bodyId;
-            public int signalCount;     // The number of biological signals detected
-            public bool status;         // Has this body had its bios predicted yet
+            public ulong systemAddress; // For reference to double check
+            public long bodyId;         // For reference to double check
+            public int signalCount;     // The number of biological signals detected (set bio.numTotal to this)
+            public bool status;         // Has this body had its bios predicted yet (false = FSSBodySignals event has occured but not Scan event)
         }
 
         // Dictionary of FSSBodySignals events
         //  - The Tuple is the SystemAddress and BodyId.
         //  - The bool value 
         //private List<Tuple<long, long>> FSS_Status;
-        private Dictionary<Tuple<long, long>, FSSBioSignals> _fss_BioSignals;
+        private Dictionary<Tuple<ulong, long>, FSSBioSignals> _fss_BioSignals;
 
         private string _currentGenus;
         private long _currentBodyId;
@@ -54,6 +53,8 @@ namespace EddiDiscoveryMonitor
         {
             StatusService.StatusUpdatedEvent += HandleStatus;
             //System.Diagnostics.Debug.WriteLine($"Initialized {MonitorName()}");
+
+            _fss_BioSignals = new Dictionary<Tuple<ulong, long>, FSSBioSignals>();
         }
 
         public string MonitorName()
@@ -140,17 +141,6 @@ namespace EddiDiscoveryMonitor
                                     // convert Km to m
                                     distance1 *= (decimal)1000.0;
 
-                                    //new Thread( () => System.Windows.MessageBox.Show( $"Distance Update, Samples >=1.\n\n" +
-                                    //                                                  $"\tCurrent Latitude = {status.latitude}\n" +
-                                    //                                                  $"\tCurrent Longitude = {status.longitude}\n\n" +
-                                    //                                                  $"\tSample Latitude = {coords1.latitude}\n" +
-                                    //                                                  $"\tSample Longitude = {coords1.longitude}\n\n" +
-                                    //                                                  $"\tDistance0 = {distance0}\n" +
-                                    //                                                  $"\tDistance1 = {distance1}\n\n" +
-                                    //                                                  $"\tCurrent Radius = {currentBody.radius}\n" +
-                                    //                                                  $"\tSample Distance = {currentBio.genus.distance}" ) ).Start();
-
-
                                     if ( distance1 <= body.surfaceSignals.bio.list[ _currentGenus ].genus.distance )
                                     {
                                         // Was previously outside sample range, alert that we have violated the radius
@@ -215,7 +205,7 @@ namespace EddiDiscoveryMonitor
 
                                     EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, body.surfaceSignals.bio.list[ _currentGenus ].genus.distance, status1, status2 ) );
                                 }
-                                catch ( System.Exception e )
+                                catch ( Exception e )
                                 {
                                     Logging.Error( $"Exobiology: Failed to Enqueue 'ScanOrganicDistanceEvent' [{e}]" );
                                 }
@@ -235,6 +225,7 @@ namespace EddiDiscoveryMonitor
                 if ( @event is CodexEntryEvent )            { handleCodexEntryEvent( (CodexEntryEvent)@event ); }
                 else if ( @event is SurfaceSignalsEvent )   { handleSurfaceSignalsEvent( (SurfaceSignalsEvent)@event ); }
                 else if ( @event is ScanOrganicEvent )      { handleScanOrganicEvent( (ScanOrganicEvent)@event ); }
+                else if ( @event is BodyScannedEvent )      { handleBodyScannedEvent( (BodyScannedEvent)@event ); }
             //}
         }
 
@@ -251,66 +242,24 @@ namespace EddiDiscoveryMonitor
         {
             if ( @event.detectionType == "FSS" )
             {
-                // EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body.surfaceSignals.GetBios() ) );
-
                 foreach ( SignalAmount sig in @event.surfacesignals )
                 {
                     if ( sig.signalSource.edname == "SAA_SignalType_Biological" )
                     {
-                        // TODO:#2212........[Temporarily store bio numbers, wait for Scan event before predicting]
-                        //_fss_BioSignals
+                        FSSBioSignals signals = new FSSBioSignals();
+
+                        signals.systemAddress = (ulong)@event.systemAddress;
+                        signals.bodyId = @event.bodyId;
+                        signals.signalCount = sig.amount;
+                        signals.status = false;
+
+                        _fss_BioSignals.Add( new Tuple<ulong, long>( (ulong)@event.systemAddress, @event.bodyId ), signals );
                     }
                 }
             }
             else if ( @event.detectionType == "SAA" )
             {
                 // TODO:#2212........[Do we need to do anything here? Double check before removing this comment.]
-
-                //currentBodyId = @event.bodyId;
-
-                //////System.Diagnostics.Debug.WriteLine( $" - Surface Signals Event: {@event.bodyname},'{@event.detectionType}'" );
-
-                //if ( CheckSafe( @event.bodyId ) )
-                //{
-                //    Body body = currentBody(currentBodyId);
-
-                //    Logging.Info( $"[handleSurfaceSignalsEvent] numTotal = {body.surfaceSignals.bio.numTotal}" );
-                //    Thread.Sleep( 10 );
-                //    Logging.Info( $"[handleSurfaceSignalsEvent] numComplete = {body.surfaceSignals.bio.numComplete}" );
-                //    Thread.Sleep( 10 );
-                //    Logging.Info( $"[handleSurfaceSignalsEvent] numRemaining = {body.surfaceSignals.bio.numRemaining}" );
-                //    Thread.Sleep( 10 );
-
-
-
-                //    //    //System.Diagnostics.Debug.WriteLine( $" - Safe" );
-                //    if ( @event.detectionType == "FSS" )
-                //    {
-                //        if ( @event.biosignals != null )
-                //        {
-                //            foreach ( string genus in @event.biosignals )
-                //            {
-                //                //Logging.Info( $" - Adding Predicted Bio: {genus}" );
-                //                body.surfaceSignals.AddBio( genus, true );
-                //            }
-
-                //            // 2212: Save/Update Body data
-                //            EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                //            StarSystemSqLiteRepository.Instance.SaveStarSystem( currentSystem );
-                //        }
-
-                //        try
-                //        {
-                //            //            //EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, @event.body ) );
-                //            EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body.surfaceSignals.GetBios() ) );
-                //            //            EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, list ) );
-                //        }
-                //        catch ( System.Exception e )
-                //        {
-                //            Logging.Error( $"Surface Signals Event: Failed to Enqueue 'OrganicPredictionEvent' [{e}]" );
-                //        }
-                //    }
-                //}
             }
         }
 
@@ -319,41 +268,36 @@ namespace EddiDiscoveryMonitor
             _currentBodyId = @event.bodyId;
             _currentGenus = @event.genus;
 
-            Logging.Debug( $"[handleScanOrganicEvent] --------------------------------------------" );
-            Thread.Sleep( 10 );
+            // TODO:#2212........[Remove]
+            //Logging.Info( $"[handleScanOrganicEvent] --------------------------------------------" );
+            //Thread.Sleep( 10 );
 
             if ( CheckSafe() )
             {
-                Logging.Debug( $"[handleScanOrganicEvent] CheckSafe OK" );
-                Thread.Sleep( 10 );
+                // TODO:#2212........[Remove]
+                //Logging.Info( $"[handleScanOrganicEvent] CheckSafe OK" );
+                //Thread.Sleep( 10 );
 
                 Body body = _currentBody(_currentBodyId);
-
-                // TESTING
-                //@event.currentSystem = currentSystem.systemname;
-                //@event.currentBody = body.shortname;
 
                 // If the biological doesn't exist, lets add it now
                 if ( !body.surfaceSignals.bio.list.ContainsKey( @event.genus ) )
                 {
-                    Logging.Debug( $"[handleScanOrganicEvent] Genus doesn't exist in list, adding {@event.genus}" );
-                    Thread.Sleep( 10 );
+                    // TODO:#2212........[Remove]
+                    //Logging.Info( $"[handleScanOrganicEvent] Genus doesn't exist in list, adding {@event.genus}" );
+                    //Thread.Sleep( 10 );
                     body.surfaceSignals.AddBio( @event.genus );
                 }
 
                 // If only the genus is present, then finish other data (and prune predictions)
                 if ( body.surfaceSignals.bio.list[ @event.genus ].samples == 0 )
                 {
-                    // TODO:#2212........[Prune Predictions]
-                    // Set prediction to false
-                    // Check if number of bios is >= number of bios reported by journal
-
-                    Logging.Debug( $"[handleScanOrganicEvent] Samples is zero, setting additional data from variant" );
-                    Thread.Sleep( 10 );
+                    // TODO:#2212........[Remove]
+                    //Logging.Info( $"[handleScanOrganicEvent] Samples is zero, setting additional data from variant" );
+                    //Thread.Sleep( 10 );
                     body.surfaceSignals.bio.list[ @event.genus ].SetData( @event.variant );
                 }
 
-                // TODO:#2212........[Possible edge case where lat/lon don't exist yet just after starting EDDI? Needs more testing to be sure.]
                 body.surfaceSignals.bio.list[ @event.genus ].Sample( @event.scanType,
                                                                      @event.variant,
                                                                      StatusService.Instance.CurrentStatus.latitude,
@@ -361,20 +305,21 @@ namespace EddiDiscoveryMonitor
 
                 @event.bio = body.surfaceSignals.GetBio( @event.genus );
 
-                Logging.Debug( $"[handleScanOrganicEvent] SetBio ---------------------------------------------" );
-                Thread.Sleep( 10 );
-                Logging.Debug( $"[handleScanOrganicEvent] SetBio:    Genus = '{@event.bio.genus.name}'" );
-                Thread.Sleep( 10 );
-                Logging.Debug( $"[handleScanOrganicEvent] SetBio:  Species = '{@event.bio.species.name}'" );
-                Thread.Sleep( 10 );
-                Logging.Debug( $"[handleScanOrganicEvent] SetBio:  Variant = '{@event.bio.variant}'" );
-                Thread.Sleep( 10 );
-                Logging.Debug( $"[handleScanOrganicEvent] SetBio:    Genus = '{@event.bio.genus.name}'" );
-                Thread.Sleep( 10 );
-                Logging.Debug( $"[handleScanOrganicEvent] SetBio: Distance = '{@event.bio.genus.distance}'" );
-                Thread.Sleep( 10 );
-                Logging.Debug( $"[handleScanOrganicEvent] SetBio ---------------------------------------------" );
-                Thread.Sleep( 10 );
+                // TODO:#2212........[Remove]
+                //Logging.Info( $"[handleScanOrganicEvent] SetBio ---------------------------------------------" );
+                //Thread.Sleep( 10 );
+                //Logging.Info( $"[handleScanOrganicEvent] SetBio:    Genus = '{@event.bio.genus.name}'" );
+                //Thread.Sleep( 10 );
+                //Logging.Info( $"[handleScanOrganicEvent] SetBio:  Species = '{@event.bio.species.name}'" );
+                //Thread.Sleep( 10 );
+                //Logging.Info( $"[handleScanOrganicEvent] SetBio:  Variant = '{@event.bio.variant}'" );
+                //Thread.Sleep( 10 );
+                //Logging.Info( $"[handleScanOrganicEvent] SetBio:    Genus = '{@event.bio.genus.name}'" );
+                //Thread.Sleep( 10 );
+                //Logging.Info( $"[handleScanOrganicEvent] SetBio: Distance = '{@event.bio.genus.distance}'" );
+                //Thread.Sleep( 10 );
+                //Logging.Info( $"[handleScanOrganicEvent] SetBio ---------------------------------------------" );
+                //Thread.Sleep( 10 );
 
                 // These are updated when the above Sample() function is called, se we send them back to the event
                 // Otherwise we would probably have to enqueue a new event (maybe not a bad idea?)
@@ -387,6 +332,356 @@ namespace EddiDiscoveryMonitor
                 EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
                 StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
             }
+        }
+
+        private void handleBodyScannedEvent ( BodyScannedEvent @event )
+        {
+            // Do predictions
+
+            if ( _fss_BioSignals != null )
+            {
+                if ( _fss_BioSignals.ContainsKey( Tuple.Create<ulong, long>( (ulong)@event.systemAddress, (long)@event.bodyId ) ) )
+                {
+                    FSSBioSignals signal = _fss_BioSignals[ Tuple.Create<ulong, long>( (ulong)@event.systemAddress, (long)@event.bodyId ) ];
+
+                    // Double check if system/body matches
+                    if ( signal.systemAddress == @event.systemAddress && signal.bodyId == @event.bodyId )
+                    {
+                        
+                        _currentBodyId = (long)@event.bodyId;
+                        if ( CheckSafe( _currentBodyId ) )
+                        {
+                            Body body = _currentBody(_currentBodyId);
+
+                            // Always update the reported total biologicals
+                            body.surfaceSignals.bio.reportedTotal = signal.signalCount;
+                            // TODO:#2212........[Remove]
+                            //Logging.Info( $"[handleBodyScannedEvent] Signal Count is {signal.signalCount}, ({body.surfaceSignals.bio.reportedTotal})" );
+
+                            if ( signal.status == false )
+                            {
+                                if ( signal.signalCount > 0 )
+                                {
+                                    List<string> bios = PredictBios( body );
+                                    body.surfaceSignals.bio.list.Clear();
+
+                                    foreach ( string genus in bios )
+                                    {
+                                        body.surfaceSignals.AddBio( genus );
+                                        // TODO:#2212........[Remove]
+                                        //Logging.Info( $"[handleBodyScannedEvent] AddBio {genus}" );
+                                        //Thread.Sleep( 10 );
+                                    }
+
+                                    // This is used by SAASignalsFound to know if we can safely clear the list to create the actual bio list
+                                    body.surfaceSignals.predicted = true;
+                                    _fss_BioSignals[ Tuple.Create<ulong, long>( (ulong)@event.systemAddress, (long)@event.bodyId ) ].status = true;
+                                    List<string> bioList = body.surfaceSignals.GetBios();
+
+                                    // TODO:#2212........[Remove]
+                                    //foreach ( string genus in bioList )
+                                    //{
+                                    //    Logging.Info( $"[handleBodyScannedEvent] GetBios {genus}" );
+                                    //    Thread.Sleep( 10 );
+                                    //}
+
+                                    // TODO:#2212........[Do not enqueue if from @event.fromLoad?]
+                                    // This doesn't have to be used but is provided just in case
+                                    EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body.surfaceSignals.GetBios() ) );
+                                }
+                            }
+
+                            // 2212: Save/Update Body data
+                            EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                        }
+                    }
+                }
+            }
+        }
+
+        public List<string> PredictBios ( Body body )
+        {
+            // Create temporary list of ALL species possible
+            List<string> list = new List<string>();
+            foreach ( string species in OrganicInfo.speciesData.Keys )
+            {
+                list.Add( species );
+            }
+
+            // Create an empty list for species that do not meet conditions
+            List<string> purge = new List<string>();
+
+            // Iterate though species
+            foreach ( string species in list )
+            {
+                // TODO:#2212........[Remove]
+                //Logging.Info( $"[Predictions] CHECKING SPECIES ==========> {species} <==========" );
+                //Thread.Sleep( 10 );
+
+                // Iterate through conditions
+                OrganicInfo.SpeciesData data = OrganicInfo.speciesData[species];
+                {
+                    // Check if body meets max gravity requirements
+                    // maxG: Maximum gravity
+                    if ( data.maxG != null )
+                    {
+                        if ( body.gravity > data.maxG )
+                        {
+                            // TODO:#2212........[Remove]
+                            //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                            //Thread.Sleep( 10 );
+                            purge.Add( species );
+                            goto Skip_To_End;
+                        }
+                    }
+
+                    // Check if body meets temperature (K) requirements
+                    //  - data.kRange: 'None'=No K requirements; 'Min'=K must be greater than minK; 'Max'=K must be less than maxK; 'MinMax'=K must be between minK and maxK
+                    //  - data.minK: Minimum temperature
+                    //  - data.maxK: Maximum temperature
+                    if ( data.kRange != "" && data.kRange != "None" )
+                    {
+                        if ( data.kRange == "Min" )
+                        {
+                            if ( body.temperature <= data.minK )
+                            {
+                                purge.Add( species );
+                                // TODO:#2212........[Remove]
+                                //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                                //Thread.Sleep( 10 );
+                                goto Skip_To_End;
+                            }
+                        }
+                        else if ( data.kRange == "Max" )
+                        {
+                            if ( body.temperature >= data.maxK )
+                            {
+                                purge.Add( species );
+                                // TODO:#2212........[Remove]
+                                //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                                //Thread.Sleep( 10 );
+                                goto Skip_To_End;
+                            }
+                        }
+                        else if ( data.kRange == "MinMax" )
+                        {
+                            if ( body.temperature < data.minK || body.temperature > data.maxK )
+                            {
+                                purge.Add( species );
+                                // TODO:#2212........[Remove]
+                                //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                                //Thread.Sleep( 10 );
+                                goto Skip_To_End;
+                            }
+                        }
+                    }
+
+                    // Check if body has appropriate parent star
+                    //data.parentStar;
+                    bool found = false;
+                    if ( data.parentStar != null && data.parentStar != "" && data.parentStar != "None" )
+                    {
+                        // TODO:#2212........[Remove]
+                        //Logging.Info( $"[Predictions] Parent Star Required = '{data.parentStar}'" );
+                        //Thread.Sleep( 10 );
+
+                        bool foundParent = false;
+                        foreach ( IDictionary<string, object> parent in body.parents )
+                        {
+                            foreach ( string key in parent.Keys )
+                            {
+                                if ( key == "Star" )
+                                {
+                                    foundParent = true;
+                                    long starId = (long)parent[ key ];
+
+                                    Body starBody = _currentSystem.BodyWithID( starId );
+                                    string starClass = starBody.stellarclass;
+
+                                    // TODO:#2212........[Remove]
+                                    //Logging.Info( $"[Predictions] Parent Star: '{starClass}'" );
+                                    //Thread.Sleep( 10 );
+
+                                    string[] starParts = data.parentStar.Split(',');
+                                    foreach ( string part in starParts )
+                                    {
+                                        if ( part == starClass )
+                                        {
+                                            // TODO:#2212........[Remove]
+                                            //Logging.Info( $"[Predictions] Found Star Match: '{part}' == '{starClass}'" );
+                                            //Thread.Sleep( 10 );
+                                            found = true;
+                                            //break;
+                                            goto ExitParentStarLoop;
+                                        }
+                                    }
+                                }
+                                else if ( key == "Null" )
+                                {
+                                    long baryId = (long)parent[ key ];
+                                    List<long> barys = _currentSystem.baryCentre.GetBaryCentres( baryId );
+
+                                    foreach ( long bodyId in barys )
+                                    {
+                                        // TODO:#2212........[Remove]
+                                        //Logging.Info( $"[Predictions] BaryCentre: '{bodyId}' -> '{_currentSystem.BodyWithID( bodyId ).bodyType.edname}'" );
+                                        //Thread.Sleep( 10 );
+                                        if ( _currentSystem.BodyWithID( bodyId ).bodyType.edname == "Star" )
+                                        {
+                                            long starId = bodyId;
+
+                                            Body starBody = _currentSystem.BodyWithID( starId );
+                                            string starClass = starBody.stellarclass;
+
+                                            // TODO:#2212........[Remove]
+                                            //Logging.Info( $"[Predictions] BaryCentre Parent Star: '{starClass}'" );
+                                            //Thread.Sleep( 10 );
+
+                                            string[] starParts = data.parentStar.Split(',');
+                                            foreach ( string part in starParts )
+                                            {
+                                                if ( part == starClass )
+                                                {
+                                                    // TODO:#2212........[Remove]
+                                                    //Logging.Info( $"[Predictions] Found Star Match: '{part}' == '{starClass}'" );
+                                                    //Thread.Sleep( 10 );
+                                                    found = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if ( found )
+                                        {
+                                            goto ExitParentStarLoop;
+                                        }
+                                    }
+                                }
+                                if ( foundParent )
+                                {
+                                    goto ExitParentStarLoop;
+                                }
+                            }
+                        }
+
+                        ExitParentStarLoop:
+                        ;
+
+                        if ( !found )
+                        {
+                            purge.Add( species );
+                            // TODO:#2212........[Remove]
+                            //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                            //Thread.Sleep( 10 );
+                            goto Skip_To_End;
+                        }
+                    }
+
+                    // Check if body has appropriate class
+                    //data.planetClass;
+                    found = false;
+                    if ( data.planetClass != "" )
+                    {
+                        string[] classParts = data.planetClass.Split(',');
+                        foreach ( string part in classParts )
+                        {
+                            if ( part == body.planetClass.edname )
+                            {
+                                found = true;
+                            }
+                        }
+
+                        if ( !found )
+                        {
+                            purge.Add( species );
+                            // TODO:#2212........[Remove]
+                            //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                            //Thread.Sleep( 10 );
+                            //break;
+                            goto Skip_To_End;
+                        }
+                    }
+
+                    // Check if body has appropriate astmosphere
+                    //data.atmosphereClass;
+                    found = false;
+                    if ( data.atmosphereClass != "" )
+                    {
+                        string[] atmosParts = data.atmosphereClass.Split(',');
+                        foreach ( string part in atmosParts )
+                        {
+                            if ( part == body.atmosphereclass.edname )
+                            {
+                                found = true;
+                            }
+                        }
+
+                        if ( !found )
+                        {
+                            purge.Add( species );
+                            // TODO:#2212........[Remove]
+                            //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                            //Thread.Sleep( 10 );
+                            goto Skip_To_End;
+                        }
+                    }
+
+                    // Check if body has appropriate volcanism
+                    //data.volcanism;
+                    found = false;
+                    if ( data.volcanism != "" )
+                    {
+                        if ( body.volcanism != null )
+                        {
+                            string[] volcanismParts = data.volcanism.Split(',');
+                            foreach ( string part in volcanismParts )
+                            {
+                                if ( part == body.volcanism.invariantComposition )
+                                {
+                                    found = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            found = false;
+                        }
+
+                        if ( !found )
+                        {
+                            purge.Add( species );
+                            // TODO:#2212........[Remove]
+                            //Logging.Info( $"[Predictions] PURGE ----------> {species} <----------" );
+                            //Thread.Sleep( 10 );
+                            goto Skip_To_End;
+                        }
+                    }
+                }
+
+                Skip_To_End:
+                ;
+            }
+
+            // Remove species that don't meet conditions from temporary list
+            foreach ( string species in purge )
+            {
+                list.Remove( species );
+            }
+
+            // Create a list of only the unique genus' found
+            List<string> genus = new List<string>();
+            foreach ( string species in list )
+            {
+                if ( !genus.Contains( OrganicInfo.speciesData[ species ].genus ) )
+                {
+                    genus.Add( OrganicInfo.speciesData[ species ].genus );
+                }
+            }
+
+            body.surfaceSignals.predicted = true;
+
+            return genus;
         }
 
         /// <summary>

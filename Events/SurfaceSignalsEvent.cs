@@ -59,10 +59,9 @@ namespace EddiEvents
             ////this.biosignals = new List<string>();
 
             // TODO:#2212........[If type is FSS, then let DiscoveryMonitor save number of bios present, then predict bios after a Scan event.]
-            // TODO:#2212........[If type is SAA, then let DiscoveryMonitor prune predictions]
-            //// TODO:#2212........[Handle fromLoad]
-            ////if ( !fromLoad )
-            ////{
+            
+            // TODO:#2212........[If type is SAA, then let DiscoveryMonitor prune predictions (real bios are reported here)]
+
             //if ( detectionType == "FSS" )
             //    {
             //    //    Logging.Info( $">>> - FSS" );
@@ -98,7 +97,6 @@ namespace EddiEvents
             //    //        this.biosignals = new List<string>();
             //    //    }
             //    }
-            ////}
         }
     }
 }

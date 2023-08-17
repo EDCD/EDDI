@@ -120,9 +120,6 @@
   <data name="Aleoids" xml:space="preserve">
     <value>Aleoida</value>
   </data>
-  <data name="Anemone" xml:space="preserve">
-    <value>Anemone</value>
-  </data>
   <data name="AsterPod" xml:space="preserve">
     <value>Aster Pod</value>
   </data>
@@ -242,6 +239,9 @@
   </data>
   <data name="SilicateCrystals" xml:space="preserve">
     <value>Silicate Crystals</value>
+  </data>
+  <data name="Sphere" xml:space="preserve">
+    <value>Anemone</value>
   </data>
   <data name="StolonPod" xml:space="preserve">
     <value>Stolon Pod</value>
