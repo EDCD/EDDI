@@ -21,17 +21,7 @@ namespace EddiEvents
         public OrganicPredictionEvent ( DateTime timestamp, List<string> signals ) : base(timestamp, NAME)
         {
             this.body = body;
-
             this.biosignals = signals;
-
-            //if ( body != null )
-            //{
-            //    this.biosignals = body.surfaceSignals.GetBios();
-            //}
-            //else
-            //{
-            //    this.biosignals = new List<string>();
-            //}
         }
     }
 }

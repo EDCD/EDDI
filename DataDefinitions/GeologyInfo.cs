@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
+using System.Threading;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -281,12 +283,30 @@ namespace EddiDataDefinitions
 
                     LookupEntryId data = entryIdData[ (long)entryId ];
 
+                    // TODO:#2212........[Remove]
+                    //Logging.Info( $"[GeologyItemn:LookupByEntryId:SRC] entryId = {(long)entryId}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[GeologyItemn:LookupByEntryId:SRC]   class = {data.geoClass}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[GeologyItemn:LookupByEntryId:SRC]    name = {data.name}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[GeologyItemn:LookupByEntryId:SRC]   value = {data.value}" );
+                    //Thread.Sleep( 10 );
+
                     item.class_name = rmGeoClassName.GetString( data.geoClass );
                     item.class_description = rmGeoClassDesc.GetString( data.geoClass );
 
                     item.name = rmGeoName.GetString( data.name );
                     item.value = data.value;
                     item.description = rmGeoDesc.GetString( data.name );
+
+                    // TODO:#2212........[Remove]
+                    //Logging.Info( $"[GeologyItemn:LookupByEntryId:DST]   class = {item.class_name}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[GeologyItemn:LookupByEntryId:DST]    name = {item.name}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[GeologyItemn:LookupByEntryId:DST]   value = {item.value}" );
+                    //Thread.Sleep( 10 );
 
                     item.SetExists( true );
                 }

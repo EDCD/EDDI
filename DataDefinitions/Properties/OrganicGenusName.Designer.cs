@@ -70,15 +70,6 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anemone.
-        /// </summary>
-        public static string Anemone {
-            get {
-                return ResourceManager.GetString("Anemone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Aster Pod.
         /// </summary>
         public static string AsterPod {
@@ -435,6 +426,15 @@ namespace EddiDataDefinitions.Properties {
         public static string SilicateCrystals {
             get {
                 return ResourceManager.GetString("SilicateCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anemone.
+        /// </summary>
+        public static string Sphere {
+            get {
+                return ResourceManager.GetString("Sphere", resourceCulture);
             }
         }
         

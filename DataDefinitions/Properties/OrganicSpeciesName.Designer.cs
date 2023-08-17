@@ -61,11 +61,92 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Albens Bell Mollusc.
+        /// </summary>
+        public static string AlbensBellMollusc {
+            get {
+                return ResourceManager.GetString("AlbensBellMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albidium Ice Crystals.
+        /// </summary>
+        public static string AlbidiumIceCrystals {
+            get {
+                return ResourceManager.GetString("AlbidiumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albidium Silicate Crystals.
+        /// </summary>
+        public static string AlbidiumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("AlbidiumSilicateCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albidum Chalice Pod.
+        /// </summary>
+        public static string AlbidumChalicePod {
+            get {
+                return ResourceManager.GetString("AlbidumChalicePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albidum Collared Pod.
+        /// </summary>
+        public static string AlbidumCollaredPod {
+            get {
+                return ResourceManager.GetString("AlbidumCollaredPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albidum Peduncle Tree.
+        /// </summary>
+        public static string AlbidumPeduncleTree {
+            get {
+                return ResourceManager.GetString("AlbidumPeduncleTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albidum Quadripartite Pod.
+        /// </summary>
+        public static string AlbidumQuadripartitePod {
+            get {
+                return ResourceManager.GetString("AlbidumQuadripartitePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Albidum Sinuous Tubers.
         /// </summary>
         public static string AlbidumSinuousTubers {
             get {
                 return ResourceManager.GetString("AlbidumSinuousTubers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albulum Gourd Mollusc.
+        /// </summary>
+        public static string AlbulumGourdMollusc {
+            get {
+                return ResourceManager.GetString("AlbulumGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Albulum Squid Mollusc.
+        /// </summary>
+        public static string AlbulumSquidMollusc {
+            get {
+                return ResourceManager.GetString("AlbulumSquidMollusc", resourceCulture);
             }
         }
         
@@ -259,11 +340,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blatteum Bell Mollusc.
+        /// </summary>
+        public static string BlatteumBellMollusc {
+            get {
+                return ResourceManager.GetString("BlatteumBellMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blatteum Bioluminescent Anemone.
         /// </summary>
         public static string BlatteumBioluminescentAnemone {
             get {
                 return ResourceManager.GetString("BlatteumBioluminescentAnemone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blatteum Collared Pod.
+        /// </summary>
+        public static string BlatteumCollaredPod {
+            get {
+                return ResourceManager.GetString("BlatteumCollaredPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blatteum Quadripartite Pod.
+        /// </summary>
+        public static string BlatteumQuadripartitePod {
+            get {
+                return ResourceManager.GetString("BlatteumQuadripartitePod", resourceCulture);
             }
         }
         
@@ -322,11 +430,128 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caeruleum Gourd Mollusc.
+        /// </summary>
+        public static string CaeruleumGourdMollusc {
+            get {
+                return ResourceManager.GetString("CaeruleumGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caeruleum Octahedral Pod.
+        /// </summary>
+        public static string CaeruleumOctahedralPod {
+            get {
+                return ResourceManager.GetString("CaeruleumOctahedralPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caeruleum peduncle Pod.
+        /// </summary>
+        public static string CaeruleumpedunclePod {
+            get {
+                return ResourceManager.GetString("CaeruleumpedunclePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caeruleum Peduncle Tree.
+        /// </summary>
+        public static string CaeruleumPeduncleTree {
+            get {
+                return ResourceManager.GetString("CaeruleumPeduncleTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caeruleum Quadripartite Pod.
+        /// </summary>
+        public static string CaeruleumQuadripartitePod {
+            get {
+                return ResourceManager.GetString("CaeruleumQuadripartitePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Caeruleum Sinuous Tubers.
         /// </summary>
         public static string CaeruleumSinuousTubers {
             get {
                 return ResourceManager.GetString("CaeruleumSinuousTubers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caeruleum Squid Mollusc.
+        /// </summary>
+        public static string CaeruleumSquidMollusc {
+            get {
+                return ResourceManager.GetString("CaeruleumSquidMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caeruleum Torus Mollusc.
+        /// </summary>
+        public static string CaeruleumTorusMollusc {
+            get {
+                return ResourceManager.GetString("CaeruleumTorusMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Candidum peduncle Pod.
+        /// </summary>
+        public static string CandidumpedunclePod {
+            get {
+                return ResourceManager.GetString("CandidumpedunclePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Candidum Rhizome Pod.
+        /// </summary>
+        public static string CandidumRhizomePod {
+            get {
+                return ResourceManager.GetString("CandidumRhizomePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cereum Aster Pod.
+        /// </summary>
+        public static string CereumAsterPod {
+            get {
+                return ResourceManager.GetString("CereumAsterPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cereum Aster Tree.
+        /// </summary>
+        public static string CereumAsterTree {
+            get {
+                return ResourceManager.GetString("CereumAsterTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cereum Bullet Mollusc.
+        /// </summary>
+        public static string CereumBulletMollusc {
+            get {
+                return ResourceManager.GetString("CereumBulletMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chryseum Void Heart.
+        /// </summary>
+        public static string ChryseumVoidHeart {
+            get {
+                return ResourceManager.GetString("ChryseumVoidHeart", resourceCulture);
             }
         }
         
@@ -354,6 +579,24 @@ namespace EddiDataDefinitions.Properties {
         public static string ClypeusSpeculumi {
             get {
                 return ResourceManager.GetString("ClypeusSpeculumi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cobalteum Rhizome Pod.
+        /// </summary>
+        public static string CobalteumRhizomePod {
+            get {
+                return ResourceManager.GetString("CobalteumRhizomePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common Thargoid Barnacle.
+        /// </summary>
+        public static string CommonThargoidBarnacle {
+            get {
+                return ResourceManager.GetString("CommonThargoidBarnacle", resourceCulture);
             }
         }
         
@@ -403,6 +646,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Croceum Gourd Mollusc.
+        /// </summary>
+        public static string CroceumGourdMollusc {
+            get {
+                return ResourceManager.GetString("CroceumGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crystalline Shards.
         /// </summary>
         public static string CrystallineShards {
@@ -426,6 +678,42 @@ namespace EddiDataDefinitions.Properties {
         public static string ElectricaeRadialem {
             get {
                 return ResourceManager.GetString("ElectricaeRadialem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flavum Bullet Mollusc.
+        /// </summary>
+        public static string FlavumBulletMollusc {
+            get {
+                return ResourceManager.GetString("FlavumBulletMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flavum Ice Crystals.
+        /// </summary>
+        public static string FlavumIceCrystals {
+            get {
+                return ResourceManager.GetString("FlavumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flavum Metallic Crystals.
+        /// </summary>
+        public static string FlavumMetallicCrystals {
+            get {
+                return ResourceManager.GetString("FlavumMetallicCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flavum Silicate Crystals.
+        /// </summary>
+        public static string FlavumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("FlavumSilicateCrystals", resourceCulture);
             }
         }
         
@@ -628,11 +916,128 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gypseeum peduncle Pod.
+        /// </summary>
+        public static string GypseeumpedunclePod {
+            get {
+                return ResourceManager.GetString("GypseeumpedunclePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gypseeum Rhizome Pod.
+        /// </summary>
+        public static string GypseeumRhizomePod {
+            get {
+                return ResourceManager.GetString("GypseeumRhizomePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large Thargoid Barnacle.
+        /// </summary>
+        public static string LargeThargoidBarnacle {
+            get {
+                return ResourceManager.GetString("LargeThargoidBarnacle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lattice Mineral Spheres.
+        /// </summary>
+        public static string LatticeMineralSpheres {
+            get {
+                return ResourceManager.GetString("LatticeMineralSpheres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Aster Pod.
+        /// </summary>
+        public static string LindigoticumAsterPod {
+            get {
+                return ResourceManager.GetString("LindigoticumAsterPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Bell Mollusc.
+        /// </summary>
+        public static string LindigoticumBellMollusc {
+            get {
+                return ResourceManager.GetString("LindigoticumBellMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lindigoticum Brain Tree.
         /// </summary>
         public static string LindigoticumBrainTree {
             get {
                 return ResourceManager.GetString("LindigoticumBrainTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Bulb Mollusc.
+        /// </summary>
+        public static string LindigoticumBulbMollusc {
+            get {
+                return ResourceManager.GetString("LindigoticumBulbMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Calcite Plates.
+        /// </summary>
+        public static string LindigoticumCalcitePlates {
+            get {
+                return ResourceManager.GetString("LindigoticumCalcitePlates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Capsule Mollusc.
+        /// </summary>
+        public static string LindigoticumCapsuleMollusc {
+            get {
+                return ResourceManager.GetString("LindigoticumCapsuleMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Ice Crystals.
+        /// </summary>
+        public static string LindigoticumIceCrystals {
+            get {
+                return ResourceManager.GetString("LindigoticumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Parasol Mollusc.
+        /// </summary>
+        public static string LindigoticumParasolMollusc {
+            get {
+                return ResourceManager.GetString("LindigoticumParasolMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Reel Mollusc.
+        /// </summary>
+        public static string LindigoticumReelMollusc {
+            get {
+                return ResourceManager.GetString("LindigoticumReelMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Silicate Crystals.
+        /// </summary>
+        public static string LindigoticumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("LindigoticumSilicateCrystals", resourceCulture);
             }
         }
         
@@ -646,6 +1051,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lindigoticum Umbrella Mollusc.
+        /// </summary>
+        public static string LindigoticumUmbrellaMollusc {
+            get {
+                return ResourceManager.GetString("LindigoticumUmbrellaMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lividum Brain Tree.
         /// </summary>
         public static string LividumBrainTree {
@@ -655,11 +1069,101 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lividum Bullet Mollusc.
+        /// </summary>
+        public static string LividumBulletMollusc {
+            get {
+                return ResourceManager.GetString("LividumBulletMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lividum Collared Pod.
+        /// </summary>
+        public static string LividumCollaredPod {
+            get {
+                return ResourceManager.GetString("LividumCollaredPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Luteolum Anemone.
         /// </summary>
         public static string LuteolumAnemone {
             get {
                 return ResourceManager.GetString("LuteolumAnemone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luteolum Bulb Mollusc.
+        /// </summary>
+        public static string LuteolumBulbMollusc {
+            get {
+                return ResourceManager.GetString("LuteolumBulbMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luteolum Calcite Plates.
+        /// </summary>
+        public static string LuteolumCalcitePlates {
+            get {
+                return ResourceManager.GetString("LuteolumCalcitePlates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luteolum Capsule Mollusc.
+        /// </summary>
+        public static string LuteolumCapsuleMollusc {
+            get {
+                return ResourceManager.GetString("LuteolumCapsuleMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luteolum Parasol Mollusc.
+        /// </summary>
+        public static string LuteolumParasolMollusc {
+            get {
+                return ResourceManager.GetString("LuteolumParasolMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luteolum Reel Mollusc.
+        /// </summary>
+        public static string LuteolumReelMollusc {
+            get {
+                return ResourceManager.GetString("LuteolumReelMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luteolum Umbrella Mollusc.
+        /// </summary>
+        public static string LuteolumUmbrellaMollusc {
+            get {
+                return ResourceManager.GetString("LuteolumUmbrellaMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Niveum Globe Molluscs.
+        /// </summary>
+        public static string NiveumGlobeMolluscs {
+            get {
+                return ResourceManager.GetString("NiveumGlobeMolluscs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Niveus Octahedral Pod.
+        /// </summary>
+        public static string NiveusOctahedralPod {
+            get {
+                return ResourceManager.GetString("NiveusOctahedralPod", resourceCulture);
             }
         }
         
@@ -727,11 +1231,83 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ostrinum Chalice Pod.
+        /// </summary>
+        public static string OstrinumChalicePod {
+            get {
+                return ResourceManager.GetString("OstrinumChalicePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ostrinum Peduncle Tree.
+        /// </summary>
+        public static string OstrinumPeduncleTree {
+            get {
+                return ResourceManager.GetString("OstrinumPeduncleTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phoeniceum Gourd Mollusc.
+        /// </summary>
+        public static string PhoeniceumGourdMollusc {
+            get {
+                return ResourceManager.GetString("PhoeniceumGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prasinum Aster Pod.
+        /// </summary>
+        public static string PrasinumAsterPod {
+            get {
+                return ResourceManager.GetString("PrasinumAsterPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prasinum Aster Tree.
+        /// </summary>
+        public static string PrasinumAsterTree {
+            get {
+                return ResourceManager.GetString("PrasinumAsterTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prasinum Bioluminescent Anemone.
         /// </summary>
         public static string PrasinumBioluminescentAnemone {
             get {
                 return ResourceManager.GetString("PrasinumBioluminescentAnemone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prasinum Ice Crystals.
+        /// </summary>
+        public static string PrasinumIceCrystals {
+            get {
+                return ResourceManager.GetString("PrasinumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prasinum Metallic Crystals.
+        /// </summary>
+        public static string PrasinumMetallicCrystals {
+            get {
+                return ResourceManager.GetString("PrasinumMetallicCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prasinum Silicate Crystals.
+        /// </summary>
+        public static string PrasinumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("PrasinumSilicateCrystals", resourceCulture);
             }
         }
         
@@ -754,11 +1330,83 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Puniceum Aster Pod.
+        /// </summary>
+        public static string PuniceumAsterPod {
+            get {
+                return ResourceManager.GetString("PuniceumAsterPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Puniceum Brain Tree.
         /// </summary>
         public static string PuniceumBrainTree {
             get {
                 return ResourceManager.GetString("PuniceumBrainTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puniceum Squid Mollusc.
+        /// </summary>
+        public static string PuniceumSquidMollusc {
+            get {
+                return ResourceManager.GetString("PuniceumSquidMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpureum Gourd Mollusc.
+        /// </summary>
+        public static string PurpureumGourdMollusc {
+            get {
+                return ResourceManager.GetString("PurpureumGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpureum Ice Crystals.
+        /// </summary>
+        public static string PurpureumIceCrystals {
+            get {
+                return ResourceManager.GetString("PurpureumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpureum Metallic Crystals.
+        /// </summary>
+        public static string PurpureumMetallicCrystals {
+            get {
+                return ResourceManager.GetString("PurpureumMetallicCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpureum peduncle Pod.
+        /// </summary>
+        public static string PurpureumpedunclePod {
+            get {
+                return ResourceManager.GetString("PurpureumpedunclePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpureum Rhizome Pod.
+        /// </summary>
+        public static string PurpureumRhizomePod {
+            get {
+                return ResourceManager.GetString("PurpureumRhizomePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purpureum Silicate Crystals.
+        /// </summary>
+        public static string PurpureumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("PurpureumSilicateCrystals", resourceCulture);
             }
         }
         
@@ -817,6 +1465,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Roseum Ice Crystals.
+        /// </summary>
+        public static string RoseumIceCrystals {
+            get {
+                return ResourceManager.GetString("RoseumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roseum Silicate Crystals.
+        /// </summary>
+        public static string RoseumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("RoseumSilicateCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Roseum Sinuous Tubers.
         /// </summary>
         public static string RoseumSinuousTubers {
@@ -826,11 +1492,173 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Roseum Squid Mollusc.
+        /// </summary>
+        public static string RoseumSquidMollusc {
+            get {
+                return ResourceManager.GetString("RoseumSquidMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubellum Aster Pod.
+        /// </summary>
+        public static string RubellumAsterPod {
+            get {
+                return ResourceManager.GetString("RubellumAsterPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubellum Aster Tree.
+        /// </summary>
+        public static string RubellumAsterTree {
+            get {
+                return ResourceManager.GetString("RubellumAsterTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubellum Peduncle Tree.
+        /// </summary>
+        public static string RubellumPeduncleTree {
+            get {
+                return ResourceManager.GetString("RubellumPeduncleTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubellum Torus Mollusc.
+        /// </summary>
+        public static string RubellumTorusMollusc {
+            get {
+                return ResourceManager.GetString("RubellumTorusMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rubeum Bioluminescent Anemone.
         /// </summary>
         public static string RubeumBioluminescentAnemone {
             get {
                 return ResourceManager.GetString("RubeumBioluminescentAnemone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubeum Bullet Mollusc.
+        /// </summary>
+        public static string RubeumBulletMollusc {
+            get {
+                return ResourceManager.GetString("RubeumBulletMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubeum Ice Crystals.
+        /// </summary>
+        public static string RubeumIceCrystals {
+            get {
+                return ResourceManager.GetString("RubeumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubeum Metallic Crystals.
+        /// </summary>
+        public static string RubeumMetallicCrystals {
+            get {
+                return ResourceManager.GetString("RubeumMetallicCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubeum Octahedral Pod.
+        /// </summary>
+        public static string RubeumOctahedralPod {
+            get {
+                return ResourceManager.GetString("RubeumOctahedralPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubeum Rhizome Pod.
+        /// </summary>
+        public static string RubeumRhizomePod {
+            get {
+                return ResourceManager.GetString("RubeumRhizomePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubeum Silicate Crystals.
+        /// </summary>
+        public static string RubeumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("RubeumSilicateCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubeum Squid Mollusc.
+        /// </summary>
+        public static string RubeumSquidMollusc {
+            get {
+                return ResourceManager.GetString("RubeumSquidMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rubicundum Collared Pod.
+        /// </summary>
+        public static string RubicundumCollaredPod {
+            get {
+                return ResourceManager.GetString("RubicundumCollaredPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rufum Gourd Mollusc.
+        /// </summary>
+        public static string RufumGourdMollusc {
+            get {
+                return ResourceManager.GetString("RufumGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rufum peduncle Pod.
+        /// </summary>
+        public static string RufumpedunclePod {
+            get {
+                return ResourceManager.GetString("RufumpedunclePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Solid Mineral Spheres.
+        /// </summary>
+        public static string SolidMineralSpheres {
+            get {
+                return ResourceManager.GetString("SolidMineralSpheres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stolon Pod.
+        /// </summary>
+        public static string StolonPod {
+            get {
+                return ResourceManager.GetString("StolonPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stolon Tree.
+        /// </summary>
+        public static string StolonTree {
+            get {
+                return ResourceManager.GetString("StolonTree", resourceCulture);
             }
         }
         
@@ -903,6 +1731,24 @@ namespace EddiDataDefinitions.Properties {
         public static string StratumTectonicas {
             get {
                 return ResourceManager.GetString("StratumTectonicas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0.
+        /// </summary>
+        public static string String {
+            get {
+                return ResourceManager.GetString("String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Barnacle Barbs.
+        /// </summary>
+        public static string ThargoidBarnacleBarbs {
+            get {
+                return ResourceManager.GetString("ThargoidBarnacleBarbs", resourceCulture);
             }
         }
         
@@ -1105,11 +1951,110 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Viride Bulb Mollusc.
+        /// </summary>
+        public static string VirideBulbMollusc {
+            get {
+                return ResourceManager.GetString("VirideBulbMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Bullet Mollusc.
+        /// </summary>
+        public static string VirideBulletMollusc {
+            get {
+                return ResourceManager.GetString("VirideBulletMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Calcite Plates.
+        /// </summary>
+        public static string VirideCalcitePlates {
+            get {
+                return ResourceManager.GetString("VirideCalcitePlates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Gourd Mollusc.
+        /// </summary>
+        public static string VirideGourdMollusc {
+            get {
+                return ResourceManager.GetString("VirideGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Octahedral Pod.
+        /// </summary>
+        public static string VirideOctahedralPod {
+            get {
+                return ResourceManager.GetString("VirideOctahedralPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Parasol Mollusc.
+        /// </summary>
+        public static string VirideParasolMollusc {
+            get {
+                return ResourceManager.GetString("VirideParasolMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Peduncle Tree.
+        /// </summary>
+        public static string ViridePeduncleTree {
+            get {
+                return ResourceManager.GetString("ViridePeduncleTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Quadripartite Pod.
+        /// </summary>
+        public static string VirideQuadripartitePod {
+            get {
+                return ResourceManager.GetString("VirideQuadripartitePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Reel Mollusc.
+        /// </summary>
+        public static string VirideReelMollusc {
+            get {
+                return ResourceManager.GetString("VirideReelMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Viride Sinuous Tubers.
         /// </summary>
         public static string VirideSinuousTubers {
             get {
                 return ResourceManager.GetString("VirideSinuousTubers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viride Umbrella Mollusc.
+        /// </summary>
+        public static string VirideUmbrellaMollusc {
+            get {
+                return ResourceManager.GetString("VirideUmbrellaMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viridis Gyre Tree.
+        /// </summary>
+        public static string ViridisGyreTree {
+            get {
+                return ResourceManager.GetString("ViridisGyreTree", resourceCulture);
             }
         }
     }

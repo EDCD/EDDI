@@ -21,6 +21,8 @@
             organic = new OrganicItem();
             astrology = new AstrometricItem();
             geology = new GeologyItem();
+            guardian = new GuardianItem();
+            thargoid = new ThargoidItem();
 
             this.entryId = entryId;
             this.edname = edname;

@@ -1,9 +1,8 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Utilities;
 using System.Threading;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -27,13 +26,13 @@ namespace EddiEvents
         public Exobiology bio { get; set; }
 
         [PublicAPI]
-        public int numTotal { get; set; }
+        public int? numTotal { get; set; }
 
         [PublicAPI]
-        public int numComplete { get; set; }
+        public int? numComplete { get; set; }
 
         [PublicAPI]
-        public int numRemaining { get; set; }
+        public int? numRemaining { get; set; }
 
         [PublicAPI]
         public List<string> listRemaining { get; set; }
@@ -60,22 +59,22 @@ namespace EddiEvents
                 try
                 {
                     this.bio = body.surfaceSignals.GetBio( genus );
-                    Logging.Debug( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
-                    Thread.Sleep( 10 );
-                    Logging.Debug( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
-                    Thread.Sleep( 10 );
-                    Logging.Debug( $"[ScanOrganicEvent] GetBio:  Species = '{this.bio.species.name}'" );
-                    Thread.Sleep( 10 );
-                    Logging.Debug( $"[ScanOrganicEvent] GetBio:  Variant = '{this.bio.variant}'" );
-                    Thread.Sleep( 10 );
-                    Logging.Debug( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
-                    Thread.Sleep( 10 );
-                    Logging.Debug( $"[ScanOrganicEvent] GetBio: Distance = '{this.bio.genus.distance}'" );
-                    Thread.Sleep( 10 );
-                    Logging.Debug( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
-                    Thread.Sleep( 10 );
+                    //Logging.Info( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[ScanOrganicEvent] GetBio:  Species = '{this.bio.species.name}'" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[ScanOrganicEvent] GetBio:  Variant = '{this.bio.variant}'" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[ScanOrganicEvent] GetBio: Distance = '{this.bio.genus.distance}'" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
+                    //Thread.Sleep( 10 );
 
-                    // TODO:#2212........[These are lagged by one sample, not updated until after Sample() is called by DiscoveryMonitor]
+                    // TODO:#2212........[These are lagged by one sample if taken here, not updated until after Sample() is called by DiscoveryMonitor and only DiscoveryMonitor has access to current location]
                     //this.total = body.surfaceSignals.bio.total;
                     //this.complete = body.surfaceSignals.bio.complete;
                     //this.remaining = body.surfaceSignals.bio.remaining;

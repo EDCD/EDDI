@@ -70,15 +70,6 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Despite their name, these organic structures more closely resemble the shells of sea urchins. These organic structures can tolerate a wide range of temperatures and are able to absorb energy from nearby stars..
-        /// </summary>
-        public static string Anemone {
-            get {
-                return ResourceManager.GetString("Anemone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to These robust seed pods will drift through space for thousands of years before finding a suitable place to release their seeds and spores..
         /// </summary>
         public static string AsterPod {
@@ -435,6 +426,15 @@ namespace EddiDataDefinitions.Properties {
         public static string SilicateCrystals {
             get {
                 return ResourceManager.GetString("SilicateCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Despite their name, these organic structures more closely resemble the shells of sea urchins. These organic structures can tolerate a wide range of temperatures and are able to absorb energy from nearby stars..
+        /// </summary>
+        public static string Sphere {
+            get {
+                return ResourceManager.GetString("Sphere", resourceCulture);
             }
         }
         

@@ -119,210 +119,158 @@
   </resheader>
   <data name="Aleoids" xml:space="preserve">
     <value>Extremely hardy photosynthetic organisms that thrive in arid environments. Thick, waxy leaf structures protect them from extreme surroundings. When gaseous exchange becomes unfavourable. the leaves can completely shut off the organism from the atmosphere causing a state of hibernation. The pointed leaves create precipitation slopes, which draw liquids to the heart of the organism. Here they are absorbed through a series of specialised cells, and stored in the root structure until needed.</value>
-    <comment>Aleoida</comment>
-  </data>
-  <data name="Anemone" xml:space="preserve">
-    <value>Despite their name, these organic structures more closely resemble the shells of sea urchins. These organic structures can tolerate a wide range of temperatures and are able to absorb energy from nearby stars.</value>
-    <comment>Anemone</comment>
   </data>
   <data name="AsterPod" xml:space="preserve">
     <value>These robust seed pods will drift through space for thousands of years before finding a suitable place to release their seeds and spores.</value>
-    <comment>Aster Pod</comment>
   </data>
   <data name="AsterTree" xml:space="preserve">
     <value>These organic structures are not trees in the traditional sense, but long-lived and extremely hardy space-based organisms.</value>
-    <comment>Aster Tree</comment>
   </data>
   <data name="Bacterial" xml:space="preserve">
     <value>True unicellular extremophiles capable of living in the full spectrum of temperatures, chemical soups and atmospheres. They form a kaleidoscopic range of patterns and colours based on their method of metabolism. They derive energy from photosynthetic chemosynthetic or thermosynthetic processes. These are believed to be the precursors for many life forms, and are often found in conjunction with other species. Links between the biochemistry of bacterial colonies and neighbouring organisms are likely but as yet unproven.</value>
-    <comment>Bacterium</comment>
   </data>
   <data name="Brancae" xml:space="preserve">
     <value>These organic structures are so called because of the vaguely brain-like growths on the ends of their branches. These resilient organic structures absorb minerals via their subsurface roots and energy via their outer skin.</value>
-    <comment>Brain Tree</comment>
   </data>
   <data name="Cactoid" xml:space="preserve">
     <value>Photosynthetic organisms that have adapted to extreme conditions by reducing their surface area to volume ratio, thereby protecting more sensitive tissues from exposure.The outer layer is formed from specialised light-transmitting cells. These are filled with an insulating hydrophobic layer, which helps to maintain core temperature and liquid retention. Deep, extensive root structures hold the organisms in place, and facilitate the extraction of trace minerals. Some cactoida species feature explosive seed distribution as a method of reproduction.</value>
-    <comment>Cactoida</comment>
   </data>
   <data name="CalcitePlates" xml:space="preserve">
     <value>These calcium-carbonate structures are created by vast numbers of tiny polyp-like creatures.</value>
-    <comment>Calcite Plates</comment>
   </data>
   <data name="ChalicePod" xml:space="preserve">
     <value>These robust seed pods are able to survive indefinitely in the vacuum of space.</value>
-    <comment>Chalice Pod</comment>
   </data>
   <data name="Clypeus" xml:space="preserve">
     <value>Extremophile organisms that have evolved to create hard shield structures, primarily to protect against stellar radiation. They also collect and condense traces of liquid material in the atmosphere, allowing the organisms to flourish in extremely arid environments. The shields are typically synthesised from surrounding inorganic material. which will frequently define their shape and colouration.</value>
-    <comment>Clypeus</comment>
   </data>
   <data name="CollaredPod" xml:space="preserve">
     <value>These organisms absorb energy through their distinctive collar.</value>
-    <comment>Collared Pod</comment>
   </data>
   <data name="Conchas" xml:space="preserve">
     <value>Highly specialised complex extremophiles that have developed protective and sturdy motile shell structures. These open and close based on the suitability of the current environmental conditions. The shells are an organic structure with an excreted inorganic insulated and sometimes reﬂective casing that help the organism maintain homeostasis. The internal organisms, which are remarkably tough in their own right, are only exposed for metabolic and reproductive purposes.</value>
-    <comment>Concha</comment>
   </data>
   <data name="Cone" xml:space="preserve">
     <value>These organic structures survive by absorbing elements from nova and supernova, with the dense outer layer protecting them from the severest radiation.</value>
-    <comment>Bark Mounds</comment>
   </data>
   <data name="Electricae" xml:space="preserve">
     <value>Organisms found exclusively on extremely cold ice worlds in the vicinity of frozen lakes. The visible tips can be observed protruding from the ice, often near fissures where it is thinnest. The bulk of the organisms extend down through the ice into subsurface melt potentially for several kilometres. Electricae are superconductive in nature. utilising the thermal circulation of the surrounding fluid to drive an electrochemical process. This is probably why they are limited to planets with atmospheres dominated by noble gases. The surface structure exists to provide a connection to the atmosphere, which in turn creates a point of electrical potential difference. A by-product of this is the bioluminescent display that runs through the organism. Although never witnessed, reproduction presumably occurs below the surface by some unidentified process.</value>
-    <comment>Electricae</comment>
   </data>
   <data name="Fonticulus" xml:space="preserve">
     <value>Photosynthetic colony organisms found exclusively on ice worlds, where they have embraced the surrounding frozen material as a form of protection. As the fonticulus develop they melt ice from around them, absorbing the liquid through tiny cellular pores and passing it to the colony’s reproductive edge. Here the liquid is excreted and immediately refreezes, creating hard translucent exoskeletons that provide protection for the organisms. Frond structures create a wide flat space that expose internal photosynthetic cells to as much light as possible. Reproduction appears to occur by colony division, most likely when a shard of the structure collapses under its own weight and the smaller shard creates a new colony.</value>
-    <comment>Fonticulua</comment>
   </data>
   <data name="Fumerolas" xml:space="preserve">
     <value>Extremophile organisms located in regions with active fumaroles. Their metabolism is driven exclusively through chemosynthetic and thermosynthetic mechanisms based on nearby volcanic activity. Proximity to volcanic heat allows them to survive in environments where the ambient temperature is naturally too cold for them. They frequently incorporate minerals from the fumaroles’ ejecta, meaning they can appear inorganic at first glance and may sport exotic colours.</value>
-    <comment>Fumerola</comment>
   </data>
   <data name="Fungoids" xml:space="preserve">
     <value>Organisms that live deep inside a planetary substrate. They share similar morphology to fungi but are not saprophytic, instead their mycelial body drives its metabolism through chemosynthetic and thermosynthetic processes. These are facilitated by the substrate which also protects the organism from environmental extremes. The exposed aspects of the organisms are primarily involved in reproduction. This is frequently through spore ejection, but certain species also support gaseous exchange with the atmosphere. Some fungoicla exhibit bioluminescent behaviours as part of a metabolic process involved in the breakdown of accumulated toxins.</value>
-    <comment>Fungoida</comment>
   </data>
   <data name="GroundStructIce" xml:space="preserve">
     <value>These crystalline structures are created by large colonies of microorganisms.</value>
-    <comment>Crystalline Shards</comment>
   </data>
   <data name="GyrePod" xml:space="preserve">
     <value>These seed pods are unusual in that they are covered in a fine layer of living tissue.</value>
-    <comment>Gyre Pod</comment>
   </data>
   <data name="GyreTree" xml:space="preserve">
     <value>These organisms are characterised by their long, slender limbs, which often terminate in a large seed pod.</value>
-    <comment>Gyre Tree</comment>
   </data>
   <data name="IceCrystals" xml:space="preserve">
     <value>These crystalline structures are created by microorganisms believed to be some of the oldest life forms in the galaxy.</value>
-    <comment>Ice Crystals</comment>
   </data>
   <data name="MetallicCrystals" xml:space="preserve">
     <value>These crystalline structures are created by huge numbers of primordial microorganisms.</value>
-    <comment>Metallic Crystals</comment>
   </data>
   <data name="MineralSpheres" xml:space="preserve">
     <value>These mineral structures are created by large colonies of ancient microorganisms.</value>
-    <comment>Mineral Spheres</comment>
   </data>
   <data name="MolluscBell" xml:space="preserve">
     <value>A bell-shaped organism with distinctive linear patterns on its underside, which feeds off starlight converted into chemical energy.</value>
-    <comment>Mollusc Bell</comment>
   </data>
   <data name="MolluscBulb" xml:space="preserve">
     <value>This organism is protected by a bulb-shaped husk, allowing it to survive for millennia in the vacuum of space.</value>
-    <comment>Mollusc Bulb</comment>
   </data>
   <data name="MolluscBullet" xml:space="preserve">
     <value>A bullet-shaped orgamism that feeds off starlight converted into chemical energy.</value>
-    <comment>Mollusc Bullet</comment>
   </data>
   <data name="MolluscCapsule" xml:space="preserve">
     <value>This organism is protected by a capsule-shaped husk, allowing it to survive for millennia in the vacuum of space.</value>
-    <comment>Mollusc Capsule</comment>
   </data>
   <data name="MolluscGlobe" xml:space="preserve">
     <value>These organisms are so called because of their spherical shell. Despite being animals, they generate chemical energy through a process similar to photosynthesis, using their tentacles to absorb starlight.</value>
-    <comment>Mollusc Globe</comment>
   </data>
   <data name="MolluscGourd" xml:space="preserve">
     <value>A gourd-shaped organism that feeds off starlight converted into chemical energy.</value>
-    <comment>Mollusc Gourd</comment>
   </data>
   <data name="MolluscParasol" xml:space="preserve">
     <value>This organism is protected by a parasol-shaped husk, allowing it to survive for millennia in the vacuum of space.</value>
-    <comment>Mollusc Parasol</comment>
   </data>
   <data name="MolluscReel" xml:space="preserve">
     <value>This organism is protected by a reel-shaped husk, allowing it to survive for millennia in the vacuum of space.</value>
-    <comment>Mollusc Reel</comment>
   </data>
   <data name="MolluscSquid" xml:space="preserve">
     <value>A squid-shaped organism with tentacles and an extended head, which feeds off starlight converted into chemical energy.</value>
-    <comment>Mollusc Squid</comment>
   </data>
   <data name="MolluscTorus" xml:space="preserve">
     <value>A ring-shaped organism with a twin set of tentacles, which feeds off starlight converted into chemical energy.</value>
-    <comment>Mollusc Torus</comment>
   </data>
   <data name="MolluscUmbrella" xml:space="preserve">
     <value>This organism is protected by a umbrella-shaped husk, allowing it to survive for millennia in the vacuum of space.</value>
-    <comment>Mollusc Umbrella</comment>
   </data>
   <data name="Osseus" xml:space="preserve">
     <value>Slow-growing organisms that can be found exclusively on rocky areas of planets. They are defined by a symbiotic relationship that has evolved between two unicellular organisms. which are now inseparable. One cell type is solely responsible for energy production by either photosynthetic. chemosynthetic or thermosynthetic processes. The symbiotic cells harvest some of this energy, and in turn deposit a hard rock-like substance extracted from the local geology to create a rigid endoskeleton. This structure provides a solid base for the organism to exist. It features complex folds that help increase available surface area for metabolic interactions. Osseus have been observed to create callus-like cell coverings, and withdraw themselves into the endoskeleton for protection.</value>
-    <comment>Osseus</comment>
   </data>
   <data name="PedunclePod" xml:space="preserve">
     <value>These robust seed pods contain both seeds and spores.</value>
-    <comment>Peduncle Pod</comment>
   </data>
   <data name="PeduncleTree" xml:space="preserve">
     <value>These organic structures are able to survive and propagate in the vacuum of space.</value>
-    <comment>Peduncle Tree</comment>
   </data>
   <data name="QuadripartitePod" xml:space="preserve">
     <value>These seed pods have a thick husk that protects the fleshy interior from the vacuum of space.</value>
-    <comment>Quadripartite Pod</comment>
   </data>
   <data name="Recepta" xml:space="preserve">
     <value>Extremophiles that are found exclusively on planets wlth atmospheres dominated by sulphur dioxide. Using a combination of inorganic and hydrocarbon materials, they build a shielding bubble. This allows them to create an isolated biome with regulated temperature and chemical composition. Growth is a difﬁcult and complex process that requires careful melting, regrowing and freezing of the external shell so that the internal organism can develop. This is a gradual process meaning that larger recepta are of significant age. Reproduction is also similarly complex and revolves around a budding process, which creates a smaller version of the adult. Once detached, it can roll under the action of gravity and air currents before coming to rest, where it will deploy a holdfast marking its final position.</value>
-    <comment>Recepta</comment>
   </data>
   <data name="RhizomePod" xml:space="preserve">
     <value>The parent organism of these seed pods has not been identified, and it is possible that they are entirely self-contained.</value>
-    <comment>Rhizome Pod</comment>
   </data>
   <data name="Shrubs" xml:space="preserve">
     <value>Robust woody plants with deep rooting structures to gather liquids and hold themselves in place where the ground may be unstable. They are photosynthetic organisms with specialised photoreceptors that work even in low light conditions. As such they are highly successful, and are widespread and diverse in nature. Their small leaf structures protect them against extremely low temperatures and liquid loss in higher temperatures.</value>
-    <comment>Frutexa</comment>
   </data>
   <data name="SilicateCrystals" xml:space="preserve">
     <value>These dense crystalline structures are created by large colonies of ancient microorganisms.</value>
-    <comment>Silicate Crystals</comment>
+  </data>
+  <data name="Sphere" xml:space="preserve">
+    <value>Despite their name, these organic structures more closely resemble the shells of sea urchins. These organic structures can tolerate a wide range of temperatures and are able to absorb energy from nearby stars.</value>
   </data>
   <data name="StolonPod" xml:space="preserve">
     <value>These seed pods are colloquially known as space oysters due to the pearlescent object sometimes found at the centre of the pod.</value>
-    <comment>Stolon Pod</comment>
   </data>
   <data name="StolonTree" xml:space="preserve">
     <value>These organic structures are incredibly long lived, enduring for millennia in the vacuum of space.</value>
-    <comment>Stolon Tree</comment>
   </data>
   <data name="Stratum" xml:space="preserve">
     <value>Low-lying photosynthetic organisms that bond tightly to the surface of rocks. The body of the organism may be embedded in the rock subsurface to provide protection from the elements, leaving the tough photosynthetic proto-leaves exposed. Their simple proto-evolutionary nature means that they are a common sight on rocky worlds. Colouration is driven by a mixture of the mineral content of the attached rock and the absorption spectral of the nearby stellar body.</value>
-    <comment>Stratum</comment>
   </data>
   <data name="ThargoidBarnacle" xml:space="preserve">
     <value />
-    <comment>Thargoid Barnacle</comment>
   </data>
   <data name="Tubers" xml:space="preserve">
     <value>These organic structures are distinguished by their tubular shape and vivid colouration. These organic structures are merely the above-ground portion of a much larger subterranean organism.</value>
-    <comment>Sinuous Tuber</comment>
   </data>
   <data name="Tubus" xml:space="preserve">
     <value>Highly specialised organisms that can grow to extreme heights, which peak when in a mature state. The organisms’ height and ability to survive is largely constrained by gravity. The lack of any real atmospheric weather has not put evolutionaly pressure on the towers to be strong, so they form tall but thin structures which cannot be supported in high-gravity environments. The tower is formed from wrapped leaf-like structures, which create a regulated chimney void. This is used by the organism to create and maintain an artificial internal atmosphere, where discrete chemical processes can be undertaken along the length of the tower. Waste gases and other material may he released from the top of the tower. Some species feature external rings that can be used to gauge an organism’s age.</value>
-    <comment>Tubus</comment>
   </data>
   <data name="Tussocks" xml:space="preserve">
     <value>Robust photosynthetic plants similar in appearance to clump grasses. They have a shallow but complex root structure, which requires a solid surface to produce structural stability. Clumps may form through tillering or wider dispersal through a variety of seeding mechanisms. Some species have adapted cellular structures containing high sugar concentrations to protect against freezing damage.</value>
-    <comment>Tussock</comment>
   </data>
   <data name="Vents" xml:space="preserve">
     <value>These organic structures take their name from a type of container dating from Earth’s Neolithic period.</value>
-    <comment>Amphora</comment>
   </data>
   <data name="VoidHeart" xml:space="preserve">
     <value>These organic structures, sometimes called barbed knots, are noted for periodically emitting tremendous bursts of heat and light.</value>
-    <comment>Void Heart</comment>
   </data>
   <data name="VoidPod" xml:space="preserve">
     <value>These seed pods are distinguished by their leathery exterior and colourful bioluminescence.</value>
-    <comment>Octahedral Pod</comment>
   </data>
 </root>

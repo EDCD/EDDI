@@ -1,9 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
 using System.Collections.Generic;
-using Utilities;
-using System.Threading;
-using System;
-using System.Security.Cryptography.X509Certificates;
 
 namespace EddiDataDefinitions
 {
@@ -22,49 +18,27 @@ namespace EddiDataDefinitions
 
             public IDictionary<string, GeologyItem> list;
 
-            private int _numTotal;
-            public int numTotal   // TODO:#2212........The number of geologicals reported from logs, should match geoList length. 
-            {
-                get
-                {
-                    return _numTotal;
-                }
+            public int? reportedTotal;
 
-                set
-                {
-                    timestamp = DateTime.Now;
-                    _numTotal = value;
-                }
-            }
+            public int? numTotal => list.Count;
 
             public Geo()
             {
                 list = new Dictionary<string, GeologyItem>();
+                reportedTotal = 0;
             }
         }
+
         public Geo geo;
 
         public class Bio
         {
             public DateTime timestamp;
-            public IDictionary<string, Exobiology> list;
+            public Dictionary<string, Exobiology> list;
 
-            private int _numTotal;
-            public int numTotal   // TODO:#2212........The number of biologicals reported from logs, may not match bioList length due to predictions.
-            {
-                get
-                {
-                    return _numTotal;
-                }
+            public int reportedTotal;  // The number of biologicals reported by FSS/SAA
 
-                set
-                {
-                    timestamp = DateTime.Now;
-                    _numTotal = value;
-                }
-            }
-            //public int complete;
-            //public int remaining;
+            public int? numTotal => list.Count;
 
             private List<string> _listRemaining;
             public List<string> listRemaining
@@ -95,8 +69,8 @@ namespace EddiDataDefinitions
                 }
             }
 
-            private int _numComplete;
-            public int numComplete
+            private int? _numComplete;
+            public int? numComplete
             {
                 get
                 {
@@ -116,8 +90,8 @@ namespace EddiDataDefinitions
                 }
             }
 
-            private int _numRemaining;
-            public int numRemaining
+            private int? _numRemaining;
+            public int? numRemaining
             {
                 get
                 {
@@ -133,10 +107,14 @@ namespace EddiDataDefinitions
             public Bio ()
             {
                 list = new Dictionary<string, Exobiology>();
+                reportedTotal = 0;
             }
 
         };
         public Bio bio;
+
+        // Are the current biologicals predicted
+        public bool predicted;
 
         public SurfaceSignals ()
         {
@@ -187,12 +165,12 @@ namespace EddiDataDefinitions
 
             if ( bio.list != null )
             {
-                int c = 0;
+                //int c = 0;
                 foreach ( string key in bio.list.Keys )
                 {
-                    Logging.Debug( $"[SurfaceSignals] GetBios() -> [#{c}] {key}" );
-                    Thread.Sleep( 10 );
-                    c++;
+                    //Logging.Info( $"[SurfaceSignals] GetBios() -> [#{c}] {key}" );
+                    //Thread.Sleep( 10 );
+                    //c++;
 
                     list.Add( bio.list[ key ].genus.name );
                 }
@@ -200,5 +178,20 @@ namespace EddiDataDefinitions
 
             return list;
         }
+
+        //public void UpdateCounts ()
+        //{
+        //    // TODO:#2212........[Testing count update]
+        //    bio.numComplete = 0;
+        //    foreach ( Exobiology item in bio.list.Values )
+        //    {
+        //        if ( item.complete )
+        //        {
+        //            bio.numComplete++;
+        //        }
+        //    }
+
+        //    bio.numRemaining = bio.numTotal - bio.numComplete;
+        //}
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
+using System.Threading;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -804,14 +806,14 @@ namespace EddiDataDefinitions
             entryIdData.Add( 2300603, new LookupEntryId( "MolluscBell", "GypseeumBellMollusc", "GypseeumBellMollusc" ) );
             entryIdData.Add( 2300605, new LookupEntryId( "MolluscBell", "BlatteumBellMollusc", "BlatteumBellMollusc" ) );
             entryIdData.Add( 2300607, new LookupEntryId( "MolluscBell", "LuteolumBellMollusc", "LuteolumBellMollusc" ) );
-            entryIdData.Add( 2100401, new LookupEntryId( "Anemone", "LuteolumAnemone", "LuteolumAnemone" ) );
-            entryIdData.Add( 2100402, new LookupEntryId( "Anemone", "CroceumAnemone", "CroceumAnemone" ) );
-            entryIdData.Add( 2100403, new LookupEntryId( "Anemone", "PuniceumAnemone", "PuniceumAnemone" ) );
-            entryIdData.Add( 2100404, new LookupEntryId( "Anemone", "RoseumAnemone", "RoseumAnemone" ) );
-            entryIdData.Add( 2100406, new LookupEntryId( "Anemone", "RubeumBioluminescentAnemone", "RubeumBioluminescentAnemone" ) );
-            entryIdData.Add( 2100407, new LookupEntryId( "Anemone", "PrasinumBioluminescentAnemone", "PrasinumBioluminescentAnemone" ) );
-            entryIdData.Add( 2100408, new LookupEntryId( "Anemone", "RoseumBioluminescentAnemone", "RoseumBioluminescentAnemone" ) );
-            entryIdData.Add( 2100405, new LookupEntryId( "Anemone", "BlatteumBioluminescentAnemone", "BlatteumBioluminescentAnemone" ) );
+            entryIdData.Add( 2100401, new LookupEntryId( "Sphere", "LuteolumAnemone", "LuteolumAnemone" ) );
+            entryIdData.Add( 2100402, new LookupEntryId( "Sphere", "CroceumAnemone", "CroceumAnemone" ) );
+            entryIdData.Add( 2100403, new LookupEntryId( "Sphere", "PuniceumAnemone", "PuniceumAnemone" ) );
+            entryIdData.Add( 2100404, new LookupEntryId( "Sphere", "RoseumAnemone", "RoseumAnemone" ) );
+            entryIdData.Add( 2100406, new LookupEntryId( "Sphere", "RubeumBioluminescentAnemone", "RubeumBioluminescentAnemone" ) );
+            entryIdData.Add( 2100407, new LookupEntryId( "Sphere", "PrasinumBioluminescentAnemone", "PrasinumBioluminescentAnemone" ) );
+            entryIdData.Add( 2100408, new LookupEntryId( "Sphere", "RoseumBioluminescentAnemone", "RoseumBioluminescentAnemone" ) );
+            entryIdData.Add( 2100405, new LookupEntryId( "Sphere", "BlatteumBioluminescentAnemone", "BlatteumBioluminescentAnemone" ) );
             entryIdData.Add( 1410110, new LookupEntryId( "MineralSpheres", "LatticeMineralSpheres", "LatticeMineralSpheres" ) );
             entryIdData.Add( 1410100, new LookupEntryId( "MineralSpheres", "SolidMineralSpheres", "SolidMineralSpheres" ) );
             entryIdData.Add( 2207200, new LookupEntryId( "StolonPod", "StolonPod", "StolonPod" ) );
@@ -1071,6 +1073,7 @@ namespace EddiDataDefinitions
             entryIdData.Add( 2451506, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Teal" ) );
             entryIdData.Add( 2451509, new LookupEntryId( "Tussocks", "TussockCapillum", "TussockCapillum_Red" ) );
             entryIdData.Add( 2101400, new LookupEntryId( "Vents", "AmphoraPlant", "AmphoraPlant" ) );
+
 
 
 
@@ -1727,14 +1730,14 @@ namespace EddiDataDefinitions
             variantData.Add( "Small_Org_Moll01_V6_Gr", new LookupVariant( (long?)2300603, "MolluscBell", "GypseeumBellMollusc", "GypseeumBellMollusc" ) );
             variantData.Add( "Small_Org_Moll01_V6_Pur", new LookupVariant( (long?)2300605, "MolluscBell", "BlatteumBellMollusc", "BlatteumBellMollusc" ) );
             variantData.Add( "Small_Org_Moll01_V6_Y", new LookupVariant( (long?)2300607, "MolluscBell", "LuteolumBellMollusc", "LuteolumBellMollusc" ) );
-            variantData.Add( "Sphere", new LookupVariant( (long?)2100401, "Anemone", "LuteolumAnemone", "LuteolumAnemone" ) );
-            variantData.Add( "SphereABCD_01", new LookupVariant( (long?)2100402, "Anemone", "CroceumAnemone", "CroceumAnemone" ) );
-            variantData.Add( "SphereABCD_02", new LookupVariant( (long?)2100403, "Anemone", "PuniceumAnemone", "PuniceumAnemone" ) );
-            variantData.Add( "SphereABCD_03", new LookupVariant( (long?)2100404, "Anemone", "RoseumAnemone", "RoseumAnemone" ) );
-            variantData.Add( "SphereEFGH_01", new LookupVariant( (long?)2100406, "Anemone", "RubeumBioluminescentAnemone", "RubeumBioluminescentAnemone" ) );
-            variantData.Add( "SphereEFGH_02", new LookupVariant( (long?)2100407, "Anemone", "PrasinumBioluminescentAnemone", "PrasinumBioluminescentAnemone" ) );
-            variantData.Add( "SphereEFGH_03", new LookupVariant( (long?)2100408, "Anemone", "RoseumBioluminescentAnemone", "RoseumBioluminescentAnemone" ) );
-            variantData.Add( "SphereEFGH", new LookupVariant( (long?)2100405, "Anemone", "BlatteumBioluminescentAnemone", "BlatteumBioluminescentAnemone" ) );
+            variantData.Add( "Sphere", new LookupVariant( (long?)2100401, "Sphere", "LuteolumAnemone", "LuteolumAnemone" ) );
+            variantData.Add( "SphereABCD_01", new LookupVariant( (long?)2100402, "Sphere", "CroceumAnemone", "CroceumAnemone" ) );
+            variantData.Add( "SphereABCD_02", new LookupVariant( (long?)2100403, "Sphere", "PuniceumAnemone", "PuniceumAnemone" ) );
+            variantData.Add( "SphereABCD_03", new LookupVariant( (long?)2100404, "Sphere", "RoseumAnemone", "RoseumAnemone" ) );
+            variantData.Add( "SphereEFGH_01", new LookupVariant( (long?)2100406, "Sphere", "RubeumBioluminescentAnemone", "RubeumBioluminescentAnemone" ) );
+            variantData.Add( "SphereEFGH_02", new LookupVariant( (long?)2100407, "Sphere", "PrasinumBioluminescentAnemone", "PrasinumBioluminescentAnemone" ) );
+            variantData.Add( "SphereEFGH_03", new LookupVariant( (long?)2100408, "Sphere", "RoseumBioluminescentAnemone", "RoseumBioluminescentAnemone" ) );
+            variantData.Add( "SphereEFGH", new LookupVariant( (long?)2100405, "Sphere", "BlatteumBioluminescentAnemone", "BlatteumBioluminescentAnemone" ) );
             variantData.Add( "SPOI_Ball_Lattice", new LookupVariant( (long?)1410110, "MineralSpheres", "LatticeMineralSpheres", "LatticeMineralSpheres" ) );
             variantData.Add( "SPOI_Ball", new LookupVariant( (long?)1410100, "MineralSpheres", "SolidMineralSpheres", "SolidMineralSpheres" ) );
             variantData.Add( "SPOI_Root_Seeds", new LookupVariant( (long?)2207200, "StolonPod", "StolonPod", "StolonPod" ) );
@@ -1997,10 +2000,11 @@ namespace EddiDataDefinitions
 
 
 
+
             // Sample distances for exobiology
             sampleDistance.Add( "Aleoids", 150 );
             sampleDistance.Add( "Vents", 100 );
-            sampleDistance.Add( "Anemone", 100 );
+            sampleDistance.Add( "Sphere", 100 );
             sampleDistance.Add( "Bacterial", 500 );
             sampleDistance.Add( "Cone", 100 );
             sampleDistance.Add( "Brancae", 100 );
@@ -2053,81 +2057,81 @@ namespace EddiDataDefinitions
 
 
 
-            // Species specific data and conditions
-            // Possible future use for biological predictions
-            // ( <species>, <base value>, <maxG>, <minK>, <maxK>, <parent star>, <planet type>, <atmosphere>, <volcanism> )
-            speciesData.Add( "AleoidaArcus", new SpeciesData( (int?)7252500, "Aleoida", (decimal?)0.27, "MinMax", (decimal?)175, (decimal?)180, "", "", "CarbonDioxide", "" ) );
-            speciesData.Add( "AleoidaCoronamus", new SpeciesData( (int?)6284600, "Aleoida", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)190, "", "", "CarbonDioxide", "" ) );
-            speciesData.Add( "AleoidaGravis", new SpeciesData( (int?)12934900, "Aleoida", (decimal?)0.27, "MinMax", (decimal?)190, (decimal?)195, "", "", "CarbonDioxide", "" ) );
-            speciesData.Add( "AleoidaLaminiae", new SpeciesData( (int?)3385200, "Aleoida", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
-            speciesData.Add( "AleoidaSpica", new SpeciesData( (int?)3385200, "Aleoida", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
-            speciesData.Add( "AmphoraPlant", new SpeciesData( (int?)1628800, "Amphora", null, "None", null, null, "A", "MetalRichBody", "None", "" ) );
-            speciesData.Add( "BlatteumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "CroceumAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "LuteolumAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "PrasinumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "PuniceumAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "RoseumAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "RoseumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "RubeumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Anemone", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
-            speciesData.Add( "BacteriumAcies", new SpeciesData( (int?)1000000, "Bacterium", null, "None", null, null, "", "", "Neon,NeonRich", "" ) );
-            speciesData.Add( "BacteriumAlcyoneum", new SpeciesData( (int?)1658500, "Bacterium", null, "None", null, null, "", "", "Ammonia", "" ) );
-            speciesData.Add( "BacteriumAurasus", new SpeciesData( (int?)1000000, "Bacterium", null, "None", null, null, "", "", "CarbonDioxide", "" ) );
-            speciesData.Add( "BacteriumBullaris", new SpeciesData( (int?)1152500, "Bacterium", null, "None", null, null, "", "", "Methane,MethaneRich", "" ) );
-            speciesData.Add( "BacteriumCerbrus", new SpeciesData( (int?)1689800, "Bacterium", null, "None", null, null, "", "", "Water,SulphurDioxide", "" ) );
-            speciesData.Add( "BacteriumInformem", new SpeciesData( (int?)8418000, "Bacterium", null, "None", null, null, "", "", "Nitrogen", "" ) );
-            speciesData.Add( "BacteriumNebulus", new SpeciesData( (int?)5289900, "Bacterium", null, "None", null, null, "", "", "Helium", "" ) );
-            speciesData.Add( "BacteriumOmentum", new SpeciesData( (int?)4638900, "Bacterium", null, "None", null, null, "", "", "Neon,NeonRich", "Nitrogen,Ammonia" ) );
-            speciesData.Add( "BacteriumScopulum", new SpeciesData( (int?)4934500, "Bacterium", null, "None", null, null, "", "", "Neon,NeonRich", "Carbon,Methane" ) );
-            speciesData.Add( "BacteriumTela", new SpeciesData( (int?)1949000, "Bacterium", null, "None", null, null, "", "", "", "Helium,Iron,Silicate,Ammonia" ) );
-            speciesData.Add( "BacteriumVerrata", new SpeciesData( (int?)3897000, "Bacterium", null, "None", null, null, "", "", "Neon,NeonRich", "Water" ) );
-            speciesData.Add( "BacteriumVesicula", new SpeciesData( (int?)1000000, "Bacterium", null, "None", null, null, "", "", "Argon", "" ) );
-            speciesData.Add( "BacteriumVolu", new SpeciesData( (int?)7774700, "Bacterium", null, "None", null, null, "", "", "Oxygen", "" ) );
-            speciesData.Add( "BarkMounds", new SpeciesData( (int?)1471900, "Bark Mounds", null, "None", null, null, "", "", "None", "" ) );
-            speciesData.Add( "AureumBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "GypseeumBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "LindigoticumBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "LividumBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "OstrinumBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "PuniceumBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "RoseumBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "VirideBrainTree", new SpeciesData( (int?)1593700, "Brain Tree", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "CactoidaCortexum", new SpeciesData( (int?)3667600, "Cactoida", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "CarbonDioxide", "" ) );
-            speciesData.Add( "CactoidaLapis", new SpeciesData( (int?)2483600, "Cactoida", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
-            speciesData.Add( "CactoidaPeperatis", new SpeciesData( (int?)2483600, "Cactoida", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
-            speciesData.Add( "CactoidaPullulanta", new SpeciesData( (int?)3667600, "Cactoida", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "", "" ) );
-            speciesData.Add( "CactoidaVermis", new SpeciesData( (int?)16202800, "Cactoida", (decimal?)0.27, "None", null, null, "", "", "Water", "" ) );
+            // TODO:#2212........[Change planet class, atmosphere and Volcanism with existing classes]
+            // Species specific data and conditions for predictions
+            // ( <species>, <base value>, <genus>, <maxG>, <kRange>, <minK>, <maxK>, <parent star>, <planet type>, <atmosphere>, <volcanism> )
+            speciesData.Add( "AleoidaArcus", new SpeciesData( (int?)7252500, "Aleoids", (decimal?)0.27, "MinMax", (decimal?)175, (decimal?)180, "", "", "CarbonDioxide", "" ) );
+            speciesData.Add( "AleoidaCoronamus", new SpeciesData( (int?)6284600, "Aleoids", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)190, "", "", "CarbonDioxide", "" ) );
+            speciesData.Add( "AleoidaGravis", new SpeciesData( (int?)12934900, "Aleoids", (decimal?)0.27, "MinMax", (decimal?)190, (decimal?)195, "", "", "CarbonDioxide", "" ) );
+            speciesData.Add( "AleoidaLaminiae", new SpeciesData( (int?)3385200, "Aleoids", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
+            speciesData.Add( "AleoidaSpica", new SpeciesData( (int?)3385200, "Aleoids", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
+            speciesData.Add( "AmphoraPlant", new SpeciesData( (int?)1628800, "Vents", null, "None", null, null, "A", "MetalRichBody", "None", "" ) );
+            speciesData.Add( "BlatteumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "CroceumAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "LuteolumAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "PrasinumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "PuniceumAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "RoseumAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "RoseumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "RubeumBioluminescentAnemone", new SpeciesData( (int?)1499900, "Sphere", null, "None", null, null, "O,B,A", "", "SulphurDioxide,None", "" ) );
+            speciesData.Add( "BacteriumAcies", new SpeciesData( (int?)1000000, "Bacterial", null, "None", null, null, "", "", "Neon,NeonRich", "" ) );
+            speciesData.Add( "BacteriumAlcyoneum", new SpeciesData( (int?)1658500, "Bacterial", null, "None", null, null, "", "", "Ammonia", "" ) );
+            speciesData.Add( "BacteriumAurasus", new SpeciesData( (int?)1000000, "Bacterial", null, "None", null, null, "", "", "CarbonDioxide", "" ) );
+            speciesData.Add( "BacteriumBullaris", new SpeciesData( (int?)1152500, "Bacterial", null, "None", null, null, "", "", "Methane,MethaneRich", "" ) );
+            speciesData.Add( "BacteriumCerbrus", new SpeciesData( (int?)1689800, "Bacterial", null, "None", null, null, "", "", "Water,SulphurDioxide", "" ) );
+            speciesData.Add( "BacteriumInformem", new SpeciesData( (int?)8418000, "Bacterial", null, "None", null, null, "", "", "Nitrogen", "" ) );
+            speciesData.Add( "BacteriumNebulus", new SpeciesData( (int?)5289900, "Bacterial", null, "None", null, null, "", "", "Helium", "" ) );
+            speciesData.Add( "BacteriumOmentum", new SpeciesData( (int?)4638900, "Bacterial", null, "None", null, null, "", "", "Neon,NeonRich", "Nitrogen,Ammonia" ) );
+            speciesData.Add( "BacteriumScopulum", new SpeciesData( (int?)4934500, "Bacterial", null, "None", null, null, "", "", "Neon,NeonRich", "Carbon,Methane" ) );
+            speciesData.Add( "BacteriumTela", new SpeciesData( (int?)1949000, "Bacterial", null, "None", null, null, "", "", "", "Helium,Iron,Silicate,Ammonia" ) );
+            speciesData.Add( "BacteriumVerrata", new SpeciesData( (int?)3897000, "Bacterial", null, "None", null, null, "", "", "Neon,NeonRich", "Water" ) );
+            speciesData.Add( "BacteriumVesicula", new SpeciesData( (int?)1000000, "Bacterial", null, "None", null, null, "", "", "Argon", "" ) );
+            speciesData.Add( "BacteriumVolu", new SpeciesData( (int?)7774700, "Bacterial", null, "None", null, null, "", "", "Oxygen", "" ) );
+            speciesData.Add( "BarkMounds", new SpeciesData( (int?)1471900, "Cone", null, "None", null, null, "", "", "None", "" ) );
+            speciesData.Add( "AureumBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "GypseeumBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "LindigoticumBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "LividumBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "OstrinumBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "PuniceumBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "RoseumBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "VirideBrainTree", new SpeciesData( (int?)1593700, "Brancae", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "CactoidaCortexum", new SpeciesData( (int?)3667600, "Cactoid", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "CarbonDioxide", "" ) );
+            speciesData.Add( "CactoidaLapis", new SpeciesData( (int?)2483600, "Cactoid", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
+            speciesData.Add( "CactoidaPeperatis", new SpeciesData( (int?)2483600, "Cactoid", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
+            speciesData.Add( "CactoidaPullulanta", new SpeciesData( (int?)3667600, "Cactoid", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "", "" ) );
+            speciesData.Add( "CactoidaVermis", new SpeciesData( (int?)16202800, "Cactoid", (decimal?)0.27, "None", null, null, "", "", "Water", "" ) );
             speciesData.Add( "ClypeusLacrimam", new SpeciesData( (int?)8418000, "Clypeus", (decimal?)0.27, "Min", (decimal?)190, null, "", "RockyBody,HighMetalContentBody", "Water,CarbonDioxide", "" ) );
             speciesData.Add( "ClypeusMargaritus", new SpeciesData( (int?)11873200, "Clypeus", (decimal?)0.27, "Min", (decimal?)190, null, "", "RockyBody,HighMetalContentBody", "Water,CarbonDioxide", "" ) );
             speciesData.Add( "ClypeusSpeculumi", new SpeciesData( (int?)16202800, "Clypeus", (decimal?)0.27, "Min", (decimal?)190, null, "", "RockyBody,HighMetalContentBody", "Water,CarbonDioxide", "" ) );
-            speciesData.Add( "ConchaAureolas", new SpeciesData( (int?)7774700, "Concha", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
-            speciesData.Add( "ConchaBiconcavis", new SpeciesData( (int?)19010800, "Concha", (decimal?)0.27, "None", null, null, "", "", "Nitrogen", "" ) );
-            speciesData.Add( "ConchaLabiata", new SpeciesData( (int?)2352400, "Concha", (decimal?)0.27, "None", null, null, "", "", "CarbonDioxide", "" ) );
-            speciesData.Add( "ConchaRenibus", new SpeciesData( (int?)4572400, "Concha", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "Water,CarbonDioxide", "" ) );
-            speciesData.Add( "CrystallineShards", new SpeciesData( (int?)1628800, "Crystalline Shards", null, "Max", (decimal?)0, (decimal?)273, "A,F,G,K,M,S", "", "None", "" ) );
+            speciesData.Add( "ConchaAureolas", new SpeciesData( (int?)7774700, "Conchas", (decimal?)0.27, "None", null, null, "", "", "Ammonia", "" ) );
+            speciesData.Add( "ConchaBiconcavis", new SpeciesData( (int?)19010800, "Conchas", (decimal?)0.27, "None", null, null, "", "", "Nitrogen", "" ) );
+            speciesData.Add( "ConchaLabiata", new SpeciesData( (int?)2352400, "Conchas", (decimal?)0.27, "None", null, null, "", "", "CarbonDioxide", "" ) );
+            speciesData.Add( "ConchaRenibus", new SpeciesData( (int?)4572400, "Conchas", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "Water,CarbonDioxide", "" ) );
+            speciesData.Add( "CrystallineShards", new SpeciesData( (int?)1628800, "GroundStructIce", null, "Max", (decimal?)0, (decimal?)273, "A,F,G,K,M,S", "", "None", "" ) );
             speciesData.Add( "ElectricaePluma", new SpeciesData( (int?)6284600, "Electricae", (decimal?)0.27, "None", null, null, "A,Neutron", "IcyBody", "Helium,Neon,Argon", "" ) );
             speciesData.Add( "ElectricaeRadialem", new SpeciesData( (int?)6284600, "Electricae", (decimal?)0.27, "None", null, null, "A,Neutron", "IcyBody", "Helium,Neon,Argon", "" ) );
-            speciesData.Add( "FonticuluaCampestris", new SpeciesData( (int?)1000000, "Fonticulua", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Argon", "" ) );
-            speciesData.Add( "FonticuluaDigitos", new SpeciesData( (int?)1804100, "Fonticulua", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Methane,MethaneRich", "" ) );
-            speciesData.Add( "FonticuluaFluctus", new SpeciesData( (int?)20000000, "Fonticulua", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Oxygen", "" ) );
-            speciesData.Add( "FonticuluaLapida", new SpeciesData( (int?)3111000, "Fonticulua", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Nitrogen", "" ) );
-            speciesData.Add( "FonticuluaSegmentatus", new SpeciesData( (int?)19010800, "Fonticulua", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Neon,NeonRich", "" ) );
-            speciesData.Add( "FonticuluaUpupam", new SpeciesData( (int?)5727600, "Fonticulua", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "ArgonRich", "" ) );
-            speciesData.Add( "FrutexaAcus", new SpeciesData( (int?)7774700, "Frutexa", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "FrutexaCollum", new SpeciesData( (int?)1639800, "Frutexa", (decimal?)0.27, "None", null, null, "", "RockyBody", "SulphurDioxide", "" ) );
-            speciesData.Add( "FrutexaFera", new SpeciesData( (int?)1632500, "Frutexa", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "FrutexaFlabellum", new SpeciesData( (int?)1808900, "Frutexa", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
-            speciesData.Add( "FrutexaFlammasis", new SpeciesData( (int?)10326000, "Frutexa", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
-            speciesData.Add( "FrutexaMetallicum", new SpeciesData( (int?)1632500, "Frutexa", (decimal?)0.27, "Max", null, (decimal?)195, "", "HighMetalContentBody", "CarbonDioxide,Ammonia", "" ) );
-            speciesData.Add( "FrutexaSponsae", new SpeciesData( (int?)5988000, "Frutexa", (decimal?)0.27, "None", null, null, "", "RockyBody", "Water", "" ) );
-            speciesData.Add( "FumerolaAquatis", new SpeciesData( (int?)6284600, "Fumerola", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyIceBody", "Any", "Water" ) );
-            speciesData.Add( "FumerolaCarbosis", new SpeciesData( (int?)6284600, "Fumerola", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyIceBody", "Any", "Carbon,Methane" ) );
-            speciesData.Add( "FumerolaExtremus", new SpeciesData( (int?)16202800, "Fumerola", (decimal?)0.27, "None", null, null, "", "RockyBody,HighMetalContentBody", "Any", "Silicate,Iron,Rocky" ) );
-            speciesData.Add( "FumerolaNitris", new SpeciesData( (int?)7500900, "Fumerola", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyIceBody", "Any", "Nitrogen,Ammonia" ) );
-            speciesData.Add( "FungoidaBullarum", new SpeciesData( (int?)3703200, "Fungoida", (decimal?)0.27, "None", null, null, "", "", "Argon,ArgonRich", "" ) );
-            speciesData.Add( "FungoidaGelata", new SpeciesData( (int?)3330300, "Fungoida", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "Water,CarbonDioxide", "" ) );
-            speciesData.Add( "FungoidaSetisis", new SpeciesData( (int?)1670100, "Fungoida", (decimal?)0.27, "None", null, null, "", "", "Ammonia,Methane", "" ) );
-            speciesData.Add( "FungoidaStabitis", new SpeciesData( (int?)2680300, "Fungoida", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "Water,CarbonDioxide", "" ) );
+            speciesData.Add( "FonticuluaCampestris", new SpeciesData( (int?)1000000, "Fonticulus", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Argon", "" ) );
+            speciesData.Add( "FonticuluaDigitos", new SpeciesData( (int?)1804100, "Fonticulus", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Methane,MethaneRich", "" ) );
+            speciesData.Add( "FonticuluaFluctus", new SpeciesData( (int?)20000000, "Fonticulus", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Oxygen", "" ) );
+            speciesData.Add( "FonticuluaLapida", new SpeciesData( (int?)3111000, "Fonticulus", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Nitrogen", "" ) );
+            speciesData.Add( "FonticuluaSegmentatus", new SpeciesData( (int?)19010800, "Fonticulus", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "Neon,NeonRich", "" ) );
+            speciesData.Add( "FonticuluaUpupam", new SpeciesData( (int?)5727600, "Fonticulus", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyBody", "ArgonRich", "" ) );
+            speciesData.Add( "FrutexaAcus", new SpeciesData( (int?)7774700, "Shrubs", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "FrutexaCollum", new SpeciesData( (int?)1639800, "Shrubs", (decimal?)0.27, "None", null, null, "", "RockyBody", "SulphurDioxide", "" ) );
+            speciesData.Add( "FrutexaFera", new SpeciesData( (int?)1632500, "Shrubs", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "FrutexaFlabellum", new SpeciesData( (int?)1808900, "Shrubs", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
+            speciesData.Add( "FrutexaFlammasis", new SpeciesData( (int?)10326000, "Shrubs", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
+            speciesData.Add( "FrutexaMetallicum", new SpeciesData( (int?)1632500, "Shrubs", (decimal?)0.27, "Max", null, (decimal?)195, "", "HighMetalContentBody", "CarbonDioxide,Ammonia", "" ) );
+            speciesData.Add( "FrutexaSponsae", new SpeciesData( (int?)5988000, "Shrubs", (decimal?)0.27, "None", null, null, "", "RockyBody", "Water", "" ) );
+            speciesData.Add( "FumerolaAquatis", new SpeciesData( (int?)6284600, "Fumerolas", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyIceBody", "Any", "Water" ) );
+            speciesData.Add( "FumerolaCarbosis", new SpeciesData( (int?)6284600, "Fumerolas", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyIceBody", "Any", "Carbon,Methane" ) );
+            speciesData.Add( "FumerolaExtremus", new SpeciesData( (int?)16202800, "Fumerolas", (decimal?)0.27, "None", null, null, "", "RockyBody,HighMetalContentBody", "Any", "Silicate,Iron,Rocky" ) );
+            speciesData.Add( "FumerolaNitris", new SpeciesData( (int?)7500900, "Fumerolas", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyIceBody", "Any", "Nitrogen,Ammonia" ) );
+            speciesData.Add( "FungoidaBullarum", new SpeciesData( (int?)3703200, "Fungoids", (decimal?)0.27, "None", null, null, "", "", "Argon,ArgonRich", "" ) );
+            speciesData.Add( "FungoidaGelata", new SpeciesData( (int?)3330300, "Fungoids", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "", "Water,CarbonDioxide", "" ) );
+            speciesData.Add( "FungoidaSetisis", new SpeciesData( (int?)1670100, "Fungoids", (decimal?)0.27, "None", null, null, "", "", "Ammonia,Methane", "" ) );
+            speciesData.Add( "FungoidaStabitis", new SpeciesData( (int?)2680300, "Fungoids", (decimal?)0.27, "None", (decimal?)180, (decimal?)195, "", "", "Water,CarbonDioxide", "" ) );
             speciesData.Add( "OsseusCornibus", new SpeciesData( (int?)1483000, "Osseus", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "RockyBody,HighMetalContentBody", "CarbonDioxide", "" ) );
             speciesData.Add( "OsseusDiscus", new SpeciesData( (int?)12934900, "Osseus", (decimal?)0.27, "None", null, null, "", "RockyBody,HighMetalContentBody", "Water", "" ) );
             speciesData.Add( "OsseusFractus", new SpeciesData( (int?)4027800, "Osseus", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)195, "", "RockyBody,HighMetalContentBody", "CarbonDioxide", "" ) );
@@ -2137,14 +2141,14 @@ namespace EddiDataDefinitions
             speciesData.Add( "ReceptaConditivus", new SpeciesData( (int?)14313700, "Recepta", (decimal?)0.27, "None", null, null, "", "IcyBody,RockyIceBody", "SulphurDioxide", "" ) );
             speciesData.Add( "ReceptaDeltahedronix", new SpeciesData( (int?)16202800, "Recepta", (decimal?)0.27, "None", null, null, "", "RockyBody,HighMetalContentBody", "SulphurDioxide", "" ) );
             speciesData.Add( "ReceptaUmbrux", new SpeciesData( (int?)12934900, "Recepta", (decimal?)0.27, "None", null, null, "", "", "SulphurDioxide", "" ) );
-            speciesData.Add( "AlbidumSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "BlatteumSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "CaeruleumSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "LindigoticumSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "PrasinumSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "RoseumSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "ViolaceumSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
-            speciesData.Add( "VirideSinuousTubers", new SpeciesData( (int?)1514500, "Sinuous Tuber", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "AlbidumSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "BlatteumSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "CaeruleumSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "LindigoticumSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "PrasinumSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "RoseumSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "ViolaceumSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
+            speciesData.Add( "VirideSinuousTubers", new SpeciesData( (int?)1514500, "Tubers", null, "None", null, null, "", "", "None", "Any" ) );
             speciesData.Add( "StratumAraneamus", new SpeciesData( (int?)2448900, "Stratum", null, "Min", (decimal?)165, null, "", "RockyBody", "SulphurDioxide", "" ) );
             speciesData.Add( "StratumCucumisis", new SpeciesData( (int?)16202800, "Stratum", null, "Min", (decimal?)190, null, "", "RockyBody", "SulphurDioxide,CarbonDioxide", "" ) );
             speciesData.Add( "StratumExcutitus", new SpeciesData( (int?)2448900, "Stratum", null, "MinMax", (decimal?)165, (decimal?)190, "", "RockyBody", "SulphurDioxide,CarbonDioxide", "" ) );
@@ -2158,21 +2162,22 @@ namespace EddiDataDefinitions
             speciesData.Add( "TubusConifer", new SpeciesData( (int?)2415500, "Tubus", (decimal?)0.15, "MinMax", (decimal?)160, (decimal?)190, "", "RockyBody", "CarbonDioxide", "" ) );
             speciesData.Add( "TubusRosarium", new SpeciesData( (int?)2637500, "Tubus", (decimal?)0.15, "Min", (decimal?)160, null, "", "RockyBody", "Ammonia", "" ) );
             speciesData.Add( "TubusSororibus", new SpeciesData( (int?)5727600, "Tubus", (decimal?)0.15, "MinMax", (decimal?)160, (decimal?)190, "", "HighMetalContentBody", "CarbonDioxide,Ammonia", "" ) );
-            speciesData.Add( "TussockAlbata", new SpeciesData( (int?)3252500, "Tussock", (decimal?)0.27, "MinMax", (decimal?)175, (decimal?)180, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockCapillum", new SpeciesData( (int?)7025800, "Tussock", (decimal?)0.27, "None", null, null, "", "RockyBody", "Argon,Methane", "" ) );
-            speciesData.Add( "TussockCaputus", new SpeciesData( (int?)3472400, "Tussock", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)190, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockCatena", new SpeciesData( (int?)1766600, "Tussock", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
-            speciesData.Add( "TussockCultro", new SpeciesData( (int?)1766600, "Tussock", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
-            speciesData.Add( "TussockDivisa", new SpeciesData( (int?)1766600, "Tussock", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
-            speciesData.Add( "TussockIgnis", new SpeciesData( (int?)1849000, "Tussock", (decimal?)0.27, "MinMax", (decimal?)160, (decimal?)170, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockPennata", new SpeciesData( (int?)5853800, "Tussock", (decimal?)0.27, "MinMax", (decimal?)145, (decimal?)155, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockPennatis", new SpeciesData( (int?)1000000, "Tussock", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockPropagito", new SpeciesData( (int?)1000000, "Tussock", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockSerrati", new SpeciesData( (int?)4447100, "Tussock", (decimal?)0.27, "MinMax", (decimal?)170, (decimal?)175, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockStigmasis", new SpeciesData( (int?)19010800, "Tussock", (decimal?)0.27, "None", null, null, "", "RockyBody", "SulphurDioxide", "" ) );
-            speciesData.Add( "TussockTriticum", new SpeciesData( (int?)7774700, "Tussock", (decimal?)0.27, "MinMax", (decimal?)190, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockVentusa", new SpeciesData( (int?)3227700, "Tussock", (decimal?)0.27, "MinMax", (decimal?)155, (decimal?)160, "", "RockyBody", "CarbonDioxide", "" ) );
-            speciesData.Add( "TussockVirgam", new SpeciesData( (int?)14313700, "Tussock", (decimal?)0.27, "None", null, null, "", "RockyBody", "Water", "" ) );
+            speciesData.Add( "TussockAlbata", new SpeciesData( (int?)3252500, "Tussocks", (decimal?)0.27, "MinMax", (decimal?)175, (decimal?)180, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockCapillum", new SpeciesData( (int?)7025800, "Tussocks", (decimal?)0.27, "None", null, null, "", "RockyBody", "Argon,Methane", "" ) );
+            speciesData.Add( "TussockCaputus", new SpeciesData( (int?)3472400, "Tussocks", (decimal?)0.27, "MinMax", (decimal?)180, (decimal?)190, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockCatena", new SpeciesData( (int?)1766600, "Tussocks", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
+            speciesData.Add( "TussockCultro", new SpeciesData( (int?)1766600, "Tussocks", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
+            speciesData.Add( "TussockDivisa", new SpeciesData( (int?)1766600, "Tussocks", (decimal?)0.27, "None", null, null, "", "RockyBody", "Ammonia", "" ) );
+            speciesData.Add( "TussockIgnis", new SpeciesData( (int?)1849000, "Tussocks", (decimal?)0.27, "MinMax", (decimal?)160, (decimal?)170, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockPennata", new SpeciesData( (int?)5853800, "Tussocks", (decimal?)0.27, "MinMax", (decimal?)145, (decimal?)155, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockPennatis", new SpeciesData( (int?)1000000, "Tussocks", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockPropagito", new SpeciesData( (int?)1000000, "Tussocks", (decimal?)0.27, "Max", null, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockSerrati", new SpeciesData( (int?)4447100, "Tussocks", (decimal?)0.27, "MinMax", (decimal?)170, (decimal?)175, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockStigmasis", new SpeciesData( (int?)19010800, "Tussocks", (decimal?)0.27, "None", null, null, "", "RockyBody", "SulphurDioxide", "" ) );
+            speciesData.Add( "TussockTriticum", new SpeciesData( (int?)7774700, "Tussocks", (decimal?)0.27, "MinMax", (decimal?)190, (decimal?)195, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockVentusa", new SpeciesData( (int?)3227700, "Tussocks", (decimal?)0.27, "MinMax", (decimal?)155, (decimal?)160, "", "RockyBody", "CarbonDioxide", "" ) );
+            speciesData.Add( "TussockVirgam", new SpeciesData( (int?)14313700, "Tussocks", (decimal?)0.27, "None", null, null, "", "RockyBody", "Water", "" ) );
+
 
         }
 
@@ -2205,11 +2210,22 @@ namespace EddiDataDefinitions
                 {
                     LookupEntryId data = entryIdData[ (long)entryId ];
 
+                    // TODO:#2212........[Remove]
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:SRC] entryId = {(long)entryId}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:SRC]   genus = {data.genus}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:SRC] species = {data.species}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:SRC] variant = {data.variant}" );
+                    //Thread.Sleep( 10 );
+
                     if ( !skipGenus )
                     {
                         item.genus.name = rmOrganicGenusName.GetString( data.genus );
                         item.genus.description = rmOrganicGenusDesc.GetString( data.genus );
                     }
+
                     item.species.name = rmOrganicSpeciesName.GetString( data.species );
                     item.species.description = rmOrganicSpeciesDesc.GetString( data.species );
                     item.species.conditions = rmOrganicSpeciesCond.GetString( data.species );
@@ -2218,6 +2234,18 @@ namespace EddiDataDefinitions
 
                     sampleDistance.TryGetValue( data.genus, out item.genus.distance );
                     speciesData.TryGetValue( data.species, out item.data );
+
+                    // TODO:#2212........[Remove]
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:DST]        genus = {item.genus.name}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:DST]   genus desc = {item.genus.description}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:DST]      species = {item.species.name}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:DST] species desc = {item.species.description}" );
+                    //Thread.Sleep( 10 );
+                    //Logging.Info( $"[OrganicItem:LookupByEntryId:DST]      variant = {data.variant}" );
+                    //Thread.Sleep( 10 );
 
                     item.SetExists( true );
                 }

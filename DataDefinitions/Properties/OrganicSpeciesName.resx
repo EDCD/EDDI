@@ -117,8 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlbensBellMollusc" xml:space="preserve">
+    <value>Albens Bell Mollusc</value>
+  </data>
+  <data name="AlbidiumIceCrystals" xml:space="preserve">
+    <value>Albidium Ice Crystals</value>
+  </data>
+  <data name="AlbidiumSilicateCrystals" xml:space="preserve">
+    <value>Albidium Silicate Crystals</value>
+  </data>
+  <data name="AlbidumChalicePod" xml:space="preserve">
+    <value>Albidum Chalice Pod</value>
+  </data>
+  <data name="AlbidumCollaredPod" xml:space="preserve">
+    <value>Albidum Collared Pod</value>
+  </data>
+  <data name="AlbidumPeduncleTree" xml:space="preserve">
+    <value>Albidum Peduncle Tree</value>
+  </data>
+  <data name="AlbidumQuadripartitePod" xml:space="preserve">
+    <value>Albidum Quadripartite Pod</value>
+  </data>
   <data name="AlbidumSinuousTubers" xml:space="preserve">
     <value>Albidum Sinuous Tubers</value>
+  </data>
+  <data name="AlbulumGourdMollusc" xml:space="preserve">
+    <value>Albulum Gourd Mollusc</value>
+  </data>
+  <data name="AlbulumSquidMollusc" xml:space="preserve">
+    <value>Albulum Squid Mollusc</value>
   </data>
   <data name="AleoidaArcus" xml:space="preserve">
     <value>Aleoida Arcus</value>
@@ -183,8 +210,17 @@
   <data name="BarkMounds" xml:space="preserve">
     <value>Bark Mounds</value>
   </data>
+  <data name="BlatteumBellMollusc" xml:space="preserve">
+    <value>Blatteum Bell Mollusc</value>
+  </data>
   <data name="BlatteumBioluminescentAnemone" xml:space="preserve">
     <value>Blatteum Bioluminescent Anemone</value>
+  </data>
+  <data name="BlatteumCollaredPod" xml:space="preserve">
+    <value>Blatteum Collared Pod</value>
+  </data>
+  <data name="BlatteumQuadripartitePod" xml:space="preserve">
+    <value>Blatteum Quadripartite Pod</value>
   </data>
   <data name="BlatteumSinuousTubers" xml:space="preserve">
     <value>Blatteum Sinuous Tubers</value>
@@ -204,8 +240,47 @@
   <data name="CactoidaVermis" xml:space="preserve">
     <value>Cactoida Vermis</value>
   </data>
+  <data name="CaeruleumGourdMollusc" xml:space="preserve">
+    <value>Caeruleum Gourd Mollusc</value>
+  </data>
+  <data name="CaeruleumOctahedralPod" xml:space="preserve">
+    <value>Caeruleum Octahedral Pod</value>
+  </data>
+  <data name="CaeruleumpedunclePod" xml:space="preserve">
+    <value>Caeruleum peduncle Pod</value>
+  </data>
+  <data name="CaeruleumPeduncleTree" xml:space="preserve">
+    <value>Caeruleum Peduncle Tree</value>
+  </data>
+  <data name="CaeruleumQuadripartitePod" xml:space="preserve">
+    <value>Caeruleum Quadripartite Pod</value>
+  </data>
   <data name="CaeruleumSinuousTubers" xml:space="preserve">
     <value>Caeruleum Sinuous Tubers</value>
+  </data>
+  <data name="CaeruleumSquidMollusc" xml:space="preserve">
+    <value>Caeruleum Squid Mollusc</value>
+  </data>
+  <data name="CaeruleumTorusMollusc" xml:space="preserve">
+    <value>Caeruleum Torus Mollusc</value>
+  </data>
+  <data name="CandidumpedunclePod" xml:space="preserve">
+    <value>Candidum peduncle Pod</value>
+  </data>
+  <data name="CandidumRhizomePod" xml:space="preserve">
+    <value>Candidum Rhizome Pod</value>
+  </data>
+  <data name="CereumAsterPod" xml:space="preserve">
+    <value>Cereum Aster Pod</value>
+  </data>
+  <data name="CereumAsterTree" xml:space="preserve">
+    <value>Cereum Aster Tree</value>
+  </data>
+  <data name="CereumBulletMollusc" xml:space="preserve">
+    <value>Cereum Bullet Mollusc</value>
+  </data>
+  <data name="ChryseumVoidHeart" xml:space="preserve">
+    <value>Chryseum Void Heart</value>
   </data>
   <data name="ClypeusLacrimam" xml:space="preserve">
     <value>Clypeus Lacrimam</value>
@@ -215,6 +290,12 @@
   </data>
   <data name="ClypeusSpeculumi" xml:space="preserve">
     <value>Clypeus Speculumi</value>
+  </data>
+  <data name="CobalteumRhizomePod" xml:space="preserve">
+    <value>Cobalteum Rhizome Pod</value>
+  </data>
+  <data name="CommonThargoidBarnacle" xml:space="preserve">
+    <value>Common Thargoid Barnacle</value>
   </data>
   <data name="ConchaAureolas" xml:space="preserve">
     <value>Concha Aureolas</value>
@@ -231,6 +312,9 @@
   <data name="CroceumAnemone" xml:space="preserve">
     <value>Croceum Anemone</value>
   </data>
+  <data name="CroceumGourdMollusc" xml:space="preserve">
+    <value>Croceum Gourd Mollusc</value>
+  </data>
   <data name="CrystallineShards" xml:space="preserve">
     <value>Crystalline Shards</value>
   </data>
@@ -239,6 +323,18 @@
   </data>
   <data name="ElectricaeRadialem" xml:space="preserve">
     <value>Electricae Radialem</value>
+  </data>
+  <data name="FlavumBulletMollusc" xml:space="preserve">
+    <value>Flavum Bullet Mollusc</value>
+  </data>
+  <data name="FlavumIceCrystals" xml:space="preserve">
+    <value>Flavum Ice Crystals</value>
+  </data>
+  <data name="FlavumMetallicCrystals" xml:space="preserve">
+    <value>Flavum Metallic Crystals</value>
+  </data>
+  <data name="FlavumSilicateCrystals" xml:space="preserve">
+    <value>Flavum Silicate Crystals</value>
   </data>
   <data name="FonticuluaCampestris" xml:space="preserve">
     <value>Fonticulua Campestris</value>
@@ -306,17 +402,89 @@
   <data name="GypseeumBrainTree" xml:space="preserve">
     <value>Gypseeum Brain Tree</value>
   </data>
+  <data name="GypseeumpedunclePod" xml:space="preserve">
+    <value>Gypseeum peduncle Pod</value>
+  </data>
+  <data name="GypseeumRhizomePod" xml:space="preserve">
+    <value>Gypseeum Rhizome Pod</value>
+  </data>
+  <data name="LargeThargoidBarnacle" xml:space="preserve">
+    <value>Large Thargoid Barnacle</value>
+  </data>
+  <data name="LatticeMineralSpheres" xml:space="preserve">
+    <value>Lattice Mineral Spheres</value>
+  </data>
+  <data name="LindigoticumAsterPod" xml:space="preserve">
+    <value>Lindigoticum Aster Pod</value>
+  </data>
+  <data name="LindigoticumBellMollusc" xml:space="preserve">
+    <value>Lindigoticum Bell Mollusc</value>
+  </data>
   <data name="LindigoticumBrainTree" xml:space="preserve">
     <value>Lindigoticum Brain Tree</value>
+  </data>
+  <data name="LindigoticumBulbMollusc" xml:space="preserve">
+    <value>Lindigoticum Bulb Mollusc</value>
+  </data>
+  <data name="LindigoticumCalcitePlates" xml:space="preserve">
+    <value>Lindigoticum Calcite Plates</value>
+  </data>
+  <data name="LindigoticumCapsuleMollusc" xml:space="preserve">
+    <value>Lindigoticum Capsule Mollusc</value>
+  </data>
+  <data name="LindigoticumIceCrystals" xml:space="preserve">
+    <value>Lindigoticum Ice Crystals</value>
+  </data>
+  <data name="LindigoticumParasolMollusc" xml:space="preserve">
+    <value>Lindigoticum Parasol Mollusc</value>
+  </data>
+  <data name="LindigoticumReelMollusc" xml:space="preserve">
+    <value>Lindigoticum Reel Mollusc</value>
+  </data>
+  <data name="LindigoticumSilicateCrystals" xml:space="preserve">
+    <value>Lindigoticum Silicate Crystals</value>
   </data>
   <data name="LindigoticumSinuousTubers" xml:space="preserve">
     <value>Lindigoticum Sinuous Tubers</value>
   </data>
+  <data name="LindigoticumUmbrellaMollusc" xml:space="preserve">
+    <value>Lindigoticum Umbrella Mollusc</value>
+  </data>
   <data name="LividumBrainTree" xml:space="preserve">
     <value>Lividum Brain Tree</value>
   </data>
+  <data name="LividumBulletMollusc" xml:space="preserve">
+    <value>Lividum Bullet Mollusc</value>
+  </data>
+  <data name="LividumCollaredPod" xml:space="preserve">
+    <value>Lividum Collared Pod</value>
+  </data>
   <data name="LuteolumAnemone" xml:space="preserve">
     <value>Luteolum Anemone</value>
+  </data>
+  <data name="LuteolumBulbMollusc" xml:space="preserve">
+    <value>Luteolum Bulb Mollusc</value>
+  </data>
+  <data name="LuteolumCalcitePlates" xml:space="preserve">
+    <value>Luteolum Calcite Plates</value>
+  </data>
+  <data name="LuteolumCapsuleMollusc" xml:space="preserve">
+    <value>Luteolum Capsule Mollusc</value>
+  </data>
+  <data name="LuteolumParasolMollusc" xml:space="preserve">
+    <value>Luteolum Parasol Mollusc</value>
+  </data>
+  <data name="LuteolumReelMollusc" xml:space="preserve">
+    <value>Luteolum Reel Mollusc</value>
+  </data>
+  <data name="LuteolumUmbrellaMollusc" xml:space="preserve">
+    <value>Luteolum Umbrella Mollusc</value>
+  </data>
+  <data name="NiveumGlobeMolluscs" xml:space="preserve">
+    <value>Niveum Globe Molluscs</value>
+  </data>
+  <data name="NiveusOctahedralPod" xml:space="preserve">
+    <value>Niveus Octahedral Pod</value>
   </data>
   <data name="OsseusCornibus" xml:space="preserve">
     <value>Osseus Cornibus</value>
@@ -339,8 +507,32 @@
   <data name="OstrinumBrainTree" xml:space="preserve">
     <value>Ostrinum Brain Tree</value>
   </data>
+  <data name="OstrinumChalicePod" xml:space="preserve">
+    <value>Ostrinum Chalice Pod</value>
+  </data>
+  <data name="OstrinumPeduncleTree" xml:space="preserve">
+    <value>Ostrinum Peduncle Tree</value>
+  </data>
+  <data name="PhoeniceumGourdMollusc" xml:space="preserve">
+    <value>Phoeniceum Gourd Mollusc</value>
+  </data>
+  <data name="PrasinumAsterPod" xml:space="preserve">
+    <value>Prasinum Aster Pod</value>
+  </data>
+  <data name="PrasinumAsterTree" xml:space="preserve">
+    <value>Prasinum Aster Tree</value>
+  </data>
   <data name="PrasinumBioluminescentAnemone" xml:space="preserve">
     <value>Prasinum Bioluminescent Anemone</value>
+  </data>
+  <data name="PrasinumIceCrystals" xml:space="preserve">
+    <value>Prasinum Ice Crystals</value>
+  </data>
+  <data name="PrasinumMetallicCrystals" xml:space="preserve">
+    <value>Prasinum Metallic Crystals</value>
+  </data>
+  <data name="PrasinumSilicateCrystals" xml:space="preserve">
+    <value>Prasinum Silicate Crystals</value>
   </data>
   <data name="PrasinumSinuousTubers" xml:space="preserve">
     <value>Prasinum Sinuous Tubers</value>
@@ -348,8 +540,32 @@
   <data name="PuniceumAnemone" xml:space="preserve">
     <value>Puniceum Anemone</value>
   </data>
+  <data name="PuniceumAsterPod" xml:space="preserve">
+    <value>Puniceum Aster Pod</value>
+  </data>
   <data name="PuniceumBrainTree" xml:space="preserve">
     <value>Puniceum Brain Tree</value>
+  </data>
+  <data name="PuniceumSquidMollusc" xml:space="preserve">
+    <value>Puniceum Squid Mollusc</value>
+  </data>
+  <data name="PurpureumGourdMollusc" xml:space="preserve">
+    <value>Purpureum Gourd Mollusc</value>
+  </data>
+  <data name="PurpureumIceCrystals" xml:space="preserve">
+    <value>Purpureum Ice Crystals</value>
+  </data>
+  <data name="PurpureumMetallicCrystals" xml:space="preserve">
+    <value>Purpureum Metallic Crystals</value>
+  </data>
+  <data name="PurpureumpedunclePod" xml:space="preserve">
+    <value>Purpureum peduncle Pod</value>
+  </data>
+  <data name="PurpureumRhizomePod" xml:space="preserve">
+    <value>Purpureum Rhizome Pod</value>
+  </data>
+  <data name="PurpureumSilicateCrystals" xml:space="preserve">
+    <value>Purpureum Silicate Crystals</value>
   </data>
   <data name="ReceptaConditivus" xml:space="preserve">
     <value>Recepta Conditivus</value>
@@ -369,11 +585,71 @@
   <data name="RoseumBrainTree" xml:space="preserve">
     <value>Roseum Brain Tree</value>
   </data>
+  <data name="RoseumIceCrystals" xml:space="preserve">
+    <value>Roseum Ice Crystals</value>
+  </data>
+  <data name="RoseumSilicateCrystals" xml:space="preserve">
+    <value>Roseum Silicate Crystals</value>
+  </data>
   <data name="RoseumSinuousTubers" xml:space="preserve">
     <value>Roseum Sinuous Tubers</value>
   </data>
+  <data name="RoseumSquidMollusc" xml:space="preserve">
+    <value>Roseum Squid Mollusc</value>
+  </data>
+  <data name="RubellumAsterPod" xml:space="preserve">
+    <value>Rubellum Aster Pod</value>
+  </data>
+  <data name="RubellumAsterTree" xml:space="preserve">
+    <value>Rubellum Aster Tree</value>
+  </data>
+  <data name="RubellumPeduncleTree" xml:space="preserve">
+    <value>Rubellum Peduncle Tree</value>
+  </data>
+  <data name="RubellumTorusMollusc" xml:space="preserve">
+    <value>Rubellum Torus Mollusc</value>
+  </data>
   <data name="RubeumBioluminescentAnemone" xml:space="preserve">
     <value>Rubeum Bioluminescent Anemone</value>
+  </data>
+  <data name="RubeumBulletMollusc" xml:space="preserve">
+    <value>Rubeum Bullet Mollusc</value>
+  </data>
+  <data name="RubeumIceCrystals" xml:space="preserve">
+    <value>Rubeum Ice Crystals</value>
+  </data>
+  <data name="RubeumMetallicCrystals" xml:space="preserve">
+    <value>Rubeum Metallic Crystals</value>
+  </data>
+  <data name="RubeumOctahedralPod" xml:space="preserve">
+    <value>Rubeum Octahedral Pod</value>
+  </data>
+  <data name="RubeumRhizomePod" xml:space="preserve">
+    <value>Rubeum Rhizome Pod</value>
+  </data>
+  <data name="RubeumSilicateCrystals" xml:space="preserve">
+    <value>Rubeum Silicate Crystals</value>
+  </data>
+  <data name="RubeumSquidMollusc" xml:space="preserve">
+    <value>Rubeum Squid Mollusc</value>
+  </data>
+  <data name="RubicundumCollaredPod" xml:space="preserve">
+    <value>Rubicundum Collared Pod</value>
+  </data>
+  <data name="RufumGourdMollusc" xml:space="preserve">
+    <value>Rufum Gourd Mollusc</value>
+  </data>
+  <data name="RufumpedunclePod" xml:space="preserve">
+    <value>Rufum peduncle Pod</value>
+  </data>
+  <data name="SolidMineralSpheres" xml:space="preserve">
+    <value>Solid Mineral Spheres</value>
+  </data>
+  <data name="StolonPod" xml:space="preserve">
+    <value>Stolon Pod</value>
+  </data>
+  <data name="StolonTree" xml:space="preserve">
+    <value>Stolon Tree</value>
   </data>
   <data name="StratumAraneamus" xml:space="preserve">
     <value>Stratum Araneamus</value>
@@ -398,6 +674,12 @@
   </data>
   <data name="StratumTectonicas" xml:space="preserve">
     <value>Stratum Tectonicas</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ThargoidBarnacleBarbs" xml:space="preserve">
+    <value>Thargoid Barnacle Barbs</value>
   </data>
   <data name="TubusCavas" xml:space="preserve">
     <value>Tubus Cavas</value>
@@ -465,7 +747,40 @@
   <data name="VirideBrainTree" xml:space="preserve">
     <value>Viride Brain Tree</value>
   </data>
+  <data name="VirideBulbMollusc" xml:space="preserve">
+    <value>Viride Bulb Mollusc</value>
+  </data>
+  <data name="VirideBulletMollusc" xml:space="preserve">
+    <value>Viride Bullet Mollusc</value>
+  </data>
+  <data name="VirideCalcitePlates" xml:space="preserve">
+    <value>Viride Calcite Plates</value>
+  </data>
+  <data name="VirideGourdMollusc" xml:space="preserve">
+    <value>Viride Gourd Mollusc</value>
+  </data>
+  <data name="VirideOctahedralPod" xml:space="preserve">
+    <value>Viride Octahedral Pod</value>
+  </data>
+  <data name="VirideParasolMollusc" xml:space="preserve">
+    <value>Viride Parasol Mollusc</value>
+  </data>
+  <data name="ViridePeduncleTree" xml:space="preserve">
+    <value>Viride Peduncle Tree</value>
+  </data>
+  <data name="VirideQuadripartitePod" xml:space="preserve">
+    <value>Viride Quadripartite Pod</value>
+  </data>
+  <data name="VirideReelMollusc" xml:space="preserve">
+    <value>Viride Reel Mollusc</value>
+  </data>
   <data name="VirideSinuousTubers" xml:space="preserve">
     <value>Viride Sinuous Tubers</value>
+  </data>
+  <data name="VirideUmbrellaMollusc" xml:space="preserve">
+    <value>Viride Umbrella Mollusc</value>
+  </data>
+  <data name="ViridisGyreTree" xml:space="preserve">
+    <value>Viridis Gyre Tree</value>
   </data>
 </root>
