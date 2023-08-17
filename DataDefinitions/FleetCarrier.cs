@@ -22,9 +22,9 @@ namespace EddiDataDefinitions
         private bool _notoriousAccess;
         private int _usedCapacity;
         private int _freeCapacity;
-        private ulong _bankBalance;
-        private ulong _bankReservedBalance;
-        private ulong _bankPurchaseAllocationsBalance;
+        private long _bankBalance;
+        private long _bankReservedBalance;
+        private long _bankPurchaseAllocationsBalance;
         private JArray _cargo = new JArray();
         private JArray _carrierLockerAssets = new JArray();
         private JArray _carrierLockerGoods = new JArray();
@@ -183,7 +183,7 @@ namespace EddiDataDefinitions
         // Finances
 
         [PublicAPI("The last reported bank balance of the carrier")]
-        public ulong bankBalance // Value is reported by the `Carrier stats` event
+        public long bankBalance // Value is reported by the `Carrier stats` event
         {
             get => _bankBalance;
             set
@@ -195,10 +195,10 @@ namespace EddiDataDefinitions
         }
 
         [PublicAPI("The last reported available bank balance of the carrier")]
-        public ulong bankAvailableBalance => bankBalance - bankReservedBalance - bankPurchaseAllocationsBalance;
+        public long bankAvailableBalance => bankBalance - bankReservedBalance - bankPurchaseAllocationsBalance;
 
         [PublicAPI("The last reported reserved bank balance of the carrier")]
-        public ulong bankReservedBalance // Value is reported by the `Carrier stats` event
+        public long bankReservedBalance // Value is reported by the `Carrier stats` event
         {
             get => _bankReservedBalance;
             set
@@ -209,7 +209,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public ulong bankPurchaseAllocationsBalance
+        public long bankPurchaseAllocationsBalance
         {
             get => _bankPurchaseAllocationsBalance;
             set
@@ -375,13 +375,13 @@ namespace EddiDataDefinitions
                 nextStarSystem = newJson["itinerary"]?["currentJump"]?.ToString();
 
                 // Finances
-                bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<ulong>() ?? 0;
+                bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<long>() ?? 0;
                 bankReservedBalance =
-                    newJson["finance"]?["bankReservedBalance"]?.ToObject<ulong>() ?? 0;
+                    newJson["finance"]?["bankReservedBalance"]?.ToObject<long>() ?? 0;
                 bankPurchaseAllocationsBalance =
-                    newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                    + newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0
-                    + newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<ulong>() ?? 0;
+                    newJson["marketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<long>() ?? 
+                    (0 + newJson["blackmarketFinances"]?["balanceAllocForPurchaseOrders"]?.ToObject<long>()) ?? 
+                    (0 + newJson["finance"]?["bartender"]?["balanceAllocForPurchaseOrders"]?.ToObject<long>()) ?? 0;
 
                 // Inventories
                 Cargo = JArray.FromObject(newJson["cargo"] ?? new JArray());

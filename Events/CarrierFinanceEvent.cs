@@ -17,18 +17,18 @@ namespace EddiEvents
         public int reservePercent { get; private set; }
 
         [PublicAPI("Your fleet carrier's current total credit balance")]
-        public ulong bankBalance { get; private set; }
+        public long bankBalance { get; private set; }
 
         [PublicAPI("The current credit balance reserved for fleet carrier expenses")]
-        public ulong bankReservedBalance { get; private set; }
+        public long bankReservedBalance { get; private set; }
 
         [PublicAPI("Your fleet carrier's current available credits")]
-        public ulong bankAvailableBalance { get; private set; }
+        public long bankAvailableBalance { get; private set; }
 
         // Not intended to be user facing
         public long? carrierID { get; private set; }
 
-        public CarrierFinanceEvent(DateTime timestamp, long? carrierId, int taxRate, int reservePercent, ulong carrierBalance, ulong reserveBalance, ulong availableBalance) : base(timestamp, NAME)
+        public CarrierFinanceEvent(DateTime timestamp, long? carrierId, int taxRate, int reservePercent, long carrierBalance, long reserveBalance, long availableBalance) : base(timestamp, NAME)
         {
             carrierID = carrierId;
             this.taxRate = taxRate;

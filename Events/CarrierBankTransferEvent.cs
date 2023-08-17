@@ -20,12 +20,12 @@ namespace EddiEvents
         public ulong cmdrBalance { get; private set; }
 
         [PublicAPI("The fleet carrier's updated credit balance")]
-        public ulong bankBalance { get; private set; }
+        public long bankBalance { get; private set; }
         
         // Not intended to be user facing
         public long carrierID { get; private set; }
 
-        public CarrierBankTransferEvent(DateTime timestamp, long carrierId, ulong? deposit, ulong? withdrawal, ulong cmdrBalance, ulong carrierBalance) : base(timestamp, NAME)
+        public CarrierBankTransferEvent(DateTime timestamp, long carrierId, ulong? deposit, ulong? withdrawal, ulong cmdrBalance, long carrierBalance) : base(timestamp, NAME)
         {
             carrierID = carrierId;
             this.deposit = deposit;

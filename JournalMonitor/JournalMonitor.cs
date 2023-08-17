@@ -4785,14 +4785,14 @@ namespace EddiJournalMonitor
                                                     + shipPacks 
                                                     + modulePacks;
 
-                                    ulong bankBalance = 0;
-                                    ulong bankReservedBalance = 0;
-                                    ulong bankAvailableBalance = 0;
+                                    long bankBalance = 0;
+                                    long bankReservedBalance = 0;
+                                    long bankAvailableBalance = 0;
                                     if (data.TryGetValue("Finance", out object finances) && finances is Dictionary<string, object> finance)
                                     {
-                                        bankBalance = JsonParsing.getULong(finance, "CarrierBalance");
-                                        bankReservedBalance = JsonParsing.getULong(finance, "ReserveBalance");
-                                        bankAvailableBalance = JsonParsing.getULong(finance, "AvailableBalance");
+                                        bankBalance = JsonParsing.getLong(finance, "CarrierBalance");
+                                        bankReservedBalance = JsonParsing.getLong(finance, "ReserveBalance");
+                                        bankAvailableBalance = JsonParsing.getLong(finance, "AvailableBalance");
                                     }
 
                                     events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance ) { raw = line, fromLoad = fromLogLoad });
@@ -4805,7 +4805,7 @@ namespace EddiJournalMonitor
                                     var deposit = JsonParsing.getOptionalULong(data, "Deposit");
                                     var withdrawal = JsonParsing.getOptionalULong(data, "Withdraw");
                                     var cmdrBalance = JsonParsing.getULong(data, "PlayerBalance");
-                                    var carrierBalance = JsonParsing.getULong(data, "CarrierBalance");
+                                    var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
                                     events.Add(new CarrierBankTransferEvent(timestamp, carrierID, deposit, withdrawal, cmdrBalance, carrierBalance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -4859,9 +4859,9 @@ namespace EddiJournalMonitor
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
                                     var taxRate = JsonParsing.getInt(data, "TaxRate");
                                     var reservePercent = JsonParsing.getInt(data, "ReservePercent");
-                                    var carrierBalance = JsonParsing.getULong(data, "CarrierBalance");
-                                    var carrierReserveBalance = JsonParsing.getULong(data, "ReserveBalance");
-                                    var carrierAvailableBalance = JsonParsing.getULong(data, "CarrierAvailableBalance");
+                                    var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
+                                    var carrierReserveBalance = JsonParsing.getLong(data, "ReserveBalance");
+                                    var carrierAvailableBalance = JsonParsing.getLong(data, "CarrierAvailableBalance");
                                     events.Add(new CarrierFinanceEvent(timestamp, carrierID, taxRate, reservePercent, carrierBalance, carrierReserveBalance, carrierAvailableBalance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
