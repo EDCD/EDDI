@@ -149,11 +149,18 @@ namespace EddiSpeechService
             }
             catch (Exception e)
             {
-                Logging.Warn($"Unable to initialize Windows.Media.SpeechSynthesis.SpeechSynthesizer, {RuntimeInformation.OSDescription}", e);
+                Logging.Error( $"Unable to initialize Windows.Media.SpeechSynthesis.SpeechSynthesizer, {RuntimeInformation.OSDescription}", e );
             }
             
             // Prep the System.Speech synthesizer
-            systemSpeechSynth = new SystemSpeechSynthesizer(ref voiceStore, lexiconSchemas);
+            try
+            {
+                systemSpeechSynth = new SystemSpeechSynthesizer( ref voiceStore, lexiconSchemas );
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( $"Unable to initialize System.Speech.Synthesis.SpeechSynthesizer, {RuntimeInformation.OSDescription}", e );
+            }
             
             // Sort results alphabetically by voice name
             allVoices = voiceStore.OrderBy(v => v.name).ToList();
@@ -417,11 +424,11 @@ namespace EddiSpeechService
                     Logging.Warn( $"{ex.Message}, retrying with Windows Media Synthesizer default voice.", ex );
                     return getSpeechStream( windowsMediaSynth.currentVoice, speech );
                 }
-                if ( requestedVoice != systemSpeechSynth.currentVoice )
+                if ( requestedVoice != systemSpeechSynth?.currentVoice )
                 {
                     // Try falling back to our System Speech default voice.
                     Logging.Warn( $"{ex.Message}, retrying with System Speech Synthesizer default voice.", ex );
-                    return getSpeechStream( systemSpeechSynth.currentVoice, speech );
+                    return getSpeechStream( systemSpeechSynth?.currentVoice, speech );
                 }
             }
             return null;
