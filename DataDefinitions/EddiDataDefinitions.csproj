@@ -109,8 +109,8 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\OrganicGenusName.Designer.cs">
-      <DependentUpon>OrganicGenusName.resx</DependentUpon>
+    <Compile Update="Properties\OrganicGenus.Designer.cs">
+      <DependentUpon>OrganicGenus.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -119,13 +119,13 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\OrganicVariantName.Designer.cs">
-      <DependentUpon>OrganicVariantName.resx</DependentUpon>
+    <Compile Update="Properties\OrganicVariant.Designer.cs">
+      <DependentUpon>OrganicVariant.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\OrganicSpeciesName.Designer.cs">
-      <DependentUpon>OrganicSpeciesName.resx</DependentUpon>
+    <Compile Update="Properties\OrganicSpecies.Designer.cs">
+      <DependentUpon>OrganicSpecies.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -525,20 +525,20 @@
       <LastGenOutput>AstronomicalName.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicGenusName.resx">
-      <LastGenOutput>OrganicGenusName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\OrganicGenus.resx">
+      <LastGenOutput>OrganicGenus.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\OrganicSpeciesCond.resx">
       <LastGenOutput>OrganicSpeciesCond.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicVariantName.resx">
-      <LastGenOutput>OrganicVariantName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\OrganicVariant.resx">
+      <LastGenOutput>OrganicVariant.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicSpeciesName.resx">
-      <LastGenOutput>OrganicSpeciesName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\OrganicSpecies.resx">
+      <LastGenOutput>OrganicSpecies.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\OrganicSpeciesDesc.resx">

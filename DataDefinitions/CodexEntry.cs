@@ -2,7 +2,7 @@
 {
     public class CodexEntry
     {
-        public OrganicItem organic;
+        public Organic organic;
         public AstrometricItem astrology;
         public GeologyItem geology;
         public GuardianItem guardian;
@@ -18,7 +18,7 @@
 
         public CodexEntry ( long entryId, string edname, string subCategory, string category, string region, string system )
         {
-            organic = new OrganicItem();
+            organic = new Organic();
             astrology = new AstrometricItem();
             geology = new GeologyItem();
             guardian = new GuardianItem();
@@ -35,7 +35,7 @@
             if ( category == "Biology" ) {
                 if ( subCategory == "Organic_Structures" )
                 {
-                    organic = OrganicInfo.Lookup( entryId, edname );
+                    organic = Organic.Lookup( entryId, edname );
                 }
                 else if ( subCategory == "Geology_and_Anomalies" ) {
                     geology = GeologyInfo.Lookup( entryId, edname );

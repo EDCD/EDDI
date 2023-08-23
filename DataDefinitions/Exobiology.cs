@@ -2,7 +2,7 @@
 
 namespace EddiDataDefinitions
 {
-    public class Exobiology : OrganicItem
+    public class Exobiology : Organic
     {
         public enum Status
         {
@@ -28,9 +28,9 @@ namespace EddiDataDefinitions
                 try
                 {
                     val = 2;
-                    if ( data != null )
+                    if ( variant != null )
                     {
-                        val = (int)data.value;
+                        val = (int)species.value;
                     }
                 }
                 catch
@@ -54,9 +54,9 @@ namespace EddiDataDefinitions
         //    }
         //}
 
-        public Exobiology ( string edname_genus, bool prediction = false ) : base()
+        public Exobiology ( string genus, bool prediction = false ) : base()
         {
-            if ( edname_genus != null )
+            if ( genus != null )
             {
                 this.prediction = prediction;
                 this.samples = 0;
@@ -66,30 +66,18 @@ namespace EddiDataDefinitions
                     coords[ i ] = new Coordinates();
                 }
 
-                this.genus = OrganicInfo.SetGenus( edname_genus );
+                //this.genus = Organic.SetGenus( edname_genus );
+                this.genus = OrganicGenus.Lookup ( genus );
             }
         }
 
-        [PublicAPI]
-        /// <summary>Get all the biological data, this should be done at the first sample</summary>
-        public void SetData ( string edname_variant )
-        {
-            OrganicItem item = OrganicInfo.LookupByVariant( edname_variant );
-
-            this.exists = item.exists;
-            this.genus = item.genus;
-            this.species = item.species;
-            this.variant = item.variant;
-            this.data = item.data;
-        }
-
         /// <summary>Increase the sample count, set the coordinates, and return the number of scans complete.</summary>
-        public int Sample ( string scanType, string edname_variant, decimal? latitude, decimal? longitude )
+        public int Sample ( string scanType, string variant, decimal? latitude, decimal? longitude )
         {
             // Never scanned before? Update data.
             if ( samples == 0 )
             {
-                SetData( edname_variant );
+                SetData( variant );
                 complete = false;
             }
 

@@ -17,27 +17,43 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             string output = string.Empty;
-            string localisedAnd = Properties.SpeechResponder.localizedAnd;
-            if (values.Count == 1)
+            string localisedAndOr;
+
+            Cottle.IMap cottleVal = values[0].Fields;
+
+            // Let us choose either And/Or for the last list item
+            string type = values.Count > 1 ? values[1].AsString : "and";
+            type = type.ToLower();
+
+            switch ( type )
             {
-                foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
+                case "or":
+                    localisedAndOr = Properties.SpeechResponder.localizedOr;
+                    break;
+                //case "and":
+                default:
+                    localisedAndOr = Properties.SpeechResponder.localizedAnd;
+                    break;
+            }
+
+            foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in cottleVal)
+            {
+                string valueString = value.Value.AsString;
+                if (value.Key == 0)
                 {
-                    string valueString = value.Value.AsString;
-                    if (value.Key == 0)
-                    {
-                        output = valueString;
-                    }
-                    else if (value.Key < (values[0].Fields.Count - 1))
-                    {
-                        output = $"{output}, {valueString}";
-                    }
-                    else
-                    {
-                        output = $"{output}{(values[0].Fields.Count() > 2 ? "," : "")} {localisedAnd} {valueString}";
-                    }
+                    output = valueString;
+                }
+                else if (value.Key < ( cottleVal.Count - 1))
+                {
+                    output = $"{output}, {valueString}";
+                }
+                else
+                {
+                    output = $"{output}{( cottleVal.Count() > 2 ? "," : "")} {localisedAndOr} {valueString}";
                 }
             }
+
             return output;
-        }, 1);
+        }, 1, 2);
     }
 }

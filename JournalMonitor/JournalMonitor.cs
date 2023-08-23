@@ -4112,7 +4112,9 @@ namespace EddiJournalMonitor
                                 break;
                             case "FSSBodySignals":
                                 {
-                                    //Logging.Info( $"[FSSBodySignals Event]" );
+                                    // TODO:#2212........[Remove]
+                                    Logging.Info( $"[FSSBodySignals Event]" );
+                                    Thread.Sleep( 10 );
 
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
@@ -4158,7 +4160,9 @@ namespace EddiJournalMonitor
                                 break;
                             case "SAASignalsFound":
                                 {
-                                    //Logging.Info( $"[SAASignalsFound Event]" );
+                                    // TODO:#2212........[Remove]
+                                    Logging.Info( $"[SAASignalsFound Event]" );
+                                    Thread.Sleep( 10 );
 
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
@@ -4198,9 +4202,11 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        //Logging.Info( $">>> - SAA Signals Found" );
+                                        Logging.Info( $">>> - SAA Signals Found" );
                                         int reportedBios = 0;
+                                        int reportedGeos = 0;
 
+                                        // TODO:#2212........[This is pretty much deprecated at this point (SignalAmount), we still get the total count though]
                                         // This is surface signal sources from a body that we've mapped
                                         List<SignalAmount> surfaceSignals = new List<SignalAmount>();
                                         foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
@@ -4221,6 +4227,11 @@ namespace EddiJournalMonitor
                                             {
                                                 reportedBios = amount;
                                             }
+
+                                            if ( source.edname == "SAA_SignalType_Geological" )
+                                            {
+                                                reportedGeos = amount;
+                                            }
                                         }
                                         surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
 
@@ -4231,19 +4242,21 @@ namespace EddiJournalMonitor
 
                                         if ( system != null )
                                         {
-                                            //Logging.Info( $">>> - System Exists" );
+                                            Logging.Info( $">>> - System Exists" );
                                             body = system?.BodyWithID( bodyId );
 
                                             if ( !( body is null ) )
                                             {
-                                                //Logging.Info( $">>> - Body Exists" );
+                                                Logging.Info( $">>> - Body Exists" );
 
                                                 if ( body.surfaceSignals == null )
                                                 {
                                                     body.surfaceSignals = new SurfaceSignals();
                                                 }
 
+                                                // Set the number of detected signals for both Bio and Geo
                                                 body.surfaceSignals.bio.reportedTotal = reportedBios;
+                                                body.surfaceSignals.geo.reportedTotal = reportedGeos;
 
                                                 // If the current list was predicted then erase and recreate with actual values
                                                 // If the number of bios in the list does not match the reported number of bios then clear
@@ -4255,17 +4268,19 @@ namespace EddiJournalMonitor
                                                 //if ( body.surfaceSignals.bio.numTotal == 0 || body.surfaceSignals.predicted == true )
                                                 //{
                                                 //body.surfaceSignals.bio.list.Clear();
+                                                // TODO:#2212........[Remove]
+                                                string log = "[SAASignalsFound]:";
                                                 foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
                                                 {
                                                     string edname_genus = JsonParsing.getString(signal, "Genus");
                                                     edname_genus = ScanOrganic.NormalizedGenus( edname_genus );
 
-                                                    //Logging.Info( $">>> - Adding bio [{body.surfaceSignals.bio.numTotal}] {edname_genus}" );
-                                                    //Thread.Sleep( 10 );
+                                                    log = log + $"\r\n\tAdding bio [{body.surfaceSignals.bio.numTotal}] {edname_genus}";
 
                                                     body.surfaceSignals.AddBio( edname_genus );
-                                                    //body.surfaceSignals.bio.numTotal++;
                                                 }
+                                                Logging.Info( log );
+                                                Thread.Sleep( 10 );
 
                                                 // The bio list is no longer a prediction, do not update it again.
                                                 body.surfaceSignals.predicted = false;
@@ -4276,19 +4291,22 @@ namespace EddiJournalMonitor
 
                                                 //biosignals = EDDI.Instance?.CurrentStarSystem.BodyWithID( bodyId ).surfaceSignals.GetBios();
 
-                                                //Logging.Info( $"[SAASignalsFound] Bio Count = {body.surfaceSignals.bio.numTotal}" );
-                                                //Thread.Sleep( 10 );
+                                                Logging.Info( $"[SAASignalsFound] Bio Count = {body.surfaceSignals.bio.reportedTotal}" );
+                                                Thread.Sleep( 10 );
 
                                                 body = system?.BodyWithID( bodyId );
                                                 biosignals = body.surfaceSignals.GetBios();
 
-                                                //int c = 0;
-                                                //foreach ( string signal in biosignals )
-                                                //{
-                                                //    Logging.Info( $"[SAASignalsFound] biosignals[{c}] {signal}" );
-                                                //    Thread.Sleep( 10 );
-                                                //    c++;
-                                                //}
+                                                // TODO:#2212........[Remove]
+                                                log = "[SAASignalsFound]:";
+                                                int c = 0;
+                                                foreach ( string signal in biosignals )
+                                                {
+                                                    log = log + $"\r\n\tbiosignals[{c}] {signal}";
+                                                    c++;
+                                                }
+                                                Logging.Info( log );
+                                                Thread.Sleep( 10 );
                                                 //}
                                             }
                                         }
@@ -5143,50 +5161,50 @@ namespace EddiJournalMonitor
                                     string variant = JsonParsing.getString(data, "Variant");
                                     variant = ScanOrganic.NormalizedVariant( variant );
 
-                                    //Logging.Info( $"[ScanOrganic] ---------------------------------------------" );
-                                    //Logging.Info( $"[ScanOrganic] systemAddress = {systemAddress}" );
-                                    //Logging.Info( $"[ScanOrganic]        bodyId = {bodyId}" );
-                                    //Logging.Info( $"[ScanOrganic]      scanType = {scanType}" );
-                                    //Logging.Info( $"[ScanOrganic]         genus = {genus}" );
-                                    //Logging.Info( $"[ScanOrganic]       species = {species}" );
-                                    //Logging.Info( $"[ScanOrganic]       variant = {variant}" );
-                                    //Logging.Info( $"[ScanOrganic] ---------------------------------------------" );
+                                    Logging.Info( $"[ScanOrganic] ---> START <---\r\n" +
+                                                  $"\tsystemAddress = {systemAddress}\r\n" +
+                                                  $"\tbodyId = {bodyId}\r\n" +
+                                                  $"\tscanType = {scanType}\r\n" +
+                                                  $"\tgenus = {genus}\r\n" +
+                                                  $"\tspecies = {species}\r\n" +
+                                                  $"\tvariant = {variant}\r\n" +
+                                                  $"[ScanOrganic] ---> END <---" );
 
                                     //if ( !fromLogLoad )
                                     //{
-                                        StarSystem system = EDDI.Instance?.CurrentStarSystem;
+                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
 
-                                        //Logging.Info( $"[ScanOrganic] Not from Log Load" );
-                                        if ( system != null )
+                                    //Logging.Info( $"[ScanOrganic] Not from Log Load" );
+                                    if ( system != null )
+                                    {
+                                        Logging.Info( $"[ScanOrganic] system exists" );
+                                        Body body = system.BodyWithID( bodyId );
+
+                                        if ( body != null )
                                         {
-                                            //Logging.Info( $"[ScanOrganic] system exists" );
-                                            Body body = system.BodyWithID( bodyId );
+                                            Logging.Info( $"[ScanOrganic] Body exists" );
 
-                                            if ( body != null )
+                                            if ( body.surfaceSignals == null )
                                             {
-                                                //Logging.Info( $"[ScanOrganic] Body exists" );
-
-                                                if ( body.surfaceSignals == null )
-                                                {
-                                                    //Logging.Info( $"[ScanOrganicEvent] body.surfacesignals is null, creating new" );
-                                                    //Thread.Sleep( 10 );
-                                                    body.surfaceSignals = new SurfaceSignals();
-                                                }
-
-                                                if ( !body.surfaceSignals.bio.list.ContainsKey( genus ) )
-                                                {
-                                                    //Logging.Info( $"[ScanOrganicEvent] Genus doesn't exist in current list, adding '{genus}'" );
-                                                    //Thread.Sleep( 10 );
-                                                    body.surfaceSignals.AddBio( genus );
-                                                }
-
-                                                // 2212: Save/Update Body data
-                                                EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                                                StarSystemSqLiteRepository.Instance.SaveStarSystem( system );
-
-                                                events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, body, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
+                                                Logging.Info( $"[ScanOrganicEvent] body.surfacesignals is null, creating new" );
+                                                Thread.Sleep( 10 );
+                                                body.surfaceSignals = new SurfaceSignals();
                                             }
+
+                                            if ( !body.surfaceSignals.bio.list.ContainsKey( genus ) )
+                                            {
+                                                Logging.Info( $"[ScanOrganicEvent] Genus doesn't exist in current list, adding '{genus}'" );
+                                                Thread.Sleep( 10 );
+                                                body.surfaceSignals.AddBio( genus );
+                                            }
+
+                                            // 2212: Save/Update Body data
+                                            EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
+                                            StarSystemSqLiteRepository.Instance.SaveStarSystem( system );
+
+                                            events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, body, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
                                         }
+                                    }
                                     //}
                                 }
                                 handled = true;

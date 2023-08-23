@@ -31,6 +31,9 @@ namespace EddiDataDefinitions
         }
 
         [PublicAPI]
+        public int reportedGeos => surfaceSignals.geo.reportedTotal;
+
+        [PublicAPI]
         public int reportedBios => surfaceSignals.bio.reportedTotal;
 
         [PublicAPI]

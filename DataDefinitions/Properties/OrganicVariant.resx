@@ -1,0 +1,2868 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Aleoids_01_A" xml:space="preserve">
+    <value>Aleoida Arcus - Green</value>
+  </data>
+  <data name="Aleoids_01_B" xml:space="preserve">
+    <value>Aleoida Arcus - Yellow</value>
+  </data>
+  <data name="Aleoids_01_D" xml:space="preserve">
+    <value>Aleoida Arcus - Indigo</value>
+  </data>
+  <data name="Aleoids_01_F" xml:space="preserve">
+    <value>Aleoida Arcus - Teal</value>
+  </data>
+  <data name="Aleoids_01_K" xml:space="preserve">
+    <value>Aleoida Arcus - Turquoise</value>
+  </data>
+  <data name="Aleoids_01_L" xml:space="preserve">
+    <value>Aleoida Arcus - Lime</value>
+  </data>
+  <data name="Aleoids_01_M" xml:space="preserve">
+    <value>Aleoida Arcus - Emerald</value>
+  </data>
+  <data name="Aleoids_01_N" xml:space="preserve">
+    <value>Aleoida Arcus - Ocher</value>
+  </data>
+  <data name="Aleoids_01_T" xml:space="preserve">
+    <value>Aleoida Arcus - Sage</value>
+  </data>
+  <data name="Aleoids_01_TTS" xml:space="preserve">
+    <value>Aleoida Arcus - Mauve</value>
+  </data>
+  <data name="Aleoids_01_W" xml:space="preserve">
+    <value>Aleoida Arcus - Grey</value>
+  </data>
+  <data name="Aleoids_02_A" xml:space="preserve">
+    <value>Aleoida Coronamus - Green</value>
+  </data>
+  <data name="Aleoids_02_B" xml:space="preserve">
+    <value>Aleoida Coronamus - Yellow</value>
+  </data>
+  <data name="Aleoids_02_D" xml:space="preserve">
+    <value>Aleoida Coronamus - Indigo</value>
+  </data>
+  <data name="Aleoids_02_F" xml:space="preserve">
+    <value>Aleoida Coronamus - Teal</value>
+  </data>
+  <data name="Aleoids_02_K" xml:space="preserve">
+    <value>Aleoida Coronamus - Turquoise</value>
+  </data>
+  <data name="Aleoids_02_L" xml:space="preserve">
+    <value>Aleoida Coronamus - Lime</value>
+  </data>
+  <data name="Aleoids_02_M" xml:space="preserve">
+    <value>Aleoida Coronamus - Emerald</value>
+  </data>
+  <data name="Aleoids_02_N" xml:space="preserve">
+    <value>Aleoida Coronamus - Ocher</value>
+  </data>
+  <data name="Aleoids_02_T" xml:space="preserve">
+    <value>Aleoida Coronamus - Sage</value>
+  </data>
+  <data name="Aleoids_02_TTS" xml:space="preserve">
+    <value>Aleoida Coronamus - Mauve</value>
+  </data>
+  <data name="Aleoids_02_Y" xml:space="preserve">
+    <value>Aleoida Coronamus - Amethyst</value>
+  </data>
+  <data name="Aleoids_03_A" xml:space="preserve">
+    <value>Aleoida Spica - Green</value>
+  </data>
+  <data name="Aleoids_03_B" xml:space="preserve">
+    <value>Aleoida Spica - Yellow</value>
+  </data>
+  <data name="Aleoids_03_D" xml:space="preserve">
+    <value>Aleoida Spica - Indigo</value>
+  </data>
+  <data name="Aleoids_03_F" xml:space="preserve">
+    <value>Aleoida Spica - Teal</value>
+  </data>
+  <data name="Aleoids_03_K" xml:space="preserve">
+    <value>Aleoida Spica - Turquoise</value>
+  </data>
+  <data name="Aleoids_03_L" xml:space="preserve">
+    <value>Aleoida Spica - Lime</value>
+  </data>
+  <data name="Aleoids_03_M" xml:space="preserve">
+    <value>Aleoida Spica - Emerald</value>
+  </data>
+  <data name="Aleoids_03_N" xml:space="preserve">
+    <value>Aleoida Spica - Ocher</value>
+  </data>
+  <data name="Aleoids_03_T" xml:space="preserve">
+    <value>Aleoida Spica - Sage</value>
+  </data>
+  <data name="Aleoids_03_TTS" xml:space="preserve">
+    <value>Aleoida Spica - Mauve</value>
+  </data>
+  <data name="Aleoids_04_A" xml:space="preserve">
+    <value>Aleoida Laminiae - Green</value>
+  </data>
+  <data name="Aleoids_04_B" xml:space="preserve">
+    <value>Aleoida Laminiae - Yellow</value>
+  </data>
+  <data name="Aleoids_04_F" xml:space="preserve">
+    <value>Aleoida Laminiae - Teal</value>
+  </data>
+  <data name="Aleoids_04_K" xml:space="preserve">
+    <value>Aleoida Laminiae - Turquoise</value>
+  </data>
+  <data name="Aleoids_04_L" xml:space="preserve">
+    <value>Aleoida Laminiae - Lime</value>
+  </data>
+  <data name="Aleoids_04_M" xml:space="preserve">
+    <value>Aleoida Laminiae - Emerald</value>
+  </data>
+  <data name="Aleoids_04_N" xml:space="preserve">
+    <value>Aleoida Laminiae - Ocher</value>
+  </data>
+  <data name="Aleoids_04_T" xml:space="preserve">
+    <value>Aleoida Laminiae - Sage</value>
+  </data>
+  <data name="Aleoids_04_TTS" xml:space="preserve">
+    <value>Aleoida Laminiae - Mauve</value>
+  </data>
+  <data name="Aleoids_04_W" xml:space="preserve">
+    <value>Aleoida Laminiae - Grey</value>
+  </data>
+  <data name="Aleoids_04_Y" xml:space="preserve">
+    <value>Aleoida Laminiae - Amethyst</value>
+  </data>
+  <data name="Aleoids_05_A" xml:space="preserve">
+    <value>Aleoida Gravis - Green</value>
+  </data>
+  <data name="Aleoids_05_B" xml:space="preserve">
+    <value>Aleoida Gravis - Yellow</value>
+  </data>
+  <data name="Aleoids_05_F" xml:space="preserve">
+    <value>Aleoida Gravis - Teal</value>
+  </data>
+  <data name="Aleoids_05_K" xml:space="preserve">
+    <value>Aleoida Gravis - Turquoise</value>
+  </data>
+  <data name="Aleoids_05_L" xml:space="preserve">
+    <value>Aleoida Gravis - Lime</value>
+  </data>
+  <data name="Aleoids_05_M" xml:space="preserve">
+    <value>Aleoida Gravis - Emerald</value>
+  </data>
+  <data name="Aleoids_05_N" xml:space="preserve">
+    <value>Aleoida Gravis - Ocher</value>
+  </data>
+  <data name="Aleoids_05_T" xml:space="preserve">
+    <value>Aleoida Gravis - Sage</value>
+  </data>
+  <data name="Aleoids_05_TTS" xml:space="preserve">
+    <value>Aleoida Gravis - Mauve</value>
+  </data>
+  <data name="Aleoids_05_Y" xml:space="preserve">
+    <value>Aleoida Gravis - Amethyst</value>
+  </data>
+  <data name="Bacterial_01_A" xml:space="preserve">
+    <value>Bacterium Aurasus - Yellow</value>
+  </data>
+  <data name="Bacterial_01_Ae" xml:space="preserve">
+    <value>Bacterium Aurasus - Orange</value>
+  </data>
+  <data name="Bacterial_01_B" xml:space="preserve">
+    <value>Bacterium Aurasus - Grey</value>
+  </data>
+  <data name="Bacterial_01_D" xml:space="preserve">
+    <value>Bacterium Aurasus - Ocher</value>
+  </data>
+  <data name="Bacterial_01_F" xml:space="preserve">
+    <value>Bacterium Aurasus - Lime</value>
+  </data>
+  <data name="Bacterial_01_G" xml:space="preserve">
+    <value>Bacterium Aurasus - Emerald</value>
+  </data>
+  <data name="Bacterial_01_K" xml:space="preserve">
+    <value>Bacterium Aurasus - Green</value>
+  </data>
+  <data name="Bacterial_01_L" xml:space="preserve">
+    <value>Bacterium Aurasus - Sage</value>
+  </data>
+  <data name="Bacterial_01_M" xml:space="preserve">
+    <value>Bacterium Aurasus - Teal</value>
+  </data>
+  <data name="Bacterial_01_N" xml:space="preserve">
+    <value>Bacterium Aurasus - Indigo</value>
+  </data>
+  <data name="Bacterial_01_O" xml:space="preserve">
+    <value>Bacterium Aurasus - Turquoise</value>
+  </data>
+  <data name="Bacterial_01_T" xml:space="preserve">
+    <value>Bacterium Aurasus - Red</value>
+  </data>
+  <data name="Bacterial_01_TTS" xml:space="preserve">
+    <value>Bacterium Aurasus - Maroon</value>
+  </data>
+  <data name="Bacterial_01_W" xml:space="preserve">
+    <value>Bacterium Aurasus - Amethyst</value>
+  </data>
+  <data name="Bacterial_01_Y" xml:space="preserve">
+    <value>Bacterium Aurasus - Mauve</value>
+  </data>
+  <data name="Bacterial_02_Antimony" xml:space="preserve">
+    <value>Bacterium Nebulus - Magenta</value>
+  </data>
+  <data name="Bacterial_02_Polonium" xml:space="preserve">
+    <value>Bacterium Nebulus - Gold</value>
+  </data>
+  <data name="Bacterial_02_Ruthenium" xml:space="preserve">
+    <value>Bacterium Nebulus - Orange</value>
+  </data>
+  <data name="Bacterial_02_Technetium" xml:space="preserve">
+    <value>Bacterium Nebulus - Cyan</value>
+  </data>
+  <data name="Bacterial_02_Tellurium" xml:space="preserve">
+    <value>Bacterium Nebulus - Green</value>
+  </data>
+  <data name="Bacterial_02_Yttrium" xml:space="preserve">
+    <value>Bacterium Nebulus - Cobalt</value>
+  </data>
+  <data name="Bacterial_03_Cadmium" xml:space="preserve">
+    <value>Bacterium Scopulum - White</value>
+  </data>
+  <data name="Bacterial_03_Mercury" xml:space="preserve">
+    <value>Bacterium Scopulum - Peach</value>
+  </data>
+  <data name="Bacterial_03_Molybdenum" xml:space="preserve">
+    <value>Bacterium Scopulum - Lime</value>
+  </data>
+  <data name="Bacterial_03_Niobium" xml:space="preserve">
+    <value>Bacterium Scopulum - Red</value>
+  </data>
+  <data name="Bacterial_03_Tin" xml:space="preserve">
+    <value>Bacterium Scopulum - Mulberry</value>
+  </data>
+  <data name="Bacterial_03_Tungsten" xml:space="preserve">
+    <value>Bacterium Scopulum - Aquamarine</value>
+  </data>
+  <data name="Bacterial_04_Antimony" xml:space="preserve">
+    <value>Bacterium Acies - Cyan</value>
+  </data>
+  <data name="Bacterial_04_Polonium" xml:space="preserve">
+    <value>Bacterium Acies - Magenta</value>
+  </data>
+  <data name="Bacterial_04_Ruthenium" xml:space="preserve">
+    <value>Bacterium Acies - Cobalt</value>
+  </data>
+  <data name="Bacterial_04_Technetium" xml:space="preserve">
+    <value>Bacterium Acies - Lime</value>
+  </data>
+  <data name="Bacterial_04_Tellurium" xml:space="preserve">
+    <value>Bacterium Acies - White</value>
+  </data>
+  <data name="Bacterial_04_Yttrium" xml:space="preserve">
+    <value>Bacterium Acies - Aquamarine</value>
+  </data>
+  <data name="Bacterial_05_Antimony" xml:space="preserve">
+    <value>Bacterium Vesicula - Cyan</value>
+  </data>
+  <data name="Bacterial_05_Polonium" xml:space="preserve">
+    <value>Bacterium Vesicula - Orange</value>
+  </data>
+  <data name="Bacterial_05_Ruthenium" xml:space="preserve">
+    <value>Bacterium Vesicula - Mulberry</value>
+  </data>
+  <data name="Bacterial_05_Technetium" xml:space="preserve">
+    <value>Bacterium Vesicula - Gold</value>
+  </data>
+  <data name="Bacterial_05_Tellurium" xml:space="preserve">
+    <value>Bacterium Vesicula - Red</value>
+  </data>
+  <data name="Bacterial_05_Yttrium" xml:space="preserve">
+    <value>Bacterium Vesicula - Lime</value>
+  </data>
+  <data name="Bacterial_06_A" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Yellow</value>
+  </data>
+  <data name="Bacterial_06_B" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Grey</value>
+  </data>
+  <data name="Bacterial_06_D" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Ocher</value>
+  </data>
+  <data name="Bacterial_06_F" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Lime</value>
+  </data>
+  <data name="Bacterial_06_G" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Emerald</value>
+  </data>
+  <data name="Bacterial_06_K" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Green</value>
+  </data>
+  <data name="Bacterial_06_L" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Sage</value>
+  </data>
+  <data name="Bacterial_06_M" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Teal</value>
+  </data>
+  <data name="Bacterial_06_N" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Indigo</value>
+  </data>
+  <data name="Bacterial_06_O" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Turquoise</value>
+  </data>
+  <data name="Bacterial_06_T" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Red</value>
+  </data>
+  <data name="Bacterial_06_TTS" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Maroon</value>
+  </data>
+  <data name="Bacterial_06_W" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Amethyst</value>
+  </data>
+  <data name="Bacterial_06_Y" xml:space="preserve">
+    <value>Bacterium Alcyoneum - Mauve</value>
+  </data>
+  <data name="Bacterial_07_Cadmium" xml:space="preserve">
+    <value>Bacterium Tela - Gold</value>
+  </data>
+  <data name="Bacterial_07_Mercury" xml:space="preserve">
+    <value>Bacterium Tela - Orange</value>
+  </data>
+  <data name="Bacterial_07_Molybdenum" xml:space="preserve">
+    <value>Bacterium Tela - Yellow</value>
+  </data>
+  <data name="Bacterial_07_Niobium" xml:space="preserve">
+    <value>Bacterium Tela - Magenta</value>
+  </data>
+  <data name="Bacterial_07_Tin" xml:space="preserve">
+    <value>Bacterium Tela - Cobalt</value>
+  </data>
+  <data name="Bacterial_07_Tungsten" xml:space="preserve">
+    <value>Bacterium Tela - Green</value>
+  </data>
+  <data name="Bacterial_08_Antimony" xml:space="preserve">
+    <value>Bacterium Informem - Red</value>
+  </data>
+  <data name="Bacterial_08_Polonium" xml:space="preserve">
+    <value>Bacterium Informem - Lime</value>
+  </data>
+  <data name="Bacterial_08_Ruthenium" xml:space="preserve">
+    <value>Bacterium Informem - Gold</value>
+  </data>
+  <data name="Bacterial_08_Technetium" xml:space="preserve">
+    <value>Bacterium Informem - Aquamarine</value>
+  </data>
+  <data name="Bacterial_08_Tellurium" xml:space="preserve">
+    <value>Bacterium Informem - Yellow</value>
+  </data>
+  <data name="Bacterial_08_Yttrium" xml:space="preserve">
+    <value>Bacterium Informem - Cobalt</value>
+  </data>
+  <data name="Bacterial_09_Antimony" xml:space="preserve">
+    <value>Bacterium Volu - Red</value>
+  </data>
+  <data name="Bacterial_09_Polonium" xml:space="preserve">
+    <value>Bacterium Volu - Aquamarine</value>
+  </data>
+  <data name="Bacterial_09_Ruthenium" xml:space="preserve">
+    <value>Bacterium Volu - Cobalt</value>
+  </data>
+  <data name="Bacterial_09_Technetium" xml:space="preserve">
+    <value>Bacterium Volu - Lime</value>
+  </data>
+  <data name="Bacterial_09_Tellurium" xml:space="preserve">
+    <value>Bacterium Volu - Cyan</value>
+  </data>
+  <data name="Bacterial_09_Yttrium" xml:space="preserve">
+    <value>Bacterium Volu - Gold</value>
+  </data>
+  <data name="Bacterial_10_Antimony" xml:space="preserve">
+    <value>Bacterium Bullaris - Cobalt</value>
+  </data>
+  <data name="Bacterial_10_Polonium" xml:space="preserve">
+    <value>Bacterium Bullaris - Yellow</value>
+  </data>
+  <data name="Bacterial_10_Ruthenium" xml:space="preserve">
+    <value>Bacterium Bullaris - Aquamarine</value>
+  </data>
+  <data name="Bacterial_10_Technetium" xml:space="preserve">
+    <value>Bacterium Bullaris - Gold</value>
+  </data>
+  <data name="Bacterial_10_Tellurium" xml:space="preserve">
+    <value>Bacterium Bullaris - Lime</value>
+  </data>
+  <data name="Bacterial_10_Yttrium" xml:space="preserve">
+    <value>Bacterium Bullaris - Red</value>
+  </data>
+  <data name="Bacterial_11_Cadmium" xml:space="preserve">
+    <value>Bacterium Omentum - Lime</value>
+  </data>
+  <data name="Bacterial_11_Mercury" xml:space="preserve">
+    <value>Bacterium Omentum - White</value>
+  </data>
+  <data name="Bacterial_11_Molybdenum" xml:space="preserve">
+    <value>Bacterium Omentum - Aquamarine</value>
+  </data>
+  <data name="Bacterial_11_Niobium" xml:space="preserve">
+    <value>Bacterium Omentum - Peach</value>
+  </data>
+  <data name="Bacterial_11_Tin" xml:space="preserve">
+    <value>Bacterium Omentum - Red</value>
+  </data>
+  <data name="Bacterial_11_Tungsten" xml:space="preserve">
+    <value>Bacterium Omentum - Blue</value>
+  </data>
+  <data name="Bacterial_12_A" xml:space="preserve">
+    <value>Bacterium Cerbrus - Yellow</value>
+  </data>
+  <data name="Bacterial_12_Ae" xml:space="preserve">
+    <value>Bacterium Cerbrus - Orange</value>
+  </data>
+  <data name="Bacterial_12_B" xml:space="preserve">
+    <value>Bacterium Cerbrus - Grey</value>
+  </data>
+  <data name="Bacterial_12_D" xml:space="preserve">
+    <value>Bacterium Cerbrus - Ocher</value>
+  </data>
+  <data name="Bacterial_12_F" xml:space="preserve">
+    <value>Bacterium Cerbrus - Lime</value>
+  </data>
+  <data name="Bacterial_12_G" xml:space="preserve">
+    <value>Bacterium Cerbrus - Emerald</value>
+  </data>
+  <data name="Bacterial_12_K" xml:space="preserve">
+    <value>Bacterium Cerbrus - Green</value>
+  </data>
+  <data name="Bacterial_12_L" xml:space="preserve">
+    <value>Bacterium Cerbrus - Sage</value>
+  </data>
+  <data name="Bacterial_12_M" xml:space="preserve">
+    <value>Bacterium Cerbrus - Teal</value>
+  </data>
+  <data name="Bacterial_12_N" xml:space="preserve">
+    <value>Bacterium Cerbrus - Indigo</value>
+  </data>
+  <data name="Bacterial_12_O" xml:space="preserve">
+    <value>Bacterium Cerbrus - Turquoise</value>
+  </data>
+  <data name="Bacterial_12_T" xml:space="preserve">
+    <value>Bacterium Cerbrus - Red</value>
+  </data>
+  <data name="Bacterial_12_TTS" xml:space="preserve">
+    <value>Bacterium Cerbrus - Maroon</value>
+  </data>
+  <data name="Bacterial_12_W" xml:space="preserve">
+    <value>Bacterium Cerbrus - Amethyst</value>
+  </data>
+  <data name="Bacterial_12_Y" xml:space="preserve">
+    <value>Bacterium Cerbrus - Mauve</value>
+  </data>
+  <data name="Bacterial_13_Cadmium" xml:space="preserve">
+    <value>Bacterium Verrata - Peach</value>
+  </data>
+  <data name="Bacterial_13_Mercury" xml:space="preserve">
+    <value>Bacterium Verrata - Red</value>
+  </data>
+  <data name="Bacterial_13_Molybdenum" xml:space="preserve">
+    <value>Bacterium Verrata - White</value>
+  </data>
+  <data name="Bacterial_13_Niobium" xml:space="preserve">
+    <value>Bacterium Verrata - Mulberry</value>
+  </data>
+  <data name="Bacterial_13_Tin" xml:space="preserve">
+    <value>Bacterium Verrata - Blue</value>
+  </data>
+  <data name="Bacterial_13_Tungsten" xml:space="preserve">
+    <value>Bacterium Verrata - Lime</value>
+  </data>
+  <data name="Cactoid_01_A" xml:space="preserve">
+    <value>Cactoida Cortexum - Green</value>
+  </data>
+  <data name="Cactoid_01_D" xml:space="preserve">
+    <value>Cactoida Cortexum - Turquoise</value>
+  </data>
+  <data name="Cactoid_01_F" xml:space="preserve">
+    <value>Cactoida Cortexum - Yellow</value>
+  </data>
+  <data name="Cactoid_01_G" xml:space="preserve">
+    <value>Cactoida Cortexum - Teal</value>
+  </data>
+  <data name="Cactoid_01_L" xml:space="preserve">
+    <value>Cactoida Cortexum - Mauve</value>
+  </data>
+  <data name="Cactoid_01_M" xml:space="preserve">
+    <value>Cactoida Cortexum - Amethyst</value>
+  </data>
+  <data name="Cactoid_01_N" xml:space="preserve">
+    <value>Cactoida Cortexum - Sage</value>
+  </data>
+  <data name="Cactoid_01_T" xml:space="preserve">
+    <value>Cactoida Cortexum - Orange</value>
+  </data>
+  <data name="Cactoid_01_TTS" xml:space="preserve">
+    <value>Cactoida Cortexum - Red</value>
+  </data>
+  <data name="Cactoid_01_Y" xml:space="preserve">
+    <value>Cactoida Cortexum - Ocher</value>
+  </data>
+  <data name="Cactoid_02_A" xml:space="preserve">
+    <value>Cactoida Lapis - Green</value>
+  </data>
+  <data name="Cactoid_02_D" xml:space="preserve">
+    <value>Cactoida Lapis - Turquoise</value>
+  </data>
+  <data name="Cactoid_02_F" xml:space="preserve">
+    <value>Cactoida Lapis - Yellow</value>
+  </data>
+  <data name="Cactoid_02_G" xml:space="preserve">
+    <value>Cactoida Lapis - Teal</value>
+  </data>
+  <data name="Cactoid_02_L" xml:space="preserve">
+    <value>Cactoida Lapis - Mauve</value>
+  </data>
+  <data name="Cactoid_02_M" xml:space="preserve">
+    <value>Cactoida Lapis - Amethyst</value>
+  </data>
+  <data name="Cactoid_02_N" xml:space="preserve">
+    <value>Cactoida Lapis - Sage</value>
+  </data>
+  <data name="Cactoid_02_O" xml:space="preserve">
+    <value>Cactoida Lapis - Grey</value>
+  </data>
+  <data name="Cactoid_02_T" xml:space="preserve">
+    <value>Cactoida Lapis - Orange</value>
+  </data>
+  <data name="Cactoid_02_TTS" xml:space="preserve">
+    <value>Cactoida Lapis - Red</value>
+  </data>
+  <data name="Cactoid_02_W" xml:space="preserve">
+    <value>Cactoida Lapis - Indigo</value>
+  </data>
+  <data name="Cactoid_02_Y" xml:space="preserve">
+    <value>Cactoida Lapis - Ocher</value>
+  </data>
+  <data name="Cactoid_03_A" xml:space="preserve">
+    <value>Cactoida Vermis - Green</value>
+  </data>
+  <data name="Cactoid_03_F" xml:space="preserve">
+    <value>Cactoida Vermis - Yellow</value>
+  </data>
+  <data name="Cactoid_03_G" xml:space="preserve">
+    <value>Cactoida Vermis - Teal</value>
+  </data>
+  <data name="Cactoid_03_L" xml:space="preserve">
+    <value>Cactoida Vermis - Mauve</value>
+  </data>
+  <data name="Cactoid_03_M" xml:space="preserve">
+    <value>Cactoida Vermis - Amethyst</value>
+  </data>
+  <data name="Cactoid_03_N" xml:space="preserve">
+    <value>Cactoida Vermis - Sage</value>
+  </data>
+  <data name="Cactoid_03_T" xml:space="preserve">
+    <value>Cactoida Vermis - Orange</value>
+  </data>
+  <data name="Cactoid_03_TTS" xml:space="preserve">
+    <value>Cactoida Vermis - Red</value>
+  </data>
+  <data name="Cactoid_04_A" xml:space="preserve">
+    <value>Cactoida Pullulanta - Green</value>
+  </data>
+  <data name="Cactoid_04_D" xml:space="preserve">
+    <value>Cactoida Pullulanta - Turquoise</value>
+  </data>
+  <data name="Cactoid_04_F" xml:space="preserve">
+    <value>Cactoida Pullulanta - Yellow</value>
+  </data>
+  <data name="Cactoid_04_G" xml:space="preserve">
+    <value>Cactoida Pullulanta - Teal</value>
+  </data>
+  <data name="Cactoid_04_L" xml:space="preserve">
+    <value>Cactoida Pullulanta - Mauve</value>
+  </data>
+  <data name="Cactoid_04_M" xml:space="preserve">
+    <value>Cactoida Pullulanta - Amethyst</value>
+  </data>
+  <data name="Cactoid_04_N" xml:space="preserve">
+    <value>Cactoida Pullulanta - Sage</value>
+  </data>
+  <data name="Cactoid_04_T" xml:space="preserve">
+    <value>Cactoida Pullulanta - Orange</value>
+  </data>
+  <data name="Cactoid_04_TTS" xml:space="preserve">
+    <value>Cactoida Pullulanta - Red</value>
+  </data>
+  <data name="Cactoid_05_A" xml:space="preserve">
+    <value>Cactoida Peperatis - Green</value>
+  </data>
+  <data name="Cactoid_05_D" xml:space="preserve">
+    <value>Cactoida Peperatis - Turquoise</value>
+  </data>
+  <data name="Cactoid_05_F" xml:space="preserve">
+    <value>Cactoida Peperatis - Yellow</value>
+  </data>
+  <data name="Cactoid_05_G" xml:space="preserve">
+    <value>Cactoida Peperatis - Teal</value>
+  </data>
+  <data name="Cactoid_05_L" xml:space="preserve">
+    <value>Cactoida Peperatis - Mauve</value>
+  </data>
+  <data name="Cactoid_05_M" xml:space="preserve">
+    <value>Cactoida Peperatis - Amethyst</value>
+  </data>
+  <data name="Cactoid_05_N" xml:space="preserve">
+    <value>Cactoida Peperatis - Sage</value>
+  </data>
+  <data name="Cactoid_05_T" xml:space="preserve">
+    <value>Cactoida Peperatis - Orange</value>
+  </data>
+  <data name="Cactoid_05_TTS" xml:space="preserve">
+    <value>Cactoida Peperatis - Red</value>
+  </data>
+  <data name="Cactoid_05_Y" xml:space="preserve">
+    <value>Cactoida Peperatis - Ocher</value>
+  </data>
+  <data name="Clypeus_01_A" xml:space="preserve">
+    <value>Clypeus Lacrimam - Orange</value>
+  </data>
+  <data name="Clypeus_01_B" xml:space="preserve">
+    <value>Clypeus Lacrimam - Maroon</value>
+  </data>
+  <data name="Clypeus_01_D" xml:space="preserve">
+    <value>Clypeus Lacrimam - Lime</value>
+  </data>
+  <data name="Clypeus_01_F" xml:space="preserve">
+    <value>Clypeus Lacrimam - Mauve</value>
+  </data>
+  <data name="Clypeus_01_G" xml:space="preserve">
+    <value>Clypeus Lacrimam - Amethyst</value>
+  </data>
+  <data name="Clypeus_01_K" xml:space="preserve">
+    <value>Clypeus Lacrimam - Grey</value>
+  </data>
+  <data name="Clypeus_01_L" xml:space="preserve">
+    <value>Clypeus Lacrimam - Teal</value>
+  </data>
+  <data name="Clypeus_01_M" xml:space="preserve">
+    <value>Clypeus Lacrimam - Turquoise</value>
+  </data>
+  <data name="Clypeus_01_N" xml:space="preserve">
+    <value>Clypeus Lacrimam - Yellow</value>
+  </data>
+  <data name="Clypeus_01_Y" xml:space="preserve">
+    <value>Clypeus Lacrimam - Green</value>
+  </data>
+  <data name="Clypeus_02_A" xml:space="preserve">
+    <value>Clypeus Margaritus - Orange</value>
+  </data>
+  <data name="Clypeus_02_B" xml:space="preserve">
+    <value>Clypeus Margaritus - Maroon</value>
+  </data>
+  <data name="Clypeus_02_F" xml:space="preserve">
+    <value>Clypeus Margaritus - Mauve</value>
+  </data>
+  <data name="Clypeus_02_G" xml:space="preserve">
+    <value>Clypeus Margaritus - Amethyst</value>
+  </data>
+  <data name="Clypeus_02_K" xml:space="preserve">
+    <value>Clypeus Margaritus - Grey</value>
+  </data>
+  <data name="Clypeus_02_L" xml:space="preserve">
+    <value>Clypeus Margaritus - Teal</value>
+  </data>
+  <data name="Clypeus_02_M" xml:space="preserve">
+    <value>Clypeus Margaritus - Turquoise</value>
+  </data>
+  <data name="Clypeus_02_N" xml:space="preserve">
+    <value>Clypeus Margaritus - Yellow</value>
+  </data>
+  <data name="Clypeus_02_Y" xml:space="preserve">
+    <value>Clypeus Margaritus - Green</value>
+  </data>
+  <data name="Clypeus_03_A" xml:space="preserve">
+    <value>Clypeus Speculumi - Orange</value>
+  </data>
+  <data name="Clypeus_03_B" xml:space="preserve">
+    <value>Clypeus Speculumi - Maroon</value>
+  </data>
+  <data name="Clypeus_03_F" xml:space="preserve">
+    <value>Clypeus Speculumi - Mauve</value>
+  </data>
+  <data name="Clypeus_03_G" xml:space="preserve">
+    <value>Clypeus Speculumi - Amethyst</value>
+  </data>
+  <data name="Clypeus_03_K" xml:space="preserve">
+    <value>Clypeus Speculumi - Grey</value>
+  </data>
+  <data name="Clypeus_03_M" xml:space="preserve">
+    <value>Clypeus Speculumi - Turquoise</value>
+  </data>
+  <data name="Clypeus_03_N" xml:space="preserve">
+    <value>Clypeus Speculumi - Yellow</value>
+  </data>
+  <data name="Conchas_01_Cadmium" xml:space="preserve">
+    <value>Concha Renibus - Red</value>
+  </data>
+  <data name="Conchas_01_Mercury" xml:space="preserve">
+    <value>Concha Renibus - Mulberry</value>
+  </data>
+  <data name="Conchas_01_Molybdenum" xml:space="preserve">
+    <value>Concha Renibus - Peach</value>
+  </data>
+  <data name="Conchas_01_Niobium" xml:space="preserve">
+    <value>Concha Renibus - Blue</value>
+  </data>
+  <data name="Conchas_01_Tin" xml:space="preserve">
+    <value>Concha Renibus - Aquamarine</value>
+  </data>
+  <data name="Conchas_01_Tungsten" xml:space="preserve">
+    <value>Concha Renibus - White</value>
+  </data>
+  <data name="Conchas_02_A" xml:space="preserve">
+    <value>Concha Aureolas - Teal</value>
+  </data>
+  <data name="Conchas_02_B" xml:space="preserve">
+    <value>Concha Aureolas - Indigo</value>
+  </data>
+  <data name="Conchas_02_D" xml:space="preserve">
+    <value>Concha Aureolas - Green</value>
+  </data>
+  <data name="Conchas_02_F" xml:space="preserve">
+    <value>Concha Aureolas - Grey</value>
+  </data>
+  <data name="Conchas_02_G" xml:space="preserve">
+    <value>Concha Aureolas - Turquoise</value>
+  </data>
+  <data name="Conchas_02_K" xml:space="preserve">
+    <value>Concha Aureolas - Red</value>
+  </data>
+  <data name="Conchas_02_L" xml:space="preserve">
+    <value>Concha Aureolas - Orange</value>
+  </data>
+  <data name="Conchas_02_N" xml:space="preserve">
+    <value>Concha Aureolas - Emerald</value>
+  </data>
+  <data name="Conchas_02_Y" xml:space="preserve">
+    <value>Concha Aureolas - Yellow</value>
+  </data>
+  <data name="Conchas_03_A" xml:space="preserve">
+    <value>Concha Labiata - Teal</value>
+  </data>
+  <data name="Conchas_03_B" xml:space="preserve">
+    <value>Concha Labiata - Indigo</value>
+  </data>
+  <data name="Conchas_03_D" xml:space="preserve">
+    <value>Concha Labiata - Green</value>
+  </data>
+  <data name="Conchas_03_F" xml:space="preserve">
+    <value>Concha Labiata - Grey</value>
+  </data>
+  <data name="Conchas_03_G" xml:space="preserve">
+    <value>Concha Labiata - Turquoise</value>
+  </data>
+  <data name="Conchas_03_K" xml:space="preserve">
+    <value>Concha Labiata - Red</value>
+  </data>
+  <data name="Conchas_03_L" xml:space="preserve">
+    <value>Concha Labiata - Orange</value>
+  </data>
+  <data name="Conchas_03_N" xml:space="preserve">
+    <value>Concha Labiata - Emerald</value>
+  </data>
+  <data name="Conchas_03_W" xml:space="preserve">
+    <value>Concha Labiata - Lime</value>
+  </data>
+  <data name="Conchas_03_Y" xml:space="preserve">
+    <value>Concha Labiata - Yellow</value>
+  </data>
+  <data name="Conchas_04_Antimony" xml:space="preserve">
+    <value>Concha Biconcavis - Peach</value>
+  </data>
+  <data name="Conchas_04_Polonium" xml:space="preserve">
+    <value>Concha Biconcavis - Red</value>
+  </data>
+  <data name="Conchas_04_Ruthenium" xml:space="preserve">
+    <value>Concha Biconcavis - Orange</value>
+  </data>
+  <data name="Conchas_04_Technetium" xml:space="preserve">
+    <value>Concha Biconcavis - White</value>
+  </data>
+  <data name="Conchas_04_Tellurium" xml:space="preserve">
+    <value>Concha Biconcavis - Yellow</value>
+  </data>
+  <data name="Conchas_04_Yttrium" xml:space="preserve">
+    <value>Concha Biconcavis - Gold</value>
+  </data>
+  <data name="Cone" xml:space="preserve">
+    <value>Bark Mounds</value>
+  </data>
+  <data name="Electricae_01_Antimony" xml:space="preserve">
+    <value>Electricae Pluma - Cobalt</value>
+  </data>
+  <data name="Electricae_01_Polonium" xml:space="preserve">
+    <value>Electricae Pluma - Cyan</value>
+  </data>
+  <data name="Electricae_01_Ruthenium" xml:space="preserve">
+    <value>Electricae Pluma - Blue</value>
+  </data>
+  <data name="Electricae_01_Technetium" xml:space="preserve">
+    <value>Electricae Pluma - Magenta</value>
+  </data>
+  <data name="Electricae_01_Tellurium" xml:space="preserve">
+    <value>Electricae Pluma - Red</value>
+  </data>
+  <data name="Electricae_01_Yttrium" xml:space="preserve">
+    <value>Electricae Pluma - Mulberry</value>
+  </data>
+  <data name="Electricae_02_Antimony" xml:space="preserve">
+    <value>Electricae Radialem - Cyan</value>
+  </data>
+  <data name="Electricae_02_Polonium" xml:space="preserve">
+    <value>Electricae Radialem - Cobalt</value>
+  </data>
+  <data name="Electricae_02_Ruthenium" xml:space="preserve">
+    <value>Electricae Radialem - Blue</value>
+  </data>
+  <data name="Electricae_02_Technetium" xml:space="preserve">
+    <value>Electricae Radialem - Aquamarine</value>
+  </data>
+  <data name="Electricae_02_Tellurium" xml:space="preserve">
+    <value>Electricae Radialem - Magenta</value>
+  </data>
+  <data name="Electricae_02_Yttrium" xml:space="preserve">
+    <value>Electricae Radialem - Green</value>
+  </data>
+  <data name="Fonticulus_01_A" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Green</value>
+  </data>
+  <data name="Fonticulus_01_Ae" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Maroon</value>
+  </data>
+  <data name="Fonticulus_01_B" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Lime</value>
+  </data>
+  <data name="Fonticulus_01_D" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Turquoise</value>
+  </data>
+  <data name="Fonticulus_01_F" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Yellow</value>
+  </data>
+  <data name="Fonticulus_01_G" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Teal</value>
+  </data>
+  <data name="Fonticulus_01_K" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Emerald</value>
+  </data>
+  <data name="Fonticulus_01_L" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Mauve</value>
+  </data>
+  <data name="Fonticulus_01_M" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Amethyst</value>
+  </data>
+  <data name="Fonticulus_01_N" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Sage</value>
+  </data>
+  <data name="Fonticulus_01_T" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Orange</value>
+  </data>
+  <data name="Fonticulus_01_TTS" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Red</value>
+  </data>
+  <data name="Fonticulus_01_Y" xml:space="preserve">
+    <value>Fonticulua Segmentatus - Ocher</value>
+  </data>
+  <data name="Fonticulus_02_A" xml:space="preserve">
+    <value>Fonticulua Campestris - Green</value>
+  </data>
+  <data name="Fonticulus_02_Ae" xml:space="preserve">
+    <value>Fonticulua Campestris - Maroon</value>
+  </data>
+  <data name="Fonticulus_02_B" xml:space="preserve">
+    <value>Fonticulua Campestris - Lime</value>
+  </data>
+  <data name="Fonticulus_02_D" xml:space="preserve">
+    <value>Fonticulua Campestris - Turquoise</value>
+  </data>
+  <data name="Fonticulus_02_F" xml:space="preserve">
+    <value>Fonticulua Campestris - Yellow</value>
+  </data>
+  <data name="Fonticulus_02_G" xml:space="preserve">
+    <value>Fonticulua Campestris - Teal</value>
+  </data>
+  <data name="Fonticulus_02_K" xml:space="preserve">
+    <value>Fonticulua Campestris - Emerald</value>
+  </data>
+  <data name="Fonticulus_02_L" xml:space="preserve">
+    <value>Fonticulua Campestris - Mauve</value>
+  </data>
+  <data name="Fonticulus_02_M" xml:space="preserve">
+    <value>Fonticulua Campestris - Amethyst</value>
+  </data>
+  <data name="Fonticulus_02_N" xml:space="preserve">
+    <value>Fonticulua Campestris - Sage</value>
+  </data>
+  <data name="Fonticulus_02_O" xml:space="preserve">
+    <value>Fonticulua Campestris - Grey</value>
+  </data>
+  <data name="Fonticulus_02_T" xml:space="preserve">
+    <value>Fonticulua Campestris - Orange</value>
+  </data>
+  <data name="Fonticulus_02_TTS" xml:space="preserve">
+    <value>Fonticulua Campestris - Red</value>
+  </data>
+  <data name="Fonticulus_02_Y" xml:space="preserve">
+    <value>Fonticulua Campestris - Ocher</value>
+  </data>
+  <data name="Fonticulus_03_A" xml:space="preserve">
+    <value>Fonticulua Upupam - Green</value>
+  </data>
+  <data name="Fonticulus_03_Ae" xml:space="preserve">
+    <value>Fonticulua Upupam - Maroon</value>
+  </data>
+  <data name="Fonticulus_03_B" xml:space="preserve">
+    <value>Fonticulua Upupam - Lime</value>
+  </data>
+  <data name="Fonticulus_03_D" xml:space="preserve">
+    <value>Fonticulua Upupam - Turquoise</value>
+  </data>
+  <data name="Fonticulus_03_F" xml:space="preserve">
+    <value>Fonticulua Upupam - Yellow</value>
+  </data>
+  <data name="Fonticulus_03_G" xml:space="preserve">
+    <value>Fonticulua Upupam - Teal</value>
+  </data>
+  <data name="Fonticulus_03_K" xml:space="preserve">
+    <value>Fonticulua Upupam - Emerald</value>
+  </data>
+  <data name="Fonticulus_03_L" xml:space="preserve">
+    <value>Fonticulua Upupam - Mauve</value>
+  </data>
+  <data name="Fonticulus_03_M" xml:space="preserve">
+    <value>Fonticulua Upupam - Amethyst</value>
+  </data>
+  <data name="Fonticulus_03_N" xml:space="preserve">
+    <value>Fonticulua Upupam - Sage</value>
+  </data>
+  <data name="Fonticulus_03_T" xml:space="preserve">
+    <value>Fonticulua Upupam - Orange</value>
+  </data>
+  <data name="Fonticulus_03_TTS" xml:space="preserve">
+    <value>Fonticulua Upupam - Red</value>
+  </data>
+  <data name="Fonticulus_03_W" xml:space="preserve">
+    <value>Fonticulua Upupam - Indigo</value>
+  </data>
+  <data name="Fonticulus_03_Y" xml:space="preserve">
+    <value>Fonticulua Upupam - Ocher</value>
+  </data>
+  <data name="Fonticulus_04_A" xml:space="preserve">
+    <value>Fonticulua Lapida - Green</value>
+  </data>
+  <data name="Fonticulus_04_Ae" xml:space="preserve">
+    <value>Fonticulua Lapida - Maroon</value>
+  </data>
+  <data name="Fonticulus_04_B" xml:space="preserve">
+    <value>Fonticulua Lapida - Lime</value>
+  </data>
+  <data name="Fonticulus_04_D" xml:space="preserve">
+    <value>Fonticulua Lapida - Turquoise</value>
+  </data>
+  <data name="Fonticulus_04_F" xml:space="preserve">
+    <value>Fonticulua Lapida - Yellow</value>
+  </data>
+  <data name="Fonticulus_04_G" xml:space="preserve">
+    <value>Fonticulua Lapida - Teal</value>
+  </data>
+  <data name="Fonticulus_04_K" xml:space="preserve">
+    <value>Fonticulua Lapida - Emerald</value>
+  </data>
+  <data name="Fonticulus_04_L" xml:space="preserve">
+    <value>Fonticulua Lapida - Mauve</value>
+  </data>
+  <data name="Fonticulus_04_M" xml:space="preserve">
+    <value>Fonticulua Lapida - Amethyst</value>
+  </data>
+  <data name="Fonticulus_04_N" xml:space="preserve">
+    <value>Fonticulua Lapida - Sage</value>
+  </data>
+  <data name="Fonticulus_04_O" xml:space="preserve">
+    <value>Fonticulua Lapida - Grey</value>
+  </data>
+  <data name="Fonticulus_04_T" xml:space="preserve">
+    <value>Fonticulua Lapida - Orange</value>
+  </data>
+  <data name="Fonticulus_04_TTS" xml:space="preserve">
+    <value>Fonticulua Lapida - Red</value>
+  </data>
+  <data name="Fonticulus_04_Y" xml:space="preserve">
+    <value>Fonticulua Lapida - Ocher</value>
+  </data>
+  <data name="Fonticulus_05_A" xml:space="preserve">
+    <value>Fonticulua Fluctus - Green</value>
+  </data>
+  <data name="Fonticulus_05_B" xml:space="preserve">
+    <value>Fonticulua Fluctus - Lime</value>
+  </data>
+  <data name="Fonticulus_05_F" xml:space="preserve">
+    <value>Fonticulua Fluctus - Yellow</value>
+  </data>
+  <data name="Fonticulus_05_G" xml:space="preserve">
+    <value>Fonticulua Fluctus - Teal</value>
+  </data>
+  <data name="Fonticulus_05_K" xml:space="preserve">
+    <value>Fonticulua Fluctus - Emerald</value>
+  </data>
+  <data name="Fonticulus_05_L" xml:space="preserve">
+    <value>Fonticulua Fluctus - Mauve</value>
+  </data>
+  <data name="Fonticulus_05_M" xml:space="preserve">
+    <value>Fonticulua Fluctus - Amethyst</value>
+  </data>
+  <data name="Fonticulus_05_N" xml:space="preserve">
+    <value>Fonticulua Fluctus - Sage</value>
+  </data>
+  <data name="Fonticulus_05_T" xml:space="preserve">
+    <value>Fonticulua Fluctus - Orange</value>
+  </data>
+  <data name="Fonticulus_05_TTS" xml:space="preserve">
+    <value>Fonticulua Fluctus - Red</value>
+  </data>
+  <data name="Fonticulus_06_A" xml:space="preserve">
+    <value>Fonticulua Digitos - Green</value>
+  </data>
+  <data name="Fonticulus_06_B" xml:space="preserve">
+    <value>Fonticulua Digitos - Lime</value>
+  </data>
+  <data name="Fonticulus_06_D" xml:space="preserve">
+    <value>Fonticulua Digitos - Turquoise</value>
+  </data>
+  <data name="Fonticulus_06_F" xml:space="preserve">
+    <value>Fonticulua Digitos - Yellow</value>
+  </data>
+  <data name="Fonticulus_06_G" xml:space="preserve">
+    <value>Fonticulua Digitos - Teal</value>
+  </data>
+  <data name="Fonticulus_06_K" xml:space="preserve">
+    <value>Fonticulua Digitos - Emerald</value>
+  </data>
+  <data name="Fonticulus_06_L" xml:space="preserve">
+    <value>Fonticulua Digitos - Mauve</value>
+  </data>
+  <data name="Fonticulus_06_M" xml:space="preserve">
+    <value>Fonticulua Digitos - Amethyst</value>
+  </data>
+  <data name="Fonticulus_06_N" xml:space="preserve">
+    <value>Fonticulua Digitos - Sage</value>
+  </data>
+  <data name="Fonticulus_06_T" xml:space="preserve">
+    <value>Fonticulua Digitos - Orange</value>
+  </data>
+  <data name="Fonticulus_06_TTS" xml:space="preserve">
+    <value>Fonticulua Digitos - Red</value>
+  </data>
+  <data name="Fonticulus_06_Y" xml:space="preserve">
+    <value>Fonticulua Digitos - Ocher</value>
+  </data>
+  <data name="Fumerolas_01_Cadmium" xml:space="preserve">
+    <value>Fumerola Carbosis - Orange</value>
+  </data>
+  <data name="Fumerolas_01_Mercury" xml:space="preserve">
+    <value>Fumerola Carbosis - Magenta</value>
+  </data>
+  <data name="Fumerolas_01_Molybdenum" xml:space="preserve">
+    <value>Fumerola Carbosis - Gold</value>
+  </data>
+  <data name="Fumerolas_01_Niobium" xml:space="preserve">
+    <value>Fumerola Carbosis - Cobalt</value>
+  </data>
+  <data name="Fumerolas_01_Tin" xml:space="preserve">
+    <value>Fumerola Carbosis - Cyan</value>
+  </data>
+  <data name="Fumerolas_01_Tungsten" xml:space="preserve">
+    <value>Fumerola Carbosis - Yellow</value>
+  </data>
+  <data name="Fumerolas_02_Cadmium" xml:space="preserve">
+    <value>Fumerola Extremus - Aquamarine</value>
+  </data>
+  <data name="Fumerolas_02_Mercury" xml:space="preserve">
+    <value>Fumerola Extremus - Lime</value>
+  </data>
+  <data name="Fumerolas_02_Molybdenum" xml:space="preserve">
+    <value>Fumerola Extremus - Blue</value>
+  </data>
+  <data name="Fumerolas_02_Niobium" xml:space="preserve">
+    <value>Fumerola Extremus - White</value>
+  </data>
+  <data name="Fumerolas_02_Tin" xml:space="preserve">
+    <value>Fumerola Extremus - Peach</value>
+  </data>
+  <data name="Fumerolas_02_Tungsten" xml:space="preserve">
+    <value>Fumerola Extremus - Mulberry</value>
+  </data>
+  <data name="Fumerolas_03_Cadmium" xml:space="preserve">
+    <value>Fumerola Nitris - White</value>
+  </data>
+  <data name="Fumerolas_03_Mercury" xml:space="preserve">
+    <value>Fumerola Nitris - Peach</value>
+  </data>
+  <data name="Fumerolas_03_Molybdenum" xml:space="preserve">
+    <value>Fumerola Nitris - Lime</value>
+  </data>
+  <data name="Fumerolas_03_Niobium" xml:space="preserve">
+    <value>Fumerola Nitris - Red</value>
+  </data>
+  <data name="Fumerolas_03_Tin" xml:space="preserve">
+    <value>Fumerola Nitris - Mulberry</value>
+  </data>
+  <data name="Fumerolas_03_Tungsten" xml:space="preserve">
+    <value>Fumerola Nitris - Aquamarine</value>
+  </data>
+  <data name="Fumerolas_04_Cadmium" xml:space="preserve">
+    <value>Fumerola Aquatis - Green</value>
+  </data>
+  <data name="Fumerolas_04_Mercury" xml:space="preserve">
+    <value>Fumerola Aquatis - Yellow</value>
+  </data>
+  <data name="Fumerolas_04_Molybdenum" xml:space="preserve">
+    <value>Fumerola Aquatis - Cyan</value>
+  </data>
+  <data name="Fumerolas_04_Niobium" xml:space="preserve">
+    <value>Fumerola Aquatis - Gold</value>
+  </data>
+  <data name="Fumerolas_04_Tin" xml:space="preserve">
+    <value>Fumerola Aquatis - Orange</value>
+  </data>
+  <data name="Fumerolas_04_Tungsten" xml:space="preserve">
+    <value>Fumerola Aquatis - Cobalt</value>
+  </data>
+  <data name="Fungoids_01_Antimony" xml:space="preserve">
+    <value>Fungoida Setisis - Peach</value>
+  </data>
+  <data name="Fungoids_01_Polonium" xml:space="preserve">
+    <value>Fungoida Setisis - White</value>
+  </data>
+  <data name="Fungoids_01_Ruthenium" xml:space="preserve">
+    <value>Fungoida Setisis - Gold</value>
+  </data>
+  <data name="Fungoids_01_Technetium" xml:space="preserve">
+    <value>Fungoida Setisis - Lime</value>
+  </data>
+  <data name="Fungoids_01_Tellurium" xml:space="preserve">
+    <value>Fungoida Setisis - Yellow</value>
+  </data>
+  <data name="Fungoids_01_Yttrium" xml:space="preserve">
+    <value>Fungoida Setisis - Orange</value>
+  </data>
+  <data name="Fungoids_02_Cadmium" xml:space="preserve">
+    <value>Fungoida Stabitis - Blue</value>
+  </data>
+  <data name="Fungoids_02_Mercury" xml:space="preserve">
+    <value>Fungoida Stabitis - Green</value>
+  </data>
+  <data name="Fungoids_02_Molybdenum" xml:space="preserve">
+    <value>Fungoida Stabitis - Magenta</value>
+  </data>
+  <data name="Fungoids_02_Niobium" xml:space="preserve">
+    <value>Fungoida Stabitis - White</value>
+  </data>
+  <data name="Fungoids_02_Tin" xml:space="preserve">
+    <value>Fungoida Stabitis - Orange</value>
+  </data>
+  <data name="Fungoids_02_Tungsten" xml:space="preserve">
+    <value>Fungoida Stabitis - Peach</value>
+  </data>
+  <data name="Fungoids_03_Antimony" xml:space="preserve">
+    <value>Fungoida Bullarum - Red</value>
+  </data>
+  <data name="Fungoids_03_Polonium" xml:space="preserve">
+    <value>Fungoida Bullarum - Mulberry</value>
+  </data>
+  <data name="Fungoids_03_Ruthenium" xml:space="preserve">
+    <value>Fungoida Bullarum - Magenta</value>
+  </data>
+  <data name="Fungoids_03_Technetium" xml:space="preserve">
+    <value>Fungoida Bullarum - Peach</value>
+  </data>
+  <data name="Fungoids_03_Tellurium" xml:space="preserve">
+    <value>Fungoida Bullarum - Gold</value>
+  </data>
+  <data name="Fungoids_03_Yttrium" xml:space="preserve">
+    <value>Fungoida Bullarum - Orange</value>
+  </data>
+  <data name="Fungoids_04_Cadmium" xml:space="preserve">
+    <value>Fungoida Gelata - Cyan</value>
+  </data>
+  <data name="Fungoids_04_Mercury" xml:space="preserve">
+    <value>Fungoida Gelata - Lime</value>
+  </data>
+  <data name="Fungoids_04_Molybdenum" xml:space="preserve">
+    <value>Fungoida Gelata - Mulberry</value>
+  </data>
+  <data name="Fungoids_04_Niobium" xml:space="preserve">
+    <value>Fungoida Gelata - Green</value>
+  </data>
+  <data name="Fungoids_04_Tin" xml:space="preserve">
+    <value>Fungoida Gelata - Red</value>
+  </data>
+  <data name="Fungoids_04_Tungsten" xml:space="preserve">
+    <value>Fungoida Gelata - Orange</value>
+  </data>
+  <data name="Ground_Struct_Ice" xml:space="preserve">
+    <value>Crystalline Shards</value>
+  </data>
+  <data name="L_Cry_IcCry_Bl" xml:space="preserve">
+    <value>Lindigoticum Ice Crystals</value>
+  </data>
+  <data name="L_Cry_IcCry_Gr" xml:space="preserve">
+    <value>Prasinum Ice Crystals</value>
+  </data>
+  <data name="L_Cry_IcCry_Pk" xml:space="preserve">
+    <value>Roseum Ice Crystals</value>
+  </data>
+  <data name="L_Cry_IcCry_Pur" xml:space="preserve">
+    <value>Purpureum Ice Crystals</value>
+  </data>
+  <data name="L_Cry_IcCry_Red" xml:space="preserve">
+    <value>Rubeum Ice Crystals</value>
+  </data>
+  <data name="L_Cry_IcCry_Wte" xml:space="preserve">
+    <value>Albidum Ice Crystals</value>
+  </data>
+  <data name="L_Cry_IcCry_Yw" xml:space="preserve">
+    <value>Flavum Ice Crystals</value>
+  </data>
+  <data name="L_Cry_MetCry_Gr" xml:space="preserve">
+    <value>Prasinum Metallic Crystals</value>
+  </data>
+  <data name="L_Cry_MetCry_Pur" xml:space="preserve">
+    <value>Purpureum Metallic Crystals</value>
+  </data>
+  <data name="L_Cry_MetCry_Red" xml:space="preserve">
+    <value>Rubeum Metallic Crystals</value>
+  </data>
+  <data name="L_Cry_MetCry_Yw" xml:space="preserve">
+    <value>Flavum Metallic Crystals</value>
+  </data>
+  <data name="L_Cry_QtzCry_Bl" xml:space="preserve">
+    <value>Lindigoticum Silicate Crystals</value>
+  </data>
+  <data name="L_Cry_QtzCry_Gr" xml:space="preserve">
+    <value>Prasinum Silicate Crystals</value>
+  </data>
+  <data name="L_Cry_QtzCry_Pk" xml:space="preserve">
+    <value>Roseum Silicate Crystals</value>
+  </data>
+  <data name="L_Cry_QtzCry_Pur" xml:space="preserve">
+    <value>Purpureum Silicate Crystals</value>
+  </data>
+  <data name="L_Cry_QtzCry_Red" xml:space="preserve">
+    <value>Rubeum Silicate Crystals</value>
+  </data>
+  <data name="L_Cry_QtzCry_Wte" xml:space="preserve">
+    <value>Albidum Silicate Crystals</value>
+  </data>
+  <data name="L_Cry_QtzCry_Yw" xml:space="preserve">
+    <value>Flavum Silicate Crystals</value>
+  </data>
+  <data name="L_Org_Moll03_V1_Dark" xml:space="preserve">
+    <value>Lindigoticum Parasol Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V1_Def" xml:space="preserve">
+    <value>Luteolum Parasol Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V1_Earth" xml:space="preserve">
+    <value>Viride Parasol Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V2_Dark" xml:space="preserve">
+    <value>Lindigoticum Bulb Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V2_Def" xml:space="preserve">
+    <value>Luteolum Bulb Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V2_Earth" xml:space="preserve">
+    <value>Viride Bulb Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V3_Dark" xml:space="preserve">
+    <value>Lindigoticum Umbrella Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V3_Def" xml:space="preserve">
+    <value>Luteolum Umbrella Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V3_Earth" xml:space="preserve">
+    <value>Viride Umbrella Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V4_Dark" xml:space="preserve">
+    <value>Lindigoticum Capsule Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V4_Def" xml:space="preserve">
+    <value>Luteolum Capsule Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V4_Earth" xml:space="preserve">
+    <value>Viride Capsule Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V6_Dark" xml:space="preserve">
+    <value>Lindigoticum Reel Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V6_Def" xml:space="preserve">
+    <value>Luteolum Reel Mollusc</value>
+  </data>
+  <data name="L_Org_Moll03_V6_Earth" xml:space="preserve">
+    <value>Viride Reel Mollusc</value>
+  </data>
+  <data name="L_Org_PltFun_V1_Bl" xml:space="preserve">
+    <value>Lindigoticum Calcite Plates</value>
+  </data>
+  <data name="L_Org_PltFun_V1_Def" xml:space="preserve">
+    <value>Luteolum Calcite Plates</value>
+  </data>
+  <data name="L_Org_PltFun_V1_Gr" xml:space="preserve">
+    <value>Viride Calcite Plates</value>
+  </data>
+  <data name="L_Org_PltFun_V1_Red" xml:space="preserve">
+    <value>Rutulum Calcite Plates</value>
+  </data>
+  <data name="L_Seed_Pln01_V1_Bl" xml:space="preserve">
+    <value>Caeruleum Peduncle Tree</value>
+  </data>
+  <data name="L_Seed_Pln01_V1_Def" xml:space="preserve">
+    <value>Albidum Peduncle Tree</value>
+  </data>
+  <data name="L_Seed_Pln01_V1_Gr" xml:space="preserve">
+    <value>Viride Peduncle Tree</value>
+  </data>
+  <data name="L_Seed_Pln01_V1_Pur" xml:space="preserve">
+    <value>Ostrinum Peduncle Tree</value>
+  </data>
+  <data name="L_Seed_Pln01_V1_Red" xml:space="preserve">
+    <value>Rubellum Peduncle Tree</value>
+  </data>
+  <data name="L_Seed_Pln02_V3_Def" xml:space="preserve">
+    <value>Cereum Aster Tree</value>
+  </data>
+  <data name="L_Seed_Pln02_V3_Gr" xml:space="preserve">
+    <value>Prasinum Aster Tree</value>
+  </data>
+  <data name="L_Seed_Pln02_V3_Red" xml:space="preserve">
+    <value>Rubellum Aster Tree</value>
+  </data>
+  <data name="L_Seed_SdRt02_V3" xml:space="preserve">
+    <value>Stolon Tree</value>
+  </data>
+  <data name="Osseus_01_A" xml:space="preserve">
+    <value>Osseus Fractus - Lime</value>
+  </data>
+  <data name="Osseus_01_F" xml:space="preserve">
+    <value>Osseus Fractus - Turquoise</value>
+  </data>
+  <data name="Osseus_01_G" xml:space="preserve">
+    <value>Osseus Fractus - Grey</value>
+  </data>
+  <data name="Osseus_01_K" xml:space="preserve">
+    <value>Osseus Fractus - Indigo</value>
+  </data>
+  <data name="Osseus_01_T" xml:space="preserve">
+    <value>Osseus Fractus - Emerald</value>
+  </data>
+  <data name="Osseus_01_TTS" xml:space="preserve">
+    <value>Osseus Fractus - Green</value>
+  </data>
+  <data name="Osseus_01_Y" xml:space="preserve">
+    <value>Osseus Fractus - Maroon</value>
+  </data>
+  <data name="Osseus_02_Cadmium" xml:space="preserve">
+    <value>Osseus Discus - White</value>
+  </data>
+  <data name="Osseus_02_Mercury" xml:space="preserve">
+    <value>Osseus Discus - Lime</value>
+  </data>
+  <data name="Osseus_02_Molybdenum" xml:space="preserve">
+    <value>Osseus Discus - Peach</value>
+  </data>
+  <data name="Osseus_02_Niobium" xml:space="preserve">
+    <value>Osseus Discus - Aquamarine</value>
+  </data>
+  <data name="Osseus_02_Tin" xml:space="preserve">
+    <value>Osseus Discus - Blue</value>
+  </data>
+  <data name="Osseus_02_Tungsten" xml:space="preserve">
+    <value>Osseus Discus - Red</value>
+  </data>
+  <data name="Osseus_03_A" xml:space="preserve">
+    <value>Osseus Spiralis - Lime</value>
+  </data>
+  <data name="Osseus_03_F" xml:space="preserve">
+    <value>Osseus Spiralis - Turquoise</value>
+  </data>
+  <data name="Osseus_03_G" xml:space="preserve">
+    <value>Osseus Spiralis - Grey</value>
+  </data>
+  <data name="Osseus_03_K" xml:space="preserve">
+    <value>Osseus Spiralis - Indigo</value>
+  </data>
+  <data name="Osseus_03_O" xml:space="preserve">
+    <value>Osseus Spiralis - Yellow</value>
+  </data>
+  <data name="Osseus_03_T" xml:space="preserve">
+    <value>Osseus Spiralis - Emerald</value>
+  </data>
+  <data name="Osseus_03_TTS" xml:space="preserve">
+    <value>Osseus Spiralis - Green</value>
+  </data>
+  <data name="Osseus_03_Y" xml:space="preserve">
+    <value>Osseus Spiralis - Maroon</value>
+  </data>
+  <data name="Osseus_04_Antimony" xml:space="preserve">
+    <value>Osseus Pumice - White</value>
+  </data>
+  <data name="Osseus_04_Polonium" xml:space="preserve">
+    <value>Osseus Pumice - Peach</value>
+  </data>
+  <data name="Osseus_04_Ruthenium" xml:space="preserve">
+    <value>Osseus Pumice - Gold</value>
+  </data>
+  <data name="Osseus_04_Technetium" xml:space="preserve">
+    <value>Osseus Pumice - Lime</value>
+  </data>
+  <data name="Osseus_04_Tellurium" xml:space="preserve">
+    <value>Osseus Pumice - Green</value>
+  </data>
+  <data name="Osseus_04_Yttrium" xml:space="preserve">
+    <value>Osseus Pumice - Yellow</value>
+  </data>
+  <data name="Osseus_05_A" xml:space="preserve">
+    <value>Osseus Cornibus - Lime</value>
+  </data>
+  <data name="Osseus_05_F" xml:space="preserve">
+    <value>Osseus Cornibus - Turquoise</value>
+  </data>
+  <data name="Osseus_05_G" xml:space="preserve">
+    <value>Osseus Cornibus - Grey</value>
+  </data>
+  <data name="Osseus_05_K" xml:space="preserve">
+    <value>Osseus Cornibus - Indigo</value>
+  </data>
+  <data name="Osseus_05_T" xml:space="preserve">
+    <value>Osseus Cornibus - Emerald</value>
+  </data>
+  <data name="Osseus_05_TTS" xml:space="preserve">
+    <value>Osseus Cornibus - Green</value>
+  </data>
+  <data name="Osseus_05_Y" xml:space="preserve">
+    <value>Osseus Cornibus - Maroon</value>
+  </data>
+  <data name="Osseus_06_A" xml:space="preserve">
+    <value>Osseus Pellebantus - Lime</value>
+  </data>
+  <data name="Osseus_06_F" xml:space="preserve">
+    <value>Osseus Pellebantus - Turquoise</value>
+  </data>
+  <data name="Osseus_06_G" xml:space="preserve">
+    <value>Osseus Pellebantus - Grey</value>
+  </data>
+  <data name="Osseus_06_K" xml:space="preserve">
+    <value>Osseus Pellebantus - Indigo</value>
+  </data>
+  <data name="Osseus_06_T" xml:space="preserve">
+    <value>Osseus Pellebantus - Emerald</value>
+  </data>
+  <data name="Osseus_06_TTS" xml:space="preserve">
+    <value>Osseus Pellebantus - Green</value>
+  </data>
+  <data name="Osseus_06_Y" xml:space="preserve">
+    <value>Osseus Pellebantus - Maroon</value>
+  </data>
+  <data name="Recepta_01_A" xml:space="preserve">
+    <value>Recepta Umbrux - Amethyst</value>
+  </data>
+  <data name="Recepta_01_Ae" xml:space="preserve">
+    <value>Recepta Umbrux - Grey</value>
+  </data>
+  <data name="Recepta_01_B" xml:space="preserve">
+    <value>Recepta Umbrux - Turquoise</value>
+  </data>
+  <data name="Recepta_01_D" xml:space="preserve">
+    <value>Recepta Umbrux - Yellow</value>
+  </data>
+  <data name="Recepta_01_F" xml:space="preserve">
+    <value>Recepta Umbrux - Mauve</value>
+  </data>
+  <data name="Recepta_01_G" xml:space="preserve">
+    <value>Recepta Umbrux - Orange</value>
+  </data>
+  <data name="Recepta_01_K" xml:space="preserve">
+    <value>Recepta Umbrux - Red</value>
+  </data>
+  <data name="Recepta_01_L" xml:space="preserve">
+    <value>Recepta Umbrux - Ocher</value>
+  </data>
+  <data name="Recepta_01_M" xml:space="preserve">
+    <value>Recepta Umbrux - Maroon</value>
+  </data>
+  <data name="Recepta_01_N" xml:space="preserve">
+    <value>Recepta Umbrux - Emerald</value>
+  </data>
+  <data name="Recepta_01_T" xml:space="preserve">
+    <value>Recepta Umbrux - Teal</value>
+  </data>
+  <data name="Recepta_01_TTS" xml:space="preserve">
+    <value>Recepta Umbrux - Sage</value>
+  </data>
+  <data name="Recepta_01_Y" xml:space="preserve">
+    <value>Recepta Umbrux - Lime</value>
+  </data>
+  <data name="Recepta_02_Cadmium" xml:space="preserve">
+    <value>Recepta Deltahedronix - Lime</value>
+  </data>
+  <data name="Recepta_02_Mercury" xml:space="preserve">
+    <value>Recepta Deltahedronix - Cyan</value>
+  </data>
+  <data name="Recepta_02_Molybdenum" xml:space="preserve">
+    <value>Recepta Deltahedronix - Gold</value>
+  </data>
+  <data name="Recepta_02_Niobium" xml:space="preserve">
+    <value>Recepta Deltahedronix - Mulberry</value>
+  </data>
+  <data name="Recepta_02_Tin" xml:space="preserve">
+    <value>Recepta Deltahedronix - Orange</value>
+  </data>
+  <data name="Recepta_02_Tungsten" xml:space="preserve">
+    <value>Recepta Deltahedronix - Red</value>
+  </data>
+  <data name="Recepta_03_Antimony" xml:space="preserve">
+    <value>Recepta Conditivus - Lime</value>
+  </data>
+  <data name="Recepta_03_Polonium" xml:space="preserve">
+    <value>Recepta Conditivus - White</value>
+  </data>
+  <data name="Recepta_03_Ruthenium" xml:space="preserve">
+    <value>Recepta Conditivus - Yellow</value>
+  </data>
+  <data name="Recepta_03_Technetium" xml:space="preserve">
+    <value>Recepta Conditivus - Aquamarine</value>
+  </data>
+  <data name="Recepta_03_Tellurium" xml:space="preserve">
+    <value>Recepta Conditivus - Cyan</value>
+  </data>
+  <data name="Recepta_03_Yttrium" xml:space="preserve">
+    <value>Recepta Conditivus - Green</value>
+  </data>
+  <data name="Seed" xml:space="preserve">
+    <value>Roseum Brain Tree</value>
+  </data>
+  <data name="SeedABCD_01" xml:space="preserve">
+    <value>Gypseeum Brain Tree</value>
+  </data>
+  <data name="SeedABCD_02" xml:space="preserve">
+    <value>Ostrinum Brain Tree</value>
+  </data>
+  <data name="SeedABCD_03" xml:space="preserve">
+    <value>Viride Brain Tree</value>
+  </data>
+  <data name="SeedEFGH" xml:space="preserve">
+    <value>Lividum Brain Tree</value>
+  </data>
+  <data name="SeedEFGH_01" xml:space="preserve">
+    <value>Aureum Brain Tree</value>
+  </data>
+  <data name="SeedEFGH_02" xml:space="preserve">
+    <value>Puniceum Brain Tree</value>
+  </data>
+  <data name="SeedEFGH_03" xml:space="preserve">
+    <value>Lindigoticum Brain Tree</value>
+  </data>
+  <data name="Shrubs_01_B" xml:space="preserve">
+    <value>Frutexa Flabellum - Lime</value>
+  </data>
+  <data name="Shrubs_01_D" xml:space="preserve">
+    <value>Frutexa Flabellum - Indigo</value>
+  </data>
+  <data name="Shrubs_01_F" xml:space="preserve">
+    <value>Frutexa Flabellum - Green</value>
+  </data>
+  <data name="Shrubs_01_G" xml:space="preserve">
+    <value>Frutexa Flabellum - Emerald</value>
+  </data>
+  <data name="Shrubs_01_L" xml:space="preserve">
+    <value>Frutexa Flabellum - Teal</value>
+  </data>
+  <data name="Shrubs_01_M" xml:space="preserve">
+    <value>Frutexa Flabellum - Grey</value>
+  </data>
+  <data name="Shrubs_01_N" xml:space="preserve">
+    <value>Frutexa Flabellum - Red</value>
+  </data>
+  <data name="Shrubs_01_O" xml:space="preserve">
+    <value>Frutexa Flabellum - Yellow</value>
+  </data>
+  <data name="Shrubs_01_TTS" xml:space="preserve">
+    <value>Frutexa Flabellum - Mauve</value>
+  </data>
+  <data name="Shrubs_01_W" xml:space="preserve">
+    <value>Frutexa Flabellum - Orange</value>
+  </data>
+  <data name="Shrubs_02_B" xml:space="preserve">
+    <value>Frutexa Acus - Lime</value>
+  </data>
+  <data name="Shrubs_02_D" xml:space="preserve">
+    <value>Frutexa Acus - Indigo</value>
+  </data>
+  <data name="Shrubs_02_F" xml:space="preserve">
+    <value>Frutexa Acus - Green</value>
+  </data>
+  <data name="Shrubs_02_G" xml:space="preserve">
+    <value>Frutexa Acus - Emerald</value>
+  </data>
+  <data name="Shrubs_02_L" xml:space="preserve">
+    <value>Frutexa Acus - Teal</value>
+  </data>
+  <data name="Shrubs_02_M" xml:space="preserve">
+    <value>Frutexa Acus - Grey</value>
+  </data>
+  <data name="Shrubs_02_N" xml:space="preserve">
+    <value>Frutexa Acus - Red</value>
+  </data>
+  <data name="Shrubs_02_TTS" xml:space="preserve">
+    <value>Frutexa Acus - Mauve</value>
+  </data>
+  <data name="Shrubs_02_W" xml:space="preserve">
+    <value>Frutexa Acus - Orange</value>
+  </data>
+  <data name="Shrubs_03_B" xml:space="preserve">
+    <value>Frutexa Metallicum - Lime</value>
+  </data>
+  <data name="Shrubs_03_D" xml:space="preserve">
+    <value>Frutexa Metallicum - Indigo</value>
+  </data>
+  <data name="Shrubs_03_F" xml:space="preserve">
+    <value>Frutexa Metallicum - Green</value>
+  </data>
+  <data name="Shrubs_03_G" xml:space="preserve">
+    <value>Frutexa Metallicum - Emerald</value>
+  </data>
+  <data name="Shrubs_03_L" xml:space="preserve">
+    <value>Frutexa Metallicum - Teal</value>
+  </data>
+  <data name="Shrubs_03_M" xml:space="preserve">
+    <value>Frutexa Metallicum - Grey</value>
+  </data>
+  <data name="Shrubs_03_N" xml:space="preserve">
+    <value>Frutexa Metallicum - Red</value>
+  </data>
+  <data name="Shrubs_03_TTS" xml:space="preserve">
+    <value>Frutexa Metallicum - Mauve</value>
+  </data>
+  <data name="Shrubs_04_B" xml:space="preserve">
+    <value>Frutexa Flammasis - Lime</value>
+  </data>
+  <data name="Shrubs_04_D" xml:space="preserve">
+    <value>Frutexa Flammasis - Indigo</value>
+  </data>
+  <data name="Shrubs_04_F" xml:space="preserve">
+    <value>Frutexa Flammasis - Green</value>
+  </data>
+  <data name="Shrubs_04_G" xml:space="preserve">
+    <value>Frutexa Flammasis - Emerald</value>
+  </data>
+  <data name="Shrubs_04_L" xml:space="preserve">
+    <value>Frutexa Flammasis - Teal</value>
+  </data>
+  <data name="Shrubs_04_M" xml:space="preserve">
+    <value>Frutexa Flammasis - Grey</value>
+  </data>
+  <data name="Shrubs_04_N" xml:space="preserve">
+    <value>Frutexa Flammasis - Red</value>
+  </data>
+  <data name="Shrubs_04_TTS" xml:space="preserve">
+    <value>Frutexa Flammasis - Mauve</value>
+  </data>
+  <data name="Shrubs_05_B" xml:space="preserve">
+    <value>Frutexa Fera - Lime</value>
+  </data>
+  <data name="Shrubs_05_D" xml:space="preserve">
+    <value>Frutexa Fera - Indigo</value>
+  </data>
+  <data name="Shrubs_05_F" xml:space="preserve">
+    <value>Frutexa Fera - Green</value>
+  </data>
+  <data name="Shrubs_05_G" xml:space="preserve">
+    <value>Frutexa Fera - Emerald</value>
+  </data>
+  <data name="Shrubs_05_L" xml:space="preserve">
+    <value>Frutexa Fera - Teal</value>
+  </data>
+  <data name="Shrubs_05_M" xml:space="preserve">
+    <value>Frutexa Fera - Grey</value>
+  </data>
+  <data name="Shrubs_05_N" xml:space="preserve">
+    <value>Frutexa Fera - Red</value>
+  </data>
+  <data name="Shrubs_05_TTS" xml:space="preserve">
+    <value>Frutexa Fera - Mauve</value>
+  </data>
+  <data name="Shrubs_06_B" xml:space="preserve">
+    <value>Frutexa Sponsae - Lime</value>
+  </data>
+  <data name="Shrubs_06_F" xml:space="preserve">
+    <value>Frutexa Sponsae - Green</value>
+  </data>
+  <data name="Shrubs_06_G" xml:space="preserve">
+    <value>Frutexa Sponsae - Emerald</value>
+  </data>
+  <data name="Shrubs_06_L" xml:space="preserve">
+    <value>Frutexa Sponsae - Teal</value>
+  </data>
+  <data name="Shrubs_06_M" xml:space="preserve">
+    <value>Frutexa Sponsae - Grey</value>
+  </data>
+  <data name="Shrubs_06_N" xml:space="preserve">
+    <value>Frutexa Sponsae - Red</value>
+  </data>
+  <data name="Shrubs_06_TTS" xml:space="preserve">
+    <value>Frutexa Sponsae - Mauve</value>
+  </data>
+  <data name="Shrubs_07_B" xml:space="preserve">
+    <value>Frutexa Collum - Lime</value>
+  </data>
+  <data name="Shrubs_07_D" xml:space="preserve">
+    <value>Frutexa Collum - Indigo</value>
+  </data>
+  <data name="Shrubs_07_F" xml:space="preserve">
+    <value>Frutexa Collum - Green</value>
+  </data>
+  <data name="Shrubs_07_G" xml:space="preserve">
+    <value>Frutexa Collum - Emerald</value>
+  </data>
+  <data name="Shrubs_07_L" xml:space="preserve">
+    <value>Frutexa Collum - Teal</value>
+  </data>
+  <data name="Shrubs_07_M" xml:space="preserve">
+    <value>Frutexa Collum - Grey</value>
+  </data>
+  <data name="Shrubs_07_N" xml:space="preserve">
+    <value>Frutexa Collum - Red</value>
+  </data>
+  <data name="Shrubs_07_TTS" xml:space="preserve">
+    <value>Frutexa Collum - Mauve</value>
+  </data>
+  <data name="Small_Org_Moll01_V1_Bl" xml:space="preserve">
+    <value>Caeruleum Gourd Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V1_Def" xml:space="preserve">
+    <value>Albulum Gourd Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V1_Gr" xml:space="preserve">
+    <value>Viride Gourd Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V1_Pnk" xml:space="preserve">
+    <value>Phoeniceum Gourd Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V1_Pur" xml:space="preserve">
+    <value>Purpureum Gourd Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V1_Red" xml:space="preserve">
+    <value>Rufum Gourd Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V1_Y" xml:space="preserve">
+    <value>Croceum Gourd Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V2_Bl" xml:space="preserve">
+    <value>Caeruleum Torus Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V2_Gr" xml:space="preserve">
+    <value>Viride Torus Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V2_Pur" xml:space="preserve">
+    <value>Blatteum Torus Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V2_Red" xml:space="preserve">
+    <value>Rubellum Torus Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V2_Y" xml:space="preserve">
+    <value>Flavum Torus Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V3_Bl" xml:space="preserve">
+    <value>Caeruleum Squid Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V3_Def" xml:space="preserve">
+    <value>Albulum Squid Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V3_Pnk" xml:space="preserve">
+    <value>Roseum Squid Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V3_Pur" xml:space="preserve">
+    <value>Puniceum Squid Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V3_Red" xml:space="preserve">
+    <value>Rubeum Squid Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V4_Bl" xml:space="preserve">
+    <value>Lividum Bullet Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V4_Def" xml:space="preserve">
+    <value>Cereum Bullet Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V4_Gr" xml:space="preserve">
+    <value>Viride Bullet Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V4_Red" xml:space="preserve">
+    <value>Rubeum Bullet Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V4_Y" xml:space="preserve">
+    <value>Flavum Bullet Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V5_Bl" xml:space="preserve">
+    <value>Cobalteum Globe Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V5_Def" xml:space="preserve">
+    <value>Niveum Globe Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V5_Gr" xml:space="preserve">
+    <value>Prasinum Globe Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V5_Pnk" xml:space="preserve">
+    <value>Roseum Globe Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V5_Pur" xml:space="preserve">
+    <value>Ostrinum Globe Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V5_Red" xml:space="preserve">
+    <value>Rutulum Globe Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V5_Y" xml:space="preserve">
+    <value>Croceum Globe Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V6_Bl" xml:space="preserve">
+    <value>Lindigoticum Bell Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V6_Def" xml:space="preserve">
+    <value>Albens Bell Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V6_Gr" xml:space="preserve">
+    <value>Gypseeum Bell Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V6_Pur" xml:space="preserve">
+    <value>Blatteum Bell Mollusc</value>
+  </data>
+  <data name="Small_Org_Moll01_V6_Y" xml:space="preserve">
+    <value>Luteolum Bell Mollusc</value>
+  </data>
+  <data name="Sphere" xml:space="preserve">
+    <value>Luteolum Anemone</value>
+  </data>
+  <data name="SphereABCD_01" xml:space="preserve">
+    <value>Croceum Anemone</value>
+  </data>
+  <data name="SphereABCD_02" xml:space="preserve">
+    <value>Puniceum Anemone</value>
+  </data>
+  <data name="SphereABCD_03" xml:space="preserve">
+    <value>Roseum Anemone</value>
+  </data>
+  <data name="SphereEFGH" xml:space="preserve">
+    <value>Blatteum Bioluminescent Anemone</value>
+  </data>
+  <data name="SphereEFGH_01" xml:space="preserve">
+    <value>Rubeum Bioluminescent Anemone</value>
+  </data>
+  <data name="SphereEFGH_02" xml:space="preserve">
+    <value>Prasinum Bioluminescent Anemone</value>
+  </data>
+  <data name="SphereEFGH_03" xml:space="preserve">
+    <value>Roseum Bioluminescent Anemone</value>
+  </data>
+  <data name="SPOI_Ball" xml:space="preserve">
+    <value>Solid Mineral Spheres</value>
+  </data>
+  <data name="SPOI_Ball_Lattice" xml:space="preserve">
+    <value>Lattice Mineral Spheres</value>
+  </data>
+  <data name="SPOI_Root_Seeds" xml:space="preserve">
+    <value>Stolon Pod</value>
+  </data>
+  <data name="SPOI_SeedPolyp01_V1" xml:space="preserve">
+    <value>Viride Gyre Tree</value>
+  </data>
+  <data name="SPOI_SeedPolyp01_V1_Gld" xml:space="preserve">
+    <value>Aurarium Gyre Tree</value>
+  </data>
+  <data name="SPOI_SeedWeed01_V1" xml:space="preserve">
+    <value>Chryseum Void Heart</value>
+  </data>
+  <data name="Stratum_01_Ae" xml:space="preserve">
+    <value>Stratum Excutitus - Teal</value>
+  </data>
+  <data name="Stratum_01_D" xml:space="preserve">
+    <value>Stratum Excutitus - Mauve</value>
+  </data>
+  <data name="Stratum_01_F" xml:space="preserve">
+    <value>Stratum Excutitus - Emerald</value>
+  </data>
+  <data name="Stratum_01_K" xml:space="preserve">
+    <value>Stratum Excutitus - Lime</value>
+  </data>
+  <data name="Stratum_01_L" xml:space="preserve">
+    <value>Stratum Excutitus - Turquoise</value>
+  </data>
+  <data name="Stratum_01_M" xml:space="preserve">
+    <value>Stratum Excutitus - Green</value>
+  </data>
+  <data name="Stratum_01_T" xml:space="preserve">
+    <value>Stratum Excutitus - Grey</value>
+  </data>
+  <data name="Stratum_01_TTS" xml:space="preserve">
+    <value>Stratum Excutitus - Amethyst</value>
+  </data>
+  <data name="Stratum_01_W" xml:space="preserve">
+    <value>Stratum Excutitus - Red</value>
+  </data>
+  <data name="Stratum_01_Y" xml:space="preserve">
+    <value>Stratum Excutitus - Indigo</value>
+  </data>
+  <data name="Stratum_02_Ae" xml:space="preserve">
+    <value>Stratum Paleas - Teal</value>
+  </data>
+  <data name="Stratum_02_D" xml:space="preserve">
+    <value>Stratum Paleas - Mauve</value>
+  </data>
+  <data name="Stratum_02_F" xml:space="preserve">
+    <value>Stratum Paleas - Emerald</value>
+  </data>
+  <data name="Stratum_02_K" xml:space="preserve">
+    <value>Stratum Paleas - Lime</value>
+  </data>
+  <data name="Stratum_02_L" xml:space="preserve">
+    <value>Stratum Paleas - Turquoise</value>
+  </data>
+  <data name="Stratum_02_M" xml:space="preserve">
+    <value>Stratum Paleas - Green</value>
+  </data>
+  <data name="Stratum_02_T" xml:space="preserve">
+    <value>Stratum Paleas - Grey</value>
+  </data>
+  <data name="Stratum_02_TTS" xml:space="preserve">
+    <value>Stratum Paleas - Amethyst</value>
+  </data>
+  <data name="Stratum_02_W" xml:space="preserve">
+    <value>Stratum Paleas - Red</value>
+  </data>
+  <data name="Stratum_02_Y" xml:space="preserve">
+    <value>Stratum Paleas - Indigo</value>
+  </data>
+  <data name="Stratum_03_F" xml:space="preserve">
+    <value>Stratum Laminamus - Emerald</value>
+  </data>
+  <data name="Stratum_03_K" xml:space="preserve">
+    <value>Stratum Laminamus - Lime</value>
+  </data>
+  <data name="Stratum_03_L" xml:space="preserve">
+    <value>Stratum Laminamus - Turquoise</value>
+  </data>
+  <data name="Stratum_03_M" xml:space="preserve">
+    <value>Stratum Laminamus - Green</value>
+  </data>
+  <data name="Stratum_03_T" xml:space="preserve">
+    <value>Stratum Laminamus - Grey</value>
+  </data>
+  <data name="Stratum_03_TTS" xml:space="preserve">
+    <value>Stratum Laminamus - Amethyst</value>
+  </data>
+  <data name="Stratum_03_W" xml:space="preserve">
+    <value>Stratum Laminamus - Red</value>
+  </data>
+  <data name="Stratum_03_Y" xml:space="preserve">
+    <value>Stratum Laminamus - Indigo</value>
+  </data>
+  <data name="Stratum_04_F" xml:space="preserve">
+    <value>Stratum Araneamus - Emerald</value>
+  </data>
+  <data name="Stratum_05_Ae" xml:space="preserve">
+    <value>Stratum Limaxus - Teal</value>
+  </data>
+  <data name="Stratum_05_D" xml:space="preserve">
+    <value>Stratum Limaxus - Mauve</value>
+  </data>
+  <data name="Stratum_05_F" xml:space="preserve">
+    <value>Stratum Limaxus - Emerald</value>
+  </data>
+  <data name="Stratum_05_K" xml:space="preserve">
+    <value>Stratum Limaxus - Lime</value>
+  </data>
+  <data name="Stratum_05_L" xml:space="preserve">
+    <value>Stratum Limaxus - Turquoise</value>
+  </data>
+  <data name="Stratum_05_M" xml:space="preserve">
+    <value>Stratum Limaxus - Green</value>
+  </data>
+  <data name="Stratum_05_T" xml:space="preserve">
+    <value>Stratum Limaxus - Grey</value>
+  </data>
+  <data name="Stratum_05_TTS" xml:space="preserve">
+    <value>Stratum Limaxus - Amethyst</value>
+  </data>
+  <data name="Stratum_05_Y" xml:space="preserve">
+    <value>Stratum Limaxus - Indigo</value>
+  </data>
+  <data name="Stratum_06_Ae" xml:space="preserve">
+    <value>Stratum Cucumisis - Teal</value>
+  </data>
+  <data name="Stratum_06_D" xml:space="preserve">
+    <value>Stratum Cucumisis - Mauve</value>
+  </data>
+  <data name="Stratum_06_F" xml:space="preserve">
+    <value>Stratum Cucumisis - Emerald</value>
+  </data>
+  <data name="Stratum_06_K" xml:space="preserve">
+    <value>Stratum Cucumisis - Lime</value>
+  </data>
+  <data name="Stratum_06_L" xml:space="preserve">
+    <value>Stratum Cucumisis - Turquoise</value>
+  </data>
+  <data name="Stratum_06_M" xml:space="preserve">
+    <value>Stratum Cucumisis - Green</value>
+  </data>
+  <data name="Stratum_06_T" xml:space="preserve">
+    <value>Stratum Cucumisis - Grey</value>
+  </data>
+  <data name="Stratum_06_TTS" xml:space="preserve">
+    <value>Stratum Cucumisis - Amethyst</value>
+  </data>
+  <data name="Stratum_06_Y" xml:space="preserve">
+    <value>Stratum Cucumisis - Indigo</value>
+  </data>
+  <data name="Stratum_07_D" xml:space="preserve">
+    <value>Stratum Tectonicas - Mauve</value>
+  </data>
+  <data name="Stratum_07_F" xml:space="preserve">
+    <value>Stratum Tectonicas - Emerald</value>
+  </data>
+  <data name="Stratum_07_K" xml:space="preserve">
+    <value>Stratum Tectonicas - Lime</value>
+  </data>
+  <data name="Stratum_07_L" xml:space="preserve">
+    <value>Stratum Tectonicas - Turquoise</value>
+  </data>
+  <data name="Stratum_07_M" xml:space="preserve">
+    <value>Stratum Tectonicas - Green</value>
+  </data>
+  <data name="Stratum_07_T" xml:space="preserve">
+    <value>Stratum Tectonicas - Grey</value>
+  </data>
+  <data name="Stratum_07_TTS" xml:space="preserve">
+    <value>Stratum Tectonicas - Amethyst</value>
+  </data>
+  <data name="Stratum_07_W" xml:space="preserve">
+    <value>Stratum Tectonicas - Red</value>
+  </data>
+  <data name="Stratum_07_Y" xml:space="preserve">
+    <value>Stratum Tectonicas - Indigo</value>
+  </data>
+  <data name="Stratum_08_Ae" xml:space="preserve">
+    <value>Stratum Frigus - Teal</value>
+  </data>
+  <data name="Stratum_08_F" xml:space="preserve">
+    <value>Stratum Frigus - Emerald</value>
+  </data>
+  <data name="Stratum_08_K" xml:space="preserve">
+    <value>Stratum Frigus - Lime</value>
+  </data>
+  <data name="Stratum_08_L" xml:space="preserve">
+    <value>Stratum Frigus - Turquoise</value>
+  </data>
+  <data name="Stratum_08_M" xml:space="preserve">
+    <value>Stratum Frigus - Green</value>
+  </data>
+  <data name="Stratum_08_T" xml:space="preserve">
+    <value>Stratum Frigus - Grey</value>
+  </data>
+  <data name="Stratum_08_TTS" xml:space="preserve">
+    <value>Stratum Frigus - Amethyst</value>
+  </data>
+  <data name="Stratum_08_Y" xml:space="preserve">
+    <value>Stratum Frigus - Indigo</value>
+  </data>
+  <data name="S_Seed_SdTp01_Bl" xml:space="preserve">
+    <value>Caeruleum Peduncle Pod</value>
+  </data>
+  <data name="S_Seed_SdTp01_Def" xml:space="preserve">
+    <value>Candidum Peduncle Pod</value>
+  </data>
+  <data name="S_Seed_SdTp01_Gr" xml:space="preserve">
+    <value>Gypseeum Peduncle Pod</value>
+  </data>
+  <data name="S_Seed_SdTp01_Pur" xml:space="preserve">
+    <value>Purpureum Peduncle Pod</value>
+  </data>
+  <data name="S_Seed_SdTp01_Red" xml:space="preserve">
+    <value>Rufum Peduncle Pod</value>
+  </data>
+  <data name="S_Seed_SdTp02_Bl" xml:space="preserve">
+    <value>Lindigoticum Aster Pod</value>
+  </data>
+  <data name="S_Seed_SdTp02_Def" xml:space="preserve">
+    <value>Cereum Aster Pod</value>
+  </data>
+  <data name="S_Seed_SdTp02_Gr" xml:space="preserve">
+    <value>Prasinum Aster Pod</value>
+  </data>
+  <data name="S_Seed_SdTp02_Pur" xml:space="preserve">
+    <value>Puniceum Aster Pod</value>
+  </data>
+  <data name="S_Seed_SdTp02_Red" xml:space="preserve">
+    <value>Rubellum Aster Pod</value>
+  </data>
+  <data name="S_Seed_SdTp03_Bl" xml:space="preserve">
+    <value>Caeruleum Octahedral Pod</value>
+  </data>
+  <data name="S_Seed_SdTp03_Def" xml:space="preserve">
+    <value>Niveum Octahedral Pod</value>
+  </data>
+  <data name="S_Seed_SdTp03_Gr" xml:space="preserve">
+    <value>Viride Octahedral Pod</value>
+  </data>
+  <data name="S_Seed_SdTp03_Pur" xml:space="preserve">
+    <value>Blatteum Octahedral Pod</value>
+  </data>
+  <data name="S_Seed_SdTp03_Red" xml:space="preserve">
+    <value>Rubeum Octahedral Pod</value>
+  </data>
+  <data name="S_Seed_SdTp04_Bl" xml:space="preserve">
+    <value>Lividum Collared Pod</value>
+  </data>
+  <data name="S_Seed_SdTp04_Def" xml:space="preserve">
+    <value>Albidum Collared Pod</value>
+  </data>
+  <data name="S_Seed_SdTp04_Pur" xml:space="preserve">
+    <value>Blatteum Collared Pod</value>
+  </data>
+  <data name="S_Seed_SdTp04_Red" xml:space="preserve">
+    <value>Rubicundum Collared Pod</value>
+  </data>
+  <data name="S_Seed_SdTp05_Bl" xml:space="preserve">
+    <value>Caeruleum Chalice Pod</value>
+  </data>
+  <data name="S_Seed_SdTp05_Def" xml:space="preserve">
+    <value>Albidum Chalice Pod</value>
+  </data>
+  <data name="S_Seed_SdTp05_Gr" xml:space="preserve">
+    <value>Viride Chalice Pod</value>
+  </data>
+  <data name="S_Seed_SdTp05_Pur" xml:space="preserve">
+    <value>Ostrinum Chalice Pod</value>
+  </data>
+  <data name="S_Seed_SdTp05_Red" xml:space="preserve">
+    <value>Rubellum Chalice Pod</value>
+  </data>
+  <data name="S_Seed_SdTp06_Def" xml:space="preserve">
+    <value>Roseum Gyre Pod</value>
+  </data>
+  <data name="S_Seed_SdTp06_Gd" xml:space="preserve">
+    <value>Aurarium Gyre Pod</value>
+  </data>
+  <data name="S_Seed_SdTp07_Bl" xml:space="preserve">
+    <value>Cobalteum Rhizome Pod</value>
+  </data>
+  <data name="S_Seed_SdTp07_Def" xml:space="preserve">
+    <value>Candidum Rhizome Pod</value>
+  </data>
+  <data name="S_Seed_SdTp07_Gr" xml:space="preserve">
+    <value>Gypseeum Rhizome Pod</value>
+  </data>
+  <data name="S_Seed_SdTp07_Pur" xml:space="preserve">
+    <value>Purpureum Rhizome Pod</value>
+  </data>
+  <data name="S_Seed_SdTp07_Red" xml:space="preserve">
+    <value>Rubeum Rhizome Pod</value>
+  </data>
+  <data name="S_Seed_SdTp08_Bl" xml:space="preserve">
+    <value>Caeruleum Quadripartite Pod</value>
+  </data>
+  <data name="S_Seed_SdTp08_Def" xml:space="preserve">
+    <value>Albidum Quadripartite Pod</value>
+  </data>
+  <data name="S_Seed_SdTp08_Gr" xml:space="preserve">
+    <value>Viride Quadripartite Pod</value>
+  </data>
+  <data name="S_Seed_SdTp08_Pur" xml:space="preserve">
+    <value>Blatteum Quadripartite Pod</value>
+  </data>
+  <data name="Thargoid_Barnacle_01" xml:space="preserve">
+    <value>Common Thargoid Barnacle</value>
+  </data>
+  <data name="Thargoid_Barnacle_02" xml:space="preserve">
+    <value>Large Thargoid Barnacle</value>
+  </data>
+  <data name="Thargoid_Barnacle_Spikes" xml:space="preserve">
+    <value>Thargoid Barnacle Barbs</value>
+  </data>
+  <data name="Tube" xml:space="preserve">
+    <value>Roseum Sinuous Tubers</value>
+  </data>
+  <data name="TubeABCD_01" xml:space="preserve">
+    <value>Prasinum Sinuous Tubers</value>
+  </data>
+  <data name="TubeABCD_02" xml:space="preserve">
+    <value>Albidum Sinuous Tubers</value>
+  </data>
+  <data name="TubeABCD_03" xml:space="preserve">
+    <value>Caeruleum Sinuous Tubers</value>
+  </data>
+  <data name="TubeEFGH" xml:space="preserve">
+    <value>Blatteum Sinuous Tubers</value>
+  </data>
+  <data name="TubeEFGH_01" xml:space="preserve">
+    <value>Lindigoticum Sinuous Tubers</value>
+  </data>
+  <data name="TubeEFGH_02" xml:space="preserve">
+    <value>Violaceum Sinuous Tubers</value>
+  </data>
+  <data name="TubeEFGH_03" xml:space="preserve">
+    <value>Viride Sinuous Tubers</value>
+  </data>
+  <data name="Tubus_01_A" xml:space="preserve">
+    <value>Tubus Conifer - Indigo</value>
+  </data>
+  <data name="Tubus_01_B" xml:space="preserve">
+    <value>Tubus Conifer - Emerald</value>
+  </data>
+  <data name="Tubus_01_D" xml:space="preserve">
+    <value>Tubus Conifer - Yellow</value>
+  </data>
+  <data name="Tubus_01_F" xml:space="preserve">
+    <value>Tubus Conifer - Grey</value>
+  </data>
+  <data name="Tubus_01_G" xml:space="preserve">
+    <value>Tubus Conifer - Red</value>
+  </data>
+  <data name="Tubus_01_K" xml:space="preserve">
+    <value>Tubus Conifer - Maroon</value>
+  </data>
+  <data name="Tubus_01_L" xml:space="preserve">
+    <value>Tubus Conifer - Turquoise</value>
+  </data>
+  <data name="Tubus_01_M" xml:space="preserve">
+    <value>Tubus Conifer - Teal</value>
+  </data>
+  <data name="Tubus_01_N" xml:space="preserve">
+    <value>Tubus Conifer - Amethyst</value>
+  </data>
+  <data name="Tubus_01_T" xml:space="preserve">
+    <value>Tubus Conifer - Mauve</value>
+  </data>
+  <data name="Tubus_01_TTS" xml:space="preserve">
+    <value>Tubus Conifer - Ocher</value>
+  </data>
+  <data name="Tubus_02_A" xml:space="preserve">
+    <value>Tubus Sororibus - Indigo</value>
+  </data>
+  <data name="Tubus_02_B" xml:space="preserve">
+    <value>Tubus Sororibus - Emerald</value>
+  </data>
+  <data name="Tubus_02_F" xml:space="preserve">
+    <value>Tubus Sororibus - Grey</value>
+  </data>
+  <data name="Tubus_02_G" xml:space="preserve">
+    <value>Tubus Sororibus - Red</value>
+  </data>
+  <data name="Tubus_02_K" xml:space="preserve">
+    <value>Tubus Sororibus - Maroon</value>
+  </data>
+  <data name="Tubus_02_L" xml:space="preserve">
+    <value>Tubus Sororibus - Turquoise</value>
+  </data>
+  <data name="Tubus_02_M" xml:space="preserve">
+    <value>Tubus Sororibus - Teal</value>
+  </data>
+  <data name="Tubus_02_N" xml:space="preserve">
+    <value>Tubus Sororibus - Amethyst</value>
+  </data>
+  <data name="Tubus_02_T" xml:space="preserve">
+    <value>Tubus Sororibus - Mauve</value>
+  </data>
+  <data name="Tubus_02_TTS" xml:space="preserve">
+    <value>Tubus Sororibus - Ocher</value>
+  </data>
+  <data name="Tubus_03_A" xml:space="preserve">
+    <value>Tubus Cavas - Indigo</value>
+  </data>
+  <data name="Tubus_03_B" xml:space="preserve">
+    <value>Tubus Cavas - Emerald</value>
+  </data>
+  <data name="Tubus_03_D" xml:space="preserve">
+    <value>Tubus Cavas - Yellow</value>
+  </data>
+  <data name="Tubus_03_F" xml:space="preserve">
+    <value>Tubus Cavas - Grey</value>
+  </data>
+  <data name="Tubus_03_G" xml:space="preserve">
+    <value>Tubus Cavas - Red</value>
+  </data>
+  <data name="Tubus_03_K" xml:space="preserve">
+    <value>Tubus Cavas - Maroon</value>
+  </data>
+  <data name="Tubus_03_L" xml:space="preserve">
+    <value>Tubus Cavas - Turquoise</value>
+  </data>
+  <data name="Tubus_03_M" xml:space="preserve">
+    <value>Tubus Cavas - Teal</value>
+  </data>
+  <data name="Tubus_03_N" xml:space="preserve">
+    <value>Tubus Cavas - Amethyst</value>
+  </data>
+  <data name="Tubus_03_T" xml:space="preserve">
+    <value>Tubus Cavas - Mauve</value>
+  </data>
+  <data name="Tubus_03_TTS" xml:space="preserve">
+    <value>Tubus Cavas - Ocher</value>
+  </data>
+  <data name="Tubus_04_A" xml:space="preserve">
+    <value>Tubus Rosarium - Indigo</value>
+  </data>
+  <data name="Tubus_04_B" xml:space="preserve">
+    <value>Tubus Rosarium - Emerald</value>
+  </data>
+  <data name="Tubus_04_F" xml:space="preserve">
+    <value>Tubus Rosarium - Grey</value>
+  </data>
+  <data name="Tubus_04_G" xml:space="preserve">
+    <value>Tubus Rosarium - Red</value>
+  </data>
+  <data name="Tubus_04_K" xml:space="preserve">
+    <value>Tubus Rosarium - Maroon</value>
+  </data>
+  <data name="Tubus_04_L" xml:space="preserve">
+    <value>Tubus Rosarium - Turquoise</value>
+  </data>
+  <data name="Tubus_04_M" xml:space="preserve">
+    <value>Tubus Rosarium - Teal</value>
+  </data>
+  <data name="Tubus_04_N" xml:space="preserve">
+    <value>Tubus Rosarium - Amethyst</value>
+  </data>
+  <data name="Tubus_04_O" xml:space="preserve">
+    <value>Tubus Rosarium - Green</value>
+  </data>
+  <data name="Tubus_04_T" xml:space="preserve">
+    <value>Tubus Rosarium - Mauve</value>
+  </data>
+  <data name="Tubus_04_TTS" xml:space="preserve">
+    <value>Tubus Rosarium - Ocher</value>
+  </data>
+  <data name="Tubus_05_A" xml:space="preserve">
+    <value>Tubus Compagibus - Indigo</value>
+  </data>
+  <data name="Tubus_05_B" xml:space="preserve">
+    <value>Tubus Compagibus - Emerald</value>
+  </data>
+  <data name="Tubus_05_D" xml:space="preserve">
+    <value>Tubus Compagibus - Yellow</value>
+  </data>
+  <data name="Tubus_05_F" xml:space="preserve">
+    <value>Tubus Compagibus - Grey</value>
+  </data>
+  <data name="Tubus_05_G" xml:space="preserve">
+    <value>Tubus Compagibus - Red</value>
+  </data>
+  <data name="Tubus_05_K" xml:space="preserve">
+    <value>Tubus Compagibus - Maroon</value>
+  </data>
+  <data name="Tubus_05_L" xml:space="preserve">
+    <value>Tubus Compagibus - Turquoise</value>
+  </data>
+  <data name="Tubus_05_M" xml:space="preserve">
+    <value>Tubus Compagibus - Teal</value>
+  </data>
+  <data name="Tubus_05_N" xml:space="preserve">
+    <value>Tubus Compagibus - Amethyst</value>
+  </data>
+  <data name="Tubus_05_T" xml:space="preserve">
+    <value>Tubus Compagibus - Mauve</value>
+  </data>
+  <data name="Tubus_05_TTS" xml:space="preserve">
+    <value>Tubus Compagibus - Ocher</value>
+  </data>
+  <data name="Tubus_05_W" xml:space="preserve">
+    <value>Tubus Compagibus - Lime</value>
+  </data>
+  <data name="Tussocks_01_F" xml:space="preserve">
+    <value>Tussock Pennata - Yellow</value>
+  </data>
+  <data name="Tussocks_01_G" xml:space="preserve">
+    <value>Tussock Pennata - Lime</value>
+  </data>
+  <data name="Tussocks_01_K" xml:space="preserve">
+    <value>Tussock Pennata - Green</value>
+  </data>
+  <data name="Tussocks_01_L" xml:space="preserve">
+    <value>Tussock Pennata - Sage</value>
+  </data>
+  <data name="Tussocks_01_M" xml:space="preserve">
+    <value>Tussock Pennata - Emerald</value>
+  </data>
+  <data name="Tussocks_01_T" xml:space="preserve">
+    <value>Tussock Pennata - Teal</value>
+  </data>
+  <data name="Tussocks_01_W" xml:space="preserve">
+    <value>Tussock Pennata - Orange</value>
+  </data>
+  <data name="Tussocks_01_Y" xml:space="preserve">
+    <value>Tussock Pennata - Red</value>
+  </data>
+  <data name="Tussocks_02_D" xml:space="preserve">
+    <value>Tussock Ventusa - Maroon</value>
+  </data>
+  <data name="Tussocks_02_F" xml:space="preserve">
+    <value>Tussock Ventusa - Yellow</value>
+  </data>
+  <data name="Tussocks_02_G" xml:space="preserve">
+    <value>Tussock Ventusa - Lime</value>
+  </data>
+  <data name="Tussocks_02_K" xml:space="preserve">
+    <value>Tussock Ventusa - Green</value>
+  </data>
+  <data name="Tussocks_02_L" xml:space="preserve">
+    <value>Tussock Ventusa - Sage</value>
+  </data>
+  <data name="Tussocks_02_M" xml:space="preserve">
+    <value>Tussock Ventusa - Emerald</value>
+  </data>
+  <data name="Tussocks_02_T" xml:space="preserve">
+    <value>Tussock Ventusa - Teal</value>
+  </data>
+  <data name="Tussocks_02_W" xml:space="preserve">
+    <value>Tussock Ventusa - Orange</value>
+  </data>
+  <data name="Tussocks_02_Y" xml:space="preserve">
+    <value>Tussock Ventusa - Red</value>
+  </data>
+  <data name="Tussocks_03_D" xml:space="preserve">
+    <value>Tussock Ignis - Maroon</value>
+  </data>
+  <data name="Tussocks_03_F" xml:space="preserve">
+    <value>Tussock Ignis - Yellow</value>
+  </data>
+  <data name="Tussocks_03_G" xml:space="preserve">
+    <value>Tussock Ignis - Lime</value>
+  </data>
+  <data name="Tussocks_03_K" xml:space="preserve">
+    <value>Tussock Ignis - Green</value>
+  </data>
+  <data name="Tussocks_03_L" xml:space="preserve">
+    <value>Tussock Ignis - Sage</value>
+  </data>
+  <data name="Tussocks_03_M" xml:space="preserve">
+    <value>Tussock Ignis - Emerald</value>
+  </data>
+  <data name="Tussocks_03_T" xml:space="preserve">
+    <value>Tussock Ignis - Teal</value>
+  </data>
+  <data name="Tussocks_03_W" xml:space="preserve">
+    <value>Tussock Ignis - Orange</value>
+  </data>
+  <data name="Tussocks_03_Y" xml:space="preserve">
+    <value>Tussock Ignis - Red</value>
+  </data>
+  <data name="Tussocks_04_D" xml:space="preserve">
+    <value>Tussock Cultro - Maroon</value>
+  </data>
+  <data name="Tussocks_04_F" xml:space="preserve">
+    <value>Tussock Cultro - Yellow</value>
+  </data>
+  <data name="Tussocks_04_G" xml:space="preserve">
+    <value>Tussock Cultro - Lime</value>
+  </data>
+  <data name="Tussocks_04_K" xml:space="preserve">
+    <value>Tussock Cultro - Green</value>
+  </data>
+  <data name="Tussocks_04_L" xml:space="preserve">
+    <value>Tussock Cultro - Sage</value>
+  </data>
+  <data name="Tussocks_04_M" xml:space="preserve">
+    <value>Tussock Cultro - Emerald</value>
+  </data>
+  <data name="Tussocks_04_T" xml:space="preserve">
+    <value>Tussock Cultro - Teal</value>
+  </data>
+  <data name="Tussocks_04_W" xml:space="preserve">
+    <value>Tussock Cultro - Orange</value>
+  </data>
+  <data name="Tussocks_04_Y" xml:space="preserve">
+    <value>Tussock Cultro - Red</value>
+  </data>
+  <data name="Tussocks_05_D" xml:space="preserve">
+    <value>Tussock Catena - Maroon</value>
+  </data>
+  <data name="Tussocks_05_F" xml:space="preserve">
+    <value>Tussock Catena - Yellow</value>
+  </data>
+  <data name="Tussocks_05_G" xml:space="preserve">
+    <value>Tussock Catena - Lime</value>
+  </data>
+  <data name="Tussocks_05_K" xml:space="preserve">
+    <value>Tussock Catena - Green</value>
+  </data>
+  <data name="Tussocks_05_L" xml:space="preserve">
+    <value>Tussock Catena - Sage</value>
+  </data>
+  <data name="Tussocks_05_M" xml:space="preserve">
+    <value>Tussock Catena - Emerald</value>
+  </data>
+  <data name="Tussocks_05_T" xml:space="preserve">
+    <value>Tussock Catena - Teal</value>
+  </data>
+  <data name="Tussocks_05_Y" xml:space="preserve">
+    <value>Tussock Catena - Red</value>
+  </data>
+  <data name="Tussocks_06_D" xml:space="preserve">
+    <value>Tussock Pennatis - Maroon</value>
+  </data>
+  <data name="Tussocks_06_F" xml:space="preserve">
+    <value>Tussock Pennatis - Yellow</value>
+  </data>
+  <data name="Tussocks_06_G" xml:space="preserve">
+    <value>Tussock Pennatis - Lime</value>
+  </data>
+  <data name="Tussocks_06_K" xml:space="preserve">
+    <value>Tussock Pennatis - Green</value>
+  </data>
+  <data name="Tussocks_06_L" xml:space="preserve">
+    <value>Tussock Pennatis - Sage</value>
+  </data>
+  <data name="Tussocks_06_M" xml:space="preserve">
+    <value>Tussock Pennatis - Emerald</value>
+  </data>
+  <data name="Tussocks_06_T" xml:space="preserve">
+    <value>Tussock Pennatis - Teal</value>
+  </data>
+  <data name="Tussocks_06_Y" xml:space="preserve">
+    <value>Tussock Pennatis - Red</value>
+  </data>
+  <data name="Tussocks_07_D" xml:space="preserve">
+    <value>Tussock Serrati - Maroon</value>
+  </data>
+  <data name="Tussocks_07_F" xml:space="preserve">
+    <value>Tussock Serrati - Yellow</value>
+  </data>
+  <data name="Tussocks_07_G" xml:space="preserve">
+    <value>Tussock Serrati - Lime</value>
+  </data>
+  <data name="Tussocks_07_K" xml:space="preserve">
+    <value>Tussock Serrati - Green</value>
+  </data>
+  <data name="Tussocks_07_L" xml:space="preserve">
+    <value>Tussock Serrati - Sage</value>
+  </data>
+  <data name="Tussocks_07_M" xml:space="preserve">
+    <value>Tussock Serrati - Emerald</value>
+  </data>
+  <data name="Tussocks_07_T" xml:space="preserve">
+    <value>Tussock Serrati - Teal</value>
+  </data>
+  <data name="Tussocks_07_Y" xml:space="preserve">
+    <value>Tussock Serrati - Red</value>
+  </data>
+  <data name="Tussocks_08_D" xml:space="preserve">
+    <value>Tussock Albata - Maroon</value>
+  </data>
+  <data name="Tussocks_08_F" xml:space="preserve">
+    <value>Tussock Albata - Yellow</value>
+  </data>
+  <data name="Tussocks_08_G" xml:space="preserve">
+    <value>Tussock Albata - Lime</value>
+  </data>
+  <data name="Tussocks_08_K" xml:space="preserve">
+    <value>Tussock Albata - Green</value>
+  </data>
+  <data name="Tussocks_08_L" xml:space="preserve">
+    <value>Tussock Albata - Sage</value>
+  </data>
+  <data name="Tussocks_08_M" xml:space="preserve">
+    <value>Tussock Albata - Emerald</value>
+  </data>
+  <data name="Tussocks_08_T" xml:space="preserve">
+    <value>Tussock Albata - Teal</value>
+  </data>
+  <data name="Tussocks_08_W" xml:space="preserve">
+    <value>Tussock Albata - Orange</value>
+  </data>
+  <data name="Tussocks_08_Y" xml:space="preserve">
+    <value>Tussock Albata - Red</value>
+  </data>
+  <data name="Tussocks_09_D" xml:space="preserve">
+    <value>Tussock Propagito - Maroon</value>
+  </data>
+  <data name="Tussocks_09_F" xml:space="preserve">
+    <value>Tussock Propagito - Yellow</value>
+  </data>
+  <data name="Tussocks_09_G" xml:space="preserve">
+    <value>Tussock Propagito - Lime</value>
+  </data>
+  <data name="Tussocks_09_K" xml:space="preserve">
+    <value>Tussock Propagito - Green</value>
+  </data>
+  <data name="Tussocks_09_L" xml:space="preserve">
+    <value>Tussock Propagito - Sage</value>
+  </data>
+  <data name="Tussocks_09_M" xml:space="preserve">
+    <value>Tussock Propagito - Emerald</value>
+  </data>
+  <data name="Tussocks_09_T" xml:space="preserve">
+    <value>Tussock Propagito - Teal</value>
+  </data>
+  <data name="Tussocks_09_Y" xml:space="preserve">
+    <value>Tussock Propagito - Red</value>
+  </data>
+  <data name="Tussocks_10_D" xml:space="preserve">
+    <value>Tussock Divisa - Maroon</value>
+  </data>
+  <data name="Tussocks_10_F" xml:space="preserve">
+    <value>Tussock Divisa - Yellow</value>
+  </data>
+  <data name="Tussocks_10_G" xml:space="preserve">
+    <value>Tussock Divisa - Lime</value>
+  </data>
+  <data name="Tussocks_10_K" xml:space="preserve">
+    <value>Tussock Divisa - Green</value>
+  </data>
+  <data name="Tussocks_10_L" xml:space="preserve">
+    <value>Tussock Divisa - Sage</value>
+  </data>
+  <data name="Tussocks_10_M" xml:space="preserve">
+    <value>Tussock Divisa - Emerald</value>
+  </data>
+  <data name="Tussocks_10_T" xml:space="preserve">
+    <value>Tussock Divisa - Teal</value>
+  </data>
+  <data name="Tussocks_10_Y" xml:space="preserve">
+    <value>Tussock Divisa - Red</value>
+  </data>
+  <data name="Tussocks_11_D" xml:space="preserve">
+    <value>Tussock Caputus - Maroon</value>
+  </data>
+  <data name="Tussocks_11_F" xml:space="preserve">
+    <value>Tussock Caputus - Yellow</value>
+  </data>
+  <data name="Tussocks_11_G" xml:space="preserve">
+    <value>Tussock Caputus - Lime</value>
+  </data>
+  <data name="Tussocks_11_K" xml:space="preserve">
+    <value>Tussock Caputus - Green</value>
+  </data>
+  <data name="Tussocks_11_L" xml:space="preserve">
+    <value>Tussock Caputus - Sage</value>
+  </data>
+  <data name="Tussocks_11_M" xml:space="preserve">
+    <value>Tussock Caputus - Emerald</value>
+  </data>
+  <data name="Tussocks_11_T" xml:space="preserve">
+    <value>Tussock Caputus - Teal</value>
+  </data>
+  <data name="Tussocks_11_Y" xml:space="preserve">
+    <value>Tussock Caputus - Red</value>
+  </data>
+  <data name="Tussocks_12_D" xml:space="preserve">
+    <value>Tussock Triticum - Maroon</value>
+  </data>
+  <data name="Tussocks_12_F" xml:space="preserve">
+    <value>Tussock Triticum - Yellow</value>
+  </data>
+  <data name="Tussocks_12_G" xml:space="preserve">
+    <value>Tussock Triticum - Lime</value>
+  </data>
+  <data name="Tussocks_12_K" xml:space="preserve">
+    <value>Tussock Triticum - Green</value>
+  </data>
+  <data name="Tussocks_12_L" xml:space="preserve">
+    <value>Tussock Triticum - Sage</value>
+  </data>
+  <data name="Tussocks_12_M" xml:space="preserve">
+    <value>Tussock Triticum - Emerald</value>
+  </data>
+  <data name="Tussocks_12_T" xml:space="preserve">
+    <value>Tussock Triticum - Teal</value>
+  </data>
+  <data name="Tussocks_12_Y" xml:space="preserve">
+    <value>Tussock Triticum - Red</value>
+  </data>
+  <data name="Tussocks_13_D" xml:space="preserve">
+    <value>Tussock Stigmasis - Maroon</value>
+  </data>
+  <data name="Tussocks_13_F" xml:space="preserve">
+    <value>Tussock Stigmasis - Yellow</value>
+  </data>
+  <data name="Tussocks_13_G" xml:space="preserve">
+    <value>Tussock Stigmasis - Lime</value>
+  </data>
+  <data name="Tussocks_13_K" xml:space="preserve">
+    <value>Tussock Stigmasis - Green</value>
+  </data>
+  <data name="Tussocks_13_L" xml:space="preserve">
+    <value>Tussock Stigmasis - Sage</value>
+  </data>
+  <data name="Tussocks_13_M" xml:space="preserve">
+    <value>Tussock Stigmasis - Emerald</value>
+  </data>
+  <data name="Tussocks_13_T" xml:space="preserve">
+    <value>Tussock Stigmasis - Teal</value>
+  </data>
+  <data name="Tussocks_13_Y" xml:space="preserve">
+    <value>Tussock Stigmasis - Red</value>
+  </data>
+  <data name="Tussocks_14_F" xml:space="preserve">
+    <value>Tussock Virgam - Yellow</value>
+  </data>
+  <data name="Tussocks_14_G" xml:space="preserve">
+    <value>Tussock Virgam - Lime</value>
+  </data>
+  <data name="Tussocks_14_K" xml:space="preserve">
+    <value>Tussock Virgam - Green</value>
+  </data>
+  <data name="Tussocks_14_L" xml:space="preserve">
+    <value>Tussock Virgam - Sage</value>
+  </data>
+  <data name="Tussocks_14_M" xml:space="preserve">
+    <value>Tussock Virgam - Emerald</value>
+  </data>
+  <data name="Tussocks_14_T" xml:space="preserve">
+    <value>Tussock Virgam - Teal</value>
+  </data>
+  <data name="Tussocks_15_D" xml:space="preserve">
+    <value>Tussock Capillum - Maroon</value>
+  </data>
+  <data name="Tussocks_15_F" xml:space="preserve">
+    <value>Tussock Capillum - Yellow</value>
+  </data>
+  <data name="Tussocks_15_G" xml:space="preserve">
+    <value>Tussock Capillum - Lime</value>
+  </data>
+  <data name="Tussocks_15_K" xml:space="preserve">
+    <value>Tussock Capillum - Green</value>
+  </data>
+  <data name="Tussocks_15_L" xml:space="preserve">
+    <value>Tussock Capillum - Sage</value>
+  </data>
+  <data name="Tussocks_15_M" xml:space="preserve">
+    <value>Tussock Capillum - Emerald</value>
+  </data>
+  <data name="Tussocks_15_T" xml:space="preserve">
+    <value>Tussock Capillum - Teal</value>
+  </data>
+  <data name="Tussocks_15_Y" xml:space="preserve">
+    <value>Tussock Capillum - Red</value>
+  </data>
+  <data name="Vents" xml:space="preserve">
+    <value>Amphora Plant</value>
+  </data>
+</root>

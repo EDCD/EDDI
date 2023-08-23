@@ -18,7 +18,7 @@ namespace EddiDataDefinitions
 
             public IDictionary<string, GeologyItem> list;
 
-            public int? reportedTotal;
+            public int reportedTotal;
 
             public int? numTotal => list.Count;
 
@@ -58,7 +58,7 @@ namespace EddiDataDefinitions
                     {
                         if ( !item.complete )
                         {
-                            _listRemaining.Add( item.genus.name );
+                            _listRemaining.Add( item.genus.localizedName );
                         }
                     }
                     return _listRemaining;
@@ -172,7 +172,7 @@ namespace EddiDataDefinitions
                     //Thread.Sleep( 10 );
                     //c++;
 
-                    list.Add( bio.list[ key ].genus.name );
+                    list.Add( bio.list[ key ].genus.localizedName );
                 }
             }
 
