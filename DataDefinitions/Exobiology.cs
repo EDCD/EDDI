@@ -68,7 +68,19 @@ namespace EddiDataDefinitions
 
                 //this.genus = Organic.SetGenus( edname_genus );
                 this.genus = OrganicGenus.Lookup ( genus );
-            }
+        }
+
+        [PublicAPI]
+        /// <summary>Get all the biological data, this should be done at the first sample</summary>
+        public void SetData ( string edname_variant )
+        {
+            OrganicItem item = OrganicInfo.LookupByVariant( edname_variant );
+
+            this.exists = item.exists;
+            this.genus = item.genus;
+            this.species = item.species;
+            this.variant = item.variant;
+            this.data = item.data;
         }
 
         /// <summary>Increase the sample count, set the coordinates, and return the number of scans complete.</summary>
