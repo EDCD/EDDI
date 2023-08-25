@@ -1008,7 +1008,7 @@ namespace EddiJournalMonitor
                                     // 2212: Save/Update StarSystem data if BaryCentre data was added
                                     if ( baryUpdated )
                                     {
-                                        StarSystemSqLiteRepository.Instance.SaveStarSystem( system );
+                                        StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
                                     }
 
                                     // Scan status
@@ -1158,41 +1158,6 @@ namespace EddiJournalMonitor
                                             scannedDateTime = (DateTime?)timestamp
                                         };
 
-
-                                        List<string> biosignals = new List<string>();
-                                        // TODO:#2212........[Predict Biologicals AFTER body has been scanned]
-                                        // This event shows up multiple times in logs:
-                                        //      - once when scanned with FSS
-                                        //      - once when scanned with SAA
-                                        // The FSSBodySignals event would be the preferred time to make predictions but
-                                        // the body definition doesn't exist yet so we don't have the data to make predictions.
-                                        // We also don't know from the Scan event if there are any biologicals present so 
-                                        // currently it always makes predictions.
-                                        //
-                                        // Need to create an FSSBodySignals handler (DiscoveryMonitor?) to remember the tuple
-                                        // systemaddress and bodyid from FSSBodySignals event. Then when a Scan event occurs,
-                                        // again capture it with DiscoveryMonitor and check the tuple list for biologicals. If
-                                        // they are present then we can make predictions and enqueue a new event for predictions.
-
-                                        //if ( body != null )
-                                        //{
-                                        //    if ( body.surfaceSignals == null )
-                                        //    {
-                                        //        body.surfaceSignals = new SurfaceSignals();
-                                        //    }
-                                        //    body.surfaceSignals.bio.list.Clear();
-
-                                        //    // TODO:#2212........[Does body have biological signals?]
-                                            //biosignals = Exobiology.PredictBios( body );
-
-                                        //    foreach ( string genus in biosignals )
-                                        //    {
-                                        //        body.surfaceSignals.AddBio( genus );
-                                        //    }
-                                        //}
-
-                                        // TODO:#2212........[Predictions]
-                                        //events.Add(new BodyScannedEvent(timestamp, scantype, body, biosignals) { raw = line, fromLoad = fromLogLoad });
                                         events.Add( new BodyScannedEvent( timestamp, scantype, body ) { raw = line, fromLoad = fromLogLoad } );
                                         handled = true;
                                     }
@@ -2453,6 +2418,13 @@ namespace EddiJournalMonitor
                                             body.scannedDateTime = body.scannedDateTime ?? timestamp;
                                             body.mappedDateTime = timestamp;
                                             body.mappedEfficiently = probesUsed <= efficiencyTarget;
+
+                                            // We make an assumption here that the predictions are no longer going to be predictions
+                                            if ( body.surfaceSignals != null )
+                                            {
+                                                body.surfaceSignals.predicted = false;
+                                            }
+
                                             events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
@@ -4248,9 +4220,11 @@ namespace EddiJournalMonitor
                                             if ( !( body is null ) )
                                             {
                                                 Logging.Info( $">>> - Body Exists" );
+                                                string log = "[SAASignalsFound]:";
 
                                                 if ( body.surfaceSignals == null )
                                                 {
+                                                    log += $"\r\n\tsurfaceSignals is null, creating new.";
                                                     body.surfaceSignals = new SurfaceSignals();
                                                 }
 
@@ -4262,6 +4236,7 @@ namespace EddiJournalMonitor
                                                 // If the number of bios in the list does not match the reported number of bios then clear
                                                 if ( body.surfaceSignals.predicted == true || body.surfaceSignals.bio.numTotal != body.surfaceSignals.bio.reportedTotal )
                                                 {
+                                                    log += $"\r\n\tClearing bio list.";
                                                     body.surfaceSignals.bio.list.Clear();
                                                 }
 
@@ -4269,7 +4244,6 @@ namespace EddiJournalMonitor
                                                 //{
                                                 //body.surfaceSignals.bio.list.Clear();
                                                 // TODO:#2212........[Remove]
-                                                string log = "[SAASignalsFound]:";
                                                 foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
                                                 {
                                                     string edname_genus = JsonParsing.getString(signal, "Genus");
@@ -4287,7 +4261,7 @@ namespace EddiJournalMonitor
 
                                                 // 2212: Save/Update Body data
                                                 EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                                                StarSystemSqLiteRepository.Instance.SaveStarSystem( system );
+                                                StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
 
                                                 //biosignals = EDDI.Instance?.CurrentStarSystem.BodyWithID( bodyId ).surfaceSignals.GetBios();
 
@@ -5186,23 +5160,27 @@ namespace EddiJournalMonitor
 
                                             if ( body.surfaceSignals == null )
                                             {
-                                                Logging.Info( $"[ScanOrganicEvent] body.surfacesignals is null, creating new" );
+                                                Logging.Info( $"[ScanOrganic] body.surfacesignals is null, creating new" );
                                                 Thread.Sleep( 10 );
                                                 body.surfaceSignals = new SurfaceSignals();
                                             }
 
                                             if ( !body.surfaceSignals.bio.list.ContainsKey( genus ) )
                                             {
-                                                Logging.Info( $"[ScanOrganicEvent] Genus doesn't exist in current list, adding '{genus}'" );
+                                                Logging.Info( $"[ScanOrganic] Genus doesn't exist in current list, adding '{genus}'" );
                                                 Thread.Sleep( 10 );
                                                 body.surfaceSignals.AddBio( genus );
                                             }
 
                                             // 2212: Save/Update Body data
                                             EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                                            StarSystemSqLiteRepository.Instance.SaveStarSystem( system );
+                                            StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
 
                                             events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, body, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
+                                        }
+                                        else
+                                        {
+                                            Logging.Error( $"[ScanOrganic] Body '{bodyId}' doesn't exist." );
                                         }
                                     }
                                     //}

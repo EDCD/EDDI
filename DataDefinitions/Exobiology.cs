@@ -18,9 +18,16 @@ namespace EddiDataDefinitions
             public Status lastStatus;       // diff between this and status determines when to trigger update events
         }
 
+        [PublicAPI]
         public bool prediction;             // Was this added as a prediction?
+
+        [PublicAPI]
         public int samples;                 // 0=none, 1=Log, 2=Sample 1, 3=Sample 2, 4=Analyse
+
+        [PublicAPI]
         public bool complete;               // Sampling of this biological is complete
+
+        [PublicAPI]
         public int value
         {
             get {
@@ -41,6 +48,8 @@ namespace EddiDataDefinitions
             }
 
         }
+
+        [PublicAPI]
         public Coordinates[] coords;        // coordinates of scan [n-1]. Only Log and Sample are stored.
 
         //public Exobiology ( bool prediction=false) : base ()

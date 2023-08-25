@@ -147,26 +147,23 @@ namespace EddiDataDefinitions
                    $"\t Complete old:({oldBody.surfaceSignals.bio.numComplete}), new:({updatedBody.surfaceSignals.bio.numComplete})\r\n" +
                    $"\tRemaining old:({oldBody.surfaceSignals.bio.numRemaining}), new:({updatedBody.surfaceSignals.bio.numRemaining})\r\n";
 
-            foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
-            {
-                log += $"[PreserveBodyData] Body {oldBody.shortname}: oldBody: {item.genus.localizedName}\r\n" +
-                       $"\tsamples = {item.samples}\r\n" +
-                       $"\tcomplete = {item.complete}\r\n" +
-                       $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
-                       $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
-            }
+            //foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
+            //{
+            //    log += $"[PreserveBodyData] Body {oldBody.shortname}: oldBody: {item.genus.localizedName}\r\n" +
+            //           $"\tsamples = {item.samples}\r\n" +
+            //           $"\tcomplete = {item.complete}\r\n" +
+            //           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
+            //           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
+            //}
 
-            foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
-            {
-                log += $"[PreserveBodyData] Body {updatedBody.shortname}: updatedBody: {item.genus.localizedName}\r\n" +
-                       $"\tsamples = {item.samples}\r\n" +
-                       $"\tcomplete = {item.complete}\r\n" +
-                       $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
-                       $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
-            }
-            log += $"[PreserveBodyData] ---> END <---";
-            Logging.Info( log );
-            Thread.Sleep( 10 );
+            //foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
+            //{
+            //    log += $"[PreserveBodyData] Body {updatedBody.shortname}: updatedBody: {item.genus.localizedName}\r\n" +
+            //           $"\tsamples = {item.samples}\r\n" +
+            //           $"\tcomplete = {item.complete}\r\n" +
+            //           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
+            //           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
+            //}
 
             if ( ( oldBody.scannedDateTime ?? DateTime.MinValue) > ( updatedBody.scannedDateTime ?? DateTime.MinValue ) )
             {
@@ -230,13 +227,40 @@ namespace EddiDataDefinitions
                 if ( updatedBody.surfaceSignals.bio.reportedTotal < oldBody.surfaceSignals.bio.reportedTotal )
                 {
                     updatedBody.surfaceSignals.bio = oldBody.surfaceSignals.bio;
+                    log += $"[PreserveBodyData] Using oldBody for bios\r\n";
+                }
+                else
+                {
+                    log += $"[PreserveBodyData] Using updatedBody for bios\r\n";
                 }
 
                 if ( updatedBody.surfaceSignals.geo.reportedTotal < oldBody.surfaceSignals.geo.reportedTotal )
                 {
                     updatedBody.surfaceSignals.geo = oldBody.surfaceSignals.geo;
+                    log += $"[PreserveBodyData] Using oldBody for geos\r\n";
+                }
+                else
+                {
+                    log += $"[PreserveBodyData] Using updatedBody for geos\r\n";
                 }
             }
+            else
+            {
+                if ( updatedBody.surfaceSignals == null )
+                {
+                    updatedBody.surfaceSignals = new SurfaceSignals();
+                    log += $"[PreserveBodyData] updatedBody is null, aborting\r\n";
+                }
+
+                if ( oldBody.surfaceSignals == null )
+                {
+                    log += $"[PreserveBodyData] oldBody is null, aborting\r\n";
+                }
+            }
+
+            log += $"[PreserveBodyData] ---> END <---";
+            Logging.Info( log );
+            Thread.Sleep( 10 );
 
             return updatedBody;
         }

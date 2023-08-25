@@ -201,8 +201,8 @@ namespace EddiDiscoveryMonitor
                                 {
                                     // 2212: Save/Update Body data
                                     // Only update when there is a status change, otherwise we don't care
-                                    EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                                    StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                                    EDDI.Instance.CurrentStarSystem.AddOrUpdateBody( body );
+                                    StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
 
                                     EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, body.surfaceSignals.bio.list[ _currentGenus ].genus.distance, status1, status2 ) );
                                 }
@@ -241,10 +241,12 @@ namespace EddiDiscoveryMonitor
         /// </summary>
         private void handleSurfaceSignalsEvent ( SurfaceSignalsEvent @event )
         {
+            string log = "";
             if ( @event.detectionType == "FSS" )
             {
                 FSS_Signals signals = new FSS_Signals();
 
+                log += "[FSSBodySignals]:\r\n";
                 signals.systemAddress = (ulong)@event.systemAddress;
                 signals.bodyId = @event.bodyId;
                 bool addSignal = false;
@@ -253,12 +255,14 @@ namespace EddiDiscoveryMonitor
                 {
                     if ( sig.signalSource.edname == "SAA_SignalType_Biological" )
                     {
+                        log += $"\tDetect bios: {sig.amount}\r\n";
                         signals.bioCount = sig.amount;
                         signals.status = false;
                         addSignal = true;
                     }
                     else if ( sig.signalSource.edname == "SAA_SignalType_Geological" )
                     {
+                        log += $"\tDetect geos: {sig.amount}\r\n";
                         signals.geoCount = sig.amount;
                         addSignal = true;
                     }
@@ -269,18 +273,22 @@ namespace EddiDiscoveryMonitor
                     Tuple<ulong, long> myTuple = new Tuple<ulong, long>( (ulong)@event.systemAddress, @event.bodyId );
                     if ( !_fss_Signals.ContainsKey( myTuple ) )
                     {
+                        log += $"\tAdding Tuple <{@event.systemAddress},{@event.bodyId}>\r\n";
                         _fss_Signals.Add( myTuple, signals );
                     }
-                    //else
-                    //{
-                    //    _fss_Signals[ myTuple ] = signals;
-                    //}
+                    else
+                    {
+                        log += $"\tTuple already exists <{@event.systemAddress},{@event.bodyId}>\r\n";
+                    }
                 }
             }
             else if ( @event.detectionType == "SAA" )
             {
                 // TODO:#2212........[Do we need to do anything here?]
             }
+
+            Logging.Info( log );
+            Thread.Sleep( 10 );
         }
 
         private void handleScanOrganicEvent ( ScanOrganicEvent @event )
@@ -349,8 +357,8 @@ namespace EddiDiscoveryMonitor
                 @event.listRemaining = body.surfaceSignals.bio.listRemaining;
 
                 // 2212: Save/Update Body data
-                EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                EDDI.Instance.CurrentStarSystem.AddOrUpdateBody( body );
+                StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
             }
         }
 
@@ -366,6 +374,7 @@ namespace EddiDiscoveryMonitor
                     // Double check if system/body matches
                     if ( signal.systemAddress == @event.systemAddress && signal.bodyId == @event.bodyId )
                     {
+                        bool saveBody = false;
 
                         _currentBodyId = (long)@event.bodyId;
                         if ( CheckSafe( _currentBodyId ) )
@@ -377,27 +386,28 @@ namespace EddiDiscoveryMonitor
                             body.surfaceSignals.geo.reportedTotal = signal.geoCount;
 
                             // TODO:#2212........[Remove]
-                            Logging.Info( $"[handleBodyScannedEvent]\r\n" +
+                            Logging.Info( $"[handleBodyScannedEvent:FSS backlog] <{@event.systemAddress},{@event.bodyId}>\r\n" +
                                           $"\tBio Count is {signal.bioCount} ({body.surfaceSignals.bio.reportedTotal})\r\n" +
                                           $"\tGeo Count is {signal.geoCount} ({body.surfaceSignals.geo.reportedTotal})" );
 
+                            string log = "";
                             if ( signal.status == false )
                             {
                                 if ( signal.bioCount > 0 )
                                 {
+                                    log = "[handleBodyScannedEvent] FSS status is false]:";
                                     //List<string> bios = PredictBios( body );
                                     List<string> bios = PredictBySpecies( body );
-                                    body.surfaceSignals.bio.list.Clear();
 
                                     // TODO:#2212........[Remove]
-                                    string log = "[handleBodyScannedEvent]:";
+                                    log = log + $"\r\n\tClearing current bio list";
+                                    body.surfaceSignals.bio.list.Clear();
+
                                     foreach ( string genus in bios )
                                     {
+                                        // TODO:#2212........[Remove]
                                         log = log + $"\r\n\tAddBio {genus}";
                                         body.surfaceSignals.AddBio( genus );
-                                        // TODO:#2212........[Remove]
-                                        //Logging.Info( $"[handleBodyScannedEvent] AddBio {genus}" );
-                                        //Thread.Sleep( 10 );
                                     }
                                     Logging.Info( log );
                                     Thread.Sleep( 10 );
@@ -413,18 +423,27 @@ namespace EddiDiscoveryMonitor
                                     {
                                         log = log + $"\r\n\tGetBios {genus}";
                                     }
-                                    Logging.Info( log );
-                                    Thread.Sleep( 10 );
 
                                     // TODO:#2212........[Do not enqueue if from @event.fromLoad?]
                                     // This doesn't have to be used but is provided just in case
                                     EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body, body.surfaceSignals.GetBios() ) );
+
+                                    saveBody = true;
                                 }
                             }
+                            else
+                            {
+                                log = "[handleBodyScannedEvent] FSS status is true (already added)]:";
+                            }
+                            Logging.Info( log );
+                            Thread.Sleep( 10 );
 
-                            // 2212: Save/Update Body data
-                            EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                            StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                            if ( saveBody )
+                            {
+                                // 2212: Save/Update Body data
+                                EDDI.Instance.CurrentStarSystem.AddOrUpdateBody( body );
+                                StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
+                            }
                         }
                     }
                 }
@@ -714,6 +733,11 @@ namespace EddiDiscoveryMonitor
         {
             String log = "";
             bool enableLog = true;
+            bool skipCrystallineShards = true;
+            bool skipBrainTrees = false;
+            bool skipBarkMounds = false;
+
+            if ( enableLog ) { log += $"[Predictions] Body '{body.bodyname}'\r\n"; }
 
             // Create temporary list of ALL species possible
             List<string> listPredicted = new List<string>();
@@ -722,7 +746,18 @@ namespace EddiDiscoveryMonitor
             foreach ( string species in OrganicSpecies.SPECIES.Keys )
             {
                 // TODO:#2212........[Remove]
-                if ( enableLog ) { log += $"[Predictions] CHECKING SPECIES {species}: "; }
+                if ( enableLog ) { log += $"\tCHECKING '{species}': "; }
+
+                // Handle ignored species
+                string genus = OrganicSpecies.Lookup( species ).genus;
+
+                if ( ( skipCrystallineShards && genus == "GroundStructIce" ) ||
+                     ( skipBrainTrees && genus == "Brancae" ) ||
+                     ( skipBarkMounds && genus == "Cone" ) )
+                {
+                    if ( enableLog ) { log += $"IGNORE '{genus}'\r\n"; }
+                    goto Skip_To_Purge;
+                }
 
                 // Iterate through conditions
                 // Get conditions for current variant
@@ -732,7 +767,7 @@ namespace EddiDiscoveryMonitor
                     // Check if body meets max gravity requirements
                     {
                         // maxG: Maximum gravity
-                        if ( check.maxG != null )
+                        if ( check.maxG != null && check.maxG != 0 )
                         {
                             if ( body.gravity > check.maxG )
                             {
@@ -752,25 +787,25 @@ namespace EddiDiscoveryMonitor
                         {
                             if ( check.kRange == "<k" )
                             {
-                                if ( body.temperature <= check.minK )
+                                if ( body.temperature < check.minK )
                                 {
                                     // TODO:#2212........[Remove]
-                                    log += $"PURGE (temp: {body.temperature} <= {check.minK})\r\n";
+                                    log += $"PURGE (temp: {body.temperature} < {check.minK})\r\n";
                                     goto Skip_To_Purge;
                                 }
                             }
-                            else if ( check.kRange == "k>" )
+                            else if ( check.kRange == "k<" )
                             {
-                                if ( body.temperature >= check.maxK )
+                                if ( body.temperature > check.maxK )
                                 {
                                     // TODO:#2212........[Remove]
-                                    log += $"PURGE (temp: {body.temperature} >= {check.maxK})\r\n";
+                                    log += $"PURGE (temp: {body.temperature} > {check.maxK})\r\n";
                                     goto Skip_To_Purge;
                                 }
                             }
                             else if ( check.kRange == "<k<" )
                             {
-                                if ( body.temperature <= check.minK || body.temperature >= check.maxK )
+                                if ( body.temperature < check.minK || body.temperature > check.maxK )
                                 {
                                     // TODO:#2212........[Remove]
                                     log += $"PURGE (temp: {body.temperature} < {check.minK} || {body.temperature} > {check.maxK})\r\n";
@@ -838,15 +873,23 @@ namespace EddiDiscoveryMonitor
                         {
                             foreach ( string composition in check.volcanism )
                             {
-                                // Check if amount, composition and type matc hthe current body
-                                //if ( amount == body.volcanism.invariantAmount && composition == body.volcanism.invariantComposition && type == body.volcanism.invariantType )
                                 if ( body.volcanism != null )
                                 {
-                                    if ( composition == body.volcanism.invariantComposition )
+                                    // If none but we got this far then the planet has an atmosphere
+                                    if ( composition == "None" )
+                                    {
+                                        break;
+                                    }
+                                    else if ( composition == "Any" || composition == body.volcanism.invariantComposition )
                                     {
                                         found = true;
                                         break;  // If found then we don't care about the rest
                                     }
+                                }
+                                else if ( composition == "None" )
+                                {
+                                    found = true;
+                                    break;
                                 }
                             }
 
@@ -912,20 +955,23 @@ namespace EddiDiscoveryMonitor
 
                                         foreach ( long bodyId in barys )
                                         {
-                                            if ( _currentSystem.BodyWithID( bodyId ).bodyType.edname == "Star" )
+                                            if ( _currentSystem.BodyWithID( bodyId ) != null )
                                             {
-                                                long starId = bodyId;
-
-                                                Body starBody = _currentSystem.BodyWithID( starId );
-                                                string starClass = starBody.stellarclass;
-                                                foundClass = starClass;
-
-                                                foreach ( string checkClass in check.starClass )
+                                                if ( _currentSystem.BodyWithID( bodyId ).bodyType.edname == "Star" )
                                                 {
-                                                    if ( checkClass == starClass )
+                                                    long starId = bodyId;
+
+                                                    Body starBody = _currentSystem.BodyWithID( starId );
+                                                    string starClass = starBody.stellarclass;
+                                                    foundClass = starClass;
+
+                                                    foreach ( string checkClass in check.starClass )
                                                     {
-                                                        found = true;
-                                                        goto ExitParentStarLoop;
+                                                        if ( checkClass == starClass )
+                                                        {
+                                                            found = true;
+                                                            goto ExitParentStarLoop;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -942,19 +988,68 @@ namespace EddiDiscoveryMonitor
                                     }
                                 }
                             }
-                        }
 
-                    ExitParentStarLoop:
-                        ;
+                        ExitParentStarLoop:
+                            ;
 
-                        if ( !found )
-                        {
-                            // TODO:#2212........[Remove]
-                            if ( enableLog ) { log = log + $"\tPURGE (parent star: {foundClass} != {string.Join( ",", check.starClass )})\r\n"; }
-                            goto Skip_To_Purge;
+                            if ( !found )
+                            {
+                                // TODO:#2212........[Remove]
+                                if ( enableLog )
+                                { log = log + $"\tPURGE (parent star: {foundClass} != {string.Join( ",", check.starClass )})\r\n"; }
+                                goto Skip_To_Purge;
+                            }
                         }
                     }
-                    
+
+                    // TODO:#2212........[Implement special case predictions]
+                    {
+                        // Brain Trees
+                        //  - Near system with guardian structures
+                        //if ( genus == "Brancae" )
+                        //{
+                        //    if ( ? ? ? )
+                        //    {
+                        //        if ( enableLog ) { log = log + $"\tPURGE (?: ? ? ? )\r\n"; }
+                        //        goto Skip_To_Purge;
+                        //    }
+                        //}
+
+                        // Electricae radialem:
+                        //  - Near nebula (how close is near?)
+                        //if ( genus == "Electricae" )
+                        //{
+                        //    if ( ? ? ? )
+                        //    {
+                        //        if ( enableLog ) { log = log + $"\tPURGE (?: ? ? ? )\r\n"; }
+                        //        goto Skip_To_Purge;
+                        //    }
+                        //}
+
+                        // Crystalline Shards:
+                        //  - Must be >12000 Ls from nearest star.
+                        //if ( genus == "GroundStructIce" )
+                        //{
+                        //    if ( ? ? ? )
+                        //    {
+                        //        if ( enableLog ) { log = log + $"\tPURGE (?: ? ? ? )\r\n"; }
+                        //        goto Skip_To_Purge;
+                        //    }
+                        //}
+
+                        // Bark Mounds
+                        //  - Seems to always have 3 geologicals
+                        //  - Should be within 150Ly from a nebula
+                        if ( genus == "Cone" )
+                        {
+                            if ( body.reportedGeos < 3 )
+                            {
+                                if ( enableLog ) { log = log + $"\tPURGE (geo signals: {body.reportedGeos} < 3)\r\n"; }
+                                goto Skip_To_Purge;
+                            }
+                        }
+                    }
+
                     log += $"OK\r\n";
                     listPredicted.Add( species );
                     goto Skip_To_End;
@@ -965,27 +1060,26 @@ namespace EddiDiscoveryMonitor
 
             Skip_To_End:
                 ;
-
-                Logging.Info( log );
-                Thread.Sleep( 10 );
             }
 
 
             // Create a list of only the unique genus' found
             log += "[Predictions] Genus List:";
-            List<string> genus = new List<string>();
+            List<string> genusList = new List<string>();
             foreach ( string species in listPredicted )
             {
-                if ( !genus.Contains( OrganicSpecies.Lookup( species ).genus ) )
+                string genusName = OrganicSpecies.Lookup( species ).genus;
+
+                if ( !genusList.Contains( genusName ) )
                 {
                     log += $"\r\n\t{OrganicSpecies.Lookup( species ).genus}";
-                    genus.Add( OrganicSpecies.Lookup( species ).genus );
+                    genusList.Add( OrganicSpecies.Lookup( species ).genus );
                 }
             }
             Logging.Info( log );
             Thread.Sleep( 10 );
 
-            return genus;
+            return genusList;
         }
 
         /// <summary>
