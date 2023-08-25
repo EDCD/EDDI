@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -14,8 +15,6 @@ namespace EddiDataDefinitions
 
         public class Geo
         {
-            public DateTime timestamp;
-
             public IDictionary<string, GeologyItem> list;
 
             public int reportedTotal;
@@ -29,11 +28,11 @@ namespace EddiDataDefinitions
             }
         }
 
+        [PublicAPI]
         public Geo geo;
 
         public class Bio
         {
-            public DateTime timestamp;
             public Dictionary<string, Exobiology> list;
 
             public int reportedTotal;  // The number of biologicals reported by FSS/SAA
@@ -70,6 +69,8 @@ namespace EddiDataDefinitions
             }
 
             private int? _numComplete;
+
+            [PublicAPI]
             public int? numComplete
             {
                 get
@@ -91,6 +92,8 @@ namespace EddiDataDefinitions
             }
 
             private int? _numRemaining;
+
+            [PublicAPI]
             public int? numRemaining
             {
                 get
@@ -111,9 +114,12 @@ namespace EddiDataDefinitions
             }
 
         };
+
+        [PublicAPI]
         public Bio bio;
 
         // Are the current biologicals predicted
+        [PublicAPI]
         public bool predicted;
 
         public SurfaceSignals ()
