@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using static EddiCompanionAppService.CompanionAppService;
 
 namespace EddiEddnResponder.Schemas
 {
@@ -41,7 +42,7 @@ namespace EddiEddnResponder.Schemas
                     {
                         if ( signals.Any() )
                         {
-                            foreach ( var state in eddnStates )
+                            foreach ( var state in eddnStates.Where(s => s.Location.StarSystemLocationIsSet() ) )
                             {
                                 try
                                 {
