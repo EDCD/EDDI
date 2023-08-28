@@ -284,6 +284,9 @@ namespace EddiInaraService
 
         private bool checkAPIcredentialsOk(InaraConfiguration inaraConfiguration)
         {
+            // Check for a valid API key
+            // Note that we don't check for a valid Inara commander name here -
+            // we will apply a filter later to remove inelligible events if no commander name is present.
             if ( !inaraConfiguration.isAPIkeyValid )
             {
                 Logging.Warn( "Background sync skipped: API key is invalid." );
@@ -293,11 +296,6 @@ namespace EddiInaraService
             if ( string.IsNullOrEmpty( inaraConfiguration.apiKey ) )
             {
                 Logging.Info( "Background sync skipped: API key not set." );
-                return false;
-            }
-            if ( string.IsNullOrEmpty( inaraConfiguration.commanderName ) )
-            {
-                Logging.Debug( "Background sync skipped: Commander name not set." );
                 return false;
             }
             return true;
