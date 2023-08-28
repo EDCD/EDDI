@@ -134,16 +134,22 @@ namespace EddiInaraService
                                 { "appName", "EDDI" },
                                 { "appVersion", Constants.EDDI_VERSION.ToString() },
                                 { "isBeingDeveloped", eddiIsBeta },
-                                { "commanderName", inaraConfiguration.commanderName },
-                                { "commanderFrontierID", inaraConfiguration.commanderFrontierID },
                                 { "APIkey", !string.IsNullOrEmpty(inaraConfiguration.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
                             },
                             events = indexedEvents
                         };
+                        if ( !string.IsNullOrEmpty(inaraConfiguration.commanderName) )
+                        {
+                            inaraRequest.header.Add( "commanderName", inaraConfiguration.commanderName );
+                        }
+                        if ( !string.IsNullOrEmpty( inaraConfiguration.commanderFrontierID ) )
+                        {
+                            inaraRequest.header.Add( "commanderFrontierID", inaraConfiguration.commanderFrontierID );
+                        }
                         request.RequestFormat = DataFormat.Json;
                         request.AddJsonBody( inaraRequest ); // uses JsonSerializer
 
-                        Logging.Debug( "Sending to Inara: " + client.BuildUri( request ).AbsoluteUri );
+                        Logging.Debug( "Sending to Inara: " + client.BuildUri( request ).AbsoluteUri, request );
                         var clientResponse = client.Execute<InaraResponses>( request );
                         if ( clientResponse.IsSuccessful )
                         {
