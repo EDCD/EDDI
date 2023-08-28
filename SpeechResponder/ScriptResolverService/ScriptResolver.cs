@@ -128,6 +128,11 @@ namespace EddiSpeechResponder.Service
                 Logging.Warn( $"Failed to resolve {scriptName} at line {e.Line}. {e}" );
                 return $"There is a problem with {scriptName} at line {e.Line}. {errorTranslation( e.Message )}";
             }
+            catch ( ConfigException ce )
+            {
+                Logging.Error( ce.Message, ce );
+                return $"Cottle speech system configuration error: {ce.Message}";
+            }
             catch ( TargetParameterCountException tpce )
             {
                 Logging.Warn( tpce.Message, tpce );
