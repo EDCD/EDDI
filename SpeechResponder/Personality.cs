@@ -350,60 +350,68 @@ namespace EddiSpeechResponder
             var defaultPersonality = !personality.IsCustom ? null : Default();
 
             var fixedScripts = new Dictionary<string, Script>();
+            var upgradeableScripts = new Dictionary<string, Script>();
 
             // First, iterate through our default event scripts. Ensure that every required event script is present.
             List<string> missingScripts = new List<string>();
             foreach (var defaultEvent in Events.DESCRIPTIONS)
             {
-                personality.Scripts.TryGetValue(defaultEvent.Key, out Script script);
-                Script defaultScript = null;
-                defaultPersonality?.Scripts?.TryGetValue(defaultEvent.Key, out defaultScript);
-                script = UpgradeScript(script, defaultScript);
-                if (!obsoleteScriptKeys.Contains(defaultEvent.Key))
+                if ( personality.Scripts.TryGetValue( defaultEvent.Key, out var personalityScript ) )
                 {
-                    if (script == null && !ignoredEventKeys.Contains(defaultEvent.Key))
-                    {
-                        missingScripts.Add(defaultEvent.Key);
-                    }
-                    else if (script != null)
-                    {
-                        script.PersonalityIsCustom = personality.IsCustom;
-                        fixedScripts.Add(defaultEvent.Key, script);
-                    }
+                    upgradeableScripts.Add( defaultEvent.Key, personalityScript );
                 }
-            }
-            // Report missing scripts which ought to be present for events, except those we have specifically named
-            if (missingScripts.Count > 0)
-            {
-                Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));
-            }
-            // Also add any secondary scripts present in the default personality but which aren't present in the events list
-            if (defaultPersonality?.Scripts != null)
-            {
-                foreach (var personalityScriptKV in personality.Scripts.Where(s => !fixedScripts.Keys.Contains(s.Key)))
+                else
                 {
-#pragma warning disable IDE0018 // Inline variable declaration - we fail CI testing when we try to in-line this.
-                    Script defaultScript = null;
-#pragma warning restore IDE0018 // Inline variable declaration
-                    if ((defaultPersonality.Scripts?.TryGetValue(personalityScriptKV.Key, out defaultScript) ?? false) && 
-                        !obsoleteScriptKeys.Contains(personalityScriptKV.Key))
+                    if ( !obsoleteScriptKeys.Contains( defaultEvent.Key ) && 
+                         !ignoredEventKeys.Contains( defaultEvent.Key ) )
                     {
-                        var script = UpgradeScript(personalityScriptKV.Value, defaultScript);
-                        script.PersonalityIsCustom = personality.IsCustom;
-                        fixedScripts.Add(personalityScriptKV.Key, script);
+                        missingScripts.Add( defaultEvent.Key );
                     }
                 }
             }
 
-            // Next, iterate through the personality's scripts and add any secondary scripts from the personality.
-            foreach (var kv in personality.Scripts)
+            // Report missing event scripts, except those we have specifically named.
+            if (missingScripts.Count > 0)
             {
-                // Add non-event scripts from the personality for which we do not have a default
-                if (!fixedScripts.ContainsKey(kv.Key) && !obsoleteScriptKeys.Contains(kv.Key))
+                Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));
+            }
+
+            // Next, add any secondary scripts present in the default personality but which were not found amongst our event scripts.
+            if (defaultPersonality?.Scripts != null)
+            {
+                foreach (var defaultScriptKV in defaultPersonality.Scripts.Where(s => !upgradeableScripts.Keys.Contains(s.Key)))
+                {
+                    if ((defaultPersonality.Scripts?.TryGetValue(defaultScriptKV.Key, out var defaultScript) ?? false) && 
+                        !obsoleteScriptKeys.Contains(defaultScriptKV.Key))
+                    {
+                        upgradeableScripts.Add(defaultScriptKV.Key, defaultScript );
+                    }
+                }
+            }
+
+            // Next, try to upgrade each personality script referencing the matching script in the default personality.
+            // Set the `PersonalityIsCustom` property.
+            foreach ( var kv in upgradeableScripts )
+            {
+                if ( ( defaultPersonality?.Scripts?.TryGetValue( kv.Key, out var defaultScript ) ?? false ) && defaultScript != null )
+                {
+                    var script = UpgradeScript(kv.Value, defaultScript);
+                    script.PersonalityIsCustom = personality.IsCustom;
+                    fixedScripts.Add( kv.Key, script );
+                }
+            }
+
+            // Finally, iterate through the personality's scripts.
+            foreach ( var kv in personality.Scripts )
+            {
+                // Add any non-obsolete and non-default secondary scripts from the personality.
+                if ( !fixedScripts.ContainsKey( kv.Key ) && 
+                     !obsoleteScriptKeys.Contains( kv.Key ) && 
+                     !kv.Value.Default )
                 {
                     var script = kv.Value;
                     script.PersonalityIsCustom = personality.IsCustom;
-                    fixedScripts.Add(kv.Key, script);
+                    fixedScripts.Add( kv.Key, script );
                 }
             }
 
