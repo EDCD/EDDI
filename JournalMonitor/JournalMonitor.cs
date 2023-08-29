@@ -5180,13 +5180,41 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "SellOrganicData":
+                                {
+                                    decimal totalValue = 0;
+                                    decimal totalBonus = 0;
+                                    decimal total = 0;
+
+                                    List<string> bios = new List<string>();
+                                    data.TryGetValue( "BioData", out object val );
+                                    List<object> discovered = (List<object>)val;
+                                    foreach ( Dictionary<string, object> discoveredBio in discovered )
+                                    {
+                                        string variant = JsonParsing.getString(discoveredBio, "Variant");
+                                        variant = ScanOrganic.NormalizedVariant( variant );
+                                        if ( !string.IsNullOrEmpty( variant ) )
+                                        {
+                                            bios.Add( variant );
+                                        }
+                                        decimal value = JsonParsing.getLong(discoveredBio, "Value");
+                                        decimal bonus = JsonParsing.getLong(discoveredBio, "Bonus");
+
+                                        totalValue += value;
+                                        totalBonus += bonus;
+                                    }
+
+                                    total = totalValue + totalBonus;
+
+                                    events.Add( new OrganicDataSoldEvent( timestamp, bios, totalValue, totalBonus, total ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
 
                             // we silently ignore these, but forward them to the responders
                             case "ModuleBuyAndStore":
                             case "RestockVehicle":
                             case "SellMicroResources":
-                            case "SellOrganicData":
-                                // TODO:#2212 - We really should add this, essentially the same as MultiSellExplorationData
 
                             // Low priority (for now)
                             case "BuyWeapon":
