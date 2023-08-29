@@ -2418,13 +2418,6 @@ namespace EddiJournalMonitor
                                             body.scannedDateTime = body.scannedDateTime ?? timestamp;
                                             body.mappedDateTime = timestamp;
                                             body.mappedEfficiently = probesUsed <= efficiencyTarget;
-
-                                            // We make an assumption here that the predictions are no longer going to be predictions
-                                            if ( body.surfaceSignals != null )
-                                            {
-                                                body.surfaceSignals.predicted = false;
-                                            }
-
                                             events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
@@ -5193,6 +5186,7 @@ namespace EddiJournalMonitor
                             case "RestockVehicle":
                             case "SellMicroResources":
                             case "SellOrganicData":
+                                // TODO:#2212 - We really should add this, essentially the same as MultiSellExplorationData
 
                             // Low priority (for now)
                             case "BuyWeapon":

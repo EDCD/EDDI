@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
 
         public class Geo
         {
-            public IDictionary<string, GeologyItem> list;
+            public IDictionary<string, Geology> list;
 
             public int reportedTotal;
 
@@ -23,7 +23,7 @@ namespace EddiDataDefinitions
 
             public Geo()
             {
-                list = new Dictionary<string, GeologyItem>();
+                list = new Dictionary<string, Geology>();
                 reportedTotal = 0;
             }
         }
@@ -161,7 +161,7 @@ namespace EddiDataDefinitions
         {
             if ( !geo.list.ContainsKey( edname ) )
             {
-                geo.list.Add( edname, new GeologyItem() );
+                geo.list.Add( edname, Geology.LookupByName( edname ) );
             }
         }
 
@@ -171,13 +171,8 @@ namespace EddiDataDefinitions
 
             if ( bio.list != null )
             {
-                //int c = 0;
                 foreach ( string key in bio.list.Keys )
                 {
-                    //Logging.Info( $"[SurfaceSignals] GetBios() -> [#{c}] {key}" );
-                    //Thread.Sleep( 10 );
-                    //c++;
-
                     list.Add( bio.list[ key ].genus.localizedName );
                 }
             }
@@ -185,19 +180,19 @@ namespace EddiDataDefinitions
             return list;
         }
 
-        //public void UpdateCounts ()
-        //{
-        //    // TODO:#2212........[Testing count update]
-        //    bio.numComplete = 0;
-        //    foreach ( Exobiology item in bio.list.Values )
-        //    {
-        //        if ( item.complete )
-        //        {
-        //            bio.numComplete++;
-        //        }
-        //    }
+        public List<string> GetGeos ()
+        {
+            List<string> list = new List<string>();
 
-        //    bio.numRemaining = bio.numTotal - bio.numComplete;
-        //}
+            if ( bio.list != null )
+            {
+                foreach ( string key in geo.list.Keys )
+                {
+                    list.Add( geo.list[ key ].localizedName );
+                }
+            }
+
+            return list;
+        }
     }
 }

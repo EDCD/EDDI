@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Basilisk {
             get {
@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to This ship can increase the damage output of nearby Thargoid Scouts..
         /// </summary>
         public static string Berserker {
             get {
@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These biomechanical structures expel caustic gas, and are deployed in great numbers to create and maintain dense clouds. They appear to react violently to nearby heat sources..
         /// </summary>
         public static string Caustic_Generator {
             get {
@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Cyclops {
             get {
@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Hydra {
             get {
@@ -106,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to This ship can increase the speed and manoeuvrability of nearby Thargoid Scouts..
         /// </summary>
         public static string Inciter {
             get {
@@ -115,7 +115,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These attack craft are typically encountered in small groups..
         /// </summary>
         public static string Marauder {
             get {
@@ -124,7 +124,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Medusa {
             get {
@@ -142,7 +142,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to This ship can remotely repair damage to nearby Thargoid Scouts..
         /// </summary>
         public static string Regenerator {
             get {
@@ -151,7 +151,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to Biomechanical constructs created by the Thargoids..
         /// </summary>
         public static string Scavengers {
             get {
@@ -160,7 +160,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to A piece of Thargoid technology..
         /// </summary>
         public static string TG_DataScan {
             get {
@@ -169,7 +169,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These cyst-like growths are a symptom of Thargoid interference with a planet&apos;s ecology..
         /// </summary>
         public static string TG_Pod {
             get {
@@ -178,7 +178,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These devices are able to generate holographic star maps..
         /// </summary>
         public static string TG_Transmitter {
             get {
@@ -187,7 +187,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to The wreckage of a Thargoid Interceptor, a Thargoid attack ship..
         /// </summary>
         public static string Wrecked_Interceptor {
             get {
@@ -196,7 +196,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to The wreckage of a Thargoid Scout, a small Thargoid attack ship..
         /// </summary>
         public static string Wrecked_Scout {
             get {

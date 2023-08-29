@@ -24,13 +24,13 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\GuardianName.Designer.cs">
-      <DependentUpon>GuardianName.resx</DependentUpon>
+    <Compile Update="Properties\Guardian.Designer.cs">
+      <DependentUpon>Guardian.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\ThargoidName.Designer.cs">
-      <DependentUpon>ThargoidName.resx</DependentUpon>
+    <Compile Update="Properties\Thargoid.Designer.cs">
+      <DependentUpon>Thargoid.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -39,23 +39,23 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\GeologyClassDesc.Designer.cs">
-      <DependentUpon>GeologyClassDesc.resx</DependentUpon>
+    <Compile Update="Properties\GeologyTypeDesc.Designer.cs">
+      <DependentUpon>GeologyTypeDesc.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\GeologyName.Designer.cs">
-      <DependentUpon>GeologyName.resx</DependentUpon>
+    <Compile Update="Properties\Geology.Designer.cs">
+      <DependentUpon>Geology.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\GeologyClassName.Designer.cs">
-      <DependentUpon>GeologyClassName.resx</DependentUpon>
+    <Compile Update="Properties\GeologyType.Designer.cs">
+      <DependentUpon>GeologyType.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\AstronomicalSubCategory.Designer.cs">
-      <DependentUpon>AstronomicalSubCategory.resx</DependentUpon>
+    <Compile Update="Properties\AstronomicalType.Designer.cs">
+      <DependentUpon>AstronomicalType.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -104,8 +104,8 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\AstronomicalName.Designer.cs">
-      <DependentUpon>AstronomicalName.resx</DependentUpon>
+    <Compile Update="Properties\Astronomical.Designer.cs">
+      <DependentUpon>Astronomical.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -432,32 +432,32 @@
       <LastGenOutput>ThargoidDesc.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\GuardianName.resx">
-      <LastGenOutput>GuardianName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\Guardian.resx">
+      <LastGenOutput>Guardian.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\ThargoidName.resx">
-      <LastGenOutput>ThargoidName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\Thargoid.resx">
+      <LastGenOutput>Thargoid.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\GeologyDesc.resx">
       <LastGenOutput>GeologyDesc.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\GeologyClassDesc.resx">
-      <LastGenOutput>GeologyClassDesc.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\GeologyTypeDesc.resx">
+      <LastGenOutput>GeologyTypeDesc.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\GeologyName.resx">
-      <LastGenOutput>GeologyName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\Geology.resx">
+      <LastGenOutput>Geology.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\GeologyClassName.resx">
-      <LastGenOutput>GeologyClassName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\GeologyType.resx">
+      <LastGenOutput>GeologyType.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\AstronomicalSubCategory.resx">
-      <LastGenOutput>AstronomicalSubCategory.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\AstronomicalType.resx">
+      <LastGenOutput>AstronomicalType.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\LoadoutDescription.resx">
@@ -521,8 +521,8 @@
       <LastGenOutput>AstronomicalDesc.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\AstronomicalName.resx">
-      <LastGenOutput>AstronomicalName.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\Astronomical.resx">
+      <LastGenOutput>Astronomical.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\OrganicGenus.resx">

@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class GeologyName {
+    public class Geology {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GeologyName() {
+        internal Geology() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.GeologyName", typeof(GeologyName).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.Geology", typeof(Geology).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

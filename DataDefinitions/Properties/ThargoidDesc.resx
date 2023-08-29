@@ -118,51 +118,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Basilisk" xml:space="preserve">
-    <value> </value>
+    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Berserker" xml:space="preserve">
-    <value> </value>
+    <value>This ship can increase the damage output of nearby Thargoid Scouts.</value>
   </data>
   <data name="Caustic_Generator" xml:space="preserve">
-    <value> </value>
+    <value>These biomechanical structures expel caustic gas, and are deployed in great numbers to create and maintain dense clouds. They appear to react violently to nearby heat sources.</value>
   </data>
   <data name="Cyclops" xml:space="preserve">
-    <value> </value>
+    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Hydra" xml:space="preserve">
-    <value> </value>
+    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Inciter" xml:space="preserve">
-    <value> </value>
+    <value>This ship can increase the speed and manoeuvrability of nearby Thargoid Scouts.</value>
   </data>
   <data name="Marauder" xml:space="preserve">
-    <value> </value>
+    <value>These attack craft are typically encountered in small groups.</value>
   </data>
   <data name="Medusa" xml:space="preserve">
-    <value> </value>
+    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Orthrus" xml:space="preserve">
     <value> </value>
   </data>
   <data name="Regenerator" xml:space="preserve">
-    <value> </value>
+    <value>This ship can remotely repair damage to nearby Thargoid Scouts.</value>
   </data>
   <data name="Scavengers" xml:space="preserve">
-    <value> </value>
+    <value>Biomechanical constructs created by the Thargoids.</value>
   </data>
   <data name="TG_DataScan" xml:space="preserve">
-    <value> </value>
+    <value>A piece of Thargoid technology.</value>
   </data>
   <data name="TG_Pod" xml:space="preserve">
-    <value> </value>
+    <value>These cyst-like growths are a symptom of Thargoid interference with a planet's ecology.</value>
   </data>
   <data name="TG_Transmitter" xml:space="preserve">
-    <value> </value>
+    <value>These devices are able to generate holographic star maps.</value>
   </data>
   <data name="Wrecked_Interceptor" xml:space="preserve">
-    <value> </value>
+    <value>The wreckage of a Thargoid Interceptor, a Thargoid attack ship.</value>
   </data>
   <data name="Wrecked_Scout" xml:space="preserve">
-    <value> </value>
+    <value>The wreckage of a Thargoid Scout, a small Thargoid attack ship.</value>
   </data>
 </root>
