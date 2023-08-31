@@ -59,34 +59,15 @@ namespace EddiEvents
                 try
                 {
                     this.bio = body.surfaceSignals.GetBio( genus );
-                    //Logging.Info( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
-                    //Thread.Sleep( 10 );
-                    //Logging.Info( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
-                    //Thread.Sleep( 10 );
-                    //Logging.Info( $"[ScanOrganicEvent] GetBio:  Species = '{this.bio.species.name}'" );
-                    //Thread.Sleep( 10 );
-                    //Logging.Info( $"[ScanOrganicEvent] GetBio:  Variant = '{this.bio.variant}'" );
-                    //Thread.Sleep( 10 );
-                    //Logging.Info( $"[ScanOrganicEvent] GetBio:    Genus = '{this.bio.genus.name}'" );
-                    //Thread.Sleep( 10 );
-                    //Logging.Info( $"[ScanOrganicEvent] GetBio: Distance = '{this.bio.genus.distance}'" );
-                    //Thread.Sleep( 10 );
-                    //Logging.Info( $"[ScanOrganicEvent] GetBio ---------------------------------------------" );
-                    //Thread.Sleep( 10 );
-
-                    // TODO:#2212........[These are lagged by one sample if taken here, not updated until after Sample() is called by DiscoveryMonitor and only DiscoveryMonitor has access to current location]
-                    //this.total = body.surfaceSignals.bio.total;
-                    //this.complete = body.surfaceSignals.bio.complete;
-                    //this.remaining = body.surfaceSignals.bio.remaining;
                 }
                 catch ( System.Exception e )
                 {
                     Logging.Error( $"ScanOrganicEvent: Failed to set 'this.bio = body.surfaceSignals.GetBio( genus )' [{e}]" );
                 }
             }
-            catch
+            catch ( System.Exception e )
             {
-                Logging.Error( "ScanOrganicEvent: Failed to get Surface Signals" );
+                Logging.Error( $"ScanOrganicEvent: Failed to get Surface Signals [{e}]" );
             }
         }
     }

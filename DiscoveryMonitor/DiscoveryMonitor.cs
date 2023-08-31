@@ -1123,6 +1123,7 @@ namespace EddiDiscoveryMonitor
         {
         }
 
+        // Example 1
         //public IDictionary<string, Tuple<Type, object>> GetVariables()
         //{
         //    lock ( StatusService.Instance.statusLock )
@@ -1131,6 +1132,20 @@ namespace EddiDiscoveryMonitor
         //        {
         //            { "status", new Tuple<Type, object>(typeof(Status), StatusService.Instance.CurrentStatus ) },
         //            { "lastStatus", new Tuple < Type, object >(typeof(Status), StatusService.Instance.LastStatus) }
+        //        };
+        //    }
+        //}
+
+        // Example 2
+        //public IDictionary<string, Tuple<Type, object>> GetVariables()
+        //{
+        //    lock ( shipyardLock )
+        //    {
+        //        return new Dictionary<string, Tuple<Type, object>>
+        //        {
+        //            ["ship"] = new Tuple<Type, object>(typeof(Ship), GetCurrentShip() ),
+        //            ["storedmodules"] = new Tuple<Type, object>(typeof(List<StoredModule>), storedmodules.ToList() ),
+        //            ["shipyard"] = new Tuple<Type, object>( typeof( List<Ship> ), shipyard.ToList() )
         //        };
         //    }
         //}
