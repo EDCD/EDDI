@@ -48,8 +48,6 @@ namespace EddiConfigService.Configurations
                 public bool humanizeBaseValue;
                 public bool reportBonusValue;
                 public bool humanizeBonusValue;
-                public bool reportSystem;
-                public bool reportRegion;
                 public bool reportLocation;
                 public bool recommendOtherBios;
                 public int reportGenusOnScan;
@@ -62,8 +60,6 @@ namespace EddiConfigService.Configurations
                     humanizeBaseValue = true;
                     reportBonusValue = true;
                     humanizeBonusValue = true;
-                    reportSystem = true;
-                    reportRegion = true;
                     reportLocation = false;
                     recommendOtherBios = true;
                     reportGenusOnScan = 0;
@@ -94,6 +90,8 @@ namespace EddiConfigService.Configurations
             public bool reportNewTraits;
             public bool reportVoucherAmounts;
             public bool reportNewDetailsOnly;
+            public bool reportSystem;
+            public bool reportRegion;
 
             public class Astronomicals
             {
@@ -177,6 +175,8 @@ namespace EddiConfigService.Configurations
                 reportNewTraits = true;
                 reportVoucherAmounts = true;
                 reportNewDetailsOnly = true;
+                reportSystem = true;
+                reportRegion = true;
             }
         }
 

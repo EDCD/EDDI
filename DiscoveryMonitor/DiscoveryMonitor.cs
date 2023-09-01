@@ -1,4 +1,6 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiConfigService.Configurations;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -29,6 +31,7 @@ namespace EddiDiscoveryMonitor
         //private List<Tuple<long, long>> FSS_Status;
         private Dictionary<Tuple<ulong, long>, FSS_Signals> _fss_Signals;
 
+        private DiscoveryMonitorConfiguration configuration;
         private string _currentGenus;
         private long _currentBodyId;
         private StarSystem _currentSystem => EDDI.Instance?.CurrentStarSystem;
@@ -53,8 +56,7 @@ namespace EddiDiscoveryMonitor
         public DiscoveryMonitor ()
         {
             StatusService.StatusUpdatedEvent += HandleStatus;
-            //System.Diagnostics.Debug.WriteLine($"Initialized {MonitorName()}");
-
+            configuration = ConfigService.Instance.discoveryMonitorConfiguration;
             _fss_Signals = new Dictionary<Tuple<ulong, long>, FSS_Signals>();
         }
 
@@ -93,6 +95,7 @@ namespace EddiDiscoveryMonitor
 
         public void Reload ()
         {
+            configuration = ConfigService.Instance.discoveryMonitorConfiguration;
         }
 
         public UserControl ConfigurationTabItem ()
@@ -733,9 +736,6 @@ namespace EddiDiscoveryMonitor
         {
             String log = "";
             bool enableLog = true;
-            bool skipCrystallineShards = true;
-            bool skipBrainTrees = false;
-            bool skipBarkMounds = false;
 
             if ( enableLog ) { log += $"[Predictions] Body '{body.bodyname}'\r\n"; }
 
@@ -751,9 +751,10 @@ namespace EddiDiscoveryMonitor
                 // Handle ignored species
                 string genus = OrganicSpecies.Lookup( species ).genus;
 
-                if ( ( skipCrystallineShards && genus == "GroundStructIce" ) ||
-                     ( skipBrainTrees && genus == "Brancae" ) ||
-                     ( skipBarkMounds && genus == "Cone" ) )
+                if ( ( configuration.exobiology.predictions.skipCrystallineShards && genus == "GroundStructIce" ) ||
+                     ( configuration.exobiology.predictions.skipBrainTrees && genus == "Brancae" ) ||
+                     ( configuration.exobiology.predictions.skipBarkMounds && genus == "Cone" ) ||
+                     ( configuration.exobiology.predictions.skipTubers && genus == "Tubers" ) )
                 {
                     if ( enableLog ) { log += $"IGNORE '{genus}'\r\n"; }
                     goto Skip_To_Purge;
@@ -1152,7 +1153,13 @@ namespace EddiDiscoveryMonitor
 
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {
-            return null;
+            //return null;
+
+            return new Dictionary<string, Tuple<Type, object>>
+            {
+                [ "bio_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Exobiology ), configuration.exobiology ),
+                [ "codex_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Codex ), configuration.codex )
+            };
         }
     }
 }
