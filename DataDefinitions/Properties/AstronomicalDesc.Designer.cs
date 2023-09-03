@@ -241,7 +241,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to D-B-V-type stars are known as pulsating white drwafs. They have helium-rich atmospheres and their luminosity changes according to non-radial gravity waves within the star..
+        ///   Looks up a localized string similar to D-B-V-type stars are known as pulsating white dwarfs. They have helium-rich atmospheres and their luminosity changes according to non-radial gravity waves within the star..
         /// </summary>
         public static string DBV_Type {
             get {
@@ -349,7 +349,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An entity I have no information about..
+        ///   Looks up a localized string similar to Gas giants such as this one are primarily hydrogen and helium based, with life just below the surface-cloud layer. This particular gas giant exhibits vivid coloration due to the presence of free-floating radioplankton - carbon-based algae that extract energy from the planet&apos;s intense radiation flux..
         /// </summary>
         public static string Green_Giant_With_Ammonia_Life {
             get {
@@ -358,7 +358,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colours. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae..
+        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colors. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae..
         /// </summary>
         public static string Green_Giant_With_Water_Life {
             get {
@@ -367,7 +367,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapour, hydrogren sulphide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layor coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae..
+        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layer coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae..
         /// </summary>
         public static string Green_Sudarsky_Class_I {
             get {
@@ -385,7 +385,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with primarily hydrogen and helium atmoshpere but without distinctive cloud layers. Surface temperatures range between 350 and 800 Kelvin. Optical scattering causes a blue color, with wispy cloud layers from sulphides and chlorides. Vivid, luminous vapor in the upper atmosphere suggests extremophile biouminescent life..
+        ///   Looks up a localized string similar to A gas giant with primarily hydrogen and helium atmosphere but without distinctive cloud layers. Surface temperatures range between 350 and 800 Kelvin. Optical scattering causes a blue color, with wispy cloud layers from sulfides and chlorides. Vivid, luminous vapor in the upper atmosphere suggests extremophile bioluminescent life..
         /// </summary>
         public static string Green_Sudarsky_Class_III {
             get {
@@ -493,7 +493,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Neutron stars are the stellar remnants of massive stars. Once nuclear fision was exhausted, the star collapsed into an extreme high-density state made up entirely of neutrons, though with insufficient mass to become a black hole..
+        ///   Looks up a localized string similar to Neutron stars are the stellar remnants of massive stars. Once nuclear fusion was exhausted, the star collapsed into an extreme high-density state made up entirely of neutrons, though with insufficient mass to become a black hole..
         /// </summary>
         public static string Neutron_Stars {
             get {
@@ -565,7 +565,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with hydrogen and helium-based atmosphere. Vivid colours are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton. Tiny carbon-based algae..
+        ///   Looks up a localized string similar to A gas giant with hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton. Tiny carbon-based algae..
         /// </summary>
         public static string Standard_Giant_With_Water_Life {
             get {
@@ -583,7 +583,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with primarily helium atmosphere. Most of all hydrogen has been lost due to insufficient mass to hold on to it. Past temperatures may have been mich higher, driving off the hydrogen at a greater rate..
+        ///   Looks up a localized string similar to A gas giant with primarily helium atmosphere. Most of all hydrogen has been lost due to insufficient mass to hold on to it. Past temperatures may have been much higher, driving off the hydrogen at a greater rate..
         /// </summary>
         public static string Standard_Helium_Rich {
             get {
@@ -637,7 +637,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere. Vivid colours are produced by clouds in the upper atmosphere of ammonia, water vapour, hydrogren sulphide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin..
+        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere. Vivid colors are produced by clouds in the upper atmosphere of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin..
         /// </summary>
         public static string Standard_Sudarsky_Class_I {
             get {
@@ -655,7 +655,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with primarily hydrogen and helium atmoshpere but without distinctive cloud layers. Optical scattering causes a blue color, with the chance of wispy cloud layers from sulphides and chlorides. Surface temperatures range between 350 and 800 Kelvin..
+        ///   Looks up a localized string similar to A gas giant with primarily hydrogen and helium atmosphere but without distinctive cloud layers. Optical scattering causes a blue color, with the chance of wispy cloud layers from sulfides and chlorides. Surface temperatures range between 350 and 800 Kelvin..
         /// </summary>
         public static string Standard_Sudarsky_Class_III {
             get {
@@ -673,7 +673,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere, with thick clouds of silicates and iron compounds, even metallic iron. They are the hottest type of gas giants with upper cloud temperatures aboce 1,400 Kelvin and much hotter lower layers..
+        ///   Looks up a localized string similar to A gas giant with a primarily hydrogen and helium atmosphere, with thick clouds of silicates and iron compounds, even metallic iron. They are the hottest type of gas giants with upper cloud temperatures above 1,400 Kelvin and much hotter lower layers..
         /// </summary>
         public static string Standard_Sudarsky_Class_V {
             get {
@@ -727,7 +727,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A gas giant with a very thick atmosphere dominated by water vapour..
+        ///   Looks up a localized string similar to A gas giant with a very thick atmosphere dominated by water vapor..
         /// </summary>
         public static string Standard_Water_Giant {
             get {
@@ -745,9 +745,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Since modern FSD technology made it possible to travel the extreme depths of space, Sagittarius A-star has been visited by hundreds of explorers. Some come here as part of a speed race or challenge, others to gain the experience (and credits) of scanning the most massive stellar body in the galaxy. Some come because their wanderlust drives them ever further from the regions around Sol, and others come as part of one of the many community expeditions that have made their way through this system.
-        ///
-        ///Sagittari [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Supermassive black holes tend to form when a black hole consumes a number of other bodies, including other black holes. Over time acquire vast mass, sometimes attaining several million solar masses..
         /// </summary>
         public static string SupermassiveBlack_Holes {
             get {
@@ -783,7 +781,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A rocky planet with little or no surface metal content. Planets like this have lost most of their volatiles due to past heating, and any metallic content will form a small central core. This body has no atmosphereand is terraformable..
+        ///   Looks up a localized string similar to A rocky planet with little or no surface metal content. Planets like this have lost most of their volatiles due to past heating, and any metallic content will form a small central core. This body has no atmosphere and is terraformable..
         /// </summary>
         public static string TRF_Rocky_No_Atmos {
             get {
@@ -846,7 +844,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The W-C-type are variants of wolf-rayet stars whose spectrum is dominated by ionised carbon lines..
+        ///   Looks up a localized string similar to The W-C-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized carbon lines..
         /// </summary>
         public static string WC_Type {
             get {
@@ -855,7 +853,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The W-N-type are variants of wolf-rayet stars whose spectrum is dominated by ionised nitrogen and helium lines..
+        ///   Looks up a localized string similar to The W-N-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized nitrogen and helium lines..
         /// </summary>
         public static string WN_Type {
             get {
@@ -864,7 +862,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The W-N-C-type are variants of wolf-rayet stars whose spectrum is dominated by ionised nitrogen, carbon-oxygen and and helium lines..
+        ///   Looks up a localized string similar to The W-N-C-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized nitrogen, carbon-oxygen and and helium lines..
         /// </summary>
         public static string WNC_Type {
             get {
@@ -873,7 +871,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The W-O-type are variants of wolf-rayet stars whose spectrum is dominated by ionised oxygen lines..
+        ///   Looks up a localized string similar to The W-O-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized oxygen lines..
         /// </summary>
         public static string WO_Type {
             get {

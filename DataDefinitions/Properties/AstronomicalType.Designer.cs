@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gas Giant.
+        ///   Looks up a localized string similar to Gas Giants.
         /// </summary>
         public static string Gas_Giants {
             get {
@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Star.
+        ///   Looks up a localized string similar to Stars.
         /// </summary>
         public static string Stars {
             get {
@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Terrestrial.
+        ///   Looks up a localized string similar to Terrestrials.
         /// </summary>
         public static string Terrestrials {
             get {

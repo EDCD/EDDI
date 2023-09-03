@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Gas_Giants" xml:space="preserve">
-    <value>Gas Giant</value>
+    <value>Gas Giants</value>
   </data>
   <data name="Stars" xml:space="preserve">
-    <value>Star</value>
+    <value>Stars</value>
   </data>
   <data name="Terrestrials" xml:space="preserve">
-    <value>Terrestrial</value>
+    <value>Terrestrials</value>
   </data>
 </root>

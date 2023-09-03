@@ -1,313 +1,158 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
+﻿using System;
+using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class Astronomical : ResourceBasedLocalizedEDName<Astronomical>
     {
-        public static ResourceManager rmAstronomicalDesc = new ResourceManager("EddiDataDefinitions.Properties.AstronomicalDesc", Assembly.GetExecutingAssembly());
-
-        public static readonly IDictionary<string, long?> ASTRONOMICALS = new Dictionary<string, long?>();
-        public static readonly IDictionary<long, Astronomical> ENTRYIDS = new Dictionary<long, Astronomical>();
-
-        // There are some missing EntryIds, so this contains those items if the standard lookups fail
-        public static readonly IDictionary<string, Astronomical> MISSINGIDS = new Dictionary<string, Astronomical>();
-
-        public bool exists;                 // This item exists and has been populated with information
-        public AstronomicalType type;
-        //public long value;
-        public string description;
-
         static Astronomical ()
         {
             resourceManager = Properties.Astronomical.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = ( edname ) => new Astronomical( edname );
-
-            ENTRYIDS.Add( (long)1200402, new Astronomical( "Gas_Giants", "Green_Giant_With_Ammonia_Life" ) );
-            ENTRYIDS.Add( (long)1200602, new Astronomical( "Gas_Giants", "Green_Sudarsky_Class_II" ) );
-            ENTRYIDS.Add( (long)1200802, new Astronomical( "Gas_Giants", "Green_Sudarsky_Class_IV" ) );
-            ENTRYIDS.Add( (long)1200902, new Astronomical( "Gas_Giants", "Green_Sudarsky_Class_V" ) );
-            ENTRYIDS.Add( (long)1200102, new Astronomical( "Gas_Giants", "Green_Water_Giant" ) );
-            ENTRYIDS.Add( (long)1200401, new Astronomical( "Gas_Giants", "Standard_Giant_With_Ammonia_Life" ) );
-            ENTRYIDS.Add( (long)1200301, new Astronomical( "Gas_Giants", "Standard_Giant_With_Water_Life" ) );
-            MISSINGIDS.Add( "Standard_Helium", new Astronomical( "Gas_Giants", "Standard_Helium" ) );
-            ENTRYIDS.Add( (long)1201001, new Astronomical( "Gas_Giants", "Standard_Helium_Rich" ) );
-            ENTRYIDS.Add( (long)1200501, new Astronomical( "Gas_Giants", "Standard_Sudarsky_Class_I" ) );
-            ENTRYIDS.Add( (long)1200601, new Astronomical( "Gas_Giants", "Standard_Sudarsky_Class_II" ) );
-            ENTRYIDS.Add( (long)1200701, new Astronomical( "Gas_Giants", "Standard_Sudarsky_Class_III" ) );
-            ENTRYIDS.Add( (long)1200801, new Astronomical( "Gas_Giants", "Standard_Sudarsky_Class_IV" ) );
-            ENTRYIDS.Add( (long)1200901, new Astronomical( "Gas_Giants", "Standard_Sudarsky_Class_V" ) );
-            ENTRYIDS.Add( (long)1200101, new Astronomical( "Gas_Giants", "Standard_Water_Giant" ) );
-            ENTRYIDS.Add( (long)1200302, new Astronomical( "Gas_Giants", "Green_Giant_With_Water_Life" ) );
-            ENTRYIDS.Add( (long)1200502, new Astronomical( "Gas_Giants", "Green_Sudarsky_Class_I" ) );
-            ENTRYIDS.Add( (long)1200702, new Astronomical( "Gas_Giants", "Green_Sudarsky_Class_III" ) );
-            ENTRYIDS.Add( (long)1100301, new Astronomical( "Stars", "A_Type" ) );
-            ENTRYIDS.Add( (long)1100302, new Astronomical( "Stars", "A_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1100303, new Astronomical( "Stars", "A_TypeSuperGiant" ) );
-            ENTRYIDS.Add( (long)1101101, new Astronomical( "Stars", "AEBE_Type" ) );
-            ENTRYIDS.Add( (long)1100201, new Astronomical( "Stars", "B_Type" ) );
-            ENTRYIDS.Add( (long)1100202, new Astronomical( "Stars", "B_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1100203, new Astronomical( "Stars", "B_TypeSuperGiant" ) );
-            ENTRYIDS.Add( (long)1102400, new Astronomical( "Stars", "Black_Holes" ) );
-            ENTRYIDS.Add( (long)1101401, new Astronomical( "Stars", "C_Type" ) );
-            ENTRYIDS.Add( (long)1101402, new Astronomical( "Stars", "C_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1101404, new Astronomical( "Stars", "C_TypeHyperGiant" ) );
-            ENTRYIDS.Add( (long)1101403, new Astronomical( "Stars", "C_TypeSuperGiant" ) );
-            MISSINGIDS.Add( "CJ_Type", new Astronomical( "Stars", "CJ_Type" ) );
-            MISSINGIDS.Add( "CN_Type", new Astronomical( "Stars", "CN_Type" ) );
-            ENTRYIDS.Add( (long)1102201, new Astronomical( "Stars", "D_Type" ) );
-            ENTRYIDS.Add( (long)1102202, new Astronomical( "Stars", "DA_Type" ) );
-            ENTRYIDS.Add( (long)1102203, new Astronomical( "Stars", "DAB_Type" ) );
-            ENTRYIDS.Add( (long)1102205, new Astronomical( "Stars", "DAV_Type" ) );
-            ENTRYIDS.Add( (long)1102206, new Astronomical( "Stars", "DAZ_Type" ) );
-            ENTRYIDS.Add( (long)1102207, new Astronomical( "Stars", "DB_Type" ) );
-            ENTRYIDS.Add( (long)1102208, new Astronomical( "Stars", "DBV_Type" ) );
-            MISSINGIDS.Add( "DBZ_Type", new Astronomical( "Stars", "DBZ_Type" ) );
-            ENTRYIDS.Add( (long)1102213, new Astronomical( "Stars", "DC_Type" ) );
-            MISSINGIDS.Add( "DCV_Type", new Astronomical( "Stars", "DCV_Type" ) );
-            ENTRYIDS.Add( (long)1102212, new Astronomical( "Stars", "DQ_Type" ) );
-            ENTRYIDS.Add( (long)1100401, new Astronomical( "Stars", "F_Type" ) );
-            ENTRYIDS.Add( (long)1100402, new Astronomical( "Stars", "F_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1100403, new Astronomical( "Stars", "F_TypeSuperGiant" ) );
-            ENTRYIDS.Add( (long)1100501, new Astronomical( "Stars", "G_Type" ) );
-            ENTRYIDS.Add( (long)1100502, new Astronomical( "Stars", "G_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1100503, new Astronomical( "Stars", "G_TypeSuperGiant" ) );
-            ENTRYIDS.Add( (long)1100601, new Astronomical( "Stars", "K_Type" ) );
-            ENTRYIDS.Add( (long)1100602, new Astronomical( "Stars", "K_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1100603, new Astronomical( "Stars", "K_TypeSuperGiant" ) );
-            ENTRYIDS.Add( (long)1100801, new Astronomical( "Stars", "L_Type" ) );
-            ENTRYIDS.Add( (long)1100701, new Astronomical( "Stars", "M_Type" ) );
-            ENTRYIDS.Add( (long)1100702, new Astronomical( "Stars", "M_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1100703, new Astronomical( "Stars", "M_TypeSuperGiant" ) );
-            MISSINGIDS.Add( "MS_Type", new Astronomical( "Stars", "MS_Type" ) );
-            ENTRYIDS.Add( (long)1102300, new Astronomical( "Stars", "Neutron_Stars" ) );
-            ENTRYIDS.Add( (long)1100101, new Astronomical( "Stars", "O_Type" ) );
-            ENTRYIDS.Add( (long)1100102, new Astronomical( "Stars", "O_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1100103, new Astronomical( "Stars", "O_TypeSuperGiant" ) );
-            ENTRYIDS.Add( (long)1102001, new Astronomical( "Stars", "S_Type" ) );
-            ENTRYIDS.Add( (long)1102002, new Astronomical( "Stars", "S_TypeGiant" ) );
-            ENTRYIDS.Add( (long)1102500, new Astronomical( "Stars", "SupermassiveBlack_Holes" ) );
-            ENTRYIDS.Add( (long)1100901, new Astronomical( "Stars", "T_Type" ) );
-            ENTRYIDS.Add( (long)1101001, new Astronomical( "Stars", "TTS_Type" ) );
-            ENTRYIDS.Add( (long)1102101, new Astronomical( "Stars", "W_Type" ) );
-            ENTRYIDS.Add( (long)1102102, new Astronomical( "Stars", "WC_Type" ) );
-            ENTRYIDS.Add( (long)1102103, new Astronomical( "Stars", "WN_Type" ) );
-            ENTRYIDS.Add( (long)1102104, new Astronomical( "Stars", "WNC_Type" ) );
-            ENTRYIDS.Add( (long)1102105, new Astronomical( "Stars", "WO_Type" ) );
-            ENTRYIDS.Add( (long)1101201, new Astronomical( "Stars", "Y_Type" ) );
-            ENTRYIDS.Add( (long)1300100, new Astronomical( "Terrestrials", "Earth_Likes" ) );
-            ENTRYIDS.Add( (long)1300202, new Astronomical( "Terrestrials", "Standard_Ammonia_Worlds" ) );
-            ENTRYIDS.Add( (long)1300501, new Astronomical( "Terrestrials", "Standard_High_Metal_Content_No_Atmos" ) );
-            ENTRYIDS.Add( (long)1300801, new Astronomical( "Terrestrials", "Standard_Ice_No_Atmos" ) );
-            ENTRYIDS.Add( (long)1300401, new Astronomical( "Terrestrials", "Standard_Metal_Rich_No_Atmos" ) );
-            ENTRYIDS.Add( (long)1300701, new Astronomical( "Terrestrials", "Standard_Rocky_Ice_No_Atmos" ) );
-            ENTRYIDS.Add( (long)1300601, new Astronomical( "Terrestrials", "Standard_Rocky_No_Atmos" ) );
-            ENTRYIDS.Add( (long)1301501, new Astronomical( "Terrestrials", "Standard_Ter_High_Metal_Content" ) );
-            ENTRYIDS.Add( (long)1301801, new Astronomical( "Terrestrials", "Standard_Ter_Ice" ) );
-            ENTRYIDS.Add( (long)1301401, new Astronomical( "Terrestrials", "Standard_Ter_Metal_Rich" ) );
-            ENTRYIDS.Add( (long)1301701, new Astronomical( "Terrestrials", "Standard_Ter_Rocky_Ice" ) );
-            ENTRYIDS.Add( (long)1301601, new Astronomical( "Terrestrials", "Standard_Ter_Rocky" ) );
-            ENTRYIDS.Add( (long)1300301, new Astronomical( "Terrestrials", "Standard_Water_Worlds" ) );
-            MISSINGIDS.Add( "TRF_Ammonia_Worlds", new Astronomical( "Terrestrials", "TRF_Ammonia_Worlds" ) );
-            ENTRYIDS.Add( (long)1300502, new Astronomical( "Terrestrials", "TRF_High_Metal_Content_No_Atmos" ) );
-            ENTRYIDS.Add( (long)1300602, new Astronomical( "Terrestrials", "TRF_Rocky_No_Atmos" ) );
-            ENTRYIDS.Add( (long)1301502, new Astronomical( "Terrestrials", "TRF_Ter_High_Metal_Content" ) );
-            MISSINGIDS.Add( "TRF_Ter_Metal_Rich", new Astronomical( "Terrestrials", "TRF_Ter_Metal_Rich" ) );
-            ENTRYIDS.Add( (long)1301602, new Astronomical( "Terrestrials", "TRF_Ter_Rocky" ) );
-            ENTRYIDS.Add( (long)1300302, new Astronomical( "Terrestrials", "TRF_Water_Worlds" ) );
-
-            ASTRONOMICALS.Add( "Green_Giant_With_Ammonia_Life", (long)1200402 );
-            ASTRONOMICALS.Add( "Green_Sudarsky_Class_II", (long)1200602 );
-            ASTRONOMICALS.Add( "Green_Sudarsky_Class_IV", (long)1200802 );
-            ASTRONOMICALS.Add( "Green_Sudarsky_Class_V", (long)1200902 );
-            ASTRONOMICALS.Add( "Green_Water_Giant", (long)1200102 );
-            ASTRONOMICALS.Add( "Standard_Giant_With_Ammonia_Life", (long)1200401 );
-            ASTRONOMICALS.Add( "Standard_Giant_With_Water_Life", (long)1200301 );
-            ASTRONOMICALS.Add( "Standard_Helium", null );
-            ASTRONOMICALS.Add( "Standard_Helium_Rich", (long)1201001 );
-            ASTRONOMICALS.Add( "Standard_Sudarsky_Class_I", (long)1200501 );
-            ASTRONOMICALS.Add( "Standard_Sudarsky_Class_II", (long)1200601 );
-            ASTRONOMICALS.Add( "Standard_Sudarsky_Class_III", (long)1200701 );
-            ASTRONOMICALS.Add( "Standard_Sudarsky_Class_IV", (long)1200801 );
-            ASTRONOMICALS.Add( "Standard_Sudarsky_Class_V", (long)1200901 );
-            ASTRONOMICALS.Add( "Standard_Water_Giant", (long)1200101 );
-            ASTRONOMICALS.Add( "Green_Giant_With_Water_Life", (long)1200302 );
-            ASTRONOMICALS.Add( "Green_Sudarsky_Class_I", (long)1200502 );
-            ASTRONOMICALS.Add( "Green_Sudarsky_Class_III", (long)1200702 );
-            ASTRONOMICALS.Add( "A_Type", (long)1100301 );
-            ASTRONOMICALS.Add( "A_TypeGiant", (long)1100302 );
-            ASTRONOMICALS.Add( "A_TypeSuperGiant", (long)1100303 );
-            ASTRONOMICALS.Add( "AEBE_Type", (long)1101101 );
-            ASTRONOMICALS.Add( "B_Type", (long)1100201 );
-            ASTRONOMICALS.Add( "B_TypeGiant", (long)1100202 );
-            ASTRONOMICALS.Add( "B_TypeSuperGiant", (long)1100203 );
-            ASTRONOMICALS.Add( "Black_Holes", (long)1102400 );
-            ASTRONOMICALS.Add( "C_Type", (long)1101401 );
-            ASTRONOMICALS.Add( "C_TypeGiant", (long)1101402 );
-            ASTRONOMICALS.Add( "C_TypeHyperGiant", (long)1101404 );
-            ASTRONOMICALS.Add( "C_TypeSuperGiant", (long)1101403 );
-            ASTRONOMICALS.Add( "CJ_Type", null );
-            ASTRONOMICALS.Add( "CN_Type", null );
-            ASTRONOMICALS.Add( "D_Type", (long)1102201 );
-            ASTRONOMICALS.Add( "DA_Type", (long)1102202 );
-            ASTRONOMICALS.Add( "DAB_Type", (long)1102203 );
-            ASTRONOMICALS.Add( "DAV_Type", (long)1102205 );
-            ASTRONOMICALS.Add( "DAZ_Type", (long)1102206 );
-            ASTRONOMICALS.Add( "DB_Type", (long)1102207 );
-            ASTRONOMICALS.Add( "DBV_Type", (long)1102208 );
-            ASTRONOMICALS.Add( "DBZ_Type", null );
-            ASTRONOMICALS.Add( "DC_Type", (long)1102213 );
-            ASTRONOMICALS.Add( "DCV_Type", null );
-            ASTRONOMICALS.Add( "DQ_Type", (long)1102212 );
-            ASTRONOMICALS.Add( "F_Type", (long)1100401 );
-            ASTRONOMICALS.Add( "F_TypeGiant", (long)1100402 );
-            ASTRONOMICALS.Add( "F_TypeSuperGiant", (long)1100403 );
-            ASTRONOMICALS.Add( "G_Type", (long)1100501 );
-            ASTRONOMICALS.Add( "G_TypeGiant", (long)1100502 );
-            ASTRONOMICALS.Add( "G_TypeSuperGiant", (long)1100503 );
-            ASTRONOMICALS.Add( "K_Type", (long)1100601 );
-            ASTRONOMICALS.Add( "K_TypeGiant", (long)1100602 );
-            ASTRONOMICALS.Add( "K_TypeSuperGiant", (long)1100603 );
-            ASTRONOMICALS.Add( "L_Type", (long)1100801 );
-            ASTRONOMICALS.Add( "M_Type", (long)1100701 );
-            ASTRONOMICALS.Add( "M_TypeGiant", (long)1100702 );
-            ASTRONOMICALS.Add( "M_TypeSuperGiant", (long)1100703 );
-            ASTRONOMICALS.Add( "MS_Type", null );
-            ASTRONOMICALS.Add( "Neutron_Stars", (long)1102300 );
-            ASTRONOMICALS.Add( "O_Type", (long)1100101 );
-            ASTRONOMICALS.Add( "O_TypeGiant", (long)1100102 );
-            ASTRONOMICALS.Add( "O_TypeSuperGiant", (long)1100103 );
-            ASTRONOMICALS.Add( "S_Type", (long)1102001 );
-            ASTRONOMICALS.Add( "S_TypeGiant", (long)1102002 );
-            ASTRONOMICALS.Add( "SupermassiveBlack_Holes", (long)1102500 );
-            ASTRONOMICALS.Add( "T_Type", (long)1100901 );
-            ASTRONOMICALS.Add( "TTS_Type", (long)1101001 );
-            ASTRONOMICALS.Add( "W_Type", (long)1102101 );
-            ASTRONOMICALS.Add( "WC_Type", (long)1102102 );
-            ASTRONOMICALS.Add( "WN_Type", (long)1102103 );
-            ASTRONOMICALS.Add( "WNC_Type", (long)1102104 );
-            ASTRONOMICALS.Add( "WO_Type", (long)1102105 );
-            ASTRONOMICALS.Add( "Y_Type", (long)1101201 );
-            ASTRONOMICALS.Add( "Earth_Likes", (long)1300100 );
-            ASTRONOMICALS.Add( "Standard_Ammonia_Worlds", (long)1300202 );
-            ASTRONOMICALS.Add( "Standard_High_Metal_Content_No_Atmos", (long)1300501 );
-            ASTRONOMICALS.Add( "Standard_Ice_No_Atmos", (long)1300801 );
-            ASTRONOMICALS.Add( "Standard_Metal_Rich_No_Atmos", (long)1300401 );
-            ASTRONOMICALS.Add( "Standard_Rocky_Ice_No_Atmos", (long)1300701 );
-            ASTRONOMICALS.Add( "Standard_Rocky_No_Atmos", (long)1300601 );
-            ASTRONOMICALS.Add( "Standard_Ter_High_Metal_Content", (long)1301501 );
-            ASTRONOMICALS.Add( "Standard_Ter_Ice", (long)1301801 );
-            ASTRONOMICALS.Add( "Standard_Ter_Metal_Rich", (long)1301401 );
-            ASTRONOMICALS.Add( "Standard_Ter_Rocky_Ice", (long)1301701 );
-            ASTRONOMICALS.Add( "Standard_Ter_Rocky", (long)1301601 );
-            ASTRONOMICALS.Add( "Standard_Water_Worlds", (long)1300301 );
-            ASTRONOMICALS.Add( "TRF_Ammonia_Worlds", null );
-            ASTRONOMICALS.Add( "TRF_High_Metal_Content_No_Atmos", (long)1300502 );
-            ASTRONOMICALS.Add( "TRF_Rocky_No_Atmos", (long)1300602 );
-            ASTRONOMICALS.Add( "TRF_Ter_High_Metal_Content", (long)1301502 );
-            ASTRONOMICALS.Add( "TRF_Ter_Metal_Rich", null );
-            ASTRONOMICALS.Add( "TRF_Ter_Rocky", (long)1301602 );
-            ASTRONOMICALS.Add( "TRF_Water_Worlds", (long)1300302 );
+            missingEDNameHandler = ( edname ) => new Astronomical( edname, null, null );
         }
+
+        public static readonly Astronomical Green_Giant_With_Ammonia_Life = new Astronomical ( "Green_Giant_With_Ammonia_Life", 1200402, AstronomicalType.GasGiants );
+        public static readonly Astronomical Green_Sudarsky_Class_I = new Astronomical ( "Green_Sudarsky_Class_I", 1200502, AstronomicalType.GasGiants );
+        public static readonly Astronomical Green_Sudarsky_Class_II = new Astronomical ( "Green_Sudarsky_Class_II", 1200602, AstronomicalType.GasGiants );
+        public static readonly Astronomical Green_Sudarsky_Class_III = new Astronomical ( "Green_Sudarsky_Class_III", 1200702, AstronomicalType.GasGiants );
+        public static readonly Astronomical Green_Sudarsky_Class_IV = new Astronomical ( "Green_Sudarsky_Class_IV", 1200802, AstronomicalType.GasGiants );
+        public static readonly Astronomical Green_Sudarsky_Class_V = new Astronomical ( "Green_Sudarsky_Class_V", 1200902, AstronomicalType.GasGiants );
+        public static readonly Astronomical Green_Water_Giant = new Astronomical ( "Green_Water_Giant", 1200102, AstronomicalType.GasGiants );
+        public static readonly Astronomical Green_Giant_With_Water_Life = new Astronomical ( "Green_Giant_With_Water_Life", 1200302, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Giant_With_Ammonia_Life = new Astronomical ( "Standard_Giant_With_Ammonia_Life", 1200401, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Giant_With_Water_Life = new Astronomical ( "Standard_Giant_With_Water_Life", 1200301, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Helium = new Astronomical ( "Standard_Helium", null, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Helium_Rich = new Astronomical ( "Standard_Helium_Rich", 1201001, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Sudarsky_Class_I = new Astronomical ( "Standard_Sudarsky_Class_I", 1200501, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Sudarsky_Class_II = new Astronomical ( "Standard_Sudarsky_Class_II", 1200601, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Sudarsky_Class_III = new Astronomical ( "Standard_Sudarsky_Class_III", 1200701, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Sudarsky_Class_IV = new Astronomical ( "Standard_Sudarsky_Class_IV", 1200801, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Sudarsky_Class_V = new Astronomical ( "Standard_Sudarsky_Class_V", 1200901, AstronomicalType.GasGiants );
+        public static readonly Astronomical Standard_Water_Giant = new Astronomical ( "Standard_Water_Giant", 1200101, AstronomicalType.GasGiants );
+
+        public static readonly Astronomical A_Type = new Astronomical ( "A_Type", 1100301, AstronomicalType.Stars );
+        public static readonly Astronomical A_TypeGiant = new Astronomical ( "A_TypeGiant", 1100302, AstronomicalType.Stars );
+        public static readonly Astronomical A_TypeSuperGiant = new Astronomical ( "A_TypeSuperGiant", 1100303, AstronomicalType.Stars );
+        public static readonly Astronomical AEBE_Type = new Astronomical ( "AEBE_Type", 1101101, AstronomicalType.Stars );
+        public static readonly Astronomical B_Type = new Astronomical ( "B_Type", 1100201, AstronomicalType.Stars );
+        public static readonly Astronomical B_TypeGiant = new Astronomical ( "B_TypeGiant", 1100202, AstronomicalType.Stars );
+        public static readonly Astronomical B_TypeSuperGiant = new Astronomical ( "B_TypeSuperGiant", 1100203, AstronomicalType.Stars );
+        public static readonly Astronomical Black_Holes = new Astronomical ( "Black_Holes", 1102400, AstronomicalType.Stars );
+        public static readonly Astronomical C_Type = new Astronomical ( "C_Type", 1101401, AstronomicalType.Stars );
+        public static readonly Astronomical C_TypeGiant = new Astronomical ( "C_TypeGiant", 1101402, AstronomicalType.Stars );
+        public static readonly Astronomical C_TypeHyperGiant = new Astronomical ( "C_TypeHyperGiant", 1101404, AstronomicalType.Stars );
+        public static readonly Astronomical C_TypeSuperGiant = new Astronomical ( "C_TypeSuperGiant", 1101403, AstronomicalType.Stars );
+        public static readonly Astronomical CJ_Type = new Astronomical ( "CJ_Type", null, AstronomicalType.Stars );
+        public static readonly Astronomical CN_Type = new Astronomical ( "CN_Type", null, AstronomicalType.Stars );
+        public static readonly Astronomical D_Type = new Astronomical ( "D_Type", 1102201, AstronomicalType.Stars );
+        public static readonly Astronomical DA_Type = new Astronomical ( "DA_Type", 1102202, AstronomicalType.Stars );
+        public static readonly Astronomical DAB_Type = new Astronomical ( "DAB_Type", 1102203, AstronomicalType.Stars );
+        public static readonly Astronomical DAV_Type = new Astronomical ( "DAV_Type", 1102205, AstronomicalType.Stars );
+        public static readonly Astronomical DAZ_Type = new Astronomical ( "DAZ_Type", 1102206, AstronomicalType.Stars );
+        public static readonly Astronomical DB_Type = new Astronomical ( "DB_Type", 1102207, AstronomicalType.Stars );
+        public static readonly Astronomical DBV_Type = new Astronomical ( "DBV_Type", 1102208, AstronomicalType.Stars );
+        public static readonly Astronomical DBZ_Type = new Astronomical ( "DBZ_Type", null, AstronomicalType.Stars );
+        public static readonly Astronomical DC_Type = new Astronomical ( "DC_Type", 1102213, AstronomicalType.Stars );
+        public static readonly Astronomical DCV_Type = new Astronomical ( "DCV_Type", null, AstronomicalType.Stars );
+        public static readonly Astronomical DQ_Type = new Astronomical ( "DQ_Type", 1102212, AstronomicalType.Stars );
+        public static readonly Astronomical F_Type = new Astronomical ( "F_Type", 1100401, AstronomicalType.Stars );
+        public static readonly Astronomical F_TypeGiant = new Astronomical ( "F_TypeGiant", 1100402, AstronomicalType.Stars );
+        public static readonly Astronomical F_TypeSuperGiant = new Astronomical ( "F_TypeSuperGiant", 1100403, AstronomicalType.Stars );
+        public static readonly Astronomical G_Type = new Astronomical ( "G_Type", 1100501, AstronomicalType.Stars );
+        public static readonly Astronomical G_TypeGiant = new Astronomical ( "G_TypeGiant", 1100502, AstronomicalType.Stars );
+        public static readonly Astronomical G_TypeSuperGiant = new Astronomical ( "G_TypeSuperGiant", 1100503, AstronomicalType.Stars );
+        public static readonly Astronomical K_Type = new Astronomical ( "K_Type", 1100601, AstronomicalType.Stars );
+        public static readonly Astronomical K_TypeGiant = new Astronomical ( "K_TypeGiant", 1100602, AstronomicalType.Stars );
+        public static readonly Astronomical K_TypeSuperGiant = new Astronomical ( "K_TypeSuperGiant", 1100603, AstronomicalType.Stars );
+        public static readonly Astronomical L_Type = new Astronomical ( "L_Type", 1100801, AstronomicalType.Stars );
+        public static readonly Astronomical M_Type = new Astronomical ( "M_Type", 1100701, AstronomicalType.Stars );
+        public static readonly Astronomical M_TypeGiant = new Astronomical ( "M_TypeGiant", 1100702, AstronomicalType.Stars );
+        public static readonly Astronomical M_TypeSuperGiant = new Astronomical ( "M_TypeSuperGiant", 1100703, AstronomicalType.Stars );
+        public static readonly Astronomical MS_Type = new Astronomical ( "MS_Type", null, AstronomicalType.Stars );
+        public static readonly Astronomical Neutron_Stars = new Astronomical ( "Neutron_Stars", 1102300, AstronomicalType.Stars );
+        public static readonly Astronomical O_Type = new Astronomical ( "O_Type", 1100101, AstronomicalType.Stars );
+        public static readonly Astronomical O_TypeGiant = new Astronomical ( "O_TypeGiant", 1100102, AstronomicalType.Stars );
+        public static readonly Astronomical O_TypeSuperGiant = new Astronomical ( "O_TypeSuperGiant", 1100103, AstronomicalType.Stars );
+        public static readonly Astronomical S_Type = new Astronomical ( "S_Type", 1102001, AstronomicalType.Stars );
+        public static readonly Astronomical S_TypeGiant = new Astronomical ( "S_TypeGiant", 1102002, AstronomicalType.Stars );
+        public static readonly Astronomical SupermassiveBlack_Holes = new Astronomical ( "SupermassiveBlack_Holes", 1102500, AstronomicalType.Stars );
+        public static readonly Astronomical T_Type = new Astronomical ( "T_Type", 1100901, AstronomicalType.Stars );
+        public static readonly Astronomical TTS_Type = new Astronomical ( "TTS_Type", 1101001, AstronomicalType.Stars );
+        public static readonly Astronomical W_Type = new Astronomical ( "W_Type", 1102101, AstronomicalType.Stars );
+        public static readonly Astronomical WC_Type = new Astronomical ( "WC_Type", 1102102, AstronomicalType.Stars );
+        public static readonly Astronomical WN_Type = new Astronomical ( "WN_Type", 1102103, AstronomicalType.Stars );
+        public static readonly Astronomical WNC_Type = new Astronomical ( "WNC_Type", 1102104, AstronomicalType.Stars );
+        public static readonly Astronomical WO_Type = new Astronomical ( "WO_Type", 1102105, AstronomicalType.Stars );
+        public static readonly Astronomical Y_Type = new Astronomical ( "Y_Type", 1101201, AstronomicalType.Stars );
+
+        public static readonly Astronomical Earth_Likes = new Astronomical( "Earth_Likes", 1300100, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Ammonia_Worlds = new Astronomical( "Standard_Ammonia_Worlds", 1300202, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_High_Metal_Content_No_Atmos = new Astronomical( "Standard_High_Metal_Content_No_Atmos", 1300501, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Ice_No_Atmos = new Astronomical ( "Standard_Ice_No_Atmos", 1300801, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Metal_Rich_No_Atmos = new Astronomical ( "Standard_Metal_Rich_No_Atmos", 1300401, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Rocky_Ice_No_Atmos = new Astronomical ( "Standard_Rocky_Ice_No_Atmos", 1300701, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Rocky_No_Atmos = new Astronomical ( "Standard_Rocky_No_Atmos", 1300601, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Ter_High_Metal_Content = new Astronomical ( "Standard_Ter_High_Metal_Content", 1301501, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Ter_Ice = new Astronomical ( "Standard_Ter_Ice", 1301801, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Ter_Metal_Rich = new Astronomical ( "Standard_Ter_Metal_Rich", 1301401, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Ter_Rocky_Ice = new Astronomical ( "Standard_Ter_Rocky_Ice", 1301701, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Ter_Rocky = new Astronomical ( "Standard_Ter_Rocky", 1301601, AstronomicalType.Terrestrials );
+        public static readonly Astronomical Standard_Water_Worlds = new Astronomical ( "Standard_Water_Worlds", 1300301, AstronomicalType.Terrestrials );
+        public static readonly Astronomical TRF_Ammonia_Worlds = new Astronomical ( "TRF_Ammonia_Worlds", null, AstronomicalType.Terrestrials );
+        public static readonly Astronomical TRF_High_Metal_Content_No_Atmos = new Astronomical ( "TRF_High_Metal_Content_No_Atmos", 1300502, AstronomicalType.Terrestrials );
+        public static readonly Astronomical TRF_Rocky_No_Atmos = new Astronomical ( "TRF_Rocky_No_Atmos", 1300602, AstronomicalType.Terrestrials );
+        public static readonly Astronomical TRF_Ter_High_Metal_Content = new Astronomical ( "TRF_Ter_High_Metal_Content", 1301502, AstronomicalType.Terrestrials );
+        public static readonly Astronomical TRF_Ter_Metal_Rich = new Astronomical( "TRF_Ter_Metal_Rich", null, AstronomicalType.Terrestrials );
+        public static readonly Astronomical TRF_Ter_Rocky = new Astronomical( "TRF_Ter_Rocky", 1301602, AstronomicalType.Terrestrials );
+        public static readonly Astronomical TRF_Water_Worlds = new Astronomical ( "TRF_Water_Worlds", 1300302, AstronomicalType.Terrestrials );
+
+        public long? entryID { get; private set; }
+
+        public AstronomicalType type { get; private set; }
+
+        public string localizedDescription { get; private set; }
 
         // dummy used to ensure that the static constructor has run
-        public Astronomical () : this( "" )
+        public Astronomical () : this( "", null, null )
         { }
 
-        private Astronomical ( string name ) : base( name, name )
+        private Astronomical ( string edname, long? entryID, AstronomicalType type ) : base( edname, edname )
         {
-            this.exists = false;
-            this.type = new AstronomicalType();
-            //this.value = 0;
-            this.description = "";
-        }
-
-        private Astronomical ( string type, string name ) : base( name, name )
-        {
-            this.exists = true;
-            this.type = AstronomicalType.Lookup( type );
-            //this.value = value;
-            this.description = rmAstronomicalDesc.GetString( name );
+            this.entryID = entryID;
+            this.type = type;
+            this.localizedDescription = AllOfThem.Any(a => a.edname == edname) 
+                ? Properties.AstronomicalDesc.ResourceManager.GetString( edname ) 
+                : string.Empty;
         }
 
         /// <summary>
-        /// Try getting data from the entryid first, then use name as a fallback
+        /// Try getting data from the entryid first, then use edname as a fallback
         /// </summary>
-        public static Astronomical Lookup ( long? entryId, string name )
+        public static Astronomical Lookup ( long? entryId, string edname )
         {
-            Astronomical item;
-            item = LookupByEntryId( entryId );
-            
-            // EntryId doesn't exist, try name
-            if ( item == null )
+            try
             {
-                item = LookupByName( name );
-            }
-
-            // Name doesn't exist, or ID reverse lookup unknown (null).
-            // See if its in the missing ID list as a last resort.
-            if ( item == null )
-            {
-                item = LookupMissing( name );
-            }
-
-            if ( item == null )
-            {
-                item = new Astronomical();
-            }
-
-            return item;
-        }
-
-        /// <summary>
-        /// Preferred method of lookup
-        /// </summary>
-        public static Astronomical LookupByEntryId ( long? entryId )
-        {
-            if ( entryId != null )
-            {
-                if ( ENTRYIDS.ContainsKey( (long)entryId ) )
+                if ( entryId != null )
                 {
-                    return ENTRYIDS[ (long)entryId ];
+                    return AllOfThem.Single( a => a.entryID == entryId );
                 }
             }
-            return null;
-        }
-
-        /// <summary>
-        /// Lookup data by name
-        /// </summary>
-        public static Astronomical LookupByName ( string name )
-        {
-            if ( name != "" )
+            catch ( InvalidOperationException e )
             {
-                if ( ASTRONOMICALS.ContainsKey( name ) )
+                if ( AllOfThem.Count( a => a.entryID == entryId ) > 1 )
                 {
-                    long? entryid = ASTRONOMICALS[ name ];
-                    if ( entryid != null )
-                    {
-                        return LookupByEntryId( entryid );
-                    }
+                    Logging.Error( $"Duplicate EntryID value {entryId} in {nameof( Astronomical )}.", e );
+                }
+                else if ( AllOfThem.All( a => a.entryID != entryId ) )
+                {
+                    Logging.Error( $"Unknown EntryID value {entryId} with edname {edname} in {nameof( Astronomical )}.", e );
                 }
             }
-            return null;
-        }
 
-        /// <summary>
-        /// Lookup data in missing ID list
-        /// </summary>
-        public static Astronomical LookupMissing ( string name )
-        {
-            if ( name != "" )
-            {
-                if ( MISSINGIDS.ContainsKey( name ) )
-                {
-                    return MISSINGIDS[ name ];
-                }
-            }
-            return null;
+            return FromEDName( edname ) ??
+                   new Astronomical( edname, entryId, null ); // No match.
         }
     }
 }

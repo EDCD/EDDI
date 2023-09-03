@@ -172,7 +172,7 @@
     <value>D-A-type stars are white dwarf stars with a hydrogen-rich atmosphere.</value>
   </data>
   <data name="DBV_Type" xml:space="preserve">
-    <value>D-B-V-type stars are known as pulsating white drwafs. They have helium-rich atmospheres and their luminosity changes according to non-radial gravity waves within the star.</value>
+    <value>D-B-V-type stars are known as pulsating white dwarfs. They have helium-rich atmospheres and their luminosity changes according to non-radial gravity waves within the star.</value>
   </data>
   <data name="DBZ_Type" xml:space="preserve">
     <value>D-B-Z-type stars are helium-rich and metallic white dwarf stars.</value>
@@ -205,19 +205,19 @@
     <value>F-type stars are white main sequence stars. They usually range in mass from 1 to 1.4 solar masses and have a surface temperature reaching 7,600 Kelvin. This particular star is a supergiant.</value>
   </data>
   <data name="Green_Giant_With_Ammonia_Life" xml:space="preserve">
-    <value>An entity I have no information about.</value>
+    <value>Gas giants such as this one are primarily hydrogen and helium based, with life just below the surface-cloud layer. This particular gas giant exhibits vivid coloration due to the presence of free-floating radioplankton - carbon-based algae that extract energy from the planet's intense radiation flux.</value>
   </data>
   <data name="Green_Giant_With_Water_Life" xml:space="preserve">
-    <value>A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colours. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
+    <value>A gas giant with a primarily hydrogen and helium atmosphere and bioluminescent life, based in the water-cloud layer just below the atmospheric surface. An excess of oxygen and many carbon-based compounds produces vivid colors. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
   </data>
   <data name="Green_Sudarsky_Class_I" xml:space="preserve">
-    <value>A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapour, hydrogren sulphide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layor coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
+    <value>A gas giant with a primarily hydrogen and helium atmosphere with clouds of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin. Vivid cloud layer coloration suggests bioluminescent organisms. There are vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
   </data>
   <data name="Green_Sudarsky_Class_II" xml:space="preserve">
     <value>An entity I have no information about.</value>
   </data>
   <data name="Green_Sudarsky_Class_III" xml:space="preserve">
-    <value>A gas giant with primarily hydrogen and helium atmoshpere but without distinctive cloud layers. Surface temperatures range between 350 and 800 Kelvin. Optical scattering causes a blue color, with wispy cloud layers from sulphides and chlorides. Vivid, luminous vapor in the upper atmosphere suggests extremophile biouminescent life.</value>
+    <value>A gas giant with primarily hydrogen and helium atmosphere but without distinctive cloud layers. Surface temperatures range between 350 and 800 Kelvin. Optical scattering causes a blue color, with wispy cloud layers from sulfides and chlorides. Vivid, luminous vapor in the upper atmosphere suggests extremophile bioluminescent life.</value>
   </data>
   <data name="Green_Sudarsky_Class_IV" xml:space="preserve">
     <value>An entity I have no information about.</value>
@@ -262,7 +262,7 @@
     <value>M-type stars are red stars that comprise the bulk of the galaxy’s main sequence stars. They usually range from 0.075 to 0.50 solar masses, and their surface temperature is less than 4,000 Kelvin. This particular star is a supergiant.</value>
   </data>
   <data name="Neutron_Stars" xml:space="preserve">
-    <value>Neutron stars are the stellar remnants of massive stars. Once nuclear fision was exhausted, the star collapsed into an extreme high-density state made up entirely of neutrons, though with insufficient mass to become a black hole.</value>
+    <value>Neutron stars are the stellar remnants of massive stars. Once nuclear fusion was exhausted, the star collapsed into an extreme high-density state made up entirely of neutrons, though with insufficient mass to become a black hole.</value>
   </data>
   <data name="O_Type" xml:space="preserve">
     <value>O-type stars are the most luminous and massive main sequence stars. They usually range from 15 to 90 solar masses, with a surface temperature reaching 52,000 Kelvin, so they appear very blue. They are very short lived with lifetimes of 1-10 million years, ending in a supernova.</value>
@@ -280,13 +280,13 @@
     <value>A gas giant with a hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in the ammonia-cloud layer, with vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
   </data>
   <data name="Standard_Giant_With_Water_Life" xml:space="preserve">
-    <value>A gas giant with hydrogen and helium-based atmosphere. Vivid colours are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
+    <value>A gas giant with hydrogen and helium-based atmosphere. Vivid colors are produced by oxygen and carbon-based compounds. This planet contains life forms in a hot layer of high-pressure water, with vast quantities of free-floating radioplankton. Tiny carbon-based algae.</value>
   </data>
   <data name="Standard_Helium" xml:space="preserve">
     <value>A gas giant with more helium in its atmosphere compared to hydrogen. Most or all hydrogen has been lost due to insufficient mass to hold on to it. Past temperatures may have been much higher, driving off the hydrogen at a greater rate.</value>
   </data>
   <data name="Standard_Helium_Rich" xml:space="preserve">
-    <value>A gas giant with primarily helium atmosphere. Most of all hydrogen has been lost due to insufficient mass to hold on to it. Past temperatures may have been mich higher, driving off the hydrogen at a greater rate.</value>
+    <value>A gas giant with primarily helium atmosphere. Most of all hydrogen has been lost due to insufficient mass to hold on to it. Past temperatures may have been much higher, driving off the hydrogen at a greater rate.</value>
   </data>
   <data name="Standard_High_Metal_Content_No_Atmos" xml:space="preserve">
     <value>A high metal content planet with a metallic core. Planets like this can have metallic ores near the surface in places, especially around areas of past volcanism. This body has no atmosphere.</value>
@@ -304,19 +304,19 @@
     <value>A rocky planet with little or no surface metal content. Planets like this have lost most of their volatiles due to past heating, and any metallic content will form a small central core. This body has no atmosphere.</value>
   </data>
   <data name="Standard_Sudarsky_Class_I" xml:space="preserve">
-    <value>A gas giant with a primarily hydrogen and helium atmosphere. Vivid colours are produced by clouds in the upper atmosphere of ammonia, water vapour, hydrogren sulphide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin.</value>
+    <value>A gas giant with a primarily hydrogen and helium atmosphere. Vivid colors are produced by clouds in the upper atmosphere of ammonia, water vapor, hydrogen sulfide, phosphine and sulfur. Upper cloud layer temperatures are typically less than 150 Kelvin.</value>
   </data>
   <data name="Standard_Sudarsky_Class_II" xml:space="preserve">
     <value>A gas giant with a primarily hydrogen and helium atmosphere. Water vapor in the upper cloud layers gives a much higher albedo. Surface temperatures are typically around 250 Kelvin.</value>
   </data>
   <data name="Standard_Sudarsky_Class_III" xml:space="preserve">
-    <value>A gas giant with primarily hydrogen and helium atmoshpere but without distinctive cloud layers. Optical scattering causes a blue color, with the chance of wispy cloud layers from sulphides and chlorides. Surface temperatures range between 350 and 800 Kelvin.</value>
+    <value>A gas giant with primarily hydrogen and helium atmosphere but without distinctive cloud layers. Optical scattering causes a blue color, with the chance of wispy cloud layers from sulfides and chlorides. Surface temperatures range between 350 and 800 Kelvin.</value>
   </data>
   <data name="Standard_Sudarsky_Class_IV" xml:space="preserve">
     <value>A gas giant with a primarily hydrogen and helium atmosphere., with carbon monoxide and upper clouds of alkali metals above lower cloud layers of silicates and iron compounds, hence the brighter colors. Upper cloud layer temperatures are typically above 900 Kelvin.</value>
   </data>
   <data name="Standard_Sudarsky_Class_V" xml:space="preserve">
-    <value>A gas giant with a primarily hydrogen and helium atmosphere, with thick clouds of silicates and iron compounds, even metallic iron. They are the hottest type of gas giants with upper cloud temperatures aboce 1,400 Kelvin and much hotter lower layers.</value>
+    <value>A gas giant with a primarily hydrogen and helium atmosphere, with thick clouds of silicates and iron compounds, even metallic iron. They are the hottest type of gas giants with upper cloud temperatures above 1,400 Kelvin and much hotter lower layers.</value>
   </data>
   <data name="Standard_Ter_High_Metal_Content" xml:space="preserve">
     <value>A high metal content planet with a metallic core. Planets like this can have metallic ores near the surface in places, especially around areas of past volcanism. This body has an atmosphere.</value>
@@ -334,17 +334,13 @@
     <value>A rocky ice planet with a small metal core and thick rocky mantle with a crust of very deep ice. Geological activity is common because of the large quantities of volatiles in the crust, often creating a thin, sometimes seasonal atmosphere. This body has an atmosphere.</value>
   </data>
   <data name="Standard_Water_Giant" xml:space="preserve">
-    <value>A gas giant with a very thick atmosphere dominated by water vapour.</value>
+    <value>A gas giant with a very thick atmosphere dominated by water vapor.</value>
   </data>
   <data name="Standard_Water_Worlds" xml:space="preserve">
     <value>A terrestrial water planet with an active water-based chemistry and carbon-water-based life.</value>
   </data>
   <data name="SupermassiveBlack_Holes" xml:space="preserve">
-    <value>Since modern FSD technology made it possible to travel the extreme depths of space, Sagittarius A-star has been visited by hundreds of explorers. Some come here as part of a speed race or challenge, others to gain the experience (and credits) of scanning the most massive stellar body in the galaxy. Some come because their wanderlust drives them ever further from the regions around Sol, and others come as part of one of the many community expeditions that have made their way through this system.
-
-Sagittarius A-star was first reached by CMDR Zulu Romeo in late November 3300 while he was doing a scouting mission for the First Great Expedition towards the galactic core. At the time no one expected that it would be possible to reach the galactic core before massive FSD failure would be experienced, but Zulu proved the resilience of modern drive technology by continuing on and on.
-
-A later notable event here at the center of the galaxy, was the record breaking meet-up during the Distant Worlds Expedition of 3302.</value>
+    <value>Supermassive black holes tend to form when a black hole consumes a number of other bodies, including other black holes. Over time acquire vast mass, sometimes attaining several million solar masses.</value>
   </data>
   <data name="S_Type" xml:space="preserve">
     <value>S-type stars are late sequence stars that were once M class stars. They have begun the cycle towards becoming carbon stars, and are nearing the end of their stellar lives.</value>
@@ -359,7 +355,7 @@ A later notable event here at the center of the galaxy, was the record breaking 
     <value>A high metal content planet with a metallic core. Planets like this can have metallic ores near the surface in places, especially around areas of past volcanism. This body has no atmosphere and is terraformable.</value>
   </data>
   <data name="TRF_Rocky_No_Atmos" xml:space="preserve">
-    <value>A rocky planet with little or no surface metal content. Planets like this have lost most of their volatiles due to past heating, and any metallic content will form a small central core. This body has no atmosphereand is terraformable.</value>
+    <value>A rocky planet with little or no surface metal content. Planets like this have lost most of their volatiles due to past heating, and any metallic content will form a small central core. This body has no atmosphere and is terraformable.</value>
   </data>
   <data name="TRF_Ter_High_Metal_Content" xml:space="preserve">
     <value>A high metal content planet with a metallic core. Planets like this can have metallic ores near the surface in places, especially around areas of past volcanism. This body has an atmosphere and is terraformable.</value>
@@ -380,16 +376,16 @@ A later notable event here at the center of the galaxy, was the record breaking 
     <value>T-type stars are brown dwarfs with a surface temperature between 700 and 1,300 Kelvin. They are sometimes known as methane dwarfs due to the prominence of methane in their composition.</value>
   </data>
   <data name="WC_Type" xml:space="preserve">
-    <value>The W-C-type are variants of wolf-rayet stars whose spectrum is dominated by ionised carbon lines.</value>
+    <value>The W-C-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized carbon lines.</value>
   </data>
   <data name="WNC_Type" xml:space="preserve">
-    <value>The W-N-C-type are variants of wolf-rayet stars whose spectrum is dominated by ionised nitrogen, carbon-oxygen and and helium lines.</value>
+    <value>The W-N-C-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized nitrogen, carbon-oxygen and and helium lines.</value>
   </data>
   <data name="WN_Type" xml:space="preserve">
-    <value>The W-N-type are variants of wolf-rayet stars whose spectrum is dominated by ionised nitrogen and helium lines.</value>
+    <value>The W-N-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized nitrogen and helium lines.</value>
   </data>
   <data name="WO_Type" xml:space="preserve">
-    <value>The W-O-type are variants of wolf-rayet stars whose spectrum is dominated by ionised oxygen lines.</value>
+    <value>The W-O-type are variants of Wolf-Rayet stars whose spectrum is dominated by ionized oxygen lines.</value>
   </data>
   <data name="W_Type" xml:space="preserve">
     <value>Wolf-Rayet stars are massive stars nearing the end of their life cycle, past their hydrogen-burning phase. They were once over 20 solar masses but now shed material through solar wind. Their surface temperature can reach 200,000 Kelvin, so they appear a brilliant blue.</value>
