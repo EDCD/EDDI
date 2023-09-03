@@ -19,6 +19,9 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = ( variant ) => new OrganicVariant( variant );
 
+            // The prediction data included here comes from the BioStats2.json file from Cannon
+            // It does not appear to produce correct predictions and can probably be removed
+            // Predictions are current made from data for the variant instead of the species
             ENTRYIDS.Add( 2100201, new OrganicVariant( "Brancae", "RoseumBrainTree", "Seed", "RockyBody;HighMetalContentBody;RockyIceBody;IcyBody", (decimal)0.0291118588763128, (decimal)4.20193902314673, (decimal)115.063599, (decimal)499.985046, "None;CarbonDioxide;Argon;Ammonia;CarbonDioxideRich;Oxygen;Water;SulphurDioxide;ArgonRich;WaterRich", "F;W;L;G;B;M;T;Y;TTS;C;K;F;A;N;M;A;G;K;B", "Metallic,Magma;Water,Magma;Major,Rocky,Magma;Rocky,Magma;Minor,Carbon,Dioxide,Geysers;Major,Water,Magma;Carbon,Dioxide,Geysers;Minor,Silicate,Vapour,Geysers;Minor,Methane,Magma;Major,Water,Geysers;Minor,Rocky,Magma;Minor,Water,Geysers;Major,Metallic,Magma;Minor,Water,Magma;None;Major,Silicate,Vapour,Geysers;Water,Geysers;Minor,Metallic,Magma;Minor,Nitrogen,Magma" ) );
             ENTRYIDS.Add( 2100202, new OrganicVariant( "Brancae", "GypseeumBrainTree", "SeedABCD_01", "RockyBody", (decimal)0.0420803507698583, (decimal)0.410940858570409, (decimal)174.777954, (decimal)329.801117, "Ammonia;None;Oxygen;SulphurDioxide", "F;G;W;T;A;L;K;Y;N;M;B;M;K", "Metallic,Magma;None;Minor,Silicate,Vapour,Geysers;Minor,Water,Magma;Minor,Metallic,Magma;Minor,Rocky,Magma" ) );
             ENTRYIDS.Add( 2100203, new OrganicVariant( "Brancae", "OstrinumBrainTree", "SeedABCD_02", "RockyBody;HighMetalContentBody;MetalRichBody", (decimal)0.0349210767818905, (decimal)2.34168655042317, (decimal)20.15815, (decimal)1794.390625, "None;CarbonDioxide;Ammonia;CarbonDioxideRich;ArgonRich;SulphurDioxide;Helium;NeonRich", "F;G;T;A;L;K;B;TTS;M;K", "Metallic,Magma;None;Minor,Silicate,Vapour,Geysers;Silicate,Vapour,Geysers;Rocky,Magma;Minor,Metallic,Magma;Minor,Rocky,Magma" ) );
@@ -1855,16 +1858,6 @@ namespace EddiDataDefinitions
 
         }
 
-        // For future use, if we want to add some species specific description.
-        //public static ResourceManager rmOrganicVariantDesc = new ResourceManager("EddiDataDefinitions.Properties.OrganicVariantDesc", Assembly.GetExecutingAssembly());
-        //public string description
-        //{
-        //    get
-        //    {
-        //        return rmOrganicVariantDesc.GetString( edname );
-        //    }
-        //}
-
         //public long entryid;
         public string genus;
         public string species;
@@ -2013,7 +2006,6 @@ namespace EddiDataDefinitions
         /// </summary>
         public static OrganicVariant LookupByEntryId ( long? entryId )
         {
-            //OrganicVariant item = new OrganicVariant();
             if ( entryId != null )
             {
                 if ( ENTRYIDS.ContainsKey( (long)entryId ) )

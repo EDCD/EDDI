@@ -118,354 +118,354 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AlbidumSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="AleoidaArcus" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, a temperature between 175 and 180 kelvin, 9 different types of parent stars, a Carbon Dioxide atmosphere and No volcanism.</value>
   </data>
   <data name="AleoidaCoronamus" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, a temperature between 180 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide atmosphere and No volcanism.</value>
   </data>
   <data name="AleoidaGravis" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, a temperature between 190 and 195 kelvin, 9 different types of parent stars, a Carbon Dioxide atmosphere and No volcanism.</value>
   </data>
   <data name="AleoidaLaminiae" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, 9 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="AleoidaSpica" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, 9 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="AmphoraPlant" xml:space="preserve">
-    <value>This species requires a Metal Rich planet with an A type star, and None atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system..</value>
+    <value>Metal-Rich bodies with a temperature less than 1000 kelvinan A-type parent star and No atmosphere.</value>
   </data>
   <data name="AureumBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Metal-Rich or High Metal Content bodies with a temperature between 300 and 500 kelvin, a No or Sulphur Dioxide atmosphere and Any volcanism.</value>
   </data>
   <data name="BacteriumAcies" xml:space="preserve">
-    <value>This species requires a planet with a Neon,NeonRich atmosphere.</value>
+    <value>Icy or Rocky Ice bodies with a maximum gravity of 0.75 and a Neon or Neon-Rich atmosphere.</value>
   </data>
   <data name="BacteriumAlcyoneum" xml:space="preserve">
-    <value>This species requires a planet with a Ammonia atmosphere.</value>
+    <value>Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.38 and a Ammonia atmosphere.</value>
   </data>
   <data name="BacteriumAurasus" xml:space="preserve">
-    <value>This species requires a planet with a CarbonDioxide atmosphere.</value>
+    <value>bodies with a maximum gravity of 1 and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="BacteriumBullaris" xml:space="preserve">
-    <value>This species requires a planet with a Methane,MethaneRich atmosphere.</value>
+    <value>Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.61 and a Methane or Methane-Rich atmosphere.</value>
   </data>
   <data name="BacteriumCerbrus" xml:space="preserve">
-    <value>This species requires a planet with a Water,SulphurDioxide atmosphere.</value>
+    <value>bodies with a maximum gravity of 1, a Water and Water-Rich or Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="BacteriumInformem" xml:space="preserve">
-    <value>This species requires a planet with a Nitrogen atmosphere.</value>
+    <value>Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.6 and a Nitrogen atmosphere.</value>
   </data>
   <data name="BacteriumNebulus" xml:space="preserve">
-    <value>This species requires a planet with a Helium atmosphere.</value>
+    <value>Icy bodies with a maximum gravity of 0.55 and a Helium atmosphere.</value>
   </data>
   <data name="BacteriumOmentum" xml:space="preserve">
-    <value>This species requires a planet with a Neon,NeonRich atmosphere and Nitrogen,Ammonia volcanism.</value>
+    <value>Icy bodies with a maximum gravity of 0.61, a Neon or Neon-Rich atmosphere and Nitrogen or Ammonia volcanism.</value>
   </data>
   <data name="BacteriumScopulum" xml:space="preserve">
-    <value>This species requires a planet with a Neon,NeonRich atmosphere and Carbon,Methane volcanism.</value>
+    <value>Icy or Rocky Ice bodies with a maximum gravity of 0.62, a Neon or Neon-Rich atmosphere and Carbon or Methane volcanism.</value>
   </data>
   <data name="BacteriumTela" xml:space="preserve">
-    <value>This species requires a planet with Helium,Iron,Silicate,Ammonia volcanism.</value>
+    <value>Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.62, a Any atmosphere, Helium and Iron or Silicate volcanism.</value>
   </data>
   <data name="BacteriumVerrata" xml:space="preserve">
-    <value>This species requires a planet with a Neon,NeonRich atmosphere and Water volcanism.</value>
+    <value>Icy, Rocky or Rocky Ice bodies with a maximum gravity of 0.61, a Neon or Neon-Rich atmosphere and Water volcanism.</value>
   </data>
   <data name="BacteriumVesicula" xml:space="preserve">
-    <value>This species requires a planet with a Argon atmosphere.</value>
+    <value>Icy, Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 1 and a Argon or Argon-Rich atmosphere.</value>
   </data>
   <data name="BacteriumVolu" xml:space="preserve">
-    <value>This species requires a planet with a Oxygen atmosphere.</value>
+    <value>Icy, Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.61 and a Oxygen atmosphere.</value>
   </data>
   <data name="BarkMounds" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere, and In or &lt;150 light years from a nebula.</value>
+    <value>Rocky, High Metal Content, Rocky Ice or Icy bodies with a temperature between 80 and 450 kelvin, a No, Carbon Dioxide, Carbon Dioxide-Rich, Argon-Rich and Sulphur Dioxide or Thick Argon-Rich atmosphere.</value>
   </data>
   <data name="BlatteumBioluminescentAnemone" xml:space="preserve">
-    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Metal-Rich or High Metal Content bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="BlatteumSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="CactoidaCortexum" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="CactoidaLapis" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere. Unofficially, additional sources say  this is also known as Tetonus aymericus.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 225 kelvin, 7 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="CactoidaPeperatis" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 190 kelvin, 7 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="CactoidaPullulanta" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and a temperature range of 180 to 195.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="CactoidaVermis" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 450 kelvin, 7 different types of parent stars and a Water atmosphere.</value>
   </data>
   <data name="CaeruleumSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="ClypeusLacrimam" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature less than 190 kelvin6 different types of parent stars and a Water or Carbon Dioxide atmosphere.</value>
   </data>
   <data name="ClypeusMargaritus" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature less than 190 kelvin6 different types of parent stars, a Water or Carbon Dioxide atmosphere and No volcanism.</value>
   </data>
   <data name="ClypeusSpeculumi" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature less than 190 kelvin6 different types of parent stars and a Water or Carbon Dioxide atmosphere.</value>
   </data>
   <data name="ConchaAureolas" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28 and a Ammonia atmosphere.</value>
   </data>
   <data name="ConchaBiconcavis" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Nitrogen atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, a Nitrogen atmosphere and No volcanism.</value>
   </data>
   <data name="ConchaLabiata" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and CarbonDioxide atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, a temperature greater than 190 kelvin and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="ConchaRenibus" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Water,CarbonDioxide atmosphere.</value>
+    <value>bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin and a Water or Water-Rich atmosphere.</value>
   </data>
   <data name="CroceumAnemone" xml:space="preserve">
-    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Rocky bodies with an B or A-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="CrystallineShards" xml:space="preserve">
-    <value>This species requires a planet with an A,Neutron type star, a temperature range of 0 to 273 kelvin, and None atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system and must be &gt;12000 light seconds from the nearest star.</value>
+    <value>bodies with a temperature greater than 273 kelvin, 5 different types of parent stars, a No, Carbon Dioxide, Argon, Carbon Dioxide-Rich, Methane, Argon-Rich, Neon and Helium or Neon-Rich atmosphere.</value>
   </data>
   <data name="ElectricaePluma" xml:space="preserve">
-    <value>This species requires a Icy planet with a maximum gravity of 0.27, an A,Neutron type star, and Helium,Neon,Argon atmosphere.</value>
+    <value>Icy bodies with a maximum gravity of 0.28, an A or N-type parent star, a Helium and Neon or Argon atmosphere.</value>
   </data>
   <data name="ElectricaeRadialem" xml:space="preserve">
-    <value>This species requires a Icy planet with a maximum gravity of 0.27, an A,Neutron type star, and Helium,Neon,Argon atmosphere.</value>
+    <value>Icy bodies with a maximum gravity of 0.28, a temperature greater than 150 kelvin, a Helium and Neon or Argon atmosphere.</value>
   </data>
   <data name="FonticuluaCampestris" xml:space="preserve">
-    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Argon atmosphere.</value>
+    <value>Icy or Rocky bodies with a maximum gravity of 0.28, a temperature greater than 150 kelvin, 12 different types of parent stars and a Argon atmosphere.</value>
   </data>
   <data name="FonticuluaDigitos" xml:space="preserve">
-    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Methane,MethaneRich atmosphere.</value>
+    <value>Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Methane or Methane-Rich atmosphere.</value>
   </data>
   <data name="FonticuluaFluctus" xml:space="preserve">
-    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Oxygen atmosphere.</value>
+    <value>Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Oxygen atmosphere.</value>
   </data>
   <data name="FonticuluaLapida" xml:space="preserve">
-    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Nitrogen atmosphere.</value>
+    <value>Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Nitrogen atmosphere.</value>
   </data>
   <data name="FonticuluaSegmentatus" xml:space="preserve">
-    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Neon,NeonRich atmosphere.</value>
+    <value>Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars, a Neon or Neon-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="FonticuluaUpupam" xml:space="preserve">
-    <value>This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and ArgonRich atmosphere.</value>
+    <value>Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Argon-Rich atmosphere.</value>
   </data>
   <data name="FrutexaAcus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="FrutexaCollum" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="FrutexaFera" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="FrutexaFlabellum" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="FrutexaFlammasis" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="FrutexaMetallicum" xml:space="preserve">
-    <value>This species requires a High Metal Content planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide,Ammonia atmosphere.</value>
+    <value>High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide, Carbon Dioxide-Rich or Ammonia atmosphere and No volcanism.</value>
   </data>
   <data name="FrutexaSponsae" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Water or Water-Rich atmosphere.</value>
   </data>
   <data name="FumerolaAquatis" xml:space="preserve">
-    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Water volcanism.</value>
+    <value>Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 450 kelvin, a Any atmosphere and Water volcanism.</value>
   </data>
   <data name="FumerolaCarbosis" xml:space="preserve">
-    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Carbon,Methane volcanism.</value>
+    <value>Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 275 kelvin, a Any atmosphere and Carbon or Methane volcanism.</value>
   </data>
   <data name="FumerolaExtremus" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, Any atmosphere, and Silicate,Iron,Rocky volcanism.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 205 kelvin, a Any atmosphere, Silicate and Iron or Rocky volcanism.</value>
   </data>
   <data name="FumerolaNitris" xml:space="preserve">
-    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Nitrogen,Ammonia volcanism.</value>
+    <value>Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 250 kelvin, a Any atmosphere and Nitrogen or Ammonia volcanism.</value>
   </data>
   <data name="FungoidaBullarum" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Argon,ArgonRich atmosphere.</value>
+    <value>Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a Argon or Argon-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="FungoidaGelata" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Water,CarbonDioxide atmosphere. Additionally, Carbon Dioxide atmospheres requires a temperature range of 180 to 195 kelvin.</value>
+    <value>Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, a Water, Water-Rich and Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="FungoidaSetisis" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Ammonia,Methane atmosphere.</value>
+    <value>Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a Ammonia and Methane or Methane-Rich atmosphere.</value>
   </data>
   <data name="FungoidaStabitis" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and Water,CarbonDioxide atmosphere.</value>
+    <value>Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, a Water, Water-Rich and Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="GypseeumBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Rocky bodies with a temperature between 200 and 300 kelvin, a Ammonia, No, Oxygen or Sulphur Dioxide atmosphere and Any volcanism.</value>
   </data>
   <data name="LindigoticumBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 300 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="LindigoticumSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="LividumBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Rocky bodies with a temperature between 300 and 500 kelvin, a No, Water or Sulphur Dioxide atmosphere and Any volcanism.</value>
   </data>
   <data name="LuteolumAnemone" xml:space="preserve">
-    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Rocky bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="OsseusCornibus" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="OsseusDiscus" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 455 kelvin and a Water or Water-Rich atmosphere.</value>
   </data>
   <data name="OsseusFractus" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 190 kelvin, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="OsseusPellebantus" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 190 and 195 kelvin, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="OsseusPumice" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content,Rocky Ice planet with a maximum gravity of 0.27, and Argon,Methane,Nitrogen atmosphere.</value>
+    <value>Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 135 kelvin, a Argon, Argon-Rich, Methane and Methane-Rich or Nitrogen atmosphere.</value>
   </data>
   <data name="OsseusSpiralis" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28 and a temperature less than 160 kelvina Ammonia atmosphere.</value>
   </data>
   <data name="OstrinumBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Metal-Rich or High Metal Content bodies with a No, Carbon Dioxide, Ammonia, Carbon Dioxide-Rich, Argon-Rich, Sulphur Dioxide, Helium or Neon-Rich atmosphere and Any volcanism.</value>
   </data>
   <data name="PrasinumBioluminescentAnemone" xml:space="preserve">
-    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Rocky, Metal-Rich or High Metal Content bodies with an O-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="PrasinumSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky, High Metal Content or Rocky Ice bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="PuniceumAnemone" xml:space="preserve">
-    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Rocky Ice or Ice bodies with an O-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="PuniceumBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Metal-Rich or High Metal Content bodies with a No, Carbon Dioxide, Oxygen, Sulphur Dioxide, Helium or Neon-Rich atmosphere and Any volcanism.</value>
   </data>
   <data name="ReceptaConditivus" xml:space="preserve">
-    <value>This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+    <value>Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 130 and 300 kelvin and a Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="ReceptaDeltahedronix" xml:space="preserve">
-    <value>This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 130 and 300 kelvin and a Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="ReceptaUmbrux" xml:space="preserve">
-    <value>This species requires a planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+    <value>Icy, Rocky Ice, Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 130 and 300 kelvin and a Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="RoseumAnemone" xml:space="preserve">
-    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Rocky bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="RoseumBioluminescentAnemone" xml:space="preserve">
-    <value>This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Metal-Rich or High Metal Content bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="RoseumBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Rocky, Metal-Rich, High Metal Content or Rocky Ice bodies with a temperature between 200 and 500 kelvin, a No, Carbon Dioxide, Argon, Ammonia, Carbon Dioxide-Rich, Oxygen, Water, Sulphur Dioxide, Argon-Rich or Water-Rich atmosphere and Any volcanism.</value>
   </data>
   <data name="RoseumSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="RubeumBioluminescentAnemone" xml:space="preserve">
-    <value>This species requires a planet with an  type star, and SulphurDioxide,None atmosphere.</value>
+    <value>Metal-Rich or High Metal Content bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere.</value>
   </data>
   <data name="StratumAraneamus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a temperature greater than 165 kelvin, and SulphurDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.55 and a temperature less than 165 kelvina Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="StratumCucumisis" xml:space="preserve">
-    <value>This species requires a Rocky planet with a temperature greater than 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.6, a temperature less than 190 kelvina Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="StratumExcutitus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.48, a temperature between 165 and 190 kelvin, a Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="StratumFrigus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a temperature greater than 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.55, a temperature less than 190 kelvina Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="StratumLaminamus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.34 and a temperature less than 165 kelvina Ammonia atmosphere.</value>
   </data>
   <data name="StratumLimaxus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.48, a temperature between 165 and 190 kelvin, a Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="StratumPaleas" xml:space="preserve">
-    <value>This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia,Water,CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.58, a temperature less than 165 kelvina Ammonia, Water, Water-Rich and Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="StratumTectonicas" xml:space="preserve">
-    <value>This species requires a High Metal Content planet with a temperature greater than 165 kelvin, and AnyThin atmosphere.</value>
+    <value>High Metal Content bodies with a maximum gravity of 0.9, a temperature less than 165 kelvina Oxygen, Ammonia, Water, Water-Rich, Carbon Dioxide and Carbon Dioxide-Rich or Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="TubusCavas" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TubusCompagibus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TubusConifer" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TubusRosarium" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.15, a temperature greater than 160 kelvin, and Ammonia atmosphere.</value>
+    <value>Rocky bodies with a maximum gravity of 0.19, a temperature less than 160 kelvin9 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="TubusSororibus" xml:space="preserve">
-    <value>This species requires a High Metal Content planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide,Ammonia atmosphere.</value>
+    <value>High Metal Content bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Ammonia, Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockAlbata" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 175 and 180 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockCapillum" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Argon,Methane atmosphere.</value>
+    <value>Rocky or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 80 and 165 kelvin, 7 different types of parent stars, a Argon, Argon-Rich and Methane or Methane-Rich atmosphere.</value>
   </data>
   <data name="TussockCaputus" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 190 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockCatena" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 150 and 190 kelvin, 7 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="TussockCultro" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="TussockDivisa" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 150 and 180 kelvin, 7 different types of parent stars and a Ammonia atmosphere.</value>
   </data>
   <data name="TussockIgnis" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 160 to 170 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 170 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockPennata" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 145 to 155 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 145 and 155 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockPennatis" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockPropagito" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockSerrati" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 170 to 175 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 170 and 175 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockStigmasis" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 130 and 210 kelvin, 7 different types of parent stars and a Sulphur Dioxide atmosphere.</value>
   </data>
   <data name="TussockTriticum" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 190 and 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism.</value>
   </data>
   <data name="TussockVentusa" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 155 to 160 kelvin, and CarbonDioxide atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 155 and 160 kelvin, 7 different types of parent stars and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere.</value>
   </data>
   <data name="TussockVirgam" xml:space="preserve">
-    <value>This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere.</value>
+    <value>Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 390 and 450 kelvin, 7 different types of parent stars and a Water or Water-Rich atmosphere.</value>
   </data>
   <data name="ViolaceumSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
   <data name="VirideBrainTree" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins.</value>
+    <value>Rocky Ice bodies with a temperature between 100 and 270 kelvin, a Ammonia, No or Sulphur Dioxide atmosphere and Any volcanism.</value>
   </data>
   <data name="VirideSinuousTubers" xml:space="preserve">
-    <value>This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core.</value>
+    <value>Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism.</value>
   </data>
 </root>

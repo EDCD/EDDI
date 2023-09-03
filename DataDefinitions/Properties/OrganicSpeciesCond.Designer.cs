@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string AlbidumSinuousTubers {
             get {
@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, a temperature between 175 and 180 kelvin, 9 different types of parent stars, a Carbon Dioxide atmosphere and No volcanism..
         /// </summary>
         public static string AleoidaArcus {
             get {
@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, a temperature between 180 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide atmosphere and No volcanism..
         /// </summary>
         public static string AleoidaCoronamus {
             get {
@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, a temperature between 190 and 195 kelvin, 9 different types of parent stars, a Carbon Dioxide atmosphere and No volcanism..
         /// </summary>
         public static string AleoidaGravis {
             get {
@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, 9 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string AleoidaLaminiae {
             get {
@@ -106,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, 9 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string AleoidaSpica {
             get {
@@ -115,7 +115,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Metal Rich planet with an A type star, and None atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system...
+        ///   Looks up a localized string similar to Metal-Rich bodies with a temperature less than 1000 kelvinan A-type parent star and No atmosphere..
         /// </summary>
         public static string AmphoraPlant {
             get {
@@ -124,7 +124,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Metal-Rich or High Metal Content bodies with a temperature between 300 and 500 kelvin, a No or Sulphur Dioxide atmosphere and Any volcanism..
         /// </summary>
         public static string AureumBrainTree {
             get {
@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Neon,NeonRich atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky Ice bodies with a maximum gravity of 0.75 and a Neon or Neon-Rich atmosphere..
         /// </summary>
         public static string BacteriumAcies {
             get {
@@ -142,7 +142,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.38 and a Ammonia atmosphere..
         /// </summary>
         public static string BacteriumAlcyoneum {
             get {
@@ -151,7 +151,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 1 and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string BacteriumAurasus {
             get {
@@ -160,7 +160,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Methane,MethaneRich atmosphere..
+        ///   Looks up a localized string similar to Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.61 and a Methane or Methane-Rich atmosphere..
         /// </summary>
         public static string BacteriumBullaris {
             get {
@@ -169,7 +169,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Water,SulphurDioxide atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 1, a Water and Water-Rich or Sulphur Dioxide atmosphere..
         /// </summary>
         public static string BacteriumCerbrus {
             get {
@@ -178,7 +178,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Nitrogen atmosphere..
+        ///   Looks up a localized string similar to Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.6 and a Nitrogen atmosphere..
         /// </summary>
         public static string BacteriumInformem {
             get {
@@ -187,7 +187,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Helium atmosphere..
+        ///   Looks up a localized string similar to Icy bodies with a maximum gravity of 0.55 and a Helium atmosphere..
         /// </summary>
         public static string BacteriumNebulus {
             get {
@@ -196,7 +196,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Neon,NeonRich atmosphere and Nitrogen,Ammonia volcanism..
+        ///   Looks up a localized string similar to Icy bodies with a maximum gravity of 0.61, a Neon or Neon-Rich atmosphere and Nitrogen or Ammonia volcanism..
         /// </summary>
         public static string BacteriumOmentum {
             get {
@@ -205,7 +205,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Neon,NeonRich atmosphere and Carbon,Methane volcanism..
+        ///   Looks up a localized string similar to Icy or Rocky Ice bodies with a maximum gravity of 0.62, a Neon or Neon-Rich atmosphere and Carbon or Methane volcanism..
         /// </summary>
         public static string BacteriumScopulum {
             get {
@@ -214,7 +214,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with Helium,Iron,Silicate,Ammonia volcanism..
+        ///   Looks up a localized string similar to Rocky, High Metal Content, Rocky Ice or Icy bodies with a maximum gravity of 0.62, a Any atmosphere, Helium and Iron or Silicate volcanism..
         /// </summary>
         public static string BacteriumTela {
             get {
@@ -223,7 +223,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Neon,NeonRich atmosphere and Water volcanism..
+        ///   Looks up a localized string similar to Icy, Rocky or Rocky Ice bodies with a maximum gravity of 0.61, a Neon or Neon-Rich atmosphere and Water volcanism..
         /// </summary>
         public static string BacteriumVerrata {
             get {
@@ -232,7 +232,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Argon atmosphere..
+        ///   Looks up a localized string similar to Icy, Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 1 and a Argon or Argon-Rich atmosphere..
         /// </summary>
         public static string BacteriumVesicula {
             get {
@@ -241,7 +241,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a Oxygen atmosphere..
+        ///   Looks up a localized string similar to Icy, Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.61 and a Oxygen atmosphere..
         /// </summary>
         public static string BacteriumVolu {
             get {
@@ -250,7 +250,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere, and In or &lt;150 light years from a nebula..
+        ///   Looks up a localized string similar to Rocky, High Metal Content, Rocky Ice or Icy bodies with a temperature between 80 and 450 kelvin, a No, Carbon Dioxide, Carbon Dioxide-Rich, Argon-Rich and Sulphur Dioxide or Thick Argon-Rich atmosphere..
         /// </summary>
         public static string BarkMounds {
             get {
@@ -259,7 +259,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Metal-Rich or High Metal Content bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string BlatteumBioluminescentAnemone {
             get {
@@ -268,7 +268,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string BlatteumSinuousTubers {
             get {
@@ -277,7 +277,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string CactoidaCortexum {
             get {
@@ -286,7 +286,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere. Unofficially, additional sources say  this is also known as Tetonus aymericus..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 225 kelvin, 7 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string CactoidaLapis {
             get {
@@ -295,7 +295,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 190 kelvin, 7 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string CactoidaPeperatis {
             get {
@@ -304,7 +304,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and a temperature range of 180 to 195..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string CactoidaPullulanta {
             get {
@@ -313,7 +313,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Water atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 450 kelvin, 7 different types of parent stars and a Water atmosphere..
         /// </summary>
         public static string CactoidaVermis {
             get {
@@ -322,7 +322,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string CaeruleumSinuousTubers {
             get {
@@ -331,7 +331,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature less than 190 kelvin6 different types of parent stars and a Water or Carbon Dioxide atmosphere..
         /// </summary>
         public static string ClypeusLacrimam {
             get {
@@ -340,7 +340,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature less than 190 kelvin6 different types of parent stars, a Water or Carbon Dioxide atmosphere and No volcanism..
         /// </summary>
         public static string ClypeusMargaritus {
             get {
@@ -349,7 +349,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature greater than 190 kelvin, and Water,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature less than 190 kelvin6 different types of parent stars and a Water or Carbon Dioxide atmosphere..
         /// </summary>
         public static string ClypeusSpeculumi {
             get {
@@ -358,7 +358,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28 and a Ammonia atmosphere..
         /// </summary>
         public static string ConchaAureolas {
             get {
@@ -367,7 +367,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Nitrogen atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, a Nitrogen atmosphere and No volcanism..
         /// </summary>
         public static string ConchaBiconcavis {
             get {
@@ -376,7 +376,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, a temperature greater than 190 kelvin and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string ConchaLabiata {
             get {
@@ -385,7 +385,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and Water,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin and a Water or Water-Rich atmosphere..
         /// </summary>
         public static string ConchaRenibus {
             get {
@@ -394,7 +394,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with an B or A-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string CroceumAnemone {
             get {
@@ -403,7 +403,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an A,Neutron type star, a temperature range of 0 to 273 kelvin, and None atmosphere. Additionally An Earth-Like, Ammonia, water giant or Gas Giant with water or ammonia based life must be present in system and must be &gt;12000 light seconds from the nearest star..
+        ///   Looks up a localized string similar to bodies with a temperature greater than 273 kelvin, 5 different types of parent stars, a No, Carbon Dioxide, Argon, Carbon Dioxide-Rich, Methane, Argon-Rich, Neon and Helium or Neon-Rich atmosphere..
         /// </summary>
         public static string CrystallineShards {
             get {
@@ -412,7 +412,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy planet with a maximum gravity of 0.27, an A,Neutron type star, and Helium,Neon,Argon atmosphere..
+        ///   Looks up a localized string similar to Icy bodies with a maximum gravity of 0.28, an A or N-type parent star, a Helium and Neon or Argon atmosphere..
         /// </summary>
         public static string ElectricaePluma {
             get {
@@ -421,7 +421,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy planet with a maximum gravity of 0.27, an A,Neutron type star, and Helium,Neon,Argon atmosphere..
+        ///   Looks up a localized string similar to Icy bodies with a maximum gravity of 0.28, a temperature greater than 150 kelvin, a Helium and Neon or Argon atmosphere..
         /// </summary>
         public static string ElectricaeRadialem {
             get {
@@ -430,7 +430,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Argon atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky bodies with a maximum gravity of 0.28, a temperature greater than 150 kelvin, 12 different types of parent stars and a Argon atmosphere..
         /// </summary>
         public static string FonticuluaCampestris {
             get {
@@ -439,7 +439,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Methane,MethaneRich atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Methane or Methane-Rich atmosphere..
         /// </summary>
         public static string FonticuluaDigitos {
             get {
@@ -448,7 +448,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Oxygen atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Oxygen atmosphere..
         /// </summary>
         public static string FonticuluaFluctus {
             get {
@@ -457,7 +457,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Nitrogen atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Nitrogen atmosphere..
         /// </summary>
         public static string FonticuluaLapida {
             get {
@@ -466,7 +466,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and Neon,NeonRich atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars, a Neon or Neon-Rich atmosphere and No volcanism..
         /// </summary>
         public static string FonticuluaSegmentatus {
             get {
@@ -475,7 +475,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky planet with a maximum gravity of 0.27, and ArgonRich atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky bodies with a maximum gravity of 0.28, 12 different types of parent stars and a Argon-Rich atmosphere..
         /// </summary>
         public static string FonticuluaUpupam {
             get {
@@ -484,7 +484,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string FrutexaAcus {
             get {
@@ -493,7 +493,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Sulphur Dioxide atmosphere..
         /// </summary>
         public static string FrutexaCollum {
             get {
@@ -502,7 +502,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string FrutexaFera {
             get {
@@ -511,7 +511,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string FrutexaFlabellum {
             get {
@@ -520,7 +520,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string FrutexaFlammasis {
             get {
@@ -529,7 +529,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a High Metal Content planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide,Ammonia atmosphere..
+        ///   Looks up a localized string similar to High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide, Carbon Dioxide-Rich or Ammonia atmosphere and No volcanism..
         /// </summary>
         public static string FrutexaMetallicum {
             get {
@@ -538,7 +538,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Water or Water-Rich atmosphere..
         /// </summary>
         public static string FrutexaSponsae {
             get {
@@ -547,7 +547,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Water volcanism..
+        ///   Looks up a localized string similar to Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 450 kelvin, a Any atmosphere and Water volcanism..
         /// </summary>
         public static string FumerolaAquatis {
             get {
@@ -556,7 +556,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Carbon,Methane volcanism..
+        ///   Looks up a localized string similar to Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 275 kelvin, a Any atmosphere and Carbon or Methane volcanism..
         /// </summary>
         public static string FumerolaCarbosis {
             get {
@@ -565,7 +565,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, Any atmosphere, and Silicate,Iron,Rocky volcanism..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 205 kelvin, a Any atmosphere, Silicate and Iron or Rocky volcanism..
         /// </summary>
         public static string FumerolaExtremus {
             get {
@@ -574,7 +574,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, Any atmosphere, and Nitrogen,Ammonia volcanism..
+        ///   Looks up a localized string similar to Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 250 kelvin, a Any atmosphere and Nitrogen or Ammonia volcanism..
         /// </summary>
         public static string FumerolaNitris {
             get {
@@ -583,7 +583,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Argon,ArgonRich atmosphere..
+        ///   Looks up a localized string similar to Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a Argon or Argon-Rich atmosphere and No volcanism..
         /// </summary>
         public static string FungoidaBullarum {
             get {
@@ -592,7 +592,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Water,CarbonDioxide atmosphere. Additionally, Carbon Dioxide atmospheres requires a temperature range of 180 to 195 kelvin..
+        ///   Looks up a localized string similar to Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, a Water, Water-Rich and Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string FungoidaGelata {
             get {
@@ -601,7 +601,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Ammonia,Methane atmosphere..
+        ///   Looks up a localized string similar to Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a Ammonia and Methane or Methane-Rich atmosphere..
         /// </summary>
         public static string FungoidaSetisis {
             get {
@@ -610,7 +610,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and Water,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, a Water, Water-Rich and Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string FungoidaStabitis {
             get {
@@ -619,7 +619,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Rocky bodies with a temperature between 200 and 300 kelvin, a Ammonia, No, Oxygen or Sulphur Dioxide atmosphere and Any volcanism..
         /// </summary>
         public static string GypseeumBrainTree {
             get {
@@ -628,7 +628,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 300 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string LindigoticumBrainTree {
             get {
@@ -637,7 +637,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string LindigoticumSinuousTubers {
             get {
@@ -646,7 +646,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Rocky bodies with a temperature between 300 and 500 kelvin, a No, Water or Sulphur Dioxide atmosphere and Any volcanism..
         /// </summary>
         public static string LividumBrainTree {
             get {
@@ -655,7 +655,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string LuteolumAnemone {
             get {
@@ -664,7 +664,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 195 kelvin, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string OsseusCornibus {
             get {
@@ -673,7 +673,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and Water atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 455 kelvin and a Water or Water-Rich atmosphere..
         /// </summary>
         public static string OsseusDiscus {
             get {
@@ -682,7 +682,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 190 kelvin, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string OsseusFractus {
             get {
@@ -691,7 +691,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, a temperature range of 180 to 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 190 and 195 kelvin, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string OsseusPellebantus {
             get {
@@ -700,7 +700,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content,Rocky Ice planet with a maximum gravity of 0.27, and Argon,Methane,Nitrogen atmosphere..
+        ///   Looks up a localized string similar to Rocky, High Metal Content or Rocky Ice bodies with a maximum gravity of 0.28, a temperature greater than 135 kelvin, a Argon, Argon-Rich, Methane and Methane-Rich or Nitrogen atmosphere..
         /// </summary>
         public static string OsseusPumice {
             get {
@@ -709,7 +709,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28 and a temperature less than 160 kelvina Ammonia atmosphere..
         /// </summary>
         public static string OsseusSpiralis {
             get {
@@ -718,7 +718,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Metal-Rich or High Metal Content bodies with a No, Carbon Dioxide, Ammonia, Carbon Dioxide-Rich, Argon-Rich, Sulphur Dioxide, Helium or Neon-Rich atmosphere and Any volcanism..
         /// </summary>
         public static string OstrinumBrainTree {
             get {
@@ -727,7 +727,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Rocky, Metal-Rich or High Metal Content bodies with an O-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string PrasinumBioluminescentAnemone {
             get {
@@ -736,7 +736,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky, High Metal Content or Rocky Ice bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string PrasinumSinuousTubers {
             get {
@@ -745,7 +745,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Rocky Ice or Ice bodies with an O-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string PuniceumAnemone {
             get {
@@ -754,7 +754,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Metal-Rich or High Metal Content bodies with a No, Carbon Dioxide, Oxygen, Sulphur Dioxide, Helium or Neon-Rich atmosphere and Any volcanism..
         /// </summary>
         public static string PuniceumBrainTree {
             get {
@@ -763,7 +763,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Icy,Rocky Ice planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere..
+        ///   Looks up a localized string similar to Icy or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 130 and 300 kelvin and a Sulphur Dioxide atmosphere..
         /// </summary>
         public static string ReceptaConditivus {
             get {
@@ -772,7 +772,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky,High Metal Content planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 130 and 300 kelvin and a Sulphur Dioxide atmosphere..
         /// </summary>
         public static string ReceptaDeltahedronix {
             get {
@@ -781,7 +781,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere..
+        ///   Looks up a localized string similar to Icy, Rocky Ice, Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 130 and 300 kelvin and a Sulphur Dioxide atmosphere..
         /// </summary>
         public static string ReceptaUmbrux {
             get {
@@ -790,7 +790,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string RoseumAnemone {
             get {
@@ -799,7 +799,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an O,B,A type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Metal-Rich or High Metal Content bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string RoseumBioluminescentAnemone {
             get {
@@ -808,7 +808,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Rocky, Metal-Rich, High Metal Content or Rocky Ice bodies with a temperature between 200 and 500 kelvin, a No, Carbon Dioxide, Argon, Ammonia, Carbon Dioxide-Rich, Oxygen, Water, Sulphur Dioxide, Argon-Rich or Water-Rich atmosphere and Any volcanism..
         /// </summary>
         public static string RoseumBrainTree {
             get {
@@ -817,7 +817,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string RoseumSinuousTubers {
             get {
@@ -826,7 +826,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with an  type star, and SulphurDioxide,None atmosphere..
+        ///   Looks up a localized string similar to Metal-Rich or High Metal Content bodies with an B-type parent star and a Sulphur Dioxide or No atmosphere..
         /// </summary>
         public static string RubeumBioluminescentAnemone {
             get {
@@ -835,7 +835,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a temperature greater than 165 kelvin, and SulphurDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.55 and a temperature less than 165 kelvina Sulphur Dioxide atmosphere..
         /// </summary>
         public static string StratumAraneamus {
             get {
@@ -844,7 +844,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a temperature greater than 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.6, a temperature less than 190 kelvina Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string StratumCucumisis {
             get {
@@ -853,7 +853,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.48, a temperature between 165 and 190 kelvin, a Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string StratumExcutitus {
             get {
@@ -862,7 +862,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a temperature greater than 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.55, a temperature less than 190 kelvina Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string StratumFrigus {
             get {
@@ -871,7 +871,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.34 and a temperature less than 165 kelvina Ammonia atmosphere..
         /// </summary>
         public static string StratumLaminamus {
             get {
@@ -880,7 +880,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a temperature range of 165 to 190 kelvin, and SulphurDioxide,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.48, a temperature between 165 and 190 kelvin, a Sulphur Dioxide and Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string StratumLimaxus {
             get {
@@ -889,7 +889,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a temperature greater than 165 kelvin, and Ammonia,Water,CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.58, a temperature less than 165 kelvina Ammonia, Water, Water-Rich and Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string StratumPaleas {
             get {
@@ -898,7 +898,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a High Metal Content planet with a temperature greater than 165 kelvin, and AnyThin atmosphere..
+        ///   Looks up a localized string similar to High Metal Content bodies with a maximum gravity of 0.9, a temperature less than 165 kelvina Oxygen, Ammonia, Water, Water-Rich, Carbon Dioxide and Carbon Dioxide-Rich or Sulphur Dioxide atmosphere..
         /// </summary>
         public static string StratumTectonicas {
             get {
@@ -907,7 +907,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TubusCavas {
             get {
@@ -916,7 +916,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TubusCompagibus {
             get {
@@ -925,7 +925,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TubusConifer {
             get {
@@ -934,7 +934,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.15, a temperature greater than 160 kelvin, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky bodies with a maximum gravity of 0.19, a temperature less than 160 kelvin9 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string TubusRosarium {
             get {
@@ -943,7 +943,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a High Metal Content planet with a maximum gravity of 0.15, a temperature range of 160 to 190 kelvin, and CarbonDioxide,Ammonia atmosphere..
+        ///   Looks up a localized string similar to High Metal Content bodies with a maximum gravity of 0.19, a temperature between 160 and 190 kelvin, 9 different types of parent stars, a Ammonia, Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TubusSororibus {
             get {
@@ -952,7 +952,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 175 to 180 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 175 and 180 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockAlbata {
             get {
@@ -961,7 +961,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Argon,Methane atmosphere..
+        ///   Looks up a localized string similar to Rocky or Rocky Ice bodies with a maximum gravity of 0.28, a temperature between 80 and 165 kelvin, 7 different types of parent stars, a Argon, Argon-Rich and Methane or Methane-Rich atmosphere..
         /// </summary>
         public static string TussockCapillum {
             get {
@@ -970,7 +970,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 180 to 190 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 180 and 190 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockCaputus {
             get {
@@ -979,7 +979,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 150 and 190 kelvin, 7 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string TussockCatena {
             get {
@@ -988,7 +988,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, 7 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string TussockCultro {
             get {
@@ -997,7 +997,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Ammonia atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 150 and 180 kelvin, 7 different types of parent stars and a Ammonia atmosphere..
         /// </summary>
         public static string TussockDivisa {
             get {
@@ -1006,7 +1006,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 160 to 170 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 160 and 170 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockIgnis {
             get {
@@ -1015,7 +1015,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 145 to 155 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 145 and 155 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockPennata {
             get {
@@ -1024,7 +1024,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockPennatis {
             get {
@@ -1033,7 +1033,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature less than 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature greater than 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockPropagito {
             get {
@@ -1042,7 +1042,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 170 to 175 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 170 and 175 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockSerrati {
             get {
@@ -1051,7 +1051,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and SulphurDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 130 and 210 kelvin, 7 different types of parent stars and a Sulphur Dioxide atmosphere..
         /// </summary>
         public static string TussockStigmasis {
             get {
@@ -1060,7 +1060,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 190 to 195 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 190 and 195 kelvin, 7 different types of parent stars, a Carbon Dioxide or Carbon Dioxide-Rich atmosphere and No volcanism..
         /// </summary>
         public static string TussockTriticum {
             get {
@@ -1069,7 +1069,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, a temperature range of 155 to 160 kelvin, and CarbonDioxide atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 155 and 160 kelvin, 7 different types of parent stars and a Carbon Dioxide or Carbon Dioxide-Rich atmosphere..
         /// </summary>
         public static string TussockVentusa {
             get {
@@ -1078,7 +1078,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a Rocky planet with a maximum gravity of 0.27, and Water atmosphere..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a maximum gravity of 0.28, a temperature between 390 and 450 kelvin, 7 different types of parent stars and a Water or Water-Rich atmosphere..
         /// </summary>
         public static string TussockVirgam {
             get {
@@ -1087,7 +1087,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string ViolaceumSinuousTubers {
             get {
@@ -1096,7 +1096,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and near system with Guardian ruins..
+        ///   Looks up a localized string similar to Rocky Ice bodies with a temperature between 100 and 270 kelvin, a Ammonia, No or Sulphur Dioxide atmosphere and Any volcanism..
         /// </summary>
         public static string VirideBrainTree {
             get {
@@ -1105,7 +1105,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species requires a planet with a None atmosphere and Any volcanism, and Seemingly more common near galactic core..
+        ///   Looks up a localized string similar to Rocky or High Metal Content bodies with a temperature between 200 and 500 kelvin, No atmosphere and Any volcanism..
         /// </summary>
         public static string VirideSinuousTubers {
             get {

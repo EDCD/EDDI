@@ -108,6 +108,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string AlbidumIceCrystals {
+            get {
+                return ResourceManager.GetString("AlbidumIceCrystals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AlbidumPeduncleTree {
             get {
                 return ResourceManager.GetString("AlbidumPeduncleTree", resourceCulture);
@@ -120,6 +129,15 @@ namespace EddiDataDefinitions.Properties {
         public static string AlbidumQuadripartitePod {
             get {
                 return ResourceManager.GetString("AlbidumQuadripartitePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AlbidumSilicateCrystals {
+            get {
+                return ResourceManager.GetString("AlbidumSilicateCrystals", resourceCulture);
             }
         }
         
@@ -151,7 +169,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This aleoida species has upright clumps of long serrated leaves, which can open up to expose a reproductive organ containing tiny round seeds..
+        ///   Looks up a localized string similar to has upright clumps of long serrated leaves, which can open up to expose a reproductive organ containing tiny round seeds..
         /// </summary>
         public static string AleoidaArcus {
             get {
@@ -160,7 +178,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This aleioda variation has an interleaved crown of mottled leaves that can grow to head height, with explosive seed pods emerging on long protruding stalks..
+        ///   Looks up a localized string similar to has an interleaved crown of mottled leaves that can grow to head height, with explosive seed pods emerging on long protruding stalks..
         /// </summary>
         public static string AleoidaCoronamus {
             get {
@@ -169,7 +187,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These aleoida’s wide flat leaves on a heavy bark base can reach huge sizes. and sprout a dome-shaped reproductive organ at their peak..
+        ///   Looks up a localized string similar to has wide flat leaves on a heavy bark base that can reach huge sizes. and sprout a dome-shaped reproductive organ at their peak..
         /// </summary>
         public static string AleoidaGravis {
             get {
@@ -178,7 +196,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These aleoida have a circle of upturned leaves marked with patterns, surrounding a bright fleshy pod with darker markings which matures in their centre..
+        ///   Looks up a localized string similar to have a circle of upturned leaves marked with patterns, surrounding a bright fleshy pod with darker markings which matures in their centre..
         /// </summary>
         public static string AleoidaLaminiae {
             get {
@@ -187,7 +205,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is an aleoida species with long spiky leaves that can reach over two metres high surrounding a single reproductive organ on a long central stalk..
+        ///   Looks up a localized string similar to has long spiky leaves that can reach over two metres high surrounding a single reproductive organ on a long central stalk..
         /// </summary>
         public static string AleoidaSpica {
             get {
@@ -207,6 +225,24 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string AurariumGyrePod {
+            get {
+                return ResourceManager.GetString("AurariumGyrePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AurariumGyreTree {
+            get {
+                return ResourceManager.GetString("AurariumGyreTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AureumBrainTree {
             get {
                 return ResourceManager.GetString("AureumBrainTree", resourceCulture);
@@ -214,7 +250,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a bacterial species that converts energy from neon-based atmospheres, creating looping whirls of bright colour..
+        ///   Looks up a localized string similar to converts energy from neon-based atmospheres, creating looping whirls of bright colour..
         /// </summary>
         public static string BacteriumAcies {
             get {
@@ -223,7 +259,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a bacterial species found in ammonia-based atmospheres that lives in sunlight. A colony’s appearance resembles an intricate maze..
+        ///   Looks up a localized string similar to Is found in ammonia-based atmospheres that lives in sunlight. A colony’s appearance resembles an intricate maze..
         /// </summary>
         public static string BacteriumAlcyoneum {
             get {
@@ -232,7 +268,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria thrive on sunlight in atmospheres rich with carbon dioxide. They cause blanket coloration across a planetary surface..
+        ///   Looks up a localized string similar to thrive on sunlight in atmospheres rich with carbon dioxide. They cause blanket coloration across a planetary surface..
         /// </summary>
         public static string BacteriumAurasus {
             get {
@@ -241,7 +277,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of bacteria thrives on atmospheric methane, appearing as a network of linked bubble paiterns..
+        ///   Looks up a localized string similar to thrives on atmospheric methane, appearing as a network of linked bubble paiterns..
         /// </summary>
         public static string BacteriumBullaris {
             get {
@@ -250,7 +286,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and sulphur dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells..
+        ///   Looks up a localized string similar to is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and sulphur dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells..
         /// </summary>
         public static string BacteriumCerbrus {
             get {
@@ -259,7 +295,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria can be found in nitrogen atmospheres, and form a shapeless mass across the surface..
+        ///   Looks up a localized string similar to can be found in nitrogen atmospheres, and form a shapeless mass across the surface..
         /// </summary>
         public static string BacteriumInformem {
             get {
@@ -268,7 +304,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a bacterial species that survives exclusively on atmospheric helium. They are distinguished by a radial pattern extending outward from the colony’s centre..
+        ///   Looks up a localized string similar to survives exclusively on atmospheric helium. They are distinguished by a radial pattern extending outward from the colony’s centre..
         /// </summary>
         public static string BacteriumNebulus {
             get {
@@ -277,7 +313,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria convert geothermal heat from nitrogen-based volcanic sites into energy. They appear as long interlinked strands across the surface..
+        ///   Looks up a localized string similar to convert geothermal heat from nitrogen-based volcanic sites into energy. They appear as long interlinked strands across the surface..
         /// </summary>
         public static string BacteriumOmentum {
             get {
@@ -286,7 +322,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria thrive on the heat generated by carbon-based volcanic activity and appear as long swirling ridges on the surface..
+        ///   Looks up a localized string similar to thrive on the heat generated by carbon-based volcanic activity and appear as long swirling ridges on the surface..
         /// </summary>
         public static string BacteriumScopulum {
             get {
@@ -295,7 +331,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites..
+        ///   Looks up a localized string similar to appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites..
         /// </summary>
         public static string BacteriumTela {
             get {
@@ -304,7 +340,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites..
+        ///   Looks up a localized string similar to appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites..
         /// </summary>
         public static string BacteriumVerrata {
             get {
@@ -313,7 +349,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These bacteria survive on worlds with argon—based atmospheres, and appear as a collection of tight loops on the ground..
+        ///   Looks up a localized string similar to survive on worlds with argon—based atmospheres, and appear as a collection of tight loops on the ground..
         /// </summary>
         public static string BacteriumVesicula {
             get {
@@ -322,7 +358,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a bacterial species dependent upon oxygen atmospheres, which creates random swirling patterns across the ground..
+        ///   Looks up a localized string similar to are dependent upon oxygen atmospheres, which creates random swirling patterns across the ground..
         /// </summary>
         public static string BacteriumVolu {
             get {
@@ -369,6 +405,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string BlatteumOctahedralPod {
+            get {
+                return ResourceManager.GetString("BlatteumOctahedralPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string BlatteumQuadripartitePod {
             get {
                 return ResourceManager.GetString("BlatteumQuadripartitePod", resourceCulture);
@@ -385,7 +430,16 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of cactoid that can reach over three metres in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds..
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string BlatteumTorusMollusc {
+            get {
+                return ResourceManager.GetString("BlatteumTorusMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to can reach over three metres in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds..
         /// </summary>
         public static string CactoidaCortexum {
             get {
@@ -394,7 +448,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This cactoid species appears as a squat growth with a latficecl upper surface, which eventually produces a cluster of seed pods..
+        ///   Looks up a localized string similar to appears as a squat growth with a latficecl upper surface, which eventually produces a cluster of seed pods..
         /// </summary>
         public static string CactoidaLapis {
             get {
@@ -403,7 +457,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a cactoid species appearing as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown..
+        ///   Looks up a localized string similar to appears as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown..
         /// </summary>
         public static string CactoidaPeperatis {
             get {
@@ -412,7 +466,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of cactoid has a globular base, from which extend vertical cylinders that can reach over four metres. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds..
+        ///   Looks up a localized string similar to has a globular base, from which extend vertical cylinders that can reach over four metres. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds..
         /// </summary>
         public static string CactoidaPullulanta {
             get {
@@ -421,11 +475,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These cactoids appear as a tall collection of cylinders linked by an undulating membrane and topped with a spiky crown. They often have a spiny life-form attached that is thought to form a symbiotic relationship with the larger organism, although the nature of this is not understood..
+        ///   Looks up a localized string similar to appear as a tall collection of cylinders linked by an undulating membrane and topped with a spiky crown. They often have a spiny life-form attached that is thought to form a symbiotic relationship with the larger organism, although the nature of this is not understood..
         /// </summary>
         public static string CactoidaVermis {
             get {
                 return ResourceManager.GetString("CactoidaVermis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CaeruleumChalicePod {
+            get {
+                return ResourceManager.GetString("CaeruleumChalicePod", resourceCulture);
             }
         }
         
@@ -450,9 +513,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string CaeruleumpedunclePod {
+        public static string CaeruleumPedunclePod {
             get {
-                return ResourceManager.GetString("CaeruleumpedunclePod", resourceCulture);
+                return ResourceManager.GetString("CaeruleumPedunclePod", resourceCulture);
             }
         }
         
@@ -504,9 +567,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string CandidumpedunclePod {
+        public static string CandidumPedunclePod {
             get {
-                return ResourceManager.GetString("CandidumpedunclePod", resourceCulture);
+                return ResourceManager.GetString("CandidumPedunclePod", resourceCulture);
             }
         }
         
@@ -556,7 +619,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of clypeus that grows a broad, tear-shaped shield to protect the sensitive organism from extreme sunlight. The shield’s ridges help to direct Water droplets down into the soil..
+        ///   Looks up a localized string similar to grows a broad, tear-shaped shield to protect the sensitive organism from extreme sunlight. The shield’s ridges help to direct Water droplets down into the soil..
         /// </summary>
         public static string ClypeusLacrimam {
             get {
@@ -565,7 +628,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This clypeus species produces a curved shield that resembles a large pearl in shape and texture. Up to three central organisms grow within it upon a supporting bed of leaves..
+        ///   Looks up a localized string similar to produces a curved shield that resembles a large pearl in shape and texture. Up to three central organisms grow within it upon a supporting bed of leaves..
         /// </summary>
         public static string ClypeusMargaritus {
             get {
@@ -574,11 +637,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a clypeus species that grows an angular shield with a mirrored exterior to protect the spiky organisms. This species can be found on planets orbiting their parent star at a distance of 5 AU or greater..
+        ///   Looks up a localized string similar to grows an angular shield with a mirrored exterior to protect the spiky organisms. This species can be found on planets orbiting their parent star at a distance of 5 AU or greater..
         /// </summary>
         public static string ClypeusSpeculumi {
             get {
                 return ResourceManager.GetString("ClypeusSpeculumi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CobalteumGlobeMollusc {
+            get {
+                return ResourceManager.GetString("CobalteumGlobeMollusc", resourceCulture);
             }
         }
         
@@ -601,7 +673,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These concha are found on worlds with nitrogen-based atmospheres. Their rounded rock-like structure splits part to extend long stalks topped with loops..
+        ///   Looks up a localized string similar to are found on worlds with nitrogen-based atmospheres. Their rounded rock-like structure splits part to extend long stalks topped with loops..
         /// </summary>
         public static string ConchaAureolas {
             get {
@@ -610,7 +682,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This concha species resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with cloughnut—shaped pods that create locations for chemical exchange..
+        ///   Looks up a localized string similar to resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with cloughnut—shaped pods that create locations for chemical exchange..
         /// </summary>
         public static string ConchaBiconcavis {
             get {
@@ -619,7 +691,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a concha species that thrives in atmospheres rich with carbon dioxide. The lip-like upper opening cracks apart to allow a vertical growth of spiky leaves and bright seeds to stretch upward..
+        ///   Looks up a localized string similar to thrives in atmospheres rich with carbon dioxide. The lip-like upper opening cracks apart to allow a vertical growth of spiky leaves and bright seeds to stretch upward..
         /// </summary>
         public static string ConchaLabiata {
             get {
@@ -628,7 +700,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of concha that relies on heat sources to survive. As the bisected growth increases in size. it sprouts a single stalk topped with an array of luminous fronds that facilitate metabolism..
+        ///   Looks up a localized string similar to relies on heat sources to survive. As the bisected growth increases in size. it sprouts a single stalk topped with an array of luminous fronds that facilitate metabolism..
         /// </summary>
         public static string ConchaRenibus {
             get {
@@ -642,6 +714,15 @@ namespace EddiDataDefinitions.Properties {
         public static string CroceumAnemone {
             get {
                 return ResourceManager.GetString("CroceumAnemone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CroceumGlobeMollusc {
+            get {
+                return ResourceManager.GetString("CroceumGlobeMollusc", resourceCulture);
             }
         }
         
@@ -664,7 +745,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of electricae that extends a tip of four connected loops above the ice, each covered with brightly luminous fronds. This species is typically found on planets orbiting bright white stars..
+        ///   Looks up a localized string similar to extends a tip of four connected loops above the ice, each covered with brightly luminous fronds. This species is typically found on planets orbiting bright white stars..
         /// </summary>
         public static string ElectricaePluma {
             get {
@@ -673,7 +754,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These electricae species protrude bioluminescent stalks that radiate out in all directions. It is thought that this species may have an unspecified link with the proximity of nebulae to its host planet..
+        ///   Looks up a localized string similar to protrude bioluminescent stalks that radiate out in all directions. It is thought that this species may have an unspecified link with the proximity of nebulae to its host planet..
         /// </summary>
         public static string ElectricaeRadialem {
             get {
@@ -718,7 +799,16 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These fonticulua thrive in argon atmospheres, and can reach four metres in height. They feature huge leaf-like structures to capture sunlight for conversion to energy..
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FlavumTorusMollusc {
+            get {
+                return ResourceManager.GetString("FlavumTorusMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to thrive in argon atmospheres, and can reach four metres in height. They feature huge leaf-like structures to capture sunlight for conversion to energy..
         /// </summary>
         public static string FonticuluaCampestris {
             get {
@@ -727,7 +817,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a fonticulua species that thrives in methane—based atmospheres, sprouting a cluster of cylindrical tubes directly from the ice..
+        ///   Looks up a localized string similar to thrives in methane—based atmospheres, sprouting a cluster of cylindrical tubes directly from the ice..
         /// </summary>
         public static string FonticuluaDigitos {
             get {
@@ -736,7 +826,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of fonticulua that exists on worlds with oxygen atmospheres. They produce coiling wave-shaped structures which tilt toward sunlight..
+        ///   Looks up a localized string similar to exists on worlds with oxygen atmospheres. They produce coiling wave-shaped structures which tilt toward sunlight..
         /// </summary>
         public static string FonticuluaFluctus {
             get {
@@ -745,7 +835,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a fonticulua species that exists in atmospheres with a heavy concentration of nitrogen. Growing up along the main stalk are bright gem-like pods. which can break off and create new colonies..
+        ///   Looks up a localized string similar to exists in atmospheres with a heavy concentration of nitrogen. Growing up along the main stalk are bright gem-like pods. which can break off and create new colonies..
         /// </summary>
         public static string FonticuluaLapida {
             get {
@@ -754,7 +844,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of fonticulua found in atmospheres dominated by neon, appearing as a pyramid—shaped cluster of frilled sections..
+        ///   Looks up a localized string similar to Is found in atmospheres dominated by neon, appearing as a pyramid—shaped cluster of frilled sections..
         /// </summary>
         public static string FonticuluaSegmentatus {
             get {
@@ -763,7 +853,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This fonticulua species can he found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis..
+        ///   Looks up a localized string similar to can he found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis..
         /// </summary>
         public static string FonticuluaUpupam {
             get {
@@ -772,7 +862,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This frutexa species has vivid colouration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods..
+        ///   Looks up a localized string similar to has vivid colouration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods..
         /// </summary>
         public static string FrutexaAcus {
             get {
@@ -781,7 +871,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of frutexa characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown..
+        ///   Looks up a localized string similar to Is characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown..
         /// </summary>
         public static string FrutexaCollum {
             get {
@@ -790,7 +880,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of frutexa combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scaitered by light winds..
+        ///   Looks up a localized string similar to combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scaitered by light winds..
         /// </summary>
         public static string FrutexaFera {
             get {
@@ -799,7 +889,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of frutexa that appears as a bush of leaves with a similar texture to seaweed. Seeds are extended on long stalks and protected by a cage formation until ready to germinate..
+        ///   Looks up a localized string similar to appears as a bush of leaves with a similar texture to seaweed. Seeds are extended on long stalks and protected by a cage formation until ready to germinate..
         /// </summary>
         public static string FrutexaFlabellum {
             get {
@@ -808,7 +898,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a frutexa species that gives the appearance of flames, with vivid upright fronds extended from multiple stalks. The fronds are dotted with disc-sha ped spores that are distributed by the wind..
+        ///   Looks up a localized string similar to gives the appearance of flames, with vivid upright fronds extended from multiple stalks. The fronds are dotted with disc-sha ped spores that are distributed by the wind..
         /// </summary>
         public static string FrutexaFlammasis {
             get {
@@ -817,7 +907,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of frutexa has an almost metallic shine to its small leaves. Along its upper branches grow spherical spores, which each have a star-shaped opening to increase germination..
+        ///   Looks up a localized string similar to has an almost metallic shine to its small leaves. Along its upper branches grow spherical spores, which each have a star-shaped opening to increase germination..
         /// </summary>
         public static string FrutexaMetallicum {
             get {
@@ -826,7 +916,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a frutexa species that produces clusters of upright intertwining branches, which are crowned with bright seed sacks..
+        ///   Looks up a localized string similar to produces clusters of upright intertwining branches, which are crowned with bright seed sacks..
         /// </summary>
         public static string FrutexaSponsae {
             get {
@@ -835,7 +925,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of fumerola that can be found near sites of water-based volcanic activity. They appear as small dark clusters with ridged folds that trap heat within..
+        ///   Looks up a localized string similar to can be found near sites of water-based volcanic activity. They appear as small dark clusters with ridged folds that trap heat within..
         /// </summary>
         public static string FumerolaAquatis {
             get {
@@ -844,7 +934,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a fumerola species found near sites of carbon—based volcanism, appearing as a thin upright tube. An inner organism protrudes from an opening at its peak to increase heat absorption..
+        ///   Looks up a localized string similar to Is found near sites of carbon—based volcanism, appearing as a thin upright tube. An inner organism protrudes from an opening at its peak to increase heat absorption..
         /// </summary>
         public static string FumerolaCarbosis {
             get {
@@ -853,7 +943,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is an exception among its kin. This fumerola species seems to have an arbitrary preference of specific volcanism types which have yet to be explicitly linked in any way. They appear as long vertical stalks with smaller fronds that can stretch out..
+        ///   Looks up a localized string similar to is an exception among its kin. This fumerola species seems to have an arbitrary preference of specific volcanism types which have yet to be explicitly linked in any way. They appear as long vertical stalks with smaller fronds that can stretch out..
         /// </summary>
         public static string FumerolaExtremus {
             get {
@@ -862,7 +952,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of fumerola prefers nitrogen-based volcanism. They produce an ovoid organism with dotted markings, which sits on top of a thin stalk..
+        ///   Looks up a localized string similar to prefers nitrogen-based volcanism. They produce an ovoid organism with dotted markings, which sits on top of a thin stalk..
         /// </summary>
         public static string FumerolaNitris {
             get {
@@ -871,7 +961,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a fungoida that features clusters of mottled bubble-shaped growths atop a central stalk. These contain spores that can be exposed to the winds to facilitate distribution..
+        ///   Looks up a localized string similar to features clusters of mottled bubble-shaped growths atop a central stalk. These contain spores that can be exposed to the winds to facilitate distribution..
         /// </summary>
         public static string FungoidaBullarum {
             get {
@@ -880,7 +970,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This fungoida species resembles an upturned jellyfish, emerging from a solid base buried within the substrate. The exposed part is dominated by fleshy reproductive organisms that shed organic tissue. This tissue can float on the light breeze and form a new organism if it lands in the right location..
+        ///   Looks up a localized string similar to resembles an upturned jellyfish, emerging from a solid base buried within the substrate. The exposed part is dominated by fleshy reproductive organisms that shed organic tissue. This tissue can float on the light breeze and form a new organism if it lands in the right location..
         /// </summary>
         public static string FungoidaGelata {
             get {
@@ -889,7 +979,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This fungoida species produces vertical clusters interspersed with spore pods atop thin stalks. allowing them to break off and scatter to reproduce elsewhere..
+        ///   Looks up a localized string similar to produces vertical clusters interspersed with spore pods atop thin stalks. allowing them to break off and scatter to reproduce elsewhere..
         /// </summary>
         public static string FungoidaSetisis {
             get {
@@ -898,11 +988,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of fungoida that thrives on geothermal energy. and can produce two-metre high tower structures composed of tightly clustered cylinders..
+        ///   Looks up a localized string similar to thrives on geothermal energy. and can produce two-metre high tower structures composed of tightly clustered cylinders..
         /// </summary>
         public static string FungoidaStabitis {
             get {
                 return ResourceManager.GetString("FungoidaStabitis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string GypseeumBellMollusc {
+            get {
+                return ResourceManager.GetString("GypseeumBellMollusc", resourceCulture);
             }
         }
         
@@ -918,9 +1017,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string GypseeumpedunclePod {
+        public static string GypseeumPedunclePod {
             get {
-                return ResourceManager.GetString("GypseeumpedunclePod", resourceCulture);
+                return ResourceManager.GetString("GypseeumPedunclePod", resourceCulture);
             }
         }
         
@@ -1098,6 +1197,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string LuteolumBellMollusc {
+            get {
+                return ResourceManager.GetString("LuteolumBellMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string LuteolumBulbMollusc {
             get {
                 return ResourceManager.GetString("LuteolumBulbMollusc", resourceCulture);
@@ -1152,9 +1260,27 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string NiveumGlobeMollusc {
+            get {
+                return ResourceManager.GetString("NiveumGlobeMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string NiveumGlobeMolluscs {
             get {
                 return ResourceManager.GetString("NiveumGlobeMolluscs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NiveumOctahedralPod {
+            get {
+                return ResourceManager.GetString("NiveumOctahedralPod", resourceCulture);
             }
         }
         
@@ -1168,7 +1294,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is an osseus species that produces a stacked series of spiral structures up to about three metres. These ridged features are upturned to better absorb sunlight for photosynthesis..
+        ///   Looks up a localized string similar to produces a stacked series of spiral structures up to about three metres. These ridged features are upturned to better absorb sunlight for photosynthesis..
         /// </summary>
         public static string OsseusCornibus {
             get {
@@ -1177,7 +1303,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is an osseus that appears as half-buried discs with radial patterns, which may resemble natural rook formations from a distance. They absorb geothermal energy from below the surface as well as available heat sources above ground..
+        ///   Looks up a localized string similar to appears as half-buried discs with radial patterns, which may resemble natural rook formations from a distance. They absorb geothermal energy from below the surface as well as available heat sources above ground..
         /// </summary>
         public static string OsseusDiscus {
             get {
@@ -1186,7 +1312,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This osseus species can grow to over six metres across. They produce wide ridged frills for metabolic interactions including aosorbing sunlight for energy production..
+        ///   Looks up a localized string similar to can grow to over six metres across. They produce wide ridged frills for metabolic interactions including aosorbing sunlight for energy production..
         /// </summary>
         public static string OsseusFractus {
             get {
@@ -1195,7 +1321,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of osseus with a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption..
+        ///   Looks up a localized string similar to has a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption..
         /// </summary>
         public static string OsseusPellebantus {
             get {
@@ -1204,7 +1330,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This osseus species grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume ofthe organism, facilitating chemical capture and chemosynthesis on its catalytically active surface..
+        ///   Looks up a localized string similar to grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume ofthe organism, facilitating chemical capture and chemosynthesis on its catalytically active surface..
         /// </summary>
         public static string OsseusPumice {
             get {
@@ -1213,7 +1339,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of osseus that produces coiling spiral structures up to six metres wide. There are ridged folds on their upturned surfaces designed to capture sunlight..
+        ///   Looks up a localized string similar to produces coiling spiral structures up to six metres wide. There are ridged folds on their upturned surfaces designed to capture sunlight..
         /// </summary>
         public static string OsseusSpiralis {
             get {
@@ -1236,6 +1362,15 @@ namespace EddiDataDefinitions.Properties {
         public static string OstrinumChalicePod {
             get {
                 return ResourceManager.GetString("OstrinumChalicePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string OstrinumGlobeMollusc {
+            get {
+                return ResourceManager.GetString("OstrinumGlobeMollusc", resourceCulture);
             }
         }
         
@@ -1281,6 +1416,15 @@ namespace EddiDataDefinitions.Properties {
         public static string PrasinumBioluminescentAnemone {
             get {
                 return ResourceManager.GetString("PrasinumBioluminescentAnemone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PrasinumGlobeMollusc {
+            get {
+                return ResourceManager.GetString("PrasinumGlobeMollusc", resourceCulture);
             }
         }
         
@@ -1386,9 +1530,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string PurpureumpedunclePod {
+        public static string PurpureumPedunclePod {
             get {
-                return ResourceManager.GetString("PurpureumpedunclePod", resourceCulture);
+                return ResourceManager.GetString("PurpureumPedunclePod", resourceCulture);
             }
         }
         
@@ -1411,7 +1555,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a recepta species where the body of the organism is suspended above ground inside a sphere-shaped translucent membrane. This is filled with chemical-rich ﬂuid that both protects the organism and provides the chemical soup needed for metabolism. Chemical exchange is controlled actively through the membrane and passively through the extensive root structure..
+        ///   Looks up a localized string similar to has a body that is suspended above ground inside a sphere-shaped translucent membrane. This is filled with chemical-rich ﬂuid that both protects the organism and provides the chemical soup needed for metabolism. Chemical exchange is controlled actively through the membrane and passively through the extensive root structure..
         /// </summary>
         public static string ReceptaConditivus {
             get {
@@ -1420,7 +1564,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of recepta produces a thick lattice of trunks in a deltahedron shape. This grows around and above the globular central organism, and helps to capture, retain and focus geothermal heat for thermosynthesis..
+        ///   Looks up a localized string similar to produces a thick lattice of trunks in a deltahedron shape. This grows around and above the globular central organism, and helps to capture, retain and focus geothermal heat for thermosynthesis..
         /// </summary>
         public static string ReceptaDeltahedronix {
             get {
@@ -1429,7 +1573,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a recepta species that grows a thick latticed structure for protection. A fine translucent membrane stretches between its gaps, allowing sunlight to penetrate and reach the inner organism for photosynthesis..
+        ///   Looks up a localized string similar to grows a thick latticed structure for protection. A fine translucent membrane stretches between its gaps, allowing sunlight to penetrate and reach the inner organism for photosynthesis..
         /// </summary>
         public static string ReceptaUmbrux {
             get {
@@ -1461,6 +1605,24 @@ namespace EddiDataDefinitions.Properties {
         public static string RoseumBrainTree {
             get {
                 return ResourceManager.GetString("RoseumBrainTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RoseumGlobeMollusc {
+            get {
+                return ResourceManager.GetString("RoseumGlobeMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RoseumGyrePod {
+            get {
+                return ResourceManager.GetString("RoseumGyrePod", resourceCulture);
             }
         }
         
@@ -1515,6 +1677,15 @@ namespace EddiDataDefinitions.Properties {
         public static string RubellumAsterTree {
             get {
                 return ResourceManager.GetString("RubellumAsterTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RubellumChalicePod {
+            get {
+                return ResourceManager.GetString("RubellumChalicePod", resourceCulture);
             }
         }
         
@@ -1629,9 +1800,27 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string RufumpedunclePod {
+        public static string RufumPedunclePod {
             get {
-                return ResourceManager.GetString("RufumpedunclePod", resourceCulture);
+                return ResourceManager.GetString("RufumPedunclePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RutulumCalcitePlates {
+            get {
+                return ResourceManager.GetString("RutulumCalcitePlates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RutulumGlobeMollusc {
+            get {
+                return ResourceManager.GetString("RutulumGlobeMollusc", resourceCulture);
             }
         }
         
@@ -1663,7 +1852,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a stratum species that has a vaguely octopoid shape. Their pale semi-translucent upper domes can reveal colourful inner organisms, which contrast with their darker outstretched tentacles..
+        ///   Looks up a localized string similar to has a vaguely octopoid shape. Their pale semi-translucent upper domes can reveal colourful inner organisms, which contrast with their darker outstretched tentacles..
         /// </summary>
         public static string StratumAraneamus {
             get {
@@ -1672,7 +1861,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of stratum that displays fleshy ovoid shapes that are connected in a narrow pattern across the ground. These are covered with streaks of round photosynthetic cells that absorb sunlight..
+        ///   Looks up a localized string similar to displays fleshy ovoid shapes that are connected in a narrow pattern across the ground. These are covered with streaks of round photosynthetic cells that absorb sunlight..
         /// </summary>
         public static string StratumCucumisis {
             get {
@@ -1681,7 +1870,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This stratum species appears as a mixture of tight concentric ring patterns and mottled proto-leaves in a mixture of dark hues..
+        ///   Looks up a localized string similar to appears as a mixture of tight concentric ring patterns and mottled proto-leaves in a mixture of dark hues..
         /// </summary>
         public static string StratumExcutitus {
             get {
@@ -1690,7 +1879,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of stratum forms broad interconnected ring structures, which are composed of narrow ridges to capture sunlight..
+        ///   Looks up a localized string similar to forms broad interconnected ring structures, which are composed of narrow ridges to capture sunlight..
         /// </summary>
         public static string StratumFrigus {
             get {
@@ -1699,7 +1888,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This particular stratum species gives the appearance of overlapping rock plateaus, each with narrow bands of colouration..
+        ///   Looks up a localized string similar to gives the appearance of overlapping rock plateaus, each with narrow bands of colouration..
         /// </summary>
         public static string StratumLaminamus {
             get {
@@ -1708,7 +1897,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of stratum appears as a series of unconnected ovoid sha pes across the ground, which are the protruding tips of the larger subterranean organism..
+        ///   Looks up a localized string similar to appears as a series of unconnected ovoid sha pes across the ground, which are the protruding tips of the larger subterranean organism..
         /// </summary>
         public static string StratumLimaxus {
             get {
@@ -1717,7 +1906,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a stratum that blends thick overlapping vines with irregular growths. with varying colours appearing in bands or streaks.  .
+        ///   Looks up a localized string similar to blends thick overlapping vines with irregular growths. with varying colours appearing in bands or streaks..
         /// </summary>
         public static string StratumPaleas {
             get {
@@ -1726,7 +1915,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a stratum species with a thick rock-like outer shell, covered with an irregular lattice of brighter cells that absorb sunlight for photosynthesis..
+        ///   Looks up a localized string similar to has a thick rock-like outer shell, covered with an irregular lattice of brighter cells that absorb sunlight for photosynthesis..
         /// </summary>
         public static string StratumTectonicas {
             get {
@@ -1735,7 +1924,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These biological structures are typically found near Thargoid barnacles. Smaller ones contain rare elements, while larger ones contain meta-alloys..
+        ///   Looks up a localized string similar to These biological structures extract resources from a planet and convert them into meta-alloys, a key component in the creation of Thargoid ships and technologies..
         /// </summary>
         public static string ThargoidBarnacleBarbs {
             get {
@@ -1744,7 +1933,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tubus species that extends pale vertical stalks composed of rigid modules. Colourful fronds frequently appear in the gaps between segments and aid with controlling gaseous exchange..
+        ///   Looks up a localized string similar to extends pale vertical stalks composed of rigid modules. Colourful fronds frequently appear in the gaps between segments and aid with controlling gaseous exchange..
         /// </summary>
         public static string TubusCavas {
             get {
@@ -1753,7 +1942,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tubus species with narrow pale segments and fronds growing between each module. A wide crown of leaves at the peak hold spores on their undersides, to germinate across a wide area..
+        ///   Looks up a localized string similar to has narrow pale segments and fronds growing between each module. A wide crown of leaves at the peak hold spores on their undersides, to germinate across a wide area..
         /// </summary>
         public static string TubusCompagibus {
             get {
@@ -1762,7 +1951,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tubus species formed from hollow vertical cylinders that can reach heights of six metres. Mature specimens are capped with a downtu rned crown that can distribute seeds on the wind across a wide area..
+        ///   Looks up a localized string similar to Is formed from hollow vertical cylinders that can reach heights of six metres. Mature specimens are capped with a downtu rned crown that can distribute seeds on the wind across a wide area..
         /// </summary>
         public static string TubusConifer {
             get {
@@ -1771,7 +1960,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This tubus species is composed of squat tubes growing into a vertical spire. The upper pods of mature specimens produce explosive seed pods on their outer skin..
+        ///   Looks up a localized string similar to is composed of squat tubes growing into a vertical spire. The upper pods of mature specimens produce explosive seed pods on their outer skin..
         /// </summary>
         public static string TubusRosarium {
             get {
@@ -1780,7 +1969,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of tubus grows a cluster of hollow stalks composed of rigid segments. Over time these become capped with a growth that flowers and produces seeds..
+        ///   Looks up a localized string similar to grows a cluster of hollow stalks composed of rigid segments. Over time these become capped with a growth that flowers and produces seeds..
         /// </summary>
         public static string TubusSororibus {
             get {
@@ -1789,7 +1978,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tussock species characterised by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores..
+        ///   Looks up a localized string similar to Is characterised by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores..
         /// </summary>
         public static string TussockAlbata {
             get {
@@ -1798,7 +1987,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This tussock species is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carw a number of round beans..
+        ///   Looks up a localized string similar to is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carw a number of round beans..
         /// </summary>
         public static string TussockCapillum {
             get {
@@ -1807,7 +1996,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tussock species with leaves that have a thick segmented lower half and a willowy upper half. Mature versions produce separate stalks that carry ovoid organisms clotted with spores..
+        ///   Looks up a localized string similar to has leaves that have a thick segmented lower half and a willowy upper half. Mature versions produce separate stalks that carry ovoid organisms clotted with spores..
         /// </summary>
         public static string TussockCaputus {
             get {
@@ -1816,7 +2005,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This species of tussock has very thin stalks carrying twin sets of seed sacks along their entire length, resembling links on a chain..
+        ///   Looks up a localized string similar to has very thin stalks carrying twin sets of seed sacks along their entire length, resembling links on a chain..
         /// </summary>
         public static string TussockCatena {
             get {
@@ -1825,7 +2014,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tussock species with tall sharp reeds reaching about two metres, characterised by narrow markings along their length..
+        ///   Looks up a localized string similar to has tall sharp reeds reaching about two metres, characterised by narrow markings along their length..
         /// </summary>
         public static string TussockCultro {
             get {
@@ -1834,7 +2023,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This tussock species blends thick segmented lower growths with longer. narrower leaves. Mature versions have pale spores along the upper branches..
+        ///   Looks up a localized string similar to blends thick segmented lower growths with longer. narrower leaves. Mature versions have pale spores along the upper branches..
         /// </summary>
         public static string TussockDivisa {
             get {
@@ -1843,7 +2032,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This tussock species produces thick intertwined leaves, above which sprout narrow stems crowned with seed pods..
+        ///   Looks up a localized string similar to produces thick intertwined leaves, above which sprout narrow stems crowned with seed pods..
         /// </summary>
         public static string TussockIgnis {
             get {
@@ -1852,7 +2041,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tussock species that extends large seed pods on thin stems above a cluster of bright leaves..
+        ///   Looks up a localized string similar to extends large seed pods on thin stems above a cluster of bright leaves..
         /// </summary>
         public static string TussockPennata {
             get {
@@ -1861,7 +2050,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a tussock species with feather-shaped growths surrounding a single segmented stem which when mature is crowned with colourful seeds..
+        ///   Looks up a localized string similar to has feather-shaped growths surrounding a single segmented stem which when mature is crowned with colourful seeds..
         /// </summary>
         public static string TussockPennatis {
             get {
@@ -1870,7 +2059,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of tussock that sprouts tapering leaves, with tips covered with colourful seed pods..
+        ///   Looks up a localized string similar to sprouts tapering leaves, with tips covered with colourful seed pods..
         /// </summary>
         public static string TussockPropagito {
             get {
@@ -1879,7 +2068,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This tussock species sprouts serrated leaves around thick stalks that produce dark seed pods..
+        ///   Looks up a localized string similar to sprouts serrated leaves around thick stalks that produce dark seed pods..
         /// </summary>
         public static string TussockSerrati {
             get {
@@ -1888,7 +2077,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This tussock species resembles a patch of tough. wiry grasses. Taller stalks carrying disc-shaped seed pods rise above the main organism when mature..
+        ///   Looks up a localized string similar to resembles a patch of tough. wiry grasses. Taller stalks carrying disc-shaped seed pods rise above the main organism when mature..
         /// </summary>
         public static string TussockStigmasis {
             get {
@@ -1897,7 +2086,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of tussock with thin tough leaves marked with dark stripes. From these sprout taller stalks with small leaves, from which seeds are released to the winds..
+        ///   Looks up a localized string similar to has thin tough leaves marked with dark stripes. From these sprout taller stalks with small leaves, from which seeds are released to the winds..
         /// </summary>
         public static string TussockTriticum {
             get {
@@ -1906,7 +2095,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of tussock that blends tough lower stalks with taller willowy reeds, which produce small pale spores..
+        ///   Looks up a localized string similar to blends tough lower stalks with taller willowy reeds, which produce small pale spores..
         /// </summary>
         public static string TussockVentusa {
             get {
@@ -1915,7 +2104,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a species of tussock with thin reeds clustered around a central stalk. which is eventually crowned with spores..
+        ///   Looks up a localized string similar to has thin reeds clustered around a central stalk. which is eventually crowned with spores..
         /// </summary>
         public static string TussockVirgam {
             get {
@@ -1971,9 +2160,36 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string VirideCapsuleMollusc {
+            get {
+                return ResourceManager.GetString("VirideCapsuleMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string VirideChalicePod {
+            get {
+                return ResourceManager.GetString("VirideChalicePod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string VirideGourdMollusc {
             get {
                 return ResourceManager.GetString("VirideGourdMollusc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string VirideGyreTree {
+            get {
+                return ResourceManager.GetString("VirideGyreTree", resourceCulture);
             }
         }
         
@@ -2028,6 +2244,15 @@ namespace EddiDataDefinitions.Properties {
         public static string VirideSinuousTubers {
             get {
                 return ResourceManager.GetString("VirideSinuousTubers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string VirideTorusMollusc {
+            get {
+                return ResourceManager.GetString("VirideTorusMollusc", resourceCulture);
             }
         }
         

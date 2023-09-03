@@ -6,6 +6,13 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\discoverymonitor.json")]
     public class DiscoveryMonitorConfiguration : Config
     {
+        // Enables the debugging messages I used to implement codex and exobiology features
+        // Still requires the overall verbose logging to be enabled for EDDI
+        // This is not available everywhere so a few things always show up with verbose logging
+        public bool enableLogging;
+
+        public bool enableVariantPredictions;
+
         public class Exobiology
         {
             public bool reportSlowBios;

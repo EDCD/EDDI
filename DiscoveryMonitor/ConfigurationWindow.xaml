@@ -9,41 +9,55 @@ d:DesignHeight="400" d:DesignWidth="800" HorizontalContentAlignment="Stretch" Ve
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TabControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <TabItem Header="General" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
+                <DockPanel LastChildFill="False">
+                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,5,5,5">
+                        <Run Text="These tabs allow configuration of the codex discoveries, exobiology and to a lesser extend geology. They change how the scripts work without needing to modify the scripts directly. Most settings have tooltips to briefly explain what they do."/><LineBreak/>
+                        <Run/><LineBreak/>
+                    </TextBlock>
+                    <StackPanel DockPanel.Dock="Top">
+                        <CheckBox x:Name="enableVariantPredictions" Content="Use Variant predictions from BioStats2.json data (Experimental and does not appear to produce correct predictions in current state)" Height="20" Unchecked="enableVariantPredictions_Toggle" Checked="enableVariantPredictions_Toggle"/>
+                        <CheckBox Content="Reserved" Height="20" IsEnabled="False"/>
+                        <CheckBox Content="Reserved" Height="20" IsEnabled="False"/>
+                    </StackPanel>
+                    <CheckBox x:Name="enableVerboseLogging" DockPanel.Dock="Bottom" Height="40" HorizontalAlignment="Center" VerticalContentAlignment="Center" Checked="enableVerboseLogging_Toggle" Unchecked="enableVerboseLogging_Toggle">Enable exobiology verbose logging. (Verbose logging for EDDI must also be enabled)</CheckBox>
+                </DockPanel>
+            </TabItem>
             <TabItem Header="Exobiology" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <UniformGrid Columns="3" Width="800" HorizontalAlignment="Stretch">
                     <StackPanel>
-                        <GroupBox Header="Generic Settings" HorizontalContentAlignment="Stretch" Padding="2,2,2,2" Margin="5,5,5,5">
+                        <GroupBox Header="Generic Settings" HorizontalContentAlignment="Stretch" Padding="2,2,2,2" Margin="5,1,5,1">
                             <UniformGrid Rows="5">
-                                <CheckBox x:Name="exobioSlowBios" Content="Report Slow Bios" Height="20" Checked="exobioSlowBios_Toggle" Unchecked="exobioSlowBios_Toggle" ToolTip="When saying biological names in lists, slow down the pronunciation."/>
+                                <CheckBox x:Name="exobioSlowBios" Content="Report slow bios" Height="20" Checked="exobioSlowBios_Toggle" Unchecked="exobioSlowBios_Toggle" ToolTip="When saying biological names in lists, slow down the pronunciation."/>
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox x:Name="exobioMinimumBios" Text="0" Height="20" TextChanged="exobioMinimumBios_Changed" ToolTip="Minimum number of bios that must be present on a body before they are reported" Width="50" PreviewTextInput="EnsureValidInteger"/>
-                                    <Label Content="Minimum Bios" Height="20" Padding="0,0,0,0" />
+                                    <Label Content="Minimum bios" Height="20" Padding="0,0,0,0" />
                                 </StackPanel>
 
-                                <CheckBox x:Name="exobioReportDest" Content="Report Destination Bios" Height="20" Checked="exobioReportDest_Toggle" Unchecked="exobioReportDest_Toggle" ToolTip="When a planet is targeted from the nav panel, give a report on the biologicals present or predicted."/>
-                                <CheckBox x:Name="exobioSystemReport" Content="Include Bios in System Report" Height="20" Checked="exobioSystemReport_Toggle" Unchecked="exobioSystemReport_Toggle" ToolTip="When a System Report is done, include biological candidates."/>
-                                <CheckBox x:Name="exobioSystemScan" Content="Report Bios after System Scan" Height="20" Checked="exobioSystemScan_Toggle" Unchecked="exobioSystemScan_Toggle" ToolTip="When a system scan is complete, give a report on the biologicals present in the system."/>
+                                <CheckBox x:Name="exobioReportDest" Content="Report destination bios" Height="20" Checked="exobioReportDest_Toggle" Unchecked="exobioReportDest_Toggle" ToolTip="When a planet is targeted from the nav panel, give a report on the biologicals present or predicted."/>
+                                <CheckBox x:Name="exobioSystemReport" Content="Include bios in system report" Height="20" Checked="exobioSystemReport_Toggle" Unchecked="exobioSystemReport_Toggle" ToolTip="When a System Report is done, include biological candidates."/>
+                                <CheckBox x:Name="exobioSystemScan" Content="Report bios after system scan" Height="20" Checked="exobioSystemScan_Toggle" Unchecked="exobioSystemScan_Toggle" ToolTip="When a system scan is complete, give a report on the biologicals present in the system."/>
                             </UniformGrid>
                         </GroupBox>
 
-                        <GroupBox Header="Organic Data Sold" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Organic Data Sold" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="2">
-                                <CheckBox x:Name="exobioSoldBreakdown" Content="Report Breakdown" Height="20" Checked="exobioSoldBreakdown_Toggle" Unchecked="exobioSoldBreakdown_Toggle" ToolTip="Give the value breakdown with the total base value and the bonus value."/>
-                                <CheckBox x:Name="exobioSoldReportTotal" Content="Always Report Total" Height="20" Checked="exobioSoldReportTotal_Toggle" Unchecked="exobioSoldReportTotal_Toggle" ToolTip="Always report the grand total, even if giving the breakdown value."/>
+                                <CheckBox x:Name="exobioSoldBreakdown" Content="Report breakdown" Height="20" Checked="exobioSoldBreakdown_Toggle" Unchecked="exobioSoldBreakdown_Toggle" ToolTip="Give the value breakdown with the total base value and the bonus value."/>
+                                <CheckBox x:Name="exobioSoldReportTotal" Content="Always report total" Height="20" Checked="exobioSoldReportTotal_Toggle" Unchecked="exobioSoldReportTotal_Toggle" ToolTip="Always report the grand total, even if giving the breakdown value."/>
                             </UniformGrid>
                         </GroupBox>
                     </StackPanel>
 
                     <StackPanel>
-                        <GroupBox Header="Organic Scans" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Organic Scans" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="9">
-                                <CheckBox x:Name="exobioScansReportBase" Content="Report Base value" Height="20" Checked="exobioScansReportBase_Toggle" Unchecked="exobioScansReportBase_Toggle" ToolTip="When scanning complete, Report the base value."/>
-                                <CheckBox x:Name="exobioScansHumanizeBase" Content="Humanize Base Value" Height="20" Checked="exobioScansHumanizeBase_Toggle" Unchecked="exobioScansHumanizeBase_Toggle" ToolTip="When reporting the base value, humanize the value for shorter reports." Margin="25,0,0,0"/>
-                                <CheckBox x:Name="exobioScansReportBonus" Content="Report Bonus Value" Height="20" Checked="exobioScansReportBonus_Toggle" Unchecked="exobioScansReportBonus_Toggle" ToolTip="When scanning complete, Report the bonus value."/>
-                                <CheckBox x:Name="exobioScansHumanizeBonus" Content="Humanize Bonus Value" Height="20" Checked="exobioScansHumanizeBonus_Toggle" Unchecked="exobioScansHumanizeBonus_Toggle" ToolTip="When reporting the bonus value, humanize the value for shorter reports." Margin="25,0,0,0"/>
-                                <CheckBox x:Name="exobioScansReportLocation" Content="Report Location" Height="20" Checked="exobioScansReportLocation_Toggle" Unchecked="exobioScansReportLocation_Toggle" ToolTip="Report the coordinates of each scan."/>
-                                <CheckBox x:Name="exobioScansRecommendBodies" Content="RecommendOther Bodies" Height="20" Checked="exobioScansRecommendBodies_Toggle" Unchecked="exobioScansRecommendBodies_Toggle" ToolTip="When scanning complete, recommend other bodies for exobiology."/>
+                                <CheckBox x:Name="exobioScansReportBase" Content="Report base value" Height="20" Checked="exobioScansReportBase_Toggle" Unchecked="exobioScansReportBase_Toggle" ToolTip="When scanning complete, Report the base value."/>
+                                <CheckBox x:Name="exobioScansHumanizeBase" Content="Humanize base value" Height="20" Checked="exobioScansHumanizeBase_Toggle" Unchecked="exobioScansHumanizeBase_Toggle" ToolTip="When reporting the base value, humanize the value for shorter reports." Margin="25,0,0,0"/>
+                                <CheckBox x:Name="exobioScansReportBonus" Content="Report bonus value" Height="20" Checked="exobioScansReportBonus_Toggle" Unchecked="exobioScansReportBonus_Toggle" ToolTip="When scanning complete, Report the bonus value."/>
+                                <CheckBox x:Name="exobioScansHumanizeBonus" Content="Humanize bonus value" Height="20" Checked="exobioScansHumanizeBonus_Toggle" Unchecked="exobioScansHumanizeBonus_Toggle" ToolTip="When reporting the bonus value, humanize the value for shorter reports." Margin="25,0,0,0"/>
+                                <CheckBox x:Name="exobioScansReportLocation" Content="Report scan location" Height="20" Checked="exobioScansReportLocation_Toggle" Unchecked="exobioScansReportLocation_Toggle" ToolTip="Report the coordinates of each scan."/>
+                                <CheckBox x:Name="exobioScansRecommendBodies" Content="Recommend other bodies on complete" Height="20" Checked="exobioScansRecommendBodies_Toggle" Unchecked="exobioScansRecommendBodies_Toggle" ToolTip="When scanning complete, recommend other bodies for exobiology."/>
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox x:Name="exobioScansGenusNum" Text="0" Height="20" TextChanged="exobioScansGenusNum_Changed" ToolTip="On the specified sample number, read the codex entry for the genus." Width="50" HorizontalAlignment="Left" PreviewTextInput="EnsureValidInteger"/>
@@ -56,7 +70,7 @@ d:DesignHeight="400" d:DesignWidth="800" HorizontalContentAlignment="Stretch" Ve
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBox x:Name="exobioScansConditionsNum" Text="0" Height="20" TextChanged="exobioScansConditionsNum_Changed" ToolTip="On the specified sample number, read the summary of conditions for the variant to exist." Width="50" HorizontalAlignment="Left" PreviewTextInput="EnsureValidInteger" IsEnabled="False"/>
+                                    <TextBox x:Name="exobioScansConditionsNum" Text="0" Height="20" TextChanged="exobioScansConditionsNum_Changed" ToolTip="On the specified sample number, read the summary of conditions for the variant to exist." Width="50" HorizontalAlignment="Left" PreviewTextInput="EnsureValidInteger"/>
                                     <Label Height="20" Content="Conditions on scan #" ToolTip="The scan number on which to report the conditions for the variant. Set to 0 to disable." Padding="0,0,0,0"/>
                                 </StackPanel>
 
@@ -65,7 +79,7 @@ d:DesignHeight="400" d:DesignWidth="800" HorizontalContentAlignment="Stretch" Ve
                     </StackPanel>
 
                     <StackPanel>
-                        <GroupBox Header="Legacy Predictions" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Legacy Predictions" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <StackPanel>
                                 <TextBlock Height="40" TextWrapping="WrapWithOverflow">These can often give false predictions due to their broad conditions.</TextBlock>
                                 <UniformGrid Rows="4">
@@ -83,58 +97,58 @@ d:DesignHeight="400" d:DesignWidth="800" HorizontalContentAlignment="Stretch" Ve
                 <UniformGrid Columns="3" Width="800" HorizontalAlignment="Stretch">
 
                     <StackPanel>
-                        <GroupBox Header="General" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="General" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="7">
-                                <CheckBox x:Name="codexReportAllScans" Content="Report All Scans" Height="20" Checked="codexReportAllScans_Toggle" Unchecked="codexReportAllScans_Toggle" ToolTip="Always report the name of the object scanned."/>
-                                <CheckBox x:Name="codexReportNewEntries" Content="Report New Entries" Height="20" Checked="codexReportNewEntries_Toggle" Unchecked="codexReportNewEntries_Toggle" ToolTip="Report the object when the codex entry is new."/>
-                                <CheckBox x:Name="codexReportNewTraits" Content="Report New Traits" Height="20" Checked="codexReportNewTraits_Toggle" Unchecked="codexReportNewTraits_Toggle" ToolTip="Report the object when a new trait is discovered."/>
-                                <CheckBox x:Name="codexReportVoucherAmount" Content="Report Voucher Amount" Height="20" Checked="codexReportVoucherAmount_Toggle" Unchecked="codexReportVoucherAmount_Toggle" ToolTip="Report the object if there is a voucher amount, also report the amount of the voucher."/>
-                                <CheckBox x:Name="codexReportNewOnly" Content="Report New Details Only" Height="20" Checked="codexReportNewOnly_Toggle" Unchecked="codexReportNewOnly_Toggle" ToolTip="Report detailed codex entries (if enabled for the object type) only when the object is new or has a new trait."/>
-                                <CheckBox x:Name="codexReportSystem" Content="Report System Name" Height="20" Checked="codexReportSystem_Toggle" Unchecked="codexReportSystem_Toggle" ToolTip="Say what the current system is that the codex entry applies to."/>
-                                <CheckBox x:Name="codexReportRegion" Content="Report Region Name" Height="20" Checked="codexReportRegion_Toggle" Unchecked="codexReportRegion_Toggle" ToolTip="say what the current region is that the codex entry applies to."/>
+                                <CheckBox x:Name="codexReportAllScans" Content="Report all scans" Height="20" Checked="codexReportAllScans_Toggle" Unchecked="codexReportAllScans_Toggle" ToolTip="Always report the name of the object scanned."/>
+                                <CheckBox x:Name="codexReportNewEntries" Content="Report new entries" Height="20" Checked="codexReportNewEntries_Toggle" Unchecked="codexReportNewEntries_Toggle" ToolTip="Report the object when the codex entry is new."/>
+                                <CheckBox x:Name="codexReportNewTraits" Content="Report new traits" Height="20" Checked="codexReportNewTraits_Toggle" Unchecked="codexReportNewTraits_Toggle" ToolTip="Report the object when a new trait is discovered."/>
+                                <CheckBox x:Name="codexReportVoucherAmount" Content="Report voucher amount" Height="20" Checked="codexReportVoucherAmount_Toggle" Unchecked="codexReportVoucherAmount_Toggle" ToolTip="Report the object if there is a voucher amount, also report the amount of the voucher."/>
+                                <CheckBox x:Name="codexReportNewOnly" Content="Report new details only" Height="20" Checked="codexReportNewOnly_Toggle" Unchecked="codexReportNewOnly_Toggle" ToolTip="Report detailed codex entries (if enabled for the object type) only when the object is new or has a new trait."/>
+                                <CheckBox x:Name="codexReportSystem" Content="Report system name" Height="20" Checked="codexReportSystem_Toggle" Unchecked="codexReportSystem_Toggle" ToolTip="Say what the current system is that the codex entry applies to."/>
+                                <CheckBox x:Name="codexReportRegion" Content="Report region name" Height="20" Checked="codexReportRegion_Toggle" Unchecked="codexReportRegion_Toggle" ToolTip="say what the current region is that the codex entry applies to."/>
                             </UniformGrid>
                         </GroupBox>
                     </StackPanel>
 
                     <StackPanel>
-                        <GroupBox Header="Astrologicals" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Astrologicals" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="3">
                                 <CheckBox x:Name="codexAstroEnable" Content="Enable Astrologicals" Height="20" Checked="codexAstroEnable_Toggle" Unchecked="codexAstroEnable_Toggle"/>
-                                <CheckBox x:Name="codexAstroType" Content="Report Type" Height="20" Margin="25,0,0,0" Checked="codexAstroType_Toggle" Unchecked="codexAstroType_Toggle"/>
-                                <CheckBox x:Name="codexAstroDetails" Content="Report Details" Height="20" Margin="25,0,0,0" Checked="codexAstroDetails_Toggle" Unchecked="codexAstroDetails_Toggle"/>
+                                <CheckBox x:Name="codexAstroType" Content="Report type" Height="20" Margin="25,0,0,0" Checked="codexAstroType_Toggle" Unchecked="codexAstroType_Toggle"/>
+                                <CheckBox x:Name="codexAstroDetails" Content="Report details" Height="20" Margin="25,0,0,0" Checked="codexAstroDetails_Toggle" Unchecked="codexAstroDetails_Toggle"/>
                             </UniformGrid>
                         </GroupBox>
 
-                        <GroupBox Header="Biologicals" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Biologicals" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="4">
                                 <CheckBox x:Name="codexBioEnable" Content="Enable Biologicals" Height="20" Checked="codexBioEnable_Toggle" Unchecked="codexBioEnable_Toggle"/>
-                                <CheckBox x:Name="codexBioGenus" Content="Report Genus Details" Height="20" Margin="25,0,0,0" Checked="codexBioGenus_Toggle" Unchecked="codexBioGenus_Toggle" ToolTip="Report the codex details specific to the genus."/>
-                                <CheckBox x:Name="codexBioSpecies" Content="Report Species Details" Height="20" Margin="25,0,0,0" Checked="codexBioSpecies_Toggle" Unchecked="codexBioSpecies_Toggle" ToolTip="Report the codex details for this particular species."/>
-                                <CheckBox x:Name="codexBioConditions" Content="Conditions" Height="20" Margin="25,0,0,0" Checked="codexBioConditions_Toggle" Unchecked="codexBioConditions_Toggle" ToolTip="Give a summary of the conditions for this variant to exist." IsEnabled="False"/>
+                                <CheckBox x:Name="codexBioGenus" Content="Report genus details" Height="20" Margin="25,0,0,0" Checked="codexBioGenus_Toggle" Unchecked="codexBioGenus_Toggle" ToolTip="Report the codex details specific to the genus."/>
+                                <CheckBox x:Name="codexBioSpecies" Content="Report species details" Height="20" Margin="25,0,0,0" Checked="codexBioSpecies_Toggle" Unchecked="codexBioSpecies_Toggle" ToolTip="Report the codex details for this particular species."/>
+                                <CheckBox x:Name="codexBioConditions" Content="Conditions" Height="20" Margin="25,0,0,0" Checked="codexBioConditions_Toggle" Unchecked="codexBioConditions_Toggle" ToolTip="Give a summary of the conditions for this variant to exist."/>
                             </UniformGrid>
                         </GroupBox>
 
-                        <GroupBox Header="Geologicals" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Geologicals" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="3">
                                 <CheckBox x:Name="codexGeoEnable" Content="Enable Geologicals" Height="20" Margin="0,0,0,0" Checked="codexGeoEnable_Toggle" Unchecked="codexGeoEnable_Toggle"/>
-                                <CheckBox x:Name="codexGeoClass" Content="Report Class Details" Height="20" Margin="25,0,0,0" Checked="codexGeoClass_Toggle" Unchecked="codexGeoClass_Toggle"/>
-                                <CheckBox x:Name="codexGeoDetails" Content="Report Object Details" Height="20" Margin="25,0,0,0" Checked="codexGeoDetails_Toggle" Unchecked="codexGeoDetails_Toggle"/>
+                                <CheckBox x:Name="codexGeoClass" Content="Report class details" Height="20" Margin="25,0,0,0" Checked="codexGeoClass_Toggle" Unchecked="codexGeoClass_Toggle"/>
+                                <CheckBox x:Name="codexGeoDetails" Content="Report object details" Height="20" Margin="25,0,0,0" Checked="codexGeoDetails_Toggle" Unchecked="codexGeoDetails_Toggle"/>
                             </UniformGrid>
                         </GroupBox>
                     </StackPanel>
 
                     <StackPanel>
-                        <GroupBox Header="Guardian Civilization" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Guardian Civilization" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="2">
                                 <CheckBox x:Name="codexGuardianEnable" Content="Enable Guardian" Height="20" Checked="codexGuardianEnable_Toggle" Unchecked="codexGuardianEnable_Toggle"/>
-                                <CheckBox x:Name="codexGuardianDetails" Content="Report Details" Height="20" Margin="25,0,0,0" Checked="codexGuardianDetails_Toggle" Unchecked="codexGuardianDetails_Toggle"/>
+                                <CheckBox x:Name="codexGuardianDetails" Content="Report details" Height="20" Margin="25,0,0,0" Checked="codexGuardianDetails_Toggle" Unchecked="codexGuardianDetails_Toggle"/>
                             </UniformGrid>
                         </GroupBox>
 
-                        <GroupBox Header="Thargoid Civilization" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <GroupBox Header="Thargoid Civilization" HorizontalContentAlignment="Stretch" Margin="5,1,5,1">
                             <UniformGrid Rows="2">
                                 <CheckBox x:Name="codexThargoidEnable" Content="Enable Thargoid" Height="20" Checked="codexThargoidEnable_Toggle" Unchecked="codexThargoidEnable_Toggle"/>
-                                <CheckBox x:Name="codexThargoidDetails" Content="Report Details" Height="20" Margin="25,0,0,0" Checked="codexThargoidDetails_Toggle" Unchecked="codexThargoidDetails_Toggle"/>
+                                <CheckBox x:Name="codexThargoidDetails" Content="Report details" Height="20" Margin="25,0,0,0" Checked="codexThargoidDetails_Toggle" Unchecked="codexThargoidDetails_Toggle"/>
                             </UniformGrid>
                         </GroupBox>
                     </StackPanel>

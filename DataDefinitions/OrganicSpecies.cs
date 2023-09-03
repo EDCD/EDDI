@@ -139,6 +139,7 @@ namespace EddiDataDefinitions
 
         // Localised description data
         public static ResourceManager rmOrganicSpeciesDesc = new ResourceManager("EddiDataDefinitions.Properties.OrganicSpeciesDesc", Assembly.GetExecutingAssembly());
+        public static ResourceManager rmOrganicSpeciesCond = new ResourceManager("EddiDataDefinitions.Properties.OrganicSpeciesCond", Assembly.GetExecutingAssembly());
 
         public string genus;
         public long value;
@@ -151,6 +152,7 @@ namespace EddiDataDefinitions
         public List<string> starClass;
         public List<string> volcanism;
         public string description;
+        public string conditions;
 
         // dummy used to ensure that the static constructor has run
         public OrganicSpecies () : this( "" )
@@ -169,13 +171,8 @@ namespace EddiDataDefinitions
             this.starClass = new List<string>();
             this.volcanism = new List<string>();
             this.description = rmOrganicSpeciesDesc.GetString( species );
+            this.conditions = rmOrganicSpeciesCond.GetString( species );
         }
-
-        //private OrganicSpecies ( string species, long value ) : base( species, species )
-        //{
-        //    this.value = value;
-        //    this.description = rmOrganicSpeciesDesc.GetString( species );
-        //}
 
         /// <summary>
         /// Convert comma separated string lists to class objects (planet, atmos, star, volc)
@@ -235,6 +232,9 @@ namespace EddiDataDefinitions
             {
                 this.volcanism = new List<string>();
             }
+
+            this.description = rmOrganicSpeciesDesc.GetString( species );
+            this.conditions = rmOrganicSpeciesCond.GetString( species );
         }
 
         private OrganicSpecies ( string species,
@@ -262,6 +262,9 @@ namespace EddiDataDefinitions
             this.atmosphereClass = atmosphereClass;
             this.starClass = starClass;
             this.volcanism = volcanism;
+
+            this.description = rmOrganicSpeciesDesc.GetString( species );
+            this.conditions = rmOrganicSpeciesCond.GetString( species );
         }
 
         /// <summary>

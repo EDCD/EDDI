@@ -132,10 +132,16 @@
   <data name="AlbidumCollaredPod" xml:space="preserve">
     <value />
   </data>
+  <data name="AlbidumIceCrystals" xml:space="preserve">
+    <value />
+  </data>
   <data name="AlbidumPeduncleTree" xml:space="preserve">
     <value />
   </data>
   <data name="AlbidumQuadripartitePod" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AlbidumSilicateCrystals" xml:space="preserve">
     <value />
   </data>
   <data name="AlbidumSinuousTubers" xml:space="preserve">
@@ -148,64 +154,70 @@
     <value />
   </data>
   <data name="AleoidaArcus" xml:space="preserve">
-    <value>This aleoida species has upright clumps of long serrated leaves, which can open up to expose a reproductive organ containing tiny round seeds.</value>
+    <value>has upright clumps of long serrated leaves, which can open up to expose a reproductive organ containing tiny round seeds.</value>
   </data>
   <data name="AleoidaCoronamus" xml:space="preserve">
-    <value>This aleioda variation has an interleaved crown of mottled leaves that can grow to head height, with explosive seed pods emerging on long protruding stalks.</value>
+    <value>has an interleaved crown of mottled leaves that can grow to head height, with explosive seed pods emerging on long protruding stalks.</value>
   </data>
   <data name="AleoidaGravis" xml:space="preserve">
-    <value>These aleoida’s wide flat leaves on a heavy bark base can reach huge sizes. and sprout a dome-shaped reproductive organ at their peak.</value>
+    <value>has wide flat leaves on a heavy bark base that can reach huge sizes. and sprout a dome-shaped reproductive organ at their peak.</value>
   </data>
   <data name="AleoidaLaminiae" xml:space="preserve">
-    <value>These aleoida have a circle of upturned leaves marked with patterns, surrounding a bright fleshy pod with darker markings which matures in their centre.</value>
+    <value>have a circle of upturned leaves marked with patterns, surrounding a bright fleshy pod with darker markings which matures in their centre.</value>
   </data>
   <data name="AleoidaSpica" xml:space="preserve">
-    <value>This is an aleoida species with long spiky leaves that can reach over two metres high surrounding a single reproductive organ on a long central stalk.</value>
+    <value>has long spiky leaves that can reach over two metres high surrounding a single reproductive organ on a long central stalk.</value>
   </data>
   <data name="AmphoraPlant" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AurariumGyrePod" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AurariumGyreTree" xml:space="preserve">
     <value />
   </data>
   <data name="AureumBrainTree" xml:space="preserve">
     <value />
   </data>
   <data name="BacteriumAcies" xml:space="preserve">
-    <value>This is a bacterial species that converts energy from neon-based atmospheres, creating looping whirls of bright colour.</value>
+    <value>converts energy from neon-based atmospheres, creating looping whirls of bright colour.</value>
   </data>
   <data name="BacteriumAlcyoneum" xml:space="preserve">
-    <value>This is a bacterial species found in ammonia-based atmospheres that lives in sunlight. A colony’s appearance resembles an intricate maze.</value>
+    <value>Is found in ammonia-based atmospheres that lives in sunlight. A colony’s appearance resembles an intricate maze.</value>
   </data>
   <data name="BacteriumAurasus" xml:space="preserve">
-    <value>These bacteria thrive on sunlight in atmospheres rich with carbon dioxide. They cause blanket coloration across a planetary surface.</value>
+    <value>thrive on sunlight in atmospheres rich with carbon dioxide. They cause blanket coloration across a planetary surface.</value>
   </data>
   <data name="BacteriumBullaris" xml:space="preserve">
-    <value>This species of bacteria thrives on atmospheric methane, appearing as a network of linked bubble paiterns.</value>
+    <value>thrives on atmospheric methane, appearing as a network of linked bubble paiterns.</value>
   </data>
   <data name="BacteriumCerbrus" xml:space="preserve">
-    <value>This is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and sulphur dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells.</value>
+    <value>is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and sulphur dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells.</value>
   </data>
   <data name="BacteriumInformem" xml:space="preserve">
-    <value>These bacteria can be found in nitrogen atmospheres, and form a shapeless mass across the surface.</value>
+    <value>can be found in nitrogen atmospheres, and form a shapeless mass across the surface.</value>
   </data>
   <data name="BacteriumNebulus" xml:space="preserve">
-    <value>This is a bacterial species that survives exclusively on atmospheric helium. They are distinguished by a radial pattern extending outward from the colony’s centre.</value>
+    <value>survives exclusively on atmospheric helium. They are distinguished by a radial pattern extending outward from the colony’s centre.</value>
   </data>
   <data name="BacteriumOmentum" xml:space="preserve">
-    <value>These bacteria convert geothermal heat from nitrogen-based volcanic sites into energy. They appear as long interlinked strands across the surface.</value>
+    <value>convert geothermal heat from nitrogen-based volcanic sites into energy. They appear as long interlinked strands across the surface.</value>
   </data>
   <data name="BacteriumScopulum" xml:space="preserve">
-    <value>These bacteria thrive on the heat generated by carbon-based volcanic activity and appear as long swirling ridges on the surface.</value>
+    <value>thrive on the heat generated by carbon-based volcanic activity and appear as long swirling ridges on the surface.</value>
   </data>
   <data name="BacteriumTela" xml:space="preserve">
-    <value>These bacteria appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites.</value>
+    <value>appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites.</value>
   </data>
   <data name="BacteriumVerrata" xml:space="preserve">
-    <value>These bacteria appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites.</value>
+    <value>appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites.</value>
   </data>
   <data name="BacteriumVesicula" xml:space="preserve">
-    <value>These bacteria survive on worlds with argon—based atmospheres, and appear as a collection of tight loops on the ground.</value>
+    <value>survive on worlds with argon—based atmospheres, and appear as a collection of tight loops on the ground.</value>
   </data>
   <data name="BacteriumVolu" xml:space="preserve">
-    <value>This is a bacterial species dependent upon oxygen atmospheres, which creates random swirling patterns across the ground.</value>
+    <value>are dependent upon oxygen atmospheres, which creates random swirling patterns across the ground.</value>
   </data>
   <data name="BarkMounds" xml:space="preserve">
     <value />
@@ -219,26 +231,35 @@
   <data name="BlatteumCollaredPod" xml:space="preserve">
     <value />
   </data>
+  <data name="BlatteumOctahedralPod" xml:space="preserve">
+    <value />
+  </data>
   <data name="BlatteumQuadripartitePod" xml:space="preserve">
     <value />
   </data>
   <data name="BlatteumSinuousTubers" xml:space="preserve">
     <value />
   </data>
+  <data name="BlatteumTorusMollusc" xml:space="preserve">
+    <value />
+  </data>
   <data name="CactoidaCortexum" xml:space="preserve">
-    <value>This is a species of cactoid that can reach over three metres in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds.</value>
+    <value>can reach over three metres in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds.</value>
   </data>
   <data name="CactoidaLapis" xml:space="preserve">
-    <value>This cactoid species appears as a squat growth with a latficecl upper surface, which eventually produces a cluster of seed pods.</value>
+    <value>appears as a squat growth with a latficecl upper surface, which eventually produces a cluster of seed pods.</value>
   </data>
   <data name="CactoidaPeperatis" xml:space="preserve">
-    <value>This is a cactoid species appearing as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown.</value>
+    <value>appears as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown.</value>
   </data>
   <data name="CactoidaPullulanta" xml:space="preserve">
-    <value>This species of cactoid has a globular base, from which extend vertical cylinders that can reach over four metres. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds.</value>
+    <value>has a globular base, from which extend vertical cylinders that can reach over four metres. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds.</value>
   </data>
   <data name="CactoidaVermis" xml:space="preserve">
-    <value>These cactoids appear as a tall collection of cylinders linked by an undulating membrane and topped with a spiky crown. They often have a spiny life-form attached that is thought to form a symbiotic relationship with the larger organism, although the nature of this is not understood.</value>
+    <value>appear as a tall collection of cylinders linked by an undulating membrane and topped with a spiky crown. They often have a spiny life-form attached that is thought to form a symbiotic relationship with the larger organism, although the nature of this is not understood.</value>
+  </data>
+  <data name="CaeruleumChalicePod" xml:space="preserve">
+    <value />
   </data>
   <data name="CaeruleumGourdMollusc" xml:space="preserve">
     <value />
@@ -246,7 +267,7 @@
   <data name="CaeruleumOctahedralPod" xml:space="preserve">
     <value />
   </data>
-  <data name="CaeruleumpedunclePod" xml:space="preserve">
+  <data name="CaeruleumPedunclePod" xml:space="preserve">
     <value />
   </data>
   <data name="CaeruleumPeduncleTree" xml:space="preserve">
@@ -264,7 +285,7 @@
   <data name="CaeruleumTorusMollusc" xml:space="preserve">
     <value />
   </data>
-  <data name="CandidumpedunclePod" xml:space="preserve">
+  <data name="CandidumPedunclePod" xml:space="preserve">
     <value />
   </data>
   <data name="CandidumRhizomePod" xml:space="preserve">
@@ -283,13 +304,16 @@
     <value />
   </data>
   <data name="ClypeusLacrimam" xml:space="preserve">
-    <value>This is a species of clypeus that grows a broad, tear-shaped shield to protect the sensitive organism from extreme sunlight. The shield’s ridges help to direct Water droplets down into the soil.</value>
+    <value>grows a broad, tear-shaped shield to protect the sensitive organism from extreme sunlight. The shield’s ridges help to direct Water droplets down into the soil.</value>
   </data>
   <data name="ClypeusMargaritus" xml:space="preserve">
-    <value>This clypeus species produces a curved shield that resembles a large pearl in shape and texture. Up to three central organisms grow within it upon a supporting bed of leaves.</value>
+    <value>produces a curved shield that resembles a large pearl in shape and texture. Up to three central organisms grow within it upon a supporting bed of leaves.</value>
   </data>
   <data name="ClypeusSpeculumi" xml:space="preserve">
-    <value>This is a clypeus species that grows an angular shield with a mirrored exterior to protect the spiky organisms. This species can be found on planets orbiting their parent star at a distance of 5 AU or greater.</value>
+    <value>grows an angular shield with a mirrored exterior to protect the spiky organisms. This species can be found on planets orbiting their parent star at a distance of 5 AU or greater.</value>
+  </data>
+  <data name="CobalteumGlobeMollusc" xml:space="preserve">
+    <value />
   </data>
   <data name="CobalteumRhizomePod" xml:space="preserve">
     <value />
@@ -298,18 +322,21 @@
     <value>These biological structures extract resources from a planet and convert them into meta-alloys, a key component in the creation of Thargoid ships and technologies.</value>
   </data>
   <data name="ConchaAureolas" xml:space="preserve">
-    <value>These concha are found on worlds with nitrogen-based atmospheres. Their rounded rock-like structure splits part to extend long stalks topped with loops.</value>
+    <value>are found on worlds with nitrogen-based atmospheres. Their rounded rock-like structure splits part to extend long stalks topped with loops.</value>
   </data>
   <data name="ConchaBiconcavis" xml:space="preserve">
-    <value>This concha species resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with cloughnut—shaped pods that create locations for chemical exchange.</value>
+    <value>resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with cloughnut—shaped pods that create locations for chemical exchange.</value>
   </data>
   <data name="ConchaLabiata" xml:space="preserve">
-    <value>This is a concha species that thrives in atmospheres rich with carbon dioxide. The lip-like upper opening cracks apart to allow a vertical growth of spiky leaves and bright seeds to stretch upward.</value>
+    <value>thrives in atmospheres rich with carbon dioxide. The lip-like upper opening cracks apart to allow a vertical growth of spiky leaves and bright seeds to stretch upward.</value>
   </data>
   <data name="ConchaRenibus" xml:space="preserve">
-    <value>This is a species of concha that relies on heat sources to survive. As the bisected growth increases in size. it sprouts a single stalk topped with an array of luminous fronds that facilitate metabolism.</value>
+    <value>relies on heat sources to survive. As the bisected growth increases in size. it sprouts a single stalk topped with an array of luminous fronds that facilitate metabolism.</value>
   </data>
   <data name="CroceumAnemone" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CroceumGlobeMollusc" xml:space="preserve">
     <value />
   </data>
   <data name="CroceumGourdMollusc" xml:space="preserve">
@@ -319,10 +346,10 @@
     <value />
   </data>
   <data name="ElectricaePluma" xml:space="preserve">
-    <value>This is a species of electricae that extends a tip of four connected loops above the ice, each covered with brightly luminous fronds. This species is typically found on planets orbiting bright white stars.</value>
+    <value>extends a tip of four connected loops above the ice, each covered with brightly luminous fronds. This species is typically found on planets orbiting bright white stars.</value>
   </data>
   <data name="ElectricaeRadialem" xml:space="preserve">
-    <value>These electricae species protrude bioluminescent stalks that radiate out in all directions. It is thought that this species may have an unspecified link with the proximity of nebulae to its host planet.</value>
+    <value>protrude bioluminescent stalks that radiate out in all directions. It is thought that this species may have an unspecified link with the proximity of nebulae to its host planet.</value>
   </data>
   <data name="FlavumBulletMollusc" xml:space="preserve">
     <value />
@@ -336,73 +363,79 @@
   <data name="FlavumSilicateCrystals" xml:space="preserve">
     <value />
   </data>
+  <data name="FlavumTorusMollusc" xml:space="preserve">
+    <value />
+  </data>
   <data name="FonticuluaCampestris" xml:space="preserve">
-    <value>These fonticulua thrive in argon atmospheres, and can reach four metres in height. They feature huge leaf-like structures to capture sunlight for conversion to energy.</value>
+    <value>thrive in argon atmospheres, and can reach four metres in height. They feature huge leaf-like structures to capture sunlight for conversion to energy.</value>
   </data>
   <data name="FonticuluaDigitos" xml:space="preserve">
-    <value>This is a fonticulua species that thrives in methane—based atmospheres, sprouting a cluster of cylindrical tubes directly from the ice.</value>
+    <value>thrives in methane—based atmospheres, sprouting a cluster of cylindrical tubes directly from the ice.</value>
   </data>
   <data name="FonticuluaFluctus" xml:space="preserve">
-    <value>This is a species of fonticulua that exists on worlds with oxygen atmospheres. They produce coiling wave-shaped structures which tilt toward sunlight.</value>
+    <value>exists on worlds with oxygen atmospheres. They produce coiling wave-shaped structures which tilt toward sunlight.</value>
   </data>
   <data name="FonticuluaLapida" xml:space="preserve">
-    <value>This is a fonticulua species that exists in atmospheres with a heavy concentration of nitrogen. Growing up along the main stalk are bright gem-like pods. which can break off and create new colonies.</value>
+    <value>exists in atmospheres with a heavy concentration of nitrogen. Growing up along the main stalk are bright gem-like pods. which can break off and create new colonies.</value>
   </data>
   <data name="FonticuluaSegmentatus" xml:space="preserve">
-    <value>This is a species of fonticulua found in atmospheres dominated by neon, appearing as a pyramid—shaped cluster of frilled sections.</value>
+    <value>Is found in atmospheres dominated by neon, appearing as a pyramid—shaped cluster of frilled sections.</value>
   </data>
   <data name="FonticuluaUpupam" xml:space="preserve">
-    <value>This fonticulua species can he found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis.</value>
+    <value>can he found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis.</value>
   </data>
   <data name="FrutexaAcus" xml:space="preserve">
-    <value>This frutexa species has vivid colouration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods.</value>
+    <value>has vivid colouration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods.</value>
   </data>
   <data name="FrutexaCollum" xml:space="preserve">
-    <value>This is a species of frutexa characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown.</value>
+    <value>Is characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown.</value>
   </data>
   <data name="FrutexaFera" xml:space="preserve">
-    <value>This species of frutexa combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scaitered by light winds.</value>
+    <value>combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scaitered by light winds.</value>
   </data>
   <data name="FrutexaFlabellum" xml:space="preserve">
-    <value>This is a species of frutexa that appears as a bush of leaves with a similar texture to seaweed. Seeds are extended on long stalks and protected by a cage formation until ready to germinate.</value>
+    <value>appears as a bush of leaves with a similar texture to seaweed. Seeds are extended on long stalks and protected by a cage formation until ready to germinate.</value>
   </data>
   <data name="FrutexaFlammasis" xml:space="preserve">
-    <value>This is a frutexa species that gives the appearance of flames, with vivid upright fronds extended from multiple stalks. The fronds are dotted with disc-sha ped spores that are distributed by the wind.</value>
+    <value>gives the appearance of flames, with vivid upright fronds extended from multiple stalks. The fronds are dotted with disc-sha ped spores that are distributed by the wind.</value>
   </data>
   <data name="FrutexaMetallicum" xml:space="preserve">
-    <value>This species of frutexa has an almost metallic shine to its small leaves. Along its upper branches grow spherical spores, which each have a star-shaped opening to increase germination.</value>
+    <value>has an almost metallic shine to its small leaves. Along its upper branches grow spherical spores, which each have a star-shaped opening to increase germination.</value>
   </data>
   <data name="FrutexaSponsae" xml:space="preserve">
-    <value>This is a frutexa species that produces clusters of upright intertwining branches, which are crowned with bright seed sacks.</value>
+    <value>produces clusters of upright intertwining branches, which are crowned with bright seed sacks.</value>
   </data>
   <data name="FumerolaAquatis" xml:space="preserve">
-    <value>This is a species of fumerola that can be found near sites of water-based volcanic activity. They appear as small dark clusters with ridged folds that trap heat within.</value>
+    <value>can be found near sites of water-based volcanic activity. They appear as small dark clusters with ridged folds that trap heat within.</value>
   </data>
   <data name="FumerolaCarbosis" xml:space="preserve">
-    <value>This is a fumerola species found near sites of carbon—based volcanism, appearing as a thin upright tube. An inner organism protrudes from an opening at its peak to increase heat absorption.</value>
+    <value>Is found near sites of carbon—based volcanism, appearing as a thin upright tube. An inner organism protrudes from an opening at its peak to increase heat absorption.</value>
   </data>
   <data name="FumerolaExtremus" xml:space="preserve">
-    <value>This is an exception among its kin. This fumerola species seems to have an arbitrary preference of specific volcanism types which have yet to be explicitly linked in any way. They appear as long vertical stalks with smaller fronds that can stretch out.</value>
+    <value>is an exception among its kin. This fumerola species seems to have an arbitrary preference of specific volcanism types which have yet to be explicitly linked in any way. They appear as long vertical stalks with smaller fronds that can stretch out.</value>
   </data>
   <data name="FumerolaNitris" xml:space="preserve">
-    <value>This species of fumerola prefers nitrogen-based volcanism. They produce an ovoid organism with dotted markings, which sits on top of a thin stalk.</value>
+    <value>prefers nitrogen-based volcanism. They produce an ovoid organism with dotted markings, which sits on top of a thin stalk.</value>
   </data>
   <data name="FungoidaBullarum" xml:space="preserve">
-    <value>This is a fungoida that features clusters of mottled bubble-shaped growths atop a central stalk. These contain spores that can be exposed to the winds to facilitate distribution.</value>
+    <value>features clusters of mottled bubble-shaped growths atop a central stalk. These contain spores that can be exposed to the winds to facilitate distribution.</value>
   </data>
   <data name="FungoidaGelata" xml:space="preserve">
-    <value>This fungoida species resembles an upturned jellyfish, emerging from a solid base buried within the substrate. The exposed part is dominated by fleshy reproductive organisms that shed organic tissue. This tissue can float on the light breeze and form a new organism if it lands in the right location.</value>
+    <value>resembles an upturned jellyfish, emerging from a solid base buried within the substrate. The exposed part is dominated by fleshy reproductive organisms that shed organic tissue. This tissue can float on the light breeze and form a new organism if it lands in the right location.</value>
   </data>
   <data name="FungoidaSetisis" xml:space="preserve">
-    <value>This fungoida species produces vertical clusters interspersed with spore pods atop thin stalks. allowing them to break off and scatter to reproduce elsewhere.</value>
+    <value>produces vertical clusters interspersed with spore pods atop thin stalks. allowing them to break off and scatter to reproduce elsewhere.</value>
   </data>
   <data name="FungoidaStabitis" xml:space="preserve">
-    <value>This is a species of fungoida that thrives on geothermal energy. and can produce two-metre high tower structures composed of tightly clustered cylinders.</value>
+    <value>thrives on geothermal energy. and can produce two-metre high tower structures composed of tightly clustered cylinders.</value>
+  </data>
+  <data name="GypseeumBellMollusc" xml:space="preserve">
+    <value />
   </data>
   <data name="GypseeumBrainTree" xml:space="preserve">
     <value />
   </data>
-  <data name="GypseeumpedunclePod" xml:space="preserve">
+  <data name="GypseeumPedunclePod" xml:space="preserve">
     <value />
   </data>
   <data name="GypseeumRhizomePod" xml:space="preserve">
@@ -462,6 +495,9 @@
   <data name="LuteolumAnemone" xml:space="preserve">
     <value />
   </data>
+  <data name="LuteolumBellMollusc" xml:space="preserve">
+    <value />
+  </data>
   <data name="LuteolumBulbMollusc" xml:space="preserve">
     <value />
   </data>
@@ -480,34 +516,43 @@
   <data name="LuteolumUmbrellaMollusc" xml:space="preserve">
     <value />
   </data>
+  <data name="NiveumGlobeMollusc" xml:space="preserve">
+    <value />
+  </data>
   <data name="NiveumGlobeMolluscs" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NiveumOctahedralPod" xml:space="preserve">
     <value />
   </data>
   <data name="NiveusOctahedralPod" xml:space="preserve">
     <value />
   </data>
   <data name="OsseusCornibus" xml:space="preserve">
-    <value>This is an osseus species that produces a stacked series of spiral structures up to about three metres. These ridged features are upturned to better absorb sunlight for photosynthesis.</value>
+    <value>produces a stacked series of spiral structures up to about three metres. These ridged features are upturned to better absorb sunlight for photosynthesis.</value>
   </data>
   <data name="OsseusDiscus" xml:space="preserve">
-    <value>This is an osseus that appears as half-buried discs with radial patterns, which may resemble natural rook formations from a distance. They absorb geothermal energy from below the surface as well as available heat sources above ground.</value>
+    <value>appears as half-buried discs with radial patterns, which may resemble natural rook formations from a distance. They absorb geothermal energy from below the surface as well as available heat sources above ground.</value>
   </data>
   <data name="OsseusFractus" xml:space="preserve">
-    <value>This osseus species can grow to over six metres across. They produce wide ridged frills for metabolic interactions including aosorbing sunlight for energy production.</value>
+    <value>can grow to over six metres across. They produce wide ridged frills for metabolic interactions including aosorbing sunlight for energy production.</value>
   </data>
   <data name="OsseusPellebantus" xml:space="preserve">
-    <value>This is a species of osseus with a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption.</value>
+    <value>has a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption.</value>
   </data>
   <data name="OsseusPumice" xml:space="preserve">
-    <value>This osseus species grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume ofthe organism, facilitating chemical capture and chemosynthesis on its catalytically active surface.</value>
+    <value>grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume ofthe organism, facilitating chemical capture and chemosynthesis on its catalytically active surface.</value>
   </data>
   <data name="OsseusSpiralis" xml:space="preserve">
-    <value>This is a species of osseus that produces coiling spiral structures up to six metres wide. There are ridged folds on their upturned surfaces designed to capture sunlight.</value>
+    <value>produces coiling spiral structures up to six metres wide. There are ridged folds on their upturned surfaces designed to capture sunlight.</value>
   </data>
   <data name="OstrinumBrainTree" xml:space="preserve">
     <value />
   </data>
   <data name="OstrinumChalicePod" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OstrinumGlobeMollusc" xml:space="preserve">
     <value />
   </data>
   <data name="OstrinumPeduncleTree" xml:space="preserve">
@@ -523,6 +568,9 @@
     <value />
   </data>
   <data name="PrasinumBioluminescentAnemone" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PrasinumGlobeMollusc" xml:space="preserve">
     <value />
   </data>
   <data name="PrasinumIceCrystals" xml:space="preserve">
@@ -558,7 +606,7 @@
   <data name="PurpureumMetallicCrystals" xml:space="preserve">
     <value />
   </data>
-  <data name="PurpureumpedunclePod" xml:space="preserve">
+  <data name="PurpureumPedunclePod" xml:space="preserve">
     <value />
   </data>
   <data name="PurpureumRhizomePod" xml:space="preserve">
@@ -568,13 +616,13 @@
     <value />
   </data>
   <data name="ReceptaConditivus" xml:space="preserve">
-    <value>This is a recepta species where the body of the organism is suspended above ground inside a sphere-shaped translucent membrane. This is filled with chemical-rich ﬂuid that both protects the organism and provides the chemical soup needed for metabolism. Chemical exchange is controlled actively through the membrane and passively through the extensive root structure.</value>
+    <value>has a body that is suspended above ground inside a sphere-shaped translucent membrane. This is filled with chemical-rich ﬂuid that both protects the organism and provides the chemical soup needed for metabolism. Chemical exchange is controlled actively through the membrane and passively through the extensive root structure.</value>
   </data>
   <data name="ReceptaDeltahedronix" xml:space="preserve">
-    <value>This species of recepta produces a thick lattice of trunks in a deltahedron shape. This grows around and above the globular central organism, and helps to capture, retain and focus geothermal heat for thermosynthesis.</value>
+    <value>produces a thick lattice of trunks in a deltahedron shape. This grows around and above the globular central organism, and helps to capture, retain and focus geothermal heat for thermosynthesis.</value>
   </data>
   <data name="ReceptaUmbrux" xml:space="preserve">
-    <value>This is a recepta species that grows a thick latticed structure for protection. A fine translucent membrane stretches between its gaps, allowing sunlight to penetrate and reach the inner organism for photosynthesis.</value>
+    <value>grows a thick latticed structure for protection. A fine translucent membrane stretches between its gaps, allowing sunlight to penetrate and reach the inner organism for photosynthesis.</value>
   </data>
   <data name="RoseumAnemone" xml:space="preserve">
     <value />
@@ -583,6 +631,12 @@
     <value />
   </data>
   <data name="RoseumBrainTree" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RoseumGlobeMollusc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RoseumGyrePod" xml:space="preserve">
     <value />
   </data>
   <data name="RoseumIceCrystals" xml:space="preserve">
@@ -601,6 +655,9 @@
     <value />
   </data>
   <data name="RubellumAsterTree" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RubellumChalicePod" xml:space="preserve">
     <value />
   </data>
   <data name="RubellumPeduncleTree" xml:space="preserve">
@@ -639,7 +696,13 @@
   <data name="RufumGourdMollusc" xml:space="preserve">
     <value />
   </data>
-  <data name="RufumpedunclePod" xml:space="preserve">
+  <data name="RufumPedunclePod" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RutulumCalcitePlates" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RutulumGlobeMollusc" xml:space="preserve">
     <value />
   </data>
   <data name="SolidMineralSpheres" xml:space="preserve">
@@ -652,91 +715,91 @@
     <value />
   </data>
   <data name="StratumAraneamus" xml:space="preserve">
-    <value>This is a stratum species that has a vaguely octopoid shape. Their pale semi-translucent upper domes can reveal colourful inner organisms, which contrast with their darker outstretched tentacles.</value>
+    <value>has a vaguely octopoid shape. Their pale semi-translucent upper domes can reveal colourful inner organisms, which contrast with their darker outstretched tentacles.</value>
   </data>
   <data name="StratumCucumisis" xml:space="preserve">
-    <value>This is a species of stratum that displays fleshy ovoid shapes that are connected in a narrow pattern across the ground. These are covered with streaks of round photosynthetic cells that absorb sunlight.</value>
+    <value>displays fleshy ovoid shapes that are connected in a narrow pattern across the ground. These are covered with streaks of round photosynthetic cells that absorb sunlight.</value>
   </data>
   <data name="StratumExcutitus" xml:space="preserve">
-    <value>This stratum species appears as a mixture of tight concentric ring patterns and mottled proto-leaves in a mixture of dark hues.</value>
+    <value>appears as a mixture of tight concentric ring patterns and mottled proto-leaves in a mixture of dark hues.</value>
   </data>
   <data name="StratumFrigus" xml:space="preserve">
-    <value>This species of stratum forms broad interconnected ring structures, which are composed of narrow ridges to capture sunlight.</value>
+    <value>forms broad interconnected ring structures, which are composed of narrow ridges to capture sunlight.</value>
   </data>
   <data name="StratumLaminamus" xml:space="preserve">
-    <value>This particular stratum species gives the appearance of overlapping rock plateaus, each with narrow bands of colouration.</value>
+    <value>gives the appearance of overlapping rock plateaus, each with narrow bands of colouration.</value>
   </data>
   <data name="StratumLimaxus" xml:space="preserve">
-    <value>This species of stratum appears as a series of unconnected ovoid sha pes across the ground, which are the protruding tips of the larger subterranean organism.</value>
+    <value>appears as a series of unconnected ovoid sha pes across the ground, which are the protruding tips of the larger subterranean organism.</value>
   </data>
   <data name="StratumPaleas" xml:space="preserve">
-    <value>This is a stratum that blends thick overlapping vines with irregular growths. with varying colours appearing in bands or streaks.  </value>
+    <value>blends thick overlapping vines with irregular growths. with varying colours appearing in bands or streaks.</value>
   </data>
   <data name="StratumTectonicas" xml:space="preserve">
-    <value>This is a stratum species with a thick rock-like outer shell, covered with an irregular lattice of brighter cells that absorb sunlight for photosynthesis.</value>
+    <value>has a thick rock-like outer shell, covered with an irregular lattice of brighter cells that absorb sunlight for photosynthesis.</value>
   </data>
   <data name="ThargoidBarnacleBarbs" xml:space="preserve">
-    <value>These biological structures are typically found near Thargoid barnacles. Smaller ones contain rare elements, while larger ones contain meta-alloys.</value>
+    <value>These biological structures extract resources from a planet and convert them into meta-alloys, a key component in the creation of Thargoid ships and technologies.</value>
   </data>
   <data name="TubusCavas" xml:space="preserve">
-    <value>This is a tubus species that extends pale vertical stalks composed of rigid modules. Colourful fronds frequently appear in the gaps between segments and aid with controlling gaseous exchange.</value>
+    <value>extends pale vertical stalks composed of rigid modules. Colourful fronds frequently appear in the gaps between segments and aid with controlling gaseous exchange.</value>
   </data>
   <data name="TubusCompagibus" xml:space="preserve">
-    <value>This is a tubus species with narrow pale segments and fronds growing between each module. A wide crown of leaves at the peak hold spores on their undersides, to germinate across a wide area.</value>
+    <value>has narrow pale segments and fronds growing between each module. A wide crown of leaves at the peak hold spores on their undersides, to germinate across a wide area.</value>
   </data>
   <data name="TubusConifer" xml:space="preserve">
-    <value>This is a tubus species formed from hollow vertical cylinders that can reach heights of six metres. Mature specimens are capped with a downtu rned crown that can distribute seeds on the wind across a wide area.</value>
+    <value>Is formed from hollow vertical cylinders that can reach heights of six metres. Mature specimens are capped with a downtu rned crown that can distribute seeds on the wind across a wide area.</value>
   </data>
   <data name="TubusRosarium" xml:space="preserve">
-    <value>This tubus species is composed of squat tubes growing into a vertical spire. The upper pods of mature specimens produce explosive seed pods on their outer skin.</value>
+    <value>is composed of squat tubes growing into a vertical spire. The upper pods of mature specimens produce explosive seed pods on their outer skin.</value>
   </data>
   <data name="TubusSororibus" xml:space="preserve">
-    <value>This species of tubus grows a cluster of hollow stalks composed of rigid segments. Over time these become capped with a growth that flowers and produces seeds.</value>
+    <value>grows a cluster of hollow stalks composed of rigid segments. Over time these become capped with a growth that flowers and produces seeds.</value>
   </data>
   <data name="TussockAlbata" xml:space="preserve">
-    <value>This is a tussock species characterised by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores.</value>
+    <value>Is characterised by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores.</value>
   </data>
   <data name="TussockCapillum" xml:space="preserve">
-    <value>This tussock species is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carw a number of round beans.</value>
+    <value>is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carw a number of round beans.</value>
   </data>
   <data name="TussockCaputus" xml:space="preserve">
-    <value>This is a tussock species with leaves that have a thick segmented lower half and a willowy upper half. Mature versions produce separate stalks that carry ovoid organisms clotted with spores.</value>
+    <value>has leaves that have a thick segmented lower half and a willowy upper half. Mature versions produce separate stalks that carry ovoid organisms clotted with spores.</value>
   </data>
   <data name="TussockCatena" xml:space="preserve">
-    <value>This species of tussock has very thin stalks carrying twin sets of seed sacks along their entire length, resembling links on a chain.</value>
+    <value>has very thin stalks carrying twin sets of seed sacks along their entire length, resembling links on a chain.</value>
   </data>
   <data name="TussockCultro" xml:space="preserve">
-    <value>This is a tussock species with tall sharp reeds reaching about two metres, characterised by narrow markings along their length.</value>
+    <value>has tall sharp reeds reaching about two metres, characterised by narrow markings along their length.</value>
   </data>
   <data name="TussockDivisa" xml:space="preserve">
-    <value>This tussock species blends thick segmented lower growths with longer. narrower leaves. Mature versions have pale spores along the upper branches.</value>
+    <value>blends thick segmented lower growths with longer. narrower leaves. Mature versions have pale spores along the upper branches.</value>
   </data>
   <data name="TussockIgnis" xml:space="preserve">
-    <value>This tussock species produces thick intertwined leaves, above which sprout narrow stems crowned with seed pods.</value>
+    <value>produces thick intertwined leaves, above which sprout narrow stems crowned with seed pods.</value>
   </data>
   <data name="TussockPennata" xml:space="preserve">
-    <value>This is a tussock species that extends large seed pods on thin stems above a cluster of bright leaves.</value>
+    <value>extends large seed pods on thin stems above a cluster of bright leaves.</value>
   </data>
   <data name="TussockPennatis" xml:space="preserve">
-    <value>This is a tussock species with feather-shaped growths surrounding a single segmented stem which when mature is crowned with colourful seeds.</value>
+    <value>has feather-shaped growths surrounding a single segmented stem which when mature is crowned with colourful seeds.</value>
   </data>
   <data name="TussockPropagito" xml:space="preserve">
-    <value>This is a species of tussock that sprouts tapering leaves, with tips covered with colourful seed pods.</value>
+    <value>sprouts tapering leaves, with tips covered with colourful seed pods.</value>
   </data>
   <data name="TussockSerrati" xml:space="preserve">
-    <value>This tussock species sprouts serrated leaves around thick stalks that produce dark seed pods.</value>
+    <value>sprouts serrated leaves around thick stalks that produce dark seed pods.</value>
   </data>
   <data name="TussockStigmasis" xml:space="preserve">
-    <value>This tussock species resembles a patch of tough. wiry grasses. Taller stalks carrying disc-shaped seed pods rise above the main organism when mature.</value>
+    <value>resembles a patch of tough. wiry grasses. Taller stalks carrying disc-shaped seed pods rise above the main organism when mature.</value>
   </data>
   <data name="TussockTriticum" xml:space="preserve">
-    <value>This is a species of tussock with thin tough leaves marked with dark stripes. From these sprout taller stalks with small leaves, from which seeds are released to the winds.</value>
+    <value>has thin tough leaves marked with dark stripes. From these sprout taller stalks with small leaves, from which seeds are released to the winds.</value>
   </data>
   <data name="TussockVentusa" xml:space="preserve">
-    <value>This is a species of tussock that blends tough lower stalks with taller willowy reeds, which produce small pale spores.</value>
+    <value>blends tough lower stalks with taller willowy reeds, which produce small pale spores.</value>
   </data>
   <data name="TussockVirgam" xml:space="preserve">
-    <value>This is a species of tussock with thin reeds clustered around a central stalk. which is eventually crowned with spores.</value>
+    <value>has thin reeds clustered around a central stalk. which is eventually crowned with spores.</value>
   </data>
   <data name="ViolaceumSinuousTubers" xml:space="preserve">
     <value />
@@ -753,7 +816,16 @@
   <data name="VirideCalcitePlates" xml:space="preserve">
     <value />
   </data>
+  <data name="VirideCapsuleMollusc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VirideChalicePod" xml:space="preserve">
+    <value />
+  </data>
   <data name="VirideGourdMollusc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VirideGyreTree" xml:space="preserve">
     <value />
   </data>
   <data name="VirideOctahedralPod" xml:space="preserve">
@@ -772,6 +844,9 @@
     <value />
   </data>
   <data name="VirideSinuousTubers" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VirideTorusMollusc" xml:space="preserve">
     <value />
   </data>
   <data name="VirideUmbrellaMollusc" xml:space="preserve">

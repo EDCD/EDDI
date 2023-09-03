@@ -5,8 +5,6 @@
         public Organic organic;
         public Geology geology;
         public Astronomical astronomical;
-
-        // TODO:#2212 - Update to standardized class format
         public Guardian guardian;
         public Thargoid thargoid;
 

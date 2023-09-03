@@ -138,32 +138,35 @@ namespace EddiDataDefinitions
 
         private static Body PreserveBodyData(Body oldBody, Body updatedBody)
         {
-            // TODO:#2212........[Remove]
-            string log = $"[PreserveBodyData] ---> START <---\r\n";
+            string log = "";
 
-            log += $"[PreserveBodyData] Body {oldBody.shortname}:\r\n" +
-                   $"\t Reported old:({oldBody.surfaceSignals.bio.reportedTotal}), new:({updatedBody.surfaceSignals.bio.reportedTotal})\r\n" +
-                   $"\t    Total old:({oldBody.surfaceSignals.bio.numTotal}), new:({updatedBody.surfaceSignals.bio.numTotal})\r\n" +
-                   $"\t Complete old:({oldBody.surfaceSignals.bio.numComplete}), new:({updatedBody.surfaceSignals.bio.numComplete})\r\n" +
-                   $"\tRemaining old:({oldBody.surfaceSignals.bio.numRemaining}), new:({updatedBody.surfaceSignals.bio.numRemaining})\r\n";
+            if(Logging.Verbose) {
+                log += $"[Exobiology] ---> START <---\r\n";
 
-            //foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
-            //{
-            //    log += $"[PreserveBodyData] Body {oldBody.shortname}: oldBody: {item.genus.localizedName}\r\n" +
-            //           $"\tsamples = {item.samples}\r\n" +
-            //           $"\tcomplete = {item.complete}\r\n" +
-            //           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
-            //           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
-            //}
+                log += $"[Exobiology] Body {oldBody.shortname}:\r\n" +
+                       $"\t Reported old:({oldBody.surfaceSignals.bio.reportedTotal}), new:({updatedBody.surfaceSignals.bio.reportedTotal})\r\n" +
+                       $"\t    Total old:({oldBody.surfaceSignals.bio.numTotal}), new:({updatedBody.surfaceSignals.bio.numTotal})\r\n" +
+                       $"\t Complete old:({oldBody.surfaceSignals.bio.numComplete}), new:({updatedBody.surfaceSignals.bio.numComplete})\r\n" +
+                       $"\tRemaining old:({oldBody.surfaceSignals.bio.numRemaining}), new:({updatedBody.surfaceSignals.bio.numRemaining})\r\n";
 
-            //foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
-            //{
-            //    log += $"[PreserveBodyData] Body {updatedBody.shortname}: updatedBody: {item.genus.localizedName}\r\n" +
-            //           $"\tsamples = {item.samples}\r\n" +
-            //           $"\tcomplete = {item.complete}\r\n" +
-            //           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
-            //           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
-            //}
+                foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
+                {
+                    log += $"[Exobiology] Body {oldBody.shortname}: oldBody: {item.genus.localizedName}\r\n" +
+                           $"\tsamples = {item.samples}\r\n" +
+                           $"\tcomplete = {item.complete}\r\n" +
+                           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
+                           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
+                }
+
+                foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
+                {
+                    log += $"[Exobiology] Body {updatedBody.shortname}: updatedBody: {item.genus.localizedName}\r\n" +
+                           $"\tsamples = {item.samples}\r\n" +
+                           $"\tcomplete = {item.complete}\r\n" +
+                           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
+                           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
+                }
+            }
 
             if ( ( oldBody.scannedDateTime ?? DateTime.MinValue) > ( updatedBody.scannedDateTime ?? DateTime.MinValue ) )
             {
@@ -227,21 +230,21 @@ namespace EddiDataDefinitions
                 if ( updatedBody.surfaceSignals.bio.reportedTotal < oldBody.surfaceSignals.bio.reportedTotal )
                 {
                     updatedBody.surfaceSignals.bio = oldBody.surfaceSignals.bio;
-                    log += $"[PreserveBodyData] Using oldBody for bios\r\n";
+                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using oldBody for bios\r\n"; }
                 }
                 else
                 {
-                    log += $"[PreserveBodyData] Using updatedBody for bios\r\n";
+                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using updatedBody for bios\r\n"; }
                 }
 
                 if ( updatedBody.surfaceSignals.geo.reportedTotal < oldBody.surfaceSignals.geo.reportedTotal )
                 {
                     updatedBody.surfaceSignals.geo = oldBody.surfaceSignals.geo;
-                    log += $"[PreserveBodyData] Using oldBody for geos\r\n";
+                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using oldBody for geos\r\n"; }
                 }
                 else
                 {
-                    log += $"[PreserveBodyData] Using updatedBody for geos\r\n";
+                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using updatedBody for geos\r\n"; }
                 }
             }
             else
@@ -249,18 +252,17 @@ namespace EddiDataDefinitions
                 if ( updatedBody.surfaceSignals == null )
                 {
                     updatedBody.surfaceSignals = new SurfaceSignals();
-                    log += $"[PreserveBodyData] updatedBody is null, aborting\r\n";
+                    if(Logging.Verbose) { log += $"[PreserveBodyData] updatedBody is null, aborting\r\n"; }
                 }
 
                 if ( oldBody.surfaceSignals == null )
                 {
-                    log += $"[PreserveBodyData] oldBody is null, aborting\r\n";
+                    if(Logging.Verbose) { log += $"[PreserveBodyData] oldBody is null, aborting\r\n"; }
                 }
             }
 
             log += $"[PreserveBodyData] ---> END <---";
-            Logging.Info( log );
-            Thread.Sleep( 10 );
+            Logging.Debug( log );
 
             return updatedBody;
         }

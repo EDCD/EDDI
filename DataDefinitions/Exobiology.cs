@@ -80,15 +80,6 @@ namespace EddiDataDefinitions
             }
         }
 
-        /// <summary>Get all the biological data, this should be done at the first sample</summary>
-        //public void SetData ( string edname_variant )
-        //{
-        //    this.variant = OrganicVariant.LookupByVariant( edname_variant );
-        //    this.species = OrganicSpecies.Lookup( this.variant.species );
-        //    this.genus = OrganicGenus.Lookup ( this.variant.genus );
-        //    this.exists = true;
-        //}
-
         /// <summary>Increase the sample count, set the coordinates, and return the number of scans complete.</summary>
         public int Sample ( string scanType, string variant, decimal? latitude, decimal? longitude )
         {

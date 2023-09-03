@@ -41,62 +41,19 @@ namespace EddiEvents
             this.bodyname = bodyName;
             this.bodyId = bodyId;
             this.surfacesignals = surfaceSignals;
-            //this.body = body;
 
-            //Logging.Info( $"[SurfaceSignalsEvent] Bio Count = {body.surfaceSignals.bio.numTotal}" );
-            //Thread.Sleep( 10 );
-
-            int c = 0;
-            foreach ( string signal in biosignals )
-            {
-                Logging.Debug( $"[SurfaceSignalsEvent] biosignals[{c}] {signal}" );
-                Thread.Sleep( 10 );
-                c++;
+            if (Logging.Verbose) {
+                string log = "";
+                int c = 0;
+                foreach ( string signal in biosignals )
+                {
+                    log += $"[SurfaceSignalsEvent] biosignals[{c}] {signal}\r\n";
+                    c++;
+                }
+                Logging.Debug( log );
             }
 
             this.biosignals = biosignals;
-
-            ////this.biosignals = new List<string>();
-
-            // TODO:#2212........[If type is FSS, then let DiscoveryMonitor save number of bios present, then predict bios after a Scan event.]
-            
-            // TODO:#2212........[If type is SAA, then let DiscoveryMonitor prune predictions (real bios are reported here)]
-
-            //if ( detectionType == "FSS" )
-            //    {
-            //    //    Logging.Info( $">>> - FSS" );
-            //    //    if ( body != null )
-            //    //    {
-            //    //        Logging.Info( $">>> - Body Exists" );
-            //    //        foreach ( SignalAmount signal in surfaceSignals )
-            //    //        {
-            //    //            if ( signal.signalSource.edname == "SAA_SignalType_Biological" && signal.amount > 0 )
-            //    //            {
-            //    //                Logging.Info( $">>> - GetBios()" );
-            //    //                this.biosignals = Exobiology.PredictBios( body );
-            //    //            }
-            //    //        }
-            //    //    }
-            //    }
-            //    else if (detectionType == "SAA")
-            //    {
-            //    //    Logging.Info( $">>> - SAA" );
-            //    //    this.biosignals = biosignals;
-            //    //    if ( body != null )
-            //    //    {
-            //    //        Logging.Info( $">>> - GetBios()" );
-            //    //        this.biosignals = body.surfaceSignals.GetBios();
-            //    //        foreach ( string signal in this.biosignals )
-            //    //        {
-            //    //            Logging.Info( $">>>   - {signal}" );
-            //    //        }
-            //    //    }
-            //    //    else
-            //    //    {
-            //    //        Logging.Info( $">>> - New List" );
-            //    //        this.biosignals = new List<string>();
-            //    //    }
-            //    }
         }
     }
 }
