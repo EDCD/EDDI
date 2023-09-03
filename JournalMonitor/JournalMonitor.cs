@@ -4909,39 +4909,17 @@ namespace EddiJournalMonitor
                                 break;
                             case "CodexEntry":
                                 {
-                                    long entryId = JsonParsing.getLong(data, "EntryID");
-                                    string edname = JsonParsing.getString(data, "Name");
-                                    string codexName = JsonParsing.getString(data, "Name");
-                                    codexName = CodexEntry.NormalizedName( codexName );
-                                    string subCategoryName = JsonParsing.getString(data, "SubCategory");
-                                    subCategoryName = CodexEntry.NormalizedSubCategory( subCategoryName );
-                                    string categoryName = JsonParsing.getString(data, "Category");
-                                    categoryName = CodexEntry.NormalizedCategory( categoryName );
-                                    string regionName = JsonParsing.getString(data, "Region_Localised");
-                                    string systemName = JsonParsing.getString(data, "System");
-
-                                    bool newEntry = false;
-                                    try
-                                    { newEntry = JsonParsing.getBool( data, "IsNewEntry" ); }
-                                    catch { newEntry = false; }
-
-                                    bool newTrait = false;
-                                    try
-                                    { newTrait = JsonParsing.getBool( data, "NewTraitsDiscovered" ); }
-                                    catch { newTrait = false; }
-
-                                    int voucherAmount = 0;
-                                    try
-                                    { voucherAmount = JsonParsing.getInt( data, "VoucherAmount" ); }
-                                    catch { voucherAmount = 0; }
-
+                                    var entryId = JsonParsing.getLong(data, "EntryID");
+                                    var edname = JsonParsing.getString(data, "Name");
+                                    var subCategoryEDName = JsonParsing.getString( data, "SubCategory" );
+                                    var categoryEDName = JsonParsing.getString( data, "Category" );
+                                    var regionLocalizedName = JsonParsing.getString(data, "Region_Localised");
+                                    var systemName = JsonParsing.getString(data, "System");
+                                    var newEntry = JsonParsing.getOptionalBool( data, "IsNewEntry" ) ?? false;
+                                    var newTrait = JsonParsing.getOptionalBool( data, "NewTraitsDiscovered" ) ?? false;
+                                    var voucherAmount = JsonParsing.getOptionalInt( data, "VoucherAmount" ) ?? 0;
                                     events.Add( new CodexEntryEvent( timestamp,
-                                                                     entryId,
-                                                                     codexName,
-                                                                     subCategoryName,
-                                                                     categoryName,
-                                                                     regionName,
-                                                                     systemName,
+                                                                     new CodexEntry( entryId, edname, subCategoryEDName, categoryEDName, regionLocalizedName, systemName ),
                                                                      newEntry,
                                                                      newTrait,
                                                                      voucherAmount ) { raw = line, fromLoad = fromLogLoad } );
