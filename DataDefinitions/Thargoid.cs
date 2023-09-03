@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
-using System.Threading;
-using Utilities;
 
 namespace EddiDataDefinitions
 {

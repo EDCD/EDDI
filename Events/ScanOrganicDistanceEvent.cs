@@ -1,6 +1,4 @@
-﻿using EddiDataDefinitions;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Utilities;
 
 namespace EddiEvents
