@@ -104,8 +104,9 @@ namespace EddiDiscoveryMonitor
             {
                 Body body = _currentBody(_currentBodyId);
 
-                if ( body.surfaceSignals.bio.list.ContainsKey( _currentGenus ) ) {
-                    int samples = body.surfaceSignals.bio.list[ _currentGenus ].samples;
+                if ( body.surfaceSignals.TryGetBio( _currentGenus, out var bio ) ) 
+                {
+                    int samples = bio.samples;
                     if ( samples > 0 && samples < 3 )
                     {
                         if ( status.latitude != null && status.longitude != null )
@@ -119,7 +120,7 @@ namespace EddiDiscoveryMonitor
 
                             if ( samples >= 1 )
                             {
-                                coords1 = body.surfaceSignals.bio.list[ _currentGenus ].coords[ 0 ];
+                                coords1 = bio.coords[ 0 ];
                                 coords1.lastStatus = coords1.status;
                                 decimal? distance1 = Utilities.Functions.SurfaceDistanceKm(body.radius*1000, status.latitude, status.longitude, coords1.latitude, coords1.longitude);
 
@@ -128,7 +129,7 @@ namespace EddiDiscoveryMonitor
                                     // convert Km to m
                                     distance1 *= (decimal)1000.0;
 
-                                    if ( distance1 <= body.surfaceSignals.bio.list[ _currentGenus ].genus.distance )
+                                    if ( distance1 <= bio.genus.distance )
                                     {
                                         // Was previously outside sample range, alert that we have violated the radius
                                         if ( coords1.lastStatus == Exobiology.Status.OutsideSampleRange )
@@ -137,7 +138,7 @@ namespace EddiDiscoveryMonitor
                                             coords1.status = Exobiology.Status.InsideSampleRange;
                                         }
                                     }
-                                    else if ( distance1 > body.surfaceSignals.bio.list[ _currentGenus ].genus.distance )
+                                    else if ( distance1 > bio.genus.distance )
                                     {
                                         // Was previously inside sample range, alert that we have traveled past the sample radius
                                         if ( coords1.lastStatus == Exobiology.Status.InsideSampleRange )
@@ -151,7 +152,7 @@ namespace EddiDiscoveryMonitor
 
                             if ( samples >= 2 )
                             {
-                                coords2 = body.surfaceSignals.bio.list[ _currentGenus ].coords[ 1 ];
+                                coords2 = bio.coords[ 1 ];
                                 coords2.lastStatus = coords2.status;
                                 decimal? distance2 = Utilities.Functions.SurfaceDistanceKm(body.radius*1000, status.latitude, status.longitude, coords2.latitude, coords2.longitude);
 
@@ -160,7 +161,7 @@ namespace EddiDiscoveryMonitor
                                 {
                                     // convert Km to m
                                     distance2 *= (decimal)1000.0;
-                                    if ( distance2 <= body.surfaceSignals.bio.list[ _currentGenus ].genus.distance )
+                                    if ( distance2 <= bio.genus.distance )
                                     {
                                         // Was previously outside sample range, alert that we have violated the radius
                                         if ( coords2.lastStatus == Exobiology.Status.OutsideSampleRange )
@@ -169,7 +170,7 @@ namespace EddiDiscoveryMonitor
                                             coords2.status = Exobiology.Status.InsideSampleRange;
                                         }
                                     }
-                                    else if ( distance2 > body.surfaceSignals.bio.list[ _currentGenus ].genus.distance )
+                                    else if ( distance2 > bio.genus.distance )
                                     {
                                         // Was previously inside sample range, alert that we have traveled past the sample radius
                                         if ( coords2.lastStatus == Exobiology.Status.InsideSampleRange )
@@ -185,12 +186,7 @@ namespace EddiDiscoveryMonitor
                             {
                                 try
                                 {
-                                    // TODO:#2212: Save/Update Body data
-                                    // Only update when there is a status change, otherwise we don't care
-                                    EDDI.Instance.CurrentStarSystem.AddOrUpdateBody( body );
-                                    StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
-
-                                    EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, body.surfaceSignals.bio.list[ _currentGenus ].genus.distance, status1, status2 ) );
+                                    EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, bio.genus.distance, status1, status2 ) );
                                 }
                                 catch ( Exception e )
                                 {
@@ -270,7 +266,52 @@ namespace EddiDiscoveryMonitor
             }
             else if ( @event.detectionType == "SAA" )
             {
-                // TODO:#2212........[Do we need to do anything here?]
+                var body = _currentSystem?.BodyWithID( @event.bodyId );
+                if ( body != null )
+                {
+                    // Set the number of detected signals for both Bio and Geo
+                    foreach ( var signal in @event.surfacesignals )
+                    {
+                        // Save the number of biologicals to update SurfaceSignals
+                        if ( signal.edname == "SAA_SignalType_Biological" )
+                        {
+                            body.surfaceSignals.reportedBiologicalCount = signal.amount;
+                        }
+
+                        if ( signal.edname == "SAA_SignalType_Geological" )
+                        {
+                            body.surfaceSignals.reportedGeologicalCount = signal.amount;
+                        }
+                    }
+
+                    // If the current list was predicted then erase and recreate with actual values
+                    // If the number of bios in the list does not match the reported number of bios then clear
+                    if ( body.surfaceSignals.predicted || 
+                         body.surfaceSignals.biosignals.Count != body.surfaceSignals.reportedBiologicalCount )
+                    {
+                        log += $"\r\n\tClearing bio list.";
+                        body.surfaceSignals.biosignals.Clear();
+                    }
+
+                    Logging.Info( log );
+                    Thread.Sleep( 10 );
+
+                    if ( @event.bioSignals != null )
+                    {
+                        // The bio list is no longer a prediction, do not update it again.
+                        body.surfaceSignals.predicted = false;
+
+                        // TODO: Compare our predicted and actual bio signals.
+
+                        // Update from predicted to actual bio signals
+                        body.surfaceSignals.biosignals = @event.bioSignals;
+                    }
+                }
+
+                // 2212: Save/Update Body data
+                body.surfaceSignals.lastUpdated = @event.timestamp;
+                EDDI.Instance.CurrentStarSystem.AddOrUpdateBody( body );
+                StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
             }
 
             if(configuration.enableLogging) {
@@ -293,30 +334,31 @@ namespace EddiDiscoveryMonitor
 
                 Body body = _currentBody(_currentBodyId);
 
-                // If the biological doesn't exist, lets add it now
-                if ( !body.surfaceSignals.bio.list.ContainsKey( @event.genus ) )
+                if ( !body.surfaceSignals.TryGetBio(@event.genus, out var bio) )
                 {
-                    log += $"[handleScanOrganicEvent] Genus doesn't exist in list, adding {@event.genus}\r\n";
-                    body.surfaceSignals.AddBio( @event.genus );
+                    // If the biological doesn't exist, lets add it now
+                    // TODO:#2212........[Remove]
+                    Logging.Info( $"[handleScanOrganicEvent] Genus doesn't exist in list, adding {@event.genus}" );
+                    Thread.Sleep( 10 );
+                    body.surfaceSignals.AddBioFromGenus( @event.genus );
                 }
-
-                // If only the genus is present, then finish other data (and prune predictions)
-                if ( body.surfaceSignals.bio.list[ @event.genus ].samples == 0 )
+                else if ( bio.samples == 0 )
                 {
+                    // If only the genus is present, then finish other data (and prune predictions)
                     log += $"[handleScanOrganicEvent] Samples is zero, setting additional data from variant\r\n";
-                    body.surfaceSignals.bio.list[ @event.genus ].SetData( @event.variant );
+                    bio.SetData( @event.variant );
                 }
 
                 if(configuration.enableLogging) {
                     Logging.Debug( log );
                 }
 
-                body.surfaceSignals.bio.list[ @event.genus ].Sample( @event.scanType,
+                bio.Sample( @event.scanType,
                                                                      @event.variant,
                                                                      StatusService.Instance.CurrentStatus.latitude,
                                                                      StatusService.Instance.CurrentStatus.longitude );
 
-                @event.bio = body.surfaceSignals.GetBio( @event.genus );
+                @event.bio = bio;
 
                 if(configuration.enableLogging) {
                     log = $"[handleScanOrganicEvent] SetBio ---------------------------------------------\r\n";
@@ -331,12 +373,11 @@ namespace EddiDiscoveryMonitor
 
                 // These are updated when the above Sample() function is called, se we send them back to the event
                 // Otherwise we would probably have to enqueue a new event (maybe not a bad idea?)
-                @event.numTotal = body.surfaceSignals.bio.numTotal;
-                @event.numComplete = body.surfaceSignals.bio.numComplete;
-                @event.numRemaining = body.surfaceSignals.bio.numRemaining;
-                @event.listRemaining = body.surfaceSignals.bio.listRemaining;
+                @event.numTotal = body.surfaceSignals.biosignals.Count;
+                @event.listRemaining = body.surfaceSignals.biosignalsremaining().Select(b => b.genus.localizedName).ToList();
 
-                // TODO:#2212: Save/Update Body data
+                // 2212: Save/Update Body data
+                body.surfaceSignals.lastUpdated = @event.timestamp;
                 EDDI.Instance.CurrentStarSystem.AddOrUpdateBody( body );
                 StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
             }
@@ -364,8 +405,8 @@ namespace EddiDiscoveryMonitor
                             Body body = _currentBody(_currentBodyId);
 
                             // Always update the reported totals
-                            body.surfaceSignals.bio.reportedTotal = signal.bioCount;
-                            body.surfaceSignals.geo.reportedTotal = signal.geoCount;
+                            body.surfaceSignals.reportedBiologicalCount = signal.bioCount;
+                            body.surfaceSignals.reportedGeologicalCount = signal.geoCount;
 
                             log += $"[handleBodyScannedEvent:FSS backlog <{@event.systemAddress},{@event.bodyId}>\r\n" +
                                    $"\tBio Count is {signal.bioCount} ({body.surfaceSignals.bio.reportedTotal})\r\n" +
@@ -387,12 +428,12 @@ namespace EddiDiscoveryMonitor
                                     }
 
                                     log += $"\r\n\tClearing current bio list";
-                                    body.surfaceSignals.bio.list.Clear();
+                                    body.surfaceSignals.biosignals.Clear();
 
                                     foreach ( string genus in bios )
                                     {
                                         log += $"\r\n\tAddBio {genus}";
-                                        body.surfaceSignals.AddBio( genus );
+                                        body.surfaceSignals.AddBioFromGenus( genus );
                                     }
                                     if(configuration.enableLogging) {
                                         Logging.Debug( log );
@@ -401,7 +442,7 @@ namespace EddiDiscoveryMonitor
                                     // This is used by SAASignalsFound to know if we can safely clear the list to create the actual bio list
                                     body.surfaceSignals.predicted = true;
                                     _fss_Signals[ Tuple.Create<ulong, long>( (ulong)@event.systemAddress, (long)@event.bodyId ) ].status = true;
-                                    List<string> bioList = body.surfaceSignals.GetBios();
+                                    List<string> bioList = body.surfaceSignals.GetLocalizedBios();
 
                                     if(configuration.enableLogging) {
                                         log += "\r\n[handleBodyScannedEvent]:";
@@ -412,7 +453,7 @@ namespace EddiDiscoveryMonitor
                                     }
 
                                     // This doesn't have to be used but is provided just in case
-                                    EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body, body.surfaceSignals.GetBios() ) );
+                                    EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body, body.surfaceSignals.GetLocalizedBios() ) );
 
                                     saveBody = true;
                                 }
@@ -428,7 +469,8 @@ namespace EddiDiscoveryMonitor
 
                             if ( saveBody )
                             {
-                                // TODO:#2212: Save/Update Body data
+                                // 2212: Save/Update Body data
+                                body.surfaceSignals.lastUpdated = @event.timestamp;
                                 EDDI.Instance.CurrentStarSystem.AddOrUpdateBody( body );
                                 StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
                             }
@@ -998,9 +1040,9 @@ namespace EddiDiscoveryMonitor
                         //  - Should be within 150Ly from a nebula
                         if ( genus == "Cone" )
                         {
-                            if ( body.reportedGeos < 3 )
+                            if ( body.surfaceSignals.geosignals.Count < 3 )
                             {
-                                if ( enableLog ) { log = log + $"\tPURGE (geo signals: {body.reportedGeos} < 3)\r\n"; }
+                                if ( enableLog ) { log = log + $"\tPURGE (geo signals: {body.surfaceSignals.geosignals.Count} < 3)\r\n"; }
                                 goto Skip_To_Purge;
                             }
                         }

@@ -28,10 +28,10 @@ namespace EddiEvents
         public int? numTotal { get; set; }
 
         [PublicAPI]
-        public int? numComplete { get; set; }
+        public int? numComplete => numTotal - numRemaining;
 
-        [PublicAPI]
-        public int? numRemaining { get; set; }
+        [ PublicAPI ] 
+        public int? numRemaining => listRemaining.Count;
 
         [PublicAPI]
         public List<string> listRemaining { get; set; }
@@ -46,28 +46,14 @@ namespace EddiEvents
 
         public ScanOrganicEvent ( DateTime timestamp, ulong systemAddress, int bodyId, Body body, string scanType, string genus, string species, string variant ) : base(timestamp, NAME)
         {
+            this.systemAddress = systemAddress;
             this.bodyId = bodyId;
             this.scanType = scanType;
             this.genus = genus;
             this.species = species;
             this.variant = variant;
 
-            try
-            {
-                this.bio = new Exobiology( genus );
-                try
-                {
-                    this.bio = body.surfaceSignals.GetBio( genus );
-                }
-                catch ( System.Exception e )
-                {
-                    Logging.Error( $"ScanOrganicEvent: Failed to set 'this.bio = body.surfaceSignals.GetBio( genus )' [{e}]" );
-                }
-            }
-            catch ( System.Exception e )
-            {
-                Logging.Error( $"ScanOrganicEvent: Failed to get Surface Signals [{e}]" );
-            }
+            this.bio = body.surfaceSignals.TryGetBio( genus, out var fetchedBio ) ? fetchedBio : new Exobiology( genus );
         }
     }
 }
