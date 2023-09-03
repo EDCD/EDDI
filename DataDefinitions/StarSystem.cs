@@ -22,9 +22,6 @@ namespace EddiDataDefinitions
 
         public long? EDSMID { get; set; } // The ID in EDSM
 
-        /// <summary>List of BaryCentre IDs with list of child BodyIds</summary>
-        public BaryCentre baryCentre { get; set; }
-
         /// <summary>X co-ordinate for this system</summary>
         [PublicAPI]
         public decimal? x { get; set; }
@@ -550,7 +547,6 @@ namespace EddiDataDefinitions
             bodies = ImmutableList.Create<Body>();
             factions = new List<Faction>();
             stations = new List<Station>();
-            baryCentre = new BaryCentre();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -597,6 +593,15 @@ namespace EddiDataDefinitions
         {
             if (other is null) { return null; }
             return Functions.StellarDistanceLy(x, y, z, other.x, other.y, other.z);
+        }
+
+        public HashSet<long> GetChildBodyIDs ( long parentBodyID )
+        {
+            // Use a hashset to ensure no duplicate values
+            return bodies
+                .Where(body => body.parents.Any(parent => parent.Values.Contains(parentBodyID)) && body.bodyId != null)
+                .Select(body => (long)body.bodyId)
+                .ToHashSet();
         }
     }
 }

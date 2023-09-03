@@ -595,8 +595,8 @@ namespace EddiDiscoveryMonitor
                         if ( check.starClass.Count > 0 )
                         {
                             bool foundParent = false;
-                            foreach ( IDictionary<string, object> parent in body.parents )
-                            {
+                            foreach ( var parent in body.parents )
+                                {
                                 foreach ( string key in parent.Keys )
                                 {
                                     if ( key == "Star" )
@@ -621,7 +621,7 @@ namespace EddiDiscoveryMonitor
                                     else if ( key == "Null" )
                                     {
                                         long baryId = (long)parent[ key ];
-                                        List<long> barys = _currentSystem.baryCentre.GetBaryCentres( baryId );
+                                        var barys = _currentSystem.GetChildBodyIDs( baryId );
 
                                         foreach ( long bodyId in barys )
                                         {
@@ -883,8 +883,8 @@ namespace EddiDiscoveryMonitor
                         if ( check.starClass.Count > 0 )
                         {
                             bool foundParent = false;
-                            foreach ( IDictionary<string, object> parent in body.parents )
-                            {
+                            foreach ( var parent in body.parents )
+                                {
                                 foreach ( string key in parent.Keys )
                                 {
                                     if ( key == "Star" )
@@ -909,7 +909,7 @@ namespace EddiDiscoveryMonitor
                                     else if ( key == "Null" )
                                     {
                                         long baryId = (long)parent[ key ];
-                                        List<long> barys = _currentSystem.baryCentre.GetBaryCentres( baryId );
+                                        var barys = _currentSystem.GetChildBodyIDs( baryId );
 
                                         foreach ( long bodyId in barys )
                                         {

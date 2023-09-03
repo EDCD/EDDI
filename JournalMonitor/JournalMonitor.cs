@@ -961,55 +961,17 @@ namespace EddiJournalMonitor
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
-                                    // TODO:#2212: Save/Update StarSystem data
-                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
-
                                     // Parent body types and IDs
-                                    data.TryGetValue("Parents", out object parentsVal);
-                                    List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
-
-                                    // Check if it is ok to add BaryCentre data
-                                    bool baryOK = false;
-                                    bool baryUpdated = false;
-                                    if ( system != null && bodyId != null )
+                                    var parents = new List<IDictionary<string, long>>();
+                                    if ( data.TryGetValue( "Parents", out object parentsVal ) )
                                     {
-                                        baryOK = true;
-                                    }
-
-                                    if (parentsVal != null)
-                                    {
-                                        foreach (IDictionary<string, object> parent in (List<object>)parentsVal)
+                                        foreach ( IDictionary<string, object> parentsDict in (List<object>)parentsVal )
                                         {
-                                            parents.Add(parent);
-
-                                            // Add BaryCentre data
-                                            if ( baryOK )
-                                            {
-                                                foreach ( string key in parent.Keys )
-                                                {
-                                                    // If the parent type is a BaryCentre, add it to the system data
-                                                    if ( key == "Null" )
-                                                    {
-                                                        try
-                                                        {
-                                                            long id = (long)parent[ key ];
-                                                            system.baryCentre.AddBody( id, (long)bodyId );
-                                                            baryUpdated = true;
-                                                        }
-                                                        catch ( Exception e )
-                                                        {
-                                                            Logging.Error( $"Failed to add body to BaryCentre [{e}]" );
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    // TODO:#2212: Save/Update StarSystem data if BaryCentre data was added
-                                    if ( baryUpdated )
+                                            foreach ( var kvPair in parentsDict )
                                     {
-                                        StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
+                                                parents.Add( new Dictionary<string, long> { { kvPair.Key, (long)kvPair.Value } } );
+                                            }
+                                    }
                                     }
 
                                     // Scan status
