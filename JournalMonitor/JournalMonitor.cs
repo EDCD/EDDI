@@ -4113,10 +4113,13 @@ namespace EddiJournalMonitor
                                         surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
 
                                         var biosignals = new HashSet<Exobiology>();
-                                        foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
+                                        if ( genusesVal != null )
                                         {
-                                            var genus = GetOrganicGenus(signal);
-                                            biosignals.Add( new Exobiology( genus ) );
+                                            foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
+                                            {
+                                                var genus = GetOrganicGenus(signal);
+                                                biosignals.Add( new Exobiology( genus ) );
+                                            }
                                         }
 
                                         events.Add( new SurfaceSignalsEvent( timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals, biosignals ) { raw = line, fromLoad = fromLogLoad } );
