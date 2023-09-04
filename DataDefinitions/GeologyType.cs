@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class GeologyType : ResourceBasedLocalizedEDName<GeologyType>
     {
@@ -24,6 +26,7 @@
         public static readonly GeologyType L_TypeAnomaly = new GeologyType ( "L_TypeAnomaly" );
         public static readonly GeologyType E_TypeAnomaly = new GeologyType ( "E_TypeAnomaly" );
 
+        [PublicAPI]
         public string description => Properties.GeologyTypeDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run

@@ -1041,6 +1041,11 @@ namespace EddiDataDefinitions
                    new OrganicVariant( NormalizeVariant( edname ) ); // No match.
         }
 
+        public static new OrganicVariant FromEDName ( string edname )
+        {
+            return ResourceBasedLocalizedEDName<OrganicVariant>.FromEDName( NormalizeVariant( edname ) );
+        }
+
         public static string NormalizeVariant ( string edname )
         {
             return edname?

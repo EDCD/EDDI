@@ -103,9 +103,14 @@ namespace EddiDataDefinitions
         public static readonly Geology Lava_Spouts_SilicateMagma = new Geology( "Lava_Spouts_SilicateMagma", 1400306, GeologyType.LavaSpout, (long)50000 );
 
         public long entryID;
-        public bool exists;                 // This item exists and has been populated with information
+
+        [PublicAPI]
         public GeologyType type;
+
+        [PublicAPI]
         public long value;
+
+        [PublicAPI]
         public string description;
 
         // dummy used to ensure that the static constructor has run

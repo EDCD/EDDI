@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class OrganicGenus : ResourceBasedLocalizedEDName<OrganicGenus>
     {
@@ -65,8 +67,10 @@
         public static readonly OrganicGenus CalcitePlates = new OrganicGenus( "CalcitePlates", 0 );
         public static readonly OrganicGenus ThargoidBarnacle = new OrganicGenus( "ThargoidBarnacle", 0 );
 
+        [PublicAPI]
         public int minimumDistanceMeters { get; private set; }
 
+        [PublicAPI]
         public string description => Properties.OrganicGenusDesc.ResourceManager.GetString( NormalizeGenus( edname ) );
 
         // dummy used to ensure that the static constructor has run

@@ -29,7 +29,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public int samples => sampleCoords.Count;
 
-        public Exobiology ( OrganicGenus genus, bool isPrediction = false )
+        public Exobiology ( OrganicGenus genus, bool isPrediction = false ) : base ( genus )
         {
             this.genus = genus;
 

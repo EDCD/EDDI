@@ -33,7 +33,11 @@ namespace EddiDataDefinitions
         //missing Thargoid Scythe Hunter
 
         public long? entryID;
+
+        [PublicAPI]
         public long? value;
+
+        [PublicAPI]
         public string description => Properties.ThargoidDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run

@@ -15,13 +15,13 @@ namespace EddiEvents
         public string systemName => codexEntry.systemName;
 
         [PublicAPI( "The category of the entry." )]
-        public string categoryName => codexEntry.categoryName;
+        public string categoryName => codexEntry.categoryName.Replace( "_", " " );
 
         [PublicAPI( "The subcategory of the entry." )]
-        public string subCategoryName => codexEntry.subCategoryName;
+        public string subCategoryName => codexEntry.subCategoryName.Replace( "_", " " );
 
         [PublicAPI( "The name of the entry." )]
-        public string entryName => codexEntry.entryName;
+        public string entryName => codexEntry.entryName.Replace( "_", " " );
 
         [PublicAPI( "The region of the discovery." )]
         public string localizedRegion => codexEntry.localizedRegion;
@@ -40,6 +40,8 @@ namespace EddiEvents
 
         // Not intended to be user facing
 
+        public ulong systemAddress => codexEntry.systemAddress;
+        
         public CodexEntryEvent ( DateTime timestamp, CodexEntry codexEntry, bool newEntry, bool newTrait, int voucherAmount ) : base( timestamp, NAME )
         {
             this.codexEntry = codexEntry;

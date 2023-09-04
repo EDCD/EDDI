@@ -110,8 +110,10 @@ namespace EddiDataDefinitions
 
         public long? entryID { get; private set; }
 
+        [PublicAPI]
         public AstronomicalType type { get; private set; }
 
+        [PublicAPI]
         public string localizedDescription { get; private set; }
 
         // dummy used to ensure that the static constructor has run

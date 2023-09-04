@@ -25,7 +25,11 @@ namespace EddiDataDefinitions
         public static readonly Guardian Relic_Tower = new Guardian( "Relic_Tower", 3200500, null );
 
         public long? entryID;
+
+        [PublicAPI]
         public long? value;
+
+        [PublicAPI]
         public string description => Properties.GuardianDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run

@@ -23,17 +23,21 @@ namespace EddiEvents
         public decimal bonus { get; private set; }
 
         [PublicAPI("The total credits received")]
-        public decimal total { get; private set; }
+        public decimal total => value + bonus;
 
         [PublicAPI( "Full object data for the sold biological variants" )]
         public List<Organic> bioSignals { get; private set; }
 
-        public OrganicDataSoldEvent(DateTime timestamp, List<Organic> bioSignals, decimal value, decimal bonus, decimal total) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        public long marketID { get; private set; }
+
+        public OrganicDataSoldEvent(DateTime timestamp, long marketID, List<Organic> bioSignals, decimal value, decimal bonus) : base(timestamp, NAME)
         {
+            this.marketID = marketID;
             this.bioSignals = bioSignals;
             this.value = value;
             this.bonus = bonus;
-            this.total = total;
         }
     }
 }

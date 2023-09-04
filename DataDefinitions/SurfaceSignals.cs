@@ -9,23 +9,20 @@ namespace EddiDataDefinitions
     {
         #region Biological Signals
 
-        [ PublicAPI ] 
+        /// <summary>
+        /// Create an Exobiology list, which contains additional structures for tracking
+        /// </summary>
+        [ PublicAPI ("Biological signal data") ] 
         public HashSet<Exobiology> biosignals { get; set; } = new HashSet<Exobiology>();
 
-        // The number of geologicals reported by FSS/SAA
+        [PublicAPI ( "The number of biologicals reported by FSS/SAA" )]
         public int reportedBiologicalCount { get; set; }
 
         public HashSet<Exobiology> biosignalsremaining () =>
             biosignals.Where( e => e.scanState != Exobiology.State.SampleComplete ).ToHashSet();
 
-        /// <summary>
-        /// Create an Exobiology list, which contains additional structures for tracking
-        /// Both are keyed to their edname because the EntryID is not available for the ScanOrganic event.
-        /// While we could probably use a List here, the IDictionary inherently prevents duplicate entries from being added.
-        /// </summary>
 
-        // Are the current biologicals predicted
-        [PublicAPI]
+        [PublicAPI("True if the current biologicals are predicted (but not confirmed) ")]
         public bool predicted;
 
         public bool TryGetBio ( string genusEDName, out Exobiology bio )
@@ -54,7 +51,7 @@ namespace EddiDataDefinitions
 
         #region Geology Signals
 
-        [PublicAPI]
+        [PublicAPI( "Geological signal data" )]
         public HashSet<Geology> geosignals { get; set; } = new HashSet<Geology>();
 
         // The number of geologicals reported by FSS/SAA

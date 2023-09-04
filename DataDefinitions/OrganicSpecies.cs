@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -258,7 +259,10 @@ namespace EddiDataDefinitions
         public static readonly OrganicSpecies ThargoidBarnacleBarbs = new OrganicSpecies("ThargoidBarnacleBarbs", OrganicGenus.ThargoidBarnacle, 0, 0, 0, "", 0, "", "", "", "" );
 
         public OrganicGenus genus;
+
+        [PublicAPI]
         public long value;
+        
         public IList<string> planetClass;
         public decimal? maxG;
         public decimal? minK;
