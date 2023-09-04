@@ -21,9 +21,10 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public string state => scanState.ToString();
 
+        // coordinates of scan [n-1]. Only Log and Sample are stored.
         [ PublicAPI ]
-        public List<Tuple<decimal?, decimal?>> sampleCoords; // coordinates of scan [n-1]. Only Log and Sample are stored.
-
+        public List<Tuple<decimal?, decimal?>> sampleCoords = new List<Tuple<decimal?, decimal?>>(); 
+        
         [PublicAPI] public bool nearPriorSample { get; set; }
 
         [PublicAPI]
@@ -57,7 +58,7 @@ namespace EddiDataDefinitions
                 scanState = State.SampleStarted;
                 sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );
             }
-            else if ( scanType == "Sample" && samples == 1 )
+            else if ( scanType == "Sample" && samples < 2 )
             {
                 scanState = State.SampleInProgress;
                 sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );

@@ -42,9 +42,12 @@ namespace EddiDataDefinitions
         /// </summary>
         /// <param name="genus">The OrganicGenus of the biological object</param>
         /// <param name="prediction">true if this is a prediction, false if confirmed</param>
-        public void AddBioFromGenus ( OrganicGenus genus, bool prediction = false )
+        /// <returns>The Exobiological object which was added to the body's surface signals</returns>
+        public Exobiology AddBioFromGenus ( OrganicGenus genus, bool prediction = false )
         {
-            biosignals.Add( new Exobiology( genus, prediction ) );
+            var bio = new Exobiology( genus, prediction );
+            biosignals.Add( bio );
+            return bio;
         }
 
         #endregion

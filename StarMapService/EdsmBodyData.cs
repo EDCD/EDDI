@@ -186,11 +186,11 @@ namespace EddiStarMapService
                     {
                         // EDSM classifies any body with an empty string atmosphere property as "No atmosphere". 
                         // However, gas giants also receive an empty string. Fix it, since gas giants have atmospheres. 
-                        atmosphereClass = AtmosphereClass.FromEDName("GasGiant");
+                        atmosphereClass = AtmosphereClass.GasGiant;
                     }
                     else
                     {
-                        atmosphereClass = AtmosphereClass.FromName((string)body["atmosphereType"]);
+                        atmosphereClass = AtmosphereClass.FromName((string)body["atmosphereType"]) ?? AtmosphereClass.None;
                     }
 
                     List<SolidComposition> solidCompositions = new List<SolidComposition>();

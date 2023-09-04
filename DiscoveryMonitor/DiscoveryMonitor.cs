@@ -9,9 +9,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiDiscoveryMonitor
 {
     public class DiscoveryMonitor : IEddiMonitor
@@ -27,8 +29,8 @@ namespace EddiDiscoveryMonitor
         private HashSet<FssSignal> fssSignalsLibrary = new HashSet<FssSignal>();
 
         private DiscoveryMonitorConfiguration configuration;
-        private OrganicGenus _currentGenus;
-        private long _currentBodyId;
+        internal OrganicGenus _currentGenus;
+        internal long _currentBodyId;
         private StarSystem _currentSystem => EDDI.Instance?.CurrentStarSystem;
         private Body _currentBody ( long bodyId ) => _currentSystem?.BodyWithID( bodyId );
 
@@ -83,17 +85,20 @@ namespace EddiDiscoveryMonitor
         {
             if ( sender is Status status )
             {
-                UpdateScanDistance( status );
+                if ( TryCheckScanDistance( status, out var bio ) )
+                {
+                    EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, bio ) );
+                }
             }
         }
 
         /// <summary>
-        /// Update the currently active bio scan distance (if any)
+        /// Check the currently active bio scan distance (if any). Return true if it's time to post a `ScanOrganicDistance` event.
         /// </summary>
-        private void UpdateScanDistance ( Status status )
+        internal bool TryCheckScanDistance ( Status status, out Exobiology bioResult )
         {
-            if ( !CheckSafe() || status.latitude is null || status.longitude is null )
-            { return; }
+            bioResult = null;
+            if ( !CheckSafe() || status.latitude is null || status.longitude is null ) { return false; }
 
             var body = _currentBody(_currentBodyId);
             if ( body.surfaceSignals.TryGetBio( _currentGenus, out var bio ) && bio.samples > 0 )
@@ -117,7 +122,8 @@ namespace EddiDiscoveryMonitor
                     if ( !bio.nearPriorSample )
                     {
                         bio.nearPriorSample = true;
-                        EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, bio ) );
+                        bioResult = bio;
+                        return true;
                     }
                 }
                 else if ( distanceM > bio.genus.minimumDistanceMeters )
@@ -126,10 +132,12 @@ namespace EddiDiscoveryMonitor
                     if ( bio.nearPriorSample )
                     {
                         bio.nearPriorSample = false;
-                        EDDI.Instance.enqueueEvent( new ScanOrganicDistanceEvent( DateTime.UtcNow, bio ) );
+                        bioResult = bio;
+                        return true;
                     }
                 }
             }
+            return false;
         }
 
         public void PreHandle ( Event @event )
@@ -144,7 +152,7 @@ namespace EddiDiscoveryMonitor
             { handleBodyScannedEvent( scannedEvent ); }
         }
 
-        private void handleCodexEntryEvent ( CodexEntryEvent @event )
+        internal void handleCodexEntryEvent ( CodexEntryEvent @event )
         {
             // Not sure if we have anything to do here with this yet
         }
@@ -153,7 +161,7 @@ namespace EddiDiscoveryMonitor
         /// Triggered when a planet is scanned (FSS) and mapped (SAA).
         /// For FSS, store information so that we can predict the genus that will be present
         /// </summary>
-        private void handleSurfaceSignalsEvent ( SurfaceSignalsEvent @event )
+        internal void handleSurfaceSignalsEvent ( SurfaceSignalsEvent @event )
         {
             var log = "";
             if ( @event.detectionType == "FSS" )
@@ -256,7 +264,7 @@ namespace EddiDiscoveryMonitor
             return true;
         }
 
-        private void handleScanOrganicEvent ( ScanOrganicEvent @event )
+        internal void handleScanOrganicEvent ( ScanOrganicEvent @event )
         {
             string log = "";
 
@@ -275,12 +283,16 @@ namespace EddiDiscoveryMonitor
                 if ( !body.surfaceSignals.TryGetBio( @event.genus, out var bio ) )
                 {
                     log += $"[handleScanOrganicEvent] Genus doesn't exist in list, adding {@event.genus}\r\n";
-                    body.surfaceSignals.AddBioFromGenus( @event.genus );
+                    bio = body.surfaceSignals.AddBioFromGenus( @event.genus );
                 }
-                // If only the genus is present, then finish other data (and prune predictions)
-                else if ( bio.samples == 0 )
+                else if ( bio.scanState == Exobiology.State.Predicted )
                 {
-                    log += $"[handleScanOrganicEvent] Samples is zero, setting additional data from variant\r\n";
+                    log += $"[handleScanOrganicEvent] Presence of predicted organic is confirmed\r\n";
+                    bio.scanState = Exobiology.State.Confirmed;
+                }
+                if ( bio.variant is null )
+                {
+                    log += $"[handleScanOrganicEvent] Setting additional data from variant details\r\n";
                     bio.SetVariantData( @event.variant );
                 }
 
@@ -319,7 +331,7 @@ namespace EddiDiscoveryMonitor
             }
         }
 
-        private void handleBodyScannedEvent ( BodyScannedEvent @event )
+        internal void handleBodyScannedEvent ( BodyScannedEvent @event )
         {
             string log = "";
 

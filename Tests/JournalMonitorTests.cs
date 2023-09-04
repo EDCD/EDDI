@@ -2351,7 +2351,7 @@ namespace UnitTests
         }
 
         [ TestMethod ]
-        public void TextCodexEntryGeoEvent()
+        public void TestCodexEntryGeoEvent()
         {
             var line = @"{ ""timestamp"":""2019-03-21T05:31:09Z"", ""event"":""CodexEntry"", ""EntryID"":2402003, ""Name"":""$Codex_Ent_L_Phn_Part_Clus_003_Name;"", ""Name_Localised"":""L01-Type Anomaly"", ""SubCategory"":""$Codex_SubCategory_Geology_and_Anomalies;"", ""SubCategory_Localised"":""Geology and anomalies"", ""Category"":""$Codex_Category_Biology;"", ""Category_Localised"":""Biological and Geological"", ""Region"":""$Codex_RegionName_1;"", ""Region_Localised"":""Galactic Centre"", ""System"":""Juenae OX-U e2-8852"", ""SystemAddress"":38020377946588, ""IsNewEntry"":true }";
             var events = JournalMonitor.ParseJournalEntry(line);
@@ -2380,7 +2380,7 @@ namespace UnitTests
         }
         
         [ TestMethod ]
-        public void TextCodexEntryBioEvent()
+        public void TestCodexEntryBioEvent()
         {
             var line = @"{ ""timestamp"":""2023-05-14T04:20:36Z"", ""event"":""CodexEntry"", ""EntryID"":2370210, ""Name"":""$Codex_Ent_Fonticulus_02_TTS_Name;"", ""Name_Localised"":""Fonticulua Campestris - Red"", ""SubCategory"":""$Codex_SubCategory_Organic_Structures;"", ""SubCategory_Localised"":""Organic structures"", ""Category"":""$Codex_Category_Biology;"", ""Category_Localised"":""Biological and Geological"", ""Region"":""$Codex_RegionName_18;"", ""Region_Localised"":""Inner Orion Spur"", ""System"":""Wandrama"", ""SystemAddress"":7266681759105, ""BodyID"":15, ""NearestDestination"":"""", ""Latitude"":-49.633488, ""Longitude"":32.112751, ""IsNewEntry"":true }";
             var events = JournalMonitor.ParseJournalEntry(line);
@@ -2411,7 +2411,7 @@ namespace UnitTests
         }
         
         [ TestMethod ]
-        public void TextCodexEntryThargoidEvent()
+        public void TestCodexEntryThargoidEvent()
         {
             var line = @"{ ""timestamp"":""2023-05-29T07:50:55Z"", ""event"":""CodexEntry"", ""EntryID"":3100402, ""Name"":""$Codex_Ent_Basilisk_Name;"", ""Name_Localised"":""Thargoid Interceptor Basilisk"", ""SubCategory"":""$Codex_SubCategory_Thargoid;"", ""SubCategory_Localised"":""Thargoid objects"", ""Category"":""$Codex_Category_Civilisations;"", ""Category_Localised"":""Xenological"", ""Region"":""$Codex_RegionName_18;"", ""Region_Localised"":""Inner Orion Spur"", ""System"":""Camaye"", ""SystemAddress"":2007796585154, ""BodyID"":0, ""IsNewEntry"":true, ""VoucherAmount"":50000 }";
             var events = JournalMonitor.ParseJournalEntry(line);
@@ -2438,7 +2438,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TextOrganicDataSoldEvent ()
+        public void TestOrganicDataSoldEvent ()
         {
             var line = OrganicDataSoldEvent.SAMPLE;
             var events = JournalMonitor.ParseJournalEntry(line);
