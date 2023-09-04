@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Basilisk" xml:space="preserve">
-    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
+    <value>These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Berserker" xml:space="preserve">
     <value>This ship can increase the damage output of nearby Thargoid Scouts.</value>
@@ -127,22 +127,22 @@
     <value>These biomechanical structures expel caustic gas, and are deployed in great numbers to create and maintain dense clouds. They appear to react violently to nearby heat sources.</value>
   </data>
   <data name="Cyclops" xml:space="preserve">
-    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
+    <value>These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Hydra" xml:space="preserve">
-    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
+    <value>These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Inciter" xml:space="preserve">
-    <value>This ship can increase the speed and manoeuvrability of nearby Thargoid Scouts.</value>
+    <value>This ship can increase the speed and maneuverability of nearby Thargoid Scouts.</value>
   </data>
   <data name="Marauder" xml:space="preserve">
     <value>These attack craft are typically encountered in small groups.</value>
   </data>
   <data name="Medusa" xml:space="preserve">
-    <value>These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
+    <value>These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic.</value>
   </data>
   <data name="Orthrus" xml:space="preserve">
-    <value> </value>
+    <value>These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic. They appear to have a role in capturing new territories.</value>
   </data>
   <data name="Regenerator" xml:space="preserve">
     <value>This ship can remotely repair damage to nearby Thargoid Scouts.</value>

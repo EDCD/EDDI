@@ -1,137 +1,79 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
+﻿using System.Linq;
+using System;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class Thargoid : ResourceBasedLocalizedEDName<Thargoid>
     {
-        public static ResourceManager rmThargoidDesc = new ResourceManager("EddiDataDefinitions.Properties.ThargoidDesc", Assembly.GetExecutingAssembly());
-
-        public static readonly IDictionary<string, long?> THARGOIDS = new Dictionary<string, long?>();
-        public static readonly IDictionary<long, Thargoid> ENTRYIDS = new Dictionary<long, Thargoid>();
-
-        public bool exists;                 // This item exists and has been populated with information
-        public long? value;
-        public string description;
-
         static Thargoid ()
         {
             resourceManager = Properties.Thargoid.ResourceManager;
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = ( edname ) => new Thargoid( edname );
-
-            ENTRYIDS.Add( (long)3100402, new Thargoid( "Basilisk", null ) );
-            ENTRYIDS.Add( (long)3100802, new Thargoid( "Berserker", null ) );
-            ENTRYIDS.Add( (long)3101300, new Thargoid( "Caustic_Generator", null ) );
-            ENTRYIDS.Add( (long)3100401, new Thargoid( "Cyclops", null ) );
-            ENTRYIDS.Add( (long)3100404, new Thargoid( "Hydra", null ) );
-            ENTRYIDS.Add( (long)3100803, new Thargoid( "Inciter", null ) );
-            ENTRYIDS.Add( (long)3100801, new Thargoid( "Marauder", null ) );
-            ENTRYIDS.Add( (long)3100403, new Thargoid( "Medusa", null ) );
-            ENTRYIDS.Add( (long)3100406, new Thargoid( "Orthrus", null ) );
-            ENTRYIDS.Add( (long)3100804, new Thargoid( "Regenerator", null ) );
-            ENTRYIDS.Add( (long)3100700, new Thargoid( "Scavengers", null ) );
-            ENTRYIDS.Add( (long)3101000, new Thargoid( "TG_DataScan", null ) );
-            ENTRYIDS.Add( (long)3101100, new Thargoid( "TG_Pod", null ) );
-            ENTRYIDS.Add( (long)3101200, new Thargoid( "TG_Transmitter", null ) );
-            ENTRYIDS.Add( (long)3100405, new Thargoid( "Wrecked_Interceptor", null ) );
-            ENTRYIDS.Add( (long)3100805, new Thargoid( "Wrecked_Scout", null ) );
-            //MISSINGIDS.Add( "", new Thargoid( "", null ) );       // Thargoid Glaive Hunter
-            //MISSINGIDS.Add( "", new Thargoid( "", null ) );       // Thargoid Scythe Hunter
-
-            THARGOIDS.Add( "Basilisk", 3100402 );
-            THARGOIDS.Add( "Berserker", 3100802 );
-            THARGOIDS.Add( "Caustic_Generator", 3101300 );
-            THARGOIDS.Add( "Cyclops", 3100401 );
-            THARGOIDS.Add( "Hydra", 3100404 );
-            THARGOIDS.Add( "Inciter", 3100803 );
-            THARGOIDS.Add( "Marauder", 3100801 );
-            THARGOIDS.Add( "Medusa", 3100403 );
-            THARGOIDS.Add( "Orthrus", 3100406 );
-            THARGOIDS.Add( "Regenerator", 3100804 );
-            THARGOIDS.Add( "Scavengers", 3100700 );
-            THARGOIDS.Add( "TG_DataScan", 3101000 );
-            THARGOIDS.Add( "TG_Pod", 3101100 );
-            THARGOIDS.Add( "TG_Transmitter", 3101200 );
-            THARGOIDS.Add( "Wrecked_Interceptor", 3100405 );
-            THARGOIDS.Add( "Wrecked_Scout", 3100805 );
-            //THARGOIDS.Add( "",  );      // Thargoid Glaive Hunter
-            //THARGOIDS.Add( "",  );      // Thargoid Scythe Hunter
         }
+
+        public static readonly Thargoid Basilisk = new Thargoid( "Basilisk", 3100402, null );
+        public static readonly Thargoid Berserker = new Thargoid( "Berserker", 3100802, null );
+        public static readonly Thargoid Caustic_Generator = new Thargoid( "Caustic_Generator", 3101300, null );
+        public static readonly Thargoid Cyclops = new Thargoid( "Cyclops", 3100401, null );
+        public static readonly Thargoid Hydra = new Thargoid( "Hydra", 3100404, null );
+        public static readonly Thargoid Inciter = new Thargoid( "Inciter", 3100803, null );
+        public static readonly Thargoid Marauder = new Thargoid( "Marauder", 3100801, null );
+        public static readonly Thargoid Medusa = new Thargoid( "Medusa", 3100403, null );
+        public static readonly Thargoid Orthrus = new Thargoid( "Orthrus", 3100406, null );
+        public static readonly Thargoid Regenerator = new Thargoid( "Regenerator", 3100804, null );
+        public static readonly Thargoid Scavengers = new Thargoid( "Scavengers", 3100700, null );
+        public static readonly Thargoid TG_DataScan = new Thargoid( "TG_DataScan", 3101000, null );
+        public static readonly Thargoid TG_Pod = new Thargoid( "TG_Pod", 3101100, null );
+        public static readonly Thargoid TG_Transmitter = new Thargoid( "TG_Transmitter", 3101200, null );
+        public static readonly Thargoid Wrecked_Interceptor = new Thargoid( "Wrecked_Interceptor", 3100405, null );
+        public static readonly Thargoid Wrecked_Scout = new Thargoid( "Wrecked_Scout", 3100805, null );
+        //missing Thargoid Glaive Hunter
+        //missing Thargoid Scythe Hunter
+
+        public long? entryID;
+        public long? value;
+        public string description => Properties.ThargoidDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run
         public Thargoid () : this( "" )
         { }
 
-        private Thargoid ( string name ) : base( name, name )
-        {
-            this.exists = false;
-            this.value = 0;
-            this.description = "";
-        }
+        private Thargoid ( string edname ) : base( edname, edname )
+        { }
 
-        private Thargoid ( string name, long? value ) : base( name, name )
+        private Thargoid ( string edname, long? entryID, long? value ) : base( edname, edname )
         {
-            this.exists = true;
+            this.entryID = entryID;
             this.value = value;
-            this.description = rmThargoidDesc.GetString( name );
         }
 
         /// <summary>
-        /// Try getting data from the entryid first, then use name as a fallback
+        /// Try getting data from the entryid first, then use edname as a fallback
         /// </summary>
-        public static Thargoid Lookup ( long? entryId, string name )
+        public static Thargoid Lookup ( long? entryId, string edName )
         {
-            Thargoid item;
-            item = LookupByEntryId( entryId );
-            
-            // EntryId doesn't exist, try name
-            if ( item == null )
+            try
             {
-                item = LookupByName( name );
-            }
-
-            if ( item == null )
-            {
-                item = new Thargoid();
-            }
-
-            return item;
-        }
-
-        /// <summary>
-        /// Preferred method of lookup
-        /// </summary>
-        public static Thargoid LookupByEntryId ( long? entryId )
-        {
-            if ( entryId != null )
-            {
-                if ( ENTRYIDS.ContainsKey( (long)entryId ) )
+                if ( entryId != null )
                 {
-                    return ENTRYIDS[ (long)entryId ];
+                    return AllOfThem.Single( a => a.entryID == entryId );
                 }
             }
-            return null;
-        }
-
-        /// <summary>
-        /// Lookup data by name
-        /// </summary>
-        public static Thargoid LookupByName ( string name )
-        {
-            if ( name != "" )
+            catch ( InvalidOperationException e )
             {
-                if ( THARGOIDS.ContainsKey( name ) )
+                if ( AllOfThem.Count( a => a.entryID == entryId ) > 1 )
                 {
-                    long? entryid = THARGOIDS[ name ];
-                    if ( entryid != null )
-                    {
-                        return LookupByEntryId( entryid );
-                    }
+                    Logging.Error( $"Duplicate EntryID value {entryId} in {nameof( Thargoid )}.", e );
+                }
+                else if ( AllOfThem.All( a => a.entryID != entryId ) )
+                {
+                    Logging.Error( $"Unknown EntryID value {entryId} with edname {edName} in {nameof( Thargoid )}.", e );
                 }
             }
-            return null;
+
+            return FromEDName( edName ) ?? new Thargoid( edName ); // No match.
         }
     }
 }

@@ -1,110 +1,98 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public class OrganicGenus : ResourceBasedLocalizedEDName<OrganicGenus>
     {
-        public static readonly IDictionary<string, OrganicGenus> GENUS = new Dictionary<string, OrganicGenus>();
-
         static OrganicGenus ()
         {
             resourceManager = Properties.OrganicGenus.ResourceManager;
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = ( edname ) => new OrganicGenus( edname );
-
-            GENUS.Add( "Aleoids", new OrganicGenus( "Aleoids", 150 ) );
-            GENUS.Add( "Vents", new OrganicGenus( "Vents", 100 ) );
-            GENUS.Add( "Sphere", new OrganicGenus( "Sphere", 100 ) );
-            GENUS.Add( "Bacterial", new OrganicGenus( "Bacterial", 500 ) );
-            GENUS.Add( "Cone", new OrganicGenus( "Cone", 100 ) );
-            GENUS.Add( "Brancae", new OrganicGenus( "Brancae", 100 ) );
-            GENUS.Add( "Cactoid", new OrganicGenus( "Cactoid", 300 ) );
-            GENUS.Add( "Clypeus", new OrganicGenus( "Clypeus", 150 ) );
-            GENUS.Add( "Conchas", new OrganicGenus( "Conchas", 150 ) );
-            GENUS.Add( "GroundStructIce", new OrganicGenus( "GroundStructIce", 100 ) );
-            GENUS.Add( "Electricae", new OrganicGenus( "Electricae", 1000 ) );
-            GENUS.Add( "Fonticulus", new OrganicGenus( "Fonticulus", 500 ) );
-            GENUS.Add( "Shrubs", new OrganicGenus( "Shrubs", 150 ) );
-            GENUS.Add( "Fumerolas", new OrganicGenus( "Fumerolas", 100 ) );
-            GENUS.Add( "Fungoids", new OrganicGenus( "Fungoids", 300 ) );
-            GENUS.Add( "Osseus", new OrganicGenus( "Osseus", 800 ) );
-            GENUS.Add( "Recepta", new OrganicGenus( "Recepta", 150 ) );
-            GENUS.Add( "Tubers", new OrganicGenus( "Tubers", 100 ) );
-            GENUS.Add( "Stratum", new OrganicGenus( "Stratum", 500 ) );
-            GENUS.Add( "Tubus", new OrganicGenus( "Tubus", 800 ) );
-            GENUS.Add( "Tussocks", new OrganicGenus( "Tussocks", 200 ) );
-            GENUS.Add( "MineralSpheres", new OrganicGenus( "MineralSpheres", 0 ) );
-            GENUS.Add( "MetallicCrystals", new OrganicGenus( "MetallicCrystals", 0 ) );
-            GENUS.Add( "SilicateCrystals", new OrganicGenus( "SilicateCrystals", 0 ) );
-            GENUS.Add( "IceCrystals", new OrganicGenus( "IceCrystals", 0 ) );
-            GENUS.Add( "MolluscReel", new OrganicGenus( "MolluscReel", 0 ) );
-            GENUS.Add( "MolluscGlobe", new OrganicGenus( "MolluscGlobe", 0 ) );
-            GENUS.Add( "MolluscBell", new OrganicGenus( "MolluscBell", 0 ) );
-            GENUS.Add( "MolluscUmbrella", new OrganicGenus( "MolluscUmbrella", 0 ) );
-            GENUS.Add( "MolluscGourd", new OrganicGenus( "MolluscGourd", 0 ) );
-            GENUS.Add( "MolluscTorus", new OrganicGenus( "MolluscTorus", 0 ) );
-            GENUS.Add( "MolluscBulb", new OrganicGenus( "MolluscBulb", 0 ) );
-            GENUS.Add( "MolluscParasol", new OrganicGenus( "MolluscParasol", 0 ) );
-            GENUS.Add( "MolluscSquid", new OrganicGenus( "MolluscSquid", 0 ) );
-            GENUS.Add( "MolluscBullet", new OrganicGenus( "MolluscBullet", 0 ) );
-            GENUS.Add( "MolluscCapsule", new OrganicGenus( "MolluscCapsule", 0 ) );
-            GENUS.Add( "CollaredPod", new OrganicGenus( "CollaredPod", 0 ) );
-            GENUS.Add( "StolonPod", new OrganicGenus( "StolonPod", 0 ) );
-            GENUS.Add( "StolonTree", new OrganicGenus( "StolonTree", 0 ) );
-            GENUS.Add( "AsterPod", new OrganicGenus( "AsterPod", 0 ) );
-            GENUS.Add( "ChalicePod", new OrganicGenus( "ChalicePod", 0 ) );
-            GENUS.Add( "PedunclePod", new OrganicGenus( "PedunclePod", 0 ) );
-            GENUS.Add( "RhizomePod", new OrganicGenus( "RhizomePod", 0 ) );
-            GENUS.Add( "QuadripartitePod", new OrganicGenus( "QuadripartitePod", 0 ) );
-            GENUS.Add( "VoidPod", new OrganicGenus( "VoidPod", 0 ) );
-            GENUS.Add( "AsterTree", new OrganicGenus( "AsterTree", 0 ) );
-            GENUS.Add( "PeduncleTree", new OrganicGenus( "PeduncleTree", 0 ) );
-            GENUS.Add( "GyreTree", new OrganicGenus( "GyreTree", 0 ) );
-            GENUS.Add( "GyrePod", new OrganicGenus( "GyrePod", 0 ) );
-            GENUS.Add( "VoidHeart", new OrganicGenus( "VoidHeart", 0 ) );
-            GENUS.Add( "CalcitePlates", new OrganicGenus( "CalcitePlates", 0 ) );
-            GENUS.Add( "ThargoidBarnacle", new OrganicGenus( "ThargoidBarnacle", 0 ) );
         }
 
-        public static ResourceManager rmOrganicGenusDesc = new ResourceManager("EddiDataDefinitions.Properties.OrganicGenusDesc", Assembly.GetExecutingAssembly());
-        public int distance;
-        public string description;
+        // Terrestrial Genuses
+        public static readonly OrganicGenus Aleoids = new OrganicGenus( "Aleoids", 150 );
+        public static readonly OrganicGenus Vents = new OrganicGenus( "Vents", 100 );
+        public static readonly OrganicGenus Sphere = new OrganicGenus( "Sphere", 100 );
+        public static readonly OrganicGenus Bacterial = new OrganicGenus( "Bacterial", 500 );
+        public static readonly OrganicGenus Cone = new OrganicGenus( "Cone", 100 );
+        public static readonly OrganicGenus Brancae = new OrganicGenus( "Brancae", 100 );
+        public static readonly OrganicGenus Cactoid = new OrganicGenus( "Cactoid", 300 );
+        public static readonly OrganicGenus Clypeus = new OrganicGenus( "Clypeus", 150 );
+        public static readonly OrganicGenus Conchas = new OrganicGenus( "Conchas", 150 );
+        public static readonly OrganicGenus GroundStructIce = new OrganicGenus( "GroundStructIce", 100 );
+        public static readonly OrganicGenus Electricae = new OrganicGenus( "Electricae", 1000 );
+        public static readonly OrganicGenus Fonticulus = new OrganicGenus( "Fonticulus", 500 );
+        public static readonly OrganicGenus Shrubs = new OrganicGenus( "Shrubs", 150 );
+        public static readonly OrganicGenus Fumerolas = new OrganicGenus( "Fumerolas", 100 );
+        public static readonly OrganicGenus Fungoids = new OrganicGenus( "Fungoids", 300 );
+        public static readonly OrganicGenus Osseus = new OrganicGenus( "Osseus", 800 );
+        public static readonly OrganicGenus Recepta = new OrganicGenus( "Recepta", 150 );
+        public static readonly OrganicGenus Tubers = new OrganicGenus( "Tubers", 100 );
+        public static readonly OrganicGenus Stratum = new OrganicGenus( "Stratum", 500 );
+        public static readonly OrganicGenus Tubus = new OrganicGenus( "Tubus", 800 );
+        public static readonly OrganicGenus Tussocks = new OrganicGenus( "Tussocks", 200 );
+
+        // Vacuum Genuses
+        public static readonly OrganicGenus MineralSpheres = new OrganicGenus( "MineralSpheres", 0 );
+        public static readonly OrganicGenus MetallicCrystals = new OrganicGenus( "MetallicCrystals", 0 );
+        public static readonly OrganicGenus SilicateCrystals = new OrganicGenus( "SilicateCrystals", 0 );
+        public static readonly OrganicGenus IceCrystals = new OrganicGenus( "IceCrystals", 0 );
+        public static readonly OrganicGenus MolluscReel = new OrganicGenus( "MolluscReel", 0 );
+        public static readonly OrganicGenus MolluscGlobe = new OrganicGenus( "MolluscGlobe", 0 );
+        public static readonly OrganicGenus MolluscBell = new OrganicGenus( "MolluscBell", 0 );
+        public static readonly OrganicGenus MolluscUmbrella = new OrganicGenus( "MolluscUmbrella", 0 );
+        public static readonly OrganicGenus MolluscGourd = new OrganicGenus( "MolluscGourd", 0 );
+        public static readonly OrganicGenus MolluscTorus = new OrganicGenus( "MolluscTorus", 0 );
+        public static readonly OrganicGenus MolluscBulb = new OrganicGenus( "MolluscBulb", 0 );
+        public static readonly OrganicGenus MolluscParasol = new OrganicGenus( "MolluscParasol", 0 );
+        public static readonly OrganicGenus MolluscSquid = new OrganicGenus( "MolluscSquid", 0 );
+        public static readonly OrganicGenus MolluscBullet = new OrganicGenus( "MolluscBullet", 0 );
+        public static readonly OrganicGenus MolluscCapsule = new OrganicGenus( "MolluscCapsule", 0 );
+        public static readonly OrganicGenus CollaredPod = new OrganicGenus( "CollaredPod", 0 );
+        public static readonly OrganicGenus StolonPod = new OrganicGenus( "StolonPod", 0 );
+        public static readonly OrganicGenus StolonTree = new OrganicGenus( "StolonTree", 0 );
+        public static readonly OrganicGenus AsterPod = new OrganicGenus( "AsterPod", 0 );
+        public static readonly OrganicGenus ChalicePod = new OrganicGenus( "ChalicePod", 0 );
+        public static readonly OrganicGenus PedunclePod = new OrganicGenus( "PedunclePod", 0 );
+        public static readonly OrganicGenus RhizomePod = new OrganicGenus( "RhizomePod", 0 );
+        public static readonly OrganicGenus QuadripartitePod = new OrganicGenus( "QuadripartitePod", 0 );
+        public static readonly OrganicGenus VoidPod = new OrganicGenus( "VoidPod", 0 );
+        public static readonly OrganicGenus AsterTree = new OrganicGenus( "AsterTree", 0 );
+        public static readonly OrganicGenus PeduncleTree = new OrganicGenus( "PeduncleTree", 0 );
+        public static readonly OrganicGenus GyreTree = new OrganicGenus( "GyreTree", 0 );
+        public static readonly OrganicGenus GyrePod = new OrganicGenus( "GyrePod", 0 );
+        public static readonly OrganicGenus VoidHeart = new OrganicGenus( "VoidHeart", 0 );
+        public static readonly OrganicGenus CalcitePlates = new OrganicGenus( "CalcitePlates", 0 );
+        public static readonly OrganicGenus ThargoidBarnacle = new OrganicGenus( "ThargoidBarnacle", 0 );
+
+        public int minimumDistanceMeters { get; private set; }
+
+        public string description => Properties.OrganicGenusDesc.ResourceManager.GetString( NormalizeGenus( edname ) );
 
         // dummy used to ensure that the static constructor has run
         public OrganicGenus () : this( "" )
         { }
 
-        private OrganicGenus ( string genus ) : base( genus, genus )
+        private OrganicGenus ( string edname, int minimumDistanceMeters = 0 ) : base( edname, NormalizeGenus( edname ) )
         {
-            this.distance = 0;
-            if ( GENUS.ContainsKey( genus ) )
-            {
-                this.distance = GENUS[ genus ].distance;
-            }
-            this.description = rmOrganicGenusDesc.GetString( genus );
+            this.minimumDistanceMeters = minimumDistanceMeters;
         }
 
-        private OrganicGenus ( string genus, int distance ) : base( genus, genus )
+        public static new OrganicGenus FromEDName ( string edname )
         {
-            this.distance = distance;
-            this.description = rmOrganicGenusDesc.GetString( genus );
+            return ResourceBasedLocalizedEDName<OrganicGenus>.FromEDName( NormalizeGenus( edname ) );
         }
 
-        /// <summary>
-        /// Try getting data from the entryid first, then use variant name as a fallback
-        /// </summary>
-        public static OrganicGenus Lookup ( string genus )
+        public static string NormalizeGenus ( string edname )
         {
-            if ( genus != "" )
-            {
-                if ( GENUS.ContainsKey( genus ) )
-                {
-                    return GENUS[ genus ];
-                }
-            }
-            return null;
+            return edname?
+                .Replace( "Codex_Ent_", "" )
+                .Replace( "$", "" )
+                .Replace( "_Genus_Name", "" )
+                .Replace( "_Genus", "" )
+                .Replace( "_Name;", "" )
+                .Replace( "_name;", "" )
+                .Replace( ";", "" );
         }
     }
 }

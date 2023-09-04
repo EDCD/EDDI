@@ -1,113 +1,71 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class Guardian : ResourceBasedLocalizedEDName<Guardian>
     {
-        public static ResourceManager rmGuardianDesc = new ResourceManager("EddiDataDefinitions.Properties.GuardianDesc", Assembly.GetExecutingAssembly());
-
         public static readonly IDictionary<string, long?> GUARDIANS = new Dictionary<string, long?>();
         public static readonly IDictionary<long, Guardian> ENTRYIDS = new Dictionary<long, Guardian>();
-
-        public bool exists;                 // This item exists and has been populated with information
-        public long? value;
-        public string description;
 
         static Guardian ()
         {
             resourceManager = Properties.Guardian.ResourceManager;
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = ( edname ) => new Guardian( edname );
-
-            ENTRYIDS.Add( 3200800, new Guardian( "Guardian_Beacons", null ) );
-            ENTRYIDS.Add( 3200200, new Guardian( "Guardian_Data_Logs", null ) );
-            ENTRYIDS.Add( 3200400, new Guardian( "Guardian_Pylon", null ) );
-            ENTRYIDS.Add( 3200600, new Guardian( "Guardian_Sentinel", null ) );
-            ENTRYIDS.Add( 3200300, new Guardian( "Guardian_Terminal", null ) );
-            ENTRYIDS.Add( 3200500, new Guardian( "Relic_Tower", null ) );
-
-            GUARDIANS.Add( "Guardian_Beacons", 3200800 );
-            GUARDIANS.Add( "Guardian_Data_Logs", 3200200 );
-            GUARDIANS.Add( "Guardian_Pylon", 3200400 );
-            GUARDIANS.Add( "Guardian_Sentinel", 3200600 );
-            GUARDIANS.Add( "Guardian_Terminal", 3200300 );
-            GUARDIANS.Add( "Relic_Tower", 3200500 );
         }
+
+        public static readonly Guardian Guardian_Beacons = new Guardian( "Guardian_Beacons", 3200800, null );
+        public static readonly Guardian Guardian_Data_Logs = new Guardian( "Guardian_Data_Logs", 3200200, null );
+        public static readonly Guardian Guardian_Pylon = new Guardian( "Guardian_Pylon", 3200400, null );
+        public static readonly Guardian Guardian_Sentinel = new Guardian( "Guardian_Sentinel", 3200600, null );
+        public static readonly Guardian Guardian_Terminal = new Guardian( "Guardian_Terminal", 3200300, null );
+        public static readonly Guardian Relic_Tower = new Guardian( "Relic_Tower", 3200500, null );
+
+        public long? entryID;
+        public long? value;
+        public string description => Properties.GuardianDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run
         public Guardian () : this( "" )
         { }
 
-        private Guardian ( string name ) : base( name, name )
-        {
-            this.exists = false;
-            this.value = 0;
-            this.description = "";
-        }
+        private Guardian ( string edname ) : base( edname, edname )
+        { }
 
-        private Guardian ( string name, long? value ) : base( name, name )
+        private Guardian ( string edname, long? entryID, long? value ) : base( edname, edname )
         {
-            this.exists = true;
+            this.entryID = entryID;
             this.value = value;
-            this.description = rmGuardianDesc.GetString( name );
         }
 
         /// <summary>
-        /// Try getting data from the entryid first, then use name as a fallback
+        /// Try getting data from the entryid first, then use edname as a fallback
         /// </summary>
-        public static Guardian Lookup ( long? entryId, string name )
+        public static Guardian Lookup ( long? entryId, string edName )
         {
-            Guardian item;
-            item = LookupByEntryId( entryId );
-            
-            // EntryId doesn't exist, try name
-            if ( item == null )
+            try
             {
-                item = LookupByName( name );
-            }
-
-            if ( item == null )
-            {
-                item = new Guardian();
-            }
-
-            return item;
-        }
-
-        /// <summary>
-        /// Preferred method of lookup
-        /// </summary>
-        public static Guardian LookupByEntryId ( long? entryId )
-        {
-            if ( entryId != null )
-            {
-                if ( ENTRYIDS.ContainsKey( (long)entryId ) )
+                if ( entryId != null )
                 {
-                    return ENTRYIDS[ (long)entryId ];
+                    return AllOfThem.Single( a => a.entryID == entryId );
                 }
             }
-            return null;
-        }
-
-        /// <summary>
-        /// Lookup data by name
-        /// </summary>
-        public static Guardian LookupByName ( string name )
-        {
-            if ( name != "" )
+            catch ( InvalidOperationException e )
             {
-                if ( GUARDIANS.ContainsKey( name ) )
+                if ( AllOfThem.Count( a => a.entryID == entryId ) > 1 )
                 {
-                    long? entryid = GUARDIANS[ name ];
-                    if ( entryid != null )
-                    {
-                        return LookupByEntryId( entryid );
-                    }
+                    Logging.Error( $"Duplicate EntryID value {entryId} in {nameof( Guardian )}.", e );
+                }
+                else if ( AllOfThem.All( a => a.entryID != entryId ) )
+                {
+                    Logging.Error( $"Unknown EntryID value {entryId} with edname {edName} in {nameof( Guardian )}.", e );
                 }
             }
-            return null;
+
+            return FromEDName( edName ) ?? new Guardian( edName ); // No match.
         }
     }
 }

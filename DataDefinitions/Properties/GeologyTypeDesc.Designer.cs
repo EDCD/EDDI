@@ -61,11 +61,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to E-Type anomolies are a range of phenomena characterised by slow-moving elements..
+        ///   Looks up a localized string similar to E-Type anomalies are a range of phenomena characterized by slow-moving elements..
         /// </summary>
-        public static string E_TypeAnomoly {
+        public static string E_TypeAnomaly {
             get {
-                return ResourceManager.GetString("E_TypeAnomoly", resourceCulture);
+                return ResourceManager.GetString("E_TypeAnomaly", resourceCulture);
             }
         }
         
@@ -106,20 +106,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to K-Type anomolies are a range of high-energy phenomena characterised by luminous cloud patterns..
+        ///   Looks up a localized string similar to K-Type anomalies are a range of high-energy phenomena characterized by luminous cloud patterns..
         /// </summary>
-        public static string K_TypeAnomoly {
+        public static string K_TypeAnomaly {
             get {
-                return ResourceManager.GetString("K_TypeAnomoly", resourceCulture);
+                return ResourceManager.GetString("K_TypeAnomaly", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to L-Type anomolies are a range of phenomena characterised by luminous clusters of energy..
+        ///   Looks up a localized string similar to L-Type anomalies are a range of phenomena characterized by luminous clusters of energy..
         /// </summary>
-        public static string L_TypeAnomoly {
+        public static string L_TypeAnomaly {
             get {
-                return ResourceManager.GetString("L_TypeAnomoly", resourceCulture);
+                return ResourceManager.GetString("L_TypeAnomaly", resourceCulture);
             }
         }
         
@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lava spouts are weakened areas of a planet’s surface where molten material percolates, generating heat and emitting vapour and gases. The nature of the material varies according to the planet’s composition and circumstances..
+        ///   Looks up a localized string similar to Lava spouts are weakened areas of a planet’s surface where molten material percolates, generating heat and emitting vapor and gases. The nature of the material varies according to the planet’s composition and circumstances..
         /// </summary>
         public static string LavaSpout {
             get {
@@ -142,20 +142,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to P-Type anomolies are a range of phenomena characterised by intensily bright energy patterns..
+        ///   Looks up a localized string similar to P-Type anomalies are a range of phenomena characterized by intensity bright energy patterns..
         /// </summary>
-        public static string P_TypeAnomoly {
+        public static string P_TypeAnomaly {
             get {
-                return ResourceManager.GetString("P_TypeAnomoly", resourceCulture);
+                return ResourceManager.GetString("P_TypeAnomaly", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Q-Type anomolies are a range of phenomena characterised by energetic center orbs..
+        ///   Looks up a localized string similar to Q-Type anomalies are a range of phenomena characterized by energetic center orbs..
         /// </summary>
-        public static string Q_TypeAnomoly {
+        public static string Q_TypeAnomaly {
             get {
-                return ResourceManager.GetString("Q_TypeAnomoly", resourceCulture);
+                return ResourceManager.GetString("Q_TypeAnomaly", resourceCulture);
             }
         }
         
@@ -169,11 +169,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to T-Type anomolies are a range of phenomena characterised by the presence of a bright pulsing sphere..
+        ///   Looks up a localized string similar to T-Type anomalies are a range of phenomena characterized by the presence of a bright pulsing sphere..
         /// </summary>
-        public static string T_TypeAnomoly {
+        public static string T_TypeAnomaly {
             get {
-                return ResourceManager.GetString("T_TypeAnomoly", resourceCulture);
+                return ResourceManager.GetString("T_TypeAnomaly", resourceCulture);
             }
         }
         

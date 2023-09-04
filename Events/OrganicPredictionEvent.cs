@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -9,19 +10,22 @@ namespace EddiEvents
     public class OrganicPredictionEvent : Event
     {
         public const string NAME = "Organic Surface Signals Prediction";
-        public const string DESCRIPTION = "Triggered when surface signal sources are detected during FSS";
-        public const string SAMPLE = @"{ ""timestamp"":""2023-04-05T02:22:19Z"", ""event"":""SAASignalsFound"", ""BodyName"":""NGC 6188 Sector XZ-M a8-1 A 4"", ""SystemAddress"":23149336745976, ""BodyID"":7, ""Signals"":[ { ""Type"":""$SAA_SignalType_Biological;"", ""Type_Localised"":""Biological"", ""Count"":1 }, { ""Type"":""$SAA_SignalType_Geological;"", ""Type_Localised"":""Geological"", ""Count"":2 } ], ""Genuses"":[ { ""Genus"":""$Codex_Ent_Bacterial_Genus_Name;"", ""Genus_Localised"":""Bacterium"" } ] }";
+        public const string DESCRIPTION = "Triggered when surface signal sources are predicted";
+        public const string SAMPLE = null;
 
-        [PublicAPI( "A list of the biologicals present on the body after an SAA (map) of body." )]
-        public List<string> biosignals { get; private set; }
+        [PublicAPI( "A list of the predicted genuses of the biologicals" )]
+        public List<string> biosignals => bioSignals.Select(s => s.genus.localizedName).ToList();
 
-        [PublicAPI( "The body that the surface signals are on" )]
+        [PublicAPI( "The body that the surface signals are predicted to be found on" )]
         public Body body { get; private set; }
 
-        public OrganicPredictionEvent ( DateTime timestamp, Body body, List<string> signals ) : base(timestamp, NAME)
+        [PublicAPI( "Full object data for the predicted biologicals" )]
+        public HashSet<Exobiology> bioSignals { get; private set; }
+
+        public OrganicPredictionEvent ( DateTime timestamp, Body body, HashSet<Exobiology> signals ) : base(timestamp, NAME)
         {
             this.body = body;
-            this.biosignals = signals;
+            this.bioSignals = signals;
         }
     }
 }

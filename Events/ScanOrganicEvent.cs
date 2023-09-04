@@ -15,36 +15,24 @@ namespace EddiEvents
         [PublicAPI( "The type of scan which can be Log, Sample or Analyse" )]
         public string scanType { get; private set; }
 
-        //[PublicAPI( "Test variable" )]
-        //public string currentSystem;
+        [PublicAPI( "An object holding all the data about the organism currently being sampled" )]
+        public Exobiology bio { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
 
-        //[PublicAPI( "Test variable" )]
-        //public string currentBody;
+        [PublicAPI( "The number of types of organisms for which samples can be collected on the current body" )]
+        public int? numTotal { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
 
-        [PublicAPI( "The object holding all the data about the current biological." )]
-        public Exobiology bio { get; set; }
-
-        [PublicAPI]
-        public int? numTotal { get; set; }
-
-        [PublicAPI]
-        public int? numComplete => numTotal - numRemaining;
-
-        [ PublicAPI ] 
-        public int? numRemaining => listRemaining.Count;
-
-        [PublicAPI]
-        public List<string> listRemaining { get; set; }
+        [PublicAPI( "The organisms for which samples are incomplete on the current body" )]
+        public List<string> listRemaining { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
 
         // Not intended to be user facing
-
-        public string genus;
-        public string species;
-        public string variant;
+        
+        public OrganicGenus genus { get; private set; }
+        public OrganicSpecies species { get; private set; }
+        public OrganicVariant variant { get; private set; }
         public ulong systemAddress { get; private set; }
         public int bodyId { get; private set; }
 
-        public ScanOrganicEvent ( DateTime timestamp, ulong systemAddress, int bodyId, Body body, string scanType, string genus, string species, string variant ) : base(timestamp, NAME)
+        public ScanOrganicEvent ( DateTime timestamp, ulong systemAddress, int bodyId, string scanType, OrganicGenus genus, OrganicSpecies species, OrganicVariant variant ) : base( timestamp, NAME )
         {
             this.systemAddress = systemAddress;
             this.bodyId = bodyId;
@@ -52,8 +40,6 @@ namespace EddiEvents
             this.genus = genus;
             this.species = species;
             this.variant = variant;
-
-            this.bio = body.surfaceSignals.TryGetBio( genus, out var fetchedBio ) ? fetchedBio : new Exobiology( genus );
         }
     }
 }

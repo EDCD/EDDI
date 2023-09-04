@@ -1,179 +1,77 @@
-﻿using Utilities;
+﻿using System;
+using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class Exobiology : Organic
     {
-        public enum Status
+        public enum State
         {
-            InsideSampleRange = 0,
-            OutsideSampleRange = 1
+            Predicted,
+            Confirmed,
+            SampleStarted,    // Logged (1st sample collected)
+            SampleInProgress, // Sampled (2nd sample collected)
+            SampleComplete,   // Sampled (3rd sample collected)
+            SampleAnalyzed    // Analyzed - this comes shortly after the final sample is collected
         }
 
-        public class Coordinates
+        public State scanState { get; set; }
+
+        [PublicAPI]
+        public string state => scanState.ToString();
+
+        [ PublicAPI ]
+        public List<Tuple<decimal?, decimal?>> sampleCoords; // coordinates of scan [n-1]. Only Log and Sample are stored.
+
+        [PublicAPI] public bool nearPriorSample { get; set; }
+
+        [PublicAPI]
+        public int samples => sampleCoords.Count;
+
+        public Exobiology ( OrganicGenus genus, bool isPrediction = false )
         {
-            public decimal? latitude;
-            public decimal? longitude;
-            public Status status;           // 0=Inside Radius, 1=Outside Radius
-            public Status lastStatus;       // diff between this and status determines when to trigger update events
-        }
+            this.genus = genus;
 
-        [PublicAPI]
-        public bool prediction;             // Was this added as a prediction?
-
-        [PublicAPI]
-        public int samples;                 // 0=none, 1=Log, 2=Sample 1, 3=Sample 2, 4=Analyse
-
-        [PublicAPI]
-        public bool complete;               // Sampling of this biological is complete
-
-        [PublicAPI]
-        public int value
-        {
-            get {
-                int val = 1;
-                try
-                {
-                    val = 2;
-                    if ( variant != null )
-                    {
-                        val = (int)species.value;
-                    }
-                }
-                catch
-                {
-                    val = 99;
-                }
-                return val;
-            }
-
-        }
-
-        [PublicAPI]
-        public Coordinates[] coords;        // coordinates of scan [n-1]. Only Log and Sample are stored.
-
-        //public Exobiology ( bool prediction=false) : base ()
-        //{
-        //    this.prediction = prediction;
-        //    this.samples = 0;
-        //    coords = new Coordinates [ 2 ];
-        //    for ( int i = 0; i < 2; i++ )
-        //    {
-        //        coords[ i ] = new Coordinates();
-        //    }
-        //}
-
-        public Exobiology ( string genus, bool prediction = false ) : base()
-        {
-            if ( genus != null )
+            if ( isPrediction )
             {
-                this.prediction = prediction;
-                this.samples = 0;
-                coords = new Coordinates[ 2 ];
-                for ( int i = 0; i < 2; i++ )
-                {
-                    coords[ i ] = new Coordinates();
-                }
-
-                //this.genus = Organic.SetGenus( edname_genus );
-                this.genus = OrganicGenus.Lookup( genus );
+                this.scanState = State.Predicted;
+            }
+            else
+            {
+                this.scanState = State.Confirmed;
             }
         }
 
         /// <summary>Increase the sample count, set the coordinates, and return the number of scans complete.</summary>
-        public int Sample ( string scanType, string variant, decimal? latitude, decimal? longitude )
+        public void Sample ( string scanType, OrganicVariant sampleVariant, decimal? latitude, decimal? longitude )
         {
-            // Never scanned before? Update data.
-            if ( samples == 0 )
+            if ( variant is null )
             {
-                SetData( variant );
-                complete = false;
+                SetVariantData( sampleVariant );
             }
 
-            // Check for sample type and update sample numbers
+            // Check for sample type and update sample coordinates
             if ( scanType == "Log" )
             {
-                try
-                {
-                    samples = 1;
-
-                    if ( coords[ samples - 1 ].latitude == null )
-                    {
-                        coords[ samples - 1 ].latitude = new decimal( 0 );
-                    }
-                    if ( coords[ samples - 1 ].longitude == null )
-                    {
-                        coords[ samples - 1 ].longitude = new decimal( 0 );
-                    }
-
-                    coords[ samples - 1 ].latitude = latitude;
-                    coords[ samples - 1 ].longitude = longitude;
-
-                    coords[ samples - 1 ].status = Status.InsideSampleRange;
-                    coords[ samples - 1 ].lastStatus = Status.InsideSampleRange;
-
-                    complete = false;
-                }
-                catch(System.Exception e )
-                {
-                    Logging.Error( $"Exobiology: Log Failed [{e}]" );
-                }
+                scanState = State.SampleStarted;
+                sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );
             }
-            else if ( scanType == "Sample" && samples==1 )
+            else if ( scanType == "Sample" && samples == 1 )
             {
-                try
-                {
-                    samples = 2;
-
-                    if ( coords[ samples - 1 ].latitude == null )
-                    {
-                        coords[ samples - 1 ].latitude = new decimal( 0 );
-                    }
-                    if ( coords[ samples - 1 ].longitude == null )
-                    {
-                        coords[ samples - 1 ].longitude = new decimal( 0 );
-                    }
-
-                    coords[ samples - 1 ].latitude = latitude;
-                    coords[ samples - 1 ].longitude = longitude;
-                }
-                catch ( System.Exception e )
-                {
-                    Logging.Error( $"Exobiology: Sample 1 Failed [{e}]" );
-                }
+                scanState = State.SampleInProgress;
+                sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );
             }
             else if ( scanType == "Sample" && samples == 2 )
             {
-                try
-                {
-                    samples = 3;
-                }
-                catch ( System.Exception e )
-                {
-                    Logging.Error( $"Exobiology: Sample 2 Failed [{e}]" );
-                }
+                scanState = State.SampleComplete;
             }
             else if ( scanType == "Analyse" )
             {
-                complete = true;
-                samples = 4;
+                scanState = State.SampleAnalyzed;
             }
-            
-            return samples;
-        }
 
-        [PublicAPI]
-        /// <summary>Is sampling of this biological complete?</summary>
-        public bool IsComplete ()
-        {
-            return ( samples >= 4);
-        }
-
-        [PublicAPI]
-        /// <summary>Get the number of samples remaining</summary>
-        public int Remaining ()
-        {
-            return 3 - samples;
+            nearPriorSample = true;
         }
     }
 }

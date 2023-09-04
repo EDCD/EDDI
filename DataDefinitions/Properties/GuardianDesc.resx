@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Guardian_Beacons" xml:space="preserve">
-    <value>A vast, space-based structure created several million years ago by the Guardians, an extinct nonhuman civilisation.</value>
+    <value>A vast, space-based structure created several million years ago by the Guardians, an extinct nonhuman civilization.</value>
   </data>
   <data name="Guardian_Data_Logs" xml:space="preserve">
-    <value>A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilisation.</value>
+    <value>A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilization.</value>
   </data>
   <data name="Guardian_Pylon" xml:space="preserve">
-    <value>A structure created several million years ago by the Guardians, an extinct nonhuman civilisation.</value>
+    <value>A structure created several million years ago by the Guardians, an extinct nonhuman civilization.</value>
   </data>
   <data name="Guardian_Sentinel" xml:space="preserve">
     <value>These constructs were created by the Guardians to defend sites of importance. They are still fully functional despite being several million years old.</value>
   </data>
   <data name="Guardian_Terminal" xml:space="preserve">
-    <value>A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilisation.</value>
+    <value>A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilization.</value>
   </data>
   <data name="Relic_Tower" xml:space="preserve">
-    <value>A structure created several million years ago by the Guardians, an extinct nonhuman civilisation.</value>
+    <value>A structure created several million years ago by the Guardians, an extinct nonhuman civilization.</value>
   </data>
 </root>

@@ -4,7 +4,6 @@ namespace EddiDataDefinitions
 {
     public class Organic
     {
-        public bool exists;   // This item exists and has been populated with information
         public OrganicGenus genus;
         public OrganicSpecies species;
         public OrganicVariant variant;
@@ -13,47 +12,35 @@ namespace EddiDataDefinitions
         /// Static constructor, we only need to initialize this data once.
         /// </summary>
         public Organic ()
+        { }
+
+        public Organic ( OrganicGenus genus, OrganicSpecies species = null, OrganicVariant variant = null )
         {
-            this.exists = false;
-            this.variant = new OrganicVariant();
-            this.genus = new OrganicGenus();
-            this.species = new OrganicSpecies();
+            this.genus = genus;
+            this.species = species;
+            this.variant = variant;
         }
 
-        public Organic (string genus)
+        public Organic ( string genusEDName )
         {
-            this.genus = OrganicGenus.Lookup( genus );
-            this.variant = new OrganicVariant();
-            this.species = new OrganicSpecies();
-
-            //if ( this.genus != null )
-            //{
-            //    this.exists = true;
-            //}
+            this.genus = OrganicGenus.FromEDName( genusEDName );
         }
 
         [PublicAPI]
         /// <summary>Get all the biological data, this should be done at the first sample</summary>
         public static Organic Lookup ( long entryid, string variant )
         {
-            Organic item = new Organic();
-
-            item.variant = OrganicVariant.Lookup( entryid, variant );
-            item.species = OrganicSpecies.Lookup( item.variant.species );
-            item.genus = OrganicGenus.Lookup( item.variant.genus );
-            item.exists = true;
-
-            return item;
+            var organicVariant = OrganicVariant.Lookup( entryid, variant );
+            return new Organic( organicVariant.genus, organicVariant.species, organicVariant );
         }
 
         [PublicAPI]
         /// <summary>Get all the biological data, this should be done at the first sample</summary>
-        public void SetData ( string variant )
+        public void SetVariantData ( OrganicVariant thisVariant )
         {
-            this.variant = OrganicVariant.LookupByVariant( variant );
-            this.species = OrganicSpecies.Lookup( this.variant.species );
-            this.genus = OrganicGenus.Lookup( this.variant.genus );
-            this.exists = true;
+            this.variant = thisVariant;
+            this.species = this.variant.species;
+            this.genus = this.variant.genus;
         }
     }
 }

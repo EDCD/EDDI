@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="E_TypeAnomoly" xml:space="preserve">
-    <value>E-Type anomolies are a range of phenomena characterised by slow-moving elements.</value>
+  <data name="E_TypeAnomaly" xml:space="preserve">
+    <value>E-Type anomalies are a range of phenomena characterized by slow-moving elements.</value>
   </data>
   <data name="Fumarole" xml:space="preserve">
     <value>Fumaroles are gaps in a planet’s crust through which gases and steam are emitted. The ejected material often accumulates around the opening.</value>
@@ -132,29 +132,29 @@
   <data name="IceGeyser" xml:space="preserve">
     <value>Ice geysers, also known as cryogeysers, are eruptions of ice, dust and volatiles.</value>
   </data>
-  <data name="K_TypeAnomoly" xml:space="preserve">
-    <value>K-Type anomolies are a range of high-energy phenomena characterised by luminous cloud patterns.</value>
+  <data name="K_TypeAnomaly" xml:space="preserve">
+    <value>K-Type anomalies are a range of high-energy phenomena characterized by luminous cloud patterns.</value>
   </data>
   <data name="LagrangeCloud" xml:space="preserve">
     <value>Lagrange clouds are a dense accumulation of gas fixed in place at a Lagrange point, where the combined gravitational forces of multiple bodies create a stable region.</value>
   </data>
   <data name="LavaSpout" xml:space="preserve">
-    <value>Lava spouts are weakened areas of a planet’s surface where molten material percolates, generating heat and emitting vapour and gases. The nature of the material varies according to the planet’s composition and circumstances.</value>
+    <value>Lava spouts are weakened areas of a planet’s surface where molten material percolates, generating heat and emitting vapor and gases. The nature of the material varies according to the planet’s composition and circumstances.</value>
   </data>
-  <data name="L_TypeAnomoly" xml:space="preserve">
-    <value>L-Type anomolies are a range of phenomena characterised by luminous clusters of energy.</value>
+  <data name="L_TypeAnomaly" xml:space="preserve">
+    <value>L-Type anomalies are a range of phenomena characterized by luminous clusters of energy.</value>
   </data>
-  <data name="P_TypeAnomoly" xml:space="preserve">
-    <value>P-Type anomolies are a range of phenomena characterised by intensily bright energy patterns.</value>
+  <data name="P_TypeAnomaly" xml:space="preserve">
+    <value>P-Type anomalies are a range of phenomena characterized by intensity bright energy patterns.</value>
   </data>
-  <data name="Q_TypeAnomoly" xml:space="preserve">
-    <value>Q-Type anomolies are a range of phenomena characterised by energetic center orbs.</value>
+  <data name="Q_TypeAnomaly" xml:space="preserve">
+    <value>Q-Type anomalies are a range of phenomena characterized by energetic center orbs.</value>
   </data>
   <data name="StormCloud" xml:space="preserve">
     <value>Storm clouds are a dense accumulation of gas fixed in place at a Lagrange point, where the combined gravitational forces of multiple bodies create a stable region.</value>
   </data>
-  <data name="T_TypeAnomoly" xml:space="preserve">
-    <value>T-Type anomolies are a range of phenomena characterised by the presence of a bright pulsing sphere.</value>
+  <data name="T_TypeAnomaly" xml:space="preserve">
+    <value>T-Type anomalies are a range of phenomena characterized by the presence of a bright pulsing sphere.</value>
   </data>
   <data name="WaterGeyser" xml:space="preserve">
     <value>Geysers are eruptions of liquid created by pressure from local geological activity.</value>

@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A vast, space-based structure created several million years ago by the Guardians, an extinct nonhuman civilisation..
+        ///   Looks up a localized string similar to A vast, space-based structure created several million years ago by the Guardians, an extinct nonhuman civilization..
         /// </summary>
         public static string Guardian_Beacons {
             get {
@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilisation..
+        ///   Looks up a localized string similar to A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilization..
         /// </summary>
         public static string Guardian_Data_Logs {
             get {
@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A structure created several million years ago by the Guardians, an extinct nonhuman civilisation..
+        ///   Looks up a localized string similar to A structure created several million years ago by the Guardians, an extinct nonhuman civilization..
         /// </summary>
         public static string Guardian_Pylon {
             get {
@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilisation..
+        ///   Looks up a localized string similar to A data-storage device created several million years ago by the Guardians, an extinct nonhuman civilization..
         /// </summary>
         public static string Guardian_Terminal {
             get {
@@ -106,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A structure created several million years ago by the Guardians, an extinct nonhuman civilisation..
+        ///   Looks up a localized string similar to A structure created several million years ago by the Guardians, an extinct nonhuman civilization..
         /// </summary>
         public static string Relic_Tower {
             get {
