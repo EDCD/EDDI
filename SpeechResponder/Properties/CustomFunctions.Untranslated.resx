@@ -363,7 +363,7 @@ Common usage is to provide distance and number of jumps for a specific query:
   <data name="List" xml:space="preserve">
     <value>This function will return a humanised list of items from an array (e.g. this, that, and the other thing).
 
-List() takes a single argument, the array variable with items you want listed.
+List() takes up to two arguments. The first argument is the array variable with items you want listed. The second is an optional boolean value, which if set to true will generate an "or" list rather than an "and" list.
 
 Common usage is to convert an array to a list, for example:
 
