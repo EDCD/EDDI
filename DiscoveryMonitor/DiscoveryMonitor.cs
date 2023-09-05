@@ -46,12 +46,12 @@ namespace EddiDiscoveryMonitor
 
         public string LocalizedMonitorName ()
         {
-            return "Discovery Monitor";
+            return Properties.DiscoveryMonitor.monitorName;
         }
 
         public string MonitorDescription ()
         {
-            return "Monitor Elite: Dangerous' Discovery events for Organics (including exobiology), geology, phenomena, codex entries, etc.";
+            return Properties.DiscoveryMonitor.monitorDescription;
         }
 
         public bool IsRequired ()
@@ -325,13 +325,12 @@ namespace EddiDiscoveryMonitor
                     log += $"[handleScanOrganicEvent] SetBio:    Genus = '{@event.bio.genus.invariantName}'\r\n";
                     log += $"[handleScanOrganicEvent] SetBio:  Species = '{@event.bio.species.invariantName}'\r\n";
                     log += $"[handleScanOrganicEvent] SetBio:  Variant = '{@event.bio.variant.invariantName}'\r\n";
-                    log += $"[handleScanOrganicEvent] SetBio:    Genus = '{@event.bio.genus.invariantName}'\r\n";
                     log += $"[handleScanOrganicEvent] SetBio: Distance = '{@event.bio.genus.minimumDistanceMeters}'\r\n";
                     log += $"[handleScanOrganicEvent] SetBio ---------------------------------------------\r\n";
                     Logging.Info( log );
                 }
 
-                // TODO: 2212: Save/Update Body data
+                // Save/Update Body data
                 body.surfaceSignals.lastUpdated = @event.timestamp;
                 _currentSystem.AddOrUpdateBody( body );
                 StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );

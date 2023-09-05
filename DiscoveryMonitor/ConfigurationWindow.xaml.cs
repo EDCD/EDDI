@@ -14,7 +14,7 @@ namespace EddiDiscoveryMonitor
     {
         private DiscoveryMonitor discoveryMonitor ()
         {
-            return (DiscoveryMonitor)EDDI.Instance.ObtainMonitor( "Discovery monitor" );
+            return (DiscoveryMonitor)EDDI.Instance.ObtainMonitor( "Discovery Monitor" );
         }
 
         public ConfigurationWindow ()
@@ -75,9 +75,7 @@ namespace EddiDiscoveryMonitor
             // Swallow the character doesn't match the regex
             e.Handled = !regex.IsMatch(e.Text);
         }
-
-
-
+        
         // ########################################
         //      General
         // ########################################
@@ -88,9 +86,7 @@ namespace EddiDiscoveryMonitor
             ConfigService.Instance.discoveryMonitorConfiguration = configuration;
             discoveryMonitor()?.Reload();
         }
-
-
-
+        
         // ########################################
         //      Exobiology
         // ########################################
@@ -297,9 +293,7 @@ namespace EddiDiscoveryMonitor
                 // Bad user input; ignore it
             }
         }
-
-
-
+        
         // ########################################
         //      Codex Entries
         // ########################################
