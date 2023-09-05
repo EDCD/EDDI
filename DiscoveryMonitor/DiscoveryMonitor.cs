@@ -18,20 +18,19 @@ namespace EddiDiscoveryMonitor
 {
     public class DiscoveryMonitor : IEddiMonitor
     {
-        private class FssSignal
+        internal class FssSignal
         {
             public ulong systemAddress;         // For reference to double check
             public long bodyId;                 // For reference to double check
             public int geoCount;                // The number of geological signals detected
             public int bioCount;                // The number of biological signals detected
-            public bool exobiologyPredicted;    // Has this body had its bios predicted yet (false = FSSBodySignals event has occured but not Scan event)
         }
-        private HashSet<FssSignal> fssSignalsLibrary = new HashSet<FssSignal>();
+        internal readonly HashSet<FssSignal> fssSignalsLibrary = new HashSet<FssSignal>();
 
         private DiscoveryMonitorConfiguration configuration;
         internal OrganicGenus _currentGenus;
         internal long _currentBodyId;
-        private StarSystem _currentSystem => EDDI.Instance?.CurrentStarSystem;
+        internal StarSystem _currentSystem => EDDI.Instance?.CurrentStarSystem;
         private Body _currentBody ( long bodyId ) => _currentSystem?.BodyWithID( bodyId );
 
         public DiscoveryMonitor ()
@@ -143,13 +142,25 @@ namespace EddiDiscoveryMonitor
         public void PreHandle ( Event @event )
         {
             if ( @event is CodexEntryEvent entryEvent )
-            { handleCodexEntryEvent( entryEvent ); }
+            {
+                handleCodexEntryEvent( entryEvent );
+            }
             else if ( @event is SurfaceSignalsEvent signalsEvent )
-            { handleSurfaceSignalsEvent( signalsEvent ); }
+            {
+                handleSurfaceSignalsEvent( signalsEvent );
+            }
             else if ( @event is ScanOrganicEvent organicEvent )
-            { handleScanOrganicEvent( organicEvent ); }
-            else if ( @event is BodyScannedEvent scannedEvent )
-            { handleBodyScannedEvent( scannedEvent ); }
+            {
+                handleScanOrganicEvent( organicEvent );
+            }
+            else if ( @event is BodyScannedEvent bodyScannedEvent )
+            {
+                handleBodyScannedEvent( bodyScannedEvent );
+            }
+            else if ( @event is StarScannedEvent starScannedEvent )
+            {
+                handleStarScannedEvent( starScannedEvent );
+            }
         }
 
         internal void handleCodexEntryEvent ( CodexEntryEvent @event )
@@ -203,7 +214,6 @@ namespace EddiDiscoveryMonitor
                 {
                     log += $"\tDetect bios: {sig.amount}\r\n";
                     signal.bioCount = sig.amount;
-                    signal.exobiologyPredicted = false;
                     addSignal = true;
                 }
                 else if ( sig.signalSource.edname == "SAA_SignalType_Geological" )
@@ -252,9 +262,6 @@ namespace EddiDiscoveryMonitor
 
             if ( @event.bioSignals != null )
             {
-                // The bio list is no longer a prediction, do not update it again.
-                body.surfaceSignals.predicted = false;
-
                 // TODO: Compare our predicted and actual bio signals.
 
                 // Update from predicted to actual bio signals
@@ -264,7 +271,7 @@ namespace EddiDiscoveryMonitor
             return true;
         }
 
-        internal void handleScanOrganicEvent ( ScanOrganicEvent @event )
+        private void handleScanOrganicEvent ( ScanOrganicEvent @event )
         {
             string log = "";
 
@@ -331,99 +338,106 @@ namespace EddiDiscoveryMonitor
             }
         }
 
-        internal void handleBodyScannedEvent ( BodyScannedEvent @event )
+        private void handleBodyScannedEvent ( BodyScannedEvent @event )
         {
-            string log = "";
+            if ( @event.bodyId is null || !CheckSafe( (long)@event.bodyId ) ) { return; }
 
-            // Transfer biologicals from FSS to body.
-            if ( fssSignalsLibrary != null && @event.systemAddress != null && @event.bodyId != null )
+            if ( @event.systemAddress == _currentSystem.systemAddress )
             {
-                FssSignal signal = fssSignalsLibrary.First(s => s.systemAddress == (ulong)@event.systemAddress && s.bodyId == (long)@event.bodyId );
+                // Predict biologicals for a scanned body
+                var body = _currentBody( (long)@event.bodyId );
+                var signal = fssSignalsLibrary.FirstOrDefault( s =>
+                    s.systemAddress == body.systemAddress && s.bodyId == body.bodyId );
 
-                bool saveBody = false;
-
-                _currentBodyId = (long)@event.bodyId;
-                if ( CheckSafe( _currentBodyId ) )
+                if ( signal != null && 
+                     !body.surfaceSignals.biosignals.Any() && 
+                     PredictionHasBios( signal, ref body ) )
                 {
-                    Body body = _currentBody(_currentBodyId);
+                    EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body, body.surfaceSignals.biosignals ) );
 
-                    // Always update the reported totals
-                    body.surfaceSignals.reportedBiologicalCount = signal.bioCount;
-                    body.surfaceSignals.reportedGeologicalCount = signal.geoCount;
+                    // Save/Update Body data
+                    body.surfaceSignals.lastUpdated = @event.timestamp;
+                    _currentSystem.AddOrUpdateBody( body );
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                }
+            }
+        }
 
-                    log += $"[handleBodyScannedEvent:FSS backlog <{@event.systemAddress},{@event.bodyId}>\r\n" +
-                           $"\tBio Count is {signal.bioCount} ({body.surfaceSignals.reportedBiologicalCount})\r\n" +
-                           $"\tGeo Count is {signal.geoCount} ({body.surfaceSignals.reportedGeologicalCount})\r\n";
+        private void handleStarScannedEvent ( StarScannedEvent @event )
+        {
+            if ( @event.bodyId is null || !CheckSafe( (long)@event.bodyId ) ) { return; }
 
-                    if ( signal.exobiologyPredicted == false )
+            if ( @event.systemAddress == _currentSystem.systemAddress )
+            {
+                // Predict biologicals for previously scanned bodies when a star is scanned
+                var childBodyIDs = _currentSystem.GetChildBodyIDs( (long)@event.bodyId );
+                foreach ( var childBodyID in _currentSystem.bodies
+                             .Where( b=> b.bodyId != null && childBodyIDs.Contains((long)b.bodyId) )
+                             .Select(b => b.bodyId) )
+                {
+                    var body = _currentBody( (long)childBodyID );
+                    var signal = fssSignalsLibrary.FirstOrDefault( s =>
+                        s.systemAddress == body.systemAddress && s.bodyId == body.bodyId );
+
+                    if ( signal != null && 
+                         !body.surfaceSignals.biosignals.Any() && 
+                         PredictionHasBios( signal, ref body ) )
                     {
-                        if ( signal.bioCount > 0 )
-                        {
-                            log += "[handleBodyScannedEvent] FSS status is false:\r\n";
-                            HashSet<OrganicGenus> bios;
-                            if ( configuration.enableVariantPredictions )
-                            {
-                                log += "[handleBodyScannedEvent] Predicting by variants:\r\n";
-                                bios = new ExobiologyPredictions(_currentSystem, body, configuration).PredictByVariants();
-                            }
-                            else
-                            {
-                                log += "[handleBodyScannedEvent] Predicting by species:\r\n";
-                                bios = new ExobiologyPredictions( _currentSystem, body, configuration ).PredictBySpecies();
-                            }
+                        EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body, body.surfaceSignals.biosignals ) );
 
-                            log += $"\r\n\tClearing current bio list";
-                            body.surfaceSignals.biosignals.Clear();
-
-                            foreach ( var genus in bios )
-                            {
-                                log += $"\r\n\tAddBio {genus}";
-                                body.surfaceSignals.AddBioFromGenus( genus, true );
-                            }
-                            if ( configuration.enableLogging )
-                            {
-                                Logging.Debug( log );
-                            }
-
-                            // This is used by SAASignalsFound to know if we can safely clear the list to create the actual bio list
-                            body.surfaceSignals.predicted = true;
-                            signal.exobiologyPredicted = true;
-
-                            if ( configuration.enableLogging )
-                            {
-                                log += "\r\n[handleBodyScannedEvent]:";
-                                var bioList = body.surfaceSignals.biosignals.Select(s => s.genus.invariantName).ToList();
-                                foreach ( var invariantGenus in bioList )
-                                {
-                                    log += $"\r\n\tGetBios {invariantGenus}";
-                                }
-                            }
-
-                            // This doesn't have to be used but is provided just in case
-                            EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body, body.surfaceSignals.biosignals ) );
-
-                            saveBody = true;
-                        }
-                    }
-                    else
-                    {
-                        log += "\r\n[handleBodyScannedEvent] FSS status is true (already added)]:";
-                    }
-
-                    if ( configuration.enableLogging )
-                    {
-                        Logging.Debug( log );
-                    }
-
-                    if ( saveBody )
-                    {
-                        // TODO:#2212: Save/Update Body data
+                        // Save/Update Body data
                         body.surfaceSignals.lastUpdated = @event.timestamp;
                         _currentSystem.AddOrUpdateBody( body );
                         StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
                     }
                 }
             }
+        }
+
+        private bool PredictionHasBios(FssSignal signal, ref Body body)
+        {
+            var log = "";
+            var hasPredictedBios = false;
+            if ( signal?.bioCount > 0 && body != null)
+            {
+                // Always update the reported totals
+                body.surfaceSignals.reportedBiologicalCount = signal.bioCount;
+                body.surfaceSignals.reportedGeologicalCount = signal.geoCount;
+                log += $"[handleBodyScannedEvent:FSS backlog <{body.systemAddress},{body.bodyId}>\r\n" +
+                       $"\tBio Count is {signal.bioCount} ({body.surfaceSignals.reportedBiologicalCount})\r\n" +
+                       $"\tGeo Count is {signal.geoCount} ({body.surfaceSignals.reportedGeologicalCount})\r\n";
+
+                log += "[handleBodyScannedEvent] FSS status is false:\r\n";
+                HashSet<OrganicGenus> bios;
+                if ( configuration.enableVariantPredictions )
+                {
+                    log += "[handleBodyScannedEvent] Predicting by variants:\r\n";
+                    bios = new ExobiologyPredictions( _currentSystem, body, configuration ).PredictByVariants();
+                }
+                else
+                {
+                    log += "[handleBodyScannedEvent] Predicting by species:\r\n";
+                    bios = new ExobiologyPredictions( _currentSystem, body, configuration ).PredictBySpecies();
+                }
+
+                log += $"\r\n\tClearing current bio list";
+                body.surfaceSignals.biosignals.Clear();
+
+                foreach ( var genus in bios )
+                {
+                    log += $"\r\n\tAddBio {genus.invariantName}";
+                    body.surfaceSignals.AddBioFromGenus( genus, true );
+                }
+
+                hasPredictedBios = true;
+            }
+
+            if ( configuration.enableLogging )
+            {
+                Logging.Debug( log );
+            }
+
+            return hasPredictedBios;
         }
 
         /// <summary>
@@ -460,12 +474,10 @@ namespace EddiDiscoveryMonitor
         }
 
         public void PostHandle ( Event @event )
-        {
-        }
+        { }
 
         public void HandleProfile ( JObject profile )
-        {
-        }
+        { }
 
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {

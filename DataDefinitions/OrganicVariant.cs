@@ -812,6 +812,7 @@ namespace EddiDataDefinitions
         public static readonly OrganicVariant Tussocks_15_Y = new OrganicVariant( "Tussocks_15_Y", 2451509, OrganicSpecies.TussockCapillum, (decimal)0.0558086060976853, (decimal)0.265004588559192, (decimal)80.075775, (decimal)106.660561, "RockyBody;RockyIceBody", "Methane;Argon", "Y;DC;H", "None;Minor,Silicate,Vapour,Geysers;Major,Silicate,Vapour,Geysers;Minor,Metallic,Magma" );
         public static readonly OrganicVariant Tussocks_15_D = new OrganicVariant( "Tussocks_15_D", 2451511, OrganicSpecies.TussockCapillum, (decimal)0.0660258998674416, (decimal)0.247931375548078, (decimal)82.633888, (decimal)101.503357, "RockyBody;RockyIceBody", "Methane;Argon", "DC;H", "None;Minor,Metallic,Magma" );
 
+        // Variants without any known criteria (including non-terrestrial variants)
         public static readonly OrganicVariant L_Cry_IcCry_Bl = new OrganicVariant( "L_Cry_IcCry_Bl", 2100601, OrganicSpecies.LindigoticumIceCrystals, (decimal)0, (decimal)0, (decimal)0, (decimal)0, "", "", "", "" );
         public static readonly OrganicVariant L_Cry_IcCry_Gr = new OrganicVariant( "L_Cry_IcCry_Gr", 2100602, OrganicSpecies.PrasinumIceCrystals, (decimal)0, (decimal)0, (decimal)0, (decimal)0, "", "", "", "" );
         public static readonly OrganicVariant L_Cry_IcCry_Pk = new OrganicVariant( "L_Cry_IcCry_Pk", 2100603, OrganicSpecies.RoseumIceCrystals, (decimal)0, (decimal)0, (decimal)0, (decimal)0, "", "", "", "" );
@@ -939,12 +940,12 @@ namespace EddiDataDefinitions
 
         public long? entryID;
         public OrganicGenus genus => species.genus;
-        public OrganicSpecies species;
-        public List<string> planetClass;
+        public OrganicSpecies species; 
         public decimal minG;
         public decimal maxG;
         public decimal minK;
         public decimal maxK;
+        public List<string> planetClass;
         public List<string> atmosphereClass;
         public List<string> starClass;
         public List<string> volcanism;
@@ -952,6 +953,15 @@ namespace EddiDataDefinitions
         // For future use, if we want to add some species specific description.
         // public string description => Properties.OrganicVariantDesc.ResourceManager.GetString( NormalizeVariant( edname ) );
         public int minimumDistanceMeters => genus.minimumDistanceMeters;
+
+        public bool isPredictable => ( minG > 0 ) ||
+                                     ( maxG > 0 ) ||
+                                     ( minK > 0 ) ||
+                                     ( maxK > 0 ) ||
+                                     planetClass.Any() ||
+                                     atmosphereClass.Any() ||
+                                     volcanism.Any() ||
+                                     starClass.Any();
 
         // dummy used to ensure that the static constructor has run
         public OrganicVariant () : this( "" )

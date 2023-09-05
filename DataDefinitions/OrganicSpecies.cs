@@ -132,7 +132,7 @@ namespace EddiDataDefinitions
         public static readonly OrganicSpecies TussockVentusa = new OrganicSpecies( "TussockVentusa", OrganicGenus.Tussocks, (int)3227700, (decimal?)0.28, (decimal?)155, "<k<", (decimal?)160, "RockyBody;HighMetalContentBody", "CarbonDioxide;CarbonDioxideRich", "", "F;G;K;M;L;T;D;H" );
         public static readonly OrganicSpecies TussockVirgam = new OrganicSpecies( "TussockVirgam", OrganicGenus.Tussocks, (int)14313700, (decimal?)0.28, (decimal?)390, "<k<", (decimal?)450, "RockyBody;HighMetalContentBody", "Water;WaterRich", "", "F;G;K;M;L;T;D;H" );
 
-        // Vaccuum Species
+        // Genuses without any known criteria (including non-terrestrial species)
         public static readonly OrganicSpecies LindigoticumIceCrystals = new OrganicSpecies("LindigoticumIceCrystals", OrganicGenus.IceCrystals, 0, 0, 0, "", 0, "", "", "", "" );
         public static readonly OrganicSpecies PrasinumIceCrystals = new OrganicSpecies("PrasinumIceCrystals", OrganicGenus.IceCrystals, 0, 0, 0, "", 0, "", "", "", "" );
         public static readonly OrganicSpecies RoseumIceCrystals = new OrganicSpecies("RoseumIceCrystals", OrganicGenus.IceCrystals, 0, 0, 0, "", 0, "", "", "", "" );
@@ -260,7 +260,7 @@ namespace EddiDataDefinitions
 
         public OrganicGenus genus;
 
-        [PublicAPI]
+        [PublicAPI( "The credit value for this species" )]
         public long value;
         
         public IList<string> planetClass;
@@ -275,6 +275,15 @@ namespace EddiDataDefinitions
         public string description => Properties.OrganicSpeciesDesc.ResourceManager.GetString( NormalizeSpecies( edname ) );
         public string conditions => Properties.OrganicSpeciesCond.ResourceManager.GetString( NormalizeSpecies( edname ) );
         public int minimumDistanceMeters => genus.minimumDistanceMeters;
+
+        public bool isPredictable => ( maxG > 0 ) ||
+                                     ( minK > 0 ) ||
+                                     ( maxK > 0 ) ||
+                                     !string.IsNullOrEmpty( kRange ) ||
+                                     planetClass.Any() ||
+                                     atmosphereClass.Any() ||
+                                     volcanism.Any() ||
+                                     starClass.Any();
 
         // dummy used to ensure that the static constructor has run
         public OrganicSpecies () : this( "" )

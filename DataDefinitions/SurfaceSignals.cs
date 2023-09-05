@@ -19,11 +19,11 @@ namespace EddiDataDefinitions
         public int reportedBiologicalCount { get; set; }
 
         public HashSet<Exobiology> biosignalsremaining () =>
-            biosignals.Where( e => e.scanState != Exobiology.State.SampleComplete ).ToHashSet();
+            biosignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
 
 
-        [PublicAPI("True if the current biologicals are predicted (but not confirmed) ")]
-        public bool predicted;
+        [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
+        public bool predicted => biosignals.Any( s => s.scanState == Exobiology.State.Predicted );
 
         public bool TryGetBio ( string genusEDName, out Exobiology bio )
         {

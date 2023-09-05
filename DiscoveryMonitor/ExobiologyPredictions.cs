@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using Utilities;
 
 namespace EddiDiscoveryMonitor
@@ -39,6 +40,25 @@ namespace EddiDiscoveryMonitor
                 // Get conditions for current variant
                 if ( variant != null )
                 {
+                    // Handle ignored species
+                    if ( ( configuration.exobiology.predictions.skipCrystallineShards && variant.genus == OrganicGenus.GroundStructIce ) ||
+                         ( configuration.exobiology.predictions.skipBrainTrees && variant.genus == OrganicGenus.Brancae ) ||
+                         ( configuration.exobiology.predictions.skipBarkMounds && variant.genus == OrganicGenus.Cone ) ||
+                         ( configuration.exobiology.predictions.skipTubers && variant.genus == OrganicGenus.Tubers ) )
+                    {
+                        if ( enableLog )
+                        { log += $"IGNORE '{variant.genus.edname} (configuration)'\r\n"; }
+                        goto Skip_To_Purge;
+                    }
+
+                    // Ignore species without any known criteria
+                    if ( !variant.isPredictable )
+                    {
+                        if ( enableLog )
+                        { log += $"IGNORE '{variant.genus.edname} (no known criteria)'\r\n"; }
+                        goto Skip_To_Purge;
+                    }
+
                     // Check if body meets max gravity requirements
                     // maxG: Maximum gravity
                     if ( variant.maxG != 0 )
@@ -314,7 +334,15 @@ namespace EddiDiscoveryMonitor
                      ( configuration.exobiology.predictions.skipTubers && species.genus == OrganicGenus.Tubers ) )
                 {
                     if ( enableLog )
-                    { log += $"IGNORE '{species.genus.edname}'\r\n"; }
+                    { log += $"IGNORE '{species.genus.edname} (configuration)'\r\n"; }
+                    goto Skip_To_Purge;
+                }
+
+                // Ignore species without any known criteria
+                if ( !species.isPredictable )
+                {
+                    if ( enableLog )
+                    { log += $"IGNORE '{species.genus.edname} (no known criteria)'\r\n"; }
                     goto Skip_To_Purge;
                 }
 

@@ -159,6 +159,8 @@ namespace EddiEvents
 
         public bool? alreadymapped => star.alreadymapped;
 
+        public ulong? systemAddress => star.systemAddress;
+
         public long? bodyId => star.bodyId;
 
         public DateTime? mapped => star.mappedDateTime;

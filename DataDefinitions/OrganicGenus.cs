@@ -1,4 +1,5 @@
-﻿using Utilities;
+﻿using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -34,7 +35,7 @@ namespace EddiDataDefinitions
         public static readonly OrganicGenus Tubus = new OrganicGenus( "Tubus", 800 );
         public static readonly OrganicGenus Tussocks = new OrganicGenus( "Tussocks", 200 );
 
-        // Vacuum Genuses
+        // Genuses without any known minimum distance (including non-terrestrial genuses)
         public static readonly OrganicGenus MineralSpheres = new OrganicGenus( "MineralSpheres", 0 );
         public static readonly OrganicGenus MetallicCrystals = new OrganicGenus( "MetallicCrystals", 0 );
         public static readonly OrganicGenus SilicateCrystals = new OrganicGenus( "SilicateCrystals", 0 );
@@ -67,8 +68,14 @@ namespace EddiDataDefinitions
         public static readonly OrganicGenus CalcitePlates = new OrganicGenus( "CalcitePlates", 0 );
         public static readonly OrganicGenus ThargoidBarnacle = new OrganicGenus( "ThargoidBarnacle", 0 );
 
-        [PublicAPI]
+        [PublicAPI ("The minimum distance that you must travel before you can collect a fresh sample of this genus")]
         public int minimumDistanceMeters { get; private set; }
+
+        [PublicAPI( "The maximum credit value for this genus" )]
+        public long maximumValue => OrganicSpecies.AllOfThem.Where( s => s.genus == this ).Max( s => s.value );
+
+        [PublicAPI( "The minimum credit value for this genus" )]
+        public long minimumValue => OrganicSpecies.AllOfThem.Where( s => s.genus == this ).Min( s => s.value );
 
         [PublicAPI]
         public string description => Properties.OrganicGenusDesc.ResourceManager.GetString( NormalizeGenus( edname ) );

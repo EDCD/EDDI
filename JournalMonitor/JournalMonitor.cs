@@ -4954,14 +4954,14 @@ namespace EddiJournalMonitor
                                     {
                                         foreach ( Dictionary<string, object> discoveredBio in discovered )
                                         {
-                                            decimal value = JsonParsing.getLong( discoveredBio, "Value" );
-                                            decimal bonus = JsonParsing.getLong( discoveredBio, "Bonus" );
+                                            var value = JsonParsing.getLong( discoveredBio, "Value" );
+                                            var bonus = JsonParsing.getLong( discoveredBio, "Bonus" );
 
                                             var organic = new Organic( GetOrganicVariant( discoveredBio ) ) ?? 
                                                           new Organic( GetOrganicSpecies(discoveredBio) ) ?? 
                                                           new Organic( GetOrganicGenus(discoveredBio) )
                                             {
-                                                value = value, 
+                                                valueOverride = value, 
                                                 bonus = bonus
                                             };
 

@@ -13,11 +13,19 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public OrganicVariant variant;
 
-        [PublicAPI]
-        public decimal value { get; set; } // Credit value (when sold in the `OrganicDataSold` event)
+        [PublicAPI ("The credit value for selling organic data for the species, or else the maximum credit value for the genus if the species is not yet known" ) ]
+        public long value => valueOverride ?? 
+                             species?.value ?? 
+                             genus?.maximumValue ?? 
+                             0;
 
-        [PublicAPI]
-        public decimal bonus { get; set; } // Bonus credit value (when sold in the `OrganicDataSold` event)
+        /// <summary>
+        /// Overrides the credit values from definitions when an actual value is indicated (as by the `OrganicDataSold` event)
+        /// </summary>
+        public long? valueOverride { get; set; }
+
+        [PublicAPI ( "The bonus credit value, as awarded when selling organic data" ) ]
+        public decimal bonus { get; set; }
 
         /// <summary>
         /// Populate the organic from variant data. Most preferred.
