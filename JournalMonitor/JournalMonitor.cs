@@ -4937,7 +4937,26 @@ namespace EddiJournalMonitor
                                     var species = GetOrganicSpecies(data);
                                     var variant = GetOrganicVariant(data);
 
-                                    events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
+                                    if ( scanType != "Analyse" || AnalysisIncomplete() )
+                                    {
+                                        events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
+                                    }
+
+                                    bool AnalysisIncomplete()
+                                    {
+                                        // `Analyse` scans can be unreasonably delayed since the timer pauses when the scanner is holstered.
+                                        // If the journal event is sufficiently delayed, we'll synthesize our own event as long as we've recorded enough samples.
+                                        if ( EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress && 
+                                             ( EDDI.Instance.CurrentStarSystem?.BodyWithID( bodyId )?.surfaceSignals.
+                                                TryGetBio( genus, out var bio ) ?? false ) )
+                                        {
+                                            if ( bio.scanState < Exobiology.State.SampleAnalyzed )
+                                            {
+                                                return true;
+                                            }
+                                        }
+                                        return false;
+                                    }
                                 }
                                 handled = true;
                                 break;

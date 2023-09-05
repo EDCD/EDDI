@@ -70,8 +70,8 @@ namespace EddiDataDefinitions
             else if ( scanType == "Analyse" )
             {
                 scanState = State.SampleAnalyzed;
-            }
-
+            } 
+            
             nearPriorSample = true;
         }
     }

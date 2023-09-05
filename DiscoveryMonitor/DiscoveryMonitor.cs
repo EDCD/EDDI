@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -273,15 +274,13 @@ namespace EddiDiscoveryMonitor
 
         private void handleScanOrganicEvent ( ScanOrganicEvent @event )
         {
-            string log = "";
+            string log = $"[handleScanOrganicEvent] --------------------------------------------\r\n";
 
-            _currentBodyId = @event.bodyId;
-            _currentGenus = @event.genus;
-
-            log += $"[handleScanOrganicEvent] --------------------------------------------\r\n";
-
-            if ( CheckSafe() )
+            if ( CheckSafe( @event.bodyId ) )
             {
+                _currentBodyId = @event.bodyId;
+                _currentGenus = @event.genus;
+
                 log += $"[handleScanOrganicEvent] CheckSafe OK\r\n";
 
                 Body body = _currentBody(_currentBodyId);
@@ -328,6 +327,33 @@ namespace EddiDiscoveryMonitor
                     log += $"[handleScanOrganicEvent] SetBio: Distance = '{@event.bio.genus.minimumDistanceMeters}'\r\n";
                     log += $"[handleScanOrganicEvent] SetBio ---------------------------------------------\r\n";
                     Logging.Info( log );
+                }
+
+                if ( bio.scanState == Exobiology.State.SampleComplete )
+                {
+                    // The `Analyse` journal event normally takes place about 5 seconds after completing the sample
+                    // but can be delayed if the commander holsters their scanner before the analysis cycle is completed.
+                    Task.Run( async () =>
+                    {
+                        int timeMs = 15000; // If after 15 seconds the event hasn't generated then
+                                            // we'll generate our own event and update our own internal tracking
+                                            // (regardless of whether the scanner is holstered).
+                        await Task.Delay( timeMs );
+                        if ( bio.scanState < Exobiology.State.SampleAnalyzed )
+                        {
+                            EDDI.Instance.enqueueEvent(
+                                new ScanOrganicEvent( 
+                                    @event.timestamp.AddMilliseconds( timeMs ), 
+                                    @event.systemAddress,
+                                    @event.bodyId, "Analyse", 
+                                    @event.genus, 
+                                    @event.species, 
+                                    @event.variant )
+                                {
+                                    fromLoad = @event.fromLoad
+                                } );
+                        }
+                    } ).ConfigureAwait( false );
                 }
 
                 // Save/Update Body data
