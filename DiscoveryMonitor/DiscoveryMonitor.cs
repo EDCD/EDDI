@@ -28,7 +28,7 @@ namespace EddiDiscoveryMonitor
         }
         internal readonly HashSet<FssSignal> fssSignalsLibrary = new HashSet<FssSignal>();
 
-        private DiscoveryMonitorConfiguration configuration;
+        internal DiscoveryMonitorConfiguration configuration;
         internal OrganicGenus _currentGenus;
         internal long _currentBodyId;
         internal StarSystem _currentSystem => EDDI.Instance?.CurrentStarSystem;
@@ -390,9 +390,9 @@ namespace EddiDiscoveryMonitor
 
         private void handleStarScannedEvent ( StarScannedEvent @event )
         {
-            if ( @event.bodyId is null || !CheckSafe( (long)@event.bodyId ) ) { return; }
+            if ( @event.bodyId is null ) { return; }
 
-            if ( @event.systemAddress == _currentSystem.systemAddress )
+            if ( _currentSystem != null && @event.systemAddress == _currentSystem.systemAddress )
             {
                 // Predict biologicals for previously scanned bodies when a star is scanned
                 var childBodyIDs = _currentSystem.GetChildBodyIDs( (long)@event.bodyId );

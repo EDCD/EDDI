@@ -148,7 +148,7 @@ namespace EddiDiscoveryMonitor
                     // Check if body has appropriate volcanism
                     {
                         bool volcanismMatches = false;
-                        if ( variant.volcanism.Count > 0 )
+                        if ( variant.volcanism.Count > 0 && body.volcanism != null )
                         {
                             foreach ( string volcanism in variant.volcanism )
                             {
@@ -173,7 +173,7 @@ namespace EddiDiscoveryMonitor
                                     }
                                 }
 
-                                // Check if amount, composition and type matc hthe current body
+                                // Check if amount, composition and type match hthe current body
                                 if ( amount == body.volcanism.invariantAmount && composition == body.volcanism.invariantComposition && type == body.volcanism.invariantType )
                                 {
                                     volcanismMatches = true;
@@ -206,7 +206,8 @@ namespace EddiDiscoveryMonitor
                                         foundParent = true;
                                         long starId = (long)parent[ key ];
 
-                                        Body starBody = _currentSystem.BodyWithID( starId );
+                                        var starBody = _currentSystem.BodyWithID( starId );
+                                        if ( starBody == null ) { goto ExitParentStarLoop; }
                                         string starClass = starBody.stellarclass;
                                         foundClass = starClass;
 
@@ -536,6 +537,7 @@ namespace EddiDiscoveryMonitor
                                                     long starId = bodyId;
 
                                                     Body starBody = _currentSystem.BodyWithID( starId );
+                                                    if ( starBody == null ) { goto ExitParentStarLoop; }
                                                     string starClass = starBody.stellarclass;
                                                     foundClass = starClass;
 
