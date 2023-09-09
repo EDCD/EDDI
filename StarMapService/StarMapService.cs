@@ -417,7 +417,7 @@ namespace EddiStarMapService
 
             if (response != null)
             {
-                Logging.Debug("Response for star map logs is: " + response);
+                Logging.Debug("Response for star map logs is: ", response);
 
                 if (response.msgnum != 100)
                 {

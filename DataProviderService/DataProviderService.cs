@@ -126,10 +126,10 @@ namespace EddiDataProviderService
             {
                 try
                 {
+                    Logging.Info( "Syncing all flight logs from EDSM" );
                     List<StarMapResponseLogEntry> flightLogs = edsmService.getStarMapLog(lastSync);
                     if (flightLogs?.Count > 0)
                     {
-                        Logging.Debug("Syncing from EDSM");
                         Dictionary<string, string> comments = edsmService.getStarMapComments();
                         int total = flightLogs.Count;
                         int i = 0;
@@ -141,12 +141,16 @@ namespace EddiDataProviderService
                             syncEdsmLogBatch(flightLogBatch, comments);
                             i += batchSize;
                         }
+                        Logging.Info( "EDSM flight logs synchronized" );
                     }
-                    Logging.Info("EDSM sync completed");
+                    else
+                    {
+                        Logging.Warn("No flight logs received.");
+                    }
                 }
                 catch (EDSMException edsme)
                 {
-                    Logging.Debug("EDSM error received: " + edsme.Message);
+                    Logging.Debug("EDSM error received: " + edsme.Message, edsme);
                 }
                 catch (ThreadAbortException e)
                 {
@@ -162,10 +166,11 @@ namespace EddiDataProviderService
             {
                 try
                 {
+                    Logging.Debug( $"Syncing flight logs from EDSM for {starSystems.Count} system(s)." );
                     List<StarMapResponseLogEntry> flightLogs = edsmService.getStarMapLog(null, starSystems.Select(s => s.systemname).ToArray());
                     Dictionary<string, string> comments = edsmService.getStarMapComments();
 
-                    if (flightLogs != null)
+                    if (flightLogs?.Count > 0)
                     {
                         foreach (StarSystem starSystem in starSystems)
                         {
@@ -189,10 +194,14 @@ namespace EddiDataProviderService
                             }
                         }
                     }
+                    else
+                    {
+                        Logging.Warn( $"No flight logs received for {starSystems.Count} system(s).." );
+                    }
                 }
                 catch (EDSMException edsme)
                 {
-                    Logging.Debug("EDSM error received: " + edsme.Message);
+                    Logging.Debug("EDSM error received: " + edsme.Message, edsme);
                 }
                 catch (ThreadAbortException e)
                 {
