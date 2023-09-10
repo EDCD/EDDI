@@ -120,8 +120,6 @@ namespace UnitTests
             Assert.AreEqual( 7, discoveryMonitor.fssSignalsLibrary?.Last().bioCount );
             var body = discoveryMonitor._currentSystem.bodies.FirstOrDefault( b => b.bodyId == 5 );
             Assert.IsNotNull( body );
-            Assert.AreEqual( 7, body.surfaceSignals.reportedBiologicalCount );
-            Assert.AreEqual( 0, body.surfaceSignals.reportedGeologicalCount );
 
             if ( !starFirst )
             {
@@ -129,6 +127,8 @@ namespace UnitTests
                 StarScan();
             }
 
+            Assert.AreEqual( 7, body.surfaceSignals.reportedBiologicalCount );
+            Assert.AreEqual( 0, body.surfaceSignals.reportedGeologicalCount );
             Assert.IsNotNull( body.surfaceSignals.biosignals );
             Assert.IsTrue( body.surfaceSignals.biosignals.Count >= 7 );
             Assert.IsTrue( body.surfaceSignals.biosignals.Distinct().Count() == body.surfaceSignals.biosignals.Count );

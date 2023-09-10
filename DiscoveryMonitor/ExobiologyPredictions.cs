@@ -1,5 +1,6 @@
 ﻿using EddiConfigService.Configurations;
 using EddiDataDefinitions;
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -11,12 +12,14 @@ namespace EddiDiscoveryMonitor
     {
         private readonly StarSystem _currentSystem;
         private readonly Body body;
+        private readonly Body parentStar;
         private readonly DiscoveryMonitorConfiguration configuration;
 
-        public ExobiologyPredictions ( StarSystem starSystem, Body body, DiscoveryMonitorConfiguration configuration )
+        public ExobiologyPredictions ( [NotNull] StarSystem starSystem, [NotNull] Body body, [NotNull] Body parentStar, [NotNull] DiscoveryMonitorConfiguration configuration )
         {
             this._currentSystem = starSystem;
             this.body = body;
+            this.parentStar = parentStar;
             this.configuration = configuration;
         }
 
@@ -26,286 +29,44 @@ namespace EddiDiscoveryMonitor
         /// </summary>
         public HashSet<OrganicGenus> PredictByVariants ()
         {
-            String log = "";
-            bool enableLog = configuration.enableLogging;
+            Logging.Debug( $"Generating predictions by variants for {body.bodyname} in {_currentSystem.systemname}." );
 
-            // Create a list to store predicted variants
-            var listPredicted = new List<OrganicVariant>();
+            // Create temporary list of ALL variants possible
+            var predictedVariants = new List<OrganicVariant>();
 
-            // Iterate though species
+            // Iterate though variants
             foreach ( var variant in OrganicVariant.AllOfThem )
             {
-                if ( enableLog ) { log += $"[Predictions] CHECKING VARIANT {variant}: "; }
-                
-                // Get conditions for current variant
-                if ( variant != null )
+                var log = $"Checking variant {variant.edname} (genus: {variant.genus}): ";
+
+                if ( !variant.isPredictable )
                 {
-                    // Handle ignored species
-                    if ( ( configuration.exobiology.predictions.skipCrystallineShards && variant.genus == OrganicGenus.GroundStructIce ) ||
-                         ( configuration.exobiology.predictions.skipBrainTrees && variant.genus == OrganicGenus.Brancae ) ||
-                         ( configuration.exobiology.predictions.skipBarkMounds && variant.genus == OrganicGenus.Cone ) ||
-                         ( configuration.exobiology.predictions.skipTubers && variant.genus == OrganicGenus.Tubers ) )
-                    {
-                        if ( enableLog )
-                        { log += $"IGNORE '{variant.genus.edname} (configuration)'\r\n"; }
-                        goto Skip_To_Purge;
-                    }
-
-                    // Ignore species without any known criteria
-                    if ( !variant.isPredictable )
-                    {
-                        if ( enableLog )
-                        { log += $"IGNORE '{variant.genus.edname} (no known criteria)'\r\n"; }
-                        goto Skip_To_Purge;
-                    }
-
-                    // Check if body meets max gravity requirements
-                    // maxG: Maximum gravity
-                    if ( variant.maxG != 0 )
-                    {
-                        if ( variant.maxG != 0 && variant.minG != 0 )
-                        {
-                            if ( body.gravity < variant.minG )
-                            {
-                                if ( enableLog )
-                                { log += $"\tPURGE (gravity: {body.gravity} < {variant.minG})\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                            else if ( body.gravity > variant.maxG )
-                            {
-                                if ( enableLog )
-                                { log += $"\tPURGE (gravity: {body.gravity} > {variant.maxG})\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // Check if body meets temperature (K) requirements
-                    //  - data.kRange: 'None'=No K requirements; 'Min'=K must be greater than minK; 'Max'=K must be less than maxK; 'MinMax'=K must be between minK and maxK
-                    //  - data.minK: Minimum temperature
-                    //  - data.maxK: Maximum temperature
-                    if ( variant.maxK != 0 && variant.minK != 0 )
-                    {
-                        if ( body.temperature < variant.minK )
-                        {
-                            if ( enableLog )
-                            { log += $"\tPURGE (temperature: {body.temperature} < {variant.minK})\r\n"; }
-                            goto Skip_To_Purge;
-                        }
-                        else if ( body.temperature > variant.maxK )
-                        {
-                            if ( enableLog )
-                            { log += $"\tPURGE (temperature: {body.temperature} > {variant.maxK})\r\n"; }
-                            goto Skip_To_Purge;
-                        }
-                    }
-
-                    // Check if body has appropriate class
-                    bool bodyClassMatches = false;
-                    if ( variant.planetClass.Count > 0 )
-                    {
-                        foreach ( string planetClass in variant.planetClass )
-                        {
-                            if ( planetClass == body.planetClass.edname )
-                            {
-                                bodyClassMatches = true;
-                                break;  // If found then we don't care about the rest
-                            }
-                        }
-
-                        if ( !bodyClassMatches )
-                        {
-                            if ( enableLog )
-                            { log += $"\tPURGE (planet class: {body.planetClass.edname} != [{string.Join( ",", variant.planetClass )}])\r\n"; }
-                            goto Skip_To_Purge;
-                        }
-                    }
-
-                    // Check if body has appropriate astmosphere
-                    {
-                        bool atmosphereMatches = false;
-                        //if ( enableLog ) { log += $"\tatmosphereClass.Count = {check.atmosphereClass.Count}\r\n"; }
-                        if ( variant.atmosphereClass.Count > 0 )
-                        {
-                            foreach ( string atmosphereClass in variant.atmosphereClass )
-                            {
-                                if ( atmosphereClass == body.atmosphereclass.edname )
-                                {
-                                    atmosphereMatches = true;
-                                    break;  // If found then we don't care about the rest
-                                }
-                            }
-
-                            if ( !atmosphereMatches )
-                            {
-                                if ( enableLog )
-                                { log += $"\tPURGE (atmosphere class: {body.atmosphereclass.edname} != [{string.Join( ",", variant.atmosphereClass )}])\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // Check if body has appropriate volcanism
-                    {
-                        bool volcanismMatches = false;
-                        if ( variant.volcanism.Count > 0 && body.volcanism != null )
-                        {
-                            foreach ( string volcanism in variant.volcanism )
-                            {
-                                string amount = null;
-                                string composition = "";
-                                string type = "";
-
-                                string[] parts = volcanism.Split(',');
-                                if ( parts.Length > 0 )
-                                {
-                                    if ( parts.Length == 2 )
-                                    {
-                                        // amount 'null' is normal
-                                        composition = parts[ 0 ];
-                                        type = parts[ 1 ];
-                                    }
-                                    else if ( parts.Length == 3 )
-                                    {
-                                        amount = parts[ 0 ];
-                                        composition = parts[ 1 ];
-                                        type = parts[ 2 ];
-                                    }
-                                }
-
-                                // Check if amount, composition and type match hthe current body
-                                if ( amount == body.volcanism.invariantAmount && composition == body.volcanism.invariantComposition && type == body.volcanism.invariantType )
-                                {
-                                    volcanismMatches = true;
-                                    break;  // If found then we don't care about the rest
-                                }
-                            }
-
-                            if ( !volcanismMatches )
-                            {
-                                if ( enableLog )
-                                { log += $"\tPURGE (volcanism: {body.volcanism.invariantAmount} {body.volcanism.invariantComposition} {body.volcanism.invariantType} != [{string.Join( ",", variant.volcanism )}])\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // Check if body has appropriate parent star
-                    {
-                        bool found = false;
-                        string foundClass = "";
-                        if ( variant.starClass.Count > 0 )
-                        {
-                            bool foundParent = false;
-                            foreach ( var parent in body.parents )
-                            {
-                                foreach ( string key in parent.Keys )
-                                {
-                                    if ( key == "Star" )
-                                    {
-                                        foundParent = true;
-                                        long starId = (long)parent[ key ];
-
-                                        var starBody = _currentSystem.BodyWithID( starId );
-                                        if ( starBody == null ) { goto ExitParentStarLoop; }
-                                        string starClass = starBody.stellarclass;
-                                        foundClass = starClass;
-
-                                        foreach ( string checkClass in variant.starClass )
-                                        {
-                                            if ( checkClass == starClass )
-                                            {
-                                                found = true;
-                                                goto ExitParentStarLoop;
-                                            }
-                                        }
-
-                                    }
-                                    else if ( key == "Null" )
-                                    {
-                                        long baryId = (long)parent[ key ];
-                                        var barys = _currentSystem.GetChildBodyIDs( baryId );
-
-                                        foreach ( long bodyId in barys )
-                                        {
-                                            if ( _currentSystem.BodyWithID( bodyId ).bodyType.edname == "Star" )
-                                            {
-                                                long starId = bodyId;
-
-                                                Body starBody = _currentSystem.BodyWithID( starId );
-                                                string starClass = starBody.stellarclass;
-                                                foundClass = starClass;
-
-                                                foreach ( string checkClass in variant.starClass )
-                                                {
-                                                    if ( checkClass == starClass )
-                                                    {
-                                                        found = true;
-                                                        goto ExitParentStarLoop;
-                                                    }
-                                                }
-                                            }
-
-                                            if ( found )
-                                            {
-                                                goto ExitParentStarLoop;
-                                            }
-                                        }
-                                    }
-                                    if ( foundParent )
-                                    {
-                                        goto ExitParentStarLoop;
-                                    }
-                                }
-                            }
-
-                            ExitParentStarLoop:
-                            ;
-
-                            if ( !found )
-                            {
-                                if ( enableLog )
-                                { log = log + $"\tPURGE (parent star: {foundClass} != {string.Join( ",", variant.starClass )})\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    log += $"OK\r\n";
-                    listPredicted.Add( variant );
-                    goto Skip_To_End;
+                    log += "SKIP. No known criteria.";
+                    Logging.Debug( log );
+                    continue;
                 }
 
-                Skip_To_Purge:
-                ;
-
-                Skip_To_End:
-                ;
-
-                if ( enableLog )
+                if ( !TryCheckConfiguration( variant.genus, ref log ) )
                 {
                     Logging.Debug( log );
+                    continue;
                 }
-            }
 
-            // Create a list of only the unique genus' found
-            if ( enableLog ) { log = "[Predictions] Genus List:"; }
-            var genus = new HashSet<OrganicGenus>();
-            foreach ( var variant in listPredicted )
-            {
-                if ( !genus.Contains( variant.genus ) )
+                if ( TryCheckGravity( variant.maxG, ref log ) &&
+                     TryCheckTemperature( variant.minK, variant.maxK, ref log ) &&
+                     TryCheckPlanetClass( variant.planetClass, ref log ) &&
+                     TryCheckAtmosphere( variant.atmosphereClass, ref log ) &&
+                     TryCheckVolcanism( variant.volcanism, ref log ) &&
+                     TryCheckStar( variant.starClass, ref log ) )
                 {
-                    if ( enableLog ) { log += $"\r\n\t{variant.genus.edname}"; }
-                    genus.Add( variant.genus );
+                    log += "OK";
+                    predictedVariants.Add( variant );
                 }
+                Logging.Debug( log );
             }
 
-            if ( enableLog )
-            {
-                Logging.Info( log );
-            }
-
-            return genus;
+            // Return a list of only the unique genus' found
+            return predictedVariants.Select( s => s.genus ).Distinct().ToHashSet();
         }
 
         /// <summary>
@@ -313,345 +74,213 @@ namespace EddiDiscoveryMonitor
         /// </summary>
         public HashSet<OrganicGenus> PredictBySpecies ()
         {
-            String log = "";
-            bool enableLog = true;
-
-            if ( enableLog )
-            { log += $"[Predictions] Body '{body.bodyname}'\r\n"; }
+            Logging.Debug( $"Generating predictions by species for {body.bodyname} in {_currentSystem.systemname}.");
 
             // Create temporary list of ALL species possible
-            var listPredicted = new List<OrganicSpecies>();
+            var predictedSpecies = new List<OrganicSpecies>();
 
             // Iterate though species
             foreach ( var species in OrganicSpecies.AllOfThem )
             {
-                if ( enableLog )
-                { log += $"\tCHECKING '{species.edname}': "; }
+                var log = $"Checking species {species.edname} (genus: {species.genus}): ";
 
-                // Handle ignored species
-                if ( ( configuration.exobiology.predictions.skipCrystallineShards && species.genus == OrganicGenus.GroundStructIce ) ||
-                     ( configuration.exobiology.predictions.skipBrainTrees && species.genus == OrganicGenus.Brancae ) ||
-                     ( configuration.exobiology.predictions.skipBarkMounds && species.genus == OrganicGenus.Cone ) ||
-                     ( configuration.exobiology.predictions.skipTubers && species.genus == OrganicGenus.Tubers ) )
-                {
-                    if ( enableLog )
-                    { log += $"IGNORE '{species.genus.edname} (configuration)'\r\n"; }
-                    goto Skip_To_Purge;
-                }
-
-                // Ignore species without any known criteria
                 if ( !species.isPredictable )
                 {
-                    if ( enableLog )
-                    { log += $"IGNORE '{species.genus.edname} (no known criteria)'\r\n"; }
-                    goto Skip_To_Purge;
+                    log += "SKIP. No known criteria.";
+                    Logging.Debug( log );
+                    continue;
                 }
 
-                // Iterate through conditions
-                // Get conditions for current variant
-                if ( species != null )
+                if ( !TryCheckConfiguration( species.genus, ref log ) )
                 {
-                    // Check if body meets max gravity requirements
-                    {
-                        // maxG: Maximum gravity
-                        if ( species.maxG != null && species.maxG != 0 )
-                        {
-                            if ( body.gravity > species.maxG )
-                            {
-                                if ( enableLog ) { log += $"PURGE (gravity: {body.gravity} > {species.maxG})\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // Check if body meets temperature (K) requirements
-                    {
-                        //  - data.kRange: 'None'=No K requirements; 'Min'=K must be greater than minK; 'Max'=K must be less than maxK; 'MinMax'=K must be between minK and maxK
-                        //  - data.minK: Minimum temperature
-                        //  - data.maxK: Maximum temperature
-                        if ( species.kRange != "" && species.kRange != "None" )
-                        {
-                            if ( species.kRange == "<k" )
-                            {
-                                if ( body.temperature < species.minK )
-                                {
-                                    if ( enableLog ) { log += $"PURGE (temp: {body.temperature} < {species.minK})\r\n"; }
-
-                                    goto Skip_To_Purge;
-                                }
-                            }
-                            else if ( species.kRange == "k<" )
-                            {
-                                if ( body.temperature > species.maxK )
-                                {
-                                    if ( enableLog ) { log += $"PURGE (temp: {body.temperature} > {species.maxK})\r\n"; }
-                                    goto Skip_To_Purge;
-                                }
-                            }
-                            else if ( species.kRange == "<k<" )
-                            {
-                                if ( body.temperature < species.minK || body.temperature > species.maxK )
-                                {
-                                    if ( enableLog ) { log += $"PURGE (temp: {body.temperature} < {species.minK} || {body.temperature} > {species.maxK})\r\n"; }
-                                    goto Skip_To_Purge;
-                                }
-                            }
-                        }
-                    }
-
-                    // Check if body has appropriate class
-                    {
-                        bool found = false;
-                        if ( species.planetClass.Count > 0 )
-                        {
-                            foreach ( string planetClass in species.planetClass )
-                            {
-                                if ( planetClass == body.planetClass.edname )
-                                {
-                                    found = true;
-                                    break;  // If found then we don't care about the rest
-                                }
-                            }
-
-                            if ( !found )
-                            {
-                                if ( enableLog )
-                                { log += $"\tPURGE (planet class: {body.planetClass.edname} != [{string.Join( ",", species.planetClass )}])\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // Check if body has appropriate astmosphere
-                    {
-                        bool found = false;
-                        //if ( enableLog ) { log += $"\tatmosphereClass.Count = {check.atmosphereClass.Count}\r\n"; }
-                        if ( species.atmosphereClass.Count > 0 )
-                        {
-                            foreach ( string atmosphereClass in species.atmosphereClass )
-                            {
-                                if ( ( atmosphereClass == "Any" && body.atmosphereclass.edname != "None" ) ||
-                                     ( atmosphereClass == body.atmosphereclass.edname ) )
-                                {
-                                    found = true;
-                                    break;  // If found then we don't care about the rest
-                                }
-                            }
-
-                            if ( !found )
-                            {
-                                if ( enableLog ) { log += $"\tPURGE (atmosphere class: {body.atmosphereclass.edname} != [{string.Join( ",", species.atmosphereClass )}])\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // Check if body has appropriate volcanism
-                    {
-                        bool found = false;
-                        if ( species.volcanism.Count > 0 )
-                        {
-                            foreach ( string composition in species.volcanism )
-                            {
-                                if ( body.volcanism != null )
-                                {
-                                    // If none but we got this far then the planet has an atmosphere
-                                    if ( composition == "None" )
-                                    {
-                                        break;
-                                    }
-                                    else if ( composition == "Any" || composition == body.volcanism.invariantComposition )
-                                    {
-                                        found = true;
-                                        break;  // If found then we don't care about the rest
-                                    }
-                                }
-                                else if ( composition == "None" )
-                                {
-                                    found = true;
-                                    break;
-                                }
-                            }
-
-                            if ( !found )
-                            {
-                                if ( enableLog )
-                                {
-                                    if ( body.volcanism != null )
-                                    {
-                                        log += $"\tPURGE (volcanism: {body.volcanism.invariantComposition} != [{string.Join( ",", species.volcanism )}])\r\n";
-                                    }
-                                    else
-                                    {
-                                        log += $"\tPURGE (volcanism: null != [{string.Join( ",", species.volcanism )}])\r\n";
-                                    }
-                                }
-
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // Check if body has appropriate parent star
-                    {
-                        bool found = false;
-                        string foundClass = "";
-
-                        if ( species.starClass.Count > 0 )
-                        {
-                            bool foundParent = false;
-                            foreach ( var parent in body.parents )
-                            {
-                                foreach ( string key in parent.Keys )
-                                {
-                                    if ( key == "Star" )
-                                    {
-                                        foundParent = true;
-                                        long starId = (long)parent[ key ];
-
-                                        Body starBody = _currentSystem.BodyWithID( starId );
-                                        string starClass = starBody.stellarclass;
-                                        foundClass = starClass;
-
-                                        foreach ( string checkClass in species.starClass )
-                                        {
-                                            if ( checkClass == starClass )
-                                            {
-                                                found = true;
-                                                goto ExitParentStarLoop;
-                                            }
-                                        }
-
-                                    }
-                                    else if ( key == "Null" )
-                                    {
-                                        long baryId = (long)parent[ key ];
-                                        var barys = _currentSystem.GetChildBodyIDs( baryId );
-
-                                        foreach ( long bodyId in barys )
-                                        {
-                                            if ( _currentSystem.BodyWithID( bodyId ) != null )
-                                            {
-                                                if ( _currentSystem.BodyWithID( bodyId ).bodyType.edname == "Star" )
-                                                {
-                                                    long starId = bodyId;
-
-                                                    Body starBody = _currentSystem.BodyWithID( starId );
-                                                    if ( starBody == null ) { goto ExitParentStarLoop; }
-                                                    string starClass = starBody.stellarclass;
-                                                    foundClass = starClass;
-
-                                                    foreach ( string checkClass in species.starClass )
-                                                    {
-                                                        if ( checkClass == starClass )
-                                                        {
-                                                            found = true;
-                                                            goto ExitParentStarLoop;
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            if ( found )
-                                            {
-                                                goto ExitParentStarLoop;
-                                            }
-                                        }
-                                    }
-                                    if ( foundParent )
-                                    {
-                                        goto ExitParentStarLoop;
-                                    }
-                                }
-                            }
-
-                            ExitParentStarLoop:
-                            ;
-
-                            if ( !found )
-                            {
-                                if ( enableLog ) { log += $"\tPURGE (parent star: {foundClass} != {string.Join( ",", species.starClass )})\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    // TODO:#2212........[Implement special case predictions if possible]
-                    {
-                        // Brain Trees
-                        //  - Near system with guardian structures
-                        //if ( genus == "Brancae" )
-                        //{
-                        //    if ( ? ? ? )
-                        //    {
-                        //        if ( enableLog ) { log = log + $"\tPURGE (?: ? ? ? )\r\n"; }
-                        //        goto Skip_To_Purge;
-                        //    }
-                        //}
-
-                        // Electricae radialem:
-                        //  - Near nebula (how close is near?)
-                        //if ( genus == "Electricae" )
-                        //{
-                        //    if ( ? ? ? )
-                        //    {
-                        //        if ( enableLog ) { log = log + $"\tPURGE (?: ? ? ? )\r\n"; }
-                        //        goto Skip_To_Purge;
-                        //    }
-                        //}
-
-                        // Crystalline Shards:
-                        //  - Must be >12000 Ls from nearest star.
-                        //if ( genus == "GroundStructIce" )
-                        //{
-                        //    if ( ? ? ? )
-                        //    {
-                        //        if ( enableLog ) { log = log + $"\tPURGE (?: ? ? ? )\r\n"; }
-                        //        goto Skip_To_Purge;
-                        //    }
-                        //}
-
-                        // Bark Mounds
-                        //  - Seems to always have 3 geologicals
-                        //  - Should be within 150Ly from a nebula
-                        if ( species.genus == OrganicGenus.Cone )
-                        {
-                            if ( body.surfaceSignals.geosignals.Count < 3 )
-                            {
-                                if ( enableLog )
-                                { log = log + $"\tPURGE (geo signals: {body.surfaceSignals.geosignals.Count} < 3)\r\n"; }
-                                goto Skip_To_Purge;
-                            }
-                        }
-                    }
-
-                    if ( enableLog ) { log += $"OK\r\n"; }
-                    listPredicted.Add( species );
-                    goto Skip_To_End;
+                    Logging.Debug( log );
+                    continue;
                 }
 
-                Skip_To_Purge:
-                ;
+                if ( TryCheckGravity( species.maxG, ref log ) && 
+                     TryCheckTemperature( species.minK, species.maxK, ref log ) && 
+                     TryCheckPlanetClass( species.planetClass, ref log ) && 
+                     TryCheckAtmosphere( species.atmosphereClass, ref log ) && 
+                     TryCheckVolcanism( species.volcanism, ref log ) && 
+                     TryCheckStar( species.starClass, ref log ) && 
+                     TryCheckSpecialSpecies( species, ref log ) )
+                {
+                    log += "OK";
+                    predictedSpecies.Add( species );
+                }
 
-                Skip_To_End:
-                ;
+                Logging.Debug( log );
             }
 
-            // Create a list of only the unique genus' found
-            if ( enableLog ) { log += "[Predictions] Genus List:"; }
-            var genusList = new HashSet<OrganicGenus>();
-            foreach ( var species in listPredicted )
+            // Return a list of only the unique genus' found
+            return predictedSpecies.Select(s => s.genus).Distinct().ToHashSet();
+        }
+
+        private bool TryCheckConfiguration ( OrganicGenus genus, ref string log )
+        {
+            // Check if species should be ignored per configuration settings
+            try
             {
-                var genus = species.genus;
-                if ( !genusList.Contains( genus ) )
+                if ( ( configuration.exobiology.predictions.skipCrystallineShards && genus == OrganicGenus.GroundStructIce ) ||
+                     ( configuration.exobiology.predictions.skipBrainTrees && genus == OrganicGenus.Brancae ) ||
+                     ( configuration.exobiology.predictions.skipBarkMounds && genus == OrganicGenus.Cone ) ||
+                     ( configuration.exobiology.predictions.skipTubers && genus == OrganicGenus.Tubers ) )
                 {
-                    if ( enableLog ) { log += $"\r\n\t{species.genus.edname}"; }
-                    genusList.Add( genus );
+                    log += "SKIP. Per configuration preferences.";
+                    return false;
                 }
             }
-            if ( enableLog ) { Logging.Debug( log ); }
+            catch ( Exception e )
+            {
+                Logging.Error("Failed to read configuration", e );
+            }
+            return true;
+        }
 
-            return genusList;
+        private bool TryCheckGravity ( decimal? maxG, ref string log )
+        {
+            // Check if body meets max gravity requirements
+            // maxG: Maximum gravity
+            if ( maxG > 0 )
+            {
+                if ( body.gravity > maxG )
+                {
+                    log += $"REJECT. Gravity: {body.gravity} > {maxG}";
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Evaluate whether a candidate organic's temperature range matches a given body.
+        /// </summary>
+        /// <param name="minK">Minimum temperature in Kelvin</param>
+        /// <param name="maxK">Maximum temperature in Kelvin</param>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        private bool TryCheckTemperature(decimal? minK, decimal? maxK, ref string log )
+        {
+            if ( body.temperature < minK )
+            {
+                log += $"REJECT. Temp: {body.temperature} K < {minK} K.";
+                return false;
+            }
+
+            if ( body.temperature > maxK )
+            {
+                log += $"REJECT. Temp: {body.temperature} K > {maxK} K.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryCheckPlanetClass(ICollection<string> checkPlanetClasses, ref string log )
+        {
+            // Check if body has appropriate planet class
+            if ( checkPlanetClasses.Count > 0 )
+            {
+                if ( checkPlanetClasses.Any( c =>
+                        ( ( c == "None" || c == string.Empty ) && ( body.planetClass == null || body.planetClass == PlanetClass.None ) ) ||
+                            c == "Any" ||
+                            c == body.planetClass.edname ) )
+                {
+                    return true;
+                }
+                log += $"REJECT. Planet class: {( body.planetClass ?? PlanetClass.None )?.edname} not in {string.Join( ",", checkPlanetClasses )}.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryCheckAtmosphere(ICollection<string> checkAtmosphereClasses, ref string log )
+        {
+            // Check if body has appropriate astmosphere
+            if ( checkAtmosphereClasses.Count > 0 )
+            {
+                if ( checkAtmosphereClasses.Any( c =>
+                        ( ( c == "None" || c == string.Empty ) && ( body.atmosphereclass == null || body.atmosphereclass == AtmosphereClass.None ) ) ||
+                            c == "Any" ||
+                            c == body.atmosphereclass.edname ) )
+                {
+                    return true;
+                }
+                log += $"REJECT. Atmosphere class: {( body.atmosphereclass ?? AtmosphereClass.None )?.edname} not in {string.Join( ",", checkAtmosphereClasses )}.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryCheckVolcanism(ICollection<string> checkVolcanismCompositions, ref string log )
+        {
+            // Check if body has appropriate volcanism
+            if ( checkVolcanismCompositions.Count > 0 )
+            {
+                if ( checkVolcanismCompositions.Any( c => 
+                        ( ( c == "None" || c == string.Empty ) && body.volcanism == null ) ||
+                            c == "Any" ||
+                            c == body.volcanism?.edComposition ) )
+                {
+                    return true;
+                }
+                log += $"REJECT. Volcanism composition: {body.volcanism?.edComposition} not in {string.Join( ",", checkVolcanismCompositions )}.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryCheckStar ( ICollection<string> checkStarClasses, ref string log )
+        {
+            // Check if body has appropriate parent star
+            if ( checkStarClasses.Count > 0 )
+            {
+                if ( checkStarClasses.Any(s => s == parentStar.stellarclass) )
+                {
+                    return true;
+                }
+                log += $"REJECT. Parent star {parentStar?.stellarclass} not in {string.Join( ",", checkStarClasses )}.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryCheckSpecialSpecies ( OrganicSpecies species, ref string log )
+        {
+            // TODO: Implement special case predictions where possible
+
+            // Brain Trees
+            //  - Near system with guardian structures
+            if ( species.genus == OrganicGenus.Brancae )
+            { }
+
+            // Electricae radialem:
+            //  - Near nebula (how close is near?)
+            if ( species.genus == OrganicGenus.Electricae )
+            { }
+
+            // Crystalline Shards:
+            //  - Must be >12000 Ls from nearest star.
+            if ( species.genus == OrganicGenus.GroundStructIce )
+            { }
+
+            // Bark Mounds
+            //  - Seems to always have 3 geologicals
+            //  - Should be within 150Ly from a nebula
+            if ( species.genus == OrganicGenus.Cone )
+            {
+                if ( body.surfaceSignals.geosignals.Count < 3 )
+                {
+                    log += $"REJECT. Body geological count: {body.surfaceSignals.geosignals.Count} < 3.";
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

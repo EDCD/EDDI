@@ -537,5 +537,44 @@ namespace EddiDataDefinitions
                 .Select(body => (long)body.bodyId)
                 .ToHashSet();
         }
+
+        public bool TryGetParentStar ( long? childBodyID, out Body star )
+        {
+            star = null;
+            if ( childBodyID is null ) { return false; }
+
+            var body = BodyWithID( childBodyID );
+            if ( body is null ) { return false; }
+
+            foreach ( var parent in body.parents )
+            {
+                foreach ( var key in parent.Keys )
+                {
+                    if ( key == BodyType.Star.edname ) // Parent is a star
+                    {
+                        star = BodyWithID( parent[ key ] );
+                        if ( star != null )
+                        {
+                            return true;
+                        }
+                    }
+
+                    if ( key == BodyType.Barycenter.edname ) // Parent is a barycentre, check barycentre children
+                    {
+                        foreach ( var bodyId in GetChildBodyIDs( parent[ key ] )
+                                     .Where( bodyId => BodyWithID( bodyId )?.bodyType == BodyType.Star ) )
+                        {
+                            star = BodyWithID( bodyId );
+                            if ( star != null )
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

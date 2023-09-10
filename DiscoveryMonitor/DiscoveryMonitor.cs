@@ -423,7 +423,7 @@ namespace EddiDiscoveryMonitor
         {
             var log = "";
             var hasPredictedBios = false;
-            if ( signal?.bioCount > 0 && body != null)
+            if ( signal?.bioCount > 0 && body != null && _currentSystem.TryGetParentStar(body.bodyId, out var parentStar))
             {
                 // Always update the reported totals
                 body.surfaceSignals.reportedBiologicalCount = signal.bioCount;
@@ -437,12 +437,12 @@ namespace EddiDiscoveryMonitor
                 if ( configuration.enableVariantPredictions )
                 {
                     log += "[handleBodyScannedEvent] Predicting by variants:\r\n";
-                    bios = new ExobiologyPredictions( _currentSystem, body, configuration ).PredictByVariants();
+                    bios = new ExobiologyPredictions( _currentSystem, body, parentStar,configuration ).PredictByVariants();
                 }
                 else
                 {
                     log += "[handleBodyScannedEvent] Predicting by species:\r\n";
-                    bios = new ExobiologyPredictions( _currentSystem, body, configuration ).PredictBySpecies();
+                    bios = new ExobiologyPredictions( _currentSystem, body, parentStar, configuration ).PredictBySpecies();
                 }
 
                 log += $"\r\n\tClearing current bio list";
