@@ -33,15 +33,19 @@ namespace EddiDataDefinitions
         public Exobiology ( OrganicGenus genus, bool isPrediction = false ) : base ( genus )
         {
             this.genus = genus;
+            this.scanState = isPrediction ? State.Predicted : State.Confirmed;
+        }
 
-            if ( isPrediction )
-            {
-                this.scanState = State.Predicted;
-            }
-            else
-            {
-                this.scanState = State.Confirmed;
-            }
+        public Exobiology ( OrganicSpecies species, bool isPrediction = false ) : base( species )
+        {
+            this.species = species;
+            this.scanState = isPrediction ? State.Predicted : State.Confirmed;
+        }
+
+        public Exobiology ( OrganicVariant variant, bool isPrediction = false ) : base( variant )
+        {
+            this.variant = variant;
+            this.scanState = isPrediction ? State.Predicted : State.Confirmed;
         }
 
         /// <summary>Increase the sample count, set the coordinates, and return the number of scans complete.</summary>
