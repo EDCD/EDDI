@@ -273,9 +273,9 @@ namespace EddiDiscoveryMonitor
             //  - Should be within 150Ly from a nebula
             if ( species.genus == OrganicGenus.Cone )
             {
-                if ( body.surfaceSignals.geosignals.Count < 3 )
+                if ( body.surfaceSignals.reportedGeologicalCount < 3 )
                 {
-                    log += $"REJECT. Body geological count: {body.surfaceSignals.geosignals.Count} < 3.";
+                    log += $"REJECT. Body geological count: {body.surfaceSignals.reportedGeologicalCount} < 3.";
                     return false;
                 }
             }
