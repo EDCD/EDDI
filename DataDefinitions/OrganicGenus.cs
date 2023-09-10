@@ -9,7 +9,7 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.OrganicGenus.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = ( edname ) => new OrganicGenus( edname );
+            missingEDNameHandler = ( edname ) => new OrganicGenus( NormalizeGenus( edname ) );
         }
 
         // Terrestrial Genuses
@@ -84,7 +84,7 @@ namespace EddiDataDefinitions
         public OrganicGenus () : this( "" )
         { }
 
-        private OrganicGenus ( string edname, int minimumDistanceMeters = 0 ) : base( edname, NormalizeGenus( edname ) )
+        private OrganicGenus ( string edname, int minimumDistanceMeters = 0 ) : base( edname, edname )
         {
             this.minimumDistanceMeters = minimumDistanceMeters;
         }
