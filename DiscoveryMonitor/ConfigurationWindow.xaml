@@ -20,7 +20,6 @@ d:DesignHeight="400" d:DesignWidth="800" HorizontalContentAlignment="Stretch" Ve
                         <CheckBox Content="Reserved" Height="20" IsEnabled="False"/>
                         <CheckBox Content="Reserved" Height="20" IsEnabled="False"/>
                     </StackPanel>
-                    <CheckBox x:Name="enableVerboseLogging" DockPanel.Dock="Bottom" Height="40" HorizontalAlignment="Center" VerticalContentAlignment="Center" Checked="enableVerboseLogging_Toggle" Unchecked="enableVerboseLogging_Toggle">Enable exobiology verbose logging. (Verbose logging for EDDI must also be enabled)</CheckBox>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Exobiology" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">

@@ -23,7 +23,6 @@ namespace EddiDiscoveryMonitor
 
             var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
 
-            enableVerboseLogging.IsChecked = configuration.enableLogging;
             enableVariantPredictions.IsChecked = configuration.enableVariantPredictions;
 
             checkboxIgnoreBrainTrees.IsChecked = configuration.exobiology.predictions.skipBrainTrees;
@@ -74,17 +73,6 @@ namespace EddiDiscoveryMonitor
             Regex regex = new Regex(@"[0-9]");
             // Swallow the character doesn't match the regex
             e.Handled = !regex.IsMatch(e.Text);
-        }
-        
-        // ########################################
-        //      General
-        // ########################################
-        private void enableVerboseLogging_Toggle ( object sender, System.Windows.RoutedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
-            configuration.enableLogging = enableVerboseLogging.IsChecked ?? false;
-            ConfigService.Instance.discoveryMonitorConfiguration = configuration;
-            discoveryMonitor()?.Reload();
         }
         
         // ########################################

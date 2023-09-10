@@ -10,110 +10,66 @@ namespace EddiConfigService.Configurations
         // Still requires the overall verbose logging to be enabled for EDDI
         // This is not available everywhere so a few things always show up with verbose logging
         public bool enableLogging;
-
         public bool enableVariantPredictions;
+        public Exobiology exobiology = new Exobiology();
+        public Codex codex = new Codex();
 
         public class Exobiology
         {
-            public bool reportSlowBios;
-            public bool reportDestinationBios;
-            public bool reportBiosInSystemReport;
-            public bool reportBiosAfterSystemScan;
-            public int minimumBiosForReporting;
+            public bool reportSlowBios = false;
+            public bool reportDestinationBios = true;
+            public bool reportBiosInSystemReport = true;
+            public bool reportBiosAfterSystemScan = true;
+            public int minimumBiosForReporting = 0;
 
             public class Predictions
             {
-                public bool skipCrystallineShards;
-                public bool skipBarkMounds;
-                public bool skipBrainTrees;
-                public bool skipTubers;
-
-                public Predictions() {
-                    skipCrystallineShards = true;
-                    skipBarkMounds = false;
-                    skipBrainTrees = true;
-                    skipTubers = false;
-                }
+                public bool skipCrystallineShards = true;
+                public bool skipBarkMounds = false;
+                public bool skipBrainTrees = true;
+                public bool skipTubers = false;
             }
-            public Predictions predictions;
+            public Predictions predictions = new Predictions();
 
             public class DataSold
             {
-                public bool reportBreakdown;
-                public bool reportTotalAlways;
-
-                public DataSold() {
-                    reportBreakdown = false;
-                    reportTotalAlways = true;
-                }
+                public bool reportBreakdown = false;
+                public bool reportTotalAlways = true;
             }
-            public DataSold dataSold;
+            public DataSold dataSold = new DataSold();
 
             public class Scans
             {
-                public bool reportBaseValue;
-                public bool humanizeBaseValue;
-                public bool reportBonusValue;
-                public bool humanizeBonusValue;
-                public bool reportLocation;
-                public bool recommendOtherBios;
-                public int reportGenusOnScan;
-                public int reportSpeciesOnScan;
-                public int reportConditionsOnScan;
-
-                public Scans()
-                {
-                    reportBaseValue = true;
-                    humanizeBaseValue = true;
-                    reportBonusValue = true;
-                    humanizeBonusValue = true;
-                    reportLocation = false;
-                    recommendOtherBios = true;
-                    reportGenusOnScan = 0;
-                    reportSpeciesOnScan = 0;
-                    reportConditionsOnScan = 0;
-                }
+                public bool reportBaseValue = true;
+                public bool humanizeBaseValue = true;
+                public bool reportBonusValue = true;
+                public bool humanizeBonusValue = true;
+                public bool reportLocation = false;
+                public bool recommendOtherBios = true;
+                public int reportGenusOnScan = 0;
+                public int reportSpeciesOnScan = 0;
+                public int reportConditionsOnScan = 0;
             }
-            public Scans scans;
-
-            public Exobiology()
-            {
-                predictions = new Predictions();
-                dataSold = new DataSold();
-                scans = new Scans();
-
-                reportSlowBios = false;
-                reportDestinationBios = true;
-                reportBiosInSystemReport = true;
-                reportBiosAfterSystemScan = true;
-                minimumBiosForReporting = 0;
-            }
+            public Scans scans = new Scans();
         }
 
         public class Codex
         {
-            public bool reportAllScans;
-            public bool reportNewEntries;
-            public bool reportNewTraits;
-            public bool reportVoucherAmounts;
-            public bool reportNewDetailsOnly;
-            public bool reportSystem;
-            public bool reportRegion;
+            public bool reportAllScans = false;
+            public bool reportNewEntries = true;
+            public bool reportNewTraits = true;
+            public bool reportVoucherAmounts = true;
+            public bool reportNewDetailsOnly = true;
+            public bool reportSystem = true;
+            public bool reportRegion = true;
 
             public class Astronomicals
             {
-                public bool enable;
-                public bool reportType;
-                public bool reportDetails;
-
-                public Astronomicals()
-                {
-                    enable = true;
-                    reportType = true;
-                    reportDetails = true;
-                }
+                public bool enable = true;
+                public bool reportType = true;
+                public bool reportDetails = true;
             }
-            public Astronomicals astronomicals;
+            public Astronomicals astronomicals = new Astronomicals();
 
             public class Biologicals
             {
@@ -121,73 +77,30 @@ namespace EddiConfigService.Configurations
                 public bool reportGenusDetails;
                 public bool reportSpeciesDetails;
                 public bool reportConditions;
-
-                public Biologicals()
-                {
-                }
             }
-            public Biologicals biologicals;
+            public Biologicals biologicals = new Biologicals();
 
             public class Geologicals
             {
-                public bool enable;
-                public bool reportClass;
-                public bool reportDetails;
-
-                public Geologicals()
-                {
-                    enable = true;
-                    reportClass = true;
-                    reportDetails = true;
-                }
+                public bool enable = true;
+                public bool reportClass = true;
+                public bool reportDetails = true;
             }
-            public Geologicals geologicals;
+            public Geologicals geologicals = new Geologicals();
 
             public class Guardian
             {
-                public bool enable;
-                public bool reportDetails;
-
-                public Guardian()
-                {
-                    enable = true;
-                    reportDetails = true;
-                }
+                public bool enable = true;
+                public bool reportDetails = true;
             }
-            public Guardian guardian;
+            public Guardian guardian = new Guardian();
 
             public class Thargoid
             {
-                public bool enable;
-                public bool reportDetails;
-
-                public Thargoid()
-                {
-                    enable = true;
-                    reportDetails = true;
-                }
+                public bool enable = true;
+                public bool reportDetails = true;
             }
-            public Thargoid thargoid;
-
-            public Codex()
-            {
-                astronomicals = new Astronomicals();
-                biologicals = new Biologicals();
-                geologicals = new Geologicals();
-                guardian = new Guardian();
-                thargoid = new Thargoid();
-
-                reportAllScans = false;
-                reportNewEntries = true;
-                reportNewTraits = true;
-                reportVoucherAmounts = true;
-                reportNewDetailsOnly = true;
-                reportSystem = true;
-                reportRegion = true;
-            }
+            public Thargoid thargoid = new Thargoid();
         }
-
-        public Exobiology exobiology = new Exobiology();
-        public Codex codex = new Codex();
     }
 }
