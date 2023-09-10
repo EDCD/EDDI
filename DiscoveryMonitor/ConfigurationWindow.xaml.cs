@@ -23,8 +23,6 @@ namespace EddiDiscoveryMonitor
 
             var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
 
-            enableVariantPredictions.IsChecked = configuration.enableVariantPredictions;
-
             checkboxIgnoreBrainTrees.IsChecked = configuration.exobiology.predictions.skipBrainTrees;
             checkboxIgnoreCrystalShards.IsChecked = configuration.exobiology.predictions.skipCrystallineShards;
             checkboxIgnoreBarkMounds.IsChecked = configuration.exobiology.predictions.skipBarkMounds;
@@ -449,14 +447,6 @@ namespace EddiDiscoveryMonitor
         {
             var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
             configuration.codex.thargoid.reportDetails = codexThargoidDetails.IsChecked ?? false;
-            ConfigService.Instance.discoveryMonitorConfiguration = configuration;
-            discoveryMonitor()?.Reload();
-        }
-
-        private void enableVariantPredictions_Toggle ( object sender, System.Windows.RoutedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
-            configuration.enableVariantPredictions = enableVariantPredictions.IsChecked ?? false;
             ConfigService.Instance.discoveryMonitorConfiguration = configuration;
             discoveryMonitor()?.Reload();
         }

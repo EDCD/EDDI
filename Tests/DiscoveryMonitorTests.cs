@@ -1,5 +1,4 @@
-﻿using EddiConfigService.Configurations;
-using EddiCore;
+﻿using EddiCore;
 using EddiDataDefinitions;
 using EddiDiscoveryMonitor;
 using EddiEvents;
@@ -56,11 +55,9 @@ namespace UnitTests
         }
 
         [DataTestMethod]
-        [DataRow( true, false )]
-        [DataRow( true, true )]
-        [DataRow( false, true )]
-        [DataRow( false, false )]
-        public void TestSurfaceSignalPredictions(bool starFirst, bool enableVariantPredictions)
+        [DataRow( true )]
+        [DataRow( false )]
+        public void TestSurfaceSignalPredictions(bool starFirst)
         {
             var fsdJump = @"{ ""timestamp"":""2022-12-08T06:26:43Z"", ""event"":""FSDJump"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""TestSystem"", ""SystemAddress"":9999999999999, ""StarPos"":[43.59375,42.34375,-74.37500], ""SystemAllegiance"":""Federation"", ""SystemEconomy"":""$economy_Refinery;"", ""SystemEconomy_Localised"":""Refinery"", ""SystemSecondEconomy"":""$economy_Military;"", ""SystemSecondEconomy_Localised"":""Military"", ""SystemGovernment"":""$government_Corporate;"", ""SystemGovernment_Localised"":""Corporate"", ""SystemSecurity"":""$SYSTEM_SECURITY_medium;"", ""SystemSecurity_Localised"":""Medium Security"", ""Population"":94434, ""Body"":""TestStar"", ""BodyID"":0, ""BodyType"":""Star"", ""JumpDist"":61.825, ""FuelUsed"":3.428739, ""FuelLevel"":23.546732, ""Factions"":[ { ""Name"":""Morinbath Progressive Party"", ""FactionState"":""None"", ""Government"":""Democracy"", ""Influence"":0.093596, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000 }, { ""Name"":""Nobles of Morinbath"", ""FactionState"":""None"", ""Government"":""Feudal"", ""Influence"":0.009852, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000 }, { ""Name"":""Silver United Systems"", ""FactionState"":""None"", ""Government"":""Corporate"", ""Influence"":0.464039, ""Allegiance"":""Federation"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000 }, { ""Name"":""Morinbath Silver Organisation"", ""FactionState"":""None"", ""Government"":""Anarchy"", ""Influence"":0.043350, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000 }, { ""Name"":""Aristocrats of Morinbath"", ""FactionState"":""Boom"", ""Government"":""Feudal"", ""Influence"":0.081773, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000, ""ActiveStates"":[ { ""State"":""Boom"" } ] }, { ""Name"":""League of Free Commanders"", ""FactionState"":""None"", ""Government"":""Confederacy"", ""Influence"":0.162562, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":46.959999 }, { ""Name"":""Aesir Heavy Industries"", ""FactionState"":""None"", ""Government"":""Corporate"", ""Influence"":0.144828, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000 } ], ""SystemFaction"":{ ""Name"":""Silver United Systems"" } }";
             var fssScanStar = @"{ ""timestamp"":""2022-12-08T06:26:49Z"", ""event"":""Scan"", ""ScanType"":""AutoScan"", ""BodyName"":""TestSystem"", ""BodyID"":0, ""StarSystem"":""TestSystem"", ""SystemAddress"":9999999999999, ""DistanceFromArrivalLS"":0.000000, ""StarType"":""F"", ""Subclass"":9, ""StellarMass"":0.964844, ""Radius"":732452608.000000, ""AbsoluteMagnitude"":4.518463, ""Age_MY"":1066, ""SurfaceTemperature"":6049.000000, ""Luminosity"":""Vb"", ""RotationPeriod"":275396.820636, ""AxialTilt"":0.000000, ""WasDiscovered"":true, ""WasMapped"":false }";
@@ -71,7 +68,6 @@ namespace UnitTests
             var privateObject = new PrivateObject( EDDI.Instance );
             var discoveryMonitor = (DiscoveryMonitor)privateObject.Invoke( nameof(EDDI.ObtainMonitor), "Discovery Monitor" );
             Assert.IsNotNull( discoveryMonitor );
-            discoveryMonitor.configuration = new DiscoveryMonitorConfiguration { enableVariantPredictions = enableVariantPredictions };
 
             // Enable the monitor so that it can handle passed events
             privateObject.Invoke( nameof(EDDI.EnableMonitor), discoveryMonitor.MonitorName() );

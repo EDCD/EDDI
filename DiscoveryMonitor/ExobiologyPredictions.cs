@@ -24,52 +24,6 @@ namespace EddiDiscoveryMonitor
         }
 
         /// <summary>
-        /// This currently works but gives incorrect predictions
-        /// Prediction data needs adjustment to use this
-        /// </summary>
-        public HashSet<OrganicGenus> PredictByVariants ()
-        {
-            Logging.Debug( $"Generating predictions by variants for {body.bodyname} in {_currentSystem.systemname}." );
-
-            // Create temporary list of ALL variants possible
-            var predictedVariants = new List<OrganicVariant>();
-
-            // Iterate though variants
-            foreach ( var variant in OrganicVariant.AllOfThem )
-            {
-                var log = $"Checking variant {variant.edname} (genus: {variant.genus}): ";
-
-                if ( !variant.isPredictable )
-                {
-                    log += "SKIP. No known criteria.";
-                    Logging.Debug( log );
-                    continue;
-                }
-
-                if ( !TryCheckConfiguration( variant.genus, ref log ) )
-                {
-                    Logging.Debug( log );
-                    continue;
-                }
-
-                if ( TryCheckGravity( variant.maxG, ref log ) &&
-                     TryCheckTemperature( variant.minK, variant.maxK, ref log ) &&
-                     TryCheckPlanetClass( variant.planetClass, ref log ) &&
-                     TryCheckAtmosphere( variant.atmosphereClass, ref log ) &&
-                     TryCheckVolcanism( variant.volcanism, ref log ) &&
-                     TryCheckStar( variant.starClass, ref log ) )
-                {
-                    log += "OK";
-                    predictedVariants.Add( variant );
-                }
-                Logging.Debug( log );
-            }
-
-            // Return a list of only the unique genus' found
-            return predictedVariants.Select( s => s.genus ).Distinct().ToHashSet();
-        }
-
-        /// <summary>
         /// This currently works and provides fairly accurate predictions
         /// </summary>
         public HashSet<OrganicGenus> PredictBySpecies ()

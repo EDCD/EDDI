@@ -525,16 +525,8 @@ namespace EddiDiscoveryMonitor
                 
                 // Predict possible biological genuses
                 HashSet<OrganicGenus> bios;
-                if ( configuration.enableVariantPredictions )
-                {
-                    log += "Predicting organics (by variants):\r\n";
-                    bios = new ExobiologyPredictions( _currentSystem, body, parentStar,configuration ).PredictByVariants();
-                }
-                else
-                {
-                    log += "Predicting organics (by species):\r\n";
-                    bios = new ExobiologyPredictions( _currentSystem, body, parentStar, configuration ).PredictBySpecies();
-                }
+                log += "Predicting organics (by species):\r\n";
+                bios = new ExobiologyPredictions( _currentSystem, body, parentStar, configuration ).PredictBySpecies();
                 foreach ( var genus in bios )
                 {
                     log += $"\tAdding predicted bio {genus.invariantName}\r\n";

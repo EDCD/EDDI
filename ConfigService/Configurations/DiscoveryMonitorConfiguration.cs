@@ -10,7 +10,6 @@ namespace EddiConfigService.Configurations
         // Still requires the overall verbose logging to be enabled for EDDI
         // This is not available everywhere so a few things always show up with verbose logging
         public bool enableLogging;
-        public bool enableVariantPredictions;
         public Exobiology exobiology = new Exobiology();
         public Codex codex = new Codex();
 

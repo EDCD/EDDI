@@ -16,7 +16,6 @@ d:DesignHeight="400" d:DesignWidth="800" HorizontalContentAlignment="Stretch" Ve
                         <Run/><LineBreak/>
                     </TextBlock>
                     <StackPanel DockPanel.Dock="Top">
-                        <CheckBox x:Name="enableVariantPredictions" Content="Predict organics using species variants rather than species (experimental - may not produce correct predictions)" Height="20" Unchecked="enableVariantPredictions_Toggle" Checked="enableVariantPredictions_Toggle"/>
                         <CheckBox Content="Reserved" Height="20" IsEnabled="False"/>
                         <CheckBox Content="Reserved" Height="20" IsEnabled="False"/>
                     </StackPanel>
