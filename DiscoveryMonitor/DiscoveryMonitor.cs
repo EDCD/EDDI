@@ -290,7 +290,7 @@ namespace EddiDiscoveryMonitor
             if ( @event.biosignals != null )
             {
                 // Compare our predicted and actual bio signals.
-                if ( body.surfaceSignals.predicted )
+                if ( body.surfaceSignals.hasPredictedBios )
                 {
                     var confirmedBiologicals = @event.biosignals.Select(b => b.species).ToList();
                     var predictedBiologicals = body.surfaceSignals.biosignals

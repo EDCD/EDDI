@@ -198,7 +198,7 @@ namespace UnitTests
 
             // Set up an initial prediction for the 1st organic that we will test (but not for the 2nd)
             var bio = body.surfaceSignals.AddBio( @event.variant, @event.species, @event.genus, true );
-            Assert.IsTrue( body.surfaceSignals.predicted );
+            Assert.IsTrue( body.surfaceSignals.hasPredictedBios );
 
             // Simulate the 2nd scan on the 1st organic, setting a prior sample to jump to the correct number of samples
             bio.sampleCoords.Add( new Tuple<decimal?, decimal?>( 0M, 0M ) );
@@ -213,7 +213,7 @@ namespace UnitTests
             Assert.AreEqual( OrganicVariant.Shrubs_05_F.species.value , body.surfaceSignals.biosignals.Last().value );
             Assert.AreEqual( 0, @event.remainingBios?.Count );
             Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
-            Assert.IsFalse( body.surfaceSignals.predicted );
+            Assert.IsFalse( body.surfaceSignals.hasPredictedBios );
 
             // Simulate the 3rd scan on the 1st organic with a fresh copy of the same event
             events = JournalMonitor.ParseJournalEntry(line);

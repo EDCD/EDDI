@@ -18,13 +18,12 @@ namespace EddiDataDefinitions
         [PublicAPI ( "The number of biological signals reported by FSS/SAA" )]
         public int reportedBiologicalCount { get; set; }
 
+        [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
+        public bool hasPredictedBios => biosignals.Any( s => s.scanState == Exobiology.State.Predicted );
+
         public HashSet<Exobiology> biosignalsremaining () =>
             biosignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
 
-
-        [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
-        public bool predicted => biosignals.Any( s => s.scanState == Exobiology.State.Predicted );
-        
         public bool TryGetBio ( Organic organic, out Exobiology bio )
         {
             bio = biosignals.FirstOrDefault( b => b.variant == organic.variant ) ?? 
