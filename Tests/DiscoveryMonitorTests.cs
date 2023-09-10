@@ -36,7 +36,7 @@ namespace UnitTests
             var discoveryMonitor = (DiscoveryMonitor)privateObject.Invoke( nameof(EDDI.ObtainMonitor), "Discovery Monitor" );
             Assert.IsNotNull( discoveryMonitor );
             discoveryMonitor._currentBodyId = _currentBody.bodyId ?? 0;
-            discoveryMonitor._currentGenus = OrganicGenus.Bacterial;
+            discoveryMonitor._currentOrganic = new Exobiology( OrganicGenus.Bacterial );
 
             _currentBody.surfaceSignals.AddBioFromGenus( OrganicGenus.Bacterial );
             _currentBody.surfaceSignals.biosignals.First().sampleCoords.Add( new Tuple<decimal?, decimal?>( 0M, 0M ) );
@@ -201,22 +201,21 @@ namespace UnitTests
             Assert.IsNotNull( body );
 
             // Set up an initial prediction for the 1st organic that we will test (but not for the 2nd)
-            var bio = body.surfaceSignals.AddBioFromGenus( @event.genus, true );
+            var bio = body.surfaceSignals.AddBio( @event.variant, @event.species, @event.genus, true );
             Assert.IsTrue( body.surfaceSignals.predicted );
 
             // Simulate the 2nd scan on the 1st organic, setting a prior sample to jump to the correct number of samples
             bio.sampleCoords.Add( new Tuple<decimal?, decimal?>( 0M, 0M ) );
             discoveryMonitor.PreHandle( @event);
             Assert.AreEqual( body.bodyId, discoveryMonitor._currentBodyId);
-            Assert.AreEqual(OrganicGenus.Shrubs, discoveryMonitor._currentGenus);
+            Assert.AreEqual(OrganicGenus.Shrubs, discoveryMonitor._currentOrganic.genus);
             Assert.AreEqual(@event.timestamp, body.surfaceSignals?.lastUpdated);
             Assert.IsNotNull( body.surfaceSignals?.biosignals?.Last() );
             Assert.AreEqual( OrganicVariant.Shrubs_05_F, body.surfaceSignals.biosignals.Last().variant );
             Assert.AreEqual( 2, body.surfaceSignals.biosignals.Last().samples );
             Assert.AreEqual( Exobiology.State.SampleInProgress, body.surfaceSignals.biosignals.Last().scanState );
             Assert.AreEqual( OrganicVariant.Shrubs_05_F.species.value , body.surfaceSignals.biosignals.Last().value );
-            Assert.AreEqual( 1, @event.numTotal );
-            Assert.AreEqual( 1, @event.listRemaining?.Count );
+            Assert.AreEqual( 0, @event.remainingBios?.Count );
             Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
             Assert.IsFalse( body.surfaceSignals.predicted );
 
@@ -226,7 +225,7 @@ namespace UnitTests
             @event = (ScanOrganicEvent)events[0];
             discoveryMonitor.PreHandle( @event );
             Assert.AreEqual( Exobiology.State.SampleComplete, body.surfaceSignals.biosignals.Last().scanState );
-            Assert.AreEqual( 0, @event.listRemaining?.Count );
+            Assert.AreEqual( 0, @event.remainingBios?.Count );
             Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
             Assert.AreEqual( 0, body.surfaceSignals.biosignalsremaining().Count );
 
@@ -237,14 +236,13 @@ namespace UnitTests
             @event = (ScanOrganicEvent)events[ 0 ];
             discoveryMonitor.PreHandle( @event );
             Assert.AreEqual( body.bodyId, discoveryMonitor._currentBodyId );
-            Assert.AreEqual( OrganicGenus.Fonticulus, discoveryMonitor._currentGenus );
+            Assert.AreEqual( OrganicGenus.Fonticulus, discoveryMonitor._currentOrganic.genus );
             Assert.IsNotNull( body.surfaceSignals?.biosignals?.Last() );
             Assert.AreEqual( OrganicVariant.Fonticulus_02_TTS, body.surfaceSignals.biosignals.Last().variant );
             Assert.AreEqual( 1, body.surfaceSignals.biosignals.Last().samples );
             Assert.AreEqual( Exobiology.State.SampleStarted, body.surfaceSignals.biosignals.Last().scanState );
             Assert.AreEqual( OrganicVariant.Fonticulus_02_TTS.species.value, body.surfaceSignals.biosignals.Last().value );
-            Assert.AreEqual( 2, @event.numTotal );
-            Assert.AreEqual( 1, @event.listRemaining?.Count );
+            Assert.AreEqual( 0, @event.remainingBios?.Count );
             Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
             Assert.AreEqual( 1, body.surfaceSignals.biosignalsremaining().Count );
         }

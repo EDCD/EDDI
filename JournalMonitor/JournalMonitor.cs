@@ -4946,11 +4946,12 @@ namespace EddiJournalMonitor
                                     {
                                         // `Analyse` scans can be unreasonably delayed since the timer pauses when the scanner is holstered.
                                         // If the journal event is sufficiently delayed, we'll synthesize our own event as long as we've recorded enough samples.
-                                        if ( EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress && 
-                                             ( EDDI.Instance.CurrentStarSystem?.BodyWithID( bodyId )?.surfaceSignals.
-                                                TryGetBio( genus, out var bio ) ?? false ) )
+                                        if ( EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress )
                                         {
-                                            if ( bio.scanState < Exobiology.State.SampleAnalyzed )
+                                            var body = EDDI.Instance.CurrentStarSystem?.BodyWithID( bodyId );
+                                            if ( body != null &&
+                                                 body.surfaceSignals.TryGetBio( variant, species, genus, out var bio ) &&
+                                                 bio.scanState < Exobiology.State.SampleAnalyzed )
                                             {
                                                 return true;
                                             }
