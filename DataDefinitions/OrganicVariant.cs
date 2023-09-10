@@ -15,8 +15,9 @@ namespace EddiDataDefinitions
         }
 
         // The prediction data included here comes from the BioStats2.json file from Cannon
-        // It does not appear to produce correct predictions and can probably be removed
-        // Predictions are current made from data for the species instead of for the variant
+        // Ref. https://drive.google.com/file/d/14t7SKjLyATHVipuqNiGT-ziA2nRW8sKj/view?usp=sharing
+        // Prediction by variant is experimental and may not produce correct predictions.
+        // Prediction by variant is not required since predictions can also be made using species data.
 
         // Terrestrial Organics
         public static readonly OrganicVariant Seed = new OrganicVariant( "Seed", 2100201, OrganicSpecies.RoseumBrainTree, (decimal)0.0291118588763128, (decimal)4.20193902314673, (decimal)115.063599, (decimal)499.985046, "RockyBody;HighMetalContentBody;RockyIceBody;IcyBody", "None;CarbonDioxide;Argon;Ammonia;CarbonDioxideRich;Oxygen;Water;SulphurDioxide;ArgonRich;WaterRich", "F;W;L;G;B;M;T;Y;TTS;C;K;F;A;N;M;A;G;K;B", "Metallic,Magma;Water,Magma;Major,Rocky,Magma;Rocky,Magma;Minor,Carbon,Dioxide,Geysers;Major,Water,Magma;Carbon,Dioxide,Geysers;Minor,Silicate,Vapour,Geysers;Minor,Methane,Magma;Major,Water,Geysers;Minor,Rocky,Magma;Minor,Water,Geysers;Major,Metallic,Magma;Minor,Water,Magma;None;Major,Silicate,Vapour,Geysers;Water,Geysers;Minor,Metallic,Magma;Minor,Nitrogen,Magma" );
