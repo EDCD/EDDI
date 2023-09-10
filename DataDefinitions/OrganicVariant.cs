@@ -939,9 +939,7 @@ namespace EddiDataDefinitions
         public static readonly OrganicVariant Thargoid_Barnacle_Spikes = new OrganicVariant( "Thargoid_Barnacle_Spikes", 2100103, OrganicSpecies.ThargoidBarnacleBarbs );
 
         public long? entryID;
-        public OrganicGenus genus => species?.genus;
         public OrganicSpecies species;
-        public int minimumDistanceMeters => genus.minimumDistanceMeters;
 
         // dummy used to ensure that the static constructor has run
         public OrganicVariant () : this( "" )

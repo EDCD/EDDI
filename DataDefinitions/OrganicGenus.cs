@@ -68,7 +68,6 @@ namespace EddiDataDefinitions
         public static readonly OrganicGenus CalcitePlates = new OrganicGenus( "CalcitePlates", 0 );
         public static readonly OrganicGenus ThargoidBarnacle = new OrganicGenus( "ThargoidBarnacle", 0 );
 
-        [PublicAPI ("The minimum distance that you must travel before you can collect a fresh sample of this genus")]
         public int minimumDistanceMeters { get; private set; }
 
         [PublicAPI( "The maximum credit value for this genus" )]
