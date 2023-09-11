@@ -223,7 +223,7 @@ namespace UnitTests
             Assert.AreEqual( Exobiology.State.SampleComplete, body.surfaceSignals.biosignals.Last().scanState );
             Assert.AreEqual( 0, @event.remainingBios?.Count );
             Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
-            Assert.AreEqual( 0, body.surfaceSignals.biosignalsremaining().Count );
+            Assert.AreEqual( 0, body.surfaceSignals.biosignalsremaining.Count );
 
             // Scan a 2nd organic which has not been created on the body and test that it is handled gracefully
             var line2 = @"{ ""timestamp"":""2023-05-14T04:22:20Z"", ""event"":""ScanOrganic"", ""ScanType"":""Log"", ""Genus"":""$Codex_Ent_Fonticulus_Genus_Name;"", ""Genus_Localised"":""Fonticulua"", ""Species"":""$Codex_Ent_Fonticulus_02_Name;"", ""Species_Localised"":""Fonticulua Campestris"", ""Variant"":""$Codex_Ent_Fonticulus_02_TTS_Name;"", ""Variant_Localised"":""Fonticulua Campestris - Red"", ""SystemAddress"":10477373803, ""Body"":42 }";
@@ -240,7 +240,7 @@ namespace UnitTests
             Assert.AreEqual( OrganicVariant.Fonticulus_02_TTS.species.value, body.surfaceSignals.biosignals.Last().value );
             Assert.AreEqual( 0, @event.remainingBios?.Count );
             Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignalsremaining().Count );
+            Assert.AreEqual( 1, body.surfaceSignals.biosignalsremaining.Count );
         }
     }
 }

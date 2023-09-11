@@ -21,8 +21,12 @@ namespace EddiDataDefinitions
         [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
         public bool hasPredictedBios => biosignals.Any( s => s.scanState == Exobiology.State.Predicted );
 
-        public HashSet<Exobiology> biosignalsremaining () =>
+        [PublicAPI( "The biological signals that have not been fully scanned" )]
+        public HashSet<Exobiology> biosignalsremaining =>
             biosignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
+
+        [PublicAPI( "The maximum expected credit value for biological signals on this body" )]
+        public long exobiologyValue => biosignals.Select(s => s.value).Sum();
 
         public bool TryGetBio ( Organic organic, out Exobiology bio )
         {

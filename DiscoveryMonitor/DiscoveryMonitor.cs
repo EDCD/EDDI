@@ -389,7 +389,7 @@ namespace EddiDiscoveryMonitor
                     // These are updated when the above Sample() function is called, se we send them back to the event
                     // Otherwise we would probably have to enqueue a new event (maybe not a bad idea?)
                     @event.bio = bio;
-                    @event.remainingBios = body.surfaceSignals.biosignalsremaining().Except( new[] { bio } ).ToList();
+                    @event.remainingBios = body.surfaceSignals.biosignalsremaining.Except( new[] { bio } ).ToList();
 
                     Logging.Debug( log, @event );
 
