@@ -293,7 +293,7 @@ namespace EddiDiscoveryMonitor
                 if ( body.surfaceSignals.hasPredictedBios )
                 {
                     var confirmedBiologicals = @event.biosignals.Select(b => b.species).ToList();
-                    var predictedBiologicals = body.surfaceSignals.biosignals
+                    var predictedBiologicals = body.surfaceSignals.bioSignals
                         .Where( b => b.scanState == Exobiology.State.Predicted ).Select( b => b.species ).ToList();
                     var unpredictedBiologicals = confirmedBiologicals.Except( predictedBiologicals ).ToList();
                     var missingBiologicals = predictedBiologicals.Except( confirmedBiologicals ).ToList();
@@ -334,7 +334,7 @@ namespace EddiDiscoveryMonitor
                 }
 
                 // Update from predicted to actual bio signals
-                body.surfaceSignals.biosignals = @event.biosignals;
+                body.surfaceSignals.bioSignals = @event.biosignals;
             }
 
             return true;
@@ -389,7 +389,7 @@ namespace EddiDiscoveryMonitor
                     // These are updated when the above Sample() function is called, se we send them back to the event
                     // Otherwise we would probably have to enqueue a new event (maybe not a bad idea?)
                     @event.bio = bio;
-                    @event.remainingBios = body.surfaceSignals.biosignalsremaining.Except( new[] { bio } ).ToList();
+                    @event.remainingBios = body.surfaceSignals.bioSignalsRemaining.Except( new[] { bio } ).ToList();
 
                     Logging.Debug( log, @event );
 
@@ -447,11 +447,11 @@ namespace EddiDiscoveryMonitor
                         s.systemAddress == body.systemAddress && s.bodyId == body.bodyId );
 
                     if ( signal != null &&
-                         !body.surfaceSignals.biosignals.Any() &&
+                         !body.surfaceSignals.bioSignals.Any() &&
                          TryPredictBios( signal, ref body ) )
                     {
                         EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body,
-                            body.surfaceSignals.biosignals ) );
+                            body.surfaceSignals.bioSignals ) );
 
                         // Save/Update Body data
                         body.surfaceSignals.lastUpdated = @event.timestamp;
@@ -486,11 +486,11 @@ namespace EddiDiscoveryMonitor
                             s.systemAddress == body.systemAddress && s.bodyId == body.bodyId );
 
                         if ( signal != null &&
-                             !body.surfaceSignals.biosignals.Any() &&
+                             !body.surfaceSignals.bioSignals.Any() &&
                              TryPredictBios( signal, ref body ) )
                         {
                             EDDI.Instance.enqueueEvent( new OrganicPredictionEvent( DateTime.UtcNow, body,
-                                body.surfaceSignals.biosignals ) );
+                                body.surfaceSignals.bioSignals ) );
 
                             // Save/Update Body data
                             body.surfaceSignals.lastUpdated = @event.timestamp;
@@ -513,7 +513,7 @@ namespace EddiDiscoveryMonitor
             var hasPredictedBios = false;
             if ( signal?.bioCount > 0 && 
                  body != null && 
-                 !body.surfaceSignals.biosignals.Any() && 
+                 !body.surfaceSignals.bioSignals.Any() && 
                  _currentSystem.TryGetParentStar(body.bodyId, out var parentStar))
             {
                 // Always update the reported totals

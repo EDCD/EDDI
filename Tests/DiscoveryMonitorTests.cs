@@ -38,9 +38,9 @@ namespace UnitTests
             discoveryMonitor._currentOrganic = new Exobiology( OrganicGenus.Bacterial );
 
             _currentBody.surfaceSignals.AddBioFromGenus( OrganicGenus.Bacterial );
-            _currentBody.surfaceSignals.biosignals.First().sampleCoords.Add( new Tuple<decimal?, decimal?>( 0M, 0M ) );
-            _currentBody.surfaceSignals.biosignals.First().nearPriorSample = inputNearPriorSample;
-            _currentBody.surfaceSignals.biosignals.First().scanState = Exobiology.State.SampleStarted;
+            _currentBody.surfaceSignals.bioSignals.First().sampleCoords.Add( new Tuple<decimal?, decimal?>( 0M, 0M ) );
+            _currentBody.surfaceSignals.bioSignals.First().nearPriorSample = inputNearPriorSample;
+            _currentBody.surfaceSignals.bioSignals.First().scanState = Exobiology.State.SampleStarted;
 
             var status = new Status
             {
@@ -125,24 +125,24 @@ namespace UnitTests
 
             Assert.AreEqual( 7, body.surfaceSignals.reportedBiologicalCount );
             Assert.AreEqual( 0, body.surfaceSignals.reportedGeologicalCount );
-            Assert.IsNotNull( body.surfaceSignals.biosignals );
-            Assert.IsTrue( body.surfaceSignals.biosignals.Count >= 7 );
-            Assert.IsTrue( body.surfaceSignals.biosignals.Distinct().Count() == body.surfaceSignals.biosignals.Count );
-            Assert.IsTrue( body.surfaceSignals.biosignals.All( s => s.scanState == Exobiology.State.Predicted ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Bacterial ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Cactoid ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Clypeus ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Osseus ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Stratum ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Shrubs ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Tussocks ) );
-            Assert.AreEqual( OrganicGenus.Bacterial.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Bacterial )?.value );
-            Assert.AreEqual( OrganicGenus.Cactoid.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Cactoid )?.value );
-            Assert.AreEqual( OrganicGenus.Clypeus.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Clypeus )?.value );
-            Assert.AreEqual( OrganicGenus.Osseus.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Osseus )?.value );
-            Assert.AreEqual( OrganicGenus.Stratum.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Stratum )?.value );
-            Assert.AreEqual( OrganicGenus.Shrubs.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Shrubs )?.value );
-            Assert.AreEqual( OrganicGenus.Tussocks.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Tussocks )?.value );
+            Assert.IsNotNull( body.surfaceSignals.bioSignals );
+            Assert.IsTrue( body.surfaceSignals.bioSignals.Count >= 7 );
+            Assert.IsTrue( body.surfaceSignals.bioSignals.Distinct().Count() == body.surfaceSignals.bioSignals.Count );
+            Assert.IsTrue( body.surfaceSignals.bioSignals.All( s => s.scanState == Exobiology.State.Predicted ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Bacterial ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Cactoid ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Clypeus ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Osseus ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Stratum ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Shrubs ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Tussocks ) );
+            Assert.AreEqual( OrganicGenus.Bacterial.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Bacterial )?.value );
+            Assert.AreEqual( OrganicGenus.Cactoid.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Cactoid )?.value );
+            Assert.AreEqual( OrganicGenus.Clypeus.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Clypeus )?.value );
+            Assert.AreEqual( OrganicGenus.Osseus.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Osseus )?.value );
+            Assert.AreEqual( OrganicGenus.Stratum.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Stratum )?.value );
+            Assert.AreEqual( OrganicGenus.Shrubs.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Shrubs )?.value );
+            Assert.AreEqual( OrganicGenus.Tussocks.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Tussocks )?.value );
             Assert.AreEqual( events[ 0 ].timestamp, body.surfaceSignals.lastUpdated );
 
             // Simulate a `SAASignalsFound` event
@@ -154,24 +154,24 @@ namespace UnitTests
             Assert.AreEqual( 1, discoveryMonitor.fssSignalsLibrary?.Count );
             Assert.AreEqual( 7, body.surfaceSignals.reportedBiologicalCount );
             Assert.AreEqual( 0, body.surfaceSignals.reportedGeologicalCount );
-            Assert.IsNotNull( body.surfaceSignals.biosignals );
-            Assert.AreEqual( 7, body.surfaceSignals.biosignals.Count );
-            Assert.IsTrue( body.surfaceSignals.biosignals.All( s => s.scanState == Exobiology.State.Confirmed ) );
-            Assert.IsTrue( body.surfaceSignals.biosignals.All( s => s.samples == 0 ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Bacterial ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Cactoid ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Clypeus ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Osseus ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Stratum ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Shrubs ) );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Count( b => b.genus == OrganicGenus.Tussocks ) );
-            Assert.AreEqual( OrganicGenus.Bacterial.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Bacterial )?.value );
-            Assert.AreEqual( OrganicGenus.Cactoid.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Cactoid )?.value );
-            Assert.AreEqual( OrganicGenus.Clypeus.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Clypeus )?.value );
-            Assert.AreEqual( OrganicGenus.Osseus.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Osseus )?.value );
-            Assert.AreEqual( OrganicGenus.Stratum.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Stratum )?.value );
-            Assert.AreEqual( OrganicGenus.Shrubs.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Shrubs )?.value );
-            Assert.AreEqual( OrganicGenus.Tussocks.maximumValue, body.surfaceSignals.biosignals.FirstOrDefault( b => b.genus == OrganicGenus.Tussocks )?.value );
+            Assert.IsNotNull( body.surfaceSignals.bioSignals );
+            Assert.AreEqual( 7, body.surfaceSignals.bioSignals.Count );
+            Assert.IsTrue( body.surfaceSignals.bioSignals.All( s => s.scanState == Exobiology.State.Confirmed ) );
+            Assert.IsTrue( body.surfaceSignals.bioSignals.All( s => s.samples == 0 ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Bacterial ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Cactoid ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Clypeus ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Osseus ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Stratum ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Shrubs ) );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Count( b => b.genus == OrganicGenus.Tussocks ) );
+            Assert.AreEqual( OrganicGenus.Bacterial.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Bacterial )?.value );
+            Assert.AreEqual( OrganicGenus.Cactoid.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Cactoid )?.value );
+            Assert.AreEqual( OrganicGenus.Clypeus.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Clypeus )?.value );
+            Assert.AreEqual( OrganicGenus.Osseus.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Osseus )?.value );
+            Assert.AreEqual( OrganicGenus.Stratum.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Stratum )?.value );
+            Assert.AreEqual( OrganicGenus.Shrubs.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Shrubs )?.value );
+            Assert.AreEqual( OrganicGenus.Tussocks.maximumValue, body.surfaceSignals.bioSignals.FirstOrDefault( b => b.genus == OrganicGenus.Tussocks )?.value );
             Assert.AreEqual( events[ 0 ].timestamp, body.surfaceSignals.lastUpdated );
 
             // // Reset
@@ -206,13 +206,13 @@ namespace UnitTests
             Assert.AreEqual( body.bodyId, discoveryMonitor._currentBodyId);
             Assert.AreEqual(OrganicGenus.Shrubs, discoveryMonitor._currentOrganic.genus);
             Assert.AreEqual(@event.timestamp, body.surfaceSignals?.lastUpdated);
-            Assert.IsNotNull( body.surfaceSignals?.biosignals?.Last() );
-            Assert.AreEqual( OrganicVariant.Shrubs_05_F, body.surfaceSignals.biosignals.Last().variant );
-            Assert.AreEqual( 2, body.surfaceSignals.biosignals.Last().samples );
-            Assert.AreEqual( Exobiology.State.SampleInProgress, body.surfaceSignals.biosignals.Last().scanState );
-            Assert.AreEqual( OrganicVariant.Shrubs_05_F.species.value , body.surfaceSignals.biosignals.Last().value );
+            Assert.IsNotNull( body.surfaceSignals?.bioSignals?.Last() );
+            Assert.AreEqual( OrganicVariant.Shrubs_05_F, body.surfaceSignals.bioSignals.Last().variant );
+            Assert.AreEqual( 2, body.surfaceSignals.bioSignals.Last().samples );
+            Assert.AreEqual( Exobiology.State.SampleInProgress, body.surfaceSignals.bioSignals.Last().scanState );
+            Assert.AreEqual( OrganicVariant.Shrubs_05_F.species.value , body.surfaceSignals.bioSignals.Last().value );
             Assert.AreEqual( 0, @event.remainingBios?.Count );
-            Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
+            Assert.AreEqual( body.surfaceSignals.bioSignals.Last(), @event.bio );
             Assert.IsFalse( body.surfaceSignals.hasPredictedBios );
 
             // Simulate the 3rd scan on the 1st organic with a fresh copy of the same event
@@ -220,10 +220,10 @@ namespace UnitTests
             Assert.AreEqual( 1, events.Count );
             @event = (ScanOrganicEvent)events[0];
             discoveryMonitor.PreHandle( @event );
-            Assert.AreEqual( Exobiology.State.SampleComplete, body.surfaceSignals.biosignals.Last().scanState );
+            Assert.AreEqual( Exobiology.State.SampleComplete, body.surfaceSignals.bioSignals.Last().scanState );
             Assert.AreEqual( 0, @event.remainingBios?.Count );
-            Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
-            Assert.AreEqual( 0, body.surfaceSignals.biosignalsremaining.Count );
+            Assert.AreEqual( body.surfaceSignals.bioSignals.Last(), @event.bio );
+            Assert.AreEqual( 0, body.surfaceSignals.bioSignalsRemaining.Count );
 
             // Scan a 2nd organic which has not been created on the body and test that it is handled gracefully
             var line2 = @"{ ""timestamp"":""2023-05-14T04:22:20Z"", ""event"":""ScanOrganic"", ""ScanType"":""Log"", ""Genus"":""$Codex_Ent_Fonticulus_Genus_Name;"", ""Genus_Localised"":""Fonticulua"", ""Species"":""$Codex_Ent_Fonticulus_02_Name;"", ""Species_Localised"":""Fonticulua Campestris"", ""Variant"":""$Codex_Ent_Fonticulus_02_TTS_Name;"", ""Variant_Localised"":""Fonticulua Campestris - Red"", ""SystemAddress"":10477373803, ""Body"":42 }";
@@ -233,14 +233,14 @@ namespace UnitTests
             discoveryMonitor.PreHandle( @event );
             Assert.AreEqual( body.bodyId, discoveryMonitor._currentBodyId );
             Assert.AreEqual( OrganicGenus.Fonticulus, discoveryMonitor._currentOrganic.genus );
-            Assert.IsNotNull( body.surfaceSignals?.biosignals?.Last() );
-            Assert.AreEqual( OrganicVariant.Fonticulus_02_TTS, body.surfaceSignals.biosignals.Last().variant );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignals.Last().samples );
-            Assert.AreEqual( Exobiology.State.SampleStarted, body.surfaceSignals.biosignals.Last().scanState );
-            Assert.AreEqual( OrganicVariant.Fonticulus_02_TTS.species.value, body.surfaceSignals.biosignals.Last().value );
+            Assert.IsNotNull( body.surfaceSignals?.bioSignals?.Last() );
+            Assert.AreEqual( OrganicVariant.Fonticulus_02_TTS, body.surfaceSignals.bioSignals.Last().variant );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignals.Last().samples );
+            Assert.AreEqual( Exobiology.State.SampleStarted, body.surfaceSignals.bioSignals.Last().scanState );
+            Assert.AreEqual( OrganicVariant.Fonticulus_02_TTS.species.value, body.surfaceSignals.bioSignals.Last().value );
             Assert.AreEqual( 0, @event.remainingBios?.Count );
-            Assert.AreEqual( body.surfaceSignals.biosignals.Last(), @event.bio );
-            Assert.AreEqual( 1, body.surfaceSignals.biosignalsremaining.Count );
+            Assert.AreEqual( body.surfaceSignals.bioSignals.Last(), @event.bio );
+            Assert.AreEqual( 1, body.surfaceSignals.bioSignalsRemaining.Count );
         }
     }
 }

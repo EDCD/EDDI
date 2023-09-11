@@ -13,34 +13,37 @@ namespace EddiDataDefinitions
         /// Create an Exobiology list, which contains additional structures for tracking
         /// </summary>
         [ PublicAPI ("Biological signal data") ] 
-        public HashSet<Exobiology> biosignals { get; set; } = new HashSet<Exobiology>();
+        public HashSet<Exobiology> bioSignals { get; set; } = new HashSet<Exobiology>();
 
         [PublicAPI ( "The number of biological signals reported by FSS/SAA" )]
         public int reportedBiologicalCount { get; set; }
 
         [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
-        public bool hasPredictedBios => biosignals.Any( s => s.scanState == Exobiology.State.Predicted );
+        public bool hasPredictedBios => bioSignals.Any( s => s.scanState == Exobiology.State.Predicted );
 
         [PublicAPI( "The biological signals that have not been fully scanned" )]
-        public HashSet<Exobiology> biosignalsremaining =>
-            biosignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
+        public HashSet<Exobiology> bioSignalsRemaining =>
+            bioSignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
 
         [PublicAPI( "The maximum expected credit value for biological signals on this body" )]
-        public long exobiologyValue => biosignals.Select(s => s.value).Sum();
+        public long exobiologyValue => bioSignals.Select(s => s.value).Sum();
+
+        [PublicAPI( "The maximum expected credit value for biological signals that have not been fully scanned on this body" )]
+        public long remainingExobiologyValue => bioSignalsRemaining.Select( s => s.value ).Sum();
 
         public bool TryGetBio ( Organic organic, out Exobiology bio )
         {
-            bio = biosignals.FirstOrDefault( b => b.variant == organic.variant ) ?? 
-                  biosignals.FirstOrDefault( b => b.species == organic.species ) ?? 
-                  biosignals.FirstOrDefault( b => b.genus == organic.genus );
+            bio = bioSignals.FirstOrDefault( b => b.variant == organic.variant ) ?? 
+                  bioSignals.FirstOrDefault( b => b.species == organic.species ) ?? 
+                  bioSignals.FirstOrDefault( b => b.genus == organic.genus );
             return bio != null;
         }
 
         public bool TryGetBio ( OrganicVariant variant, OrganicSpecies species, OrganicGenus genus, out Exobiology bio )
         {
-            bio = biosignals.FirstOrDefault( b => b.variant == variant ) ?? 
-                  biosignals.FirstOrDefault( b => b.species == species ) ?? 
-                  biosignals.FirstOrDefault( b => b.genus == genus );
+            bio = bioSignals.FirstOrDefault( b => b.variant == variant ) ?? 
+                  bioSignals.FirstOrDefault( b => b.species == species ) ?? 
+                  bioSignals.FirstOrDefault( b => b.genus == genus );
             return bio != null;
         }
 
@@ -59,7 +62,7 @@ namespace EddiDataDefinitions
                 genus != null ? new Exobiology( genus, prediction ) : null;
             if ( bio != null )
             {
-                biosignals.Add( bio );
+                bioSignals.Add( bio );
             }
             return bio;
         }
@@ -73,7 +76,7 @@ namespace EddiDataDefinitions
         public Exobiology AddBioFromGenus ( OrganicGenus genus, bool prediction = false )
         {
             var bio = new Exobiology( genus, prediction );
-            biosignals.Add( bio );
+            bioSignals.Add( bio );
             return bio;
         }
 

@@ -271,9 +271,11 @@ namespace EddiDataDefinitions
         public IList<string> starClass;
         public IList<string> volcanism;
 
-        public string description => Properties.OrganicSpeciesDesc.ResourceManager.GetString( NormalizeSpecies( edname ) );
-        public string conditions => Properties.OrganicSpeciesCond.ResourceManager.GetString( NormalizeSpecies( edname ) );
-        public int minimumDistanceMeters => genus.minimumDistanceMeters;
+        [PublicAPI]
+        public string description => Properties.OrganicSpeciesDesc.ResourceManager.GetString( edname );
+
+        [PublicAPI]
+        public string conditions => Properties.OrganicSpeciesCond.ResourceManager.GetString( edname );
 
         public bool isPredictable => maxG != null ||
                                      minK != null ||
