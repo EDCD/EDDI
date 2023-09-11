@@ -420,6 +420,11 @@ namespace EddiDiscoveryMonitor
                             }
                         } ).ConfigureAwait( false );
                     }
+                    else if ( bio.scanState == Exobiology.State.SampleAnalyzed )
+                    { 
+                        // Clear our tracked organic once analysis is complete.
+                        _currentOrganic = null; 
+                    }
 
                     // Save/Update Body data
                     body.surfaceSignals.lastUpdated = @event.timestamp;
