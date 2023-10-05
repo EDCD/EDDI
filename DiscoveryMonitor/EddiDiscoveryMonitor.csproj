@@ -22,6 +22,19 @@
     <Page Remove="Properties\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\DiscoveryMonitor.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiscoveryMonitor.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\DiscoveryMonitor.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DiscoveryMonitor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
     <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
     <ProjectReference Include="..\EDDI\Eddi.csproj" />

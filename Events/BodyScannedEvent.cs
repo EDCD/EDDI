@@ -163,7 +163,7 @@ namespace EddiEvents
 
         public long? bodyId => body.bodyId;
         
-        public List<IDictionary<string, object>> parents => body.parents;
+        public List<IDictionary<string, long>> parents => body.parents;
 
         public AtmosphereClass atmosphereclass => body.atmosphereclass;
         

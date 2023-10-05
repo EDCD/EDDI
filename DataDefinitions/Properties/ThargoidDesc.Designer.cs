@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
+        ///   Looks up a localized string similar to These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Basilisk {
             get {
@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
+        ///   Looks up a localized string similar to These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Cyclops {
             get {
@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
+        ///   Looks up a localized string similar to These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Hydra {
             get {
@@ -106,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This ship can increase the speed and manoeuvrability of nearby Thargoid Scouts..
+        ///   Looks up a localized string similar to This ship can increase the speed and maneuverability of nearby Thargoid Scouts..
         /// </summary>
         public static string Inciter {
             get {
@@ -124,7 +124,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These Powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
+        ///   Looks up a localized string similar to These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic..
         /// </summary>
         public static string Medusa {
             get {
@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  .
+        ///   Looks up a localized string similar to These powerful Thargoid ships are able to navigate hyperspace in ways that are not fully understood, and are at least partly organic. They appear to have a role in capturing new territories..
         /// </summary>
         public static string Orthrus {
             get {

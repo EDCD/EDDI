@@ -17,39 +17,28 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             string output = string.Empty;
-            string localisedAndOr;
 
-            Cottle.IMap cottleVal = values[0].Fields;
+            // Choose either And/Or for the last list item using the second argument (if any)
+            var orList = values.Count > 1 && values[1].AsBoolean;
+            var localisedAndOr = orList ? 
+                Properties.SpeechResponder.localizedOr : 
+                Properties.SpeechResponder.localizedAnd;
 
-            // Let us choose either And/Or for the last list item
-            string type = values.Count > 1 ? values[1].AsString : "and";
-            type = type.ToLower();
-
-            switch ( type )
-            {
-                case "or":
-                    localisedAndOr = Properties.SpeechResponder.localizedOr;
-                    break;
-                //case "and":
-                default:
-                    localisedAndOr = Properties.SpeechResponder.localizedAnd;
-                    break;
-            }
-
-            foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in cottleVal)
+            var cottleMap = values[0].Fields;
+            foreach ( KeyValuePair<Cottle.Value, Cottle.Value> value in cottleMap)
             {
                 string valueString = value.Value.AsString;
                 if (value.Key == 0)
                 {
                     output = valueString;
                 }
-                else if (value.Key < ( cottleVal.Count - 1))
+                else if (value.Key < ( cottleMap.Count - 1))
                 {
                     output = $"{output}, {valueString}";
                 }
                 else
                 {
-                    output = $"{output}{( cottleVal.Count() > 2 ? "," : "")} {localisedAndOr} {valueString}";
+                    output = $"{output}{( cottleMap.Count() > 2 ? "," : "")} {localisedAndOr} {valueString}";
                 }
             }
 

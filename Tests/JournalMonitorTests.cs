@@ -2349,5 +2349,106 @@ namespace UnitTests
             eddiPrivateObject.Invoke( "eventHandler", (SystemScanComplete)events[ 0 ] );
             Assert.AreEqual(45, ( (SystemScanComplete)events[ 0 ] ).count );
         }
+
+        [ TestMethod ]
+        public void TestCodexEntryGeoEvent()
+        {
+            var line = @"{ ""timestamp"":""2019-03-21T05:31:09Z"", ""event"":""CodexEntry"", ""EntryID"":2402003, ""Name"":""$Codex_Ent_L_Phn_Part_Clus_003_Name;"", ""Name_Localised"":""L01-Type Anomaly"", ""SubCategory"":""$Codex_SubCategory_Geology_and_Anomalies;"", ""SubCategory_Localised"":""Geology and anomalies"", ""Category"":""$Codex_Category_Biology;"", ""Category_Localised"":""Biological and Geological"", ""Region"":""$Codex_RegionName_1;"", ""Region_Localised"":""Galactic Centre"", ""System"":""Juenae OX-U e2-8852"", ""SystemAddress"":38020377946588, ""IsNewEntry"":true }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual( 1, events.Count );
+            var @event = (CodexEntryEvent)events[0];
+
+            Assert.AreEqual( "Juenae OX-U e2-8852", @event.systemName );
+            Assert.AreEqual( 38020377946588UL, @event.systemAddress );
+            Assert.AreEqual( "Biology", @event.categoryName );
+            Assert.AreEqual( "Geology and Anomalies", @event.subCategoryName );
+            Assert.AreEqual( "L Phn Part Clus 003", @event.entryName );
+            Assert.AreEqual( "Galactic Centre", @event.localizedRegion );
+            Assert.AreEqual( true, @event.newEntry );
+            Assert.AreEqual( false, @event.newTrait );
+            Assert.AreEqual( 0, @event.voucherAmount );
+            Assert.IsNotNull( @event.codexEntry );
+            Assert.IsNull( @event.codexEntry.organic );
+            Assert.IsNull( @event.codexEntry.astronomical );
+            Assert.IsNull( @event.codexEntry.guardian );
+            Assert.IsNull( @event.codexEntry.thargoid );
+            Assert.IsNotNull( @event.codexEntry.geology );
+            Assert.AreEqual( "L_Phn_Part_Clus_003", @event.codexEntry.geology.edname );
+            Assert.AreEqual( 2402003, @event.codexEntry.geology.entryID );
+            Assert.AreEqual( GeologyType.L_TypeAnomaly, @event.codexEntry.geology.type );
+            Assert.AreEqual( 50000, @event.codexEntry.geology.value );
+        }
+        
+        [ TestMethod ]
+        public void TestCodexEntryBioEvent()
+        {
+            var line = @"{ ""timestamp"":""2023-05-14T04:20:36Z"", ""event"":""CodexEntry"", ""EntryID"":2370210, ""Name"":""$Codex_Ent_Fonticulus_02_TTS_Name;"", ""Name_Localised"":""Fonticulua Campestris - Red"", ""SubCategory"":""$Codex_SubCategory_Organic_Structures;"", ""SubCategory_Localised"":""Organic structures"", ""Category"":""$Codex_Category_Biology;"", ""Category_Localised"":""Biological and Geological"", ""Region"":""$Codex_RegionName_18;"", ""Region_Localised"":""Inner Orion Spur"", ""System"":""Wandrama"", ""SystemAddress"":7266681759105, ""BodyID"":15, ""NearestDestination"":"""", ""Latitude"":-49.633488, ""Longitude"":32.112751, ""IsNewEntry"":true }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual( 1, events.Count );
+            var @event = (CodexEntryEvent)events[0];
+
+            Assert.AreEqual( "Wandrama", @event.systemName );
+            Assert.AreEqual( 7266681759105UL, @event.systemAddress );
+            Assert.AreEqual( "Biology", @event.categoryName );
+            Assert.AreEqual( "Organic Structures", @event.subCategoryName );
+            Assert.AreEqual( "Fonticulus 02 TTS", @event.entryName );
+            Assert.AreEqual( "Inner Orion Spur", @event.localizedRegion );
+            Assert.AreEqual( true, @event.newEntry );
+            Assert.AreEqual( false, @event.newTrait );
+            Assert.AreEqual( 0, @event.voucherAmount );
+            Assert.IsNotNull( @event.codexEntry );
+            Assert.IsNull( @event.codexEntry.astronomical );
+            Assert.IsNull( @event.codexEntry.guardian );
+            Assert.IsNull( @event.codexEntry.thargoid );
+            Assert.IsNull( @event.codexEntry.geology );
+            Assert.IsNotNull( @event.codexEntry.organic );
+            Assert.AreEqual( "Fonticulus_02_TTS", @event.codexEntry.organic.variant.edname );
+            Assert.AreEqual( 2370210, @event.codexEntry.organic.variant.entryID );
+            Assert.AreEqual( OrganicSpecies.FonticuluaCampestris, @event.codexEntry.organic.species );
+            Assert.AreEqual( 1000000, @event.codexEntry.organic.species.value );
+            Assert.AreEqual( OrganicGenus.Fonticulus, @event.codexEntry.organic.genus );
+            Assert.AreEqual( 500, @event.codexEntry.organic.genus.minimumDistanceMeters );
+        }
+        
+        [ TestMethod ]
+        public void TestCodexEntryThargoidEvent()
+        {
+            var line = @"{ ""timestamp"":""2023-05-29T07:50:55Z"", ""event"":""CodexEntry"", ""EntryID"":3100402, ""Name"":""$Codex_Ent_Basilisk_Name;"", ""Name_Localised"":""Thargoid Interceptor Basilisk"", ""SubCategory"":""$Codex_SubCategory_Thargoid;"", ""SubCategory_Localised"":""Thargoid objects"", ""Category"":""$Codex_Category_Civilisations;"", ""Category_Localised"":""Xenological"", ""Region"":""$Codex_RegionName_18;"", ""Region_Localised"":""Inner Orion Spur"", ""System"":""Camaye"", ""SystemAddress"":2007796585154, ""BodyID"":0, ""IsNewEntry"":true, ""VoucherAmount"":50000 }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual( 1, events.Count );
+            var @event = (CodexEntryEvent)events[0];
+
+            Assert.AreEqual( "Camaye", @event.systemName );
+            Assert.AreEqual( 2007796585154UL, @event.systemAddress );
+            Assert.AreEqual( "Civilisations", @event.categoryName );
+            Assert.AreEqual( "Thargoid", @event.subCategoryName );
+            Assert.AreEqual( "Basilisk", @event.entryName );
+            Assert.AreEqual( "Inner Orion Spur", @event.localizedRegion );
+            Assert.AreEqual( true, @event.newEntry );
+            Assert.AreEqual( false, @event.newTrait );
+            Assert.AreEqual( 50000, @event.voucherAmount );
+            Assert.IsNotNull( @event.codexEntry );
+            Assert.IsNull( @event.codexEntry.astronomical );
+            Assert.IsNull( @event.codexEntry.geology );
+            Assert.IsNull( @event.codexEntry.organic );
+            Assert.IsNull( @event.codexEntry.guardian );
+            Assert.IsNotNull( @event.codexEntry.thargoid );
+            Assert.AreEqual( "Basilisk", @event.codexEntry.thargoid.edname );
+            Assert.AreEqual( 3100402 , @event.codexEntry.thargoid.entryID );
+        }
+
+        [TestMethod]
+        public void TestOrganicDataSoldEvent ()
+        {
+            var line = OrganicDataSoldEvent.SAMPLE;
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual( 1, events.Count );
+            var @event = (OrganicDataSoldEvent)events[0];
+
+            Assert.AreEqual( 3704044544, @event.marketID );
+            Assert.AreEqual( 229447700M, @event.value );
+            Assert.AreEqual( 761762800M, @event.bonus );
+            Assert.AreEqual(60, @event.bioSignals.Count);
+        }
     }
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Utilities;
-using System.Threading;
 
 namespace EddiEvents
 {
@@ -22,38 +21,23 @@ namespace EddiEvents
         [PublicAPI("A list of signals (as objects)")]
         public List<SignalAmount> surfacesignals { get; private set; }
 
-        [PublicAPI( "A list of the biologicals present on the body after an SAA (map) of body." )]
-        public List<string> biosignals { get; set; }
-
-        [PublicAPI( "The body that the surface signals are on" )]
-        public Body body { get; private set; }
+        [PublicAPI( "A list of the organisms present on the body after an SAA (map) of body (as objects)." )]
+        public HashSet<Exobiology> biosignals { get; set; }
 
         // Not intended to be user facing
 
         public ulong? systemAddress { get; private set; }
         
         public long bodyId { get; private set; }
-
-        public SurfaceSignalsEvent ( DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals, List<string> biosignals ) : base( timestamp, NAME )
+        
+        public SurfaceSignalsEvent ( DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals, HashSet<Exobiology> biosignals = null ) : base( timestamp, NAME )
         {
             this.detectionType = detectionType;
             this.systemAddress = systemAddress;
             this.bodyname = bodyName;
             this.bodyId = bodyId;
-            this.surfacesignals = surfaceSignals;
-
-            if (Logging.Verbose) {
-                string log = "";
-                int c = 0;
-                foreach ( string signal in biosignals )
-                {
-                    log += $"[SurfaceSignalsEvent] biosignals[{c}] {signal}\r\n";
-                    c++;
-                }
-                Logging.Debug( log );
-            }
-
-            this.biosignals = biosignals;
+            this.surfacesignals = surfaceSignals ?? new List<SignalAmount>();
+            this.biosignals = biosignals ?? new HashSet<Exobiology>();
         }
     }
 }

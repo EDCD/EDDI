@@ -1,198 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class SurfaceSignals
     {
+        #region Biological Signals
+
         /// <summary>
-        /// Create a simple geology list, same as a codex entry
         /// Create an Exobiology list, which contains additional structures for tracking
-        /// Both are keyed to their edname because the EntryID is not available for the ScanOrganic event.
-        /// While we could probably use a List here, the IDictionary inherently prevents duplicate entries from being added.
         /// </summary>
+        [ PublicAPI ("Biological signal data") ] 
+        public HashSet<Exobiology> bioSignals { get; set; } = new HashSet<Exobiology>();
 
-        public class Geo
+        [PublicAPI ( "The number of biological signals reported by FSS/SAA" )]
+        public int reportedBiologicalCount { get; set; }
+
+        [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
+        public bool hasPredictedBios => bioSignals.Any( s => s.scanState == Exobiology.State.Predicted );
+
+        [PublicAPI( "The biological signals that have not been fully scanned" )]
+        public HashSet<Exobiology> bioSignalsRemaining =>
+            bioSignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
+
+        [PublicAPI( "The maximum expected credit value for biological signals on this body" )]
+        public long exobiologyValue => bioSignals.Select(s => s.value).Sum();
+
+        [PublicAPI( "The maximum expected credit value for biological signals that have not been fully scanned on this body" )]
+        public long remainingExobiologyValue => bioSignalsRemaining.Select( s => s.value ).Sum();
+
+        public bool TryGetBio ( Organic organic, out Exobiology bio )
         {
-            public IDictionary<string, Geology> list;
-
-            public int reportedTotal;
-
-            public int? numTotal => list.Count;
-
-            public Geo()
-            {
-                list = new Dictionary<string, Geology>();
-                reportedTotal = 0;
-            }
+            bio = bioSignals.FirstOrDefault( b => b.variant == organic.variant ) ?? 
+                  bioSignals.FirstOrDefault( b => b.species == organic.species ) ?? 
+                  bioSignals.FirstOrDefault( b => b.genus == organic.genus );
+            return bio != null;
         }
 
-        [PublicAPI]
-        public Geo geo;
-
-        public class Bio
+        public bool TryGetBio ( OrganicVariant variant, OrganicSpecies species, OrganicGenus genus, out Exobiology bio )
         {
-            public Dictionary<string, Exobiology> list;
-
-            public int reportedTotal;  // The number of biologicals reported by FSS/SAA
-
-            public int? numTotal => list.Count;
-
-            private List<string> _listRemaining;
-            public List<string> listRemaining
-            {
-                get
-                {
-                    if ( _listRemaining == null )
-                    {
-                        _listRemaining = new List<string>();
-                    }
-                    else
-                    {
-                        _listRemaining.Clear();
-                    }
-
-                    foreach ( Exobiology item in list.Values )
-                    {
-                        if ( !item.complete )
-                        {
-                            _listRemaining.Add( item.genus.localizedName );
-                        }
-                    }
-                    return _listRemaining;
-                }
-                set
-                {
-                    _listRemaining = value;
-                }
-            }
-
-            private int? _numComplete;
-
-            [PublicAPI]
-            public int? numComplete
-            {
-                get
-                {
-                    _numComplete = 0;
-                    foreach ( Exobiology item in list.Values )
-                    {
-                        if ( item.complete )
-                        {
-                            _numComplete++;
-                        }
-                    }
-                    return _numComplete;
-                }
-                set
-                {
-                    _numComplete = value;
-                }
-            }
-
-            private int? _numRemaining;
-
-            [PublicAPI]
-            public int? numRemaining
-            {
-                get
-                {
-                    _numRemaining = numTotal - _numComplete;
-                    return _numRemaining;
-                }
-                set
-                {
-                    _numRemaining = value;
-                }
-            }
-
-            public Bio ()
-            {
-                list = new Dictionary<string, Exobiology>();
-                reportedTotal = 0;
-            }
-
-        };
-
-        [PublicAPI]
-        public Bio bio;
-
-        // Are the current biologicals predicted
-        [PublicAPI]
-        public bool predicted;
-
-        public SurfaceSignals ()
-        {
-            bio = new Bio();
-            geo = new Geo();
-        }
-
-        public Exobiology GetBio ( string edname_genus )
-        {
-            if ( bio.list.ContainsKey( edname_genus ) )
-            {
-                return bio.list[ edname_genus ];
-            }
-            return new Exobiology( edname_genus );
+            bio = bioSignals.FirstOrDefault( b => b.variant == variant ) ?? 
+                  bioSignals.FirstOrDefault( b => b.species == species ) ?? 
+                  bioSignals.FirstOrDefault( b => b.genus == genus );
+            return bio != null;
         }
 
         /// <summary>
-        /// Add a biological Exobiology object
+        /// Add a biological object
         /// </summary>
-        /// <param name="edname">i.e. name=Codex_Ent_Stratum_02_F_Name, edname=Stratum_02_F  </param>
-        public void AddBio ( string edname_genus )
+        /// <param name="variant">The Organic Variant of the biological object</param>
+        /// <param name="species">The Organic Species of the biological object</param>
+        /// <param name="genus">The Organic Genus of the biological object</param>
+        /// <param name="prediction">true if this is a prediction, false if confirmed</param>
+        /// <returns>The Exobiological object which was added to the body's surface signals</returns>
+        public Exobiology AddBio ( OrganicVariant variant, OrganicSpecies species, OrganicGenus genus, bool prediction = false )
         {
-            if ( !bio.list.ContainsKey( edname_genus ) )
+            var bio = variant != null ? new Exobiology( variant, prediction ) :
+                species != null ? new Exobiology( species, prediction ) :
+                genus != null ? new Exobiology( genus, prediction ) : null;
+            if ( bio != null )
             {
-                bio.list.Add( edname_genus, new Exobiology( edname_genus ) );
+                bioSignals.Add( bio );
             }
+            return bio;
         }
 
-        public void AddBio ( string edname_genus, bool prediction )
+        /// <summary>
+        /// Add a biological object
+        /// </summary>
+        /// <param name="genus">The OrganicGenus of the biological object</param>
+        /// <param name="prediction">true if this is a prediction, false if confirmed</param>
+        /// <returns>The Exobiological object which was added to the body's surface signals</returns>
+        public Exobiology AddBioFromGenus ( OrganicGenus genus, bool prediction = false )
         {
-            if ( !bio.list.ContainsKey( edname_genus ) )
-            {
-                bio.list.Add( edname_genus, new Exobiology( edname_genus, prediction ) );
-            }
+            var bio = new Exobiology( genus, prediction );
+            bioSignals.Add( bio );
+            return bio;
         }
 
-        public void AddGeo ( string edname )
-        {
-            if ( !geo.list.ContainsKey( edname ) )
-            {
-                geo.list.Add( edname, Geology.LookupByName( edname ) );
-            }
-        }
+        #endregion
 
-        public List<string> GetBios ()
-        {
-            List<string> list = new List<string>();
+        #region Geology Signals
 
-            if ( bio.list != null )
-            {
-                foreach ( string key in bio.list.Keys )
-                {
-                    list.Add( bio.list[ key ].genus.localizedName );
-                }
-            }
+        [PublicAPI( "The number of geological signals reported by FSS/SAA" )]
+        public int reportedGeologicalCount { get; set; }
 
-            return list;
-        }
+        #endregion
 
-        public List<string> GetGeos ()
-        {
-            List<string> list = new List<string>();
+        #region Guardian Signals
 
-            if ( bio.list != null )
-            {
-                foreach ( string key in geo.list.Keys )
-                {
-                    list.Add( geo.list[ key ].localizedName );
-                }
-            }
+        [PublicAPI( "The number of Guardian signals reported by FSS/SAA" )]
+        public int reportedGuardianCount { get; set; }
 
-            return list;
-        }
+        #endregion
+
+        #region Human Signals
+
+        [PublicAPI( "The number of Human signals reported by SAA" )]
+        public int reportedHumanCount { get; set; }
+
+        #endregion
+
+        #region Thargoid Signals
+
+        [PublicAPI( "The number of Thargoid signals reported by SAA" )]
+        public int reportedThargoidCount { get; set; }
+
+        #endregion
+
+        #region Other Signals
+
+        [PublicAPI( "The number of other signals reported by SAA" )]
+        public int reportedOtherCount { get; set; }
+
+        #endregion
+
+        public DateTime lastUpdated { get; set; }
     }
 }

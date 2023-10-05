@@ -1,5 +1,4 @@
 ﻿using EddiConfigService;
-using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -70,7 +69,7 @@ namespace EddiJournalMonitor
                 Match match = JsonRegex.Match(line);
                 if (match.Success)
                 {
-                    //Logging.Info("Received event", line);
+                    Logging.Debug("Received event", line);
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
 
                     if (fromLogLoad && ignoredLogLoadEvents.Contains(JsonParsing.getString(data, "event")))
@@ -107,9 +106,6 @@ namespace EddiJournalMonitor
                     {
                         EDDI.Instance.JournalTimeStamp = timestamp;
                     }
-
-                    Logging.Info( $"Received event '{edType}'", line );
-                    //Logging.Info($"Checking Event '{edType}'");
 
                     try
                     {
@@ -921,8 +917,6 @@ namespace EddiJournalMonitor
                                 break;
                             case "Scan":
                                 {
-                                    //Logging.Info( $"[Scan Event]" );
-
                                     string name = JsonParsing.getString(data, "BodyName");
                                     string scantype = JsonParsing.getString(data, "ScanType");
 
@@ -961,55 +955,17 @@ namespace EddiJournalMonitor
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
-                                    // TODO:#2212: Save/Update StarSystem data
-                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
-
                                     // Parent body types and IDs
-                                    data.TryGetValue("Parents", out object parentsVal);
-                                    List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
-
-                                    // Check if it is ok to add BaryCentre data
-                                    bool baryOK = false;
-                                    bool baryUpdated = false;
-                                    if ( system != null && bodyId != null )
+                                    var parents = new List<IDictionary<string, long>>();
+                                    if ( data.TryGetValue( "Parents", out object parentsVal ) )
                                     {
-                                        baryOK = true;
-                                    }
-
-                                    if (parentsVal != null)
-                                    {
-                                        foreach (IDictionary<string, object> parent in (List<object>)parentsVal)
+                                        foreach ( IDictionary<string, object> parentsDict in (List<object>)parentsVal )
                                         {
-                                            parents.Add(parent);
-
-                                            // Add BaryCentre data
-                                            if ( baryOK )
+                                            foreach ( var kvPair in parentsDict )
                                             {
-                                                foreach ( string key in parent.Keys )
-                                                {
-                                                    // If the parent type is a BaryCentre, add it to the system data
-                                                    if ( key == "Null" )
-                                                    {
-                                                        try
-                                                        {
-                                                            long id = (long)parent[ key ];
-                                                            system.baryCentre.AddBody( id, (long)bodyId );
-                                                            baryUpdated = true;
-                                                        }
-                                                        catch ( Exception e )
-                                                        {
-                                                            Logging.Error( $"Failed to add body to BaryCentre [{e}]" );
-                                                        }
-                                                    }
-                                                }
+                                                parents.Add( new Dictionary<string, long> { { kvPair.Key, (long)kvPair.Value } } );
                                             }
                                         }
-                                    }
-
-                                    // TODO:#2212: Save/Update StarSystem data if BaryCentre data was added
-                                    if ( baryUpdated )
-                                    {
-                                        StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
                                     }
 
                                     // Scan status
@@ -4078,10 +4034,6 @@ namespace EddiJournalMonitor
                                 break;
                             case "FSSBodySignals":
                                 {
-                                    String log = "";
-                                    bool enableLog = ConfigService.Instance.discoveryMonitorConfiguration.enableLogging;
-                                    if (enableLog) { log += $"[FSSBodySignals Event]"; }
-
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
@@ -4103,31 +4055,17 @@ namespace EddiJournalMonitor
                                         surfaceSignals.Add( new SignalAmount( source, amount ) );
                                     }
                                     surfaceSignals = surfaceSignals.OrderByDescending( s => s.amount ).ToList();
-
-                                    List<string> biosignals = new List<string>();
-
-                                    if (enableLog) {
-                                        Logging.Debug( log );
-                                    }
-
-                                    events.Add( new SurfaceSignalsEvent( timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals, biosignals ) { raw = line, fromLoad = fromLogLoad } );
+                                    events.Add( new SurfaceSignalsEvent( timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
                             case "SAASignalsFound":
                                 {
-                                    String log = "";
-                                    bool enableLog = ConfigService.Instance.discoveryMonitorConfiguration.enableLogging;
-                                    if (enableLog) { log += $"[SAASignalsFound Event]\r\n"; }
-
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
                                     data.TryGetValue("Signals", out object signalsVal);
                                     data.TryGetValue( "Genuses", out object genusesVal );
-
-                                    //StarSystem system => EDDI.Instance?.CurrentStarSystem;
-                                    //Body body = null;
 
                                     if (bodyName.EndsWith(" Ring"))
                                     {
@@ -4158,110 +4096,30 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        if (enableLog) { log += $">>> - SAA Signals Found\r\n"; }
-                                        int reportedBios = 0;
-                                        int reportedGeos = 0;
-
-                                        // TODO:#2212........[This is pretty much deprecated at this point (SignalAmount), we still get the total count though]
                                         // This is surface signal sources from a body that we've mapped
                                         List<SignalAmount> surfaceSignals = new List<SignalAmount>();
                                         foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
                                         {
-                                            SignalSource source;
-                                            string signalSource = JsonParsing.getString(signal, "Type");
-                                            source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                            var signalSource = JsonParsing.getString(signal, "Type");
+                                            var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
                                             var localizedName = JsonParsing.getString(data, "Type_Localised");
                                             if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
                                             {
                                                 source.fallbackLocalizedName = localizedName;
                                             }
-                                            int amount = JsonParsing.getInt(signal, "Count");
+                                            var amount = JsonParsing.getInt(signal, "Count");
                                             surfaceSignals.Add(new SignalAmount(source, amount));
-
-                                            // Save the number of biologicals to update SurfaceSignals
-                                            if ( source.edname == "SAA_SignalType_Biological" )
-                                            {
-                                                reportedBios = amount;
-                                            }
-
-                                            if ( source.edname == "SAA_SignalType_Geological" )
-                                            {
-                                                reportedGeos = amount;
-                                            }
                                         }
                                         surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
 
-                                        // Start of the SurfaceSignals for Exobiology logic
-                                        List<string> biosignals = new List<string>();
-                                        StarSystem system = EDDI.Instance?.CurrentStarSystem;
-                                        Body body = null;
-
-                                        if ( system != null )
+                                        var biosignals = new HashSet<Exobiology>();
+                                        if ( genusesVal != null )
                                         {
-                                            if (enableLog) { log += $">>> - System Exists\r\n"; }
-                                            body = system?.BodyWithID( bodyId );
-
-                                            if ( !( body is null ) )
+                                            foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
                                             {
-                                                if (enableLog) {
-                                                    log += $">>> - Body Exists\r\n";
-                                                    log += "[SAASignalsFound]:";
-                                                }
-
-                                                if ( body.surfaceSignals == null )
-                                                {
-                                                    if (enableLog) { log += $"\r\n\tsurfaceSignals is null, creating new."; }
-                                                    body.surfaceSignals = new SurfaceSignals();
-                                                }
-
-                                                // Set the number of detected signals for both Bio and Geo
-                                                body.surfaceSignals.bio.reportedTotal = reportedBios;
-                                                body.surfaceSignals.geo.reportedTotal = reportedGeos;
-
-                                                // If the current list was predicted then erase and recreate with actual values
-                                                // If the number of bios in the list does not match the reported number of bios then clear
-                                                if ( body.surfaceSignals.predicted == true || body.surfaceSignals.bio.numTotal != body.surfaceSignals.bio.reportedTotal )
-                                                {
-                                                    if (enableLog) { log += $"\r\n\tClearing bio list."; }
-                                                    body.surfaceSignals.bio.list.Clear();
-                                                }
-
-                                                foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
-                                                {
-                                                    string edname_genus = JsonParsing.getString(signal, "Genus");
-                                                    edname_genus = ScanOrganic.NormalizedGenus( edname_genus );
-
-                                                    if (enableLog) { log += $"\r\n\tAdding bio [{body.surfaceSignals.bio.numTotal}] {edname_genus}"; }
-
-                                                    body.surfaceSignals.AddBio( edname_genus );
-                                                }
-
-                                                // The bio list is no longer a prediction, do not update it again.
-                                                body.surfaceSignals.predicted = false;
-
-                                                // TODO:#2212: Save/Update Body data
-                                                EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                                                StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
-
-                                                if (enableLog) { log += $"\r\n[SAASignalsFound] Bio Count = {body.surfaceSignals.bio.reportedTotal}\r\n"; }
-
-                                                body = system?.BodyWithID( bodyId );
-                                                biosignals = body.surfaceSignals.GetBios();
-
-                                                if (enableLog) {
-                                                    log += "[SAASignalsFound]:";
-                                                    int c = 0;
-                                                    foreach ( string signal in biosignals )
-                                                    {
-                                                        log += $"\r\n\tbiosignals[{c}] {signal}";
-                                                        c++;
-                                                    }
-                                                }
+                                                var genus = GetOrganicGenus(signal);
+                                                biosignals.Add( new Exobiology( genus ) );
                                             }
-                                        }
-
-                                        if (enableLog) {
-                                            Logging.Debug( log );
                                         }
 
                                         events.Add( new SurfaceSignalsEvent( timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals, biosignals ) { raw = line, fromLoad = fromLogLoad } );
@@ -5052,39 +4910,18 @@ namespace EddiJournalMonitor
                                 break;
                             case "CodexEntry":
                                 {
-                                    long entryId = JsonParsing.getLong(data, "EntryID");
-                                    string edname = JsonParsing.getString(data, "Name");
-                                    string codexName = JsonParsing.getString(data, "Name");
-                                    codexName = CodexEntry.NormalizedName( codexName );
-                                    string subCategoryName = JsonParsing.getString(data, "SubCategory");
-                                    subCategoryName = CodexEntry.NormalizedSubCategory( subCategoryName );
-                                    string categoryName = JsonParsing.getString(data, "Category");
-                                    categoryName = CodexEntry.NormalizedCategory( categoryName );
-                                    string regionName = JsonParsing.getString(data, "Region_Localised");
-                                    string systemName = JsonParsing.getString(data, "System");
-
-                                    bool newEntry = false;
-                                    try
-                                    { newEntry = JsonParsing.getBool( data, "IsNewEntry" ); }
-                                    catch { newEntry = false; }
-
-                                    bool newTrait = false;
-                                    try
-                                    { newTrait = JsonParsing.getBool( data, "NewTraitsDiscovered" ); }
-                                    catch { newTrait = false; }
-
-                                    int voucherAmount = 0;
-                                    try
-                                    { voucherAmount = JsonParsing.getInt( data, "VoucherAmount" ); }
-                                    catch { voucherAmount = 0; }
-
+                                    var entryId = JsonParsing.getLong(data, "EntryID");
+                                    var edname = JsonParsing.getString(data, "Name");
+                                    var subCategoryEDName = JsonParsing.getString( data, "SubCategory" );
+                                    var categoryEDName = JsonParsing.getString( data, "Category" );
+                                    var regionLocalizedName = JsonParsing.getString(data, "Region_Localised");
+                                    var systemName = JsonParsing.getString(data, "System");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var newEntry = JsonParsing.getOptionalBool( data, "IsNewEntry" ) ?? false;
+                                    var newTrait = JsonParsing.getOptionalBool( data, "NewTraitsDiscovered" ) ?? false;
+                                    var voucherAmount = JsonParsing.getOptionalInt( data, "VoucherAmount" ) ?? 0;
                                     events.Add( new CodexEntryEvent( timestamp,
-                                                                     entryId,
-                                                                     codexName,
-                                                                     subCategoryName,
-                                                                     categoryName,
-                                                                     regionName,
-                                                                     systemName,
+                                                                     new CodexEntry( entryId, edname, subCategoryEDName, categoryEDName, regionLocalizedName, systemName, systemAddress ),
                                                                      newEntry,
                                                                      newTrait,
                                                                      voucherAmount ) { raw = line, fromLoad = fromLogLoad } );
@@ -5093,107 +4930,68 @@ namespace EddiJournalMonitor
                                 break;
                             case "ScanOrganic":
                                 {
-                                    String log = "";
-                                    bool enableLog = ConfigService.Instance.discoveryMonitorConfiguration.enableLogging;
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var bodyId = JsonParsing.getInt(data, "Body"); // This is in fact the BodyID, not the body name
+                                    var scanType = JsonParsing.getString(data, "ScanType"); // Log, Sample, Analyse
+                                    var genus = GetOrganicGenus( data );
+                                    var species = GetOrganicSpecies(data);
+                                    var variant = GetOrganicVariant(data);
 
-                                    // System address identifier
-                                    ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
-
-                                    // This is in fact the BodyID, not the body name
-                                    int bodyId = JsonParsing.getInt(data, "Body");
-
-                                    // Log, Sample, Analyse
-                                    string scanType = JsonParsing.getString(data, "ScanType");
-                                    
-                                    // i.e. Frutexa
-                                    string genus = JsonParsing.getString(data, "Genus");
-                                    genus = ScanOrganic.NormalizedGenus( genus );
-                                    
-                                    // i.e. Flabellum
-                                    string species = JsonParsing.getString(data, "Species");
-                                    species = ScanOrganic.NormalizedSpecies( species );
-                                    
-                                    // i.e. Green
-                                    string variant = JsonParsing.getString(data, "Variant");
-                                    variant = ScanOrganic.NormalizedVariant( variant );
-
-                                    if (enableLog) { log += $"[ScanOrganic] ---> START <---\r\n" +
-                                                            $"\tsystemAddress = {systemAddress}\r\n" +
-                                                            $"\tbodyId = {bodyId}\r\n" +
-                                                            $"\tscanType = {scanType}\r\n" +
-                                                            $"\tgenus = {genus}\r\n" +
-                                                            $"\tspecies = {species}\r\n" +
-                                                            $"\tvariant = {variant}\r\n" +
-                                                            $"[ScanOrganic] ---> END <---\r\n"; }
-
-                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
-
-                                    if ( system != null )
+                                    if ( scanType != "Analyse" || AnalysisIncomplete() )
                                     {
-                                        if (enableLog) { log += $"[ScanOrganic] system exists\r\n"; }
-                                        Body body = system.BodyWithID( bodyId );
-
-                                        if ( body != null )
-                                        {
-                                            if (enableLog) { log += $"[ScanOrganic] Body exists\r\n"; }
-
-                                            if ( body.surfaceSignals == null )
-                                            {
-                                                if (enableLog) { log += $"[ScanOrganic] body.surfacesignals is null, creating new\r\n"; }
-                                                body.surfaceSignals = new SurfaceSignals();
-                                            }
-
-                                            if ( !body.surfaceSignals.bio.list.ContainsKey( genus ) )
-                                            {
-                                                if (enableLog) { log += $"[ScanOrganic] Genus doesn't exist in current list, adding '{genus}'\r\n"; }
-                                                body.surfaceSignals.AddBio( genus );
-                                            }
-
-                                            // TODO:#2212: Save/Update Body data
-                                            EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                                            StarSystemSqLiteRepository.Instance.SaveStarSystem( EDDI.Instance.CurrentStarSystem );
-
-                                            events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, body, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
-                                        }
-                                        else
-                                        {
-                                            Logging.Error( $"[ScanOrganic] Body '{bodyId}' doesn't exist." );
-                                        }
+                                        events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
                                     }
 
-                                    if (enableLog) {
-                                        Logging.Debug( log );
+                                    bool AnalysisIncomplete()
+                                    {
+                                        // `Analyse` scans can be unreasonably delayed since the timer pauses when the scanner is holstered.
+                                        // If the journal event is sufficiently delayed, we'll synthesize our own event as long as we've recorded enough samples.
+                                        if ( EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress )
+                                        {
+                                            var body = EDDI.Instance.CurrentStarSystem?.BodyWithID( bodyId );
+                                            if ( body != null &&
+                                                 body.surfaceSignals.TryGetBio( variant, species, genus, out var bio ) &&
+                                                 bio.scanState < Exobiology.State.SampleAnalyzed )
+                                            {
+                                                return true;
+                                            }
+                                        }
+                                        return false;
                                     }
                                 }
                                 handled = true;
                                 break;
                             case "SellOrganicData":
                                 {
+                                    var marketID = JsonParsing.getLong(data, "MarketID");
                                     decimal totalValue = 0;
                                     decimal totalBonus = 0;
-                                    decimal total = 0;
 
-                                    List<string> bios = new List<string>();
+                                    var bios = new List<Organic>();
                                     data.TryGetValue( "BioData", out object val );
                                     List<object> discovered = (List<object>)val;
-                                    foreach ( Dictionary<string, object> discoveredBio in discovered )
+                                    if ( discovered != null )
                                     {
-                                        string variant = JsonParsing.getString(discoveredBio, "Variant");
-                                        variant = ScanOrganic.NormalizedVariant( variant );
-                                        if ( !string.IsNullOrEmpty( variant ) )
+                                        foreach ( Dictionary<string, object> discoveredBio in discovered )
                                         {
-                                            bios.Add( variant );
+                                            var value = JsonParsing.getLong( discoveredBio, "Value" );
+                                            var bonus = JsonParsing.getLong( discoveredBio, "Bonus" );
+
+                                            var organic = new Organic( GetOrganicVariant( discoveredBio ) ) ?? 
+                                                          new Organic( GetOrganicSpecies(discoveredBio) ) ?? 
+                                                          new Organic( GetOrganicGenus(discoveredBio) )
+                                            {
+                                                valueOverride = value, 
+                                                bonus = bonus
+                                            };
+
+                                            bios.Add( organic );
+
+                                            totalValue += value;
+                                            totalBonus += bonus;
                                         }
-                                        decimal value = JsonParsing.getLong(discoveredBio, "Value");
-                                        decimal bonus = JsonParsing.getLong(discoveredBio, "Bonus");
-
-                                        totalValue += value;
-                                        totalBonus += bonus;
+                                        events.Add( new OrganicDataSoldEvent( timestamp, marketID, bios, totalValue, totalBonus ) { raw = line, fromLoad = fromLogLoad } );
                                     }
-
-                                    total = totalValue + totalBonus;
-
-                                    events.Add( new OrganicDataSoldEvent( timestamp, bios, totalValue, totalBonus, total ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
@@ -5256,7 +5054,7 @@ namespace EddiJournalMonitor
 
                     if (!handled)
                     {
-                        Logging.Info("Unhandled event: " + line);
+                        Logging.Debug("Unhandled event: " + line);
 
                         // Pass a basic event so that responders can react appropriately.
                         // For example, the EDSM responder will handle raw events.
@@ -5266,7 +5064,7 @@ namespace EddiJournalMonitor
             }
             catch (JsonReaderException jre)
             {
-                Logging.Info(jre.Message, jre);
+                Logging.Debug(jre.Message, jre);
                 try
                 {
                     if (line.Contains("\"event\":\"BackpackChange\"") && line.Contains("] \"Removed\""))
@@ -5287,6 +5085,57 @@ namespace EddiJournalMonitor
                 Logging.Error($"Exception whilst parsing journal line {line}", ex);
             }
             return events;
+        }
+
+        private static OrganicVariant GetOrganicVariant ( IDictionary<string, object> data )
+        {
+            // i.e. Green
+            var variantEDName = JsonParsing.getString(data, "Variant");
+            var localizedVariant = JsonParsing.getString(data, "Variant_Localised");
+            var variant = OrganicVariant.FromEDName(variantEDName);
+            if ( variant != null && !string.IsNullOrEmpty( localizedVariant ) )
+            {
+                variant.fallbackLocalizedName = localizedVariant;
+            }
+            if ( variant is null && data.ContainsKey("Variant") )
+            {
+                Logging.Warn("Unable to parse organic variant data.", data );
+            }
+            return variant;
+        }
+
+        private static OrganicSpecies GetOrganicSpecies ( IDictionary<string, object> data )
+        {
+            // i.e. Flabellum
+            var speciesEDName = JsonParsing.getString(data, "Species");
+            var localizedSpecies = JsonParsing.getString(data, "Species_Localised");
+            var species = OrganicSpecies.FromEDName(speciesEDName);
+            if ( species != null && !string.IsNullOrEmpty( localizedSpecies ) )
+            {
+                species.fallbackLocalizedName = localizedSpecies;
+            }
+            if ( species is null && data.ContainsKey("Species"))
+            {
+                Logging.Warn( "Unable to parse organic species data.", data );
+            }
+            return species;
+        }
+
+        private static OrganicGenus GetOrganicGenus ( IDictionary<string, object> data )
+        {
+            // i.e. Frutexa
+            var genusEDName = JsonParsing.getString(data, "Genus");
+            var localizedGenus = JsonParsing.getString(data, "Genus_Localised");
+            var genus = OrganicGenus.FromEDName(genusEDName);
+            if ( genus != null && !string.IsNullOrEmpty( localizedGenus ) )
+            {
+                genus.fallbackLocalizedName = localizedGenus;
+            }
+            if ( genus is null && data.ContainsKey( "Genus" ) )
+            {
+                Logging.Warn( "Unable to parse organic genus data.", data );
+            }
+            return genus;
         }
 
         private static void GetThargoidWarData ( IDictionary<string, object> data, out ThargoidWar thargoidWar )

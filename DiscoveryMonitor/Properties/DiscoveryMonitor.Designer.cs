@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EddiDataDefinitions.Properties {
+namespace EddiDiscoveryMonitor.Properties {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AstronomicalType {
+    internal class DiscoveryMonitor {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AstronomicalType() {
+        internal DiscoveryMonitor() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.AstronomicalType", typeof(AstronomicalType).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDiscoveryMonitor.Properties.DiscoveryMonitor", typeof(DiscoveryMonitor).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace EddiDataDefinitions.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,29 +61,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gas Giants.
+        ///   Looks up a localized string similar to Monitor Elite: Dangerous&apos; discovery events (including exobiology), geology, phenomena, codex entries, etc..
         /// </summary>
-        public static string Gas_Giants {
+        internal static string monitorDescription {
             get {
-                return ResourceManager.GetString("Gas_Giants", resourceCulture);
+                return ResourceManager.GetString("monitorDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stars.
+        ///   Looks up a localized string similar to Discovery Monitor.
         /// </summary>
-        public static string Stars {
+        internal static string monitorName {
             get {
-                return ResourceManager.GetString("Stars", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Terrestrials.
-        /// </summary>
-        public static string Terrestrials {
-            get {
-                return ResourceManager.GetString("Terrestrials", resourceCulture);
+                return ResourceManager.GetString("monitorName", resourceCulture);
             }
         }
     }

@@ -8,7 +8,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
-using System.Threading;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -21,9 +20,6 @@ namespace EddiDataDefinitions
         public string systemname { get; set; }
 
         public long? EDSMID { get; set; } // The ID in EDSM
-
-        /// <summary>List of BaryCentre IDs with list of child BodyIds</summary>
-        public BaryCentre baryCentre { get; set; }
 
         /// <summary>X co-ordinate for this system</summary>
         [PublicAPI]
@@ -138,36 +134,6 @@ namespace EddiDataDefinitions
 
         private static Body PreserveBodyData(Body oldBody, Body updatedBody)
         {
-            string log = "";
-
-            if(Logging.Verbose) {
-                log += $"[Exobiology] ---> START <---\r\n";
-
-                log += $"[Exobiology] Body {oldBody.shortname}:\r\n" +
-                       $"\t Reported old:({oldBody.surfaceSignals.bio.reportedTotal}), new:({updatedBody.surfaceSignals.bio.reportedTotal})\r\n" +
-                       $"\t    Total old:({oldBody.surfaceSignals.bio.numTotal}), new:({updatedBody.surfaceSignals.bio.numTotal})\r\n" +
-                       $"\t Complete old:({oldBody.surfaceSignals.bio.numComplete}), new:({updatedBody.surfaceSignals.bio.numComplete})\r\n" +
-                       $"\tRemaining old:({oldBody.surfaceSignals.bio.numRemaining}), new:({updatedBody.surfaceSignals.bio.numRemaining})\r\n";
-
-                foreach ( Exobiology item in oldBody.surfaceSignals.bio.list.Values )
-                {
-                    log += $"[Exobiology] Body {oldBody.shortname}: oldBody: {item.genus.localizedName}\r\n" +
-                           $"\tsamples = {item.samples}\r\n" +
-                           $"\tcomplete = {item.complete}\r\n" +
-                           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
-                           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
-                }
-
-                foreach ( Exobiology item in updatedBody.surfaceSignals.bio.list.Values )
-                {
-                    log += $"[Exobiology] Body {updatedBody.shortname}: updatedBody: {item.genus.localizedName}\r\n" +
-                           $"\tsamples = {item.samples}\r\n" +
-                           $"\tcomplete = {item.complete}\r\n" +
-                           $"\tcoords[0] = ({item.coords[ 0 ].latitude},{item.coords[ 0 ].longitude})\r\n" +
-                           $"\tcoords[1] = ({item.coords[ 1 ].latitude},{item.coords[ 1 ].longitude})\r\n";
-                }
-            }
-
             if ( ( oldBody.scannedDateTime ?? DateTime.MinValue) > ( updatedBody.scannedDateTime ?? DateTime.MinValue ) )
             {
                 updatedBody.scannedDateTime = oldBody.scannedDateTime;
@@ -223,46 +189,11 @@ namespace EddiDataDefinitions
                 }
             }
 
-            // Third party sites do not have biological data (currently)
-            // Assume that any bio or geo object with a higher numTotal is accurate
-            if ( updatedBody.surfaceSignals != null && oldBody.surfaceSignals != null )
+            // Third party sites do not have surface signal data (currently)
+            if ( oldBody.surfaceSignals.lastUpdated > updatedBody.surfaceSignals.lastUpdated )
             {
-                if ( updatedBody.surfaceSignals.bio.reportedTotal < oldBody.surfaceSignals.bio.reportedTotal )
-                {
-                    updatedBody.surfaceSignals.bio = oldBody.surfaceSignals.bio;
-                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using oldBody for bios\r\n"; }
-                }
-                else
-                {
-                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using updatedBody for bios\r\n"; }
-                }
-
-                if ( updatedBody.surfaceSignals.geo.reportedTotal < oldBody.surfaceSignals.geo.reportedTotal )
-                {
-                    updatedBody.surfaceSignals.geo = oldBody.surfaceSignals.geo;
-                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using oldBody for geos\r\n"; }
-                }
-                else
-                {
-                    if(Logging.Verbose) { log += $"[PreserveBodyData] Using updatedBody for geos\r\n"; }
-                }
+                updatedBody.surfaceSignals = oldBody.surfaceSignals;
             }
-            else
-            {
-                if ( updatedBody.surfaceSignals == null )
-                {
-                    updatedBody.surfaceSignals = new SurfaceSignals();
-                    if(Logging.Verbose) { log += $"[PreserveBodyData] updatedBody is null, aborting\r\n"; }
-                }
-
-                if ( oldBody.surfaceSignals == null )
-                {
-                    if(Logging.Verbose) { log += $"[PreserveBodyData] oldBody is null, aborting\r\n"; }
-                }
-            }
-
-            log += $"[PreserveBodyData] ---> END <---";
-            Logging.Debug( log );
 
             return updatedBody;
         }
@@ -550,7 +481,6 @@ namespace EddiDataDefinitions
             bodies = ImmutableList.Create<Body>();
             factions = new List<Faction>();
             stations = new List<Station>();
-            baryCentre = new BaryCentre();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -597,6 +527,54 @@ namespace EddiDataDefinitions
         {
             if (other is null) { return null; }
             return Functions.StellarDistanceLy(x, y, z, other.x, other.y, other.z);
+        }
+
+        public HashSet<long> GetChildBodyIDs ( long parentBodyID )
+        {
+            // Use a hashset to ensure no duplicate values
+            return bodies
+                .Where(body => body.parents.Any(parent => parent.Values.Contains(parentBodyID)) && body.bodyId != null)
+                .Select(body => (long)body.bodyId)
+                .ToHashSet();
+        }
+
+        public bool TryGetParentStar ( long? childBodyID, out Body star )
+        {
+            star = null;
+            if ( childBodyID is null ) { return false; }
+
+            var body = BodyWithID( childBodyID );
+            if ( body is null ) { return false; }
+
+            foreach ( var parent in body.parents )
+            {
+                foreach ( var key in parent.Keys )
+                {
+                    if ( key == BodyType.Star.edname ) // Parent is a star
+                    {
+                        star = BodyWithID( parent[ key ] );
+                        if ( star != null )
+                        {
+                            return true;
+                        }
+                    }
+
+                    if ( key == BodyType.Barycenter.edname ) // Parent is a barycentre, check barycentre children
+                    {
+                        foreach ( var bodyId in GetChildBodyIDs( parent[ key ] )
+                                     .Where( bodyId => BodyWithID( bodyId )?.bodyType == BodyType.Star ) )
+                        {
+                            star = BodyWithID( bodyId );
+                            if ( star != null )
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

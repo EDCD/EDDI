@@ -1,89 +1,108 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class CodexEntry
     {
-        public Organic organic;
-        public Geology geology;
-        public Astronomical astronomical;
-        public Guardian guardian;
-        public Thargoid thargoid;
+        public long entryId { get; }
 
-        public long entryId;
-        public string edname;
+        public string edname { get; }
 
-        public string subCategory;
-        public string category;
-        public string region;
-        public string system;
+        [PublicAPI]
+        public string entryName { get; }
 
-        public CodexEntry ( long entryId, string edname, string subCategory, string category, string region, string system )
+        [PublicAPI]
+        public string subCategoryName { get; }
+
+        [PublicAPI]
+        public string categoryName { get; }
+
+        [PublicAPI]
+        public string localizedRegion { get; }
+
+        [PublicAPI]
+        public string systemName { get; }
+        
+        public ulong systemAddress { get; }
+
+        [PublicAPI]
+        public Organic organic { get; private set; }
+
+        [PublicAPI]
+        public Geology geology { get; private set; }
+
+        [PublicAPI]
+        public Astronomical astronomical { get; private set; }
+
+        [PublicAPI]
+        public Guardian guardian { get; private set; }
+
+        [PublicAPI]
+        public Thargoid thargoid { get; private set; }
+
+        public CodexEntry ( long entryId, string edname, string subCategoryEDName, string categoryEDName, string localizedRegion, string systemName, ulong systemAddress )
         {
-            organic = new Organic();
-            astronomical = new Astronomical();
-            geology = new Geology();
-            guardian = new Guardian();
-            thargoid = new Thargoid();
-
             this.entryId = entryId;
             this.edname = edname;
-            this.subCategory = subCategory;
-            this.category = category;
-            this.region = region;
-            this.system = system;
-
-
-            if ( category == "Biology" ) {
-                if ( subCategory == "Organic_Structures" )
+            this.entryName = NormalizedName( edname );
+            this.subCategoryName = NormalizedSubCategory( subCategoryEDName );
+            this.categoryName = NormalizedCategory( categoryEDName );
+            this.localizedRegion = localizedRegion;
+            this.systemName = systemName;
+            this.systemAddress = systemAddress;
+            
+            if ( categoryName == "Biology" ) 
+            {
+                if ( subCategoryName == "Organic_Structures" )
                 {
                     organic = Organic.Lookup( entryId, edname );
                 }
-                else if ( subCategory == "Geology_and_Anomalies" ) {
+                else if ( subCategoryName == "Geology_and_Anomalies" ) 
+                {
                     geology = Geology.Lookup( entryId, edname );
                 }
             }
-            else if ( category == "StellarBodies" )
+            else if ( categoryName == "StellarBodies" )
             {
                 astronomical = Astronomical.Lookup( entryId, edname );
             }
-            else if ( category == "Civilisations" ) {
-                if ( subCategory == "Guardian" )
+            else if ( categoryName == "Civilisations" ) 
+            {
+                if ( subCategoryName == "Guardian" )
                 {
                     guardian = Guardian.Lookup( entryId, edname );
                 }
-                else if ( subCategory == "Thargoid" )
+                else if ( subCategoryName == "Thargoid" )
                 {
                     thargoid = Thargoid.Lookup( entryId, edname );
                 }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string NormalizedName ( string rawName )
+        private static string NormalizedName ( string edname )
         {
-            return rawName
-                ?.Replace( "Codex_Ent_", "" )
-                ?.Replace( "$", "" )
-                ?.Replace( "_Name;", "" )
-                ?.Replace( "_name;", "" )
-                ?.Replace( ";", "" );
+            return edname?
+                .Replace( "Codex_Ent_", "" )
+                .Replace( "$", "" )
+                .Replace( "_Name;", "" )
+                .Replace( "_name;", "" )
+                .Replace( ";", "" );
         }
 
-        public static string NormalizedSubCategory ( string rawName )
+        private static string NormalizedSubCategory ( string subcategoryEDName )
         {
-            return rawName
-                ?.Replace( "Codex_SubCategory_", "" )
-                ?.Replace( "$", "" )
-                ?.Replace( ";", "" );
+            return subcategoryEDName?
+                .Replace( "Codex_SubCategory_", "" )
+                .Replace( "$", "" )
+                .Replace( ";", "" );
         }
 
-        public static string NormalizedCategory ( string rawName )
+        private static string NormalizedCategory ( string categoryEDName )
         {
-            return rawName
-                ?.Replace( "Codex_Category_", "" )
-                ?.Replace( "$", "" )
-                ?.Replace( ";", "" );
+            return categoryEDName?
+                .Replace( "Codex_Category_", "" )
+                .Replace( "$", "" )
+                .Replace( ";", "" );
         }
     }
 }

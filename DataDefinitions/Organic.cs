@@ -1,63 +1,81 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
-using System.Threading;
-using Utilities;
+﻿using Utilities;
 
 namespace EddiDataDefinitions
 {
     public class Organic
     {
-        public bool exists;   // This item exists and has been populated with information
+        [PublicAPI]
         public OrganicGenus genus;
+
+        [PublicAPI]
         public OrganicSpecies species;
+
+        [PublicAPI]
         public OrganicVariant variant;
 
+        [PublicAPI ("The credit value for selling organic data for the species, or else the maximum credit value for the genus if the species is not yet known" ) ]
+        public long value => valueOverride ?? 
+                             species?.value ?? 
+                             genus?.maximumValue ?? 
+                             0;
+
+        [PublicAPI( "The minimum distance that you must travel before you can collect a fresh sample of this genus" )]
+        public int minimumDistanceMeters => genus.minimumDistanceMeters;
+
         /// <summary>
-        /// Static constructor, we only need to initialize this data once.
+        /// Overrides the credit values from definitions when an actual value is indicated (as by the `OrganicDataSold` event)
         /// </summary>
-        public Organic ()
+        public long? valueOverride { get; set; }
+
+        [PublicAPI ( "The bonus credit value, as awarded when selling organic data" ) ]
+        public decimal bonus { get; set; }
+
+        /// <summary>
+        /// Populate the organic from variant data. Most preferred.
+        /// </summary>
+        public Organic ( OrganicVariant variant )
         {
-            this.exists = false;
-            this.variant = new OrganicVariant();
-            this.genus = new OrganicGenus();
-            this.species = new OrganicSpecies();
+            if (variant is null) { return; }
+            this.variant = variant;
+            this.species = variant.species;
+            this.genus = variant.species?.genus;
         }
 
-        public Organic (string genus)
+        /// <summary>
+        /// Populate the organic from species data. Supplement using the {SetVariantData} method when variant data is available.
+        /// </summary>
+        public Organic ( OrganicSpecies species )
         {
-            this.genus = OrganicGenus.Lookup( genus );
-            this.variant = new OrganicVariant();
-            this.species = new OrganicSpecies();
-
-            //if ( this.genus != null )
-            //{
-            //    this.exists = true;
-            //}
+            if ( species is null ) { return; }
+            this.species = species;
+            this.genus = species.genus;
         }
 
+        /// <summary>
+        /// Populate the organic from genus data. Least preferred. Supplement using the {SetVariantData} method when variant data is available.
+        /// </summary>
+        public Organic ( OrganicGenus genus )
+        {
+            if ( genus is null ) { return; }
+            this.genus = genus;
+        }
+
+        /// <summary> Get all the biological data, this should be done at the first sample </summary>
         [PublicAPI]
-        /// <summary>Get all the biological data, this should be done at the first sample</summary>
         public static Organic Lookup ( long entryid, string variant )
         {
-            Organic item = new Organic();
-
-            item.variant = OrganicVariant.Lookup( entryid, variant );
-            item.species = OrganicSpecies.Lookup( item.variant.species );
-            item.genus = OrganicGenus.Lookup( item.variant.genus );
-            item.exists = true;
-
-            return item;
+            var organicVariant = OrganicVariant.Lookup( entryid, variant );
+            return new Organic( organicVariant );
         }
 
-        [PublicAPI]
         /// <summary>Get all the biological data, this should be done at the first sample</summary>
-        public void SetData ( string variant )
+        [PublicAPI]
+        public void SetVariantData ( OrganicVariant thisVariant )
         {
-            this.variant = OrganicVariant.LookupByVariant( variant );
-            this.species = OrganicSpecies.Lookup( this.variant.species );
-            this.genus = OrganicGenus.Lookup( this.variant.genus );
-            this.exists = true;
+            if ( variant is null ) { return; }
+            this.variant = thisVariant;
+            this.species = this.variant?.species;
+            this.genus = this.variant?.species?.genus;
         }
     }
 }
