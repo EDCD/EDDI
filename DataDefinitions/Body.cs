@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
     public class Body : INotifyPropertyChanged
     {
         /// <summary>Information for Non-Human Surface Signals (biology/geology)</summary>
-        [PublicAPI]
+        [PublicAPI("Data about surface signals that have been found on the body")]
         public SurfaceSignals surfaceSignals { get; set; } = new SurfaceSignals();
 
         /// <summary>The ID of this body in the star system</summary>

@@ -15,14 +15,11 @@ namespace EddiEvents
         [PublicAPI( "The type of scan which can be Log, Sample or Analyse" )]
         public string scanType { get; private set; }
 
-        [PublicAPI( "An object holding all the data about the organism currently being sampled" )]
+        [PublicAPI( "An object holding all the data about the organism currently being sampled (as an object)" )]
         public Exobiology bio { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
-
-        [PublicAPI( "The number of types of organisms for which samples can be collected on the current body" )]
-        public int? numTotal { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
-
-        [PublicAPI( "The organisms for which samples are incomplete on the current body" )]
-        public List<string> listRemaining { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
+        
+        [PublicAPI( "The other organisms for which samples are incomplete on the current body (as objects)" )]
+        public List<Exobiology> remainingBios { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
 
         // Not intended to be user facing
         

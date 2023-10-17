@@ -19,6 +19,9 @@ namespace EddiDataDefinitions
                              genus?.maximumValue ?? 
                              0;
 
+        [PublicAPI( "The minimum distance that you must travel before you can collect a fresh sample of this genus" )]
+        public int minimumDistanceMeters => genus.minimumDistanceMeters;
+
         /// <summary>
         /// Overrides the credit values from definitions when an actual value is indicated (as by the `OrganicDataSold` event)
         /// </summary>
@@ -35,7 +38,7 @@ namespace EddiDataDefinitions
             if (variant is null) { return; }
             this.variant = variant;
             this.species = variant.species;
-            this.genus = variant.genus;
+            this.genus = variant.species?.genus;
         }
 
         /// <summary>
@@ -69,9 +72,10 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public void SetVariantData ( OrganicVariant thisVariant )
         {
+            if ( variant is null ) { return; }
             this.variant = thisVariant;
-            this.species = this.variant.species;
-            this.genus = this.variant.genus;
+            this.species = this.variant?.species;
+            this.genus = this.variant?.species?.genus;
         }
     }
 }

@@ -13,28 +13,58 @@ namespace EddiDataDefinitions
         /// Create an Exobiology list, which contains additional structures for tracking
         /// </summary>
         [ PublicAPI ("Biological signal data") ] 
-        public HashSet<Exobiology> biosignals { get; set; } = new HashSet<Exobiology>();
+        public HashSet<Exobiology> bioSignals { get; set; } = new HashSet<Exobiology>();
 
-        [PublicAPI ( "The number of biologicals reported by FSS/SAA" )]
+        [PublicAPI ( "The number of biological signals reported by FSS/SAA" )]
         public int reportedBiologicalCount { get; set; }
 
-        public HashSet<Exobiology> biosignalsremaining () =>
-            biosignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
-
-
         [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
-        public bool predicted => biosignals.Any( s => s.scanState == Exobiology.State.Predicted );
+        public bool hasPredictedBios => bioSignals.Any( s => s.scanState == Exobiology.State.Predicted );
 
-        public bool TryGetBio ( string genusEDName, out Exobiology bio )
+        [PublicAPI( "The biological signals that have not been fully scanned" )]
+        public HashSet<Exobiology> bioSignalsRemaining =>
+            bioSignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
+
+        [PublicAPI( "The maximum expected credit value for biological signals on this body" )]
+        public long exobiologyValue => bioSignals.Select(s => s.value).Sum();
+
+        [PublicAPI( "The maximum expected credit value for biological signals that have not been fully scanned on this body" )]
+        public long remainingExobiologyValue => bioSignalsRemaining.Select( s => s.value ).Sum();
+
+        public bool TryGetBio ( Organic organic, out Exobiology bio )
         {
-            bio = biosignals.FirstOrDefault( b => b.genus.edname == genusEDName );
+            bio = bioSignals.FirstOrDefault( b => b.variant == organic.variant ) ?? 
+                  bioSignals.FirstOrDefault( b => b.species == organic.species ) ?? 
+                  bioSignals.FirstOrDefault( b => b.genus == organic.genus );
             return bio != null;
         }
 
-        public bool TryGetBio ( OrganicGenus genus, out Exobiology bio )
+        public bool TryGetBio ( OrganicVariant variant, OrganicSpecies species, OrganicGenus genus, out Exobiology bio )
         {
-            bio = biosignals.FirstOrDefault( b => b.genus.edname == genus.edname );
+            bio = bioSignals.FirstOrDefault( b => b.variant == variant ) ?? 
+                  bioSignals.FirstOrDefault( b => b.species == species ) ?? 
+                  bioSignals.FirstOrDefault( b => b.genus == genus );
             return bio != null;
+        }
+
+        /// <summary>
+        /// Add a biological object
+        /// </summary>
+        /// <param name="variant">The Organic Variant of the biological object</param>
+        /// <param name="species">The Organic Species of the biological object</param>
+        /// <param name="genus">The Organic Genus of the biological object</param>
+        /// <param name="prediction">true if this is a prediction, false if confirmed</param>
+        /// <returns>The Exobiological object which was added to the body's surface signals</returns>
+        public Exobiology AddBio ( OrganicVariant variant, OrganicSpecies species, OrganicGenus genus, bool prediction = false )
+        {
+            var bio = variant != null ? new Exobiology( variant, prediction ) :
+                species != null ? new Exobiology( species, prediction ) :
+                genus != null ? new Exobiology( genus, prediction ) : null;
+            if ( bio != null )
+            {
+                bioSignals.Add( bio );
+            }
+            return bio;
         }
 
         /// <summary>
@@ -46,7 +76,7 @@ namespace EddiDataDefinitions
         public Exobiology AddBioFromGenus ( OrganicGenus genus, bool prediction = false )
         {
             var bio = new Exobiology( genus, prediction );
-            biosignals.Add( bio );
+            bioSignals.Add( bio );
             return bio;
         }
 
@@ -54,23 +84,37 @@ namespace EddiDataDefinitions
 
         #region Geology Signals
 
-        [PublicAPI( "Geological signal data" )]
-        public HashSet<Geology> geosignals { get; set; } = new HashSet<Geology>();
-
-        // The number of geologicals reported by FSS/SAA
+        [PublicAPI( "The number of geological signals reported by FSS/SAA" )]
         public int reportedGeologicalCount { get; set; }
 
-        public void AddGeo ( string edname )
-        {
-            geosignals.Add( Geology.FromEDName( edname ) );
-        }
+        #endregion
 
-        public bool TryGetGeo ( string edname, out Geology geo )
-        {
-            geo = geosignals.FirstOrDefault( g => g.edname == edname );
-            return geo != null;
-        }
-        
+        #region Guardian Signals
+
+        [PublicAPI( "The number of Guardian signals reported by FSS/SAA" )]
+        public int reportedGuardianCount { get; set; }
+
+        #endregion
+
+        #region Human Signals
+
+        [PublicAPI( "The number of Human signals reported by SAA" )]
+        public int reportedHumanCount { get; set; }
+
+        #endregion
+
+        #region Thargoid Signals
+
+        [PublicAPI( "The number of Thargoid signals reported by SAA" )]
+        public int reportedThargoidCount { get; set; }
+
+        #endregion
+
+        #region Other Signals
+
+        [PublicAPI( "The number of other signals reported by SAA" )]
+        public int reportedOtherCount { get; set; }
+
         #endregion
 
         public DateTime lastUpdated { get; set; }

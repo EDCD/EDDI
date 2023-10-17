@@ -9,7 +9,7 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.OrganicGenus.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = ( edname ) => new OrganicGenus( edname );
+            missingEDNameHandler = ( edname ) => new OrganicGenus( NormalizeGenus( edname ) );
         }
 
         // Terrestrial Genuses
@@ -68,7 +68,6 @@ namespace EddiDataDefinitions
         public static readonly OrganicGenus CalcitePlates = new OrganicGenus( "CalcitePlates", 0 );
         public static readonly OrganicGenus ThargoidBarnacle = new OrganicGenus( "ThargoidBarnacle", 0 );
 
-        [PublicAPI ("The minimum distance that you must travel before you can collect a fresh sample of this genus")]
         public int minimumDistanceMeters { get; private set; }
 
         [PublicAPI( "The maximum credit value for this genus" )]
@@ -84,7 +83,7 @@ namespace EddiDataDefinitions
         public OrganicGenus () : this( "" )
         { }
 
-        private OrganicGenus ( string edname, int minimumDistanceMeters = 0 ) : base( edname, NormalizeGenus( edname ) )
+        private OrganicGenus ( string edname, int minimumDistanceMeters = 0 ) : base( edname, edname )
         {
             this.minimumDistanceMeters = minimumDistanceMeters;
         }

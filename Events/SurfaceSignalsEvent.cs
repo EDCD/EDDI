@@ -1,7 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -22,70 +21,23 @@ namespace EddiEvents
         [PublicAPI("A list of signals (as objects)")]
         public List<SignalAmount> surfacesignals { get; private set; }
 
-        [PublicAPI( "A list of the biologicals present on the body after an SAA (map) of body." )]
-        public List<string> biosignals => bioSignals?.Select(b => b.genus.localizedName).ToList() ?? new List<string>();
-
-        [PublicAPI( "The body that the surface signals are on" )]
-        public Body body { get; private set; }
+        [PublicAPI( "A list of the organisms present on the body after an SAA (map) of body (as objects)." )]
+        public HashSet<Exobiology> biosignals { get; set; }
 
         // Not intended to be user facing
 
         public ulong? systemAddress { get; private set; }
         
         public long bodyId { get; private set; }
-
-        public HashSet<Exobiology> bioSignals { get; set; }
-
-        public SurfaceSignalsEvent ( DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals, HashSet<Exobiology> bioSignals = null ) : base( timestamp, NAME )
+        
+        public SurfaceSignalsEvent ( DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals, HashSet<Exobiology> biosignals = null ) : base( timestamp, NAME )
         {
             this.detectionType = detectionType;
             this.systemAddress = systemAddress;
             this.bodyname = bodyName;
             this.bodyId = bodyId;
-            this.surfacesignals = surfaceSignals;
-            this.bioSignals = bioSignals;
-
-            ////this.biosignals = new List<string>();
-
-            // TODO:#2212........[If type is FSS, then let DiscoveryMonitor save number of bios present, then predict bios after a Scan event.]
-            
-            // TODO:#2212........[If type is SAA, then let DiscoveryMonitor prune predictions (real bios are reported here)]
-
-            //if ( detectionType == "FSS" )
-            //    {
-            //    //    Logging.Info( $">>> - FSS" );
-            //    //    if ( body != null )
-            //    //    {
-            //    //        Logging.Info( $">>> - Body Exists" );
-            //    //        foreach ( SignalAmount signal in surfaceSignals )
-            //    //        {
-            //    //            if ( signal.signalSource.edname == "SAA_SignalType_Biological" && signal.amount > 0 )
-            //    //            {
-            //    //                Logging.Info( $">>> - GetBios()" );
-            //    //                this.biosignals = Exobiology.PredictBios( body );
-            //    //            }
-            //    //        }
-            //    //    }
-            //    }
-            //    else if (detectionType == "SAA")
-            //    {
-            //    //    Logging.Info( $">>> - SAA" );
-            //    //    this.biosignals = biosignals;
-            //    //    if ( body != null )
-            //    //    {
-            //    //        Logging.Info( $">>> - GetBios()" );
-            //    //        this.biosignals = body.surfaceSignals.GetBios();
-            //    //        foreach ( string signal in this.biosignals )
-            //    //        {
-            //    //            Logging.Info( $">>>   - {signal}" );
-            //    //        }
-            //    //    }
-            //    //    else
-            //    //    {
-            //    //        Logging.Info( $">>> - New List" );
-            //    //        this.biosignals = new List<string>();
-            //    //    }
-            //    }
+            this.surfacesignals = surfaceSignals ?? new List<SignalAmount>();
+            this.biosignals = biosignals ?? new HashSet<Exobiology>();
         }
     }
 }
