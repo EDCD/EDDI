@@ -13,7 +13,7 @@ namespace EddiDataDefinitions
             SampleStarted,    // Logged (1st sample collected)
             SampleInProgress, // Sampled (2nd sample collected)
             SampleComplete,   // Sampled (3rd sample collected)
-            SampleAnalyzed    // Analyzed - this comes shortly after the final sample is collected
+            SampleAnalysed    // Analysed - this comes shortly after the final sample is collected
         }
 
         public State scanState { get; set; }
