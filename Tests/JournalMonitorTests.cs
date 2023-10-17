@@ -1966,12 +1966,12 @@ namespace UnitTests
             Assert.AreEqual(expectedBodyName, @event.bodyname);
             Assert.AreEqual(expectedBodyID, @event.bodyId);
             Assert.AreEqual(expectedSystemAddress, @event.systemAddress);
-            Assert.AreEqual(expectedBioSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Biological")?.amount ?? 0);
-            Assert.AreEqual(expectedGeoSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Geological")?.amount ?? 0);
-            Assert.AreEqual(expectedGuardianSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Guardian")?.amount ?? 0);
-            Assert.AreEqual(expectedHumanSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Human")?.amount ?? 0);
-            Assert.AreEqual(expectedThargoidSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Thargoid")?.amount ?? 0);
-            Assert.AreEqual(expectedOtherSignals, @event.surfacesignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Other")?.amount ?? 0);
+            Assert.AreEqual(expectedBioSignals, @event.surfaceSignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Biological")?.amount ?? 0);
+            Assert.AreEqual(expectedGeoSignals, @event.surfaceSignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Geological")?.amount ?? 0);
+            Assert.AreEqual(expectedGuardianSignals, @event.surfaceSignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Guardian")?.amount ?? 0);
+            Assert.AreEqual(expectedHumanSignals, @event.surfaceSignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Human")?.amount ?? 0);
+            Assert.AreEqual(expectedThargoidSignals, @event.surfaceSignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Thargoid")?.amount ?? 0);
+            Assert.AreEqual(expectedOtherSignals, @event.surfaceSignals?.FirstOrDefault(s => s.signalSource.edname == "SAA_SignalType_Other")?.amount ?? 0);
         }
 
         [TestMethod]

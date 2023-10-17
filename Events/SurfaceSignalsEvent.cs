@@ -19,10 +19,10 @@ namespace EddiEvents
         public string bodyname { get; private set; }
 
         [PublicAPI("A list of signals (as objects)")]
-        public List<SignalAmount> surfacesignals { get; private set; }
+        public List<SignalAmount> surfaceSignals { get; private set; }
 
         [PublicAPI( "A list of the organisms present on the body after an SAA (map) of body (as objects)." )]
-        public HashSet<Exobiology> biosignals { get; set; }
+        public HashSet<Exobiology> bioSignals { get; set; }
 
         // Not intended to be user facing
 
@@ -30,14 +30,14 @@ namespace EddiEvents
         
         public long bodyId { get; private set; }
         
-        public SurfaceSignalsEvent ( DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals, HashSet<Exobiology> biosignals = null ) : base( timestamp, NAME )
+        public SurfaceSignalsEvent ( DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals, HashSet<Exobiology> bioSignals = null ) : base( timestamp, NAME )
         {
             this.detectionType = detectionType;
             this.systemAddress = systemAddress;
             this.bodyname = bodyName;
             this.bodyId = bodyId;
-            this.surfacesignals = surfaceSignals ?? new List<SignalAmount>();
-            this.biosignals = biosignals ?? new HashSet<Exobiology>();
+            this.surfaceSignals = surfaceSignals ?? new List<SignalAmount>();
+            this.bioSignals = bioSignals ?? new HashSet<Exobiology>();
         }
     }
 }

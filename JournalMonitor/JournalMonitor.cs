@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+﻿﻿using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -4948,7 +4948,10 @@ namespace EddiJournalMonitor
                                         // If the journal event is sufficiently delayed, we'll synthesize our own event as long as we've recorded enough samples.
                                         if ( EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress )
                                         {
-                                            if ( bio.scanState < Exobiology.State.SampleAnalysed )
+                                            var body = EDDI.Instance.CurrentStarSystem?.BodyWithID( bodyId );
+                                            if ( body != null &&
+                                                 body.surfaceSignals.TryGetBio( variant, species, genus, out var bio ) &&
+                                                 bio.scanState < Exobiology.State.SampleAnalysed )
                                             {
                                                 return true;
                                             }

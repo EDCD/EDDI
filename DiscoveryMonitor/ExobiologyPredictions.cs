@@ -1,4 +1,4 @@
-﻿using EddiConfigService.Configurations;
+﻿﻿using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using JetBrains.Annotations;
 using System.Collections.Generic;
@@ -115,17 +115,7 @@ namespace EddiDiscoveryMonitor
         /// <returns></returns>
         private bool TryCheckTemperature(decimal? minK, decimal? maxK, ref string log )
         {
-            String log = "";
-            bool enableLog = false;
-
-            if ( enableLog )
-            { log += $"[Predictions] Body '{body.bodyname}'\r\n"; }
-
-            // Create temporary list of ALL species possible
-            var listPredicted = new List<OrganicSpecies>();
-
-            // Iterate though species
-            foreach ( var species in OrganicSpecies.AllOfThem )
+            if ( body.temperature < minK )
             {
                 log += $"REJECT. Temp: {body.temperature} K < {minK} K.";
                 return false;

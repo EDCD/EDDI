@@ -16,12 +16,12 @@ namespace EddiDataDefinitions
         public HashSet<Exobiology> bioSignals { get; set; } = new HashSet<Exobiology>();
 
         [PublicAPI( "The genus list of remaining biologicals" )]
-        public List<string> biosignalsRemainingGenuslist {
+        public List<string> bioSignalsRemainingGenuslist {
             get
             {
                 List<string> _list = new List<string>();
 
-                HashSet<Exobiology> incomplete = biosignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
+                HashSet<Exobiology> incomplete = bioSignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
 
                 foreach(Exobiology t_bio in incomplete) {
                     _list.Add(t_bio.genus.localizedName);
@@ -37,14 +37,17 @@ namespace EddiDataDefinitions
         [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
         public bool hasPredictedBios => bioSignals.Any( s => s.scanState == Exobiology.State.Predicted );
 
+        public HashSet<Exobiology> bioSignalsRemaining =>
+            bioSignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
+
         [PublicAPI( "The number of remaining bio signals on the body" )]
-        public int biosignalsRemainingCount => biosignalsremaining().Count();
+        public int biosignalsRemainingCount => bioSignalsRemaining.Count();
 
         [PublicAPI( "The number of complete bio signals on the body" )]
-        public int biosignalsCompleteCount => biosignals.Where( e => e.scanState >= Exobiology.State.SampleComplete ).Count();
+        public int biosignalsCompleteCount => bioSignals.Where( e => e.scanState >= Exobiology.State.SampleComplete ).Count();
 
         [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
-        public bool predicted => biosignals.Any( s => s.scanState == Exobiology.State.Predicted );
+        public bool predicted => bioSignals.Any( s => s.scanState == Exobiology.State.Predicted );
 
         [PublicAPI( "The genus list of biologicals" )]
         public List<string> genuslist {
@@ -52,7 +55,7 @@ namespace EddiDataDefinitions
             {
             List<string> _list = new List<string>();
 
-            foreach(Exobiology t_bio in biosignals) {
+            foreach(Exobiology t_bio in bioSignals) {
                 _list.Add(t_bio.genus.localizedName);
             }
 
@@ -60,7 +63,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public bool TryGetBio ( string genusEDName, out Exobiology bio )
+        public bool TryGetBio ( Organic organic, out Exobiology bio )
         {
             bio = bioSignals.FirstOrDefault( b => b.variant == organic.variant ) ?? 
                   bioSignals.FirstOrDefault( b => b.species == organic.species ) ?? 
@@ -132,8 +135,7 @@ namespace EddiDataDefinitions
 
         #endregion
 
-        [PublicAPI ( "The number of geologicals reported by FSS/SAA" )]
-        public int reportedGeologicalCount { get; set; }
+        #region Thargoid Signals
 
         [PublicAPI( "The number of Thargoid signals reported by SAA" )]
         public int reportedThargoidCount { get; set; }
