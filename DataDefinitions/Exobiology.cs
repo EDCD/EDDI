@@ -70,10 +70,11 @@ namespace EddiDataDefinitions
             else if ( scanType == "Sample" && samples == 2 )
             {
                 scanState = State.SampleComplete;
+                sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );
             }
             else if ( scanType == "Analyse" )
             {
-                scanState = State.SampleAnalyzed;
+                scanState = State.SampleAnalysed;
             } 
             
             nearPriorSample = true;

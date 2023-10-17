@@ -4948,10 +4948,7 @@ namespace EddiJournalMonitor
                                         // If the journal event is sufficiently delayed, we'll synthesize our own event as long as we've recorded enough samples.
                                         if ( EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress )
                                         {
-                                            var body = EDDI.Instance.CurrentStarSystem?.BodyWithID( bodyId );
-                                            if ( body != null &&
-                                                 body.surfaceSignals.TryGetBio( variant, species, genus, out var bio ) &&
-                                                 bio.scanState < Exobiology.State.SampleAnalyzed )
+                                            if ( bio.scanState < Exobiology.State.SampleAnalysed )
                                             {
                                                 return true;
                                             }
