@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using Utilities;
 
@@ -15,21 +17,8 @@ namespace EddiDataDefinitions
         [ PublicAPI ("Biological signal data") ] 
         public HashSet<Exobiology> bioSignals { get; set; } = new HashSet<Exobiology>();
 
-        [PublicAPI( "The genus list of remaining biologicals" )]
-        public List<string> bioSignalsRemainingGenuslist {
-            get
-            {
-                List<string> _list = new List<string>();
-
-                HashSet<Exobiology> incomplete = bioSignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
-
-                foreach(Exobiology t_bio in incomplete) {
-                    _list.Add(t_bio.genus.localizedName);
-                }
-
-                return _list;
-            }
-        }
+        [PublicAPI( "The maximum expected credit value for biological signals on this body" )]
+        public long exobiologyValue => bioSignals.Select(s => s.value).Sum();
 
         [PublicAPI ( "The number of biologicals reported by FSS/SAA" )]
         public int reportedBiologicalCount { get; set; }
@@ -40,26 +29,57 @@ namespace EddiDataDefinitions
         public HashSet<Exobiology> bioSignalsRemaining =>
             bioSignals.Where( e => e.scanState < Exobiology.State.SampleComplete ).ToHashSet();
 
-        [PublicAPI( "The number of remaining bio signals on the body" )]
-        public int biosignalsRemainingCount => bioSignalsRemaining.Count();
-
-        [PublicAPI( "The number of complete bio signals on the body" )]
-        public int biosignalsCompleteCount => bioSignals.Where( e => e.scanState >= Exobiology.State.SampleComplete ).Count();
-
         [ PublicAPI( "True if the current biologicals are predicted (but not confirmed) " ) ]
         public bool predicted => bioSignals.Any( s => s.scanState == Exobiology.State.Predicted );
 
-        [PublicAPI( "The genus list of biologicals" )]
-        public List<string> genuslist {
-            get
-            {
-            List<string> _list = new List<string>();
+        [PublicAPI( "The maximum expected credit value for biological signals that have not been fully scanned on this body" )]
+        public long remainingExobiologyValue => bioSignalsRemaining.Select( s => s.value ).Sum();
 
-            foreach(Exobiology t_bio in bioSignals) {
-                _list.Add(t_bio.genus.localizedName);
+        [PublicAPI( "The predicted total minimum value limited to the number of reported biologicals." )]
+        public long predictedMinimumTotalValue {
+            get {
+                long value = 0;
+
+                if(reportedBiologicalCount==1) {
+                    value = bioSignals.First().value;
+                }
+                else if(reportedBiologicalCount>1) {
+                    SortedSet<long> values = new SortedSet<long>();
+                    foreach(Exobiology t_bio in bioSignals) {
+                        values.Add( t_bio.predictedMinimumValue );
+                    }
+
+                    int iMin = Math.Min(values.Count(), reportedBiologicalCount);
+                    for(int i=0; i<iMin; i++) {
+                        value += values.ElementAt(i);
+                    }
+                }
+
+                return value;
             }
+        }
 
-            return _list;
+        [PublicAPI( "The predicted total maximum value limited to the number of reported biologicals." )]
+        public long predictedMaximumTotalValue {
+            get {
+                long value = 0;
+
+                if(reportedBiologicalCount==1) {
+                    value = bioSignals.First().value;
+                }
+                else if(reportedBiologicalCount>1) {
+                    SortedSet<long> values = new SortedSet<long>();
+                    foreach(Exobiology t_bio in bioSignals) {
+                        values.Add( t_bio.predictedMaximumValue );
+                    }
+
+                    int iMax = Math.Max(0, values.Count()-reportedBiologicalCount);
+                    for( int i = values.Count()-1; i>iMax; i-- ) {
+                        value += values.ElementAt(i);
+                    }
+                }
+
+                return value;
             }
         }
 
@@ -111,6 +131,13 @@ namespace EddiDataDefinitions
             bioSignals.Add( bio );
             return bio;
         }
+
+        //public Exobiology AddBioFromPrediction ( OrganicGenus genus, long value, bool prediction = false )
+        //{
+        //    var bio = new Exobiology( genus, value, prediction );
+        //    bioSignals.Add( bio );
+        //    return bio;
+        //}
 
         #endregion
 

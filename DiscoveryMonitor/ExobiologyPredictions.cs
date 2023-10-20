@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Utilities;
+using System.ServiceModel.Security;
 
 namespace EddiDiscoveryMonitor
 {
@@ -51,12 +52,12 @@ namespace EddiDiscoveryMonitor
                     continue;
                 }
 
-                if ( TryCheckGravity( species.maxG, ref log ) && 
+                if ( TryCheckGravity( 0, species.maxG, ref log ) && 
                      TryCheckTemperature( species.minK, species.maxK, ref log ) && 
                      TryCheckPlanetClass( species.planetClass, ref log ) && 
                      TryCheckAtmosphere( species.atmosphereClass, ref log ) && 
                      TryCheckVolcanism( species.volcanism, ref log ) && 
-                     TryCheckStar( species.starClass, ref log ) && 
+                     TryCheckPrimaryStar( species.starClass, ref log ) && 
                      TryCheckSpecialSpecies( species, ref log ) )
                 {
                     log += "OK";
@@ -66,8 +67,135 @@ namespace EddiDiscoveryMonitor
                 Logging.Debug( log );
             }
 
+            // Create a distinct genus list
+            List<OrganicGenus> listGenus = predictedSpecies.Select(s => s.genus).Distinct().ToList();
+
+            // Iterate over all predicted species, set the min/max values for the genus list from all predicted species
+            for ( int i = 0; i < listGenus.Count(); i++ )
+            {
+                foreach ( var species in predictedSpecies )
+                {
+                    if ( listGenus[ i ].edname == species.genus.edname )
+                    {
+                        // Set initial value
+                        if ( listGenus[ i ].predictedMinimumValue == 0 )
+                        {
+                            listGenus[ i ].predictedMinimumValue = species.value;
+                        }
+
+                        if ( listGenus[ i ].predictedMaximumValue == 0 )
+                        {
+                            listGenus[ i ].predictedMaximumValue = species.value;
+                        }
+
+                        // If new minimum detected, overwrite old
+                        if ( species.value < listGenus[ i ].predictedMinimumValue )
+                        {
+                            listGenus[ i ].predictedMinimumValue = species.value;
+                        }
+
+                        // If new maximum detected, overwrite old
+                        if ( species.value > listGenus[ i ].predictedMaximumValue )
+                        {
+                            listGenus[ i ].predictedMaximumValue = species.value;
+                        }
+                    }
+                }
+            }
+
             // Return a list of only the unique genus' found
-            return predictedSpecies.Select(s => s.genus).Distinct().ToHashSet();
+            //return predictedSpecies.Select(s => s.genus).Distinct().ToHashSet();
+            return listGenus.ToHashSet();
+        }
+
+        /// <summary>
+        /// This currently works and provides fairly accurate predictions
+        /// </summary>
+        public HashSet<OrganicGenus> PredictByVariant ()
+        {
+            Logging.Debug( $"Generating predictions by variant for {body.bodyname} in {_currentSystem.systemname}.");
+
+            // Create temporary list of ALL variant possible
+            var predictedVariants = new List<OrganicVariant>();
+
+            // Iterate though variant
+            foreach ( var variant in OrganicVariant.AllOfThem )
+            {
+                var log = $"Checking variant {variant.edname} (genus: {variant.genus}): ";
+
+                if ( !variant.isPredictable )
+                {
+                    log += "SKIP. No known criteria.";
+                    Logging.Debug( log );
+                    continue;
+                }
+
+                if ( !TryCheckConfiguration( variant.genus, ref log ) )
+                {
+                    Logging.Debug( log );
+                    continue;
+                }
+
+                if ( TryCheckGravity( variant.minG, variant.maxG, ref log ) && 
+                     TryCheckTemperature( variant.minK, variant.maxK, ref log ) && 
+                     TryCheckPressure( variant.minP, variant.maxP, ref log ) && 
+                     TryCheckPlanetClass( variant.planetClass, ref log ) && 
+                     TryCheckAtmosphere( variant.atmosphereClass, ref log ) && 
+                     TryCheckVolcanismAdvanced( variant.volcanism, ref log ) && 
+                     TryCheckPrimaryStar( variant.primaryStarClass, ref log ) && 
+                     TryCheckLocalStar( variant.localStarClass, ref log ) && 
+                     TryCheckSpecialVariants( variant, ref log ) )
+                {
+                    log += "OK";
+                    predictedVariants.Add( variant );
+                }
+
+                Logging.Debug( log );
+            }
+
+            // Create a distinct genus list
+            List<OrganicGenus> listGenus = predictedVariants.Select(s => s.genus).Distinct().ToList();
+
+            // Iterate over all predicted variants, set the min/max values for the genus list
+            for ( int i = 0; i < listGenus.Count(); i++ )
+            {
+                foreach ( var variant in predictedVariants )
+                {
+                    if ( listGenus[ i ].edname == variant.genus.edname )
+                    {
+                        var species = OrganicSpecies.FromEDName( variant.species.edname );
+                        if(species != null) {
+
+                            if ( listGenus[ i ].predictedMinimumValue == 0 )
+                            {
+                                listGenus[ i ].predictedMinimumValue = species.value;
+                            
+                            }
+
+                            if ( listGenus[ i ].predictedMaximumValue == 0 )
+                            {
+                                listGenus[ i ].predictedMaximumValue = species.value;
+                            }
+
+                            // If new minimum detected, overwrite old
+                            if ( species.value < listGenus[ i ].predictedMinimumValue )
+                            {
+                                listGenus[ i ].predictedMinimumValue = species.value;
+                            }
+
+                            // If new maximum detected, overwrite old
+                            if ( species.value > listGenus[ i ].predictedMaximumValue )
+                            {
+                                listGenus[ i ].predictedMaximumValue = species.value;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Return a list of only the unique genus' found
+            //return predictedSpecies.Select(s => s.genus).Distinct().ToHashSet();
+            return listGenus.ToHashSet();
         }
 
         private bool TryCheckConfiguration ( OrganicGenus genus, ref string log )
@@ -91,10 +219,17 @@ namespace EddiDiscoveryMonitor
             return true;
         }
 
-        private bool TryCheckGravity ( decimal? maxG, ref string log )
+        private bool TryCheckGravity ( decimal? minG, decimal? maxG, ref string log )
         {
-            // Check if body meets max gravity requirements
-            // maxG: Maximum gravity
+            if ( minG > 0 )
+            {
+                if ( body.gravity < minG )
+                {
+                    log += $"REJECT. Gravity: {body.gravity} < {minG}";
+                    return false;
+                }
+            }
+
             if ( maxG > 0 )
             {
                 if ( body.gravity > maxG )
@@ -124,6 +259,23 @@ namespace EddiDiscoveryMonitor
             if ( body.temperature > maxK )
             {
                 log += $"REJECT. Temp: {body.temperature} K > {maxK} K.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryCheckPressure(decimal? minP, decimal? maxP, ref string log )
+        {
+            if ( body.pressure < minP )
+            {
+                log += $"REJECT. Pressure: {body.pressure} atm. < {minP} atm.";
+                return false;
+            }
+
+            if ( body.pressure > maxP )
+            {
+                log += $"REJECT. Pressure: {body.pressure} atm. > {maxP} atm.";
                 return false;
             }
 
@@ -187,11 +339,63 @@ namespace EddiDiscoveryMonitor
             return true;
         }
 
-        private bool TryCheckStar ( ICollection<string> checkStarClasses, ref string log )
+        // Check the amount, composition and type of volcanism
+        //private bool TryCheckVolcanismAdvanced(IList<Volcanism> checkVolcanismCompositions, ref string log )
+        //{
+        //    // Check if body has appropriate volcanism
+        //    if ( checkVolcanismCompositions.Count > 0 )
+        //    {
+        //        if ( checkVolcanismCompositions.Any( c => ( ( c == null ) || c == body.volcanism ) ) )
+        //        {
+        //            return true;
+        //        }
+        //        if(body.volcanism is null) {
+        //            log += $"REJECT. Volcanism composition: 'None' not in [{String.Join("; ", checkVolcanismCompositions.Select(s => s.ToString()).ToList().ToArray()  )}].";
+        //        }
+        //        else {
+        //            log += $"REJECT. Volcanism composition: '{body.volcanism?.ToString()}' not in [{String.Join("; ", checkVolcanismCompositions.Select(s => s.ToString()).ToList().ToArray()  )}].";
+        //        }
+        //        return false;
+        //    }
+
+        //    return true;
+        //}
+        private bool TryCheckVolcanismAdvanced(IList<string> checkVolcanismCompositions, ref string log )
+        {
+            // Check if body has appropriate volcanism
+            if ( checkVolcanismCompositions.Count > 0 )
+            {
+                foreach(var composition in checkVolcanismCompositions) {
+                    Volcanism volcanism = Volcanism.FromName(composition);
+
+                    if( (volcanism is null && body.volcanism is null) || volcanism == body.volcanism) {
+                        return true;
+                    }
+                }
+
+                if(body.volcanism is null) {
+                    log += $"REJECT. Volcanism composition: 'None' not in [{String.Join("; ", checkVolcanismCompositions)}].";
+                }
+                else {
+                    log += $"REJECT. Volcanism composition: '{body.volcanism?.ToString()}' not in [{String.Join("; ", checkVolcanismCompositions)}].";
+                }
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryCheckPrimaryStar ( ICollection<string> checkStarClasses, ref string log )
         {
             // Check if body has appropriate parent star
             if ( checkStarClasses.Count > 0 )
             {
+                //_currentSystem.bodies.Where(x=>x.type=
+                List<Body> systemBodies = _currentSystem.bodies.ToList();
+                
+                
+                //BodyWithID
+
                 if ( checkStarClasses.Any(s => s == parentStar.stellarclass) )
                 {
                     return true;
@@ -199,6 +403,30 @@ namespace EddiDiscoveryMonitor
                 log += $"REJECT. Parent star {parentStar?.stellarclass} not in {string.Join( ",", checkStarClasses )}.";
                 return false;
             }
+
+            return true;
+        }
+
+        private bool TryCheckLocalStar ( ICollection<string> checkStarClasses, ref string log )
+        {
+            // TODO:2212_bt - Possible future implementation
+
+            //// Check if body has appropriate parent star
+            //if ( checkStarClasses.Count > 0 )
+            //{
+            //    //_currentSystem.bodies.Where(x=>x.type=
+            //    List<Body> systemBodies = _currentSystem.bodies.ToList();
+                
+                
+            //    //BodyWithID
+
+            //    if ( checkStarClasses.Any(s => s == parentStar.stellarclass) )
+            //    {
+            //        return true;
+            //    }
+            //    log += $"REJECT. Parent star {parentStar?.stellarclass} not in {string.Join( ",", checkStarClasses )}.";
+            //    return false;
+            //}
 
             return true;
         }
@@ -226,6 +454,40 @@ namespace EddiDiscoveryMonitor
             //  - Seems to always have 3 geologicals
             //  - Should be within 150Ly from a nebula
             if ( species.genus == OrganicGenus.Cone )
+            {
+                if ( body.surfaceSignals.reportedGeologicalCount < 3 )
+                {
+                    log += $"REJECT. Body geological count: {body.surfaceSignals.reportedGeologicalCount} < 3.";
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool TryCheckSpecialVariants ( OrganicVariant variant, ref string log )
+        {
+            // TODO: Implement special case predictions where possible
+
+            // Brain Trees
+            //  - Near system with guardian structures
+            if ( variant.genus == OrganicGenus.Brancae )
+            { }
+
+            // Electricae radialem:
+            //  - Near nebula (how close is near?)
+            if ( variant.genus == OrganicGenus.Electricae )
+            { }
+
+            // Crystalline Shards:
+            //  - Must be >12000 Ls from nearest star.
+            if ( variant.genus == OrganicGenus.GroundStructIce )
+            { }
+
+            // Bark Mounds
+            //  - Seems to always have 3 geologicals
+            //  - Should be within 150Ly from a nebula
+            if ( variant.genus == OrganicGenus.Cone )
             {
                 if ( body.surfaceSignals.reportedGeologicalCount < 3 )
                 {

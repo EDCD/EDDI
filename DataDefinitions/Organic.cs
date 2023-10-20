@@ -13,11 +13,21 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public OrganicVariant variant;
 
-        [PublicAPI ("The credit value for selling organic data for the species, or else the maximum credit value for the genus if the species is not yet known" ) ]
+        [PublicAPI ("The credit value for selling organic data for the species, or the predicted value, or else the minimum credit value for the genus if the species is not yet known" ) ]
         public long value => valueOverride ?? 
                              species?.value ?? 
-                             genus?.maximumValue ?? 
+                             genus?.minimumValue ?? 
                              0;
+
+        [PublicAPI ("The minimum value from all predictions of this genus.")]
+        public long predictedMinimumValue => valueOverride ??
+                                             genus?.predictedMinimumValue ??
+                                             0;
+
+        [PublicAPI ("The maximum value from all predictions of this genus.")]
+        public long predictedMaximumValue => valueOverride ??
+                                             genus?.predictedMaximumValue ??
+                                             0;
 
         [PublicAPI( "The minimum distance that you must travel before you can collect a fresh sample of this genus" )]
         public int minimumDistanceMeters => genus.minimumDistanceMeters;
@@ -26,6 +36,11 @@ namespace EddiDataDefinitions
         /// Overrides the credit values from definitions when an actual value is indicated (as by the `OrganicDataSold` event)
         /// </summary>
         public long? valueOverride { get; set; }
+
+        /// <summary>
+        /// Sets the value from predictions, this could be the minimum value from several predicted species of the same genus.
+        /// </summary>
+        //public long? valuePredicted { get; set; }
 
         [PublicAPI ( "The bonus credit value, as awarded when selling organic data" ) ]
         public decimal bonus { get; set; }
@@ -72,7 +87,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public void SetVariantData ( OrganicVariant thisVariant )
         {
-            if ( variant is null ) { return; }
+            if ( thisVariant is null ) { return; }
             this.variant = thisVariant;
             this.species = this.variant?.species;
             this.genus = this.variant?.species?.genus;

@@ -111,7 +111,7 @@ namespace EddiDataDefinitions
         public long value;
 
         [PublicAPI]
-        public string description;
+        public string localizedDescription => Properties.GeologyDesc.ResourceManager.GetString(edname);
 
         // dummy used to ensure that the static constructor has run
         public Geology () : this( "" )
@@ -125,7 +125,6 @@ namespace EddiDataDefinitions
             this.entryID = entryID;
             this.type = type;
             this.value = value;
-            this.description = Properties.GeologyDesc.ResourceManager.GetString(edname);
         }
 
         /// <summary>

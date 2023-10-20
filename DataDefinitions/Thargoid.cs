@@ -38,7 +38,7 @@ namespace EddiDataDefinitions
         public long? value;
 
         [PublicAPI]
-        public string description => Properties.ThargoidDesc.ResourceManager.GetString( edname );
+        public string localizedDescription => Properties.ThargoidDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run
         public Thargoid () : this( "" )

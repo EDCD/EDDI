@@ -538,6 +538,51 @@ namespace EddiDataDefinitions
                 .ToHashSet();
         }
 
+        // TODO:2212_bt - Testing getting the main star of the system
+        public bool TryGetMainStar( out Body star ) {
+            star = null;
+
+            // Assume most of the time that body 0 is the main star
+            // If not then this is likely a barycentric system
+            var body = BodyWithID(0);
+            if ( body != null )
+            {
+                if ( body.bodyType == BodyType.Star )
+                {
+                    star = body;
+                    return true;
+                }
+            }
+            else if ( body is null ) {
+                List<long?> listBodyIDs = bodies.Select(x=>x.bodyId).ToList();
+                SortedSet<long?> sortedBodyIDs = new SortedSet<long?>();
+
+                // Get a list of body IDs and sort them
+                foreach ( var bodyID in listBodyIDs ) {
+                    if(bodyID != null)
+                    {
+                        sortedBodyIDs.Add(bodyID);
+                    }
+                }
+
+                // Return the first star we find
+                for(int i=1; i<sortedBodyIDs.Count(); i++) {
+                    try {
+                        body = BodyWithID(sortedBodyIDs.ElementAt(i));
+                        if ( body.bodyType == BodyType.Star )
+                        {
+                            star = body;
+                            return true;
+                        }
+                    }
+                    catch {
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public bool TryGetParentStar ( long? childBodyID, out Body star )
         {
             star = null;

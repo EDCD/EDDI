@@ -30,7 +30,7 @@ namespace EddiDataDefinitions
         public long? value;
 
         [PublicAPI]
-        public string description => Properties.GuardianDesc.ResourceManager.GetString( edname );
+        public string localizedDescription => Properties.GuardianDesc.ResourceManager.GetString( edname );
 
         // dummy used to ensure that the static constructor has run
         public Guardian () : this( "" )

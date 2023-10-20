@@ -21,6 +21,9 @@ namespace EddiEvents
         [PublicAPI( "The other organisms for which samples are incomplete on the current body (as objects)" )]
         public List<Exobiology> remainingBios { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
 
+        [PublicAPI( "The other organisms for which samples are incomplete on the current body (as list of strings)" )]
+        public List<String> remainingGenus { get; set; } // Variable is updated by the Discovery Monitor before being handled by Responders
+
         // Not intended to be user facing
         
         public OrganicGenus genus { get; private set; }

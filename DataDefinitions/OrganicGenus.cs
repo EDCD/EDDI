@@ -76,8 +76,14 @@ namespace EddiDataDefinitions
         [PublicAPI( "The minimum credit value for this genus" )]
         public long minimumValue => OrganicSpecies.AllOfThem.Where( s => s.genus == this ).Min( s => s.value );
 
+        [PublicAPI( "The predicted minimum credit value for this genus" )]
+        public long predictedMinimumValue;
+
+        [PublicAPI( "The predicted maximum credit value for this genus" )]
+        public long predictedMaximumValue;
+
         [PublicAPI]
-        public string description => Properties.OrganicGenusDesc.ResourceManager.GetString( NormalizeGenus( edname ) );
+        public string localizedDescription => Properties.OrganicGenusDesc.ResourceManager.GetString( NormalizeGenus( edname ) );
 
         // dummy used to ensure that the static constructor has run
         public OrganicGenus () : this( "" )

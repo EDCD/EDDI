@@ -211,10 +211,8 @@ namespace EddiDiscoveryMonitor
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
                 }
             }
-            if ( configuration.enableLogging )
-            {
-                Logging.Debug( log );
-            }
+
+            Logging.Debug( log );
         }
 
         private bool TryGetFssSurfaceSignals ( SurfaceSignalsEvent @event, ref string log, out FssSignal signal )
@@ -312,7 +310,8 @@ namespace EddiDiscoveryMonitor
                         log += $"\tPlanet Class: {(body.planetClass ?? PlanetClass.None).edname}\r\n";
                         log += $"\tAtmosphere:   {(body.atmosphereclass ?? AtmosphereClass.None).edname}\r\n";
                         log += $"\tVolcanism:    {body.volcanism?.edComposition ?? "None"}\r\n";
-                        if ( _currentSystem?.TryGetParentStar( body.bodyId, out var parentStar ) ?? false )
+                        //if ( _currentSystem?.TryGetParentStar( body.bodyId, out var parentStar ) ?? false )
+                        if ( _currentSystem?.TryGetMainStar( out var parentStar ) ?? false )
                         {
                             log += $"\tParent star class: {parentStar.stellarclass}\r\n";
                         }
@@ -329,7 +328,8 @@ namespace EddiDiscoveryMonitor
                         log += $"\tPlanet Class: {( body.planetClass ?? PlanetClass.None ).edname}\r\n";
                         log += $"\tAtmosphere:   {( body.atmosphereclass ?? AtmosphereClass.None ).edname}\r\n";
                         log += $"\tVolcanism:    {body.volcanism?.edComposition ?? "None"}\r\n";
-                        if ( _currentSystem?.TryGetParentStar( body.bodyId, out var parentStar ) ?? false )
+                        //if ( _currentSystem?.TryGetParentStar( body.bodyId, out var parentStar ) ?? false )
+                        if ( _currentSystem?.TryGetMainStar( out var parentStar ) ?? false )
                         {
                             log += $"\tParent star class: {parentStar.stellarclass}\r\n";
                         }
@@ -515,10 +515,15 @@ namespace EddiDiscoveryMonitor
                 body.surfaceSignals.reportedGeologicalCount = signal.geoCount;
             }
 
+            //if ( signal?.bioCount > 0 && 
+            //     body != null && 
+            //     !body.surfaceSignals.bioSignals.Any() && 
+            //     _currentSystem.TryGetParentStar(body.bodyId, out var parentStar))
+
             if ( signal?.bioCount > 0 && 
                  body != null && 
                  !body.surfaceSignals.bioSignals.Any() && 
-                 _currentSystem.TryGetParentStar(body.bodyId, out var parentStar))
+                 _currentSystem.TryGetMainStar(out var parentStar))
             {
                 // Always update the reported totals
                 body.surfaceSignals.reportedBiologicalCount = signal.bioCount;
@@ -529,10 +534,12 @@ namespace EddiDiscoveryMonitor
                 // Predict possible biological genuses
                 HashSet<OrganicGenus> bios;
                 log += "Predicting organics (by species):\r\n";
-                bios = new ExobiologyPredictions( _currentSystem, body, parentStar, configuration ).PredictBySpecies();
+                //bios = new ExobiologyPredictions( _currentSystem, body, parentStar, configuration ).PredictBySpecies();
+                bios = new ExobiologyPredictions( _currentSystem, body, parentStar, configuration ).PredictByVariant();
                 foreach ( var genus in bios )
                 {
                     log += $"\tAdding predicted bio {genus.invariantName}\r\n";
+                    //body.surfaceSignals.AddBioFromGenus( genus, true );
                     body.surfaceSignals.AddBioFromGenus( genus, true );
                 }
                 hasPredictedBios = true;
@@ -588,8 +595,8 @@ namespace EddiDiscoveryMonitor
 
             return new Dictionary<string, Tuple<Type, object>>
             {
-                [ "bio_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Exobiology ), configuration.exobiology ),
-                [ "codex_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Codex ), configuration.codex )
+                //[ "bio_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Exobiology ), configuration.exobiology ),
+                //[ "codex_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Codex ), configuration.codex )
             };
         }
     }
