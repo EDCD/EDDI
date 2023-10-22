@@ -1837,4 +1837,12 @@
     <value>Coral Sap</value>
     <comment>Commodity CoralSap</comment>
   </data>
+  <data name="UnknownMineral" xml:space="preserve">
+    <value>Impure Spire Mineral</value>
+    <comment>Commodity UnknownMineral</comment>
+  </data>
+  <data name="UnknownRefinedMineral" xml:space="preserve">
+    <value>Semi-Refined Spire Mineral</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
+  </data>
 </root>

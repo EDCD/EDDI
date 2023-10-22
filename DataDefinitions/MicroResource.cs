@@ -178,6 +178,7 @@ namespace EddiDataDefinitions
         // Items
         public static readonly MicroResource AgriculturalProcessSample = new MicroResource("AgriculturalProcessSample", MicroResourceCategory.Items, 128965837);
         public static readonly MicroResource BiochemicalAgent = new MicroResource("BiochemicalAgent", MicroResourceCategory.Items, 128961554);
+        public static readonly MicroResource BiomechanicalComponent = new MicroResource("BiomechanicalComponent", MicroResourceCategory.Items, null); // EDID not yet identified
         public static readonly MicroResource BuildingSchematic = new MicroResource("BuildingSchematic", MicroResourceCategory.Items, 128962597);
         public static readonly MicroResource Californium = new MicroResource("Californium", MicroResourceCategory.Items, 128961556);
         public static readonly MicroResource CastFossil = new MicroResource("CastFossil", MicroResourceCategory.Items, 128961557);

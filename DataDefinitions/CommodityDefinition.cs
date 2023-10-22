@@ -440,6 +440,9 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(129019258, "ThargoidTissueSampleType5", Salvage, 98368, false),
                 new CommodityDefinition(129019259, "ThargoidGeneratorTissueSample", Salvage, 67680, false),
                 new CommodityDefinition(129022087, "UnocuppiedEscapePod", Salvage, 3900, false),
+                
+                new CommodityDefinition(129022408, "UnknownMineral", Salvage, 31986, false),
+                new CommodityDefinition(129022409, "UnknownRefinedMineral", Salvage, 158421, false),
 
                 // Items for which we do not have pricing
                 new CommodityDefinition(129022395, "ThargoidTissueSampleType6", Salvage, 0, false),

@@ -3553,6 +3553,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Impure Spire Mineral.
+        /// </summary>
+        public static string UnknownMineral {
+            get {
+                return ResourceManager.GetString("UnknownMineral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Semi-Refined Spire Mineral.
+        /// </summary>
+        public static string UnknownRefinedMineral {
+            get {
+                return ResourceManager.GetString("UnknownRefinedMineral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Resin.
         /// </summary>
         public static string UnknownResin {
