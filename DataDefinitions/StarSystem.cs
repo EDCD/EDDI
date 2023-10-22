@@ -621,5 +621,45 @@ namespace EddiDataDefinitions
 
             return false;
         }
+
+        public bool TryGetParentStars ( long? childBodyID, out HashSet<Body> stars )
+        {
+            stars = new HashSet<Body>();
+            if ( childBodyID is null ) { return false; }
+
+            var body = BodyWithID( childBodyID );
+            if ( body is null ) { return false; }
+
+            var starIDs = body.parents
+                .Where( p => p.ContainsKey( BodyType.Star.edname ) )
+                .SelectMany( p => p.Values )
+                .ToHashSet();
+
+            if ( starIDs.Any() ) // One or more direct star parents
+            {
+                stars = starIDs.Select( s => BodyWithID( s ) ).ToHashSet();
+                return true;
+            }
+
+            var barycentreIDs = body.parents
+                .Where( p => p.ContainsKey( BodyType.Barycenter.edname ) )
+                .SelectMany( p => p.Values )
+                .ToHashSet();
+
+            if ( barycentreIDs.Any() ) // One more more barycentre parents, recurse to search the parent's parents
+            {
+                foreach ( var barycentreID in barycentreIDs )
+                {
+                    TryGetParentStars( barycentreID, out var baryStars );
+                    foreach ( var star in baryStars )
+                    {
+                        stars.Add( star );
+                    }
+                }
+                return true;
+            }
+
+            return false;
+        }
     }
 }
