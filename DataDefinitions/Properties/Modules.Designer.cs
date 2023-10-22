@@ -421,6 +421,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extraction Missile.
+        /// </summary>
+        public static string Extraction_Missile {
+            get {
+                return ResourceManager.GetString("Extraction_Missile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fighter Armour.
         /// </summary>
         public static string FighterArmour {

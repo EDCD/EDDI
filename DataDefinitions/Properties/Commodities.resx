@@ -1830,7 +1830,7 @@
     <comment>Commodity UnknownSack</comment>
   </data>
   <data name="ThargoidPod" xml:space="preserve">
-    <value>Xenobiological Prison Pod</value>
+    <value>Thargoid Bio-storage Capsule</value>
     <comment>Commodity ThargoidPod</comment>
   </data>
   <data name="CoralSap" xml:space="preserve">

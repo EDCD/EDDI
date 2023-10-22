@@ -3220,7 +3220,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xenobiological Prison Pod.
+        ///   Looks up a localized string similar to Thargoid Bio-storage Capsule.
         /// </summary>
         public static string ThargoidPod {
             get {
