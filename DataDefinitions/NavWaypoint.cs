@@ -20,8 +20,19 @@ namespace EddiDataDefinitions
         public decimal? y { get; set; }
         public decimal? z { get; set; }
 
+        /// <summary>
+        /// Distance to this waypoint (from the last waypoint)
+        /// </summary>
         public decimal distance { get; set; }
+
+        /// <summary>
+        /// Total distance travelled
+        /// </summary>
         public decimal distanceTraveled { get; set; }
+
+        /// <summary>
+        /// Total distance remaining
+        /// </summary>
         public decimal distanceRemaining { get; set; }
 
         public int index { get; set; }

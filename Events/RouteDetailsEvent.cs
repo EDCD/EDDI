@@ -28,10 +28,10 @@ namespace EddiEvents
         [PublicAPI("A count of missions, systems, or mission expiry seconds, depending on the route type")]
         public long count { get; private set; }
 
-        [PublicAPI("The distance to the next star system waypoint")]
-        public decimal distance => Route?.Waypoints.Count > 1 ? Route?.Waypoints[1].distance ?? 0 : 0;
+        [PublicAPI("The distance to the next star system waypoint in ly")]
+        public decimal distance => Route?.UnvisitedWaypoints.Count > 0 ? Route?.NearestUnvisitedWaypointDistance ?? 0 : 0;
 
-        [PublicAPI("The total distance of the route, if applicable")]
+        [PublicAPI("The total distance of the route in ly, if applicable")]
         public decimal routedistance => Route?.RouteDistance ?? 0;
 
         [PublicAPI("The mission ID(s) associated with the next waypoint star system, if applicable")]

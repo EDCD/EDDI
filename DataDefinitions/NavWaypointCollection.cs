@@ -45,6 +45,28 @@ namespace EddiDataDefinitions
 
         public ObservableCollection<NavWaypoint> Waypoints { get; } = new ObservableCollection<NavWaypoint>();
 
+        public List<NavWaypoint> UnvisitedWaypoints => Waypoints.Where(wp => !wp.visited).ToList();
+
+        public NavWaypoint NearestUnvisitedWaypoint => currentX is null || currentY is null || currentZ is null 
+            ? null 
+            : UnvisitedWaypoints
+                .OrderBy(wp => Functions.StellarDistanceLy(currentX, currentY, currentZ, wp.x, wp.y, wp.z) )
+                .FirstOrDefault();
+
+        public decimal? NearestUnvisitedWaypointDistance => 
+            Functions.StellarDistanceLy( currentX, currentY, currentZ, NearestUnvisitedWaypoint?.x, NearestUnvisitedWaypoint?.y, NearestUnvisitedWaypoint?.z );
+
+        public NavWaypoint DestinationWaypoint => destinationX is null || destinationY is null || destinationZ is null
+            ? null
+            : UnvisitedWaypoints.FirstOrDefault(wp => wp.x == destinationX && wp.y == destinationY && wp.z == destinationZ);
+
+        private decimal? currentX;
+        private decimal? currentY;
+        private decimal? currentZ;
+        private decimal? destinationX;
+        private decimal? destinationY;
+        private decimal? destinationZ;
+
         [JsonConstructor]
         public NavWaypointCollection()
         {
@@ -158,7 +180,32 @@ namespace EddiDataDefinitions
             }
         }
 
-        public void UpdateVisitedStatus(ulong visitedSystemAddress)
+        // Update coordinates
+        public void UpdateLocationData ( 
+            ulong currSystemAddress,
+            decimal? currX = null, 
+            decimal? currY = null, 
+            decimal? currZ = null )
+        {
+            this.currentX = currX;
+            this.currentY = currY;
+            this.currentZ = currZ;
+
+            UpdateVisitedStatus( currSystemAddress );
+        }
+
+        // Update destination coordinates
+        public void UpdateDestinationData (
+            decimal? destX = null,
+            decimal? destY = null,
+            decimal? destZ = null )
+        {
+            this.destinationX = destX;
+            this.destinationY = destY;
+            this.destinationZ = destZ;
+        }
+
+        private void UpdateVisitedStatus(ulong visitedSystemAddress)
         {
             if (FillVisitedGaps)
             {
