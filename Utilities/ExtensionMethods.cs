@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Utilities;
 
 namespace System
 {
@@ -23,10 +24,27 @@ namespace System
             if ((obj == null) || (another == null)) { return false; }
             if (obj.GetType() != another.GetType()) { return false; }
 
-            var objJson = JsonConvert.SerializeObject(obj);
-            var anotherJson = JsonConvert.SerializeObject(another);
+            try
+            {
+                return obj.GetHashCode() == another.GetHashCode();
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( "Value equality comparison failed.", e );
+            }
 
-            return objJson == anotherJson;
+            try
+            {
+                var objJson = JsonConvert.SerializeObject(obj);
+                var anotherJson = JsonConvert.SerializeObject(another);
+                return objJson == anotherJson;
+            }
+            catch ( Exception e )
+            {
+                Logging.Error("Value equality comparison failed.", e);
+            }
+
+            return false;
         }
     }
 
