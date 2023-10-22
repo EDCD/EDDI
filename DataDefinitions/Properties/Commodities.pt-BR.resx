@@ -1829,12 +1829,11 @@
     <value>Sucata de Membrana Protetora</value>
     <comment>Commodity UnknownSack</comment>
   </data>
-  <data name="ThargoidPod" xml:space="preserve">
-    <value>Cápsula de Pisão Xenobiológica</value>
-    <comment>Commodity ThargoidPod</comment>
-  </data>
+  
   <data name="CoralSap" xml:space="preserve">
     <value>Seiva de Coral</value>
     <comment>Commodity CoralSap</comment>
   </data>
+  
+  
 </root>
