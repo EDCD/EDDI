@@ -1829,12 +1829,11 @@
     <value>保护膜废料</value>
     <comment>Commodity UnknownSack</comment>
   </data>
-  <data name="ThargoidPod" xml:space="preserve">
-    <value>外星生物押解舱</value>
-    <comment>Commodity ThargoidPod</comment>
-  </data>
+  
   <data name="CoralSap" xml:space="preserve">
     <value>珊瑚树树液</value>
     <comment>Commodity CoralSap</comment>
   </data>
+  
+  
 </root>
