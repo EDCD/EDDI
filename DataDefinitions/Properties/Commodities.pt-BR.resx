@@ -1829,11 +1829,20 @@
     <value>Sucata de Membrana Protetora</value>
     <comment>Commodity UnknownSack</comment>
   </data>
-  
+  <data name="ThargoidPod" xml:space="preserve">
+    <value>Cápsula de Bio-Armazenamento Thargoid</value>
+    <comment>Commodity ThargoidPod</comment>
+  </data>
   <data name="CoralSap" xml:space="preserve">
     <value>Seiva de Coral</value>
     <comment>Commodity CoralSap</comment>
   </data>
-  
-  
+  <data name="UnknownMineral" xml:space="preserve">
+    <value>Mineral de Pináculo Impuro</value>
+    <comment>Commodity UnknownMineral</comment>
+  </data>
+  <data name="UnknownRefinedMineral" xml:space="preserve">
+    <value>Mineral de Pináculo Semi-Refinado</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
+  </data>
 </root>
