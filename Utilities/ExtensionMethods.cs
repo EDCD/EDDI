@@ -26,15 +26,6 @@ namespace System
 
             try
             {
-                return obj.GetHashCode() == another.GetHashCode();
-            }
-            catch ( Exception e )
-            {
-                Logging.Error( "Value equality comparison failed.", e );
-            }
-
-            try
-            {
                 var objJson = JsonConvert.SerializeObject(obj);
                 var anotherJson = JsonConvert.SerializeObject(another);
                 return objJson == anotherJson;
