@@ -285,5 +285,25 @@ namespace Utilities
             //file is not locked
             return false;
         }
+
+        public static string GetAbsoluteFilePath ( string basePath, string path )
+        {
+            if ( string.IsNullOrEmpty( path ) || string.IsNullOrEmpty( basePath ) ) { return null; }
+
+            string finalPath;
+            if ( !Path.IsPathRooted( path ) || "\\".Equals( Path.GetPathRoot( path ) ) )
+            {
+                finalPath = path.StartsWith( Path.DirectorySeparatorChar.ToString() )
+                    ? Path.Combine( Path.GetPathRoot( basePath ), path.TrimStart( Path.DirectorySeparatorChar ) )
+                    : Path.Combine( basePath, path );
+            }
+            else
+            {
+                finalPath = path;
+            }
+
+            // resolves any internal "..\" to get the true full path.
+            return Path.GetFullPath( finalPath );
+        }
     }
 }

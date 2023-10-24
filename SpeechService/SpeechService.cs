@@ -653,13 +653,14 @@ namespace EddiSpeechService
             try
             {
                 IWaveSource audioSource;
+                string absolutePath = Files.GetAbsoluteFilePath( Constants.DATA_DIR, fileName );
                 try
                 {
-                    audioSource = CodecFactory.Instance.GetCodec( fileName );
+                    audioSource = CodecFactory.Instance.GetCodec( absolutePath );
                 }
                 catch ( FileNotFoundException fnfe )
                 {
-                    Say( null, $"Audio file not found at {fileName}.", 0 );
+                    Say( null, $"Audio file not found at {fnfe.FileName}.", 0 );
                     Logging.Warn( fnfe.Message, fnfe );
                     throw;
                 }
@@ -681,7 +682,7 @@ namespace EddiSpeechService
                         if ( soundOut is WasapiOut && !useLegacySoundOut )
                         {
                             Logging.Warn( "Falling back to legacy DirectSoundOut." );
-                            PlayAudio( fileName, volumeOverride, true );
+                            PlayAudio( absolutePath, volumeOverride, true );
                         }
                     }
 

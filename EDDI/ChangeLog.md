@@ -5,7 +5,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.4-b1
   * Navigation Montitor
     * Improved route guidance updates.
-
+  * Speech Responder
+    * Functions
+      * `Play()` now supports relative file system paths. (#2581)
 
 ## 4.0.3
   * EDSM Responder
