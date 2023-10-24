@@ -85,8 +85,15 @@ namespace EddiSpeechResponder.Service
             {
                 Logging.Debug( $"Resolving {( isTopLevelScript ? "top level " : "" )}script {scriptObject?.Name}: {script}", store );
 
+                //If this is not a top level script then we need to preserve escape sequence characters (\).
+                if ( !isTopLevelScript )
+                {
+                    script = Regex.Replace( script, @"\\", @"\\\\" );
+                }
+
                 var document = new SimpleDocument( script, setting );
                 var result = document.Render( store );
+
                 // Tidy up the output script
                 if ( isTopLevelScript )
                 {
