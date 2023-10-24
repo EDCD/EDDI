@@ -23,10 +23,11 @@ namespace EddiDiscoveryMonitor
 
             var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
 
-            checkboxIgnoreBrainTrees.IsChecked = configuration.exobiology.predictions.skipBrainTrees;
-            checkboxIgnoreCrystalShards.IsChecked = configuration.exobiology.predictions.skipCrystallineShards;
-            checkboxIgnoreBarkMounds.IsChecked = configuration.exobiology.predictions.skipBarkMounds;
+            checkboxIgnoreBrainTrees.IsChecked = configuration.exobiology.predictions.skipBrancae;
+            checkboxIgnoreCrystalShards.IsChecked = configuration.exobiology.predictions.skipGroundStructIce;
+            checkboxIgnoreBarkMounds.IsChecked = configuration.exobiology.predictions.skipCone;
             checkboxIgnoreTubers.IsChecked = configuration.exobiology.predictions.skipTubers;
+
             //exobioSlowBios.IsChecked = configuration.exobiology.reportSlowBios;
             //exobioMinimumBios.Text = configuration.exobiology.minimumBiosForReporting.ToString();
             //exobioReportDest.IsChecked = configuration.exobiology.reportDestinationBios;
@@ -79,7 +80,7 @@ namespace EddiDiscoveryMonitor
         private void IgnoreBrainTrees_Toggle ( object sender, System.Windows.RoutedEventArgs e )
         {
             var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
-            configuration.exobiology.predictions.skipBrainTrees = checkboxIgnoreBrainTrees.IsChecked ?? false;
+            configuration.exobiology.predictions.skipBrancae = checkboxIgnoreBrainTrees.IsChecked ?? false;
             ConfigService.Instance.discoveryMonitorConfiguration = configuration;
             discoveryMonitor()?.Reload();
         }
@@ -87,7 +88,7 @@ namespace EddiDiscoveryMonitor
         private void IgnoreCrystalShards_Toggle ( object sender, System.Windows.RoutedEventArgs e )
         {
             var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
-            configuration.exobiology.predictions.skipCrystallineShards = checkboxIgnoreCrystalShards.IsChecked ?? false;
+            configuration.exobiology.predictions.skipGroundStructIce = checkboxIgnoreCrystalShards.IsChecked ?? false;
             ConfigService.Instance.discoveryMonitorConfiguration = configuration;
             discoveryMonitor()?.Reload();
         }
@@ -95,7 +96,7 @@ namespace EddiDiscoveryMonitor
         private void IgnoreBarkMounds_Toggle ( object sender, System.Windows.RoutedEventArgs e )
         {
             var configuration = ConfigService.Instance.discoveryMonitorConfiguration;
-            configuration.exobiology.predictions.skipBarkMounds = checkboxIgnoreBarkMounds.IsChecked ?? false;
+            configuration.exobiology.predictions.skipCone = checkboxIgnoreBarkMounds.IsChecked ?? false;
             ConfigService.Instance.discoveryMonitorConfiguration = configuration;
             discoveryMonitor()?.Reload();
         }

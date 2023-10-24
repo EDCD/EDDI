@@ -39,22 +39,27 @@ namespace EddiDataDefinitions
         public long predictedMinimumTotalValue {
             get {
                 long value = 0;
+                var log = "\r\n";
 
                 if(reportedBiologicalCount==1) {
-                    value = bioSignals.First().value;
+                    //value = bioSignals.OrderBy(x => x.predictedMinimumValue).First().value;
+                    value = bioSignals.Min(x => x.predictedMinimumValue);
+                    log += $"\t(1/1) predictedMinimumTotalValue={value} [{bioSignals.Min(x => x.predictedMinimumValue)}]\r\n";
                 }
                 else if(reportedBiologicalCount>1) {
-                    SortedSet<long> values = new SortedSet<long>();
-                    foreach(Exobiology t_bio in bioSignals) {
-                        values.Add( t_bio.predictedMinimumValue );
-                    }
-
+                    var values = bioSignals.OrderBy(x => x.predictedMinimumValue);
                     int iMin = Math.Min(values.Count(), reportedBiologicalCount);
+                    log += $"\tvalues.Count()={values.Count()}, reportedBiologicalCount={reportedBiologicalCount}\r\n";
                     for(int i=0; i<iMin; i++) {
-                        value += values.ElementAt(i);
+                        value += values.ElementAt(i).predictedMinimumValue;
+                        log += $"\t({i+1}/{iMin}) predictedMinimumTotalValue={value} [{values.ElementAt(i).predictedMinimumValue}]\r\n";
                     }
                 }
+                else {
+                    log = "";
+                }
 
+                if(log != "") Logging.Debug(log);
                 return value;
             }
         }
@@ -63,22 +68,27 @@ namespace EddiDataDefinitions
         public long predictedMaximumTotalValue {
             get {
                 long value = 0;
+                var log = "\r\n";
 
                 if(reportedBiologicalCount==1) {
-                    value = bioSignals.First().value;
+                    //value = bioSignals.OrderBy(x => x.predictedMaximumValue).Last().value;
+                    value = bioSignals.Max(x => x.predictedMaximumValue);
+                    log += $"\t(1/1) predictedMaximumTotalValue={value} [{bioSignals.Max(x => x.predictedMaximumValue)}]\r\n";
                 }
                 else if(reportedBiologicalCount>1) {
-                    SortedSet<long> values = new SortedSet<long>();
-                    foreach(Exobiology t_bio in bioSignals) {
-                        values.Add( t_bio.predictedMaximumValue );
-                    }
-
-                    int iMax = Math.Max(0, values.Count()-reportedBiologicalCount);
-                    for( int i = values.Count()-1; i>iMax; i-- ) {
-                        value += values.ElementAt(i);
+                    var values = bioSignals.OrderBy(x => x.predictedMaximumValue).Reverse();
+                    int iMin = Math.Min(values.Count(), reportedBiologicalCount);
+                    log += $"\tvalues.Count()={values.Count()}, reportedBiologicalCount={reportedBiologicalCount}\r\n";
+                    for( int i = 0; i<iMin; i++ ) {
+                        value += values.ElementAt(i).predictedMaximumValue;
+                        log += $"\t({i+1}/{iMin}) predictedMaximumTotalValue={value} [{values.ElementAt(i).predictedMaximumValue}]\r\n";
                     }
                 }
+                else {
+                    log = "";
+                }
 
+                if(log != "") Logging.Debug(log);
                 return value;
             }
         }

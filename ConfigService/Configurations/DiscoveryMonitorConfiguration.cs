@@ -23,10 +23,63 @@ namespace EddiConfigService.Configurations
 
             public class Predictions
             {
-                public bool skipCrystallineShards = true;
-                public bool skipBarkMounds = false;
-                public bool skipBrainTrees = true;
-                public bool skipTubers = false;
+                // Legacy
+                public bool skipGroundStructIce = true;     // Crystalline Shards
+                public bool skipCone = false;               // Bark Mounds
+                public bool skipBrancae = true;             // Brain Trees
+                public bool skipTubers = false;             // Sinuous Tubers
+
+                // Odyssey
+                public bool skipAleoids = false;            // Aleoida
+                public bool skipVents = false;              // Amphora
+                public bool skipSphere = false;             // Anemone
+                public bool skipBacterial = false;          // Bacterium
+                public bool skipCactoid = false;            // Cactoida
+                public bool skipClypeus = false;            // Clypeus
+                public bool skipConchas = false;            // Concha
+                public bool skipElectricae = false;         // Electricae
+                public bool skipFonticulus = false;         // Fonticulua
+                public bool skipShrubs = false;             // Frutexa
+                public bool skipFumerolas = false;          // Fumerola
+                public bool skipFungoids = false;           // Fungoida
+                public bool skipOsseus = false;             // Osseus
+                public bool skipRecepta = false;            // Recepta
+                public bool skipStratum = false;            // Stratum
+                public bool skipTubus = false;              // Tubus
+                public bool skipTussocks = false;           // Tussock
+
+                // Non-predictable
+                //public bool skipMineralSpheres = false;
+                //public bool skipMetallicCrystals = false;
+                //public bool skipSilicateCrystals = false;
+                //public bool skipIceCrystals = false;
+                //public bool skipMolluscReel = false;
+                //public bool skipMolluscGlobe = false;
+                //public bool skipMolluscBell = false;
+                //public bool skipMolluscUmbrella = false;
+                //public bool skipMolluscGourd = false;
+                //public bool skipMolluscTorus = false;
+                //public bool skipMolluscBulb = false;
+                //public bool skipMolluscParasol = false;
+                //public bool skipMolluscSquid = false;
+                //public bool skipMolluscBullet = false;
+                //public bool skipMolluscCapsule = false;
+                //public bool skipCollaredPod = false;
+                //public bool skipStolonPod = false;
+                //public bool skipStolonTree = false;
+                //public bool skipAsterPod = false;
+                //public bool skipChalicePod = false;
+                //public bool skipPedunclePod = false;
+                //public bool skipRhizomePod = false;
+                //public bool skipQuadripartitePod = false;
+                //public bool skipVoidPod = false;
+                //public bool skipAsterTree = false;
+                //public bool skipPeduncleTree = false;
+                //public bool skipGyreTree = false;
+                //public bool skipGyrePod = false;
+                //public bool skipVoidHeart = false;
+                //public bool skipCalcitePlates = false;
+                //public bool skipThargoidBarnacle = false;
             }
             public Predictions predictions = new Predictions();
 
