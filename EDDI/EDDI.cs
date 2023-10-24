@@ -1452,49 +1452,60 @@ namespace EddiCore
 
         private bool eventCarrierJumped(CarrierJumpedEvent @event)
         {
-            if (@event.docked)
-            {
-                Logging.Info("Carrier jumped to: " + @event.systemname);
+            Logging.Info( "Carrier jumped to: " + @event.systemname );
 
-                // We are docked and in the ship
-                Environment = Constants.ENVIRONMENT_DOCKED;
-                Vehicle = Constants.VEHICLE_SHIP;
+            if ( @event.docked || @event.onFoot )
+            {
+                // We are either docked and in a ship or on foot and in normal space.
+                Environment = @event.docked ? Constants.ENVIRONMENT_DOCKED : Constants.ENVIRONMENT_NORMAL_SPACE;
+                Vehicle = @event.docked ? Constants.VEHICLE_SHIP : Constants.VEHICLE_LEGS;
 
                 // Remove the carrier from its prior location (of any) so that we can re-save it with a new location
                 // If we haven't already updated our current star system, the carrier should be in `CurrentStarSystem`. If we have, it should be in `LastStarSystem`.
-                if (CurrentStation?.marketId == @event.carrierId || CurrentStation?.name == @event.carriername)
+
+                // There's a journal bug here where carrier market information is missing if we are on foot but present if we are docked
+                // so we fall back to our saved FleetCarrier object information if event information is missing.
+                var carrierID = @event.carrierId ?? FleetCarrier?.carrierID;
+                var carrierCallsign = @event.carriername ?? FleetCarrier?.callsign;
+
+                // Remove the carrier from the current star system or last star system
+                CurrentStation = CurrentStarSystem?.stations.FirstOrDefault( s => 
+                    s.marketId == carrierID || s.name == carrierCallsign );
+                if ( CurrentStation != null )
                 {
-                    CurrentStarSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
+                    CurrentStarSystem?.stations.RemoveAll( s => s.marketId == carrierID );
                 }
-                else
+                else if ( LastStarSystem != null )
                 {
-                    CurrentStation = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
-                    if (CurrentStation is null)
+                    CurrentStation = LastStarSystem.stations.FirstOrDefault( s =>
+                        s.marketId == carrierID || s.name == carrierCallsign );
+                    if ( CurrentStation != null )
                     {
-                        CurrentStation = LastStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId || s.name == @event.carriername);
-                        if (CurrentStation != null && LastStarSystem != null)
-                        {
-                            LastStarSystem.stations.RemoveAll(s => s.marketId == @event.carrierId);
-                            StarSystemSqLiteRepository.Instance.SaveStarSystem(LastStarSystem);
-                        }
+                        LastStarSystem.stations.RemoveAll( s => s.marketId == carrierID );
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem( LastStarSystem );
                     }
                 }
-                if (CurrentStation == null)
+
+                // If the carrier is not found in the current or last star system but a fleet carrier object is present,
+                // we can generate current station information from the FleetCarrier object
+                if ( CurrentStation == null )
                 {
-                    // This carrier is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder.
-                    CurrentStation = new Station();
+                    CurrentStation = FleetCarrier?.Market?.UpdateStation( @event.timestamp, new Station() );
                 }
 
                 // Update current station properties
-                CurrentStation.name = @event.carriername;
-                CurrentStation.marketId = @event.carrierId;
-                CurrentStation.systemname = @event.systemname;
-                CurrentStation.systemAddress = @event.systemAddress;
-                CurrentStation.Faction = @event.carrierFaction;
-                CurrentStation.LargestPad = LandingPadSize.Large; // Carriers always include large pads
-                CurrentStation.Model = @event.carrierType;
-                CurrentStation.economyShares = @event.carrierEconomies;
-                CurrentStation.stationServices = @event.carrierServices;
+                if ( CurrentStation != null )
+                {
+                    CurrentStation.systemname = @event.systemname;
+                    CurrentStation.systemAddress = @event.systemAddress;
+                    CurrentStation.name = carrierCallsign;
+                    CurrentStation.marketId = carrierID;
+                    CurrentStation.Faction = @event.carrierFaction;
+                    CurrentStation.LargestPad = LandingPadSize.Large; // Carriers always include large pads
+                    CurrentStation.Model = @event.carrierType;
+                    CurrentStation.economyShares = @event.carrierEconomies;
+                    CurrentStation.stationServices = @event.carrierServices;
+                } 
 
                 // Update our current star system and carrier location
                 updateCurrentSystem(@event.systemname, @event.systemAddress );
@@ -1509,9 +1520,12 @@ namespace EddiCore
 
                     // Update Thargoid war data, when available
                     CurrentStarSystem.ThargoidWar = @event.ThargoidWar;
-                    
-                    // Add our carrier to the new current star system
-                    CurrentStarSystem.stations.Add(CurrentStation);
+
+                    if ( currentStation != null )
+                    {
+                        // Add our carrier to the new current star system
+                        CurrentStarSystem.stations.Add(CurrentStation);                        
+                    }
 
                     // Update the mutable system data from the journal
                     if (@event.population != null)

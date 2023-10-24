@@ -399,7 +399,7 @@ namespace EddiJournalMonitor
                                     // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
-                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, onFoot, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, powerplayPowers, powerplayState, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
@@ -410,8 +410,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "Bounty":
                                 {
-                                    string target = JsonParsing.getString(data, "Target");
-                                    if (target != null)
+                                    var target = JsonParsing.getString(data, "Target");
+                                    if ( target != null)
                                     {
                                         // Might be a ship
                                         var targetShip = ShipDefinitions.FromEDModel(target, false);
@@ -426,21 +426,20 @@ namespace EddiJournalMonitor
                                         var targetNpcSuitLoadout = NpcSuitLoadout.EDNameExists(target) ? NpcSuitLoadout.FromEDName(target) : null;
 
                                         target = targetShip?.SpokenModel()
-                                            ?? targetCmdrSuit?.localizedName
-                                            ?? targetVehicle?.localizedName
-                                            ?? targetNpcSuitLoadout?.localizedName
-                                            ?? JsonParsing.getString(data, "Target_Localised")
+                                                 ?? targetCmdrSuit?.localizedName
+                                                 ?? targetVehicle?.localizedName
+                                                 ?? targetNpcSuitLoadout?.localizedName
+                                                 ?? JsonParsing.getString(data, "Target_Localised")
                                             ;
                                     }
 
-                                    string victimFaction = GetFactionName(data, "VictimFaction");
+                                    var pilot = JsonParsing.getString(data, "PilotName");
+                                    var pilotLocalised = JsonParsing.getString(data, "PilotName_Localised");
+
+                                    var victimFaction = GetFactionName(data, "VictimFaction");
 
                                     data.TryGetValue("SharedWithOthers", out object val);
-                                    bool shared = false;
-                                    if (val != null && (long)val == 1)
-                                    {
-                                        shared = true;
-                                    }
+                                    var shared = val != null && (long)val == 1;
 
                                     long reward;
                                     List<Reward> rewards = new List<Reward>();
@@ -4361,7 +4360,6 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Get carrier data
-                                    bool docked = JsonParsing.getBool(data, "Docked");
                                     string carrierName = JsonParsing.getString(data, "StationName");
                                     StationModel carrierType = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                     long carrierId = JsonParsing.getLong(data, "MarketID");
@@ -4413,12 +4411,10 @@ namespace EddiJournalMonitor
                                     // Thargoid war data (if any)
                                     GetThargoidWarData( data, out ThargoidWar thargoidWar );
 
-                                    bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
-                                    bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
-                                    bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
+                                    bool docked = JsonParsing.getBool(data, "Docked");
                                     bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
-                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPowers, powerplayState, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, bodyName, bodyId, bodyType, docked, onFoot, carrierName, carrierType, carrierId, stationServices, systemfaction, stationFaction, factions, conflicts, stationEconomies, systemEconomy, systemEconomy2, systemSecurity, systemPopulation, powerplayPowers, powerplayState, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
 
                                     // Generate secondary event when the carrier jump cooldown completes
                                     if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
