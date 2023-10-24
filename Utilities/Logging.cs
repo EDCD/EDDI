@@ -347,7 +347,7 @@ namespace Utilities
         // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
         // The Rollbar API test console is available at https://docs.rollbar.com/reference.
 
-        const string rollbarWriteToken = "c94faac5c4d8447fb05654e0488305db";
+        const string rollbarWriteToken = "30d5520d152e41c78fca8d9d56c7f98f";
 
         public static bool TelemetryEnabled {
             get => RollbarLocator.RollbarInstance.Config.RollbarDeveloperOptions.Transmit;
