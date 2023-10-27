@@ -5,6 +5,40 @@ namespace Utilities
     // A collection of common functions used in code
     public class Functions
     {
+        // This is faster and less computationally heavy without the sqrt. Can be used for sorting by distance where the result is not going to be returned.
+        public static decimal? StellarDistanceSquare(decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2)
+        {
+            var diffX = x1 - x2;
+            var diffY = y1 - y2;
+            var diffZ = z1 - z2;
+
+            if (diffX != null && diffY != null && diffZ != null)
+            {
+                double square(double x) => x * x;
+                var distance = square((double)diffX) + square((double)diffY) + square((double)diffZ);
+                return (decimal)distance;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // Convert a squared distance (as in from the StellarDistanceSquare function) and convert it to Ly
+        public static decimal? StellarDistanceLy(decimal? squareDistance)
+        {
+
+            if (squareDistance != null)
+            {
+                var distance = Math.Sqrt((double)squareDistance);
+                return (decimal)Math.Round(distance, 2);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         /// <summary>The direct distance in light years from one point in space to another.</summary>
         public static decimal? StellarDistanceLy(decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2)
         {

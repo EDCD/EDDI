@@ -176,31 +176,41 @@ namespace EddiDiscoveryMonitor
             // Create a distinct genus list
             List<OrganicGenus> listGenus = predictedVariants.Select(s => s.genus).Distinct().ToList();
 
-            log = $"Setting Min/Max values:\r\n";
-
-            // Iterate over all predicted variants, set the min/max values for the genus list
-            for ( int i = 0; i < listGenus.Count(); i++ )
+            if ( listGenus.Count()==0 )
             {
-                log += $"\t[{listGenus[ i ].edname}]\r\n";
-                foreach ( var variant in predictedVariants )
+                log += $"No predictions were made, adding Unknown.";
+                listGenus.Add( OrganicGenus.Unknown );
+                listGenus[0].predictedMinimumValue = 0;
+                listGenus[0].predictedMaximumValue = 0;
+            }
+            else
+            {
+                log = $"Setting Min/Max values:\r\n";
+
+                // Iterate over all predicted variants, set the min/max values for the genus list
+                for ( int i = 0; i < listGenus.Count(); i++ )
                 {
-                    if ( listGenus[ i ].edname == variant.genus.edname )
+                    log += $"\t[{listGenus[ i ].edname}]\r\n";
+                    foreach ( var variant in predictedVariants )
                     {
-                        log += $"\t\t{variant.edname} ";
-                        var species = OrganicSpecies.FromEDName( variant.species.edname );
-                        if(species != null) {
-                            //listGenus[ i ].predictedMinimumValue = (listGenus[ i ].predictedMinimumValue==0 || species.value < listGenus[ i ].predictedMinimumValue) ? species.value : listGenus[ i ].predictedMinimumValue;
-                            //listGenus[ i ].predictedMaximumValue = (listGenus[ i ].predictedMaximumValue==0 || species.value > listGenus[ i ].predictedMaximumValue) ? species.value : listGenus[ i ].predictedMaximumValue;
+                        if ( listGenus[ i ].edname == variant.genus.edname )
+                        {
+                            log += $"\t\t{variant.edname} ";
+                            var species = OrganicSpecies.FromEDName( variant.species.edname );
+                            if(species != null) {
+                                //listGenus[ i ].predictedMinimumValue = (listGenus[ i ].predictedMinimumValue==0 || species.value < listGenus[ i ].predictedMinimumValue) ? species.value : listGenus[ i ].predictedMinimumValue;
+                                //listGenus[ i ].predictedMaximumValue = (listGenus[ i ].predictedMaximumValue==0 || species.value > listGenus[ i ].predictedMaximumValue) ? species.value : listGenus[ i ].predictedMaximumValue;
 
-                            if(listGenus[ i ].predictedMinimumValue == 0 || species.value < listGenus[ i ].predictedMinimumValue) {
-                                listGenus[ i ].predictedMinimumValue = species.value;
+                                if(listGenus[ i ].predictedMinimumValue == 0 || species.value < listGenus[ i ].predictedMinimumValue) {
+                                    listGenus[ i ].predictedMinimumValue = species.value;
+                                }
+
+                                if(listGenus[ i ].predictedMaximumValue == 0 || species.value > listGenus[ i ].predictedMaximumValue) {
+                                    listGenus[ i ].predictedMaximumValue = species.value;
+                                }
+
+                                log += $": value={species.value}, predictedMinimum={listGenus[ i ].predictedMinimumValue}, predictedMaximum={listGenus[ i ].predictedMaximumValue}\r\n";
                             }
-
-                            if(listGenus[ i ].predictedMaximumValue == 0 || species.value > listGenus[ i ].predictedMaximumValue) {
-                                listGenus[ i ].predictedMaximumValue = species.value;
-                            }
-
-                            log += $": value={species.value}, predictedMinimum={listGenus[ i ].predictedMinimumValue}, predictedMaximum={listGenus[ i ].predictedMaximumValue}\r\n";
                         }
                     }
                 }
@@ -253,7 +263,17 @@ namespace EddiDiscoveryMonitor
 
         private bool TryCheckRegion(ICollection<string> checkRegions, ref string log )
         {
-            // TODO:2212_bt - Regions do not appear to be saved in system info, but this could be useful for slightly more accurate predictions
+            if (checkRegions.Count() > 0)
+            {
+                var currentRegion = Utilities.RegionMap.RegionMap.FindRegion((double)_currentSystem.x, (double)_currentSystem.y, (double)_currentSystem.z);
+                if (checkRegions.Any( a => a == currentRegion.name ) )
+                {
+                    log += $"ACCEPT. '{currentRegion.name}' is in '{string.Join(",", checkRegions)}'. ";
+                    return true;
+                }
+                log += $"REJECT. Region: '{currentRegion.name}' not in '{string.Join(",", checkRegions)}'";
+                return false;
+            }
             return true;
         }
 
@@ -419,7 +439,7 @@ namespace EddiDiscoveryMonitor
                 foreach(var composition in checkVolcanismCompositions) {
                     Volcanism volcanism = Volcanism.FromName(composition);
 
-                    if( (volcanism is null && body.volcanism is null) || volcanism == body.volcanism) {
+                    if( ( composition=="Any" && body.volcanism != null) || (volcanism is null && body.volcanism is null) || volcanism == body.volcanism) {
                         return true;
                     }
                 }
@@ -491,30 +511,38 @@ namespace EddiDiscoveryMonitor
                 HashSet<Body> parentStars = new HashSet<Body>();
                 var result = _currentSystem.TryGetParentStars( body.bodyId, out parentStars );
                 
-                log += $"(CHECK STAR: '{string.Join(",", parentStars)}')\r\n";
+                log += $"(CHECK STAR: '{string.Join(";", parentStars.Select( w => string.Join(",", (new { w.starClass.edname, w.luminosityclass }) ) ) )}')\r\n";
 
-                foreach( var starGroup in checkStar) {
-                    IList<string> starParts = starGroup.Split( ',' ).ToList();
+                if(parentStars.Count()>0) {
+                    foreach( var starGroup in checkStar) {
+                        IList<string> starParts = starGroup.Split( ',' ).ToList();
 
-                    log += $"\t[starParts={string.Join(",",starParts)}]\r\n";
+                        log += $"\t[starParts={string.Join(",",starParts)}]\r\n";
 
-                    foreach ( var parentStar in parentStars ) {
-                        if ( starParts[0] == parentStar.starClass.edname )
-                        {
-                            log += $"\t\tClass => {starParts[0]}=={parentStar.starClass.edname} ";
-                            if(starParts.Count >= 2) {
-                                if ( parentStar.luminosityclass.Contains(starParts[1]) ) {
-                                    log += $"Luminosity => {starParts[1]} ? {parentStar.luminosityclass} ";
+                        foreach ( var parentStar in parentStars ) {
+                            if ( starParts[0] == parentStar.starClass.edname )
+                            {
+                                log += $"\t\tClass => {starParts[0]}=={parentStar.starClass.edname}, ";
+                                if(starParts.Count >= 2) {
+                                    if ( parentStar.luminosityclass.Contains(starParts[1]) ) {
+                                        log += $"Luminosity => {starParts[1]} ? {parentStar.luminosityclass}, ";
+                                        return true;
+                                    }
+                                }
+                                else {
+                                    log += $"Luminosity => SKIP, ";
                                     return true;
                                 }
+                                log += "\r\n";
                             }
-                            else {
-                                log += $"Luminosity => SKIP ";
-                                return true;
-                            }
-                            log += "\r\n";
                         }
                     }
+                }
+                else
+                {
+                    // Failed to get parent stars, return True as this check isn't valid anymore
+                    log += $"FAILED. Did not get any parent stars, pass by default. ";
+                    return true;
                 }
 
                 log += $"REJECT. Parent star/luminosity [{string.Join(",", parentStars.Select( x => x.starClass.edname ) ) }] not in {string.Join(";", checkStar)}.";
@@ -576,7 +604,7 @@ namespace EddiDiscoveryMonitor
                         return true;
                     }
                 }
-                log += $"REJECT. Body with type present [{string.Join(",", _currentSystem.bodies.Select( x => x.planetClass ) ) }] not in {string.Join( ",", checkBodyTypes) }.";
+                log += $"REJECT. Body with type present [{string.Join(",", _currentSystem.bodies.Select( x => x.planetClass.edname ) ) }] not in {string.Join( ",", checkBodyTypes) }.";
 
                 return false;
             }
@@ -635,12 +663,14 @@ namespace EddiDiscoveryMonitor
         private bool TryCheckNebulaDistance ( decimal? checkNebulaDistance, ref string log )
         {
             if( checkNebulaDistance != null && checkNebulaDistance != 0 ) {
-                // TODO:2212_bt - Implement nebula distance check
-                // https://docs.google.com/spreadsheets/d/1uU01bSvv5SpScuOnsaUK56R2ylVAU4rFtVkcGUA7VZg/edit#gid=73369533
-
-                return true;
-                //log += $"REJECT. Nebula distance [{???}] not <= {checkNebulaDistance}.";
-                //return false;
+                var nearestNebula = Nebula.TryGetNearestNebula( _currentSystem );
+                if (nearestNebula != null) {
+                    if ( nearestNebula.distance < checkNebulaDistance ) {
+                        return true;
+                    }
+                }
+                log += $"REJECT. Nebula distance [{(nearestNebula is null ? "Null" : nearestNebula.name)} @ {(nearestNebula is null ? "Null" : nearestNebula.distance.ToString())} Ly] > {checkNebulaDistance}.";
+                return false;
             }
 
             return true;

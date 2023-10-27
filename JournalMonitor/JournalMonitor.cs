@@ -295,7 +295,10 @@ namespace EddiJournalMonitor
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, thargoidWar) { raw = line, fromLoad = fromLogLoad });
+                                    // TODO:2212_bt - Need to make sure this function is efficient
+                                    Nebula nearNebula = Nebula.TryGetNearestNebula( systemName, x, y, z );
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, thargoidWar, nearNebula) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

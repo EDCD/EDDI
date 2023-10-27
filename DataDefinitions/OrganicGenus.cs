@@ -12,6 +12,9 @@ namespace EddiDataDefinitions
             missingEDNameHandler = ( edname ) => new OrganicGenus( NormalizeGenus( edname ) );
         }
 
+        // So we can add a placeholder for missed predictions
+        public static readonly OrganicGenus Unknown = new OrganicGenus( "Unknown", 0 );
+
         // Terrestrial Genuses
         public static readonly OrganicGenus Aleoids = new OrganicGenus( "Aleoids", 150 );
         public static readonly OrganicGenus Vents = new OrganicGenus( "Vents", 100 );

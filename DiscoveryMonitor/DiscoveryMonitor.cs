@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
+using Utilities.RegionMap;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiDiscoveryMonitor
@@ -33,6 +34,9 @@ namespace EddiDiscoveryMonitor
         internal long _currentBodyId;
         internal StarSystem _currentSystem => EDDI.Instance?.CurrentStarSystem;
         private Body _currentBody ( long bodyId ) => _currentSystem?.BodyWithID( bodyId );
+
+        internal Region _currentRegion;
+        internal Nebula _nearestNebula;
 
         public DiscoveryMonitor ()
         {
@@ -177,6 +181,79 @@ namespace EddiDiscoveryMonitor
             {
                 handleStarScannedEvent( starScannedEvent );
             }
+            else if ( @event is JumpedEvent jumpedEvent )
+            {
+                handleJumpedEvent( jumpedEvent );
+            }
+        }
+
+        internal void handleJumpedEvent ( JumpedEvent @event )
+        {
+            var log = "\r\n";
+
+            log += $"\tGetting Region for ({@event.x},{@event.y},{@event.z}): ";
+
+            // Check for new region
+            var newRegion = Utilities.RegionMap.RegionMap.FindRegion((double)@event.x, (double)@event.y, (double)@event.z);
+
+            if( newRegion != null )
+            {
+                if( newRegion.id != _currentRegion.id )
+                {
+                    log += $"New Region = {newRegion.name}.\r\n";
+
+                    _currentRegion = newRegion;
+
+                    EDDI.Instance.enqueueEvent(
+                        new RegionEvent(
+                            DateTime.UtcNow,
+                            newRegion )
+                        {
+                            fromLoad = @event.fromLoad
+                        } );
+                }
+                else
+                {
+                    log += $"No New Region.\r\n";
+                }
+            }
+            else 
+            {
+                log += $"Region = NULL.\r\n";
+            }
+
+            log += $"\tGetting Nebula for {@event.system} @ ({@event.x},{@event.y},{@event.z}): ";
+
+            // Check for new nebula nearby
+            var newNebula = Nebula.TryGetNearestNebula( @event.system, @event.x, @event.y, @event.z );
+            if( newNebula != null )
+            {
+                if ( newNebula.id != _nearestNebula.id )
+                {
+                    log += $"New Nebula = {newNebula.name} @ {newNebula.distance} Ly.\r\n";
+
+                    _nearestNebula = newNebula;
+
+                    EDDI.Instance.enqueueEvent(
+                        new NebulaEvent(
+                            DateTime.UtcNow,
+                            newNebula )
+                        {
+                            fromLoad = @event.fromLoad
+                        } );
+                }
+                else
+                {
+                    log += $"No New Nebula.\r\n";
+                }
+            }
+            else 
+            {
+                log += $"Nebula = NULL.\r\n";
+            }
+
+            Logging.Debug( log );
+            
         }
 
         internal void handleCodexEntryEvent ( CodexEntryEvent @event )
@@ -584,17 +661,31 @@ namespace EddiDiscoveryMonitor
         }
 
         public void PostHandle ( Event @event )
-        { }
+        {
+            if( _currentSystem != null )
+            {
+                if ( _currentRegion is null )
+                {
+                    _currentRegion = Utilities.RegionMap.RegionMap.FindRegion((double)_currentSystem.x, (double)_currentSystem.y, (double)_currentSystem.z);
+                }
+
+                if ( _nearestNebula is null ) 
+                {
+                    _nearestNebula = Nebula.TryGetNearestNebula( _currentSystem.systemname, _currentSystem.x, _currentSystem.y, _currentSystem.z );
+                }
+            }
+
+        }
 
         public void HandleProfile ( JObject profile )
         { }
 
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {
-            //return null;
-
             return new Dictionary<string, Tuple<Type, object>>
             {
+                [ "nearestnebula" ] = new Tuple<Type, object>( typeof( Nebula ), _nearestNebula ),
+                [ "currentregion" ] = new Tuple<Type, object>( typeof( Region ), _currentRegion )
                 //[ "bio_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Exobiology ), configuration.exobiology ),
                 //[ "codex_settings" ] = new Tuple<Type, object>( typeof( DiscoveryMonitorConfiguration.Codex ), configuration.codex )
             };
