@@ -229,7 +229,14 @@ namespace EddiSpeechResponder
             var highlighting = GetHighlighting( metaVars );
             editScriptWindow = new EditScriptWindow(scriptResolver, script, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, isRecoveredScript);
             EDDI.Instance.SpeechResponderModalWait = true;
-            editScriptWindow.ShowDialog();
+            try
+            {
+                editScriptWindow.ShowDialog();
+            }
+            catch ( Win32Exception ex )
+            {
+                Logging.Warn( ex.Message, ex );
+            }
             EDDI.Instance.SpeechResponderModalWait = false;
             if (editScriptWindow.DialogResult ?? false)
             {
@@ -354,12 +361,19 @@ namespace EddiSpeechResponder
             var metaVars = GetMetaVariables ().ToList ();
             var highlighting = GetHighlighting( metaVars );
             editScriptWindow = new EditScriptWindow( speechResponder.ScriptResolver, null, speechResponder.CurrentPersonality.Scripts, metaVars, highlighting, true);
-            if ( editScriptWindow.ShowDialog() == true)
+            try
             {
-                var newScript = editScriptWindow.script;
-                speechResponder.CurrentPersonality.Scripts[newScript.Name] = newScript;
-                speechResponder.SavePersonality();
-                scriptsView.Refresh();
+                if ( editScriptWindow.ShowDialog() == true )
+                {
+                    var newScript = editScriptWindow.script;
+                    speechResponder.CurrentPersonality.Scripts[ newScript.Name ] = newScript;
+                    speechResponder.SavePersonality();
+                    scriptsView.Refresh();
+                }
+            }
+            catch ( Win32Exception ex )
+            {
+                Logging.Warn( ex.Message, ex );
             }
             EDDI.Instance.SpeechResponderModalWait = false;
         }
@@ -372,9 +386,16 @@ namespace EddiSpeechResponder
             {
                 Owner = Window.GetWindow(this)
             };
-            if (window.ShowDialog() == true)
+            try
             {
-                speechResponder.CopyCurrentPersonality(window.PersonalityName, window.PersonalityDescription, window.PersonalityDisableScripts);
+                if ( window.ShowDialog() == true )
+                {
+                    speechResponder.CopyCurrentPersonality( window.PersonalityName, window.PersonalityDescription, window.PersonalityDisableScripts );
+                }
+            }
+            catch ( Win32Exception ex )
+            {
+                Logging.Warn( ex.Message, ex );
             }
             EDDI.Instance.SpeechResponderModalWait = false;
         }
