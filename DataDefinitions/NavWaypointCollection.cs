@@ -56,16 +56,9 @@ namespace EddiDataDefinitions
         public decimal? NearestUnvisitedWaypointDistance => 
             Functions.StellarDistanceLy( currentX, currentY, currentZ, NearestUnvisitedWaypoint?.x, NearestUnvisitedWaypoint?.y, NearestUnvisitedWaypoint?.z );
 
-        public NavWaypoint DestinationWaypoint => destinationX is null || destinationY is null || destinationZ is null
-            ? null
-            : UnvisitedWaypoints.FirstOrDefault(wp => wp.x == destinationX && wp.y == destinationY && wp.z == destinationZ);
-
         private decimal? currentX;
         private decimal? currentY;
         private decimal? currentZ;
-        private decimal? destinationX;
-        private decimal? destinationY;
-        private decimal? destinationZ;
 
         [JsonConstructor]
         public NavWaypointCollection()
@@ -192,17 +185,6 @@ namespace EddiDataDefinitions
             this.currentZ = currZ;
 
             UpdateVisitedStatus( currSystemAddress );
-        }
-
-        // Update destination coordinates
-        public void UpdateDestinationData (
-            decimal? destX = null,
-            decimal? destY = null,
-            decimal? destZ = null )
-        {
-            this.destinationX = destX;
-            this.destinationY = destY;
-            this.destinationZ = destZ;
         }
 
         private void UpdateVisitedStatus(ulong visitedSystemAddress)

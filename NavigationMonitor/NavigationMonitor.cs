@@ -723,9 +723,6 @@ namespace EddiNavigationMonitor
                 routeStart?.x, routeStart?.y, routeStart?.z, 
                 routeDestination.x, routeDestination.y, routeDestination.z) ?? 0;
             EDDI.Instance.DestinationDistanceLy = distance;
-
-            NavRoute.UpdateDestinationData( routeDestination.x, routeDestination.y, routeDestination.z );
-            PlottedRoute.UpdateDestinationData( routeDestination.x, routeDestination.y, routeDestination.z );
         }
 
         private void OnStatusUpdated(object sender, EventArgs e)

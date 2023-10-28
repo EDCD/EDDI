@@ -110,16 +110,29 @@ namespace EddiNavigationService.QueryResolvers
                 w.systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress );
             if ( currentWaypoint != null )
             {
-                // We're following the plotted route
-                return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.update.ToString (), currentPlottedRoute.NearestUnvisitedWaypoint.systemName, currentPlottedRoute.NearestUnvisitedWaypoint.stationName, currentPlottedRoute, currentPlottedRoute.Waypoints.Count, currentPlottedRoute.NearestUnvisitedWaypoint.missionids );
+                // We're visiting a waypoint on the plotted route and need to update using the next unvisited waypoint
+                return new RouteDetailsEvent( DateTime.UtcNow, QueryType.update.ToString(), currentPlottedRoute.UnvisitedWaypoints.First().systemName, currentPlottedRoute.UnvisitedWaypoints.First().stationName, currentPlottedRoute, currentPlottedRoute.Waypoints.Count, currentPlottedRoute.UnvisitedWaypoints.First().missionids );
             }
 
-            var destinationWaypoint = currentPlottedRoute?.Waypoints.FirstOrDefault( w =>
-                    w.systemAddress == EDDI.Instance.DestinationStarSystem?.systemAddress );
+            NavWaypoint destinationWaypoint = null;
+            if ( currentPlottedRoute?.FillVisitedGaps ?? false )
+            {
+                // If `FillVisitedGaps` is true then our goal is simply get to the end of the route and
+                // any unvisited waypoint on the route is a valid destination.
+                destinationWaypoint = currentPlottedRoute.Waypoints.Where(w => !w.visited).FirstOrDefault( w => 
+                        w.systemAddress == EDDI.Instance.DestinationStarSystem?.systemAddress );
+            }
+            if ( destinationWaypoint is null )
+            {
+                // If `FillVisitedGaps` is not true then our goal is to reach the first unvisited waypoint on the route.
+                // Other destinations (including waypoints we are planning to visit later in the route) are invalid.
+                destinationWaypoint = currentPlottedRoute?.Waypoints.FirstOrDefault( w => 
+                    !w.visited && w.systemAddress == EDDI.Instance.DestinationStarSystem?.systemAddress ); 
+            }
             if ( destinationWaypoint != null )
             {
-                // We're making our way back to the plotted route
-                return new RouteDetailsEvent( DateTime.UtcNow, QueryType.update.ToString(), currentPlottedRoute.DestinationWaypoint?.systemName, null, currentPlottedRoute, currentPlottedRoute.Waypoints.Count, currentPlottedRoute.DestinationWaypoint?.missionids );
+                // We're making our way to a valid destination waypoint
+                return new RouteDetailsEvent( DateTime.UtcNow, QueryType.update.ToString(), destinationWaypoint.systemName, destinationWaypoint.stationName, currentPlottedRoute, currentPlottedRoute.Waypoints.Count, destinationWaypoint.missionids );
             }
 
             // We've strayed, recalculate the route
