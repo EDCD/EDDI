@@ -21,6 +21,9 @@ namespace EddiEvents
         [PublicAPI("The id of the region we are currently in.")]
         public decimal? distance => nebula.distance;
 
+        [PublicAPI("The size of the nebula if known, otherwise 10Ly for planetary and 100Ly for standard nebulae.")]
+        public int? size => nebula.diameter;
+
         public NebulaEvent (DateTime timestamp, Nebula nebula) : base(timestamp, NAME)
         {
             this.nebula = nebula;

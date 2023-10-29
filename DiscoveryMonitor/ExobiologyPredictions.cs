@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Utilities;
+using Utilities.RegionMap;
 using System.ServiceModel.Security;
 using MathNet.Numerics.Distributions;
 using System.Runtime.ExceptionServices;
@@ -164,6 +165,7 @@ namespace EddiDiscoveryMonitor
                      TryCheckNebulaDistance( variant.nebulaDistance, ref log ) &&
                      TryCheckDistanceFromArrival( variant.distanceFromArrival, ref log ) &&
                      TryCheckGeologyNum( variant.geologicalsPresent, ref log ) &&
+                     TryCheckGuardianSector( variant.genus, ref log ) &&
                      TryCheckRegion( variant.regions, ref log ) )
                 {
                     log += "OK";
@@ -444,7 +446,7 @@ namespace EddiDiscoveryMonitor
                     }
                 }
 
-                log += $"REJECT. Volcanism composition: '{(body.volcanism is null ? "None" : body.volcanism?.ToString())}' not in [{String.Join("; ", checkVolcanismCompositions)}].";
+                log += $"REJECT. Volcanism composition: '{(body.volcanism is null ? "None" : body.volcanism?.ToString())}' not in [{String.Join(";", checkVolcanismCompositions)}].";
                 return false;
             }
 
@@ -683,6 +685,33 @@ namespace EddiDiscoveryMonitor
                     return true;
                 }
                 log += $"REJECT. Distance from arrival [{body.distance}] < {checkDistanceFromArrival}.";
+                return false;
+            }
+            return true;
+        }
+
+        private bool TryCheckGuardianSector ( OrganicGenus genus, ref string log )
+        {
+            if ( genus == OrganicGenus.Brancae )
+            {
+                var region = Utilities.RegionMap.RegionMap.FindRegion( (double)_currentSystem.x, (double)_currentSystem.y, (double)_currentSystem.z );
+
+                if ( region != null )
+                {
+                    if( GuardianSector.TryGetGuardianSector(_currentSystem.systemname, region.name ) )
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if( GuardianSector.TryGetGuardianSector(_currentSystem.systemname ) )
+                    {
+                        return true;
+                    }
+                }
+
+                log += $"REJECT. Not in known Guardian sector {_currentSystem.systemname}.";
                 return false;
             }
             return true;

@@ -1,10 +1,41 @@
 ﻿using System;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Utilities
 {
     // A collection of common functions used in code
     public class Functions
     {
+        // Used to set the clipboard contents
+        public static void SetClipboard( string textForClipboard )
+        {
+            //Thread clipboardThread = new Thread( _SetClipboard );
+            Thread clipboardThread = new Thread(() => {
+                System.Windows.Forms.Clipboard.SetText(textForClipboard);
+            });
+            clipboardThread.SetApartmentState(ApartmentState.STA);
+            clipboardThread.IsBackground = false;
+            clipboardThread.Start(textForClipboard);
+        }
+        
+        //internal static void _SetClipboard(object textForClipboard)
+        //{
+        //    System.Windows.Forms.Clipboard.SetText((string)textForClipboard);
+        //}
+
+        // Get the current clipboard contents
+        public static void GetClipboard()
+        {
+            object textFromClipboard = null;
+            Thread clipboardThread = new Thread(() => {
+                textFromClipboard = System.Windows.Forms.Clipboard.GetText();
+            });
+            clipboardThread.SetApartmentState(ApartmentState.STA);
+            clipboardThread.IsBackground = false;
+            clipboardThread.Start(textFromClipboard);
+        }
+
         // This is faster and less computationally heavy without the sqrt. Can be used for sorting by distance where the result is not going to be returned.
         public static decimal? StellarDistanceSquare(decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2)
         {

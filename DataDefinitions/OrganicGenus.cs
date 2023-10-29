@@ -74,10 +74,10 @@ namespace EddiDataDefinitions
         public int minimumDistanceMeters { get; private set; }
 
         [PublicAPI( "The maximum credit value for this genus" )]
-        public long maximumValue => OrganicSpecies.AllOfThem.Where( s => s.genus == this ).Max( s => s.value );
+        public long maximumValue => OrganicSpecies.AllOfThem.Where( s => s.genus == this )?.Max( s => s?.value ) ?? 0;
 
         [PublicAPI( "The minimum credit value for this genus" )]
-        public long minimumValue => OrganicSpecies.AllOfThem.Where( s => s.genus == this ).Min( s => s.value );
+        public long minimumValue => OrganicSpecies.AllOfThem.Where( s => s.genus == this )?.Min( s => s?.value ) ?? 0;
 
         [PublicAPI( "The predicted minimum credit value for this genus" )]
         public long predictedMinimumValue;
