@@ -661,21 +661,7 @@ namespace EddiDiscoveryMonitor
         }
 
         public void PostHandle ( Event @event )
-        {
-            if( _currentSystem != null )
-            {
-                if ( _currentRegion is null )
-                {
-                    _currentRegion = Utilities.RegionMap.RegionMap.FindRegion((double)_currentSystem.x, (double)_currentSystem.y, (double)_currentSystem.z);
-                }
-
-                if ( _nearestNebula is null ) 
-                {
-                    _nearestNebula = Nebula.TryGetNearestNebula( _currentSystem.systemname, _currentSystem.x, _currentSystem.y, _currentSystem.z );
-                }
-            }
-
-        }
+        { }
 
         public void HandleProfile ( JObject profile )
         { }
