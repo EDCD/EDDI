@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using Utilities.RegionMap;
 
 namespace EddiEvents
 {
@@ -88,7 +89,10 @@ namespace EddiEvents
         public ThargoidWar ThargoidWar { get; private set; }
 
         [PublicAPI("Nearby Nebula")]
-        public Nebula nearnebula { get; private set; }
+        public Nebula nebula { get; private set; }
+
+        [PublicAPI("Current Region")]
+        public Region region { get; private set; }
 
         // These properties are not intended to be user facing
 
@@ -110,7 +114,7 @@ namespace EddiEvents
 
         public PowerplayState powerState { get; private set; }
 
-        public JumpedEvent (DateTime timestamp, string system, ulong systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Power> powerplayPowers, PowerplayState powerplayState, bool? taxi, bool? multicrew, ThargoidWar thargoidWar, Nebula nearnebula) : base(timestamp, NAME)
+        public JumpedEvent (DateTime timestamp, string system, ulong systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Power> powerplayPowers, PowerplayState powerplayState, bool? taxi, bool? multicrew, ThargoidWar thargoidWar, Nebula nebula, Region region) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -134,7 +138,8 @@ namespace EddiEvents
             this.taxi = taxi;
             this.multicrew = multicrew;
             this.ThargoidWar = thargoidWar;
-            this.nearnebula = nearnebula;
+            this.nebula = nebula;
+            this.region = region;
         }
     }
 }

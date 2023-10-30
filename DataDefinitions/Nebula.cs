@@ -5841,6 +5841,7 @@ namespace EddiDataDefinitions
                 {
                     if( nebula.x != null && nebula.y != null && nebula.z != null )
                     {
+                        // We don't need the exact distance, use the faster method for sorting purposes
                         nebula.distance = Functions.StellarDistanceSquare(systemX, systemY, systemZ, nebula.x, nebula.y, nebula.z);
                         //nebula.distance = Functions.StellarDistanceLy(systemX, systemY, systemZ, nebula.x, nebula.y, nebula.z);
                         listNebula.Add(nebula);
@@ -5850,21 +5851,8 @@ namespace EddiDataDefinitions
 
             Nebula closest = listNebula.OrderBy( s => s.distance).First();
             closest.distance = Functions.StellarDistanceLy( closest.distance );
-
-            //return listNebula.OrderBy( s => s.distance).First();
             
             // TODO:There should be a way to get the nearest nebula into the clipboard. Maybe through VA integration only?
-            // Current thread must be set to STA (single thread apartment)
-            //System.Windows.Forms.Clipboard.SetText( closest.name );
-            //System.Windows.Clipboard( closest.name );
-
-            Utilities.Functions.SetClipboard( closest.name );
-
-            //Thread clipboardThread = new Thread( SetClipboard(closest.name) );
-            //clipboardThread.SetApartmentState(ApartmentState.STA);
-            //clipboardThread.IsBackground = false;
-            //clipboardThread.Start();
-
             return closest;
         }
 

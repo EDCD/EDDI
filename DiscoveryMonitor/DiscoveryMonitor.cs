@@ -185,29 +185,31 @@ namespace EddiDiscoveryMonitor
             {
                 handleJumpedEvent( jumpedEvent );
             }
+            else if ( @event is LocationEvent locationEvent )
+            {
+                handleLocationEvent( locationEvent );
+            }
         }
 
         internal void handleJumpedEvent ( JumpedEvent @event )
         {
             var log = "\r\n";
+            bool error = false;
 
+            // Check if the current region has changed
             log += $"\tGetting Region for ({@event.x},{@event.y},{@event.z}): ";
-
-            // Check for new region
-            var newRegion = Utilities.RegionMap.RegionMap.FindRegion((double)@event.x, (double)@event.y, (double)@event.z);
-
-            if( newRegion != null )
+            if( @event.region != null )
             {
-                if( newRegion.id != _currentRegion.id )
+                if( _currentRegion is null || @event.region.id != _currentRegion.id )
                 {
-                    log += $"New Region = {newRegion.name}.\r\n";
+                    log += $"New Region = {@event.region.name}.\r\n";
 
-                    _currentRegion = newRegion;
+                    _currentRegion = @event.region;
 
                     EDDI.Instance.enqueueEvent(
                         new RegionEvent(
                             DateTime.UtcNow,
-                            newRegion )
+                            @event.region )
                         {
                             fromLoad = @event.fromLoad
                         } );
@@ -219,25 +221,24 @@ namespace EddiDiscoveryMonitor
             }
             else 
             {
+                error = true;
                 log += $"Region = NULL.\r\n";
             }
 
+            // Check if the nearest nebula has changed
             log += $"\tGetting Nebula for {@event.system} @ ({@event.x},{@event.y},{@event.z}): ";
-
-            // Check for new nebula nearby
-            var newNebula = Nebula.TryGetNearestNebula( @event.system, @event.x, @event.y, @event.z );
-            if( newNebula != null )
+            if( @event.nebula != null )
             {
-                if ( newNebula.id != _nearestNebula.id )
+                if ( _nearestNebula is null || @event.nebula.id != _nearestNebula.id )
                 {
-                    log += $"New Nebula = {newNebula.name} @ {newNebula.distance} Ly.\r\n";
+                    log += $"New Nebula = {@event.nebula.name} @ {@event.nebula.distance} Ly.\r\n";
 
-                    _nearestNebula = newNebula;
+                    _nearestNebula = @event.nebula;
 
                     EDDI.Instance.enqueueEvent(
                         new NebulaEvent(
                             DateTime.UtcNow,
-                            newNebula )
+                            @event.nebula )
                         {
                             fromLoad = @event.fromLoad
                         } );
@@ -249,10 +250,97 @@ namespace EddiDiscoveryMonitor
             }
             else 
             {
+                error = true;
                 log += $"Nebula = NULL.\r\n";
             }
 
-            Logging.Debug( log );
+            if (error)
+            {
+                Logging.Error( log );
+            }
+            else
+            {
+                Logging.Debug( log );
+            }
+            
+        }
+
+        // When the location is recieved at startup or if the player respawns at a station update the region and nebula
+        internal void handleLocationEvent ( LocationEvent @event )
+        {
+            var log = "\r\n";
+            bool error = false;
+
+            // Check if the current region has changed
+            var checkRegion = RegionMap.FindRegion( (double)@event.x, (double)@event.y, (double)@event.z );
+
+            log += $"\tGetting Region for ({@event.x},{@event.y},{@event.z}): ";
+            if( checkRegion != null )
+            {
+                if( _currentRegion is null || checkRegion.id != _currentRegion.id )
+                {
+                    log += $"New Region = {checkRegion.name}.\r\n";
+
+                    _currentRegion = checkRegion;
+
+                    EDDI.Instance.enqueueEvent(
+                        new RegionEvent(
+                            DateTime.UtcNow,
+                            checkRegion )
+                        {
+                            fromLoad = @event.fromLoad
+                        } );
+                }
+                else
+                {
+                    log += $"No New Region.\r\n";
+                }
+            }
+            else 
+            {
+                error = true;
+                log += $"Region = NULL.\r\n";
+            }
+
+            // Check if the nearest nebula has changed
+            var checkNebula = Nebula.TryGetNearestNebula( @event.systemname, (decimal)@event.x, (decimal)@event.y, (decimal) @event.z );
+
+            log += $"\tGetting Nebula for {@event.systemname} @ ({@event.x},{@event.y},{@event.z}): ";
+            if( checkNebula != null )
+            {
+                if ( _nearestNebula is null || checkNebula.id != _nearestNebula.id )
+                {
+                    log += $"New Nebula = {checkNebula.name} @ {checkNebula.distance} Ly.\r\n";
+
+                    _nearestNebula = checkNebula;
+
+                    EDDI.Instance.enqueueEvent(
+                        new NebulaEvent(
+                            DateTime.UtcNow,
+                            checkNebula )
+                        {
+                            fromLoad = @event.fromLoad
+                        } );
+                }
+                else
+                {
+                    log += $"No New Nebula.\r\n";
+                }
+            }
+            else 
+            {
+                error = true;
+                log += $"Nebula = NULL.\r\n";
+            }
+
+            if (error)
+            {
+                Logging.Error( log );
+            }
+            else
+            {
+                Logging.Debug( log );
+            }
             
         }
 
@@ -282,10 +370,10 @@ namespace EddiDiscoveryMonitor
                 {
                     // Save/Update Body data
                     body.surfaceSignals.lastUpdated = @event.timestamp;
-                    //_currentSystem.AddOrUpdateBody( body );
-                    //StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
-                    EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
+                    _currentSystem.AddOrUpdateBody( body );
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                    //EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
+                    //StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
                 }
             }
 
@@ -509,10 +597,10 @@ namespace EddiDiscoveryMonitor
 
                     // Save/Update Body data
                     body.surfaceSignals.lastUpdated = @event.timestamp;
-                    //_currentSystem.AddOrUpdateBody( body );
-                    //StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
-                    EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
+                    _currentSystem.AddOrUpdateBody( body );
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                    //EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
+                    //StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
                 }
             }
             catch ( Exception e )
@@ -540,10 +628,10 @@ namespace EddiDiscoveryMonitor
 
                     // Save/Update Body data
                     body.surfaceSignals.lastUpdated = @event.timestamp;
-                    //_currentSystem.AddOrUpdateBody( body );
-                    //StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
-                    EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
+                    _currentSystem.AddOrUpdateBody( body );
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                    //EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
+                    //StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
                 }
             }
         }
@@ -572,10 +660,10 @@ namespace EddiDiscoveryMonitor
 
                         // Save/Update Body data
                         body.surfaceSignals.lastUpdated = @event.timestamp;
-                        //_currentSystem.AddOrUpdateBody( body );
-                        //StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
-                        EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
+                        _currentSystem.AddOrUpdateBody( body );
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem( _currentSystem );
+                        //EDDI.Instance?.CurrentStarSystem.AddOrUpdateBody( body );
+                        //StarSystemSqLiteRepository.Instance.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
                     }
                 }
             }
