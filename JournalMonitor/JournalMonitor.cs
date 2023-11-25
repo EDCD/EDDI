@@ -2278,10 +2278,14 @@ namespace EddiJournalMonitor
                                 break;
                             case "FSSDiscoveryScan":
                                 {
-                                    decimal progress = JsonParsing.getDecimal(data, "Progress"); // value from 0-1
+                                    // A journal error was introduced in Odyssey 4.0 Update 17
+                                    // where FSSDiscoveryScan would report zero bodies and infinite progress.
+                                    // Don't parse `Progress` unless `BodyCount` is greater than zero.
+
                                     int bodyCount = JsonParsing.getInt(data, "BodyCount"); // total number of stellar bodies in system
                                     int nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // total number of non-body signals found
-                                    events.Add(new DiscoveryScanEvent(timestamp, progress, bodyCount, nonBodyCount) { raw = line, fromLoad = fromLogLoad });
+                                    decimal progress = bodyCount > 0 ? JsonParsing.getDecimal(data, "Progress") : 0; // value from 0-1
+                                    events.Add( new DiscoveryScanEvent( timestamp, progress, bodyCount, nonBodyCount ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
