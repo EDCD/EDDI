@@ -19,14 +19,19 @@ namespace EddiJournalMonitor
 {
     public class JournalMonitor : LogMonitor, IEddiMonitor
     {
-        private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", (result, isLogLoadEvent) =>
-        ForwardJournalEntry(result, EDDI.Instance.enqueueEvent, isLogLoadEvent))
+        private static readonly Regex JsonRegex = new Regex( @"^{.*}$", RegexOptions.Singleline );
+
+        public JournalMonitor () : base( GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$",
+            ( result, isLogLoadEvent ) =>
+                ForwardJournalEntry( result, EDDI.Instance.enqueueEvent, isLogLoadEvent ) )
         { }
 
         private enum ShipyardType { ShipsHere, ShipsRemote }
 
-        private static readonly Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources = new Dictionary<long, CancellationTokenSource>();
+        private static readonly Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources =
+            new Dictionary<long, CancellationTokenSource>();
+
+        private static string lastType;
 
         public static void ForwardJournalEntry(string line, Action<Event> callback, bool isLogLoadEvent)
         {
@@ -72,6 +77,7 @@ namespace EddiJournalMonitor
                     Logging.Debug("Received event", line);
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
 
+                    // Ignore specified log load events
                     if (fromLogLoad && ignoredLogLoadEvents.Contains(JsonParsing.getString(data, "event")))
                     {
                         return events;
@@ -91,12 +97,11 @@ namespace EddiJournalMonitor
                     // Every event has an event field
                     if (!data.ContainsKey("event"))
                     {
-                        Logging.Warn("Event without event field!");
-                        return null;
+                        Logging.Warn("Event without event field!", line);
+                        return events;
                     }
 
-                    bool handled = false;
-
+                    // Get the `edType`
                     string edType = JsonParsing.getString(data, "event");
                     if (edType == "Fileheader")
                     {
@@ -107,6 +112,14 @@ namespace EddiJournalMonitor
                         EDDI.Instance.JournalTimeStamp = timestamp;
                     }
 
+                    // Ignore invalidly duplicated events
+                    if ( lastType == edType && invalidDuplicateEvents.Contains(edType) )
+                    {
+                        return events;
+                    }
+                    lastType = edType;
+
+                    bool handled = false;
                     try
                     {
                         switch (edType)
@@ -3354,7 +3367,7 @@ namespace EddiJournalMonitor
                                                      system.x is decimal sx && 
                                                      system.y is decimal sy &&
                                                      system.z is decimal sz )
-                                            {
+                                                {
                                                     var dest = new NavWaypoint( system.systemname, sx, sy, sz );
                                                     dest.missionids.Add( mission.missionid );
                                                     mission.destinationsystems.Add( dest );
@@ -5473,6 +5486,12 @@ namespace EddiJournalMonitor
             "WingInvite",
             "WingJoin",
             "WingLeave"
+        };
+
+        private static readonly string[] invalidDuplicateEvents = new string[]
+        {
+            // We suppress and ignore duplicate events of these types (FDev journal issues)
+            "SystemsShutdown"
         };
     }
 }
