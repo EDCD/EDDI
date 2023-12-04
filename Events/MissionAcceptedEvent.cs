@@ -82,8 +82,7 @@ namespace EddiEvents
         [PublicAPI("True if the mission is a community goal")]
         public bool communal => Mission.communal;
 
-        // Not intended to be user facing
-
+        [PublicAPI("The mission object")]
         public Mission Mission { get; }
 
         public MissionAcceptedEvent(DateTime timestamp, Mission mission) : base(timestamp, NAME)
