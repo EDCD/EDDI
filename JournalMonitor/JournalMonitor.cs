@@ -31,8 +31,6 @@ namespace EddiJournalMonitor
         private static readonly Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources =
             new Dictionary<long, CancellationTokenSource>();
 
-        private static string lastType;
-
         public static void ForwardJournalEntry(string line, Action<Event> callback, bool isLogLoadEvent)
         {
             if (line == null)
@@ -111,13 +109,6 @@ namespace EddiJournalMonitor
                     {
                         EDDI.Instance.JournalTimeStamp = timestamp;
                     }
-
-                    // Ignore invalidly duplicated events
-                    if ( lastType == edType && invalidDuplicateEvents.Contains(edType) )
-                    {
-                        return events;
-                    }
-                    lastType = edType;
 
                     bool handled = false;
                     try
@@ -5485,12 +5476,6 @@ namespace EddiJournalMonitor
             "WingInvite",
             "WingJoin",
             "WingLeave"
-        };
-
-        private static readonly string[] invalidDuplicateEvents = new string[]
-        {
-            // We suppress and ignore duplicate events of these types (FDev journal issues)
-            "SystemsShutdown"
         };
     }
 }
