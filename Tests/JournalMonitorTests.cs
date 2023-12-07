@@ -339,6 +339,40 @@ namespace UnitTests
             string line = @"{ ""timestamp"":""2016-09-21T07:00:17Z"",""event"":""Interdiction"",""Success"":true,""Interdicted"":""Torval's Shield"",""IsPlayer"":false,""Faction"":""Zemina Torval"",""Power"":""Empire""}";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
+            if ( events[0] is ShipInterdictionEvent @event )
+            {
+                Assert.AreEqual( "Zemina Torval", @event.faction );
+                Assert.AreEqual( "Torval's Shield", @event.interdictee );
+                Assert.AreEqual( "Empire", @event.power );
+                Assert.IsNull( @event.rating );
+                Assert.IsTrue( @event.succeeded );
+                Assert.IsFalse( @event.iscommander );
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void TestJournalInterdiction2 ()
+        {
+            string line = @"{ ""timestamp"":""2023-11-29T22:21:30Z"",""event"":""Interdiction"",""Success"":true,""IsPlayer"":true,""Interdicted"":""*redacted*"",""CombatRank"":5}";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue( events.Count == 1 );
+            if ( events[ 0 ] is ShipInterdictionEvent @event )
+            {
+                Assert.IsNull( @event.faction );
+                Assert.AreEqual( "*redacted*", @event.interdictee );
+                Assert.IsNull( @event.power );
+                Assert.AreEqual(CombatRating.Master.localizedName, @event.rating );
+                Assert.IsTrue( @event.succeeded );
+                Assert.IsTrue( @event.iscommander );
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
         [TestMethod]
@@ -1158,8 +1192,10 @@ namespace UnitTests
             LocationEvent @event = (LocationEvent)events[0];
 
             Assert.IsNotNull(@event.raw);
-            Assert.AreEqual("None", @event.controllingsystemfaction.Allegiance?.invariantName);
-            Assert.AreEqual("$faction_None", @event.controllingsystemfaction.Allegiance?.edname);
+            Assert.IsNull(@event.controllingsystemfaction.Allegiance?.invariantName);
+#pragma warning disable CS0618 // Type or member is obsolete
+            Assert.AreEqual( "None", @event.controllingsystemfaction.allegiance);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [TestMethod]

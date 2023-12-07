@@ -41,12 +41,12 @@
 
         public static Superpower FromNameOrEdName(string from)
         {
-            if (from == null)
+            if (string.IsNullOrEmpty(from))
             {
-                return None;
+                return null;
             }
 
-            Superpower result = FromName(from);
+            var result = FromName(from);
             if (result == null && from.StartsWith("$faction_"))
             {
                 result = FromEDName(from);

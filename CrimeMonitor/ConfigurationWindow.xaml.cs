@@ -57,7 +57,7 @@ namespace EddiCrimeMonitor
 
                 Thread factionStationThread = new Thread(() =>
                 {
-                    Superpower Allegiance = Superpower.FromNameOrEdName(record.faction);
+                    var Allegiance = Superpower.FromNameOrEdName(record.faction);
                     if (Allegiance == null)
                     {
                         crimeMonitor()?.GetFactionData(record, record.system);

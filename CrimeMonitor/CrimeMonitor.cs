@@ -853,7 +853,7 @@ namespace EddiCrimeMonitor
             if (faction == null) { return null; }
 
             FactionRecord record = new FactionRecord(faction);
-            Superpower Allegiance = Superpower.FromNameOrEdName(faction);
+            var Allegiance = Superpower.FromNameOrEdName(faction);
             if (Allegiance == null)
             {
                 GetFactionData(record);
@@ -1015,7 +1015,7 @@ namespace EddiCrimeMonitor
 
             // Get the faction from Elite BGS and set faction record values
             Faction faction = bgsService.GetFactionByName(record.faction);
-            record.Allegiance = faction.Allegiance ?? Superpower.None;
+            record.Allegiance = faction.Allegiance;
 
             // Check faction with archived home systems
             if (homeSystems.TryGetValue(record.faction, out string result))
@@ -1123,7 +1123,7 @@ namespace EddiCrimeMonitor
                 {
                     foreach (FactionRecord record in criminalrecord.ToList())
                     {
-                        Superpower Allegiance = Superpower.FromNameOrEdName(record.faction);
+                        var Allegiance = Superpower.FromNameOrEdName(record.faction);
                         if (Allegiance == null)
                         {
                             record.station = GetFactionStation(record.system);

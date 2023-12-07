@@ -39,10 +39,10 @@ namespace EddiDataDefinitions
         public long? EDSMID { get; set; }
 
         /// <summary> The faction's allegiance </summary>
-        public Superpower Allegiance { get; set; } = Superpower.None;
+        public Superpower Allegiance { get; set; }
 
         /// <summary> The faction's government </summary>
-        public Government Government { get; set; } = Government.None;
+        public Government Government { get; set; }
 
         /// <summary> Whether the faction is a player faction </summary>
         public bool? isplayer { get; set; }

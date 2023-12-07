@@ -16,7 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( Superpower );
         public NativeFunction function => new NativeFunction((values) =>
         {
-            var result = Superpower.FromNameOrEdName(values[0].AsString);
+            var result = Superpower.FromNameOrEdName(values[0].AsString) ?? Superpower.None;
             return new ReflectionValue(result ?? new object());
         }, 1);
     }

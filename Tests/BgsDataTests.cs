@@ -135,8 +135,8 @@ namespace UnitTests
             Faction faction2 = fakeBgsService.GetFactionByName("No such faction");
             Assert.IsNotNull(faction2);
             Assert.AreEqual("No such faction", faction2.name);
-            Assert.AreEqual(Government.None, faction2.Government);
-            Assert.AreEqual(Superpower.None, faction2.Allegiance);
+            Assert.IsNull(faction2.Government);
+            Assert.IsNull(faction2.Allegiance);
             Assert.AreEqual(DateTime.MinValue, faction2.updatedAt);
             Assert.AreEqual(0, faction2.presences.Count);
         }

@@ -1835,7 +1835,7 @@ namespace EddiJournalMonitor
                                     string interdictee = JsonParsing.getString(data, "Interdicted");
                                     bool iscommander = JsonParsing.getBool(data, "IsPlayer");
                                     data.TryGetValue("CombatRank", out object val);
-                                    CombatRating rating = (val == null ? null : CombatRating.FromRank((int)val));
+                                    var rating = ( val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) ) );
                                     string faction = GetFactionName(data, "Faction");
                                     string power = JsonParsing.getString(data, "Power");
 
@@ -5071,9 +5071,8 @@ namespace EddiJournalMonitor
         private static Superpower GetAllegiance(IDictionary<string, object> data, string key)
         {
             data.TryGetValue(key, out object val);
-            // FD sends "" rather than null; fix that here
-            if (((string)val) == "") { val = null; }
-            return Superpower.FromNameOrEdName((string)val);
+            // FD may send "" rather than null;
+            return Superpower.FromNameOrEdName(Convert.ToString(val));
         }
 
         private static List<Conflict> GetConflicts(object conflictsVal, List<Faction> factions)
