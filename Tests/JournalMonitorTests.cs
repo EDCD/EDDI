@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Tests.Properties;
 using Utilities;
 
@@ -2384,6 +2385,26 @@ namespace UnitTests
             Assert.AreEqual( 1, events.Count );
             eddiPrivateObject.Invoke( "eventHandler", (SystemScanComplete)events[ 0 ] );
             Assert.AreEqual(45, ( (SystemScanComplete)events[ 0 ] ).count );
+        }
+
+        [TestMethod]
+        public void TestRepeatedShipShutdownEvents ()
+        {
+            // Trigger a `ShipShutdown` event.
+            var events = JournalMonitor.ParseJournalEntry( @"{ ""timestamp"":""2023-11-24T20:22:45Z"", ""event"":""SystemsShutdown"" }" );
+            Assert.AreEqual( 1, events.Count );
+            Assert.AreEqual(typeof(ShipShutdownEvent), events[0].GetType() );
+
+            // New `ShipShutdown` events should be suppressed for the next 15 seconds. Test at 8 seconds.
+            Thread.Sleep( TimeSpan.FromSeconds( 8 ) );
+            events = JournalMonitor.ParseJournalEntry( @"{ ""timestamp"":""2023-11-24T20:22:53Z"", ""event"":""SystemsShutdown"" }" );
+            Assert.AreEqual( 0, events.Count );
+
+            // New `ShipShutdown` events should be suppressed for the next 15 seconds. Test at 8 + 8 = 16 seconds.
+            Thread.Sleep( TimeSpan.FromSeconds( 8 ) );
+            events = JournalMonitor.ParseJournalEntry( @"{ ""timestamp"":""2023-11-24T20:23:01Z"", ""event"":""SystemsShutdown"" }" );
+            Assert.AreEqual( 1, events.Count );
+            Assert.AreEqual( typeof( ShipShutdownEvent ), events[ 0 ].GetType() );
         }
     }
 }

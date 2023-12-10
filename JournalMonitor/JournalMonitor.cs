@@ -31,6 +31,8 @@ namespace EddiJournalMonitor
         private static readonly Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources =
             new Dictionary<long, CancellationTokenSource>();
 
+        private static Task ShipShutdownTask = null;
+
         public static void ForwardJournalEntry(string line, Action<Event> callback, bool isLogLoadEvent)
         {
             if (line == null)
@@ -3988,15 +3990,17 @@ namespace EddiJournalMonitor
                                 break;
                             case "SystemsShutdown":
                                 {
-                                    if ( !fromLogLoad )
+                                    if ( ShipShutdownTask is null || ShipShutdownTask.Status != TaskStatus.Running )
                                     {
                                         events.Add(new ShipShutdownEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                        Task.Run( async () =>
+                                        ShipShutdownTask?.Dispose();
+                                        ShipShutdownTask = new Task( () =>
                                         {
-                                            // The ship shall reboot about 15 seconds after the shutdown occurs
-                                            await Task.Delay( TimeSpan.FromSeconds( 15 ) );
+                                            // The ship reboots about 15 seconds after the shutdown occurs
+                                            Thread.Sleep( TimeSpan.FromSeconds( 15 ) );
                                             events.Add( new ShipShutdownRebootEvent( timestamp ) { fromLoad = fromLogLoad } );
-                                        } ).ConfigureAwait(false);                                        
+                                        } );
+                                        ShipShutdownTask.Start();     
                                     }
                                 }
                                 handled = true;

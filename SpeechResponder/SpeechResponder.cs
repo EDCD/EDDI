@@ -277,9 +277,9 @@ namespace EddiSpeechResponder
             // Simulate a forced shutdown effect affecting the speech responder until the ship's system is rebooted
             if ( @event is ShipShutdownEvent )
             {
-                if ( EDDI.Instance.State.TryGetValue( "speechresponder_quiet", out var stateObj ) && stateObj is bool state )
+                if ( EDDI.Instance.State.TryGetValue( "speechresponder_quiet", out var stateObj ) )
                 {
-                    speechresponder_quiet_was = state;
+                    speechresponder_quiet_was = stateObj as bool?;
                 }
                 EDDI.Instance.State[ "speechresponder_quiet" ] = true;
                 SpeechService.Instance.speechQueue.DequeueAllSpeech();
