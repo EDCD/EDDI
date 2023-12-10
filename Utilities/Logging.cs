@@ -1,18 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Rollbar;
-using Rollbar.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Exception = System.Exception;
+using Utilities.TelemetryService;
 
 namespace Utilities
 {
@@ -57,6 +54,41 @@ namespace Utilities
                     message = $"{shortPath}:{method} {Redaction.RedactEnvironmentVariables(message)}";
                     var preppedData = FilterAndRedactData(data);
 
+                    void handleTelemetry (bool reportTelemetry = false)
+                    {
+                        if ( TelemetryEnabled )
+                        {
+                            try
+                            {
+                                if ( reportTelemetry )
+                                {
+                                    ReportTelemetryEvent( timestamp, errorlevel, message, preppedData );
+                                }
+                                else
+                                {
+                                    RecordTelemetryInfo( errorlevel, message, preppedData );
+                                }
+                            }
+                            catch ( TelemetryException tex )
+                            {
+                                Warn( tex.Message, tex );
+                            }
+                            catch ( HttpRequestException httpEx )
+                            {
+                                Warn( httpEx.Message, httpEx );
+                            }
+                            catch ( Exception ex )
+                            {
+                                Warn( ex.Message, ex );
+                            }
+
+                            if ( !string.IsNullOrEmpty( anonymousTelemetryID ) )
+                            {
+                                log( timestamp, errorlevel, $"Reporting error to telemetry service, anonymous ID {anonymousTelemetryID}: {message}" );
+                            }
+                        }
+                    }
+
                     switch (errorlevel)
                     {
                         case ErrorLevel.Debug:
@@ -65,30 +97,21 @@ namespace Utilities
                             {
                                 log(timestamp, errorlevel, message, preppedData);
                             }
-                            if (TelemetryEnabled)
-                            {
-                                RecordTelemetryInfo(errorlevel, message, preppedData);
-                            }
+                            handleTelemetry();
                             break;
                         }
                         case ErrorLevel.Info:
                         case ErrorLevel.Warning:
                         {
                             log(timestamp, errorlevel, message, preppedData);
-                            if (TelemetryEnabled)
-                            {
-                                RecordTelemetryInfo(errorlevel, message, preppedData);
-                            }
+                            handleTelemetry();
                             break;
                         }
                         case ErrorLevel.Error:
                         case ErrorLevel.Critical:
                         {
                             log(timestamp, errorlevel, message, preppedData);
-                            if (TelemetryEnabled)
-                            {
-                                ReportTelemetryEvent(timestamp, errorlevel, message, preppedData);
-                            }
+                            handleTelemetry( true );
                             break;
                         }
                     }
@@ -123,67 +146,6 @@ namespace Utilities
             if (errorlevel == ErrorLevel.Error || errorlevel == ErrorLevel.Critical)
             {
                 Console.WriteLine(str);
-            }
-        }
-
-        private static void RecordTelemetryInfo(ErrorLevel errorLevel, string message, IDictionary<string, object> preppedData = null)
-        {
-            if (Enum.TryParse(errorLevel.ToString(), out TelemetryLevel telemetryLevel))
-            {
-                try
-                {
-                    var telemetryBody = preppedData is null
-                        ? new LogTelemetry(message)
-                        : new LogTelemetry(message, preppedData);
-                    var telemetry = new Rollbar.DTOs.Telemetry(TelemetrySource.Client, telemetryLevel, telemetryBody);
-                    LockManager.GetLock(nameof(Telemetry), () =>
-                    {
-                        RollbarInfrastructure.Instance.TelemetryCollector?.Capture(telemetry);
-                    });
-                }
-                catch (RollbarException rex)
-                {
-                    Warn(rex.Message, rex);
-                }
-                catch (HttpRequestException httpEx)
-                {
-                    Warn(httpEx.Message, httpEx);
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Source != "Rollbar")
-                    {
-                        Warn(ex.Message, ex);
-                    }
-                }
-            }
-        }
-
-        private static void ReportTelemetryEvent(string timestamp, ErrorLevel errorLevel, string message, Dictionary<string, object> preppedData = null)
-        {
-            try
-            {
-                LockManager.GetLock(nameof(Telemetry), () =>
-                {
-                    RollbarLocator.RollbarInstance.Log(errorLevel, message, preppedData);
-                });
-                string personID = RollbarLocator.RollbarInstance.Config.RollbarPayloadAdditionOptions.Person?.Id;
-                if (!string.IsNullOrEmpty(personID))
-                {
-                    log(timestamp, errorLevel, $"Reporting error to Rollbar telemetry service, anonymous ID {personID}: {message}");
-                }
-            }
-            catch (RollbarException rex)
-            {
-                Warn(rex.Message, rex);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                Warn(httpEx.Message, httpEx);
-            }
-            catch (Exception ex)
-            {
-                Warn(ex.Message, ex);
             }
         }
 
@@ -338,112 +300,6 @@ namespace Utilities
                         // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
                     }
                 }
-            }
-        }
-    }
-
-    public class Telemetry
-    {
-        // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
-        // The Rollbar API test console is available at https://docs.rollbar.com/reference.
-
-        const string rollbarWriteToken = "30d5520d152e41c78fca8d9d56c7f98f";
-
-        public static bool TelemetryEnabled {
-            get => RollbarLocator.RollbarInstance.Config.RollbarDeveloperOptions.Transmit;
-            // ReSharper disable once ValueParameterNotUsed
-            set => RollbarLocator.RollbarInstance.Config.RollbarDeveloperOptions.Transmit =
-#if DEBUG
-                false;
-#else
-                value;
-#endif
-        }
-
-        public static void Start(string uniqueId, bool fromVA = false)
-        {
-            try
-            {
-                TelemetryEnabled = true;
-
-                var config = new RollbarInfrastructureConfig( rollbarWriteToken, Constants.EDDI_VERSION.ToString() );
-
-                // Configure telemetry
-                var telemetryOptions = new RollbarTelemetryOptions( true, 250 );
-                config.RollbarTelemetryOptions.Reconfigure( telemetryOptions );
-
-                // Configure Infrastructure Options
-                var infrastructureOptions = new RollbarInfrastructureOptions
-                {
-                    MaxReportsPerMinute = 1,
-                    PayloadPostTimeout = TimeSpan.FromSeconds( 10 ),
-                    CaptureUncaughtExceptions = false
-                };
-                config.RollbarInfrastructureOptions.Reconfigure( infrastructureOptions );
-
-                // Configure Logger Options
-                var loggerOptions = new RollbarLoggerConfig( rollbarWriteToken, Constants.EDDI_VERSION.ToString() );
-                var loggerDataSecurityOptions = new RollbarDataSecurityOptions(
-                    PersonDataCollectionPolicies.None,
-                    IpAddressCollectionPolicy.DoNotCollect,
-                    new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID" } );
-                var assyMetadataAttributes = Assembly.GetExecutingAssembly()?.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
-                var loggerPayloadOptions = new RollbarPayloadAdditionOptions()
-                {
-                    Person = new Person( uniqueId + ( fromVA ? " VA" : "" ) ),
-                    Server = new Server
-                    {
-                        Root = "https://github.com/EDCD/EDDI",
-                        Branch = assyMetadataAttributes.SingleOrDefault( a => a.Key == "SourceBranch")?.Value
-                    },
-                    CodeVersion = assyMetadataAttributes.SingleOrDefault( a => a.Key == "SourceRevisionId" )?.Value
-                };
-                loggerOptions.RollbarDataSecurityOptions.Reconfigure( loggerDataSecurityOptions );
-                loggerOptions.RollbarPayloadAdditionOptions.Reconfigure( loggerPayloadOptions );
-                config.RollbarLoggerConfig.Reconfigure( loggerOptions );
-
-                // Initialize our configured client
-                RollbarInfrastructure.Instance.Init( config );
-                RollbarLocator.RollbarInstance.Configure( config.RollbarLoggerConfig );
-                RollbarLocator.RollbarInstance.InternalEvent += OnRollbarInternalEvent;
-                Thread.Sleep( 100 ); // Give some space for Rollbar to initialize before we begin sending data
-            }
-            catch ( Exception e )
-            {
-                TelemetryEnabled = false;
-                Logging.Warn( "Telemetry process has failed", e );
-            }
-        }
-
-        /// <summary>
-        /// Called when rollbar internal event is detected.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RollbarEventArgs"/> instance containing the event data.</param>
-        private static void OnRollbarInternalEvent ( object sender, RollbarEventArgs e )
-        {
-            if ( e is RollbarApiErrorEventArgs apiErrorEvent )
-            {
-                Logging.Warn(apiErrorEvent.ErrorDescription, apiErrorEvent);
-                return;
-            }
-
-            if ( e is CommunicationEventArgs )
-            {
-                //TODO: handle/report Rollbar API communication event as needed...
-                return;
-            }
-
-            if ( e is CommunicationErrorEventArgs commErrorEvent )
-            {
-                Logging.Warn( commErrorEvent.Error.Message, commErrorEvent );
-                return;
-            }
-
-            if ( e is InternalErrorEventArgs internalErrorEvent )
-            {
-                Logging.Warn( internalErrorEvent.Details, internalErrorEvent );
-                return;
             }
         }
     }

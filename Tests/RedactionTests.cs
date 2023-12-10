@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Utilities;
 
 namespace UnitTests
 {
@@ -9,7 +10,7 @@ namespace UnitTests
         private void TestRoundTrip(string source)
         {
             string rawPath = source != null ? Environment.ExpandEnvironmentVariables(source) : null;
-            string redacted = Utilities.Redaction.RedactEnvironmentVariables(rawPath);
+            string redacted = Redaction.RedactEnvironmentVariables(rawPath);
             string expected = source?.Replace("%TMP%", "%TEMP%"); // these are exact synonyms and we normalise on %TEMP%
             Assert.AreEqual(expected, redacted);
         }
@@ -55,7 +56,7 @@ namespace UnitTests
             string oldVal = Environment.GetEnvironmentVariable("HOMEPATH");
             Environment.SetEnvironmentVariable("HOMEPATH", null);
             string source = @"C:\EDDI\eddi.json";
-            string redacted = Utilities.Redaction.RedactEnvironmentVariables(source);
+            string redacted = Redaction.RedactEnvironmentVariables(source);
             string expected = source;
             Assert.AreEqual(expected, redacted);
             Environment.SetEnvironmentVariable("HOMEPATH", oldVal);
@@ -67,7 +68,7 @@ namespace UnitTests
             string oldVal = Environment.GetEnvironmentVariable("HOMEPATH");
             Environment.SetEnvironmentVariable("HOMEPATH", "");
             string source = @"C:\EDDI\eddi.json";
-            string redacted = Utilities.Redaction.RedactEnvironmentVariables(source);
+            string redacted = Redaction.RedactEnvironmentVariables(source);
             string expected = source;
             Assert.AreEqual(expected, redacted);
             Environment.SetEnvironmentVariable("HOMEPATH", oldVal);
@@ -79,7 +80,7 @@ namespace UnitTests
             string oldVal = Environment.GetEnvironmentVariable("HOMEPATH");
             Environment.SetEnvironmentVariable("HOMEPATH", @"\");
             string source = @"C:\EDDI\eddi.json";
-            string redacted = Utilities.Redaction.RedactEnvironmentVariables(source);
+            string redacted = Redaction.RedactEnvironmentVariables(source);
             string expected = source;
             Assert.AreEqual(expected, redacted);
             Environment.SetEnvironmentVariable("HOMEPATH", oldVal);

@@ -120,7 +120,7 @@ namespace Eddi
             // Generate an id unique to this app run for bug tracking
             // and start the telemetry service
             var telemetryID = Guid.NewGuid().ToString();
-            Telemetry.Start(telemetryID, FromVA);
+            Utilities.TelemetryService.Telemetry.Start(telemetryID, FromVA);
 
             // Catch and send unhandled exceptions
             System.Windows.Forms.Application.ThreadException += (sender, args) =>

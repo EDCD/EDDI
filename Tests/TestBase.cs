@@ -23,7 +23,7 @@ namespace UnitTests
         internal void MakeSafe()
         {
             // Prevent telemetry data from being reported based on test results
-            Utilities.Telemetry.TelemetryEnabled = false;
+            Utilities.TelemetryService.Telemetry.TelemetryEnabled = false;
 
             // Don't write to permanent storage (do this before we initialize our EDDI instance)
             Utilities.Files.unitTesting = true;
