@@ -33,21 +33,20 @@ namespace UnitTests
         {
             var speechService = new PrivateObject(new SpeechService());
             speechService.SetFieldOrProperty("speechQueue", new SpeechQueue());
-            SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
+            var speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
 
-            EddiSpeech speech1 = new EddiSpeech(message1, null, priority1);
-            EddiSpeech speech2 = new EddiSpeech(message2, null, priority2);
+            var speech1 = new EddiSpeech(message1, null, priority1);
+            var speech2 = new EddiSpeech(message2, null, priority2);
 
             if ( speechQueue is null )
             {
                 Assert.Fail();
-
             }
 
             speechQueue.Enqueue(speech1);
             speechQueue.Enqueue(speech2);
 
-            if ( speechQueue.TryDequeue( out EddiSpeech result1 ))
+            if ( speechQueue.TryDequeue( out var result1 ))
             {
                 Assert.IsNotNull( result1 );
             }
@@ -56,7 +55,7 @@ namespace UnitTests
                 Assert.Fail();
             }
 
-            if ( speechQueue.TryDequeue( out EddiSpeech result2 ))
+            if ( speechQueue.TryDequeue( out var result2 ))
             {
                 Assert.IsNotNull( result2 );
             }
@@ -74,34 +73,34 @@ namespace UnitTests
         {
             var speechService = new PrivateObject(new SpeechService());
 
-            EddiSpeech priority5speech = new EddiSpeech("Priority 5", null, 5);
-            EddiSpeech priority4speech = new EddiSpeech("Priority 2", null, 4);
-            EddiSpeech priority2speech = new EddiSpeech("Priority 4", null, 2);
-            EddiSpeech priority1speech = new EddiSpeech("Priority 1", null, 1);
+            var priority5speech = new EddiSpeech("Priority 5", null, 5);
+            var priority4speech = new EddiSpeech("Priority 2", null, 4);
+            var priority2speech = new EddiSpeech("Priority 4", null, 2);
+            var priority1speech = new EddiSpeech("Priority 1", null, 1);
 
             // Set up priority 5 speech
             speechService.SetFieldOrProperty("activeSpeechPriority", priority5speech.priority);
             Assert.AreEqual(5, (int?)speechService.GetFieldOrProperty("activeSpeechPriority"));
 
             // Check that priority 5 speech IS interrupted by priority 4 speech.
-            Assert.IsTrue((bool?)speechService.Invoke("checkSpeechInterrupt", new object[] { priority4speech.priority }));
+            Assert.IsTrue((bool?)speechService.Invoke("checkSpeechInterrupt", priority4speech.priority ));
 
             // Set up priority 4 speech
             speechService.SetFieldOrProperty("activeSpeechPriority", priority4speech.priority);
             Assert.AreEqual(4, (int?)speechService.GetFieldOrProperty("activeSpeechPriority"));
 
             // Check that priority 4 speech IS NOT interrupted by priority 2 speech.
-            Assert.IsFalse((bool?)speechService.Invoke("checkSpeechInterrupt", new object[] { priority2speech.priority }));
+            Assert.IsFalse((bool?)speechService.Invoke("checkSpeechInterrupt", priority2speech.priority ));
 
             // Check that priority 4 speech IS interrupted by priority 1 speech.
-            Assert.IsTrue((bool?)speechService.Invoke("checkSpeechInterrupt", new object[] { priority1speech.priority }));
+            Assert.IsTrue((bool?)speechService.Invoke("checkSpeechInterrupt", priority1speech.priority ));
         }
 
         [TestMethod]
         public void TestClearSpeechQueue()
         {
-            EddiSpeech speech = new EddiSpeech("Priority 3", null, 3);
-            SpeechQueue speechQueue = new SpeechQueue();
+            var speech = new EddiSpeech("Priority 3", null, 3);
+            var speechQueue = new SpeechQueue();
             Assert.IsTrue(speechQueue.priorityQueues.ElementAtOrDefault(speech.priority) != null);
 
             speechQueue.priorityQueues[speech.priority].Enqueue(speech);
@@ -115,11 +114,11 @@ namespace UnitTests
         [TestMethod]
         public void TestFilterSpeechQueue()
         {
-            EddiSpeech speech1 = new EddiSpeech("Jumped", null, 3, null, false, "FSD engaged");
-            EddiSpeech speech2 = new EddiSpeech("Refueled", null, 3, null, false, "Ship refueled");
-            EddiSpeech speech3 = new EddiSpeech("Scanned", null, 3, null, false, "Body scan");
+            var speech1 = new EddiSpeech("Jumped", null, 3, null, false, "FSD engaged");
+            var speech2 = new EddiSpeech("Refueled", null, 3, null, false, "Ship refueled");
+            var speech3 = new EddiSpeech("Scanned", null, 3, null, false, "Body scan");
 
-            SpeechQueue speechQueue = new SpeechQueue();
+            var speechQueue = new SpeechQueue();
             Assert.IsTrue(speechQueue.priorityQueues.ElementAtOrDefault(3) != null);
             speechQueue.priorityQueues[speech1.priority].Enqueue(speech1);
             speechQueue.priorityQueues[speech2.priority].Enqueue(speech2);
@@ -143,70 +142,70 @@ namespace UnitTests
         [TestMethod]
         public void TestPathingString1()
         {
-            string pathingString = @"There are [4;5] lights";
-            List<string> pathingOptions = new List<string>() {
-                "There are 4 lights"
-                , "There are 5 lights"
+            var pathingString = @"There are [4;5] lights";
+            var pathingOptions = new List<string>() {
+                 "There are 4 lights"
+                ,"There are 5 lights"
             };
 
-            HashSet<string> pathingResults = new HashSet<string>();
-            for (int i = 0; i < 1000; i++)
+            var pathingResults = new HashSet<string>();
+            for ( var i = 0; i < 1000; i++)
             {
-                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
-            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            var expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
             Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
         }
 
         [TestMethod]
         public void TestPathingString2()
         {
-            string pathingString = @"There are [4;5;] lights";
-            List<string> pathingOptions = new List<string>() {
-                "There are 4 lights"
-                , "There are 5 lights"
-                , "There are  lights"
+            var pathingString = @"There are [4;5;] lights";
+            var pathingOptions = new List<string>() {
+                 "There are 4 lights"
+                ,"There are 5 lights"
+                ,"There are  lights"
             };
 
-            HashSet<string> pathingResults = new HashSet<string>();
-            for (int i = 0; i < 1000; i++)
+            var pathingResults = new HashSet<string>();
+            for ( var i = 0; i < 1000; i++)
             {
-                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
-            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            var expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
             Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
         }
 
         [TestMethod]
         public void TestPathingString3()
         {
-            string pathingString = @"There [are;might be;could be] [4;5;] lights;It's dark in here;";
-            List<string> pathingOptions = new List<string>() {
-                "There are 4 lights"
-                , "There are 5 lights"
-                , "There are  lights"
+            var pathingString = @"There [are;might be;could be] [4;5;] lights;It's dark in here;";
+            var pathingOptions = new List<string>() {
+                 "There are 4 lights"
+                ,"There are 5 lights"
+                ,"There are  lights"
                 ,"There might be 4 lights"
-                , "There might be 5 lights"
-                , "There might be  lights"
+                ,"There might be 5 lights"
+                ,"There might be  lights"
                 ,"There could be 4 lights"
-                , "There could be 5 lights"
-                , "There could be  lights"
-                , "It's dark in here"
-                , ""
+                ,"There could be 5 lights"
+                ,"There could be  lights"
+                ,"It's dark in here"
+                ,""
             };
 
-            HashSet<string> pathingResults = new HashSet<string>();
-            for (int i = 0; i < 1000; i++)
+            var pathingResults = new HashSet<string>();
+            for ( var i = 0; i < 1000; i++)
             {
-                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
-            HashSet<string> expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
+            var expectedHashSet = new HashSet<string>(pathingOptions.Select(CondenseSpaces));
             Assert.IsTrue(pathingResults.SetEquals(expectedHashSet));
         }
 
@@ -215,13 +214,13 @@ namespace UnitTests
         {
             var pathingString = @";;;;;;Seven;;;";
             var pathingOptions = new List<string>() {
-                ""
-                , "Seven"
+                 ""
+                ,"Seven"
             };
 
-            int sevenCount = 0;
+            var sevenCount = 0;
             var pathingResults = new HashSet<string>();
-            for ( int i = 0; i < 10000; i++)
+            for ( var i = 0; i < 10000; i++)
             {
                 var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add( pathedString );
@@ -241,15 +240,15 @@ namespace UnitTests
         [TestMethod]
         public void TestPathingString5()
         {
-            string pathingString = @"You leave me [no choice].";
-            List<string> pathingOptions = new List<string>() {
+            var pathingString = @"You leave me [no choice].";
+            var pathingOptions = new List<string>() {
                 "You leave me no choice."
             };
 
-            HashSet<string> pathingResults = new HashSet<string>();
-            for (int i = 0; i < 1000; i++)
+            var pathingResults = new HashSet<string>();
+            for (var i = 0; i < 1000; i++)
             {
-                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -259,15 +258,15 @@ namespace UnitTests
         [TestMethod]
         public void TestPathingString6()
         {
-            string pathingString = @"[There can be only one.]";
-            List<string> pathingOptions = new List<string>() {
+            var pathingString = @"[There can be only one.]";
+            var pathingOptions = new List<string>() {
                 "There can be only one."
             };
 
-            HashSet<string> pathingResults = new HashSet<string>();
-            for (int i = 0; i < 1000; i++)
+            var pathingResults = new HashSet<string>();
+            for (var i = 0; i < 1000; i++)
             {
-                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -290,28 +289,28 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechQueue_DequeueSpeechOfType()
         {
-            PrivateObject privateObject = new PrivateObject(new SpeechQueue());
-            privateObject.Invoke("DequeueAllSpeech", System.Array.Empty<object>());
-            privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 1", null, 3, null, false, null) });
-            privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 2", null, 4, null, false, "Hull damaged") });
-            privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 3", null, 3, null, false, "Body scanned") });
+            var privateObject = new PrivateObject(new SpeechQueue());
+            privateObject.Invoke("DequeueAllSpeech", Array.Empty<object>());
+            privateObject.Invoke("Enqueue", new EddiSpeech("Test speech 1", null, 3, null, false, null) );
+            privateObject.Invoke("Enqueue", new EddiSpeech("Test speech 2", null, 4, null, false, "Hull damaged") );
+            privateObject.Invoke("Enqueue", new EddiSpeech("Test speech 3", null, 3, null, false, "Body scanned") );
 
-            List<ConcurrentQueue<EddiSpeech>> priorityQueues = (List<ConcurrentQueue<EddiSpeech>>)privateObject.GetFieldOrProperty("priorityQueues");
+            var priorityQueues = (List<ConcurrentQueue<EddiSpeech>>)privateObject.GetFieldOrProperty("priorityQueues");
             Assert.AreEqual(3, priorityQueues?.SelectMany(q => q).Count());
             try
             {
                 // Only the speech of type "Hull damaged" should be removed, null types and other types should remain in place.
-                privateObject.Invoke("DequeueSpeechOfType", new object[] { "Hull damaged" });
+                privateObject.Invoke("DequeueSpeechOfType", "Hull damaged" );
                 Assert.AreEqual(2, priorityQueues?.SelectMany(q => q).Count());
                 // Verify that the order of remaining speech of the same priority is unchanged.
                 Assert.AreEqual("Test speech 1", priorityQueues?[3].First().message);
                 Assert.AreEqual("Test speech 3", priorityQueues?[3].Last().message);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 Assert.Fail();
             }
-            privateObject.Invoke("DequeueAllSpeech", System.Array.Empty<object>());
+            privateObject.Invoke("DequeueAllSpeech", Array.Empty<object>());
         }
 
         [DataTestMethod]

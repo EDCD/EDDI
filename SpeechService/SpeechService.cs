@@ -730,18 +730,17 @@ namespace EddiSpeechService
         {
             Logging.Debug( $"Ending all audio playback." );
             discardPendingSegments = true;
-            lock ( activeAudioLock )
+            lock (activeAudioLock)
             {
-                var keysToRemove = activeAudioTS.Keys;
-                keysToRemove.AsParallel().ForAll( key =>
+                foreach ( var soundOut in activeAudioTS.Keys )
                 {
-                    if ( activeAudioTS.TryRemove( key, out var tokenSource ) )
+                    if ( activeAudioTS.TryRemove( soundOut, out var ts ) )
                     {
-                        tokenSource.Cancel();
-                        tokenSource.Token.WaitHandle.WaitOne( TimeSpan.FromSeconds( 5 ) );
-                        tokenSource.Dispose();
-                    }
-                } );
+                        ts.Cancel();
+                        ts.Token.WaitHandle.WaitOne( TimeSpan.FromSeconds( 5 ) );
+                        ts.Dispose();
+                    };
+                }
             }
         }
 
