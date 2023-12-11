@@ -87,7 +87,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms">
-      <Version>7.0.3</Version>
+      <Version>7.0.4</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
       <Version>3.1.1</Version>
