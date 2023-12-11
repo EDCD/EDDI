@@ -33,7 +33,7 @@ namespace Eddi
             app.Exit += OnExit;
 
             // Prepare to start the application
-            Logging.incrementLogs(); // Increment to a new log file.
+            Logging.IncrementLogs(); // Increment to a new log file.
             EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
             if (configuration != null && !configuration.DisableTelemetry)
             {

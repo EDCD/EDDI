@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -17,30 +18,31 @@ namespace Utilities
     {
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
 
-        public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
+        private static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
+
         public static bool Verbose { get; set; }
 
         public static void Error(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleLogging(ErrorLevel.Error, message, data, memberName, filePath);
+            Handle(ErrorLevel.Error, message, data is null ? null : JToken.FromObject(data), memberName, filePath);
         }
 
         public static void Warn(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleLogging(ErrorLevel.Warning, message, data, memberName, filePath);
+            Handle(ErrorLevel.Warning, message, data is null ? null : JToken.FromObject( data ), memberName, filePath);
         }
 
         public static void Info(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleLogging(ErrorLevel.Info, message, data, memberName, filePath);
+            Handle(ErrorLevel.Info, message, data is null ? null : JToken.FromObject( data ), memberName, filePath);
         }
 
         public static void Debug(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            handleLogging(ErrorLevel.Debug, message, data, memberName, filePath);
+            Handle(ErrorLevel.Debug, message, data is null ? null : JToken.FromObject( data ), memberName, filePath);
         }
 
-        private static void handleLogging(ErrorLevel errorlevel, string message, object data, string memberName,
+        private static void Handle(ErrorLevel errorlevel, string message, [CanBeNull] JToken data, string memberName,
             string filePath)
         {
             try
@@ -48,46 +50,10 @@ namespace Utilities
                 System.Threading.Tasks.Task.Run(() =>
                 {
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-                    string timestamp = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture);
-                    var shortPath = Redaction.RedactEnvironmentVariables(Path.GetFileNameWithoutExtension(filePath));
-                    var method = Redaction.RedactEnvironmentVariables(memberName);
-                    message = $"{shortPath}:{method} {Redaction.RedactEnvironmentVariables(message)}";
-                    var preppedData = FilterAndRedactData(data);
-
-                    void handleTelemetry (bool reportTelemetry = false)
-                    {
-                        if ( TelemetryEnabled )
-                        {
-                            try
-                            {
-                                if ( reportTelemetry )
-                                {
-                                    ReportTelemetryEvent( timestamp, errorlevel, message, preppedData );
-                                }
-                                else
-                                {
-                                    RecordTelemetryInfo( errorlevel, message, preppedData );
-                                }
-                            }
-                            catch ( TelemetryException tex )
-                            {
-                                Warn( tex.Message, tex );
-                            }
-                            catch ( HttpRequestException httpEx )
-                            {
-                                Warn( httpEx.Message, httpEx );
-                            }
-                            catch ( Exception ex )
-                            {
-                                Warn( ex.Message, ex );
-                            }
-
-                            if ( !string.IsNullOrEmpty( anonymousTelemetryID ) )
-                            {
-                                log( timestamp, errorlevel, $"Reporting error to telemetry service, anonymous ID {anonymousTelemetryID}: {message}" );
-                            }
-                        }
-                    }
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                    var timestamp = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture);
+                    message = PrepareMessage( message, memberName, filePath );
+                    var preppedData = PrepareData( data );
 
                     switch (errorlevel)
                     {
@@ -95,101 +61,69 @@ namespace Utilities
                         {
                             if (Verbose)
                             {
-                                log(timestamp, errorlevel, message, preppedData);
+                                WriteToLog(timestamp, errorlevel, message, preppedData);
                             }
-                            handleTelemetry();
+                            HandleTelemetry( errorlevel, message, timestamp, false, preppedData );
                             break;
                         }
                         case ErrorLevel.Info:
                         case ErrorLevel.Warning:
                         {
-                            log(timestamp, errorlevel, message, preppedData);
-                            handleTelemetry();
+                            WriteToLog(timestamp, errorlevel, message, preppedData);
+                            HandleTelemetry( errorlevel, message, timestamp, false, preppedData );
                             break;
                         }
                         case ErrorLevel.Error:
                         case ErrorLevel.Critical:
                         {
-                            log(timestamp, errorlevel, message, preppedData);
-                            handleTelemetry( true );
+                            WriteToLog(timestamp, errorlevel, message, preppedData);
+                            HandleTelemetry( errorlevel, message, timestamp, true, preppedData );
                             break;
                         }
                     }
-                }).ConfigureAwait(false);
+                } ).ConfigureAwait(false);
             }
             catch
             {
                 // Nothing to do here
             }
         }
-
-        private static readonly object logLock = new object();
-        private static void log(string timestamp, ErrorLevel errorlevel, string message, object data = null)
+        
+        private static string PrepareMessage ( string message, string memberName, string filePath )
         {
-            var str = $"{timestamp} [{errorlevel}] {message}" + (data != null
-                            ? $": {Redaction.RedactEnvironmentVariables(JsonConvert.SerializeObject(data))}"
-                            : null);
-            lock (logLock)
+            var shortPath = Redaction.RedactEnvironmentVariables( Path.GetFileNameWithoutExtension( filePath ) );
+            var method = Redaction.RedactEnvironmentVariables( memberName );
+            message = $"{shortPath}:{method} {Redaction.RedactEnvironmentVariables( message )}";
+            return message;
+        }
+
+        private static Dictionary<string, object> PrepareData ( [CanBeNull] JToken data )
+        {
+            if ( data == null ) { return null; }
+            if ( data.Type == JTokenType.String && !JsonRegex.IsMatch( data.ToString() ) )
+            {
+                return WrapData( "message", Redaction.RedactEnvironmentVariables( data.ToString() ) );
+            }
+            else
             {
                 try
                 {
-                    using (StreamWriter file = new StreamWriter(LogFile, true))
+                    data = Redaction.RedactEnvironmentVariables( data );
+                    data = Redaction.RedactPersonalProperties( data );
+                    if ( data is JObject )
                     {
-                        file.WriteLine(str);
+                        return data.ToObject<Dictionary<string, object>>();
                     }
+                    return WrapData( "data", data );
                 }
-                catch (Exception)
+                catch ( ObjectDisposedException )
                 {
-                    // Failed; can't do anything about it as we're in the logging code anyway
+                    return null;
                 }
-            }
-            if (errorlevel == ErrorLevel.Error || errorlevel == ErrorLevel.Critical)
-            {
-                Console.WriteLine(str);
             }
         }
 
-        private static Dictionary<string, object> FilterAndRedactData(object data)
-        {
-            if (data is null) { return null; }
-            try
-            {
-                if (data is string str && !JsonRegex.IsMatch(str))
-                {
-                    return Wrap("message", Redaction.RedactEnvironmentVariables(str));
-                }
-                else
-                {
-                    // Serialize the data to a string 
-                    string serialized = JsonConvert.SerializeObject(data);
-                    serialized = FilterPropertiesFromJsonString(serialized);
-                    serialized = Redaction.RedactEnvironmentVariables(serialized);
-                    if (data is Exception)
-                    {
-                        return JsonConvert.DeserializeObject<Dictionary<string, object>>(serialized);
-                    }
-                    else
-                    {
-                        var jToken = JToken.Parse(serialized);
-                        if (jToken is JArray jArray)
-                        {
-                            return Wrap("data", jArray);
-                        }
-                        if (jToken is JObject jObject)
-                        {
-                            return jObject.ToObject<Dictionary<string, object>>();
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // Something went wrong. Return null and don't send data to Rollbar
-            }
-            return null;
-        }
-
-        private static Dictionary<string, object> Wrap(string key, object data)
+        private static Dictionary<string, object> WrapData ( string key, object data )
         {
             var wrappedData = new Dictionary<string, object>()
             {
@@ -198,71 +132,72 @@ namespace Utilities
             return wrappedData;
         }
 
-        private static string FilterPropertiesFromJsonString(string json)
+        private static readonly object logLock = new object();
+
+        private static void WriteToLog ( string timestamp, ErrorLevel errorlevel, string message, object preppedData = null )
         {
-            if (string.IsNullOrEmpty(json)) { return null; }
+            var str = $"{timestamp} [{errorlevel}] {message}" + ( preppedData != null
+                ? $": {Redaction.RedactEnvironmentVariables( JsonConvert.SerializeObject( preppedData ) )}"
+                : null );
+            if ( string.IsNullOrEmpty( str ) ) { return; }
 
-            try
+            lock ( logLock )
             {
-                var jToken = JToken.Parse(json);
-                if (jToken is JObject data)
+                try
                 {
-                    // Strip module data that is not useful to report for more consistent matching
-                    // Strip commodity data that is not useful to report for more consistent matching
-                    // Strip sensitive or personal data like "apiKey" or "frontierID"
-                    string[] filterProperties =
-                    {
-                        "priority",
-                        "health",
-                        "buyprice",
-                        "stock",
-                        "stockbracket",
-                        "sellprice",
-                        "demand",
-                        "demandbracket",
-                        "StatusFlags",
-                        "apiKey",
-                        "frontierID",
-                        "FID",
-                        "ActiveFine",
-                        "CockpitBreach",
-                        "BoostUsed",
-                        "FuelLevel",
-                        "FuelUsed",
-                        "JumpDist",
-                        "Wanted",
-                        "Latitude",
-                        "Longitude",
-                        "MyReputation",
-                        "SquadronFaction",
-                        "HappiestSystem",
-                        "HomeSystem",
-                        "access_token",
-                        "refresh_token",
-                        "uploaderID",
-                        "commanderName"
-                    };
+                    // Log to console
+                    Console.WriteLine( str );
 
-                    foreach (string property in filterProperties)
+                    // Log to file
+                    using ( StreamWriter file = new StreamWriter( LogFile, true ) )
                     {
-                        data.Descendants()
-                            .OfType<JProperty>()
-                            .Where(attr => attr.Name.StartsWith(property, StringComparison.OrdinalIgnoreCase))
-                            .ToList()
-                            .ForEach(attr => attr.Remove());
+                        file.WriteLine( str );
                     }
-
-                    json = data.ToString();
+                }
+                catch ( Exception )
+                {
+                    // Failed; can't do anything about it as we're in the logging code anyway
                 }
             }
-            catch (Exception)
-            {
-                // Not parseable json.
-            }
-            return json;
         }
 
-        public static void incrementLogs()
+        private static void HandleTelemetry ( ErrorLevel errorlevel, string message, string timestamp, bool reportTelemetry,
+            Dictionary<string, object> preppedData )
+        {
+            if ( TelemetryEnabled )
+            {
+                try
+                {
+                    if ( reportTelemetry && ( errorlevel == ErrorLevel.Error || errorlevel == ErrorLevel.Critical ) )
+                    {
+                        if ( !string.IsNullOrEmpty( anonymousTelemetryID ) )
+                        {
+                            WriteToLog( timestamp, errorlevel,
+                                $"Reporting error to telemetry service, anonymous ID {anonymousTelemetryID}: {message}" );
+                        }
+                        ReportTelemetryEvent( timestamp, errorlevel, message, preppedData );
+                    }
+                    else
+                    {
+                        RecordTelemetryInfo( errorlevel, message, preppedData );
+                    }
+                }
+                catch ( TelemetryException tex )
+                {
+                    Warn( tex.Message, tex );
+                }
+                catch ( HttpRequestException httpEx )
+                {
+                    Warn( httpEx.Message, httpEx );
+                }
+                catch ( Exception ex )
+                {
+                    Warn( ex.Message, ex );
+                }
+            }
+        }
+
+        public static void IncrementLogs()
         {
             // Ensure dir exists
             DirectoryInfo directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
@@ -272,33 +207,33 @@ namespace Utilities
             }
 
             // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
-            foreach (FileInfo file in directoryInfo.GetFiles().OrderBy(f => f.LastWriteTimeUtc).ToList())
+            foreach ( var file in directoryInfo.GetFiles().OrderBy( f => f.LastWriteTimeUtc ).ToList() )
             {
-                string filePath = file.FullName;
-                if (filePath.EndsWith(".log"))
-                {
-                    try
-                    {
-                        bool parsed = int.TryParse(filePath.Replace(Constants.DATA_DIR + @"\eddi", "").Replace(".log", ""), out int i);
-                        ++i; // Increment our index number
+                var filePath = file.FullName;
+                if ( !filePath.EndsWith( ".log" ) ) { continue; }
 
-                        if (i >= 10)
-                        {
-                            File.Delete(filePath);
-                        }
-                        else
-                        {
-                            // This might be our primary log file, so we lock it prior to doing anything with it
-                            lock (logLock)
-                            {
-                                File.Move(filePath, Constants.DATA_DIR + @"\eddi" + i + ".log");
-                            }
-                        }
-                    }
-                    catch (Exception)
+                try
+                {
+                    int.TryParse( filePath.Replace( Constants.DATA_DIR + @"\eddi", "" ).Replace( ".log", "" ),
+                        out int i );
+                    ++i; // Increment our index number
+
+                    if ( i >= 10 )
                     {
-                        // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
+                        File.Delete( filePath );
                     }
+                    else
+                    {
+                        // This might be our primary log file, so we lock it prior to doing anything with it
+                        lock ( logLock )
+                        {
+                            File.Move( filePath, Constants.DATA_DIR + @"\eddi" + i + ".log" );
+                        }
+                    }
+                }
+                catch ( Exception )
+                {
+                    // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
                 }
             }
         }

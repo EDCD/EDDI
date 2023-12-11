@@ -10,18 +10,18 @@ namespace UnitTests
     [TestClass]
     public class TelemetryTests : TestBase
     {
-        private Dictionary<string, object> PrepRollbarData(object data)
+        private Dictionary<string, object> PrepTelemetryData(object data)
         {
-            PrivateType privateType = new PrivateType(typeof(Logging));
-            Dictionary<string, object> result = (Dictionary<string, object>)privateType.InvokeStatic("FilterAndRedactData", new object[] { data });
+            var privateType = new PrivateType(typeof(Logging));
+            var result = (Dictionary<string, object>)privateType.InvokeStatic("PrepareData", JToken.FromObject(data) );
             return result;
         }
 
         [TestMethod]
         public void TestString()
         {
-            string data = "This is a string data package";
-            Dictionary<string, object> result = PrepRollbarData(data);
+            var data = "This is a string data package";
+            var result = PrepTelemetryData(data);
             result.TryGetValue("message", out object message);
             Assert.AreEqual(data, (string)message);
         }
@@ -29,8 +29,8 @@ namespace UnitTests
         [TestMethod]
         public void TestOther()
         {
-            Event data = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
-            Dictionary<string, object> result = PrepRollbarData(data);
+            var data = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
+            var result = PrepTelemetryData(data);
             Assert.IsFalse(result.TryGetValue("frontierID", out _), "'frontierID' property should have been removed");
             Assert.IsTrue(result.TryGetValue("type", out _));
         }
@@ -38,8 +38,8 @@ namespace UnitTests
         [TestMethod]
         public void TestException()
         {
-            Exception exception = new InvalidCastException();
-            Dictionary<string, object> result = PrepRollbarData(exception);
+            var exception = new InvalidCastException();
+            var result = PrepTelemetryData(exception);
 
             result.TryGetValue("Message", out object message);
             Assert.AreEqual(exception.Message, message?.ToString());
@@ -51,19 +51,19 @@ namespace UnitTests
         [TestMethod]
         public void TestDictionary()
         {
-            string str = "This is a Dictionary payload";
-            Event @event = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
+            var str = "This is a Dictionary payload";
+            var @event = new CommanderLoadingEvent(DateTime.UtcNow, "testCmdr", "F111111");
             Assert.IsNotNull(@event);
-            Exception exception = new InvalidCastException();
+            var exception = new InvalidCastException();
 
-            Dictionary<string, object> data = new Dictionary<string, object>
+            var data = new Dictionary<string, object>
             {
                 { "message", str },
                 { "event", @event },
                 { "exception", exception }
             };
 
-            Dictionary<string, object> result = PrepRollbarData(data);
+            var result = PrepTelemetryData(data);
 
             result.TryGetValue("message", out object message);
             Assert.AreEqual(str, message?.ToString());
@@ -86,7 +86,7 @@ namespace UnitTests
         public void TestArray()
         {
             string[] data = { "a", "b", "c" };
-            Dictionary<string, object> result = PrepRollbarData(data);
+            var result = PrepTelemetryData(data);
             Assert.IsTrue(result.TryGetValue("data", out object package));
             for (int i = 0; i < data.Length; i++)
             {
