@@ -773,9 +773,9 @@ namespace EddiCore
             {
                 if (!activeMonitors.Contains(monitor))
                 {
-                    if (monitor.NeedsStart())
+                    activeMonitors.Add( monitor );
+                    if ( monitor.NeedsStart())
                     {
-                        activeMonitors.Add(monitor);
                         Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
                         {
                             IsBackground = true
@@ -2959,20 +2959,10 @@ namespace EddiCore
                 CurrentStarSystem.ClearTemporaryStars();
             }
 
-            // We use an un-named temporary star at distance 0M during the FSD Target event.
-            // Try to match and replace that temporary star if it exists. Otherwise, match by body name.
-            Body star = CurrentStarSystem.bodies?
-                .Where(s => s.bodyType == BodyType.Star).ToList()
-                .Find(s => 
-                    (string.IsNullOrEmpty(s.bodyname) && s.distance == 0M && s.distance == theEvent.distance) || 
-                    s.bodyname == theEvent.bodyname);
-            if (star?.scannedDateTime is null)
-            {
-                CurrentStarSystem.AddOrUpdateBody(theEvent.star);
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                return true;
-            }
-            return false;
+            Logging.Debug( "Saving data for scanned star " + theEvent.bodyname );
+            CurrentStarSystem.AddOrUpdateBody( theEvent.star );
+            StarSystemSqLiteRepository.Instance.SaveStarSystem( CurrentStarSystem );
+            return true;
         }
 
         private bool eventBodyScanned(BodyScannedEvent theEvent)

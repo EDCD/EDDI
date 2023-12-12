@@ -14,6 +14,51 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Properties\GuardianDesc.Designer.cs">
+      <DependentUpon>GuardianDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\ThargoidDesc.Designer.cs">
+      <DependentUpon>ThargoidDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Guardian.Designer.cs">
+      <DependentUpon>Guardian.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Thargoid.Designer.cs">
+      <DependentUpon>Thargoid.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\GeologyDesc.Designer.cs">
+      <DependentUpon>GeologyDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\GeologyTypeDesc.Designer.cs">
+      <DependentUpon>GeologyTypeDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Geology.Designer.cs">
+      <DependentUpon>Geology.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\GeologyType.Designer.cs">
+      <DependentUpon>GeologyType.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\AstronomicalType.Designer.cs">
+      <DependentUpon>AstronomicalType.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Properties\MessageChannels.Designer.cs">
       <DependentUpon>MessageChannels.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -53,6 +98,46 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NpcShip.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\AstronomicalDesc.Designer.cs">
+      <DependentUpon>AstronomicalDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Astronomical.Designer.cs">
+      <DependentUpon>Astronomical.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\OrganicGenus.Designer.cs">
+      <DependentUpon>OrganicGenus.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\OrganicSpeciesCond.Designer.cs">
+      <DependentUpon>OrganicSpeciesCond.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\OrganicVariant.Designer.cs">
+      <DependentUpon>OrganicVariant.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\OrganicSpecies.Designer.cs">
+      <DependentUpon>OrganicSpecies.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\OrganicSpeciesDesc.Designer.cs">
+      <DependentUpon>OrganicSpeciesDesc.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\OrganicGenusDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrganicGenusDesc.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\StationState.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -339,6 +424,42 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Properties\GuardianDesc.resx">
+      <LastGenOutput>GuardianDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\ThargoidDesc.resx">
+      <LastGenOutput>ThargoidDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Guardian.resx">
+      <LastGenOutput>Guardian.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Thargoid.resx">
+      <LastGenOutput>Thargoid.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\GeologyDesc.resx">
+      <LastGenOutput>GeologyDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\GeologyTypeDesc.resx">
+      <LastGenOutput>GeologyTypeDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Geology.resx">
+      <LastGenOutput>Geology.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\GeologyType.resx">
+      <LastGenOutput>GeologyType.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\AstronomicalType.resx">
+      <LastGenOutput>AstronomicalType.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\LoadoutDescription.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LoadoutDescription.Designer.cs</LastGenOutput>
@@ -395,6 +516,38 @@
     <EmbeddedResource Update="Properties\NpcShip.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NpcShip.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\AstronomicalDesc.resx">
+      <LastGenOutput>AstronomicalDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Astronomical.resx">
+      <LastGenOutput>Astronomical.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicGenus.resx">
+      <LastGenOutput>OrganicGenus.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicSpeciesCond.resx">
+      <LastGenOutput>OrganicSpeciesCond.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicVariant.resx">
+      <LastGenOutput>OrganicVariant.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicSpecies.resx">
+      <LastGenOutput>OrganicSpecies.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicSpeciesDesc.resx">
+      <LastGenOutput>OrganicSpeciesDesc.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicGenusDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrganicGenusDesc.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\StationState.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

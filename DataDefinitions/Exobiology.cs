@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using Utilities;
+
+namespace EddiDataDefinitions
+{
+    public class Exobiology : Organic
+    {
+        public enum State
+        {
+            Predicted,
+            Confirmed,
+            SampleStarted,    // Logged (1st sample collected)
+            SampleInProgress, // Sampled (2nd sample collected)
+            SampleComplete,   // Sampled (3rd sample collected)
+            SampleAnalysed    // Analysed - this comes shortly after the final sample is collected
+        }
+
+        public State scanState { get; set; }
+
+        [PublicAPI]
+        public string state => scanState.ToString();
+
+        // coordinates of scan [n-1]. Only Log and Sample are stored.
+        [ PublicAPI ]
+        public List<Tuple<decimal?, decimal?>> sampleCoords = new List<Tuple<decimal?, decimal?>>(); 
+        
+        [PublicAPI] public bool nearPriorSample { get; set; }
+
+        [PublicAPI]
+        public int samples => sampleCoords.Count;
+
+        public Exobiology ( OrganicGenus genus, bool isPrediction = false ) : base ( genus )
+        {
+            this.genus = genus;
+            this.scanState = isPrediction ? State.Predicted : State.Confirmed;
+        }
+
+        //public Exobiology ( OrganicGenus genus, long value, bool isPrediction = false ) : base ( genus )
+        //{
+        //    this.genus = genus;
+        //    this.valuePredicted = value;
+        //    this.scanState = isPrediction ? State.Predicted : State.Confirmed;
+        //}
+
+        public Exobiology ( OrganicSpecies species, bool isPrediction = false ) : base( species )
+        {
+            this.species = species;
+            this.scanState = isPrediction ? State.Predicted : State.Confirmed;
+        }
+
+        public Exobiology ( OrganicVariant variant, bool isPrediction = false ) : base( variant )
+        {
+            this.variant = variant;
+            this.scanState = isPrediction ? State.Predicted : State.Confirmed;
+        }
+
+        /// <summary>Increase the sample count, set the coordinates, and return the number of scans complete.</summary>
+        public void Sample ( string scanType, OrganicVariant sampleVariant, decimal? latitude, decimal? longitude )
+        {
+            if ( variant is null )
+            {
+                SetVariantData( sampleVariant );
+            }
+
+            // Check for sample type and update sample coordinates
+            if ( scanType == "Log" )
+            {
+                scanState = State.SampleStarted;
+                sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );
+            }
+            else if ( scanType == "Sample" && samples < 2 )
+            {
+                scanState = State.SampleInProgress;
+                sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );
+            }
+            else if ( scanType == "Sample" && samples == 2 )
+            {
+                scanState = State.SampleComplete;
+                sampleCoords.Add( new Tuple<decimal?, decimal?>( latitude, longitude ) );
+            }
+            else if ( scanType == "Analyse" )
+            {
+                scanState = State.SampleAnalysed;
+            } 
+            
+            nearPriorSample = true;
+        }
+    }
+}

@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Fumarole_CarbonDioxideGeysers" xml:space="preserve">
+    <value>Carbon Dioxide Fumarole</value>
+  </data>
+  <data name="Fumarole_SilicateVapourGeysers" xml:space="preserve">
+    <value>Silicate Vapour Fumarole</value>
+  </data>
+  <data name="Fumarole_SulphurDioxideMagma" xml:space="preserve">
+    <value>Sulphur Dioxide Fumarole</value>
+  </data>
+  <data name="Fumarole_WaterGeysers" xml:space="preserve">
+    <value>Water Fumarole</value>
+  </data>
+  <data name="Gas_Clds_Blue" xml:space="preserve">
+    <value>Caeruleum Lagrange Cloud</value>
+  </data>
+  <data name="Gas_Clds_Green" xml:space="preserve">
+    <value>Viride Lagrange Cloud</value>
+  </data>
+  <data name="Gas_Clds_Green_Storm" xml:space="preserve">
+    <value>Viride Lagrange Storm Cloud</value>
+  </data>
+  <data name="Gas_Clds_Light" xml:space="preserve">
+    <value>Proto-Lagrange Cloud</value>
+  </data>
+  <data name="Gas_Clds_Orange" xml:space="preserve">
+    <value>Luteolum Lagrange Cloud</value>
+  </data>
+  <data name="Gas_Clds_Orange_Storm" xml:space="preserve">
+    <value>Luteolum Lagrange Storm Cloud</value>
+  </data>
+  <data name="Gas_Clds_Pink" xml:space="preserve">
+    <value>Roseum Lagrange Cloud</value>
+  </data>
+  <data name="Gas_Clds_Pink_Storm" xml:space="preserve">
+    <value>Roseum Lagrange Storm Cloud</value>
+  </data>
+  <data name="Gas_Clds_Red" xml:space="preserve">
+    <value>Rubicundum Lagrange Cloud</value>
+  </data>
+  <data name="Gas_Clds_Red_Storm" xml:space="preserve">
+    <value>Rubicundum Lagrange Storm Cloud</value>
+  </data>
+  <data name="Gas_Clds_Yellow" xml:space="preserve">
+    <value>Croceum Lagrange Cloud</value>
+  </data>
+  <data name="Gas_Clds_Yellow_Storm" xml:space="preserve">
+    <value>Croceum Lagrange Storm Cloud</value>
+  </data>
+  <data name="Gas_Vents_CarbonDioxideGeysers" xml:space="preserve">
+    <value>Carbon Dioxide Gas Vent</value>
+  </data>
+  <data name="Gas_Vents_SilicateVapourGeysers" xml:space="preserve">
+    <value>Silicate Vapour Gas Vent</value>
+  </data>
+  <data name="Gas_Vents_SulphurDioxideMagma" xml:space="preserve">
+    <value>Sulphur Dioxide Gas Vent</value>
+  </data>
+  <data name="Gas_Vents_WaterGeysers" xml:space="preserve">
+    <value>Water Gas Vent</value>
+  </data>
+  <data name="Geysers_WaterGeysers" xml:space="preserve">
+    <value>Water Geyser</value>
+  </data>
+  <data name="IceFumarole_AmmoniaGeysers" xml:space="preserve">
+    <value>Ammonia Ice Fumarole</value>
+  </data>
+  <data name="IceFumarole_CarbonDioxideGeysers" xml:space="preserve">
+    <value>Carbon Dioxide Ice Fumarole</value>
+  </data>
+  <data name="IceFumarole_MethaneGeysers" xml:space="preserve">
+    <value>Methane Ice Fumarole</value>
+  </data>
+  <data name="IceFumarole_NitrogenGeysers" xml:space="preserve">
+    <value>Nitrogen Ice Fumarole</value>
+  </data>
+  <data name="IceFumarole_SilicateVapourGeysers" xml:space="preserve">
+    <value>Silicate Vapour Ice Fumarole</value>
+  </data>
+  <data name="IceFumarole_SulphurDioxideMagma" xml:space="preserve">
+    <value>Sulphur Dioxide Ice Fumarole</value>
+  </data>
+  <data name="IceFumarole_WaterGeysers" xml:space="preserve">
+    <value>Water Ice Fumarole</value>
+  </data>
+  <data name="IceGeysers_AmmoniaGeysers" xml:space="preserve">
+    <value>Ammonia Ice Geyser</value>
+  </data>
+  <data name="IceGeysers_CarbonDioxideGeysers" xml:space="preserve">
+    <value>Carbon Dioxide Ice Geyser</value>
+  </data>
+  <data name="IceGeysers_MethaneGeysers" xml:space="preserve">
+    <value>Methane Ice Geyser</value>
+  </data>
+  <data name="IceGeysers_NitrogenGeysers" xml:space="preserve">
+    <value>Nitrogen Ice Geyser</value>
+  </data>
+  <data name="IceGeysers_WaterGeysers" xml:space="preserve">
+    <value>Water Ice Geyser</value>
+  </data>
+  <data name="Lava_Spouts_IronMagma" xml:space="preserve">
+    <value>Iron Magma Lava Spout</value>
+  </data>
+  <data name="Lava_Spouts_SilicateMagma" xml:space="preserve">
+    <value>Silicate Magma Lava Spout</value>
+  </data>
+  <data name="L_Phn_Part_Cld_001" xml:space="preserve">
+    <value>K01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_002" xml:space="preserve">
+    <value>K02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_003" xml:space="preserve">
+    <value>K03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_004" xml:space="preserve">
+    <value>K04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_005" xml:space="preserve">
+    <value>K05-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_006" xml:space="preserve">
+    <value>K06-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_007" xml:space="preserve">
+    <value>E04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_008" xml:space="preserve">
+    <value>K07-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_009" xml:space="preserve">
+    <value>K08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_010" xml:space="preserve">
+    <value>K09-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_011" xml:space="preserve">
+    <value>K10-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_012" xml:space="preserve">
+    <value>K11-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_013" xml:space="preserve">
+    <value>E01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_014" xml:space="preserve">
+    <value>E02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_015" xml:space="preserve">
+    <value>E03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_016" xml:space="preserve">
+    <value>K12-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_017" xml:space="preserve">
+    <value>K13-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_001" xml:space="preserve">
+    <value>T01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_002" xml:space="preserve">
+    <value>T02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_003" xml:space="preserve">
+    <value>L01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_004" xml:space="preserve">
+    <value>T03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_005" xml:space="preserve">
+    <value>T04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_007" xml:space="preserve">
+    <value>L03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_008" xml:space="preserve">
+    <value>L04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_009" xml:space="preserve">
+    <value>L05-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_010" xml:space="preserve">
+    <value>L06-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_011" xml:space="preserve">
+    <value>L07-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_012" xml:space="preserve">
+    <value>L08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_013" xml:space="preserve">
+    <value>L09-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_002" xml:space="preserve">
+    <value>P01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_003" xml:space="preserve">
+    <value>P02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_004" xml:space="preserve">
+    <value>P03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_005" xml:space="preserve">
+    <value>P04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_006" xml:space="preserve">
+    <value>P05-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_007" xml:space="preserve">
+    <value>P06-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_008" xml:space="preserve">
+    <value>P07-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_009" xml:space="preserve">
+    <value>P08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_010" xml:space="preserve">
+    <value>P09-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_011" xml:space="preserve">
+    <value>P10-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_012" xml:space="preserve">
+    <value>P11-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_013" xml:space="preserve">
+    <value>P12-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_014" xml:space="preserve">
+    <value>P13-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_015" xml:space="preserve">
+    <value>P14-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_016" xml:space="preserve">
+    <value>P15-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_001" xml:space="preserve">
+    <value>Q01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_002" xml:space="preserve">
+    <value>Q02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_003" xml:space="preserve">
+    <value>Q03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_004" xml:space="preserve">
+    <value>Q04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_005" xml:space="preserve">
+    <value>Q05-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_006" xml:space="preserve">
+    <value>Q06-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_007" xml:space="preserve">
+    <value>Q07-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_008" xml:space="preserve">
+    <value>Q08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_009" xml:space="preserve">
+    <value>Q09-Type Anomaly</value>
+  </data>
+</root>

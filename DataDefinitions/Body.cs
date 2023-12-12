@@ -13,6 +13,10 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Body : INotifyPropertyChanged
     {
+        /// <summary>Information for Non-Human Surface Signals (biology/geology)</summary>
+        [PublicAPI("Data about surface signals that have been found on the body")]
+        public SurfaceSignals surfaceSignals { get; set; } = new SurfaceSignals();
+
         /// <summary>The ID of this body in the star system</summary>
         public long? bodyId { get; set; }
 
@@ -56,7 +60,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The body's rings</summary>
         [PublicAPI]
-        public List<Ring> rings { get; set; }
+        public List<Ring> rings { get; set; } = new List<Ring>();
 
         // Scan data
 
@@ -151,23 +155,20 @@ namespace EddiDataDefinitions
         public decimal? semimajoraxis { get; set; }
 
         /// <summary>The parent bodies to this body, if any</summary>
-        public List<IDictionary<string, object>> parents
+        public List<IDictionary<string, long>> parents
         {
-            get
-            {
-                return _parents;
-            }
+            get => _parents;
             set
             {
                 if (bodyType == null)
                 {
                     if (planetClass != null)
                     {
-                        if (value.Exists(p => p.ContainsKey("Planet")))
+                        if ( value.Exists( p => p.ContainsKey( "Planet" ) ) )
                         {
                             bodyType = BodyType.Moon;
                         }
-                        else if (value.Exists(p => p.ContainsKey("Star")))
+                        else if ( value.Exists( p => p.ContainsKey( "Star" ) ) )
                         {
                             bodyType = BodyType.Planet;
                         }
@@ -181,7 +182,7 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        [JsonIgnore] private List<IDictionary<string, object>> _parents;
+        [JsonIgnore] private List<IDictionary<string, long>> _parents;
 
         /// <summary> Density in Kg per cubic meter </summary>
         [PublicAPI, JsonIgnore]
@@ -284,12 +285,12 @@ namespace EddiDataDefinitions
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
         /// <summary> Star definition </summary>
-        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped)
+        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, long>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped)
         {
             this.bodyname = bodyName;
             this.radius = radiusKm;
             this.bodyType = BodyType.Star;
-            this.rings = rings ?? new List<Ring>();
+            this.rings = rings;
             this.temperature = temperatureKelvin;
             this.bodyId = bodyId;
 
@@ -435,12 +436,12 @@ namespace EddiDataDefinitions
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
         /// <summary> Planet or Moon definition </summary>
-        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped)
+        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, long>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped)
         {
             this.bodyname = bodyName;
-            this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
-                        ? BodyType.Moon : BodyType.Planet;
-            this.rings = rings ?? new List<Ring>();
+            this.bodyType = (bool)parents?.Exists( p => p.ContainsKey( BodyType.Planet.invariantName ) )
+                ? BodyType.Moon : BodyType.Planet;
+            this.rings = rings;
             this.temperature = temperature;
             this.bodyId = bodyId;
 

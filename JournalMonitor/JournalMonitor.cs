@@ -1,4 +1,4 @@
-﻿using EddiConfigService;
+﻿﻿using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
+using Utilities.RegionMap;
 
 namespace EddiJournalMonitor
 {
@@ -299,7 +300,10 @@ namespace EddiJournalMonitor
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, thargoidWar) { raw = line, fromLoad = fromLogLoad });
+                                    Nebula nebula = Nebula.TryGetNearestNebula( systemName, x, y, z );
+                                    Region region = RegionMap.FindRegion( (double)x, (double)y, (double)z );
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPowers, powerplayState, taxi, multicrew, thargoidWar, nebula, region) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -959,13 +963,15 @@ namespace EddiJournalMonitor
                                     decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
                                     // Parent body types and IDs
-                                    data.TryGetValue("Parents", out object parentsVal);
-                                    List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
-                                    if (parentsVal != null)
+                                    var parents = new List<IDictionary<string, long>>();
+                                    if ( data.TryGetValue( "Parents", out object parentsVal ) )
                                     {
-                                        foreach (IDictionary<string, object> parent in (List<object>)parentsVal)
+                                        foreach ( IDictionary<string, object> parentsDict in (List<object>)parentsVal )
                                         {
-                                            parents.Add(parent);
+                                            foreach ( var kvPair in parentsDict )
+                                            {
+                                                parents.Add( new Dictionary<string, long> { { kvPair.Key, (long)kvPair.Value } } );
+                                            }
                                         }
                                     }
 
@@ -1116,7 +1122,7 @@ namespace EddiJournalMonitor
                                             scannedDateTime = (DateTime?)timestamp
                                         };
 
-                                        events.Add(new BodyScannedEvent(timestamp, scantype, body) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add( new BodyScannedEvent( timestamp, scantype, body ) { raw = line, fromLoad = fromLogLoad } );
                                         handled = true;
                                     }
                                 }
@@ -2343,7 +2349,7 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "SAAScanComplete":
+                            case "SAAScanComplete": // Body Mapped
                                 {
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
@@ -4042,25 +4048,25 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
-                                    data.TryGetValue("Signals", out object signalsVal);
+                                    data.TryGetValue( "Signals", out object signalsVal );
 
                                     // These are surface signal sources from a body that we've scanned
                                     List<SignalAmount> surfaceSignals = new List<SignalAmount>();
-                                    foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+                                    foreach ( Dictionary<string, object> signal in (List<object>)signalsVal )
                                     {
                                         SignalSource source;
                                         string signalSource = JsonParsing.getString(signal, "Type");
-                                        source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                        source = SignalSource.FromEDName( signalSource ) ?? new SignalSource();
                                         var localizedName = JsonParsing.getString(data, "Type_Localised");
-                                        if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                        if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
                                         {
                                             source.fallbackLocalizedName = localizedName;
                                         }
                                         int amount = JsonParsing.getInt(signal, "Count");
-                                        surfaceSignals.Add(new SignalAmount(source, amount));
+                                        surfaceSignals.Add( new SignalAmount( source, amount ) );
                                     }
-                                    surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                    events.Add(new SurfaceSignalsEvent(timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                    surfaceSignals = surfaceSignals.OrderByDescending( s => s.amount ).ToList();
+                                    events.Add( new SurfaceSignalsEvent( timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
@@ -4070,6 +4076,7 @@ namespace EddiJournalMonitor
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long bodyId = JsonParsing.getLong(data, "BodyID");
                                     data.TryGetValue("Signals", out object signalsVal);
+                                    data.TryGetValue( "Genuses", out object genusesVal );
 
                                     if (bodyName.EndsWith(" Ring"))
                                     {
@@ -4104,19 +4111,29 @@ namespace EddiJournalMonitor
                                         List<SignalAmount> surfaceSignals = new List<SignalAmount>();
                                         foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
                                         {
-                                            SignalSource source;
-                                            string signalSource = JsonParsing.getString(signal, "Type");
-                                            source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                            var signalSource = JsonParsing.getString(signal, "Type");
+                                            var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
                                             var localizedName = JsonParsing.getString(data, "Type_Localised");
                                             if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
                                             {
                                                 source.fallbackLocalizedName = localizedName;
                                             }
-                                            int amount = JsonParsing.getInt(signal, "Count");
+                                            var amount = JsonParsing.getInt(signal, "Count");
                                             surfaceSignals.Add(new SignalAmount(source, amount));
                                         }
                                         surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                        events.Add(new SurfaceSignalsEvent(timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+
+                                        var biosignals = new HashSet<Exobiology>();
+                                        if ( genusesVal != null )
+                                        {
+                                            foreach ( Dictionary<string, object> signal in (List<object>)genusesVal )
+                                            {
+                                                var genus = GetOrganicGenus(signal);
+                                                biosignals.Add( new Exobiology( genus ) );
+                                            }
+                                        }
+
+                                        events.Add( new SurfaceSignalsEvent( timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals, biosignals ) { raw = line, fromLoad = fromLogLoad } );
                                     }
                                 }
                                 handled = true;
@@ -4899,15 +4916,98 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "CodexEntry":
+                                {
+                                    var entryId = JsonParsing.getLong(data, "EntryID");
+                                    var edname = JsonParsing.getString(data, "Name");
+                                    var subCategoryEDName = JsonParsing.getString( data, "SubCategory" );
+                                    var categoryEDName = JsonParsing.getString( data, "Category" );
+                                    var regionLocalizedName = JsonParsing.getString(data, "Region_Localised");
+                                    var systemName = JsonParsing.getString(data, "System");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var newEntry = JsonParsing.getOptionalBool( data, "IsNewEntry" ) ?? false;
+                                    var newTrait = JsonParsing.getOptionalBool( data, "NewTraitsDiscovered" ) ?? false;
+                                    var voucherAmount = JsonParsing.getOptionalInt( data, "VoucherAmount" ) ?? 0;
+                                    events.Add( new CodexEntryEvent( timestamp,
+                                                                     new CodexEntry( entryId, edname, subCategoryEDName, categoryEDName, regionLocalizedName, systemName, systemAddress ),
+                                                                     newEntry,
+                                                                     newTrait,
+                                                                     voucherAmount ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
+                            case "ScanOrganic":
+                                {
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var bodyId = JsonParsing.getInt(data, "Body"); // This is in fact the BodyID, not the body name
+                                    var scanType = JsonParsing.getString(data, "ScanType"); // Log, Sample, Analyse
+                                    var genus = GetOrganicGenus( data );
+                                    var species = GetOrganicSpecies(data);
+                                    var variant = GetOrganicVariant(data);
+
+                                    if ( scanType != "Analyse" || AnalysisIncomplete() )
+                                    {
+                                        events.Add( new ScanOrganicEvent( timestamp, systemAddress, bodyId, scanType, genus, species, variant ) { raw = line, fromLoad = fromLogLoad } );
+                                    }
+
+                                    bool AnalysisIncomplete()
+                                    {
+                                        // `Analyse` scans can be unreasonably delayed since the timer pauses when the scanner is holstered.
+                                        // If the journal event is sufficiently delayed, we'll synthesize our own event as long as we've recorded enough samples.
+                                        if ( EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress )
+                                        {
+                                            var body = EDDI.Instance.CurrentStarSystem?.BodyWithID( bodyId );
+                                            if ( body != null &&
+                                                 body.surfaceSignals.TryGetBio( variant, species, genus, out var bio ) &&
+                                                 bio.scanState < Exobiology.State.SampleAnalysed )
+                                            {
+                                                return true;
+                                            }
+                                        }
+                                        return false;
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "SellOrganicData":
+                                {
+                                    var marketID = JsonParsing.getLong(data, "MarketID");
+                                    decimal totalValue = 0;
+                                    decimal totalBonus = 0;
+
+                                    var bios = new List<Organic>();
+                                    data.TryGetValue( "BioData", out object val );
+                                    List<object> discovered = (List<object>)val;
+                                    if ( discovered != null )
+                                    {
+                                        foreach ( Dictionary<string, object> discoveredBio in discovered )
+                                        {
+                                            var value = JsonParsing.getLong( discoveredBio, "Value" );
+                                            var bonus = JsonParsing.getLong( discoveredBio, "Bonus" );
+
+                                            var organic = new Organic( GetOrganicVariant( discoveredBio ) ) ?? 
+                                                          new Organic( GetOrganicSpecies(discoveredBio) ) ?? 
+                                                          new Organic( GetOrganicGenus(discoveredBio) )
+                                            {
+                                                valueOverride = value, 
+                                                bonus = bonus
+                                            };
+
+                                            bios.Add( organic );
+
+                                            totalValue += value;
+                                            totalBonus += bonus;
+                                        }
+                                        events.Add( new OrganicDataSoldEvent( timestamp, marketID, bios, totalValue, totalBonus ) { raw = line, fromLoad = fromLogLoad } );
+                                    }
+                                }
+                                handled = true;
+                                break;
 
                             // we silently ignore these, but forward them to the responders
-                            case "CodexDiscovery":
-                            case "CodexEntry":
                             case "ModuleBuyAndStore":
                             case "RestockVehicle":
-                            case "ScanOrganic":
                             case "SellMicroResources":
-                            case "SellOrganicData":
 
                             // Low priority (for now)
                             case "BuyWeapon":
@@ -4934,6 +5034,7 @@ namespace EddiJournalMonitor
                             case "WingLeave":
 
                             // No plans to support
+                            case "CodexDiscovery":  // This doesn't appear to exist in logs anymore and may be deprecated by CodexEntry.
                             case "CollectItems": // The `BackpackChange` event keeps us up to date.
                             case "CrimeVictim": // No need to track crimes committed by other cmdrs. If added, filter out events where the current player is listed as the offender.
                             case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`
@@ -4992,6 +5093,57 @@ namespace EddiJournalMonitor
                 Logging.Error($"Exception whilst parsing journal line {line}", ex);
             }
             return events;
+        }
+
+        private static OrganicVariant GetOrganicVariant ( IDictionary<string, object> data )
+        {
+            // i.e. Green
+            var variantEDName = JsonParsing.getString(data, "Variant");
+            var localizedVariant = JsonParsing.getString(data, "Variant_Localised");
+            var variant = OrganicVariant.FromEDName(variantEDName);
+            if ( variant != null && !string.IsNullOrEmpty( localizedVariant ) )
+            {
+                variant.fallbackLocalizedName = localizedVariant;
+            }
+            if ( variant is null && data.ContainsKey("Variant") )
+            {
+                Logging.Warn("Unable to parse organic variant data.", data );
+            }
+            return variant;
+        }
+
+        private static OrganicSpecies GetOrganicSpecies ( IDictionary<string, object> data )
+        {
+            // i.e. Flabellum
+            var speciesEDName = JsonParsing.getString(data, "Species");
+            var localizedSpecies = JsonParsing.getString(data, "Species_Localised");
+            var species = OrganicSpecies.FromEDName(speciesEDName);
+            if ( species != null && !string.IsNullOrEmpty( localizedSpecies ) )
+            {
+                species.fallbackLocalizedName = localizedSpecies;
+            }
+            if ( species is null && data.ContainsKey("Species"))
+            {
+                Logging.Warn( "Unable to parse organic species data.", data );
+            }
+            return species;
+        }
+
+        private static OrganicGenus GetOrganicGenus ( IDictionary<string, object> data )
+        {
+            // i.e. Frutexa
+            var genusEDName = JsonParsing.getString(data, "Genus");
+            var localizedGenus = JsonParsing.getString(data, "Genus_Localised");
+            var genus = OrganicGenus.FromEDName(genusEDName);
+            if ( genus != null && !string.IsNullOrEmpty( localizedGenus ) )
+            {
+                genus.fallbackLocalizedName = localizedGenus;
+            }
+            if ( genus is null && data.ContainsKey( "Genus" ) )
+            {
+                Logging.Warn( "Unable to parse organic genus data.", data );
+            }
+            return genus;
         }
 
         private static void GetThargoidWarData ( IDictionary<string, object> data, out ThargoidWar thargoidWar )

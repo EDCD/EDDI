@@ -80,11 +80,18 @@ namespace EddiStarMapService
                 decimal? rotationPeriodDays = (decimal?)body["rotationalPeriod"]; // Days
                 decimal? axialTiltDegrees = (decimal?)body["axialTilt"]; // Degrees
 
-                List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
-                if (body["parents"] != null)
+                var parents = new List<IDictionary<string, long>>();
+                if ( body["parents"] != null)
                 {
                     // Parent body types and IDs
-                    parents = body["parents"].ToObject<List<IDictionary<string, object>>>() ?? new List<IDictionary<string, object>>();
+                    var parentsDict = body["parents"].ToObject<List<IDictionary<string, object>>>() ?? new List<IDictionary<string, object>>();
+                    foreach ( var dict in parentsDict )
+                    {
+                        foreach ( var kvPair in dict )
+                        {
+                            parents.Add( new Dictionary<string, long> { { kvPair.Key, (long)kvPair.Value } } );
+                        }
+                    }
                 }
 
                 List<Ring> rings = new List<Ring>();
@@ -179,11 +186,11 @@ namespace EddiStarMapService
                     {
                         // EDSM classifies any body with an empty string atmosphere property as "No atmosphere". 
                         // However, gas giants also receive an empty string. Fix it, since gas giants have atmospheres. 
-                        atmosphereClass = AtmosphereClass.FromEDName("GasGiant");
+                        atmosphereClass = AtmosphereClass.GasGiant;
                     }
                     else
                     {
-                        atmosphereClass = AtmosphereClass.FromName((string)body["atmosphereType"]);
+                        atmosphereClass = AtmosphereClass.FromName((string)body["atmosphereType"]) ?? AtmosphereClass.None;
                     }
 
                     List<SolidComposition> solidCompositions = new List<SolidComposition>();

@@ -27,6 +27,7 @@
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
     <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj" />
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\DiscoveryMonitor\EddiDiscoveryMonitor.csproj" />
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
     <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
     <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />

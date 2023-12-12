@@ -565,7 +565,7 @@ namespace EddiDataProviderService
             }
 
             // Save the deserialized star system to our short term star system cache for reference
-            if (result != null)
+            if (result != null && !unitTesting)
             {
                 starSystemCache.Add(result);
             }

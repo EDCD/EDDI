@@ -17,27 +17,32 @@ namespace EddiSpeechResponder.CustomFunctions
         public NativeFunction function => new NativeFunction((values) =>
         {
             string output = string.Empty;
-            string localisedAnd = Properties.SpeechResponder.localizedAnd;
-            if (values.Count == 1)
+
+            // Choose either And/Or for the last list item using the second argument (if any)
+            var orList = values.Count > 1 && values[1].AsBoolean;
+            var localisedAndOr = orList ? 
+                Properties.SpeechResponder.localizedOr : 
+                Properties.SpeechResponder.localizedAnd;
+
+            var cottleMap = values[0].Fields;
+            foreach ( KeyValuePair<Cottle.Value, Cottle.Value> value in cottleMap)
             {
-                foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
+                string valueString = value.Value.AsString;
+                if (value.Key == 0)
                 {
-                    string valueString = value.Value.AsString;
-                    if (value.Key == 0)
-                    {
-                        output = valueString;
-                    }
-                    else if (value.Key < (values[0].Fields.Count - 1))
-                    {
-                        output = $"{output}, {valueString}";
-                    }
-                    else
-                    {
-                        output = $"{output}{(values[0].Fields.Count() > 2 ? "," : "")} {localisedAnd} {valueString}";
-                    }
+                    output = valueString;
+                }
+                else if (value.Key < ( cottleMap.Count - 1))
+                {
+                    output = $"{output}, {valueString}";
+                }
+                else
+                {
+                    output = $"{output}{( cottleMap.Count() > 2 ? "," : "")} {localisedAndOr} {valueString}";
                 }
             }
+
             return output;
-        }, 1);
+        }, 1, 2);
     }
 }

@@ -153,13 +153,17 @@ namespace EddiEvents
         [PublicAPI("Whether this body's map data has already been registered with Universal Cartographics")]
         public bool? alreadymapped => body?.alreadymapped;
 
+        //[PublicAPI( "Predicted biologicals for the body" )]
+        //public List<string> biosignals { get; set; }
+        //public List<string> biosignals => body?.surfaceSignals.GetBios();
+
         // Variables below are not intended to be user facing
 
         public Body body { get; private set; }
 
         public long? bodyId => body.bodyId;
         
-        public List<IDictionary<string, object>> parents => body.parents;
+        public List<IDictionary<string, long>> parents => body.parents;
 
         public AtmosphereClass atmosphereclass => body.atmosphereclass;
         
@@ -189,7 +193,7 @@ namespace EddiEvents
         [Obsolete("Use tilt instead")]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
 
-        public BodyScannedEvent(DateTime timestamp, string scantype, Body body) : base(timestamp, NAME)
+        public BodyScannedEvent ( DateTime timestamp, string scantype, Body body ) : base( timestamp, NAME )
         {
             this.body = body;
             this.scantype = scantype;
