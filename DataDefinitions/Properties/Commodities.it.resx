@@ -1821,8 +1821,28 @@
     <value>Campione parziale di stomaco di Titano Thargoid</value>
     <comment>Commodity ThargoidTissueSampleType10c</comment>
   </data>
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType7" xml:space="preserve">
+    <value>Campione di tessuto di Scythe Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+  </data>
+  <data name="UnknownSack" xml:space="preserve">
+    <value>Resti di membrana protettiva</value>
+    <comment>Commodity UnknownSack</comment>
+  </data>
+  <data name="ThargoidPod" xml:space="preserve">
+    <value>Capsula di Bio-Stoccaggio Thargoid</value>
+    <comment>Commodity ThargoidPod</comment>
+  </data>
+  <data name="CoralSap" xml:space="preserve">
+    <value>Linfa corallina</value>
+    <comment>Commodity CoralSap</comment>
+  </data>
+  <data name="UnknownMineral" xml:space="preserve">
+    <value>Minerale impuro della Guglia</value>
+    <comment>Commodity UnknownMineral</comment>
+  </data>
+  <data name="UnknownRefinedMineral" xml:space="preserve">
+    <value>Minerale semi-raffinato della Guglia</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
+  </data>
 </root>

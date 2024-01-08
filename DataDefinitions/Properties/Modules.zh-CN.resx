@@ -641,4 +641,8 @@
     <value>脉冲波八角扫描器</value>
     <comment>Module PulseWaveXenoScanner</comment>
   </data>
+  <data name="Extraction_Missile" xml:space="preserve">
+    <value>提取导弹</value>
+    <comment>Module Human </comment>
+  </data>
 </root>

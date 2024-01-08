@@ -1830,11 +1830,19 @@
     <comment>Commodity UnknownSack</comment>
   </data>
   <data name="ThargoidPod" xml:space="preserve">
-    <value>外星生物押解舱</value>
+    <value>八角生物储存胶囊</value>
     <comment>Commodity ThargoidPod</comment>
   </data>
   <data name="CoralSap" xml:space="preserve">
     <value>珊瑚树树液</value>
     <comment>Commodity CoralSap</comment>
+  </data>
+  <data name="UnknownMineral" xml:space="preserve">
+    <value>掺杂尖塔矿物</value>
+    <comment>Commodity UnknownMineral</comment>
+  </data>
+  <data name="UnknownRefinedMineral" xml:space="preserve">
+    <value>半精炼尖塔矿物</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
   </data>
 </root>
