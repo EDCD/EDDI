@@ -93,16 +93,8 @@ jobs:
       uses: darenm/Setup-VSTest@d9a5dffa3f11d9c27ec42eb69515d3aaeaad9ef8
     - name: Make a TestResults directory
       run: mkdir -p ./TestResults
-    - name: Test our solution and generate a coverage report using OpenCover
-      uses: ./.github/actions/TestWithCoverage
+    - name: Test our solution
+      uses: ./.github/actions/Test
       with:
-        opencover-console-path: \.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe
-        opencover-console-args: -mergebyhash -skipautoprops -excludebyattribute:*.ExcludeFromCodeCoverage*,*.GeneratedCodeAttribute* -excludebyfile:*\*.Designer.cs,*.xaml -filter:"+[Eddi*]* +[Utilities*]* +[Tests*]UnitTests*" -register:Path32 -returntargetcode
         target-path: vstest.console.exe
         target-args: Tests\bin\Release\Tests.dll /tests:UnitTests /Parallel /InIsolation /Blame
-        output-path: ./TestResults/coverage.xml
-    - name: Upload coverage to CodeCov (ref. https://github.com/codecov/codecov-action)
-      uses: codecov/codecov-action@d9f34f8cd5cb3b3eb79b3e4b5dae3a16df499a70
-      with:
-        files: TestResults/coverage.xml
-        fail_ci_if_error: false # Specify if CI pipeline should fail when Codecov runs into errors during upload. Defaults to false

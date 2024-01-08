@@ -1,0 +1,20 @@
+name: 'Test'
+description: 'Run tests'
+inputs:
+  target-path:
+    description: The path to the test adapter that should be used to run the tests
+    required: true
+  target-args:
+    description: The arguments to be passed to the test adapter
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+  - name: Run tests
+    id: runTests
+    run: |
+      $runTestCmd = "${{ inputs.target-path }} ${{ inputs.target-args }}"
+      ECHO Invoking... $runTestCmd
+      Invoke-Expression $runTestCmd
+    shell: pwsh
