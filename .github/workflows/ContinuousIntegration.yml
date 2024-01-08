@@ -91,8 +91,6 @@ jobs:
     # Perform unit testing
     - name: Add VSTest.console.exe to PATH
       uses: darenm/Setup-VSTest@d9a5dffa3f11d9c27ec42eb69515d3aaeaad9ef8
-    - name: Make a TestResults directory
-      run: mkdir -p ./TestResults
     - name: Test our solution
       uses: ./.github/actions/Test
       with:

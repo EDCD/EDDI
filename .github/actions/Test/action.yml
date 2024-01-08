@@ -16,5 +16,12 @@ runs:
     run: |
       $runTestCmd = "${{ inputs.target-path }} ${{ inputs.target-args }}"
       ECHO Invoking... $runTestCmd
-      Invoke-Expression $runTestCmd
+      # Wrap the invokation so that we can act on its success or failure
+      try {
+        Invoke-Expression $runTestCmd
+      } catch {
+        # seems to have failed
+        ECHO "::error::Tests failed - " + $_.Exception.Message
+        EXIT 1
+      }
     shell: pwsh
