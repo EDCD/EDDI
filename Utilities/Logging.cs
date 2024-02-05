@@ -37,13 +37,18 @@ namespace Utilities
             Handle(ErrorLevel.Info, message, data is null ? null : JToken.FromObject( data ), memberName, filePath);
         }
 
-        public static void Debug(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Debug ( string message, object data = null, [ CallerMemberName ] string memberName = "",
+            [ CallerFilePath ] string filePath = "" )
         {
-            Handle(ErrorLevel.Debug, message, data is null ? null : JToken.FromObject( data ), memberName, filePath);
+            Handle( ErrorLevel.Debug, message,
+                data is null
+                    ? null
+                    : JToken.FromObject( data,
+                        new JsonSerializer { ReferenceLoopHandling = ReferenceLoopHandling.Ignore } ), memberName,
+                filePath );
         }
 
-        private static void Handle(ErrorLevel errorlevel, string message, [CanBeNull] JToken data, string memberName,
-            string filePath)
+        private static void Handle(ErrorLevel errorlevel, string message, [CanBeNull] JToken data, string memberName, string filePath)
         {
             try
             {
