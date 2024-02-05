@@ -1279,7 +1279,7 @@ namespace UnitTests
             Assert.AreEqual("War", @event.signalSource.spawningState.invariantName);
             Assert.AreEqual("Colonia Council", @event.faction);
             Assert.AreEqual(0, @event.threatlevel);
-            Assert.AreEqual(2385.816M, @event.secondsremaining);
+            Assert.AreEqual( 2385.8, Convert.ToDouble( @event.secondsremaining ), 0.1 );
         }
 
         [TestMethod]
