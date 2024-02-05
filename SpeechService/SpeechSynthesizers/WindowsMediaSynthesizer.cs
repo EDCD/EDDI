@@ -13,6 +13,7 @@ using Windows.Media.SpeechSynthesis;
 
 namespace EddiSpeechService.SpeechSynthesizers
 {
+    [System.Runtime.Versioning.SupportedOSPlatform( "windows10.0.17763.0" )]
     public sealed class WindowsMediaSynthesizer : IDisposable
     {
         private readonly SpeechSynthesizer synth = new SpeechSynthesizer();

@@ -39,7 +39,7 @@ namespace EddiSpeechService
             get => configuration;
             set
             {
-                if (configuration != value)
+                if ( configuration != value )
                 {
                     configuration = value;
                     OnPropertyChanged();
@@ -53,8 +53,8 @@ namespace EddiSpeechService
 
         public List<VoiceDetails> allVoices { get; }
         public List<string> allvoices => allVoices
-            .Where(v => !v.hideVoice)
-            .Select(v => v.name)
+            .Where( v => !v.hideVoice )
+            .Select( v => v.name )
             .ToList();
 
         private readonly XmlSchemaSet lexiconSchemas = new XmlSchemaSet();
@@ -98,13 +98,13 @@ namespace EddiSpeechService
         {
             get
             {
-                if (instance == null)
+                if ( instance == null )
                 {
-                    lock (instanceLock)
+                    lock ( instanceLock )
                     {
-                        if (instance == null)
+                        if ( instance == null )
                         {
-                            Logging.Debug("No Speech service instance: creating one");
+                            Logging.Debug( "No Speech service instance: creating one" );
                             instance = new SpeechService();
                         }
                     }
@@ -113,25 +113,25 @@ namespace EddiSpeechService
             }
         }
 
-        public void Dispose()
+        public void Dispose ()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Dispose( true );
+            GC.SuppressFinalize( this );
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose ( bool disposing )
         {
-            if (disposing)
+            if ( disposing )
             {
                 systemSpeechSynth?.Dispose();
-                if ( IsWindowsMediaSynthesizerSupported() )
+                if ( IsWindowsMediaSynthesizerSupported )
                 {
                     windowsMediaSynth?.Dispose();
                 }
             }
         }
 
-        public SpeechService()
+        public SpeechService ()
         {
             Configuration = SpeechServiceConfiguration.FromFile();
             var voiceStore = new HashSet<VoiceDetails>(); // Use a Hashset to ensure no duplicates
@@ -141,17 +141,17 @@ namespace EddiSpeechService
             // Windows.Media.SpeechSynthesis isn't available on older Windows versions so we must check if we have access
             try
             {
-                if (IsWindowsMediaSynthesizerSupported())
+                if ( IsWindowsMediaSynthesizerSupported )
                 {
                     // Prep the Windows.Media.SpeechSynthesis synthesizer
-                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore, lexiconSchemas);
+                    windowsMediaSynth = new WindowsMediaSynthesizer( ref voiceStore, lexiconSchemas );
                 }
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
                 Logging.Error( $"Unable to initialize Windows.Media.SpeechSynthesis.SpeechSynthesizer, {RuntimeInformation.OSDescription}", e );
             }
-            
+
             // Prep the System.Speech synthesizer
             try
             {
@@ -161,15 +161,15 @@ namespace EddiSpeechService
             {
                 Logging.Error( $"Unable to initialize System.Speech.Synthesis.SpeechSynthesizer, {RuntimeInformation.OSDescription}", e );
             }
-            
+
             // Sort results alphabetically by voice name
-            allVoices = voiceStore.OrderBy(v => v.name).ToList();
+            allVoices = voiceStore.OrderBy( v => v.name ).ToList();
 
             // Monitor and respond appropriately to changes in the state of the CompanionAppService
             CompanionAppService.Instance.StateChanged += CompanionAppService_StateChanged;
         }
 
-        private void FetchLexiconSchemas()
+        private void FetchLexiconSchemas ()
         {
             // Try to obtain and load lexicon related schemas for lexicon schema validation
             try
@@ -180,9 +180,11 @@ namespace EddiSpeechService
                 {
                     using ( var resourceStream = thisAssembly.GetManifestResourceStream( resourceName ) )
                     {
-                        if ( resourceStream != null )
+                        if ( resourceStream == null )
+                        { return; }
+                        var schema = XmlSchema.Read( resourceStream, null );
+                        if ( schema != null )
                         {
-                            var schema = XmlSchema.Read( resourceStream, null );
                             lexiconSchemas.Add( schema );
                         }
                     }
@@ -200,25 +202,23 @@ namespace EddiSpeechService
             }
         }
 
-        private static bool IsWindowsMediaSynthesizerSupported()
-        {
-            return OSInfo.TryGetWindowsVersion( out var osVersion ) &&
-                   osVersion >= new System.Version( 10, 0, 16299, 0 );
-        }
+        [System.Runtime.Versioning.SupportedOSPlatformGuard( "windows10.0.17763.0" )]
+        private static bool IsWindowsMediaSynthesizerSupported => OperatingSystem.IsWindowsVersionAtLeast( 10, 0, 17763 );
 
-        private void CompanionAppService_StateChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
+        private void CompanionAppService_StateChanged ( CompanionAppService.State oldState, CompanionAppService.State newState )
         {
-            if (newState == CompanionAppService.State.ConnectionLost)
+            if ( newState == CompanionAppService.State.ConnectionLost )
             {
-                Say(null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0);
+                Say( null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0 );
             }
         }
 
-        public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
+        public void Say ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false )
         {
             // Skip empty speech and speech containing nothing except one or more pauses / breaks.
-            message = SpeechFormatter.TrimSpeech(message);
-            if (string.IsNullOrEmpty(message)) { return; }
+            message = SpeechFormatter.TrimSpeech( message );
+            if ( string.IsNullOrEmpty( message ) )
+            { return; }
 
             Thread speechQueueHandler = new Thread(() =>
             {
@@ -245,7 +245,7 @@ namespace EddiSpeechService
                 IsBackground = true
             };
             speechQueueHandler.Start();
-            if (invokedFromVA)
+            if ( invokedFromVA )
             {
                 // If invoked from VA, thread should terminate only after speech completes
                 speechQueueHandler.Join();
@@ -286,8 +286,7 @@ namespace EddiSpeechService
                 }
                 catch ( ThreadAbortException tax )
                 {
-                    Logging.Debug( "Thread aborted", tax );
-                    Thread.ResetAbort();
+                    Logging.Debug( "Speech thread aborted", tax );
                 }
             }
         }
@@ -303,35 +302,37 @@ namespace EddiSpeechService
             return false;
         }
 
-        public static void Speak(EddiSpeech speech)
+        public static void Speak ( EddiSpeech speech )
         {
-            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority);
+            Instance.Speak( speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority );
         }
 
-        public void Speak(string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3)
+        public void Speak ( string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3 )
         {
-            if (speech == null || speech.Trim() == "") { return; }
+            if ( speech == null || speech.Trim() == "" )
+            { return; }
 
             // If the user wants to disable IPA then we remove any IPA phoneme tags here
-            if (Configuration.DisableIpa && speech.Contains("<phoneme"))
+            if ( Configuration.DisableIpa && speech.Contains( "<phoneme" ) )
             {
-                speech = SpeechFormatter.DisableIPA(speech);
+                speech = SpeechFormatter.DisableIPA( speech );
             }
 
             discardPendingSegments = false;
             List<string> segments = SpeechFormatter.SeparateSpeechSegments(speech);
 
-            foreach (string segment in segments)
+            foreach ( string segment in segments )
             {
-                if ( discardPendingSegments )  { continue; }
+                if ( discardPendingSegments )
+                { continue; }
 
                 string voice = null;
                 string statement = null;
 
                 bool isAudio = segment.Contains("<audio"); // This is an audio file, we will disable voice effects processing
-                if (isAudio)
+                if ( isAudio )
                 {
-                    SpeechFormatter.UnpackAudioTags(segment, out string fileName, out bool async, out decimal? volumeOverride);
+                    SpeechFormatter.UnpackAudioTags( segment, out string fileName, out bool async, out decimal? volumeOverride );
                     try
                     {
                         // Play the audio, waiting for the audio to complete unless we're in async mode
@@ -360,47 +361,47 @@ namespace EddiSpeechService
                     continue;
                 }
 
-                bool isRadio = segment.Contains("<transmit") || radio; 
-                if (isRadio)
+                bool isRadio = segment.Contains("<transmit") || radio;
+                if ( isRadio )
                 {
                     // This is a radio transmission, we will enable radio voice effects processing
-                    statement = SpeechFormatter.StripRadioTags(segment);
+                    statement = SpeechFormatter.StripRadioTags( segment );
                 }
 
-                bool isVoice = segment.Contains("<voice") || radio; 
-                if (isVoice)
+                bool isVoice = segment.Contains("<voice") || radio;
+                if ( isVoice )
                 {
                     // This is a voice override
-                    SpeechFormatter.UnpackVoiceTags(segment, out voice, out statement);
+                    SpeechFormatter.UnpackVoiceTags( segment, out voice, out statement );
                 }
 
-                using (Stream stream = getSpeechStream(voice ?? defaultVoice, statement ?? segment))
+                using ( Stream stream = getSpeechStream( voice ?? defaultVoice, statement ?? segment ) )
                 {
-                    if (stream == null)
+                    if ( stream == null )
                     {
-                        Logging.Debug("getSpeechStream() returned null; nothing to say");
+                        Logging.Debug( "getSpeechStream() returned null; nothing to say" );
                         return;
                     }
-                    if (stream.Length < 50)
+                    if ( stream.Length < 50 )
                     {
-                        Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
+                        Logging.Debug( "getSpeechStream() returned empty stream; nothing to say" );
                         return;
                     }
                     else
                     {
-                        Logging.Debug("Stream length is " + stream.Length);
+                        Logging.Debug( "Stream length is " + stream.Length );
                     }
-                    Logging.Debug("Seeking back to the beginning of the stream");
-                    stream.Seek(0, SeekOrigin.Begin);
+                    Logging.Debug( "Seeking back to the beginning of the stream" );
+                    stream.Seek( 0, SeekOrigin.Begin );
 
                     IWaveSource source = new WaveFileReader(stream);
-                    source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
+                    source = addEffectsToSource( source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio );
 
-                    PlaySpeechStream(source, priority);
+                    PlaySpeechStream( source, priority );
                 }
             }
         }
-        
+
         // Obtain the speech memory stream
         public Stream getSpeechStream ( string requestedVoice, string speech )
         {
@@ -418,7 +419,9 @@ namespace EddiSpeechService
             {
                 Logging.Warn( "Speech failed (" + Encoding.Default.EncodingName + ")", ex );
                 var voiceDetails = allVoices.FirstOrDefault( v => v.name == requestedVoice );
-                if ( voiceDetails?.synthType is nameof( Windows.Media ) && requestedVoice != windowsMediaSynth.currentVoice )
+                if ( IsWindowsMediaSynthesizerSupported &&
+                     voiceDetails?.synthType is nameof( Windows.Media ) &&
+                     requestedVoice != windowsMediaSynth.currentVoice )
                 {
                     // Try falling back to our Windows Media default voice.
                     Logging.Warn( $"{ex.Message}, retrying with Windows Media Synthesizer default voice.", ex );
@@ -440,7 +443,7 @@ namespace EddiSpeechService
             {
                 return systemSpeechSynth?.Speak( voiceDetails, speech, Configuration );
             }
-            if ( voiceDetails.synthType is nameof( Windows.Media ) && IsWindowsMediaSynthesizerSupported() )
+            if ( voiceDetails.synthType is nameof( Windows.Media ) && IsWindowsMediaSynthesizerSupported )
             {
                 return windowsMediaSynth?.Speak( voiceDetails, speech, Configuration );
             }
@@ -493,7 +496,7 @@ namespace EddiSpeechService
             }
 
             // If the requested voice was not found, try to re-resolve this once using the synthesizer's default voice.
-            var synthDefaultVoice = IsWindowsMediaSynthesizerSupported()
+            var synthDefaultVoice = IsWindowsMediaSynthesizerSupported
                 ? windowsMediaSynth?.currentVoice ?? systemSpeechSynth?.currentVoice
                 : systemSpeechSynth?.currentVoice;
             if ( !string.IsNullOrEmpty( synthDefaultVoice ) &&
@@ -550,7 +553,7 @@ namespace EddiSpeechService
 
         #region Speech
 
-        private void PlaySpeechStream(IWaveSource source, int priority, bool useLegacySoundOut = false)
+        private void PlaySpeechStream ( IWaveSource source, int priority, bool useLegacySoundOut = false )
         {
             try
             {
@@ -607,7 +610,8 @@ namespace EddiSpeechService
 
         private void StartSpeech ( ISoundOut soundout, int priority, CancellationTokenSource cancellationTokenSource )
         {
-            while ( eddiSpeaking ) { Thread.Sleep( 10 ); }
+            while ( eddiSpeaking )
+            { Thread.Sleep( 10 ); }
             lock ( activeSpeechLock )
             {
                 activeSpeechTS.TryAdd( soundout, cancellationTokenSource );
@@ -618,14 +622,14 @@ namespace EddiSpeechService
             }
         }
 
-        public void StopCurrentSpeech()
+        public void StopCurrentSpeech ()
         {
             lock ( activeSpeechLock )
             {
                 Logging.Debug( "Ending active speech." );
                 discardPendingSegments = true;
                 var keysToRemove = activeSpeechTS.Keys;
-                keysToRemove.AsParallel().ForAll(key =>
+                keysToRemove.AsParallel().ForAll( key =>
                 {
                     if ( activeSpeechTS.TryRemove( key, out var tokenSource ) )
                     {
@@ -670,13 +674,14 @@ namespace EddiSpeechService
                     Logging.Warn( $"Skipping unsupported audio file {fileName}.", e );
                     throw;
                 }
-                if ( !( audioSource?.Length > 0 ) ) { return; }
+                if ( !( audioSource?.Length > 0 ) )
+                { return; }
 
                 var waitTime = audioSource.GetTime( audioSource.Length );
 
                 using ( var soundOut = GetSoundOut() )
                 {
-                    Logging.Debug($"Beginning audio playback for {fileName}.");
+                    Logging.Debug( $"Beginning audio playback for {fileName}." );
                     if ( !TryInitializeSoundOut( soundOut, audioSource ) )
                     {
                         if ( soundOut is WasapiOut && !useLegacySoundOut )
@@ -697,7 +702,7 @@ namespace EddiSpeechService
                     var cancellationTokenSource = new CancellationTokenSource();
                     lock ( activeAudioLock )
                     {
-                        activeAudioTS.TryAdd(soundOut, cancellationTokenSource );
+                        activeAudioTS.TryAdd( soundOut, cancellationTokenSource );
                     }
                     try
                     {
@@ -722,7 +727,7 @@ namespace EddiSpeechService
             }
             catch ( Exception e )
             {
-                Logging.Error("Audio playback failed.", e);            
+                Logging.Error( "Audio playback failed.", e );
             }
         }
 
@@ -730,7 +735,7 @@ namespace EddiSpeechService
         {
             Logging.Debug( $"Ending all audio playback." );
             discardPendingSegments = true;
-            lock (activeAudioLock)
+            lock ( activeAudioLock )
             {
                 foreach ( var soundOut in activeAudioTS.Keys )
                 {
@@ -749,9 +754,9 @@ namespace EddiSpeechService
         public event PropertyChangedEventHandler PropertyChanged;
 
         [JetBrains.Annotations.NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged ( [CallerMemberName] string propertyName = null )
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
     }
 
@@ -779,7 +784,7 @@ namespace EddiSpeechService
 
         public bool hideVoice { get; set; }
 
-        internal VoiceDetails( string displayName, string gender, CultureInfo Culture, string synthType, XmlSchemaSet lexiconSchemas )
+        internal VoiceDetails ( string displayName, string gender, CultureInfo Culture, string synthType, XmlSchemaSet lexiconSchemas )
         {
             this.name = displayName;
             this.gender = gender;
@@ -794,73 +799,74 @@ namespace EddiSpeechService
 
         private XmlSchemaSet lexiconSchemas;
 
-        public HashSet<string> GetLexicons()
+        public HashSet<string> GetLexicons ()
         {
             var result = new HashSet<string>();
-            HashSet<string> GetLexiconsFromDirectory(string directory, bool createIfMissing = false)
+            HashSet<string> GetLexiconsFromDirectory ( string directory, bool createIfMissing = false )
             {
                 // When multiple lexicons are referenced, their precedence goes from lower to higher with document order.
                 // Precedence means that a token is first looked up in the lexicon with highest precedence.
                 // Only if not found in that lexicon, the next lexicon is searched and so on until a first match or until all lexicons have been used for lookup. (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4).
 
-                if (string.IsNullOrEmpty(directory) || string.IsNullOrEmpty(culturecode)) { return null; }
+                if ( string.IsNullOrEmpty( directory ) || string.IsNullOrEmpty( culturecode ) )
+                { return null; }
                 DirectoryInfo dir = new DirectoryInfo(directory);
-                if (dir.Exists)
+                if ( dir.Exists )
                 {
                     // Find two letter language code lexicons (these will have lower precedence than any full language code lexicons)
-                    foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
-                        .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.TwoLetterISOLanguageName.ToLowerInvariant()}.pls"))
+                    foreach ( var file in dir.GetFiles( "*.pls", SearchOption.AllDirectories )
+                        .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.TwoLetterISOLanguageName.ToLowerInvariant()}.pls" ) )
                     {
-                        CheckAndAdd(file);
+                        CheckAndAdd( file );
                     }
                     // Find full language code lexicons
-                    foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
-                        .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.IetfLanguageTag.ToLowerInvariant()}.pls"))
+                    foreach ( var file in dir.GetFiles( "*.pls", SearchOption.AllDirectories )
+                        .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.IetfLanguageTag.ToLowerInvariant()}.pls" ) )
                     {
-                        CheckAndAdd(file);
+                        CheckAndAdd( file );
                     }
                 }
-                else if (createIfMissing)
+                else if ( createIfMissing )
                 {
                     dir.Create();
                 }
                 return result;
             }
 
-            void CheckAndAdd(FileInfo file)
+            void CheckAndAdd ( FileInfo file )
             {
-                if (IsValidXML(file.FullName, out _))
+                if ( IsValidXML( file.FullName, out _ ) )
                 {
-                    result.Add(file.FullName);
+                    result.Add( file.FullName );
                 }
                 else
                 {
-                    file.MoveTo($"{file.FullName}.malformed");
+                    file.MoveTo( $"{file.FullName}.malformed" );
                 }
             }
 
             // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
 
             // Add lexicons from our installation directory
-            result.UnionWith(GetLexiconsFromDirectory(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lexicons"));
+            result.UnionWith( GetLexiconsFromDirectory( new FileInfo( System.Reflection.Assembly.GetExecutingAssembly().Location ).DirectoryName + @"\lexicons" ) );
 
             // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
-            result.UnionWith(GetLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons"));
+            result.UnionWith( GetLexiconsFromDirectory( Constants.DATA_DIR + @"\lexicons" ) );
 
             return result;
         }
 
-        private bool IsValidXML(string filename, out XDocument xml)
+        private bool IsValidXML ( string filename, out XDocument xml )
         {
             // Check whether the file is valid .xml (.pls is an xml-based format)
             xml = null;
             try
             {
                 // Try to load the file as xml
-                xml = XDocument.Load(filename);
+                xml = XDocument.Load( filename );
 
                 // Validate the lexicon xml against the schema
-                xml.Validate(lexiconSchemas, ( o, e ) =>
+                xml.Validate( lexiconSchemas, ( o, e ) =>
                 {
                     if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
                     {
@@ -871,9 +877,9 @@ namespace EddiSpeechService
                 var lastNodeName = string.Empty;
                 while ( reader.Read() )
                 {
-                    if ( reader.HasValue && 
-                         reader.NodeType is XmlNodeType.Text && 
-                         lastNodeName == "phoneme" && 
+                    if ( reader.HasValue &&
+                         reader.NodeType is XmlNodeType.Text &&
+                         lastNodeName == "phoneme" &&
                          !IPA.IsValid( reader.Value ) )
                     {
                         throw new ArgumentException( $"Invalid phoneme found in lexicon file: {reader.Value}" );
@@ -882,19 +888,19 @@ namespace EddiSpeechService
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Logging.Warn($"Could not load lexicon file '{filename}', please review.", ex);
+                Logging.Warn( $"Could not load lexicon file '{filename}', please review.", ex );
                 return false;
             }
         }
 
         #endregion
 
-        private string BestGuessCulture()
+        private string BestGuessCulture ()
         {
             string guess;
-            if (name.Contains("CereVoice"))
+            if ( name.Contains( "CereVoice" ) )
             {
                 // Cereproc voices do not support the normal xml:lang attribute country/region codes (like en-GB) 
                 // (see https://www.cereproc.com/files/CereVoiceCloudGuide.pdf), 
@@ -906,16 +912,17 @@ namespace EddiSpeechService
                 // Trust the voice's information (with the complete country/region code)
                 guess = Culture.Name;
             }
-            Logging.Debug($"Best guess culture for {name} is {guess}"); return guess;
+            Logging.Debug( $"Best guess culture for {name} is {guess}" );
+            return guess;
         }
 
         // Implement IEquatable
-        public bool Equals(VoiceDetails other)
+        public bool Equals ( VoiceDetails other )
         {
             return name == other?.name;
         }
 
-        public override int GetHashCode()
+        public override int GetHashCode ()
         {
             return name.GetHashCode();
         }
