@@ -6,9 +6,8 @@
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-	<!--System.ServiceModel.Syndication.dll needs to be included in the output directory.-->
-	<!--We are using 'CopyLocalLockFileAssemblies' to copy the transient dependency to the output folder.-->
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	<!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
+	<EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\bin\Debug\</OutputPath>
@@ -38,10 +37,4 @@
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
   </ItemGroup>
-  <!--We need to filter 'CopyLocalLockFileAssemblies' so that only System.ServiceModel.Syndication.dll is copied-->
-  <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
-	<ItemGroup>
-	  <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' != 'System.ServiceModel.Syndication.dll'" />
-	</ItemGroup>
-  </Target>
 </Project>
