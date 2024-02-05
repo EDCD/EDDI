@@ -7,7 +7,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-  </PropertyGroup>
+    <!--Cottle.dll and ICSharpcode.AvalonEdit.dll need to be included in the output directory.-->
+	<!--We are using 'CopyLocalLockFileAssemblies' to copy the transient dependencies to the output folder.-->
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\bin\Debug\</OutputPath>
   </PropertyGroup>
@@ -79,9 +81,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AvalonEdit">
-      <Version>6.3.0.90</Version>
-    </PackageReference>
+    <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
     <PackageReference Include="CommonMark.NET">
       <Version>0.15.1</Version>
     </PackageReference>
@@ -114,5 +114,11 @@
   </PropertyGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="xcopy /y &quot;$(SolutionDir)SpeechResponder\Variables.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
+  </Target>
+  <!--We need to filter 'CopyLocalLockFileAssemblies' so that only Cottle.dll and ICSharpcode.AvalonEdit.dll are copied-->
+  <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
+	<ItemGroup>
+	  <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' != 'Cottle.dll' And '%(Filename)' != 'ICSharpcode.AvalonEdit.dll'" />
+	</ItemGroup>
   </Target>
 </Project>
