@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -14,7 +15,8 @@ namespace EddiEdsmResponder
 {
     public class EDSMResponder : IEddiResponder
     {
-        private Thread updateThread;
+        private Task updateTask;
+        private CancellationTokenSource updateThreadCancellationTokenSource;
         private List<string> ignoredEvents = new List<string>();
         private readonly IEdsmService edsmService;
         private readonly DataProviderService dataProviderService;
@@ -58,8 +60,8 @@ namespace EddiEdsmResponder
         {
             edsmService?.StopJournalSync();
             // Stop flight log synchronization
-            updateThread?.Abort();
-            updateThread = null;
+            updateThreadCancellationTokenSource?.Cancel();
+            updateTask = null;
         }
 
         public void Reload()
@@ -76,15 +78,23 @@ namespace EddiEdsmResponder
                 StarMapService.inGameCommanderName = EDDI.Instance.Cmdr?.name;
                 edsmService.SetEdsmCredentials();
 
-                if (updateThread == null && edsmService.EdsmCredentialsSet())
+                if ( updateTask == null && edsmService.EdsmCredentialsSet() )
                 {
-                    // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
-                    updateThread = new Thread(() => dataProviderService.syncFromStarMapService(ConfigService.Instance.edsmConfiguration?.lastFlightLogSync))
+                    // Spin off a task to download & sync flight logs & system comments from EDSM in the background 
+                    updateThreadCancellationTokenSource = new CancellationTokenSource();
+                    updateTask = new Task( () =>
                     {
-                        IsBackground = true,
-                        Name = "EDSM updater"
-                    };
-                    updateThread.Start();
+                        try
+                        {
+                            dataProviderService
+                                .syncFromStarMapService( ConfigService.Instance.edsmConfiguration?.lastFlightLogSync );
+                        }
+                        catch ( TaskCanceledException )
+                        {
+                            // Nothing to do here
+                        }
+                    }, updateThreadCancellationTokenSource.Token );
+                    updateTask.Start();
                 }
             }
         }
