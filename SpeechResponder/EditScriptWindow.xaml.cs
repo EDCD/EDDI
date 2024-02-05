@@ -140,7 +140,7 @@ namespace EddiSpeechResponder
             // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
             var dpiScale = VisualTreeHelper.GetDpi(this);
             var windowPosition = new Rect(new Point(Settings.Default.Left, Settings.Default.Top), new Size(Settings.Default.Width, Settings.Default.Height));
-            if ( windowPosition == Rect.Empty || !isWindowValid( windowPosition, dpiScale ) )
+            if ( Screen.PrimaryScreen != null && ( windowPosition == Rect.Empty || !isWindowValid( windowPosition, dpiScale ) ) )
             {
                 // Revert to default values if the prior size and position are no longer valid
                 Left = centerWindow( applyDpiScale( Screen.PrimaryScreen.Bounds.Width, dpiScale.DpiScaleX ),

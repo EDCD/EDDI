@@ -152,8 +152,8 @@ namespace Eddi
         {
             // Suppress uncaught Rollbar internal HTTP exceptions
             if ( ex is AggregateException aex && 
-                 aex.InnerException is HttpRequestException hre && 
-                 hre.StackTrace.Contains("Rollbar") )
+                 aex.InnerException is HttpRequestException hre &&
+                 ( hre.StackTrace?.Contains( "Rollbar" ) ?? false ) )
             {
                 return;
             }

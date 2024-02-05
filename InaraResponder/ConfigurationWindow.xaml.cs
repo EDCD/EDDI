@@ -105,11 +105,10 @@ namespace EddiInaraResponder
             Errors[propertyName].Add(errorMessage);
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
-        public IEnumerable GetErrors(string propertyName)
+        public IEnumerable GetErrors ( string propertyName )
         {
-            if (string.IsNullOrEmpty(propertyName) || (!HasErrors)) { return null; }
-            if (!Errors.ContainsKey(propertyName)) { Errors.Add(propertyName, new List<string>()); }
-            return Errors[propertyName];
+            // Included to complete the implementation but never invoked.
+            throw new NotImplementedException();
         }
         public void ClearErrors(string propertyName)
         {

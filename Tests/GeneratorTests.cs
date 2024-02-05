@@ -182,17 +182,15 @@ namespace GeneratorTests
             var resolver = new ScriptResolver(null);
             var store = new BuiltinStore();
             var assy = Assembly.GetAssembly(typeof(ScriptResolver));
-            foreach (var type in assy.GetTypes()
-                .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
+            if ( assy != null )
             {
-                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
-                    ? Activator.CreateInstance(type) :
-                    Activator.CreateInstance(type, resolver, store));
-
-                if (function != null)
-                {
-                    functionsList.Add(function);
-                }
+                var customFunctions = assy.GetTypes()
+                    .Where( t => t.IsClass && t.GetInterface( nameof(ICustomFunction) ) != null )
+                    .Select( type => (ICustomFunction)( type.GetConstructor( Type.EmptyTypes ) != null
+                        ? Activator.CreateInstance( type )
+                        : Activator.CreateInstance( type, resolver, store ) ) )
+                    .Where( function => function != null );
+                functionsList.AddRange( customFunctions );
             }
 
             // Organize functions in alphabetical order (except exclude functions that we've flagged as hidden)

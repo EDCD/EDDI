@@ -802,7 +802,7 @@ namespace EddiDataProviderService
                         // Get schema version 
                         using ( var cmd = new SQLiteCommand( TABLE_GET_SCHEMA_VERSION_SQL, con ) )
                         {
-                            Instance.SCHEMA_VERSION = (long)cmd.ExecuteScalar();
+                            Instance.SCHEMA_VERSION = (long)( cmd.ExecuteScalar() ?? 0 );
                             Logging.Debug( "Starsystem repository is schema version " + Instance.SCHEMA_VERSION );
                         }
 

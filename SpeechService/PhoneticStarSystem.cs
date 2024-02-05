@@ -365,8 +365,9 @@ namespace EddiSpeechService
                 var matchConditions = new Regex(@"([A-Z])|(\d+)|([a-z])|(\S)");
                 foreach (var m in matchConditions.Matches(starSystem))
                 {
-                    var useLongNumbers = !THREE_OR_MORE_DIGITS.IsMatch( m.ToString() );
-                    elements.Add( sayAsLettersOrNumbers( m.ToString(), useLongNumbers, useICAO ) );
+                    if ( m is not Match match ) { continue; }
+                    var useLongNumbers = !THREE_OR_MORE_DIGITS.IsMatch( match.ToString() );
+                    elements.Add( sayAsLettersOrNumbers( match.ToString(), useLongNumbers, useICAO ) );
                 }
                 result = string.Join(" ", elements).Trim();
             }

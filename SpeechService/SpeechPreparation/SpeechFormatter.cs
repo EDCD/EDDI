@@ -122,7 +122,7 @@ namespace EddiSpeechService.SpeechPreparation
             result = Regex.Replace(result, "<(/spurt)>", "%XXX%$1%YYY%");
 
             // Now escape anything that is still present
-            result = SecurityElement.Escape(result) ?? string.Empty;
+            result = SecurityElement.Escape( result );
 
             // Put back the characters we hid
             result = Regex.Replace(result, "%XXX%", "<");

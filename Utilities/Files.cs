@@ -294,7 +294,7 @@ namespace Utilities
             if ( !Path.IsPathRooted( path ) || "\\".Equals( Path.GetPathRoot( path ) ) )
             {
                 finalPath = path.StartsWith( Path.DirectorySeparatorChar.ToString() )
-                    ? Path.Combine( Path.GetPathRoot( basePath ), path.TrimStart( Path.DirectorySeparatorChar ) )
+                    ? Path.Combine( Path.GetPathRoot( basePath ) ?? "", path.TrimStart( Path.DirectorySeparatorChar ) )
                     : Path.Combine( basePath, path );
             }
             else

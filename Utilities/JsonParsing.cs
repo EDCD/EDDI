@@ -313,7 +313,7 @@ namespace Utilities
 
                         if (selfValue != toValue && (selfValue == null || !selfValue.Equals(toValue)))
                         {
-                            if ( selfValue is object )
+                            if ( selfValue is not null )
                             {
                                 if (compareJsonEquality(selfValue, toValue, jsonIgnore, out mutatedPropertyName, ignore))
                                 {

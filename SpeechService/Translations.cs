@@ -255,6 +255,11 @@ namespace EddiSpeechService
             foreach (var match in matchConditions.Matches(part))
             {
                 var matchAsString = match.ToString();
+                if ( string.IsNullOrEmpty( matchAsString ) )
+                {
+                    // Handle null / empty strings
+                    return "";
+                }
                 if (long.TryParse(matchAsString, out long number))
                 {
                     // Handle numbers
