@@ -1823,7 +1823,10 @@
   </data>
   
   
-  
+  <data name="ThargoidPod" xml:space="preserve">
+    <value>Thargoid Biospeicherkapsel</value>
+    <comment>Commodity ThargoidPod</comment>
+  </data>
   
   
   
