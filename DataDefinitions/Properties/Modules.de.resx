@@ -641,5 +641,8 @@
     <value>Impulswellen-Xeno-Scanner</value>
     <comment>Module PulseWaveXenoScanner</comment>
   </data>
-  
+  <data name="Extraction_Missile" xml:space="preserve">
+    <value>Abbaurakete</value>
+    <comment>Module Human </comment>
+  </data>
 </root>
