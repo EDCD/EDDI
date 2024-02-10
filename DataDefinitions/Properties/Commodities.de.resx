@@ -1582,7 +1582,7 @@
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
   <data name="ThargoidScoutTissueSample" xml:space="preserve">
-    <value>Gewebeprobe von Thargoiden-Späher </value>
+    <value>Thargoiden-Späher Gewebeprobe </value>
     <comment>Commodity ThargoidScoutTissueSample</comment>
   </data>
   <data name="UnmarkedWeapons" xml:space="preserve">
@@ -1821,13 +1821,25 @@
     <value>Titan Maw Teilgewebeprobe</value>
     <comment>Commodity ThargoidTissueSampleType10c</comment>
   </data>
-  
-  
+  <data name="ThargoidTissueSampleType7" xml:space="preserve">
+    <value>Thargoid Scythe Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+  </data>
+  <data name="UnknownSack" xml:space="preserve">
+    <value>Schutzmembranen-Schrott</value>
+    <comment>Commodity UnknownSack</comment>
+  </data>
   <data name="ThargoidPod" xml:space="preserve">
     <value>Thargoid Biospeicherkapsel</value>
     <comment>Commodity ThargoidPod</comment>
   </data>
-  
-  
+  <data name="CoralSap" xml:space="preserve">
+    <value>Korallensaft</value>
+    <comment>Commodity CoralSap</comment>
+  </data>
+  <data name="UnknownMineral" xml:space="preserve">
+    <value>Unreines Spitzen-Mineral</value>
+    <comment>Commodity UnknownMineral</comment>
+  </data>
   
 </root>
