@@ -894,5 +894,8 @@
   <data name="GeneticSample" xml:space="preserve">
     <value>Biologische Probe</value>
   </data>
-  
+  <data name="BiomechanicalComponent" xml:space="preserve">
+    <value>raffinierter Spitzen-Verbund</value>
+    <comment>Found at Thargoid spire sites</comment>
+  </data>
 </root>
