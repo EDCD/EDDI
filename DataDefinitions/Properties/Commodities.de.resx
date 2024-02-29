@@ -1841,5 +1841,8 @@
     <value>Unreines Spitzen-Mineral</value>
     <comment>Commodity UnknownMineral</comment>
   </data>
-  
+  <data name="UnknownRefinedMineral" xml:space="preserve">
+    <value>Teilveredeltes Spitzen-Mineral</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
+  </data>
 </root>
