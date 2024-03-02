@@ -666,6 +666,11 @@
   
   
   
-  
+  <data name="tg_shutdowndata" xml:space="preserve">
+    <value>Параметры сильного энергетического импульса</value>
+    <comment>tg_shutdowndata
+Material tg_shutdowndata
+Data collected when you observe a Thargoid Titan explode</comment>
+  </data>
   
 </root>
