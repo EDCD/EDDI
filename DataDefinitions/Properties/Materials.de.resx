@@ -694,8 +694,10 @@
     <comment>Material tg_abrasion03</comment>
   </data>
   <data name="tg_shutdowndata" xml:space="preserve">
-    <value>Analyse massiven Energieanstiegs</value>
-    <comment>Material tg_shutdowndata</comment>
+    <value>Analyse einer enormen Energiespitze</value>
+    <comment>tg_shutdowndata
+Material tg_shutdowndata
+Data collected when you observe a Thargoid Titan explode</comment>
   </data>
   <data name="unknowncorechip" xml:space="preserve">
     <value>Taktischer Kern Chip</value>
