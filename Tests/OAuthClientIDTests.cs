@@ -8,8 +8,10 @@ namespace OAuthClientIDTests
         [TestMethod, TestCategory("Credentials")]
         public void TestClientIDNotNull()
         {
-            string ID = EddiCompanionAppService.ClientId.ID;
-            Assert.IsNotNull(ID);
+            var clientIDClass = new PrivateType(typeof(EddiCompanionAppService.ClientId));
+            object clientID = clientIDClass.GetStaticField("ID");
+            Assert.IsInstanceOfType(clientID, typeof(string));
+            Assert.IsNotNull( clientID );
         }
     }
 }
