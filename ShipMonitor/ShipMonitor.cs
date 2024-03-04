@@ -1187,7 +1187,7 @@ namespace EddiShipMonitor
                         {
                             foreach (var shipHardpoint in ship.hardpoints)
                             {
-                                if (profileHardpoint.module != null && profileHardpoint.module.invariantName == shipHardpoint.module.invariantName)
+                                if (profileHardpoint.module != null && profileHardpoint.module.invariantName == shipHardpoint.module?.invariantName)
                                 {
                                     shipHardpoint.module = shipHardpoint.module ?? new Module();
                                     shipHardpoint.module.UpdateFromFrontierAPIModule(profileHardpoint.module);
