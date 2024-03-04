@@ -695,7 +695,9 @@
   </data>
   <data name="tg_shutdowndata" xml:space="preserve">
     <value>大规模能量浪涌分析</value>
-    <comment>Material tg_shutdowndata</comment>
+    <comment>tg_shutdowndata
+Material tg_shutdowndata
+Data collected when you observe a Thargoid Titan explode</comment>
   </data>
   <data name="unknowncorechip" xml:space="preserve">
     <value>战术核心芯片</value>
