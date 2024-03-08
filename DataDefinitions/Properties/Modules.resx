@@ -645,4 +645,8 @@
     <value>Extraction Missile</value>
     <comment>Module Human </comment>
   </data>
+  <data name="GuardianNaniteTorpedoPylon" xml:space="preserve">
+    <value>Guardian Nanite Torpedo Pylon</value>
+    <comment>Module Guardian Nanite Torpedo Pylon</comment>
+  </data>
 </root>

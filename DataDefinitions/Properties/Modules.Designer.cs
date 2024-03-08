@@ -583,6 +583,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guardian Nanite Torpedo Pylon.
+        /// </summary>
+        public static string GuardianNaniteTorpedoPylon {
+            get {
+                return ResourceManager.GetString("GuardianNaniteTorpedoPylon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Guardian Plasma Charger.
         /// </summary>
         public static string GuardianPlasmaCharger {

@@ -1090,8 +1090,9 @@ namespace EddiDataDefinitions
                 new Module(129022089, "Hpt_ATMultiCannon_Gimbal_Medium", "Enhanced_AXMulti_Cannon", 2, "E", 1197344, ModuleMount.Gimballed),
                 new Module(129022952, "Hpt_XenoScanner_Advanced_Tiny", "PulseWaveXenoScanner", 0, "C", 850000),
                 new Module(129022663, "Hpt_AntiUnknownShutdown_Tiny_V2", "Thargoid_Pulse_Neutraliser", 0, "E", 0),
-
                 new Module(129028577, "Hpt_Human_Extraction_Fixed_Medium", "Extraction_Missile", 2, "B", 843170),
+                new Module(129030049, "Hpt_ATVentDisruptorPylon_Fixed_Medium", "GuardianNaniteTorpedoPylon", 2, "I", 843170),
+                new Module(129030050, "Hpt_ATVentDisruptorPylon_Fixed_Large", "GuardianNaniteTorpedoPylon", 3, "I", 1627420),
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 new Module(128049673, "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed),
