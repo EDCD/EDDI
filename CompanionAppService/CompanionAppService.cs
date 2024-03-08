@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService.Exceptions;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -113,7 +114,10 @@ namespace EddiCompanionAppService
             string appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
             void logger(string message) => Logging.Error(message);
             URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrl, logger, appPath);
-            clientID = ClientId.ID;
+
+            var secrets = new ConfigurationBuilder().AddUserSecrets<CompanionAppService>().Build();
+            clientID = secrets[ "CompanionAppService:ClientId" ]; // We don't need the Client Secret for PKCE authentication
+
             if (clientID == null)
             {
                 CurrentState = State.NoClientIDConfigured;
