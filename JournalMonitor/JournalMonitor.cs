@@ -2300,6 +2300,10 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
                                     SignalSource source = GetSignalSourceName(data);
+
+                                    var signalTypeEdName = JsonParsing.getString( data, "SignalType" );
+                                    source.signalType = signalTypeEdName is null ? null : SignalType.FromEDName( signalTypeEdName );
+
                                     source.spawningFaction = GetFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
                                     source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)(secondsRemaining));

@@ -8,6 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Functions
       * `Play()` now supports relative file system paths. (#2581)
+    * Events
+      * `Signal detected` updated to include new `signaltype` property.
 
 ## 4.0.3
   * EDSM Responder

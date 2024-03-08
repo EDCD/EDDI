@@ -124,7 +124,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SignalSource.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Powers.Designer.cs">
+	<Compile Update="Properties\SignalType.Designer.cs">
+	  <AutoGen>True</AutoGen>
+	  <DesignTime>True</DesignTime>
+	  <DependentUpon>SignalType.resx</DependentUpon>
+	</Compile>
+	<Compile Update="Properties\Powers.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Powers.resx</DependentUpon>
@@ -395,6 +400,10 @@
     <EmbeddedResource Update="Properties\NpcShip.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NpcShip.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\SignalType.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SignalType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\StationState.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

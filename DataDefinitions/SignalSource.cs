@@ -105,6 +105,7 @@ namespace EddiDataDefinitions
         public static readonly SignalSource UnidentifiedSignalSource;
         public static readonly SignalSource GenericSignalSource;
 
+        public SignalType signalType { get; set; }
         public int index;
         public string spawningFaction { get; set; }
         public DateTime? expiry { get; set; }

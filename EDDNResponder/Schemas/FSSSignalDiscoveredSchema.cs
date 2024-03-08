@@ -108,6 +108,10 @@ namespace EddiEddnResponder.Schemas
                     {
                         handledSignal["SignalName"] = signalName;
                     }
+                    if ( retrievedSignal.TryGetValue( "SignalType", out var signalType ) )
+                    {
+                        handledSignal[ "SignalType" ] = signalType;
+                    }
                     if (retrievedSignal.TryGetValue("IsStation", out var isStation))
                     {
                         handledSignal["IsStation"] = isStation;
