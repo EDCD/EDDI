@@ -40,7 +40,9 @@ namespace EddiEddnResponder.Schemas
                     handledData["timestamp"] = data["timestamp"];
                     handledData["systemName"] = data["StarSystem"];
                     handledData["stationName"] = data["StationName"];
+                    handledData["stationType"] = data["StationType"]; // market.json specific
                     handledData["marketId"] = data["MarketID"];
+                    handledData["carrierDockingAccess"] = data["CarrierDockingAccess"];
                     handledData["commodities"] = JArray.FromObject(data["Items"])
                         .Where(c => ApplyJournalMarketFilter(c))
                         .Select(c => FormatCommodity(c, true))
@@ -115,6 +117,15 @@ namespace EddiEddnResponder.Schemas
                     data.Add("commodities", commodities);
                     data.Add("economies", economies);
                     data.Add("prohibited", prohibitedCommodities);
+
+                    // Add fleet carrier data if applicable
+                    if ( fleetCarrierJson != null )
+                    {
+                        if ( fleetCarrierJson["dockingAccess"]?.ToString() is string dockingAccess )
+                        {
+                            data.Add( "carrierDockingAccess", dockingAccess );
+                        }
+                    }
 
                     // Remove localized names
                     data = eddnState.PersonalData.Strip(data);
