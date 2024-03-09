@@ -1276,6 +1276,15 @@
 			"description": "Triggered when your hull is damaged to a certain extent",
 			"default": true
 		},
+		"Hyperdicted": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Hyperdicted",
+			"description": "Triggered when your ship is hyperdicted by a Thargoid"
+		},
 		"Insurance check": {
 			"enabled": true,
 			"priority": 3,

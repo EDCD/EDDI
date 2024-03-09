@@ -3,12 +3,15 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 4.0.4-b1
-  * Navigation Montitor
+  * Core
+    * EDDI will no longer report your environment as "Supercruise" right after a Thargoid hyperdiction. (#2597)
+  * Navigation Monitor
     * Improved route guidance updates.
   * Speech Responder
     * Functions
       * `Play()` now supports relative file system paths. (#2581)
     * Events
+      * `Hyperdicted` event added. 
       * `Signal detected` updated to include new `signaltype` property.
 
 ## 4.0.3

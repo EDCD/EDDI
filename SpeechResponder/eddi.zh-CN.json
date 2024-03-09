@@ -1172,6 +1172,15 @@
       "script": "{if event.vehicle = vehicle:\r\n    {if event.health < 40:\r\n        危险:\r\n    |elif event.health < 60:\r\n        警告:\r\n    |elif event.health < 80:\r\n        小心:\r\n    }\r\n    {OneOf(\"船体\", \"船体完整度\", \"完整度\", \"结构完整度\")} {Occasionally(3, \"现在\")} 为百分之 {event.health}.\r\n}\r\n",
       "default": true
     },
+    "Hyperdicted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Hyperdicted",
+      "description": "Triggered when your ship is hyperdicted by a Thargoid"
+    },
     "Insurance check": {
       "name": "Insurance check",
       "description": "Check for enough credits to cover your insurance",

@@ -1151,6 +1151,15 @@
       "name": "Hull damaged",
       "description": "Se activa cuando el casco de su nave se encuentra dañada en cierta medida"
     },
+    "Hyperdicted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Hyperdicted",
+      "description": "Triggered when your ship is hyperdicted by a Thargoid"
+    },
     "Insurance check": {
       "enabled": true,
       "priority": 3,

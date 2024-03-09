@@ -2,12 +2,14 @@
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
+using MathNet.Numerics.RootFinding;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnitTests;
+using Utilities;
 
 namespace IntegrationTests
 {
@@ -104,6 +106,43 @@ namespace UnitTests
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
             var result = (bool?)privateObject.Invoke("eventJumped", new object[] { @event });
             Assert.IsTrue(result);
+        }
+
+
+        [TestMethod]
+        public void TestJumpedHandler_Hyperdiction()
+        {
+            PrivateObject privateObject = new PrivateObject(EDDI.Instance);
+
+            string line1 = @"{ ""timestamp"":""2024-02-20T11:10:24Z"", ""event"":""FSDJump"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""Cephei Sector DQ-Y b1"", ""SystemAddress"":2868635641225, ""StarPos"":[-93.31250,31.00000,-73.00000], ""SystemAllegiance"":""Thargoid"", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""Нет"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""Нет"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""Нет"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Анархия"", ""Population"":0, ""Body"":""Cephei Sector DQ-Y b1 A"", ""BodyID"":1, ""BodyType"":""Star"", ""ThargoidWar"":{ ""CurrentState"":""Thargoid_Controlled"", ""NextStateSuccess"":"""", ""NextStateFailure"":""Thargoid_Controlled"", ""SuccessStateReached"":false, ""WarProgress"":0.000224, ""RemainingPorts"":0, ""EstimatedRemainingTime"":""0 Days"" }, ""JumpDist"":6.076, ""FuelUsed"":0.359144, ""FuelLevel"":31.640856 }";
+            var event1 = (JumpedEvent)JournalMonitor.ParseJournalEntry(line1)[0];
+            Assert.IsNotNull( event1 );
+            Assert.IsInstanceOfType( event1, typeof( JumpedEvent ) );
+
+            string line2 = @"{ ""timestamp"":""2024-02-20T11:11:12Z"", ""event"":""FSDJump"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""HIP 8525"", ""SystemAddress"":560216410467, ""StarPos"":[-96.28125,31.65625,-71.25000], ""SystemAllegiance"":""Thargoid"", ""SystemEconomy"":""$economy_HighTech;"", ""SystemEconomy_Localised"":""Высокие технологии"", ""SystemSecondEconomy"":""$economy_Military;"", ""SystemSecondEconomy_Localised"":""Военная"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""Нет"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Анархия"", ""Population"":0, ""Body"":""HIP 8525 A"", ""BodyID"":1, ""BodyType"":""Star"", ""ThargoidWar"":{ ""CurrentState"":""Thargoid_Controlled"", ""NextStateSuccess"":""Thargoid_Recovery"", ""NextStateFailure"":""Thargoid_Controlled"", ""SuccessStateReached"":false, ""WarProgress"":0.006071, ""RemainingPorts"":0, ""EstimatedRemainingTime"":""0 Days"" }, ""JumpDist"":3.508, ""FuelUsed"":0.086031, ""FuelLevel"":31.554825, ""SystemFaction"":{ ""Name"":""None"" } }";
+            var event2 = (JumpedEvent)JournalMonitor.ParseJournalEntry(line2)[0];
+            Assert.IsNotNull( event2 );
+            Assert.IsInstanceOfType( event2, typeof( JumpedEvent ) );
+
+            string line3 = @"{ ""timestamp"":""2024-02-20T11:12:23Z"", ""event"":""FSDJump"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""HIP 8525"", ""SystemAddress"":560216410467, ""StarPos"":[-96.28125,31.65625,-71.25000], ""SystemAllegiance"":""Thargoid"", ""SystemEconomy"":""$economy_HighTech;"", ""SystemEconomy_Localised"":""Высокие технологии"", ""SystemSecondEconomy"":""$economy_Military;"", ""SystemSecondEconomy_Localised"":""Военная"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""Нет"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Анархия"", ""Population"":0, ""Body"":""HIP 8525 ABC"", ""BodyID"":0, ""BodyType"":""Null"", ""ThargoidWar"":{ ""CurrentState"":""Thargoid_Controlled"", ""NextStateSuccess"":""Thargoid_Recovery"", ""NextStateFailure"":""Thargoid_Controlled"", ""SuccessStateReached"":false, ""WarProgress"":0.006071, ""RemainingPorts"":0, ""EstimatedRemainingTime"":""0 Days"" }, ""JumpDist"":3.508, ""FuelUsed"":0.086017, ""FuelLevel"":31.468807, ""SystemFaction"":{ ""Name"":""None"" } }";
+            var event3 = (JumpedEvent)JournalMonitor.ParseJournalEntry(line3)[0];
+            Assert.IsNotNull( event3 );
+            Assert.IsInstanceOfType( event3, typeof( JumpedEvent ) );
+
+            // Standard jump to Cephei Sector DQ-Y b1. Environment is supercruise.
+            privateObject.Invoke("eventJumped", event1 );
+            Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, privateObject.GetFieldOrProperty( nameof(EDDI.Instance.Environment) ) );
+            Assert.AreEqual( 2868635641225UL, ( (StarSystem)privateObject.GetFieldOrProperty( nameof(EDDI.Instance.CurrentStarSystem) ) )?.systemAddress );
+
+            // Standard jump to HIP 8525. Environment is supercruise.
+            privateObject.Invoke("eventJumped", event2 );
+            Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, privateObject.GetFieldOrProperty( nameof( EDDI.Instance.Environment ) ) );
+            Assert.AreEqual( 560216410467UL, ( (StarSystem)privateObject.GetFieldOrProperty( nameof( EDDI.Instance.CurrentStarSystem ) ) )?.systemAddress );
+
+            // Hyperdiction in HIP 8525. Environment is normal space rather than supercruise.
+            privateObject.Invoke( "eventJumped", event3 );
+            Assert.AreEqual( Constants.ENVIRONMENT_NORMAL_SPACE, privateObject.GetFieldOrProperty( nameof( EDDI.Instance.Environment ) ) );
+            Assert.AreEqual( 560216410467UL, ( (StarSystem)privateObject.GetFieldOrProperty( nameof( EDDI.Instance.CurrentStarSystem ) ) )?.systemAddress );
         }
 
         [TestMethod]
