@@ -328,7 +328,7 @@ namespace SpeechTests
             SpeechService.Instance.Say(null, "Testing invalid voice", 3, "No such voice", false);
         }
 
-        [TestMethod, TestCategory("Speech")]
+        [TestMethod, TestCategory("Speech"), DoNotParallelize]
         public void TestFSSDiscoveryScan()
         {
             SpeechResponder speechresponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");

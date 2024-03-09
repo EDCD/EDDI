@@ -270,7 +270,7 @@ namespace UnitTests
             ConfigService.Instance.crimeMonitorConfiguration = data;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestCrimeShipTargeted()
         {
             var privateObject = new PrivateObject(crimeMonitor);

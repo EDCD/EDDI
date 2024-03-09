@@ -40,7 +40,7 @@ namespace IntegrationTests
             fakeEdsmRestClient.Expect(resource2, json2, data2);
         }
 
-        [DataTestMethod]
+        [DataTestMethod, DoNotParallelize]
         [DataRow(QueryType.encoded, null, null, 10000.0, true, "EZ Aquarii", "Magnus Gateway")]
         [DataRow(QueryType.manufactured, null, null, 10000.0, true, "Sirius", "Patterson Enterprise")]
         [DataRow(QueryType.raw, null, null, 10000.0, true, "61 Cygni", "Broglie Terminal")]

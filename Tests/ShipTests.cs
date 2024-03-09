@@ -253,7 +253,7 @@ namespace UnitTests
             Assert.AreEqual(true, @event.engineermodifications.Length > 0);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestModuleSwappedEvent()
         {
             string line = @"{ ""timestamp"":""2018 - 06 - 29T02: 38:30Z"", ""event"":""ModuleSwap"", ""MarketID"":128132856, ""FromSlot"":""Slot06_Size3"", ""ToSlot"":""Slot07_Size3"", ""FromItem"":""$int_stellarbodydiscoveryscanner_advanced_name;"", ""FromItem_Localised"":""D - Scanner"", ""ToItem"":""Null"", ""Ship"":""krait_mkii"", ""ShipID"":81 }";
@@ -567,7 +567,7 @@ namespace UnitTests
             Assert.IsTrue(event2.full);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestShipJumpedEvent()
         {
             // Obtain our ship monitor and save its state
