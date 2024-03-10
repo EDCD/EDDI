@@ -2,7 +2,6 @@
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
-using MathNet.Numerics.RootFinding;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
