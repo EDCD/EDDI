@@ -145,7 +145,7 @@ namespace EddiDataProviderService
                     }
                     else
                     {
-                        Logging.Warn("No flight logs received.");
+                        Logging.Warn("No new flight logs received.");
                     }
                 }
                 catch (EDSMException edsme)

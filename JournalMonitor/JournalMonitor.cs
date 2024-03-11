@@ -3685,12 +3685,20 @@ namespace EddiJournalMonitor
                             case "RebootRepair":
                                 {
                                     // This event returns a list of slots rather than actual module ednames.
-                                    data.TryGetValue("Modules", out object val);
-                                    var slotsJson = (List<string>)val;
+                                    List<string> slotsJson = null;
+                                    data.TryGetValue( "Modules", out var val );
+                                    if ( val is List<string> ls )
+                                    {
+                                        slotsJson = ls;
+                                    }
+                                    else if ( val is List<object> lo )
+                                    {
+                                        slotsJson = lo.Select( o => o.ToString() ).ToList();
+                                    }
 
                                     var ship = EDDI.Instance.CurrentShip;
                                     List<Module> modules = new List<Module>();
-                                    foreach (string slot in slotsJson)
+                                    foreach (var slot in slotsJson)
                                     {
                                         Module module = null;
                                         if (slot.Contains("CargoHatch"))
