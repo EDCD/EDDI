@@ -623,17 +623,26 @@ namespace EddiSpeechService
             lock ( activeSpeechLock )
             {
                 Logging.Debug( "Ending active speech." );
-                discardPendingSegments = true;
-                var keysToRemove = activeSpeechTS.Keys;
-                keysToRemove.AsParallel().ForAll(key =>
+                try
                 {
-                    if ( activeSpeechTS.TryRemove( key, out var tokenSource ) )
+                    discardPendingSegments = true;
+                    if ( activeSpeechTS.Keys is ICollection<ISoundOut> keysToRemove )
                     {
-                        tokenSource.Cancel();
-                        tokenSource.Token.WaitHandle.WaitOne( TimeSpan.FromSeconds( 5 ) );
-                        tokenSource.Dispose();
+                        keysToRemove.AsParallel().ForAll( key =>
+                        {
+                            if ( activeSpeechTS.TryRemove( key, out var tokenSource ) )
+                            {
+                                tokenSource.Cancel();
+                                tokenSource.Token.WaitHandle.WaitOne( TimeSpan.FromSeconds( 5 ) );
+                                tokenSource.Dispose();
+                            }
+                        } );
                     }
-                } );
+                }
+                catch ( Exception e )
+                {
+                    Logging.Warn( e.Message, e );
+                }
                 OnPropertyChanged( nameof( eddiSpeaking ) );
             }
         }
