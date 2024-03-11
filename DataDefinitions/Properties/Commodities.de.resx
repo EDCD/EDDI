@@ -426,7 +426,7 @@
     <comment>Commodity CropHarvesters</comment>
   </data>
   <data name="Cryolite" xml:space="preserve">
-    <value>Kryolith</value>
+    <value>Kriolyth</value>
     <comment>Commodity Cryolite</comment>
   </data>
   <data name="CrystallineSpheres" xml:space="preserve">
@@ -794,7 +794,7 @@
     <comment>Commodity LiveHecateSeaWorms</comment>
   </data>
   <data name="LowTemperatureDiamond" xml:space="preserve">
-    <value>Niedertemperaturdiamanten</value>
+    <value>Tieftemperaturdiamanten</value>
     <comment>Commodity LowTemperatureDiamond</comment>
   </data>
   <data name="LTTHypersweet" xml:space="preserve">
