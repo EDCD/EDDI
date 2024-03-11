@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
-    <value>Faro di navigazione</value>
+    <value>Radiofaro di navigazione</value>
     <comment>Nav beacon</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
-    <value>Faro di navigazione Compromesso</value>
+    <value>Radiofaro di navigazione Compromesso</value>
     <comment>Compromised nav beacon</comment>
   </data>
   <data name="USS" xml:space="preserve">
@@ -186,7 +186,7 @@
     <comment>Distress signal</comment>
   </data>
   <data name="USS_Type_TradingBeacon" xml:space="preserve">
-    <value>Faro di Commercio</value>
+    <value>Radiofaro commerciale</value>
     <comment>TradingBeacon signal</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>Resource Extraction Site [Hazardous]</comment>
   </data>
   <data name="NumberStation" xml:space="preserve">
-    <value>Faro di Comunicazione non Registrato</value>
+    <value>Radiofaro di Comunicazione non Registrato</value>
     <comment>NumberStation</comment>
   </data>
   <data name="Warzone_TG" xml:space="preserve">
@@ -258,7 +258,7 @@
     <comment>Checkpoint</comment>
   </data>
   <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
-    <value>Faro di navigazione per convogli</value>
+    <value>Radiofaro per convogli</value>
     <comment>Convoy Beacon	</comment>
   </data>
   <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">

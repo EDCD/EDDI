@@ -117,137 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Combat" xml:space="preserve">
+    <value>Combattimento</value>
+    <comment>SignalType "Combat"</comment>
+  </data>
+  <data name="FleetCarrier" xml:space="preserve">
+    <value>Porta Navi</value>
+    <comment>SignalType "FleetCarrier"</comment>
+  </data>
+  <data name="Generic" xml:space="preserve">
+    <value>Generico</value>
+    <comment>SignalType "Generic"</comment>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installazione</value>
+    <comment>SignalType "Installation"</comment>
+  </data>
+  <data name="Megaship" xml:space="preserve">
+    <value>Mega nave</value>
+    <comment>SignalType "Megaship"</comment>
+  </data>
+  <data name="NavBeacon" xml:space="preserve">
+    <value>Radiofaro di navigazione</value>
+    <comment>SignalType "NavBeacon"</comment>
+  </data>
+  <data name="Outpost" xml:space="preserve">
+    <value>Avamposto</value>
+    <comment>SignalType "Outpost"</comment>
+  </data>
+  <data name="ResourceExtraction" xml:space="preserve">
+    <value>Estrazione risorse</value>
+    <comment>SignalType "ResourceExtraction"</comment>
+  </data>
+  <data name="StationAsteroid" xml:space="preserve">
+    <value>Stazione</value>
+    <comment>SignalType "StationAsteroid"</comment>
+  </data>
+  <data name="StationBernalSphere" xml:space="preserve">
+    <value>Stazione</value>
+    <comment>SignalType "StationBernalSphere"</comment>
+  </data>
+  <data name="StationCoriolis" xml:space="preserve">
+    <value>Stazione</value>
+    <comment>SignalType "StationCoriolis"</comment>
+  </data>
+  <data name="StationMegaShip" xml:space="preserve">
+    <value>Stazione</value>
+    <comment>SignalType "StationMegaShip"</comment>
+  </data>
+  <data name="StationONeilCylinder" xml:space="preserve">
+    <value>Stazione</value>
+    <comment>SignalType "StationONeilCylinder"</comment>
+  </data>
+  <data name="StationONeilOrbis" xml:space="preserve">
+    <value>Stazione</value>
+    <comment>SignalType "StationONeilOrbis"</comment>
+  </data>
+  <data name="Titan" xml:space="preserve">
+    <value>Titano</value>
+    <comment>SignalType "Titan"</comment>
+  </data>
+  <data name="TouristBeacon" xml:space="preserve">
+    <value>Radiofaro Turistico</value>
+    <comment>SignalType "TouristBeacon"</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Sorgente di Segnale non identificato</value>
+    <comment>SignalType "USS"</comment>
+  </data>
 </root>
