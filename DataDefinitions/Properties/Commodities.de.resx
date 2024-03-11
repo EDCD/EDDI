@@ -770,7 +770,7 @@
     <comment>Commodity LeestianEvilJuice</comment>
   </data>
   <data name="Lepidolite" xml:space="preserve">
-    <value>Lepidolit</value>
+    <value>Lepidolith</value>
     <comment>Commodity Lepidolite</comment>
   </data>
   <data name="LiquidOxygen" xml:space="preserve">
@@ -794,7 +794,7 @@
     <comment>Commodity LiveHecateSeaWorms</comment>
   </data>
   <data name="LowTemperatureDiamond" xml:space="preserve">
-    <value>Tieftemperaturdiamanten</value>
+    <value>Niedertemperaturdiamanten</value>
     <comment>Commodity LowTemperatureDiamond</comment>
   </data>
   <data name="LTTHypersweet" xml:space="preserve">
@@ -1170,7 +1170,7 @@
     <comment>Commodity SyntheticReagents</comment>
   </data>
   <data name="Taaffeite" xml:space="preserve">
-    <value>Taaffeite</value>
+    <value>Taaffeit</value>
     <comment>Commodity Taaffeite</comment>
   </data>
   <data name="TacticalData" xml:space="preserve">
