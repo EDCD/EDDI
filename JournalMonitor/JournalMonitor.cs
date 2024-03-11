@@ -4375,13 +4375,13 @@ namespace EddiJournalMonitor
                                                    bodyType;
                                     }
 
-                                    // Get carrier data
+                                    // Get carrier data (may not be present when on-foot at a fleet carrier but not docked)
                                     string carrierName = JsonParsing.getString(data, "StationName");
                                     StationModel carrierType = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                     long carrierId = JsonParsing.getLong(data, "MarketID");
                                     Faction stationFaction = GetFaction(data, "Station", systemName);
 
-                                    // Get carrier services data
+                                    // Get carrier services data (may not be present when on-foot at a fleet carrier but not docked)
                                     List<StationService> stationServices = new List<StationService>();
                                     data.TryGetValue("StationServices", out object stationserviceVal);
                                     List<string> stationservices = (stationserviceVal as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
@@ -4390,7 +4390,7 @@ namespace EddiJournalMonitor
                                         stationServices.Add(StationService.FromEDName(service));
                                     }
 
-                                    // Get carrier economies and their shares
+                                    // Get carrier economies and their shares (may not be present when on-foot at a fleet carrier but not docked)
                                     data.TryGetValue("StationEconomies", out object economiesVal);
                                     List<object> economies = economiesVal as List<object> ?? new List<object>();
                                     List<EconomyShare> stationEconomies = new List<EconomyShare>();
