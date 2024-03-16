@@ -146,7 +146,7 @@
     <comment>SignalType "TouristBeacon"</comment>
   </data>
   <data name="USS" xml:space="preserve">
-    <value>Unbekannte Signalquelle</value>
+    <value>Unidentifizierte Signalquelle</value>
     <comment>SignalType "USS"</comment>
   </data>
 </root>
