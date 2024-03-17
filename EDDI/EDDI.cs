@@ -381,7 +381,14 @@ namespace EddiCore
         [CanBeNull]
         public FleetCarrier FleetCarrier
         {
-            get => fleetCarrier;
+            get
+            {
+                if ( fleetCarrier is null )
+                {
+                    RefreshFleetCarrierFromFrontierAPI( true );
+                }
+                return fleetCarrier;
+            }
             set
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
