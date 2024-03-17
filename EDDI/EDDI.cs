@@ -606,6 +606,7 @@ namespace EddiCore
                                 IsBackground = true
                             };
                             Logging.Info("Starting keepalive for " + monitor.MonitorName());
+                            monitorThread.Name = monitor.MonitorName();
                             monitorThread.Start();
                         }
                     }
@@ -788,6 +789,7 @@ namespace EddiCore
                             IsBackground = true
                         };
                         Logging.Info("Starting keepalive for " + monitor.MonitorName());
+                        monitorThread.Name = monitor.MonitorName();
                         monitorThread.Start();
                     }
                 }
