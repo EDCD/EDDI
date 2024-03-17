@@ -1601,6 +1601,15 @@
       "name": "Mission warning",
       "description": "Triggered when a mission is about to expire, based on a set threshold"
     },
+    "Missions": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Missions }\r\n{_ Triggered at startup, with basic information of the Mission Log }\r\n\r\n{F(\"Mission check galaxy\")}",
+      "default": true,
+      "name": "Missions",
+      "description": "Triggered at startup, with basic information of the Mission Log"
+    },
     "Missions route": {
       "enabled": true,
       "priority": 3,

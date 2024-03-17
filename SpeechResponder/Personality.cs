@@ -395,7 +395,7 @@ namespace EddiSpeechResponder
             {
                 if ( ( defaultPersonality?.Scripts?.TryGetValue( kv.Key, out var defaultScript ) ?? false ) && defaultScript != null )
                 {
-                    if ( ( personality.Scripts?.TryGetValue(kv.Key, out var personalityScript) ?? false ) && personalityScript != null )
+                    if ( personality.Scripts.TryGetValue(kv.Key, out var personalityScript) && personalityScript != null )
                     {
                         var script = UpgradeScript(personalityScript, defaultScript);
                         script.PersonalityIsCustom = personality.IsCustom;
