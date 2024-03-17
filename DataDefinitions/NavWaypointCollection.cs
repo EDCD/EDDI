@@ -47,14 +47,20 @@ namespace EddiDataDefinitions
 
         public List<NavWaypoint> UnvisitedWaypoints => Waypoints.Where(wp => !wp.visited).ToList();
 
-        public NavWaypoint NearestUnvisitedWaypoint => currentX is null || currentY is null || currentZ is null 
-            ? null 
-            : UnvisitedWaypoints
-                .OrderBy(wp => Functions.StellarDistanceLy(currentX, currentY, currentZ, wp.x, wp.y, wp.z) )
-                .FirstOrDefault();
+        public NavWaypoint NextWaypoint
+        {
+            get => nextWaypoint ?? ( currentX is null || currentY is null || currentZ is null
+                ? null
+                : FillVisitedGaps
+                    ? UnvisitedWaypoints.OrderBy( wp =>
+                        Functions.StellarDistanceLy( currentX, currentY, currentZ, wp.x, wp.y, wp.z ) ).FirstOrDefault()
+                    : UnvisitedWaypoints.FirstOrDefault() );
+            set => nextWaypoint = value;
+        }
+        private NavWaypoint nextWaypoint;
 
-        public decimal? NearestUnvisitedWaypointDistance => 
-            Functions.StellarDistanceLy( currentX, currentY, currentZ, NearestUnvisitedWaypoint?.x, NearestUnvisitedWaypoint?.y, NearestUnvisitedWaypoint?.z );
+        public decimal? NextWaypointDistance => 
+            Functions.StellarDistanceLy( currentX, currentY, currentZ, NextWaypoint?.x, NextWaypoint?.y, NextWaypoint?.z );
 
         private decimal? currentX;
         private decimal? currentY;

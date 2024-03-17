@@ -29,7 +29,7 @@ namespace EddiEvents
         public long count { get; private set; }
 
         [PublicAPI("The distance to the next star system waypoint in ly")]
-        public decimal distance => Route?.UnvisitedWaypoints.Count > 0 ? Route?.NearestUnvisitedWaypointDistance ?? 0 : 0;
+        public decimal distance => Route?.UnvisitedWaypoints.Count > 0 ? Route?.NextWaypointDistance ?? 0 : 0;
 
         [PublicAPI("The total distance of the route in ly, if applicable")]
         public decimal routedistance => Route?.RouteDistance ?? 0;
