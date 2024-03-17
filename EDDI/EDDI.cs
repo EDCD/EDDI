@@ -2009,6 +2009,14 @@ namespace EddiCore
                         updateThread.Start();
                     }
                 }
+                else if ( theEvent.latitude != null && theEvent.longitude != null )
+                {
+                    Environment = Constants.ENVIRONMENT_LANDED;
+                }
+                else
+                {
+                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                }
 
                 if ( theEvent.bodyname != null && ( theEvent.bodyType == BodyType.Moon ||
                                                     theEvent.bodyType == BodyType.Planet ) )
@@ -2016,15 +2024,6 @@ namespace EddiCore
                     // Update the body 
                     Logging.Debug( "Now at body " + theEvent.bodyname );
                     updateCurrentStellarBody( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
-                }
-
-                if ( theEvent.latitude != null && theEvent.longitude != null )
-                {
-                    Environment = Constants.ENVIRONMENT_LANDED;
-                }
-                else
-                {
-                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
                 }
 
                 // Update to most recent information

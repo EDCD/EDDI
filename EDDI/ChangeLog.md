@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.0.4-b1
   * Core
     * EDDI will no longer report your environment as "Supercruise" right after a Thargoid hyperdiction. (#2597)
+    * EDDI will no longer report your enviroment as "Normal Space" when starting docked. (#2598)
   * Navigation Monitor
     * Improved route guidance updates.
     * Fixed ship routes reporting wrong jump distances. (#2591)
