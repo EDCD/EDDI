@@ -174,10 +174,38 @@ namespace EddiNavigationService
                 // Resolve the current search query
                 if ( queryResolvers.ContainsKey( queryType ) )
                 {
+                    if ( EDDI.Instance.CurrentStarSystem == null )
+                    {
+                        Logging.Debug( "Could not resolve navigation query: current star system is unknown." );
+                        return null;
+                    }
+
                     foreach ( var resolver in queryResolvers
                                  .Where( resolver => resolver.Key == queryType ) )
                     {
-                        result = resolver.Value.Resolve( query );
+                        if ( queryType == QueryType.carrier )
+                        {
+                            var fleetCarrier = EDDI.Instance.FleetCarrier;
+                            if ( fleetCarrier is null )
+                            {
+                                Logging.Warn( "Invalid query: no fleet carrier found." );
+                                return null;
+                            }
+                            else
+                            {
+                                var carrierLocation = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem( fleetCarrier.currentStarSystem );
+                                if ( carrierLocation is null )
+                                {
+                                    Logging.Warn("Invalid query: unable to find fleet carrier location.");
+                                    return null;
+                                }
+                                result = resolver.Value.Resolve( query, carrierLocation );
+                            }
+                        }
+                        else
+                        {
+                            result = resolver.Value.Resolve( query, EDDI.Instance.CurrentStarSystem );
+                        }
                         break;
                     }
                 }

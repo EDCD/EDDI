@@ -61,28 +61,27 @@ namespace EddiDataDefinitions
         private decimal? currentZ;
 
         [JsonConstructor]
-        public NavWaypointCollection()
+        public NavWaypointCollection (IEnumerable<NavWaypoint> items = null, bool fillVisitedGaps = false)
         {
-            Waypoints.CollectionChanged += NavWaypointList_CollectionChanged;
-        }
-
-        public NavWaypointCollection(bool fillVisitedGaps = false)
-        {
-            FillVisitedGaps = fillVisitedGaps;
-            Waypoints.CollectionChanged += NavWaypointList_CollectionChanged;
-        }
-
-        public NavWaypointCollection(IEnumerable<NavWaypoint> items, bool fillVisitedGaps = false)
-        {
-            foreach (var item in items)
+            if ( items != null )
             {
-                Waypoints.Add(item);
+                foreach ( var item in items )
+                {
+                    Waypoints.Add( item );
+                }
+                CalculateFuelUsed();
+                CalculateRouteDistances();
             }
 
-            CalculateFuelUsed();
-            CalculateRouteDistances();
-
             FillVisitedGaps = fillVisitedGaps;
+            Waypoints.CollectionChanged += NavWaypointList_CollectionChanged;
+        }
+
+        public NavWaypointCollection ( decimal x, decimal y, decimal z )
+        {
+            currentX = x;
+            currentY = y;
+            currentZ = z;
             Waypoints.CollectionChanged += NavWaypointList_CollectionChanged;
         }
 

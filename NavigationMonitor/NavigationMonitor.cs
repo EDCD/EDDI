@@ -143,66 +143,62 @@ namespace EddiNavigationMonitor
 
         public void PreHandle(Event @event)
         {
-            if (@event.timestamp >= updateDat)
+            // Handle the events that we care about
+            if (@event is CarrierJumpRequestEvent carrierJumpRequestEvent)
             {
-                // Handle the events that we care about
-
-                if (@event is CarrierJumpRequestEvent carrierJumpRequestEvent)
-                {
-                    handleCarrierJumpRequestEvent(carrierJumpRequestEvent);
-                }
-                else if (@event is CarrierJumpCancelledEvent carrierJumpCancelledEvent)
-                {
-                    handleCarrierJumpCancelledEvent(carrierJumpCancelledEvent);
-                }
-                else if (@event is CarrierJumpedEvent carrierJumpedEvent)
-                {
-                    handleCarrierJumpedEvent(carrierJumpedEvent);
-                }
-                else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
-                {
-                    handleCarrierJumpEngagedEvent(carrierJumpEngagedEvent);
-                }
-                else if (@event is CarrierPurchasedEvent carrierPurchasedEvent)
-                {
-                    handleCarrierPurchasedEvent(carrierPurchasedEvent);
-                }
-                else if (@event is CarrierStatsEvent carrierStatsEvent)
-                {
-                    handleCarrierStatsEvent(carrierStatsEvent);
-                }
-                else if (@event is CommodityPurchasedEvent commodityPurchasedEvent)
-                {
-                    handleCommodityPurchasedEvent(commodityPurchasedEvent);
-                }
-                else if (@event is CommoditySoldEvent commoditySoldEvent)
-                {
-                    handleCommoditySoldEvent(commoditySoldEvent);
-                }
-                else if (@event is DockedEvent dockedEvent)
-                {
-                    handleDockedEvent(dockedEvent);
-                }
-                else if (@event is JumpedEvent jumpedEvent)
-                {
-                    handleJumpedEvent(jumpedEvent);
-                }
-                else if (@event is LocationEvent locationEvent)
-                {
-                    handleLocationEvent(locationEvent);
-                }
-                else if (@event is NavRouteEvent navRouteEvent)
-                {
-                    handleNavRouteEvent(navRouteEvent);
-                }
-                else if (@event is RouteDetailsEvent routeDetailsEvent)
-                {
-                    handleRouteDetailsEvent(routeDetailsEvent);
-                }
-                else if (@event is FSDTargetEvent fsdTargetEvent)
-                {
-                    handleFSDTargetEvent(fsdTargetEvent);
-                }
+                handleCarrierJumpRequestEvent(carrierJumpRequestEvent);
+            }
+            else if (@event is CarrierJumpCancelledEvent carrierJumpCancelledEvent)
+            {
+                handleCarrierJumpCancelledEvent(carrierJumpCancelledEvent);
+            }
+            else if (@event is CarrierJumpedEvent carrierJumpedEvent)
+            {
+                handleCarrierJumpedEvent(carrierJumpedEvent);
+            }
+            else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
+            {
+                handleCarrierJumpEngagedEvent(carrierJumpEngagedEvent);
+            }
+            else if (@event is CarrierPurchasedEvent carrierPurchasedEvent)
+            {
+                handleCarrierPurchasedEvent(carrierPurchasedEvent);
+            }
+            else if (@event is CarrierStatsEvent carrierStatsEvent)
+            {
+                handleCarrierStatsEvent(carrierStatsEvent);
+            }
+            else if (@event is CommodityPurchasedEvent commodityPurchasedEvent)
+            {
+                handleCommodityPurchasedEvent(commodityPurchasedEvent);
+            }
+            else if (@event is CommoditySoldEvent commoditySoldEvent)
+            {
+                handleCommoditySoldEvent(commoditySoldEvent);
+            }
+            else if (@event is DockedEvent dockedEvent)
+            {
+                handleDockedEvent(dockedEvent);
+            }
+            else if (@event is JumpedEvent jumpedEvent)
+            {
+                handleJumpedEvent(jumpedEvent);
+            }
+            else if (@event is LocationEvent locationEvent)
+            {
+                handleLocationEvent(locationEvent);
+            }
+            else if (@event is NavRouteEvent navRouteEvent)
+            {
+                handleNavRouteEvent(navRouteEvent);
+            }
+            else if (@event is RouteDetailsEvent routeDetailsEvent)
+            {
+                handleRouteDetailsEvent(routeDetailsEvent);
+            }
+            else if (@event is FSDTargetEvent fsdTargetEvent)
+            {
+                handleFSDTargetEvent(fsdTargetEvent);
             }
         }
 
@@ -635,11 +631,11 @@ namespace EddiNavigationMonitor
                 GetBookmarkExtras(Bookmarks);
 
                 // Restore our in-game routing
-                NavRoute = navConfig.navRouteList ?? new NavWaypointCollection(true);
+                NavRoute = navConfig.navRouteList ?? new NavWaypointCollection(null, true);
 
                 // Restore our plotted routes
+                CarrierPlottedRoute = navConfig.carrierPlottedRoute ?? new NavWaypointCollection(null, true);
                 PlottedRoute = navConfig.plottedRouteList ?? new NavWaypointCollection();
-                CarrierPlottedRoute = navConfig.carrierPlottedRoute ?? new NavWaypointCollection(true);
 
                 // Misc
                 updateDat = navConfig.updatedat;

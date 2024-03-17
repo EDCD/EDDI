@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * EDDI will no longer report your environment as "Supercruise" right after a Thargoid hyperdiction. (#2597)
   * Navigation Monitor
     * Improved route guidance updates.
+    * Fixed ship routes reporting wrong jump distances. (#2591)
   * Speech Responder
     * Functions
       * `Play()` now supports relative file system paths. (#2581)

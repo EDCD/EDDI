@@ -36,11 +36,11 @@ namespace EddiConfigService.Configurations
         public ObservableCollection<NavBookmark> bookmarks { get; set; } = new ObservableCollection<NavBookmark>();
 
         // Current in-game route
-        public NavWaypointCollection navRouteList { get; set; } = new NavWaypointCollection();
+        public NavWaypointCollection navRouteList { get; set; } = new NavWaypointCollection(null, true);
 
         // Plotted routes
-        public NavWaypointCollection plottedRouteList { get; set; } = new NavWaypointCollection();
+        public NavWaypointCollection carrierPlottedRoute { get; set; } = new NavWaypointCollection(null, true);
 
-        public NavWaypointCollection carrierPlottedRoute { get; set; } = new NavWaypointCollection();
+        public NavWaypointCollection plottedRouteList { get; set; } = new NavWaypointCollection();
     }
 }
