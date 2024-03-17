@@ -2439,12 +2439,6 @@ namespace EddiCore
             CurrentStation = null;
             CurrentStellarBody = null;
 
-            // Set the destination system as the current star system
-            if ( @event.systemAddress != null )
-            {
-                updateCurrentSystem( @event.system, (ulong)@event.systemAddress );
-            }
-
             // Save a copy of this event for later reference
             lastEvents[nameof(FSDEngagedEvent)] = @event;;
 
@@ -2537,13 +2531,8 @@ namespace EddiCore
 
                 // After jump has completed we are always in supercruise
                 Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-                
-                if ( CurrentStarSystem == null || CurrentStarSystem.systemname != theEvent.system )
-                {
-                    // The 'StartJump' event must have been missed
-                    updateCurrentSystem( theEvent.system, theEvent.systemAddress );
-                }
 
+                updateCurrentSystem( theEvent.system, theEvent.systemAddress );
                 if ( CurrentStarSystem != null )
                 {
                     CurrentStarSystem.systemAddress = theEvent.systemAddress;
