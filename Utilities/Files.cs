@@ -193,7 +193,7 @@ namespace Utilities
             }
             catch (NotSupportedException nsex)
             {
-                Logging.Error("Directory " + directory + " not supported: ", nsex);
+                Logging.Error($"Directory '{directory}' not supported: ", nsex);
             }
 
             if (fileInfo != null)
@@ -205,7 +205,7 @@ namespace Utilities
                     maxTries--;
                     if (maxTries == 0)
                     {
-                        Logging.Info("Unable to open Elite Dangerous" + filename + "file");
+                        Logging.Info($"Unable to open Elite Dangerous '{filename}' file");
                         return null;
                     }
                 }

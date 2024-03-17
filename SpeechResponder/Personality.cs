@@ -395,9 +395,12 @@ namespace EddiSpeechResponder
             {
                 if ( ( defaultPersonality?.Scripts?.TryGetValue( kv.Key, out var defaultScript ) ?? false ) && defaultScript != null )
                 {
-                    var script = UpgradeScript(kv.Value, defaultScript);
-                    script.PersonalityIsCustom = personality.IsCustom;
-                    fixedScripts.Add( kv.Key, script );
+                    if ( ( personality.Scripts?.TryGetValue(kv.Key, out var personalityScript) ?? false ) && personalityScript != null )
+                    {
+                        var script = UpgradeScript(personalityScript, defaultScript);
+                        script.PersonalityIsCustom = personality.IsCustom;
+                        fixedScripts.Add( kv.Key, script );
+                    }
                 }
             }
 
