@@ -645,5 +645,8 @@
     <value>提取导弹</value>
     <comment>Module Human </comment>
   </data>
-  
+  <data name="GuardianNaniteTorpedoPylon" xml:space="preserve">
+    <value>守护者纳米鱼雷塔</value>
+    <comment>Module Guardian Nanite Torpedo Pylon</comment>
+  </data>
 </root>
