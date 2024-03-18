@@ -277,6 +277,7 @@ namespace EddiSpeechResponder
             // Simulate a forced shutdown effect affecting the speech responder until the ship's system is rebooted
             if ( @event is ShipShutdownEvent )
             {
+                Logging.Debug("Stopping speech during ship shutdown.");
                 if ( EDDI.Instance.State.TryGetValue( "speechresponder_quiet", out var stateObj ) )
                 {
                     speechresponder_quiet_was = stateObj as bool?;
@@ -287,6 +288,7 @@ namespace EddiSpeechResponder
             }
             else if ( @event is ShipShutdownRebootEvent )
             {
+                Logging.Debug( "Restoring speech after ship shutdown." );
                 EDDI.Instance.State[ "speechresponder_quiet" ] = speechresponder_quiet_was;
             }
 
