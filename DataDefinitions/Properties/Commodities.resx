@@ -1845,4 +1845,20 @@
     <value>Semi-Refined Spire Mineral</value>
     <comment>Commodity UnknownRefinedMineral</comment>
   </data>
+  <data name="ThargoidTitanDriveComponent" xml:space="preserve">
+    <value>Thargoid Titan Drive Component</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+  </data>
+  <data name="ThargoidCystSpecimen" xml:space="preserve">
+    <value>Cyst Specimen</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+  </data>
+  <data name="ThargoidBoneFragments" xml:space="preserve">
+    <value>Bone Fragments</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+  </data>
+  <data name="ThargoidOrganSample" xml:space="preserve">
+    <value>Organ Sample</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+  </data>
 </root>

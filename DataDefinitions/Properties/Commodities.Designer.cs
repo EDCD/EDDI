@@ -3211,11 +3211,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bone Fragments.
+        /// </summary>
+        public static string ThargoidBoneFragments {
+            get {
+                return ResourceManager.GetString("ThargoidBoneFragments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cyst Specimen.
+        /// </summary>
+        public static string ThargoidCystSpecimen {
+            get {
+                return ResourceManager.GetString("ThargoidCystSpecimen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Caustic Tissue Sample.
         /// </summary>
         public static string ThargoidGeneratorTissueSample {
             get {
                 return ResourceManager.GetString("ThargoidGeneratorTissueSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organ Sample.
+        /// </summary>
+        public static string ThargoidOrganSample {
+            get {
+                return ResourceManager.GetString("ThargoidOrganSample", resourceCulture);
             }
         }
         
@@ -3351,6 +3378,15 @@ namespace EddiDataDefinitions.Properties {
         public static string ThargoidTissueSampleType9c {
             get {
                 return ResourceManager.GetString("ThargoidTissueSampleType9c", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Titan Drive Component.
+        /// </summary>
+        public static string ThargoidTitanDriveComponent {
+            get {
+                return ResourceManager.GetString("ThargoidTitanDriveComponent", resourceCulture);
             }
         }
         

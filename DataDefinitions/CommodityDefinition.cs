@@ -456,6 +456,11 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(129022406, "ThargoidPod", Salvage, 0, false),
                 new CommodityDefinition(129022407, "CoralSap", Salvage, 0, false),
 
+                new CommodityDefinition(129030459,"ThargoidTitanDriveComponent",Salvage,0, false),
+                new CommodityDefinition(129030460,"ThargoidCystSpecimen",Salvage,0,false),
+                new CommodityDefinition(129030461,"ThargoidBoneFragments",Salvage,0,false),
+                new CommodityDefinition(129030462,"ThargoidOrganSample",Salvage,0,false)
+
                 // Items for which we do not have Elite IDs
             };
         }
