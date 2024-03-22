@@ -645,7 +645,10 @@
     <value>Elementos de Propulsão Thargoid</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
-  
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Condutores Biomecânicos Thargoid</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
   <data name="tg_weaponparts" xml:space="preserve">
     <value>Peças de Armas Thargoid</value>
     <comment>Material tg_weaponparts</comment>
