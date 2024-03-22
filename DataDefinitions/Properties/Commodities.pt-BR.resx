@@ -1845,8 +1845,20 @@
     <value>Mineral de Pináculo Semi-Refinado</value>
     <comment>Commodity UnknownRefinedMineral</comment>
   </data>
-  
-  
-  
-  
+  <data name="ThargoidTitanDriveComponent" xml:space="preserve">
+    <value>Componente da Unidade da Titan</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+  </data>
+  <data name="ThargoidCystSpecimen" xml:space="preserve">
+    <value>Espécime de Cisto</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+  </data>
+  <data name="ThargoidBoneFragments" xml:space="preserve">
+    <value>Fragmentos de Ossos</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+  </data>
+  <data name="ThargoidOrganSample" xml:space="preserve">
+    <value>Amostra de Órgão</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+  </data>
 </root>
