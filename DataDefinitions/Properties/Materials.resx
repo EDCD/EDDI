@@ -646,7 +646,7 @@
     <comment>Material tg_propulsionelement</comment>
   </data>
   <data name="tg_biomechanicalconduits" xml:space="preserve">
-    <value>Thargoid Bio-Mechanical Components</value>
+    <value>Thargoid Bio-Mechanical Conduits</value>
     <comment>Material tg_biomechanicalconduits</comment>
   </data>
   <data name="tg_weaponparts" xml:space="preserve">

@@ -1087,7 +1087,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thargoid Bio-Mechanical Components.
+        ///   Looks up a localized string similar to Thargoid Bio-Mechanical Conduits.
         /// </summary>
         public static string tg_biomechanicalconduits {
             get {
