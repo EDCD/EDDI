@@ -645,10 +645,7 @@
     <value>Thargoiden Antriebsteil</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
-  <data name="tg_biomechanicalconduits" xml:space="preserve">
-    <value>Thargoiden Bio-Mechanische Bauteile</value>
-    <comment>Material tg_biomechanicalconduits</comment>
-  </data>
+  
   <data name="tg_weaponparts" xml:space="preserve">
     <value>Waffenteile der Thargoiden</value>
     <comment>Material tg_weaponparts</comment>
@@ -695,9 +692,7 @@
   </data>
   <data name="tg_shutdowndata" xml:space="preserve">
     <value>Analyse einer enormen Energiespitze</value>
-    <comment>tg_shutdowndata
-Material tg_shutdowndata
-Data collected when you observe a Thargoid Titan explode</comment>
+    <comment>Material tg_shutdowndata</comment>
   </data>
   <data name="unknowncorechip" xml:space="preserve">
     <value>Taktischer Kern Chip</value>
