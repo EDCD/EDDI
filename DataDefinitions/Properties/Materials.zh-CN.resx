@@ -645,7 +645,10 @@
     <value>八角推进元件</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
-  
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>八角生物机械管线</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
   <data name="tg_weaponparts" xml:space="preserve">
     <value>八角武器零件</value>
     <comment>Material tg_weaponparts</comment>
