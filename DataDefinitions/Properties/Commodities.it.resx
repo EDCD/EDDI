@@ -1861,5 +1861,8 @@
     <value>Campione d'organo</value>
     <comment>Commodity ThargoidOrganSample</comment>
   </data>
-  
+  <data name="ThargoidHeart" xml:space="preserve">
+    <value>Cuore Thargoid</value>
+    <comment>Commodity ThargoidHeart</comment>
+  </data>
 </root>
