@@ -30,7 +30,7 @@ namespace EddiEvents
         public string faction { get; private set; }
 
         [PublicAPI("The aligned power of the pilot (if player is pledged)")]
-        public string power => Power?.localizedName;
+        public string power => (Power ?? Power.None)?.localizedName;
 
         [PublicAPI("The legal status of the pilot")]
         public string legalstatus => LegalStatus?.localizedName;
