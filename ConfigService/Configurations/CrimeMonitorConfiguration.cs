@@ -14,8 +14,6 @@ namespace EddiConfigService.Configurations
         
         public Dictionary<string, string> homeSystems { get; set; } = new Dictionary<string, string>();
 
-        public string targetSystem { get; set; }
-        
         public DateTime updatedat { get; set; }
     }
 }

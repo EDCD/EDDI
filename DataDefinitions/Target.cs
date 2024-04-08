@@ -27,10 +27,16 @@ namespace EddiDataDefinitions
         public string faction { get; set; }
 
         // The superpower in which the target is aligned
-        public Superpower Allegiance { get; set; }
+        // Prioritize power allegiance (when present) over faction
+        public Superpower Allegiance
+        {
+            get => Power?.Allegiance ?? _Allegiance; 
+            set => _Allegiance = value;
+        }
+        private Superpower _Allegiance;
 
         [PublicAPI]
-        public string allegiance => (Allegiance ?? Superpower.None).localizedName;
+        public string allegiance => ( Allegiance ?? Superpower.None ).localizedName;
 
         // The power in which the target is pledged
         public Power Power { get; set; }

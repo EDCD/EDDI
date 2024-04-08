@@ -31,11 +31,10 @@ namespace EddiCrimeMonitor
         public long claims => criminalrecord.Sum(r => r.claims);
         public long fines => criminalrecord.Sum(r => r.fines);
         public long bounties => criminalrecord.Sum(r => r.bounties);
-        public string targetSystem;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
         private string crimeAuthorityFaction;
-        public List<Target> shipTargets = new List<Target>();
+        public readonly List<Target> shipTargets = new List<Target>();
 
         internal static readonly object recordLock = new object();
         public event EventHandler RecordUpdatedEvent;
@@ -207,7 +206,6 @@ namespace EddiCrimeMonitor
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
-                targetSystem = @event.systemname;
                 updateDat = @event.timestamp;
                 writeRecord();
             }
@@ -226,17 +224,15 @@ namespace EddiCrimeMonitor
         private void _handleJumpedEvent(JumpedEvent @event)
         {
             shipTargets.Clear();
-            targetSystem = @event.system;
         }
 
         private void handleShipTargetedEvent(ShipTargetedEvent @event)
         {
             // System targets list may be 're-built' for the current system from Log Load
-            string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
-            if (targetSystem == null) { targetSystem = currentSystem; }
-            if (@event.targetlocked && currentSystem == targetSystem)
+            var currentSystem = EDDI.Instance?.CurrentStarSystem;
+            if ( @event.targetlocked )
             {
-                Target target = new Target();
+                var target = new Target();
                 if (@event.scanstage >= 1)
                 {
                     target = shipTargets.FirstOrDefault(t => t.name == @event.name);
@@ -249,16 +245,11 @@ namespace EddiCrimeMonitor
                 if (@event.scanstage >= 3 && target.LegalStatus == null)
                 {
                     target.faction = @event.faction;
-                    Faction faction = bgsService.GetFactionByName(@event.faction);
-                    target.Power = @event.Power ?? Power.None;
-
-                    // Prioritize power allegiance (when present) over faction
-                    target.Allegiance = @event.Power != Power.None
-                        ? @event.Power?.Allegiance
-                        : faction?.Allegiance;
-
+                    target.Power = @event.Power;
                     target.LegalStatus = @event.LegalStatus;
                     target.bounty = @event.bounty;
+                    target.Allegiance = currentSystem?.factions.FirstOrDefault(f => f.name == @event.faction)?.Allegiance ?? 
+                                        bgsService.GetFactionByName( @event.faction )?.Allegiance;
                 }
             }
         }
@@ -818,7 +809,6 @@ namespace EddiCrimeMonitor
                 var configuration = new CrimeMonitorConfiguration()
                 {
                     criminalrecord = criminalrecord,
-                    targetSystem = targetSystem,
                     homeSystems = homeSystems,
                     updatedat = updateDat
                 };
@@ -834,7 +824,6 @@ namespace EddiCrimeMonitor
             {
                 // Obtain current criminal record from configuration
                 configuration = configuration ?? ConfigService.Instance.crimeMonitorConfiguration;
-                targetSystem = configuration.targetSystem;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 
