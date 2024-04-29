@@ -645,5 +645,9 @@
     <value>Abbaurakete</value>
     <comment>Module Human </comment>
   </data>
+  <data name="GuardianNaniteTorpedoPylon" xml:space="preserve">
+    <value>Guardian Nanit-Torpedopylon</value>
+    <comment>Module Guardian Nanite Torpedo Pylon</comment>
+  </data>
   
 </root>
