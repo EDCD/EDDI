@@ -646,7 +646,7 @@
     <comment>Material tg_propulsionelement</comment>
   </data>
   <data name="tg_biomechanicalconduits" xml:space="preserve">
-    <value>Componenti Biomeccanici Thargoid</value>
+    <value>Condotti Biomeccanici Thargoid</value>
     <comment>Material tg_biomechanicalconduits</comment>
   </data>
   <data name="tg_weaponparts" xml:space="preserve">
@@ -695,9 +695,7 @@
   </data>
   <data name="tg_shutdowndata" xml:space="preserve">
     <value>Analisi di variazioni energetiche massive</value>
-    <comment>tg_shutdowndata
-Material tg_shutdowndata
-Data collected when you observe a Thargoid Titan explode</comment>
+    <comment>Material tg_shutdowndata</comment>
   </data>
   <data name="unknowncorechip" xml:space="preserve">
     <value>Chip del nucleo tattico</value>
