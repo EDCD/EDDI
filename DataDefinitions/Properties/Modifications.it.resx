@@ -655,5 +655,7 @@
     <value>Giallo decorativo</value>
     <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
   </data>
-  
+  <data name="GuardianWeaponSturdy" xml:space="preserve">
+    <value>Resistenza alla Zona Anti-Guardiano</value>
+  </data>
 </root>
