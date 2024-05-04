@@ -655,5 +655,7 @@
     <value>黄装饰</value>
     <comment>Special from 2021 Winking Cat Christmas treasure hunt</comment>
   </data>
-  
+  <data name="GuardianWeaponSturdy" xml:space="preserve">
+    <value>“反守护者科技区”抗性</value>
+  </data>
 </root>
