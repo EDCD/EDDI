@@ -1845,4 +1845,24 @@
     <value>半精炼尖塔矿物</value>
     <comment>Commodity UnknownRefinedMineral</comment>
   </data>
+  <data name="ThargoidTitanDriveComponent" xml:space="preserve">
+    <value>八角泰坦驱动器组件</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+  </data>
+  <data name="ThargoidCystSpecimen" xml:space="preserve">
+    <value>囊肿标本</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+  </data>
+  <data name="ThargoidBoneFragments" xml:space="preserve">
+    <value>骨碎片</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+  </data>
+  <data name="ThargoidOrganSample" xml:space="preserve">
+    <value>器官样本</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+  </data>
+  <data name="ThargoidHeart" xml:space="preserve">
+    <value>八角心脏</value>
+    <comment>Commodity ThargoidHeart</comment>
+  </data>
 </root>
