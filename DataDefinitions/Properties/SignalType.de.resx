@@ -117,4 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Combat" xml:space="preserve">
+    <value>Kampf</value>
+    <comment>SignalType "Combat"</comment>
+  </data>
+  <data name="FleetCarrier" xml:space="preserve">
+    <value>Carrier</value>
+    <comment>SignalType "FleetCarrier"</comment>
+  </data>
+  <data name="Generic" xml:space="preserve">
+    <value>Allgemein</value>
+    <comment>SignalType "Generic"</comment>
+  </data>
+  <data name="Megaship" xml:space="preserve">
+    <value>Megaschiff</value>
+    <comment>SignalType "Megaship"</comment>
+  </data>
+  <data name="NavBeacon" xml:space="preserve">
+    <value>Navigationsboje</value>
+    <comment>SignalType "NavBeacon"</comment>
+  </data>
+  <data name="Outpost" xml:space="preserve">
+    <value>Außenposten</value>
+    <comment>SignalType "Outpost"</comment>
+  </data>
+  <data name="ResourceExtraction" xml:space="preserve">
+    <value>Rohstoffabbau</value>
+    <comment>SignalType "ResourceExtraction"</comment>
+  </data>
+  <data name="StationCoriolis" xml:space="preserve">
+    <value>Coriolis-Station</value>
+    <comment>SignalType "StationCoriolis"</comment>
+  </data>
+  <data name="StationONeilOrbis" xml:space="preserve">
+    <value>Orbis-Station</value>
+    <comment>SignalType "StationONeilOrbis"</comment>
+  </data>
+  <data name="Titan" xml:space="preserve">
+    <value>Titan</value>
+    <comment>SignalType "Titan"</comment>
+  </data>
+  <data name="TouristBeacon" xml:space="preserve">
+    <value>Touristenbake</value>
+    <comment>SignalType "TouristBeacon"</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Unidentifizierte Signalquelle</value>
+    <comment>SignalType "USS"</comment>
+  </data>
 </root>
