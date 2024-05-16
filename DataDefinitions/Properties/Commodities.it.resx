@@ -1581,10 +1581,7 @@
     <value>Equipaggiamento Industriale di Sirius</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
-  <data name="ThargoidScoutTissueSample" xml:space="preserve">
-    <value>Campione di Tessuto di Esploratore Thargoid</value>
-    <comment>Commodity ThargoidScoutTissueSample</comment>
-  </data>
+  
   <data name="UnmarkedWeapons" xml:space="preserve">
     <value>Forniture Militari non registrate</value>
     <comment>Commodity UnmarkedWeapons</comment>
@@ -1844,5 +1841,25 @@
   <data name="UnknownRefinedMineral" xml:space="preserve">
     <value>Minerale semi-raffinato della Guglia</value>
     <comment>Commodity UnknownRefinedMineral</comment>
+  </data>
+  <data name="ThargoidTitanDriveComponent" xml:space="preserve">
+    <value>Componente della guida di Titano Thargoid</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+  </data>
+  <data name="ThargoidCystSpecimen" xml:space="preserve">
+    <value>Esemplare di Cisti</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+  </data>
+  <data name="ThargoidBoneFragments" xml:space="preserve">
+    <value>Frammenti d'ossa</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+  </data>
+  <data name="ThargoidOrganSample" xml:space="preserve">
+    <value>Campione d'organo</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+  </data>
+  <data name="ThargoidHeart" xml:space="preserve">
+    <value>Cuore Thargoid</value>
+    <comment>Commodity ThargoidHeart</comment>
   </data>
 </root>
