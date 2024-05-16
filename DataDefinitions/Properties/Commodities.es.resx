@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -241,6 +241,7 @@
     <value>Autofabricantes</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
+  
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
     <value>Krill del vacío de Baltah Sine</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
@@ -738,6 +739,7 @@
     <value>Cerveza de Kongga</value>
     <comment>Commodity KonggaAle</comment>
   </data>
+  
   <data name="Landmines" xml:space="preserve">
     <value>Minas terrestres</value>
     <comment>Commodity Landmines</comment>
@@ -1574,10 +1576,7 @@
     <value>Equipo industrial de Sirius</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
-  <data name="ThargoidScoutTissueSample" xml:space="preserve">
-    <value>Muestra de tejido de explorador Thargoide </value>
-    <comment>Commodity ThargoidScoutTissueSample</comment>
-  </data>
+  
   <data name="UnmarkedWeapons" xml:space="preserve">
     <value>Suministros militares sin marcar</value>
     <comment>Commodity UnmarkedWeapons</comment>
@@ -1594,6 +1593,7 @@
     <value>Publicidad de Utopian</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
+  
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Orquídea Charis de Shan</value>
     <comment>Commodity ShansCharisOrchid</comment>
@@ -1650,6 +1650,7 @@
     <value>Alejandrita</value>
     <comment>Commodity Alexandrite</comment>
   </data>
+  
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Materia Biológica Zargoide</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
@@ -1758,7 +1759,27 @@
     <value>Cepa gamma de Cebollazo</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
-  <data name="ThargoidTitanDriveComponent" xml:space="preserve">
-    <value>Componente de Motor de Titan</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
