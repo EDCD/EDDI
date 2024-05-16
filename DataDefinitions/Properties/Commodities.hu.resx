@@ -1251,10 +1251,7 @@
     <value>Siriusi ipari berendezés</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
-  <data name="ThargoidScoutTissueSample" xml:space="preserve">
-    <value>Thargoid felderítő szövet minta </value>
-    <comment>Commodity ThargoidScoutTissueSample</comment>
-  </data>
+  
   <data name="UnmarkedWeapons" xml:space="preserve">
     <value>Jelöletlen katonai utánpótlás</value>
     <comment>Commodity UnmarkedWeapons</comment>
@@ -1353,6 +1350,11 @@
     <value>Onionhead gamma törzs</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
+  
+  
+  
+  
+  
   
   
   
