@@ -1581,7 +1581,10 @@
     <value>天狼星工业设备</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
-  
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>八角侦察兵组织样本</value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+  </data>
   <data name="UnmarkedWeapons" xml:space="preserve">
     <value>未标记的军用补给</value>
     <comment>Commodity UnmarkedWeapons</comment>
