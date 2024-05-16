@@ -1581,10 +1581,7 @@
     <value>Equipamento Industrial do Sírius</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
-  <data name="ThargoidScoutTissueSample" xml:space="preserve">
-    <value>Amostra de Tecido de Scout Thargoid</value>
-    <comment>Commodity ThargoidScoutTissueSample</comment>
-  </data>
+  
   <data name="UnmarkedWeapons" xml:space="preserve">
     <value>Mantimentos Militares Sem Marca</value>
     <comment>Commodity UnmarkedWeapons</comment>
