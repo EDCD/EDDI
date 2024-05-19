@@ -649,5 +649,8 @@
     <value>Pilone de Torpedo de Nanite Guardian</value>
     <comment>Module Guardian Nanite Torpedo Pylon</comment>
   </data>
-  
+  <data name="FrameShiftDrive_SCO" xml:space="preserve">
+    <value>Motor de Distorção de Fase com Sobrecarga de Supervelocidade</value>
+    <comment>Module Frame Shift Drive (SCO)</comment>
+  </data>
 </root>
