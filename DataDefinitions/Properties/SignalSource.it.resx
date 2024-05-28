@@ -421,5 +421,8 @@
     <value>Sito Guglia Thargoid</value>
     <comment>Thargoid Spire Site</comment>
   </data>
-  
+  <data name="FIXED_EVENT_PROBE" xml:space="preserve">
+    <value>Antica sonda</value>
+    <comment>Ancient Probe</comment>
+  </data>
 </root>
