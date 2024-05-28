@@ -126,7 +126,7 @@
     <comment>Compromised nav beacon</comment>
   </data>
   <data name="USS" xml:space="preserve">
-    <value>Unbekannte Signalquelle</value>
+    <value>Unidentifizierte Signalquelle</value>
     <comment>Unidentified Signal Source</comment>
   </data>
   <data name="Warzone_PointRace_High" xml:space="preserve">
@@ -417,4 +417,6 @@
     <value>Kleinere Wrackteile</value>
     <comment>Minor Wreckage</comment>
   </data>
+  
+  
 </root>
