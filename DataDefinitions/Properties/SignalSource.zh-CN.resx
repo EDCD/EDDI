@@ -421,5 +421,8 @@
     <value>八角尖塔节点</value>
     <comment>Thargoid Spire Site</comment>
   </data>
-  
+  <data name="FIXED_EVENT_PROBE" xml:space="preserve">
+    <value>远古探针</value>
+    <comment>Ancient Probe</comment>
+  </data>
 </root>
