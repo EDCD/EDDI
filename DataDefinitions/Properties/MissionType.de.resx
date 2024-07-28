@@ -126,14 +126,9 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Mordauftrag</value>
   </data>
-  <data name="AssassinateWing" xml:space="preserve">
-    <value>Mordauftrag im Wing</value>
-  </data>
+  
   <data name="Collect" xml:space="preserve">
     <value>Beschaffungsmission</value>
-  </data>
-  <data name="CollectWing" xml:space="preserve">
-    <value>Beschaffung im Wing</value>
   </data>
   <data name="CommunityGoal" xml:space="preserve">
     <value>Gemeinschaftsziel</value>
@@ -144,14 +139,8 @@
   <data name="Delivery" xml:space="preserve">
     <value>Liefermission</value>
   </data>
-  <data name="DeliveryWing" xml:space="preserve">
-    <value>Lieferung im Wing</value>
-  </data>
   <data name="Disable" xml:space="preserve">
     <value>Oberflächeneinrichtung abschalten</value>
-  </data>
-  <data name="DisableWing" xml:space="preserve">
-    <value>Abschalten im Wing</value>
   </data>
   <data name="GenericPermit1" xml:space="preserve">
     <value>Einreisegenehmigung</value>
@@ -165,24 +154,12 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massakermission</value>
   </data>
-  <data name="MassacreThargoid" xml:space="preserve">
-    <value>Thargoiden Massakermission</value>
-  </data>
-  <data name="MassacreWing" xml:space="preserve">
-    <value>Massakermission im Wing</value>
-  </data>
+  
   <data name="Mining" xml:space="preserve">
     <value>Bergbaumission</value>
   </data>
-  <data name="MiningWing" xml:space="preserve">
-    <value>Bergbau im Wing</value>
-  </data>
-  <data name="PassengerBulk" xml:space="preserve">
-    <value>Passagiertransport</value>
-  </data>
-  <data name="PassengerVIP" xml:space="preserve">
-    <value>VIP-Transport</value>
-  </data>
+  
+  
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
@@ -235,14 +212,9 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Imperiale Aufstiegsmission</value>
   </data>
-  <data name="DisableMegaship" xml:space="preserve">
-    <value>Megaschiff ausschalten</value>
-  </data>
+  
   <data name="Founder" xml:space="preserve">
     <value>Gründermission</value>
-  </data>
-  <data name="HackMegaship" xml:space="preserve">
-    <value>Megaschiff hacken</value>
   </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Skimmer zerstören</value>
@@ -256,12 +228,12 @@
     <value>Verdeckte Mission</value>
   </data>
   <data name="Download" xml:space="preserve">
-    <value>Download</value>
-    <comment>Hack type</comment>
+	  <value>Download</value>
+	  <comment>On-foot hack type</comment>
   </data>
   <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-    <comment>Hack type</comment>
+	  <value>Upload</value>
+	  <comment>On-foot hack type</comment>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Siedlung ausschalten</value>
@@ -324,9 +296,7 @@
     <value>In Flammen</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  <data name="PassengerEvacuation" xml:space="preserve">
-    <value>Passagier-Evakuierung</value>
-  </data>
+  
   <data name="Alert" xml:space="preserve">
     <value>Alarm</value>
   </data>
@@ -334,4 +304,6 @@
     <value>Thargoid Späher Ziele</value>
     <comment>Massacre type</comment>
   </data>
+  
+  
 </root>
