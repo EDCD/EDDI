@@ -126,14 +126,9 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Assassinato</value>
   </data>
-  <data name="AssassinateWing" xml:space="preserve">
-    <value>Assassinato em Esquadrão</value>
-  </data>
+  
   <data name="Collect" xml:space="preserve">
     <value>Coleta</value>
-  </data>
-  <data name="CollectWing" xml:space="preserve">
-    <value>Coleta em Esquadrão</value>
   </data>
   <data name="CommunityGoal" xml:space="preserve">
     <value>Objetivo da Comunidade</value>
@@ -144,14 +139,8 @@
   <data name="Delivery" xml:space="preserve">
     <value>Entrega</value>
   </data>
-  <data name="DeliveryWing" xml:space="preserve">
-    <value>Entrega em Esquadrão</value>
-  </data>
   <data name="Disable" xml:space="preserve">
     <value>Desabilitar Instalação em Superfície</value>
-  </data>
-  <data name="DisableWing" xml:space="preserve">
-    <value>Desabilitar em Esquadrão</value>
   </data>
   <data name="GenericPermit1" xml:space="preserve">
     <value>Oportunidade de Aquisição de Permissão</value>
@@ -165,24 +154,12 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massacre</value>
   </data>
-  <data name="MassacreThargoid" xml:space="preserve">
-    <value>Massacre de Thargoid</value>
-  </data>
-  <data name="MassacreWing" xml:space="preserve">
-    <value>Massacre em Esquadrão</value>
-  </data>
+  
   <data name="Mining" xml:space="preserve">
     <value>Mineração</value>
   </data>
-  <data name="MiningWing" xml:space="preserve">
-    <value>Mineração em Esquadrão</value>
-  </data>
-  <data name="PassengerBulk" xml:space="preserve">
-    <value>Transporte</value>
-  </data>
-  <data name="PassengerVIP" xml:space="preserve">
-    <value>Transporte</value>
-  </data>
+  
+  
   <data name="Piracy" xml:space="preserve">
     <value>Pirataria</value>
   </data>
@@ -235,14 +212,9 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Contrato da Marinha Imperial</value>
   </data>
-  <data name="DisableMegaship" xml:space="preserve">
-    <value>Desabilitar Meganave</value>
-  </data>
+  
   <data name="Founder" xml:space="preserve">
     <value>Fundador</value>
-  </data>
-  <data name="HackMegaship" xml:space="preserve">
-    <value>Hackear Meganave</value>
   </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Alvos Skimmer</value>
@@ -256,12 +228,12 @@
     <value>Disfarçada</value>
   </data>
   <data name="Download" xml:space="preserve">
-    <value>Download</value>
-    <comment>Hack type</comment>
+	  <value>Download</value>
+	  <comment>On-foot hack type</comment>
   </data>
   <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-    <comment>Hack type</comment>
+	  <value>Upload</value>
+	  <comment>On-foot hack type</comment>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Assentamento Desativado</value>
@@ -324,9 +296,7 @@
     <value>Em Chamas</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  <data name="PassengerEvacuation" xml:space="preserve">
-    <value>Evacuação de Passageiro</value>
-  </data>
+  
   <data name="Alert" xml:space="preserve">
     <value>Alerta</value>
   </data>
@@ -334,4 +304,6 @@
     <value>Alvos de Espionagem Thargoid</value>
     <comment>Massacre type</comment>
   </data>
+  
+  
 </root>
