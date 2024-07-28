@@ -124,14 +124,9 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Asesinato</value>
   </data>
-  <data name="AssassinateWing" xml:space="preserve">
-    <value>Asesinato de escuadrón</value>
-  </data>
+  
   <data name="Collect" xml:space="preserve">
     <value>Recaudación</value>
-  </data>
-  <data name="CollectWing" xml:space="preserve">
-    <value>Recaudación de escuadrón</value>
   </data>
   <data name="CommunityGoal" xml:space="preserve">
     <value>Objetivos de la comunidad</value>
@@ -142,14 +137,8 @@
   <data name="Delivery" xml:space="preserve">
     <value>Entrega</value>
   </data>
-  <data name="DeliveryWing" xml:space="preserve">
-    <value>Entrega de Escuadrón</value>
-  </data>
   <data name="Disable" xml:space="preserve">
     <value>Deshabilitar instalación de superficie</value>
-  </data>
-  <data name="DisableWing" xml:space="preserve">
-    <value>Deshabilitar escuadrón</value>
   </data>
   
   <data name="Hack" xml:space="preserve">
@@ -161,24 +150,12 @@
   <data name="Massacre" xml:space="preserve">
     <value>Masacre</value>
   </data>
-  <data name="MassacreThargoid" xml:space="preserve">
-    <value>Masacre Thargoide</value>
-  </data>
-  <data name="MassacreWing" xml:space="preserve">
-    <value>Masacre de Escuadrón</value>
-  </data>
+  
   <data name="Mining" xml:space="preserve">
     <value>Minería</value>
   </data>
-  <data name="MiningWing" xml:space="preserve">
-    <value>Escuadrón minero</value>
-  </data>
-  <data name="PassengerBulk" xml:space="preserve">
-    <value>Transporte</value>
-  </data>
-  <data name="PassengerVIP" xml:space="preserve">
-    <value>Transporte</value>
-  </data>
+  
+  
   <data name="Piracy" xml:space="preserve">
     <value>Piratería</value>
   </data>
@@ -201,6 +178,7 @@
   <data name="StartZone" xml:space="preserve">
     <value>Zona de Inicio</value>
   </data>
+  
   
   
   
