@@ -126,7 +126,9 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Assassinato</value>
   </data>
-  
+  <data name="Wing" xml:space="preserve">
+	  <value>Esquadrão</value>
+  </data>
   <data name="Collect" xml:space="preserve">
     <value>Coleta</value>
   </data>
@@ -154,12 +156,18 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massacre</value>
   </data>
-  
+  <data name="Thargoid" xml:space="preserve">
+	  <value>Thargoid</value><comment>e.g. massacre of thargoid targets</comment>
+  </data>
   <data name="Mining" xml:space="preserve">
     <value>Mineração</value>
   </data>
-  
-  
+  <data name="Bulk" xml:space="preserve">
+	  <value>Transporte em Massa</value><comment>e.g. of passengers</comment>
+  </data>
+  <data name="VIP" xml:space="preserve">
+	  <value>Transporte VIP</value><comment>e.g. VIP passenger</comment>
+  </data>
   <data name="Piracy" xml:space="preserve">
     <value>Pirataria</value>
   </data>
@@ -212,7 +220,9 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Contrato da Marinha Imperial</value>
   </data>
-  
+  <data name="Megaship" xml:space="preserve">
+	  <value>Meganave</value><comment>e.g. hack or disable missions targeting a megaship</comment>
+  </data>
   <data name="Founder" xml:space="preserve">
     <value>Fundador</value>
   </data>
@@ -296,7 +306,9 @@
     <value>Em Chamas</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  
+  <data name="Evacuation" xml:space="preserve">
+	  <value>Evacuação</value><comment>e.g. of passengers</comment>
+  </data>
   <data name="Alert" xml:space="preserve">
     <value>Alerta</value>
   </data>
@@ -304,6 +316,10 @@
     <value>Alvos de Espionagem Thargoid</value>
     <comment>Massacre type</comment>
   </data>
-  
-  
+  <data name="Contact" xml:space="preserve">
+	  <value>Contato</value><comment>e.g. mission assigned by an on-foot contact</comment>
+  </data>
+  <data name="Sabotage" xml:space="preserve">
+	  <value>Sabotagem</value><comment>e.g. on-foot settlement sabotage mission</comment>
+  </data>
 </root>
