@@ -645,7 +645,10 @@
     <value>Thargoiden Antriebsteil</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
-  
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Biomechanische Leiter</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
   <data name="tg_weaponparts" xml:space="preserve">
     <value>Waffenteile der Thargoiden</value>
     <comment>Material tg_weaponparts</comment>
@@ -698,5 +701,7 @@
     <value>Taktischer Kern Chip</value>
     <comment>Material unknowncorechip</comment>
   </data>
-  
+  <data name="searchrescuevoucher" xml:space="preserve">
+	  <value>Such- und Rettungsgutschein</value><comment>material searchrescuevoucher</comment>
+  </data>
 </root>
