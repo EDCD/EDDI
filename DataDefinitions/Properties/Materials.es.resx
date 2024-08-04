@@ -646,10 +646,7 @@
     <value>Elemento de propulsión Thargoide</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
-  <data name="tg_biomechanicalconduits" xml:space="preserve">
-    <value>Componentes biomecánicos Thargoide</value>
-    <comment>Material tg_biomechanicalconduits</comment>
-  </data>
+  
   <data name="tg_weaponparts" xml:space="preserve">
     <value>Piezas de Armamento Thargoide</value>
     <comment>Material tg_weaponparts</comment>
@@ -669,9 +666,8 @@
   
   <data name="tg_shutdowndata" xml:space="preserve">
     <value>Análisis de sobrecarga de energía masiva</value>
-    <comment>tg_shutdowndata
-Material tg_shutdowndata
-Data collected when you observe a Thargoid Titan explode</comment>
+    <comment>Material tg_shutdowndata</comment>
   </data>
+  
   
 </root>
