@@ -649,5 +649,8 @@
     <value>Guardian Nanit-Torpedopylon</value>
     <comment>Module Guardian Nanite Torpedo Pylon</comment>
   </data>
-  
+  <data name="FrameShiftDrive_SCO" xml:space="preserve">
+    <value>Frame Shift Drive mit Supercruise Überladung</value>
+    <comment>Module Frame Shift Drive (SCO)</comment>
+  </data>
 </root>
