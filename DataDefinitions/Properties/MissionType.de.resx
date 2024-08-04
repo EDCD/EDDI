@@ -126,7 +126,9 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Mordauftrag</value>
   </data>
-  
+  <data name="Wing" xml:space="preserve">
+	  <value>Wing</value>
+  </data>
   <data name="Collect" xml:space="preserve">
     <value>Beschaffungsmission</value>
   </data>
@@ -154,12 +156,18 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massakermission</value>
   </data>
-  
+  <data name="Thargoid" xml:space="preserve">
+	  <value>Thargoid</value><comment>e.g. massacre of thargoid targets</comment>
+  </data>
   <data name="Mining" xml:space="preserve">
     <value>Bergbaumission</value>
   </data>
-  
-  
+  <data name="Bulk" xml:space="preserve">
+	  <value>Massentransport</value><comment>e.g. of passengers</comment>
+  </data>
+  <data name="VIP" xml:space="preserve">
+	  <value>VIP Transport</value><comment>e.g. VIP passenger</comment>
+  </data>
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
@@ -212,7 +220,9 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Imperiale Aufstiegsmission</value>
   </data>
-  
+  <data name="Megaship" xml:space="preserve">
+	  <value>Megaschiff</value><comment>e.g. hack or disable missions targeting a megaship</comment>
+  </data>
   <data name="Founder" xml:space="preserve">
     <value>Gründermission</value>
   </data>
@@ -296,7 +306,9 @@
     <value>In Flammen</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  
+  <data name="Evacuation" xml:space="preserve">
+	  <value>Evakuierung</value><comment>e.g. of passengers</comment>
+  </data>
   <data name="Alert" xml:space="preserve">
     <value>Alarm</value>
   </data>
@@ -304,6 +316,10 @@
     <value>Thargoid Späher Ziele</value>
     <comment>Massacre type</comment>
   </data>
-  
-  
+  <data name="Contact" xml:space="preserve">
+	  <value>Kontakt</value><comment>e.g. mission assigned by an on-foot contact</comment>
+  </data>
+  <data name="Sabotage" xml:space="preserve">
+	  <value>Sabotage</value><comment>e.g. on-foot settlement sabotage mission</comment>
+  </data>
 </root>
