@@ -126,7 +126,9 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Assassinio</value>
   </data>
-  
+  <data name="Wing" xml:space="preserve">
+	  <value>Stormo</value>
+  </data>
   <data name="Collect" xml:space="preserve">
     <value>Raccolta</value>
   </data>
