@@ -1581,7 +1581,10 @@
     <value>Sirius Industrieausrüstung</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
-  
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>Thargoidenspäher Gewebeprobe</value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+  </data>
   <data name="UnmarkedWeapons" xml:space="preserve">
     <value>Unmarkierte Militärmaterialien</value>
     <comment>Commodity UnmarkedWeapons</comment>
@@ -1842,9 +1845,24 @@
     <value>Teilveredeltes Spitzen-Mineral</value>
     <comment>Commodity UnknownRefinedMineral</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="ThargoidTitanDriveComponent" xml:space="preserve">
+    <value>Titan Antriebskomponente</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+  </data>
+  <data name="ThargoidCystSpecimen" xml:space="preserve">
+    <value>Zystenprobe</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+  </data>
+  <data name="ThargoidBoneFragments" xml:space="preserve">
+    <value>Knochenfragmente</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+  </data>
+  <data name="ThargoidOrganSample" xml:space="preserve">
+    <value>Organprobe</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+  </data>
+  <data name="ThargoidHeart" xml:space="preserve">
+    <value>Thargoiden Herz</value>
+    <comment>Commodity ThargoidHeart</comment>
+  </data>
 </root>
