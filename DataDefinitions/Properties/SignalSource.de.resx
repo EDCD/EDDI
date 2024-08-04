@@ -417,6 +417,12 @@
     <value>Kleinere Wrackteile</value>
     <comment>Minor Wreckage</comment>
   </data>
-  
-  
+  <data name="Settlement_Unflattened_TGMegaBarnacle" xml:space="preserve">
+    <value>Thargoiden Hauptstandort</value>
+    <comment>Thargoid Spire Site</comment>
+  </data>
+  <data name="FIXED_EVENT_PROBE" xml:space="preserve">
+    <value>Uralte Sonde</value>
+    <comment>Ancient Probe</comment>
+  </data>
 </root>
