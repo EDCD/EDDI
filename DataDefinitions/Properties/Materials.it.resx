@@ -701,5 +701,7 @@
     <value>Chip del nucleo tattico</value>
     <comment>Material unknowncorechip</comment>
   </data>
-  
+  <data name="searchrescuevoucher" xml:space="preserve">
+	  <value>Voucher per Ricerca e Soccorso</value><comment>material searchrescuevoucher</comment>
+  </data>
 </root>
