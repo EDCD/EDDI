@@ -126,6 +126,7 @@
   <data name="Assassinate" xml:space="preserve">
     <value>刺杀</value>
   </data>
+  
   <data name="Collect" xml:space="preserve">
     <value>搜集</value>
   </data>
@@ -153,15 +154,12 @@
   <data name="Massacre" xml:space="preserve">
     <value>屠戮</value>
   </data>
+  
   <data name="Mining" xml:space="preserve">
     <value>采矿</value>
   </data>
-  <data name="Bulk" xml:space="preserve">
-    <value>运输</value>
-  </data>
-  <data name="VIP" xml:space="preserve">
-    <value>运输</value>
-  </data>
+  
+  
   <data name="Piracy" xml:space="preserve">
     <value>海盗行为</value>
   </data>
@@ -214,6 +212,7 @@
   <data name="RankEmp" xml:space="preserve">
     <value>帝国海军合同</value>
   </data>
+  
   <data name="Founder" xml:space="preserve">
     <value>创始人</value>
   </data>
@@ -297,9 +296,7 @@
     <value>失火</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  <data name="Evacuation" xml:space="preserve">
-    <value>疏散乘客</value>
-  </data>
+  
   <data name="Alert" xml:space="preserve">
     <value>警报</value>
   </data>
