@@ -156,6 +156,9 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massakermission</value>
   </data>
+  <data name="Thargoid" xml:space="preserve">
+	  <value>Thargoid</value><comment>e.g. massacre of thargoid targets</comment>
+  </data>
   <data name="Mining" xml:space="preserve">
     <value>Bergbaumission</value>
   </data>
@@ -216,6 +219,9 @@
   </data>
   <data name="RankEmp" xml:space="preserve">
     <value>Imperiale Aufstiegsmission</value>
+  </data>
+  <data name="Megaship" xml:space="preserve">
+	  <value>Megaschiff</value><comment>e.g. hack or disable missions targeting a megaship</comment>
   </data>
   <data name="Founder" xml:space="preserve">
     <value>Gründermission</value>
