@@ -117,4 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Combat" xml:space="preserve">
+    <value>战斗</value>
+    <comment>SignalType "Combat"</comment>
+  </data>
+  <data name="FleetCarrier" xml:space="preserve">
+    <value>舰队航母</value>
+    <comment>SignalType "FleetCarrier"</comment>
+  </data>
+  <data name="Generic" xml:space="preserve">
+    <value>通用</value>
+    <comment>SignalType "Generic"</comment>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>设施</value>
+    <comment>SignalType "Installation"</comment>
+  </data>
+  <data name="Megaship" xml:space="preserve">
+    <value>巨舰</value>
+    <comment>SignalType "Megaship"</comment>
+  </data>
+  <data name="NavBeacon" xml:space="preserve">
+    <value>导航信标</value>
+    <comment>SignalType "NavBeacon"</comment>
+  </data>
+  <data name="Outpost" xml:space="preserve">
+    <value>前哨站</value>
+    <comment>SignalType "Outpost"</comment>
+  </data>
+  <data name="ResourceExtraction" xml:space="preserve">
+    <value>资源开采</value>
+    <comment>SignalType "ResourceExtraction"</comment>
+  </data>
+  <data name="StationAsteroid" xml:space="preserve">
+    <value>站点</value>
+    <comment>SignalType "StationAsteroid"</comment>
+  </data>
+  <data name="StationBernalSphere" xml:space="preserve">
+    <value>站点</value>
+    <comment>SignalType "StationBernalSphere"</comment>
+  </data>
+  <data name="StationCoriolis" xml:space="preserve">
+    <value>站点</value>
+    <comment>SignalType "StationCoriolis"</comment>
+  </data>
+  <data name="StationMegaShip" xml:space="preserve">
+    <value>站点</value>
+    <comment>SignalType "StationMegaShip"</comment>
+  </data>
+  <data name="StationONeilCylinder" xml:space="preserve">
+    <value>站点</value>
+    <comment>SignalType "StationONeilCylinder"</comment>
+  </data>
+  <data name="StationONeilOrbis" xml:space="preserve">
+    <value>站点</value>
+    <comment>SignalType "StationONeilOrbis"</comment>
+  </data>
+  <data name="Titan" xml:space="preserve">
+    <value>泰坦</value>
+    <comment>SignalType "Titan"</comment>
+  </data>
+  <data name="TouristBeacon" xml:space="preserve">
+    <value>旅游信标</value>
+    <comment>SignalType "TouristBeacon"</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>未知信号源</value>
+    <comment>SignalType "USS"</comment>
+  </data>
 </root>
