@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
@@ -13,11 +13,11 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.Spacialise;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative1( ( runtime, input, writer ) =>
         {
-            if (values[0].AsString == null) { return ""; }
-            bool useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
-            return Translations.sayAsLettersOrNumbers(values[0].AsString, false, useICAO);
-        }, 1);
+            if ( string.IsNullOrEmpty( input.AsString ) ) { return ""; }
+            var useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
+            return Translations.sayAsLettersOrNumbers( input.AsString, false, useICAO );
+        });
     }
 }

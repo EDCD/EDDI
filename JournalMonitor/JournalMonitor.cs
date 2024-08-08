@@ -109,7 +109,7 @@ namespace EddiJournalMonitor
                             // The ship reboots about 30 seconds after the shutdown occurs unless canceled early.
                             await Task.Delay( TimeSpan.FromSeconds( 30 ), ShipShutdownCancellationTokenSource.Token );
                             EDDI.Instance.enqueueEvent( new ShipShutdownRebootEvent( shipShutdownEvent.timestamp + ( DateTime.UtcNow - startTime ) ) );
-                            ShipShutdownCancellationTokenSource.Dispose();
+                            ShipShutdownCancellationTokenSource?.Dispose();
                             ShipShutdownCancellationTokenSource = null;
                         } ).ConfigureAwait( false );
                     }
@@ -3206,20 +3206,19 @@ namespace EddiJournalMonitor
                                 break;
                             case "CargoDepot":
                                 {
-                                    data.TryGetValue("MissionID", out object val);
-                                    long missionid = (long)val;
-                                    string updatetype = JsonParsing.getString(data, "UpdateType");
+                                    var missionid = JsonParsing.getLong(data, "MissionID");
+                                    var updatetype = JsonParsing.getString(data, "UpdateType");
+                                    var startmarketid = JsonParsing.getLong(data, "StartMarketID");
+                                    var endmarketid = JsonParsing.getLong(data, "EndMarketID");
+                                    var collected = JsonParsing.getInt(data, "ItemsCollected");
+                                    var delivered = JsonParsing.getInt(data, "ItemsDelivered");
+                                    var totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
 
                                     // Not available in 'WingUpdate'
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "CargoType"));
-                                    data.TryGetValue("Count", out val);
-                                    int? amount = (int?)(long?)val;
+                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "CargoType"));
+                                    var amount = JsonParsing.getOptionalInt(data, "Count");
 
-                                    long startmarketid = JsonParsing.getLong(data, "StartMarketID");
-                                    long endmarketid = JsonParsing.getLong(data, "EndMarketID");
-                                    int collected = JsonParsing.getInt(data, "ItemsCollected");
-                                    int delivered = JsonParsing.getInt(data, "ItemsDelivered");
-                                    int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
+                                    // The Progress value represents pending progress for goods in transit: (ItemsCollected-ItemsDelivered)/TotalItemsToDeliver
 
                                     events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, startmarketid, endmarketid, collected, delivered, totaltodeliver) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -3410,7 +3409,7 @@ namespace EddiJournalMonitor
                                         };
 
                                         // Missions with multiple destinations
-                                        if (destinationsystem != null && destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
+                                        if ( destinationsystem != null && destinationsystem.Contains( "$MISSIONUTIL_MULTIPLE" ) )
                                         {
                                             // If 'chained' mission, get the destination systems
                                             string[] systems = destinationsystem
@@ -3421,8 +3420,8 @@ namespace EddiJournalMonitor
                                             var starSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systems, true, false);
                                             foreach ( var system in starSystems )
                                             {
-                                                if ( !string.IsNullOrEmpty(system.systemname) &&
-                                                     system.x is decimal sx && 
+                                                if ( !string.IsNullOrEmpty( system.systemname ) &&
+                                                     system.x is decimal sx &&
                                                      system.y is decimal sy &&
                                                      system.z is decimal sz )
                                                 {
@@ -3433,33 +3432,20 @@ namespace EddiJournalMonitor
                                             }
 
                                             // Load the first destination system.
-                                            mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).systemName;
+                                            mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault( 0 ).systemName;
                                         }
                                         else
                                         {
                                             // Populate destination system and station, depending on mission type
-                                            foreach (var type in mission.edTags)
+                                            if ( mission.tagsList.Contains( MissionType.Altruism ) )
                                             {
-                                                bool exitLoop;
-                                                switch (type.ToLowerInvariant())
-                                                {
-                                                    case "altruism":
-                                                    case "altruismcredits":
-                                                        {
-                                                            mission.destinationsystem = mission.originsystem;
-                                                            mission.destinationstation = mission.originstation;
-                                                            exitLoop = true;
-                                                            break;
-                                                        }
-                                                    default:
-                                                        {
-                                                            mission.destinationsystem = destinationsystem;
-                                                            mission.destinationstation = destinationstation ?? destinationsettlement;
-                                                            exitLoop = true;
-                                                            break;
-                                                        }
-                                                }
-                                                if (exitLoop) { break; }
+                                                mission.destinationsystem = mission.originsystem;
+                                                mission.destinationstation = mission.originstation;
+                                            }
+                                            else
+                                            {
+                                                mission.destinationsystem = destinationsystem;
+                                                mission.destinationstation = destinationstation ?? destinationsettlement;
                                             }
                                         }
 

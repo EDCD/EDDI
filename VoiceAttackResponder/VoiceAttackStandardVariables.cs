@@ -99,54 +99,66 @@ namespace EddiVoiceAttackResponder
         }
 
         // Set values from a dictionary
-        protected static void setDictionaryValues(IDictionary<string, object> dict, string prefix, ref dynamic vaProxy)
+        public static void setDictionaryValues ( IDictionary<string, object> dict, string prefix, ref dynamic vaProxy )
         {
-            foreach (var key in dict.Keys)
+            foreach ( var key in dict.Keys )
             {
                 var varname = "EDDI " + prefix + " " + key;
-                var value = dict[key];
-                if (value == null)
-                {
-                    // No idea what it might have been so reset everything
-                    vaProxy.SetText(varname, null);
-                    vaProxy.SetInt(varname, null);
-                    vaProxy.SetDecimal(varname, null);
-                    vaProxy.SetBoolean(varname, null);
-                    continue;
-                }
-                var valueType = value.GetType();
-                if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                {
-                    valueType = Nullable.GetUnderlyingType(valueType);
-                }
 
-                if (valueType == typeof(string))
+                vaProxy.SetText( varname, null );
+                vaProxy.SetInt( varname, null );
+                vaProxy.SetSmallInt( varname, null );
+                vaProxy.SetDecimal( varname, null );
+                vaProxy.SetBoolean( varname, null );
+
+                var value = dict[ key ];
+                if ( value is null ) { continue; }
+
+                var s = value.ToString();
+                vaProxy.SetText( varname, s );
+                if ( value is decimal d || decimal.TryParse( s, out d ) )
                 {
-                    vaProxy.SetText(varname, (string)value);
-                }
-                else if (valueType == typeof(int))
-                {
-                    vaProxy.SetInt(varname, (int)value);
-                }
-                else if (valueType == typeof(bool))
-                {
-                    vaProxy.SetBoolean(varname, (bool?)value);
-                }
-                else if (valueType == typeof(decimal))
-                {
-                    vaProxy.SetDecimal(varname, (decimal?)value);
-                }
-                else if (valueType == typeof(double))
-                {
-                    vaProxy.SetDecimal(varname, (decimal?)(double?)value);
-                }
-                else if (valueType == typeof(long))
-                {
-                    vaProxy.SetDecimal(varname, (decimal?)(long?)value);
+                    vaProxy.SetDecimal( varname, d );
+                    vaProxy.SetBoolean( varname, d != 0 );
+                    if ( d <= int.MaxValue )
+                    {
+                        vaProxy.SetInt( varname, Convert.ToInt32( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
+                    }
+
+                    if ( d <= short.MaxValue )
+                    {
+                        vaProxy.SetSmallInt( varname, Convert.ToInt16( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
+                    }
                 }
                 else
                 {
-                    Logging.Debug("Not handling state value type " + valueType);
+                    vaProxy.SetDecimal( varname, null );
+                }
+
+                if ( value is int i || int.TryParse( s, out i ) )
+                {
+                    vaProxy.SetInt( varname, i );
+                }
+
+                if ( value is short sh || short.TryParse( s, out sh ) )
+                {
+                    vaProxy.SetSmallInt( varname, sh );
+                }
+
+                if ( value is bool b || bool.TryParse( s, out b ) )
+                {
+                    vaProxy.SetBoolean( varname, b );
+                    vaProxy.SetDecimal( varname, (decimal?)( b ? 1 : 0 ) );
+                    vaProxy.SetInt( varname, (int?)( b ? 1 : 0 ) );
+                    vaProxy.SetSmallInt( varname, (short?)( b ? 1 : 0 ) );
+                }
+                else if ( !decimal.TryParse( s, out _ ) )
+                {
+                    b = !string.IsNullOrEmpty( s );
+                    vaProxy.SetBoolean( varname, b );
+                    vaProxy.SetDecimal( varname, (decimal?)(b ? 1 : 0) );
+                    vaProxy.SetInt( varname, (int?)(b ? 1 : 0) );
+                    vaProxy.SetSmallInt( varname, (short?)(b ? 1 : 0) );
                 }
             }
         }

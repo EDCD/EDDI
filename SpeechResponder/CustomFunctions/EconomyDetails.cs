@@ -1,9 +1,9 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -14,11 +14,11 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.EconomyDetails;
         public Type ReturnType => typeof( Economy );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative1( ( runtime, economy, writer ) =>
         {
-            var result = Economy.FromName(values[0].AsString) ?? 
-                                Economy.FromEDName(values[0].AsString);
-            return new ReflectionValue(result ?? new object());
-        }, 1);
+            var result = Economy.FromName(economy.AsString) ?? 
+                                Economy.FromEDName(economy.AsString);
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+        });
     }
 }

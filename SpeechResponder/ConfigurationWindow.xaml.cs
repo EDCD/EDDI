@@ -85,7 +85,7 @@ namespace EddiSpeechResponder
         {
             if (speechResponder is null) { return; }
             this.speechResponder = speechResponder;
-            customFunctionNames = speechResponder.ScriptResolver.GetCustomFunctions().Select(f => f.name);
+            customFunctionNames = ScriptResolver.GetCustomFunctions().Select( f => f.name );
             Task.Run( GetStandardVariables );
 
             InitializeComponent();

@@ -1,12 +1,10 @@
-﻿using Cottle.Stores;
-using EddiEvents;
+﻿using EddiEvents;
 using EddiSpeechResponder.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Utilities;
 
 namespace GeneratorTests
@@ -178,22 +176,7 @@ namespace GeneratorTests
         public void TestGenerateFunctionsHelp()
         {
             // Prepare our functions
-            var functionsList = new List<ICustomFunction>();
-            var resolver = new ScriptResolver(null);
-            var store = new BuiltinStore();
-            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
-            foreach (var type in assy.GetTypes()
-                .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
-            {
-                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null
-                    ? Activator.CreateInstance(type) :
-                    Activator.CreateInstance(type, resolver, store));
-
-                if (function != null)
-                {
-                    functionsList.Add(function);
-                }
-            }
+            var functionsList = ScriptResolver.GetCustomFunctions();
 
             // Organize functions in alphabetical order (except exclude functions that we've flagged as hidden)
             functionsList = functionsList

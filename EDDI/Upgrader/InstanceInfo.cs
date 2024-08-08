@@ -1,4 +1,4 @@
-﻿namespace Utilities
+﻿namespace EddiCore.Upgrader
 {
     /// <summary>
     /// Information obtained from the update server

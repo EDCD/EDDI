@@ -1,9 +1,9 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -14,11 +14,10 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.SecurityLevelDetails;
         public Type ReturnType => typeof( SecurityLevel );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative1( ( state, input, writer ) =>
         {
-            var result = SecurityLevel.FromName(values[0].AsString) ?? 
-                                     SecurityLevel.FromEDName(values[0].AsString);
-            return new ReflectionValue(result ?? new object());
-        }, 1);
+            var result = SecurityLevel.FromName(input.AsString) ?? SecurityLevel.FromEDName(input.AsString);
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+        });
     }
 }

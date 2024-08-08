@@ -172,4 +172,7 @@
   <data name="extra_details_tooltip" xml:space="preserve">
     <value>Show or hide additional details about the selected mission</value>
   </data>
+  <data name="header_notes" xml:space="preserve">
+	  <value>Notes:</value><comment>A label for a UI element where a commander can record personal notes about a mission.</comment>
+  </data>
 </root>

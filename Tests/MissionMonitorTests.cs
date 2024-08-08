@@ -169,7 +169,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionsEvent((MissionsEvent)events[0]);
             Assert.AreEqual(3, missionMonitor.missions.Count);
-            Assert.AreEqual(3, missionMonitor.missions.Where(m => m.statusEDName == "Active").Count());
+            Assert.AreEqual(3, missionMonitor.missions.Count( m => m.statusEDName == "Active" ));
 
             //CargoDepotEvent - 'Shared'
             line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""WingUpdate"", ""CargoType"":""Gold"", ""Count"":20, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":20, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
@@ -179,15 +179,35 @@ namespace UnitTests
             var mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
             Assert.AreEqual(4, missionMonitor.missions.Count);
             Assert.IsNotNull(mission);
-            Assert.IsTrue(mission.edTags.Contains("CollectWing"));
+            Assert.IsTrue( mission.edTags.Contains( "Collect" ) );
+            Assert.IsTrue( mission.edTags.Contains( "Wing" ) );
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.wing);
             Assert.IsTrue(mission.shared);
+            Assert.AreEqual( "Gold", mission.CommodityDefinition.invariantName );
+            Assert.AreEqual( 0, mission.collected );
+            Assert.AreEqual( 20, mission.delivered );
+            Assert.AreEqual( 54, mission.amount );
+            Assert.AreEqual( 0, mission.startmarketid );
+            Assert.AreEqual( 3224777216, mission.endmarketid );
             line = @"{ ""timestamp"":""2018-08-27T02:56:16Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""Deliver"", ""CargoType"":""Gold"", ""Count"":34, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
-            Assert.AreEqual(3, missionMonitor.missions.Count);
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
+            Assert.AreEqual(MissionStatus.Claim, mission?.statusDef);
+            Assert.AreEqual( 4, missionMonitor.missions.Count );
+            Assert.IsNotNull( mission );
+            Assert.AreEqual( "Gold", mission.CommodityDefinition.invariantName );
+            Assert.AreEqual( 0, mission.collected );
+            Assert.AreEqual( 54, mission.delivered );
+            Assert.AreEqual( 54, mission.amount );
+            Assert.AreEqual( 0, mission.startmarketid );
+            Assert.AreEqual( 3224777216, mission.endmarketid );
+            line = @"{ ""timestamp"":""2018-08-27T02:56:36Z"", ""event"":""MissionCompleted"", ""Faction"":""Sanctuary Inc"", ""Name"":""Mission_Collect_CivilLiberty_name"", ""LocalisedName"":""Supplier needs 54 units of Gold"", ""MissionID"":413748365, ""Commodity"":""$Gold_Name;"", ""Commodity_Localised"":""Gold"", ""Count"":54, ""DestinationSystem"":""Xi Wangda"", ""DestinationStation"":""Cartier City"", ""Reward"":30448920, ""FactionEffects"":[ { ""Faction"":""Sanctuary Inc"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_EP_up;"", ""Effect_Localised"":""The economic status of $#MinorFaction; has improved in the $#System; system."", ""Trend"":""UpGood"" } ], ""Influence"":[ { ""SystemAddress"":2869708727713, ""Trend"":""UpGood"", ""Influence"":""+++++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";
+            events = JournalMonitor.ParseJournalEntry( line );
+            missionMonitor._postHandleMissionCompletedEvent( (MissionCompletedEvent)events[ 0 ] );
+            Assert.AreEqual( 3, missionMonitor.missions.Count );
 
             //MissionAbandonedEvent
             line = @"{ ""timestamp"":""2018-08-28T00:50:48Z"", ""event"":""MissionAbandoned"", ""Name"":""Mission_Courier_Elections_name"", ""Fine"":50000, ""MissionID"":413563499 }";
@@ -225,7 +245,7 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
-            Assert.AreEqual(1, missionMonitor.missions.ToList().Where(m => m.missionid == 413748324).Count());
+            Assert.AreEqual(1, missionMonitor.missions.Count( m => m.missionid == 413748324 ));
             Assert.AreEqual(4, missionMonitor.missions.Count);
 
             //CargoDepotEvent - 'Collect'
@@ -258,7 +278,7 @@ namespace UnitTests
             Assert.AreEqual(4, missionMonitor.missions.Count);
 
             //MissionFailedEvent
-            line = @"{ ""timestamp"":""2018-09-23T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":50000, ""MissionID"":413748324 }";
+            line = @"{ ""timestamp"":""2018-09-23T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":5000, ""MissionID"":413748324 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
@@ -269,10 +289,10 @@ namespace UnitTests
             crimeMonitor._handleMissionFine(events[0].timestamp, mission, fine);
             FactionRecord record = crimeMonitor.criminalrecord.ToList().FirstOrDefault(r => r.faction == mission?.faction);
             Assert.IsNotNull(record);
-            Assert.AreEqual(50000, record.fines);
+            Assert.AreEqual(5000, record.fines);
             FactionReport report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.MissionFine);
             Assert.IsNotNull(report);
-            Assert.AreEqual(50000, report.amount);
+            Assert.AreEqual(5000, report.amount);
             ConfigService.Instance.crimeMonitorConfiguration = crimeData;
 
             missionMonitor.handleMissionFailedEvent((MissionFailedEvent)events[0]);

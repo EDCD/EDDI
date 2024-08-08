@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -13,18 +13,13 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.StartsWithVowel;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreatePure1( ( runtime, input) =>
         {
-            string Entree = values[0].AsString;
-            if (Entree == "")
-            { return ""; }
+            if (string.IsNullOrEmpty( input.AsString )) { return ""; }
 
             char[] vowels = { 'a', 'à', 'â', 'ä', 'e', 'ê', 'é', 'è', 'ë', 'i', 'î', 'ï', 'o', 'ô', 'ö', 'u', 'ù', 'û', 'ü', 'œ' };
-            char firstCharacter = Entree.ToLower().ToCharArray().ElementAt(0);
-            bool result = vowels.Contains(firstCharacter);
-
-            return result;
-
-        }, 1);
+            var firstCharacter = input.AsString.ToLower().ToCharArray().ElementAt(0);
+            return vowels.Contains( firstCharacter );
+        });
     }
 }

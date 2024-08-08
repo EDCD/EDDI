@@ -1,10 +1,10 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -18,10 +18,10 @@ namespace EddiSpeechResponder.CustomFunctions
 
         private static readonly DataProviderService dataProviderService = new DataProviderService();
 
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             Traffic result = null;
-            string systemName = values[0].AsString;
+            var systemName = values[0].AsString;
             if (!string.IsNullOrEmpty(systemName))
             {
                 if (values.Count == 2)
@@ -44,7 +44,7 @@ namespace EddiSpeechResponder.CustomFunctions
                     result = dataProviderService.GetSystemTraffic(systemName);
                 }
             }
-            return new ReflectionValue(result ?? new object());
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 1, 2);
     }
 }

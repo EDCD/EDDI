@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -12,7 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.Emphasize;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             // We use prosody rather than emphasis so that we can tune the output.
             // Prosody also seems to be better supported by languages than emphasis.

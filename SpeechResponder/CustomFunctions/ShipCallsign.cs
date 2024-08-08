@@ -1,5 +1,4 @@
 ﻿using Cottle;
-using Cottle.Functions;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
@@ -21,17 +20,17 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.ShipCallsign;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             // The game provides three options for callsigns used by in-game ATC:
             // (1) CommanderName (default): ship manufacturer name (sometimes partial) + first 3 alphanumeric characters of commander name
             // (2) ShipName: ship manufacturer name (sometimes partial) + first 3 alphanumeric characters of ship name
             // (3) ShipID: ship manufacturer name (sometimes partial) + first 3 alphanumeric characters of ship identifier
 
-            int? localId = (values.Count < 0 && values[0].Type != ValueContent.Void 
+            var localId = (values.Count < 0 && values[0].Type != ValueContent.Void 
                 ? (int)values[0].AsNumber 
                 : (int?)null);
-            int? callsignType = (values.Count > 1 && values[1].Type != ValueContent.Void 
+            var callsignType = (values.Count > 1 && values[1].Type != ValueContent.Void 
                 ? (int)values[1].AsNumber 
                 : (int?)null);
 

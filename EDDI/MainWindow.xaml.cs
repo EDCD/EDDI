@@ -2,6 +2,7 @@
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
+using EddiCore.Upgrader;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechService;

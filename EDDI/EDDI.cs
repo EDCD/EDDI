@@ -3029,6 +3029,13 @@ namespace EddiCore
             // We just scanned a body.  We can only proceed if we know our current star system
             if (CurrentStarSystem == null) { return false; }
 
+            // Suppress repetitious `Body scanned` events generated within 10 seconds after mapping.
+            var systemBody = CurrentStarSystem.bodies.FirstOrDefault( s => s.bodyname == theEvent.bodyname );
+            if ( systemBody?.scannedDateTime != null && systemBody.mappedDateTime < ( theEvent.timestamp + TimeSpan.FromSeconds( 10 ) ) )
+            {
+                return false;
+            }
+
             CurrentStarSystem.AddOrUpdateBody(theEvent.body);
 
             Logging.Debug("Saving data for scanned body " + theEvent.bodyname);

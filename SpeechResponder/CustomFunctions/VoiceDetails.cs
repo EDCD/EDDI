@@ -1,9 +1,9 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -13,16 +13,18 @@ namespace EddiSpeechResponder.CustomFunctions
         public string name => "VoiceDetails";
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.VoiceDetails;
-        public Type ReturnType => typeof( VoiceDetails );
-        public NativeFunction function => new NativeFunction((values) =>
+        public Type ReturnType => typeof( EddiSpeechService.VoiceDetails );
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             if (values.Count == 0)
             {
                 if (SpeechService.Instance?.allVoices != null)
                 {
-                    return new ReflectionValue(
-                        SpeechService.Instance.allVoices.FirstOrDefault(v =>
-                            v.name == SpeechService.Instance.Configuration.StandardVoice) ?? new object());
+                    var result = SpeechService.Instance.allVoices.FirstOrDefault( v =>
+                        v.name == SpeechService.Instance.Configuration.StandardVoice );
+                    return result is null
+                        ? Value.EmptyMap
+                        : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
                 }
             }
 
@@ -31,17 +33,18 @@ namespace EddiSpeechResponder.CustomFunctions
                 if (int.TryParse(values[0].AsString, out var seed) && SpeechService.Instance?.allVoices != null)
                 {
                     var fromSeed = new System.Random(seed);
-                    return new ReflectionValue(SpeechService.Instance.allVoices
-                        .OrderBy(o => fromSeed.Next()).ToList());
+                    var result = SpeechService.Instance.allVoices
+                        .OrderBy( o => fromSeed.Next() ).ToList();
+                    return Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
                 }
 
                 if (!string.IsNullOrEmpty(values[0].AsString) && SpeechService.Instance?.allVoices != null)
                 {
-                    foreach (var vc in SpeechService.Instance.allVoices)
+                    foreach (var result in SpeechService.Instance.allVoices)
                     {
-                        if (vc.name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant()))
+                        if (result.name.ToLowerInvariant().Contains(values[0].AsString.ToLowerInvariant()))
                         {
-                            return new ReflectionValue(vc);
+                            return Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
                         }
                     }
 

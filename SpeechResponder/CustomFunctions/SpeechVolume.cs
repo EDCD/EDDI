@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -12,16 +12,16 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Voice;
         public string description => Properties.CustomFunctions_Untranslated.SpeechVolume;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
-            string text = values[0].AsString;
+            var text = values[0].AsString;
             if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
             {
                 return text;
             }
             if (values.Count == 2)
             {
-                string volume = values[1].AsString ?? "default";
+                var volume = values[1].AsString;
                 return @"<prosody volume=""" + volume + @""">" + text + "</prosody>";
             }
             return "The SpeechVolume function is used improperly. Please review the documentation for correct usage.";

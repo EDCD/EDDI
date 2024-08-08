@@ -562,6 +562,8 @@ This function only supports integers, booleans, decimals and strings as state va
 
 State variables are made available in VoiceAttack with the prefix 'EDDI state'.  For example, to access the text variable stored in the last paragraph you would use '\{TXT:EDDI state my_variable\}'.
 
+Variables shall be set to as many variable types as possible, e.g. 'TXT', 'DEC', 'INT', 'SMALL', and 'BOOL' as applicable. Decimal values shall be set to their rounded values in 'INT' and 'SMALL' variable types. Non-zero numeric values and non-empty string values shall be set to 'True' in the BOOL variable type.
+
 To access the same variable from within EDDI's Speech Responder, you would call '\{state.my_variable\}'.
 
 Please note that state is transient, and is purposefully not persisted beyond the running instance of EDDI.  This means that every time you start VoiceAttack the state will be empty.  Also, because EDDI responders run asynchronously and concurrently there is no guarantee that, for example, the speech responder for an event will finish before the VoiceAttack responder for an event starts (or vice versa).

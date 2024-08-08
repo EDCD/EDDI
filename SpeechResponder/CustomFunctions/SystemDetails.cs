@@ -1,11 +1,11 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -17,23 +17,13 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.SystemDetails;
         public Type ReturnType => typeof( StarSystem );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             try
             {
-                StarSystem result;
-                if (values.Count == 0)
-                {
-                    result = EDDI.Instance.CurrentStarSystem;
-                }
-                else if (values.Count > 0 && values[0].AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
-                {
-                    result = EDDI.Instance.CurrentStarSystem;
-                }
-                else
-                {
-                    result = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
-                }
+                var result = values.Count == 0 
+                    ? EDDI.Instance.CurrentStarSystem 
+                    : StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
 
                 var distanceFromHome = result?.DistanceFromStarSystem(EDDI.Instance.HomeStarSystem);
                 if (distanceFromHome != null)
@@ -42,12 +32,12 @@ namespace EddiSpeechResponder.CustomFunctions
                     result.distancefromhome = distanceFromHome;
                 }
 
-                return new ReflectionValue(result ?? new object());
+                return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
             }
             catch (Exception e)
             {
                 return $"The SystemDetails function is used incorrectly. {e.Message}.";
             }
-        }, 1);
+        }, 0, 1);
     }
 }

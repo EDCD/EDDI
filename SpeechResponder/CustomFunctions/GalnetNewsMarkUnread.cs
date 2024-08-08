@@ -1,5 +1,4 @@
-﻿using Cottle.Functions;
-using EddiDataDefinitions;
+﻿using Cottle;
 using EddiGalnetMonitor;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
@@ -14,14 +13,14 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Galnet;
         public string description => Properties.CustomFunctions_Untranslated.GalnetNewsMarkUnread;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreatePure1( ( runtime, uuid ) =>
         {
-            News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+            var result = GalnetSqLiteRepository.Instance.GetArticle(uuid.AsString);
             if (result != null)
             {
                 GalnetSqLiteRepository.Instance.MarkUnread(result);
             }
             return "";
-        }, 1);
+        });
     }
 }

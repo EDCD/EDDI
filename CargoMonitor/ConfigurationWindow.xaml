@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:EddiCargoMonitor"
              xmlns:resx="clr-namespace:EddiCargoMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
+             xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
@@ -54,7 +55,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_haulage}" Width="80" Binding="{Binding Path=haulage, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_haulage}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.haulage), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -67,7 +68,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_stolen}" Width="80" Binding="{Binding Path=stolen, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_stolen}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.stolen), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -80,7 +81,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_owned}" Width="80" Binding="{Binding Path=owned, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_owned}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.owned), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -93,7 +94,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_need}" Width="80" Binding="{Binding Path=need, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_need}" Width="80" Binding="{Binding Path=(eddiDataDefinitions:Cargo.need), NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

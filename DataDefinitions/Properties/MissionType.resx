@@ -126,14 +126,11 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Assassination</value>
   </data>
-  <data name="AssassinateWing" xml:space="preserve">
-    <value>Wing Assassination</value>
+  <data name="Wing" xml:space="preserve">
+	  <value>Wing</value>
   </data>
   <data name="Collect" xml:space="preserve">
     <value>Collection</value>
-  </data>
-  <data name="CollectWing" xml:space="preserve">
-    <value>Wing Collection</value>
   </data>
   <data name="CommunityGoal" xml:space="preserve">
     <value>Community Goal</value>
@@ -144,14 +141,8 @@
   <data name="Delivery" xml:space="preserve">
     <value>Delivery</value>
   </data>
-  <data name="DeliveryWing" xml:space="preserve">
-    <value>Wing Delivery</value>
-  </data>
   <data name="Disable" xml:space="preserve">
     <value>Disable Surface Installation</value>
-  </data>
-  <data name="DisableWing" xml:space="preserve">
-    <value>Wing Disable</value>
   </data>
   <data name="GenericPermit1" xml:space="preserve">
     <value>Permit Acquisition Opportunity</value>
@@ -165,23 +156,17 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massacre</value>
   </data>
-  <data name="MassacreThargoid" xml:space="preserve">
-    <value>Thargoid Massacre</value>
-  </data>
-  <data name="MassacreWing" xml:space="preserve">
-    <value>Wing Massacre</value>
+  <data name="Thargoid" xml:space="preserve">
+	  <value>Thargoid</value><comment>e.g. massacre of thargoid targets</comment>
   </data>
   <data name="Mining" xml:space="preserve">
     <value>Mining</value>
   </data>
-  <data name="MiningWing" xml:space="preserve">
-    <value>Wing Mining</value>
+  <data name="Bulk" xml:space="preserve">
+	  <value>Bulk Transport</value><comment>e.g. of passengers</comment>
   </data>
-  <data name="PassengerBulk" xml:space="preserve">
-    <value>Transport</value>
-  </data>
-  <data name="PassengerVIP" xml:space="preserve">
-    <value>Transport</value>
+  <data name="VIP" xml:space="preserve">
+	  <value>Transport VIP</value><comment>e.g. VIP passenger</comment>
   </data>
   <data name="Piracy" xml:space="preserve">
     <value>Piracy</value>
@@ -235,14 +220,11 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Imperial Navy Contract</value>
   </data>
-  <data name="DisableMegaship" xml:space="preserve">
-    <value>Disable Megaship</value>
+  <data name="Megaship" xml:space="preserve">
+	  <value>Megaship</value><comment>e.g. hack or disable missions targeting a megaship</comment>
   </data>
   <data name="Founder" xml:space="preserve">
     <value>Founder</value>
-  </data>
-  <data name="HackMegaship" xml:space="preserve">
-    <value>Hack Megaship</value>
   </data>
   <data name="Skimmer" xml:space="preserve">
     <value>Skimmer Targets</value>
@@ -256,12 +238,12 @@
     <value>Covert</value>
   </data>
   <data name="Download" xml:space="preserve">
-    <value>Download</value>
-    <comment>Hack type</comment>
+	  <value>Download</value>
+	  <comment>On-foot hack type</comment>
   </data>
   <data name="Upload" xml:space="preserve">
-    <value>Upload</value>
-    <comment>Hack type</comment>
+	  <value>Upload</value>
+	  <comment>On-foot hack type</comment>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Offline Settlement</value>
@@ -324,8 +306,8 @@
     <value>On Fire</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  <data name="PassengerEvacuation" xml:space="preserve">
-    <value>Passenger Evacuation</value>
+  <data name="Evacuation" xml:space="preserve">
+	  <value>Evacuation</value><comment>e.g. of passengers</comment>
   </data>
   <data name="Alert" xml:space="preserve">
     <value>Alert</value>
@@ -333,5 +315,11 @@
   <data name="Scout" xml:space="preserve">
     <value>Thargoid Scout Targets</value>
     <comment>Massacre type</comment>
+  </data>
+  <data name="Contact" xml:space="preserve">
+	  <value>Contact</value><comment>e.g. mission assigned by an on-foot contact</comment>
+  </data>
+  <data name="Sabotage" xml:space="preserve">
+	  <value>Sabotage</value><comment>e.g. on-foot settlement sabotage mission</comment>
   </data>
 </root>

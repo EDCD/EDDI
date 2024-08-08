@@ -13,7 +13,7 @@ namespace EddiEvents
         public const string SAMPLE = @"{ ""timestamp"":""2021-07-24T06:54:44Z"", ""event"":""MissionCompleted"", ""Faction"":""69 G. Carinae Solutions"", ""Name"":""Mission_OnFoot_Onslaught_Offline_MB_name"", ""MissionID"":794589235, ""TargetFaction"":""Amaterasu Silver Brothers"", ""Reward"":269600, ""MaterialsReward"":[ { ""Name"":""SuitSchematic"", ""Name_Localised"":""Suit Schematic"", ""Category"":""$MICRORESOURCE_CATEGORY_Item;"", ""Category_Localised"":""Item"", ""Count"":2 } ], ""FactionEffects"":[ { ""Faction"":""69 G. Carinae Solutions"", ""Effects"":[  ], ""Influence"":[ { ""SystemAddress"":1865920022891, ""Trend"":""UpGood"", ""Influence"":""++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";
 
         [PublicAPI("The ID of the mission")]
-        public long? missionid { get; }
+        public long missionid { get; }
 
         [PublicAPI("The name of the mission")]
         public string name { get; }
@@ -81,7 +81,7 @@ namespace EddiEvents
 
         public MicroResource microResource { get; }
 
-        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, MicroResource microResource, CommodityDefinition commodity, int? amount, bool communal, long reward, List<string> permitsawarded = null, List<CommodityAmount> commodityrewards = null, List<MaterialAmount> materialsrewards = null, List<MicroResourceAmount> microResourceRewards = null, List<MissionFactionEffect> factionEffects = null, long donation = 0) : base(timestamp, NAME)
+        public MissionCompletedEvent(DateTime timestamp, long missionid, string name, string faction, MicroResource microResource, CommodityDefinition commodity, int? amount, bool communal, long reward, List<string> permitsawarded = null, List<CommodityAmount> commodityrewards = null, List<MaterialAmount> materialsrewards = null, List<MicroResourceAmount> microResourceRewards = null, List<MissionFactionEffect> factionEffects = null, long donation = 0) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;

@@ -167,14 +167,14 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            from = from.ToLowerInvariant();
+            from = from.ToLowerInvariant().Trim();
             T result;
             lock (resourceLock)
             {
                 result = allOfThem.FirstOrDefault(
                     v =>
-                    v.localizedName.ToLowerInvariant() == from
-                    || v.invariantName.ToLowerInvariant() == from);
+                    v.localizedName.ToLowerInvariant().Trim() == from
+                    || v.invariantName.ToLowerInvariant().Trim() == from);
             }
             return result;
         }
@@ -187,14 +187,14 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedFrom = from?.Replace(";", "").Replace(" ", "").ToLowerInvariant();
+            string tidiedFrom = from?.Replace(";", "").Replace(" ", "").ToLowerInvariant().Trim();
             T result;
             lock (resourceLock)
             {
                 result = allOfThem.FirstOrDefault(
                     v => v.edname
                     .ToLowerInvariant()
-                    .Replace(";", "") == tidiedFrom);
+                    .Replace(";", "").Trim() == tidiedFrom);
             }
             if (result == null)
             {

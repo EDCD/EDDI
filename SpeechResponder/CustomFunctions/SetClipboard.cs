@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -15,9 +15,9 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.SetClipboard;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction( ( values ) =>
+        public IFunction function => Function.CreatePure1( ( runtime, input ) =>
         {
-            var text = values[0].AsString;
+            var text = input.AsString;
             if ( !string.IsNullOrEmpty( text ) )
             {
                 var clipboardThread = new Thread( () =>
@@ -40,6 +40,6 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 return "The SetClipboard function is used improperly. Please review the documentation for correct usage.";
             }
-        }, 1 );
+        } );
     }
 }

@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiCore;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
@@ -13,6 +13,6 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.CommanderName;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) => EDDI.Instance.Cmdr?.SpokenName(), 0, 0);
+        public IFunction function => Function.CreateNative0( ( runtime, writer ) => EDDI.Instance.Cmdr?.SpokenName() );
     }
 }

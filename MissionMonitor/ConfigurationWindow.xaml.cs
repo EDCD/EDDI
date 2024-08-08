@@ -81,5 +81,10 @@ namespace EddiMissionMonitor
                 }
             }
         }
+
+        private void MissionNotes_OnTextChanged ( object sender, TextChangedEventArgs e )
+        {
+            missionMonitor().writeMissions();
+        }
     }
 }

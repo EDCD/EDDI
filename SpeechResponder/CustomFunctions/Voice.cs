@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using EddiSpeechService;
 using JetBrains.Annotations;
@@ -14,9 +14,9 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Voice;
         public string description => Properties.CustomFunctions_Untranslated.Voice;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
-            string text = values[0].AsString ?? string.Empty;
+            string text = values[0].AsString;
             var voice = SpeechService.Instance.allVoices?.SingleOrDefault(v => string.Equals(v.name, values[1].AsString ?? string.Empty, StringComparison.InvariantCultureIgnoreCase));
             if (voice != null && values.Count == 2)
             {

@@ -10,55 +10,6 @@ namespace EddiDataDefinitions
 {
     public class Mission : INotifyPropertyChanged
     {
-        private static readonly Dictionary<string, string> CHAINED = new Dictionary<string, string>()
-        {
-            {"clearingthepath", "delivery"},
-            {"drawthegeneralout", "assassinate"},
-            {"findthepiratelord", "assassinate"},
-            {"helpfinishtheorder", "delivery"},
-            {"helpwithpreventionmeasures", "massacre"},
-            {"miningtoorder", "mining"},
-            {"piracyfraud", "delivery"},
-            {"planetaryincursions", "scan"},
-            {"rampantleadership", "assassinate"},
-            {"regainfooting", "assassinate"},
-            {"rescuefromthetwins", "salvage"},
-            {"rescuethewares", "salvage"},
-            {"safetravelling", "passengervip"},
-            {"salvagejustice", "assassinate"},
-            {"securingmyposition", "passengervip"},
-            {"seekingasylum", "assassinate"},
-            {"thedead", "special"},
-            {"wrongtarget", "assassinate"},
-        };
-
-        public static readonly List<string> ORGRETURN = new List<string>()
-        {
-            "altruism",
-            "altruismcredits",
-            "assassinate",
-            "assassinatewing",
-            "collect",
-            "collectwing",
-            "deliverywing",
-            "disable",
-            "disablewing",
-            "genericpermit1",
-            "hack",
-            "longdistanceexpedition",
-            "massacre",
-            "massacrethargoid",
-            "massacrewing",
-            "mining",
-            "miningwing",
-            "onfoot",
-            "piracy",
-            "rescue",
-            "salvage",
-            "scan",
-            "sightseeing"
-        };
-
         // The mission ID
         [Utilities.PublicAPI]
         public long missionid { get; private set; }
@@ -71,18 +22,13 @@ namespace EddiDataDefinitions
             set
             {
                 _name = value;
-                SetFactionState();
-                SetTypes();
+                OnPropertyChanged();
             }
         }
-
         [JsonIgnore]
         private string _name;
 
         // The localised name of the mission
-        [JsonIgnore]
-        private string _localisedname;
-
         [Utilities.PublicAPI]
         public string localisedname 
         {
@@ -90,34 +36,50 @@ namespace EddiDataDefinitions
             set
             {
                 _localisedname = value;
-                GetDestinationStation();
-                GetTargetFaction();
+                destinationstation = !string.IsNullOrEmpty( destinationstation ) 
+                    ? destinationstation 
+                    : FallbackGetDestinationStation( value );
+                targetfaction = !string.IsNullOrEmpty(targetfaction) 
+                    ? targetfaction 
+                    : FallbackGetTargetFaction( value );
                 OnPropertyChanged();
             }
         }
-
-        // The type of mission
-
         [JsonIgnore]
-        public List<MissionType> tagsList { get; set; } = new List<MissionType>();
+        private string _localisedname;
+
+        #region Expiration Data
+
+        [Utilities.PublicAPI]
+        public DateTime? expiry { get; set; }
 
         [Utilities.PublicAPI, JsonIgnore]
-        public List<string> invariantTags => tagsList.Select(t => t.invariantName ?? "Unknown").ToList();
+        public long? expiryseconds => expiry != null ? (long?)Utilities.Dates.fromDateTimeToSeconds( (DateTime)expiry ) : null;
 
         [JsonIgnore]
-        public List<string> localizedTags => tagsList.Select(t => t.localizedName ?? "Unknown").ToList();
+        public bool expiring { get; set; }
 
-        [JsonIgnore, UsedImplicitly]
-        public string localizedTagsString => string.Join(", ", localizedTags);
-
+        // The mission time remaining
         [JsonIgnore]
-        public List<string> edTags => tagsList.Select(t => t.edname ?? "Unknown").ToList();
+        public TimeSpan? timeRemaining => expiry != null ? TimeSpanNearestSecond( expiry - DateTime.UtcNow ) : null;
 
-        [Utilities.PublicAPI, JsonIgnore]
-        public List<string> tags => localizedTags;
+        private TimeSpan? TimeSpanNearestSecond ( TimeSpan? utcNow )
+        {
+            if ( utcNow is null )
+            { return null; }
+            return new TimeSpan( utcNow.Value.Days, utcNow.Value.Hours, utcNow.Value.Minutes, utcNow.Value.Seconds );
+        }
 
-        [Utilities.PublicAPI("Obsolete: `type` has been deprecated in favor of tags"), JsonIgnore, Obsolete("`type` has been deprecated in favor of tags")]
-        public string type => localizedTags[0];
+        // While we track the time remaining constantly, we loop through each mission
+        // and update the displayed time remaining at intervals defined by the Mission Monitor.
+        public void UpdateTimeRemaining ()
+        {
+            OnPropertyChanged( nameof( timeRemaining ) );
+        }
+
+        #endregion
+
+        #region Mission Status
 
         // Status of the mission
         public string statusEDName
@@ -125,13 +87,11 @@ namespace EddiDataDefinitions
             get => statusDef?.edname;
             set
             {
-                MissionStatus sDef = MissionStatus.FromEDName(value);
+                var sDef = MissionStatus.FromEDName(value);
                 this.statusDef = sDef;
             }
         }
 
-        [JsonIgnore]
-        private MissionStatus _statusDef;
         [JsonIgnore]
         public MissionStatus statusDef
         {
@@ -139,16 +99,98 @@ namespace EddiDataDefinitions
             set
             {
                 _statusDef = value;
-                UpdateExpiry();
-                OnPropertyChanged("localizedStatus");
+                if ( value != null && value != MissionStatus.Active && !onfoot )
+                {
+                    // Missions are time constrained when active, and on-foot missions
+                    // continue to be time constrained even after they are claimable.
+                    expiry = null;
+                }
+                OnPropertyChanged( nameof( localizedStatus ) );
             }
         }
+        [JsonIgnore]
+        private MissionStatus _statusDef;
 
         [JsonIgnore]
         public string localizedStatus => statusDef?.localizedName ?? "Unknown";
 
-        [Utilities.PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        [Utilities.PublicAPI, JsonIgnore, Obsolete( "Please use localizedName or invariantName" )]
         public string status => localizedStatus;
+
+        [Utilities.PublicAPI]
+        public bool shared { get; set; }
+
+        [Utilities.PublicAPI ("Notes you have recorded about the mission.")]
+        public string notes
+        {
+            get => _notes;
+            set
+            {
+                if ( _notes == value ) { return; }
+                _notes = value;
+                OnPropertyChanged( nameof( notes ) );
+            }
+        }
+        [JsonIgnore]
+        private string _notes;
+
+        #endregion
+
+        #region Mission Tags / MetaData
+
+        [ JsonIgnore ] 
+        public List<MissionType> tagsList => MissionTypes.FromMissionName( name );
+
+        [Utilities.PublicAPI, JsonIgnore]
+        public List<string> invariantTags => tagsList.Select(t => t.invariantName ?? "Unknown").ToList();
+
+        [JsonIgnore, UsedImplicitly]
+        public string localizedTagsString => string.Join(", ", tags );
+
+        [JsonIgnore]
+        public List<string> edTags => tagsList.Select(t => t.edname ?? "Unknown").ToList();
+
+        [Utilities.PublicAPI, JsonIgnore]
+        public List<string> tags => tagsList.Select( t => t.localizedName ?? "Unknown" ).ToList();
+
+        [Utilities.PublicAPI("Obsolete: `type` has been deprecated in favor of tags"), JsonIgnore, Obsolete("`type` has been deprecated in favor of tags")]
+        public string type => tags[0];
+
+        [JsonIgnore]
+        public bool chained => tagsList.Contains( MissionType.Chained );
+
+        [JsonIgnore]
+        public bool onfoot => tagsList.Contains( MissionType.OnFoot );
+
+        [Utilities.PublicAPI]
+        public bool communal { get; set; }
+
+        [Utilities.PublicAPI, JsonIgnore]
+        public bool legal => !tagsList.Any( t =>
+            t == MissionType.Hack ||
+            t == MissionType.Illegal ||
+            t == MissionType.Piracy ||
+            t == MissionType.Smuggle );
+
+        [Utilities.PublicAPI, JsonIgnore] // On-foot missions are always shareable.
+        public bool wing => tagsList.Contains( MissionType.Wing ) || onfoot;
+
+        #endregion
+
+        #region Mission Rewards
+
+        [Utilities.PublicAPI]
+        public string influence { get; set; }
+
+        [Utilities.PublicAPI]
+        public string reputation { get; set; }
+
+        [Utilities.PublicAPI("Credits awarded upon successful completion")]
+        public long? reward { get; set; }
+
+        #endregion
+
+        #region Mission Origin and Origin Faction
 
         // The system in which the mission was accepted
         [Utilities.PublicAPI]
@@ -159,100 +201,53 @@ namespace EddiDataDefinitions
         public string originstation { get; set; }
 
         // Mission returns to origin
-        [Utilities.PublicAPI]
-        public bool originreturn => edTags
-            .Any(t => ORGRETURN.Contains(t, StringComparer.InvariantCultureIgnoreCase));
+        [Utilities.PublicAPI, JsonIgnore]
+        public bool originreturn => tagsList.Any(t => t.ClaimAtOrigin);
+
+        // Mission delivers to a cargo depot
+        [Utilities.PublicAPI, JsonIgnore]
+        public bool cargodepot => tagsList.Any(t => t.ClaimAtCargoDepot);
 
         [Utilities.PublicAPI]
         public string faction { get; set; }
 
         // The state of the minor faction
-        [JsonProperty("factionstate")]
-        public string factionstate
+        [ JsonIgnore ] 
+        public FactionState FactionState => GetFactionState( name );
+
+        private FactionState GetFactionState ( string missionName )
         {
-            get => FactionState?.localizedName ?? FactionState.None.localizedName;
-            set
+            if ( string.IsNullOrEmpty( missionName ) )
+            { return null; }
+
+            // Get the faction state (Boom, Bust, Civil War, etc), if available
+            var elements = missionName.Split( '_' );
+            for ( var i = 2; i < elements.Length; i++ )
             {
-                FactionState fsDef = FactionState.FromName(value);
-                this.FactionState = fsDef;
+                var element = elements
+                    .ElementAtOrDefault(i)?
+                    .ToLowerInvariant();
+
+                // Return faction state when present
+                var factionState = FactionState
+                    .AllOfThem
+                    .FirstOrDefault(s => s.edname.ToLowerInvariant() == element);
+                if ( factionState != null )
+                { return factionState; }
             }
-        }
-        [JsonIgnore]
-        private FactionState _FactionState = FactionState.None;
-        [JsonIgnore]
-        public FactionState FactionState
-        {
-            get { return _FactionState; }
-            set { _FactionState = value; }
+
+            return null;
         }
 
-        [Utilities.PublicAPI]
-        public string influence { get; set; }
+        #endregion
 
-        [Utilities.PublicAPI]
-        public string reputation { get; set; }
+        #region Mission Destination
 
-        public bool chained => name.ToLowerInvariant().Contains("chained");
-
-        public bool onfoot => name.ToLowerInvariant().Contains("onfoot");
-
-        [Utilities.PublicAPI]
-        public bool communal { get; set; }
-
-        [Utilities.PublicAPI]
-        public bool legal => !name.ToLowerInvariant().Contains("hack")
-            && !name.ToLowerInvariant().Contains("illegal")
-            && !name.ToLowerInvariant().Contains("piracy")
-            && !name.ToLowerInvariant().Contains("smuggle");
-
-        [Utilities.PublicAPI]
-        public bool shared { get; set; }
-
-        [Utilities.PublicAPI]
-        public bool wing => name.ToLowerInvariant().Contains("wing") || onfoot;
-
-        [Utilities.PublicAPI]
-        public long? reward { get; set; }
-
-        [Utilities.PublicAPI, JsonProperty("commodity")]
-        public string commodity
-        {
-            get => CommodityDefinition?.localizedName;
-            set
-            {
-                var comDef = CommodityDefinition.FromName(value);
-                this.CommodityDefinition = comDef;
-            }
-        }
-        [JsonIgnore]
-        public CommodityDefinition CommodityDefinition { get; set; }
-
-        [Utilities.PublicAPI, JsonProperty("microresource")]
-        public string microresource
-        {
-            get => MicroResourceDefinition?.localizedName;
-            set
-            {
-                var resDef = MicroResource.FromName(value);
-                this.MicroResourceDefinition = resDef;
-            }
-        }
-        [JsonIgnore]
-        public MicroResource MicroResourceDefinition { get; set; }
-
-        [Utilities.PublicAPI]
-        public int? amount { get; set; }
-
-        // THe destination system of the mission
-        private string _destinationsystem;
-
-        [Utilities.PublicAPI]
+        // The destination system of the mission
+        [ Utilities.PublicAPI ]
         public string destinationsystem
         {
-            get
-            {
-                return _destinationsystem;
-            }
+            get => _destinationsystem;
             set
             {
                 if (_destinationsystem != value)
@@ -262,17 +257,14 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        [JsonIgnore]
+        private string _destinationsystem;
 
         // The destination station of the mission
-        private string _destinationstation;
-
         [Utilities.PublicAPI]
         public string destinationstation
         {
-            get
-            {
-                return _destinationstation;
-            }
+            get => _destinationstation;
             set
             {
                 if (_destinationstation != value)
@@ -282,191 +274,19 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        [JsonIgnore]
+        private string _destinationstation;
 
         // Destination systems for chained missions
-
         [Utilities.PublicAPI]
         public List<NavWaypoint> destinationsystems { get; set; }
 
-        // Community goal details, if applicable
-        public int communalPercentileBand { get; set; }
-
-        public int communalTier { get; set; }
-        
-        // The mission time remaining
-        [JsonIgnore]
-        public TimeSpan? timeRemaining => expiry != null ? TimeSpanNearestSecond(expiry - DateTime.UtcNow) : null;
-
-        private TimeSpan? TimeSpanNearestSecond(TimeSpan? utcNow)
+        private static string FallbackGetDestinationStation ( string localisedName )
         {
-            if (utcNow is null) { return null; }
-            return new TimeSpan(utcNow.Value.Days, utcNow.Value.Hours, utcNow.Value.Minutes, utcNow.Value.Seconds);
-        }
+            if ( string.IsNullOrEmpty( localisedName ) )
+            { return string.Empty; }
 
-        public string passengertypeEDName { get; set; }
-        
-        [Utilities.PublicAPI, JsonIgnore]
-        public string passengertype => PassengerType.FromEDName(passengertypeEDName)?.localizedName;
-
-        [Utilities.PublicAPI]
-        public bool? passengerwanted { get; set; }
-
-        [Utilities.PublicAPI]
-        public bool? passengervips { get; set; }
-
-        [Utilities.PublicAPI]
-        public string target { get; set; }
-
-        [Utilities.PublicAPI]
-        public string targetfaction { get; set; }
-
-        public string targetTypeEDName;
-
-        [Utilities.PublicAPI, JsonIgnore]
-        public string targettype => TargetType.FromEDName(targetTypeEDName)?.localizedName;
-
-        [Utilities.PublicAPI]
-        public DateTime? expiry { get; set; }
-
-        [Utilities.PublicAPI, JsonIgnore]
-        public long? expiryseconds => expiry != null ? (long?)Utilities.Dates.fromDateTimeToSeconds((DateTime)expiry) : null;
-
-        [JsonIgnore]
-        public bool expiring { get; set; }
-
-        // Default Constructor
-        public Mission() { }
-
-        [JsonConstructor]
-        // Main Constructor
-        public Mission(long MissionId, string Name, DateTime? expiry, MissionStatus Status, bool Shared = false)
-        {
-            this.missionid = MissionId;
-            this.name = Name;
-            this.expiry = expiry?.ToUniversalTime();
-            this.statusDef = Status;
-            this.shared = Shared;
-            this.expiring = false;
-            destinationsystems = new List<NavWaypoint>();
-        }
-
-        public void UpdateTimeRemaining()
-        {
-            OnPropertyChanged(nameof(timeRemaining));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
-        { 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
-        }
-
-        private void SetFactionState()
-        {
-            if (string.IsNullOrEmpty(name)) { return; }
-
-            // Get the faction state (Boom, Bust, Civil War, etc), if available
-            for (int i = 2; i < name.Split('_').Count(); i++)
-            {
-                string element = name.Split('_')
-                    .ElementAtOrDefault(i)?
-                    .ToLowerInvariant();
-
-                // Might be a faction state
-                FactionState factionState = FactionState
-                    .AllOfThem
-                    .Find(s => s.edname.ToLowerInvariant() == element);
-                if (factionState != null)
-                {
-                    factionstate = factionState.localizedName;
-                    break;
-                }
-            }
-        }
-
-        private void SetTypes()
-        {
-            if (string.IsNullOrEmpty(name)) { return; }
-
-            var tidiedName = name.ToLowerInvariant()
-                .Replace("agriculture", "agri") // to match the `agri` economy definition
-                .Replace("altruismcredits", "altruism_credits")
-                .Replace("elections", "election") // to match the `election` faction state definition
-                .Replace("assassinationillegal", "assassinate_illegal")
-                .Replace("massacreillegal", "massacre_illegal")
-                .Replace("onslaughtillegal", "onslaught_illegal")
-                .Replace("salvageillegal", "salvage_illegal")
-                ;
-
-            var elements = tidiedName.Split('_').ToList();
-
-            // Skip various obscure mission type elements that we don't need or that we're representing some other way
-            elements.RemoveAll(t =>
-                t == "mission" ||
-                t == "arriving" ||
-                t == "leaving" ||
-                t == "plural" ||
-                t == "name" ||
-                t == "bs" ||
-                t == "ds" || 
-                t == "rs" ||
-                t == "mb"
-            );
-
-            // Some elements should not be removed but should be moved to the end of the list.
-            // Do that here.
-            foreach (var elementToMove in new[] { "tw" })
-            {
-                if (elements.FirstOrDefault() == elementToMove)
-                {
-                    elements.Remove(elementToMove);
-                    elements.Add(elementToMove);
-                }
-            }
-
-            // Skip passenger elements (we'll fill these using the `Passengers` event)
-            elements.RemoveAll(t => PassengerType
-                .AllOfThem
-                .Select(s => s.edname)
-                .Contains(t, StringComparer.InvariantCultureIgnoreCase));
-
-            // Tidy up any government name embedded in the elements
-            for (var index = 0; index < elements.Count; index++)
-            {
-                var gov = Government.AllOfThem
-                    .FirstOrDefault(e => e.edname.ToLowerInvariant() == $"$government_{elements[index]};");
-                if (gov != null)
-                {
-                    elements[index] = gov.edname;
-                }
-            }
-
-            // Skip numeric elements
-            elements.RemoveAll(t => int.TryParse(t, out _));
-
-            // Replace chained mission types with conventional equivalents
-            elements.ForEach(e =>
-            {
-                if (CHAINED.TryGetValue(e, out var value)) { e = value; }
-            });
-
-            foreach (var element in elements)
-            {
-                var typeDef = MissionType.FromEDName(element);
-                if (typeDef != null)
-                {
-                    tagsList.Add(typeDef);
-                }
-            }
-        }
-
-        private void GetDestinationStation()
-        {
-            if (string.IsNullOrEmpty(localisedname) || !string.IsNullOrEmpty(destinationstation)) { return; }
-
-            var tidiedName = localisedname
+            var tidiedName = localisedName
                 .Replace("Covert ", "")
                 .Replace("Nonviolent ", "")
                 .Replace("Digital Infiltration: ", "")
@@ -494,43 +314,88 @@ namespace EddiDataDefinitions
                 Tuple.Create("Turn on power at ", "")
             };
 
-            string settlementName = null;
-            foreach (var prefixSuffix in prefixesSuffixes)
+            foreach ( var prefixSuffix in prefixesSuffixes )
             {
-                if (tidiedName.StartsWith(prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase) 
-                    && tidiedName.EndsWith(prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase))
+                if ( tidiedName.StartsWith( prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase )
+                    && tidiedName.EndsWith( prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase ) )
                 {
-                    if (prefixSuffix.Item1.Length > 0)
+                    if ( prefixSuffix.Item1.Length > 0 )
                     {
                         tidiedName = tidiedName
-                            .Replace(prefixSuffix.Item1, "");
+                            .Replace( prefixSuffix.Item1, "" );
                     }
-                    if (prefixSuffix.Item2.Length > 0)
+                    if ( prefixSuffix.Item2.Length > 0 )
                     {
                         tidiedName = tidiedName
-                            .Replace(prefixSuffix.Item2, "");
+                            .Replace( prefixSuffix.Item2, "" );
                     }
-                    settlementName = tidiedName;
                     break;
                 }
             }
-
-            if (!string.IsNullOrEmpty(settlementName))
-            {
-                destinationstation = settlementName;
-                OnPropertyChanged(nameof(destinationstation));
-            }
+            return tidiedName;
         }
 
-        private void GetTargetFaction()
-        {
-            if (string.IsNullOrEmpty(localisedname) || !string.IsNullOrEmpty(targetfaction)) { return; }
+        #endregion
 
-            var tidiedName = localisedname
-                .Replace("Settlement ", "")
-                .Replace("Massacre: ", "")
-                .Replace("Raid: ", "")
-            ;
+        #region Community Goal Info
+
+        // Community goal details, if applicable
+        public int communalPercentileBand { get; set; }
+
+        public int communalTier { get; set; }
+
+        #endregion
+
+        #region Passenger Data
+
+        public string passengertypeEDName { get; set; }
+
+        [Utilities.PublicAPI, JsonIgnore]
+        public string passengertype => PassengerType.FromEDName( passengertypeEDName )?.localizedName;
+
+        [Utilities.PublicAPI]
+        public bool? passengerwanted { get; set; }
+
+        [Utilities.PublicAPI]
+        public bool? passengervips { get; set; }
+
+        #endregion
+
+        #region Mission Target
+
+        [Utilities.PublicAPI]
+        public string target { get; set; }
+
+        [Utilities.PublicAPI]
+        public string targetfaction
+        {
+            get => _targetfaction;
+            set
+            {
+                if ( _targetfaction != value )
+                {
+                    _targetfaction = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private string _targetfaction;
+
+        public string targetTypeEDName;
+
+        [Utilities.PublicAPI, JsonIgnore]
+        public string targettype => TargetType.FromEDName( targetTypeEDName )?.localizedName;
+
+        private string FallbackGetTargetFaction ( string localisedName )
+        {
+            if ( string.IsNullOrEmpty( localisedName ) )
+            { return string.Empty; }
+
+            var tidiedName = localisedName
+                    .Replace("Settlement ", "")
+                    .Replace("Massacre: ", "")
+                    .Replace("Raid: ", "")
+                ;
 
             var prefixesSuffixes = new List<Tuple<string, string>>
             {
@@ -538,40 +403,106 @@ namespace EddiDataDefinitions
                 Tuple.Create("Take out ", " personnel"),
             };
 
-            string factionName = null;
-            foreach (var prefixSuffix in prefixesSuffixes)
+            foreach ( var prefixSuffix in prefixesSuffixes )
             {
-                if (tidiedName.StartsWith(prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase)
-                    && tidiedName.EndsWith(prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase))
+                if ( tidiedName.StartsWith( prefixSuffix.Item1, StringComparison.InvariantCultureIgnoreCase )
+                     && tidiedName.EndsWith( prefixSuffix.Item2, StringComparison.InvariantCultureIgnoreCase ) )
                 {
-                    if (prefixSuffix.Item1.Length > 0)
+                    if ( prefixSuffix.Item1.Length > 0 )
                     {
                         tidiedName = tidiedName
-                            .Replace(prefixSuffix.Item1, "");
+                            .Replace( prefixSuffix.Item1, "" );
                     }
-                    if (prefixSuffix.Item2.Length > 0)
+                    if ( prefixSuffix.Item2.Length > 0 )
                     {
                         tidiedName = tidiedName
-                            .Replace(prefixSuffix.Item2, "");
+                            .Replace( prefixSuffix.Item2, "" );
                     }
-                    factionName = tidiedName;
                     break;
                 }
             }
 
-            if (!string.IsNullOrEmpty(factionName))
+            return tidiedName;
+        }
+
+        #endregion
+
+        #region Mission Haulage Data
+
+        [Utilities.PublicAPI( "The localized name of the commodity required to complete the mission, as applicable" ), JsonProperty( "commodity" )]
+        public string commodity
+        {
+            get => CommodityDefinition?.localizedName;
+            set
             {
-                targetfaction = factionName;
-                OnPropertyChanged(nameof(targetfaction));
+                var comDef = CommodityDefinition.FromName(value);
+                this.CommodityDefinition = comDef;
             }
         }
 
-        private void UpdateExpiry()
+        [Utilities.PublicAPI( "The commodity object for the commodity required to complete the mission, as applicable" ), JsonIgnore]
+        public CommodityDefinition CommodityDefinition { get; set; }
+
+        [Utilities.PublicAPI( "The localized name of the micro-resource required to complete the mission, as applicable" ), JsonProperty( "microresource" )]
+        public string microresource
         {
-            if (statusDef != MissionStatus.Active && !onfoot)
+            get => MicroResourceDefinition?.localizedName;
+            set
             {
-                expiry = null;
+                var resDef = MicroResource.FromName(value);
+                this.MicroResourceDefinition = resDef;
             }
+        }
+
+        [Utilities.PublicAPI( "The micro-resource object for the micro-resource required to complete the mission, as applicable" ), JsonIgnore]
+        public MicroResource MicroResourceDefinition { get; set; }
+
+        [Utilities.PublicAPI( "The amount of the commodity or micro-resource required to complete the mission." )] 
+        public int? amount { get; set; }
+
+        [Utilities.PublicAPI( "The system where the mission cargo has been found, as applicable" )]
+        public string sourcesystem { get; set; }
+
+        [Utilities.PublicAPI ( "The body or station where the mission cargo has been found, as applicable" )]
+        public string sourcebody { get; set; }
+
+        [Utilities.PublicAPI( "The quantity of mission cargo which has been collected at a cargo depot" )]
+        public int collected { get; set; }
+
+        [Utilities.PublicAPI( "The quantity of mission cargo which has been delivered to a cargo depot" )]
+        public int delivered { get; set; }
+
+        public int wingCollected { get; set; } // The quantity of mission cargo which has been collected and not delivered by wing members
+
+        public long startmarketid { get; set; } // The cargo depot where mission cargo is collected
+
+        public long endmarketid { get; set; } // The cargo depot where mission cargo is delivered
+
+        #endregion
+
+        // Default Constructor
+        public Mission () { }
+
+        [JsonConstructor]
+        // Main Constructor
+        public Mission(long MissionId, string Name, DateTime? expiry, MissionStatus Status, string notes = null, bool Shared = false)
+        {
+            this.missionid = MissionId;
+            this.name = Name;
+            this.expiry = expiry?.ToUniversalTime();
+            this.statusDef = Status;
+            this.shared = Shared;
+            this.notes = notes;
+            this.expiring = false;
+            destinationsystems = new List<NavWaypoint>();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+        { 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
         }
     }
 }

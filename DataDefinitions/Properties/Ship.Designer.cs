@@ -405,6 +405,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to your.
         /// </summary>
+        public static string yourType8 {
+            get {
+                return ResourceManager.GetString("yourType8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
         public static string yourType9 {
             get {
                 return ResourceManager.GetString("yourType9", resourceCulture);

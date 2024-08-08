@@ -2,9 +2,71 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.0-b1
+  * Core
+    * Added support for the Type-8 Transporter.
+    * Added `sourcesystem`, `sourcebody`, `collected`, and `delivered`, properties to the `mission` object.
+    * Commodities now have a `corrosive` boolean property.
+    * Removed `haulageData` map from the `cargo` object, add `missionCargo` dictionary object in its place.
+    * Suppressed a repetitious `Body scanned` event which could occur after mapping. (#2633)
+    * The `need` property of `cargo` is now calculated after resolvers have handled events (to minimize cross linking between the Cargo and Mission Monitors).
+  * Crime Monitor
+    * An interstellar bounty applies when fines or bounties for factions aligned with a superpower exceed 10,000 credits.
+  * Mission Monitor
+    * The drop-down on missions now includes a "Notes" section where you can record notes about ongoing missions. (#2410)
+  * Speech Responder
+    * Fixed a bug that could prevent variables set with `set` from being available in some contexts. 
+    * Custom Functions
+      * `HaulageDetails()` function has been removed. 
+    * Scripts
+      * `Body scanned` updated to improve the context passed to child scripts. 
+      * `Blueprint make report` updated to fix a typo (stray letter).
+      * `Cargo depot` updated to replace `HaulageDetails()` function with `MissionDetails()`.
+      * `Carrier jump engaged` updated to better separate carrier context from commander context.
+      * `Carrier jumped` updated to better separate carrier context from commander context.
+      * `Commodity sale check` updated to remove unnecessary reference to `haulageData`.
+      * `FSD engaged` updated to tidy context.
+      * `Jumped` updated to tidy context.
+      * `Material discard report` updated to tidy context.
+      * `Material inventory report` updated to tidy context.
+      * `Mission check galaxy` updated to make `allmissions()` internal function pure.
+      * `Mission check system` updated to make `addstation()` internal function pure.
+      * `Mission expired` updated to demo the `missionCargo` property and add more clarity when cargo shall be marked as stolen. 
+      * `Route details` updated to replace `HaulageDetails()` function with `MissionDetails()`.
+      * `Star scanned` updated to fix a typo (missing comma) and to improve the context passed to child scripts.
+      * `System distance report` updated to tidy context.
+      * `System materials report` updated to fix an error with the `isSeleniumSpecialCase` helper function.
+      * `System state changed` updated to tidy context.
+  * VoiceAttack
+    * Variables set with SetState are now set to as types as possible (e.g. TXT, DEC, INT, SMALL, BOOL) in VoiceAttack.
+
+## 4.1.0-a2
+  * Speech Responder
+    * Increased the render cycle limit (<https://cottle.readthedocs.io/en/latest/page/04-configuration.html#render-cycle-limit>) from 10,0000 to 100,000.
+    * Scripts
+      * `System materials report` updated to more efficiently identify volcanic bodies.
+
 ## 4.1.0-a1
   * Events
     * `Cargo Transfer` added. (#2621)
+  * Speech Responder
+    * Update Cottle to latest available experimental version. Variables which are set in a script are now being stored in an immutable context. While these variables can still be passed to a child script / context, variables in a child script / context cannot be set and passed back to a parent script / context.
+    * Custom Functions
+      * A variable set with `SetState` can no longer be retrieved using `state` from the same script / context where it was set. 
+      * `GetState` has been added to allow retrieval of state variables in the same script / context where it was set. 
+    * Scripts
+      * `Blueprint make report` updated to simplify state retrieval.
+      * `Blueprint material report` updated to simplify state retrieval.
+      * `Galnet news` updated to simplify state retrieval.
+      * `Material discard report` updated to simplify state retrieval.
+      * `Material inventory report` updated to simplify state retrieval.
+      * `Material required report` updated to simplify state retrieval.
+      * `Material location report` updated to simplify state retrieval.
+      * `Material use report` updated to simplify state retrieval.
+      * `System materials report` updated to use `factionState` variable name rather than reserved `state` variable name.
+  * VoiceAttack
+    * EDDI.vap commands updated to synchronize state variable names with updated scripts.
+    * Whole number variables set with SetState are now set as INT values rather than DEC values in VoiceAttack.
 
 ## 4.0.4
   * Core

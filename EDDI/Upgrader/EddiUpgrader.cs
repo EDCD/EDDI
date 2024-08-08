@@ -1,5 +1,5 @@
-﻿using EddiConfigService;
-using EddiCore;
+﻿using Eddi;
+using EddiConfigService;
 using EddiSpeechService;
 using System;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Reflection;
 using Utilities;
 
-namespace Eddi
+namespace EddiCore.Upgrader
 {
     public class EddiUpgrader
     {
@@ -89,7 +89,7 @@ namespace Eddi
                 {
                     Logging.Info( $"Downloading upgrade from {UpgradeLocation}" );
                     SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.downloading_upgrade, 0);
-                    var updateFile = await Net.DownloadFileAsync(UpgradeLocation, @"EDDI-update.exe");
+                    var updateFile = await Utilities.Net.DownloadFileAsync(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
                         SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.download_failed, 0);

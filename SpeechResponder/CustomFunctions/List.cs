@@ -1,8 +1,7 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -14,30 +13,27 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.List;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative1( ( runtime, values, writer ) =>
         {
-            string output = string.Empty;
-            string localisedAnd = Properties.SpeechResponder.localizedAnd;
-            if (values.Count == 1)
+            var output = string.Empty;
+            var localisedAnd = Properties.SpeechResponder.localizedAnd;
+            foreach ( var value in values.Fields )
             {
-                foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
+                var valueString = value.Value.AsString;
+                if ( value.Key == 0 )
                 {
-                    string valueString = value.Value.AsString;
-                    if (value.Key == 0)
-                    {
-                        output = valueString;
-                    }
-                    else if (value.Key < (values[0].Fields.Count - 1))
-                    {
-                        output = $"{output}, {valueString}";
-                    }
-                    else
-                    {
-                        output = $"{output}{(values[0].Fields.Count() > 2 ? "," : "")} {localisedAnd} {valueString}";
-                    }
+                    output = valueString;
+                }
+                else if ( value.Key < ( values.Fields.Count - 1 ) )
+                {
+                    output = $"{output}, {valueString}";
+                }
+                else
+                {
+                    output = $"{output}{( values.Fields.Count() > 2 ? "," : "" )} {localisedAnd} {valueString}";
                 }
             }
             return output;
-        }, 1);
+        });
     }
 }

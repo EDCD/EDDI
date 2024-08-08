@@ -1,11 +1,11 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiConfigService;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -16,22 +16,21 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.CargoDetails;
         public Type ReturnType => typeof( Cargo );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative1( ( runtime, input, writer ) =>
         {
             var cargoInventory = ConfigService.Instance.cargoMonitorConfiguration?.cargo;
-            Cottle.Value value = values[0];
             Cargo result = null;
 
-            if (value.Type == Cottle.ValueContent.String)
+            if (input.Type == ValueContent.String)
             {
-                var edname = CommodityDefinition.FromNameOrEDName(value.AsString)?.edname;
+                var edname = CommodityDefinition.FromNameOrEDName(input.AsString)?.edname;
                 result = cargoInventory?.FirstOrDefault(c=> c.edname == edname) ?? new Cargo(edname);
             }
-            else if (value.Type == Cottle.ValueContent.Number)
+            else if (input.Type == ValueContent.Number)
             {
-                result = cargoInventory?.FirstOrDefault(c => c.haulageData.FirstOrDefault(h => h.missionid == (long)value.AsNumber) != null);
+                result = cargoInventory?.FirstOrDefault(c => c.missionCargo.Any(h => h.Key == Convert.ToInt64(input.AsNumber)));
             }
-            return new ReflectionValue(result ?? new object());
-        }, 1);
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+        });
     }
 }

@@ -239,7 +239,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667760, "TransgenicOnionHead", Narcotics, 8472, true),
                 new CommodityDefinition(128668017, "JaquesQuinentianStill", ConsumerItems, 2108, true),
                 new CommodityDefinition(128668018, "SoontillRelics", ConsumerItems, 19885, true),
-                new CommodityDefinition(128668547, "UnknownArtifact", Salvage, 290190, false),
+                new CommodityDefinition(128668547, "UnknownArtifact", Salvage, 290190, false, true),
                 new CommodityDefinition(128668548, "AiRelics", Salvage, 138613, false),
                 new CommodityDefinition(128668549, "Hafnium178", Metals, 69098, false),
                 new CommodityDefinition(128668550, "Painite", Minerals, 40508, false),
@@ -331,7 +331,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128672316, "MasterChefs", Slaves, 20590, true),
                 new CommodityDefinition(128672431, "PersonalGifts", ConsumerItems, 16535, false),
                 new CommodityDefinition(128672432, "CrystallineSpheres", ConsumerItems, 12216, true),
-                new CommodityDefinition(128672701, "MetaAlloys", IndustrialMaterials, 88148, false),
+                new CommodityDefinition(128672701, "MetaAlloys", IndustrialMaterials, 88148, false, true),
                 new CommodityDefinition(128672775, "Taaffeite", Minerals, 20696, false),
                 new CommodityDefinition(128672776, "Jadeite", Minerals, 13474, false),
                 new CommodityDefinition(128672810, "UnstableDataCore", Salvage, 2427, false),
@@ -368,7 +368,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128673873, "MicroControllers", Technology, 3274, false),
                 new CommodityDefinition(128673874, "IonDistributor", Technology, 1133, false),
                 new CommodityDefinition(128673875, "DiagnosticSensor", Technology, 4337, false),
-                new CommodityDefinition(128673876, "UnknownArtifact2", Salvage, 411003, false),
+                new CommodityDefinition(128673876, "UnknownArtifact2", Salvage, 411003, false, true),
                 new CommodityDefinition(128682044, "ConductiveFabrics", Textiles, 507, false),
                 new CommodityDefinition(128682045, "MilitaryGradeFabrics", Textiles, 708, false),
                 new CommodityDefinition(128682046, "AdvancedMedicines", Medicines, 1259, false),
@@ -392,20 +392,20 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128732549, "GromCounterIntelligence", Powerplay, 0, false), // PowerPlay
                 new CommodityDefinition(128732550, "GromWarTrophies", Powerplay, 0, false), // PowerPlay
                 new CommodityDefinition(128732551, "ShansCharisOrchid", ConsumerItems, 9043, true),
-                new CommodityDefinition(128737287, "UnknownResin", Salvage, 18652, false),
-                new CommodityDefinition(128737288, "UnknownBiologicalMatter", Salvage, 25479, false),
-                new CommodityDefinition(128737289, "UnknownTechnologySamples", Salvage, 22551, false),
-                new CommodityDefinition(128740752, "UnknownArtifact3", Salvage, 31350, false),
+                new CommodityDefinition(128737287, "UnknownResin", Salvage, 18652, false, true),
+                new CommodityDefinition(128737288, "UnknownBiologicalMatter", Salvage, 25479, false, true),
+                new CommodityDefinition(128737289, "UnknownTechnologySamples", Salvage, 22551, false, true),
+                new CommodityDefinition(128740752, "UnknownArtifact3", Salvage, 31350, false, true),
                 new CommodityDefinition(128748428, "BuckyballBeerMats", ConsumerItems, 7957, true),
                 new CommodityDefinition(128793113, "HarmaSilverSeaRum", Narcotics, 9762, true),
                 new CommodityDefinition(128793114, "PlatinumAloy", Metals, 18333, true),
-                new CommodityDefinition(128793127, "ThargoidHeart", Salvage, 0, false),
-                new CommodityDefinition(128793128, "ThargoidTissueSampleType1", Salvage, 14081, false),
-                new CommodityDefinition(128793129, "ThargoidTissueSampleType2", Salvage, 0, false),
-                new CommodityDefinition(128793130, "ThargoidTissueSampleType3", Salvage, 0, false),
-                new CommodityDefinition(128824468, "ThargoidScoutTissueSample", Salvage, 15215, false),
+                new CommodityDefinition(128793127, "ThargoidHeart", Salvage, 0, false, true),
+                new CommodityDefinition(128793128, "ThargoidTissueSampleType1", Salvage, 14081, false, true),
+                new CommodityDefinition(128793129, "ThargoidTissueSampleType2", Salvage, 0, false, true),
+                new CommodityDefinition(128793130, "ThargoidTissueSampleType3", Salvage, 0, false, true),
+                new CommodityDefinition(128824468, "ThargoidScoutTissueSample", Salvage, 15215, false, true),
                 new CommodityDefinition(128888499, "AncientKey", Salvage, 29931, false),
-                new CommodityDefinition(128902652, "ThargoidTissueSampleType4", Salvage, 0, false),
+                new CommodityDefinition(128902652, "ThargoidTissueSampleType4", Salvage, 0, false, true),
                 new CommodityDefinition(128913661, "Nanomedicines", Medicines, 9859, true),
                 new CommodityDefinition(128922517, "M_TissueSample_Fluid", Salvage, 0, false),
                 new CommodityDefinition(128922518, "M_TissueSample_Soft", Salvage, 0, false),
@@ -437,29 +437,28 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128983059, "OnionHeadC", Narcotics, 5387, false),
                 new CommodityDefinition(129002574, "ClassifiedExperimentalEquipment", Technology, 0, true),
                 new CommodityDefinition(129015433, "AncientRelicTG", Salvage, 4798, false),
-                new CommodityDefinition(129019258, "ThargoidTissueSampleType5", Salvage, 98368, false),
-                new CommodityDefinition(129019259, "ThargoidGeneratorTissueSample", Salvage, 67680, false),
+                new CommodityDefinition(129019258, "ThargoidTissueSampleType5", Salvage, 98368, false, true),
+                new CommodityDefinition(129019259, "ThargoidGeneratorTissueSample", Salvage, 67680, false, true),
                 new CommodityDefinition(129022087, "UnocuppiedEscapePod", Salvage, 3900, false),
-                new CommodityDefinition(129022408, "UnknownMineral", Salvage, 31986, false),
-                new CommodityDefinition(129022409, "UnknownRefinedMineral", Salvage, 158421, false),
+                new CommodityDefinition(129022408, "UnknownMineral", Salvage, 31986, false, true),
+                new CommodityDefinition(129022409, "UnknownRefinedMineral", Salvage, 158421, false, true),
 
                 // Items for which we do not have pricing
-                new CommodityDefinition(129022395, "ThargoidTissueSampleType6", Salvage, 0, false),
-                new CommodityDefinition(129022396, "ThargoidTissueSampleType7", Salvage, 0, false),
-                new CommodityDefinition(129022398, "ThargoidTissueSampleType9a", Salvage, 0, false),
-                new CommodityDefinition(129022399, "ThargoidTissueSampleType9b", Salvage, 0, false),
-                new CommodityDefinition(129022400, "ThargoidTissueSampleType9c", Salvage, 0, false),
-                new CommodityDefinition(129022402, "ThargoidTissueSampleType10a", Salvage, 0, false),
-                new CommodityDefinition(129022403, "ThargoidTissueSampleType10b", Salvage, 0, false),
-                new CommodityDefinition(129022404, "ThargoidTissueSampleType10c", Salvage, 0, false),
-                new CommodityDefinition(129022405, "UnknownSack", Salvage, 0, false),
+                new CommodityDefinition(129022395, "ThargoidTissueSampleType6", Salvage, 0, false, true),
+                new CommodityDefinition(129022396, "ThargoidTissueSampleType7", Salvage, 0, false, true),
+                new CommodityDefinition(129022398, "ThargoidTissueSampleType9a", Salvage, 0, false, true),
+                new CommodityDefinition(129022399, "ThargoidTissueSampleType9b", Salvage, 0, false, true),
+                new CommodityDefinition(129022400, "ThargoidTissueSampleType9c", Salvage, 0, false, true),
+                new CommodityDefinition(129022402, "ThargoidTissueSampleType10a", Salvage, 0, false, true),
+                new CommodityDefinition(129022403, "ThargoidTissueSampleType10b", Salvage, 0, false, true),
+                new CommodityDefinition(129022404, "ThargoidTissueSampleType10c", Salvage, 0, false, true),
+                new CommodityDefinition(129022405, "UnknownSack", Salvage, 0, false, true),
                 new CommodityDefinition(129022406, "ThargoidPod", Salvage, 0, false),
-                new CommodityDefinition(129022407, "CoralSap", Salvage, 0, false),
-
-                new CommodityDefinition(129030459,"ThargoidTitanDriveComponent",Salvage,0, false),
-                new CommodityDefinition(129030460,"ThargoidCystSpecimen",Salvage,0,false),
-                new CommodityDefinition(129030461,"ThargoidBoneFragments",Salvage,0,false),
-                new CommodityDefinition(129030462,"ThargoidOrganSample",Salvage,0,false)
+                new CommodityDefinition(129022407, "CoralSap", Salvage, 0, false, true),
+                new CommodityDefinition(129030459,"ThargoidTitanDriveComponent",Salvage,0, false, true),
+                new CommodityDefinition(129030460,"ThargoidCystSpecimen",Salvage,0,false, true),
+                new CommodityDefinition(129030461,"ThargoidBoneFragments",Salvage,0,false, true),
+                new CommodityDefinition(129030462,"ThargoidOrganSample",Salvage,0,false, true)
 
                 // Items for which we do not have Elite IDs
             };
@@ -471,12 +470,15 @@ namespace EddiDataDefinitions
 
         public string category => Category.localizedName;
 
-        [PublicAPI]
+        [PublicAPI("True if the commodity is a rare market commodity")]
         public readonly bool rare;
+
+        [PublicAPI("True if the commodity is known to be corrosive")]
+        public readonly bool corrosive;
 
         // The average price of a commodity can change - thus this cannot be read only.
         // Instead, this value should be updated whenever revised data is received.
-        [PublicAPI]
+        [PublicAPI("The latest known average market price for the commodity")]
         public decimal avgprice { get; set; }
 
         // Not intended to be user facing
@@ -487,12 +489,13 @@ namespace EddiDataDefinitions
         public CommodityDefinition() : this(0, "", Unknown)
         { }
 
-        internal CommodityDefinition(long EliteID, string edname, CommodityCategory Category, int AveragePrice = 0, bool Rare = false) : base(edname, edname)
+        internal CommodityDefinition ( long EliteID, string edname, CommodityCategory Category, int AveragePrice = 0, bool Rare = false, bool Corrosive = false ) : base(edname, edname)
         {
             this.EliteID = EliteID;
             this.Category = Category;
             this.avgprice = AveragePrice;
             this.rare = Rare;
+            this.corrosive = Corrosive;
             CommoditiesByEliteID[EliteID] = this;
         }
 

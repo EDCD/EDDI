@@ -350,7 +350,25 @@ namespace EddiSpeechResponder.Properties {
                 return ResourceManager.GetString("GalnetNewsMarkUnread", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to This function will retrieve a session state value. 
+        ///
+        /// GetState takes one argument: the name of the state value to retrieve.  The name of the state value shall be converted to lower-case with spaces changed to underscores.
+        ///
+        /// Common usage of this is to retrieve cumulative or persistent information stored using `SetState` during a session, for example:
+        /// 
+        ///     {SetState("distance_travelled_today", state.distance_travelled_today + event.distance)}
+        ///    {set distance to GetState("distance_travelled_today")}.
+        /// </summary>
+        public static string GetState
+        {
+            get
+            {
+                return ResourceManager.GetString( "GetState", resourceCulture );
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to This function will provide full information for a government given its name.
         ///

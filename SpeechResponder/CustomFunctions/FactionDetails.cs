@@ -1,11 +1,11 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiBgsService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -19,7 +19,7 @@ namespace EddiSpeechResponder.CustomFunctions
 
         private static readonly BgsService bgsService = new BgsService();
 
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             Faction result;
             if (values.Count == 0)
@@ -34,7 +34,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 result = bgsService.GetFactionByName(values[0].AsString, values[1].AsString);
             }
-            return new ReflectionValue(result ?? new object());
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 1, 2);
     }
 }

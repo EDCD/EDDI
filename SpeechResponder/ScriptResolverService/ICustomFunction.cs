@@ -1,6 +1,7 @@
-﻿using Cottle.Functions;
-using Cottle.Stores;
+﻿using Cottle;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EddiSpeechResponder.Service
 {
@@ -10,7 +11,40 @@ namespace EddiSpeechResponder.Service
         FunctionCategory Category { get; }
         string description { get; }
         Type ReturnType { get; }
-        NativeFunction function { get; }
+        IFunction function { get; }
+    }
+
+    public class RecursiveFunction
+    {
+        private IContext TopLevelContext { get; }
+
+        private static Dictionary<Value, Value> RuntimeGlobals { get; set; } = new Dictionary<Value, Value>();
+
+        protected Dictionary<string, Script> Scripts { get; }
+
+        protected RecursiveFunction ( IContext context, Dictionary< string, Script > scripts )
+        {
+            this.TopLevelContext = context;
+            this.Scripts = scripts;
+            RuntimeGlobals.Clear();
+        }
+
+        protected IContext GetContext ( IMap globals )
+        {
+            RuntimeGlobals = new[]
+                {
+                    globals.ToDictionary( g => g.Key, g => g.Value ),
+                    RuntimeGlobals.Where( g => !globals.Contains( g.Key ) )
+                }
+                .SelectMany( dict => dict )
+                .ToDictionary( pair => pair.Key, pair => pair.Value );
+            var runtimeState = new Dictionary<Value, Value> { [ "state" ] = ScriptResolver.buildState() }
+                .Where( pair => !RuntimeGlobals.ContainsKey( pair.Key ) );
+            var latestContext = Context.CreateBuiltin( new[] { RuntimeGlobals, runtimeState }
+                .SelectMany( dict => dict )
+                .ToDictionary( pair => pair.Key, pair => pair.Value ) );
+            return Context.CreateCascade( latestContext, TopLevelContext );
+        }
     }
 
     public enum FunctionCategory
@@ -23,23 +57,5 @@ namespace EddiSpeechResponder.Service
         Tempo,
         Utility,
         Voice
-    }
-
-    public abstract class ResolverInstance<T1, T2>
-    {
-        protected ScriptResolver resolver { get; }
-        protected BuiltinStore store { get; }
-
-        protected ResolverInstance(T1 parameter1, T2 parameter2)
-        {
-            if (parameter1 is ScriptResolver resolverParameter)
-            {
-                resolver = resolverParameter;
-            }
-            if (parameter2 is BuiltinStore storeParameter)
-            {
-                store = storeParameter;
-            }
-        }
     }
 }

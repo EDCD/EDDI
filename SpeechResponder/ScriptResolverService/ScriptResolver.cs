@@ -1,15 +1,9 @@
 ﻿using Cottle;
-using Cottle.Builtins;
-using Cottle.Documents;
 using Cottle.Exceptions;
-using Cottle.Settings;
-using Cottle.Stores;
-using Cottle.Values;
 using Eddi;
 using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
-using EddiEvents;
 using EddiNavigationService;
 using EddiSpeechService;
 using JetBrains.Annotations;
@@ -24,38 +18,37 @@ namespace EddiSpeechResponder.Service
 {
     public class ScriptResolver
     {
-        private readonly Dictionary<string, Script> scripts;
-        private readonly CustomSetting setting;
+        public readonly Dictionary<string, Script> Scripts;
+        public static readonly DocumentConfiguration documentConfiguration = new DocumentConfiguration
+        {
+            Trimmer = DocumentConfiguration.TrimRepeatedWhitespaces, NbCycleMax = 100000
+        };
 
         // The file to log speech
         [UsedImplicitly] public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
 
-        public ScriptResolver(Dictionary<string, Script> scripts)
+        public ScriptResolver(Dictionary<string, Script> scripts = null)
         {
-            this.scripts = scripts ?? new Dictionary<string, Script>();
-            setting = new CustomSetting
-            {
-                Trimmer = BuiltinTrimmers.CollapseBlankCharacters
-            };
+            this.Scripts = scripts ?? new Dictionary<string, Script>();
         }
 
         public int priority(string name)
         {
-            scripts.TryGetValue(name, out Script script);
+            Scripts.TryGetValue(name, out var script);
             return script?.Priority ?? 3;
         }
 
-        /// <summary> From a custom dictionary of variable values in the default store </summary>
+        /// <summary> From a custom dictionary of variable values in the default context </summary>
         public string resolveFromName(string name, Dictionary<string, Tuple<Type, Value>> vars, bool isTopLevelScript)
         {
-            BuiltinStore store = buildStore(vars);
-            return resolveFromName(name, store, isTopLevelScript);
+            var context = buildContext(vars, Scripts);
+            return resolveFromName(name, Scripts, context, isTopLevelScript);
         }
 
-        /// <summary> From a custom store </summary>
-        public string resolveFromName(string name, BuiltinStore store, bool isTopLevelScript)
+        /// <summary> From a custom context </summary>
+        public static string resolveFromName(string name, IDictionary<string, Script> scripts, IContext context, bool isTopLevelScript)
         {
-            if (!scripts.TryGetValue(name, out Script script) || 
+            if (!scripts.TryGetValue(name, out var script) || 
                 script?.Value is null)
             {
                 Logging.Debug($"No {name} script found");
@@ -67,23 +60,23 @@ namespace EddiSpeechResponder.Service
                 return null;
             }
 
-            return resolveFromValue(script.Value, store, isTopLevelScript, script);
+            return resolveFromValue(script.Value, context, isTopLevelScript, script);
         }
 
-        /// <summary> From the default dictionary of variable values in the default store </summary>
+        /// <summary> From the default dictionary of variable values in the default context </summary>
         public string resolveFromValue(string scriptValue, bool isTopLevelScript)
         {
             var vars = CompileVariables();
-            BuiltinStore store = buildStore(vars);
-            return resolveFromValue(scriptValue, store, isTopLevelScript);
+            var context = buildContext(vars);
+            return resolveFromValue(scriptValue, context, isTopLevelScript);
         }
 
-        /// <summary> From a custom store </summary>
-        public string resolveFromValue(string script, BuiltinStore store, bool isTopLevelScript, Script scriptObject = null)
+        /// <summary> From a custom context </summary>
+        public static string resolveFromValue(string script, IContext context, bool isTopLevelScript, Script scriptObject = null)
         {
             try
             {
-                Logging.Debug( $"Resolving {( isTopLevelScript ? "top level " : "" )}script {scriptObject?.Name}: {script}", store );
+                Logging.Debug( $"Resolving {( isTopLevelScript ? "top level " : "" )}script {scriptObject?.Name}: {script}", context );
 
                 //If this is not a top level script then we need to preserve escape sequence characters (\).
                 if ( !isTopLevelScript )
@@ -91,8 +84,25 @@ namespace EddiSpeechResponder.Service
                     script = Regex.Replace( script, @"\\", @"\\\\" );
                 }
 
-                var document = new SimpleDocument( script, setting );
-                var result = document.Render( store );
+                var documentResult = Document.CreateDefault( script, documentConfiguration );
+                if ( !documentResult.Success )
+                {
+                    foreach ( var report in documentResult.Reports )
+                    {
+                        // Errors will be handled through the ParseException class so we're only concerned with warnings and notices here.
+                        if ( report.Severity is DocumentSeverity.Warning )
+                        {
+                            Logging.Warn( @"Cottle Parser Warning", report );
+                        }
+                        if ( report.Severity is DocumentSeverity.Notice )
+                        {
+                            Logging.Debug( @"Cottle Parser Suggestion", report );
+                        }
+                    }
+                }
+                var document = documentResult.DocumentOrThrow;
+
+                var result = document.Render( context );
 
                 // Tidy up the output script
                 if ( isTopLevelScript )
@@ -164,7 +174,7 @@ namespace EddiSpeechResponder.Service
         }
 
         // Compile variables from the EDDI information
-        protected internal Dictionary<string, Tuple<Type, Value>> CompileVariables(Event theEvent = null)
+        protected internal Dictionary<string, Tuple<Type, Value>> CompileVariables(dynamic theEvent = null)
         {
             var dict = new Dictionary<string, Tuple<Type, Value>>
             {
@@ -189,72 +199,72 @@ namespace EddiSpeechResponder.Service
             // Standard objects
             if ( EDDI.Instance.Cmdr != null )
             {
-                dict[ "cmdr" ] = new Tuple<Type, Value>( typeof( Commander ), new ReflectionValue( EDDI.Instance.Cmdr ) );
+                dict[ "cmdr" ] = new Tuple<Type, Value>( typeof( Commander ), Value.FromReflection( EDDI.Instance.Cmdr, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.HomeStarSystem != null )
             {
-                dict[ "homesystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.HomeStarSystem ) );
+                dict[ "homesystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.HomeStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.HomeStation != null )
             {
-                dict[ "homestation" ] = new Tuple<Type, Value>( typeof( Station ), new ReflectionValue( EDDI.Instance.HomeStation ) );
+                dict[ "homestation" ] = new Tuple<Type, Value>( typeof( Station ), Value.FromReflection(EDDI.Instance.HomeStation, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.SquadronStarSystem != null )
             {
-                dict[ "squadronsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.SquadronStarSystem ) );
+                dict[ "squadronsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.SquadronStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.CurrentStarSystem != null )
             {
-                dict[ "system" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.CurrentStarSystem ) );
+                dict[ "system" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.CurrentStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.LastStarSystem != null )
             {
-                dict[ "lastsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.LastStarSystem ) );
+                dict[ "lastsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.LastStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.NextStarSystem != null )
             {
-                dict[ "nextsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.NextStarSystem ) );
+                dict[ "nextsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.NextStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.DestinationStarSystem != null )
             {
-                dict[ "destinationsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( EDDI.Instance.DestinationStarSystem ) );
+                dict[ "destinationsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.DestinationStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( NavigationService.Instance.SearchStarSystem != null )
             {
-                dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), new ReflectionValue( NavigationService.Instance.SearchStarSystem ) );
+                dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(NavigationService.Instance.SearchStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( NavigationService.Instance.SearchStation != null )
             {
-                dict[ "searchstation" ] = new Tuple<Type, Value>( typeof( Station ), new ReflectionValue( NavigationService.Instance.SearchStation ) );
+                dict[ "searchstation" ] = new Tuple<Type, Value>( typeof( Station ), Value.FromReflection(NavigationService.Instance.SearchStation, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.CurrentStation != null )
             {
-                dict[ "station" ] = new Tuple<Type, Value>( typeof( Station ), new ReflectionValue( EDDI.Instance.CurrentStation ) );
+                dict[ "station" ] = new Tuple<Type, Value>( typeof( Station ), Value.FromReflection(EDDI.Instance.CurrentStation, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.CurrentStellarBody != null )
             {
-                dict[ "body" ] = new Tuple<Type, Value>( typeof( Body ), new ReflectionValue( EDDI.Instance.CurrentStellarBody ) );
+                dict[ "body" ] = new Tuple<Type, Value>( typeof( Body ), Value.FromReflection(EDDI.Instance.CurrentStellarBody, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.FleetCarrier != null )
             {
-                dict[ "carrier" ] = new Tuple<Type, Value>( typeof( FleetCarrier ), new ReflectionValue( EDDI.Instance.FleetCarrier ) );
+                dict[ "carrier" ] = new Tuple<Type, Value>( typeof( FleetCarrier ), Value.FromReflection(EDDI.Instance.FleetCarrier, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
-            if ( theEvent != null )
+            if ( theEvent != null ) // A dynamic type is used so that Value.FromReflection 
             {
-                dict[ "event" ] = new Tuple<Type, Value>( typeof( Event ), new ReflectionValue( theEvent ) );
+                dict[ "event" ] = new Tuple<Type, Value>( theEvent.GetType(), Value.FromReflection( theEvent, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
             if ( EDDI.Instance.State != null )
@@ -262,14 +272,14 @@ namespace EddiSpeechResponder.Service
                 dict[ "state" ] = new Tuple<Type, Value>( typeof( IDictionary<string, object>), buildState() );
                 Logging.Debug( "State is: ", EDDI.Instance.State );
             }
-
+            
             // Obtain additional variables from each monitor
-            foreach ( IEddiMonitor monitor in EDDI.Instance.monitors )
+            foreach ( var monitor in EDDI.Instance.monitors )
             {
                 var monitorVariables = monitor.GetVariables();
                 if ( monitorVariables != null )
                 {
-                    foreach ( string key in monitorVariables.Keys )
+                    foreach ( var key in monitorVariables.Keys )
                     {
                         if ( monitorVariables[ key ].Item2 == null )
                         {
@@ -277,7 +287,7 @@ namespace EddiSpeechResponder.Service
                         }
                         else
                         {
-                            dict[ key ] = new Tuple<Type, Value>( monitorVariables[ key ].Item1, new ReflectionValue( monitorVariables[ key ]?.Item2 ) );
+                            dict[ key ] = new Tuple<Type, Value>( monitorVariables[ key ].Item1, Value.FromReflection((dynamic)monitorVariables[key]?.Item2, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
                         }
                     }
                 }
@@ -287,37 +297,28 @@ namespace EddiSpeechResponder.Service
         }
 
         /// <summary>
-        /// Build a store from a list of variables
+        /// Build a context from a list of variables
         /// </summary>
-        public BuiltinStore buildStore(Dictionary<string, Tuple<Type, Value>> vars = null)
+        public static IContext buildContext (Dictionary<string, Tuple<Type, Value>> vars = null, IDictionary<string, Script> scripts = null )
         {
-            BuiltinStore store = new BuiltinStore();
-            
-            // Loop through our custom functions and add them to the store.
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => t.IsClass && t.GetInterface(nameof(ICustomFunction)) != null))
-            {
-                // Create an instance of the function and add it to the store,
-                // either with no .ctor or passing data to a .ctor as required (for classes implementing `ResolverInstance`).
-                var function = (ICustomFunction)(type.GetConstructor(Type.EmptyTypes) != null 
-                    ? Activator.CreateInstance(type) : 
-                    Activator.CreateInstance(type, this, store));
-                if ( function != null )
-                {
-                    store.Set( function.name, function.function, StoreMode.Global );
-                }
-            }
+            var context = new Dictionary<Value, Value>();
 
             // Variables
             if (vars != null)
             {
                 foreach (var entry in vars)
                 {
-                    store[ entry.Key ] = entry.Value.Item2;
+                    context[ entry.Key ] = entry.Value.Item2;
                 }
             }
 
-            return store;
+            // Loop through our custom functions and add them to the context.
+            foreach ( var function in GetCustomFunctions( context, scripts ) )
+            {
+                context[ function.name ] = Value.FromFunction( function.function );
+            }
+
+            return Context.CreateBuiltin( context );
         }
 
         public static Dictionary<Value, Value> buildState()
@@ -357,18 +358,23 @@ namespace EddiSpeechResponder.Service
             return state;
         }
 
-        internal List<ICustomFunction> GetCustomFunctions ()
+        public static List<ICustomFunction> GetCustomFunctions ( Dictionary<Value, Value> dict, IDictionary<string, Script> scripts = null )
+        {
+            return GetCustomFunctions( Context.CreateBuiltin( dict ), scripts );
+        }
+
+        public static List<ICustomFunction> GetCustomFunctions ( IContext context = null, IDictionary<string, Script> scripts = null )
         {
             var functionsList = new List<ICustomFunction>();
-            var assy = Assembly.GetAssembly(typeof(ScriptResolver));
+            var assy = Assembly.GetAssembly( typeof(ScriptResolver) );
             if ( assy != null )
             {
                 foreach ( var type in assy.GetTypes()
-                             .Where( t => t.IsClass && t.GetInterface( nameof( ICustomFunction ) ) != null ) )
+                             .Where( t => t.IsClass && t.GetInterface( nameof(ICustomFunction) ) != null ) )
                 {
                     var function = (ICustomFunction)( type.GetConstructor( Type.EmptyTypes ) != null
-                        ? Activator.CreateInstance( type )
-                        : Activator.CreateInstance( type, this, buildStore() ) );
+                            ? Activator.CreateInstance( type )
+                            : Activator.CreateInstance( type, context ?? Context.Empty, scripts ?? new Dictionary<string, Script>() ) );
 
                     if ( function != null )
                     {

@@ -1,10 +1,10 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiDataDefinitions;
 using EddiGalnetMonitor;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -15,10 +15,10 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Galnet;
         public string description => Properties.CustomFunctions_Untranslated.GalnetNewsArticle;
         public Type ReturnType => typeof( News );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreatePure1( ( runtime, uuid ) =>
         {
-            var result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
-            return new ReflectionValue(result ?? new object());
-        }, 1);
+            var result = GalnetSqLiteRepository.Instance.GetArticle(uuid.AsString);
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+        });
     }
 }

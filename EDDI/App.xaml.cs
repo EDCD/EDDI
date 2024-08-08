@@ -1,6 +1,7 @@
 ﻿using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiCore;
+using EddiCore.Upgrader;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -43,7 +44,7 @@ namespace Eddi
 
             // Start by fetching information from the update server, and handling appropriately
             EddiUpgrader.CheckUpgrade();
-            if (EddiUpgrader.UpgradeRequired)
+            if ( EddiUpgrader.UpgradeRequired)
             {
                 // We are too old to continue; initialize in a "safe mode". 
                 EDDI.Init(true);
@@ -127,7 +128,7 @@ namespace Eddi
             {
                 CrashLogger(args.Exception);
             };
-            App.Current.DispatcherUnhandledException += (sender, args) =>
+            Current.DispatcherUnhandledException += (sender, args) =>
             {
                 CrashLogger(args.Exception);
             };

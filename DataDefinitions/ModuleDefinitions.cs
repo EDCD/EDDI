@@ -1104,6 +1104,13 @@ namespace EddiDataDefinitions
                 new Module(129030485, "int_hyperdrive_overcharge_size4_class3", "FrameShiftDrive_SCO", 4, "C", 214677 ),
                 new Module(129030486, "int_hyperdrive_overcharge_size3_class3", "FrameShiftDrive_SCO", 3, "C", 67722 ),
                 new Module(129030487, "int_hyperdrive_overcharge_size2_class3", "FrameShiftDrive_SCO", 2, "C", 21363 ),
+
+                new Module(129030535, "type8_armour_grade1", "LightweightAlloy", 1, "I", 0 ),
+                new Module(129030536, "type8_armour_grade2", "ReinforcedAlloy", 1, "I", 0 ),
+                new Module(129030537, "type8_armour_grade3", "MilitaryGradeComposite", 1, "I", 0 ),
+                new Module(129030538, "type8_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 0 ),
+                new Module(129030539, "type8_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 0 ),
+
                 new Module(129030577, "int_hyperdrive_overcharge_size2_class1", "FrameShiftDrive_SCO", 2, "E", 21363 ),
                 new Module(129030578, "int_hyperdrive_overcharge_size2_class2", "FrameShiftDrive_SCO", 2, "D", 64090 ),
                 new Module(129030579, "int_hyperdrive_overcharge_size2_class4", "FrameShiftDrive_SCO", 2, "B", 64090 ),
@@ -1194,6 +1201,7 @@ namespace EddiDataDefinitions
                 new Module(999999949, "Mamba_Cockpit", "CockpitCanopy", 1, "I", 0),
                 new Module(999999950, "TypeX_2_Cockpit", "CockpitCanopy", 1, "I", 0),
                 new Module(999999951, "Python_NX_Cockpit", "CockpitCanopy", 1, "I", 0),
+                new Module(999999952, "Type8_Cockpit", "CockpitCanopy", 1, "I", 0),
 
                 // Fighter modules
                 new Module(899990000, "Empire_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0),

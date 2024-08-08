@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -12,20 +12,20 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.Play;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             // The file to play
-            string fileName = values[0].AsString;
+            var fileName = values[0].AsString;
 
             // Whether the audio should be played asynchronously
-            bool async = false;
+            var async = false;
             if (values.Count > 1)
             {
                 async = values[1].AsBoolean;
             }
 
             // The volume override (where 100 is normal max volume)
-            decimal? volumeOverride = null;
+            double? volumeOverride = null;
             if (values.Count > 2)
             {
                 volumeOverride = values[2].AsNumber;

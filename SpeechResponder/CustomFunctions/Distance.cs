@@ -1,11 +1,11 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -17,10 +17,10 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.Distance;
         public Type ReturnType => typeof( decimal? );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeVariadic( ( runtime, values, writer ) =>
         {
-            bool numVal = values[0].Type == Cottle.ValueContent.Number;
-            bool stringVal = values[0].Type == Cottle.ValueContent.String;
+            var numVal = values[0].Type == ValueContent.Number;
+            var stringVal = values[0].Type == ValueContent.String;
 
             StarSystem curr = null;
             StarSystem dest = null;
@@ -41,23 +41,23 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     return $"Unable to calculate distance between {curr.systemname} and {dest.systemname}. Could not obtain system coordinates.";
                 }
-                return new ReflectionValue(result);
+                return Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
             }
             else if (values.Count == 6 && numVal)
             {
-                var x1 = values[0].AsNumber;
-                var y1 = values[1].AsNumber;
-                var z1 = values[2].AsNumber;
-                var x2 = values[3].AsNumber;
-                var y2 = values[4].AsNumber;
-                var z2 = values[5].AsNumber;
-                var result = Functions.StellarDistanceLy(x1, y1, z1, x2, y2, z2);
-                return new ReflectionValue(result);
+                var x1 = Convert.ToDecimal( values[ 0 ].AsNumber );
+                var y1 = Convert.ToDecimal( values[ 1 ].AsNumber );
+                var z1 = Convert.ToDecimal( values[ 2 ].AsNumber );
+                var x2 = Convert.ToDecimal( values[ 3 ].AsNumber );
+                var y2 = Convert.ToDecimal( values[ 4 ].AsNumber );
+                var z2 = Convert.ToDecimal( values[ 5 ].AsNumber );
+                var result = Functions.StellarDistanceLy( x1, y1, z1, x2, y2, z2 );
+                return Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
             }
             else
             {
                 return "The Distance function is used improperly. Please review the documentation for correct usage.";
             }
-        }, 1, 6);
+        });
     }
 }

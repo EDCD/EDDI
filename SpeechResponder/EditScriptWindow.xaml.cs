@@ -50,7 +50,7 @@ namespace EddiSpeechResponder
             InitializeComponent();
             DataContext = this;
 
-            this.customFunctions = scriptResolver.GetCustomFunctions();
+            this.customFunctions = ScriptResolver.GetCustomFunctions();
             this.isNewOrRecoveredScript = isNewOrRecoveredScript;
             _scripts = scripts;
             this.script = script;

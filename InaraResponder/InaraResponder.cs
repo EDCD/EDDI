@@ -543,12 +543,12 @@ namespace EddiInaraResponder
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            IDictionary<string, object> rawMissionObj = Deserializtion.DeserializeData(@event.raw);
-            string commodity = JsonParsing.getString(rawMissionObj, "Commodity");
-            int? commodityCount = JsonParsing.getOptionalInt(rawMissionObj, "Count");
-            int? killCount = JsonParsing.getOptionalInt(rawMissionObj, "KillCount");
-            int? passengerCount = JsonParsing.getOptionalInt(rawMissionObj, "PassengerCount");
-            Dictionary<string, object> eventData = new Dictionary<string, object>()
+            var rawMissionObj = Deserializtion.DeserializeData(@event.raw);
+            var commodity = JsonParsing.getString(rawMissionObj, "Commodity");
+            var commodityCount = JsonParsing.getOptionalInt(rawMissionObj, "Count");
+            var killCount = JsonParsing.getOptionalInt(rawMissionObj, "KillCount");
+            var passengerCount = JsonParsing.getOptionalInt(rawMissionObj, "PassengerCount");
+            var eventData = new Dictionary<string, object>()
             {
                 { "missionName", @event.name },
                 { "missionGameID", @event.missionid },
@@ -556,13 +556,13 @@ namespace EddiInaraResponder
                 { "influenceGain", @event.influence },
                 { "reputationGain", @event.reputation }
             };
-            if (EDDI.Instance.CurrentStarSystem != null)
+            if ( !string.IsNullOrEmpty( @event.Mission.originsystem ) )
             {
-                eventData.Add("starsystemNameOrigin", EDDI.Instance.CurrentStarSystem?.systemname);
+                eventData.Add( "starsystemNameOrigin", @event.Mission.originsystem );
             }
-            if (EDDI.Instance.CurrentStation != null)
+            if ( !string.IsNullOrEmpty(@event.Mission.originstation))
             {
-                eventData.Add("stationNameOrigin", EDDI.Instance.CurrentStation?.name);
+                eventData.Add("stationNameOrigin", @event.Mission.originstation);
             }
             if (!string.IsNullOrEmpty(@event.faction))
             {

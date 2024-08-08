@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
 using Utilities;
 
 namespace EddiSpeechService.SpeechPreparation
@@ -38,7 +42,7 @@ namespace EddiSpeechService.SpeechPreparation
 
         internal static void PrepareSpeech(VoiceDetails voice, ref string speech, out bool useSSML)
         {
-            var lexicons = voice.GetLexicons();
+            var lexicons = GetLexicons(voice);
             if (speech.Contains("<") || lexicons.Any())
             {
                 // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
@@ -227,5 +231,105 @@ namespace EddiSpeechService.SpeechPreparation
             speech = Regex.Replace(speech, @"<\/phoneme>", string.Empty);
             return speech;
         }
+
+        #region Lexicons
+
+        private static HashSet<string> GetLexicons ( VoiceDetails voice )
+        {
+            var result = new HashSet<string>();
+            HashSet<string> GetLexiconsFromDirectory ( string directory, bool createIfMissing = false )
+            {
+                // When multiple lexicons are referenced, their precedence goes from lower to higher with document order.
+                // Precedence means that a token is first looked up in the lexicon with highest precedence.
+                // Only if not found in that lexicon, the next lexicon is searched and so on until a first match or until all lexicons have been used for lookup. (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4).
+
+                if ( string.IsNullOrEmpty( directory ) || string.IsNullOrEmpty( voice.culturecode ) )
+                { return null; }
+                DirectoryInfo dir = new DirectoryInfo(directory);
+                if ( dir.Exists )
+                {
+                    // Find two letter language code lexicons (these will have lower precedence than any full language code lexicons)
+                    foreach ( var file in dir.GetFiles( "*.pls", SearchOption.AllDirectories )
+                        .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{voice.cultureTwoLetterISOLanguageName.ToLowerInvariant()}.pls" ) )
+                    {
+                        CheckAndAdd( file );
+                    }
+                    // Find full language code lexicons
+                    foreach ( var file in dir.GetFiles( "*.pls", SearchOption.AllDirectories )
+                        .Where( f => $"{f.Name.ToLowerInvariant()}" == $"{voice.cultureIetfLanguageTag.ToLowerInvariant()}.pls" ) )
+                    {
+                        CheckAndAdd( file );
+                    }
+                }
+                else if ( createIfMissing )
+                {
+                    dir.Create();
+                }
+                return result;
+            }
+
+            void CheckAndAdd ( FileInfo file )
+            {
+                if ( IsValidXML( file.FullName, out _ ) )
+                {
+                    result.Add( file.FullName );
+                }
+                else
+                {
+                    file.MoveTo( $"{file.FullName}.malformed" );
+                }
+            }
+
+            // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
+
+            // Add lexicons from our installation directory
+            result.UnionWith( GetLexiconsFromDirectory( new FileInfo( System.Reflection.Assembly.GetExecutingAssembly().Location ).DirectoryName + @"\lexicons" ) );
+
+            // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
+            result.UnionWith( GetLexiconsFromDirectory( Constants.DATA_DIR + @"\lexicons" ) );
+
+            return result;
+        }
+
+        private static bool IsValidXML ( string filename, out XDocument xml )
+        {
+            // Check whether the file is valid .xml (.pls is an xml-based format)
+            xml = null;
+            try
+            {
+                // Try to load the file as xml
+                xml = XDocument.Load( filename );
+
+                // Validate the lexicon xml against the schema
+                xml.Validate( SpeechService.Instance.lexiconSchemas, ( o, e ) =>
+                {
+                    if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
+                    {
+                        throw new XmlSchemaValidationException( e.Message, e.Exception );
+                    }
+                } );
+                var reader = xml.CreateReader();
+                var lastNodeName = string.Empty;
+                while ( reader.Read() )
+                {
+                    if ( reader.HasValue &&
+                         reader.NodeType is XmlNodeType.Text &&
+                         lastNodeName == "phoneme" &&
+                         !IPA.IsValid( reader.Value ) )
+                    {
+                        throw new ArgumentException( $"Invalid phoneme found in lexicon file: {reader.Value}" );
+                    }
+                    lastNodeName = reader.Name;
+                }
+                return true;
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( $"Could not load lexicon file '{filename}', please review.", ex );
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

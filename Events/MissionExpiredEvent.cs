@@ -11,12 +11,12 @@ namespace EddiEvents
         public const string SAMPLE = null;
 
         [PublicAPI("The ID of the mission")]
-        public long? missionid { get; private set; }
+        public long missionid { get; private set; }
 
         [PublicAPI("The name of the mission")]
         public string name { get; private set; }
 
-        public MissionExpiredEvent(DateTime timestamp, long? MissionId, string Name) : base(timestamp, NAME)
+        public MissionExpiredEvent(DateTime timestamp, long MissionId, string Name) : base(timestamp, NAME)
         {
             this.missionid = MissionId;
             this.name = Name;

@@ -275,7 +275,7 @@ namespace EddiShipMonitor
                 if (!inFighter(@event.shipEDModel) && !inBuggy(@event.shipEDModel) && !onFoot(@event.shipEDModel) && !inTaxi(@event.shipEDModel))
                 {
                     SetCurrentShip((int?)@event.shipid, @event.shipEDModel);
-                    Ship ship = GetCurrentShip();
+                    var ship = GetCurrentShip();
                     if (ship is null && !string.IsNullOrEmpty(@event.shipEDModel) && @event.shipid != null)
                     {
                         // We don't know of this ship so need to create it
@@ -446,10 +446,10 @@ namespace EddiShipMonitor
                     Ship ship = ParseShipLoadoutEvent(@event);
 
                     // Update the local and global variables
-                    SetCurrentShip(ship.LocalId, ship.EDName);
                     EDDI.Instance.CurrentShip = ship;
+                    SetCurrentShip( ship.LocalId, ship.EDName );
 
-                    AddShip(ship);
+                    AddShip( ship);
                     if (!@event.fromLoad) { writeShips(); }
                 }
             }
@@ -741,7 +741,10 @@ namespace EddiShipMonitor
             if (@event.itemEDNames.Contains("All") || @event.itemEDNames.Contains("Wear"))
             {
                 var currentShip = GetCurrentShip();
-                currentShip.health = 100M;
+                if ( currentShip != null )
+                {
+                    currentShip.health = 100M;
+                }
             }
             if (!@event.fromLoad) { writeShips(); }
         }
@@ -1044,7 +1047,10 @@ namespace EddiShipMonitor
             if (@event.timestamp > updatedAt)
             {
                 updatedAt = @event.timestamp;
-                Ship ship = GetCurrentShip();
+                // Committing a crime while in multicrew will apply a fine or bounty to your most valuable ship.
+                var ship = EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW 
+                    ? shipyard.ToList().OrderByDescending(s => s.value).FirstOrDefault() 
+                    : GetCurrentShip();
                 if (ship != null)
                 {
                     ship.hot = true;
@@ -1362,7 +1368,7 @@ namespace EddiShipMonitor
         public Ship GetCurrentShip()
         {
             Ship currentShip = GetShip(currentShipId);
-            EDDI.Instance.CurrentShip = currentShip;
+            EDDI.Instance.CurrentShip = currentShip ?? EDDI.Instance.CurrentShip;
             return currentShip;
         }
 

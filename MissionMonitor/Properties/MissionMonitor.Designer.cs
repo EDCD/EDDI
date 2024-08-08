@@ -178,6 +178,17 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notes:.
+        /// </summary>
+        public static string header_notes
+        {
+            get
+            {
+                return ResourceManager.GetString( "header_notes", resourceCulture );
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Track information on your missions..
         /// </summary>
         public static string mission_monitor_desc {

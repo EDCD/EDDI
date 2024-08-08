@@ -134,6 +134,7 @@ namespace EddiDataDefinitions
         public static readonly Material Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", Data, VeryRare);
 
         // Unknown rarity
+        public static readonly Material SearchRescueVoucher = new Material( "searchrescuevoucher", Data, Rarity.Unknown );
 
         #endregion
 

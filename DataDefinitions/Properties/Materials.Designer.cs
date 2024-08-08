@@ -934,6 +934,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search and Rescue Voucher.
+        /// </summary>
+        public static string searchrescuevoucher {
+            get {
+                return ResourceManager.GetString("searchrescuevoucher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security Firmware Patch.
         /// </summary>
         public static string securityfirmware {

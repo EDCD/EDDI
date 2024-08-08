@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCore.Upgrader;
 using EddiCargoMonitor;
 using EddiCompanionAppService;
 using EddiCore;
@@ -767,6 +768,13 @@ namespace EddiVoiceAttackResponder
                 if (strValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = strValue;
+                    return;
+                }
+
+                int? shortValue = vaProxy.GetSmallInt(name);
+                if ( shortValue != null )
+                {
+                    EDDI.Instance.State[ stateVariableName ] = shortValue;
                     return;
                 }
 

@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -12,7 +12,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Tempo;
         public string description => Properties.CustomFunctions_Untranslated.SpeechRate;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             string text = values[0].AsString;
             if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
@@ -21,7 +21,7 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             if (values.Count == 2)
             {
-                string rate = values[1].AsString ?? "default";
+                string rate = values[1].AsString;
                 return @"<prosody rate=""" + rate + @""">" + text + "</prosody>";
             }
             return "The SpeechRate function is used improperly. Please review the documentation for correct usage.";

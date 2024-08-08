@@ -11,7 +11,7 @@ namespace EddiEvents
         public const string SAMPLE = null;
 
         [PublicAPI("The ID of the mission")]
-        public long? missionid { get; private set; }
+        public long missionid { get; private set; }
 
         [PublicAPI("The name of the mission")]
         public string name { get; private set; }
@@ -19,7 +19,7 @@ namespace EddiEvents
         [PublicAPI("The time remaining (in minutes) to complete the mission")]
         public int remaining { get; private set; }
 
-        public MissionWarningEvent(DateTime timestamp, long? MissionId, string Name, int Remaining) : base(timestamp, NAME)
+        public MissionWarningEvent(DateTime timestamp, long MissionId, string Name, int Remaining) : base(timestamp, NAME)
         {
             this.missionid = MissionId;
             this.name = Name;

@@ -1,5 +1,4 @@
-﻿using Cottle.Functions;
-using Cottle.Stores;
+﻿using Cottle;
 using EddiCore;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
@@ -8,42 +7,34 @@ using System;
 namespace EddiSpeechResponder.CustomFunctions
 {
     [UsedImplicitly]
-    public class SetState : ResolverInstance<ScriptResolver, BuiltinStore>, ICustomFunction
+    public class SetState :  ICustomFunction
     {
         public string name => "SetState";
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.SetState;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative2((runtime, variableName, variableValue, writer) =>
         {
-            string varName = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
-            Cottle.Value value = values[1];
-            if (value.Type == Cottle.ValueContent.Boolean)
+            var varName = variableName.AsString.ToLowerInvariant().Replace(" ", "_");
+            var value = variableValue;
+            if (value.Type == ValueContent.Boolean)
             {
                 EDDI.Instance.State[varName] = value.AsBoolean;
-                store["state"] = ScriptResolver.buildState();
             }
-            else if (value.Type == Cottle.ValueContent.Number)
+            else if (value.Type == ValueContent.Number)
             {
-                EDDI.Instance.State[varName] = value.AsNumber;
-                store["state"] = ScriptResolver.buildState();
+                EDDI.Instance.State[ varName ] = Convert.ToDecimal( value.AsNumber );
             }
-            else if (value.Type == Cottle.ValueContent.String)
+            else if (value.Type == ValueContent.String)
             {
                 EDDI.Instance.State[varName] = value.AsString;
-                store["state"] = ScriptResolver.buildState();
             }
-            else if (value.Type == Cottle.ValueContent.Void)
+            else if (value.Type == ValueContent.Void)
             {
                 EDDI.Instance.State[varName] = null;
-                store["state"] = ScriptResolver.buildState();
             }
             // Ignore other possibilities
             return "";
-        }, 2);
-
-        // Implement nesting
-        public SetState(ScriptResolver resolver, BuiltinStore store) : base(resolver, store)
-        { }
+        });
     }
 }

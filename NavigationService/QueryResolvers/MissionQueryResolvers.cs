@@ -22,31 +22,30 @@ namespace EddiNavigationService.QueryResolvers
         /// <returns> The query result </returns>
         private RouteDetailsEvent GetMissionCargoSourceRoute ( [NotNull] StarSystem currentSystem, string fromSystemName = null )
         {
-            var cargo = ConfigService.Instance.cargoMonitorConfiguration.cargo.ToList();
-            if ( cargo.Sum( c => c.haulageData.Count ) == 0 ) { return null; }
+            var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
+            if ( missions.All( m => m.sourcesystem == null ) ) { return null; }
 
             var haulageMissionIds = new HashSet<long>(); // List of mission IDs for the next system
             var sortedSourceSystems = new SortedList<long, StarSystem>();
+
+            // The route will start in the current system
             var navRouteList = new NavWaypointCollection(Convert.ToDecimal(currentSystem.x), Convert.ToDecimal(currentSystem.y), Convert.ToDecimal(currentSystem.z));
 
-            foreach ( var haulage in cargo
-                         .Where( c => c.haulageData.Any() )
-                         .SelectMany(c => c.haulageData )
-                         .Where( h => h.status == "Active" && h.sourcesystem != null ) )
+            foreach ( var mission in missions.Where( m => m.statusDef == MissionStatus.Active && m.sourcesystem != null ) )
             {
-                if ( fromSystemName == currentSystem.systemname && haulage.originsystem != currentSystem.systemname )
+                if ( fromSystemName == currentSystem.systemname && mission.originsystem != currentSystem.systemname )
                 {
                     // We are already at the named system and this is not the system where this haulage originates
                     break;
                 }
 
-                var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(haulage.sourcesystem, true, false, true, false, false);
+                var dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(mission.sourcesystem, true, false, true, false, false);
                 var distance = (long)(Functions.StellarDistanceLy(currentSystem.x, currentSystem.y, currentSystem.z, dest.x, dest.y, dest.z) ?? (0 * 100));
                 if ( !sortedSourceSystems.TryGetValue( distance, out _ ) )
                 {
                     sortedSourceSystems.Add( distance, dest );
                 }
-                haulageMissionIds.Add( haulage.missionid );
+                haulageMissionIds.Add( mission.missionid );
             }
 
             var searchSystem = sortedSourceSystems.Values.FirstOrDefault ();

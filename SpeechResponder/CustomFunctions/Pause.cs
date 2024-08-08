@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
@@ -12,9 +12,6 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Tempo;
         public string description => Properties.CustomFunctions_Untranslated.Pause;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
-        {
-            return @"<break time=""" + values[0].AsNumber + @"ms"" />";
-        }, 1);
+        public IFunction function => Function.CreateNative1( ( runtime, milliseconds, writer ) => @"<break time=""" + Convert.ToInt64( milliseconds.AsNumber ) + @"ms"" />" );
     }
 }

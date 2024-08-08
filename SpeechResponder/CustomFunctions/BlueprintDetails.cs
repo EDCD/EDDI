@@ -1,9 +1,9 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -14,12 +14,11 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.BlueprintDetails;
         public Type ReturnType => typeof(Blueprint);
-        public NativeFunction function => new NativeFunction((values) =>
+
+        public IFunction function => Function.CreateNative2( ( runtime, blueprintName, blueprintGrade, writer ) =>
         {
-            string blueprintName = values[0].AsString;
-            int blueprintGrade = Convert.ToInt32(values[1].AsNumber);
-            Blueprint result = Blueprint.FromNameAndGrade(blueprintName, blueprintGrade);
-            return new ReflectionValue(result ?? new object());
-        }, 2);
+            var result = Blueprint.FromNameAndGrade( blueprintName.AsString,  Convert.ToInt32(blueprintGrade.AsNumber) );
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+        } );
     }
 }

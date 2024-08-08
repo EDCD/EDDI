@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Utilities
+namespace EddiCore.Upgrader
 {
     /// <summary>
     /// Information obtained from the update server
@@ -28,7 +28,7 @@ namespace Utilities
         /// </summary>
         public static ServerInfo FromServer(string baseUri)
         {
-            string data = Net.DownloadString(baseUri + "info.json");
+            string data = Utilities.Net.DownloadString(baseUri + "info.json");
             return data == null ? null : JsonConvert.DeserializeObject<ServerInfo>(data);
         }
     }

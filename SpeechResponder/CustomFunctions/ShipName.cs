@@ -1,4 +1,4 @@
-﻿using Cottle.Functions;
+﻿using Cottle;
 using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
@@ -17,7 +17,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Phonetic;
         public string description => Properties.CustomFunctions_Untranslated.ShipName;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             int? localId = (values.Count == 0 ? (int?) null : (int) values[0].AsNumber);
             string model = (values.Count == 2 ? values[1].AsString : null);

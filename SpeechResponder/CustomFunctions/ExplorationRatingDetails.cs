@@ -1,9 +1,9 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiDataDefinitions;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -14,11 +14,12 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.ExplorationRatingDetails;
         public Type ReturnType => typeof( ExplorationRating );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative1( ( runtime, input, writer ) =>
         {
-            var result = ExplorationRating.FromName(values[0].AsString) ?? 
-                                        ExplorationRating.FromEDName(values[0].AsString);
-            return new ReflectionValue(result ?? new object());
-        }, 1);
+            var result = input.Type == ValueContent.Number
+                ? ExplorationRating.FromRank( Convert.ToInt32( input.AsNumber ) )
+                : ExplorationRating.FromName( input.AsString ) ?? ExplorationRating.FromEDName( input.AsString );
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+        });
     }
 }

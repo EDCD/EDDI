@@ -1,11 +1,11 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -16,7 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.BodyDetails;
         public Type ReturnType => typeof( Body );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             StarSystem system;
             if (values.Count == 0)
@@ -32,8 +32,8 @@ namespace EddiSpeechResponder.CustomFunctions
                 // Named system
                 system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
             }
-            Body result = system?.bodies?.Find(v => v.bodyname?.ToLowerInvariant() == values[0].AsString?.ToLowerInvariant());
-            return new ReflectionValue(result ?? new object());
+            var result = system?.bodies?.Find(v => v.bodyname?.ToLowerInvariant() == values[0].AsString?.ToLowerInvariant());
+            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 1, 2);
     }
 }

@@ -1,11 +1,11 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiCore;
 using EddiNavigationService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
 using System.Linq;
+using System.Reflection;
 using Utilities;
 
 namespace EddiSpeechResponder.CustomFunctions
@@ -17,23 +17,24 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.RouteDetails;
         public Type ReturnType => typeof( string );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             try
             {
-                Logging.Debug($"RouteDetails() invoked, arguments: ", values);
+                Logging.Debug("RouteDetails() invoked, arguments: ", values);
 
-                string query = values?.FirstOrDefault()?.AsString;
-                string result = null;
+                var query = values?.FirstOrDefault().AsString;
+
                 if (string.IsNullOrEmpty(query))
                 {
-                    return new ReflectionValue(new object());
+                    return Value.EmptyMap;
                 }
                 if (!Enum.TryParse(query, true, out QueryType queryType))
                 {
                     Logging.Warn($"The search query '{query}' is unrecognized.");
-                    return new ReflectionValue(new object());
+                    return Value.EmptyMap;
                 }
+
                 // Special case any queries which allow optional arguments
                 string stringArg0 = null;
                 string stringArg1 = null;
@@ -120,17 +121,18 @@ namespace EddiSpeechResponder.CustomFunctions
 
                 // Execute 
                 var @event = NavigationService.Instance?.NavQuery(queryType, stringArg0, stringArg1, numericArg);
-                if (@event != null)
+                string result = null;
+                if ( @event != null)
                 {
                     EDDI.Instance?.enqueueEvent(@event);
                     result = @event.system;
                 }
-                return new ReflectionValue(result ?? new object());
+                return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
             }
             catch (Exception e)
             {
                 Logging.Error("Unable to resolve RouteDetails() request", e);
-                return new ReflectionValue(new object());
+                return Value.EmptyMap;
             }
         }, 1, 4);
     }

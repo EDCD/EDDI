@@ -1,11 +1,11 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiDataDefinitions;
 using EddiGalnetMonitor;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -16,7 +16,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Galnet;
         public string description => Properties.CustomFunctions_Untranslated.GalnetNewsArticles;
         public Type ReturnType => typeof( List<News> );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
             List<News> results = null;
             if (values.Count == 0)
@@ -34,7 +34,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 // Obtain all news of a given category
                 results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString, values[1].AsBoolean);
             }
-            return new ReflectionValue(results ?? new List<News>());
+            return results is null ? Value.EmptyMap : Value.FromReflection( results, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 0, 2);
     }
 }

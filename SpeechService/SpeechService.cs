@@ -22,8 +22,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Schema;
 using Utilities;
 
@@ -57,7 +55,7 @@ namespace EddiSpeechService
             .Select(v => v.name)
             .ToList();
 
-        private readonly XmlSchemaSet lexiconSchemas = new XmlSchemaSet();
+        internal readonly XmlSchemaSet lexiconSchemas = new XmlSchemaSet();
 
         private static readonly object activeAudioLock = new object();
         private static readonly object activeSpeechLock = new object();
@@ -787,128 +785,30 @@ namespace EddiSpeechService
         public string synthType { get; }
 
         [Utilities.PublicAPI]
-        public string cultureinvariantname => Culture.EnglishName;
+        public string cultureinvariantname { get; }
 
         [Utilities.PublicAPI]
-        public string culturename => Culture.NativeName;
-
-        public CultureInfo Culture { get; }
+        public string culturename { get; }
 
         public bool hideVoice { get; set; }
+
+        internal string cultureTwoLetterISOLanguageName;
+        internal string cultureIetfLanguageTag;
 
         internal VoiceDetails( string displayName, string gender, CultureInfo Culture, string synthType, XmlSchemaSet lexiconSchemas )
         {
             this.name = displayName;
             this.gender = gender;
-            this.Culture = Culture;
+            this.cultureinvariantname = Culture.EnglishName;
+            this.culturename = Culture.NativeName;
+            this.cultureTwoLetterISOLanguageName = Culture.TwoLetterISOLanguageName;
+            this.cultureIetfLanguageTag = Culture.IetfLanguageTag;
             this.synthType = synthType;
 
-            culturecode = BestGuessCulture();
-            this.lexiconSchemas = lexiconSchemas;
+            culturecode = BestGuessCulture(Culture);
         }
 
-        #region Lexicons
-
-        private XmlSchemaSet lexiconSchemas;
-
-        public HashSet<string> GetLexicons()
-        {
-            var result = new HashSet<string>();
-            HashSet<string> GetLexiconsFromDirectory(string directory, bool createIfMissing = false)
-            {
-                // When multiple lexicons are referenced, their precedence goes from lower to higher with document order.
-                // Precedence means that a token is first looked up in the lexicon with highest precedence.
-                // Only if not found in that lexicon, the next lexicon is searched and so on until a first match or until all lexicons have been used for lookup. (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4).
-
-                if (string.IsNullOrEmpty(directory) || string.IsNullOrEmpty(culturecode)) { return null; }
-                DirectoryInfo dir = new DirectoryInfo(directory);
-                if (dir.Exists)
-                {
-                    // Find two letter language code lexicons (these will have lower precedence than any full language code lexicons)
-                    foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
-                        .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.TwoLetterISOLanguageName.ToLowerInvariant()}.pls"))
-                    {
-                        CheckAndAdd(file);
-                    }
-                    // Find full language code lexicons
-                    foreach (var file in dir.GetFiles("*.pls", SearchOption.AllDirectories)
-                        .Where(f => $"{f.Name.ToLowerInvariant()}" == $"{Culture.IetfLanguageTag.ToLowerInvariant()}.pls"))
-                    {
-                        CheckAndAdd(file);
-                    }
-                }
-                else if (createIfMissing)
-                {
-                    dir.Create();
-                }
-                return result;
-            }
-
-            void CheckAndAdd(FileInfo file)
-            {
-                if (IsValidXML(file.FullName, out _))
-                {
-                    result.Add(file.FullName);
-                }
-                else
-                {
-                    file.MoveTo($"{file.FullName}.malformed");
-                }
-            }
-
-            // When multiple lexicons are referenced, their precedence goes from lower to higher with document order (https://www.w3.org/TR/2004/REC-speech-synthesis-20040907/#S3.1.4) 
-
-            // Add lexicons from our installation directory
-            result.UnionWith(GetLexiconsFromDirectory(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lexicons"));
-
-            // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
-            result.UnionWith(GetLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons"));
-
-            return result;
-        }
-
-        private bool IsValidXML(string filename, out XDocument xml)
-        {
-            // Check whether the file is valid .xml (.pls is an xml-based format)
-            xml = null;
-            try
-            {
-                // Try to load the file as xml
-                xml = XDocument.Load(filename);
-
-                // Validate the lexicon xml against the schema
-                xml.Validate(lexiconSchemas, ( o, e ) =>
-                {
-                    if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
-                    {
-                        throw new XmlSchemaValidationException( e.Message, e.Exception );
-                    }
-                } );
-                var reader = xml.CreateReader();
-                var lastNodeName = string.Empty;
-                while ( reader.Read() )
-                {
-                    if ( reader.HasValue && 
-                         reader.NodeType is XmlNodeType.Text && 
-                         lastNodeName == "phoneme" && 
-                         !IPA.IsValid( reader.Value ) )
-                    {
-                        throw new ArgumentException( $"Invalid phoneme found in lexicon file: {reader.Value}" );
-                    }
-                    lastNodeName = reader.Name;
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn($"Could not load lexicon file '{filename}', please review.", ex);
-                return false;
-            }
-        }
-
-        #endregion
-
-        private string BestGuessCulture()
+        private string BestGuessCulture(CultureInfo Culture)
         {
             string guess;
             if (name.Contains("CereVoice"))

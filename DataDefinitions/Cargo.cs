@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -13,109 +12,101 @@ namespace EddiDataDefinitions
     /// <summary>
     /// Cargo defines a number of commodities carried along with some additional data
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
+    [JsonObject( MemberSerialization.OptIn )]
     public class Cargo : INotifyPropertyChanged
     {
         // The commodity name
         public string invariantName => commodityDef?.invariantName ?? "";
 
         public string localizedName => commodityDef?.localizedName ?? "";
-        
-        [PublicAPI, Obsolete("Please use localizedName or invariantName")]
+
+        [PublicAPI, Obsolete( "Please use localizedName or invariantName" )]
         public string name => localizedName;
 
-        [JsonProperty("edname")]
+        [JsonProperty( nameof( edname ) )]
         public string edname
         {
             get => commodityDef.edname;
-            set
-            {
-                this.commodityDef = CommodityDefinition.FromEDName(value);
-            }
+            set => commodityDef = CommodityDefinition.FromEDName( value );
         }
 
         // The number of stolen items
-
-        [JsonProperty("stolen")]
-        private int _stolen;
-        
         [PublicAPI]
         public int stolen
         {
             get => _stolen;
             set
             {
-                if (_stolen != value)
+                if ( _stolen != value )
                 {
                     _stolen = value;
-                    NotifyPropertyChanged("stolen");
+                    NotifyPropertyChanged( nameof( stolen ) );
                 }
             }
         }
+        [JsonProperty(nameof(stolen))]
+        private int _stolen;
 
-        // The number of items related to a mission
-        [JsonProperty("haulage")]
-        private int _haulage;
-
-        [PublicAPI]
-        public int haulage
-        {
-            get => _haulage;
-            set
-            {
-                if (_haulage != value)
-                {
-                    _haulage = value;
-                    NotifyPropertyChanged("haulage");
-                }
-            }
-        }
+        // The number of items related to a mission currently on-board
+        public int haulage => missionCargo.Values.Sum();
 
         // The number of collected/purchased items
-
-        [JsonProperty("owned")]
-        private int _owned;
-
         [PublicAPI]
         public int owned
         {
             get => _owned;
             set
             {
-                if (_owned != value)
+                if ( _owned != value )
                 {
                     _owned = value;
-                    NotifyPropertyChanged("owned");
+                    NotifyPropertyChanged( nameof( owned ) );
                 }
             }
         }
+        [JsonProperty(nameof(owned))]
+        private int _owned;
 
-        [Obsolete("please use owned instead")]
+        [Obsolete( "please use owned instead" )]
         public int other => owned;
 
-        // The number of items needed for missions
+        // Mission items on board (with MissionID and count)
+        [PublicAPI("A dictionary where the key is a mission ID and the value is the amount of cargo associated with that mission ID")]
+        public Dictionary<long, int> missionCargo
+        {
+            get => _missionCargo;
+            set
+            {
+                if ( _missionCargo != value )
+                {
+                    _missionCargo = value;
+                    NotifyPropertyChanged( nameof( missionCargo ) );
+                }
+            }
+        }
+        [ JsonProperty(nameof(missionCargo)) ]
+        private Dictionary<long, int> _missionCargo = new Dictionary<long, int>();
 
-        [ PublicAPI ] 
-        public int need => haulageData?.Sum( h => h.need ) ?? 0;
+        [ PublicAPI ] public int need { get; set; }
 
         // Total amount of the commodity
-        
+
         [PublicAPI]
         public int total => haulage + stolen + owned;
 
         // How much we actually paid for it (per unit)
 
         [PublicAPI]
-        public int price => decimal.ToInt32(weightedAvgPrice);
+        public int price => decimal.ToInt32( weightedAvgPrice );
 
-        [JsonProperty("price")]
+        [JsonProperty(nameof(price))]
         private decimal weightedAvgPrice;
 
         // The commodity category, localized
         public string localizedCategory => commodityDef?.Category?.localizedName;
 
         // deprecated commodity category (exposed to Cottle and VA)
-        [PublicAPI, Obsolete("Please use localizedCategory instead")]
+        [PublicAPI, Obsolete( "Please use localizedCategory instead" )]
         public string category => localizedCategory;
 
         private CommodityDefinition _commodityDef;
@@ -125,94 +116,70 @@ namespace EddiDataDefinitions
             set
             {
                 _commodityDef = value;
-                NotifyPropertyChanged("invariantName");
-                NotifyPropertyChanged("localizedName");
-                NotifyPropertyChanged("localizedCategory");
+                NotifyPropertyChanged( nameof(invariantName) );
+                NotifyPropertyChanged( nameof(localizedName) );
+                NotifyPropertyChanged( nameof(localizedCategory) );
             }
         }
 
         [PublicAPI, Obsolete]
         public CommodityDefinition commodity => commodityDef;
-
-        [PublicAPI, JsonProperty("haulageData")]
-        public ObservableCollection<Haulage> haulageData { get; set; } = new ObservableCollection<Haulage>();
-
+        
         [JsonExtensionData]
         private IDictionary<string, JToken> _additionalJsonData;
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
+        private void OnDeserialized ( StreamingContext context )
         {
-            if (commodityDef == null)
+            if ( commodityDef == null )
             {
                 // legacy JSON with no edname in the top level
-                edname = (string)_additionalJsonData["commodity"]["edname"];
-                owned = (int)_additionalJsonData["other"];
+                edname = (string)_additionalJsonData[ "commodity" ][ "edname" ];
+                owned = (int)_additionalJsonData[ "other" ];
             }
 
             _additionalJsonData = null;
         }
 
         // Default Constructor
-        public Cargo() { }
+        public Cargo () { }
 
         [JsonConstructor]
-        public Cargo(string edname)
+        public Cargo ( string edname )
         {
-            commodityDef = CommodityDefinition.FromEDName(edname);
+            commodityDef = CommodityDefinition.FromEDName( edname );
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
-        public void NotifyPropertyChanged(string propName)
+
+        public void NotifyPropertyChanged ( string propName )
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propName ) );
         }
 
-        public void CalculateNeed()
-        { }
-
-        public void UpdateWeightedPrice(decimal newPrice, int newAmount)
+        public void UpdateWeightedPrice ( decimal newPrice, int newAmount )
         {
-            if (newAmount == 0) { return; }
-            var weightedValueSum = (weightedAvgPrice * total) + (newPrice * newAmount);
-            var weightedQtySum = total + newAmount;
+            if ( newAmount == 0 ) { return; }
+            var weightedValueSum = (weightedAvgPrice * owned) + (newPrice * newAmount);
+            var weightedQtySum = owned + newAmount;
 
-            if (weightedQtySum > 0)
+            if ( weightedQtySum > 0 )
             {
                 weightedAvgPrice = weightedValueSum / weightedQtySum;
-                NotifyPropertyChanged("price");
+                NotifyPropertyChanged( "price" );
             }
         }
 
-        /// <summary> </summary>
-        /// <param name="cargoType">The type of cargo to add</param>
+        /// <summary> Add non-mission cargo </summary>
+        /// <param name="cargoType">The type of cargo to add (e.g. legal or stolen)</param>
         /// <param name="acquistionAmount">The amount of cargo to add</param>
-        /// <param name="cargoHaulageData">Add or update haulage instance</param>
         /// <param name="acquistionPrice">The acquisition price per unit (if not zero)</param>
-        public void AddDetailedQty(CargoType cargoType, int acquistionAmount, decimal acquistionPrice, Haulage cargoHaulageData = null)
+        public void AddDetailedQty ( CargoType cargoType, int acquistionAmount, decimal? acquistionPrice = 0)
         {
-            UpdateWeightedPrice(acquistionPrice, acquistionAmount);
-            switch (cargoType)
+            UpdateWeightedPrice( acquistionPrice ?? 0, acquistionAmount );
+
+            switch ( cargoType )
             {
-                case CargoType.mission:
-                    {
-                        haulage += acquistionAmount;
-                        if (cargoHaulageData != null) 
-                        {
-                            var currentHaulage = haulageData.FirstOrDefault( h => h.missionid == cargoHaulageData.missionid );
-                            if ( currentHaulage != null)
-                            {
-                                var haulageIndex = haulageData.IndexOf( currentHaulage );
-                                haulageData[ haulageIndex] = cargoHaulageData;
-                            }
-                            else
-                            {
-                                haulageData.Add(cargoHaulageData);
-                            }
-                        }
-                        break;
-                    }
                 case CargoType.stolen:
                     {
                         stolen += acquistionAmount;
@@ -226,27 +193,30 @@ namespace EddiDataDefinitions
             }
         }
 
-        /// <param name="cargoType">The type of cargo to remove</param>
-        /// <param name="removedAmount">The amount of cargo to remove</param>
-        /// <param name="missionId">Remove haulage instance by mission ID</param>
-        public void RemoveDetailedQty(CargoType cargoType, int removedAmount, long? missionId)
+        /// <summary> Add mission cargo </summary>
+        /// <param name="missionID">Add mission cargo by mission ID</param>
+        /// <param name="acquistionAmount">The amount of cargo to add</param>
+        public void AddDetailedQty ( long missionID, int acquistionAmount )
         {
-            var thisHaulageData = haulageData.FirstOrDefault(h => h.missionid == missionId);
-            RemoveDetailedQty(cargoType, removedAmount, thisHaulageData);
+            if ( missionCargo.ContainsKey( missionID ) )
+            {
+                missionCargo[ missionID ] += acquistionAmount;
+            }
+            else
+            {
+                missionCargo.Add( missionID, acquistionAmount );
+            }
+
+            NotifyPropertyChanged( nameof(missionCargo) );
         }
 
-        /// <param name="cargoType">The type of cargo to remove</param>
+        /// <summary> Remove non-mission cargo </summary>
+        /// <param name="cargoType">The type of cargo to remove (e.g. legal or stolen)</param>
         /// <param name="removedAmount">The amount of cargo to remove</param>
-        /// <param name="cargoHaulageData">Remove haulage instance</param>
-        public void RemoveDetailedQty(CargoType cargoType, int removedAmount, Haulage cargoHaulageData = null)
+        public void RemoveDetailedQty ( CargoType cargoType, int removedAmount )
         {
-            switch (cargoType)
+            switch ( cargoType )
             {
-                case CargoType.mission:
-                    {
-                        haulage -= removedAmount;
-                        break;
-                    }
                 case CargoType.stolen:
                     {
                         stolen -= removedAmount;
@@ -259,12 +229,28 @@ namespace EddiDataDefinitions
                     }
             }
         }
+
+        /// <summary> Remove mission cargo </summary>
+        /// <param name="missionID">Remove mission cargo by mission ID</param>
+        /// <param name="removedAmount">The amount of cargo to remove</param>
+        public void RemoveDetailedQty ( long missionID, int removedAmount )
+        {
+            if ( missionCargo.ContainsKey( missionID ) )
+            {
+                var cargoAmount = missionCargo[ missionID ];
+                missionCargo[ missionID ] -= Math.Min( removedAmount, cargoAmount );
+
+                if ( missionCargo[ missionID ] == 0 )
+                {
+                    missionCargo.Remove( missionID );
+                }
+            }
+        }
     }
 
     public enum CargoType
     {
         legal,
-        mission,
         stolen
     }
 }

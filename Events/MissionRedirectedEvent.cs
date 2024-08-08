@@ -11,7 +11,7 @@ namespace EddiEvents
         public const string SAMPLE = "{ \"timestamp\": \"2017-08-01T09:04:07Z\", \"event\": \"MissionRedirected\", \"MissionID\": 65367315, \"Name\":\"Mission_Courier\", \"NewDestinationStation\": \"Metcalf Orbital\", \"OldDestinationStation\": \"Cuffey Orbital\", \"NewDestinationSystem\": \"Cemiess\", \"OldDestinationSystem\": \"Vequess\" }";
 
         [PublicAPI("The ID of the mission")]
-        public long? missionid { get; private set; }
+        public long missionid { get; private set; }
 
         [PublicAPI("The name of the mission")]
         public string name { get; private set; }
@@ -28,7 +28,7 @@ namespace EddiEvents
         [PublicAPI("The old destination system for the mission")]
         public string olddestinationsystem { get; private set; }
 
-        public MissionRedirectedEvent(DateTime timestamp, long? missionid, string name, string newdestinationstation, string olddestinationstation, string newdestinationsystem, string olddestinationsystem) : base(timestamp, NAME)
+        public MissionRedirectedEvent(DateTime timestamp, long missionid, string name, string newdestinationstation, string olddestinationstation, string newdestinationsystem, string olddestinationsystem) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;

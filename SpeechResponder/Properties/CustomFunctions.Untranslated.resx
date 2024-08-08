@@ -184,8 +184,9 @@ Common usage of this is to provide further information about a commodity, for ex
   <data name="Distance" xml:space="preserve">
     <value>This function will provide the distance (in light years) between two systems.
 
-Distance() takes either two or six arguments.
-- Two argurments, the names of the two systems.
+Distance() takes either one, two, or six arguments.
+- One argument, the name of the target system (distance calculated relative to the current system)
+- Two arguments, the names of the two systems.
 - Six arguments, the x, y, z coordinates of the two systems.
 
 Examples of each usage:
@@ -198,7 +199,7 @@ Examples of each usage:
 
 EconomyDetails() takes a single argument of the economy for which you want more information.
 
-At current this does not have a lot of use as the economy object only contains its name, but expect it to be expanded in future.</value>
+At current this does not have a lot of use as the economy object only contains its name, but this may be expanded in future.</value>
   </data>
   <data name="Emphasize" xml:space="preserve">
     <value>This function allows you to give emphasis to specific words (to the extent supported by the voice you are using - your mileage may vary). This function uses SSML tags.
@@ -302,20 +303,7 @@ It takes a single mandatory argument, the article uuid to mark as unread.</value
 
 GovernmentDetails() takes a single argument of the government for which you want more information.
 
-At current this does not have a lot of use as the government object only contains its name, but expect it to be expanded in future.</value>
-  </data>
-  <data name="HaulageDetails" xml:space="preserve">
-    <value>This function will provide 'haulage' information for a mission-related cargo. See the 'haulage' object for variable details.
-
-HaulageDetails() takes one mandatory argument, a mission ID associated with the haulage. If the mission ID is not associated with haulage, a 'null' is returned.
-
-Common usage of this is to provide further information about a particular mission haulage, for example:
-
-    {set haulage to HaulageDetails(event.missionid)}
-    {if haulage &amp;&amp; haulage.deleivered &gt; 0:
-        {set total to haulage.amount + haulage.deleivered}
-     {haulage.type} mission to the cargo depot is {round(haulage.delivered / total * 100, 0)} percent complete.
-    }</value>
+At current this does not have a lot of use as the government object only contains its name but this may be expanded in future.</value>
   </data>
   <data name="Humanise" xml:space="preserve">
     <value>This function will turn its argument into a more human number, for example turning 31245 in to \"just over thirty thousand\".
@@ -534,12 +522,12 @@ Common usage of this is to check how long it has been since a given time, for ex
 
 SecurityLevelDetails() takes a single argument of the security level for which you want more information.
 
-At current this does not have a lot of use as the security level object only contains its name, but expect it to be expanded in future.</value>
+At current this does not have a lot of use as the security level object only contains its name, but this may be expanded in future.</value>
   </data>
   <data name="SetState" xml:space="preserve">
-    <value>This function will set a session state value.  The value will be available as a property of the 'state' object in future templates within the same EDDI session.
+	  <value>This function will set a session state value. The value will be available in future scripts or child scripts throughout the remainder of the EDDI session as a property of the persistent 'state' object. If you wish to refer to the stored value in the same script where it was stored then please retrieve the value using the 'GetState' function.
 
-SetState takes two arguments: the name of the state value to set, and its value.  The name of the state value will be converted to lower-case and spaces changed to underscores.  The value must be either a boolean, a number, or a string; other values will be ignored.
+SetState takes two arguments: the name of the state value to set, and its value.  The name of the state value will be converted to lower-case and spaces changed to underscores.  The value must be either a boolean, a number, a string, or a null / void value; other values will be ignored.
 
 Common usage of this is to keep track of the cumulative or persistent information within a session, for example:
 
@@ -629,11 +617,11 @@ Common usage of this is to select the word that should proceed the string (e.g. 
     {if StartsWithVowel(event.name): an |else: a } {event.name}</value>
   </data>
   <data name="StateDetails" xml:space="preserve">
-    <value>This function will provide full information for a state given its name.
+    <value>This function will provide full information for a faction state given its name.
 
-StateDetails() takes a single argument of the state for which you want more information.
+StateDetails() takes a single argument of the faction state for which you want more information.
 
-At current this does not have a lot of use as the state object only contains its name, but expect it to be expanded in future.</value>
+At current this does not have a lot of use as the state object only contains its name but this may be expanded in future.</value>
   </data>
   <data name="StationDetails" xml:space="preserve">
     <value>This function will provide full information for a station given its name and optional system.
@@ -650,7 +638,7 @@ Common usage of this is to provide further information about a station, for exam
 
 SuperpowerDetails() takes a single argument of the superpower for which you want more information.
 
-At current this does not have a lot of use as the superpower object only contains its name, but expect it to be expanded in future.</value>
+At current this does not have a lot of use as the superpower object only contains its name but this may be expanded in future.</value>
   </data>
   <data name="SystemDetails" xml:space="preserve">
     <value>This function will provide full information for a star system given its name.
@@ -764,5 +752,15 @@ SetClipboard takes a single argument: the text to send to the clipboard.
 Common usage of this is to allow a text string to be pasted outside of EDDI, for example:
 
     {SetClipboard("Shinrarta Dezhra")}</value>
+  </data>
+  <data name="GetState" xml:space="preserve">
+    <value>This function will retrieve a session state value. 
+
+GetState takes one argument: the name of the state value to retrieve.  The name of the state value shall be converted to lower-case with spaces changed to underscores. 
+
+Common usage of this is to retrieve cumulative or persistent information stored using `SetState` during a session, for example:
+
+    {SetState("distance_travelled_today", state.distance_travelled_today + event.distance)}
+    {set distance to GetState("distance_travelled_today")}</value>
   </data>
 </root>

@@ -1,9 +1,9 @@
-﻿using Cottle.Functions;
-using Cottle.Values;
+﻿using Cottle;
 using EddiInaraService;
 using EddiSpeechResponder.Service;
 using JetBrains.Annotations;
 using System;
+using System.Reflection;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -14,18 +14,16 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Details;
         public string description => Properties.CustomFunctions_Untranslated.InaraDetails;
         public Type ReturnType => typeof( InaraCmdr );
-        public NativeFunction function => new NativeFunction((values) =>
+        public IFunction function => Function.CreateNative1( ( runtime, cmdrName, writer ) =>
         {
-            if (values[0].AsString is string commanderName)
+            var commanderName = cmdrName.AsString;
+            if ( !string.IsNullOrWhiteSpace( commanderName ) )
             {
-                if (!string.IsNullOrWhiteSpace(commanderName))
-                {
-                    EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
-                    var result = inaraService.GetCommanderProfile(commanderName);
-                    return new ReflectionValue(result ?? new object());
-                }
+                IInaraService inaraService = new InaraService();
+                var result = inaraService.GetCommanderProfile(commanderName);
+                return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
             }
             return "";
-        }, 1);
+        });
     }
 }

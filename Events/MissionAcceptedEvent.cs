@@ -13,7 +13,7 @@ namespace EddiEvents
         public const string SAMPLE = "{ \"timestamp\":\"2018-11-10T03:25:17Z\", \"event\":\"MissionAccepted\", \"Faction\":\"HIP 20277 Party\", \"Name\":\"Mission_DeliveryWing_Boom\", \"LocalisedName\":\"Boom time delivery of 2737 units of Survival Equipment\", \"Commodity\":\"$SurvivalEquipment_Name;\", \"Commodity_Localised\":\"Survival Equipment\", \"Count\":2737, \"TargetFaction\":\"Guathiti Empire Party\", \"DestinationSystem\":\"Guathiti\", \"DestinationStation\":\"Houtman Landing\", \"Expiry\":\"2018-11-11T02:41:24Z\", \"Wing\":true, \"Influence\":\"+\", \"Reputation\":\"+\", \"Reward\":5391159, \"MissionID\":426330530 }";
 
         [PublicAPI("The ID of the mission")] 
-        public long? missionid => Mission.missionid;
+        public long missionid => Mission.missionid;
 
         [PublicAPI("The name of the mission")]
         public string name => Mission.name;
