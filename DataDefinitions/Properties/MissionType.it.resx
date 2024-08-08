@@ -156,15 +156,12 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massacro</value>
   </data>
+  
   <data name="Mining" xml:space="preserve">
     <value>Estrazione di Minerali</value>
   </data>
-  <data name="Bulk" xml:space="preserve">
-    <value>Trasporta</value>
-  </data>
-  <data name="VIP" xml:space="preserve">
-    <value>Trasporta</value>
-  </data>
+  
+  
   <data name="Piracy" xml:space="preserve">
     <value>Pirateria</value>
   </data>
@@ -217,6 +214,7 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Contratto per la Marina Imperiale</value>
   </data>
+  
   <data name="Founder" xml:space="preserve">
     <value>Fondatore</value>
   </data>
@@ -300,9 +298,7 @@
     <value>A fuoco</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  <data name="Evacuation" xml:space="preserve">
-    <value>Evacuazione dei Passeggeri</value>
-  </data>
+  
   <data name="Alert" xml:space="preserve">
     <value>Allarme</value>
   </data>
