@@ -255,10 +255,20 @@
     <value>Filtern Sie die Ergebnisse nach Skriptname, Beschreibung oder Volltext.</value>
     <comment>tooltip that appears when the search filter textbox is selected</comment>
   </data>
+  <data name="messagebox_unable_to_save_script" xml:space="preserve">
+	  <value>Skript kann nicht gespeichert werden.</value>
+  </data>
+  <data name="messagebox_script_name_required" xml:space="preserve">
+	  <value>Ein Skriptname ist erforderlich.</value>
+  </data>
+  <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
+	  <value>Der Skriptname darf nicht enthalten</value><comment>e.g. The script name may not contain ';'.</comment>
+  </data>
+  <data name="messagebox_script_name_already_in_use" xml:space="preserve">
+	  <value>Der Skriptname wird bereits verwendet.</value>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="tooltip_include" xml:space="preserve">
+	  <value>Hier identifizierte Skripte sollen vor dem Skript der obersten Ebene ausgeführt werden. Dies kann benutzt werden, um Einstellungen festzulegen oder Funktionen zu erstellen, die zwischen mehreren Skripten wiederverwendet werden können. Trennen Sie mehrere Skriptnamen mit ';' als Trennzeichen.</value>
+  </data>
 </root>
