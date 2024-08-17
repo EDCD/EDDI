@@ -255,10 +255,22 @@
     <value>FIltra i risultati in base al nome, alla descrizione, o al testo dello script.</value>
     <comment>tooltip that appears when the search filter textbox is selected</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="messagebox_unable_to_save_script" xml:space="preserve">
+	  <value>Impossibile salvare lo script.</value>
+  </data>
+  <data name="messagebox_script_name_required" xml:space="preserve">
+	  <value>È necessario dare un nome allo script.</value>
+  </data>
+  <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
+	  <value>Il nome dello script non può contenere</value><comment>e.g. The script name may not contain ';'.</comment>
+  </data>
+  <data name="messagebox_script_name_already_in_use" xml:space="preserve">
+	  <value>Esiste già uno script con questo nome.</value>
+  </data>
+  <data name="header_include" xml:space="preserve">
+	  <value>Includi</value>
+  </data>
+  <data name="tooltip_include" xml:space="preserve">
+	  <value>Gli script qui elencati devono essere eseguiti prima dello script di primo livello. Questo può essere usato per impostare le preferenze o creare funzioni che possono essere riutilizzate tra più script. Separa i nomi di più script usando ';' come separatore.</value>
+  </data>
 </root>
