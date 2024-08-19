@@ -279,7 +279,7 @@
     <value>Planetenmission</value>
   </data>
   <data name="PolPrisoner" xml:space="preserve">
-    <value>Transport politischer Gefangene</value>
+    <value>Politische Gefangene</value>
     <comment>Bulk passenger type</comment>
   </data>
   <data name="Assassination" xml:space="preserve">
