@@ -177,5 +177,7 @@
     <value>Batedor Thargoid</value>
     <comment>Massacre mission target - Thargoid scout</comment>
   </data>
-  
+  <data name="Politician" xml:space="preserve">
+	  <value>Político</value>
+  </data>
 </root>
