@@ -267,7 +267,9 @@
   <data name="messagebox_script_name_already_in_use" xml:space="preserve">
 	  <value>Der Skriptname wird bereits verwendet.</value>
   </data>
-  
+  <data name="header_include" xml:space="preserve">
+	  <value>Einbeziehen</value>
+  </data>
   <data name="tooltip_include" xml:space="preserve">
 	  <value>Hier identifizierte Skripte sollen vor dem Skript der obersten Ebene ausgeführt werden. Dies kann benutzt werden, um Einstellungen festzulegen oder Funktionen zu erstellen, die zwischen mehreren Skripten wiederverwendet werden können. Trennen Sie mehrere Skriptnamen mit ';' als Trennzeichen.</value>
   </data>
