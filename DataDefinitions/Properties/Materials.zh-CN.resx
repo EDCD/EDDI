@@ -554,7 +554,7 @@
     <comment>Material biotechconductors</comment>
   </data>
   <data name="fedcorecomposites" xml:space="preserve">
-    <value>核心动力学复合材料</value>
+    <value>核心动力复合材料</value>
     <comment>Material fedcorecomposites</comment>
   </data>
   <data name="exquisitefocuscrystals" xml:space="preserve">
