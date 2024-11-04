@@ -1550,18 +1550,9 @@
     <value>Alliage de platine</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>Ravitaillement militaire de Hudson</value>
-    <comment>Commodity RepublicanFieldSupplies</comment>
-  </data>
-  <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>Ravitaillement de garnison de Hudson</value>
-    <comment>Commodity RepublicanGarisonSupplies</comment>
-  </data>
-  <data name="RestrictedIntel" xml:space="preserve">
-    <value>Renseignements confidentiels de Hudson</value>
-    <comment>Commodity RestrictedIntel</comment>
-  </data>
+  
+  
+  
   <data name="RestrictedPackage" xml:space="preserve">
     <value>Colis scellés Core Holding</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1760,6 +1751,10 @@
     <value>Ailes à faible gravité Uzumoku</value>
     <comment>Commodity UzumokuLowGWings</comment>
   </data>
+  
+  
+  
+  
   
   
   
