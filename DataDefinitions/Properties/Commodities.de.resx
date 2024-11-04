@@ -1553,18 +1553,9 @@
     <value>Platinlegierung</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>Hudsons Feldversorgung</value>
-    <comment>Commodity RepublicanFieldSupplies</comment>
-  </data>
-  <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>Hudsons Garnisonsversorgung</value>
-    <comment>Commodity RepublicanGarisonSupplies</comment>
-  </data>
-  <data name="RestrictedIntel" xml:space="preserve">
-    <value>Hudsons Geheiminformationen</value>
-    <comment>Commodity RestrictedIntel</comment>
-  </data>
+  
+  
+  
   <data name="RestrictedPackage" xml:space="preserve">
     <value>Vertrauliches Paket der Core Holding</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1865,4 +1856,8 @@
     <value>Thargoiden Herz</value>
     <comment>Commodity ThargoidHeart</comment>
   </data>
+  
+  
+  
+  
 </root>
