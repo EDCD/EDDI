@@ -1550,18 +1550,9 @@
     <value>Платиновый сплав</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>Полевые припасы Хадсона</value>
-    <comment>Commodity RepublicanFieldSupplies</comment>
-  </data>
-  <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>Гарнизонные припасы Хадсона</value>
-    <comment>Commodity RepublicanGarisonSupplies</comment>
-  </data>
-  <data name="RestrictedIntel" xml:space="preserve">
-    <value>Секретные разведданные Хадсона</value>
-    <comment>Commodity RestrictedIntel</comment>
-  </data>
+  
+  
+  
   <data name="RestrictedPackage" xml:space="preserve">
     <value>Секретный груз Core</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1768,6 +1759,10 @@
     <value>Классифицированное экспериментальное оборудование</value>
     <comment>Commodity ClassifiedExperimentalEquipment</comment>
   </data>
+  
+  
+  
+  
   
   
   
