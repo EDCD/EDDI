@@ -290,5 +290,8 @@ If transporting via taxi or dropship</comment>
     <value>sua</value>
     <comment>e.g. *your* Type-8 Transporter</comment>
   </data>
-  
+  <data name="yourMandalay" xml:space="preserve">
+    <value>sua</value>
+    <comment>e.g. *your* Mandalay</comment>
+  </data>
 </root>
