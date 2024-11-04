@@ -1553,18 +1553,9 @@
     <value>Lega di Platino</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>Forniture da Campo di Hudson</value>
-    <comment>Commodity RepublicanFieldSupplies</comment>
-  </data>
-  <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>Forniture da Fortezza di Hudson</value>
-    <comment>Commodity RepublicanGarisonSupplies</comment>
-  </data>
-  <data name="RestrictedIntel" xml:space="preserve">
-    <value>Informazioni Riservate di Hudson</value>
-    <comment>Commodity RestrictedIntel</comment>
-  </data>
+  
+  
+  
   <data name="RestrictedPackage" xml:space="preserve">
     <value>Pacchetti Riservati del Nucleo</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1865,4 +1856,8 @@
     <value>Cuore Thargoid</value>
     <comment>Commodity ThargoidHeart</comment>
   </data>
+  
+  
+  
+  
 </root>
