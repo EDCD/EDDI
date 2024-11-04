@@ -1553,18 +1553,9 @@
     <value>Liga de Platina</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>Mantimentos de Campo do Hudson</value>
-    <comment>Commodity RepublicanFieldSupplies</comment>
-  </data>
-  <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>Mantimentos de Tropas do Hudson</value>
-    <comment>Commodity RepublicanGarisonSupplies</comment>
-  </data>
-  <data name="RestrictedIntel" xml:space="preserve">
-    <value>Inteligência Restrita do Hudson</value>
-    <comment>Commodity RestrictedIntel</comment>
-  </data>
+  
+  
+  
   <data name="RestrictedPackage" xml:space="preserve">
     <value>Pacote Restrito da Core</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1865,4 +1856,8 @@
     <value>Coração Thargoid</value>
     <comment>Commodity ThargoidHeart</comment>
   </data>
+  
+  
+  
+  
 </root>
