@@ -597,7 +597,6 @@
   </data>
   <data name="Transmitter" xml:space="preserve">
     <value>Transmissor</value>
-    
     <comment>An electronic device designed to produce electromagnetic waves.</comment>
   </data>
   <data name="AudioLogs" xml:space="preserve">
@@ -898,4 +897,26 @@
     <value>Composto de Refinaria de Pináculo</value>
     <comment>Found at Thargoid spire sites</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
