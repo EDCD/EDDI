@@ -1229,14 +1229,8 @@
     <comment>Commodity PatreusGarisonSupplies</comment>
   </data>
   
-  <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>Hudson harctéri készletek</value>
-    <comment>Commodity RepublicanFieldSupplies</comment>
-  </data>
-  <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>Hudson helyőrségi készletek</value>
-    <comment>Commodity RepublicanGarisonSupplies</comment>
-  </data>
+  
+  
   
   
   <data name="SiriusCommercialContracts" xml:space="preserve">
@@ -1350,6 +1344,10 @@
     <value>Onionhead gamma törzs</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
   </data>
+  
+  
+  
+  
   
   
   
