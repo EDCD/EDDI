@@ -173,5 +173,7 @@
     <value>Thargoid</value>
     <comment>LegalState Thargoid</comment>
   </data>
-  
+  <data name="Allied" xml:space="preserve">
+    <value>Aliado</value>
+  </data>
 </root>
