@@ -597,7 +597,6 @@
   </data>
   <data name="Transmitter" xml:space="preserve">
     <value>Передатчик</value>
-    
     <comment>An electronic device designed to produce electromagnetic waves.</comment>
   </data>
   <data name="AudioLogs" xml:space="preserve">
@@ -894,5 +893,27 @@
   <data name="GeneticSample" xml:space="preserve">
     <value>Биологическая проба</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 </root>
