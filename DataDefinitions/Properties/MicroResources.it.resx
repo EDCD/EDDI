@@ -918,5 +918,8 @@
   
   
   
-  
+  <data name="PowerMedical" xml:space="preserve">
+    <value>Campione Medico</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
