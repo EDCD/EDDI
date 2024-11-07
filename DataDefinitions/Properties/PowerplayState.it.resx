@@ -126,7 +126,13 @@
   <data name="Exploited" xml:space="preserve">
     <value>Sfruttato</value>
   </data>
-  
-  
-  
+  <data name="Headquarters" xml:space="preserve">
+    <value>Quartier generale</value>
+  </data>
+  <data name="Fortified" xml:space="preserve">
+    <value>Fortificato</value>
+  </data>
+  <data name="Stronghold" xml:space="preserve">
+    <value>Roccaforte</value>
+  </data>
 </root>
