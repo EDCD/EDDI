@@ -425,5 +425,7 @@
     <value>Antica sonda</value>
     <comment>Ancient Probe</comment>
   </data>
-  
+  <data name="USS_Type_PowerEmissions" xml:space="preserve">
+    <value>Tracciato di potenza di relitto</value>
+  </data>
 </root>
