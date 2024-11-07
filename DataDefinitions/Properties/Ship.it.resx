@@ -287,7 +287,7 @@ If transporting via taxi or dropship</comment>
     <comment>If transporting via a generic ship (e.g. multicrew)</comment>
   </data>
   <data name="yourType8" xml:space="preserve">
-    <value>la tua</value>
+    <value>la sua</value>
     <comment>e.g. *your* Type-8 Transporter</comment>
   </data>
   <data name="yourMandalay" xml:space="preserve">
