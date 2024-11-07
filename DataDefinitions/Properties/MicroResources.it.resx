@@ -897,27 +897,90 @@
     <value>Composto di raffineria della Guglia</value>
     <comment>Found at Thargoid spire sites</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="PowerEmployeeData" xml:space="preserve">
+    <value>Dati associativi di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerClassifiedData" xml:space="preserve">
+    <value>Dati classificati di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerFinancialRecords" xml:space="preserve">
+    <value>Dati industriali di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerPreparationSpyware" xml:space="preserve">
+    <value>Malware iniettabile di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerPropagandaData" xml:space="preserve">
+    <value>Dati politici di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerResearchData" xml:space="preserve">
+    <value>Dati di ricerca di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerSpyware" xml:space="preserve">
+    <value>Malware di tracciamento di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerSecurity" xml:space="preserve">
+    <value>Registri di Sicurezza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerResearch" xml:space="preserve">
+    <value>Note di ricerca</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerplayMilitary" xml:space="preserve">
+    <value>Schema militare</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerElectronics" xml:space="preserve">
+    <value>Pacchetto di Elettronica</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerIndustrial" xml:space="preserve">
+    <value>Componente industriale</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerMiscIndust" xml:space="preserve">
+    <value>Macchinario industriale</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerInventory" xml:space="preserve">
+    <value>Registro dell'inventario</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerComputer" xml:space="preserve">
+    <value>Parti di computer</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerExtraction" xml:space="preserve">
+    <value>Campione di estrazione</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerPower" xml:space="preserve">
+    <value>Regolatore d'energia</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerAgriculture" xml:space="preserve">
+    <value>Campione agricolo</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerExperiment" xml:space="preserve">
+    <value>Prototipo sperimentale</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerEquipment" xml:space="preserve">
+    <value>Equipaggiamento personale protettivo</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerMiscComputer" xml:space="preserve">
+    <value>Dispositivo di archiviazione dati</value>
+    <comment>Powerplay</comment>
+  </data>
   <data name="PowerMedical" xml:space="preserve">
     <value>Campione Medico</value>
     <comment>Powerplay</comment>
