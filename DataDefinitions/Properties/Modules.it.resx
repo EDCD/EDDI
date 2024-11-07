@@ -653,5 +653,8 @@
     <value>Motore a Modulazione con Sovraccarico all'Iperguida</value>
     <comment>Module Frame Shift Drive (SCO)</comment>
   </data>
-  
+  <data name="ConcordCannon" xml:space="preserve">
+    <value>Cannone Concord</value>
+    <comment>Powerplay module</comment>
+  </data>
 </root>
