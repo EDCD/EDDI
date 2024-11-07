@@ -1458,7 +1458,7 @@
     <comment>Commodity torvalcommercialcontracts</comment>
   </data>
   <data name="lavignygarisonsupplies" xml:space="preserve">
-    <value>Forniture per le Fortezze di Lavigny</value>
+    <value>Forniture per Presidi di Lavigny</value>
     <comment>Commodity lavignygarisonsupplies</comment>
   </data>
   <data name="lavignycorruptiondossiers" xml:space="preserve">
@@ -1546,16 +1546,25 @@
     <comment>Commodity PatreusFieldSupplies</comment>
   </data>
   <data name="PatreusGarisonSupplies" xml:space="preserve">
-    <value>Forniture da Fortezza di Patreus</value>
+    <value>Forniture per Presidi di Patreus</value>
     <comment>Commodity PatreusGarisonSupplies</comment>
   </data>
   <data name="PlatinumAloy" xml:space="preserve">
     <value>Lega di Platino</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  
-  
-  
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>Forniture da Campo di Archer</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>Forniture per Presidi di Archer</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>Informazioni riservate di Archer</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
   <data name="RestrictedPackage" xml:space="preserve">
     <value>Pacchetti Riservati del Nucleo</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1856,8 +1865,20 @@
     <value>Cuore Thargoid</value>
     <comment>Commodity ThargoidHeart</comment>
   </data>
-  
-  
-  
-  
+  <data name="KaineAidSupplies" xml:space="preserve">
+    <value>Forniture di soccorso di Kaine</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineMisinformation" xml:space="preserve">
+    <value>Disinformazione di Kaine</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineLobbyingMaterial" xml:space="preserve">
+    <value>Materiale per Lobbismo di Kaine</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="LavignyStrategicReports" xml:space="preserve">
+    <value>Rapporti strategici di Lavigny</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
