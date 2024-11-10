@@ -427,5 +427,7 @@
   </data>
   <data name="USS_Type_PowerEmissions" xml:space="preserve">
     <value>Tracciato di potenza di relitto</value>
+    <comment>Powerplay</comment>
   </data>
+  
 </root>
