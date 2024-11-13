@@ -425,4 +425,13 @@
     <value>Sonda Antiga</value>
     <comment>Ancient Probe</comment>
   </data>
+  
+  <data name="USS_Type_PowerConvoy" xml:space="preserve">
+    <value>Comboio de Potência</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerplayConvoyDistressSignal" xml:space="preserve">
+    <value>Sinal de Socorro de Comboio de Potência</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
