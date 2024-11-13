@@ -597,7 +597,6 @@
   </data>
   <data name="Transmitter" xml:space="preserve">
     <value>Sender</value>
-    
     <comment>An electronic device designed to produce electromagnetic waves.</comment>
   </data>
   <data name="AudioLogs" xml:space="preserve">
@@ -898,4 +897,77 @@
     <value>raffinierter Spitzen-Verbund</value>
     <comment>Found at Thargoid spire sites</comment>
   </data>
+  <data name="PowerEmployeeData" xml:space="preserve">
+    <value>Zugehörigkeitsdaten der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
+  
+  <data name="PowerFinancialRecords" xml:space="preserve">
+    <value>Industriedaten der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
+  
+  <data name="PowerPropagandaData" xml:space="preserve">
+    <value>Politische Daten der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerResearchData" xml:space="preserve">
+    <value>Forschungsdaten der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
+  
+  <data name="PowerSecurity" xml:space="preserve">
+    <value>Sicherheitsprotokolle</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerResearch" xml:space="preserve">
+    <value>Forschungsnotizen</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerplayMilitary" xml:space="preserve">
+    <value>Militärbauplan</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerElectronics" xml:space="preserve">
+    <value>Elektronikpaket</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerIndustrial" xml:space="preserve">
+    <value>Industrielle Komponente</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerMiscIndust" xml:space="preserve">
+    <value>Industrielle Maschinen</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerInventory" xml:space="preserve">
+    <value>Inventaraufzeichnung</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerComputer" xml:space="preserve">
+    <value>Computerbauteile</value>
+    <comment>Powerplay</comment>
+  </data>
+  
+  <data name="PowerPower" xml:space="preserve">
+    <value>Energieregulator</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerAgriculture" xml:space="preserve">
+    <value>Agrikulturverfahren-Probe</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerExperiment" xml:space="preserve">
+    <value>Experimenteller Prototyp</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerEquipment" xml:space="preserve">
+    <value>Persönliche Schutzausrüstung</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="PowerMiscComputer" xml:space="preserve">
+    <value>Datenspeichergerät</value>
+    <comment>Powerplay</comment>
+  </data>
+  
 </root>
