@@ -426,9 +426,15 @@
     <comment>Ancient Probe</comment>
   </data>
   <data name="USS_Type_PowerEmissions" xml:space="preserve">
-    <value>Tracciato di potenza di relitto</value>
+    <value>Tracciato di un relitto di una Potenza</value>
     <comment>Powerplay</comment>
   </data>
-  
-  
+  <data name="USS_Type_PowerConvoy" xml:space="preserve">
+    <value>Convoglio di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerplayConvoyDistressSignal" xml:space="preserve">
+    <value>Segnale di emergenza da un Convoglio di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
