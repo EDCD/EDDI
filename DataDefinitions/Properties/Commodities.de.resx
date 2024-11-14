@@ -1862,8 +1862,20 @@
     <value>Thargoiden Herz</value>
     <comment>Commodity ThargoidHeart</comment>
   </data>
-  
-  
-  
-  
+  <data name="KaineAidSupplies" xml:space="preserve">
+    <value>Kaines Hilfsgüter</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineMisinformation" xml:space="preserve">
+    <value>Kaines Falschinformationen</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineLobbyingMaterial" xml:space="preserve">
+    <value>Kaines Lobbymaterial</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="LavignyStrategicReports" xml:space="preserve">
+    <value>Lavignys strategische Berichte</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
