@@ -894,7 +894,7 @@
     <value>Biologische Probe</value>
   </data>
   <data name="BiomechanicalComponent" xml:space="preserve">
-    <value>raffinierter Spitzen-Verbund</value>
+    <value>Raffinerierter Spitzen-Verbund</value>
     <comment>Found at Thargoid spire sites</comment>
   </data>
   <data name="PowerEmployeeData" xml:space="preserve">
