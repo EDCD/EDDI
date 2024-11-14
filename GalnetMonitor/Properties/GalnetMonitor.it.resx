@@ -133,7 +133,7 @@
     <value>Leggi gli articoli di Galnet quando sei disconnesso</value>
   </data>
   <data name="titleFilterPowerplay" xml:space="preserve">
-    <value>Intrighi di Potere: aggiornamento in arrivo</value>
+    <value>Politica: aggiornamento in arrivo</value>
     <comment>Title filter for determining whether an item is a Powerplay item</comment>
   </data>
   <data name="titleFilterCg" xml:space="preserve">
@@ -161,7 +161,7 @@
     <comment>Category (as seen by the user): Article</comment>
   </data>
   <data name="categoryPowerplay" xml:space="preserve">
-    <value>Intrigo di Potere</value>
+    <value>Politica</value>
     <comment>Category (as seen by the user): Powerplay</comment>
   </data>
   <data name="categoryCG" xml:space="preserve">
