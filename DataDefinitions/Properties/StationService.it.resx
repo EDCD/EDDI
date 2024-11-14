@@ -210,7 +210,7 @@
     <comment>Station Service: OnDockMission</comment>
   </data>
   <data name="Powerplay" xml:space="preserve">
-    <value>Intrigo di Potere</value>
+    <value>Politica</value>
     <comment>Station Service: Powerplay</comment>
   </data>
   <data name="SearchAndRescue" xml:space="preserve">
