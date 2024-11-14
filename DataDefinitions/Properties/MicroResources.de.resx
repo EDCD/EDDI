@@ -906,7 +906,10 @@
     <value>Industriedaten der Macht</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="PowerPreparationSpyware" xml:space="preserve">
+    <value>Macht-Einspeisungs-Malware</value>
+    <comment>Powerplay</comment>
+  </data>
   <data name="PowerPropagandaData" xml:space="preserve">
     <value>Politische Daten der Macht</value>
     <comment>Powerplay</comment>
@@ -915,7 +918,10 @@
     <value>Forschungsdaten der Macht</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="PowerSpyware" xml:space="preserve">
+    <value>Macht-Tracker-Malware</value>
+    <comment>Powerplay</comment>
+  </data>
   <data name="PowerSecurity" xml:space="preserve">
     <value>Sicherheitsprotokolle</value>
     <comment>Powerplay</comment>
