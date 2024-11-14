@@ -153,4 +153,10 @@
   <data name="None" xml:space="preserve">
     <value>Keine</value>
   </data>
+  <data name="NakatoKaine" xml:space="preserve">
+    <value>Nakato Kaine</value>
+  </data>
+  <data name="JeromeArcher" xml:space="preserve">
+    <value>Jerome Archer</value>
+  </data>
 </root>
