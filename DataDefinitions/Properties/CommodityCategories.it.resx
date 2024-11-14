@@ -158,7 +158,7 @@
     <comment>Commodity category NonMarketable</comment>
   </data>
   <data name="Powerplay" xml:space="preserve">
-    <value>Intrighi di Potere</value>
+    <value>Politica</value>
     <comment>Commodity category Powerplay</comment>
   </data>
   <data name="Salvage" xml:space="preserve">
