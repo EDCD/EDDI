@@ -147,7 +147,7 @@
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>Conseguenze di Combattimento</value>
-    <comment>Aftermatch signal</comment>
+    <comment>Combat Aftermath signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomalia</value>
@@ -437,4 +437,5 @@
     <value>Segnale di emergenza da un Convoglio di una Potenza</value>
     <comment>Powerplay</comment>
   </data>
+  
 </root>
