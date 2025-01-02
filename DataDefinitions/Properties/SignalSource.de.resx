@@ -425,8 +425,20 @@
     <value>Uralte Sonde</value>
     <comment>Ancient Probe</comment>
   </data>
-  
-  
-  
-  
+  <data name="USS_Type_PowerEmissions" xml:space="preserve">
+    <value>Wracksignaturen der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerConvoy" xml:space="preserve">
+    <value>Konvoi der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerplayConvoyDistressSignal" xml:space="preserve">
+    <value>Konvoi-Notrufsignal der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerWeaponsFire" xml:space="preserve">
+    <value>PP-Waffenfeuer</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
