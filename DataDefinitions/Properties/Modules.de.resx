@@ -653,4 +653,8 @@
     <value>Frame Shift Drive mit Supercruise Überladung</value>
     <comment>Module Frame Shift Drive (SCO)</comment>
   </data>
+  <data name="ConcordCannon" xml:space="preserve">
+    <value>Concord-Kanone</value>
+    <comment>Powerplay module</comment>
+  </data>
 </root>
