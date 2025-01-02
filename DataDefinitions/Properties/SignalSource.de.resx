@@ -147,7 +147,7 @@
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>Kampffolgen</value>
-    <comment>Aftermatch signal</comment>
+    <comment>Combat Aftermath signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomalie</value>
@@ -425,6 +425,7 @@
     <value>Uralte Sonde</value>
     <comment>Ancient Probe</comment>
   </data>
+  
   
   
   
