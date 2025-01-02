@@ -901,7 +901,10 @@
     <value>Zugehörigkeitsdaten der Macht</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="PowerClassifiedData" xml:space="preserve">
+    <value>Klassen-Daten der Macht</value>
+    <comment>Powerplay</comment>
+  </data>
   <data name="PowerFinancialRecords" xml:space="preserve">
     <value>Industriedaten der Macht</value>
     <comment>Powerplay</comment>
@@ -954,7 +957,10 @@
     <value>Computerbauteile</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="PowerExtraction" xml:space="preserve">
+    <value>Abbauprobe</value>
+    <comment>Powerplay</comment>
+  </data>
   <data name="PowerPower" xml:space="preserve">
     <value>Energieregulator</value>
     <comment>Powerplay</comment>
@@ -975,5 +981,8 @@
     <value>Datenspeichergerät</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="PowerMedical" xml:space="preserve">
+    <value>Medizinische Probe</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
