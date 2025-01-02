@@ -147,7 +147,7 @@
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>Zkáza po boji</value>
-    <comment>Aftermatch signal</comment>
+    <comment>Combat Aftermath signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomálie</value>
@@ -305,6 +305,10 @@
     <value>Volání v nouzi</value>
     <comment>Distress Call</comment>
   </data>
+  
+  
+  
+  
   
   
   
