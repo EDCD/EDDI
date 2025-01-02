@@ -147,7 +147,7 @@
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>战斗余波</value>
-    <comment>Aftermatch signal</comment>
+    <comment>Combat Aftermath signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>异常事态</value>
@@ -425,4 +425,8 @@
     <value>远古探针</value>
     <comment>Ancient Probe</comment>
   </data>
+  
+  
+  
+  
 </root>
