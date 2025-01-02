@@ -1561,7 +1561,10 @@
     <value>Archers Garnisonsversorgung</value>
     <comment>Commodity RepublicanGarisonSupplies</comment>
   </data>
-  
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>Archers Geheiminformationen</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
   <data name="RestrictedPackage" xml:space="preserve">
     <value>Vertrauliches Paket der Core Holding</value>
     <comment>Commodity RestrictedPackage</comment>
