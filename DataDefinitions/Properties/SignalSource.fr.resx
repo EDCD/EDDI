@@ -147,7 +147,7 @@
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>Site d'affrontement récent</value>
-    <comment>Aftermatch signal</comment>
+    <comment>Combat Aftermath signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomalie</value>
@@ -302,6 +302,10 @@
     <value>Appel de détresse</value>
     <comment>Distress Call</comment>
   </data>
+  
+  
+  
+  
   
   
   
