@@ -147,7 +147,7 @@
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
     <value>Последствия боя</value>
-    <comment>Aftermatch signal</comment>
+    <comment>Combat Aftermath signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Зарегистрирован аномальный сигнал</value>
@@ -389,6 +389,10 @@
     <value>Источник сигнала</value>
     <comment>When the signal source may be one of several types</comment>
   </data>
+  
+  
+  
+  
   
   
   
