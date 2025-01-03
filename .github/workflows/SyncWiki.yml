@@ -17,27 +17,6 @@ jobs:
 
     # Retrieve our zipped build from a prior workflow
     - name: Retrieve build artifacts
-      uses: dawidd6/action-download-artifact@v6
-      with:
-        # Required, workflow file name or ID
-        workflow: ContinuousIntegration.yml
-        # Optional, the status or conclusion of a completed workflow to search for
-        # Can be one of a workflow conclusion::
-        # "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
-        # Or a workflow status:
-        # "completed", "in_progress", "queued"
-        # Default: "completed,success"
-        workflow_conclusion: success
-        # Required, commit ID
-        commit: ${{github.event.release.head.sha}}
-        # Optional, uploaded artifact name,
-        # will download all artifacts if not specified
-        # and extract them in respective subdirectories
-        # https://github.com/actions/download-artifact#download-all-artifacts
-        name: build-artifact
-        # Optional, directory where to extract artifact
-        path: ./bin/Release
-    - name: Retrieve build artifacts V2
       uses: actions/download-artifact@v4.1.8
       with:
         # Optional, uploaded artifact name,
