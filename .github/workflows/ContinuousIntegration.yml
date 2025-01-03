@@ -14,7 +14,7 @@ env:
   # Build artifact variables
   build-artifact-name: build-artifact
 
-# Define our triggersb
+# Define our triggers
 on: 
   push:
     branches: 
