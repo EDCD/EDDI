@@ -14,7 +14,7 @@ env:
   # Build artifact variables
   build-artifact-name: build-artifact
 
-# Define our triggers
+# Define our triggersb
 on: 
   push:
     branches: 
@@ -83,10 +83,11 @@ jobs:
       id: build
       run: msbuild ${{ env.solution }} /p:Configuration=${{ env.build-config }} /p:UseSharedCompilation=false /verbosity:minimal
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3.1.0
+      uses: actions/upload-artifact@v4.5.0
       with:
         name: ${{ env.build-artifact-name }}
         path: ./bin/Release/*
+        if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
     # Perform unit testing
     - name: Add VSTest.console.exe to PATH
