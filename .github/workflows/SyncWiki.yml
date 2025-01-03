@@ -37,6 +37,16 @@ jobs:
         name: build-artifact
         # Optional, directory where to extract artifact
         path: ./bin/Release
+    - name: Retrieve build artifacts V2
+      uses: actions/download-artifact@v4.1.8
+      with:
+        # Optional, uploaded artifact name,
+        # will download all artifacts if not specified
+        # and extract them in respective subdirectories
+        # https://github.com/actions/download-artifact#download-all-artifacts
+        name: build-artifact
+        # Optional, directory where to extract artifact
+        path: ./bin/Release
 
     # Uncompress the build
     - name: Uncompress build artifacts (may not be required if completed by the prior step)
