@@ -83,7 +83,7 @@ namespace UnitTests
             }
         }
 
-        [TestCleanup]
+        [TestCleanup, DoNotParallelize]
         public void Cleanup ()
         {
             // Clean up the test database directory
