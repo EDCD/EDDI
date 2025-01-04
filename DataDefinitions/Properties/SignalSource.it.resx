@@ -437,5 +437,8 @@
     <value>Segnale di emergenza da un Convoglio di una Potenza</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="USS_Type_PowerWeaponsFire" xml:space="preserve">
+    <value>Tracciato di Arma di una Potenza</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
