@@ -123,7 +123,11 @@ namespace EddiShipMonitor
         public void PreHandle(Event @event)
         {
             // Handle the events that we care about
-            if (@event is CommanderContinuedEvent commanderContinuedEvent)
+            if ( @event is CarrierJumpedEvent carrierJumpedEvent )
+            {
+                handleCarrierJumpedEvent( carrierJumpedEvent );
+            }
+            else if (@event is CommanderContinuedEvent commanderContinuedEvent)
             {
                 handleCommanderContinuedEvent(commanderContinuedEvent);
             }
@@ -241,6 +245,26 @@ namespace EddiShipMonitor
             }
         }
 
+        private void handleCarrierJumpedEvent ( CarrierJumpedEvent @event )
+        {
+            if ( @event.timestamp > updatedAt )
+            {
+                lock ( shipyardLock )
+                {
+                    foreach ( var ship in shipyard )
+                    {
+                        if ( ship.StoredLocation.marketId == @event.carrierId )
+                        {
+                            ship.StoredLocation = new Ship.Location( @event.systemname, @event.systemAddress, @event.x,
+                                @event.y, @event.z, @event.carriername, @event.carrierId );
+                            ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                        }
+                    }
+                    writeShips();
+                }
+            }
+        }
+
         // Set the ship name conditionally, avoiding filtered names
         private void setShipName(Ship ship, string name)
         {
@@ -338,7 +362,7 @@ namespace EddiShipMonitor
                     if (storedShip != null)
                     {
                         // Set location of stored ship to the current system
-                        storedShip.StoredLocation = new Ship.ShipLocation( EDDI.Instance.CurrentStarSystem, EDDI.Instance?.CurrentStation?.name, EDDI.Instance?.CurrentStation?.marketId );
+                        storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem, EDDI.Instance?.CurrentStation?.name, EDDI.Instance?.CurrentStation?.marketId );
                         storedShip.distance = 0;
                     }
                 }
@@ -383,7 +407,7 @@ namespace EddiShipMonitor
                         // Set location of stored ship to the current system
                         if ( EDDI.Instance?.CurrentStarSystem != null )
                         {
-                            storedShip.StoredLocation = new Ship.ShipLocation( EDDI.Instance.CurrentStarSystem,
+                            storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem,
                                 EDDI.Instance?.CurrentStation?.name, EDDI.Instance?.CurrentStation?.marketId );
                             storedShip.distance = 0;
                         }
@@ -604,7 +628,7 @@ namespace EddiShipMonitor
                             var stationData = systemData?.stations?.FirstOrDefault( s => s.marketId == ship.marketid );
                             ship.StoredLocation = systemData is null || stationData is null
                                 ? null
-                                : new Ship.ShipLocation( systemData, stationData?.name, stationData?.marketId );
+                                : new Ship.Location( systemData, stationData?.name, stationData?.marketId );
                             ship.distance = ship.DistanceLY( EDDI.Instance?.CurrentStarSystem );
                         }
                         else
@@ -612,7 +636,7 @@ namespace EddiShipMonitor
                             ship.StoredLocation =
                                 EDDI.Instance?.CurrentStarSystem is null || EDDI.Instance.CurrentStation is null
                                     ? null
-                                    : new Ship.ShipLocation( 
+                                    : new Ship.Location( 
                                         EDDI.Instance.CurrentStarSystem,
                                         EDDI.Instance.CurrentStation.name, 
                                         EDDI.Instance.CurrentStation.marketId );

@@ -534,7 +534,7 @@ namespace UnitTests
             var ship = new Ship
             {
                 LocalId = 9999,
-                StoredLocation = new Ship.ShipLocation( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ), "Furukawa Enterprise", 3534391808 )
+                StoredLocation = new Ship.Location( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ), "Furukawa Enterprise", 3534391808 )
             };
             shipMonitor.RemoveShip(9999);
             shipMonitor.AddShip(ship);

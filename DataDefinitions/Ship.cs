@@ -293,7 +293,7 @@ namespace EddiDataDefinitions
 
         private bool _hot = false;
 
-        public ShipLocation StoredLocation
+        public Location StoredLocation
         {
             get => _storedLocation;
             set 
@@ -309,7 +309,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
-        private ShipLocation _storedLocation;
+        private Location _storedLocation;
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         [ Utilities.PublicAPI, JsonIgnore ]
@@ -814,7 +814,7 @@ namespace EddiDataDefinitions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public class ShipLocation
+        public class Location
         {
             public string systemName { get; set; }
             public ulong systemAddress { get; set; }
@@ -826,7 +826,7 @@ namespace EddiDataDefinitions
 
             // Default constructor
             [JsonConstructor]
-            public ShipLocation ( string systemName, ulong systemAddress, decimal? x, decimal? y, decimal? z, string stationName, long? marketId )
+            public Location ( string systemName, ulong systemAddress, decimal? x, decimal? y, decimal? z, string stationName, long? marketId )
             {
                 this.systemName = systemName;
                 this.systemAddress = systemAddress;
@@ -837,7 +837,7 @@ namespace EddiDataDefinitions
                 this.marketId = marketId;
             }
 
-            public ShipLocation ( [NotNull] StarSystem starSystem, string stationName, long? marketId )
+            public Location ( [NotNull] StarSystem starSystem, string stationName, long? marketId )
             {
                 this.systemName = starSystem.systemname;
                 this.systemAddress = starSystem.systemAddress;
@@ -848,7 +848,7 @@ namespace EddiDataDefinitions
                 this.marketId = marketId;
             }
 
-            public ShipLocation ( [NotNull] NavWaypoint waypoint )
+            public Location ( [NotNull] NavWaypoint waypoint )
             {
                 this.systemName = waypoint.systemName;
                 this.systemAddress = waypoint.systemAddress;

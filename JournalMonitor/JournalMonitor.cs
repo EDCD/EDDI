@@ -1317,7 +1317,7 @@ namespace EddiJournalMonitor
                                                             shipSystemName ?? system, shipMarketID ?? marketId );
                                                     ship.StoredLocation = stationWaypoint is null 
                                                         ? null 
-                                                        : new Ship.ShipLocation( stationWaypoint );
+                                                        : new Ship.Location( stationWaypoint );
                                                     ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
                                                     shipyard.Add(ship);
                                                 }
