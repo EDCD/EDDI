@@ -183,4 +183,7 @@
   <data name="p5" xml:space="preserve">
     <value>EDDIは、船の設計を出力し、CoriolisやEDShipyard（外部ツール）に送ることができます。ツールを選択してください。</value>
   </data>
+  
+  
+  
 </root>
