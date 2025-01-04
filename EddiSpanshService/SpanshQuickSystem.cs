@@ -10,12 +10,12 @@ namespace EddiSpanshService
 {
     public partial class SpanshService
     {
-        // Uses the Spansh star system quick API (brief star system data), e.g. https://spansh.co.uk/api/search?q=3932277478106
+        // Uses the Spansh star system quick API (brief star system data), e.g. https://spansh.co.uk/api/system/3932277478106
         // Useful for quickly obtaining sparse system stations.
         public StarSystem GetQuickStarSystem(ulong systemAddress)
         {
             if ( systemAddress == 0 ) { return null; }
-            var request = new RestRequest($"search?q={systemAddress}");
+            var request = new RestRequest($"system/{systemAddress}");
             if (TryGetQuickSystem(request, out var quickStarSystem))
             {
                 return quickStarSystem;
@@ -47,14 +47,7 @@ namespace EddiSpanshService
                     {
                         Logging.Debug( "Spansh responded with: " + jResponse["error"] );
                     }
-
-                    var systemJToken = jResponse[ "results" ]?.FirstOrDefault( r =>
-                        r?[ "type" ]?.ToString() == "system" && 
-                        r[ "record" ]?[ "id64" ]?.ToObject<ulong?>() == jResponse[ "query" ]?.ToObject<ulong?>() );
-                    if ( systemJToken != null )
-                    {
-                        quickStarSystem = ParseQuickSystem( systemJToken[ "record" ] );
-                    }
+                    quickStarSystem = ParseQuickSystem( jResponse[ "record" ] );
                 }
                 catch ( Exception e )
                 {

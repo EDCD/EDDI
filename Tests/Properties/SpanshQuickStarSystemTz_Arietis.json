@@ -1,0 +1,2099 @@
+{
+  "record": {
+    "allegiance": "Federation",
+    "bodies": [
+      {
+        "distance_to_arrival": 0,
+        "estimated_mapping_value": 4578,
+        "estimated_scan_value": 1207,
+        "id": 13864825529761,
+        "id64": 13864825529761,
+        "is_main_star": true,
+        "name": "TZ Arietis",
+        "subtype": "M (Red dwarf) Star",
+        "type": "Star"
+      },
+      {
+        "distance_to_arrival": 6.913452,
+        "estimated_mapping_value": 56177,
+        "estimated_scan_value": 15462,
+        "id": 324273037996205500,
+        "id64": 324273037996205500,
+        "is_main_star": null,
+        "name": "TZ Arietis 1",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 12.299634,
+        "estimated_mapping_value": 54277,
+        "estimated_scan_value": 14939,
+        "id": 360301835015169500,
+        "id64": 360301835015169500,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Silicate Vapour Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Silicate Magma Lava Spout",
+            "type": "Lava Spout",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Silicate Vapour Gas Vent",
+            "type": "Gas Vent",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 2",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 823.094874,
+        "estimated_mapping_value": 17195,
+        "estimated_scan_value": 4733,
+        "id": 864704993280665000,
+        "id64": 864704993280665000,
+        "is_main_star": null,
+        "name": "TZ Arietis 3",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 821.478424,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 972791384337556900,
+        "id64": 972791384337556900,
+        "is_main_star": null,
+        "name": "TZ Arietis 3 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 823.888376,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0088201813565208e+18,
+        "id64": 1.0088201813565208e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 3 b",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 825.152394,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0448489783754848e+18,
+        "id64": 1.0448489783754848e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Installation",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 3 c",
+        "subtype": "Rocky Ice world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 801.878515,
+        "estimated_mapping_value": 2278,
+        "estimated_scan_value": 517,
+        "id": 1.0808777753944488e+18,
+        "id64": 1.0808777753944488e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 4",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1181.233684,
+        "estimated_mapping_value": 4028,
+        "estimated_scan_value": 1042,
+        "id": 1.1169065724134127e+18,
+        "id64": 1.1169065724134127e+18,
+        "is_main_star": null,
+        "name": "TZ Arietis 5",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1182.541098,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2249929634703048e+18,
+        "id64": 1.2249929634703048e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 5 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1185.056202,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2610217604892687e+18,
+        "id64": 1.2610217604892687e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Port",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 5 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1185.047082,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2970505575082327e+18,
+        "id64": 1.2970505575082327e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 5 b a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1189.152091,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.3330793545271967e+18,
+        "id64": 1.3330793545271967e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 5 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1172.33763,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.3691081515461606e+18,
+        "id64": 1.3691081515461606e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 5 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1169.051424,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4051369485651246e+18,
+        "id64": 1.4051369485651246e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 5 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1161.128091,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4411657455840886e+18,
+        "id64": 1.4411657455840886e+18,
+        "is_main_star": null,
+        "landmark_value": 11529000,
+        "landmarks": [
+          {
+            "count": 36,
+            "subtype": "Fonticulua Lapida",
+            "type": "Fonticulua",
+            "value": 3111000
+          },
+          {
+            "count": 2,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Port",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 31,
+            "subtype": "Bacterium Informem",
+            "type": "Bacterium",
+            "value": 8418000
+          }
+        ],
+        "name": "TZ Arietis 5 f",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1996.949146,
+        "estimated_mapping_value": 4104,
+        "estimated_scan_value": 1065,
+        "id": 2.08968409192544e+18,
+        "id64": 2.08968409192544e+18,
+        "is_main_star": null,
+        "name": "TZ Arietis 6",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1996.211347,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.161741685963368e+18,
+        "id64": 2.161741685963368e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 6 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1997.810257,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.197770482982332e+18,
+        "id64": 2.197770482982332e+18,
+        "is_main_star": null,
+        "name": "TZ Arietis 6 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1999.187682,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.233799280001296e+18,
+        "id64": 2.233799280001296e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 3,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "TZ Arietis 6 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1945.774271,
+        "estimated_mapping_value": 2321,
+        "estimated_scan_value": 530,
+        "id": 2.2698280770202598e+18,
+        "id64": 2.2698280770202598e+18,
+        "is_main_star": null,
+        "name": "TZ Arietis 7",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2939.565352,
+        "estimated_mapping_value": 3728,
+        "estimated_scan_value": 952,
+        "id": 2.3779144680771517e+18,
+        "id64": 2.3779144680771517e+18,
+        "is_main_star": null,
+        "name": "TZ Arietis 8",
+        "subtype": "Gas giant with water-based life",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 3075.724237,
+        "estimated_mapping_value": 2701,
+        "estimated_scan_value": 644,
+        "id": 2.4860008591340436e+18,
+        "id64": 2.4860008591340436e+18,
+        "is_main_star": null,
+        "name": "TZ Arietis 9",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4036.747782,
+        "estimated_mapping_value": 2698,
+        "estimated_scan_value": 643,
+        "id": 2.5220296561530076e+18,
+        "id64": 2.5220296561530076e+18,
+        "is_main_star": null,
+        "name": "TZ Arietis 10",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 24,
+    "controlling_minor_faction": "FrogCorp",
+    "controlling_minor_faction_state": "Boom",
+    "controlling_power": "Jerome Archer",
+    "estimated_mapping_value": 182958,
+    "estimated_scan_value": 48234,
+    "government": "Corporate",
+    "id64": 13864825529761,
+    "known_permit": false,
+    "landmark_value": 11529000,
+    "minor_faction_presences": [
+      {
+        "influence": 0.099798,
+        "name": "Bureau of TZ Arietis Law Party",
+        "state": "Famine"
+      },
+      {
+        "influence": 0.492944,
+        "name": "FrogCorp",
+        "state": "Boom"
+      },
+      {
+        "influence": 0.110887,
+        "name": "Future of EZ Aquarii",
+        "state": "None"
+      },
+      {
+        "influence": 0.043347,
+        "name": "George Pantazis Crimson Bridge",
+        "state": "None"
+      },
+      {
+        "influence": 0.077621,
+        "name": "Ross 154 Vision Partners",
+        "state": "Election"
+      },
+      {
+        "influence": 0.05746,
+        "name": "TZ Arietis Crimson Allied Inc",
+        "state": "Election"
+      },
+      {
+        "influence": 0.010081,
+        "name": "TZ Arietis Purple Council",
+        "state": "None"
+      },
+      {
+        "influence": 0.107863,
+        "name": "Workers of TZ Arietis Democrats",
+        "state": "None"
+      }
+    ],
+    "name": "TZ Arietis",
+    "needs_permit": false,
+    "population": 63823540,
+    "power": [
+      "Li Yong-Rui",
+      "Yuri Grom",
+      "Zemina Torval",
+      "Jerome Archer"
+    ],
+    "power_state": "Stronghold",
+    "primary_economy": "High Tech",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Refinery",
+    "security": "High",
+    "stations": [
+      {
+        "distance_to_arrival": 153473.048862,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "market_id": 3704822272,
+        "name": "VBL-47N",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 3923.166246,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3700377088,
+        "medium_pads": 4,
+        "name": "Q7K-8HW",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 1185.986495,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3700481280,
+        "medium_pads": 4,
+        "name": "H3W-GKL",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3702989056,
+        "medium_pads": 4,
+        "name": "T9J-79L",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702111744,
+        "medium_pads": 4,
+        "name": "FLV-32Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 153450.178809,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3707400192,
+        "medium_pads": 4,
+        "name": "X1F-69J",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3700067072,
+        "medium_pads": 4,
+        "name": "T1M-W2Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 12.299662,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3710185728,
+        "medium_pads": 4,
+        "name": "J0V-T3M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3708616448,
+        "medium_pads": 4,
+        "name": "KBN-74N",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707526400,
+        "medium_pads": 4,
+        "name": "V9V-N8G",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 824.324742,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702001408,
+        "medium_pads": 4,
+        "name": "H7Y-43B",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 827.495715,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3708408320,
+        "medium_pads": 4,
+        "name": "K9X-05M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3702277120,
+        "medium_pads": 4,
+        "name": "H1Z-2UZ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "market_id": 3701622016,
+        "name": "X4K-W8W",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3701848576,
+        "medium_pads": 4,
+        "name": "H7Y-34T",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3706364928,
+        "medium_pads": 4,
+        "name": "T8X-G6F",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 956.891821,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3710181632,
+        "medium_pads": 4,
+        "name": "T9Q-5XZ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3700456192,
+        "medium_pads": 4,
+        "name": "J0M-1TK",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 822.944553,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3704092928,
+        "medium_pads": 4,
+        "name": "K3X-06L",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.139629,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3703474688,
+        "medium_pads": 4,
+        "name": "K3T-G1J",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3702697216,
+        "medium_pads": 4,
+        "name": "HNT-0HW",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707519232,
+        "medium_pads": 4,
+        "name": "GHV-T9Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3703236352,
+        "medium_pads": 4,
+        "name": "V9M-BQZ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913393,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3703548672,
+        "medium_pads": 4,
+        "name": "N8H-01Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3700435456,
+        "medium_pads": 4,
+        "name": "G8L-N6V",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 7.437426,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3703995136,
+        "medium_pads": 4,
+        "name": "K2L-LVJ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913345,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "market_id": 3700335872,
+        "name": "X5F-T8G",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3702304000,
+        "medium_pads": 4,
+        "name": "W7T-28Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913347,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3706522880,
+        "medium_pads": 4,
+        "name": "N5Q-TVZ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 12.299652,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705019904,
+        "medium_pads": 4,
+        "name": "V9J-33Y",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 822.710151,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707290624,
+        "medium_pads": 4,
+        "name": "HFH-0QJ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707867648,
+        "medium_pads": 4,
+        "name": "GFX-8QV",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.564126,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3708257792,
+        "medium_pads": 4,
+        "name": "T6B-68N",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 23.088002,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3701562880,
+        "medium_pads": 4,
+        "name": "N3V-80Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913348,
+        "has_large_pad": true,
+        "large_pads": 8,
+        "market_id": 3708803328,
+        "medium_pads": 4,
+        "name": "Q8M-B4Q",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 823.066326,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702336256,
+        "medium_pads": 4,
+        "name": "J1X-71G",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913442,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3701217024,
+        "medium_pads": 4,
+        "name": "KFG-L1M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 1540.040601,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 8,
+        "market_id": 3704302848,
+        "medium_pads": 4,
+        "name": "V6N-62X",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 835.511911,
+        "has_large_pad": true,
+        "has_market": true,
+        "market_id": 3702381568,
+        "name": "QBG-99X",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 5375.565144,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3700096512,
+        "medium_pads": 4,
+        "name": "J8G-17G",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913456,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3700549888,
+        "medium_pads": 4,
+        "name": "X6W-33F",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 2039.660327,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3710174464,
+        "medium_pads": 4,
+        "name": "JZH-GHW",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 1055.656367,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3706476288,
+        "medium_pads": 4,
+        "name": "K4M-12B",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 823.09815,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3710243072,
+        "medium_pads": 4,
+        "name": "H0B-27W",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 3049.748467,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3710356224,
+        "medium_pads": 4,
+        "name": "Q2L-25H",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913467,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3709449984,
+        "medium_pads": 4,
+        "name": "GLX-21M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 1189.574941,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702411776,
+        "medium_pads": 4,
+        "name": "VHZ-L1Q",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 818.451253,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3706348032,
+        "medium_pads": 4,
+        "name": "J0B-BHJ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 822.902715,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3709588992,
+        "medium_pads": 4,
+        "name": "TFF-BXF",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 12.299626,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705470464,
+        "medium_pads": 4,
+        "name": "T8J-30Y",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913349,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3703272960,
+        "medium_pads": 4,
+        "name": "K6H-TVW",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 825.240686,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702809856,
+        "medium_pads": 4,
+        "name": "N6J-75Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3703661824,
+        "medium_pads": 4,
+        "name": "HZW-B1N",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 542.276585,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3704679168,
+        "medium_pads": 4,
+        "name": "HHQ-WKT",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 11.574659,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707371008,
+        "medium_pads": 4,
+        "name": "HNJ-67Q",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3701831424,
+        "medium_pads": 4,
+        "name": "YHY-34Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 12.299657,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3704172032,
+        "medium_pads": 4,
+        "name": "X5Y-01Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6574.760159,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3700050688,
+        "medium_pads": 4,
+        "name": "QFH-78K",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 37.148142,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "market_id": 3708334080,
+        "name": "HZK-NQT",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 121.846588,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3703961088,
+        "medium_pads": 4,
+        "name": "K7Q-T2M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705629952,
+        "medium_pads": 4,
+        "name": "T6M-NTJ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 607.0563,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3700628224,
+        "medium_pads": 4,
+        "name": "J1N-NHW",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3702842112,
+        "medium_pads": 4,
+        "name": "H6Z-67Y",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 394.511782,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3709756160,
+        "medium_pads": 4,
+        "name": "KBT-90B",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 3131.876699,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3701977088,
+        "medium_pads": 4,
+        "name": "B0G-9VZ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 824.321387,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3702997248,
+        "medium_pads": 4,
+        "name": "VNW-42Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707621632,
+        "medium_pads": 4,
+        "name": "Q6H-W7K",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 805.544421,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3710477568,
+        "medium_pads": 4,
+        "name": "J7Y-NHF",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.913445,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 8,
+        "market_id": 3706459136,
+        "medium_pads": 4,
+        "name": "XBZ-WKL",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 813.884175,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 7,
+        "market_id": 3228843776,
+        "medium_pads": 12,
+        "name": "Snyder Enterprise",
+        "small_pads": 7,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3701346304,
+        "medium_pads": 4,
+        "name": "XZQ-N0Y",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 12.299621,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702508800,
+        "medium_pads": 4,
+        "name": "HHW-80J",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 822.904704,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702502400,
+        "medium_pads": 4,
+        "name": "V2H-00W",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3707165184,
+        "medium_pads": 4,
+        "name": "V6F-11X",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 801.475553,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3706379520,
+        "medium_pads": 4,
+        "name": "T3Y-0KF",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3702888192,
+        "medium_pads": 4,
+        "name": "QNK-2XF",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3703663616,
+        "medium_pads": 4,
+        "name": "V8N-68Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 985.804552,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3707205632,
+        "medium_pads": 4,
+        "name": "V4M-N3B",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 1181.234316,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3710479104,
+        "medium_pads": 4,
+        "name": "Q5M-G0N",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 823.075711,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3710516480,
+        "medium_pads": 4,
+        "name": "T9Z-WXZ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707044608,
+        "medium_pads": 4,
+        "name": "TBZ-2TJ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3708912128,
+        "medium_pads": 4,
+        "name": "T9Z-GXQ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 12.299646,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3709928192,
+        "medium_pads": 4,
+        "name": "T7G-54V",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 12.29964,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705354240,
+        "medium_pads": 4,
+        "name": "H3T-14N",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 6.91346,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 2,
+        "market_id": 3930454529,
+        "medium_pads": 4,
+        "name": "Stronghold Carrier",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 820.515905,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3886263552,
+        "medium_pads": 0,
+        "name": "Kanu Prospecting Installation",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 820.239522,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886264064,
+        "medium_pads": 0,
+        "name": "Wan Synthetics Exchange",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 821.023118,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886263808,
+        "medium_pads": 0,
+        "name": "Cooper Engineering Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 824.430131,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886263296,
+        "medium_pads": 0,
+        "name": "Stelmah Minerology",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 822.895009,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3886263040,
+        "medium_pads": 0,
+        "name": "Diaw's Prominence",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 818.679365,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3886259456,
+        "medium_pads": 0,
+        "name": "Poirier Drilling Enterprise",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 825.152394,
+        "has_large_pad": false,
+        "market_id": 3534863616,
+        "name": "Hadamard Lab"
+      },
+      {
+        "distance_to_arrival": 821.224753,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886258432,
+        "medium_pads": 0,
+        "name": "Pyeon Manufacturing Silo",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 820.085756,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886258944,
+        "medium_pads": 0,
+        "name": "Spark Engineering Facility",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 823.226394,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886258688,
+        "medium_pads": 0,
+        "name": "Baker's Foundry",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 818.302936,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3886259200,
+        "medium_pads": 0,
+        "name": "Polubotok Entertainment Lodge",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 801.456815,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3888114176,
+        "medium_pads": 0,
+        "name": "Byun Industrial Holdings",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 817.757337,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3888114432,
+        "medium_pads": 0,
+        "name": "Kravchenko's Falls",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 801.878515,
+        "has_large_pad": false,
+        "market_id": 3534866432,
+        "name": "Pellegrino Terminal"
+      },
+      {
+        "distance_to_arrival": 814.738785,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3888113664,
+        "medium_pads": 0,
+        "name": "Khatri's Forge",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 801.475668,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3888113920,
+        "medium_pads": 0,
+        "name": "Riviere Manufacturing Installation",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1178.195123,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886264320,
+        "medium_pads": 0,
+        "name": "Wada's Globe",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1180.987524,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886258176,
+        "medium_pads": 0,
+        "name": "Antonaci's Workshop",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1183.667122,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886257664,
+        "medium_pads": 0,
+        "name": "Suarez's Gate",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1185.062506,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886257920,
+        "medium_pads": 0,
+        "name": "Markey Synthetics Depot",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1186.473722,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3534863872,
+        "medium_pads": 4,
+        "name": "Santos Depot",
+        "small_pads": 4,
+        "type": "Planetary Port"
+      },
+      {
+        "distance_to_arrival": 1186.551869,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3886256384,
+        "medium_pads": 0,
+        "name": "Nakamura Bridge",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1181.388137,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886262784,
+        "medium_pads": 0,
+        "name": "Margrave Manufacturing Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1180.933918,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 2,
+        "market_id": 3534864128,
+        "medium_pads": 2,
+        "name": "Puleston Horizons",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 1175.396274,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886262528,
+        "medium_pads": 0,
+        "name": "MacKinnon's Muse",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1188.53083,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3886264576,
+        "medium_pads": 1,
+        "name": "Rawlins's Quest",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1175.706032,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 2,
+        "market_id": 3534864640,
+        "medium_pads": 2,
+        "name": "Godwin Prospect",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 1169.051424,
+        "has_large_pad": false,
+        "market_id": 3534865664,
+        "name": "Meikle Vista"
+      },
+      {
+        "distance_to_arrival": 1165.531464,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886255616,
+        "medium_pads": 0,
+        "name": "Moreno Synthetics Silo",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1182.72836,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886256128,
+        "medium_pads": 0,
+        "name": "Durno Manufacturing Plant",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1169.051424,
+        "has_large_pad": false,
+        "market_id": 3886255360,
+        "name": "Palma's Reception"
+      },
+      {
+        "distance_to_arrival": 1169.051424,
+        "has_large_pad": false,
+        "market_id": 3886255872,
+        "name": "Jackson Synthetics Moulding"
+      },
+      {
+        "distance_to_arrival": 1175.367329,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3886256896,
+        "medium_pads": 0,
+        "name": "Serduk Industrial Workshop",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1197.309837,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886257152,
+        "medium_pads": 0,
+        "name": "Bellegrade Engineering",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1165.321615,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886256640,
+        "medium_pads": 0,
+        "name": "Li Manufacturing Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1161.74338,
+        "has_large_pad": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3791334400,
+        "medium_pads": 4,
+        "name": "Jernigan Arsenal",
+        "small_pads": 4,
+        "type": "Planetary Port"
+      },
+      {
+        "distance_to_arrival": 1162.525355,
+        "has_large_pad": true,
+        "has_outfitting": true,
+        "large_pads": 2,
+        "market_id": 3791334912,
+        "medium_pads": 4,
+        "name": "Meaney Camp",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 1165.303085,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886257408,
+        "medium_pads": 0,
+        "name": "Rawlins Tourist District",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1164.026525,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3791334656,
+        "medium_pads": 4,
+        "name": "Pashin Prospect",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 1997.265237,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3886259712,
+        "medium_pads": 0,
+        "name": "Makubuya Synthetics Exchange",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1997.272542,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3886259968,
+        "medium_pads": 0,
+        "name": "Broutsos Chemical Productions",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1996.211347,
+        "has_large_pad": false,
+        "market_id": 3534865408,
+        "name": "Ziljak Base"
+      },
+      {
+        "distance_to_arrival": 1996.211347,
+        "has_large_pad": false,
+        "market_id": 3886260224,
+        "name": "Jawara's Edge"
+      },
+      {
+        "distance_to_arrival": 1996.229775,
+        "has_large_pad": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3534865152,
+        "medium_pads": 4,
+        "name": "McDaniel Landing",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 1989.180912,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886261760,
+        "medium_pads": 0,
+        "name": "Nunez Manufacturing Workshop",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1996.955022,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886262272,
+        "medium_pads": 0,
+        "name": "Indongo Chemical Workshop",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2001.026127,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886262016,
+        "medium_pads": 0,
+        "name": "Martin Synthetics Depot",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1997.540766,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3886261504,
+        "medium_pads": 0,
+        "name": "Chakraborty's Tranquility",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1996.576124,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886260992,
+        "medium_pads": 0,
+        "name": "Laflamme Synthetics Foundry",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1999.187682,
+        "has_large_pad": false,
+        "market_id": 3534866176,
+        "name": "Asire Refinery"
+      },
+      {
+        "distance_to_arrival": 1996.167121,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886260480,
+        "medium_pads": 0,
+        "name": "Poulton's Junction",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1995.953358,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886260736,
+        "medium_pads": 0,
+        "name": "Moulin Chemical Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1999.108738,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3886261248,
+        "medium_pads": 0,
+        "name": "Bhardwaj Synthetics Installation",
+        "small_pads": 0,
+        "type": "Settlement"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-04 04:02:52+00",
+    "x": -5.375,
+    "y": -10.59375,
+    "z": -8.5
+  }
+}

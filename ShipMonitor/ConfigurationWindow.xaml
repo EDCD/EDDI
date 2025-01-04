@@ -4,12 +4,44 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+             xmlns:defs="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:local="clr-namespace:EddiShipMonitor"
              xmlns:resx="clr-namespace:EddiShipMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="shipDetailsTemplate" DataType="{x:Type defs:Ship}">
+            <Grid Background="Azure">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Margin="25, 0, 0, 0">
+                    <Run Text="{x:Static resx:ShipMonitor.header_ship_ID}"/>
+                    <Run Text=":"/>
+                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=ident}" Margin="10, 0, 10, 0"/>
+                <TextBlock Grid.Column="2" Grid.Row="0" Margin="10, 0, 10, 0">
+                    <Run Text="{x:Static resx:ShipMonitor.header_station_name}"/>
+                    <Run Text=":"/>
+                </TextBlock>
+                <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding Path=StoredLocation.stationName}" Margin="10, 0, 10, 0"/>
+                <TextBlock Grid.Column="4" Grid.Row="0" Margin="5, 0, 5, 0">
+                    <Run Text="{x:Static resx:ShipMonitor.header_value}"/>
+                    <Run Text=":"/>
+                </TextBlock>
+                <TextBlock Grid.Column="5" Grid.Row="0" Text="{Binding Path=value, StringFormat=\{0:N0\}}" Margin="5, 0, 0, 0"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:ShipMonitor.p1}" VerticalAlignment="Top"/>
         <RichTextBox DockPanel.Dock="Top" Margin="0"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
@@ -41,10 +73,17 @@
         </Grid >
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated" HeadersVisibility="Column">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_ship_ID}" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:ShipMonitor.header_value}" IsReadOnly="True" Binding="{Binding Path=value, StringFormat=\{0:N0\}}">
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ToggleButton Content="⯈" Click="RowDetailsButtonClick" ToolTip="{x:Static resx:ShipMonitor.extra_details_tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"/>
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"/>
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_location}" IsReadOnly="True" Binding="{Binding Path=StoredLocation.systemName}"/>
+                <utility:DataGridNumericColumn Header="{x:Static resx:ShipMonitor.header_distanceLY}" IsReadOnly="True" Binding="{Binding Path=distance, StringFormat=\{0:N0\}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -52,7 +91,6 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_location}" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_hot}" IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
@@ -69,7 +107,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.Sorted}}">
+                <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static defs:Role.Sorted}}">
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
                             <EventSetter Event="SelectionChanged" Handler="shipsUpdated" />
@@ -105,12 +143,25 @@
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="eddi:Ship">
+                        <DataTemplate DataType="defs:Ship">
                             <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip" Content="{x:Static resx:ShipMonitor.export_it_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate DataType="{x:Type defs:Ship}">
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="ContentTemplate"
+                                        Value="{StaticResource shipDetailsTemplate}" />
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+
         </DataGrid>
     </DockPanel>
 </UserControl>

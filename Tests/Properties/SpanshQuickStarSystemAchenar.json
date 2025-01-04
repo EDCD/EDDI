@@ -1,634 +1,594 @@
 {
-  "count": 2,
-  "query": "164098653",
-  "results": [
-    {
-      "record": {
-        "allegiance": "Empire",
-        "bodies": [
-          {
-            "distance_to_arrival": 0,
-            "estimated_mapping_value": 5138,
-            "estimated_scan_value": 1375,
-            "id": 164098653,
-            "id64": 164098653,
-            "is_main_star": true,
-            "name": "Achenar",
-            "subtype": "B (Blue-White) Star",
-            "type": "Star"
-          },
-          {
-            "distance_to_arrival": 755.493802,
-            "estimated_mapping_value": 106848,
-            "estimated_scan_value": 29408,
-            "id": 36028797183062620,
-            "id64": 36028797183062620,
-            "is_main_star": null,
-            "name": "Achenar 1",
-            "subtype": "Metal-rich body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1261.485052,
-            "estimated_mapping_value": 125789,
-            "estimated_scan_value": 34621,
-            "id": 72057594202026600,
-            "id64": 72057594202026600,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 6,
-                "subtype": "Sulphur Dioxide Gas Vent",
-                "type": "Gas Vent",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Tourist Beacon",
-                "type": "Tourist Beacon",
-                "value": 0
-              },
-              {
-                "count": 7,
-                "subtype": "Sulphur Dioxide Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              }
-            ],
-            "name": "Achenar 2",
-            "subtype": "Metal-rich body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2336.242207,
-            "estimated_mapping_value": 76815,
-            "estimated_scan_value": 21142,
-            "id": 108086391220990560,
-            "id64": 108086391220990560,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 18,
-                "subtype": "Silicate Vapour Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 14,
-                "subtype": "Silicate Magma Lava Spout",
-                "type": "Lava Spout",
-                "value": 0
-              },
-              {
-                "count": 12,
-                "subtype": "Silicate Vapour Gas Vent",
-                "type": "Gas Vent",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Surface Station",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Achenar 3",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 5831.373872,
-            "estimated_mapping_value": 3018,
-            "estimated_scan_value": 739,
-            "id": 144115188239954530,
-            "id64": 144115188239954530,
-            "is_main_star": null,
-            "name": "Achenar 4",
-            "subtype": "Class III gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 5828.392867,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 180143985258918500,
-            "id64": 180143985258918500,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 2,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Achenar 4a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 12555.967687,
-            "estimated_mapping_value": 53503,
-            "estimated_scan_value": 14726,
-            "id": 216172782277882460,
-            "id64": 216172782277882460,
-            "is_main_star": null,
-            "name": "Achenar 5",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 20808.514708,
-            "estimated_mapping_value": 4184,
-            "estimated_scan_value": 1089,
-            "id": 252201579296846430,
-            "id64": 252201579296846430,
-            "is_main_star": null,
-            "name": "Achenar 6",
-            "subtype": "Class III gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 20800.218798,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 288230376315810370,
-            "id64": 288230376315810370,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 3,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Tourist Beacon",
-                "type": "Tourist Beacon",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Yamaha's Grave",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 20788.098814,
-            "estimated_mapping_value": 928014,
-            "estimated_scan_value": 255417,
-            "id": 324259173334774340,
-            "id64": 324259173334774340,
-            "is_main_star": null,
-            "name": "New World",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Terraformed",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 20748.481652,
-            "estimated_mapping_value": 998711,
-            "estimated_scan_value": 274875,
-            "id": 360287970353738300,
-            "id64": 360287970353738300,
-            "is_main_star": null,
-            "name": "Conversion",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Terraformed",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 20928.087955,
-            "estimated_mapping_value": 1080785,
-            "estimated_scan_value": 297464,
-            "id": 396316767372702300,
-            "id64": 396316767372702300,
-            "is_main_star": null,
-            "name": "Capitol",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 42367.530418,
-            "estimated_mapping_value": 81647,
-            "estimated_scan_value": 22472,
-            "id": 432345564391666240,
-            "id64": 432345564391666240,
-            "is_main_star": null,
-            "name": "Achenar 7",
-            "subtype": "Class II gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 119254.239502,
-            "estimated_mapping_value": 14481,
-            "estimated_scan_value": 3986,
-            "id": 468374361410630200,
-            "id64": 468374361410630200,
-            "is_main_star": null,
-            "name": "Achenar 8",
-            "subtype": "Class I gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 202596.085251,
-            "estimated_mapping_value": 4648,
-            "estimated_scan_value": 1228,
-            "id": 504403158429594200,
-            "id64": 504403158429594200,
-            "is_main_star": null,
-            "name": "Achenar 9",
-            "subtype": "Class IV gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          }
-        ],
-        "body_count": 15,
-        "controlling_minor_faction": "Achenar Empire League",
-        "controlling_minor_faction_state": "None",
-        "controlling_power": "A. Lavigny-Duval",
-        "estimated_mapping_value": 3488023,
-        "estimated_scan_value": 959542,
-        "government": "Patronage",
-        "id64": 164098653,
-        "known_permit": true,
-        "landmark_value": 0,
-        "minor_faction_presences": [
-          {
-            "influence": 0.063126,
-            "name": "Achenar Comms Co",
-            "state": "None"
-          },
-          {
-            "influence": 0.633267,
-            "name": "Achenar Empire League",
-            "state": "None"
-          },
-          {
-            "influence": 0.074148,
-            "name": "Achenar Empire Party",
-            "state": "None"
-          },
-          {
-            "influence": 0.06513,
-            "name": "Achenar Jet Organisation",
-            "state": "None"
-          },
-          {
-            "influence": 0.05511,
-            "name": "Achenar Universal Incorporated",
-            "state": "None"
-          },
-          {
-            "influence": 0.01002,
-            "name": "Free Marlinists of Carinae",
-            "state": "None"
-          },
-          {
-            "influence": 0.099198,
-            "name": "United Condovichs Freedom Party",
-            "state": "None"
-          }
-        ],
-        "name": "Achenar",
-        "needs_permit": true,
-        "population": 16380054761,
-        "power": [
-          "A. Lavigny-Duval",
-          "Aisling Duval"
-        ],
-        "power_state": "Stronghold",
-        "primary_economy": "Refinery",
-        "region": "Inner Orion Spur",
-        "secondary_economy": "Service",
-        "security": "High",
-        "stations": [
-          {
-            "distance_to_arrival": 20791.639294,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128048896,
-            "medium_pads": 18,
-            "name": "Bell Terminal",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 12556.053039,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3222038784,
-            "medium_pads": 1,
-            "name": "Wilson Vision",
-            "small_pads": 4,
-            "type": "Outpost"
-          },
-          {
-            "distance_to_arrival": 20782.345953,
-            "has_large_pad": false,
-            "has_market": true,
-            "has_outfitting": true,
-            "market_id": 128975985,
-            "name": "Rescue Ship - Dawes Hub",
-            "type": "Mega ship"
-          },
-          {
-            "distance_to_arrival": 42367.812112,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3222039040,
-            "medium_pads": 1,
-            "name": "Peters City",
-            "small_pads": 2,
-            "type": "Outpost"
-          },
-          {
-            "distance_to_arrival": 119254.532044,
-            "has_large_pad": false,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 0,
-            "market_id": 3222039296,
-            "medium_pads": 1,
-            "name": "Kagawa Station",
-            "small_pads": 4,
-            "type": "Outpost"
-          },
-          {
-            "distance_to_arrival": 20929.505454,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 3222038272,
-            "medium_pads": 18,
-            "name": "Dawes Hub",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 2336.252973,
-            "has_large_pad": false,
-            "large_pads": 0,
-            "market_id": 3222038528,
-            "medium_pads": 1,
-            "name": "Jones Dock",
-            "small_pads": 2,
-            "type": "Outpost"
-          },
-          {
-            "distance_to_arrival": 20795.950259,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128048640,
-            "medium_pads": 18,
-            "name": "Baker Terminal",
-            "small_pads": 17,
-            "type": "Coriolis Starport"
-          },
-          {
-            "distance_to_arrival": 20750.485068,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128049674,
-            "medium_pads": 18,
-            "name": "Macmillan Terminal",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 755.480458,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 1,
-            "market_id": 128977777,
-            "medium_pads": 2,
-            "name": "Fairfax Vision",
-            "small_pads": 4,
-            "type": "Mega ship"
-          },
-          {
-            "distance_to_arrival": 755.493802,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 2,
-            "market_id": 3930437889,
-            "medium_pads": 4,
-            "name": "Stronghold Carrier",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 2336.242207,
-            "has_large_pad": false,
-            "market_id": 3504577792,
-            "name": "Brill Works"
-          },
-          {
-            "distance_to_arrival": 5828.392867,
-            "has_large_pad": false,
-            "market_id": 3504578560,
-            "name": "Zhuravleva Relay ++"
-          },
-          {
-            "distance_to_arrival": 5828.392867,
-            "has_large_pad": false,
-            "market_id": 3504578304,
-            "name": "Hoffleit Landing"
-          },
-          {
-            "distance_to_arrival": 5831.585385,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 4,
-            "market_id": 3504578048,
-            "medium_pads": 4,
-            "name": "Greenstein Silo",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 5830.767908,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 3,
-            "market_id": 128680839,
-            "medium_pads": 3,
-            "name": "Fortune's Loss",
-            "small_pads": 2,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 5833.034582,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3805222400,
-            "medium_pads": 0,
-            "name": "Hogan Agricultural Biome",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 5830.527746,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3805222912,
-            "medium_pads": 1,
-            "name": "Acharya Arms Site",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 5828.698339,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3805222656,
-            "medium_pads": 0,
-            "name": "Arba Botanical Estate",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 20800.218798,
-            "has_large_pad": false,
-            "market_id": 3504578816,
-            "name": "Friedman Holdings"
-          },
-          {
-            "distance_to_arrival": 20801.479606,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3805221632,
-            "medium_pads": 1,
-            "name": "Nishimura's Haunt",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 20801.558481,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3805222144,
-            "medium_pads": 0,
-            "name": "Suk Horticultural Garden",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 20799.687647,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3805221888,
-            "medium_pads": 0,
-            "name": "Tuvey Nutrition Base",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 20795.131315,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 4,
-            "market_id": 3504577536,
-            "medium_pads": 4,
-            "name": "Baynes Horizons",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          }
-        ],
-        "thargoid_war_failure_state": "None",
-        "thargoid_war_state": "None",
-        "thargoid_war_success_state": "None",
-        "updated_at": "2024-12-07 21:19:04+00",
-        "x": 67.5,
-        "y": -119.46875,
-        "z": 24.84375
-      },
-      "type": "system"
-    },
-    {
-      "record": {
-        "age": 2,
-        "atmosphere": "No atmosphere",
-        "axis_tilt": 0.073172,
-        "body_id": 0,
+  "record": {
+    "allegiance": "Empire",
+    "bodies": [
+      {
         "distance_to_arrival": 0,
         "estimated_mapping_value": 5138,
         "estimated_scan_value": 1375,
+        "id": 164098653,
         "id64": 164098653,
         "is_main_star": true,
-        "is_rotational_period_tidally_locked": false,
-        "luminosity_class": "V",
         "name": "Achenar",
-        "rotational_period": 1.59499205984954,
-        "solar_masses": 9.714844,
-        "solar_radius": 4.06927477785766,
-        "spectral_class": "B6",
         "subtype": "B (Blue-White) Star",
-        "surface_temperature": 23624,
-        "system_controlling_power": "A. Lavigny-Duval",
-        "system_id64": 164098653,
-        "system_name": "Achenar",
-        "system_power_state": "Stronghold",
-        "system_region": "Inner Orion Spur",
-        "system_x": 67.5,
-        "system_y": -119.46875,
-        "system_z": 24.84375,
-        "type": "Star",
-        "updated_at": "2024-12-07 21:19:04+00"
+        "type": "Star"
       },
-      "type": "body"
-    }
-  ]
+      {
+        "distance_to_arrival": 755.493802,
+        "estimated_mapping_value": 106848,
+        "estimated_scan_value": 29408,
+        "id": 36028797183062620,
+        "id64": 36028797183062620,
+        "is_main_star": null,
+        "name": "Achenar 1",
+        "subtype": "Metal-rich body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1261.485052,
+        "estimated_mapping_value": 125789,
+        "estimated_scan_value": 34621,
+        "id": 72057594202026600,
+        "id64": 72057594202026600,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 6,
+            "subtype": "Sulphur Dioxide Gas Vent",
+            "type": "Gas Vent",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Tourist Beacon",
+            "type": "Tourist Beacon",
+            "value": 0
+          },
+          {
+            "count": 7,
+            "subtype": "Sulphur Dioxide Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          }
+        ],
+        "name": "Achenar 2",
+        "subtype": "Metal-rich body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2336.242207,
+        "estimated_mapping_value": 76815,
+        "estimated_scan_value": 21142,
+        "id": 108086391220990560,
+        "id64": 108086391220990560,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 18,
+            "subtype": "Silicate Vapour Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 14,
+            "subtype": "Silicate Magma Lava Spout",
+            "type": "Lava Spout",
+            "value": 0
+          },
+          {
+            "count": 12,
+            "subtype": "Silicate Vapour Gas Vent",
+            "type": "Gas Vent",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Achenar 3",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 5831.373872,
+        "estimated_mapping_value": 3018,
+        "estimated_scan_value": 739,
+        "id": 144115188239954530,
+        "id64": 144115188239954530,
+        "is_main_star": null,
+        "name": "Achenar 4",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 5829.925415,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 180143985258918500,
+        "id64": 180143985258918500,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Achenar 4a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 12555.967687,
+        "estimated_mapping_value": 53503,
+        "estimated_scan_value": 14726,
+        "id": 216172782277882460,
+        "id64": 216172782277882460,
+        "is_main_star": null,
+        "name": "Achenar 5",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 20808.514708,
+        "estimated_mapping_value": 4184,
+        "estimated_scan_value": 1089,
+        "id": 252201579296846430,
+        "id64": 252201579296846430,
+        "is_main_star": null,
+        "name": "Achenar 6",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 20811.877916,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 288230376315810370,
+        "id64": 288230376315810370,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 4,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Tourist Beacon",
+            "type": "Tourist Beacon",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Yamaha's Grave",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 20838.043807,
+        "estimated_mapping_value": 928014,
+        "estimated_scan_value": 255417,
+        "id": 324259173334774340,
+        "id64": 324259173334774340,
+        "is_main_star": null,
+        "name": "New World",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Terraformed",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 20787.44961,
+        "estimated_mapping_value": 998711,
+        "estimated_scan_value": 274875,
+        "id": 360287970353738300,
+        "id64": 360287970353738300,
+        "is_main_star": null,
+        "name": "Conversion",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Terraformed",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 20947.409127,
+        "estimated_mapping_value": 1080785,
+        "estimated_scan_value": 297464,
+        "id": 396316767372702300,
+        "id64": 396316767372702300,
+        "is_main_star": null,
+        "name": "Capitol",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 42367.530418,
+        "estimated_mapping_value": 81647,
+        "estimated_scan_value": 22472,
+        "id": 432345564391666240,
+        "id64": 432345564391666240,
+        "is_main_star": null,
+        "name": "Achenar 7",
+        "subtype": "Class II gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 119254.239502,
+        "estimated_mapping_value": 14481,
+        "estimated_scan_value": 3986,
+        "id": 468374361410630200,
+        "id64": 468374361410630200,
+        "is_main_star": null,
+        "name": "Achenar 8",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 202596.085251,
+        "estimated_mapping_value": 4648,
+        "estimated_scan_value": 1228,
+        "id": 504403158429594200,
+        "id64": 504403158429594200,
+        "is_main_star": null,
+        "name": "Achenar 9",
+        "subtype": "Class IV gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 15,
+    "controlling_minor_faction": "Achenar Empire League",
+    "controlling_minor_faction_state": "Boom",
+    "controlling_power": "A. Lavigny-Duval",
+    "estimated_mapping_value": 3488023,
+    "estimated_scan_value": 959542,
+    "government": "Patronage",
+    "id64": 164098653,
+    "known_permit": true,
+    "landmark_value": 0,
+    "minor_faction_presences": [
+      {
+        "influence": 0.047379,
+        "name": "Achenar Comms Co",
+        "state": "None"
+      },
+      {
+        "influence": 0.673387,
+        "name": "Achenar Empire League",
+        "state": "Boom"
+      },
+      {
+        "influence": 0.050403,
+        "name": "Achenar Empire Party",
+        "state": "None"
+      },
+      {
+        "influence": 0.081653,
+        "name": "Achenar Jet Organisation",
+        "state": "None"
+      },
+      {
+        "influence": 0.065524,
+        "name": "Achenar Universal Incorporated",
+        "state": "None"
+      },
+      {
+        "influence": 0.010081,
+        "name": "Free Marlinists of Carinae",
+        "state": "Retreat"
+      },
+      {
+        "influence": 0.071573,
+        "name": "United Condovichs Freedom Party",
+        "state": "None"
+      }
+    ],
+    "name": "Achenar",
+    "needs_permit": true,
+    "population": 16380054761,
+    "power": [
+      "A. Lavigny-Duval",
+      "Aisling Duval"
+    ],
+    "power_state": "Stronghold",
+    "primary_economy": "Refinery",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Service",
+    "security": "High",
+    "stations": [
+      {
+        "distance_to_arrival": 12555.903403,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3222038784,
+        "medium_pads": 1,
+        "name": "Wilson Vision",
+        "small_pads": 4,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 20782.345953,
+        "has_large_pad": false,
+        "has_market": true,
+        "has_outfitting": true,
+        "market_id": 128975985,
+        "name": "Rescue Ship - Dawes Hub",
+        "type": "Mega ship"
+      },
+      {
+        "distance_to_arrival": 20786.653945,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128049674,
+        "medium_pads": 18,
+        "name": "Macmillan Terminal",
+        "small_pads": 17,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 42367.555244,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3222039040,
+        "medium_pads": 1,
+        "name": "Peters City",
+        "small_pads": 2,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 119253.494733,
+        "has_large_pad": false,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 0,
+        "market_id": 3222039296,
+        "medium_pads": 1,
+        "name": "Kagawa Station",
+        "small_pads": 4,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 20813.58585,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128048640,
+        "medium_pads": 18,
+        "name": "Baker Terminal",
+        "small_pads": 17,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 20837.69777,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128048896,
+        "medium_pads": 18,
+        "name": "Bell Terminal",
+        "small_pads": 17,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 2336.275849,
+        "has_large_pad": false,
+        "large_pads": 0,
+        "market_id": 3222038528,
+        "medium_pads": 1,
+        "name": "Jones Dock",
+        "small_pads": 2,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 20947.737681,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 3222038272,
+        "medium_pads": 18,
+        "name": "Dawes Hub",
+        "small_pads": 17,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 755.480114,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 1,
+        "market_id": 128977777,
+        "medium_pads": 2,
+        "name": "Fairfax Vision",
+        "small_pads": 4,
+        "type": "Mega ship"
+      },
+      {
+        "distance_to_arrival": 755.493802,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 2,
+        "market_id": 3930437889,
+        "medium_pads": 4,
+        "name": "Stronghold Carrier",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 2336.242207,
+        "has_large_pad": false,
+        "market_id": 3504577792,
+        "name": "Brill Works"
+      },
+      {
+        "distance_to_arrival": 5829.925415,
+        "has_large_pad": false,
+        "market_id": 3504578560,
+        "name": "Zhuravleva Relay ++"
+      },
+      {
+        "distance_to_arrival": 5829.925415,
+        "has_large_pad": false,
+        "market_id": 3504578304,
+        "name": "Hoffleit Landing"
+      },
+      {
+        "distance_to_arrival": 5830.488798,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3805222400,
+        "medium_pads": 0,
+        "name": "Hogan Agricultural Biome",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 5830.527746,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3805222912,
+        "medium_pads": 1,
+        "name": "Acharya Arms Site",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 5828.698339,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3805222656,
+        "medium_pads": 0,
+        "name": "Arba Botanical Estate",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 5831.157334,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 3,
+        "market_id": 128680839,
+        "medium_pads": 3,
+        "name": "Fortune's Loss",
+        "small_pads": 2,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 5828.909943,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3504578048,
+        "medium_pads": 4,
+        "name": "Greenstein Silo",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 20811.877916,
+        "has_large_pad": false,
+        "market_id": 3504578816,
+        "name": "Friedman Holdings"
+      },
+      {
+        "distance_to_arrival": 20813.032345,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3805221632,
+        "medium_pads": 1,
+        "name": "Nishimura's Haunt",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 20801.558481,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3805222144,
+        "medium_pads": 0,
+        "name": "Suk Horticultural Garden",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 20796.683927,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3805221888,
+        "medium_pads": 0,
+        "name": "Tuvey Nutrition Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 20795.131315,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3504577536,
+        "medium_pads": 4,
+        "name": "Baynes Horizons",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-04 03:50:10+00",
+    "x": 67.5,
+    "y": -119.46875,
+    "z": 24.84375
+  }
 }

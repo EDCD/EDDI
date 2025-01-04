@@ -1,244 +1,207 @@
 {
-  "count": 2,
-  "query": "2724879894859",
-  "results": [
-    {
-      "record": {
-        "allegiance": "Independent",
-        "bodies": [
-          {
-            "distance_to_arrival": 0,
-            "estimated_mapping_value": 4641,
-            "estimated_scan_value": 1226,
-            "id": 2724879894859,
-            "id64": 2724879894859,
-            "is_main_star": true,
-            "name": "Pleiades Sector HR-W d1-79",
-            "subtype": "F (White) Star",
-            "type": "Star"
-          },
-          {
-            "distance_to_arrival": 454.411581,
-            "estimated_mapping_value": 49252,
-            "estimated_scan_value": 13556,
-            "id": 36031521898858824,
-            "id64": 36031521898858824,
-            "is_main_star": null,
-            "name": "Pleiades Sector HR-W d1-79 1",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 453.886268,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 72060318917822800,
-            "id64": 72060318917822800,
-            "is_main_star": null,
-            "name": "Pleiades Sector HR-W d1-79 1 a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 803.762744,
-            "estimated_mapping_value": 539455,
-            "estimated_scan_value": 148474,
-            "id": 108089115936786770,
-            "id64": 108089115936786770,
-            "is_main_star": null,
-            "landmark_value": 1689800,
-            "landmarks": [
-              {
-                "count": 39,
-                "subtype": "Bacterium Cerbrus",
-                "type": "Bacterium",
-                "value": 1689800
-              }
-            ],
-            "name": "Pleiades Sector HR-W d1-79 2",
-            "subtype": "High metal content world",
-            "terraforming_state": "Terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 3667.668117,
-            "estimated_mapping_value": 49634,
-            "estimated_scan_value": 13661,
-            "id": 144117912955750720,
-            "id64": 144117912955750720,
-            "is_main_star": null,
-            "name": "Pleiades Sector HR-W d1-79 3",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4629.067966,
-            "estimated_mapping_value": 50019,
-            "estimated_scan_value": 13767,
-            "id": 180146709974714700,
-            "id64": 180146709974714700,
-            "is_main_star": null,
-            "name": "Pleiades Sector HR-W d1-79 4",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 5983.753193,
-            "estimated_mapping_value": 51712,
-            "estimated_scan_value": 14233,
-            "id": 216175506993678660,
-            "id64": 216175506993678660,
-            "is_main_star": null,
-            "name": "Pleiades Sector HR-W d1-79 5",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 5988.236935,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 252204304012642620,
-            "id64": 252204304012642620,
-            "is_main_star": null,
-            "name": "Pleiades Sector HR-W d1-79 5 a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 9275.840035,
-            "estimated_mapping_value": 49656,
-            "estimated_scan_value": 13667,
-            "id": 288233101031606600,
-            "id64": 288233101031606600,
-            "is_main_star": null,
-            "name": "Pleiades Sector HR-W d1-79 6",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          }
-        ],
-        "body_count": 9,
-        "estimated_mapping_value": 798811,
-        "estimated_scan_value": 219584,
-        "government": "Prison",
-        "id64": 2724879894859,
-        "known_permit": false,
-        "landmark_value": 1689800,
-        "name": "Pleiades Sector HR-W d1-79",
-        "needs_permit": false,
-        "population": 0,
-        "primary_economy": "Extraction",
-        "region": "Inner Orion Spur",
-        "secondary_economy": "None",
-        "security": "High",
-        "stations": [
-          {
-            "distance_to_arrival": 12.733588,
-            "has_large_pad": true,
-            "has_market": true,
-            "market_id": 3704722944,
-            "name": "K2V-6KM",
-            "type": "Drake-Class Carrier"
-          },
-          {
-            "distance_to_arrival": 0,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 8,
-            "market_id": 3705692672,
-            "medium_pads": 4,
-            "name": "QBX-36M",
-            "small_pads": 4,
-            "type": "Drake-Class Carrier"
-          },
-          {
-            "distance_to_arrival": 739.114411,
-            "has_large_pad": true,
-            "has_market": true,
-            "market_id": 3701756672,
-            "name": "K5B-1TN",
-            "type": "Drake-Class Carrier"
-          },
-          {
-            "distance_to_arrival": 803.77964,
-            "has_large_pad": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 1,
-            "market_id": 128833431,
-            "medium_pads": 2,
-            "name": "The Penitent",
-            "small_pads": 4,
-            "type": "Mega ship"
-          },
-          {
-            "distance_to_arrival": 0,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 8,
-            "market_id": 3706688256,
-            "medium_pads": 4,
-            "name": "T6Z-86N",
-            "small_pads": 4,
-            "type": "Drake-Class Carrier"
-          },
-          {
-            "distance_to_arrival": 803.755358,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 8,
-            "market_id": 3700423936,
-            "medium_pads": 4,
-            "name": "K5B-W9K",
-            "small_pads": 4,
-            "type": "Drake-Class Carrier"
-          }
-        ],
-        "thargoid_war_failure_state": "None",
-        "thargoid_war_state": "None",
-        "thargoid_war_success_state": "None",
-        "updated_at": "2024-12-07 22:21:04+00",
-        "x": -80.625,
-        "y": -146.65625,
-        "z": -343.25
-      },
-      "type": "system"
-    },
-    {
-      "record": {
-        "age": 1216,
-        "atmosphere": "No atmosphere",
-        "axis_tilt": 0,
-        "body_id": 0,
+  "record": {
+    "allegiance": "Independent",
+    "bodies": [
+      {
         "distance_to_arrival": 0,
         "estimated_mapping_value": 4641,
         "estimated_scan_value": 1226,
+        "id": 2724879894859,
         "id64": 2724879894859,
         "is_main_star": true,
-        "luminosity_class": "Vab",
         "name": "Pleiades Sector HR-W d1-79",
-        "rotational_period": 3.03146012940972,
-        "solar_masses": 1.4375,
-        "solar_radius": 1.23007190222861,
-        "spectral_class": "F6",
         "subtype": "F (White) Star",
-        "surface_temperature": 6591,
-        "system_id64": 2724879894859,
-        "system_name": "Pleiades Sector HR-W d1-79",
-        "system_region": "Inner Orion Spur",
-        "system_x": -80.625,
-        "system_y": -146.65625,
-        "system_z": -343.25,
-        "type": "Star",
-        "updated_at": "2024-12-04 07:09:19+00"
+        "type": "Star"
       },
-      "type": "body"
-    }
-  ]
+      {
+        "distance_to_arrival": 454.387053,
+        "estimated_mapping_value": 49252,
+        "estimated_scan_value": 13556,
+        "id": 36031521898858824,
+        "id64": 36031521898858824,
+        "is_main_star": null,
+        "name": "Pleiades Sector HR-W d1-79 1",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 454.234971,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 72060318917822800,
+        "id64": 72060318917822800,
+        "is_main_star": null,
+        "name": "Pleiades Sector HR-W d1-79 1 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 803.764599,
+        "estimated_mapping_value": 539455,
+        "estimated_scan_value": 148474,
+        "id": 108089115936786770,
+        "id64": 108089115936786770,
+        "is_main_star": null,
+        "landmark_value": 1689800,
+        "landmarks": [
+          {
+            "count": 40,
+            "subtype": "Bacterium Cerbrus",
+            "type": "Bacterium",
+            "value": 1689800
+          }
+        ],
+        "name": "Pleiades Sector HR-W d1-79 2",
+        "subtype": "High metal content world",
+        "terraforming_state": "Terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 3667.606446,
+        "estimated_mapping_value": 49634,
+        "estimated_scan_value": 13661,
+        "id": 144117912955750720,
+        "id64": 144117912955750720,
+        "is_main_star": null,
+        "name": "Pleiades Sector HR-W d1-79 3",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4629.242274,
+        "estimated_mapping_value": 50019,
+        "estimated_scan_value": 13767,
+        "id": 180146709974714700,
+        "id64": 180146709974714700,
+        "is_main_star": null,
+        "name": "Pleiades Sector HR-W d1-79 4",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 5983.985215,
+        "estimated_mapping_value": 51712,
+        "estimated_scan_value": 14233,
+        "id": 216175506993678660,
+        "id64": 216175506993678660,
+        "is_main_star": null,
+        "name": "Pleiades Sector HR-W d1-79 5",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 5989.290685,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 252204304012642620,
+        "id64": 252204304012642620,
+        "is_main_star": null,
+        "name": "Pleiades Sector HR-W d1-79 5 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 9275.478731,
+        "estimated_mapping_value": 49656,
+        "estimated_scan_value": 13667,
+        "id": 288233101031606600,
+        "id64": 288233101031606600,
+        "is_main_star": null,
+        "name": "Pleiades Sector HR-W d1-79 6",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 9,
+    "estimated_mapping_value": 798811,
+    "estimated_scan_value": 219584,
+    "government": "Prison",
+    "id64": 2724879894859,
+    "known_permit": false,
+    "landmark_value": 1689800,
+    "name": "Pleiades Sector HR-W d1-79",
+    "needs_permit": false,
+    "population": 0,
+    "primary_economy": "Extraction",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "None",
+    "security": "High",
+    "stations": [
+      {
+        "distance_to_arrival": 12.733588,
+        "has_large_pad": true,
+        "has_market": true,
+        "market_id": 3704722944,
+        "name": "K2V-6KM",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705692672,
+        "medium_pads": 4,
+        "name": "QBX-36M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 739.114411,
+        "has_large_pad": true,
+        "has_market": true,
+        "market_id": 3701756672,
+        "name": "K5B-1TN",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 803.747296,
+        "has_large_pad": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 1,
+        "market_id": 128833431,
+        "medium_pads": 2,
+        "name": "The Penitent",
+        "small_pads": 4,
+        "type": "Mega ship"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3706688256,
+        "medium_pads": 4,
+        "name": "T6Z-86N",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 803.755358,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3700423936,
+        "medium_pads": 4,
+        "name": "K5B-W9K",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-04 02:40:54+00",
+    "x": -80.625,
+    "y": -146.65625,
+    "z": -343.25
+  }
 }

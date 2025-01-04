@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using Utilities;
 
@@ -157,6 +158,27 @@ namespace EddiShipMonitor
                     int caretIndex = textBox.CaretIndex;
                     textBox.Text = textBox.Text.Replace(" ", "ˈ");
                     textBox.CaretIndex = Math.Max(caretIndex, textBox.Text.Length);
+                }
+            }
+        }
+
+        private void RowDetailsButtonClick ( object sender, RoutedEventArgs e )
+        {
+            if ( sender is ToggleButton toggleButton )
+            {
+                DataGridRow selectedRow = DataGridRow.GetRowContainingElement(toggleButton);
+                if ( selectedRow != null )
+                {
+                    if ( toggleButton.IsChecked ?? false )
+                    {
+                        toggleButton.Content = "⯆";
+                        selectedRow.DetailsVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        toggleButton.Content = "⯈";
+                        selectedRow.DetailsVisibility = Visibility.Collapsed;
+                    }
                 }
             }
         }

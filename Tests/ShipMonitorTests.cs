@@ -337,8 +337,8 @@ namespace UnitTests
             Assert.AreEqual("Cobra Mk. III", ship1.model);
             Assert.AreEqual(0, ship1.LocalId);
             Assert.AreEqual("The Dynamo", ship1.name);
-            Assert.AreEqual("Laksak", ship1.starsystem);
-            Assert.AreEqual("Stjepan Seljan Hub", ship1.station);
+            Assert.AreEqual("La Rochelle", ship1.starsystem);
+            Assert.AreEqual( "J9J-9KT", ship1.station);
             Assert.AreEqual(8605684, ship1.value);
 
             Assert.IsNotNull(ship2);
@@ -531,7 +531,11 @@ namespace UnitTests
             var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
 
             // Set up our ship
-            var ship = new Ship { LocalId = 9999, x = 0, y = 0, z = 0 };
+            var ship = new Ship
+            {
+                LocalId = 9999,
+                StoredLocation = new Ship.ShipLocation( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ), "Furukawa Enterprise", 3534391808 )
+            };
             shipMonitor.RemoveShip(9999);
             shipMonitor.AddShip(ship);
 

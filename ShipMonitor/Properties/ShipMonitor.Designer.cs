@@ -79,6 +79,24 @@ namespace EddiShipMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show or hide additional details about the selected ship.
+        /// </summary>
+        public static string extra_details_tooltip {
+            get {
+                return ResourceManager.GetString("extra_details_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance (LY).
+        /// </summary>
+        public static string header_distanceLY {
+            get {
+                return ResourceManager.GetString("header_distanceLY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string header_hot {
@@ -138,6 +156,15 @@ namespace EddiShipMonitor.Properties {
         public static string header_spoken_name {
             get {
                 return ResourceManager.GetString("header_spoken_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station.
+        /// </summary>
+        public static string header_station_name {
+            get {
+                return ResourceManager.GetString("header_station_name", resourceCulture);
             }
         }
         

@@ -1,0 +1,1647 @@
+{
+  "record": {
+    "allegiance": "Empire",
+    "bodies": [
+      {
+        "distance_to_arrival": 0,
+        "estimated_mapping_value": 4581,
+        "estimated_scan_value": 1208,
+        "id": 633675387594,
+        "id64": 633675387594,
+        "is_main_star": true,
+        "name": "LTT 1349",
+        "subtype": "M (Red dwarf) Star",
+        "type": "Star"
+      },
+      {
+        "distance_to_arrival": 137.52155,
+        "estimated_mapping_value": 86105,
+        "estimated_scan_value": 23699,
+        "id": 180144618770207420,
+        "id64": 180144618770207420,
+        "is_main_star": null,
+        "name": "LTT 1349 1",
+        "subtype": "Class II gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 364.267253,
+        "estimated_mapping_value": 10463,
+        "estimated_scan_value": 2880,
+        "id": 216173415789171400,
+        "id64": 216173415789171400,
+        "is_main_star": null,
+        "name": "LTT 1349 2",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 363.802684,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 288231009827099300,
+        "id64": 288231009827099300,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 2 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 365.088338,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 360288603865027260,
+        "id64": 360288603865027260,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 2 b",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 649.226366,
+        "estimated_mapping_value": 3668,
+        "estimated_scan_value": 934,
+        "id": 648518980016739100,
+        "id64": 648518980016739100,
+        "is_main_star": null,
+        "name": "LTT 1349 3",
+        "subtype": "Gas giant with water-based life",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 650.551481,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 720576574054667000,
+        "id64": 720576574054667000,
+        "is_main_star": null,
+        "name": "LTT 1349 3 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 649.618267,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 756605371073631000,
+        "id64": 756605371073631000,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 3 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 646.732358,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 828662965111558900,
+        "id64": 828662965111558900,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 3 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 646.743195,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 864691762130522900,
+        "id64": 864691762130522900,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 3 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 644.283282,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 936749356168450800,
+        "id64": 936749356168450800,
+        "is_main_star": null,
+        "name": "LTT 1349 3 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 644.266058,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 972778153187414800,
+        "id64": 972778153187414800,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 6,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 6,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 3 e a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 642.876544,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0088069502063788e+18,
+        "id64": 1.0088069502063788e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 3 f",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 640.780441,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.1168933412632707e+18,
+        "id64": 1.1168933412632707e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 3 g",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 826.36362,
+        "estimated_mapping_value": 3631,
+        "estimated_scan_value": 923,
+        "id": 1.1529221382822346e+18,
+        "id64": 1.1529221382822346e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 4",
+        "subtype": "Gas giant with water-based life",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 828.147815,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2610085293391265e+18,
+        "id64": 1.2610085293391265e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 4 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 824.438742,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2970373263580905e+18,
+        "id64": 1.2970373263580905e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 4 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 830.40255,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.3330661233770545e+18,
+        "id64": 1.3330661233770545e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 4 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 832.021263,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.3690949203960184e+18,
+        "id64": 1.3690949203960184e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 4 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 832.035369,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4051237174149824e+18,
+        "id64": 1.4051237174149824e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 4 d a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 819.391015,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4411525144339464e+18,
+        "id64": 1.4411525144339464e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 4 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 835.980698,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.5132101084718743e+18,
+        "id64": 1.5132101084718743e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 4 f",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1132.074919,
+        "estimated_mapping_value": 112876,
+        "estimated_scan_value": 31067,
+        "id": 1.5852677025098022e+18,
+        "id64": 1.5852677025098022e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 5",
+        "subtype": "Class II gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1132.479616,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6212964995287662e+18,
+        "id64": 1.6212964995287662e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 5 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1131.234843,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6573252965477302e+18,
+        "id64": 1.6573252965477302e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 5 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1134.033045,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6933540935666941e+18,
+        "id64": 1.6933540935666941e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 5 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1130.973496,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.729382890585658e+18,
+        "id64": 1.729382890585658e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 5 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1137.801008,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.765411687604622e+18,
+        "id64": 1.765411687604622e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 5 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1137.792083,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.801440484623586e+18,
+        "id64": 1.801440484623586e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Carbon Dioxide Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 3,
+            "subtype": "Carbon Dioxide Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "LTT 1349 5 e a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1122.004012,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.83746928164255e+18,
+        "id64": 1.83746928164255e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 5 f",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1121.951168,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.873498078661514e+18,
+        "id64": 1.873498078661514e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 5 f a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1459.879182,
+        "estimated_mapping_value": 14336,
+        "estimated_scan_value": 3946,
+        "id": 1.981584469718406e+18,
+        "id64": 1.981584469718406e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 6",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1458.968451,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.0536420637563338e+18,
+        "id64": 2.0536420637563338e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 6 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1459.488899,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.0896708607752978e+18,
+        "id64": 2.0896708607752978e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 6 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1461.588106,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.1977572518321897e+18,
+        "id64": 2.1977572518321897e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 6 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2129.067117,
+        "estimated_mapping_value": 13650,
+        "estimated_scan_value": 3757,
+        "id": 2.3058436428890813e+18,
+        "id64": 2.3058436428890813e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 7",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2128.746803,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.3418724399080453e+18,
+        "id64": 2.3418724399080453e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 7 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2130.557649,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.3779012369270093e+18,
+        "id64": 2.3779012369270093e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 7 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2132.654543,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.413930033945973e+18,
+        "id64": 2.413930033945973e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 7 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2129.41244,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.449958830964937e+18,
+        "id64": 2.449958830964937e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 7 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2122.473481,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.485987627983901e+18,
+        "id64": 2.485987627983901e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 7 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2122.875384,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.522016425002865e+18,
+        "id64": 2.522016425002865e+18,
+        "is_main_star": null,
+        "name": "LTT 1349 7 f",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 42,
+    "controlling_minor_faction": "East India Company",
+    "controlling_minor_faction_state": "Expansion",
+    "controlling_power": "Denton Patreus",
+    "estimated_mapping_value": 324824,
+    "estimated_scan_value": 85414,
+    "government": "Corporate",
+    "id64": 633675387594,
+    "known_permit": false,
+    "landmark_value": 0,
+    "minor_faction_presences": [
+      {
+        "influence": 0.69,
+        "name": "East India Company",
+        "state": "Expansion"
+      },
+      {
+        "influence": 0.06,
+        "name": "Green Party of LTT 1349",
+        "state": "None"
+      },
+      {
+        "influence": 0.048,
+        "name": "LTT 1349 Life Services",
+        "state": "None"
+      },
+      {
+        "influence": 0.096,
+        "name": "LTT 1349 Patron's Principles",
+        "state": "Civil War"
+      },
+      {
+        "influence": 0.01,
+        "name": "LTT 1349 Silver Gang",
+        "state": "None"
+      },
+      {
+        "influence": 0.096,
+        "name": "LTT 1349 Transport Industry",
+        "state": "Civil War"
+      }
+    ],
+    "name": "LTT 1349",
+    "needs_permit": false,
+    "population": 12356357,
+    "power": [
+      "Denton Patreus",
+      "Li Yong-Rui",
+      "Zemina Torval",
+      "Jerome Archer"
+    ],
+    "power_state": "Fortified",
+    "primary_economy": "High Tech",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Refinery",
+    "security": "Medium",
+    "stations": [
+      {
+        "distance_to_arrival": 648.77043,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806881536,
+        "medium_pads": 0,
+        "name": "Gorbanenko Cultivation Site",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2119.953382,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806875392,
+        "medium_pads": 1,
+        "name": "Akinjide's Point",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1132.546838,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806878208,
+        "medium_pads": 0,
+        "name": "Kikuchi's Resolve",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2123.884692,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806880000,
+        "medium_pads": 0,
+        "name": "Accardo Manufacturing Facility",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 644.284866,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806882304,
+        "medium_pads": 1,
+        "name": "Wilkinson Arms Garrison",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "market_id": 3703739648,
+        "name": "QHB-N1V",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 829.396449,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806878720,
+        "medium_pads": 1,
+        "name": "Miyazaki Honour",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1133.806188,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806878464,
+        "medium_pads": 1,
+        "name": "Baker's Camp",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 649.493958,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806881792,
+        "medium_pads": 0,
+        "name": "Li Botanical Holding",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 647.7958,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806882560,
+        "medium_pads": 0,
+        "name": "Araujo Agricultural Habitat",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 650.559455,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806887680,
+        "medium_pads": 0,
+        "name": "Dykul Nutrition Habitat",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1454.813677,
+        "has_large_pad": false,
+        "has_market": true,
+        "market_id": 3806892544,
+        "name": "Deshpande Munitions Stockade",
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 110.340052,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705270272,
+        "medium_pads": 4,
+        "name": "X2X-N3M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 2122.901722,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806884864,
+        "medium_pads": 1,
+        "name": "Endo Military Stockade",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1461.520637,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806892800,
+        "medium_pads": 1,
+        "name": "Vidal's Camp",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2122.020108,
+        "has_large_pad": false,
+        "has_market": true,
+        "market_id": 3806893312,
+        "name": "Leclerc Military Camp",
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1458.760315,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806894848,
+        "medium_pads": 1,
+        "name": "Eadon Military Stockade",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2124.967144,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806884608,
+        "medium_pads": 1,
+        "name": "Araujo's Stockade",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1459.110286,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806879232,
+        "medium_pads": 0,
+        "name": "Estrada's Obligation",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2121.557513,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806880256,
+        "medium_pads": 0,
+        "name": "Acheampong Engineering Facility",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3706005504,
+        "medium_pads": 4,
+        "name": "GHB-2TZ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 4.522683,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707247616,
+        "medium_pads": 4,
+        "name": "K3G-35J",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 119.208796,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3703167232,
+        "medium_pads": 4,
+        "name": "Q6N-81Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 144.159448,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3704498688,
+        "medium_pads": 4,
+        "name": "JNL-5VX",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3708068864,
+        "medium_pads": 4,
+        "name": "KHL-W9V",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 141.467409,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 3223529472,
+        "medium_pads": 12,
+        "name": "Lundwall City",
+        "small_pads": 7,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 1286.285657,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "market_id": 3703042048,
+        "name": "G5Z-9VZ",
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 8599.972556,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3701001216,
+        "medium_pads": 4,
+        "name": "V0F-16N",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 363.701305,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3223529728,
+        "medium_pads": 1,
+        "name": "Aitken Vision",
+        "small_pads": 3,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 2128.93386,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3223529984,
+        "medium_pads": 1,
+        "name": "Gelfand Survey",
+        "small_pads": 2,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3702321152,
+        "medium_pads": 4,
+        "name": "K8G-7VK",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 363.802684,
+        "has_large_pad": false,
+        "market_id": 3806893568,
+        "name": "Oyawale Arms Base"
+      },
+      {
+        "distance_to_arrival": 363.887479,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806894336,
+        "medium_pads": 0,
+        "name": "Boulaid Botanical Range",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 363.802684,
+        "has_large_pad": false,
+        "market_id": 3806894080,
+        "name": "Laister's Productions"
+      },
+      {
+        "distance_to_arrival": 364.306806,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806893824,
+        "medium_pads": 0,
+        "name": "Melo's Constructions",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 365.088338,
+        "has_large_pad": false,
+        "market_id": 3511278592,
+        "name": "Lupoff Point"
+      },
+      {
+        "distance_to_arrival": 364.045759,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806892032,
+        "medium_pads": 1,
+        "name": "Kikelomo Arms Installation",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 364.33721,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806891776,
+        "medium_pads": 1,
+        "name": "Hartmann Military Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 364.757089,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806892288,
+        "medium_pads": 1,
+        "name": "Dukhnovenko Synthetics Base",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 650.551481,
+        "has_large_pad": false,
+        "market_id": 3806881024,
+        "name": "Toussaint Outpost"
+      },
+      {
+        "distance_to_arrival": 649.739981,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806881280,
+        "medium_pads": 0,
+        "name": "Golub's Garden",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 648.399774,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806880768,
+        "medium_pads": 0,
+        "name": "Bojti Outpost",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 650.911787,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806888704,
+        "medium_pads": 0,
+        "name": "Abiodun's Plantation",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 649.618267,
+        "has_large_pad": false,
+        "market_id": 3806887424,
+        "name": "Abebe Entertainment Complex"
+      },
+      {
+        "distance_to_arrival": 649.618267,
+        "has_large_pad": false,
+        "market_id": 3806888192,
+        "name": "Chaly Horticultural Enterprise"
+      },
+      {
+        "distance_to_arrival": 649.157376,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806887936,
+        "medium_pads": 0,
+        "name": "Jang Cultivation Holdings",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 649.618267,
+        "has_large_pad": false,
+        "market_id": 3806888448,
+        "name": "Baek Nutritional"
+      },
+      {
+        "distance_to_arrival": 651.674756,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806886144,
+        "medium_pads": 0,
+        "name": "Vogel Botanical Biosphere",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 651.674464,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806886656,
+        "medium_pads": 0,
+        "name": "Richter Nutrition Site",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 649.850725,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806886400,
+        "medium_pads": 0,
+        "name": "Vargas Horticultural",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 646.732358,
+        "has_large_pad": false,
+        "market_id": 3806885632,
+        "name": "Sauer Defence Encampment"
+      },
+      {
+        "distance_to_arrival": 644.283282,
+        "has_large_pad": false,
+        "market_id": 3806882816,
+        "name": "Carrasco Botanical Collection"
+      },
+      {
+        "distance_to_arrival": 644.266058,
+        "has_large_pad": false,
+        "market_id": 3806876416,
+        "name": "Conde Cultivation Facility"
+      },
+      {
+        "distance_to_arrival": 644.940028,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806876672,
+        "medium_pads": 0,
+        "name": "Brunt's Plantation",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 644.266058,
+        "has_large_pad": false,
+        "market_id": 3806875904,
+        "name": "Lagarde Munitions Complex"
+      },
+      {
+        "distance_to_arrival": 649.403443,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806876928,
+        "medium_pads": 0,
+        "name": "Ghatak Hydroponics Garden",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 644.266058,
+        "has_large_pad": false,
+        "market_id": 3806876160,
+        "name": "Acheampong's Barracks"
+      },
+      {
+        "distance_to_arrival": 642.876544,
+        "has_large_pad": false,
+        "market_id": 3511279104,
+        "name": "Volterra Horizons"
+      },
+      {
+        "distance_to_arrival": 643.029182,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806891008,
+        "medium_pads": 1,
+        "name": "Adebowale Military Encampment",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 643.679241,
+        "has_large_pad": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3511278848,
+        "medium_pads": 4,
+        "name": "Reed Terminal",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 642.876544,
+        "has_large_pad": false,
+        "market_id": 3806891520,
+        "name": "Toro Nutrition Holding"
+      },
+      {
+        "distance_to_arrival": 642.876544,
+        "has_large_pad": false,
+        "market_id": 3806890752,
+        "name": "Bojti Manufacturing Silo"
+      },
+      {
+        "distance_to_arrival": 657.699258,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806896640,
+        "medium_pads": 1,
+        "name": "Hair Engineering Base",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 658.496283,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3511279360,
+        "medium_pads": 4,
+        "name": "Greenstein Bastion",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 823.903753,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806896384,
+        "medium_pads": 1,
+        "name": "Cardoso Munitions Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 824.497425,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806889216,
+        "medium_pads": 0,
+        "name": "Lin Defence Outpost",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 823.545236,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806888960,
+        "medium_pads": 1,
+        "name": "Mnogogrishny's Expedition",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 830.40255,
+        "has_large_pad": false,
+        "market_id": 3806878976,
+        "name": "Salinas Outpost"
+      },
+      {
+        "distance_to_arrival": 822.098374,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806877184,
+        "medium_pads": 0,
+        "name": "Gibbs Defence Hub",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 819.181726,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806895872,
+        "medium_pads": 1,
+        "name": "Galitzki Command Site",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 822.154814,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806895616,
+        "medium_pads": 0,
+        "name": "Gomes Military Fortification",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 830.691056,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806883584,
+        "medium_pads": 0,
+        "name": "Pan Engineering Base",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 819.3921,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806883072,
+        "medium_pads": 1,
+        "name": "Geeson Command Site",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 823.088008,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806883840,
+        "medium_pads": 0,
+        "name": "Rutten Manufacturing Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 822.475473,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806890240,
+        "medium_pads": 0,
+        "name": "Yao Manufacturing Facility",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 816.734997,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806889984,
+        "medium_pads": 0,
+        "name": "Kondo Armament",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 835.323472,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806890496,
+        "medium_pads": 0,
+        "name": "Nkoana Engineering Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1132.479616,
+        "has_large_pad": false,
+        "market_id": 3806874112,
+        "name": "Berezuk Munitions Outpost"
+      },
+      {
+        "distance_to_arrival": 1131.512501,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806874624,
+        "medium_pads": 0,
+        "name": "Mahto's Forge",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1132.479616,
+        "has_large_pad": false,
+        "market_id": 3511280128,
+        "name": "White Settlement"
+      },
+      {
+        "distance_to_arrival": 1133.491921,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806874368,
+        "medium_pads": 0,
+        "name": "Ricci Arms Encampment",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1132.476985,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806886912,
+        "medium_pads": 1,
+        "name": "Ptaszynski Defence Installation",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1131.417724,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806887168,
+        "medium_pads": 1,
+        "name": "Kikelomo Command Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1131.804115,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806885120,
+        "medium_pads": 1,
+        "name": "Estrada Watch",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1126.753965,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806885376,
+        "medium_pads": 0,
+        "name": "Cardoso's Outpost",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1122.364514,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806877952,
+        "medium_pads": 0,
+        "name": "Altadonna Command Outpost",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1139.535018,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806877696,
+        "medium_pads": 0,
+        "name": "Busch Military Fort",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1130.477108,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806884352,
+        "medium_pads": 0,
+        "name": "Winstone Defence Facility",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1457.255215,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3806879488,
+        "medium_pads": 0,
+        "name": "Hilborn Munitions Enterprise",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1453.942465,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806894592,
+        "medium_pads": 1,
+        "name": "Okamoto Honour",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2127.700312,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806875648,
+        "medium_pads": 1,
+        "name": "Mannan Defence Barracks",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2130.557649,
+        "has_large_pad": false,
+        "market_id": 3806889472,
+        "name": "Farias Defence Site"
+      },
+      {
+        "distance_to_arrival": 2128.193118,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806893056,
+        "medium_pads": 1,
+        "name": "Ponce's Liberty",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2132.682008,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3806879744,
+        "medium_pads": 1,
+        "name": "Shewayish Manufacturing Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2122.875384,
+        "has_large_pad": false,
+        "market_id": 3806880512,
+        "name": "Yim's Armoury"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-03 23:15:38+00",
+    "x": 17.15625,
+    "y": -66.96875,
+    "z": -29.3125
+  }
+}

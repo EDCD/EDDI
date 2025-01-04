@@ -2732,7 +2732,7 @@ namespace EddiCore
                 if ( Cmdr.name != theEvent.name )
                 {
                     Cmdr.name = theEvent.name;
-                    ObtainResponder( "EDSM Responder" ).Reload();
+                    ObtainResponder( "EDSM Responder" )?.Reload();
                 }
                 Cmdr.EDID = theEvent.frontierID;
             }

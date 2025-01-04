@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -19,15 +20,15 @@ namespace EddiDataDefinitions
         public int LocalId { get; set; }
 
         /// <summary>the manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string manufacturer { get; set; }
 
         /// <summary>the spoken manufacturer of the ship (Lakon, CoreDynamics etc.) (rendered using ssml and IPA)</summary>
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string phoneticmanufacturer => SpokenManufacturer();
 
         /// <summary>the spoken model of the ship (Python, Anaconda, etc.) (rendered using ssml and IPA)</summary>
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string phoneticmodel => SpokenModel();
 
         [JsonIgnore]
@@ -38,7 +39,7 @@ namespace EddiDataDefinitions
         public LandingPadSize Size { get; set; } = LandingPadSize.Small;
 
         /// <summary>the spoken size of this ship</summary>
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string size => (Size ?? LandingPadSize.Small).localizedName;
 
         /// <summary>the size of the military compartment slots</summary>
@@ -46,7 +47,7 @@ namespace EddiDataDefinitions
         public int? militarysize { get; set; }
 
         /// <summary>the total tonnage cargo capacity</summary>
-        [ PublicAPI, JsonIgnore] 
+        [ Utilities.PublicAPI, JsonIgnore] 
         public int cargocapacity => compartments
             .Where( c=> c.module != null  )
             .Select(c => c.module)
@@ -55,7 +56,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the value of the ship without cargo, in credits</summary>
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public long value
         {
             get => _value;
@@ -73,7 +74,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the value of the ship's hull, in credits</summary>
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public long? hullvalue
         {
             get => _hullvalue;
@@ -91,7 +92,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the value of the ship's hull, in credits</summary>
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public long? modulesvalue
         {
             get => _modulesvalue;
@@ -108,7 +109,7 @@ namespace EddiDataDefinitions
         private long _modulesvalue;
 
         /// <summary>the value of the ship's rebuy, in credits</summary>
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public long rebuy
         {
             get => _rebuy;
@@ -117,7 +118,7 @@ namespace EddiDataDefinitions
         private long _rebuy;
 
         /// <summary>the name of this ship</summary>
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string name
         {
             get => _name;
@@ -133,7 +134,7 @@ namespace EddiDataDefinitions
         private string _name;
 
         /// <summary>the model of the ship (Python, Anaconda, Cobra Mk. III, etc.)</summary>
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string model
         {
             get => _model;
@@ -151,7 +152,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the identifier of this ship</summary>
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string ident
         {
             get => _ident;
@@ -190,7 +191,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The ship's spoken name (rendered using ssml and IPA)</summary>
 
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string phoneticname => SpokenName();
 
         [JsonIgnore]
@@ -225,7 +226,7 @@ namespace EddiDataDefinitions
         }
         private Role _Role = Role.MultiPurpose;
 
-        [PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        [Utilities.PublicAPI, JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string role => Role?.localizedName; // This string is made available for Cottle scripts that vary depending on the ship's role. 
 
         [JsonExtensionData]
@@ -270,12 +271,13 @@ namespace EddiDataDefinitions
         }
         private string _raw;
 
+        [JsonIgnore]
         public bool RawIsNotNull => !string.IsNullOrEmpty(_raw);
 
         /// <summary>
         /// The wanted/hot status of this ship
         /// </summary>
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public bool hot
         {
             get => _hot;
@@ -291,57 +293,49 @@ namespace EddiDataDefinitions
 
         private bool _hot = false;
 
-        /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
-        [PublicAPI]
-        public string starsystem
+        public ShipLocation StoredLocation
         {
-            get => _starsystem;
-            set
+            get => _storedLocation;
+            set 
             {
-                if (_starsystem != value)
+                if ( _storedLocation?.systemAddress != value?.systemAddress ||
+                     _storedLocation?.marketId != value?.marketId ||
+                     _storedLocation?.x != value?.x ||
+                     _storedLocation?.y != value?.y ||
+                     _storedLocation?.z != value?.z )
                 {
-                    _starsystem = value;
+                    _storedLocation = value;
                     OnPropertyChanged();
                 }
             }
         }
+        private ShipLocation _storedLocation;
 
-        private string _starsystem;
+        /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
+        [ Utilities.PublicAPI, JsonIgnore ]
+        public string starsystem => StoredLocation?.systemName;
 
-        [Obsolete("Please use 'starsystem' instead")]
+        [Obsolete( "Please use 'starsystem' instead"), JsonIgnore ]
         public string system => starsystem; // Legacy Cottle scripts may use `system` rather than `starsystem`. 
 
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
 
-        [PublicAPI]
-        public string station
-        {
-            get => _station;
-            set { _station = value; OnPropertyChanged(); }
-        }
-        private string _station;
+        [Utilities.PublicAPI, JsonIgnore]
+        public string station => StoredLocation?.stationName;
 
-        [PublicAPI]
-        public long? marketid
-        {
-            get => _marketid;
-            set { _marketid = value; OnPropertyChanged(); }
-        }
-        private long? _marketid;
+        [Utilities.PublicAPI, JsonIgnore]
+        public long? marketid => StoredLocation?.marketId;
 
-        public decimal? x { get; set; }
-
-        public decimal? y { get; set; }
-
-        public decimal? z { get; set; }
-
+        [JsonIgnore]
         public bool intransit { get; set; }
 
+        [JsonIgnore]
         public long? transferprice { get; set; }
 
+        [JsonIgnore]
         public long? transfertime { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI ("The distance to the ship in light years" ) ]
         public decimal? distance
         {
             get => _distance;
@@ -350,7 +344,7 @@ namespace EddiDataDefinitions
 
         private decimal? _distance;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public decimal health
         {
             get => _health;
@@ -358,7 +352,7 @@ namespace EddiDataDefinitions
         }
         private decimal _health = 100M;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module cargohatch
         {
             get => _cargohatch;
@@ -366,7 +360,7 @@ namespace EddiDataDefinitions
         }
         private Module _cargohatch = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module bulkheads
         {
             get => _bulkheads;
@@ -374,7 +368,7 @@ namespace EddiDataDefinitions
         }
         private Module _bulkheads = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module canopy
         {
             get => _canopy;
@@ -382,7 +376,7 @@ namespace EddiDataDefinitions
         }
         private Module _canopy = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module powerplant
         {
             get => _powerplant;
@@ -390,7 +384,7 @@ namespace EddiDataDefinitions
         }
         private Module _powerplant = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module thrusters
         {
             get => _thrusters;
@@ -398,7 +392,7 @@ namespace EddiDataDefinitions
         }
         private Module _thrusters = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module frameshiftdrive
         {
             get => _frameshiftdrive;
@@ -406,7 +400,7 @@ namespace EddiDataDefinitions
         }
         private Module _frameshiftdrive = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module lifesupport
         {
             get => _lifesupport;
@@ -414,7 +408,7 @@ namespace EddiDataDefinitions
         }
         private Module _lifesupport = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module powerdistributor
         {
             get => _powerdistributor;
@@ -422,7 +416,7 @@ namespace EddiDataDefinitions
         }
         private Module _powerdistributor = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module sensors
         {
             get => _sensors;
@@ -430,7 +424,7 @@ namespace EddiDataDefinitions
         }
         private Module _sensors = new Module();
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Module fueltank
         {
             get => _fueltank;
@@ -438,7 +432,7 @@ namespace EddiDataDefinitions
             }
         private Module _fueltank = new Module();
 
-        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        [Utilities.PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Hardpoint> hardpoints
         {
             get => _hardpoints;
@@ -446,7 +440,7 @@ namespace EddiDataDefinitions
         }
         private List<Hardpoint> _hardpoints = new List<Hardpoint>();
 
-        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        [Utilities.PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Compartment> compartments
         {
             get => _compartments;
@@ -454,7 +448,7 @@ namespace EddiDataDefinitions
         }
         private List<Compartment> _compartments = new List<Compartment>();
 
-        [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        [Utilities.PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<LaunchBay> launchbays
         {
             get => _launchbays;
@@ -464,10 +458,10 @@ namespace EddiDataDefinitions
 
         public string paintjob { get; set; }
 
-        [PublicAPI, JsonIgnore] // Core capacity
+        [Utilities.PublicAPI, JsonIgnore] // Core capacity
         public decimal? fueltankcapacity => fueltank?.@class > 0 ? 1 << fueltank?.@class : 0; // Shift operator, equiv to 2^(fueltank.@class), calculated as an integer
 
-        [PublicAPI, JsonIgnore] // Capacity including additional tanks (and excluding the active fuel reservoir)
+        [Utilities.PublicAPI, JsonIgnore] // Capacity including additional tanks (and excluding the active fuel reservoir)
         public decimal? fueltanktotalcapacity => fueltankcapacity + compartments
             .Where( c => c.module != null )
             .Select( c => c.module )
@@ -480,7 +474,7 @@ namespace EddiDataDefinitions
 
         // Ship jump and mass properties
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public decimal maxjumprange 
         {
             get => _maxjumprange;
@@ -503,7 +497,7 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use maxjumprange instead")]
         public decimal maxjump => maxjumprange;
 
-        [ PublicAPI, JsonIgnore] 
+        [ Utilities.PublicAPI, JsonIgnore] 
         public decimal maxfuelperjump => frameshiftdrive?.GetFsdMaxFuelPerJump() ?? 0;
 
         [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]
@@ -591,14 +585,7 @@ namespace EddiDataDefinitions
         }
 
         public string SpokenManufacturer() => ShipManufacturer.SpokenManufacturer(manufacturer) ?? manufacturer;
-
-        /// <summary> Calculates the distance from the specified coordinates to the ship's recorded x, y, and z coordinates </summary>
-        public decimal? Distance(decimal? fromX, decimal? fromY, decimal? fromZ)
-        {
-            // Work out the distance to the system where the ship is stored if we can
-            return Functions.StellarDistanceLy(x, y, z, fromX, fromY, fromZ);
-        }
-
+        
         public string CoriolisUri(bool beta = false)
         {
             if (raw != null)
@@ -807,12 +794,70 @@ namespace EddiDataDefinitions
                 return null;
             }
         }
+        
+        /// <summary> Calculates the distance from the specified coordinates to the ship's recorded x, y, and z coordinates </summary>
+        public decimal? DistanceLY ( decimal? fromX, decimal? fromY, decimal? fromZ )
+        {
+            return Functions.StellarDistanceLy( StoredLocation?.x, StoredLocation?.y, StoredLocation?.z, fromX, fromY, fromZ );
+        }
+
+        /// <summary> Calculates the distance from the specified coordinates to the ship's recorded x, y, and z coordinates </summary>
+        public decimal? DistanceLY ( StarSystem fromStarSystem )
+        {
+            return Functions.StellarDistanceLy( StoredLocation?.x, StoredLocation?.y, StoredLocation?.z, fromStarSystem?.x, fromStarSystem?.y, fromStarSystem?.z );
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        public class ShipLocation
+        {
+            public string systemName { get; set; }
+            public ulong systemAddress { get; set; }
+            public decimal? x { get; set; }
+            public decimal? y { get; set; }
+            public decimal? z { get; set; }
+            public string stationName { get; set; }
+            public long? marketId { get; set; }
+
+            // Default constructor
+            [JsonConstructor]
+            public ShipLocation ( string systemName, ulong systemAddress, decimal? x, decimal? y, decimal? z, string stationName, long? marketId )
+            {
+                this.systemName = systemName;
+                this.systemAddress = systemAddress;
+                this.x = x;
+                this.y = y;
+                this.z = z;
+                this.stationName = stationName;
+                this.marketId = marketId;
+            }
+
+            public ShipLocation ( [NotNull] StarSystem starSystem, string stationName, long? marketId )
+            {
+                this.systemName = starSystem.systemname;
+                this.systemAddress = starSystem.systemAddress;
+                this.x = starSystem.x;
+                this.y = starSystem.y;
+                this.z = starSystem.z;
+                this.stationName = stationName;
+                this.marketId = marketId;
+            }
+
+            public ShipLocation ( [NotNull] NavWaypoint waypoint )
+            {
+                this.systemName = waypoint.systemName;
+                this.systemAddress = waypoint.systemAddress;
+                this.x = waypoint.x;
+                this.y = waypoint.y;
+                this.z = waypoint.z;
+                this.stationName = waypoint.stationName;
+                this.marketId = waypoint.marketID;
+            }
         }
     }
 }

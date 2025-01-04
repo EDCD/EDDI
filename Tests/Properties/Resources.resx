@@ -304,4 +304,16 @@
   <data name="SpanshStarSystemDumpCarthage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SpanshStarSystemDumpCarthage.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="SpanshQuickStarSystemAlectrona" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SpanshQuickStarSystemAlectrona.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SpanshQuickStarSystemTz_Arietis" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SpanshQuickStarSystemTz_Arietis.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SpanshQuickStarSystemLTT_1349" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SpanshQuickStarSystemLTT_1349.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SpanshQuickStarSystemKaushpoos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>SpanshQuickStarSystemKaushpoos.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -1,0 +1,854 @@
+{
+  "record": {
+    "allegiance": "Independent",
+    "bodies": [
+      {
+        "distance_to_arrival": 0,
+        "estimated_mapping_value": 4568,
+        "estimated_scan_value": 1204,
+        "id": 5069001205129,
+        "id64": 5069001205129,
+        "is_main_star": true,
+        "name": "Kaushpoos",
+        "subtype": "M (Red dwarf) Star",
+        "type": "Star"
+      },
+      {
+        "distance_to_arrival": 8.263758,
+        "estimated_mapping_value": 55596,
+        "estimated_scan_value": 15302,
+        "id": 180149054096024960,
+        "id64": 180149054096024960,
+        "is_main_star": null,
+        "name": "Kaushpoos 1",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 556.985749,
+        "estimated_mapping_value": 17377,
+        "estimated_scan_value": 4783,
+        "id": 684552212361520500,
+        "id64": 684552212361520500,
+        "is_main_star": null,
+        "name": "Kaushpoos 2",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 556.512108,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 792638603418412400,
+        "id64": 792638603418412400,
+        "is_main_star": null,
+        "name": "Kaushpoos 2 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 555.482596,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 828667400437376400,
+        "id64": 828667400437376400,
+        "is_main_star": null,
+        "name": "Kaushpoos 2 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 561.138833,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 864696197456340400,
+        "id64": 864696197456340400,
+        "is_main_star": null,
+        "name": "Kaushpoos 2 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 562.581696,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 936753791494268300,
+        "id64": 936753791494268300,
+        "is_main_star": null,
+        "name": "Kaushpoos 2 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 562.621202,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 972782588513232300,
+        "id64": 972782588513232300,
+        "is_main_star": null,
+        "name": "Kaushpoos 2 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 558.476718,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0088113855321962e+18,
+        "id64": 1.0088113855321962e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 2 f",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 710.024812,
+        "estimated_mapping_value": 3521,
+        "estimated_scan_value": 890,
+        "id": 1.261012964664944e+18,
+        "id64": 1.261012964664944e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 3",
+        "subtype": "Gas giant with ammonia-based life",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 709.205533,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.369099355721836e+18,
+        "id64": 1.369099355721836e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 3 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 708.450326,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4051281527408e+18,
+        "id64": 1.4051281527408e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 3 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 707.840134,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.441156949759764e+18,
+        "id64": 1.441156949759764e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 3 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 709.314201,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.513214543797692e+18,
+        "id64": 1.513214543797692e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Kaushpoos 3 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 709.290331,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.549243340816656e+18,
+        "id64": 1.549243340816656e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 3 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 722.538901,
+        "estimated_mapping_value": 12233,
+        "estimated_scan_value": 3367,
+        "id": 1.5852721378356198e+18,
+        "id64": 1.5852721378356198e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 4",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 722.042621,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6573297318735478e+18,
+        "id64": 1.6573297318735478e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 4 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 723.34359,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6933585288925117e+18,
+        "id64": 1.6933585288925117e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 4 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 723.034373,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.7293873259114757e+18,
+        "id64": 1.7293873259114757e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 4 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1026.38965,
+        "estimated_mapping_value": 12577,
+        "estimated_scan_value": 3462,
+        "id": 1.7654161229304397e+18,
+        "id64": 1.7654161229304397e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 5",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1027.507641,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.8735025139873316e+18,
+        "id64": 1.8735025139873316e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 5 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1024.265702,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.9095313110062956e+18,
+        "id64": 1.9095313110062956e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 5 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1028.807432,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.9815889050442235e+18,
+        "id64": 1.9815889050442235e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 5 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1028.814584,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.0176177020631875e+18,
+        "id64": 2.0176177020631875e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 5 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1026.932044,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.0536464990821514e+18,
+        "id64": 2.0536464990821514e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 5 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1335.691386,
+        "estimated_mapping_value": 13318,
+        "estimated_scan_value": 3666,
+        "id": 2.1617328901390433e+18,
+        "id64": 2.1617328901390433e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1334.831103,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.2698192811959352e+18,
+        "id64": 2.2698192811959352e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1334.563534,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.305848078214899e+18,
+        "id64": 2.305848078214899e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1335.733413,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.341876875233863e+18,
+        "id64": 2.341876875233863e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1338.256319,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.377905672252827e+18,
+        "id64": 2.377905672252827e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1329.145827,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.413934469271791e+18,
+        "id64": 2.413934469271791e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1343.771819,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.449963266290755e+18,
+        "id64": 2.449963266290755e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6 f",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1341.393916,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.485992063309719e+18,
+        "id64": 2.485992063309719e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 6 g",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1746.900522,
+        "estimated_mapping_value": 2404,
+        "estimated_scan_value": 555,
+        "id": 2.558049657347647e+18,
+        "id64": 2.558049657347647e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 7",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1751.197741,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.630107251385575e+18,
+        "id64": 2.630107251385575e+18,
+        "is_main_star": null,
+        "name": "Kaushpoos 7 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 35,
+    "controlling_minor_faction": "The Armory Coalition",
+    "controlling_minor_faction_state": "Boom",
+    "estimated_mapping_value": 181561,
+    "estimated_scan_value": 46729,
+    "government": "Corporate",
+    "id64": 5069001205129,
+    "known_permit": false,
+    "landmark_value": 0,
+    "minor_faction_presences": [
+      {
+        "influence": 0.09018,
+        "name": "Future of MCC 549",
+        "state": "None"
+      },
+      {
+        "influence": 0.063126,
+        "name": "Kaushpoos Power Ltd",
+        "state": "None"
+      },
+      {
+        "influence": 0.130261,
+        "name": "Kaushpoos Pro-Alliance Union",
+        "state": "None"
+      },
+      {
+        "influence": 0.06012,
+        "name": "Kaushpoos Purple Brotherhood",
+        "state": "None"
+      },
+      {
+        "influence": 0.064128,
+        "name": "Official Kaushpoos Freedom Party",
+        "state": "None"
+      },
+      {
+        "influence": 0.572144,
+        "name": "The Armory Coalition",
+        "state": "Boom"
+      },
+      {
+        "influence": 0.02004,
+        "name": "Wolfram Security",
+        "state": "None"
+      }
+    ],
+    "name": "Kaushpoos",
+    "needs_permit": false,
+    "population": 11419718,
+    "primary_economy": "High Tech",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Refinery",
+    "security": "Medium",
+    "stations": [
+      {
+        "distance_to_arrival": 8.263757,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3706472704,
+        "medium_pads": 4,
+        "name": "K2V-7XQ",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 8,
+        "market_id": 3707875584,
+        "medium_pads": 4,
+        "name": "WNZ-63Z",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 8.263755,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3703811584,
+        "medium_pads": 4,
+        "name": "J0F-L2T",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 1346.454787,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3849845760,
+        "medium_pads": 1,
+        "name": "Syrotuk Munitions Encampment",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 727.004108,
+        "has_large_pad": false,
+        "large_pads": 0,
+        "market_id": 3229105408,
+        "medium_pads": 1,
+        "name": "Norgay Port",
+        "small_pads": 2,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3706465280,
+        "medium_pads": 4,
+        "name": "K2V-75L",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 8.239465,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 7,
+        "market_id": 3229104896,
+        "medium_pads": 11,
+        "name": "Neville Horizons",
+        "small_pads": 8,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 612.234833,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3229105152,
+        "medium_pads": 1,
+        "name": "Gilliland Terminal",
+        "small_pads": 2,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 556.577381,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3849840384,
+        "medium_pads": 1,
+        "name": "Ishikawa Control",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 558.476718,
+        "has_large_pad": false,
+        "market_id": 3849840128,
+        "name": "Leiva Agricultural Habitat"
+      },
+      {
+        "distance_to_arrival": 709.314201,
+        "has_large_pad": false,
+        "market_id": 3849840640,
+        "name": "Gowon's Industrial"
+      },
+      {
+        "distance_to_arrival": 709.314201,
+        "has_large_pad": false,
+        "market_id": 3535946240,
+        "name": "Godwin Prospect +"
+      },
+      {
+        "distance_to_arrival": 709.314201,
+        "has_large_pad": false,
+        "market_id": 3535946496,
+        "name": "Biggle Landing"
+      },
+      {
+        "distance_to_arrival": 709.314201,
+        "has_large_pad": false,
+        "market_id": 3535945728,
+        "name": "de Caminha Settlement"
+      },
+      {
+        "distance_to_arrival": 707.226595,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3849841152,
+        "medium_pads": 0,
+        "name": "Malakar's Venture",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 712.871685,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3849840896,
+        "medium_pads": 1,
+        "name": "Stelmah Synthetics Workshop",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 712.870042,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3535945984,
+        "medium_pads": 4,
+        "name": "Verrazzano Base",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 713.846143,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 2,
+        "market_id": 3535945472,
+        "medium_pads": 2,
+        "name": "Sleator Arsenal",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 709.290331,
+        "has_large_pad": false,
+        "market_id": 3849836288,
+        "name": "Yang Industrial Facility"
+      },
+      {
+        "distance_to_arrival": 709.290331,
+        "has_large_pad": false,
+        "market_id": 3849837312,
+        "name": "Courbet Barracks"
+      },
+      {
+        "distance_to_arrival": 707.243009,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3849837568,
+        "medium_pads": 0,
+        "name": "Prevost Munitions Encampment",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 709.290331,
+        "has_large_pad": false,
+        "market_id": 3849837056,
+        "name": "Kapadia Hydroponics Farm"
+      },
+      {
+        "distance_to_arrival": 709.290331,
+        "has_large_pad": false,
+        "market_id": 3849836544,
+        "name": "Parnenzini Engineering Site"
+      },
+      {
+        "distance_to_arrival": 706.774252,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3849836032,
+        "medium_pads": 0,
+        "name": "Simelane Manufacturing Facility",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 746.025893,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3849838848,
+        "medium_pads": 0,
+        "name": "Kimura Arms Encampment",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 684.796506,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3849842944,
+        "medium_pads": 0,
+        "name": "Kondo Agricultural Collection",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 684.693845,
+        "has_large_pad": false,
+        "has_market": true,
+        "market_id": 3849843200,
+        "name": "Harland Nutrition Holdings",
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 731.832776,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3849837824,
+        "medium_pads": 0,
+        "name": "Dhillon Industrial Silo",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1027.507641,
+        "has_large_pad": false,
+        "market_id": 3849835008,
+        "name": "Hitchen's Service"
+      },
+      {
+        "distance_to_arrival": 1024.878731,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3849834752,
+        "medium_pads": 1,
+        "name": "Romero's Dock",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1029.225777,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3849841408,
+        "medium_pads": 0,
+        "name": "Fiorentino Military Hub",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1028.807432,
+        "has_large_pad": false,
+        "market_id": 3849841664,
+        "name": "Jarvis Munitions Stockade"
+      },
+      {
+        "distance_to_arrival": 1029.135597,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3849844224,
+        "medium_pads": 0,
+        "name": "Bauer Command Facility",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1026.932044,
+        "has_large_pad": false,
+        "market_id": 3849844736,
+        "name": "Suarez Command Garrison"
+      },
+      {
+        "distance_to_arrival": 1025.663783,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3849844992,
+        "medium_pads": 0,
+        "name": "Rutten's Keep",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1341.393916,
+        "has_large_pad": false,
+        "market_id": 3849842432,
+        "name": "Pestille's Haven"
+      },
+      {
+        "distance_to_arrival": 1751.197741,
+        "has_large_pad": false,
+        "market_id": 3849839872,
+        "name": "Yim Industrial Creations"
+      },
+      {
+        "distance_to_arrival": 1764.460617,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3849839616,
+        "medium_pads": 0,
+        "name": "Poirier Chemical Works",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1751.197741,
+        "has_large_pad": false,
+        "market_id": 3849839104,
+        "name": "Riquelme's Horizon"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-03 03:50:45+00",
+    "x": -1.90625,
+    "y": 65.1875,
+    "z": -79.65625
+  }
+}

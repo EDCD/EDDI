@@ -1,498 +1,448 @@
 {
-  "count": 2,
-  "query": "3107509474002",
-  "results": [
-    {
-      "record": {
-        "allegiance": "Empire",
-        "bodies": [
-          {
-            "distance_to_arrival": 0,
-            "estimated_mapping_value": 4594,
-            "estimated_scan_value": 1212,
-            "id": 3107509474002,
-            "id64": 3107509474002,
-            "is_main_star": true,
-            "name": "Artemis",
-            "subtype": "K (Yellow-Orange) Star",
-            "type": "Star"
-          },
-          {
-            "distance_to_arrival": 179.614773,
-            "estimated_mapping_value": 104690,
-            "estimated_scan_value": 28814,
-            "id": 36031904528437970,
-            "id64": 36031904528437970,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Artemis 1",
-            "subtype": "Metal-rich body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 238.643104,
-            "estimated_mapping_value": 1025933,
-            "estimated_scan_value": 282367,
-            "id": 72060701547401940,
-            "id64": 72060701547401940,
-            "is_main_star": null,
-            "name": "Laphria",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Terraformed",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 393.492007,
-            "estimated_mapping_value": 363161,
-            "estimated_scan_value": 99953,
-            "id": 144118295585329900,
-            "id64": 144118295585329900,
-            "is_main_star": null,
-            "name": "Artemis 3",
-            "subtype": "Water world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 395.425819,
-            "estimated_mapping_value": 53060,
-            "estimated_scan_value": 14604,
-            "id": 180147092604293860,
-            "id64": 180147092604293860,
-            "is_main_star": null,
-            "name": "Artemis 4",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 3212.594761,
-            "estimated_mapping_value": 4558,
-            "estimated_scan_value": 1201,
-            "id": 288233483661185700,
-            "id64": 288233483661185700,
-            "is_main_star": null,
-            "name": "Agrotera",
-            "subtype": "Class IV gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 3209.67593,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 324262280680149700,
-            "id64": 324262280680149700,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Silicate Vapour Gas Vent",
-                "type": "Gas Vent",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Surface Station",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Agrotera a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 3208.300523,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 360291077699113660,
-            "id64": 360291077699113660,
-            "is_main_star": null,
-            "name": "Agrotera b",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 3201.209816,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 396319874718077630,
-            "id64": 396319874718077630,
-            "is_main_star": null,
-            "landmark_value": 2362000,
-            "landmarks": [
-              {
-                "count": 7,
-                "subtype": "Stratum Paleas",
-                "type": "Stratum",
-                "value": 1362000
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 6,
-                "subtype": "Bacterium Aurasus",
-                "type": "Bacterium",
-                "value": 1000000
-              }
-            ],
-            "name": "Agrotera c",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          }
-        ],
-        "body_count": 9,
-        "controlling_minor_faction": "East India Company",
-        "controlling_minor_faction_state": "Expansion",
-        "controlling_power": "Denton Patreus",
-        "estimated_mapping_value": 1562659,
-        "estimated_scan_value": 429651,
-        "government": "Corporate",
-        "id64": 3107509474002,
-        "known_permit": false,
-        "landmark_value": 2362000,
-        "minor_faction_presences": [
-          {
-            "influence": 0.074074,
-            "name": "Artemis Blue Universal Exchange",
-            "state": "None"
-          },
-          {
-            "influence": 0.086086,
-            "name": "Artemis Empire Assembly",
-            "state": "None"
-          },
-          {
-            "influence": 0.01001,
-            "name": "Artemis Gold Partnership",
-            "state": "None"
-          },
-          {
-            "influence": 0.126126,
-            "name": "Artemis Holdings",
-            "state": "None"
-          },
-          {
-            "influence": 0.144144,
-            "name": "Artemis Resistance",
-            "state": "None"
-          },
-          {
-            "influence": 0.55956,
-            "name": "East India Company",
-            "state": "Expansion"
-          }
-        ],
-        "name": "Artemis",
-        "needs_permit": false,
-        "population": 1525606,
-        "power": [
-          "Denton Patreus",
-          "Li Yong-Rui",
-          "Zemina Torval",
-          "Jerome Archer"
-        ],
-        "power_state": "Exploited",
-        "primary_economy": "Tourism",
-        "region": "Inner Orion Spur",
-        "secondary_economy": "Industrial",
-        "security": "Medium",
-        "stations": [
-          {
-            "distance_to_arrival": 0,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 8,
-            "market_id": 3704059648,
-            "medium_pads": 4,
-            "name": "T9Z-3VK",
-            "small_pads": 4,
-            "type": "Drake-Class Carrier"
-          },
-          {
-            "distance_to_arrival": 2133.247361,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 1,
-            "market_id": 129028579,
-            "medium_pads": 2,
-            "name": "The Legacy",
-            "small_pads": 4,
-            "type": "Mega ship"
-          },
-          {
-            "distance_to_arrival": 0,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 8,
-            "market_id": 3707601408,
-            "medium_pads": 4,
-            "name": "K9X-N0F",
-            "small_pads": 4,
-            "type": "Drake-Class Carrier"
-          },
-          {
-            "distance_to_arrival": 2133.246945,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 7,
-            "market_id": 128169720,
-            "medium_pads": 8,
-            "name": "Freeholm",
-            "small_pads": 4,
-            "type": "Asteroid base"
-          },
-          {
-            "distance_to_arrival": 238.483411,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128130296,
-            "medium_pads": 18,
-            "name": "Laphrian Shipyard",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 179.648972,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3224092928,
-            "medium_pads": 1,
-            "name": "Burckhardt Station",
-            "small_pads": 2,
-            "type": "Outpost"
-          },
-          {
-            "distance_to_arrival": 179.676302,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 4,
-            "market_id": 3513439232,
-            "medium_pads": 4,
-            "name": "Suri Base",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 179.614773,
-            "has_large_pad": false,
-            "market_id": 3513438720,
-            "name": "Merbold Terminal"
-          },
-          {
-            "distance_to_arrival": 179.702038,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856041472,
-            "medium_pads": 0,
-            "name": "Dykul Engineering Depot",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 179.684627,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856041216,
-            "medium_pads": 0,
-            "name": "Keita Astrophysics Lab",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 179.702051,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856041984,
-            "medium_pads": 0,
-            "name": "Zoungrana Metallurgic Hub",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 179.614773,
-            "has_large_pad": false,
-            "market_id": 3513438976,
-            "name": "Agassiz's Inheritance ++"
-          },
-          {
-            "distance_to_arrival": 179.614773,
-            "has_large_pad": false,
-            "market_id": 3513440000,
-            "name": "Clapperton Plant"
-          },
-          {
-            "distance_to_arrival": 179.666517,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856041728,
-            "medium_pads": 0,
-            "name": "Dabral's Productions",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 3214.172068,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856042752,
-            "medium_pads": 0,
-            "name": "Frank Industrial Hub",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 3235.393448,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3856043264,
-            "medium_pads": 0,
-            "name": "Schmitt's Genetics",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 3214.128109,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856043008,
-            "medium_pads": 0,
-            "name": "Breguet Engineering Facility",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 3224.994405,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3856043520,
-            "medium_pads": 1,
-            "name": "Cox's Nest",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 3208.300523,
-            "has_large_pad": false,
-            "market_id": 3513439488,
-            "name": "Potter Barracks"
-          },
-          {
-            "distance_to_arrival": 3225.546644,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856042240,
-            "medium_pads": 0,
-            "name": "Reyes Analysis Centre",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 3207.393086,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 2,
-            "market_id": 3790141184,
-            "medium_pads": 2,
-            "name": "Stanley Installation",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 3199.720082,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3856042496,
-            "medium_pads": 0,
-            "name": "Mathibeli Hydroponics Nursery",
-            "small_pads": 2,
-            "type": "Settlement"
-          }
-        ],
-        "thargoid_war_failure_state": "None",
-        "thargoid_war_state": "None",
-        "thargoid_war_success_state": "None",
-        "updated_at": "2024-12-19 15:47:55+00",
-        "x": 14.28125,
-        "y": -63.1875,
-        "z": -24.875
-      },
-      "type": "system"
-    },
-    {
-      "record": {
-        "age": 1432,
-        "atmosphere": "No atmosphere",
-        "axis_tilt": 0.198205,
-        "body_id": 0,
+  "record": {
+    "allegiance": "Empire",
+    "bodies": [
+      {
         "distance_to_arrival": 0,
         "estimated_mapping_value": 4594,
         "estimated_scan_value": 1212,
+        "id": 3107509474002,
         "id64": 3107509474002,
         "is_main_star": true,
-        "luminosity_class": "V",
         "name": "Artemis",
-        "rotational_period": 3.8695301571875,
-        "solar_masses": 0.6875,
-        "solar_radius": 0.810638355140187,
-        "spectral_class": "K3",
         "subtype": "K (Yellow-Orange) Star",
-        "surface_temperature": 4634,
-        "system_controlling_power": "Denton Patreus",
-        "system_id64": 3107509474002,
-        "system_name": "Artemis",
-        "system_power_state": "Exploited",
-        "system_region": "Inner Orion Spur",
-        "system_x": 14.28125,
-        "system_y": -63.1875,
-        "system_z": -24.875,
-        "type": "Star",
-        "updated_at": "2024-12-19 15:47:55+00"
+        "type": "Star"
       },
-      "type": "body"
-    }
-  ]
+      {
+        "distance_to_arrival": 179.585062,
+        "estimated_mapping_value": 104690,
+        "estimated_scan_value": 28814,
+        "id": 36031904528437970,
+        "id64": 36031904528437970,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Artemis 1",
+        "subtype": "Metal-rich body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 238.4997,
+        "estimated_mapping_value": 1025933,
+        "estimated_scan_value": 282367,
+        "id": 72060701547401940,
+        "id64": 72060701547401940,
+        "is_main_star": null,
+        "name": "Laphria",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Terraformed",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 394.324154,
+        "estimated_mapping_value": 363161,
+        "estimated_scan_value": 99953,
+        "id": 144118295585329900,
+        "id64": 144118295585329900,
+        "is_main_star": null,
+        "name": "Artemis 3",
+        "subtype": "Water world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 394.34041,
+        "estimated_mapping_value": 53060,
+        "estimated_scan_value": 14604,
+        "id": 180147092604293860,
+        "id64": 180147092604293860,
+        "is_main_star": null,
+        "name": "Artemis 4",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 3212.524581,
+        "estimated_mapping_value": 4558,
+        "estimated_scan_value": 1201,
+        "id": 288233483661185700,
+        "id64": 288233483661185700,
+        "is_main_star": null,
+        "name": "Agrotera",
+        "subtype": "Class IV gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 3214.584439,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 324262280680149700,
+        "id64": 324262280680149700,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Silicate Vapour Gas Vent",
+            "type": "Gas Vent",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Agrotera a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 3210.755531,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 360291077699113660,
+        "id64": 360291077699113660,
+        "is_main_star": null,
+        "name": "Agrotera b",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 3201.264593,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 396319874718077630,
+        "id64": 396319874718077630,
+        "is_main_star": null,
+        "landmark_value": 2362000,
+        "landmarks": [
+          {
+            "count": 8,
+            "subtype": "Stratum Paleas",
+            "type": "Stratum",
+            "value": 1362000
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 6,
+            "subtype": "Bacterium Aurasus",
+            "type": "Bacterium",
+            "value": 1000000
+          }
+        ],
+        "name": "Agrotera c",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 9,
+    "controlling_minor_faction": "East India Company",
+    "controlling_minor_faction_state": "Expansion",
+    "controlling_power": "Denton Patreus",
+    "estimated_mapping_value": 1562659,
+    "estimated_scan_value": 429651,
+    "government": "Corporate",
+    "id64": 3107509474002,
+    "known_permit": false,
+    "landmark_value": 2362000,
+    "minor_faction_presences": [
+      {
+        "influence": 0.094094,
+        "name": "Artemis Blue Universal Exchange",
+        "state": "Civil War"
+      },
+      {
+        "influence": 0.094094,
+        "name": "Artemis Empire Assembly",
+        "state": "Civil War"
+      },
+      {
+        "influence": 0.01001,
+        "name": "Artemis Gold Partnership",
+        "state": "None"
+      },
+      {
+        "influence": 0.131131,
+        "name": "Artemis Holdings",
+        "state": "None"
+      },
+      {
+        "influence": 0.209209,
+        "name": "Artemis Resistance",
+        "state": "None"
+      },
+      {
+        "influence": 0.461461,
+        "name": "East India Company",
+        "state": "Expansion"
+      }
+    ],
+    "name": "Artemis",
+    "needs_permit": false,
+    "population": 1525606,
+    "power": [
+      "Denton Patreus",
+      "Li Yong-Rui",
+      "Zemina Torval",
+      "Jerome Archer"
+    ],
+    "power_state": "Exploited",
+    "primary_economy": "Tourism",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Industrial",
+    "security": "Medium",
+    "stations": [
+      {
+        "distance_to_arrival": 179.595801,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3224092928,
+        "medium_pads": 1,
+        "name": "Burckhardt Station",
+        "small_pads": 2,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 2133.247361,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 1,
+        "market_id": 129028579,
+        "medium_pads": 2,
+        "name": "The Legacy",
+        "small_pads": 4,
+        "type": "Mega ship"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707601408,
+        "medium_pads": 4,
+        "name": "K9X-N0F",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 2133.246945,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 7,
+        "market_id": 128169720,
+        "medium_pads": 8,
+        "name": "Freeholm",
+        "small_pads": 4,
+        "type": "Asteroid base"
+      },
+      {
+        "distance_to_arrival": 238.506566,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128130296,
+        "medium_pads": 18,
+        "name": "Laphrian Shipyard",
+        "small_pads": 17,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 179.607713,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3513439232,
+        "medium_pads": 4,
+        "name": "Suri Base",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 179.585062,
+        "has_large_pad": false,
+        "market_id": 3513438720,
+        "name": "Merbold Terminal"
+      },
+      {
+        "distance_to_arrival": 179.666517,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856041728,
+        "medium_pads": 0,
+        "name": "Dabral's Productions",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 179.585062,
+        "has_large_pad": false,
+        "market_id": 3513438976,
+        "name": "Agassiz's Inheritance ++"
+      },
+      {
+        "distance_to_arrival": 179.585062,
+        "has_large_pad": false,
+        "market_id": 3513440000,
+        "name": "Clapperton Plant"
+      },
+      {
+        "distance_to_arrival": 179.702038,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856041472,
+        "medium_pads": 0,
+        "name": "Dykul Engineering Depot",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 179.702051,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856041984,
+        "medium_pads": 0,
+        "name": "Zoungrana Metallurgic Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 179.684627,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856041216,
+        "medium_pads": 0,
+        "name": "Keita Astrophysics Lab",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 3235.393448,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3856043264,
+        "medium_pads": 0,
+        "name": "Schmitt's Genetics",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 3214.172068,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856042752,
+        "medium_pads": 0,
+        "name": "Frank Industrial Hub",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 3214.128109,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856043008,
+        "medium_pads": 0,
+        "name": "Breguet Engineering Facility",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 3224.994405,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3856043520,
+        "medium_pads": 1,
+        "name": "Cox's Nest",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 3210.755531,
+        "has_large_pad": false,
+        "market_id": 3513439488,
+        "name": "Potter Barracks"
+      },
+      {
+        "distance_to_arrival": 3225.546644,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856042240,
+        "medium_pads": 0,
+        "name": "Reyes Analysis Centre",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 3199.720082,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3856042496,
+        "medium_pads": 0,
+        "name": "Mathibeli Hydroponics Nursery",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 3207.393086,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 2,
+        "market_id": 3790141184,
+        "medium_pads": 2,
+        "name": "Stanley Installation",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-04 00:40:54+00",
+    "x": 14.28125,
+    "y": -63.1875,
+    "z": -24.875
+  }
 }

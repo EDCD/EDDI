@@ -558,7 +558,7 @@ namespace UnitTests
         {
             // Arrange
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            fakeSpanshRestClient.Expect( @"search?q=10477373803", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemSol ) );
+            fakeSpanshRestClient.Expect( @"system/10477373803", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemSol ) );
 
             // Act
             var starSystem = fakeSpanshService.GetQuickStarSystem(10477373803U);

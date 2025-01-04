@@ -1,0 +1,1420 @@
+{
+  "record": {
+    "allegiance": "Independent",
+    "bodies": [
+      {
+        "distance_to_arrival": 0,
+        "estimated_mapping_value": 4578,
+        "estimated_scan_value": 1207,
+        "id": 9467047323049,
+        "id64": 9467047323049,
+        "is_main_star": true,
+        "name": "Alectrona",
+        "subtype": "M (Red dwarf) Star",
+        "type": "Star"
+      },
+      {
+        "distance_to_arrival": 318.934977,
+        "estimated_mapping_value": 2451,
+        "estimated_scan_value": 569,
+        "id": 216182249161106850,
+        "id64": 216182249161106850,
+        "is_main_star": null,
+        "name": "Alectrona 1",
+        "subtype": "Gas giant with ammonia-based life",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 316.818015,
+        "estimated_mapping_value": 10241,
+        "estimated_scan_value": 2819,
+        "id": 288239843199034800,
+        "id64": 288239843199034800,
+        "is_main_star": null,
+        "name": "Alectrona 2",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 316.483894,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 396326234255926700,
+        "id64": 396326234255926700,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 9,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 14,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Installation",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 2 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 449.775167,
+        "estimated_mapping_value": 105802,
+        "estimated_scan_value": 29120,
+        "id": 468383828293854660,
+        "id64": 468383828293854660,
+        "is_main_star": null,
+        "name": "Alectrona 3",
+        "subtype": "Class II gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 448.756595,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 504412625312818600,
+        "id64": 504412625312818600,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 3 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 449.537118,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 540441422331782600,
+        "id64": 540441422331782600,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 3 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 447.18691,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 576470219350746500,
+        "id64": 576470219350746500,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Carbon Dioxide Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Carbon Dioxide Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 3 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 446.55601,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 612499016369710500,
+        "id64": 612499016369710500,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 3 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 451.936664,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 648527813388674400,
+        "id64": 648527813388674400,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 3,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 3 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 431.529325,
+        "estimated_mapping_value": 2261,
+        "estimated_scan_value": 512,
+        "id": 684556610407638400,
+        "id64": 684556610407638400,
+        "is_main_star": null,
+        "name": "Alectrona 4",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1068.777401,
+        "estimated_mapping_value": 3984,
+        "estimated_scan_value": 1029,
+        "id": 756614204445566300,
+        "id64": 756614204445566300,
+        "is_main_star": null,
+        "name": "Alectrona 5",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1068.587474,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 864700595502458200,
+        "id64": 864700595502458200,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 5 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1071.452533,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 900729392521422200,
+        "id64": 900729392521422200,
+        "is_main_star": null,
+        "name": "Alectrona 5 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1066.551914,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 936758189540386200,
+        "id64": 936758189540386200,
+        "is_main_star": null,
+        "name": "Alectrona 5 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1059.447459,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0088157835783141e+18,
+        "id64": 1.0088157835783141e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Ammonia Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 3,
+            "subtype": "Ammonia Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 5 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1059.504522,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0448445805972781e+18,
+        "id64": 1.0448445805972781e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Ammonia Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 3,
+            "subtype": "Ammonia Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 5 e",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 964.122715,
+        "estimated_mapping_value": 12737,
+        "estimated_scan_value": 3506,
+        "id": 1.080873377616242e+18,
+        "id64": 1.080873377616242e+18,
+        "is_main_star": null,
+        "name": "Alectrona 6",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1454.954727,
+        "estimated_mapping_value": 17449,
+        "estimated_scan_value": 4803,
+        "id": 1.188959768673134e+18,
+        "id64": 1.188959768673134e+18,
+        "is_main_star": null,
+        "name": "Alectrona 7",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1458.075322,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.224988565692098e+18,
+        "id64": 1.224988565692098e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 7 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1453.677024,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.297046159730026e+18,
+        "id64": 1.297046159730026e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 7 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1453.603181,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.33307495674899e+18,
+        "id64": 1.33307495674899e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Carbon Dioxide Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Carbon Dioxide Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 7 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1443.577705,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.369103753767954e+18,
+        "id64": 1.369103753767954e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 7 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1807.420147,
+        "estimated_mapping_value": 15568,
+        "estimated_scan_value": 4285,
+        "id": 1.4771901448248458e+18,
+        "id64": 1.4771901448248458e+18,
+        "is_main_star": null,
+        "name": "Alectrona 8",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1807.118046,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.5852765358817377e+18,
+        "id64": 1.5852765358817377e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 8 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1805.595036,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6213053329007017e+18,
+        "id64": 1.6213053329007017e+18,
+        "is_main_star": null,
+        "name": "Alectrona 8 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1806.578077,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6573341299196657e+18,
+        "id64": 1.6573341299196657e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 8 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1803.893535,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6933629269386296e+18,
+        "id64": 1.6933629269386296e+18,
+        "is_main_star": null,
+        "name": "Alectrona 8 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1720.846933,
+        "estimated_mapping_value": 2491,
+        "estimated_scan_value": 581,
+        "id": 1.7293917239575936e+18,
+        "id64": 1.7293917239575936e+18,
+        "is_main_star": null,
+        "name": "Alectrona 9",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2735.663838,
+        "estimated_mapping_value": 2758,
+        "estimated_scan_value": 661,
+        "id": 1.7654205209765576e+18,
+        "id64": 1.7654205209765576e+18,
+        "is_main_star": null,
+        "name": "Alectrona 10",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2733.899018,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.8735069120334495e+18,
+        "id64": 1.8735069120334495e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 3,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alectrona 10 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 31,
+    "controlling_minor_faction": "Teaka Elite Altruists Bagging Cooperative",
+    "controlling_minor_faction_state": "Expansion",
+    "controlling_power": "Denton Patreus",
+    "estimated_mapping_value": 224740,
+    "estimated_scan_value": 59092,
+    "government": "Cooperative",
+    "id64": 9467047323049,
+    "known_permit": false,
+    "landmark_value": 0,
+    "minor_faction_presences": [
+      {
+        "influence": 0.095045,
+        "name": "Alectrona Company",
+        "state": "Civil War"
+      },
+      {
+        "influence": 0.123357,
+        "name": "Alectrona Imperial Society",
+        "state": "Election"
+      },
+      {
+        "influence": 0.123357,
+        "name": "Alectrona Nationalists",
+        "state": "Election"
+      },
+      {
+        "influence": 0.06269,
+        "name": "Chi Eridani Crimson Travel & Co",
+        "state": "None"
+      },
+      {
+        "influence": 0.102123,
+        "name": "LFT 133 Exchange",
+        "state": "None"
+      },
+      {
+        "influence": 0.095045,
+        "name": "Social Alectrona Free",
+        "state": "Civil War"
+      },
+      {
+        "influence": 0.398382,
+        "name": "Teaka Elite Altruists Bagging Cooperative",
+        "state": "Expansion"
+      }
+    ],
+    "name": "Alectrona",
+    "needs_permit": false,
+    "population": 23157652,
+    "power": [
+      "Denton Patreus",
+      "Zemina Torval",
+      "Jerome Archer"
+    ],
+    "power_state": "Exploited",
+    "primary_economy": "Industrial",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Refinery",
+    "security": "Medium",
+    "stations": [
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3710646528,
+        "medium_pads": 4,
+        "name": "G9B-6VK",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 0,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705325824,
+        "medium_pads": 4,
+        "name": "V0T-43M",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 964.30142,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3707107840,
+        "medium_pads": 4,
+        "name": "JHK-N0Y",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 728.550436,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3703623424,
+        "medium_pads": 4,
+        "name": "V0Y-9KK",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 964.814027,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3224125952,
+        "medium_pads": 1,
+        "name": "Le Guin Port",
+        "small_pads": 3,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 447.618064,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 3224125440,
+        "medium_pads": 18,
+        "name": "Marley City",
+        "small_pads": 17,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 2799.006641,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3705581056,
+        "medium_pads": 4,
+        "name": "TNW-B8V",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 2590.443902,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3703926784,
+        "medium_pads": 4,
+        "name": "T9F-2QW",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 316.254541,
+        "has_large_pad": false,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 0,
+        "market_id": 3224125696,
+        "medium_pads": 1,
+        "name": "Russ City",
+        "small_pads": 4,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 315.483113,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804757248,
+        "medium_pads": 0,
+        "name": "Dakhno Chemical Silo",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 316.483894,
+        "has_large_pad": false,
+        "market_id": 3513485824,
+        "name": "Lebedev Barracks"
+      },
+      {
+        "distance_to_arrival": 315.328695,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804756992,
+        "medium_pads": 0,
+        "name": "Parekh Manufacturing Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 315.332664,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804756736,
+        "medium_pads": 0,
+        "name": "Banerjee Hydroponics",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 449.586127,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 8,
+        "market_id": 3705497344,
+        "medium_pads": 4,
+        "name": "X7Z-8VL",
+        "small_pads": 4,
+        "type": "Drake-Class Carrier"
+      },
+      {
+        "distance_to_arrival": 450.074673,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804753408,
+        "medium_pads": 0,
+        "name": "Faucher Nutrition Facility",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 448.75971,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804753152,
+        "medium_pads": 1,
+        "name": "Lusmore's Encampment",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 449.537118,
+        "has_large_pad": false,
+        "market_id": 3804748800,
+        "name": "Koroma Horticultural Garden"
+      },
+      {
+        "distance_to_arrival": 448.220018,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804748544,
+        "medium_pads": 1,
+        "name": "Antonaci Jurisdiction",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 447.18691,
+        "has_large_pad": false,
+        "market_id": 3513486592,
+        "name": "Maine Enterprise"
+      },
+      {
+        "distance_to_arrival": 452.326939,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804753920,
+        "medium_pads": 0,
+        "name": "Stupka Chemical Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 452.458394,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804754176,
+        "medium_pads": 0,
+        "name": "Alonso Botanical Range",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 448.858901,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804753664,
+        "medium_pads": 0,
+        "name": "Edwards Manufacturing Exchange",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 451.659051,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804754432,
+        "medium_pads": 0,
+        "name": "Kulkarni's Command",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 447.744062,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 2,
+        "market_id": 3513486336,
+        "medium_pads": 2,
+        "name": "Back Base",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 453.00495,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804755712,
+        "medium_pads": 0,
+        "name": "Igbinedion's Muse",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 446.180082,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804755200,
+        "medium_pads": 0,
+        "name": "Nishimura Synthetics Base",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 446.55601,
+        "has_large_pad": false,
+        "market_id": 3513486848,
+        "name": "Koishikawa Lab"
+      },
+      {
+        "distance_to_arrival": 449.882562,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804755456,
+        "medium_pads": 0,
+        "name": "Jarvis Depot",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 453.293929,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804754944,
+        "medium_pads": 0,
+        "name": "Mitchell's Nursery",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 451.813107,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804754688,
+        "medium_pads": 0,
+        "name": "Obi Cultivation Exchange",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 451.936664,
+        "has_large_pad": false,
+        "market_id": 3513486080,
+        "name": "Pickering Terminal"
+      },
+      {
+        "distance_to_arrival": 451.936664,
+        "has_large_pad": false,
+        "market_id": 3804749824,
+        "name": "Faconti Chemical Works"
+      },
+      {
+        "distance_to_arrival": 455.639412,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804749312,
+        "medium_pads": 0,
+        "name": "Mangal Agricultural Market",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 451.936664,
+        "has_large_pad": false,
+        "market_id": 3804750080,
+        "name": "Rey Watch"
+      },
+      {
+        "distance_to_arrival": 455.714928,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804749568,
+        "medium_pads": 0,
+        "name": "Amato Engineering Foundry",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 444.413779,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804749056,
+        "medium_pads": 0,
+        "name": "Giuliani Hydroponics Collection",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1068.587474,
+        "has_large_pad": false,
+        "market_id": 3804758528,
+        "name": "Taschieri Engineering Base"
+      },
+      {
+        "distance_to_arrival": 1068.587474,
+        "has_large_pad": false,
+        "market_id": 3804758016,
+        "name": "Constancia's Vista"
+      },
+      {
+        "distance_to_arrival": 1062.790973,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804758272,
+        "medium_pads": 0,
+        "name": "Moy Manufacturing Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1071.042459,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804758784,
+        "medium_pads": 0,
+        "name": "Zeng Munitions Hub",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1068.197541,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804759040,
+        "medium_pads": 0,
+        "name": "Alaneme Stockade",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1067.285033,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804760064,
+        "medium_pads": 0,
+        "name": "Awolowo Hold",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1074.737032,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804760320,
+        "medium_pads": 1,
+        "name": "Pettitt Dock",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1081.238719,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804755968,
+        "medium_pads": 0,
+        "name": "Aguta Defence Installation",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1077.636278,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804750848,
+        "medium_pads": 0,
+        "name": "Toure Industrial Depot",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1077.633266,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804751360,
+        "medium_pads": 1,
+        "name": "Scavo Synthetics Assembly",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1063.361319,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804751104,
+        "medium_pads": 0,
+        "name": "Seok's Engineering",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1059.504522,
+        "has_large_pad": false,
+        "market_id": 3804750336,
+        "name": "Valenzuela's Fort"
+      },
+      {
+        "distance_to_arrival": 1072.198797,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804750592,
+        "medium_pads": 0,
+        "name": "Bernier Arms Base",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1450.8375,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804757760,
+        "medium_pads": 1,
+        "name": "Uchida Munitions Installation",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1457.208479,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804757504,
+        "medium_pads": 1,
+        "name": "Henriquez Military Expedition",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1454.805606,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3804759296,
+        "medium_pads": 0,
+        "name": "Guerrero's Eden",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1452.662892,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804759808,
+        "medium_pads": 0,
+        "name": "Bourne Watch",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1452.672613,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804759552,
+        "medium_pads": 0,
+        "name": "Christensson's Control",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1442.003166,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3807444736,
+        "medium_pads": 0,
+        "name": "Reyes Military Outpost",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1467.108257,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3807444480,
+        "medium_pads": 1,
+        "name": "Poulton's Encampment",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1794.729969,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804760576,
+        "medium_pads": 1,
+        "name": "Yan Military Installation",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1797.073474,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804760832,
+        "medium_pads": 1,
+        "name": "Park Military Barracks",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1796.089691,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804761088,
+        "medium_pads": 1,
+        "name": "Murakami's Hold",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1793.13158,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804751872,
+        "medium_pads": 0,
+        "name": "Jawara Military Fort",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1800.770613,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804751616,
+        "medium_pads": 1,
+        "name": "Kolev Command Installation",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1799.587472,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804756480,
+        "medium_pads": 0,
+        "name": "Contreras Defence Installation",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1790.957705,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804756224,
+        "medium_pads": 1,
+        "name": "Bhatt's Liberty",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2737.464467,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3804752128,
+        "medium_pads": 1,
+        "name": "Ueno's Haunt",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2724.43379,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804752640,
+        "medium_pads": 0,
+        "name": "Asaju Engineering Site",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2724.434724,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804752384,
+        "medium_pads": 0,
+        "name": "Yakimchuk's Creations",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2724.518006,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3804752896,
+        "medium_pads": 0,
+        "name": "Foster Industrial Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-04 01:00:21+00",
+    "x": 14.53125,
+    "y": -52.46875,
+    "z": 2.5625
+  }
+}

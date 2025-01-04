@@ -1,1689 +1,1648 @@
 {
-  "count": 2,
-  "query": "10477373803",
-  "results": [
-    {
-      "record": {
-        "allegiance": "Federation",
-        "bodies": [
-          {
-            "distance_to_arrival": 0,
-            "estimated_mapping_value": 4614,
-            "estimated_scan_value": 1218,
-            "id": 10477373803,
-            "id64": 10477373803,
-            "is_main_star": true,
-            "name": "Sol",
-            "subtype": "G (White-Yellow) Star",
-            "type": "Star"
-          },
-          {
-            "distance_to_arrival": 162.352908,
-            "estimated_mapping_value": 104250,
-            "estimated_scan_value": 28693,
-            "id": 36028807496337770,
-            "id64": 36028807496337770,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Wrecked Ship",
-                "type": "Wrecked Ship",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Tourist Beacon",
-                "type": "Tourist Beacon",
-                "value": 0
-              },
-              {
-                "count": 2,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Port",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Mercury",
-            "subtype": "Metal-rich body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 363.120134,
-            "estimated_mapping_value": 54128,
-            "estimated_scan_value": 14898,
-            "id": 72057604515301740,
-            "id64": 72057604515301740,
-            "is_main_star": null,
-            "name": "Venus",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 507.288155,
-            "estimated_mapping_value": 1030514,
-            "estimated_scan_value": 283628,
-            "id": 108086401534265710,
-            "id64": 108086401534265710,
-            "is_main_star": null,
-            "name": "Earth",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 506.699515,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 144115198553229660,
-            "id64": 144115198553229660,
-            "is_main_star": null,
-            "name": "Moon",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 822.6707,
-            "estimated_mapping_value": 896273,
-            "estimated_scan_value": 246681,
-            "id": 180143995572193630,
-            "id64": 180143995572193630,
-            "is_main_star": null,
-            "name": "Mars",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Terraformed",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2709.363146,
-            "estimated_mapping_value": 16792,
-            "estimated_scan_value": 4622,
-            "id": 252201589610121570,
-            "id64": 252201589610121570,
-            "is_main_star": null,
-            "name": "Jupiter",
-            "subtype": "Class I gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2710.722265,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 324259183648049540,
-            "id64": 324259183648049540,
-            "is_main_star": null,
-            "name": "Io",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2711.606871,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 360287980667013500,
-            "id64": 360287980667013500,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 22,
-                "subtype": "Water Ice Geyser",
-                "type": "Geyser",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Installation",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 18,
-                "subtype": "Water Ice Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Tourist Beacon",
-                "type": "Tourist Beacon",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Surface Station",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Europa",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2711.417703,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 396316777685977500,
-            "id64": 396316777685977500,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 4,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Ganymede",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2714.781539,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 432345574704941440,
-            "id64": 432345574704941440,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 6,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Surface Station",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Callisto",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4822.811389,
-            "estimated_mapping_value": 14481,
-            "estimated_scan_value": 3986,
-            "id": 468374371723905400,
-            "id64": 468374371723905400,
-            "is_main_star": null,
-            "name": "Saturn",
-            "subtype": "Class I gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4822.462757,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 540431965761833340,
-            "id64": 540431965761833340,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 16,
-                "subtype": "Water Ice Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 17,
-                "subtype": "Water Ice Geyser",
-                "type": "Geyser",
-                "value": 0
-              }
-            ],
-            "name": "Enceladus",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4822.135562,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 576460762780797300,
-            "id64": 576460762780797300,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 5,
-                "subtype": "Water Ice Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 5,
-                "subtype": "Water Ice Geyser",
-                "type": "Geyser",
-                "value": 0
-              }
-            ],
-            "name": "Tethys",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4823.744513,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 612489559799761300,
-            "id64": 612489559799761300,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 3,
-                "subtype": "Water Ice Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 7,
-                "subtype": "Water Ice Geyser",
-                "type": "Geyser",
-                "value": 0
-              }
-            ],
-            "name": "Dione",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4821.509521,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 648518356818725200,
-            "id64": 648518356818725200,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Rhea",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4821.743028,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 684547153837689200,
-            "id64": 684547153837689200,
-            "is_main_star": null,
-            "name": "Titan",
-            "subtype": "Rocky Ice world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4828.080626,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 720575950856653200,
-            "id64": 720575950856653200,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 4,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Iapetus",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 9144.147707,
-            "estimated_mapping_value": 11829,
-            "estimated_scan_value": 3256,
-            "id": 792633544894581100,
-            "id64": 792633544894581100,
-            "is_main_star": null,
-            "name": "Uranus",
-            "subtype": "Class I gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 9144.013,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 864691138932509000,
-            "id64": 864691138932509000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 6,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Ariel",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 9143.459613,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 900719935951473000,
-            "id64": 900719935951473000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Umbriel",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 9145.100226,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 936748732970437000,
-            "id64": 936748732970437000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Titania",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 9146.039911,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 972777529989401000,
-            "id64": 972777529989401000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 4,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Oberon",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 14912.064701,
-            "estimated_mapping_value": 12026,
-            "estimated_scan_value": 3310,
-            "id": 1008806327008364900,
-            "id64": 1008806327008364900,
-            "is_main_star": null,
-            "name": "Neptune",
-            "subtype": "Class I gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 14913.15383,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1080863921046292900,
-            "id64": 1080863921046292900,
-            "is_main_star": null,
-            "name": "Triton",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 20667.669204,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1152921515084220700,
-            "id64": 1152921515084220700,
-            "is_main_star": null,
-            "name": "Pluto",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 20667.643579,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1188950312103184600,
-            "id64": 1188950312103184600,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Wrecked Ship",
-                "type": "Wrecked Ship",
-                "value": 0
-              }
-            ],
-            "name": "Charon",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 15915.161668,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1224979109122148600,
-            "id64": 1224979109122148600,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "90482 Orcus",
-            "subtype": "Rocky Ice world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 15915.190951,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1261007906141112600,
-            "id64": 1261007906141112600,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Vanth",
-            "subtype": "Rocky Ice world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 18955.399037,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1297036703160076500,
-            "id64": 1297036703160076500,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "(307261) 2002 MS4",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 18622.969752,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1333065500179040500,
-            "id64": 1333065500179040500,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Salacia",
-            "subtype": "Rocky Ice world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 18622.986869,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1369094297198004500,
-            "id64": 1369094297198004500,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 5,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 7,
-                "subtype": "Water Ice Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 6,
-                "subtype": "Water Gas Vent",
-                "type": "Gas Vent",
-                "value": 0
-              },
-              {
-                "count": 9,
-                "subtype": "Water Ice Geyser",
-                "type": "Geyser",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Tourist Beacon",
-                "type": "Tourist Beacon",
-                "value": 0
-              }
-            ],
-            "name": "Actaea",
-            "subtype": "Rocky Ice world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 25264.695295,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1405123094216968400,
-            "id64": 1405123094216968400,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Haumea",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 25264.806482,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1441151891235932400,
-            "id64": 1441151891235932400,
-            "is_main_star": null,
-            "name": "Hi'iaka",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 21066.495832,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1477180688254896400,
-            "id64": 1477180688254896400,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Quaoar",
-            "subtype": "Rocky Ice world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 25456.555578,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1513209485273860400,
-            "id64": 1513209485273860400,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Makemake",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 24001.527233,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1549238282292824300,
-            "id64": 1549238282292824300,
-            "is_main_star": null,
-            "name": "(225088) 2007 OR10",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 39243.70747,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1585267079311788300,
-            "id64": 1585267079311788300,
-            "is_main_star": null,
-            "name": "Eris",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 290802.520293,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1621295876330752300,
-            "id64": 1621295876330752300,
-            "is_main_star": null,
-            "name": "Sedna",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 484303.100823,
-            "estimated_mapping_value": 2451,
-            "estimated_scan_value": 569,
-            "id": 1657324673349716200,
-            "id64": 1657324673349716200,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 4,
-                "subtype": "Water Ice Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 10,
-                "subtype": "Water Ice Geyser",
-                "type": "Geyser",
-                "value": 0
-              }
-            ],
-            "name": "Persephone",
-            "subtype": "Icy body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          }
-        ],
-        "body_count": 40,
-        "controlling_minor_faction": "Mother Gaia",
-        "controlling_minor_faction_state": "None",
-        "controlling_power": "Jerome Archer",
-        "estimated_mapping_value": 2213988,
-        "estimated_scan_value": 605861,
-        "government": "Democracy",
-        "id64": 10477373803,
-        "known_permit": true,
-        "landmark_value": 0,
-        "minor_faction_presences": [
-          {
-            "influence": 0.00998,
-            "name": "Aegis Core",
-            "state": "None"
-          },
-          {
-            "influence": 0.174651,
-            "name": "Federal Congress",
-            "state": "None"
-          },
-          {
-            "influence": 0.299401,
-            "name": "Mother Gaia",
-            "state": "None"
-          },
-          {
-            "influence": 0.103792,
-            "name": "Sol Constitution Party",
-            "state": "None"
-          },
-          {
-            "influence": 0.102794,
-            "name": "Sol Nationalists",
-            "state": "None"
-          },
-          {
-            "influence": 0.309381,
-            "name": "Sol Workers' Party",
-            "state": "None"
-          }
-        ],
-        "name": "Sol",
-        "needs_permit": true,
-        "population": 19675804719,
-        "power": [
-          "Edmund Mahon",
-          "Yuri Grom",
-          "Jerome Archer"
-        ],
-        "power_state": "Stronghold",
-        "primary_economy": "Service",
-        "region": "Inner Orion Spur",
-        "secondary_economy": "Refinery",
-        "security": "High",
-        "stations": [
-          {
-            "distance_to_arrival": 168.105447,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128016384,
-            "medium_pads": 18,
-            "name": "Daedalus",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 496.966721,
-            "has_large_pad": false,
-            "has_market": true,
-            "has_outfitting": true,
-            "market_id": 128977009,
-            "name": "Rescue Ship - Li Qing Jao",
-            "type": "Mega ship"
-          },
-          {
-            "distance_to_arrival": 2708.274763,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 6,
-            "market_id": 128017920,
-            "medium_pads": 12,
-            "name": "Columbus",
-            "small_pads": 7,
-            "type": "Ocellus Starport"
-          },
-          {
-            "distance_to_arrival": 507.291289,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128016896,
-            "medium_pads": 18,
-            "name": "Abraham Lincoln",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 822.764737,
-            "has_large_pad": true,
-            "large_pads": 9,
-            "market_id": 128017664,
-            "medium_pads": 18,
-            "name": "Mars High",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 362.981105,
-            "has_large_pad": false,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 0,
-            "market_id": 3228719104,
-            "medium_pads": 1,
-            "name": "Burnell Station",
-            "small_pads": 4,
-            "type": "Outpost"
-          },
-          {
-            "distance_to_arrival": 507.389488,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128017152,
-            "medium_pads": 18,
-            "name": "M.Gorbachev",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 506.773781,
-            "has_large_pad": true,
-            "large_pads": 9,
-            "market_id": 128016640,
-            "medium_pads": 18,
-            "name": "Galileo",
-            "small_pads": 17,
-            "type": "Ocellus Starport"
-          },
-          {
-            "distance_to_arrival": 4819.702267,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128018176,
-            "medium_pads": 18,
-            "name": "Titan City",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 507.413148,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 6,
-            "market_id": 128017408,
-            "medium_pads": 11,
-            "name": "Li Qing Jao",
-            "small_pads": 6,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 168.323538,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 8,
-            "market_id": 3534390016,
-            "medium_pads": 8,
-            "name": "Ehrlich City",
-            "small_pads": 8,
-            "type": "Planetary Port"
-          },
-          {
-            "distance_to_arrival": 168.39572,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 2,
-            "market_id": 3534389760,
-            "medium_pads": 2,
-            "name": "Walz Depot",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 168.278812,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 2,
-            "market_id": 3534391808,
-            "medium_pads": 2,
-            "name": "Furukawa Enterprise",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 2711.606871,
-            "has_large_pad": false,
-            "market_id": 3534392832,
-            "name": "Chargaff Reach"
-          },
-          {
-            "distance_to_arrival": 2711.606871,
-            "has_large_pad": false,
-            "market_id": 3534392064,
-            "name": "Fung's Claim"
-          },
-          {
-            "distance_to_arrival": 2711.606871,
-            "has_large_pad": false,
-            "market_id": 3534390528,
-            "name": "Illy Enterprise"
-          },
-          {
-            "distance_to_arrival": 2711.578235,
-            "has_large_pad": true,
-            "large_pads": 4,
-            "market_id": 3534390272,
-            "medium_pads": 4,
-            "name": "Haberlandt Survey",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 2709.254461,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3802402816,
-            "medium_pads": 0,
-            "name": "Majoro Entertainment Complex",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2710.173952,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 4,
-            "market_id": 3534390784,
-            "medium_pads": 4,
-            "name": "Durrance Camp",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 2708.137692,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802408704,
-            "medium_pads": 1,
-            "name": "Kvitka Dredging Enterprise",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2707.533734,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802409472,
-            "medium_pads": 1,
-            "name": "Malins's Camp",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2710.3312,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802409216,
-            "medium_pads": 1,
-            "name": "Bruno's Encampment",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2706.954639,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802408960,
-            "medium_pads": 0,
-            "name": "Grebby Prospecting",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2714.781539,
-            "has_large_pad": false,
-            "market_id": 3534391552,
-            "name": "Daimler Camp"
-          },
-          {
-            "distance_to_arrival": 2713.574306,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802403584,
-            "medium_pads": 0,
-            "name": "Fraser Industrial Moulding",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2709.835073,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802403328,
-            "medium_pads": 0,
-            "name": "Alasa Industries",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2715.336171,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 2,
-            "market_id": 3534391296,
-            "medium_pads": 2,
-            "name": "Schottky Reformatory",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 2714.003367,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3802403072,
-            "medium_pads": 0,
-            "name": "Hidalgo's Slumber",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2712.230821,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802403840,
-            "medium_pads": 1,
-            "name": "Bourne Mining Installation",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2715.125788,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802404352,
-            "medium_pads": 0,
-            "name": "Dewsnap Prospecting Station",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2710.709827,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802404096,
-            "medium_pads": 0,
-            "name": "Vadamootoo Mining Base",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4822.481778,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3908612352,
-            "medium_pads": 0,
-            "name": "Ikeda Tourist Zone",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4824.43397,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3802405120,
-            "medium_pads": 0,
-            "name": "Kvitka's Origin",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4824.3213,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802402560,
-            "medium_pads": 1,
-            "name": "Ndiaye Hospitality Complex",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4823.203149,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3802404608,
-            "medium_pads": 0,
-            "name": "Bibeau's Wandering",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4833.873325,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802407168,
-            "medium_pads": 1,
-            "name": "Mendy Excavation Site",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4830.134445,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802407424,
-            "medium_pads": 0,
-            "name": "Mathibeli Excavation Station",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4832.258746,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802407936,
-            "medium_pads": 0,
-            "name": "Banyard Command Outpost",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4830.085968,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802407680,
-            "medium_pads": 0,
-            "name": "Aithal Garrison",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 4829.83482,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 3,
-            "market_id": 128677511,
-            "medium_pads": 3,
-            "name": "Dekker's Yard",
-            "small_pads": 2,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 9144.68538,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802401024,
-            "medium_pads": 0,
-            "name": "Lamar's Prospect",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.756605,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802401536,
-            "medium_pads": 0,
-            "name": "Abimbola Metallurgic Reserve",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.795576,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802401792,
-            "medium_pads": 1,
-            "name": "Hirano Mineralogic Territory",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.700808,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802401280,
-            "medium_pads": 0,
-            "name": "Deshpande Mining Exchange",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.239587,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802402304,
-            "medium_pads": 0,
-            "name": "Avery Manufacturing Hub",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.665114,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802402048,
-            "medium_pads": 0,
-            "name": "Pavlenko's Reception",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9145.04549,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802404864,
-            "medium_pads": 0,
-            "name": "Correa Entertainment Complex",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.971771,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802408448,
-            "medium_pads": 1,
-            "name": "Oshpak's House",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9143.203421,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802400768,
-            "medium_pads": 0,
-            "name": "Indongo Bay",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.468302,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802400256,
-            "medium_pads": 0,
-            "name": "Amos Mining Hub",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9146.183175,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802400512,
-            "medium_pads": 0,
-            "name": "Shen Extraction Rigs",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 9144.084011,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802400000,
-            "medium_pads": 0,
-            "name": "Navarrete's Prospect",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 15914.423436,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802406400,
-            "medium_pads": 1,
-            "name": "Tsarenko Prospecting Exchange",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 15914.146366,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802406144,
-            "medium_pads": 0,
-            "name": "Sakurai Tourism Complex",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 15911.325894,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3807125248,
-            "medium_pads": 0,
-            "name": "Uutoni Extraction Platform",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 15914.70776,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3807124992,
-            "medium_pads": 0,
-            "name": "Walachnia's Gate",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18955.916416,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802405376,
-            "medium_pads": 0,
-            "name": "Beauchene's Horizon",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18623.044963,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802406656,
-            "medium_pads": 0,
-            "name": "Ji's Slumber",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18623.27909,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802406912,
-            "medium_pads": 1,
-            "name": "Avery Excavation Hub",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18623.085738,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3807124736,
-            "medium_pads": 0,
-            "name": "Awolowo Mineralogic Base",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18623.0873,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3807123968,
-            "medium_pads": 1,
-            "name": "Fincham Drilling Hub",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18623.260978,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3807124224,
-            "medium_pads": 0,
-            "name": "Yamashita Excavation Territory",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18623.005324,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3807123712,
-            "medium_pads": 0,
-            "name": "Seidel's Globe",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 18623.089473,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3807124480,
-            "medium_pads": 0,
-            "name": "Florianz Mining Prospect",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 25264.955232,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3802408192,
-            "medium_pads": 1,
-            "name": "Hao's Steal",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 21066.420888,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3802405888,
-            "medium_pads": 0,
-            "name": "Ponomarenko's Drilling",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 25456.854687,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3802405632,
-            "medium_pads": 0,
-            "name": "Adebisi Hospitality Zone",
-            "small_pads": 2,
-            "type": "Settlement"
-          }
-        ],
-        "thargoid_war_days_remaining": 0,
-        "thargoid_war_failure_state": "None",
-        "thargoid_war_ports_remaining": 0,
-        "thargoid_war_progress": 0.00002,
-        "thargoid_war_state": "Thargoid Stronghold",
-        "thargoid_war_success_reached": false,
-        "thargoid_war_success_state": "None",
-        "updated_at": "2024-12-07 21:59:57+00",
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "type": "system"
-    },
-    {
-      "record": {
-        "age": 4792,
-        "atmosphere": "No atmosphere",
-        "axis_tilt": -0.219615,
-        "belts": [
-          {
-            "inner_radius": 308170000000,
-            "mass": 4060500000000,
-            "name": "Asteroid Belt",
-            "outer_radius": 489190000000,
-            "type": "Rocky"
-          }
-        ],
-        "body_id": 0,
+  "record": {
+    "allegiance": "Federation",
+    "bodies": [
+      {
         "distance_to_arrival": 0,
         "estimated_mapping_value": 4614,
         "estimated_scan_value": 1218,
+        "id": 10477373803,
         "id64": 10477373803,
         "is_main_star": true,
-        "luminosity_class": "V",
         "name": "Sol",
-        "rotational_period": 2.58327451196759,
-        "solar_masses": 1,
-        "solar_radius": 0.999999953989935,
-        "spectral_class": "G2",
         "subtype": "G (White-Yellow) Star",
-        "surface_temperature": 5778,
-        "system_controlling_power": "Jerome Archer",
-        "system_id64": 10477373803,
-        "system_name": "Sol",
-        "system_power_state": "Stronghold",
-        "system_region": "Inner Orion Spur",
-        "system_x": 0,
-        "system_y": 0,
-        "system_z": 0,
-        "type": "Star",
-        "updated_at": "2024-12-07 21:59:11+00"
+        "type": "Star"
       },
-      "type": "body"
-    }
-  ]
+      {
+        "distance_to_arrival": 194.443407,
+        "estimated_mapping_value": 104250,
+        "estimated_scan_value": 28693,
+        "id": 36028807496337770,
+        "id64": 36028807496337770,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Wrecked Ship",
+            "type": "Wrecked Ship",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Tourist Beacon",
+            "type": "Tourist Beacon",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Port",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Mercury",
+        "subtype": "Metal-rich body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 363.247272,
+        "estimated_mapping_value": 54128,
+        "estimated_scan_value": 14898,
+        "id": 72057604515301740,
+        "id64": 72057604515301740,
+        "is_main_star": null,
+        "name": "Venus",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 506.009406,
+        "estimated_mapping_value": 1030514,
+        "estimated_scan_value": 283628,
+        "id": 108086401534265710,
+        "id64": 108086401534265710,
+        "is_main_star": null,
+        "name": "Earth",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 504.989621,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 144115198553229660,
+        "id64": 144115198553229660,
+        "is_main_star": null,
+        "name": "Moon",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 828.777708,
+        "estimated_mapping_value": 896273,
+        "estimated_scan_value": 246681,
+        "id": 180143995572193630,
+        "id64": 180143995572193630,
+        "is_main_star": null,
+        "name": "Mars",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Terraformed",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2707.065413,
+        "estimated_mapping_value": 16792,
+        "estimated_scan_value": 4622,
+        "id": 252201589610121570,
+        "id64": 252201589610121570,
+        "is_main_star": null,
+        "name": "Jupiter",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2706.002065,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 324259183648049540,
+        "id64": 324259183648049540,
+        "is_main_star": null,
+        "name": "Io",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2706.01136,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 360287980667013500,
+        "id64": 360287980667013500,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 22,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Installation",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 18,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Tourist Beacon",
+            "type": "Tourist Beacon",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Europa",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2710.548663,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 396316777685977500,
+        "id64": 396316777685977500,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 4,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Ganymede",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2705.904152,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 432345574704941440,
+        "id64": 432345574704941440,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 6,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Callisto",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4818.642769,
+        "estimated_mapping_value": 14481,
+        "estimated_scan_value": 3986,
+        "id": 468374371723905400,
+        "id64": 468374371723905400,
+        "is_main_star": null,
+        "name": "Saturn",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4818.601535,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 540431965761833340,
+        "id64": 540431965761833340,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 16,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 17,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Enceladus",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4819.426193,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 576460762780797300,
+        "id64": 576460762780797300,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 5,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 5,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Tethys",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4819.466495,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 612489559799761300,
+        "id64": 612489559799761300,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 3,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 7,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Dione",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4817.157562,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 648518356818725200,
+        "id64": 648518356818725200,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Rhea",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4815.559165,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 684547153837689200,
+        "id64": 684547153837689200,
+        "is_main_star": null,
+        "name": "Titan",
+        "subtype": "Rocky Ice world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4809.784664,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 720575950856653200,
+        "id64": 720575950856653200,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 4,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Iapetus",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 9143.926461,
+        "estimated_mapping_value": 11829,
+        "estimated_scan_value": 3256,
+        "id": 792633544894581100,
+        "id64": 792633544894581100,
+        "is_main_star": null,
+        "name": "Uranus",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 9144.385501,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 864691138932509000,
+        "id64": 864691138932509000,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 6,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Ariel",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 9144.194993,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 900719935951473000,
+        "id64": 900719935951473000,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Umbriel",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 9143.720676,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 936748732970437000,
+        "id64": 936748732970437000,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Titania",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 9145.86234,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 972777529989401000,
+        "id64": 972777529989401000,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 4,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Oberon",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 14912.416448,
+        "estimated_mapping_value": 12026,
+        "estimated_scan_value": 3310,
+        "id": 1.0088063270083649e+18,
+        "id64": 1.0088063270083649e+18,
+        "is_main_star": null,
+        "name": "Neptune",
+        "subtype": "Class I gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 14911.401511,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0808639210462929e+18,
+        "id64": 1.0808639210462929e+18,
+        "is_main_star": null,
+        "name": "Triton",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 20659.147221,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.1529215150842207e+18,
+        "id64": 1.1529215150842207e+18,
+        "is_main_star": null,
+        "name": "Pluto",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 20659.091055,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.1889503121031846e+18,
+        "id64": 1.1889503121031846e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Wrecked Ship",
+            "type": "Wrecked Ship",
+            "value": 0
+          }
+        ],
+        "name": "Charon",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 15919.947366,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2249791091221486e+18,
+        "id64": 1.2249791091221486e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "90482 Orcus",
+        "subtype": "Rocky Ice world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 15919.971525,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2610079061411126e+18,
+        "id64": 1.2610079061411126e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Vanth",
+        "subtype": "Rocky Ice world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 18950.900043,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2970367031600765e+18,
+        "id64": 1.2970367031600765e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "(307261) 2002 MS4",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 18622.530138,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.3330655001790405e+18,
+        "id64": 1.3330655001790405e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Salacia",
+        "subtype": "Rocky Ice world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 18622.548248,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.3690942971980045e+18,
+        "id64": 1.3690942971980045e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 5,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 7,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 6,
+            "subtype": "Water Gas Vent",
+            "type": "Gas Vent",
+            "value": 0
+          },
+          {
+            "count": 9,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Tourist Beacon",
+            "type": "Tourist Beacon",
+            "value": 0
+          }
+        ],
+        "name": "Actaea",
+        "subtype": "Rocky Ice world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 25262.112949,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4051230942169684e+18,
+        "id64": 1.4051230942169684e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Haumea",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 25262.040505,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4411518912359324e+18,
+        "id64": 1.4411518912359324e+18,
+        "is_main_star": null,
+        "name": "Hi'iaka",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 21067.269171,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.4771806882548964e+18,
+        "id64": 1.4771806882548964e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Quaoar",
+        "subtype": "Rocky Ice world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 25453.313805,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.5132094852738604e+18,
+        "id64": 1.5132094852738604e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Makemake",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 24018.338271,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.5492382822928243e+18,
+        "id64": 1.5492382822928243e+18,
+        "is_main_star": null,
+        "name": "(225088) 2007 OR10",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 39233.64147,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.5852670793117883e+18,
+        "id64": 1.5852670793117883e+18,
+        "is_main_star": null,
+        "name": "Eris",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 290810.12505,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.6212958763307523e+18,
+        "id64": 1.6212958763307523e+18,
+        "is_main_star": null,
+        "name": "Sedna",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 484299.476981,
+        "estimated_mapping_value": 2451,
+        "estimated_scan_value": 569,
+        "id": 1.6573246733497162e+18,
+        "id64": 1.6573246733497162e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 4,
+            "subtype": "Water Ice Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 11,
+            "subtype": "Water Ice Geyser",
+            "type": "Geyser",
+            "value": 0
+          }
+        ],
+        "name": "Persephone",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 40,
+    "controlling_minor_faction": "Mother Gaia",
+    "controlling_minor_faction_state": "None",
+    "controlling_power": "Jerome Archer",
+    "estimated_mapping_value": 2213988,
+    "estimated_scan_value": 605861,
+    "government": "Democracy",
+    "id64": 10477373803,
+    "known_permit": true,
+    "landmark_value": 0,
+    "minor_faction_presences": [
+      {
+        "influence": 0.00997,
+        "name": "Aegis Core",
+        "state": "None"
+      },
+      {
+        "influence": 0.182453,
+        "name": "Federal Congress",
+        "state": "None"
+      },
+      {
+        "influence": 0.291127,
+        "name": "Mother Gaia",
+        "state": "None"
+      },
+      {
+        "influence": 0.108674,
+        "name": "Sol Constitution Party",
+        "state": "None"
+      },
+      {
+        "influence": 0.110668,
+        "name": "Sol Nationalists",
+        "state": "None"
+      },
+      {
+        "influence": 0.297109,
+        "name": "Sol Workers' Party",
+        "state": "None"
+      }
+    ],
+    "name": "Sol",
+    "needs_permit": true,
+    "population": 18320926115,
+    "power": [
+      "Aisling Duval",
+      "Edmund Mahon",
+      "Li Yong-Rui",
+      "Yuri Grom",
+      "Zemina Torval",
+      "Jerome Archer"
+    ],
+    "power_state": "Exploited",
+    "primary_economy": "Refinery",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Service",
+    "security": "High",
+    "stations": [
+      {
+        "distance_to_arrival": 496.966721,
+        "has_large_pad": false,
+        "has_market": true,
+        "has_outfitting": true,
+        "market_id": 128977009,
+        "name": "Rescue Ship - Li Qing Jao",
+        "type": "Mega ship"
+      },
+      {
+        "distance_to_arrival": 4815.542842,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 5,
+        "market_id": 128018176,
+        "medium_pads": 13,
+        "name": "Titan City",
+        "small_pads": 7,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 505.923146,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 128017152,
+        "medium_pads": 13,
+        "name": "M.Gorbachev",
+        "small_pads": 8,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 828.881318,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 128017664,
+        "medium_pads": 12,
+        "name": "Mars High",
+        "small_pads": 6,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 505.030109,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 128016640,
+        "medium_pads": 13,
+        "name": "Galileo",
+        "small_pads": 9,
+        "type": "Ocellus Starport"
+      },
+      {
+        "distance_to_arrival": 194.675847,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 128016384,
+        "medium_pads": 13,
+        "name": "Daedalus",
+        "small_pads": 10,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 506.103362,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 5,
+        "market_id": 128016896,
+        "medium_pads": 9,
+        "name": "Abraham Lincoln",
+        "small_pads": 8,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 2705.819922,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 128017920,
+        "medium_pads": 12,
+        "name": "Columbus",
+        "small_pads": 7,
+        "type": "Ocellus Starport"
+      },
+      {
+        "distance_to_arrival": 505.958796,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 128017408,
+        "medium_pads": 11,
+        "name": "Li Qing Jao",
+        "small_pads": 6,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 363.207302,
+        "has_large_pad": false,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 0,
+        "market_id": 3228719104,
+        "medium_pads": 1,
+        "name": "Burnell Station",
+        "small_pads": 4,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 190.4785,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 2,
+        "market_id": 3534389760,
+        "medium_pads": 2,
+        "name": "Walz Depot",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 191.415964,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 2,
+        "market_id": 3534391808,
+        "medium_pads": 2,
+        "name": "Furukawa Enterprise",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 194.638386,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 8,
+        "market_id": 3534390016,
+        "medium_pads": 8,
+        "name": "Ehrlich City",
+        "small_pads": 8,
+        "type": "Planetary Port"
+      },
+      {
+        "distance_to_arrival": 2706.01136,
+        "has_large_pad": false,
+        "market_id": 3534392832,
+        "name": "Chargaff Reach"
+      },
+      {
+        "distance_to_arrival": 2706.01136,
+        "has_large_pad": false,
+        "market_id": 3534392064,
+        "name": "Fung's Claim"
+      },
+      {
+        "distance_to_arrival": 2706.01136,
+        "has_large_pad": false,
+        "market_id": 3534390528,
+        "name": "Illy Enterprise"
+      },
+      {
+        "distance_to_arrival": 2709.376218,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3534390272,
+        "medium_pads": 4,
+        "name": "Haberlandt Survey",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 2708.114773,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3802402816,
+        "medium_pads": 0,
+        "name": "Majoro Entertainment Complex",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2708.137692,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802408704,
+        "medium_pads": 1,
+        "name": "Kvitka Dredging Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2707.075858,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802409216,
+        "medium_pads": 1,
+        "name": "Bruno's Encampment",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2707.533734,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802409472,
+        "medium_pads": 1,
+        "name": "Malins's Camp",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2705.620985,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 4,
+        "market_id": 3534390784,
+        "medium_pads": 4,
+        "name": "Durrance Camp",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 2709.897145,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802408960,
+        "medium_pads": 0,
+        "name": "Grebby Prospecting",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2705.904152,
+        "has_large_pad": false,
+        "market_id": 3534391552,
+        "name": "Daimler Camp"
+      },
+      {
+        "distance_to_arrival": 2704.814813,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802403328,
+        "medium_pads": 0,
+        "name": "Alasa Industries",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2710.709827,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802404096,
+        "medium_pads": 0,
+        "name": "Vadamootoo Mining Base",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2704.967493,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 2,
+        "market_id": 3534391296,
+        "medium_pads": 2,
+        "name": "Schottky Reformatory",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 2714.003367,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3802403072,
+        "medium_pads": 0,
+        "name": "Hidalgo's Slumber",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2704.681452,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802403840,
+        "medium_pads": 1,
+        "name": "Bourne Mining Installation",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2704.868173,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802403584,
+        "medium_pads": 0,
+        "name": "Fraser Industrial Moulding",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2705.056605,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802404352,
+        "medium_pads": 0,
+        "name": "Dewsnap Prospecting Station",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4822.481778,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3908612352,
+        "medium_pads": 0,
+        "name": "Ikeda Tourist Zone",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4824.43397,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3802405120,
+        "medium_pads": 0,
+        "name": "Kvitka's Origin",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4824.3213,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802402560,
+        "medium_pads": 1,
+        "name": "Ndiaye Hospitality Complex",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4823.203149,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3802404608,
+        "medium_pads": 0,
+        "name": "Bibeau's Wandering",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4832.258746,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802407936,
+        "medium_pads": 0,
+        "name": "Banyard Command Outpost",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4833.873325,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802407168,
+        "medium_pads": 1,
+        "name": "Mendy Excavation Site",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4809.78283,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 3,
+        "market_id": 128677511,
+        "medium_pads": 3,
+        "name": "Dekker's Yard",
+        "small_pads": 2,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 4809.78713,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802407680,
+        "medium_pads": 0,
+        "name": "Aithal Garrison",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 4810.007308,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802407424,
+        "medium_pads": 0,
+        "name": "Mathibeli Excavation Station",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9144.239587,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802402304,
+        "medium_pads": 0,
+        "name": "Avery Manufacturing Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9144.665114,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802402048,
+        "medium_pads": 0,
+        "name": "Pavlenko's Reception",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9143.438335,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802401792,
+        "medium_pads": 1,
+        "name": "Hirano Mineralogic Territory",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9144.700808,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802401280,
+        "medium_pads": 0,
+        "name": "Deshpande Mining Exchange",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9144.328255,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802401024,
+        "medium_pads": 0,
+        "name": "Lamar's Prospect",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9144.562855,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802401536,
+        "medium_pads": 0,
+        "name": "Abimbola Metallurgic Reserve",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9145.04549,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802404864,
+        "medium_pads": 0,
+        "name": "Correa Entertainment Complex",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9144.971771,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802408448,
+        "medium_pads": 1,
+        "name": "Oshpak's House",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9146.183175,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802400512,
+        "medium_pads": 0,
+        "name": "Shen Extraction Rigs",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9145.862892,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802400768,
+        "medium_pads": 0,
+        "name": "Indongo Bay",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9145.862907,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802400256,
+        "medium_pads": 0,
+        "name": "Amos Mining Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 9145.665707,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802400000,
+        "medium_pads": 0,
+        "name": "Navarrete's Prospect",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 15914.423436,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802406400,
+        "medium_pads": 1,
+        "name": "Tsarenko Prospecting Exchange",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 15919.80075,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802406144,
+        "medium_pads": 0,
+        "name": "Sakurai Tourism Complex",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 15919.844956,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3807124992,
+        "medium_pads": 0,
+        "name": "Walachnia's Gate",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 15919.732683,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3807125248,
+        "medium_pads": 0,
+        "name": "Uutoni Extraction Platform",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18955.916416,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802405376,
+        "medium_pads": 0,
+        "name": "Beauchene's Horizon",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18622.533189,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802406656,
+        "medium_pads": 0,
+        "name": "Ji's Slumber",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18622.535874,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802406912,
+        "medium_pads": 1,
+        "name": "Avery Excavation Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18623.0873,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3807123968,
+        "medium_pads": 1,
+        "name": "Fincham Drilling Hub",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18623.005324,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3807123712,
+        "medium_pads": 0,
+        "name": "Seidel's Globe",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18623.089473,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3807124480,
+        "medium_pads": 0,
+        "name": "Florianz Mining Prospect",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18623.085738,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3807124736,
+        "medium_pads": 0,
+        "name": "Awolowo Mineralogic Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 18623.260978,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3807124224,
+        "medium_pads": 0,
+        "name": "Yamashita Excavation Territory",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 25264.955232,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3802408192,
+        "medium_pads": 1,
+        "name": "Hao's Steal",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 21067.235882,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3802405888,
+        "medium_pads": 0,
+        "name": "Ponomarenko's Drilling",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 25456.854687,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3802405632,
+        "medium_pads": 0,
+        "name": "Adebisi Hospitality Zone",
+        "small_pads": 2,
+        "type": "Settlement"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-04 03:52:31+00",
+    "x": 0,
+    "y": 0,
+    "z": 0
+  }
 }

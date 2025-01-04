@@ -1,73 +1,158 @@
 {
-  "count": 2,
-  "query": "1183229809290",
-  "results": [
-    {
-      "record": {
-        "bodies": [],
-        "body_count": 11,
-        "estimated_mapping_value": 1959194,
-        "estimated_scan_value": 538528,
-        "government": "None",
-        "id64": 1183229809290,
-        "known_permit": false,
-        "landmark_value": 0,
-        "name": "Pleiades Sector GW-W c1-4",
-        "needs_permit": false,
-        "population": 0,
-        "primary_economy": "None",
-        "region": "Inner Orion Spur",
-        "secondary_economy": "None",
-        "security": "Anarchy",
-        "thargoid_war_failure_state": "None",
-        "thargoid_war_state": "None",
-        "thargoid_war_success_state": "None",
-        "updated_at": "2024-11-04 20:36:33+00",
-        "x": -81.625,
-        "y": -151.3125,
-        "z": -383.53125
-      },
-      "type": "system"
-    },
-    {
-      "record": {
-        "age": 5398,
-        "atmosphere": "No atmosphere",
-        "axis_tilt": 0,
-        "belts": [
-          {
-            "inner_radius": 1186400000,
-            "mass": 1843500000,
-            "name": "Pleiades Sector GW-W c1-4 A Belt",
-            "outer_radius": 2211300000,
-            "type": "Metallic"
-          }
-        ],
-        "body_id": 0,
+  "record": {
+    "bodies": [
+      {
         "distance_to_arrival": 0,
         "estimated_mapping_value": 4598,
         "estimated_scan_value": 1213,
+        "id": 1183229809290,
         "id64": 1183229809290,
         "is_main_star": true,
-        "is_rotational_period_tidally_locked": false,
-        "luminosity_class": "Vab",
         "name": "Pleiades Sector GW-W c1-4",
-        "rotational_period": 4.78646710849537,
-        "solar_masses": 0.769531,
-        "solar_radius": 0.898315410496046,
-        "spectral_class": "K0",
         "subtype": "K (Yellow-Orange) Star",
-        "surface_temperature": 5058,
-        "system_id64": 1183229809290,
-        "system_name": "Pleiades Sector GW-W c1-4",
-        "system_region": "Inner Orion Spur",
-        "system_x": -81.625,
-        "system_y": -151.3125,
-        "system_z": -383.53125,
-        "type": "Star",
-        "updated_at": "2024-11-04 20:36:26+00"
+        "type": "Star"
       },
-      "type": "body"
-    }
-  ]
+      {
+        "distance_to_arrival": 272.284783,
+        "estimated_mapping_value": 626749,
+        "estimated_scan_value": 172500,
+        "id": 324260356400485000,
+        "id64": 324260356400485000,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 1",
+        "subtype": "High metal content world",
+        "terraforming_state": "Terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 348.729612,
+        "estimated_mapping_value": 610373,
+        "estimated_scan_value": 167993,
+        "id": 360289153419448960,
+        "id64": 360289153419448960,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 2",
+        "subtype": "High metal content world",
+        "terraforming_state": "Terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 463.089836,
+        "estimated_mapping_value": 647230,
+        "estimated_scan_value": 178137,
+        "id": 396317950438412900,
+        "id64": 396317950438412900,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 3",
+        "subtype": "High metal content world",
+        "terraforming_state": "Terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 662.298537,
+        "estimated_mapping_value": 56138,
+        "estimated_scan_value": 15451,
+        "id": 432346747457376900,
+        "id64": 432346747457376900,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 4",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1872.792093,
+        "estimated_mapping_value": 2881,
+        "estimated_scan_value": 698,
+        "id": 504404341495304800,
+        "id64": 504404341495304800,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 5",
+        "subtype": "Gas giant with ammonia-based life",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1872.274331,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 540433138514268800,
+        "id64": 540433138514268800,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 5 a",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1872.57763,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 576461935533232800,
+        "id64": 576461935533232800,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 5 b",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1870.058631,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 612490732552196700,
+        "id64": 612490732552196700,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 5 c",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1866.514806,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 648519529571160700,
+        "id64": 648519529571160700,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 5 d",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2598.925532,
+        "estimated_mapping_value": 2341,
+        "estimated_scan_value": 536,
+        "id": 1.1168938908176923e+18,
+        "id64": 1.1168938908176923e+18,
+        "is_main_star": null,
+        "name": "Pleiades Sector GW-W c1-4 6",
+        "subtype": "Icy body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 11,
+    "estimated_mapping_value": 1959194,
+    "estimated_scan_value": 538528,
+    "government": "None",
+    "id64": 1183229809290,
+    "known_permit": false,
+    "landmark_value": 0,
+    "name": "Pleiades Sector GW-W c1-4",
+    "needs_permit": false,
+    "population": 0,
+    "primary_economy": "None",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "None",
+    "security": "Anarchy",
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2024-11-04 20:36:33+00",
+    "x": -81.625,
+    "y": -151.3125,
+    "z": -383.53125
+  }
 }

@@ -17,7 +17,7 @@ namespace EddiShipMonitor
 
         public static List<Ship> ShipyardFromJson(Ship activeShip, dynamic json)
         {
-            List<Ship> shipyard = new List<Ship>();
+            var shipyard = new List<Ship>();
 
             foreach (dynamic shipJson in json["ships"])
             {
@@ -25,31 +25,26 @@ namespace EddiShipMonitor
                 {
                     // Take underlying value if present
                     JObject shipObj = shipJson.Value ?? shipJson;
-                    if (shipObj != null)
+                    var ship = ShipFromJson(shipObj);
+                    if (activeShip?.LocalId == ship.LocalId)
                     {
-                        Ship ship = ShipFromJson(shipObj);
-                        if (activeShip?.LocalId == ship.LocalId)
+                        // This is the active ship so add that instead
+                        shipyard.Add(activeShip);
+                    }
+                    else
+                    {
+                        if (shipObj["starsystem"] != null)
                         {
-                            // This is the active ship so add that instead
-                            shipyard.Add(activeShip);
-                        }
-                        else
-                        {
-                            if (shipObj["starsystem"] != null)
-                            {
-                                ship.starsystem = (string)shipObj["starsystem"]["name"];
-                                ship.station = (string)shipObj["station"]?["name"];
-
-                                // Get the ship's coordinates for distance calculations
-                                var storedShipStarSystem = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint(ship.starsystem);
-                                if ( storedShipStarSystem != null )
-                                {
-                                    ship.x = storedShipStarSystem.x;
-                                    ship.y = storedShipStarSystem.y;
-                                    ship.z = storedShipStarSystem.z;
-                                    shipyard.Add( ship );
-                                }
-                            }
+                            // Get the ship's location for distance calculations
+                            var shipSystemAddress = shipObj["starsystem"]["systemaddress"]?.ToObject<ulong?>();
+                            var shipMarketId = shipObj["station"]?["id"]?.ToObject<long?>();
+                            var stationWaypoint = shipSystemAddress is null || shipMarketId is null
+                                ? null 
+                                : EDDI.Instance.DataProvider.GetOrFetchStationWaypoint( (ulong)shipSystemAddress, (long)shipMarketId );
+                            ship.StoredLocation =
+                                stationWaypoint is null ? null : new Ship.ShipLocation( stationWaypoint );
+                            ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                            shipyard.Add( ship );
                         }
                     }
                 }

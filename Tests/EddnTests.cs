@@ -26,12 +26,12 @@ namespace UnitTests
         private EDDNResponder makeTestEDDNResponder()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            fakeSpanshRestClient.Expect( "search?q=2724879894859", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemPleiadesSector_HR_W_d1_79 ) );
-            fakeSpanshRestClient.Expect( "search?q=1183229809290", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemPleiadesSector_GW_W_c1_4 ) );
-            fakeSpanshRestClient.Expect( "search?q=10477373803", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemSol ) );
-            fakeSpanshRestClient.Expect( "search?q=5068463809865", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemHyadesSector_DL_X_b1_2 ) );
-            fakeSpanshRestClient.Expect( "search?q=35835461971465", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemOmegaSector_DM_M_b7_16 ) );
-            fakeSpanshRestClient.Expect( "search?q=3107509474002", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemArtemis ) );
+            fakeSpanshRestClient.Expect( "system/2724879894859", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemPleiadesSector_HR_W_d1_79 ) );
+            fakeSpanshRestClient.Expect( "system/1183229809290", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemPleiadesSector_GW_W_c1_4 ) );
+            fakeSpanshRestClient.Expect( "system/10477373803", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemSol ) );
+            fakeSpanshRestClient.Expect( "system/5068463809865", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemHyadesSector_DL_X_b1_2 ) );
+            fakeSpanshRestClient.Expect( "system/35835461971465", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemOmegaSector_DM_M_b7_16 ) );
+            fakeSpanshRestClient.Expect( "system/3107509474002", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemArtemis ) );
 
             var responder = new EDDNResponder(true);
             return responder;

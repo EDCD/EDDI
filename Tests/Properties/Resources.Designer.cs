@@ -363,6 +363,16 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] SpanshQuickStarSystemAlectrona {
+            get {
+                object obj = ResourceManager.GetObject("SpanshQuickStarSystemAlectrona", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] SpanshQuickStarSystemAlioth {
             get {
                 object obj = ResourceManager.GetObject("SpanshQuickStarSystemAlioth", resourceCulture);
@@ -386,6 +396,26 @@ namespace Tests.Properties {
         public static byte[] SpanshQuickStarSystemHyadesSector_DL_X_b1_2 {
             get {
                 object obj = ResourceManager.GetObject("SpanshQuickStarSystemHyadesSector_DL_X_b1_2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SpanshQuickStarSystemKaushpoos {
+            get {
+                object obj = ResourceManager.GetObject("SpanshQuickStarSystemKaushpoos", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SpanshQuickStarSystemLTT_1349 {
+            get {
+                object obj = ResourceManager.GetObject("SpanshQuickStarSystemLTT_1349", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -426,6 +456,16 @@ namespace Tests.Properties {
         public static byte[] SpanshQuickStarSystemSol {
             get {
                 object obj = ResourceManager.GetObject("SpanshQuickStarSystemSol", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SpanshQuickStarSystemTz_Arietis {
+            get {
+                object obj = ResourceManager.GetObject("SpanshQuickStarSystemTz_Arietis", resourceCulture);
                 return ((byte[])(obj));
             }
         }

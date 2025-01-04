@@ -1308,12 +1308,17 @@ namespace EddiJournalMonitor
                                                     ship.value = JsonParsing.getLong(shipData, "Value");
                                                     ship.hot = JsonParsing.getOptionalBool(shipData, "Hot") ?? false;
                                                     ship.intransit = JsonParsing.getOptionalBool(shipData, "InTransit") ?? false;
-                                                    ship.marketid = JsonParsing.getOptionalLong(shipData, "ShipMarketID") ?? marketId;
                                                     ship.transferprice = JsonParsing.getOptionalLong(shipData, "TransferPrice");
                                                     ship.transfertime = JsonParsing.getOptionalLong(shipData, "TransferTime");
 
-                                                    var systemName = JsonParsing.getString(shipData, "StarSystem");
-                                                    ship.starsystem = systemName ?? system;
+                                                    var shipSystemName = JsonParsing.getString(shipData, "StarSystem");
+                                                    var shipMarketID = JsonParsing.getOptionalLong( shipData, "ShipMarketID" );
+                                                    var stationWaypoint = EDDI.Instance.DataProvider.GetOrFetchStationWaypoint(
+                                                            shipSystemName ?? system, shipMarketID ?? marketId );
+                                                    ship.StoredLocation = stationWaypoint is null 
+                                                        ? null 
+                                                        : new Ship.ShipLocation( stationWaypoint );
+                                                    ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
                                                     shipyard.Add(ship);
                                                 }
                                             }

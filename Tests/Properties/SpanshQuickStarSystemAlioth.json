@@ -1,1394 +1,1346 @@
 {
-  "count": 2,
-  "query": "1109989017963",
-  "results": [
-    {
-      "record": {
-        "allegiance": "Alliance",
-        "bodies": [
-          {
-            "distance_to_arrival": 0,
-            "estimated_mapping_value": 4644,
-            "estimated_scan_value": 1227,
-            "id": 1109989017963,
-            "id64": 1109989017963,
-            "is_main_star": true,
-            "name": "Alioth",
-            "subtype": "A (Blue-White) Star",
-            "type": "Star"
-          },
-          {
-            "distance_to_arrival": 1235.670029,
-            "estimated_mapping_value": 4414,
-            "estimated_scan_value": 1158,
-            "id": 180145095083837800,
-            "id64": 180145095083837800,
-            "is_main_star": null,
-            "name": "Alioth 1",
-            "subtype": "Class IV gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1236.271835,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 288231486140729700,
-            "id64": 288231486140729700,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 3,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Tourist Beacon",
-                "type": "Tourist Beacon",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 1 a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1654.716807,
-            "estimated_mapping_value": 3771,
-            "estimated_scan_value": 965,
-            "id": 936749832482081200,
-            "id64": 936749832482081200,
-            "is_main_star": null,
-            "name": "Alioth 2",
-            "subtype": "Class III gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1653.693706,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1008807426520009100,
-            "id64": 1008807426520009100,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 2 a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1653.131937,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1044836223538973000,
-            "id64": 1044836223538973000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 2 b",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1655.916358,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1080865020557937000,
-            "id64": 1080865020557937000,
-            "is_main_star": null,
-            "name": "Alioth 2 c",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1655.553905,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1116893817576901000,
-            "id64": 1116893817576901000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 2 d",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1651.618817,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1152922614595864800,
-            "id64": 1152922614595864800,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 5,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 2 e",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 1653.266221,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1224980208633792800,
-            "id64": 1224980208633792800,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 2,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 2 f",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2297.335038,
-            "estimated_mapping_value": 3128,
-            "estimated_scan_value": 772,
-            "id": 1693354569880324400,
-            "id64": 1693354569880324400,
-            "is_main_star": null,
-            "name": "Alioth 3",
-            "subtype": "Class III gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2298.120073,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1801440960937216300,
-            "id64": 1801440960937216300,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 3,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 3,
-                "subtype": "Silicate Vapour Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 4,
-                "subtype": "Silicate Magma Lava Spout",
-                "type": "Lava Spout",
-                "value": 0
-              },
-              {
-                "count": 4,
-                "subtype": "Silicate Vapour Gas Vent",
-                "type": "Gas Vent",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Surface Station",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 3 a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2298.449276,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1837469757956180200,
-            "id64": 1837469757956180200,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 3,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 3 b",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2296.604861,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1873498554975144200,
-            "id64": 1873498554975144200,
-            "is_main_star": null,
-            "name": "Alioth 3 c",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2296.634423,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1909527351994108200,
-            "id64": 1909527351994108200,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 1,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Silicate Vapour Fumarole",
-                "type": "Fumarole",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Silicate Magma Lava Spout",
-                "type": "Lava Spout",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 3 c a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2301.497479,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 1945556149013072100,
-            "id64": 1945556149013072100,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 3,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 3 d",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2351.847341,
-            "estimated_mapping_value": 62580,
-            "estimated_scan_value": 17224,
-            "id": 1981584946032036000,
-            "id64": 1981584946032036000,
-            "is_main_star": null,
-            "name": "Alioth 4",
-            "subtype": "High metal content world",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 2351.480762,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 2053642540069964000,
-            "id64": 2053642540069964000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 5,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Alioth 4 a",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4690.648065,
-            "estimated_mapping_value": 3694,
-            "estimated_scan_value": 942,
-            "id": 2089671337088928000,
-            "id64": 2089671337088928000,
-            "is_main_star": null,
-            "name": "Alioth 5",
-            "subtype": "Class III gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4637.307949,
-            "estimated_mapping_value": 961688,
-            "estimated_scan_value": 264685,
-            "id": 2125700134107892000,
-            "id64": 2125700134107892000,
-            "is_main_star": null,
-            "name": "Wicca's World",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Terraformed",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4617.078984,
-            "estimated_mapping_value": 956448,
-            "estimated_scan_value": 263243,
-            "id": 2161728931126856000,
-            "id64": 2161728931126856000,
-            "is_main_star": null,
-            "name": "Turner's World",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Terraformed",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 4520.517779,
-            "estimated_mapping_value": 954617,
-            "estimated_scan_value": 262739,
-            "id": 2197757728145820000,
-            "id64": 2197757728145820000,
-            "is_main_star": null,
-            "name": "Argent's Claim",
-            "subtype": "Earth-like world",
-            "terraforming_state": "Terraformed",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 7781.984944,
-            "estimated_mapping_value": 3528,
-            "estimated_scan_value": 892,
-            "id": 2233786525164783900,
-            "id64": 2233786525164783900,
-            "is_main_star": null,
-            "name": "Bifrost",
-            "subtype": "Class III gas giant",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 7780.483914,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 2269815322183747800,
-            "id64": 2269815322183747800,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 4,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Mackenzie's Legacy",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 7781.451032,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 2305844119202712000,
-            "id64": 2305844119202712000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 4,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 2,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Ousey Rock",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          },
-          {
-            "distance_to_arrival": 7789.889052,
-            "estimated_mapping_value": 2221,
-            "estimated_scan_value": 500,
-            "id": 2341872916221676000,
-            "id64": 2341872916221676000,
-            "is_main_star": null,
-            "landmark_value": 0,
-            "landmarks": [
-              {
-                "count": 4,
-                "subtype": "Settlement",
-                "type": "Surface Station",
-                "value": 0
-              },
-              {
-                "count": 1,
-                "subtype": "Crater Outpost",
-                "type": "Surface Station",
-                "value": 0
-              }
-            ],
-            "name": "Miller Rock",
-            "subtype": "Rocky body",
-            "terraforming_state": "Not terraformable",
-            "type": "Planet"
-          }
-        ],
-        "body_count": 26,
-        "controlling_minor_faction": "Alioth Independents",
-        "controlling_minor_faction_state": "None",
-        "controlling_power": "Edmund Mahon",
-        "estimated_mapping_value": 2994048,
-        "estimated_scan_value": 821847,
-        "government": "Democracy",
-        "id64": 1109989017963,
-        "known_permit": true,
-        "landmark_value": 0,
-        "minor_faction_presences": [
-          {
-            "influence": 0.04878,
-            "name": "Alioth Council",
-            "state": "None"
-          },
-          {
-            "influence": 0.581301,
-            "name": "Alioth Independents",
-            "state": "None"
-          },
-          {
-            "influence": 0.095528,
-            "name": "Alioth Pro-Alliance Group",
-            "state": "None"
-          },
-          {
-            "influence": 0.143293,
-            "name": "Independent Constitution Party",
-            "state": "None"
-          },
-          {
-            "influence": 0.046748,
-            "name": "Natural Growth Party",
-            "state": "None"
-          },
-          {
-            "influence": 0.044715,
-            "name": "Sirius Corporation",
-            "state": "None"
-          },
-          {
-            "influence": 0.039634,
-            "name": "Turner Research Group",
-            "state": "None"
-          }
-        ],
-        "name": "Alioth",
-        "needs_permit": true,
-        "population": 14900167328,
-        "power": [
-          "Edmund Mahon"
-        ],
-        "power_state": "Stronghold",
-        "primary_economy": "High Tech",
-        "region": "Inner Orion Spur",
-        "secondary_economy": "Service",
-        "security": "High",
-        "stations": [
-          {
-            "distance_to_arrival": 4630.70403,
-            "has_large_pad": false,
-            "has_market": true,
-            "has_outfitting": true,
-            "market_id": 128856650,
-            "name": "Rescue Ship - Donaldson",
-            "type": "Mega ship"
-          },
-          {
-            "distance_to_arrival": 7781.851787,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128141816,
-            "medium_pads": 18,
-            "name": "Golden Gate",
-            "small_pads": 17,
-            "type": "Coriolis Starport"
-          },
-          {
-            "distance_to_arrival": 4617.208116,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 6,
-            "market_id": 128141048,
-            "medium_pads": 11,
-            "name": "Donaldson",
-            "small_pads": 10,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 7789.48934,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128140792,
-            "medium_pads": 18,
-            "name": "Melbourne Park",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 4637.064157,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 5,
-            "market_id": 128141560,
-            "medium_pads": 12,
-            "name": "Aachen Town",
-            "small_pads": 8,
-            "type": "Coriolis Starport"
-          },
-          {
-            "distance_to_arrival": 7782.460829,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128140536,
-            "medium_pads": 18,
-            "name": "Irkutsk",
-            "small_pads": 17,
-            "type": "Orbis Starport"
-          },
-          {
-            "distance_to_arrival": 4520.427979,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 9,
-            "market_id": 128141304,
-            "medium_pads": 18,
-            "name": "Gotham Park",
-            "small_pads": 17,
-            "type": "Coriolis Starport"
-          },
-          {
-            "distance_to_arrival": 4519.906714,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 2,
-            "market_id": 3930406913,
-            "medium_pads": 4,
-            "name": "Stronghold Carrier",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 1235.210757,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 1,
-            "market_id": 129008728,
-            "medium_pads": 2,
-            "name": "The Witness Odysseus",
-            "small_pads": 4,
-            "type": "Mega ship"
-          },
-          {
-            "distance_to_arrival": 1237.184726,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3229503488,
-            "medium_pads": 1,
-            "name": "Laird Dock",
-            "small_pads": 3,
-            "type": "Outpost"
-          },
-          {
-            "distance_to_arrival": 1245.078074,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867301888,
-            "medium_pads": 0,
-            "name": "Fournier Botanical Biosphere",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1236.271835,
-            "has_large_pad": false,
-            "market_id": 3537523968,
-            "name": "Grigson Point"
-          },
-          {
-            "distance_to_arrival": 1236.271835,
-            "has_large_pad": false,
-            "market_id": 3537522688,
-            "name": "Heaviside Enterprise"
-          },
-          {
-            "distance_to_arrival": 1236.271835,
-            "has_large_pad": false,
-            "market_id": 3537519872,
-            "name": "Steinmuller Keep"
-          },
-          {
-            "distance_to_arrival": 1237.166839,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867301632,
-            "medium_pads": 0,
-            "name": "Wu Manufacturing Base",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1234.759581,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 4,
-            "market_id": 128975463,
-            "medium_pads": 4,
-            "name": "Lakon Spaceways Central",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 1235.628033,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3867301376,
-            "medium_pads": 0,
-            "name": "Gao Boarding Zone",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1654.66618,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3867302656,
-            "medium_pads": 0,
-            "name": "Schulte's Passage",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1655.472946,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867302400,
-            "medium_pads": 0,
-            "name": "Moller's Industrial",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1654.901705,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867304704,
-            "medium_pads": 0,
-            "name": "Zuniga's Keep",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1652.799269,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867305216,
-            "medium_pads": 0,
-            "name": "Ziegler Munitions Stockade",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1658.184845,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867304960,
-            "medium_pads": 0,
-            "name": "Wilkinson Armoury",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1656.024902,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3922326016,
-            "medium_pads": 0,
-            "name": "Rayne Cultivation Nursery",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1662.830345,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3922325760,
-            "medium_pads": 0,
-            "name": "Bhardwaj Industrial Site",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1652.888906,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3922325504,
-            "medium_pads": 0,
-            "name": "Ludwig's Dock",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1657.114107,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3922326272,
-            "medium_pads": 0,
-            "name": "Dibrova Agricultural Base",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1652.888522,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3922325248,
-            "medium_pads": 0,
-            "name": "Shimizu Military Armoury",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1659.213189,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867304192,
-            "medium_pads": 0,
-            "name": "Corbin Terminus",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 1651.380213,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867303936,
-            "medium_pads": 0,
-            "name": "Nishimura Industrial Enterprise",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2298.120073,
-            "has_large_pad": false,
-            "market_id": 3537522176,
-            "name": "Fernandes' Progress"
-          },
-          {
-            "distance_to_arrival": 2300.71237,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867303168,
-            "medium_pads": 0,
-            "name": "Kotsuba Hydroponics Exchange",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2298.051208,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867302912,
-            "medium_pads": 0,
-            "name": "Yarovy Chemical Foundry",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2299.56431,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867303424,
-            "medium_pads": 0,
-            "name": "Sherlock Hydroponics Exchange",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2296.465006,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3867303680,
-            "medium_pads": 0,
-            "name": "Leckey's Peace",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2301.638292,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867305472,
-            "medium_pads": 1,
-            "name": "Esme Munitions Enterprise",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2298.449276,
-            "has_large_pad": false,
-            "market_id": 3537521920,
-            "name": "Nesvadba Installation"
-          },
-          {
-            "distance_to_arrival": 2296.476291,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867305728,
-            "medium_pads": 0,
-            "name": "Mowatt Cultivation Site",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2298.651007,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867305984,
-            "medium_pads": 0,
-            "name": "Kava Industrial Enterprise",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2300.112478,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3867304448,
-            "medium_pads": 0,
-            "name": "Riquelme's Quest",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2296.604861,
-            "has_large_pad": false,
-            "market_id": 3537521664,
-            "name": "Froude Installation"
-          },
-          {
-            "distance_to_arrival": 2295.252049,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867302144,
-            "medium_pads": 0,
-            "name": "Crosby Agricultural Hub",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2307.556785,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867300608,
-            "medium_pads": 0,
-            "name": "Pohl Botanical Holding",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2301.497479,
-            "has_large_pad": false,
-            "market_id": 3537521408,
-            "name": "Marley Arsenal"
-          },
-          {
-            "distance_to_arrival": 2298.541599,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867301120,
-            "medium_pads": 0,
-            "name": "Faucher's Obligation",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2298.862439,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867300864,
-            "medium_pads": 0,
-            "name": "Nightingale Nutrition Holdings",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2338.352583,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867296512,
-            "medium_pads": 0,
-            "name": "Toure Chemical Base",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2327.33576,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867296000,
-            "medium_pads": 0,
-            "name": "Goto Horticultural Farm",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2352.691647,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867295488,
-            "medium_pads": 1,
-            "name": "Lusmore's Steal",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2353.884915,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867296256,
-            "medium_pads": 0,
-            "name": "Cha Cultivation Centre",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2353.000826,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867295744,
-            "medium_pads": 0,
-            "name": "Lusmore Agricultural Plantation",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 2351.867235,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 3,
-            "market_id": 128674183,
-            "medium_pads": 3,
-            "name": "Turner Metallics Inc",
-            "small_pads": 2,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 7780.483914,
-            "has_large_pad": false,
-            "market_id": 3537522432,
-            "name": "Cook Landing"
-          },
-          {
-            "distance_to_arrival": 7779.96888,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867297536,
-            "medium_pads": 0,
-            "name": "Mnogogrishny Manufacturing Silo",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7782.007274,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 2,
-            "market_id": 3867298048,
-            "medium_pads": 0,
-            "name": "Brunt Leisure",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7781.397623,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867296768,
-            "medium_pads": 0,
-            "name": "Iglesias Horticultural Enterprise",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7779.409758,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867297024,
-            "medium_pads": 0,
-            "name": "Sul Botanical",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7781.096545,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867297280,
-            "medium_pads": 0,
-            "name": "Deol Hydroponics Hub",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7780.772779,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867297792,
-            "medium_pads": 0,
-            "name": "Hirano Industrial Facility",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7785.678595,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867298560,
-            "medium_pads": 0,
-            "name": "Richelieu Cultivation Site",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7780.068581,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867298816,
-            "medium_pads": 0,
-            "name": "Shepherd Hydroponics Holdings",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7781.451032,
-            "has_large_pad": false,
-            "market_id": 3537520896,
-            "name": "Altshuller Town ++"
-          },
-          {
-            "distance_to_arrival": 7779.90299,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 4,
-            "market_id": 3537520128,
-            "medium_pads": 4,
-            "name": "Diophantus Works",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 7787.858316,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867299072,
-            "medium_pads": 0,
-            "name": "Teklehaimanot Cultivation Hub",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7777.256612,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867299328,
-            "medium_pads": 0,
-            "name": "Trau Industrial Enterprise",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7781.323679,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867298304,
-            "medium_pads": 0,
-            "name": "Close's Humility",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7780.089548,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "has_shipyard": true,
-            "large_pads": 4,
-            "market_id": 3537520640,
-            "medium_pads": 4,
-            "name": "Mallory Settlement",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 7771.228491,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867300352,
-            "medium_pads": 0,
-            "name": "Ribeiro Barracks",
-            "small_pads": 2,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7789.889052,
-            "has_large_pad": false,
-            "market_id": 3537521152,
-            "name": "Pangborn Lab"
-          },
-          {
-            "distance_to_arrival": 7771.305113,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867299584,
-            "medium_pads": 0,
-            "name": "McGuire Industrial Base",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7794.935055,
-            "has_large_pad": true,
-            "has_market": true,
-            "has_outfitting": true,
-            "large_pads": 4,
-            "market_id": 3537520384,
-            "medium_pads": 4,
-            "name": "Desargues Beacon",
-            "small_pads": 4,
-            "type": "Planetary Outpost"
-          },
-          {
-            "distance_to_arrival": 7771.124058,
-            "has_large_pad": false,
-            "has_market": true,
-            "large_pads": 0,
-            "market_id": 3867299840,
-            "medium_pads": 0,
-            "name": "Gough Industrial",
-            "small_pads": 1,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7794.454875,
-            "has_large_pad": true,
-            "has_market": true,
-            "large_pads": 1,
-            "market_id": 3867300096,
-            "medium_pads": 0,
-            "name": "Babangida Industrial Depot",
-            "small_pads": 0,
-            "type": "Settlement"
-          },
-          {
-            "distance_to_arrival": 7789.889052,
-            "has_large_pad": false,
-            "market_id": 3537519616,
-            "name": "Fremion Hub"
-          }
-        ],
-        "thargoid_war_failure_state": "None",
-        "thargoid_war_state": "None",
-        "thargoid_war_success_state": "None",
-        "updated_at": "2024-12-07 21:57:54+00",
-        "x": -33.65625,
-        "y": 72.46875,
-        "z": -20.65625
-      },
-      "type": "system"
-    },
-    {
-      "record": {
-        "age": 3386,
-        "atmosphere": "No atmosphere",
-        "axis_tilt": -0.030416,
-        "belts": [
-          {
-            "inner_radius": 3657800000,
-            "mass": 21145000000000000,
-            "name": "Alioth A Belt",
-            "outer_radius": 234100000000,
-            "type": "Rocky"
-          }
-        ],
-        "body_id": 0,
+  "record": {
+    "allegiance": "Alliance",
+    "bodies": [
+      {
         "distance_to_arrival": 0,
         "estimated_mapping_value": 4644,
         "estimated_scan_value": 1227,
+        "id": 1109989017963,
         "id64": 1109989017963,
         "is_main_star": true,
-        "luminosity_class": "IV",
         "name": "Alioth",
-        "rotational_period": 1.47679716,
-        "solar_masses": 1.519531,
-        "solar_radius": 1.39636221423436,
-        "spectral_class": "A1",
         "subtype": "A (Blue-White) Star",
-        "surface_temperature": 7910,
-        "system_controlling_power": "Edmund Mahon",
-        "system_id64": 1109989017963,
-        "system_name": "Alioth",
-        "system_power_state": "Stronghold",
-        "system_region": "Inner Orion Spur",
-        "system_x": -33.65625,
-        "system_y": 72.46875,
-        "system_z": -20.65625,
-        "type": "Star",
-        "updated_at": "2024-12-07 21:57:54+00"
+        "type": "Star"
       },
-      "type": "body"
-    }
-  ]
+      {
+        "distance_to_arrival": 1235.426435,
+        "estimated_mapping_value": 4414,
+        "estimated_scan_value": 1158,
+        "id": 180145095083837800,
+        "id64": 180145095083837800,
+        "is_main_star": null,
+        "name": "Alioth 1",
+        "subtype": "Class IV gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1232.299048,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 288231486140729700,
+        "id64": 288231486140729700,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 3,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Tourist Beacon",
+            "type": "Tourist Beacon",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 1 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1654.46744,
+        "estimated_mapping_value": 3771,
+        "estimated_scan_value": 965,
+        "id": 936749832482081200,
+        "id64": 936749832482081200,
+        "is_main_star": null,
+        "name": "Alioth 2",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1655.519128,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.0088074265200091e+18,
+        "id64": 1.0088074265200091e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 2 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1655.52337,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.044836223538973e+18,
+        "id64": 1.044836223538973e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 2 b",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1652.55908,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.080865020557937e+18,
+        "id64": 1.080865020557937e+18,
+        "is_main_star": null,
+        "name": "Alioth 2 c",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1650.844872,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.116893817576901e+18,
+        "id64": 1.116893817576901e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 2 d",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1650.698742,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.1529226145958648e+18,
+        "id64": 1.1529226145958648e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 5,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 2 e",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 1660.807265,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.2249802086337928e+18,
+        "id64": 1.2249802086337928e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 2,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 2 f",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2297.428043,
+        "estimated_mapping_value": 3128,
+        "estimated_scan_value": 772,
+        "id": 1.6933545698803244e+18,
+        "id64": 1.6933545698803244e+18,
+        "is_main_star": null,
+        "name": "Alioth 3",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2296.730542,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.8014409609372163e+18,
+        "id64": 1.8014409609372163e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 3,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 3,
+            "subtype": "Silicate Vapour Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 4,
+            "subtype": "Silicate Magma Lava Spout",
+            "type": "Lava Spout",
+            "value": 0
+          },
+          {
+            "count": 4,
+            "subtype": "Silicate Vapour Gas Vent",
+            "type": "Gas Vent",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Surface Station",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 3 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2294.82589,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.8374697579561802e+18,
+        "id64": 1.8374697579561802e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 3,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 3 b",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2297.77042,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.8734985549751442e+18,
+        "id64": 1.8734985549751442e+18,
+        "is_main_star": null,
+        "name": "Alioth 3 c",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2297.753592,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.9095273519941082e+18,
+        "id64": 1.9095273519941082e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 1,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Silicate Vapour Fumarole",
+            "type": "Fumarole",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Silicate Magma Lava Spout",
+            "type": "Lava Spout",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 3 c a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2304.529768,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 1.9455561490130721e+18,
+        "id64": 1.9455561490130721e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 3,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 3 d",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2347.767662,
+        "estimated_mapping_value": 62580,
+        "estimated_scan_value": 17224,
+        "id": 1.981584946032036e+18,
+        "id64": 1.981584946032036e+18,
+        "is_main_star": null,
+        "name": "Alioth 4",
+        "subtype": "High metal content world",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 2348.159341,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.053642540069964e+18,
+        "id64": 2.053642540069964e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 5,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Alioth 4 a",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4690.648065,
+        "estimated_mapping_value": 3694,
+        "estimated_scan_value": 942,
+        "id": 2.089671337088928e+18,
+        "id64": 2.089671337088928e+18,
+        "is_main_star": null,
+        "name": "Alioth 5",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4621.227412,
+        "estimated_mapping_value": 961688,
+        "estimated_scan_value": 264685,
+        "id": 2.125700134107892e+18,
+        "id64": 2.125700134107892e+18,
+        "is_main_star": null,
+        "name": "Wicca's World",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Terraformed",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4634.929713,
+        "estimated_mapping_value": 956448,
+        "estimated_scan_value": 263243,
+        "id": 2.161728931126856e+18,
+        "id64": 2.161728931126856e+18,
+        "is_main_star": null,
+        "name": "Turner's World",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Terraformed",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 4524.977604,
+        "estimated_mapping_value": 954617,
+        "estimated_scan_value": 262739,
+        "id": 2.19775772814582e+18,
+        "id64": 2.19775772814582e+18,
+        "is_main_star": null,
+        "name": "Argent's Claim",
+        "subtype": "Earth-like world",
+        "terraforming_state": "Terraformed",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 7781.984944,
+        "estimated_mapping_value": 3528,
+        "estimated_scan_value": 892,
+        "id": 2.2337865251647839e+18,
+        "id64": 2.2337865251647839e+18,
+        "is_main_star": null,
+        "name": "Bifrost",
+        "subtype": "Class III gas giant",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 7783.142027,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.2698153221837478e+18,
+        "id64": 2.2698153221837478e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 4,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Mackenzie's Legacy",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 7785.258832,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.305844119202712e+18,
+        "id64": 2.305844119202712e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 4,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 2,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Ousey Rock",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      },
+      {
+        "distance_to_arrival": 7788.186802,
+        "estimated_mapping_value": 2221,
+        "estimated_scan_value": 500,
+        "id": 2.341872916221676e+18,
+        "id64": 2.341872916221676e+18,
+        "is_main_star": null,
+        "landmark_value": 0,
+        "landmarks": [
+          {
+            "count": 5,
+            "subtype": "Settlement",
+            "type": "Surface Station",
+            "value": 0
+          },
+          {
+            "count": 1,
+            "subtype": "Crater Outpost",
+            "type": "Surface Station",
+            "value": 0
+          }
+        ],
+        "name": "Miller Rock",
+        "subtype": "Rocky body",
+        "terraforming_state": "Not terraformable",
+        "type": "Planet"
+      }
+    ],
+    "body_count": 26,
+    "controlling_minor_faction": "Alioth Independents",
+    "controlling_minor_faction_state": "None",
+    "controlling_power": "Edmund Mahon",
+    "estimated_mapping_value": 2994048,
+    "estimated_scan_value": 821847,
+    "government": "Democracy",
+    "id64": 1109989017963,
+    "known_permit": true,
+    "landmark_value": 0,
+    "minor_faction_presences": [
+      {
+        "influence": 0.04,
+        "name": "Alioth Council",
+        "state": "None"
+      },
+      {
+        "influence": 0.594,
+        "name": "Alioth Independents",
+        "state": "None"
+      },
+      {
+        "influence": 0.1,
+        "name": "Alioth Pro-Alliance Group",
+        "state": "None"
+      },
+      {
+        "influence": 0.147,
+        "name": "Independent Constitution Party",
+        "state": "None"
+      },
+      {
+        "influence": 0.032,
+        "name": "Natural Growth Party",
+        "state": "None"
+      },
+      {
+        "influence": 0.045,
+        "name": "Sirius Corporation",
+        "state": "None"
+      },
+      {
+        "influence": 0.042,
+        "name": "Turner Research Group",
+        "state": "None"
+      }
+    ],
+    "name": "Alioth",
+    "needs_permit": true,
+    "population": 14900167328,
+    "power": [
+      "Edmund Mahon"
+    ],
+    "power_state": "Stronghold",
+    "primary_economy": "High Tech",
+    "region": "Inner Orion Spur",
+    "secondary_economy": "Service",
+    "security": "High",
+    "stations": [
+      {
+        "distance_to_arrival": 4630.70403,
+        "has_large_pad": false,
+        "has_market": true,
+        "has_outfitting": true,
+        "market_id": 128856650,
+        "name": "Rescue Ship - Donaldson",
+        "type": "Mega ship"
+      },
+      {
+        "distance_to_arrival": 4634.168701,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 6,
+        "market_id": 128141048,
+        "medium_pads": 11,
+        "name": "Donaldson",
+        "small_pads": 10,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 4621.143949,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 5,
+        "market_id": 128141560,
+        "medium_pads": 12,
+        "name": "Aachen Town",
+        "small_pads": 8,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 4524.938751,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 2,
+        "market_id": 3930406913,
+        "medium_pads": 4,
+        "name": "Stronghold Carrier",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 4524.953723,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128141304,
+        "medium_pads": 18,
+        "name": "Gotham Park",
+        "small_pads": 17,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 1235.171275,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 1,
+        "market_id": 129008728,
+        "medium_pads": 2,
+        "name": "The Witness Odysseus",
+        "small_pads": 4,
+        "type": "Mega ship"
+      },
+      {
+        "distance_to_arrival": 7782.375187,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128141816,
+        "medium_pads": 18,
+        "name": "Golden Gate",
+        "small_pads": 17,
+        "type": "Coriolis Starport"
+      },
+      {
+        "distance_to_arrival": 7785.306261,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128140536,
+        "medium_pads": 18,
+        "name": "Irkutsk",
+        "small_pads": 17,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 7786.056434,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 9,
+        "market_id": 128140792,
+        "medium_pads": 18,
+        "name": "Melbourne Park",
+        "small_pads": 17,
+        "type": "Orbis Starport"
+      },
+      {
+        "distance_to_arrival": 1231.304784,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3229503488,
+        "medium_pads": 1,
+        "name": "Laird Dock",
+        "small_pads": 3,
+        "type": "Outpost"
+      },
+      {
+        "distance_to_arrival": 1245.078074,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867301888,
+        "medium_pads": 0,
+        "name": "Fournier Botanical Biosphere",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1232.299048,
+        "has_large_pad": false,
+        "market_id": 3537523968,
+        "name": "Grigson Point"
+      },
+      {
+        "distance_to_arrival": 1232.299048,
+        "has_large_pad": false,
+        "market_id": 3537522688,
+        "name": "Heaviside Enterprise"
+      },
+      {
+        "distance_to_arrival": 1232.299048,
+        "has_large_pad": false,
+        "market_id": 3537519872,
+        "name": "Steinmuller Keep"
+      },
+      {
+        "distance_to_arrival": 1237.166839,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867301632,
+        "medium_pads": 0,
+        "name": "Wu Manufacturing Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1235.628033,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3867301376,
+        "medium_pads": 0,
+        "name": "Gao Boarding Zone",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1233.723439,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 4,
+        "market_id": 128975463,
+        "medium_pads": 4,
+        "name": "Lakon Spaceways Central",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 1654.271839,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3867302656,
+        "medium_pads": 0,
+        "name": "Schulte's Passage",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1655.472946,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867302400,
+        "medium_pads": 0,
+        "name": "Moller's Industrial",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1654.35071,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867304704,
+        "medium_pads": 0,
+        "name": "Zuniga's Keep",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1652.799269,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867305216,
+        "medium_pads": 0,
+        "name": "Ziegler Munitions Stockade",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1658.184845,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867304960,
+        "medium_pads": 0,
+        "name": "Wilkinson Armoury",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1656.024902,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3922326016,
+        "medium_pads": 0,
+        "name": "Rayne Cultivation Nursery",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1662.830345,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3922325760,
+        "medium_pads": 0,
+        "name": "Bhardwaj Industrial Site",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1652.888906,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3922325504,
+        "medium_pads": 0,
+        "name": "Ludwig's Dock",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1657.114107,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3922326272,
+        "medium_pads": 0,
+        "name": "Dibrova Agricultural Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1652.888522,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3922325248,
+        "medium_pads": 0,
+        "name": "Shimizu Military Armoury",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1660.872941,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867304192,
+        "medium_pads": 0,
+        "name": "Corbin Terminus",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 1651.380213,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867303936,
+        "medium_pads": 0,
+        "name": "Nishimura Industrial Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2296.730542,
+        "has_large_pad": false,
+        "market_id": 3537522176,
+        "name": "Fernandes' Progress"
+      },
+      {
+        "distance_to_arrival": 2300.71237,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867303168,
+        "medium_pads": 0,
+        "name": "Kotsuba Hydroponics Exchange",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2298.051208,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867302912,
+        "medium_pads": 0,
+        "name": "Yarovy Chemical Foundry",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2299.56431,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867303424,
+        "medium_pads": 0,
+        "name": "Sherlock Hydroponics Exchange",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2296.465006,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3867303680,
+        "medium_pads": 0,
+        "name": "Leckey's Peace",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2301.638292,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867305472,
+        "medium_pads": 1,
+        "name": "Esme Munitions Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2294.82589,
+        "has_large_pad": false,
+        "market_id": 3537521920,
+        "name": "Nesvadba Installation"
+      },
+      {
+        "distance_to_arrival": 2296.476291,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867305728,
+        "medium_pads": 0,
+        "name": "Mowatt Cultivation Site",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2298.651007,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867305984,
+        "medium_pads": 0,
+        "name": "Kava Industrial Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2300.112478,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3867304448,
+        "medium_pads": 0,
+        "name": "Riquelme's Quest",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2297.77042,
+        "has_large_pad": false,
+        "market_id": 3537521664,
+        "name": "Froude Installation"
+      },
+      {
+        "distance_to_arrival": 2295.252049,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867302144,
+        "medium_pads": 0,
+        "name": "Crosby Agricultural Hub",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2307.556785,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867300608,
+        "medium_pads": 0,
+        "name": "Pohl Botanical Holding",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2304.529768,
+        "has_large_pad": false,
+        "market_id": 3537521408,
+        "name": "Marley Arsenal"
+      },
+      {
+        "distance_to_arrival": 2298.541599,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867301120,
+        "medium_pads": 0,
+        "name": "Faucher's Obligation",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2298.862439,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867300864,
+        "medium_pads": 0,
+        "name": "Nightingale Nutrition Holdings",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2351.290005,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867296512,
+        "medium_pads": 0,
+        "name": "Toure Chemical Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2327.33576,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867296000,
+        "medium_pads": 0,
+        "name": "Goto Horticultural Farm",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2349.620583,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867295488,
+        "medium_pads": 1,
+        "name": "Lusmore's Steal",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2353.884915,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867296256,
+        "medium_pads": 0,
+        "name": "Cha Cultivation Centre",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2348.990934,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867295744,
+        "medium_pads": 0,
+        "name": "Lusmore Agricultural Plantation",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 2348.201508,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 3,
+        "market_id": 128674183,
+        "medium_pads": 3,
+        "name": "Turner Metallics Inc",
+        "small_pads": 2,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 7783.142027,
+        "has_large_pad": false,
+        "market_id": 3537522432,
+        "name": "Cook Landing"
+      },
+      {
+        "distance_to_arrival": 7779.96888,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867297536,
+        "medium_pads": 0,
+        "name": "Mnogogrishny Manufacturing Silo",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7783.01122,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 2,
+        "market_id": 3867298048,
+        "medium_pads": 0,
+        "name": "Brunt Leisure",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7781.397623,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867296768,
+        "medium_pads": 0,
+        "name": "Iglesias Horticultural Enterprise",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7779.409758,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867297024,
+        "medium_pads": 0,
+        "name": "Sul Botanical",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7781.096545,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867297280,
+        "medium_pads": 0,
+        "name": "Deol Hydroponics Hub",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7780.772779,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867297792,
+        "medium_pads": 0,
+        "name": "Hirano Industrial Facility",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7785.678595,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867298560,
+        "medium_pads": 0,
+        "name": "Richelieu Cultivation Site",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7780.068581,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867298816,
+        "medium_pads": 0,
+        "name": "Shepherd Hydroponics Holdings",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7785.258832,
+        "has_large_pad": false,
+        "market_id": 3537520896,
+        "name": "Altshuller Town ++"
+      },
+      {
+        "distance_to_arrival": 7779.928799,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 4,
+        "market_id": 3537520128,
+        "medium_pads": 4,
+        "name": "Diophantus Works",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 7787.858316,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867299072,
+        "medium_pads": 0,
+        "name": "Teklehaimanot Cultivation Hub",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7777.256612,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867299328,
+        "medium_pads": 0,
+        "name": "Trau Industrial Enterprise",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7781.323679,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867298304,
+        "medium_pads": 0,
+        "name": "Close's Humility",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7780.089548,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "has_shipyard": true,
+        "large_pads": 4,
+        "market_id": 3537520640,
+        "medium_pads": 4,
+        "name": "Mallory Settlement",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 7771.228491,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867300352,
+        "medium_pads": 0,
+        "name": "Ribeiro Barracks",
+        "small_pads": 2,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7788.186802,
+        "has_large_pad": false,
+        "market_id": 3537521152,
+        "name": "Pangborn Lab"
+      },
+      {
+        "distance_to_arrival": 7771.305113,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867299584,
+        "medium_pads": 0,
+        "name": "McGuire Industrial Base",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7775.631788,
+        "has_large_pad": true,
+        "has_market": true,
+        "has_outfitting": true,
+        "large_pads": 4,
+        "market_id": 3537520384,
+        "medium_pads": 4,
+        "name": "Desargues Beacon",
+        "small_pads": 4,
+        "type": "Planetary Outpost"
+      },
+      {
+        "distance_to_arrival": 7776.761064,
+        "has_large_pad": false,
+        "has_market": true,
+        "large_pads": 0,
+        "market_id": 3867299840,
+        "medium_pads": 0,
+        "name": "Gough Industrial",
+        "small_pads": 1,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7794.454875,
+        "has_large_pad": true,
+        "has_market": true,
+        "large_pads": 1,
+        "market_id": 3867300096,
+        "medium_pads": 0,
+        "name": "Babangida Industrial Depot",
+        "small_pads": 0,
+        "type": "Settlement"
+      },
+      {
+        "distance_to_arrival": 7788.186802,
+        "has_large_pad": false,
+        "market_id": 3537519616,
+        "name": "Fremion Hub"
+      }
+    ],
+    "thargoid_war_failure_state": "None",
+    "thargoid_war_state": "None",
+    "thargoid_war_success_state": "None",
+    "updated_at": "2025-01-04 03:56:06+00",
+    "x": -33.65625,
+    "y": 72.46875,
+    "z": -20.65625
+  }
 }
