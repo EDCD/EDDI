@@ -183,7 +183,15 @@
   <data name="p5" xml:space="preserve">
     <value>EDDI kann Deine aktuelle Schiffskonfiguration an Coriolis oder EDShipyard (3rd Party tools) senden. Wähle dein favorisiertes Tool.</value>
   </data>
-  
-  
-  
+  <data name="header_distanceLY" xml:space="preserve">
+    <value>Entfernung (Lj)</value>
+    <comment>Header column to indicate the distance of the ship in light years from your current location</comment>
+  </data>
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Weitere Details über das ausgewählte Schiff anzeigen oder verbergen</value>
+  </data>
+  <data name="header_station_name" xml:space="preserve">
+    <value>Station</value>
+    <comment>Header column identifying stored ship station name</comment>
+  </data>
 </root>
