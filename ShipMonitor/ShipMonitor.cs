@@ -359,7 +359,7 @@ namespace EddiShipMonitor
                 {
                     // We stored a ship - set its location to the current location
                     var storedShip = GetShip(@event.storedshipid);
-                    if (storedShip != null)
+                    if (storedShip != null && EDDI.Instance.CurrentStarSystem != null)
                     {
                         // Set location of stored ship to the current system
                         storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem, EDDI.Instance?.CurrentStation?.name, EDDI.Instance?.CurrentStation?.marketId );
