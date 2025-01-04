@@ -82,16 +82,5 @@ namespace UnitTests
                 }
             }
         }
-
-        [TestCleanup, DoNotParallelize]
-        public void Cleanup ()
-        {
-            // Clean up the test database directory
-            var testDatabaseDirectory = new DirectoryInfo(testDatabaseDir );
-            if ( testDatabaseDirectory.Exists )
-            {
-                testDatabaseDirectory.Delete( true );
-            }
-        }
     }
 }
