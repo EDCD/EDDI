@@ -30,6 +30,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Powerplay` event updated to remove the obsolete `votes` property (Powerplay 2.0 does not use a voting system).
     * `Signal detected` event updated to include new Powerplay properties.
     * `Star scanned` event updated to add missing `systemname` property.
+  * Ship Monitor
+    * Updated ships grid to add distances in light years.  
   * Speech Responder
     * Scripts 
       * `Carrier jumped` script updated to include new Powerplay details.
