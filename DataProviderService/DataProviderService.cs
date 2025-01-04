@@ -19,11 +19,11 @@ namespace EddiDataProviderService
     /// <summary>Access data services. Prefer our cache and local database wherever possible.</summary>
     public class DataProviderService
     {
-        private readonly BgsService bgsService;
-        private readonly StarMapService edsmService;
-        private readonly SpanshService spanshService;
-        private readonly StarSystemSqLiteRepository starSystemRepository;
-        private readonly StarSystemCache starSystemCache;
+        internal readonly BgsService bgsService;
+        internal readonly StarMapService edsmService;
+        internal readonly SpanshService spanshService;
+        internal readonly StarSystemSqLiteRepository starSystemRepository;
+        internal readonly StarSystemCache starSystemCache;
 
         public static bool unitTesting;
 

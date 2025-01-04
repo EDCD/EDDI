@@ -22,22 +22,19 @@ namespace UnitTests
         [TestMethod]
         public void TestSqlRepositoryPresent()
         {
-            var starSystemRepository = StarSystemSqLiteRepository.Instance;
-
-            var DBData = starSystemRepository.GetSqlStarSystem( 10477373803U );
-            if ( DBData is null )
-            {
-                starSystemRepository.SaveStarSystem( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ) );
-                DBData = starSystemRepository.GetSqlStarSystem( 10477373803U );
-            }
-            Assert.IsNotNull(DBData);
-            Assert.AreEqual("Sol", DBData.systemName);
+            EDDI.Instance.DataProvider = new DataProviderService();
+            var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
+            starSystemRepository.SaveStarSystem( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ) );
+            var dbData = starSystemRepository.GetSqlStarSystem( 10477373803U );
+            Assert.IsNotNull(dbData);
+            Assert.AreEqual("Sol", dbData.systemName);
         }
 
         [TestMethod]
         public void TestSqlRepositoryMissing()
         {
-            var starSystemRepository = StarSystemSqLiteRepository.Instance;
+            EDDI.Instance.DataProvider = new DataProviderService();
+            var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
             var DBData = starSystemRepository.GetSqlStarSystem(0);
             Assert.IsNull(DBData);
         }

@@ -8,6 +8,7 @@ using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Data.SQLite;
 using System.IO;
 
 // Number of worker threads is automatic because `Workers` is set to 0.
@@ -32,6 +33,10 @@ namespace UnitTests
         internal static readonly FakeEdsmRestClient fakeEdsmRestClient = new FakeEdsmRestClient();
         internal static readonly StarMapService fakeEdsmService = new StarMapService(fakeEdsmRestClient);
 
+        private static readonly string testDatabaseDir = @"C:\Temp";
+        internal static SQLiteConnection fakeSqLiteConnection;
+        internal static StarSystemSqLiteRepository fakeStarSystemSqLiteRepository;
+
         internal void MakeSafe()
         {
             // Prevent telemetry data from being reported based on test results
@@ -49,7 +54,12 @@ namespace UnitTests
 
         internal DataProviderService ConfigureTestDataProvider ()
         {
-            return new DataProviderService( fakeBgsService, fakeEdsmService, fakeSpanshService, new StarSystemSqLiteRepository() {  } );
+            // Create a temporary database for testing
+            Directory.CreateDirectory( testDatabaseDir );
+            fakeSqLiteConnection = new SQLiteConnection( $@"Data Source={testDatabaseDir}\EDDI_TEST.sqlite" );
+            fakeStarSystemSqLiteRepository = new StarSystemSqLiteRepository( fakeSqLiteConnection );
+
+            return new DataProviderService( fakeBgsService, fakeEdsmService, fakeSpanshService, fakeStarSystemSqLiteRepository );
         }
 
         public static T DeserializeJsonResource<T>(byte[] data, JsonSerializerSettings settings = null) where T : class
@@ -70,6 +80,17 @@ namespace UnitTests
                         return jsonSerializer.Deserialize(reader, typeof(T)) as T;
                     }
                 }
+            }
+        }
+
+        [TestCleanup]
+        public void Cleanup ()
+        {
+            // Clean up the test database directory
+            var testDatabaseDirectory = new DirectoryInfo(testDatabaseDir );
+            if ( testDatabaseDirectory.Exists )
+            {
+                testDatabaseDirectory.Delete( true );
             }
         }
     }

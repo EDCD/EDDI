@@ -98,27 +98,9 @@ namespace EddiDataProviderService
         private const string WHERE_SYSTEMADDRESS = @"WHERE systemaddress = @systemaddress; PRAGMA optimize;";
         private const string WHERE_NAME = @"WHERE name = @name; PRAGMA optimize;";
 
-        private static StarSystemSqLiteRepository instance;
-
-        private static readonly object instanceLock = new object();
-        public static StarSystemSqLiteRepository Instance
+        public StarSystemSqLiteRepository ( SQLiteConnection connection = null )
         {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No StarSystemSqLiteRepository instance: creating one");
-                            instance = new StarSystemSqLiteRepository();
-                            CreateOrUpdateDatabase();
-                        }
-                    }
-                }
-                return instance;
-            }
+            CreateOrUpdateDatabase( connection );
         }
 
         public DatabaseStarSystem GetSqlStarSystem ( ulong systemAddress )
@@ -135,7 +117,7 @@ namespace EddiDataProviderService
 
             if ( !systemAddresses.Any() ) { return results; }
 
-            results = Instance.ReadStarSystems( systemAddresses );
+            results = ReadStarSystems( systemAddresses );
             foreach ( var dbStarSystem in results )
             {
                 if ( !string.IsNullOrEmpty( dbStarSystem.systemJson ) )
@@ -295,7 +277,7 @@ namespace EddiDataProviderService
             var update = new List<StarSystem>();
             var insert = new List<StarSystem>();
 
-            var dbSystems = Instance.ReadStarSystems(starSystems);
+            var dbSystems = ReadStarSystems(starSystems);
 
             // Determine whether to insert + delete or update the SQL record.
             // Skip records with a zero value for the systemAddress
@@ -325,13 +307,13 @@ namespace EddiDataProviderService
             }
 
             // Delete applicable systems
-            Instance.deleteStarSystems(delete.ToImmutableList());
+            deleteStarSystems(delete.ToImmutableList());
 
             // Insert applicable systems
-            Instance.insertStarSystems(insert.ToImmutableList() );
+            insertStarSystems(insert.ToImmutableList() );
 
             // Update applicable systems
-            Instance.updateStarSystems(update.ToImmutableList() );
+            updateStarSystems(update.ToImmutableList() );
         }
 
         private void insertStarSystems(ImmutableList<StarSystem> systems)
@@ -486,11 +468,11 @@ namespace EddiDataProviderService
             }
         }
 
-        private static void CreateOrUpdateDatabase()
+        private void CreateOrUpdateDatabase( SQLiteConnection connection = null )
         {
             lock ( nameof(SimpleDbConnection) ) // Lock before writing to the database
             {
-                using ( var con = SimpleDbConnection() )
+                using ( var con = connection ?? SimpleDbConnection() )
                 {
                     try
                     {
@@ -505,19 +487,19 @@ namespace EddiDataProviderService
                         // Get schema version 
                         using ( var cmd = new SQLiteCommand( TABLE_GET_SCHEMA_VERSION_SQL, con ) )
                         {
-                            Instance.SCHEMA_VERSION = (long)cmd.ExecuteScalar();
-                            Logging.Debug( "Starsystem repository is schema version " + Instance.SCHEMA_VERSION );
+                            SCHEMA_VERSION = (long)cmd.ExecuteScalar();
+                            Logging.Debug( "Starsystem repository is schema version " + SCHEMA_VERSION );
                         }
 
                         // Apply any necessary updates
-                        if ( Instance.SCHEMA_VERSION < 1 )
+                        if ( SCHEMA_VERSION < 1 )
                         {
                             Logging.Debug( "Updating starsystem repository to schema version 1" );
                             AddColumnIfMissing( con, "comment" );
-                            Instance.SCHEMA_VERSION = 1;
+                            SCHEMA_VERSION = 1;
                         }
 
-                        if ( Instance.SCHEMA_VERSION < 2 )
+                        if ( SCHEMA_VERSION < 2 )
                         {
                             Logging.Debug( "Updating starsystem repository to schema version 2" );
 
@@ -530,10 +512,10 @@ namespace EddiDataProviderService
                                 cmd.ExecuteNonQuery();
                             }
 
-                            Instance.SCHEMA_VERSION = 2;
+                            SCHEMA_VERSION = 2;
                         }
 
-                        if ( Instance.SCHEMA_VERSION < 3 )
+                        if ( SCHEMA_VERSION < 3 )
                         {
                             Logging.Debug( "Updating starsystem repository to schema version 3" );
 
@@ -544,7 +526,7 @@ namespace EddiDataProviderService
                                 cmd.ExecuteNonQuery();
                             }
 
-                            Instance.SCHEMA_VERSION = 3;
+                            SCHEMA_VERSION = 3;
                         }
 
                         // Add our indices
@@ -556,9 +538,9 @@ namespace EddiDataProviderService
 
                         // Set schema version 
                         using ( var cmd = new SQLiteCommand(
-                                   TABLE_SET_SCHEMA_VERSION_SQL + Instance.SCHEMA_VERSION + ";", con ) )
+                                   TABLE_SET_SCHEMA_VERSION_SQL + SCHEMA_VERSION + ";", con ) )
                         {
-                            Logging.Info( "Starsystem repository schema is version " + Instance.SCHEMA_VERSION );
+                            Logging.Info( "Starsystem repository schema is version " + SCHEMA_VERSION );
                             cmd.ExecuteNonQuery();
                         }
                     }
