@@ -285,7 +285,16 @@
     <value>Capitão</value>
     <comment>Station Service "Captain" - the service representing the captain of a fleet carrier</comment>
   </data>
-  
-  
-  
+  <data name="Market" xml:space="preserve">
+    <value>Mercado</value>
+    <comment>Station service: Market</comment>
+  </data>
+  <data name="FleetCarrierFuel" xml:space="preserve">
+    <value>Combustível do Porta Frota</value>
+    <comment>Station Service: Fleet Carrier Fuel</comment>
+  </data>
+  <data name="FleetCarrierManagement" xml:space="preserve">
+    <value>Gerenciamento do Porta Frota</value>
+    <comment>Station Service: Fleet Carrier Management</comment>
+  </data>
 </root>
