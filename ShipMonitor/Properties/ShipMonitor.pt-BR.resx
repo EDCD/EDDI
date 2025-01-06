@@ -183,7 +183,15 @@
   <data name="p5" xml:space="preserve">
     <value>O EDDI pode enviar uma exportação dos dados da sua nave para Coriolis ou EDShipyard (ferramentas de terceiros). Selecione a ferramenta que você preferir.</value>
   </data>
-  
-  
-  
+  <data name="header_distanceLY" xml:space="preserve">
+    <value>Distância (AL)</value>
+    <comment>Header column to indicate the distance of the ship in light years from your current location</comment>
+  </data>
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>Mostrar ou ocultar detalhes adicionais sobre a nave selecionada</value>
+  </data>
+  <data name="header_station_name" xml:space="preserve">
+    <value>Estação</value>
+    <comment>Header column identifying stored ship station name</comment>
+  </data>
 </root>
