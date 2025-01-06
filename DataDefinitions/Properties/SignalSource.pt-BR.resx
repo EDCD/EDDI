@@ -425,7 +425,10 @@
     <value>Sonda Antiga</value>
     <comment>Ancient Probe</comment>
   </data>
-  
+  <data name="USS_Type_PowerEmissions" xml:space="preserve">
+    <value>Assinatura dos Destroços da Potência</value>
+    <comment>Powerplay</comment>
+  </data>
   <data name="USS_Type_PowerConvoy" xml:space="preserve">
     <value>Comboio de Potência</value>
     <comment>Powerplay</comment>
