@@ -312,11 +312,22 @@ namespace EddiVoiceAttackResponder
             else if (volumeInt < 0) { volumeInt = 0; } // Must be zero or greater
             else if (volumeInt > 100) { volumeInt = 100; } // Must be 100 or less
 
+            // Update our speech configuration settings
             SpeechService.Instance.Configuration.Volume = (int)volumeInt;
             SpeechService.Instance.Configuration.ToFile();
-            Application.Current.Dispatcher.InvokeAsync( () =>
+
+            // Refresh the UI with the new volume
+            Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                ((MainWindow)Application.Current.MainWindow)?.ConfigureTTS();
+                var mainWindow = (MainWindow)Application.Current.MainWindow;
+                if ( mainWindow == null ) { return; }
+                foreach (var tab in mainWindow.MainTabControl.Items)
+                {
+                    if ( tab is System.Windows.Controls.TabItem tabItem && tabItem.Content is TextToSpeechTab tts )
+                    {
+                        tts.ConfigureTTS();
+                    }
+                }
             });
         }
 

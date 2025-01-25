@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="Eddi.TextToSpeechTab"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resx="clr-namespace:Eddi.Properties"
+        mc:Ignorable="d"
+        d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{x:Static SystemColors.ControlLightColor}"/>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" >
+        <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_tts_desc}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Margin="0, 5" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_tts_voice_label}" />
+            <ComboBox x:Name="ttsVoiceDropDown" Grid.Column="1" Grid.Row="0" Margin="5" VerticalContentAlignment="Center" SelectionChanged="ttsVoiceDropDownUpdated"/>
+            <Label x:Name="ttsVolumeLabel" Grid.Column="0" Grid.Row="1" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_volume_label}" />
+            <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="1" Margin="5" VerticalAlignment="Center">
+                <TextBox x:Name="ttsVolumeText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsVolumeSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40" Margin="5,0,0,0"/>
+                <Slider x:Name="ttsVolumeSlider" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsVolumeUpdated"/>
+            </DockPanel>
+            <Label x:Name="ttsRateLabel" Grid.Column="0" Grid.Row="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_rate_label}" />
+            <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="2" Margin="5" VerticalAlignment="Center">
+                <TextBox x:Name="ttsRateText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsRateSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
+                <Slider x:Name="ttsRateSlider" Minimum="-10" Maximum="10"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsRateUpdated"/>
+            </DockPanel>
+            <Label x:Name="ttsEffectsLevelLabel" Grid.Column="0" Grid.Row="3" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_level_label}" />
+            <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="3" Margin="5" VerticalAlignment="Center">
+                <TextBox x:Name="ttsEffectsLevelText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsEffectsLevelSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
+                <Slider x:Name="ttsEffectsLevelSlider" Minimum="0" Maximum="100"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsEffectsLevelUpdated"/>
+            </DockPanel>
+            <Label x:Name="ttsDistortLabel" Grid.Column="0" Grid.Row="4" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_distort_label}" />
+            <CheckBox x:Name="ttsDistortCheckbox" Grid.Column="1" Grid.Row="4" Margin="5" VerticalAlignment="Center" Checked="ttsDistortionLevelUpdated" Unchecked="ttsDistortionLevelUpdated"/>
+            <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_test_desc}" />
+            <Label x:Name="ttsTestShipLabel" Grid.Column="0" Grid.Row="6" Margin="0, 5" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_tts_test_ship_label}" />
+            <ComboBox x:Name="ttsTestShipDropDown" Grid.Column="1" Grid.Row="6" Margin="5" VerticalContentAlignment="Center"/>
+            <UniformGrid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5" Columns="2">
+                <Button x:Name="ttsTestButton" Margin="0,0,5,0" Content="{x:Static resx:MainWindow.tab_tts_test_button}" Click="ttsTestVoiceButtonClicked" />
+                <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="{x:Static resx:MainWindow.tab_tts_test_damaged_button}" Click="ttsTestDamagedVoiceButtonClicked" />
+            </UniformGrid>
+            <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_phonetic_speech_desc}" />
+            <Label x:Name="disableIpaLabel" VerticalAlignment="Top" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
+            <DockPanel Grid.Column="1" Grid.Row="9" Margin="0, 5">
+                <CheckBox x:Name="DisableIpaCheckbox" Margin="5" VerticalAlignment="Top" Checked="disableIpaUpdated" Unchecked="disableIpaUpdated"/>
+            </DockPanel>
+            <TextBlock Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_icao_desc}" />
+            <Label x:Name="enableIcaoLabel" Grid.Column="0" Grid.Row="11" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_icao_label}" />
+            <CheckBox x:Name="enableIcaoCheckbox" Grid.Column="1" Grid.Row="11" Margin="5" VerticalAlignment="Center" Checked="enableICAOUpdated" Unchecked="enableICAOUpdated"/>
+        </Grid>
+    </DockPanel>
+</UserControl>
