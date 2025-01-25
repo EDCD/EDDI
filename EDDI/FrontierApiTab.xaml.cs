@@ -17,7 +17,6 @@ namespace Eddi
             CompanionAppService.Instance.StateChanged += companionApiStatusChanged;
         }
 
-
         private void companionApiStatusChanged ( CompanionAppService.State oldState, CompanionAppService.State newState )
         {
             // The calling thread for this method may not have direct access to the MainWindow dispatcher so we invoke the dispatcher here.

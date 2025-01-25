@@ -220,7 +220,6 @@ namespace EddiDataDefinitions
                                                                        && !s.IsCarrier()
                                                                        && !s.IsMegaShip() );
 
-
         #endregion
 
         #region Signals
