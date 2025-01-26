@@ -9,7 +9,14 @@ namespace EddiEvents
     {
         public const string NAME = "Ship targeted";
         public const string DESCRIPTION = "Triggered when the player selects a non-Thargoid target";
-        public const string SAMPLE = "{\"timestamp\":\"2018-05-09T23:19:49Z\",\"event\":\"ShipTargeted\",\"TargetLocked\":true,\"Ship\":\"adder\",\"ScanStage\":3,\"PilotName\":\"$npc_name_decorate:#name=Phoenix;\",\"PilotName_Localised\":\"Phoenix\",\"PilotRank\":\"Competent\",\"ShieldHealth\":100.000000,\"HullHealth\":100.000000,\"Faction\":\"Union Cosmos\",\"LegalStatus\":\"Lawless\",\"Subsystem\":\"$int_powerplant_size3_class3_name;\",\"Subsystem_Localised\":\"Power Plant\",\"SubsystemHealth\":100.000000}";
+        public static readonly string[] SAMPLES =
+        {
+            "{ \"timestamp\":\"2020-05-16T08:14:36Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":0 }",
+            "{ \"timestamp\":\"2020-05-16T08:14:37Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":1, \"PilotName\":\"$npc_name_decorate:#name=Noni Ryder;\", \"PilotName_Localised\":\"Noni Ryder\", \"PilotRank\":\"Mostly Harmless\" }",
+            "{ \"timestamp\":\"2020-05-16T08:14:39Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":2, \"PilotName\":\"$npc_name_decorate:#name=Noni Ryder;\", \"PilotName_Localised\":\"Noni Ryder\", \"PilotRank\":\"Mostly Harmless\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000 }",
+            "{ \"timestamp\":\"2020-05-16T08:14:45Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"sidewinder\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Noni Ryder;\", \"PilotName_Localised\":\"Noni Ryder\", \"PilotRank\":\"Mostly Harmless\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Balante Jet Posse\", \"LegalStatus\":\"Wanted\", \"Bounty\":1642 }",
+            "{ \"timestamp\":\"2018-05-09T23:19:49Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"adder\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Phoenix;\", \"PilotName_Localised\":\"Phoenix\", \"PilotRank\":\"Competent\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Union Cosmos\", \"LegalStatus\":\"Lawless\", \"Subsystem\":\"$int_powerplant_size3_class3_name;\", \"Subsystem_Localised\":\"Power Plant\", \"SubsystemHealth\":100.000000}"
+        };
 
         [PublicAPI("True when a ship has been targeted. False when a target has been lost/deselected")]
         public bool targetlocked { get; private set; }
@@ -20,34 +27,34 @@ namespace EddiEvents
         [PublicAPI("the stage of the ship scan (e.g. 0, 1, 2, or 3)")]
         public int? scanstage { get; private set; }
 
-        [PublicAPI("The name of the pilot")]
+        [PublicAPI("The name of the pilot (at scan state 1+)")]
         public string name { get; private set; }
 
-        [PublicAPI("The rank of the pilot")]
+        [PublicAPI( "The rank of the pilot (at scan state 1+)" )]
         public string rank => CombatRank?.localizedName;
 
-        [PublicAPI("The faction of the pilot")]
-        public string faction { get; private set; }
-
-        [PublicAPI("The aligned power of the pilot (if player is pledged)")]
-        public string power => (Power ?? Power.None)?.localizedName;
-
-        [PublicAPI("The legal status of the pilot")]
-        public string legalstatus => LegalStatus?.localizedName;
-
-        [PublicAPI("The bounty being offered by system authorities for destruction of the ship")]
-        public int? bounty { get; private set; }
-
-        [PublicAPI("The health of the shields")]
+        [PublicAPI( "The health of the shields (at scan state 2+)" )]
         public decimal? shieldhealth { get; private set; }
 
-        [PublicAPI("The health of the hull")]
+        [PublicAPI( "The health of the hull (at scan state 2+)" )]
         public decimal? hullhealth { get; private set; }
 
-        [ PublicAPI( "The subsystem targeted" ) ]
+        [PublicAPI( "The faction of the pilot (at scan state 3)" )]
+        public string faction { get; private set; }
+
+        [PublicAPI( "The aligned power of the pilot (if player is pledged) (at scan state 3)" )]
+        public string power => (Power ?? Power.None)?.localizedName;
+
+        [PublicAPI( "The legal status of the pilot (at scan state 3)" )]
+        public string legalstatus => LegalStatus?.localizedName;
+
+        [PublicAPI( "The bounty being offered by system authorities for destruction of the ship (at scan state 3)" )]
+        public int? bounty { get; private set; }
+
+        [ PublicAPI( "The subsystem targeted (at scan state 3)" ) ]
         public string subsystem { get; private set; }
 
-        [PublicAPI("The health of the subsystem targeted")]
+        [PublicAPI( "The health of the subsystem targeted (at scan state 3)" )]
         public decimal? subsystemhealth { get; private set; }
 
         // Not intended to be user facing
