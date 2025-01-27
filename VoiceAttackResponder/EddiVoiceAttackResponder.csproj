@@ -15,7 +15,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj" />
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
@@ -23,7 +22,6 @@
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
     <ProjectReference Include="..\Events\EddiEvents.csproj" />
     <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
-    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj" />
     <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj" />
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />

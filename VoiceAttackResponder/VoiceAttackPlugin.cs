@@ -1,23 +1,19 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
 using EddiCompanionAppService;
 using EddiCore;
 using EddiCore.Upgrader;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiNavigationService;
-using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using EddiStarMapService;
 using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
 
@@ -88,27 +84,7 @@ namespace EddiVoiceAttackResponder
                         setCAPIState(newState == CompanionAppService.State.Authorized, ref App.vaProxy );
                     };
 
-                    var cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
-                    cargoMonitor.InventoryUpdatedEvent += (s, e) =>
-                    {
-                        lock (vaProxyLock)
-                        {
-                            setCargo(cargoMonitor, ref App.vaProxy );
-                        }
-                    };
-
-                    var shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
-                    if (shipMonitor != null)
-                    {
-                        shipMonitor.ShipyardUpdatedEvent += (s, e) =>
-                        {
-                            lock (vaProxyLock)
-                            {
-                                setShipValues(shipMonitor.GetCurrentShip(), "Ship", ref App.vaProxy );
-                                Task.Run(() => setShipyardValues(shipMonitor.shipyard?.ToList(), ref App.vaProxy ) );
-                            }
-                        };
-                    }
+                    EddiConfigService.ConfigService.Instance.PropertyChanged += updateConfigurationValues;
 
                     // Display instance information if available
                     if (EddiUpgrader.UpgradeRequired)

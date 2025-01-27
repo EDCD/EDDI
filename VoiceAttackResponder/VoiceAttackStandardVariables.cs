@@ -1,6 +1,7 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
 using EddiCompanionAppService;
+using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiVoiceAttackResponder
@@ -96,6 +98,28 @@ namespace EddiVoiceAttackResponder
                 }
             }
             App.vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
+        }
+
+        protected static void updateConfigurationValues ( object sender, PropertyChangedEventArgs e )
+        {
+            if ( sender is ConfigService configService )
+            {
+                if ( e.PropertyName.Equals( nameof( CargoMonitorConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
+                {
+                    var cargoConfig = configService.cargoMonitorConfiguration;
+                    setCargo( cargoConfig, ref App.vaProxy );
+                    return;
+                }
+
+                if ( e.PropertyName.Equals( nameof( ShipMonitorConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
+                {
+                    var shipConfig = configService.shipMonitorConfiguration;
+                    var currentShip = shipConfig.shipyard.FirstOrDefault( s => s.LocalId == shipConfig.currentshipid );
+                    setShipValues( currentShip, "Ship", ref App.vaProxy );
+                    Task.Run( () => setShipyardValues( shipConfig.shipyard?.ToList(), ref App.vaProxy ) );
+                    return;
+                }
+            }
         }
 
         // Set values from a dictionary
@@ -722,12 +746,12 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        protected static void setCargo(CargoMonitor cargoMonitor, ref dynamic vaProxy)
+        protected static void setCargo( CargoMonitorConfiguration cargoConfig, ref dynamic vaProxy )
         {
             try
             {
-                vaProxy.SetInt("Ship cargo carried", cargoMonitor?.cargoCarried ?? 0);
-                vaProxy.SetInt("Ship limpets carried", cargoMonitor?.GetCargoWithEDName("Drones")?.total ?? 0);
+                vaProxy.SetInt("Ship cargo carried", cargoConfig?.cargo.Sum( c => c.total ) ?? 0);
+                vaProxy.SetInt("Ship limpets carried", cargoConfig?.cargo.Where(c => c.edname.Equals( "Drones" ) ).Sum(c => c.total) ?? 0);
             }
             catch (Exception ex)
             {
