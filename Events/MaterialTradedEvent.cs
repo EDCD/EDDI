@@ -26,6 +26,12 @@ namespace EddiEvents
         [PublicAPI("The amount of the material gained in the trade")]
         public int received_quantity { get; private set; }
 
+        [PublicAPI( "The total amount of the material received in the trade in your inventory" )]
+        public int received_total { get; set; }
+
+        [PublicAPI( "The total amount of the material lost in the trade which remains in your inventory" )]
+        public int lost_total { get; set; }
+
         // Not intended to be user facing
 
         public long marketid { get; private set; }

@@ -208,22 +208,46 @@ namespace EddiMaterialMonitor
         private void handleMaterialCollectedEvent(MaterialCollectedEvent @event)
         {
             incMaterial(@event.edname, @event.amount, @event.fromLoad);
+            @event.total = inventory
+                .Where( m => m.edname.Equals( @event.edname, StringComparison.InvariantCultureIgnoreCase ) )
+                .Sum( m => m.amount );
+
+            writeMaterials();
         }
 
         private void handleMaterialDiscardedEvent(MaterialDiscardedEvent @event)
         {
             decMaterial(@event.edname, @event.amount, @event.fromLoad);
+            @event.total = inventory
+                .Where( m => m.edname.Equals( @event.edname, StringComparison.InvariantCultureIgnoreCase ) )
+                .Sum( m => m.amount );
+
+            writeMaterials();
         }
 
         private void handleMaterialDonatedEvent(MaterialDonatedEvent @event)
         {
             decMaterial(@event.edname, @event.amount, @event.fromLoad);
+            @event.total = inventory
+                .Where( m => m.edname.Equals( @event.edname, StringComparison.InvariantCultureIgnoreCase ) )
+                .Sum( m => m.amount );
+
+            writeMaterials();
         }
 
         private void handleMaterialTradedEvent(MaterialTradedEvent @event)
         {
             decMaterial(@event.paid_edname, @event.paid_quantity, @event.fromLoad);
-            incMaterial(@event.received_edname, @event.received_quantity, @event.fromLoad);
+            @event.lost_total = inventory
+                .Where( m => m.edname.Equals( @event.paid_edname, StringComparison.InvariantCultureIgnoreCase ) )
+                .Sum( m => m.amount );
+
+            incMaterial( @event.received_edname, @event.received_quantity, @event.fromLoad );
+            @event.received_total = inventory
+                .Where( m => m.edname.Equals( @event.received_edname, StringComparison.InvariantCultureIgnoreCase ) )
+                .Sum( m => m.amount );
+
+            writeMaterials();
         }
 
         private void handleSynthesisedEvent(SynthesisedEvent @event)
@@ -234,6 +258,8 @@ namespace EddiMaterialMonitor
                 {
                     decMaterial(component.edname, component.amount, @event.fromLoad);
                 }
+
+                writeMaterials();
             }
         }
 
@@ -245,6 +271,8 @@ namespace EddiMaterialMonitor
                 {
                     decMaterial(component.edname, component.amount, @event.fromLoad);
                 }
+
+                writeMaterials();
             }
         }
 
@@ -256,6 +284,8 @@ namespace EddiMaterialMonitor
                 {
                     decMaterial(material.edname, material.amount, @event.fromLoad);
                 }
+
+                writeMaterials();
             }
         }
 
@@ -267,6 +297,8 @@ namespace EddiMaterialMonitor
                 {
                     incMaterial(material.edname, material.amount, @event.fromLoad);
                 }
+
+                writeMaterials();
             }
         }
 
@@ -276,6 +308,8 @@ namespace EddiMaterialMonitor
             {
                 decMaterial(@event.materialAmount.edname, @event.materialAmount.amount, @event.fromLoad);
             }
+
+            writeMaterials();
         }
 
         public void HandleProfile(JObject profile)
@@ -329,8 +363,6 @@ namespace EddiMaterialMonitor
                     // We have crossed the minimum threshold for this material
                     pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Minimum", (int)ma.minimum, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
-
-                writeMaterials();
             }
         }
 
@@ -370,8 +402,6 @@ namespace EddiMaterialMonitor
                     // We have crossed the maximum threshold for this material
                     pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
-
-                writeMaterials();
             }
         }
 
@@ -468,7 +498,7 @@ namespace EddiMaterialMonitor
                 // Add in any new materials
                 foreach (Material material in Material.AllOfThem.ToList())
                 {
-                    MaterialAmount ma = newInventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
+                    MaterialAmount ma = newInventory.FirstOrDefault( inv => inv.edname == material.edname );
                     if (ma == null)
                     {
                         // We don't have this one - add it and set it to zero

@@ -22,6 +22,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Holoscreen hacked` event added. 
     * `Jumped` event updated to expose new Powerplay properties.
     * `Location` event updated to expose new Powerplay properties.
+    * `Material collected` event updated to include a new `total` property.
+    * `Material discarded` event updated to include a new `total` property.
+    * `Material donated` event updated to include a new `total` property.
+    * `Material traded` event updated to include new `received__total` and `lost_total` properties.
     * `Power commodity fast tracked` obsolete event removed.
     * `Power defected` obsolete event removed.
     * `Power expansion vote cast` obsolete event removed.

@@ -17,6 +17,9 @@ namespace EddiEvents
         [PublicAPI("The amount of the donated material")]
         public int amount { get; private set; }
 
+        [PublicAPI( "The total amount of the donated material remaining in your inventory" )]
+        public int total { get; set; }
+
         // Not intended to be user facing
 
         public string edname { get; private set; }
