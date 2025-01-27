@@ -1,6 +1,6 @@
-﻿using EddiConfigService;
+﻿using EddiCore;
+using EddiConfigService;
 using EddiConfigService.Configurations;
-using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechService;
 using System;

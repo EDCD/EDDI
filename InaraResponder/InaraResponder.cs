@@ -1,5 +1,5 @@
-﻿using EddiConfigService;
-using EddiCore;
+﻿using EddiCore;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiInaraService;

@@ -1,6 +1,6 @@
 ﻿using Cottle;
-using EddiConfigService;
 using EddiCore;
+using EddiConfigService;
 using EddiDataDefinitions;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;

@@ -1,8 +1,8 @@
 ﻿using Eddi;
+using EddiCore;
 using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
-using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
 using EddiSpeechService;
@@ -20,24 +20,24 @@ namespace EddiVoiceAttackResponder
         // The following variables notify changes via `PropertyChanged`
         private static readonly Dictionary<string, Action> StandardValues = new Dictionary<string, Action>
         {
-            { nameof(EDDI.Instance.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref App.vaProxy) },
-            { nameof(EDDI.Instance.LastStarSystem), () => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref App.vaProxy) },
-            { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref App.vaProxy) },
-            { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref App.vaProxy) },
-            { nameof(EDDI.Instance.DestinationDistanceLy), () => App.vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
-            { nameof(EDDI.Instance.SquadronStarSystem), () => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref App.vaProxy) },
+            { nameof(EDDI.Instance.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref App.VaProxy) },
+            { nameof(EDDI.Instance.LastStarSystem), () => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref App.VaProxy) },
+            { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref App.VaProxy) },
+            { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref App.VaProxy) },
+            { nameof(EDDI.Instance.DestinationDistanceLy), () => App.VaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
+            { nameof(EDDI.Instance.SquadronStarSystem), () => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref App.VaProxy) },
             { nameof(EDDI.Instance.HomeStarSystem), () =>
                 {
-                    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref App.vaProxy);
+                    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref App.VaProxy);
 
                     // Backwards-compatibility with 1.x documented variables
                     try
                     {
-                        App.vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem?.systemname);
-                        App.vaProxy.SetText("Home system (spoken)", Translations.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
+                        App.VaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem?.systemname);
+                        App.VaProxy.SetText("Home system (spoken)", Translations.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
                         if (EDDI.Instance.HomeStation != null)
                         {
-                                App.vaProxy.SetText("Home station", EDDI.Instance.HomeStation?.name);
+                                App.VaProxy.SetText("Home station", EDDI.Instance.HomeStation?.name);
                         }
                     }
                     catch (Exception ex)
@@ -45,19 +45,19 @@ namespace EddiVoiceAttackResponder
                         Logging.Error("Failed to set 1.x home system values", ex);
                     }
                 } },
-            { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref App.vaProxy) },
-            { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station", ref App.vaProxy) },
-            { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station", ref App.vaProxy) },
-            { nameof(EDDI.Instance.Cmdr), () => setCommanderValues(EDDI.Instance.Cmdr, ref App.vaProxy) },
-            { nameof(EDDI.Instance.FleetCarrier), () => setFleetCarrierValues(EDDI.Instance.FleetCarrier, "Carrier", ref App.vaProxy) },
-            { nameof(EDDI.Instance.CurrentShip), () => setShipValues(EDDI.Instance.CurrentShip, "Ship", ref App.vaProxy) },
-            { nameof(EDDI.Instance.Environment), () => App.vaProxy.SetText("Environment", EDDI.Instance.Environment) },
-            { nameof(EDDI.Instance.Vehicle), () => App.vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle) },
-            { nameof(EDDI.Instance.inHorizons), () => App.vaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons) },
-            { nameof(EDDI.Instance.inOdyssey), () => App.vaProxy.SetBoolean("odyssey", EDDI.Instance.inOdyssey) },
+            { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref App.VaProxy) },
+            { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station", ref App.VaProxy) },
+            { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station", ref App.VaProxy) },
+            { nameof(EDDI.Instance.Cmdr), () => setCommanderValues(EDDI.Instance.Cmdr, ref App.VaProxy) },
+            { nameof(EDDI.Instance.FleetCarrier), () => setFleetCarrierValues(EDDI.Instance.FleetCarrier, "Carrier", ref App.VaProxy) },
+            { nameof(EDDI.Instance.CurrentShip), () => setShipValues(EDDI.Instance.CurrentShip, "Ship", ref App.VaProxy) },
+            { nameof(EDDI.Instance.Environment), () => App.VaProxy.SetText("Environment", EDDI.Instance.Environment) },
+            { nameof(EDDI.Instance.Vehicle), () => App.VaProxy.SetText("Vehicle", EDDI.Instance.Vehicle) },
+            { nameof(EDDI.Instance.inHorizons), () => App.VaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons) },
+            { nameof(EDDI.Instance.inOdyssey), () => App.VaProxy.SetBoolean("odyssey", EDDI.Instance.inOdyssey) },
         };
 
-        protected static void updateStandardValues(PropertyChangedEventArgs eventArgs)
+        protected static void updateStandardValues(PropertyChangedEventArgs eventArgs, ref dynamic vaProxy)
         {
             // Update select values when triggered by a `PropertyChanged` event
             foreach (var standardValue in StandardValues)
@@ -76,12 +76,12 @@ namespace EddiVoiceAttackResponder
             }
 
             // Update values not notified by `PropertyChanged` events
-            App.vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance.active);
-            App.vaProxy.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
-            App.vaProxy.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
-            App.vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
-            setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref App.vaProxy);
-            setStationValues(NavigationService.Instance.SearchStation, "Search station", ref App.vaProxy);
+            vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance.active);
+            vaProxy.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
+            vaProxy.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
+            vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
+            setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref vaProxy );
+            setStationValues(NavigationService.Instance.SearchStation, "Search station", ref vaProxy );
         }
 
         protected static void initializeStandardValues()
@@ -97,7 +97,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Error($"Failed to initialize {standardValue.Key}", ex);
                 }
             }
-            App.vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
+            App.VaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
         }
 
         protected static void updateConfigurationValues ( object sender, PropertyChangedEventArgs e )
@@ -107,7 +107,7 @@ namespace EddiVoiceAttackResponder
                 if ( e.PropertyName.Equals( nameof( CargoMonitorConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                 {
                     var cargoConfig = configService.cargoMonitorConfiguration;
-                    setCargo( cargoConfig, ref App.vaProxy );
+                    setCargo( cargoConfig, ref App.VaProxy );
                     return;
                 }
 
@@ -115,8 +115,8 @@ namespace EddiVoiceAttackResponder
                 {
                     var shipConfig = configService.shipMonitorConfiguration;
                     var currentShip = shipConfig.shipyard.FirstOrDefault( s => s.LocalId == shipConfig.currentshipid );
-                    setShipValues( currentShip, "Ship", ref App.vaProxy );
-                    Task.Run( () => setShipyardValues( shipConfig.shipyard?.ToList(), ref App.vaProxy ) );
+                    setShipValues( currentShip, "Ship", ref App.VaProxy );
+                    Task.Run( () => setShipyardValues( shipConfig.shipyard?.ToList(), ref App.VaProxy ) );
                     return;
                 }
             }
@@ -237,8 +237,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Credits (spoken)", Translations.Humanize(cmdr?.credits));
                 vaProxy.SetDecimal("Debt", cmdr?.debt);
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
-                vaProxy.SetText("Title", cmdr?.title ?? Eddi.Properties.EddiResources.Commander);
-                vaProxy.SetText("Gender", cmdr?.gender ?? Eddi.Properties.MainWindow.tab_commander_gender_n);
+                vaProxy.SetText("Title", cmdr?.title ?? EddiCore.Properties.EddiResources.Commander);
+                vaProxy.SetText("Gender", cmdr?.gender ?? EddiCore.Properties.MainWindow.tab_commander_gender_n);
                 vaProxy.SetText("Squadron name", cmdr?.squadronname);
                 vaProxy.SetText("Squadron id", cmdr?.squadronid);
                 vaProxy.SetInt("Squadron rating", cmdr?.squadronrank?.rank);
@@ -641,15 +641,15 @@ namespace EddiVoiceAttackResponder
             {
                 LockManager.GetLock(nameof(SpeechService.Instance.eddiSpeaking), () => 
                 {
-                    App.vaProxy.SetBoolean("EDDI speaking", SpeechService.Instance.eddiSpeaking);
+                    App.VaProxy.SetBoolean("EDDI speaking", SpeechService.Instance.eddiSpeaking);
                 });
             }
             if (eventArgs.PropertyName == nameof(SpeechService.Instance.Configuration).Split('.').Last())
             {
                 LockManager.GetLock(nameof(SpeechService.Instance.Configuration), () => 
                 {
-                    App.vaProxy.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
-                    App.vaProxy.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
+                    App.VaProxy.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
+                    App.VaProxy.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
                 });
             }
         }

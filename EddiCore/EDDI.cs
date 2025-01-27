@@ -1,5 +1,4 @@
-﻿using Eddi;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiConfigService;
 using EddiConfigService.Configurations;
 using EddiDataDefinitions;
@@ -23,7 +22,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
@@ -40,7 +38,7 @@ namespace EddiCore
         public bool SpeechResponderModalWait { get; set; } = false;
 
         private static bool started;
-        internal static bool running = true;
+        public static bool running = true;
 
         public bool inTelepresence { get; private set; } = false;
 
@@ -129,6 +127,9 @@ namespace EddiCore
             Directory.CreateDirectory(Constants.DATA_DIR);
         }
 
+        // True if we have been started by VoiceAttack
+        public static bool FromVA;
+
         public static void Init(bool safeMode)
         {
             if (instance == null)
@@ -209,7 +210,7 @@ namespace EddiCore
         public StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
         {
             get => squadronStarSystem;
-            private set
+            set
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
@@ -505,30 +506,11 @@ namespace EddiCore
                 Task.WaitAll(essentialAsyncTasks.ToArray(), eventHandlerTS.Token );
 
                 // Tasks we can start asynchronously and don't need to wait for
-
-                // If our home system and squadron system are the same, run those tasks in the same thread to prevent fetching from the star system database multiple times.
-                // Otherwise, run them in separate threads.
-                void ActionUpdateHomeSystemStation()
+                Task.Run( () =>
                 {
                     setHomeSystem( configuration.HomeSystemAddress, configuration.HomeSystem );
                     setHomeStation( configuration );
-                }
-                void ActionUpdateSquadronSystem()
-                {
-                    setSquadronSystem( configuration.SquadronSystemAddress, configuration.SquadronSystem );
-                }
-                if (configuration.HomeSystemAddress == configuration.SquadronSystemAddress)
-                {
-                    // Run both actions on the same thread
-                    Task.Run((Action)ActionUpdateHomeSystemStation + ActionUpdateSquadronSystem, eventHandlerTS.Token ).ConfigureAwait(false);
-                }
-                else
-                {
-                    // Run both actions on distinct threads
-                    Task.Run(() => ActionUpdateHomeSystemStation(), eventHandlerTS.Token).ConfigureAwait(false);
-                    Task.Run(() => ActionUpdateSquadronSystem(), eventHandlerTS.Token ).ConfigureAwait(false);
-                }
-
+                }, eventHandlerTS.Token ).ConfigureAwait( false );
                 Task.Run(() => updateDestinationSystem( configuration.DestinationSystemAddress, configuration.DestinationSystem), eventHandlerTS.Token).ConfigureAwait(false);
                 Task.Run(() =>
                 {
@@ -667,7 +649,7 @@ namespace EddiCore
 
                 foreach (var responder in responders)
                 {
-                    if ( !App.FromVA && responder.ResponderName() == "VoiceAttack responder" )
+                    if ( !EDDI.FromVA && responder.ResponderName() == "VoiceAttack responder" )
                     {
                         // When we are not running from VoiceAttack then we skip starting the VoiceAttack responder.
                         continue;
@@ -1072,14 +1054,6 @@ namespace EddiCore
                     else if (@event is NearSurfaceEvent nearSurfaceEvent)
                     {
                         passEvent = eventNearSurface(nearSurfaceEvent);
-                    }
-                    else if (@event is SquadronStatusEvent squadronStatusEvent)
-                    {
-                        passEvent = eventSquadronStatus(squadronStatusEvent);
-                    }
-                    else if (@event is SquadronRankEvent squadronRankEvent)
-                    {
-                        passEvent = eventSquadronRank(squadronRankEvent);
                     }
                     else if (@event is FriendsEvent friendsEvent)
                     {
@@ -1672,18 +1646,6 @@ namespace EddiCore
                                 station.Faction = stationFaction;
                             }
                         }
-
-                        // Check if current system is inhabited by or HQ for squadron faction
-                        Faction squadronFaction = @event.factions.FirstOrDefault(f =>
-                        {
-                            var squadronhomesystem = f.presences
-                                .FirstOrDefault(p => p.systemAddress == CurrentStarSystem.systemAddress)?.squadronhomesystem;
-                            return squadronhomesystem != null && ((bool)squadronhomesystem || f.squadronfaction);
-                        });
-                        if (squadronFaction != null)
-                        {
-                            updateSquadronData(squadronFaction, CurrentStarSystem.systemAddress );
-                        }
                     }
 
                     // (When pledged) Powerplay information
@@ -2008,15 +1970,6 @@ namespace EddiCore
                         {
                             station.Faction = stationFaction;
                         }
-                    }
-
-                    // Check if current system is inhabited by or HQ for squadron faction
-                    var squadronFaction = theEvent.factions.FirstOrDefault( f => ( f.presences
-                        ?.FirstOrDefault( p => p.systemAddress == CurrentStarSystem?.systemAddress )
-                        ?.squadronhomesystem ?? false ) || f.squadronfaction );
-                    if ( squadronFaction != null )
-                    {
-                        updateSquadronData( squadronFaction, CurrentStarSystem.systemAddress );
                     }
                 }
 
@@ -2611,15 +2564,6 @@ namespace EddiCore
                                 station.Faction = stationFaction;
                             }
                         }
-
-                        // Check if current system is inhabited by or HQ for squadron faction
-                        var squadronFaction = theEvent.factions.Find(f =>
-                        (f.presences?.Find(p => p.systemAddress == CurrentStarSystem?.systemAddress)?.squadronhomesystem ?? false) ||
-                        f.squadronfaction);
-                        if ( squadronFaction != null )
-                        {
-                            updateSquadronData( squadronFaction, CurrentStarSystem.systemAddress );
-                        }
                     }
 
                     CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
@@ -2787,149 +2731,6 @@ namespace EddiCore
                 Cmdr.cqcrating = theEvent.cqc;
                 Cmdr.empirerating = theEvent.empire;
                 Cmdr.federationrating = theEvent.federation;
-            }
-            return true;
-        }
-
-        private bool eventSquadronStartup(SquadronStartupEvent theEvent)
-        {
-            SquadronRank rank = SquadronRank.FromRank(theEvent.rank + 1);
-
-            // Update the configuration file
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            configuration.SquadronName = theEvent.name;
-            configuration.SquadronRank = rank;
-            ConfigService.Instance.eddiConfiguration = configuration;
-
-            // Update the squadron UI data
-            Application.Current?.Dispatcher?.InvokeAsync(() =>
-            {
-                if (Application.Current?.MainWindow != null)
-                {
-                    ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                    ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
-                }
-            });
-
-            // Update the commander object, if it exists
-            if (Cmdr != null)
-            {
-                Cmdr.squadronname = theEvent.name;
-                Cmdr.squadronrank = rank;
-            }
-            return true;
-        }
-
-        private bool eventSquadronStatus(SquadronStatusEvent theEvent)
-        {
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-
-            switch (theEvent.status)
-            {
-                case "created":
-                    {
-                        SquadronRank rank = SquadronRank.FromRank(1);
-
-                        // Update the configuration file
-                        configuration.SquadronName = theEvent.name;
-                        configuration.SquadronRank = rank;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.InvokeAsync( () =>
-                        {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                                ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
-                                configuration = ((MainWindow)Application.Current.MainWindow).resetSquadronRank(configuration);
-                            }
-                        });
-
-                        // Update the commander object, if it exists
-                        if (Cmdr != null)
-                        {
-                            Cmdr.squadronname = theEvent.name;
-                            Cmdr.squadronrank = rank;
-                        }
-                        break;
-                    }
-                case "joined":
-                    {
-                        // Update the configuration file
-                        configuration.SquadronName = theEvent.name;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.InvokeAsync( () =>
-                        {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                            }
-                        });
-
-                        // Update the commander object, if it exists
-                        if (Cmdr != null)
-                        {
-                            Cmdr.squadronname = theEvent.name;
-                        }
-                        break;
-                    }
-                case "disbanded":
-                case "kicked":
-                case "left":
-                    {
-                        // Update the configuration file
-                        configuration.SquadronName = null;
-                        configuration.SquadronID = null;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.InvokeAsync( () =>
-                        {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = string.Empty;
-                                ((MainWindow)Application.Current.MainWindow).eddiSquadronIDText.Text = string.Empty;
-                                configuration = ((MainWindow)Application.Current.MainWindow).resetSquadronRank(configuration);
-                            }
-                        });
-
-                        // Update the commander object, if it exists
-                        if (Cmdr != null)
-                        {
-                            Cmdr.squadronname = null;
-                        }
-                        break;
-                    }
-            }
-            ConfigService.Instance.eddiConfiguration = configuration;
-            return true;
-        }
-
-        private bool eventSquadronRank(SquadronRankEvent theEvent)
-        {
-            SquadronRank rank = SquadronRank.FromRank(theEvent.newrank + 1);
-
-            // Update the configuration file
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            configuration.SquadronName = theEvent.name;
-            configuration.SquadronRank = rank;
-            ConfigService.Instance.eddiConfiguration = configuration;
-
-            // Update the squadron UI data
-            Application.Current?.Dispatcher?.InvokeAsync( () =>
-            {
-                if (Application.Current?.MainWindow != null)
-                {
-                    ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
-                    ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedItem = rank.localizedName;
-                }
-            });
-
-            // Update the commander object, if it exists
-            if (Cmdr != null)
-            {
-                Cmdr.squadronname = theEvent.name;
-                Cmdr.squadronrank = rank;
             }
             return true;
         }
@@ -3226,7 +3027,7 @@ namespace EddiCore
         {
             if (Cmdr != null)
             {
-                Cmdr.title = Eddi.Properties.EddiResources.Commander;
+                Cmdr.title = EddiCore.Properties.EddiResources.Commander;
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -3312,13 +3113,13 @@ namespace EddiCore
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
+                    string msg = string.Format(EddiCore.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(Eddi.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    string msg = string.Format(EddiCore.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
@@ -3571,126 +3372,6 @@ namespace EddiCore
                 }
             }
             return configuration;
-        }
-
-        public void setSquadronSystem ( ulong? newSystemAddress, string newSystemName )
-        {
-            StarSystem newSystem = null;
-            if ( newSystemAddress != null )
-            {
-                newSystem = DataProvider.GetOrFetchStarSystem( (ulong)newSystemAddress );
-            }
-            if ( newSystem is null && !string.IsNullOrEmpty(newSystemName) )
-            {
-                newSystem = DataProvider.GetOrFetchStarSystem( newSystemName );
-            }
-
-            //Ignore null & empty systems
-            if ( newSystem?.bodies.Count > 0 )
-            {
-                if ( newSystem.systemAddress != SquadronStarSystem?.systemAddress )
-                {
-                    SquadronStarSystem = newSystem;
-                    Logging.Debug( "Squadron star system is " + SquadronStarSystem.systemname );
-
-                    var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-                    eddiConfiguration.SquadronSystem = newSystem.systemname;
-                    eddiConfiguration.SquadronSystemAddress = newSystem.systemAddress;
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-                }
-            }
-            else
-            {
-                SquadronStarSystem = null;
-            }
-        }
-
-        public void updateSquadronData(Faction faction, ulong systemAddress )
-        {
-            if (faction != null)
-            {
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-
-                //Update the squadron faction, if changed
-                if (configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name)
-                {
-                    configuration.SquadronFaction = faction.name;
-
-                    Application.Current?.Dispatcher?.InvokeAsync( () =>
-                    {
-                        if (Application.Current?.MainWindow != null)
-                        {
-                            ((MainWindow)Application.Current.MainWindow).squadronFactionDropDown.SelectedItem = faction.name;
-                        }
-                    });
-
-                    if ( Cmdr != null )
-                    {
-                        Cmdr.squadronfaction = faction.name;
-                    }
-                }
-
-                // Update system, allegiance, & power when in squadron home system
-                if ((faction.presences.FirstOrDefault(p => p.systemAddress == systemAddress )?.squadronhomesystem ?? false))
-                {
-                    // Update the squadron system data, if changed
-                    string system = CurrentStarSystem?.systemname;
-                    if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
-                    {
-                        configuration.SquadronSystem = system;
-                        configuration.SquadronSystemAddress = CurrentStarSystem?.systemAddress;
-
-                        Application.Current?.Dispatcher?.InvokeAsync( () =>
-                        {
-                            if (Application.Current?.MainWindow != null)
-                            {
-                                ((MainWindow)Application.Current.MainWindow).squadronSystemDropDown.Text = system;
-                                ((MainWindow)Application.Current.MainWindow).ConfigureSquadronFactionOptions();
-                            }
-                        });
-
-                        setSquadronSystem( configuration.SquadronSystemAddress, configuration.SquadronSystem );
-                    }
-
-                    //Update the squadron allegiance, if changed
-                    Superpower allegiance = CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None;
-
-                    //Prioritize UI entry if squadron system allegiance not specified
-                    if (allegiance != Superpower.None)
-                    {
-                        if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
-                        {
-                            configuration.SquadronAllegiance = allegiance;
-                            if ( Cmdr != null )
-                            {
-                                Cmdr.squadronallegiance = allegiance;
-                            }
-                        }
-                    }
-
-                    // Update the squadron power, if changed
-                    Power power = Power.FromName(CurrentStarSystem?.power) ?? Power.None;
-
-                    //Prioritize UI entry if squadron system power not specified
-                    if (power != Power.None)
-                    {
-                        if (configuration.SquadronPower == Power.None && configuration.SquadronPower != power)
-                        {
-                            configuration.SquadronPower = power;
-
-                            Application.Current?.Dispatcher?.InvokeAsync( () =>
-                            {
-                                if (Application.Current?.MainWindow != null)
-                                {
-                                    ((MainWindow)Application.Current.MainWindow).squadronPowerDropDown.SelectedItem = power.localizedName;
-                                    ((MainWindow)Application.Current.MainWindow).ConfigureSquadronPowerOptions(configuration);
-                                }
-                            });
-                        }
-                    }
-                }
-                ConfigService.Instance.eddiConfiguration = configuration;
-            }
         }
 
         private void UpdateFleetCarrierConfig()

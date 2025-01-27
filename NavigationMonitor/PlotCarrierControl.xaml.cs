@@ -1,6 +1,5 @@
-﻿using Eddi;
+﻿using EddiCore;
 using EddiConfigService;
-using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
 using System;

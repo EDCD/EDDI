@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Utilities;
 
-namespace Eddi
+namespace EddiUI
 {
     public partial class TextToSpeechTab : UserControl
     {

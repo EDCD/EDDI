@@ -51,6 +51,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Power preparation vote cast` obsolete script removed.
       * `Power micro resources collected` script added.
       * `Power micro resources delivered` script added.
+      * `Power salary claimed` obsolete script removed.
       * `Ship refuelled` script updated to no longer suppress 5T refueling increments.
       * `Signal detected` script updated to incorporate additional signal types and Powerplay details. 
       

@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="access_beta" xml:space="preserve">
+    <value>Доступ к бета версии EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>Статус EDDI: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>обладает большим количеством функций, которые можно настраивать отдельно. Существует три разных группы.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Первая группа получает и управляет основной информацией, используемой EDDI. Это вкладки «Данные командира», «Frontier API» и «Синтез речи». Вам необходимо настроить их для того, чтобы EDDI имел полный доступ к вашей информации Elite: Dangerous.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Вторая группа получает информацию о событиях. Это вкладки, с приставкой «Монитор». Они получают различные игровые события и требуют минимальной настройки, что бы они смогли корректно работать.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Третья группа реагирует на события. Это вкладки, оканчивающиеся на «Ответчик». Их можно настроить, но они будут работать "из коробки".</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Вы можете узнать больше информации о функционале EDDI на</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Сообщить о проблеме</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Информация об устранении неполадок</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Активировать "verbose logging" (только если вас об этом попросили разработчики EDDI)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Если "verbose logging" активирован, на рабочем столе будет создан ZIP архив с логами, который уже готов для отправки на GitHub для решения проблемы. Никакой личной информации в логах не сохраняется.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Версия:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>project wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Выберите язык EDDI (требуется перезапуск EDDI):</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier имеет API, который позволяет EDDI получать информацию о ваших кораблях, рынке на текущей станции и тому подобное. Эти данные не доступны где либо ещё. Если вы хотите, чтобы EDDI получал и использовал эту информацию, вам нужно нажать кнопку «Вход» и авторизовать EDDI на сервере Frontier для этой возможности.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Если у вас проблемы с подключением, вы можете его сбросить и попробовать ещё раз, обычно это помогает.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI использует свой собственный механизм наложения эффектов на text-to-speech, который обрабатывает голос в зависимости от повреждения корабля и размера кабины. Вы можете настроить параметры этого эффекта голоса здесь.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Искажать голос при повреждении корабля:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Синтез речи</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Уровень обработки голоса:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI использует фонетическую речь, чтобы произносить различные трудно произносимые слова и ставить паузы между речью. Некоторые голоса, часто Microsoft, имеют проблемы с фонетической речью, и это приводит к зависанию или падению EDDI. Если у вас это происхходит, попробуйте проверить опцию ниже</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Скорость речи:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Тест речи</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Тест речи (при сильных повреждениях)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Корабль для теста речи:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Голос:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Громкость речи:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>Обновление EDDI</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Вы можете проверить, как будет звучать речь. Обратите внимание, что если голос несовместим, будет использована речь по умолчанию.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Отключить фонетическую речь:</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI может использовать ICAO, например, произносить «альфа», а не «А», когда произносит имена звезд и тел. Это может облегчить понимание сложных системных имен, но для произнесения требуется больше времени. Если вы хотите услышать произношение ICAO, включите опцию ниже. Обратите внимание, что функция не будет работать, если вы отключили фонетическую речь выше.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Включить ICAO:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Данные Командира</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Предпочтительный пол для местоимений и названий:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Женский</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Мужской</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Ни то, ни другое</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Домашняя станция:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Домашняя система:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Вы можете указать название конкретной системы, которую считаете домом, а также станцию внутри этой системы. Если вы это сделаете, то информация об этой системе и станции будет предоставлена "респондентам" EDDI.</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Название эксадры:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Система эскадры:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Сторона:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Фракция:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Сила:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Ранг экадрильи:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID эскадрильи:</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Станций нет</value>
+  </data>
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>В этой версии EDDI использование Frontier API невозможно.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Выберите язык EDDI (требуется перезапуск VoiceAttack):</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Имя (произносимое)</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Прослушать</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Международный фонетический алфавит</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Если EDDI не может произнести имя командира, то вы можете добавить произносимую версию имени командира используя</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. К примеру, если ваше имя командира "Salomé", то ваше произносимое имя командира будет "səˈloʊmi".</value>
+  </data>
+</root>

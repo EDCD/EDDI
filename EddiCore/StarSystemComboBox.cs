@@ -1,11 +1,10 @@
-﻿using EddiCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Eddi
+namespace EddiCore
 {
     /// <summary>A subclass of ComboBox for selecting star systems</summary>
     // TODO: Revise to use a base type with both systemName and systemAddress (e.g. StarSystem or NavWaypoint)

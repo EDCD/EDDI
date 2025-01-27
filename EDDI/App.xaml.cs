@@ -2,6 +2,7 @@
 using EddiConfigService.Configurations;
 using EddiCore;
 using EddiCore.Upgrader;
+using EddiUI;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -20,9 +21,9 @@ namespace Eddi
     {
         public static Mutex eddiMutex { get; private set; }
 
-        // True if we have been started by VoiceAttack and the vaProxy object has been set
-        public static bool FromVA => vaProxy != null;
-        public static dynamic vaProxy;
+        // True if we have been started by VoiceAttack and the VaProxy object has been set
+        public static bool FromVA => VaProxy != null;
+        public static dynamic VaProxy;
         public static Action vaStartup;
 
         [STAThread]
@@ -53,6 +54,7 @@ namespace Eddi
             if (FromVA)
             {
                 // Start with the MainWindow hidden
+                EDDI.FromVA = FromVA;
                 app.MainWindow = new MainWindow();
                 vaStartup?.Invoke();
                 app.Run();
@@ -85,8 +87,8 @@ namespace Eddi
             {
                 if (!FromVA)
                 {
-                    string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
-                    string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
+                    string localisedMultipleInstanceAlertTitle = EddiCore.Properties.EddiResources.already_running_alert_title;
+                    string localisedMultipleInstanceAlertText = EddiCore.Properties.EddiResources.already_running_alert_body_text;
                     MessageBox.Show(localisedMultipleInstanceAlertText,
                                     localisedMultipleInstanceAlertTitle,
                                     MessageBoxButton.OK, MessageBoxImage.Information);
@@ -94,7 +96,7 @@ namespace Eddi
                 }
                 else
                 {
-                    vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
+                    VaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
 
                     MessageBoxResult result =
                         MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
@@ -108,7 +110,7 @@ namespace Eddi
 
                     if (MessageBoxResult.Cancel == result)
                     {
-                        vaProxy.WriteToLog("EDDI initialization cancelled by user.", "red");
+                        VaProxy.WriteToLog("EDDI initialization cancelled by user.", "red");
                         return true;
                     }
                 }

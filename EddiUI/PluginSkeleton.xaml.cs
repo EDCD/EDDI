@@ -4,7 +4,7 @@ using EddiCore;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Eddi
+namespace EddiUI
 {
     /// <summary>
     /// Interaction logic for PluginSkeleton.xaml

@@ -1,6 +1,6 @@
-﻿using EddiConfigService;
+﻿using EddiCore;
+using EddiConfigService;
 using EddiConfigService.Configurations;
-using EddiCore;
 using EddiDataDefinitions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

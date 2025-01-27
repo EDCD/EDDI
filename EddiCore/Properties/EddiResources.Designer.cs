@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Eddi.Properties {
+namespace EddiCore.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Eddi.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Eddi.Properties.EddiResources", typeof(EddiResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiCore.Properties.EddiResources", typeof(EddiResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

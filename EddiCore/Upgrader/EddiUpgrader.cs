@@ -1,5 +1,4 @@
-﻿using Eddi;
-using EddiConfigService;
+﻿using EddiConfigService;
 using EddiSpeechService;
 using System;
 using System.Diagnostics;
@@ -42,15 +41,15 @@ namespace EddiCore.Upgrader
                 {
                     var configuration = ConfigService.Instance.eddiConfiguration;
                     var info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
-                    var spokenVersion = info.version.Replace(".", $" {Eddi.Properties.EddiResources.point} ");
+                    var spokenVersion = info.version.Replace(".", $" {EddiCore.Properties.EddiResources.point} ");
                     Motd = info.motd;
                     var minVersion = new Utilities.Version(info.minversion);
                     if (minVersion > Constants.EDDI_VERSION)
                     {
                         // There is a mandatory update available
-                        if (!App.FromVA)
+                        if (!EDDI.FromVA)
                         {
-                            var message = String.Format(Eddi.Properties.EddiResources.mandatory_upgrade, spokenVersion);
+                            var message = String.Format(EddiCore.Properties.EddiResources.mandatory_upgrade, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeRequired = true;
@@ -63,9 +62,9 @@ namespace EddiCore.Upgrader
                     if (latestVersion > Constants.EDDI_VERSION)
                     {
                         // There is an update available
-                        if (!App.FromVA)
+                        if (!EDDI.FromVA)
                         {
-                            var message = String.Format(Eddi.Properties.EddiResources.update_available, spokenVersion);
+                            var message = String.Format(EddiCore.Properties.EddiResources.update_available, spokenVersion);
                             SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeAvailable = true;
@@ -76,7 +75,7 @@ namespace EddiCore.Upgrader
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.update_server_unreachable, 0);
+                SpeechService.Instance.Say(null, EddiCore.Properties.EddiResources.update_server_unreachable, 0);
                 Logging.Warn( $"Failed to access {Constants.EDDI_SERVER_URL}", ex);
             }
         }
@@ -88,11 +87,11 @@ namespace EddiCore.Upgrader
                 if (UpgradeLocation != null)
                 {
                     Logging.Info( $"Downloading upgrade from {UpgradeLocation}" );
-                    SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.downloading_upgrade, 0);
+                    SpeechService.Instance.Say(null, EddiCore.Properties.EddiResources.downloading_upgrade, 0);
                     var updateFile = await Utilities.Net.DownloadFileAsync(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.download_failed, 0);
+                        SpeechService.Instance.Say(null, EddiCore.Properties.EddiResources.download_failed, 0);
                     }
                     else
                     {
@@ -102,7 +101,7 @@ namespace EddiCore.Upgrader
                         Logging.Info( $"Downloaded update to {updateFile}" );
                         Logging.Info( $"Path is {Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )}" );
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.starting_upgrade, 0);
+                        SpeechService.Instance.Say(null, EddiCore.Properties.EddiResources.starting_upgrade, 0);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, $@"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""{Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )}""" );
@@ -111,7 +110,7 @@ namespace EddiCore.Upgrader
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Eddi.Properties.EddiResources.upgrade_failed, 0);
+                SpeechService.Instance.Say(null, EddiCore.Properties.EddiResources.upgrade_failed, 0);
                 Logging.Error("Upgrade failed", ex);
             }
         }

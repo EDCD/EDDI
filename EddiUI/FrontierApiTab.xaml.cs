@@ -1,11 +1,11 @@
-﻿using EddiCompanionAppService;
-using EddiCore;
+﻿using EddiCore;
+using EddiCompanionAppService;
 using EddiSpeechService;
 using System.Windows;
 using System.Windows.Controls;
 using System.Security.Principal;
 
-namespace Eddi
+namespace EddiUI
 {
     public partial class FrontierApiTab : UserControl
     {
@@ -48,8 +48,8 @@ namespace Eddi
                 case CompanionAppService.State.ConnectionLost:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
                     companionAppButton.Content = Properties.EddiResources.login;
-                    companionAppButton.IsEnabled = !App.FromVA;
-                    companionAppText.Text = !App.FromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
+                    companionAppButton.IsEnabled = !EDDI.FromVA;
+                    companionAppText.Text = !EDDI.FromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
                     break;
                 case CompanionAppService.State.AwaitingCallback:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnecting;
@@ -89,7 +89,7 @@ namespace Eddi
                 // Logout from the companion EddiApplication and start again
                 CompanionAppService.Instance.Logout();
                 SpeechService.Instance.Say( null, Properties.EddiResources.frontier_api_reset, 0 );
-                if ( App.FromVA )
+                if ( EDDI.FromVA )
                 {
                     SpeechService.Instance.Say( null, Properties.EddiResources.frontier_api_cant_login_from_va, 0 );
                 }

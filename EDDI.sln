@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docs\issue_template.md = docs\issue_template.md
 		LICENSE.md = LICENSE.md
 		LicenseFile.txt = LicenseFile.txt
+		graphics\logo-with-alpha.png = graphics\logo-with-alpha.png
 		images\MainOptions.jpg = images\MainOptions.jpg
 		images\MainProfile.jpg = images\MainProfile.jpg
 		images\OptionsPluginSupport.jpg = images\OptionsPluginSupport.jpg
@@ -116,8 +117,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EddiNavigationMonitor", "Na
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EddiConfigService", "ConfigService\EddiConfigService.csproj", "{1AF3FE80-A671-463E-B2A2-C8D4D148EFD4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EddiCore", "EddiCore\EddiCore.csproj", "{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EddiSpanshService", "EddiSpanshService\EddiSpanshService.csproj", "{EEB0110F-5ABF-466B-BE85-D5BD21A57CD5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EddiStatusService", "EddiStatusService\EddiStatusService.csproj", "{7D25AF37-6EF2-4210-B079-14672BECDBB0}"
@@ -129,6 +128,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Services", "Data Services", "{DBAE065B-DD96-4349-9189-D0935280BB0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiBgsService", "BgsService\EddiBgsService.csproj", "{5CAC88ED-CAF1-41B9-A7A3-D32475EB4B61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiUI", "EddiUI\EddiUI.csproj", "{645DC2B5-55B4-4D7B-B6D0-4536CA561FA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCore", "EddiCore\EddiCore.csproj", "{C1950A43-F6DB-4281-BBEB-DB233A54B504}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCommanderMonitor", "EddiCommanderMonitor\EddiCommanderMonitor.csproj", "{3FD08C20-1C5F-469C-B03C-F38657189517}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -248,10 +253,6 @@ Global
 		{1AF3FE80-A671-463E-B2A2-C8D4D148EFD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AF3FE80-A671-463E-B2A2-C8D4D148EFD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AF3FE80-A671-463E-B2A2-C8D4D148EFD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28DC25D7-4DFD-4A77-B4FF-B9BADB711ECB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EEB0110F-5ABF-466B-BE85-D5BD21A57CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EEB0110F-5ABF-466B-BE85-D5BD21A57CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEB0110F-5ABF-466B-BE85-D5BD21A57CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -264,6 +265,18 @@ Global
 		{5CAC88ED-CAF1-41B9-A7A3-D32475EB4B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CAC88ED-CAF1-41B9-A7A3-D32475EB4B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CAC88ED-CAF1-41B9-A7A3-D32475EB4B61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{645DC2B5-55B4-4D7B-B6D0-4536CA561FA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{645DC2B5-55B4-4D7B-B6D0-4536CA561FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{645DC2B5-55B4-4D7B-B6D0-4536CA561FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{645DC2B5-55B4-4D7B-B6D0-4536CA561FA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1950A43-F6DB-4281-BBEB-DB233A54B504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1950A43-F6DB-4281-BBEB-DB233A54B504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1950A43-F6DB-4281-BBEB-DB233A54B504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1950A43-F6DB-4281-BBEB-DB233A54B504}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FD08C20-1C5F-469C-B03C-F38657189517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD08C20-1C5F-469C-B03C-F38657189517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD08C20-1C5F-469C-B03C-F38657189517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD08C20-1C5F-469C-B03C-F38657189517}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -294,11 +307,12 @@ Global
 		{EEB0110F-5ABF-466B-BE85-D5BD21A57CD5} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
 		{7D25AF37-6EF2-4210-B079-14672BECDBB0} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
 		{5CAC88ED-CAF1-41B9-A7A3-D32475EB4B61} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
+		{3FD08C20-1C5F-469C-B03C-F38657189517} = {7511F244-BC52-4F4A-ABBE-3956957B4F1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
-		RESX_ShowErrorsInErrorList = False
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_TaskErrorCategory = Message
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
 	EndGlobalSection
 EndGlobal
