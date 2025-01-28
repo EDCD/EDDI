@@ -239,8 +239,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Credits (spoken)", Translations.Humanize(cmdr?.credits));
                 vaProxy.SetDecimal("Debt", cmdr?.debt);
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
-                vaProxy.SetText("Title", cmdr?.title ?? EddiCore.Properties.EddiResources.Commander);
-                vaProxy.SetText("Gender", cmdr?.gender ?? EddiCore.Properties.MainWindow.tab_commander_gender_n);
+                vaProxy.SetText("Title", cmdr?.title ?? EddiCore.Properties.Resources.Commander);
+                vaProxy.SetText("Gender", cmdr?.gender ?? EddiCore.Properties.Resources.commander_gender_n);
                 vaProxy.SetText("Squadron name", cmdr?.squadronname);
                 vaProxy.SetText("Squadron id", cmdr?.squadronid);
                 vaProxy.SetInt("Squadron rating", cmdr?.squadronrank?.rank);

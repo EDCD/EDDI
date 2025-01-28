@@ -109,7 +109,7 @@ namespace EddiVoiceAttackResponder
                     if (EddiUpgrader.Motd != null)
                     {
                         VaProxy.WriteToLog("Message from EDDI: " + EddiUpgrader.Motd, "black");
-                        string msg = String.Format(EddiCore.Properties.EddiResources.msg_from_eddi, EddiUpgrader.Motd);
+                        string msg = String.Format(EddiCore.Properties.Resources.msg_from_eddi, EddiUpgrader.Motd);
                         SpeechService.Instance.Say(null, msg, 0);
                     }
 
@@ -828,7 +828,7 @@ namespace EddiVoiceAttackResponder
             string cmdrScript;
             if (string.IsNullOrEmpty(EDDI.Instance.Cmdr?.name))
             {
-                cmdrScript = EddiCore.Properties.EddiResources.Commander;
+                cmdrScript = EddiCore.Properties.Resources.Commander;
             }
             else
             {

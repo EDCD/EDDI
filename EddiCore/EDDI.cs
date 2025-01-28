@@ -3027,7 +3027,7 @@ namespace EddiCore
         {
             if (Cmdr != null)
             {
-                Cmdr.title = EddiCore.Properties.EddiResources.Commander;
+                Cmdr.title = EddiCore.Properties.Resources.Commander;
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -3113,13 +3113,13 @@ namespace EddiCore
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(EddiCore.Properties.EddiResources.problem_load_monitor_file, dir.FullName);
+                    string msg = string.Format(EddiCore.Properties.Resources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(EddiCore.Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    string msg = string.Format(EddiCore.Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }

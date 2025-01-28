@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -118,146 +118,152 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="change_affect_va" xml:space="preserve">
-    <value>这里所有的改动会自动在VoiceAttack中生效。当您完成编辑后可以直接关闭此窗口。</value>
+    <value>Alle hier vorgenommenen Änderungen werden automatisch in VoiceAttack wirksam. Sie können dieses Fenster schließen, wenn Sie fertig sind.</value>
   </data>
   <data name="complete" xml:space="preserve">
-    <value>已完成</value>
+    <value>Vollständig</value>
     <comment>This is the adjective not the verb</comment>
   </data>
   <data name="done" xml:space="preserve">
-    <value>好了</value>
+    <value>fertig</value>
   </data>
   <data name="failed" xml:space="preserve">
-    <value>失败</value>
+    <value>fehlgeschlagen</value>
   </data>
   <data name="frontier_api_nok" xml:space="preserve">
-    <value>Frontier API 关联不可用</value>
+    <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
-    <value>指挥官 {0}，您已关联到Frontier API</value>
+    <value>Ihre Verbindung zur Frontier-API ist betriebsbereit, Commander {0}.</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
-    <value>如果您要使用VoiceAttack，为了使改动生效，在启动VoiceAttack前请先关闭本窗口。您可以在 VoiceAttack中通过命令 'Configure EDDI'来访问本窗口。</value>
+    <value>Wenn Sie VoiceAttack verwenden, schließen Sie bitte dieses Fenster, bevor Sie VoiceAttack starten, damit Ihre Änderungen wirksam werden. Sie können auf dieses Fenster von VoiceAttack mit dem Befehl 'EDDI konfigurieren' zugreifen.</value>
   </data>
   <data name="invalid_station" xml:space="preserve">
-    <value>无效的站点</value>
+    <value>Ungültige Station</value>
   </data>
   <data name="invalid_system" xml:space="preserve">
-    <value>无效的星系</value>
+    <value>Ungültiges System</value>
   </data>
   <data name="login_nok_frontier_service" xml:space="preserve">
-    <value>无法登入，这通常是Frontier服务的暂时性问题；请稍后再试</value>
+    <value>Anmeldung nicht möglich. Dies ist normalerweise ein vorübergehendes Problem mit dem Dienst von Frontier. Bitte versuchen Sie es später erneut</value>
   </data>
   <data name="logout" xml:space="preserve">
-    <value>登出</value>
+    <value>Abmeldung</value>
   </data>
   <data name="operational" xml:space="preserve">
-    <value>可用</value>
+    <value>Betriebsbereit</value>
   </data>
   <data name="preparing_log" xml:space="preserve">
-    <value>正在准备日志... </value>
+    <value>Log wird vorbereitet... </value>
   </data>
   <data name="update_message" xml:space="preserve">
-    <value> {0} 版本已发布</value>
+    <value>Version {0} verfügbar</value>
   </data>
   <data name="voice_test_damage" xml:space="preserve">
-    <value>您的 {0} 受到严重伤害.</value>
+    <value>Schwerer Schaden für deine {0}.</value>
   </data>
   <data name="voice_test_ship" xml:space="preserve">
-    <value>我在您的 {0} 中听起来是这样.</value>
+    <value>So werde ich in deinem Schiff {0} klingen.</value>
   </data>
   <data name="plugin_enabled" xml:space="preserve">
-    <value>插件已启用</value>
+    <value>Plugin aktiviert</value>
   </data>
   <data name="download_failed" xml:space="preserve">
-    <value>下载失败。请稍后再试</value>
+    <value>Download fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="downloading_upgrade" xml:space="preserve">
-    <value>正在下载更新包。</value>
+    <value>Lade Upgrade herunter.</value>
   </data>
   <data name="mandatory_upgrade" xml:space="preserve">
-    <value>必须更新EDDI至 {0}.</value>
+    <value>Ein obligatorisches Eddi-Upgrade auf {0} ist erforderlich.</value>
   </data>
   <data name="msg_from_eddi" xml:space="preserve">
-    <value>来自EDDI的信息: {0}</value>
+    <value>Nachtricht von Eddi: {0}</value>
   </data>
   <data name="point" xml:space="preserve">
-    <value>点</value>
+    <value>Punkt</value>
     <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
   </data>
   <data name="update_available" xml:space="preserve">
-    <value>Eddi 版本: {0} 已可用.</value>
+    <value>Eddi Version {0} ist jetzt verfügbar.</value>
   </data>
   <data name="upgrade_failed" xml:space="preserve">
-    <value>更新失败。请稍后再试</value>
+    <value>Upgrade fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
   </data>
   <data name="starting_upgrade" xml:space="preserve">
-    <value>正在开始更新。</value>
+    <value>Starte Upgrade.</value>
   </data>
   <data name="update_server_unreachable" xml:space="preserve">
-    <value>EDDI无法连接至更新服务器。如果再次出现这种情况，请查看论坛这是否为已知问题。</value>
+    <value>EDDI konnte keine Verbindung zum Update-Server herstellen. Sollte sich dies wiederholen, überprüfen Sie bitte im Forum 
+( https://forums.frontier.co.uk/threads/eddi-3-3-bring-your-cockpit-to-life.387955/ ) oder bei github - issues ( https://github. com/EDCD/EDDI/issues ), ob es sich um ein bekanntes Problem handelt.</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>同时只能有一个EDDI运行，请先关闭其他的EDDI进程。</value>
+    <value>Nur eine EDDI-Instanz kann gleichzeitig ausgeführt werden.
+
+Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   </data>
   <data name="already_running_alert_title" xml:space="preserve">
-    <value>EDDI已经在运行了</value>
+    <value>EDDI läuft bereits</value>
   </data>
   <data name="problem_load_monitor" xml:space="preserve">
-    <value>加载监视器失败: {0}</value>
+    <value>Monitor: {0} konnte nicht geladen werden</value>
     <comment>Weapon mount type problem_load_monitor</comment>
   </data>
   <data name="problem_load_monitor_file" xml:space="preserve">
-    <value>加载监视器失败. 请确认 {0} 没有在共享或网络共享状态。</value>
+    <value>Fehler beim Laden des Monitors. Stellen Sie sicher, dass {0} nicht auf einer Netzwerkfreigabe oder selbst freigegeben ist.</value>
     <comment>Weapon mount type problem_load_monitor_file</comment>
   </data>
   <data name="Commander" xml:space="preserve">
-    <value>指挥官</value>
+    <value>Kommandant</value>
     <comment>Vocative form of "Commander"</comment>
   </data>
   <data name="system_language" xml:space="preserve">
-    <value>自动</value>
+    <value>Automatisch</value>
     <comment>The user's system language</comment>
   </data>
   <data name="safe_mode" xml:space="preserve">
-    <value>安全模式-需要更新.</value>
+    <value>Abgesicherter Modus - Upgrade erforderlich.</value>
   </data>
   <data name="login" xml:space="preserve">
-    <value>登入</value>
+    <value>Anmeldung</value>
   </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
-    <value>为了关联Frontier API，请先关闭VoiceAttack并单独开启EDDI。</value>
+    <value>Um sich anzumelden, beenden Sie bitte Voice Attack und starten Sie EDDI eigenständig.</value>
   </data>
   <data name="frontierApiStatusLabel" xml:space="preserve">
-    <value>Frontier API 状态:</value>
+    <value>Frontier API Status:</value>
   </data>
   <data name="frontierApiConnected" xml:space="preserve">
-    <value>已关联</value>
+    <value>Verbunden</value>
   </data>
   <data name="frontierApiNotConnected" xml:space="preserve">
-    <value>未关联</value>
+    <value>Nicht verbunden</value>
   </data>
   <data name="frontierApiConnecting" xml:space="preserve">
-    <value>正在关联</value>
+    <value>Verbinde</value>
   </data>
   <data name="frontier_api_close_browser" xml:space="preserve">
-    <value>您现在可以关闭浏览器窗口并返回EDDI了。</value>
+    <value>Sie können Ihr Browserfenster jetzt schließen und zu EDDI zurückkehren.</value>
   </data>
   <data name="frontier_api_reset" xml:space="preserve">
-    <value>关联已重置</value>
+    <value>Zurücksetzen der Verbindung.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
-    <value>请验证 EDDI 与 Frontier API 的关联状态</value>
+    <value>Bitte authentifizieren Sie die Verbindung von EDDI zur Frontier API.</value>
   </data>
   <data name="frontierApiNotEnabled" xml:space="preserve">
-    <value>未启用</value>
+    <value>Nicht möglich</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
   <data name="frontier_api_not_enabled" xml:space="preserve">
-    <value>Frontier API 关联未启用</value>
+    <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
   <data name="frontier_api_admin_mode" xml:space="preserve">
-    <value>EDDI正在管理员模式下运行。管理员模式有可能阻止您的浏览器向EDDI传送信息，从而导致登录失败。</value>
+    <value>EDDI wird im Administratormodus ausgeführt. Der Administratormodus blockiert möglicherweise die Nachrichtenübertragung von Ihrem Browser zu EDDI und führt dazu, dass die Anmeldung fehlschlägt.</value>
+  </data>
+  <data name="commander_gender_n" xml:space="preserve">
+    <value>Weder noch</value>
   </data>
 </root>

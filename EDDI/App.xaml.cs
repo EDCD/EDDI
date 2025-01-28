@@ -87,8 +87,8 @@ namespace Eddi
             {
                 if (!FromVA)
                 {
-                    string localisedMultipleInstanceAlertTitle = EddiCore.Properties.EddiResources.already_running_alert_title;
-                    string localisedMultipleInstanceAlertText = EddiCore.Properties.EddiResources.already_running_alert_body_text;
+                    string localisedMultipleInstanceAlertTitle = EddiCore.Properties.Resources.already_running_alert_title;
+                    string localisedMultipleInstanceAlertText = EddiCore.Properties.Resources.already_running_alert_body_text;
                     MessageBox.Show(localisedMultipleInstanceAlertText,
                                     localisedMultipleInstanceAlertTitle,
                                     MessageBoxButton.OK, MessageBoxImage.Information);

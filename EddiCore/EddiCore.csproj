@@ -48,25 +48,16 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Properties\EddiResources.Designer.cs">
+      <Compile Update="Properties\Resources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>EddiResources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Properties\MainWindow.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>MainWindow.resx</DependentUpon>
+        <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Update="Properties\EddiResources.resx">
+      <EmbeddedResource Update="Properties\Resources.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>EddiResources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\MainWindow.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 </Project>
