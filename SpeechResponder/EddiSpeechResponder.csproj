@@ -32,7 +32,6 @@
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
     <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
-    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>

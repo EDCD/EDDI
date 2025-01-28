@@ -37,7 +37,6 @@
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
     </PackageReference>
-    <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\GalnetMonitor.Designer.cs">
