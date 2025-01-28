@@ -64,7 +64,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Info("Initialising EDDI VoiceAttack plugin");
 
                     // Set initial values for standard variables
-                    initializeStandardValues();
+                    initializeStandardValues(VaProxy);
 
                     // Set up our event responder.
                     voiceAttackEventHandler = new VoiceAttackEventHandler( VaProxy );
