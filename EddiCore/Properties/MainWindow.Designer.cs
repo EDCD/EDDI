@@ -97,15 +97,6 @@ namespace EddiCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to International Phonetic Alphabet.
-        /// </summary>
-        public static string link_ipa {
-            get {
-                return ResourceManager.GetString("link_ipa", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No Station.
         /// </summary>
         public static string no_station {
@@ -178,173 +169,11 @@ namespace EddiCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commander Details.
-        /// </summary>
-        public static string tab_commander_details_header {
-            get {
-                return ResourceManager.GetString("tab_commander_details_header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preferred gender for pronouns and titles:.
-        /// </summary>
-        public static string tab_commander_gender {
-            get {
-                return ResourceManager.GetString("tab_commander_gender", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Female.
-        /// </summary>
-        public static string tab_commander_gender_f {
-            get {
-                return ResourceManager.GetString("tab_commander_gender_f", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Male.
-        /// </summary>
-        public static string tab_commander_gender_m {
-            get {
-                return ResourceManager.GetString("tab_commander_gender_m", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Neither.
         /// </summary>
         public static string tab_commander_gender_n {
             get {
                 return ResourceManager.GetString("tab_commander_gender_n", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home station:.
-        /// </summary>
-        public static string tab_commander_home_station {
-            get {
-                return ResourceManager.GetString("tab_commander_home_station", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home system:.
-        /// </summary>
-        public static string tab_commander_home_system {
-            get {
-                return ResourceManager.GetString("tab_commander_home_system", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If the name of your commander is hard for EDDI to pronounce then you can add a spoken version of the your commander&apos;s name using the.
-        /// </summary>
-        public static string tab_commander_Ipa1 {
-            get {
-                return ResourceManager.GetString("tab_commander_Ipa1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to . For example, if your commander was called &apos;Salomé&apos; then your spoken name would be &apos;səˈloʊmi&apos;..
-        /// </summary>
-        public static string tab_commander_Ipa2 {
-            get {
-                return ResourceManager.GetString("tab_commander_Ipa2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can provide the name of a particular system you consider home, and also a station inside that system. If you do then the information about this system and station will be made available to EDDI&apos;s responders..
-        /// </summary>
-        public static string tab_commander_par1 {
-            get {
-                return ResourceManager.GetString("tab_commander_par1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name (spoken).
-        /// </summary>
-        public static string tab_commander_phonetic_name {
-            get {
-                return ResourceManager.GetString("tab_commander_phonetic_name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Squadron allegiance:.
-        /// </summary>
-        public static string tab_commander_squadron_allegiance {
-            get {
-                return ResourceManager.GetString("tab_commander_squadron_allegiance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Squadron faction:.
-        /// </summary>
-        public static string tab_commander_squadron_faction {
-            get {
-                return ResourceManager.GetString("tab_commander_squadron_faction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Squadron ID:.
-        /// </summary>
-        public static string tab_commander_squadron_id {
-            get {
-                return ResourceManager.GetString("tab_commander_squadron_id", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Squadron name:.
-        /// </summary>
-        public static string tab_commander_squadron_name {
-            get {
-                return ResourceManager.GetString("tab_commander_squadron_name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Squadron power:.
-        /// </summary>
-        public static string tab_commander_squadron_power {
-            get {
-                return ResourceManager.GetString("tab_commander_squadron_power", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Squadron rank:.
-        /// </summary>
-        public static string tab_commander_squadron_rank {
-            get {
-                return ResourceManager.GetString("tab_commander_squadron_rank", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Squadron system:.
-        /// </summary>
-        public static string tab_commander_squadron_system {
-            get {
-                return ResourceManager.GetString("tab_commander_squadron_system", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hear it.
-        /// </summary>
-        public static string tab_commander_test_phonetic_name {
-            get {
-                return ResourceManager.GetString("tab_commander_test_phonetic_name", resourceCulture);
             }
         }
         
