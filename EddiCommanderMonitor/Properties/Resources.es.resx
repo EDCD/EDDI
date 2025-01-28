@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Rango del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Potencia del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Nombre del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Facción del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Alianza del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Sistema del escuadrón:</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Escuchar</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Nombre (fonético)</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Si el nombre de su comandante es difícil de pronunciar para EDDI, puede agregar una versión hablada del nombre de su comandante usando el comando</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Por ejemplo, si su comandante se llamara "Salomé", su nombre sería "səˈloʊmi".</value>
+  </data>
+  <data name="MonitorDescription" xml:space="preserve">
+    <value>Puede especificar el nombre de un sistema y una estación en particular del mismo, que considere como su hogar. Si lo hace, su información estará disponible para los Asistentes de EDDI.</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Género preferido para pronombres y títulos:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Mujer</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Hombre</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Estación hogar:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Sistema hogar:</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Sin Estaciones</value>
+  </data>
+</root>
