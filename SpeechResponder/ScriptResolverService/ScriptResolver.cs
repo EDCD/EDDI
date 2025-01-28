@@ -1,7 +1,7 @@
 ﻿using Cottle;
 using Cottle.Exceptions;
-using EddiCore;
 using EddiCompanionAppService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
 using EddiSpeechService;

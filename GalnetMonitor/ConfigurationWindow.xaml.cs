@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;

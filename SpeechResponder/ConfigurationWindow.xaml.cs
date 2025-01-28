@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiEvents;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;

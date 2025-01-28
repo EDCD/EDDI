@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;

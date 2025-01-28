@@ -1,7 +1,7 @@
 ﻿using Eddi;
+using EddiCompanionAppService;
 using EddiCore;
 using EddiCore.Upgrader;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiNavigationService;

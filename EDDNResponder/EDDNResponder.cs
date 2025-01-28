@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEddnResponder.Properties;
 using EddiEddnResponder.Sender;

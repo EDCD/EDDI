@@ -1,7 +1,7 @@
-﻿using EddiCore;
-using EddiBgsService;
+﻿using EddiBgsService;
 using EddiCompanionAppService;
 using EddiConfigService;
+using EddiCore;
 using EddiDataProviderService;
 using EddiSpanshService;
 using EddiStarMapService;

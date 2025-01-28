@@ -1,9 +1,9 @@
-﻿using EddiCore;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
+using EddiCore;
 using EddiSpeechService;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Controls;
-using System.Security.Principal;
 
 namespace EddiUI
 {

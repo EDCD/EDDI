@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStarMapService;

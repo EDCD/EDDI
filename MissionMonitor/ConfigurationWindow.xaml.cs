@@ -1,5 +1,5 @@
-﻿using EddiCore;
-using EddiConfigService;
+﻿using EddiConfigService;
+using EddiCore;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
