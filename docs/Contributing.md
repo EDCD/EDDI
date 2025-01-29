@@ -94,8 +94,5 @@ The update server is governed by `info.json` in https://github.com/EDCD/EDDP.git
 ### CrowdIn
 We use CrowdIn for translation: https://crowdin.com/project/eddi and it governs all non-English RESX files. That is, we don't edit non-English RESX files locally and in the event of a merge conflict, CrowdIn wins.
 
-### AppVeyor
-We use AppVeyor for continuous integration: https://ci.appveyor.com/project/richardbuckle/eddi
-
-### CodeCov
-We use CodeCov for code coverage but this may change https://codecov.io/gh/EDCD/EDDI
+### Github Actions
+We use Github Actions for continuous integration. The workflows are defined in `.github/workflows/`. These run the unit tests and code analysis on every push to `develop` and every PR.
