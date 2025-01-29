@@ -117,11 +117,160 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>変更は、自動的にVoiceAttackに適用されます。設定を変更した後、このウィンドウを閉じてください。</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>完了</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>失敗しました</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Frontier API 接続が使用不能です。</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Frontier APIに接続されています。ようこそ CMDR {0}。</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>VoiceAttackと併用する場合は、設定の反映のため、VoiceAttackを起動する前にこのウィンドウを閉じてください。VoiceAttackからは、'Configure EDDI'コマンドにより、このウィンドウを開くことができます。</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>ログインに失敗しました。これは、普通はFrontierのサーバに問題があります。後ほど、もう一度お試しください。</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>ログアウト</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>稼働中</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>ログを準備中... </value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>バージョン {0} が利用可能です。</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>{0} が重大なダメージを受けています。</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>{0} をこのように読み上げます。</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>プラグイン有効化</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>ダウンロードに失敗しました。後でもう一度お試しください。</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>更新をダウンロードしています。</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>EDDI {0} への更新は必須です。</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>EDDIからのメッセージ：{0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>てん</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>EDDIに新しいバージョン {0} があります</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>更新に失敗しました。後でもう一度お試しください</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>更新を開始しています。</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>アップデートサーバに接続できません。繰り返し発生する場合、フォーラムを確認してみてください。</value>
+  </data>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>EDDIの複数実行は不可能です。</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDIは既に実行中です</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>モニターの読み込みに失敗しました: {0}</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>モニターの読み込みに失敗しました: {0} がネットワークで共有されていないか確認してください。</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>コマンダー</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>自動</value>
+    <comment>The user's system language</comment>
+  </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>セーフモード - 更新が必要です。</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>ログイン</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>ログインするために、Voice Attackを終了してから、EDDIを起動してください。</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Frontier APIの状態:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>接続完了</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>未接続</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>接続試行中</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>ブラウザの画面を閉じ、EDDIに戻ってください。</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>接続をリセット</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Frontier APIで、EDDIの接続を認証してください。</value>
+  </data>
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>有効になっていません。</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Frontier API 接続が有効になっていません。</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_admin_mode" xml:space="preserve">
+    <value>EDDIが管理者モードで動作しています。管理者モードでは、ブラウザーからの通信がブロックされ、ログインに失敗する場合があります。</value>
+  </data>
   <data name="access_beta" xml:space="preserve">
     <value>EDDIのベータ版を使用</value>
   </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>EDDIの言語（EDDIの再起動が必要です）</value>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>EDDIの言語（VoiceAttackの再起動が必要です）</value>
+  </data>
   <data name="EDDI_status_label" xml:space="preserve">
     <value>EDDIの状態: </value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>国際音声記号（International Phonetic Alphabet, IPA）</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>ステーションなし</value>
   </data>
   <data name="paragraph_0" xml:space="preserve">
     <value>は、いくつもの機能があり、それぞれ設定可能です。大きく分けて、3種類の機能があります。</value>
@@ -141,24 +290,11 @@
   <data name="report_issue" xml:space="preserve">
     <value>問題を報告</value>
   </data>
-  <data name="troubleshoot_common_issues" xml:space="preserve">
-    <value>よくある問題の解決法</value>
-    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  <data name="reset_button" xml:space="preserve">
+    <value>リセット</value>
   </data>
-  <data name="verbose_logging_checkbox" xml:space="preserve">
-    <value>詳細なログを有効化（EDDI開発者に指示された場合のみ）</value>
-  </data>
-  <data name="verbose_logging_desc" xml:space="preserve">
-    <value>詳細なログを有効化すると、EDDIはログを取得し、デスクトップに保存します。GitHubのIssueに添付してください。詳細なログに個人情報は含まれません。</value>
-  </data>
-  <data name="version_hyperlink" xml:space="preserve">
-    <value>バージョン：</value>
-  </data>
-  <data name="wiki_hyperlink" xml:space="preserve">
-    <value>Project Wiki（英語）</value>
-  </data>
-  <data name="choose_lang_label" xml:space="preserve">
-    <value>EDDIの言語（EDDIの再起動が必要です）</value>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>その他</value>
   </data>
   <data name="tab_frontier_desc" xml:space="preserve">
     <value>Frontier社は、あなたの艦船、ステーションのマーケットや、その他の情報が取得可能なAPIを提供しています。EDDIでFrontier APIを利用するには、Frontierアカウントでの認証が必要です。ログインボタンをクリックし、Frontierのサーバで認証を行ってください。</value>
@@ -166,17 +302,29 @@
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>
   </data>
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>このEDDIのビルドでは、Frontier APIが有効になっていません。</value>
+  </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
     <value>接続に問題がある場合、設定をリセットして再度ログインすると、問題が解決する可能性があります。</value>
   </data>
   <data name="tab_tts_desc" xml:space="preserve">
     <value>EDDIは、船の損傷やコックピットの大きさによって音声を処理する、独自のテキスト読み上げエンジンを使用しています。ここで、声のパラメータを設定できます。</value>
   </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>フォネティック・コードによる読み上げを無効化:</value>
+  </data>
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>船が損傷したとき、音声を歪ませる:</value>
   </data>
   <data name="tab_tts_header" xml:space="preserve">
     <value>Text-to-Speech</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDIは、星系名や惑星名の読み上げに、ICAO発音(例:「A」を「アルファ」と発音)を使用可能です。これにより、星系名を理解しやすくなりますが、読み上げには時間が必要です。ICAO発音を使用するには、下記にチェックしてください。フォネティック・コードによる読み上げを無効化している場合、この設定は機能しません。</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>ICAO発音を有効化:</value>
   </data>
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>音声処理のレベル:</value>
@@ -193,6 +341,9 @@
   <data name="tab_tts_test_damaged_button" xml:space="preserve">
     <value>音声をテスト（損傷を受けた場合）</value>
   </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>以下で音声をテストできます。読み上げエンジンに互換性がない場合、デフォルトの音声が使用されます。</value>
+  </data>
   <data name="tab_tts_test_ship_label" xml:space="preserve">
     <value>音声のテストに使用する船:</value>
   </data>
@@ -202,38 +353,22 @@
   <data name="tab_tts_volume_label" xml:space="preserve">
     <value>音声のボリューム:</value>
   </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>よくある問題の解決法</value>
+  </data>
   <data name="upgrade_button" xml:space="preserve">
     <value>EDDIを更新</value>
   </data>
-  <data name="reset_button" xml:space="preserve">
-    <value>リセット</value>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>詳細なログを有効化（EDDI開発者に指示された場合のみ）</value>
   </data>
-  <data name="tab_tts_test_desc" xml:space="preserve">
-    <value>以下で音声をテストできます。読み上げエンジンに互換性がない場合、デフォルトの音声が使用されます。</value>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>詳細なログを有効化すると、EDDIはログを取得し、デスクトップに保存します。GitHubのIssueに添付してください。詳細なログに個人情報は含まれません。</value>
   </data>
-  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
-    <value>フォネティック・コードによる読み上げを無効化:</value>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>バージョン：</value>
   </data>
-  <data name="tab_tts_icao_desc" xml:space="preserve">
-    <value>EDDIは、星系名や惑星名の読み上げに、ICAO発音(例:「A」を「アルファ」と発音)を使用可能です。これにより、星系名を理解しやすくなりますが、読み上げには時間が必要です。ICAO発音を使用するには、下記にチェックしてください。フォネティック・コードによる読み上げを無効化している場合、この設定は機能しません。</value>
-  </data>
-  <data name="tab_tts_icao_label" xml:space="preserve">
-    <value>ICAO発音を有効化:</value>
-  </data>
-  <data name="tab_commander_gender_n" xml:space="preserve">
-    <value>その他</value>
-  </data>
-  <data name="no_station" xml:space="preserve">
-    <value>ステーションなし</value>
-  </data>
-  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
-    <value>このEDDIのビルドでは、Frontier APIが有効になっていません。</value>
-    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
-  </data>
-  <data name="choose_lang_label_va" xml:space="preserve">
-    <value>EDDIの言語（VoiceAttackの再起動が必要です）</value>
-  </data>
-  <data name="link_ipa" xml:space="preserve">
-    <value>国際音声記号（International Phonetic Alphabet, IPA）</value>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>Project Wiki（英語）</value>
   </data>
 </root>

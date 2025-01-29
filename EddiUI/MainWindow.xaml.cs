@@ -186,13 +186,13 @@ namespace EddiUI
             {
                 // Allow the EDDI VA plugin to change window state
                 VaWindowStateChange += OnVaWindowStateChange;
-                heroText.Text = Properties.EddiResources.change_affect_va;
-                chooseLanguageText.Text = Properties.MainWindow.choose_lang_label_va;
+                heroText.Text = Properties.Resources.change_affect_va;
+                chooseLanguageText.Text = Properties.Resources.choose_lang_label_va;
             }
             else
             {
-                heroText.Text = Properties.EddiResources.if_using_va;
-                chooseLanguageText.Text = Properties.MainWindow.choose_lang_label;
+                heroText.Text = Properties.Resources.if_using_va;
+                chooseLanguageText.Text = Properties.Resources.choose_lang_label;
             }
 
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
@@ -263,7 +263,7 @@ namespace EddiUI
             {
 
                 // Add the "Automatic" culture, we are using the InvariantCulture name "" to mean user's culture
-                new LanguageDef(CultureInfo.InvariantCulture, Properties.EddiResources.system_language)
+                new LanguageDef(CultureInfo.InvariantCulture, Properties.Resources.system_language)
             };
 
             var neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".
@@ -452,7 +452,7 @@ namespace EddiUI
 
             if (EddiUpgrader.UpgradeVersion != null)
             {
-                statusText.Text = string.Format(Properties.EddiResources.update_message, EddiUpgrader.UpgradeVersion);
+                statusText.Text = string.Format(Properties.Resources.update_message, EddiUpgrader.UpgradeVersion);
                 // Do not show upgrade button if EDDI is started from VA
                 upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -462,19 +462,19 @@ namespace EddiUI
                 var capiState = CompanionAppService.Instance.CurrentState;
                 if (!EDDI.running)
                 {
-                    statusText.Text = Properties.EddiResources.safe_mode;
+                    statusText.Text = Properties.Resources.safe_mode;
                 }
                 else if (capiState == CompanionAppService.State.NoClientIDConfigured)
                 {
-                    statusText.Text = Properties.EddiResources.frontier_api_not_enabled;
+                    statusText.Text = Properties.Resources.frontier_api_not_enabled;
                 }
                 else if (capiState != CompanionAppService.State.Authorized)
                 {
-                    statusText.Text = Properties.EddiResources.frontier_api_nok;
+                    statusText.Text = Properties.Resources.frontier_api_nok;
                 }
                 else
                 {
-                    statusText.Text = Properties.EddiResources.operational;
+                    statusText.Text = Properties.Resources.operational;
                 }
             }
         }
@@ -535,7 +535,7 @@ namespace EddiUI
             if (eddiVerboseLogging.IsChecked ?? false)
             {
                 Logging.Debug("Preparing log for export.");
-                var progress = new Progress<string>(s => githubIssueButton.Content = Properties.EddiResources.preparing_log + s);
+                var progress = new Progress<string>(s => githubIssueButton.Content = Properties.Resources.preparing_log + s);
                 await Task.Factory.StartNew(() => prepareLogs(progress), TaskCreationOptions.LongRunning);
             }
 
@@ -572,11 +572,11 @@ namespace EddiUI
                 }
                 Directory.Delete(issueLogDir);
 
-                progress.Report(Properties.EddiResources.done);
+                progress.Report(Properties.Resources.done);
             }
             catch (Exception ex)
             {
-                progress.Report(Properties.EddiResources.failed);
+                progress.Report(Properties.Resources.failed);
                 Logging.Error("Failed to prepare log", ex);
 
             }

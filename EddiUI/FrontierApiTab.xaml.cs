@@ -29,13 +29,13 @@ namespace EddiUI
             if ( oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized )
             {
-                SpeechService.Instance.Say( null, string.Format( Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr?.phoneticname ), 0 );
-                SpeechService.Instance.Say( null, Properties.EddiResources.frontier_api_close_browser, 0 );
+                SpeechService.Instance.Say( null, string.Format( Properties.Resources.frontier_api_ok, EDDI.Instance.Cmdr?.phoneticname ), 0 );
+                SpeechService.Instance.Say( null, Properties.Resources.frontier_api_close_browser, 0 );
             }
             else if ( oldState == CompanionAppService.State.LoggedOut &&
                 newState == CompanionAppService.State.AwaitingCallback )
             {
-                SpeechService.Instance.Say( null, Properties.EddiResources.frontier_api_please_authenticate, 0 );
+                SpeechService.Instance.Say( null, Properties.Resources.frontier_api_please_authenticate, 0 );
             }
         }
 
@@ -46,29 +46,29 @@ namespace EddiUI
             {
                 case CompanionAppService.State.LoggedOut:
                 case CompanionAppService.State.ConnectionLost:
-                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
-                    companionAppButton.Content = Properties.EddiResources.login;
+                    companionAppStatusValue.Text = Properties.Resources.frontierApiNotConnected;
+                    companionAppButton.Content = Properties.Resources.login;
                     companionAppButton.IsEnabled = !EDDI.FromVA;
-                    companionAppText.Text = !EDDI.FromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
+                    companionAppText.Text = !EDDI.FromVA ? "" : Properties.Resources.frontier_api_cant_login_from_va;
                     break;
                 case CompanionAppService.State.AwaitingCallback:
-                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnecting;
-                    companionAppButton.Content = Properties.MainWindow.reset_button;
+                    companionAppStatusValue.Text = Properties.Resources.frontierApiConnecting;
+                    companionAppButton.Content = Properties.Resources.reset_button;
                     companionAppButton.IsEnabled = true;
-                    companionAppText.Text = Properties.EddiResources.frontier_api_please_authenticate;
+                    companionAppText.Text = Properties.Resources.frontier_api_please_authenticate;
                     break;
                 case CompanionAppService.State.Authorized:
                 case CompanionAppService.State.TokenRefresh:
-                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnected;
-                    companionAppButton.Content = Properties.MainWindow.reset_button;
+                    companionAppStatusValue.Text = Properties.Resources.frontierApiConnected;
+                    companionAppButton.Content = Properties.Resources.reset_button;
                     companionAppButton.IsEnabled = true;
-                    companionAppText.Text = Properties.MainWindow.tab_frontier_reset_desc;
+                    companionAppText.Text = Properties.Resources.tab_frontier_reset_desc;
                     break;
                 case CompanionAppService.State.NoClientIDConfigured:
-                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotEnabled;
-                    companionAppButton.Content = Properties.EddiResources.login;
+                    companionAppStatusValue.Text = Properties.Resources.frontierApiNotEnabled;
+                    companionAppButton.Content = Properties.Resources.login;
                     companionAppButton.IsEnabled = false;
-                    companionAppText.Text = Properties.MainWindow.tab_frontier_not_enabled_desc;
+                    companionAppText.Text = Properties.Resources.tab_frontier_not_enabled_desc;
                     break;
             }
         }
@@ -80,7 +80,7 @@ namespace EddiUI
             {
                 if ( IsAdministrator() )
                 {
-                    SpeechService.Instance.Say( null, Properties.EddiResources.frontier_api_admin_mode, 0 );
+                    SpeechService.Instance.Say( null, Properties.Resources.frontier_api_admin_mode, 0 );
                 }
                 CompanionAppService.Instance.Login();
             }
@@ -88,10 +88,10 @@ namespace EddiUI
             {
                 // Logout from the companion EddiApplication and start again
                 CompanionAppService.Instance.Logout();
-                SpeechService.Instance.Say( null, Properties.EddiResources.frontier_api_reset, 0 );
+                SpeechService.Instance.Say( null, Properties.Resources.frontier_api_reset, 0 );
                 if ( EDDI.FromVA )
                 {
-                    SpeechService.Instance.Say( null, Properties.EddiResources.frontier_api_cant_login_from_va, 0 );
+                    SpeechService.Instance.Say( null, Properties.Resources.frontier_api_cant_login_from_va, 0 );
                 }
             }
         }

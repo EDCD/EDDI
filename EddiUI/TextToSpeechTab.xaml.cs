@@ -101,7 +101,7 @@ namespace EddiUI
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
             testShip.health = 100;
-            string message = String.Format(Properties.EddiResources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
+            string message = String.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
             SpeechService.Instance.Say(testShip, message, 0);
         }
 
@@ -109,7 +109,7 @@ namespace EddiUI
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
             testShip.health = 20;
-            string message = String.Format(Properties.EddiResources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
+            string message = String.Format(Properties.Resources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
             SpeechService.Instance.Say(testShip, message, 0);
         }
 

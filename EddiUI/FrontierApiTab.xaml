@@ -11,7 +11,7 @@
         <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{x:Static SystemColors.ControlLightColor}"/>
     </UserControl.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_frontier_desc}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:Resources.tab_frontier_desc}" VerticalAlignment="Top"/>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -30,14 +30,14 @@
                                  Grid.Row="4"
                                  Grid.Column="0"
                                  Grid.ColumnSpan="2"
-                                 Content="{x:Static resx:EddiResources.login}"
+                                 Content="{x:Static resx:Resources.login}"
                                  Margin="5"
                                  Click="companionAppClicked"
                                  HorizontalAlignment="Right"
                                  MinWidth="80" />
-            <TextBlock x:Name ="companionAppText" Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_frontier_reset_desc}"/>
-            <TextBlock x:Name ="companionAppStatusLabel" Grid.Row="5" Grid.Column="0" Margin="5" Text="{x:Static resx:EddiResources.frontierApiStatusLabel}"  HorizontalAlignment="Right"/>
-            <TextBlock x:Name ="companionAppStatusValue" Grid.Row="5" Grid.Column="1" Margin="5" Text="{x:Static resx:EddiResources.frontierApiNotConnected}"  HorizontalAlignment="Right" MinWidth="80" TextAlignment="Center"/>
+            <TextBlock x:Name ="companionAppText" Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.tab_frontier_reset_desc}"/>
+            <TextBlock x:Name ="companionAppStatusLabel" Grid.Row="5" Grid.Column="0" Margin="5" Text="{x:Static resx:Resources.frontierApiStatusLabel}"  HorizontalAlignment="Right"/>
+            <TextBlock x:Name ="companionAppStatusValue" Grid.Row="5" Grid.Column="1" Margin="5" Text="{x:Static resx:Resources.frontierApiNotConnected}"  HorizontalAlignment="Right" MinWidth="80" TextAlignment="Center"/>
         </Grid>
     </DockPanel>
 </UserControl>

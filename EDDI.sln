@@ -310,9 +310,10 @@ Global
 		{3FD08C20-1C5F-469C-B03C-F38657189517} = {7511F244-BC52-4F4A-ABBE-3956957B4F1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TaskErrorCategory = Message
-		RESX_AutoCreateNewLanguageFiles = True
-		RESX_ShowErrorsInErrorList = False
+		RESX_SortFileContentOnSave = True
 		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
+		RESX_ShowErrorsInErrorList = False
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_TaskErrorCategory = Message
 	EndGlobalSection
 EndGlobal

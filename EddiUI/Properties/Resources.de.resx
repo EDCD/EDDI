@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -138,12 +138,6 @@
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Wenn Sie VoiceAttack verwenden, schließen Sie bitte dieses Fenster, bevor Sie VoiceAttack starten, damit Ihre Änderungen wirksam werden. Sie können auf dieses Fenster von VoiceAttack mit dem Befehl 'EDDI konfigurieren' zugreifen.</value>
-  </data>
-  <data name="invalid_station" xml:space="preserve">
-    <value>Ungültige Station</value>
-  </data>
-  <data name="invalid_system" xml:space="preserve">
-    <value>Ungültiges System</value>
   </data>
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>Anmeldung nicht möglich. Dies ist normalerweise ein vorübergehendes Problem mit dem Dienst von Frontier. Bitte versuchen Sie es später erneut</value>
@@ -262,5 +256,122 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   </data>
   <data name="frontier_api_admin_mode" xml:space="preserve">
     <value>EDDI wird im Administratormodus ausgeführt. Der Administratormodus blockiert möglicherweise die Nachrichtenübertragung von Ihrem Browser zu EDDI und führt dazu, dass die Anmeldung fehlschlägt.</value>
+  </data>
+  <data name="access_beta" xml:space="preserve">
+    <value>Zugriff auf die Beta-Versionen von EDDI</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Wählen Sie die Sprache von EDDI (erfordert einen Neustart von EDDI):</value>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Wähle die Sprache von EDDI aus (erfordert einen Neustart von VoiceAttack):</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDI Status: </value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Internationales Phonetisches Alphabet</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Keine Station</value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Funktionen.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten "! Commander Details", "! Frontier API" und "! Text-to-Speech". Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen!</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit " 'Überwachung" beginnen. Sie enthalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit " Info an..." bzw. " Sprachausgabe auf..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Ein Problem melden</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Weder noch</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Die Frontier API ermöglicht EDDI Informationen über Ihre Schiffe, den Markt der aktuellen Station und andere Dinge zu erhalten. Diese Daten sind an anderer Stelle nicht verfügbar. Wenn Sie möchten, dass EDDI diese Informationen verwenden kann, müssen Sie auf die Schaltfläche Login klicken und EDDI für diese Daten auf dem Server von Frontier autorisieren.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>! Frontier API</value>
+  </data>
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>Die Frontier API ist in dieser EDDI Version nicht möglich.</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Wenn Sie Probleme mit Ihrer Verbindung feststellen, können Sie diese möglicherweise durch Zurücksetzen und erneutes Anmelden beheben.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI verwendet eine eigene Text-to-Speech-Engine, die die Stimme abhängig von Merkmalen wie Schiffsbeschädigung und Größe des Cockpits verarbeitet. Hier können Sie die Parameter der Stimme einstellen.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Phonetische Sprache deaktivieren:</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Verzerren Sie die Stimme bei Schiffsschäden:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>! Text-to-Speech</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI kann die Aussprache laut ICAO verwenden, zum Beispiel "alpha" statt "A", wenn man Stern- und Körpernamen sagt. Dies kann das Verständnis der Systemnamen erleichtern, dauert jedoch länger. Wenn Sie die ICAO-Aussprache hören möchten, aktivieren Sie die Option unten. Beachten Sie, dass dies nicht funktioniert, wenn Sie die phonetische Sprache oben deaktiviert haben.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>ICAO aktivieren:</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Level der Sprachverzerrung:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI verwendet phonetische Sprache, um verschiedene schwer zu sagende Wörter auszusprechen und Pausen zwischen Wörtern einzufügen. Einige Stimmen, oft Microsoft-Stimmen, haben ein Problem mit phonetischer Sprache und verursachen, dass EDDI hängt oder abstürzt. Wenn dies der Fall ist, versuchen Sie die folgende Option zu aktivieren</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Geschwindigkeit der Sprache:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Stimme testen</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Stimme testen (schwerer Schaden)</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Sie können unten testen, wie die Stimme klingen wird. Beachten Sie, dass, wenn die Stimme inkompatibel ist, stattdessen die Standard-Stimme verwendet wird.</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Schiff zum Testen der Stimme:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Stimme:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Lautstärke der Stimme:</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Fehlerbehebung bei bekannten Problemen</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>EDDI aktualisieren</value>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Ausführliche Protokollierung aktivieren (nur wenn Sie von den EDDI-Entwicklern dazu aufgefordert wurden)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Wenn die ausführliche Protokollierung aktiviert ist, erstellt EDDI eine gekürzte Version Ihres Protokolls der letzten Stunde und legt es auf Ihrem Desktop ab. Sie können diese Protokolldatei in den Github-Problembericht einfügen. Im Protokoll werden keine persönlichen Informationen versendet.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>Projekt Wiki</value>
   </data>
 </root>
