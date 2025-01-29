@@ -437,5 +437,8 @@
     <value>Sinal de Socorro de Comboio de Potência</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="USS_Type_PowerWeaponsFire" xml:space="preserve">
+    <value>Assinatura de Disparo de Armas da Potência</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
