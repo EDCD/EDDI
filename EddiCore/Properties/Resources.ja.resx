@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,67 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>EDDIの複数実行は不可能です。</value>
-  </data>
-  <data name="already_running_alert_title" xml:space="preserve">
-    <value>EDDIは既に実行中です</value>
-  </data>
-  <data name="change_affect_va" xml:space="preserve">
-    <value>変更は、自動的にVoiceAttackに適用されます。設定を変更した後、このウィンドウを閉じてください。</value>
-  </data>
-  <data name="Commander" xml:space="preserve">
-    <value>コマンダー</value>
-    <comment>Vocative form of "Commander"</comment>
-  </data>
-  <data name="commander_gender_n" xml:space="preserve">
-    <value>その他</value>
-  </data>
-  <data name="complete" xml:space="preserve">
-    <value>完了</value>
-    <comment>This is the adjective not the verb</comment>
-  </data>
-  <data name="downloading_upgrade" xml:space="preserve">
-    <value>更新をダウンロードしています。</value>
-  </data>
-  <data name="download_failed" xml:space="preserve">
-    <value>ダウンロードに失敗しました。後でもう一度お試しください。</value>
-  </data>
-  <data name="mandatory_upgrade" xml:space="preserve">
-    <value>EDDI {0} への更新は必須です。</value>
-  </data>
-  <data name="msg_from_eddi" xml:space="preserve">
-    <value>EDDIからのメッセージ：{0}</value>
-  </data>
-  <data name="point" xml:space="preserve">
-    <value>てん</value>
-    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
-  </data>
-  <data name="problem_load_monitor" xml:space="preserve">
-    <value>モニターの読み込みに失敗しました: {0}</value>
-    <comment>Weapon mount type problem_load_monitor</comment>
-  </data>
-  <data name="problem_load_monitor_file" xml:space="preserve">
-    <value>モニターの読み込みに失敗しました: {0} がネットワークで共有されていないか確認してください。</value>
-    <comment>Weapon mount type problem_load_monitor_file</comment>
-  </data>
-  <data name="starting_upgrade" xml:space="preserve">
-    <value>更新を開始しています。</value>
-  </data>
-  <data name="system_language" xml:space="preserve">
-    <value>自動</value>
-    <comment>The user's system language</comment>
-  </data>
-  <data name="update_available" xml:space="preserve">
-    <value>EDDIに新しいバージョン {0} があります</value>
-  </data>
-  <data name="update_message" xml:space="preserve">
-    <value>バージョン {0} が利用可能です。</value>
-  </data>
-  <data name="update_server_unreachable" xml:space="preserve">
-    <value>アップデートサーバに接続できません。繰り返し発生する場合、フォーラムを確認してみてください。</value>
-  </data>
-  <data name="upgrade_failed" xml:space="preserve">
-    <value>更新に失敗しました。後でもう一度お試しください</value>
-  </data>
 </root>
