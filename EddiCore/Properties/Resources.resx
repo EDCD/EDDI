@@ -117,11 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="download_failed" xml:space="preserve">
-    <value>Download failed. Please try again later.</value>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Only one instance of EDDI can run at a time.
+
+Please close the other instance and try again.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI is already running</value>
+  </data>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Any changes made here will take effect automatically in VoiceAttack. You can close this window when you have finished.</value>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Commander</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="commander_gender_n" xml:space="preserve">
+    <value>Neither</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Complete</value>
+    <comment>This is the adjective not the verb</comment>
   </data>
   <data name="downloading_upgrade" xml:space="preserve">
     <value>Downloading upgrade.</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Download failed. Please try again later.</value>
   </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Mandatory Eddi upgrade to {0} is required.</value>
@@ -133,26 +155,6 @@
     <value>point</value>
     <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
   </data>
-  <data name="update_available" xml:space="preserve">
-    <value>Eddi version {0} is now available.</value>
-  </data>
-  <data name="upgrade_failed" xml:space="preserve">
-    <value>Upgrade failed. Please try again later.</value>
-  </data>
-  <data name="starting_upgrade" xml:space="preserve">
-    <value>Starting upgrade.</value>
-  </data>
-  <data name="update_server_unreachable" xml:space="preserve">
-    <value>Eddi could not connect to its update server. If this recurs, please check the forum to see if it is a known problem.</value>
-  </data>
-  <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>Only one instance of EDDI can run at a time.
-
-Please close the other instance and try again.</value>
-  </data>
-  <data name="already_running_alert_title" xml:space="preserve">
-    <value>EDDI is already running</value>
-  </data>
   <data name="problem_load_monitor" xml:space="preserve">
     <value>Failed to load monitor: {0}</value>
     <comment>Weapon mount type problem_load_monitor</comment>
@@ -161,25 +163,23 @@ Please close the other instance and try again.</value>
     <value>Failed to load monitor. Please ensure that {0} is not on a network share, or itself shared.</value>
     <comment>Weapon mount type problem_load_monitor_file</comment>
   </data>
-  <data name="Commander" xml:space="preserve">
-    <value>Commander</value>
-    <comment>Vocative form of "Commander"</comment>
-  </data>
-  <data name="commander_gender_n" xml:space="preserve">
-    <value>Neither</value>
-  </data>
-  <data name="change_affect_va" xml:space="preserve">
-    <value>Any changes made here will take effect automatically in VoiceAttack. You can close this window when you have finished.</value>
-  </data>
-  <data name="complete" xml:space="preserve">
-    <value>Complete</value>
-    <comment>This is the adjective not the verb</comment>
-  </data>
-  <data name="update_message" xml:space="preserve">
-    <value>Version {0} is available</value>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Starting upgrade.</value>
   </data>
   <data name="system_language" xml:space="preserve">
     <value>Automatic</value>
     <comment>The user's system language</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Eddi version {0} is now available.</value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} is available</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>Eddi could not connect to its update server. If this recurs, please check the forum to see if it is a known problem.</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Upgrade failed. Please try again later.</value>
   </data>
 </root>

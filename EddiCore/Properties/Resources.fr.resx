@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -117,63 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Une seule instance d'EDDI peut s'exécuter à la fois.
+
+Veuillez fermer l'autre instance et réessayer.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI est déjà en cours d'exécution</value>
+  </data>
   <data name="change_affect_va" xml:space="preserve">
     <value>Tous les changement effectués ici prendront automatiquement effet dans VoiceAttack. Vous pouvez fermer cette fenêtre lorsque vous aurez terminé.</value>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Commandant</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="commander_gender_n" xml:space="preserve">
+    <value>Neutre</value>
   </data>
   <data name="complete" xml:space="preserve">
     <value>Achevé</value>
     <comment>This is the adjective not the verb</comment>
   </data>
-  <data name="done" xml:space="preserve">
-    <value>terminé</value>
-  </data>
-  <data name="failed" xml:space="preserve">
-    <value>échec</value>
-  </data>
-  <data name="frontier_api_nok" xml:space="preserve">
-    <value>Connexion à l'API Frontier non opérationnelle</value>
-  </data>
-  <data name="frontier_api_ok" xml:space="preserve">
-    <value>Votre connexion à l'API Frontier est opérationnelle, Commandant {0}.</value>
-  </data>
-  <data name="if_using_va" xml:space="preserve">
-    <value>Si vous utilisez VoiceAttack, veuillez fermer cette fenêtre avant de démarrer VoiceAttack afin que vos changements prennent effet. Vous pouvez accéder à cette fenêtre depuis VoiceAttack avec la commande 'Configurer les paramètres EDDI'.</value>
-  </data>
-  <data name="invalid_station" xml:space="preserve">
-    <value>Station invalide</value>
-  </data>
-  <data name="invalid_system" xml:space="preserve">
-    <value>Système invalide</value>
-  </data>
-  <data name="login_nok_frontier_service" xml:space="preserve">
-    <value>Impossible de se connecter. Ceci est généralement dû à un problème temporaire avec les serveurs de Frontier. Veuillez réessayer ultérieurement.</value>
-  </data>
-  <data name="logout" xml:space="preserve">
-    <value>Déconnexion</value>
-  </data>
-  <data name="operational" xml:space="preserve">
-    <value>Opérationnel</value>
-  </data>
-  <data name="preparing_log" xml:space="preserve">
-    <value>Préparation du journal... </value>
-  </data>
-  <data name="update_message" xml:space="preserve">
-    <value>Version {0} est disponible</value>
-  </data>
-  <data name="voice_test_damage" xml:space="preserve">
-    <value>Dommage sévère sur votre {0}.</value>
-  </data>
-  <data name="voice_test_ship" xml:space="preserve">
-    <value>Voici comment je parlerai dans votre {0}.</value>
-  </data>
-  <data name="plugin_enabled" xml:space="preserve">
-    <value>Plugin activé</value>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Téléchargement de la mise à jour.</value>
   </data>
   <data name="download_failed" xml:space="preserve">
     <value>Échec du téléchargement. Veuillez réessayer ultérieurement.</value>
-  </data>
-  <data name="downloading_upgrade" xml:space="preserve">
-    <value>Téléchargement de la mise à jour.</value>
   </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Mise à jour obligatoire d'EDDI vers {0} requise.</value>
@@ -185,26 +155,6 @@
     <value> point </value>
     <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
   </data>
-  <data name="update_available" xml:space="preserve">
-    <value>EDDI version {0} est maintenant disponible.</value>
-  </data>
-  <data name="upgrade_failed" xml:space="preserve">
-    <value>Échec de la mise à jour. Veuillez réessayer ultérieurement.</value>
-  </data>
-  <data name="starting_upgrade" xml:space="preserve">
-    <value>Lancement de la mise à jour.</value>
-  </data>
-  <data name="update_server_unreachable" xml:space="preserve">
-    <value>Eddi n'a pas pu se connecter au serveur de mise à jour. Si cela se reproduit, veuillez consulter le forum pour voir s'il s'agit d'un problème connu.</value>
-  </data>
-  <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>Une seule instance d'EDDI peut s'exécuter à la fois.
-
-Veuillez fermer l'autre instance et réessayer.</value>
-  </data>
-  <data name="already_running_alert_title" xml:space="preserve">
-    <value>EDDI est déjà en cours d'exécution</value>
-  </data>
   <data name="problem_load_monitor" xml:space="preserve">
     <value>Échec du chargement du moniteur: {0}</value>
     <comment>Weapon mount type problem_load_monitor</comment>
@@ -213,56 +163,23 @@ Veuillez fermer l'autre instance et réessayer.</value>
     <value>Échec du chargement du moniteur. Veuillez vous assurer que {0} n'est pas partagé sur le réseau.</value>
     <comment>Weapon mount type problem_load_monitor_file</comment>
   </data>
-  <data name="Commander" xml:space="preserve">
-    <value>Commandant</value>
-    <comment>Vocative form of "Commander"</comment>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Lancement de la mise à jour.</value>
   </data>
   <data name="system_language" xml:space="preserve">
     <value>Automatique</value>
     <comment>The user's system language</comment>
   </data>
-  <data name="safe_mode" xml:space="preserve">
-    <value>Mode sans échec - mise à jour requise.</value>
+  <data name="update_available" xml:space="preserve">
+    <value>EDDI version {0} est maintenant disponible.</value>
   </data>
-  <data name="login" xml:space="preserve">
-    <value>Connexion</value>
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} est disponible</value>
   </data>
-  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
-    <value>Pour vous connecter, veuillez quitter VoiceAttack et lancez EDDI en tant qu'application autonome.</value>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>Eddi n'a pas pu se connecter au serveur de mise à jour. Si cela se reproduit, veuillez consulter le forum pour voir s'il s'agit d'un problème connu.</value>
   </data>
-  <data name="frontierApiStatusLabel" xml:space="preserve">
-    <value>Statut de l'API Frontier :</value>
-  </data>
-  <data name="frontierApiConnected" xml:space="preserve">
-    <value>Connecté</value>
-  </data>
-  <data name="frontierApiNotConnected" xml:space="preserve">
-    <value>Déconnecté</value>
-  </data>
-  <data name="frontierApiConnecting" xml:space="preserve">
-    <value>Connexion</value>
-  </data>
-  <data name="frontier_api_close_browser" xml:space="preserve">
-    <value>Vous pouvez fermer la fenêtre de votre navigateur et retourner dans EDDI.</value>
-  </data>
-  <data name="frontier_api_reset" xml:space="preserve">
-    <value>Connexion réinitialisée.</value>
-  </data>
-  <data name="frontier_api_please_authenticate" xml:space="preserve">
-    <value>Veuillez authentifier la connexion d'EDDI à l'API Frontier.</value>
-  </data>
-  <data name="frontierApiNotEnabled" xml:space="preserve">
-    <value>Désactivé</value>
-    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
-  </data>
-  <data name="frontier_api_not_enabled" xml:space="preserve">
-    <value>La connexion à l'API Frontier n'est pas activé</value>
-    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
-  </data>
-  <data name="frontier_api_admin_mode" xml:space="preserve">
-    <value>EDDI fonctionne en mode administrateur. Le mode Administrateur peut bloquer la transmission des messages de votre navigateur à EDDI et provoquer l'échec de la connexion.</value>
-  </data>
-  <data name="commander_gender_n" xml:space="preserve">
-    <value>Neutre</value>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Échec de la mise à jour. Veuillez réessayer ultérieurement.</value>
   </data>
 </root>
