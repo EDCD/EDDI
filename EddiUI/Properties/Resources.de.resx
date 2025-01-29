@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="access_beta" xml:space="preserve">
+    <value>Zugriff auf die Beta-Versionen von EDDI</value>
+  </data>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Nur eine EDDI-Instanz kann gleichzeitig ausgeführt werden.
+
+Bitte schließe die andere Instanz und versuche es noch einmal.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI läuft bereits</value>
+  </data>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Alle hier vorgenommenen Änderungen werden automatisch in VoiceAttack wirksam. Sie können dieses Fenster schließen, wenn Sie fertig sind.</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Wählen Sie die Sprache von EDDI (erfordert einen Neustart von EDDI):</value>
+  </data>
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Wähle die Sprache von EDDI aus (erfordert einen Neustart von VoiceAttack):</value>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Kommandant</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Vollständig</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>fertig</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Lade Upgrade herunter.</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Download fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDI Status: </value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>fehlgeschlagen</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>Verbinde</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>Nicht möglich</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Frontier API Status:</value>
+  </data>
+  <data name="frontier_api_admin_mode" xml:space="preserve">
+    <value>EDDI wird im Administratormodus ausgeführt. Der Administratormodus blockiert möglicherweise die Nachrichtenübertragung von Ihrem Browser zu EDDI und führt dazu, dass die Anmeldung fehlschlägt.</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>Um sich anzumelden, beenden Sie bitte Voice Attack und starten Sie EDDI eigenständig.</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Sie können Ihr Browserfenster jetzt schließen und zu EDDI zurückkehren.</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Ihre Verbindung zur Frontier-API ist betriebsbereit, Commander {0}.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Bitte authentifizieren Sie die Verbindung von EDDI zur Frontier API.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Zurücksetzen der Verbindung.</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>Wenn Sie VoiceAttack verwenden, schließen Sie bitte dieses Fenster, bevor Sie VoiceAttack starten, damit Ihre Änderungen wirksam werden. Sie können auf dieses Fenster von VoiceAttack mit dem Befehl 'EDDI konfigurieren' zugreifen.</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Internationales Phonetisches Alphabet</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>Anmeldung</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>Anmeldung nicht möglich. Dies ist normalerweise ein vorübergehendes Problem mit dem Dienst von Frontier. Bitte versuchen Sie es später erneut</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Abmeldung</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Ein obligatorisches Eddi-Upgrade auf {0} ist erforderlich.</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Nachtricht von Eddi: {0}</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Keine Station</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Betriebsbereit</value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Funktionen.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten "! Commander Details", "! Frontier API" und "! Text-to-Speech". Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen!</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit " 'Überwachung" beginnen. Sie enthalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit " Info an..." bzw. " Sprachausgabe auf..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>Plugin aktiviert</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>Punkt</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Log wird vorbereitet... </value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Monitor: {0} konnte nicht geladen werden</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Fehler beim Laden des Monitors. Stellen Sie sicher, dass {0} nicht auf einer Netzwerkfreigabe oder selbst freigegeben ist.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Ein Problem melden</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>Abgesicherter Modus - Upgrade erforderlich.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Starte Upgrade.</value>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>Automatisch</value>
+    <comment>The user's system language</comment>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Weder noch</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Die Frontier API ermöglicht EDDI Informationen über Ihre Schiffe, den Markt der aktuellen Station und andere Dinge zu erhalten. Diese Daten sind an anderer Stelle nicht verfügbar. Wenn Sie möchten, dass EDDI diese Informationen verwenden kann, müssen Sie auf die Schaltfläche Login klicken und EDDI für diese Daten auf dem Server von Frontier autorisieren.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>! Frontier API</value>
+  </data>
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>Die Frontier API ist in dieser EDDI Version nicht möglich.</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Wenn Sie Probleme mit Ihrer Verbindung feststellen, können Sie diese möglicherweise durch Zurücksetzen und erneutes Anmelden beheben.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI verwendet eine eigene Text-to-Speech-Engine, die die Stimme abhängig von Merkmalen wie Schiffsbeschädigung und Größe des Cockpits verarbeitet. Hier können Sie die Parameter der Stimme einstellen.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Phonetische Sprache deaktivieren:</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Verzerren Sie die Stimme bei Schiffsschäden:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>! Text-to-Speech</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI kann die Aussprache laut ICAO verwenden, zum Beispiel "alpha" statt "A", wenn man Stern- und Körpernamen sagt. Dies kann das Verständnis der Systemnamen erleichtern, dauert jedoch länger. Wenn Sie die ICAO-Aussprache hören möchten, aktivieren Sie die Option unten. Beachten Sie, dass dies nicht funktioniert, wenn Sie die phonetische Sprache oben deaktiviert haben.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>ICAO aktivieren:</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Level der Sprachverzerrung:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI verwendet phonetische Sprache, um verschiedene schwer zu sagende Wörter auszusprechen und Pausen zwischen Wörtern einzufügen. Einige Stimmen, oft Microsoft-Stimmen, haben ein Problem mit phonetischer Sprache und verursachen, dass EDDI hängt oder abstürzt. Wenn dies der Fall ist, versuchen Sie die folgende Option zu aktivieren</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Geschwindigkeit der Sprache:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Stimme testen</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Stimme testen (schwerer Schaden)</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Sie können unten testen, wie die Stimme klingen wird. Beachten Sie, dass, wenn die Stimme inkompatibel ist, stattdessen die Standard-Stimme verwendet wird.</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Schiff zum Testen der Stimme:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Stimme:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Lautstärke der Stimme:</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Fehlerbehebung bei bekannten Problemen</value>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Eddi Version {0} ist jetzt verfügbar.</value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} verfügbar</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>EDDI konnte keine Verbindung zum Update-Server herstellen. Sollte sich dies wiederholen, überprüfen Sie bitte im Forum 
+( https://forums.frontier.co.uk/threads/eddi-3-3-bring-your-cockpit-to-life.387955/ ) oder bei github - issues ( https://github. com/EDCD/EDDI/issues ), ob es sich um ein bekanntes Problem handelt.</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>EDDI aktualisieren</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Upgrade fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Ausführliche Protokollierung aktivieren (nur wenn Sie von den EDDI-Entwicklern dazu aufgefordert wurden)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Wenn die ausführliche Protokollierung aktiviert ist, erstellt EDDI eine gekürzte Version Ihres Protokolls der letzten Stunde und legt es auf Ihrem Desktop ab. Sie können diese Protokolldatei in den Github-Problembericht einfügen. Im Protokoll werden keine persönlichen Informationen versendet.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Schwerer Schaden für deine {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>So werde ich in deinem Schiff {0} klingen.</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>Projekt Wiki</value>
+  </data>
+</root>

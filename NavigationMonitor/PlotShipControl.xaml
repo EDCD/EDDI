@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:eddi="clr-namespace:Eddi;assembly=EDDI"
              xmlns:resx="clr-namespace:EddiNavigationMonitor.Properties"
              xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:eddiNavigationService="clr-namespace:EddiNavigationService;assembly=EddiNavigationService"
+             xmlns:eddi="clr-namespace:EddiCore;assembly=EddiCore"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>

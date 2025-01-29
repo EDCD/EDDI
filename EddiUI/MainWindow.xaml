@@ -1,0 +1,118 @@
+﻿<Window x:Class="EddiUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EddiUI"
+        xmlns:resx="clr-namespace:EddiUI.Properties"
+        mc:Ignorable="d"
+        Title="EDDI" ResizeMode="CanResizeWithGrip" Width="928" Height="600" MinWidth="928" MinHeight="600">
+    <Window.Resources>
+        <!-- Colors and simple brushes -->
+        <Color x:Key="DeepPurple" A="0xff" R="0x43" G="0x35" B="0x5d"/>
+        <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{x:Static SystemColors.ControlLightColor}"/>
+        <SolidColorBrush x:Key="DataGridLineBrush" Color="LightGray"/>
+        <!-- Gradients -->
+        <LinearGradientBrush x:Key="DockPanelBackgroundBrush" EndPoint="0.5,1.0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0.0">
+            <GradientStop Color="Black" Offset="0.0"/>
+            <GradientStop Color="{StaticResource DeepPurple}" Offset="1.0"/>
+        </LinearGradientBrush>
+        <!-- Styles -->
+        <Style TargetType="DataGrid">
+            <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <DockPanel LastChildFill="True" Background="{StaticResource DockPanelBackgroundBrush}">
+        <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Left">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="MinWidth" Value="150" />
+                    <Setter Property="MinHeight" Value="30" />
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="EDDI">
+                <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
+                    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" DockPanel.Dock="Bottom" Margin="5">
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{x:Static resx:Resources.EDDI_status_label}"/>
+                        <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                        <Label Height="28" Margin="0,0,0,0" Name="Version" DockPanel.Dock="Right" VerticalAlignment="Center">
+                            <Hyperlink Click="ChangeLog_Click">
+                                <Run Text="{x:Static resx:Resources.version_hyperlink}" />
+                            </Hyperlink>
+                        </Label>
+                        <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked" Content="{x:Static resx:Resources.upgrade_button}"></Button>
+                        <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="{x:Static resx:Resources.operational}"/>
+                    </DockPanel>
+                    <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+                        <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
+                            <Paragraph>
+                                <Hyperlink Click="EDDIClicked">EDDI</Hyperlink>
+                                <Run Text="{x:Static resx:Resources.paragraph_0}" />
+                            </Paragraph>
+                            <Paragraph>
+                                <Run Text="{x:Static resx:Resources.paragraph_1}" />
+                            </Paragraph>
+                            <Paragraph>
+                                <Run Text="{x:Static resx:Resources.paragraph_2}" />
+                            </Paragraph>
+                            <Paragraph>
+                                <Run Text="{x:Static resx:Resources.paragraph_3}" />
+                            </Paragraph>
+                            <Paragraph>
+                                <TextBlock Text="{x:Static resx:Resources.paragraph_4}" />
+                                <Hyperlink Click="WikiClicked" >
+                                    <Run Text="{x:Static resx:Resources.wiki_hyperlink}" />
+                                </Hyperlink> .
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
+                            <Hyperlink Click="TroubleshootClicked"><Run Text="{x:Static resx:Resources.troubleshoot_common_issues}" /></Hyperlink>
+                        </TextBlock>
+                        <TextBlock x:Name="chooseLanguageText" Grid.Row="1" Grid.Column="0" Margin="5" Text="{x:Static resx:Resources.choose_lang_label}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="chooseLanguageDropDown" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.verbose_logging_checkbox}" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.verbose_logging_desc}"/>
+                        <Button  x:Name="githubIssueButton" Grid.Row="3" Grid.Column="1" Content="{x:Static resx:Resources.report_issue}" Margin="5" Width="auto" MinWidth="110" Click="createGithubIssueClicked"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.access_beta}" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="4" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
+                    </Grid>
+                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="{x:Static resx:Resources.tab_frontier_header}">
+                <local:FrontierApiTab/>
+            </TabItem>
+            <TabItem Header="{x:Static resx:Resources.tab_tts_header}">
+                <local:TextToSpeechTab/>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

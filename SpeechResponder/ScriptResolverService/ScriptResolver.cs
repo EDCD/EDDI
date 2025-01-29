@@ -1,6 +1,5 @@
 ﻿using Cottle;
 using Cottle.Exceptions;
-using Eddi;
 using EddiCompanionAppService;
 using EddiCore;
 using EddiDataDefinitions;
@@ -242,7 +241,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                 ["environment"] = new Tuple<Type, Value>(typeof(string), EDDI.Instance.Environment),
                 ["horizons"] = new Tuple<Type, Value>(typeof(bool), EDDI.Instance.inHorizons),
                 ["odyssey"] = new Tuple<Type, Value>(typeof(bool), EDDI.Instance.inOdyssey),
-                ["va_active"] = new Tuple<Type, Value>(typeof(bool), App.FromVA),
+                ["va_active"] = new Tuple<Type, Value>(typeof(bool), EDDI.FromVA),
                 ["vehicle"] = new Tuple<Type, Value>(typeof(string), EDDI.Instance.Vehicle),
                 ["icao_active"] = new Tuple<Type, Value>(typeof(bool), SpeechService.Instance.Configuration.EnableIcao),
                 ["ipa_active"] = new Tuple<Type, Value>(typeof(bool), !SpeechService.Instance.Configuration.DisableIpa),

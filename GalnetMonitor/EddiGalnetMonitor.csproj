@@ -19,7 +19,7 @@
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
-    <ProjectReference Include="..\EDDI\Eddi.csproj" />
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
     <ProjectReference Include="..\Events\EddiEvents.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
@@ -37,7 +37,6 @@
     <PackageReference Include="System.Runtime.Extensions">
       <Version>4.3.1</Version>
     </PackageReference>
-    <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\GalnetMonitor.Designer.cs">

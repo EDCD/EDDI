@@ -27,13 +27,11 @@
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
-    <ProjectReference Include="..\EDDI\Eddi.csproj" />
     <ProjectReference Include="..\Events\EddiEvents.csproj" />
     <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj" />
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
     <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
-    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>

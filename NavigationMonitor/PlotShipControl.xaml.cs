@@ -1,5 +1,4 @@
-﻿using Eddi;
-using EddiConfigService;
+﻿using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;

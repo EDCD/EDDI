@@ -51,8 +51,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Power preparation vote cast` obsolete script removed.
       * `Power micro resources collected` script added.
       * `Power micro resources delivered` script added.
+      * `Power salary claimed` obsolete script removed.
       * `Ship refuelled` script updated to no longer suppress 5T refueling increments.
       * `Signal detected` script updated to incorporate additional signal types and Powerplay details. 
+    * Other Notes
+      * The journal event `PowerplayCollect` (EDDI event `Power commodity obtained`) should not be obsolete but appears to be missing? 
+      * The journal event `PowerplayDeliver` (EDDI event `Power commodity delivered`) should not be obsolete but appears to be missing? 
       
 ## 4.1.0-b3
   * Core

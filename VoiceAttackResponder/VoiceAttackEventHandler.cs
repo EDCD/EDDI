@@ -1,5 +1,4 @@
-﻿using Eddi;
-using EddiCore;
+﻿using EddiCore;
 using EddiEvents;
 using System;
 using System.Collections.Concurrent;
@@ -10,18 +9,25 @@ using Utilities;
 
 namespace EddiVoiceAttackResponder
 {
-    internal static class VoiceAttackEventHandler
+    internal class VoiceAttackEventHandler
     {
-        private static readonly ConcurrentDictionary<string, TaskQueue<Event>> taskQueues = new ConcurrentDictionary<string, TaskQueue<Event>>();
-        private static readonly CancellationTokenSource consumerCancellationTS = new CancellationTokenSource(); // This must be static so that it is visible to child threads and tasks
+        private dynamic VaProxy;
+        private readonly ConcurrentDictionary<string, TaskQueue<Event>> taskQueues = new ConcurrentDictionary<string, TaskQueue<Event>>();
+        private readonly CancellationTokenSource consumerCancellationTS = new CancellationTokenSource(); // This must be static so that it is visible to child threads and tasks
+
+        public VoiceAttackEventHandler(dynamic vaProxy )
+        {
+            VaProxy = vaProxy;
+            Logging.Debug( "Started VoiceAttack event handler" );
+        }
 
         // We'll maintain a referenceable list of variables that we've set from events
-        private static readonly ConcurrentDictionary<string, VoiceAttackVariable> currentVariables = new ConcurrentDictionary<string, VoiceAttackVariable>();
+        private readonly ConcurrentDictionary<string, VoiceAttackVariable> currentVariables = new ConcurrentDictionary<string, VoiceAttackVariable>();
 
         // If running VoiceAttack version 1.7.4 or later then we should use the more modern API endpoints
-        private static bool useLegacyVACommandAPI => EDDI.Instance.vaVersion?.CompareTo( new System.Version( 1, 7, 4 ) ) <= 0;
+        private bool useLegacyVACommandAPI => EDDI.Instance.vaVersion?.CompareTo( new System.Version( 1, 7, 4 ) ) <= 0;
 
-        public static void Handle ( Event theEvent )
+        public void Handle ( Event theEvent )
         {
             if ( theEvent is null || consumerCancellationTS.IsCancellationRequested ) { return; }
 
@@ -38,7 +44,7 @@ namespace EddiVoiceAttackResponder
             taskQueue.StartOrRestart( () => dequeueEvents( taskQueue ), consumerCancellationTS.Token );
         }
 
-        private static async void dequeueEvents ( BlockingCollection<Event> eventQueue )
+        private async void dequeueEvents ( BlockingCollection<Event> eventQueue )
         {
             try
             {
@@ -59,8 +65,8 @@ namespace EddiVoiceAttackResponder
                             {
                                 await Task.Delay( 25 );
                                 isCommandExecuting = useLegacyVACommandAPI 
-                                    ? App.vaProxy.CommandActive( "((EDDI " + @event.type.ToLowerInvariant() + "))" ) 
-                                    : App.vaProxy.Command.Active( "((EDDI " + @event.type.ToLowerInvariant() + "))" );
+                                    ? VaProxy.CommandActive( "((EDDI " + @event.type.ToLowerInvariant() + "))" ) 
+                                    : VaProxy.Command.Active( "((EDDI " + @event.type.ToLowerInvariant() + "))" );
                             }
                         }
                     }
@@ -82,13 +88,13 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void updateValuesOnEvent ( Event @event )
+        private void updateValuesOnEvent ( Event @event )
         {
             try
             {
                 Logging.Debug( $"Processing EDDI event {@event.type}:", @event );
                 var startTime = DateTime.UtcNow;
-                App.vaProxy.SetText( "EDDI event", @event.type );
+                VaProxy.SetText( "EDDI event", @event.type );
 
                 // Retrieve and clear variables from prior iterations of the same event
                 clearPriorEventValues( @event.type );
@@ -100,7 +106,7 @@ namespace EddiVoiceAttackResponder
                     .AsVoiceAttackVariables("EDDI", @event.type);
                 foreach ( var var in eventVariables )
                 {
-                    var.Set( App.vaProxy );
+                    var.Set( VaProxy );
                     currentVariables[var.key] = var;
                 }
                 Logging.Debug( $"Set VoiceAttack variables for EDDI event {@event.type}", eventVariables );
@@ -112,7 +118,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void clearPriorEventValues ( string eventType )
+        private void clearPriorEventValues ( string eventType )
         {
             try
             {
@@ -121,7 +127,7 @@ namespace EddiVoiceAttackResponder
                              .Where( v => v.eventType == eventType && v.value != null ) )
                 {
                     variable.value = null;
-                    variable.Set( App.vaProxy );
+                    variable.Set( VaProxy );
                 }
             }
             catch ( Exception ex )
@@ -130,7 +136,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static bool TryTriggerVACommands ( Event @event )
+        private bool TryTriggerVACommands ( Event @event )
         {
             string commandName = "((EDDI " + @event.type.ToLowerInvariant() + "))";
             try
@@ -138,18 +144,18 @@ namespace EddiVoiceAttackResponder
                 // Fire local command if present  
                 Logging.Debug( "Searching for command " + commandName );
                 var commandExists = useLegacyVACommandAPI
-                    ? App.vaProxy.CommandExists( commandName )
-                    : App.vaProxy.Command.Exists( commandName );
+                    ? VaProxy.CommandExists( commandName )
+                    : VaProxy.Command.Exists( commandName );
                 if ( commandExists ) 
                 {
                     Logging.Debug( "Found command " + commandName );
                     if ( useLegacyVACommandAPI )
                     {
-                        App.vaProxy.ExecuteCommand( commandName );
+                        VaProxy.ExecuteCommand( commandName );
                     }
                     else
                     {
-                        App.vaProxy.Command.Execute( commandName );
+                        VaProxy.Command.Execute( commandName );
                     }
                     Logging.Info( "Executed command " + commandName );
                     return true;
@@ -162,7 +168,7 @@ namespace EddiVoiceAttackResponder
             return false;
         }
 
-        public static void StopEventHandling ()
+        public void StopEventHandling ()
         {
             // Cancel event queue threads and wait for them to complete
             consumerCancellationTS?.Cancel();

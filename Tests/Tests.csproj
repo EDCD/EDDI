@@ -27,10 +27,10 @@
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
     <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj" />
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
     <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
     <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
     <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
-    <ProjectReference Include="..\EDDI\Eddi.csproj" />
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
     <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
     <ProjectReference Include="..\EDDNResponder\EddiEddnResponder.csproj" />
@@ -56,9 +56,6 @@
     </PackageReference>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2024.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="MathNet.Numerics">
-      <Version>5.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms">
