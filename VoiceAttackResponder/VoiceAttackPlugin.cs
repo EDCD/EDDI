@@ -218,7 +218,7 @@ namespace EddiVoiceAttackResponder
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     case "initialize eddi":
-                        if (App.FromVA && Application.Current != null)
+                        if (VaProxy != null && Application.Current != null)
                         {
                             vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                         }
@@ -234,7 +234,7 @@ namespace EddiVoiceAttackResponder
                     case "configurationclose":
                         // Ignore any attempt to access the EDDI UI if VA
                         // doesn't own the EDDI instance.
-                        if (App.FromVA && Application.Current != null)
+                        if (VaProxy != null && Application.Current != null)
                         {
                             InvokeConfiguration(ref vaProxy);
                         }
@@ -368,8 +368,8 @@ namespace EddiVoiceAttackResponder
                                 else
                                 {
                                     // Tell the configuration UI to restore its window if minimized
-                                    setWindowState(ref App.VaProxy, WindowState.Minimized, true, false);
-                                    App.VaProxy.WriteToLog("The EDDI configuration window is already open.", "orange");
+                                    setWindowState(ref VaProxy, WindowState.Minimized, true, false);
+                                    VaProxy.WriteToLog("The EDDI configuration window is already open.", "orange");
                                 }
                             }
                             catch (Exception ex)
