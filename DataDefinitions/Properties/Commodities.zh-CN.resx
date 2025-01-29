@@ -1553,18 +1553,9 @@
     <value>铂合金</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>哈德森野战补给</value>
-    <comment>Commodity RepublicanFieldSupplies</comment>
-  </data>
-  <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>哈德森驻军补给</value>
-    <comment>Commodity RepublicanGarisonSupplies</comment>
-  </data>
-  <data name="RestrictedIntel" xml:space="preserve">
-    <value>哈德森机密情报</value>
-    <comment>Commodity RestrictedIntel</comment>
-  </data>
+  
+  
+  
   <data name="RestrictedPackage" xml:space="preserve">
     <value>核心机密包裹</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1865,4 +1856,8 @@
     <value>八角心脏</value>
     <comment>Commodity ThargoidHeart</comment>
   </data>
+  
+  
+  
+  
 </root>
