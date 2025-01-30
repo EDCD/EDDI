@@ -117,4 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MonitorDescription" xml:space="preserve">
+    <value>Sie können den Namen eines bestimmten Systems und einer Station in diesem System, das Sie als Ihr Zuhause betrachten, angeben. Wenn Sie dies tun, werden die Informationen über dieses System und diese Station den Ansprechpartnern von EDDI zur Verfügung gestellt.</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Keine Station</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Bevorzugtes Geschlecht für Pronomen und Titel:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Weiblich</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Männlich</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Weder noch</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Heimatstation:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Heimatsystem:</value>
+  </data>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Wenn der Name Ihres Schiffes für EDDI schwer auszusprechen ist, können Sie eine gesprochene Version des Schiffes hinzufügen über </value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Zum Beispiel, wenn Dein Commander 'Salomé' heißt, dann sollte der gesprochene Name so aussehen: 'səˈloʊmi'.</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Name (gesprochen)</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Geschwader-Treue:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Geschwader-Fraktion:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>Geschwader-ID:</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Geschwader-Name:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Geschwader-Power:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Geschwader-Rank:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Geschwader-System:</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Anhören</value>
+  </data>
 </root>
