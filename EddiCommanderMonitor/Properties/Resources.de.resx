@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Internationales phonetisches Alphabet</value>
+  </data>
   <data name="MonitorDescription" xml:space="preserve">
     <value>Sie können den Namen eines bestimmten Systems und einer Station in diesem System, das Sie als Ihr Zuhause betrachten, angeben. Wenn Sie dies tun, werden die Informationen über dieses System und diese Station den Ansprechpartnern von EDDI zur Verfügung gestellt.</value>
+  </data>
+  <data name="MonitorName" xml:space="preserve">
+    <value>! Kommandant</value>
   </data>
   <data name="no_station" xml:space="preserve">
     <value>Keine Station</value>
@@ -133,7 +139,7 @@
     <value>Männlich</value>
   </data>
   <data name="tab_commander_gender_n" xml:space="preserve">
-    <value>Weder noch</value>
+    <value>Divers</value>
   </data>
   <data name="tab_commander_home_station" xml:space="preserve">
     <value>Heimatstation:</value>
