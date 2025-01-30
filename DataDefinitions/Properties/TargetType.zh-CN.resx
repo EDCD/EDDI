@@ -177,5 +177,7 @@
     <value>八角侦查兵</value>
     <comment>Massacre mission target - Thargoid scout</comment>
   </data>
-  
+  <data name="Politician" xml:space="preserve">
+	  <value>从政人员</value>
+  </data>
 </root>

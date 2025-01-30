@@ -156,12 +156,18 @@
   <data name="Massacre" xml:space="preserve">
     <value>Massacro</value>
   </data>
-  
+  <data name="Thargoid" xml:space="preserve">
+	  <value>Thargoid</value><comment>e.g. massacre of thargoid targets</comment>
+  </data>
   <data name="Mining" xml:space="preserve">
     <value>Estrazione di Minerali</value>
   </data>
-  
-  
+  <data name="Bulk" xml:space="preserve">
+	  <value>Trasporto di massa</value><comment>e.g. of passengers</comment>
+  </data>
+  <data name="VIP" xml:space="preserve">
+	  <value>Trasporto VIP</value><comment>e.g. VIP passenger</comment>
+  </data>
   <data name="Piracy" xml:space="preserve">
     <value>Pirateria</value>
   </data>
@@ -214,7 +220,9 @@
   <data name="RankEmp" xml:space="preserve">
     <value>Contratto per la Marina Imperiale</value>
   </data>
-  
+  <data name="Megaship" xml:space="preserve">
+	  <value>Mega nave</value><comment>e.g. hack or disable missions targeting a megaship</comment>
+  </data>
   <data name="Founder" xml:space="preserve">
     <value>Fondatore</value>
   </data>
@@ -298,7 +306,9 @@
     <value>A fuoco</value>
     <comment>e.g. rescue from a burning station</comment>
   </data>
-  
+  <data name="Evacuation" xml:space="preserve">
+	  <value>Evacuazione</value><comment>e.g. of passengers</comment>
+  </data>
   <data name="Alert" xml:space="preserve">
     <value>Allarme</value>
   </data>
@@ -306,6 +316,10 @@
     <value>Obiettivi dell'esploratore Thargoid</value>
     <comment>Massacre type</comment>
   </data>
-  
-  
+  <data name="Contact" xml:space="preserve">
+	  <value>Contatto</value><comment>e.g. mission assigned by an on-foot contact</comment>
+  </data>
+  <data name="Sabotage" xml:space="preserve">
+	  <value>Sabotaggio</value><comment>e.g. on-foot settlement sabotage mission</comment>
+  </data>
 </root>

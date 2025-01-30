@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -152,7 +152,7 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>Baixando atualização.</value>
   </data>
   <data name="download_failed" xml:space="preserve">
-    <value>Dowload falhou. Por favor, tente novamente mais tarde.</value>
+    <value>Download falhou. Por favor, tente novamente mais tarde.</value>
   </data>
   <data name="EDDI_status_label" xml:space="preserve">
     <value>Status do EDDI: </value>
@@ -232,7 +232,7 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>possui vários recursos que podem ser configurados separadamente. Existem três tipos diferentes de itens.</value>
   </data>
   <data name="paragraph_1" xml:space="preserve">
-    <value>O primeiro grupo obtém e gerencia as informações básicas usadas pelo EDDI. Estas são as guias 'Detalhes do Comandante', 'Frontier API' e 'Text-Para-Fala'. Você deve passar por cada um deles e configurá-los para que o EDDI tenha acesso total à sua informação do Elite: Dangerous.</value>
+    <value>O primeiro grupo obtém e gerencia as informações básicas usadas pelo EDDI. Estas são as guias 'Detalhes do Comandante', 'API da Frontier' e 'Texto-Para-Fala'. Você deve passar por cada um deles e configurá-los para que o EDDI tenha acesso total à sua informação do Elite: Dangerous.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
     <value>O segundo grupo obtém informações de eventos. Estas são as guias que começam com 'monitor'. Elas obtêm eventos de diferentes locais e exigem configuração mínima, mas precisam ser concluídas antes de funcionarem.</value>
@@ -284,10 +284,11 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>A Frontier possui uma API que permite ao EDDI obter informações sobre suas naves, o mercado atualizado da estação e vários outros itens. Esses dados não estão disponíveis em outro lugar. Se você quiser que o EDDI obtenha e use essas informações, clique no botão Entrar e autorize o EDDI para esses dados no servidor do Frontier.</value>
   </data>
   <data name="tab_frontier_header" xml:space="preserve">
-    <value>Frontier API</value>
+    <value>API da Frontier</value>
   </data>
   <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
     <value>A API da Frontier não está habilitada nesta versão do EDDI.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
     <value>Se você está tendo problemas com sua conexão, você pode redefini-la e efetuar login novamente, o que pode resolver o problema.</value>
@@ -302,7 +303,7 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>Distorcer a voz quando a nave é danificada:</value>
   </data>
   <data name="tab_tts_header" xml:space="preserve">
-    <value>Texto-para-fala</value>
+    <value>Texto-para-Fala</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>O EDDI pode usar ICAO, por exemplo, usando 'alfa' em vez de 'A', ao dizer nomes de estrela e corpos. Isso pode facilitar a compreensão dos nomes do sistema, mas demora mais para ser pronunciado. Se você quiser ouvir pronunciações ICAO, marque a opção abaixo. Note que isso não funcionará se você tiver desativado a fala fonética acima.</value>
@@ -326,7 +327,7 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>Testar voz (dano severo)</value>
   </data>
   <data name="tab_tts_test_desc" xml:space="preserve">
-    <value>Você pode testar como a voz vai soar abaixo. Observe que, se a voz for incompatível, ela usará a voz padrão.</value>
+    <value>Você pode testar como a voz vai soar abaixo. Observe que, se a voz for incompatível, ele usará a voz padrão.</value>
   </data>
   <data name="tab_tts_test_ship_label" xml:space="preserve">
     <value>Nave para testar a voz:</value>
@@ -339,6 +340,7 @@ Por favor, feche a outra instância e tente novamente.</value>
   </data>
   <data name="troubleshoot_common_issues" xml:space="preserve">
     <value>Solucionar problemas comuns</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
   </data>
   <data name="update_available" xml:space="preserve">
     <value>Versão {0} do Eddi está disponível.</value>

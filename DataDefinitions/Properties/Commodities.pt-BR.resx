@@ -1554,15 +1554,15 @@
     <comment>Commodity PlatinumAloy</comment>
   </data>
   <data name="RepublicanFieldSupplies" xml:space="preserve">
-    <value>Mantimentos de Campo do Hudson</value>
+    <value>Mantimentos de Campo do Archer</value>
     <comment>Commodity RepublicanFieldSupplies</comment>
   </data>
   <data name="RepublicanGarisonSupplies" xml:space="preserve">
-    <value>Mantimentos de Tropas do Hudson</value>
+    <value>Mantimentos de Tropas do Archer</value>
     <comment>Commodity RepublicanGarisonSupplies</comment>
   </data>
   <data name="RestrictedIntel" xml:space="preserve">
-    <value>Inteligência Restrita do Hudson</value>
+    <value>Inteligência Restrita do Archer</value>
     <comment>Commodity RestrictedIntel</comment>
   </data>
   <data name="RestrictedPackage" xml:space="preserve">
@@ -1864,5 +1864,21 @@
   <data name="ThargoidHeart" xml:space="preserve">
     <value>Coração Thargoid</value>
     <comment>Commodity ThargoidHeart</comment>
+  </data>
+  <data name="KaineAidSupplies" xml:space="preserve">
+    <value>Suprimentos de Ajuda da Kaine</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineMisinformation" xml:space="preserve">
+    <value>Desinformação da Kaine</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineLobbyingMaterial" xml:space="preserve">
+    <value>Material de Lobby da Kaine</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="LavignyStrategicReports" xml:space="preserve">
+    <value>Relatórios Estratégicos da Lavigny</value>
+    <comment>Powerplay</comment>
   </data>
 </root>

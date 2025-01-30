@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -121,7 +121,7 @@
     <value>Accedi a versioni BETA di EDDI</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>E' consentita una sola istanza di EDDI alla volta.
+    <value>È consentita una sola istanza di EDDI alla volta.
 Si prega di chiudere l'altra istanza e riprovare.</value>
   </data>
   <data name="already_running_alert_title" xml:space="preserve">
@@ -144,9 +144,6 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <value>Completato</value>
     <comment>This is the adjective not the verb</comment>
   </data>
-  <data name="done" xml:space="preserve">
-    <value>Fatto</value>
-  </data>
   <data name="downloading_upgrade" xml:space="preserve">
     <value>Aggiornamento in download.</value>
   </data>
@@ -157,7 +154,7 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <value>Situazione di EDDI: </value>
   </data>
   <data name="failed" xml:space="preserve">
-    <value>Fallito</value>
+    <value>fallito</value>
   </data>
   <data name="frontierApiConnected" xml:space="preserve">
     <value>Connesso</value>
@@ -173,7 +170,7 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
   <data name="frontierApiStatusLabel" xml:space="preserve">
-    <value>Stato della Chiave API Frontier:</value>
+    <value>Stato della Chiave API di Frontier:</value>
   </data>
   <data name="frontier_api_admin_mode" xml:space="preserve">
     <value>EDDI sta lavorando in modalità Amministratore. Tale modalità potrebbe bloccare i messaggi dal tuo browser verso EDDI facendo quindi fallire il login.</value>
@@ -182,23 +179,20 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <value>Per effettuare la connessione si prega di chiudere VoiceAttack e avviare EDDI come applicazione singola.</value>
   </data>
   <data name="frontier_api_close_browser" xml:space="preserve">
-    <value>Si può adesso chiudere la finestra di browser e tornare ad EDDI.</value>
+    <value>Ora si può chiudere la finestra del browser e tornare a EDDI.</value>
   </data>
   <data name="frontier_api_nok" xml:space="preserve">
-    <value>L'API di Frontier non è operativo</value>
+    <value>L'API di Frontier non è operativa</value>
   </data>
   <data name="frontier_api_not_enabled" xml:space="preserve">
     <value>Connessione all'API di Frontier non abilitata</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
-    <value>La connessione con Chiave API Frontier è ora operativa, Comandante {0}.</value>
+    <value>La connessione con Chiave API Frontier ora è operativa, Comandante {0}.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Si prega di autenticare la connessione di EDDI alla Chiave API Frontier.</value>
-  </data>
-  <data name="frontier_api_reset" xml:space="preserve">
-    <value>Connessione ristabilita.</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Se si sta usando VoiceAttack è necessario chiudere questa finestra PRIMA di avviare VoiceAttack per far si che i cambiamenti apportati abbiano effetto. Questa finestra è visibile dall'interno di VoiceAttack con il comando 'Configura EDDI'.</value>
@@ -253,7 +247,7 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <value>Diario in preparazione... </value>
   </data>
   <data name="problem_load_monitor" xml:space="preserve">
-    <value>Caricamento controllore: {0} , fallito</value>
+    <value>Fallimento nel Caricare il controllore: {0}</value>
     <comment>Weapon mount type problem_load_monitor</comment>
   </data>
   <data name="problem_load_monitor_file" xml:space="preserve">
@@ -287,6 +281,7 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
   </data>
   <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
     <value>L'API di Frontier non è abilitata in questa versione di EDDI.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
     <value>Se si riscontrassero problemi con la connessione è possibile reimpostarla e riconnettersi nuovamente. Questo dovrebbe eliminare tali problemi.</value>
@@ -325,7 +320,7 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <value>Prova Voce (danni notevoli)</value>
   </data>
   <data name="tab_tts_test_desc" xml:space="preserve">
-    <value>Qui sotto è possibile provare come la voce suonerà. Resta da notare che, qualora la voce scelta risultasse non compatibile, al suo posto verrà utilizzata la voce di default.</value>
+    <value>Qui sotto è possibile provare come la voce suonerà. Notare che, qualora la voce scelta risultasse non compatibile, al suo posto verrà utilizzata la voce di default.</value>
   </data>
   <data name="tab_tts_test_ship_label" xml:space="preserve">
     <value>Prova Voce con navi differenti:</value>
@@ -338,9 +333,10 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
   </data>
   <data name="troubleshoot_common_issues" xml:space="preserve">
     <value>Risoluzione dei Problemi più comuni</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
   </data>
   <data name="update_available" xml:space="preserve">
-    <value>Versione {0} di EDDI a disposizione.</value>
+    <value>Versione {0} di EDDI disponibile.</value>
   </data>
   <data name="update_message" xml:space="preserve">
     <value>E' disponibile la versione {0}</value>
@@ -358,7 +354,7 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <value>Abilitare log esteso (solo se è stato richiesto dagli sviluppatori di EDDI)</value>
   </data>
   <data name="verbose_logging_desc" xml:space="preserve">
-    <value>Se il log esteso è abilitato, verrà creato un file. zip del vostro log sul desktop, pronto per essere incollato in un Issue Report su GitHub. Nessuna informazione personale è inclusa nel file di log.</value>
+    <value>Se il log esteso è abilitato, verrà creato un file .zip del vostro log sul desktop, pronto per essere incollato in un Issue Report su GitHub. Nessuna informazione personale è inclusa nel file di log.</value>
   </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Versione:</value>

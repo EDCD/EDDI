@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,41 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="tab_commander_squadron_id" xml:space="preserve">
-    <value>ID da esquadra:</value>
-  </data>
-  <data name="tab_commander_squadron_rank" xml:space="preserve">
-    <value>Rank na esquadra:</value>
-  </data>
-  <data name="tab_commander_squadron_power" xml:space="preserve">
-    <value>Poder da esqudra:</value>
-  </data>
-  <data name="tab_commander_squadron_name" xml:space="preserve">
-    <value>Nome da esquadra:</value>
-  </data>
-  <data name="tab_commander_squadron_faction" xml:space="preserve">
-    <value>Facção da esquadra:</value>
-  </data>
-  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
-    <value>Lealdade da esqudra:</value>
-  </data>
-  <data name="tab_commander_squadron_system" xml:space="preserve">
-    <value>Sistema da esquadra:</value>
-  </data>
-  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
-    <value>Ouvir</value>
-  </data>
-  <data name="tab_commander_phonetic_name" xml:space="preserve">
-    <value>Nome (falado)</value>
-  </data>
-  <data name="tab_commander_Ipa1" xml:space="preserve">
-    <value>Se o nome do seu comandante for difícil para o EDDI pronunciar, você pode adicionar uma versão falada do comandante usando o</value>
-  </data>
-  <data name="tab_commander_Ipa2" xml:space="preserve">
-    <value>. Por exemplo, se seu comandante se chama 'Salomé', então seu nome falado seria 'səˈloʊmi'.</value>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Alfabeto Fonético Internacional</value>
   </data>
   <data name="MonitorDescription" xml:space="preserve">
     <value>Você pode fornecer o nome de um sistema específico que você considera sua casa e também uma estação dentro desse sistema. Se você fizer isso, as informações sobre este sistema e estação serão disponibilizadas para as respostas do EDDI.</value>
+  </data>
+  <data name="MonitorName" xml:space="preserve">
+    <value>Monitor do Comandante</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Sem Estação</value>
   </data>
   <data name="tab_commander_gender" xml:space="preserve">
     <value>Gênero preferido para pronomes e títulos:</value>
@@ -171,7 +147,37 @@
   <data name="tab_commander_home_system" xml:space="preserve">
     <value>Sistema de origem:</value>
   </data>
-  <data name="no_station" xml:space="preserve">
-    <value>Sem Estação</value>
+  <data name="tab_commander_Ipa1" xml:space="preserve">
+    <value>Se o nome do seu comandante for difícil para o EDDI pronunciar, você pode adicionar uma versão falada do comandante usando o</value>
+  </data>
+  <data name="tab_commander_Ipa2" xml:space="preserve">
+    <value>. Por exemplo, se seu comandante se chama 'Salomé', então seu nome falado seria 'saloˈmɛ'.</value>
+  </data>
+  <data name="tab_commander_phonetic_name" xml:space="preserve">
+    <value>Nome (falado)</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Lealdade da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Facção da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Nome da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Poder da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Rank na esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Sistema da esquadra:</value>
+  </data>
+  <data name="tab_commander_test_phonetic_name" xml:space="preserve">
+    <value>Ouvir</value>
   </data>
 </root>

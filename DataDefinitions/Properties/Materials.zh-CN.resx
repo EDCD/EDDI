@@ -554,7 +554,7 @@
     <comment>Material biotechconductors</comment>
   </data>
   <data name="fedcorecomposites" xml:space="preserve">
-    <value>核心动力学复合材料</value>
+    <value>核心动力复合材料</value>
     <comment>Material fedcorecomposites</comment>
   </data>
   <data name="exquisitefocuscrystals" xml:space="preserve">
@@ -701,5 +701,7 @@
     <value>战术核心芯片</value>
     <comment>Material unknowncorechip</comment>
   </data>
-  
+  <data name="searchrescuevoucher" xml:space="preserve">
+	  <value>搜索和救援兑换券</value><comment>material searchrescuevoucher</comment>
+  </data>
 </root>

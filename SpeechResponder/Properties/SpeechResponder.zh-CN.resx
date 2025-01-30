@@ -255,10 +255,22 @@
     <value>按脚本的名称、描述或全文筛选结果。</value>
     <comment>tooltip that appears when the search filter textbox is selected</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="messagebox_unable_to_save_script" xml:space="preserve">
+	  <value>无法保存脚本。</value>
+  </data>
+  <data name="messagebox_script_name_required" xml:space="preserve">
+	  <value>必须设置脚本名称。</value>
+  </data>
+  <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
+	  <value>脚本名称中不能包含</value><comment>e.g. The script name may not contain ';'.</comment>
+  </data>
+  <data name="messagebox_script_name_already_in_use" xml:space="preserve">
+	  <value>脚本名称已被使用。</value>
+  </data>
+  <data name="header_include" xml:space="preserve">
+	  <value>包含</value>
+  </data>
+  <data name="tooltip_include" xml:space="preserve">
+	  <value>这里指明的脚本必须在顶级脚本之前执行。 这可以用于设置首选项或创建可以在多个脚本之间重新使用的函数。 使用分隔符“;”分隔多个脚本名称。</value>
+  </data>
 </root>
