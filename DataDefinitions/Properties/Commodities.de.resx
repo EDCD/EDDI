@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedCatalysers" xml:space="preserve">
-    <value>Fortschrittliche Katalysatoren</value>
+    <value>Fortschr. Katalysatoren</value>
     <comment>Commodity AdvancedCatalysers</comment>
   </data>
   <data name="AdvancedMedicines" xml:space="preserve">
@@ -150,7 +150,7 @@
     <comment>Commodity Algae</comment>
   </data>
   <data name="alieneggs" xml:space="preserve">
-    <value>Lederige Eier</value>
+    <value>Ledrige Eier</value>
     <comment>Commodity alieneggs</comment>
   </data>
   <data name="AltairianSkin" xml:space="preserve">
@@ -166,27 +166,27 @@
     <comment>Commodity AlyaBodySoap</comment>
   </data>
   <data name="AncientCasket" xml:space="preserve">
-    <value>Uralte Schatulle</value>
+    <value>Guardianschatulle</value>
     <comment>Commodity AncientCasket</comment>
   </data>
   <data name="AncientOrb" xml:space="preserve">
-    <value>Uralte Kugel</value>
+    <value>Guardiankugel</value>
     <comment>Commodity AncientOrb</comment>
   </data>
   <data name="AncientRelic" xml:space="preserve">
-    <value>Uraltes Relikt</value>
+    <value>Guardian-Relikt</value>
     <comment>Commodity AncientRelic</comment>
   </data>
   <data name="AncientTablet" xml:space="preserve">
-    <value>Uraltes Tablett</value>
+    <value>Guardiantafel</value>
     <comment>Commodity AncientTablet</comment>
   </data>
   <data name="AncientTotem" xml:space="preserve">
-    <value>Uraltes Totem</value>
+    <value>Guardian-Totem</value>
     <comment>Commodity AncientTotem</comment>
   </data>
   <data name="AncientUrn" xml:space="preserve">
-    <value>Uralte Urne</value>
+    <value>Guardian-Urne</value>
     <comment>Commodity AncientUrn</comment>
   </data>
   <data name="AnduligaFireWorks" xml:space="preserve">
@@ -202,7 +202,7 @@
     <comment>Commodity AnimalMonitors</comment>
   </data>
   <data name="AntimatterContainmentUnit" xml:space="preserve">
-    <value>Antimaterie-Eindämmungs-Einheit</value>
+    <value>Antimaterie-Transporteinheit</value>
     <comment>Commodity AntimatterContainmentUnit</comment>
   </data>
   <data name="AntiqueJewellery" xml:space="preserve">
@@ -242,15 +242,15 @@
     <comment>Commodity AutoFabricators</comment>
   </data>
   <data name="AzCancriFormula42" xml:space="preserve">
-    <value>AZ Krebs Formel 42</value>
+    <value>AZ Cancri Formel 42</value>
     <comment>Commodity AzCancriFormula42</comment>
   </data>
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
-    <value>Baltah Sine Weltraumkrill</value>
+    <value>Vacuumkrill von Baltah'sine</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
   </data>
   <data name="BankiAmphibiousLeather" xml:space="preserve">
-    <value>Banki Amphibisches Leder</value>
+    <value>Banki-Amphibienleder</value>
     <comment>Commodity BankiAmphibiousLeather</comment>
   </data>
   <data name="BasicMedicines" xml:space="preserve">
@@ -262,7 +262,7 @@
     <comment>Commodity BasicNarcotics</comment>
   </data>
   <data name="BastSnakeGin" xml:space="preserve">
-    <value>Bast Schlangen Gin</value>
+    <value>Bast Snake Gin</value>
     <comment>Commodity BastSnakeGin</comment>
   </data>
   <data name="BattleWeapons" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Commodity Beer</comment>
   </data>
   <data name="BelalansRayLeather" xml:space="preserve">
-    <value>Belalans Ray Leder</value>
+    <value>Belalans-Rochenleder</value>
     <comment>Commodity BelalansRayLeather</comment>
   </data>
   <data name="Bertrandite" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>Commodity Bismuth</comment>
   </data>
   <data name="BlueMilk" xml:space="preserve">
-    <value>Azurblaue Milch</value>
+    <value>Azurmilch</value>
     <comment>Commodity BlueMilk</comment>
   </data>
   <data name="BootlegLiquor" xml:space="preserve">
@@ -322,11 +322,11 @@
     <comment>Commodity BuildingFabricators</comment>
   </data>
   <data name="BurnhamBileDistillate" xml:space="preserve">
-    <value>Burnham Galle-Destillat</value>
+    <value>Burnham-Körpersaftdestillat</value>
     <comment>Commodity BurnhamBileDistillate</comment>
   </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
-    <value>CD-75 Kätzchen-Marke Kaffee</value>
+    <value>CD-75 Kitten Brand Coffee</value>
     <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
@@ -338,19 +338,19 @@
     <comment>Commodity CeramicComposites</comment>
   </data>
   <data name="CeremonialHeikeTea" xml:space="preserve">
-    <value>Zeremonieller Heike Tee</value>
+    <value>Heike-Zeremonientee</value>
     <comment>Commodity CeremonialHeikeTea</comment>
   </data>
   <data name="CetiAepyornisEgg" xml:space="preserve">
-    <value>Aepyornis Ei</value>
+    <value>Aepyornis-Eier</value>
     <comment>Commodity CetiAepyornisEgg</comment>
   </data>
   <data name="CetiRabbits" xml:space="preserve">
-    <value>Ceti Hasen</value>
+    <value>Ceti-Kaninchen</value>
     <comment>Commodity CetiRabbits</comment>
   </data>
   <data name="ChameleonCloth" xml:space="preserve">
-    <value>Tarnanzug</value>
+    <value>Chamäleon-Kleidung</value>
     <comment>Commodity ChameleonCloth</comment>
   </data>
   <data name="ChateauDeAegaeon" xml:space="preserve">
@@ -398,7 +398,7 @@
     <comment>Commodity ComercialSamples</comment>
   </data>
   <data name="ComputerComponents" xml:space="preserve">
-    <value>Computer Komponenten</value>
+    <value>Computerteile</value>
     <comment>Commodity ComputerComponents</comment>
   </data>
   <data name="ConductiveFabrics" xml:space="preserve">
@@ -418,7 +418,7 @@
     <comment>Commodity Copper</comment>
   </data>
   <data name="CoquimSpongiformVictuals" xml:space="preserve">
-    <value>Coqium schwammförmige Lebensmittel</value>
+    <value>Coqium Schwammkost</value>
     <comment>Commodity CoquimSpongiformVictuals</comment>
   </data>
   <data name="CropHarvesters" xml:space="preserve">
@@ -430,7 +430,7 @@
     <comment>Commodity Cryolite</comment>
   </data>
   <data name="CrystallineSpheres" xml:space="preserve">
-    <value>Kristallkugel</value>
+    <value>Kristallkugeln</value>
     <comment>Commodity CrystallineSpheres</comment>
   </data>
   <data name="DamagedEscapePod" xml:space="preserve">
@@ -438,7 +438,7 @@
     <comment>Commodity DamagedEscapePod</comment>
   </data>
   <data name="DamnaCarapaces" xml:space="preserve">
-    <value>Damna Schale</value>
+    <value>Damna-Schildpanzer</value>
     <comment>Commodity DamnaCarapaces</comment>
   </data>
   <data name="DataCore" xml:space="preserve">
@@ -446,7 +446,7 @@
     <comment>Commodity DataCore</comment>
   </data>
   <data name="DeltaPhoenicisPalms" xml:space="preserve">
-    <value>Delta Phoenics Palmen</value>
+    <value>Delta-Phönix-Palmen</value>
     <comment>Commodity DeltaPhoenicisPalms</comment>
   </data>
   <data name="DeuringasTruffles" xml:space="preserve">
@@ -482,7 +482,7 @@
     <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
   </data>
   <data name="EleuThermals" xml:space="preserve">
-    <value>Eleu Thermik</value>
+    <value>Eleu-Thermotextilien</value>
     <comment>Commodity EleuThermals</comment>
   </data>
   <data name="EmergencyPowerCells" xml:space="preserve">
@@ -578,11 +578,11 @@
     <comment>Commodity GerasianGueuzeBeer</comment>
   </data>
   <data name="GiantIrukamaSnails" xml:space="preserve">
-    <value>Gigantische Irukama Schnecken</value>
+    <value>Irukama-Riesenschnecken</value>
     <comment>Commodity GiantIrukamaSnails</comment>
   </data>
   <data name="GiantVerrix" xml:space="preserve">
-    <value>Gigantischer Verrix</value>
+    <value>Riesen-Verrix</value>
     <comment>Commodity GiantVerrix</comment>
   </data>
   <data name="GilyaSignatureWeapons" xml:space="preserve">
@@ -610,7 +610,7 @@
     <comment>Commodity Hafnium178</comment>
   </data>
   <data name="HaidneBlackBrew" xml:space="preserve">
-    <value>Haidne Schwarz Bräu</value>
+    <value>Haiden-Schwarzbier</value>
     <comment>Commodity HaidneBlackBrew</comment>
   </data>
   <data name="HavasupaiDreamCatcher" xml:space="preserve">
@@ -706,7 +706,7 @@
     <comment>Commodity Jadeite</comment>
   </data>
   <data name="JaquesQuinentianStill" xml:space="preserve">
-    <value>Jaques Taschen-Destillerie</value>
+    <value>Jaques Quinent-Destille</value>
     <comment>Commodity JaquesQuinentianStill</comment>
   </data>
   <data name="JaradharrePuzzleBox" xml:space="preserve">
