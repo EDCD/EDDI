@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Nur eine EDDI-Instanz kann gleichzeitig ausgeführt werden.
+
+Bitte schließe die andere Instanz und versuche es noch einmal.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI läuft bereits</value>
+  </data>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Alle hier vorgenommenen Änderungen werden automatisch in VoiceAttack wirksam. Sie können dieses Fenster schließen, wenn Sie fertig sind.</value>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Kommandant</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
 </root>
