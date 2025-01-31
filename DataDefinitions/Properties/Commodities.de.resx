@@ -790,7 +790,7 @@
     <comment>Commodity LithiumHydroxide</comment>
   </data>
   <data name="LiveHecateSeaWorms" xml:space="preserve">
-    <value>Hecate lebendige Seewürmer</value>
+    <value>Live-Hecate-Seewürmer</value>
     <comment>Commodity LiveHecateSeaWorms</comment>
   </data>
   <data name="LowTemperatureDiamond" xml:space="preserve">
@@ -798,7 +798,7 @@
     <comment>Commodity LowTemperatureDiamond</comment>
   </data>
   <data name="LTTHypersweet" xml:space="preserve">
-    <value>LTT Hypersüss</value>
+    <value>LTT-Hypersüße</value>
     <comment>Commodity LTTHypersweet</comment>
   </data>
   <data name="LyraeWeed" xml:space="preserve">
@@ -818,11 +818,11 @@
     <comment>Commodity MasterChefs</comment>
   </data>
   <data name="MechucosHighTea" xml:space="preserve">
-    <value>Mechucos Hochlandtee</value>
+    <value>Mechucos-High-Tee</value>
     <comment>Commodity MechucosHighTea</comment>
   </data>
   <data name="MedbStarlube" xml:space="preserve">
-    <value>Medb Sternenstaub</value>
+    <value>Medb-Sternschmiere</value>
     <comment>Commodity MedbStarlube</comment>
   </data>
   <data name="MedicalDiagnosticEquipment" xml:space="preserve">
@@ -870,11 +870,11 @@
     <comment>Commodity Moissanite</comment>
   </data>
   <data name="MokojingBeastFeast" xml:space="preserve">
-    <value>Mokojing Tierfest</value>
+    <value>Mokojing Monstermüsli</value>
     <comment>Commodity MokojingBeastFeast</comment>
   </data>
   <data name="MomusBogSpaniel" xml:space="preserve">
-    <value>Momus Wackeldackel</value>
+    <value>Momus-Sumpfspaniel</value>
     <comment>Commodity MomusBogSpaniel</comment>
   </data>
   <data name="MotronaExperienceJelly" xml:space="preserve">
@@ -922,7 +922,7 @@
     <comment>Commodity NgadandariFireOpals</comment>
   </data>
   <data name="NgunaModernAntiques" xml:space="preserve">
-    <value>Moderne Nguna Antiquitäten</value>
+    <value>Nguna Moderne Antiquitäen</value>
     <comment>Commodity NgunaModernAntiques</comment>
   </data>
   <data name="NjangariSaddles" xml:space="preserve">
@@ -930,7 +930,7 @@
     <comment>Commodity NjangariSaddles</comment>
   </data>
   <data name="NonEuclidianExotanks" xml:space="preserve">
-    <value>Nicht euklidische Außenpanzerungen</value>
+    <value>Nichteuklidische Exotanks</value>
     <comment>Commodity NonEuclidianExotanks</comment>
   </data>
   <data name="NonLethalWeapons" xml:space="preserve">
@@ -942,7 +942,7 @@
     <comment>Commodity OccupiedCryoPod</comment>
   </data>
   <data name="OchoengChillies" xml:space="preserve">
-    <value>Ochoeng Peperoni</value>
+    <value>Ochoeng-Chili</value>
     <comment>Commodity OchoengChillies</comment>
   </data>
   <data name="OnionHead" xml:space="preserve">
@@ -962,7 +962,7 @@
     <comment>Commodity OphiuchExinoArtefacts</comment>
   </data>
   <data name="OrrerianViciousBrew" xml:space="preserve">
-    <value>Schädliches Orrerian Gebräu</value>
+    <value>Orrerianisches Immerwach</value>
     <comment>Commodity OrrerianViciousBrew</comment>
   </data>
   <data name="Osmium" xml:space="preserve">
@@ -978,7 +978,7 @@
     <comment>Commodity Palladium</comment>
   </data>
   <data name="PantaaPrayerSticks" xml:space="preserve">
-    <value>Pantaa Gebetsstöcke</value>
+    <value>Pantaa-Weihrauchstöcke</value>
     <comment>Commodity PantaaPrayerSticks</comment>
   </data>
   <data name="PavonisEarGrubs" xml:space="preserve">
@@ -1074,7 +1074,7 @@
     <comment>Commodity Robotics</comment>
   </data>
   <data name="RusaniOldSmokey" xml:space="preserve">
-    <value>Alter Rusani Raucher</value>
+    <value>Rusani Old Smokey</value>
     <comment>Commodity RusaniOldSmokey</comment>
   </data>
   <data name="Rutile" xml:space="preserve">
@@ -1090,11 +1090,11 @@
     <comment>(Deprecated) Commodity SanumaDecorativeMeat</comment>
   </data>
   <data name="SAP8CoreContainer" xml:space="preserve">
-    <value>8 Kern Saft Behälter</value>
+    <value>Container mit SAP 8-Kern</value>
     <comment>Commodity SAP8CoreContainer</comment>
   </data>
   <data name="SaxonWine" xml:space="preserve">
-    <value>Sächsischer Wein</value>
+    <value>Sachsenwein</value>
     <comment>Commodity SaxonWine</comment>
   </data>
   <data name="ScientificResearch" xml:space="preserve">
