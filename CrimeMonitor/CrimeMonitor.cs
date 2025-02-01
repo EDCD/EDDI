@@ -55,7 +55,7 @@ namespace EddiCrimeMonitor
 
         public bool IsRequired()
         {
-            return true;
+            return false;
         }
 
         public CrimeMonitor()

@@ -49,7 +49,7 @@ namespace EddiCargoMonitor
 
         public bool IsRequired()
         {
-            return true;
+            return false;
         }
 
         /// <summary>

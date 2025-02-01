@@ -52,7 +52,7 @@ namespace EddiMaterialMonitor
 
         public bool IsRequired()
         {
-            return true;
+            return false;
         }
 
         public MaterialMonitor()

@@ -53,7 +53,7 @@ namespace EddiMissionMonitor
 
         public bool IsRequired()
         {
-            return true;
+            return false;
         }
 
         public MissionMonitor()

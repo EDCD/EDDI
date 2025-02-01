@@ -60,7 +60,7 @@ namespace EddiStatusMonitor
 
         public bool IsRequired()
         {
-            return true;
+            return false;
         }
 
         public bool NeedsStart()
@@ -92,12 +92,6 @@ namespace EddiStatusMonitor
             {
                 lastStatus = currentStatus;
                 currentStatus = status;
-            }
-
-            // Update the commander's credit balance
-            if ( status.credit_balance != null && EDDI.Instance.Cmdr != null )
-            {
-                EDDI.Instance.Cmdr.credits = Convert.ToUInt64( status.credit_balance );
             }
 
             // Update vehicle information
