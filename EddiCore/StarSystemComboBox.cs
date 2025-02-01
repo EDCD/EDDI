@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -7,75 +8,76 @@ using System.Windows.Controls;
 namespace EddiCore
 {
     /// <summary>A subclass of ComboBox for selecting star systems</summary>
-    // TODO: Revise to use a base type with both systemName and systemAddress (e.g. StarSystem or NavWaypoint)
     public class StarSystemComboBox : ComboBox
     {
         public TextBox TextBox { get; private set; }
 
-        private List<string> systemList = new List<string>();
-        private readonly Dictionary<string, List<string>> systemListCache = new Dictionary<string, List<string>>();
+        private List<NavWaypoint> systemList = new List<NavWaypoint>();
+        private readonly Dictionary<string, List<NavWaypoint>> systemListCache = new Dictionary<string, List<NavWaypoint>>();
         private const int systemDisplayListSize = 10;
 
-        public StarSystemComboBox()
+        public StarSystemComboBox ()
         {
+            DisplayMemberPath = nameof( NavWaypoint.systemName );
             this.GotFocus += OnGotFocus;
         }
 
-        private void OnGotFocus(object sender, RoutedEventArgs e)
+        private void OnGotFocus ( object sender, RoutedEventArgs e )
         {
-            if (GetTemplateChild("PART_EditableTextBox") is TextBox textBox)
+            if ( GetTemplateChild( "PART_EditableTextBox" ) is TextBox textBox )
             {
                 TextBox = textBox;
             }
         }
 
-        private List<string> GetTypeAheadSystemNames(string partialSystemName)
+        private List<NavWaypoint> GetTypeAheadSystemNames ( string partialSystemName )
         {
             // We'll need to request a new list if our cache does not already contain the key value
-            if (!systemListCache.ContainsKey(partialSystemName))
+            if ( !systemListCache.ContainsKey( partialSystemName ) )
             {
                 // Request a new list
                 systemListCache[ partialSystemName ] = EDDI.Instance.DataProvider.GetTypeAheadSystems( partialSystemName );
             }
 
-            return systemListCache[partialSystemName];
+            return systemListCache[ partialSystemName ];
         }
 
-        public void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
+        public void TextDidChange ( object sender, TextChangedEventArgs e, string oldValue, Action changeHandler )
         {
-            if (Text == oldValue) { return; }
+            if ( Text == oldValue )
+            { return; }
 
             string systemName = Text.ToLowerInvariant();
-            if (systemName.Length > 1)
+            if ( systemName.Length > 1 )
             {
                 // Obtain a new systemList when the string is being shortened or when the current systemList no longer contains a valid entry
-                if (e.Changes.All(t => t.RemovedLength == 0) &&
-                    e.Changes.Any(t => t.AddedLength > 0) &&
-                    systemList.Any(s => s.Contains(systemName, StringComparison.InvariantCultureIgnoreCase)))
+                if ( e.Changes.All( t => t.RemovedLength == 0 ) &&
+                    e.Changes.Any( t => t.AddedLength > 0 ) &&
+                    systemList.Any( s => s.systemName.Contains( systemName, StringComparison.InvariantCultureIgnoreCase ) ) )
                 {
                     // Filter down from our prior list
-                    systemList = systemList.Where(s => s.Contains(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    systemList = systemList.Where( s => s.systemName.Contains( systemName, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
                     // If the filtered list is less than our desired display list size, try to fetch more systems
-                    if (systemList.Count < systemDisplayListSize)
+                    if ( systemList.Count < systemDisplayListSize )
                     {
-                        systemList = GetTypeAheadSystemNames(systemName);
+                        systemList = GetTypeAheadSystemNames( systemName );
                     }
                 }
                 else
                 {
-                    systemList = GetTypeAheadSystemNames(systemName);
+                    systemList = GetTypeAheadSystemNames( systemName );
                 }
 
                 var caretIndex = TextBox.CaretIndex;
-                if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
+                if ( systemList.Count == 1 && systemName.Equals( systemList[ 0 ].systemName, StringComparison.InvariantCultureIgnoreCase ) )
                 {
-                    ItemsSource = systemList.Take(1);
+                    ItemsSource = systemList.Take( 1 );
                     SelectedIndex = 0;
                     IsDropDownOpen = false;
                 }
                 else
                 {
-                    ItemsSource = systemList.Take(systemDisplayListSize);
+                    ItemsSource = systemList.Take( systemDisplayListSize );
                     Text = systemName;
                     IsDropDownOpen = true;
                 }
@@ -90,18 +92,17 @@ namespace EddiCore
             changeHandler?.Invoke();
         }
 
-        public void SelectionDidChange(Action<string> changeHandler)
+        public void SelectionDidChange ( Action<NavWaypoint> changeHandler )
         {
-            if (ItemsSource != null)
+            if ( ItemsSource != null && SelectedItem is NavWaypoint wp )
             {
-                string newValue = SelectedItem?.ToString();
-                changeHandler(newValue);
+                changeHandler( wp );
             }
         }
 
-        public void DidLoseFocus(string oldValue)
+        public void DidLoseFocus ( string oldValue )
         {
-            if (Text != oldValue)
+            if ( Text != oldValue )
             {
                 Text = oldValue;
                 IsDropDownOpen = false;

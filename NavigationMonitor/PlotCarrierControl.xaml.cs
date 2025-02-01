@@ -151,10 +151,10 @@ namespace EddiNavigationMonitor
         {
             if ( !( sender is StarSystemComboBox starSystemComboBox ) || !starSystemComboBox.IsLoaded ) { return; }
 
-            void changeHandler (string newValue)
+            void changeHandler (NavWaypoint newValue)
             {
                 // Update to new destination system
-                NavigationService.Instance.LastCarrierDestinationArg = newValue;
+                NavigationService.Instance.LastCarrierDestinationArg = newValue.systemName;
                 UpdateSearchButtonEnabled();
             }
             destinationSystemDropDown.SelectionDidChange(changeHandler);
@@ -177,10 +177,10 @@ namespace EddiNavigationMonitor
         {
             if ( !( sender is StarSystemComboBox starSystemComboBox ) || !starSystemComboBox.IsLoaded ) { return; }
 
-            void changeHandler (string newValue)
+            void changeHandler (NavWaypoint newValue)
             {
                 // Update to new origin system
-                LastCarrierOriginArg = newValue;
+                LastCarrierOriginArg = newValue.systemName;
 
                 UpdateSearchButtonEnabled();
             }

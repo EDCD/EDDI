@@ -86,10 +86,10 @@ namespace CommanderMonitor
             if ( sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded )
             { return; }
 
-            void changeHandler ( string newValue )
+            void changeHandler ( NavWaypoint newValue )
             {
                 // Update configuration to new home system
-                EDDI.Instance.setHomeSystem( null, newValue );
+                EDDI.Instance.setHomeSystem( newValue.systemAddress );
 
                 // Update station options for new system
                 ConfigureHomeStationOptions();
@@ -339,10 +339,10 @@ namespace CommanderMonitor
 
         private void SquadronSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
         {
-            void changeHandler ( string newValue )
+            void changeHandler ( NavWaypoint newValue )
             {
                 // Update configuration to new squadron system
-                commanderMonitor().setSquadronSystem( null, newValue );
+                commanderMonitor().setSquadronSystem( newValue.systemAddress );
 
                 // Update squadron faction options for new system
                 ConfigureSquadronFactionOptions();

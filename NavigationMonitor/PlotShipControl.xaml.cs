@@ -387,10 +387,10 @@ namespace EddiNavigationMonitor
         {
             if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
 
-            void changeHandler(string newValue)
+            void changeHandler(NavWaypoint newValue)
             {
                 // Update to new search system
-                NavigationService.Instance.LastQuerySystemArg = newValue;
+                NavigationService.Instance.LastQuerySystemArg = newValue.systemName;
 
                 // Update station options for new system
                 ConfigureSearchStationOptions(NavigationService.Instance.LastQuerySystemArg);

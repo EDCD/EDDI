@@ -508,7 +508,7 @@ namespace EddiCore
                 // Tasks we can start asynchronously and don't need to wait for
                 Task.Run( () =>
                 {
-                    setHomeSystem( configuration.HomeSystemAddress, configuration.HomeSystem );
+                    setHomeSystem( configuration.HomeSystemAddress );
                     setHomeStation( configuration );
                 }, eventHandlerTS.Token ).ConfigureAwait( false );
                 Task.Run(() => updateDestinationSystem( configuration.DestinationSystemAddress, configuration.DestinationSystem), eventHandlerTS.Token).ConfigureAwait(false);
@@ -3319,16 +3319,12 @@ namespace EddiCore
             ConfigService.Instance.eddiConfiguration = configuration;
         }
 
-        public void setHomeSystem ( ulong? newSystemAddress, string newSystemName )
+        public void setHomeSystem ( ulong? newSystemAddress )
         {
             StarSystem newSystem = null;
             if ( newSystemAddress != null )
             {
                 newSystem = DataProvider.GetOrFetchStarSystem( (ulong)newSystemAddress );
-            }
-            if ( newSystem is null && !string.IsNullOrEmpty( newSystemName ) )
-            {
-                newSystem = DataProvider.GetOrFetchStarSystem( newSystemName );
             }
 
             //Ignore null & empty systems

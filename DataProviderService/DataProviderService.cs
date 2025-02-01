@@ -37,9 +37,9 @@ namespace EddiDataProviderService
             this.starSystemRepository = starSystemRepository ?? new StarSystemSqLiteRepository(unitTesting);
         }
 
-        public List<string> GetTypeAheadSystems ( string systemName )
+        public List<NavWaypoint> GetTypeAheadSystems ( string systemName )
         {
-            return spanshService.GetWaypointsBySystemName( systemName ).Select(s => s.systemName).ToList();
+            return spanshService.GetWaypointsBySystemName( systemName ).ToList();
         }
 
         public List<StarSystem> GetOrCreateStarSystems ( Dictionary<ulong, string> requestedSystems, bool refreshIfOutdated = true, bool showMarketDetails = false )

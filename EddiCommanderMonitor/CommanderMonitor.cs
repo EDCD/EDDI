@@ -41,7 +41,7 @@ namespace EddiCommanderMonitor
         public void Reload ()
         {
             var configuration = ConfigService.Instance.eddiConfiguration;
-            setSquadronSystem( configuration.SquadronSystemAddress, configuration.SquadronSystem );
+            setSquadronSystem( configuration.SquadronSystemAddress );
         }
 
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
@@ -274,16 +274,12 @@ namespace EddiCommanderMonitor
             ConfigService.Instance.eddiConfiguration = configuration;
         }
 
-        public void setSquadronSystem ( ulong? newSystemAddress, string newSystemName )
+        public void setSquadronSystem ( ulong? newSystemAddress )
         {
             StarSystem newSystem = null;
             if ( newSystemAddress != null )
             {
                 newSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem( (ulong)newSystemAddress );
-            }
-            if ( newSystem is null && !string.IsNullOrEmpty( newSystemName ) )
-            {
-                newSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem( newSystemName );
             }
 
             //Ignore null & empty systems
@@ -350,7 +346,7 @@ namespace EddiCommanderMonitor
                             }
                         } );
 
-                        setSquadronSystem( configuration.SquadronSystemAddress, configuration.SquadronSystem );
+                        setSquadronSystem( configuration.SquadronSystemAddress );
                     }
 
                     //Update the squadron allegiance, if changed
