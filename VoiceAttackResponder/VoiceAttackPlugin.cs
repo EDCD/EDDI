@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
 
@@ -419,7 +420,10 @@ namespace EddiVoiceAttackResponder
         /// <summary>Force-update EDDI's information</summary>
         private static void InvokeUpdateProfile()
         {
-            EDDI.Instance.refreshProfile(true);
+            Task.Run( () =>
+            {
+                EDDI.Instance.refreshProfile( true );
+            } );
         }
 
         private static void OpenOrStoreURI(ref dynamic vaProxy, string systemUri)

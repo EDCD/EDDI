@@ -187,10 +187,6 @@ namespace EddiShipMonitor
             {
                 handleShipRepairedEvent(shipRepairedEvent);
             }
-            else if (@event is ShipRepairDroneEvent)
-            {
-                handleShipRepairDroneEvent();
-            }
             else if (@event is ShipRestockedEvent)
             {
                 handleShipRestockedEvent();
@@ -813,12 +809,15 @@ namespace EddiShipMonitor
             if (!@event.fromLoad) { writeShips(); }
         }
 
-        private void handleShipRepairDroneEvent()
+        private void posthandleShipRepairDroneEvent(ShipRepairDroneEvent @event)
         {
             // This event does not report the percentage of hull repaired.
             // It reports the integrity repaired (which we can't use since we do not calculate integrity).
             // Set ship hull and module health with a profile refresh.
-            EDDI.Instance?.refreshProfile();
+            if ( !@event.fromLoad )
+            {
+                EDDI.Instance?.refreshProfile();
+            }
         }
 
         private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
@@ -1168,6 +1167,23 @@ namespace EddiShipMonitor
             if (@event is ShipLoadoutEvent shipLoadoutEvent)
             {
                 posthandleShipLoadoutEvent(shipLoadoutEvent);
+            }
+            else if ( @event is ShipRepairDroneEvent shipRepairDroneEvent )
+            {
+                posthandleShipRepairDroneEvent( shipRepairDroneEvent );
+            }
+            else if ( @event is UndockedEvent undockedEvent )
+            {
+                posthandleUndockedEvent( undockedEvent );
+            }
+        }
+
+        private void posthandleUndockedEvent (UndockedEvent @event)
+        {
+            // Call refreshProfile() to ensure that our ship is up-to-date
+            if ( !@event.fromLoad )
+            {
+                EDDI.Instance?.refreshProfile();
             }
         }
 

@@ -2144,10 +2144,6 @@ namespace EddiCore
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             CurrentStation = null;
-            
-            // Call refreshProfile() to ensure that our ship is up-to-date
-            refreshProfile();
-
             return true;
         }
 
