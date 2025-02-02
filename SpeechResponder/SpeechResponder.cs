@@ -15,6 +15,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -327,32 +328,37 @@ namespace EddiSpeechResponder
         private void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
             var dict = resolver.CompileVariables(theEvent);
-            string speech = resolver.resolveFromName(scriptName, dict, true);
-            if (speech != null && Configuration != null)
+
+            // Generate and enqueue speech asynchronously
+            Task.Run( () =>
             {
-                if (Configuration.Subtitles)
+                string speech = resolver.resolveFromName(scriptName, dict, true);
+                if ( speech != null && Configuration != null )
                 {
-                    // Log a tidied version of the speech
-                    string tidiedSpeech = Regex.Replace(speech, "<.*?>", string.Empty).Trim();
-                    if (!string.IsNullOrEmpty(tidiedSpeech))
+                    if ( Configuration.Subtitles )
                     {
-                        log(tidiedSpeech);
+                        // Log a tidied version of the speech
+                        string tidiedSpeech = Regex.Replace(speech, "<.*?>", string.Empty).Trim();
+                        if ( !string.IsNullOrEmpty( tidiedSpeech ) )
+                        {
+                            log( tidiedSpeech );
+                        }
+                    }
+                    if ( sayOutLoud && !( Configuration.Subtitles && Configuration.SubtitlesOnly ) )
+                    {
+                        Logging.Debug( $"Sending speach '{speech}' to SpeechService.", new Dictionary<string, object>()
+                        {
+                            { "Ship", ship },
+                            { "ScriptName", scriptName },
+                            { "Event", theEvent },
+                            { "Priority", priority },
+                            { "Voice", voice },
+                            { "InvokedFromVA", invokedFromVA }
+                        } );
+                        SpeechService.Instance.Say( ship, speech, priority ?? resolver.priority( scriptName ), voice, false, theEvent?.type, invokedFromVA );
                     }
                 }
-                if (sayOutLoud && !(Configuration.Subtitles && Configuration.SubtitlesOnly))
-                {
-                    Logging.Debug($"Sending speach '{speech}' to SpeechService.", new Dictionary<string, object>()
-                    {
-                        { "Ship", ship },
-                        { "ScriptName", scriptName },
-                        { "Event", theEvent }, 
-                        { "Priority", priority }, 
-                        { "Voice", voice },
-                        { "InvokedFromVA", invokedFromVA }
-                    });
-                    SpeechService.Instance.Say(ship, speech, priority ?? resolver.priority(scriptName), voice, false, theEvent?.type, invokedFromVA);
-                }
-            }
+            } );
         }
 
         public UserControl ConfigurationTabItem()
