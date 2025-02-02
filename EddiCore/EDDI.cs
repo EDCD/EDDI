@@ -1649,6 +1649,7 @@ namespace EddiCore
                     }
 
                     // (When pledged) Powerplay information
+                    CurrentStarSystem.Power = @event.Power;
                     CurrentStarSystem.ContestingPowers = @event.ContestingPowers;
                     CurrentStarSystem.powerState = @event.PowerState ?? CurrentStarSystem.powerState;
 
@@ -1974,6 +1975,7 @@ namespace EddiCore
                 }
 
                 // (When pledged) Powerplay information
+                CurrentStarSystem.Power = theEvent.Power;
                 CurrentStarSystem.ContestingPowers = theEvent.ContestingPowers;
                 CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
 
@@ -2570,6 +2572,7 @@ namespace EddiCore
                     }
 
                     // (When pledged) Powerplay information
+                    CurrentStarSystem.Power = theEvent.Power;
                     CurrentStarSystem.ContestingPowers = theEvent.ContestingPowers;
                     CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
 
