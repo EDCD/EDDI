@@ -1553,9 +1553,18 @@
     <value>铂合金</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  
-  
-  
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>阿彻野战补给</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>阿彻驻军补给</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>阿彻机密情报</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
   <data name="RestrictedPackage" xml:space="preserve">
     <value>核心机密包裹</value>
     <comment>Commodity RestrictedPackage</comment>
@@ -1856,8 +1865,20 @@
     <value>八角心脏</value>
     <comment>Commodity ThargoidHeart</comment>
   </data>
-  
-  
-  
-  
+  <data name="KaineAidSupplies" xml:space="preserve">
+    <value>凯恩援助物资</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineMisinformation" xml:space="preserve">
+    <value>凯恩误导信息</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="KaineLobbyingMaterial" xml:space="preserve">
+    <value>凯恩游说材料</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="LavignyStrategicReports" xml:space="preserve">
+    <value>拉维尼战略报告</value>
+    <comment>Powerplay</comment>
+  </data>
 </root>
