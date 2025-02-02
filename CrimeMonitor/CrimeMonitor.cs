@@ -118,9 +118,13 @@ namespace EddiCrimeMonitor
 
         public void PostHandle(Event @event)
         {
-            if (@event is ShipSwappedEvent)
+            if ( @event is ShipSwappedEvent )
             {
                 postHandleShipSwappedEvent();
+            }
+            else if ( @event is ShipTargetedEvent targetedEvent )
+            {
+                postHandleShipTargetedEvent( targetedEvent );
             }
         }
 
@@ -140,10 +144,6 @@ namespace EddiCrimeMonitor
             else if (@event is JumpedEvent jumpedEvent)
             {
                 handleJumpedEvent(jumpedEvent);
-            }
-            else if (@event is ShipTargetedEvent targetedEvent)
-            {
-                handleShipTargetedEvent(targetedEvent);
             }
             else if (@event is BondAwardedEvent awardedEvent)
             {
@@ -215,7 +215,7 @@ namespace EddiCrimeMonitor
             shipTargets.Clear();
         }
 
-        internal void handleShipTargetedEvent(ShipTargetedEvent @event)
+        internal void postHandleShipTargetedEvent(ShipTargetedEvent @event)
         {
             // System targets list may be 're-built' for the current system from Log Load
             var currentSystem = EDDI.Instance?.CurrentStarSystem;

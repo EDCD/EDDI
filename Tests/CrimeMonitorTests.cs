@@ -282,7 +282,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2019-04-24T00:13:35Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"federation_corvette\", \"Ship_Localised\":\"Federal Corvette\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Kurt Pettersen;\", \"PilotName_Localised\":\"Kurt Pettersen\", \"PilotRank\":\"Deadly\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Calennero Crew\", \"LegalStatus\":\"Wanted\", \"Bounty\":295785 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
-            crimeMonitor.handleShipTargetedEvent( (ShipTargetedEvent)events[ 0 ] );
+            crimeMonitor.postHandleShipTargetedEvent( (ShipTargetedEvent)events[ 0 ] );
             Assert.IsNotNull(crimeMonitor.shipTargets);
             Assert.AreEqual(1, crimeMonitor.shipTargets.Count);
             var target = crimeMonitor.shipTargets.FirstOrDefault(t => t.name == "Kurt Pettersen");
