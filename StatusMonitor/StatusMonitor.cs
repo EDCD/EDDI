@@ -60,7 +60,7 @@ namespace EddiStatusMonitor
 
         public bool IsRequired()
         {
-            return false;
+            return true;
         }
 
         public bool NeedsStart()
