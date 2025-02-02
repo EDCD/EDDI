@@ -653,5 +653,8 @@
     <value>超空间引擎（含超巡过载）</value>
     <comment>Module Frame Shift Drive (SCO)</comment>
   </data>
-  
+  <data name="ConcordCannon" xml:space="preserve">
+    <value>协和加农炮</value>
+    <comment>Powerplay module</comment>
+  </data>
 </root>
