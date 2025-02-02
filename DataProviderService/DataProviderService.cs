@@ -23,6 +23,8 @@ namespace EddiDataProviderService
         internal readonly StarMapService edsmService;
         internal readonly SpanshService spanshService;
         internal readonly StarSystemSqLiteRepository starSystemRepository;
+
+        internal readonly FactionCache factionCache;
         internal readonly StarSystemCache starSystemCache;
 
         public static bool unitTesting;
@@ -30,6 +32,7 @@ namespace EddiDataProviderService
         public DataProviderService ( BgsService bgsService = null, StarMapService edsmService = null,
             SpanshService spanshService = null, StarSystemSqLiteRepository starSystemRepository = null )
         {
+            factionCache = new FactionCache( 600 ); // Keep a cache of factions for 10 minutes
             starSystemCache = new StarSystemCache( 300 ); // Keep a cache of star systems for 5 minutes
             this.bgsService = bgsService ?? new BgsService();
             this.edsmService = edsmService ?? new StarMapService();
@@ -409,6 +412,7 @@ namespace EddiDataProviderService
                 // Save the deserialized star system to our short term star system cache for reference
                 if ( result != null )
                 {
+                    factionCache.AddOrUpdate(result.factions);
                     starSystemCache.AddOrUpdate( result );
                 }
 
@@ -431,10 +435,10 @@ namespace EddiDataProviderService
         {
             if ( !starSystems.Any() || unitTesting ) { return; }
 
-            // Update any star systems in our short term star system cache to minimize repeat deserialization
+            // Update any faction and star systems in our short term faction and star system caches to minimize repeat deserialization
             foreach ( var starSystem in starSystems )
             {
-                starSystemCache.Remove( starSystem.systemAddress );
+                factionCache.AddOrUpdate( starSystem.factions );
                 starSystemCache.AddOrUpdate( starSystem );
             }
 
@@ -454,9 +458,17 @@ namespace EddiDataProviderService
         [CanBeNull]
         public Faction FetchFactionByName ( string factionName, string presenceSystemName = null )
         {
+            // First try to fetch the faction from the cache
+            if ( factionCache.TryGet(factionName, out var faction) )
+            {
+                return faction;
+            }
+
             // While it is possible to obtain faction data from Spansh, Spansh does not have a dedicated endpoint for faction data.
             // In benchmarking conducted Dec. 2024 it was both slower and less comprehensive than EliteBGS.
-            return bgsService.GetFactionByName( factionName, presenceSystemName );
+            faction = bgsService.GetFactionByName( factionName, presenceSystemName );
+            factionCache.AddOrUpdate(faction);
+            return faction;
         }
 
         #endregion
