@@ -103,8 +103,6 @@ namespace EddiBgsService
         {
             try
             {
-                Logging.Debug($"Response from EliteBGS bgsRestClient endpoint {factionEndpoint} is: ", response);
-
                 var factionJson = Deserializtion.DeserializeData(response.ToString());
                 var faction = new Faction
                 {

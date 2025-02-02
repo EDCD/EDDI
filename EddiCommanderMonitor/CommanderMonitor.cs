@@ -288,7 +288,7 @@ namespace EddiCommanderMonitor
                 if ( newSystem.systemAddress != EDDI.Instance.SquadronStarSystem?.systemAddress )
                 {
                     EDDI.Instance.SquadronStarSystem = newSystem;
-                    Logging.Debug( "Squadron star system is " + EDDI.Instance.SquadronStarSystem.systemname );
+                    Logging.Debug( $"Squadron star system set to: {newSystemAddress} ({EDDI.Instance.SquadronStarSystem.systemname})" );
 
                     var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
                     eddiConfiguration.SquadronSystem = newSystem.systemname;

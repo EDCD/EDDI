@@ -5,11 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CommanderMonitor"
              xmlns:resx="clr-namespace:EddiCommanderMonitor.Properties"
-             xmlns:defs="clr-namespace:EddiDataDefinitions"
              xmlns:utilities="clr-namespace:Utilities;assembly=Utilities"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:eddiCore="clr-namespace:EddiCore;assembly=EddiCore"
-             xmlns:eddiDataDefinitions="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True"  Background="#FFE5E5E5" Margin="0,0">

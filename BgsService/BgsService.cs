@@ -82,10 +82,7 @@ namespace EddiBgsService
         private PageResponse PageRequest(IBgsRestClient restClient, RestRequest request, int page)
         {
             request.AddOrUpdateParameter("page", page);
-
-            Logging.Debug($"Query: {JsonConvert.SerializeObject(request.Parameters)}. Sending request to {request.Resource}");
             var clientResponse = (RestResponse<RestRequest>)restClient.Execute<RestRequest>(request);
-            Logging.Debug("Response received: ", clientResponse);
             if (clientResponse.IsSuccessful)
             {
                 string json = clientResponse.Content;
@@ -98,7 +95,8 @@ namespace EddiBgsService
             }
             else
             {
-                Logging.Debug($"EliteBGS data error: Error obtaining data from {request.Resource}.", clientResponse);
+                Logging.Warn( $"EliteBGS data error: Error obtaining data from {request.Resource}.",
+                    new Dictionary<string, object> { { "request", request }, { "response", clientResponse } } );
             }
             return null; // No results
         }
