@@ -920,6 +920,12 @@ namespace EddiCrimeMonitor
             {
                 record.bounties += report.amount;
             }
+            else if ( !report.bounty && record.bounties > 0 )
+            {
+                // This fine is converted to a bounty because we already have a bounty from this faction.
+                record.bounties += report.amount;
+                report.bounty = true;
+            }
             else
             {
                 record.fines += report.amount;
