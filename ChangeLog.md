@@ -42,6 +42,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Responder
     * Scripts 
       * `Bodies to map` script updated to correct an issue with quotes. 
+      * `Body materials report` updated to optionally filter non-volcanic bodies (enabled by default).
       * `Carrier jumped` script updated to include new Powerplay details.
       * `Holoscreen hacked` event added. 
       * `Jumped` script updated to include new Powerplay details.
