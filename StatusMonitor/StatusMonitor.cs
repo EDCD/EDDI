@@ -233,6 +233,27 @@ namespace EddiStatusMonitor
                     var station = EDDI.Instance.CurrentStarSystem.stations.FirstOrDefault(s =>
                         s.name == status.destination_name);
 
+                    // Could be a scannable megaship (these move on a weekly schedule and are not dockable)
+                    var scannableMegashipTypes = new[]
+                    {
+                        "Alcatraz-class Reformatory", "Amaethon-class Cropper", "Aquarius-class Tanker",
+                        "Banner-class Hauler", "Beckett-class Researcher", "Bellmarsh-class Reformatory", "Bowman-class Researcher",
+                        "Demeter-class Cropper", "Dionysus-class Cropper",
+                        "Freedom-class Surveyor",
+                        "Gordon-class Hauler",
+                        "Henry-class Hauler", "Hogan-class Hauler", "Hercules-class Hauler",
+                        "James-class Hauler",
+                        "Lichfield-class Reformatory", "Lowell-class Researcher",
+                        "Naphtha-class Tanker",
+                        "Riker-class Reformatory",
+                        "Sagan-class Traveller", "Samson-class Hauler", "Sanchez-class Researcher"
+                    };
+                    if ( string.IsNullOrEmpty( status.destination_localized_name ) && 
+                         scannableMegashipTypes.Any(m => status.destination_name.EndsWith(m) ) )
+                    {
+                        station = new Station { name = status.destination_name };
+                    }
+
                     // There is an FDev bug where both Encoded Emissions and High Grade Emissions use the `USS_HighGradeEmissions` edName.
                     // When this occurs, we need to fall back to our generic signal source name.
                     // It's also possible for both the standard name and localized name to be symbolic values. If so, prefer and try to match the value in the localized field. 
