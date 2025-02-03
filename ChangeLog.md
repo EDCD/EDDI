@@ -41,6 +41,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated ships grid to add distances in light years.  
   * Speech Responder
     * Scripts 
+      * `Bodies to map` script updated to correct an issue with quotes. 
       * `Carrier jumped` script updated to include new Powerplay details.
       * `Holoscreen hacked` event added. 
       * `Jumped` script updated to include new Powerplay details.
