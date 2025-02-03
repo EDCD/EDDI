@@ -384,7 +384,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Landing pads locked. Final jump preparations initiated.",
+      "script": "{if environment = \"Docked\" && station.name = carrier.callsign:\r\n    Landing pads {OneOf(\"locked\", \"secured\")}. \r\n    Final jump preparations initiated.\r\n}",
       "default": true,
       "name": "Carrier pads locked",
       "description": "Triggered when your fleet carrier locks landing pads prior to a jump"

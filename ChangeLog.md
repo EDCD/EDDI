@@ -44,6 +44,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Bodies to map` script updated to correct an issue with quotes. 
       * `Body materials report` updated to optionally filter non-volcanic bodies (enabled by default).
       * `Carrier jumped` script updated to include new Powerplay details.
+      * `Carrier pads locked` script updated to not speak when you are not docked at the carrier.
       * `Holoscreen hacked` event added. 
       * `Jumped` script updated to include new Powerplay details.
       * `Location` script updated to include new Powerplay details.
