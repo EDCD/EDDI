@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -30,7 +31,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The short name of the body</summary>
         [PublicAPI, JsonIgnore]
-        public string shortname => GetShortName(bodyname, systemname);
+        public string shortname => GetShortName(bodyname, systemname, bodyType);
 
         /// <summary>The name of the system in which the body resides</summary>
         [PublicAPI]
@@ -641,12 +642,18 @@ namespace EddiDataDefinitions
             return null;
         }
 
-        public static string GetShortName(string bodyname, string systemname)
+        public static string GetShortName(string bodyname, string systemname, BodyType bodyType = null)
         {
             if (bodyname is null) { return null; }
-            return (systemname == null || bodyname == systemname || !bodyname.StartsWith(systemname)) 
+            var shortName = (systemname == null || bodyname == systemname || !bodyname.StartsWith(systemname)) 
                 ? bodyname 
-                : bodyname?.Replace(systemname, "").Trim();
+                : bodyname.Replace(systemname, "").Trim();
+            if ( bodyType == BodyType.Star && Regex.IsMatch( shortName.ToUpper(), @"(?<STARS>(?<=^|\s)[A-E]+)" ) )
+            {
+                // Status destinations can have incorrect casing on star names. Fix that here.
+                shortName = shortName.ToUpper();
+            }
+            return shortName;
         }
 
         public static int CompareById(Body lhs, Body rhs) => Math.Sign((lhs.bodyId - rhs.bodyId) ?? 0);

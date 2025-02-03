@@ -91,7 +91,7 @@ namespace EddiSpeechService
         private static readonly Regex MOON = new Regex(@"^[a-z]$");
         private static readonly Regex SUBSTARS = new Regex(@"^\bA[BCDE]?[CDE]?[DE]?[E]?\b|\bB[CDE]?[DE]?[E]?\b|\bC[DE]?[E]?\b|\bD[E]?\b$");
         private static readonly Regex SYSTEMBODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$");
-        private static readonly Regex SHORTBODY = new Regex(@"(?=\S)(?<STARS>(?<=^|\s)A?B?C?D?E?)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$");
+        private static readonly Regex SHORTBODY = new Regex(@"(?=\S)(?<STARS>(?<=^|\s)[A-E]+)? ?(?<PLANET>(?<=^|\s)\d{1,2})? ?(?<MOON>(?<=^|\s)[a-z])? ?(?<SUBMOON>(?<=^|\s)[a-z])? ?(?>(?<=^|\s)(?<RINGORBELTGROUP>[A-Z]) (?<RINGORBELTTYPE>Belt|Ring))? ?(?>(?<=^|\s)(?<CLUSTER>Cluster) (?<CLUSTERNUMBER>\d*))?$");
         private static readonly Regex PROC_GEN_SYSTEM = new Regex(@"^(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))$");
         private static readonly Regex PROC_GEN_SYSTEM_BODY = new Regex(@"^(?<SYSTEM>(?<SECTOR>[\w\s'.()-]+) (?<COORDINATES>(?<l1>[A-Za-z])(?<l2>[A-Za-z])-(?<l3>[A-Za-z]) (?<mcode>[A-Za-z])(?:(?<n1>\d+)-)?(?<n2>\d+))) ?(?<BODY>.*)$");
 
