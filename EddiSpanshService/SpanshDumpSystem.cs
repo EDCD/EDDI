@@ -116,7 +116,11 @@ namespace EddiSpanshService
                     starSystem.securityLevel = SecurityLevel.FromName( (string)data[ "security" ] ) ??
                                                SecurityLevel.None;
 
-                    starSystem.stations.AddRange( data[ "stations" ]?.AsParallel().Select( stationToken => ParseStation( starSystem, stationToken, null, showMarketDetails ) ).RemoveNulls().ToList() ?? new List<Station>() );
+                    var orbitalStations = data[ "stations" ]?.AsParallel().Select( stationToken => ParseStation( starSystem, stationToken, null, showMarketDetails ) ).ToList() ?? new List<Station>();
+                    if ( orbitalStations.Any() )
+                    {
+                        starSystem.stations.AddRange( orbitalStations );
+                    }
 
                     starSystem.Power = Power.FromName( data[ "controllingPower" ]?.ToString() );
                     starSystem.powerState = PowerplayState.FromName( data[ "powerState" ]?.ToString() );
@@ -300,8 +304,11 @@ namespace EddiSpanshService
             } ).OrderByDescending( x => x.percent ).ToList() ?? new List<SolidComposition>();
 
             var surfaceStations = planetData[ "stations" ]?.AsParallel().Select( s =>
-                ParseStation( starSystem, s, planetData, showMarketDetails ) ).RemoveNulls().ToList() ?? new List<Station>();
-            starSystem.stations.AddRange( surfaceStations );
+                ParseStation( starSystem, s, planetData, showMarketDetails ) ).ToList() ?? new List<Station>();
+            if ( surfaceStations.Any() )
+            {
+                starSystem.stations.AddRange( surfaceStations );
+            }
 
             var terraformState = TerraformState.FromName( planetData[ "terraformingState" ]?.ToString() ) ??
                                  TerraformState.NotTerraformable;
