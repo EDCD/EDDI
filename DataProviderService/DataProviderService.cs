@@ -90,7 +90,7 @@ namespace EddiDataProviderService
             results.AddRange( starSystemCache.GetRange( missingSystems() ) );
             
             // Fetch from the local database
-            results.AddRange( GetSqlStarSystems( systemAddresses.ToArray(), out var dbStarSystems, refreshIfOutdated ) );
+            results.AddRange( GetSqlStarSystems( missingSystems(), out var dbStarSystems, refreshIfOutdated ) );
 
             // Fetch from external data providers (when so instructed)
             if ( missingSystems().Any() && fetchIfMissing )
@@ -175,6 +175,7 @@ namespace EddiDataProviderService
         {
             var results = new List<NavWaypoint>();
             if ( systemNames is null || !systemNames.Any() ) { return results; }
+
             string[] missingSystems () => systemNames.Where( k => results.All( s => s.systemName != k ) ).Distinct().ToArray();
 
             // Fetch from cached systems
