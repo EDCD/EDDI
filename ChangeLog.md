@@ -46,6 +46,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier jumped` script updated to include new Powerplay details.
       * `Carrier pads locked` script updated to not speak when you are not docked at the carrier.
       * `Commodity sold` script updated to reduce verbosity.
+      * `Engineer report` script updated to change the response when docked at an engineer's station.
       * `Holoscreen hacked` event added. 
       * `Jumped` script updated to include new Powerplay details.
       * `Location` script updated to include new Powerplay details.
