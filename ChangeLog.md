@@ -51,6 +51,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Holoscreen hacked` event added. 
       * `Jumped` script updated to include new Powerplay details.
       * `Location` script updated to include new Powerplay details.
+      * `Mission redirected` script updated to update mission guidance when applicable.
       * `Power commodity fast tracked` obsolete script removed.
       * `Power defected` obsolete script removed.
       * `Power expansion vote cast` obsolete script removed.
