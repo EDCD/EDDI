@@ -459,6 +459,8 @@ namespace EddiDataProviderService
         [CanBeNull]
         public Faction FetchFactionByName ( string factionName, string presenceSystemName = null )
         {
+            if ( string.IsNullOrEmpty( factionName ) ) { return null; }
+
             // First try to fetch the faction from the cache
             if ( factionCache.TryGet(factionName, out var faction) )
             {
@@ -513,7 +515,7 @@ namespace EddiDataProviderService
                 Logging.Warn( "Spansh API responded with: " + data[ "error" ] );
                 return null;
             }
-            return spanshService.ParseQuickStation( data?[ "results" ]?.FirstOrDefault() );
+            return spanshService.ParseQuickStationWaypoint( data?[ "results" ]?.FirstOrDefault() );
         }
 
         /// <summary>

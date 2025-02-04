@@ -202,23 +202,23 @@ namespace EddiDataDefinitions
         private List<Conflict> _conflicts;
 
         [Utilities.PublicAPI( "The star system's stations (as an array of Station objects)" )]
-        public List<Station> stations
+        public ImmutableList<Station> stations
         {
             get => _stations;
             set { _stations = value; OnPropertyChanged(); }
         }
-        private List<Station> _stations;
+        private ImmutableList<Station> _stations;
 
         /// <summary>Summary info for stations</summary>
         [Utilities.PublicAPI( "The star system's stations, filtered to only return dockable and permanent planetary stations (array of Station objects)" ), JsonIgnore]
         public List<Station> planetarystations => stations.FindAll( s => ( s.hasdocking ?? false )
-                                                                         && s.IsPlanetary() );
+                                                                         && s.IsPlanetary() ).ToList();
 
         [Utilities.PublicAPI( "The star system's stations, filtered to only return dockable and permanent orbital stations (array of Station objects)" ), JsonIgnore]
         public List<Station> orbitalstations => stations.FindAll( s => ( s.hasdocking ?? false )
                                                                        && !s.IsPlanetary()
                                                                        && !s.IsCarrier()
-                                                                       && !s.IsMegaShip() );
+                                                                       && !s.IsMegaShip() ).ToList();
 
         #endregion
 
@@ -296,7 +296,7 @@ namespace EddiDataDefinitions
         {
             bodies = ImmutableList.Create<Body>();
             factions = new List<Faction>();
-            stations = new List<Station>();
+            stations = ImmutableList.Create<Station>();
         }
 
         #region Deserialization
@@ -380,8 +380,7 @@ namespace EddiDataDefinitions
 
         private void internalAddOrUpdateBody ( Body newOrUpdatedBody, ImmutableList<Body>.Builder builder )
         {
-            if ( newOrUpdatedBody is null )
-            { return; }
+            if ( newOrUpdatedBody is null ) { return; }
 
             int index = builder.FindIndex(b =>
                 (b.bodyId != null && newOrUpdatedBody.bodyId != null && b.bodyId == newOrUpdatedBody.bodyId) || // Matching bodyId
@@ -496,6 +495,50 @@ namespace EddiDataDefinitions
                 }
             }
             return updatedBody;
+        }
+
+        public void AddOrUpdateStation ( Station newOrUpdatedStation )
+        {
+            var builder = stations.ToBuilder();
+            internalAddOrUpdateStation( newOrUpdatedStation, builder );
+            builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
+            stations = builder.ToImmutable();
+        }
+
+        public void AddOrUpdateStations ( IEnumerable<Station> newOrUpdatedStations )
+        {
+            var builder = stations.ToBuilder();
+            foreach ( var station in newOrUpdatedStations )
+            {
+                internalAddOrUpdateStation( station, builder );
+            }
+            builder.Sort( (lhs, rhs) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
+            stations = builder.ToImmutable();
+        }
+
+        private void internalAddOrUpdateStation ( Station newOrUpdatedStation, ImmutableList<Station>.Builder builder )
+        {
+            if ( newOrUpdatedStation is null ) { return; }
+
+            var index = builder.FindIndex( s =>
+                ( s.marketId != null && newOrUpdatedStation.marketId != null &&
+                  s.marketId == newOrUpdatedStation.marketId ) ); // Matching marketId
+            if ( index >= 0 )
+            {
+                builder[ index ] = newOrUpdatedStation;
+            }
+            else
+            {
+                builder.Add( newOrUpdatedStation );
+            }
+        }
+
+        public void RemoveStation ( long marketId )
+        {
+            var builder = stations.ToBuilder();
+            var index = builder.FindIndex( s => s.marketId == marketId );
+            builder.RemoveAt( index );
+            stations = builder.ToImmutable();
         }
 
         public void AddOrUpdateSignalSource ( SignalSource signalSource )

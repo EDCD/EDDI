@@ -1230,7 +1230,7 @@ namespace EddiCore
                         {
                             station.Model = StationModel.Outpost;
                         }
-                        Instance.CurrentStarSystem.stations.Add( station );
+                        Instance.CurrentStarSystem.AddOrUpdateStation( station );
                     }
                 }
             }
@@ -1365,7 +1365,7 @@ namespace EddiCore
                         systemname = CurrentStarSystem?.systemname,
                         systemAddress = settlementApproachedEvent.systemAddress
                     };
-                    CurrentStarSystem?.stations.Add(station);
+                    CurrentStarSystem?.AddOrUpdateStation( station );
                 }
                 station.Faction = settlementApproachedEvent.controllingFaction;
                 station.stationServices = settlementApproachedEvent.stationServices;
@@ -1495,7 +1495,7 @@ namespace EddiCore
                 };
 
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
-                CurrentStarSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
+                CurrentStarSystem?.RemoveStation( @event.carrierId ?? 0 );
 
                 // Set the destination system as the current star system
                 updateCurrentSystem(@event.systemname, @event.systemAddress);
@@ -1507,22 +1507,22 @@ namespace EddiCore
                 CurrentStation.systemAddress = @event.systemAddress;
 
                 // Add the carrier to the destination system
-                CurrentStarSystem?.stations.Add(CurrentStation);
+                CurrentStarSystem?.AddOrUpdateStation(CurrentStation);
             }
             else if (!string.IsNullOrEmpty(@event.originSystemName))
             {
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 var starSystem = DataProvider.GetOrFetchStarSystem(@event.originSystemAddress);
                 var carrier = starSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId);
-                starSystem?.stations.RemoveAll(s => s.marketId == @event.carrierId);
+                starSystem?.RemoveStation( @event.carrierId ?? 0 );
                 // Save the carrier to the updated star system
-                if (carrier != null)
+                if ( carrier != null)
                 {
                     carrier.systemname = @event.systemname;
                     carrier.systemAddress = @event.systemAddress;
                     if (@event.systemAddress == CurrentStarSystem?.systemAddress)
                     {
-                        CurrentStarSystem?.stations.Add(carrier);
+                        CurrentStarSystem?.AddOrUpdateStation( carrier );
                         DataProvider.SaveStarSystem(starSystem);
                     }
                     else
@@ -1530,7 +1530,7 @@ namespace EddiCore
                         var updatedStarSystem = DataProvider.GetOrFetchStarSystem(@event.systemAddress);
                         if (updatedStarSystem != null)
                         {
-                            updatedStarSystem.stations.Add(carrier);
+                            updatedStarSystem.AddOrUpdateStation( carrier);
                             DataProvider.SaveStarSystem(updatedStarSystem);
                         }
                     }
@@ -1568,7 +1568,7 @@ namespace EddiCore
                     s.marketId == carrierID || s.name == carrierCallsign );
                 if ( CurrentStation != null )
                 {
-                    CurrentStarSystem?.stations.RemoveAll( s => s.marketId == carrierID );
+                    CurrentStarSystem?.RemoveStation( carrierID ?? 0 );
                 }
                 else if ( LastStarSystem != null )
                 {
@@ -1576,7 +1576,7 @@ namespace EddiCore
                         s.marketId == carrierID || s.name == carrierCallsign );
                     if ( CurrentStation != null )
                     {
-                        LastStarSystem.stations.RemoveAll( s => s.marketId == carrierID );
+                        LastStarSystem.RemoveStation( carrierID ?? 0 );
                         DataProvider.SaveStarSystem( LastStarSystem );
                     }
                 }
@@ -1618,7 +1618,7 @@ namespace EddiCore
                     if ( currentStation != null )
                     {
                         // Add our carrier to the new current star system
-                        CurrentStarSystem.stations.Add(CurrentStation);                        
+                        CurrentStarSystem.AddOrUpdateStation( CurrentStation );
                     }
 
                     // Update the mutable system data from the journal
@@ -1990,7 +1990,7 @@ namespace EddiCore
                     {
                         // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
                         station = new Station { name = stationName, systemname = theEvent.systemname, systemAddress = theEvent.systemAddress };
-                        CurrentStarSystem.stations.Add( station );
+                        CurrentStarSystem.AddOrUpdateStation( station );
                     }
 
                     // We are docked
@@ -2060,7 +2060,7 @@ namespace EddiCore
                     systemname = CurrentStarSystem.systemname,
                     systemAddress = CurrentStarSystem.systemAddress
                 };
-                CurrentStarSystem.stations.Add(station);
+                CurrentStarSystem?.AddOrUpdateStation( station );
             }
 
             if ( station != null )
@@ -2079,7 +2079,7 @@ namespace EddiCore
 
             if (CurrentStarSystem != null)
             {
-                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
+                var station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
                 if (Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId)
                 {
                     // We are already at this station
@@ -2099,7 +2099,7 @@ namespace EddiCore
                             systemname = theEvent.system,
                             systemAddress = theEvent.systemAddress
                         };
-                        CurrentStarSystem.stations.Add(station);
+                        CurrentStarSystem.AddOrUpdateStation( station );
                     }
                 }
 
@@ -2130,7 +2130,7 @@ namespace EddiCore
                     {
                         // Refresh station data
                         if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
-                        Thread updateThread = new Thread(conditionallyRefreshStationProfile)
+                        var updateThread = new Thread(conditionallyRefreshStationProfile)
                         {
                             IsBackground = true
                         };

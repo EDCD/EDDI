@@ -58,8 +58,20 @@ namespace EddiSpanshService
         private List<NavWaypoint> ParseTypeAheadSystems ( JToken responses )
         {
             return responses[ "min_max" ]?
-                .Select( r => new NavWaypoint( r[ "name" ].ToString(), r[ "id64" ].ToObject<ulong>(),
-                    r[ "x" ].ToObject<decimal>(), r[ "y" ].ToObject<decimal>(), r[ "z" ].ToObject<decimal>() ) ).ToList();
+                .Select( ParseTypeAheadSystem ).RemoveNulls().ToList();
+        }
+
+        private NavWaypoint ParseTypeAheadSystem ( JToken r )
+        {
+            try
+            {
+                return new NavWaypoint( r[ "name" ].ToString(), r[ "id64" ].ToObject<ulong>(), r[ "x" ].ToObject<decimal>(), r[ "y" ].ToObject<decimal>(), r[ "z" ].ToObject<decimal>() );
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( $"Failed to parse star system name data: {e.Message}", e );
+                return null;
+            }
         }
     }
 }

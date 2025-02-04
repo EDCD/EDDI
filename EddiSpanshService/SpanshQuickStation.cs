@@ -45,7 +45,7 @@ namespace EddiSpanshService
                     {
                         Logging.Debug( "Spansh responded with: " + jResponse["error"] );
                     }
-                    quickStation = ParseQuickStation( jResponse[ "record" ] );
+                    quickStation = ParseQuickStationWaypoint( jResponse[ "record" ] );
                 }
                 catch ( Exception e )
                 {
@@ -60,22 +60,29 @@ namespace EddiSpanshService
             return quickStation != null;
         }
 
-        public NavWaypoint ParseQuickStation ( JToken stationData )
+        public NavWaypoint ParseQuickStationWaypoint ( JToken stationData )
         {
-            if ( stationData is null )
-            { return null; }
-
-            var systemName = stationData[ "system_name" ]?.ToString();
-            var systemAddress = stationData[ "system_id64" ]?.ToObject<ulong>() ?? 0;
-            var systemX = stationData[ "system_x" ]?.ToObject<decimal>() ?? 0;
-            var systemY = stationData[ "system_y" ]?.ToObject<decimal>() ?? 0;
-            var systemZ = stationData[ "system_z" ]?.ToObject<decimal>() ?? 0;
-
-            return new NavWaypoint( systemName, systemAddress, systemX, systemY, systemZ )
+            try
             {
-                stationName = stationData[ "name" ]?.ToString(),
-                marketID = stationData[ "market_id" ]?.ToObject<long>()
-            };
+                if ( stationData is null ) { return null; }
+
+                var systemName = stationData[ "system_name" ]?.ToString();
+                var systemAddress = stationData[ "system_id64" ]?.ToObject<ulong>() ?? 0;
+                var systemX = stationData[ "system_x" ]?.ToObject<decimal>() ?? 0;
+                var systemY = stationData[ "system_y" ]?.ToObject<decimal>() ?? 0;
+                var systemZ = stationData[ "system_z" ]?.ToObject<decimal>() ?? 0;
+
+                return new NavWaypoint( systemName, systemAddress, systemX, systemY, systemZ )
+                {
+                    stationName = stationData[ "name" ]?.ToString(),
+                    marketID = stationData[ "market_id" ]?.ToObject<long>()
+                };
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( $"Failed to parse quick station waypoint: {e.Message}", e );
+                throw;
+            }
         }
     }
 }

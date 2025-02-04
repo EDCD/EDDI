@@ -1071,7 +1071,7 @@ namespace EddiCrimeMonitor
                 // max distance from the main star, game version, and landing pad size requirements
                 LandingPadSize padSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
                 List<Station> factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false)
-                    ? factionStarSystem.stations
+                    ? factionStarSystem.stations.ToList()
                     : factionStarSystem.orbitalstations;
                 factionStations = factionStations
                     .Where(s => s.Model != StationModel.FleetCarrier)

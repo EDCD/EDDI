@@ -1189,7 +1189,6 @@ namespace EddiShipMonitor
             }
         }
 
-
         private void posthandleUndockedEvent ( UndockedEvent @event )
         {
             // Call refreshProfile() to ensure that our ship is up-to-date

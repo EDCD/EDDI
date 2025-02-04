@@ -85,31 +85,46 @@ namespace EddiSpanshService
                 }
 
                 // Spansh does not assign on-foot surface settlements a station type so we have to assign these ourselves.
-                starSystem.stations = data[ "stations" ]?.Select( s => new Station
-                    {
-                        name = s[ "name" ]?.ToString(),
-                        marketId = s[ "market_id" ]?.ToObject<long?>(),
-                        Model = FromSpanshStationModel( s[ "type" ]?.ToString() ) ?? StationModel.OnFootSettlement,
-                        systemname = starSystem.systemname,
-                        systemAddress = starSystem.systemAddress,
-                        landingPads = new StationLandingPads( 
-                            s[ "small_pads" ]?.ToObject<int?>() ?? 0, 
-                            s[ "medium_pads" ]?.ToObject<int?>() ?? 0,
-                            s[ "large_pads" ]?.ToObject<int?>() ?? 0 ),
-                        hasdocking = (
-                            (s[ "small_pads" ]?.ToObject<int?>() ?? 0 ) + 
-                            (s[ "medium_pads" ]?.ToObject<int?>() ?? 0) + 
-                            (s[ "large_pads" ]?.ToObject<int?>() ?? 0)) > 0
-                } ).ToList();
+                starSystem.AddOrUpdateStations( data[ "stations" ]?.AsParallel().Select( s =>
+                {
+                    var station = ParseQuickStation( s );
+                    station.systemname = starSystem.systemname;
+                    station.systemAddress = starSystem.systemAddress;
+                    return station;
+                } ).RemoveNulls().ToList() ?? new List<Station>() );
 
                 starSystem.lastupdated = DateTime.UtcNow;
                 return starSystem;
             }
             catch ( Exception e )
             {
-                Logging.Error( $"Failed to parse Spansh star system: {e.Message}", e );
+                Logging.Error( $"Failed to parse quick star system: {e.Message}", e );
             }
             return null;
+        }
+
+        private static Station ParseQuickStation ( JToken stationData )
+        {
+            try
+            {
+                var station = new Station
+                {
+                    name = stationData[ "name" ]?.ToString(),
+                    marketId = stationData[ "market_id" ]?.ToObject<long?>(),
+                    Model = FromSpanshStationModel( stationData[ "type" ]?.ToString() ) ?? StationModel.OnFootSettlement,
+                    landingPads = new StationLandingPads(
+                        stationData[ "small_pads" ]?.ToObject<int?>() ?? 0,
+                        stationData[ "medium_pads" ]?.ToObject<int?>() ?? 0,
+                        stationData[ "large_pads" ]?.ToObject<int?>() ?? 0 )
+                };
+                station.hasdocking = ( station.landingPads.Large + station.landingPads.Medium + station.landingPads.Small ) > 0;
+                return station;
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( $"Failed to parse quick station: {e.Message}", e );
+                return null;
+            }
         }
     }
 }
