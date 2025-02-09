@@ -45,7 +45,8 @@ namespace EddiDataProviderService
             return spanshService.GetWaypointsBySystemName( systemName ).ToList();
         }
 
-        public List<StarSystem> GetOrCreateStarSystems ( Dictionary<ulong, string> requestedSystems, bool refreshIfOutdated = true, bool showMarketDetails = false )
+        public List<StarSystem> GetOrCreateStarSystems ( Dictionary<ulong, string> requestedSystems,
+            bool fetchIfMissing = false, bool refreshIfOutdated = true, bool showMarketDetails = false )
         {
             var results = new List<StarSystem>();
             if ( !requestedSystems.Any() ) { return new List<StarSystem>(); }
@@ -53,7 +54,10 @@ namespace EddiDataProviderService
             var missingSystems = requestedSystems.Where( k => results.All( s => s.systemAddress != k.Key ) )
                 .ToDictionary( k => k.Key, v => v.Value );
 
-            results = GetOrFetchStarSystems( missingSystems.Keys.ToArray(), true, refreshIfOutdated, showMarketDetails ) ?? new List<StarSystem>();
+            if ( fetchIfMissing )
+            {
+                results = GetOrFetchStarSystems( missingSystems.Keys.ToArray(), true, refreshIfOutdated, showMarketDetails ) ?? new List<StarSystem>();
+            }
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             var createdStarSystems = missingSystems
@@ -665,8 +669,18 @@ namespace EddiDataProviderService
         public void syncEdsmLogBatch(List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments)
         {
             var syncedSystems = new List<StarSystem>();
-            var flightLogSystems = flightLogBatch.ToDictionary(k => k.systemId64, v => v.system);
-            var batchSystems = GetOrCreateStarSystems(flightLogSystems, false );
+            var uniqueEntries = new HashSet<(ulong systemId64, string system)>();
+            var flightLogSystems = new Dictionary<ulong, string>();
+
+            foreach ( var log in flightLogBatch )
+            {
+                if ( uniqueEntries.Add( (log.systemId64, log.system) ) )
+                {
+                    flightLogSystems[ log.systemId64 ] = log.system;
+                }
+            }
+
+            var batchSystems = GetOrCreateStarSystems(flightLogSystems, refreshIfOutdated: false );
             foreach (var starSystem in batchSystems)
             {
                 if (starSystem != null)
