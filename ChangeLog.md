@@ -43,6 +43,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts 
       * `Bodies to map` script updated to correct an issue with quotes. 
       * `Body materials report` updated to optionally filter non-volcanic bodies (enabled by default).
+      * `Carrier jump engaged` script updated to better mirror the `FSD engaged` script.
       * `Carrier jumped` script updated to include new Powerplay details.
       * `Carrier pads locked` script updated to not speak when you are not docked at the carrier.
       * `Commodity sold` script updated to reduce verbosity.
