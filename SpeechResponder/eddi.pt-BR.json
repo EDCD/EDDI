@@ -2095,6 +2095,15 @@
 			"description": "Triggered periodically when pledged to a power",
 			"default": true
 		},
+		"Powerplay report": {
+			"enabled": true,
+			"priority": 3,
+			"responder": false,
+			"script": "{_ Fetch from Context, if a context is set _}\r\n{if state.eddi_context_system_name:\r\n    {set reportSystem to SystemDetails(state.eddi_context_system_name)}\r\n|else:\r\n    {set reportSystem to SystemDetails(system.systemname)}\r\n}\r\n\r\n{set contestingPowers to []}\r\n{for contestingPower in reportSystem.contestingpowers:\r\n    {set contestingPowers to cat(contestingPowers, [P(contestingPower, \"power\")])}\r\n}\r\n    \r\n{if reportSystem.powerState.invariantName = \"Contested\":\r\n    {P(reportSystem.systemname, \"starsystem\")} is contested by {List(contestingPowers)}.\r\n|elif reportSystem.power && reportSystem.power != \"None\":\r\n    {P(reportSystem.systemname, \"starsystem\")} is\r\n    {if reportSystem.powerState.invariantName = \"Exploited\":\r\n        {OneOf(\"tenuously controlled\", \"exploited\")} by\r\n    |elif reportSystem.powerState.invariantName = \"Fortified\":\r\n        {OneOf(\"controlled\", \"being fortified\")} by\r\n    |elif reportSystem.powerState.invariantName = \"Stronghold\":\r\n        a stronghold of\r\n    |elif reportSystem.powerState.invariantName = \"Headquarters\":\r\n        the headquarters of\r\n    }\r\n    {reportSystem.power}\r\n    {if len(contestingPowers) > 0:\r\n        and is being undermined by {List(contestingPowers)}\r\n    }.\r\n}",
+			"default": true,
+			"name": "Powerplay report",
+			"description": "Report on the powerplay state in the contextual system"
+		},
 		"RandomizeVoice": {
 			"enabled": true,
 			"priority": 3,
