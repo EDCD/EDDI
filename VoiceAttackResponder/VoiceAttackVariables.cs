@@ -117,7 +117,10 @@ namespace EddiVoiceAttackResponder
                     var shipConfig = configService.shipMonitorConfiguration;
                     var currentShip = shipConfig.shipyard.FirstOrDefault( s => s.LocalId == shipConfig.currentshipid );
                     setShipValues( currentShip, "Ship", VaProxy );
-                    Task.Run( () => setShipyardValues( shipConfig.shipyard?.ToList(), VaProxy ) );
+                    Task.Run( () =>
+                    {
+                        setShipyardValues( shipConfig.shipyard?.ToList(), VaProxy );
+                    } );
                     return;
                 }
             }
