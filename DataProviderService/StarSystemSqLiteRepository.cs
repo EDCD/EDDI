@@ -177,28 +177,37 @@ namespace EddiDataProviderService
         {
             List<DatabaseStarSystem> results = new List<DatabaseStarSystem>();
             if (!starSystems.Any()) { return results; }
-            using (var con = SimpleDbConnection())
+
+            lock ( nameof(SimpleDbConnection) ) // Lock before reading from the database
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                using ( var con = SimpleDbConnection() )
                 {
-                    using (var transaction = con.BeginTransaction())
+                    con.Open();
+                    using ( var cmd = new SQLiteCommand( con ) )
                     {
-                        foreach (StarSystem starSystem in starSystems)
+                        using ( var transaction = con.BeginTransaction() )
                         {
-                            try
+                            foreach ( StarSystem starSystem in starSystems )
                             {
-                                cmd.Prepare();
-                                    cmd.Parameters.AddWithValue("@systemaddress", starSystem.systemAddress);
+                                try
+                                {
+                                    cmd.Prepare();
+                                    cmd.Parameters.AddWithValue( "@systemaddress", starSystem.systemAddress );
                                     cmd.CommandText = SELECT_SQL + WHERE_SYSTEMADDRESS;
-                                results.Add(ReadStarSystemEntry(cmd) ?? new DatabaseStarSystem(starSystem.systemname, starSystem.systemAddress, string.Empty));
+                                    results.Add( ReadStarSystemEntry( cmd ) ??
+                                                 new DatabaseStarSystem( starSystem.systemname,
+                                                     starSystem.systemAddress, string.Empty ) );
+                                }
+                                catch ( SQLiteException sqle )
+                                {
+                                    Logging.Warn(
+                                        "Problem reading data for star system '" + starSystem.systemname +
+                                        "' from database.", sqle );
+                                }
                             }
-                            catch (SQLiteException sqle)
-                            {
-                                Logging.Warn("Problem reading data for star system '" + starSystem.systemname + "' from database.", sqle );
-                            }
+
+                            transaction.Commit();
                         }
-                        transaction.Commit();
                     }
                 }
             }
