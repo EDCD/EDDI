@@ -67,7 +67,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * No journal event is written to record the redeemed contents power care packages.
     * The journal event `PowerplayCollect` (EDDI event `Power commodity obtained`) is missing. Commodities simply appear in cargo with no transaction event. 
     * The journal event `PowerplayDeliver` (EDDI event `Power commodity delivered`) is missing. Commodities simply disappear from cargo with no transaction event. 
-    * The journal event `RedeemVoucher` (EDDI event `Bounty paid`) is bugged and missing faction data needed to accurately track bounties redeemed through your Power contact.
+    * The journal event `PowerplayVoucher` (EDDI event `Power voucher received`) is missing. The journal event `RedeemVoucher` (EDDI event `Bounty paid`) is written but is bugged and missing faction data needed to accurately track bounties redeemed through your Power contact.
           
 ## 4.1.0-b3
   * Core
