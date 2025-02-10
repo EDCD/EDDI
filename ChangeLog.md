@@ -59,6 +59,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Power micro resources collected` script added.
       * `Power micro resources delivered` script added.
       * `Power salary claimed` obsolete script removed.
+      * `Route details` script updated to reduce redundant warnings for low fuel.
       * `Ship refuelled` script updated to no longer suppress 5T refueling increments.
       * `Signal detected` script updated to incorporate additional signal types and Powerplay details. 
       * `System report` script updated to omit power information now covered by the `Powerplay report` script.
