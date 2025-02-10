@@ -17,6 +17,7 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The controlling faction</summary>
+        [PublicAPI]
         public Faction Faction
         {
             get => _faction;
