@@ -6,6 +6,8 @@ using EddiEvents;
 using EddiSpeechService;
 using JetBrains.Annotations;
 using System;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using Utilities;
@@ -63,27 +65,15 @@ namespace EddiVoiceAttackResponder
 
                     // Set up our event responder.
                     voiceAttackEventHandler = new VoiceAttackEventHandler();
-                    VoiceAttackResponder.RaiseEvent += (s, @event) => { voiceAttackEventHandler.Handle(@event); };
+                    VoiceAttackResponder.RaiseEvent += OnRaiseEvent;
 
                     // Add notifiers for changes in variables we want to react to 
                     // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
-                    EDDI.Instance.PropertyChanged += (s, e) => VoiceAttackVariables.updateStandardValues( e, VaProxy);
-                    EDDI.Instance.State.CollectionChanged += (s, e) =>
-                    {
-                        VoiceAttackVariables.setDictionaryValues( EDDI.Instance.State, "state", VaProxy );
-                    };
-                    EDDI.Instance.State.PropertyChanged += ( s, e ) =>
-                    {
-                        VoiceAttackVariables.setDictionaryValues( EDDI.Instance.State, "state", VaProxy );
-                    };
-                    SpeechService.Instance.PropertyChanged += (s, e) =>
-                    {
-                        VoiceAttackVariables.setSpeechState( e);
-                    };
-                    CompanionAppService.Instance.StateChanged += (oldState, newState) =>
-                    {
-                        VoiceAttackVariables.setCAPIState( newState == CompanionAppService.State.Authorized, VaProxy );
-                    };
+                    EDDI.Instance.PropertyChanged += OnEddiPropertyChanged;
+                    EDDI.Instance.State.CollectionChanged += OnEddiStateCollectionChanged;
+                    EDDI.Instance.State.PropertyChanged += OnEddiStatePropertyChanged;
+                    SpeechService.Instance.PropertyChanged += OnSpeechPropertyChanged;
+                    CompanionAppService.Instance.StateChanged += OnCapiStateChanged;
 
                     EddiConfigService.ConfigService.Instance.PropertyChanged += VoiceAttackVariables.updateConfigurationValues;
 
@@ -134,6 +124,36 @@ namespace EddiVoiceAttackResponder
             appThread.Start();
         }
 
+        private static void OnCapiStateChanged ( CompanionAppService.State oldState, CompanionAppService.State newState )
+        {
+            VoiceAttackVariables.setCAPIState( newState == CompanionAppService.State.Authorized, VaProxy );
+        }
+
+        private static void OnSpeechPropertyChanged ( object s, PropertyChangedEventArgs e )
+        {
+            VoiceAttackVariables.setSpeechState( e );
+        }
+
+        private static void OnEddiStatePropertyChanged ( object s, PropertyChangedEventArgs e )
+        {
+            VoiceAttackVariables.setDictionaryValues( EDDI.Instance.State, "state", VaProxy );
+        }
+
+        private static void OnEddiStateCollectionChanged ( object s, NotifyCollectionChangedEventArgs e )
+        {
+            VoiceAttackVariables.setDictionaryValues( EDDI.Instance.State, "state", VaProxy );
+        }
+
+        private static void OnEddiPropertyChanged ( object s, PropertyChangedEventArgs e )
+        {
+            VoiceAttackVariables.updateStandardValues( e, VaProxy );
+        }
+
+        private static void OnRaiseEvent ( object s, Event @event )
+        {
+            voiceAttackEventHandler.Handle( @event );
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:Remove unused parameter", Justification = "VA API" )]
         // ReSharper disable once UnusedMember.Global
         // ReSharper disable once UnusedParameter.Global - VoiceAttack API
@@ -150,6 +170,15 @@ namespace EddiVoiceAttackResponder
             // Cancel event queue threads and wait for them to complete
             voiceAttackEventHandler.StopEventHandling();
 
+            // Unsubscribe from events
+            VoiceAttackResponder.RaiseEvent -= OnRaiseEvent;
+            EDDI.Instance.PropertyChanged -= OnEddiPropertyChanged;
+            EDDI.Instance.State.CollectionChanged -=OnEddiStateCollectionChanged;
+            EDDI.Instance.State.PropertyChanged -= OnEddiStatePropertyChanged;
+            SpeechService.Instance.PropertyChanged -= OnSpeechPropertyChanged;
+            CompanionAppService.Instance.StateChanged -= OnCapiStateChanged;
+            EddiConfigService.ConfigService.Instance.PropertyChanged -= VoiceAttackVariables.updateConfigurationValues;
+            
             // Stop all monitors and responders
             EDDI.Instance.Stop();
 
