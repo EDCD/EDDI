@@ -61,10 +61,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Power salary claimed` obsolete script removed.
       * `Ship refuelled` script updated to no longer suppress 5T refueling increments.
       * `Signal detected` script updated to incorporate additional signal types and Powerplay details. 
-    * Other Notes
-      * The journal event `PowerplayCollect` (EDDI event `Power commodity obtained`) should not be obsolete but appears to be missing? 
-      * The journal event `PowerplayDeliver` (EDDI event `Power commodity delivered`) should not be obsolete but appears to be missing? 
-      
+  * Powerplay 2.0 Known Issues
+    * No journal or status event is written for updates to the commander's merit count throughout the game session.
+    * No journal or status event is written for updates to the commander's power rank throughout the game session.
+    * No journal event is written to record the redeemed contents power care packages.
+    * The journal event `PowerplayCollect` (EDDI event `Power commodity obtained`) is missing. Commodities simply appear in cargo with no transaction event. 
+    * The journal event `PowerplayDeliver` (EDDI event `Power commodity delivered`) is missing. Commodities simply disappear from cargo with no transaction event. 
+    * The journal event `RedeemVoucher` (EDDI event `Bounty paid`) is bugged and missing faction data needed to accurately track bounties redeemed through your Power contact.
+          
 ## 4.1.0-b3
   * Core
     * Miscellaneous minor bug fixes.
