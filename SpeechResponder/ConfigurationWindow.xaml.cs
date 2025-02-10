@@ -400,7 +400,7 @@ namespace EddiSpeechResponder
         {
             if (SpeechResponder?.Personalities is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
-            CopyPersonalityWindow window = new CopyPersonalityWindow(SpeechResponder.Personalities)
+            var window = new CopyPersonalityWindow(SpeechResponder.Personalities)
             {
                 Owner = Window.GetWindow(this)
             };
@@ -430,6 +430,24 @@ namespace EddiSpeechResponder
                 case MessageBoxResult.Yes:
                     SpeechResponder.RemoveCurrentPersonality();
                     break;
+            }
+            EDDI.Instance.SpeechResponderModalWait = false;
+        }
+
+        private void configureHotkeysButtonClicked ( object sender, RoutedEventArgs e )
+        {
+            EDDI.Instance.SpeechResponderModalWait = true;
+            var window = new HotkeysWindow()
+            {
+                Owner = Window.GetWindow(this)
+            };
+            try
+            {
+                window.ShowDialog();
+            }
+            catch ( Win32Exception ex )
+            {
+                Logging.Warn( ex.Message, ex );
             }
             EDDI.Instance.SpeechResponderModalWait = false;
         }
