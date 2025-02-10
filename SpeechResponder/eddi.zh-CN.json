@@ -254,6 +254,15 @@
       "name": "Cargo scoop",
       "description": "Triggered when you deploy or retract your cargo scoop"
     },
+    "Cargo transfer": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Cargo transfer",
+      "description": "Triggered when transferring commodities between your ship, SRV, or carrier"
+    },
     "Cargo wingupdate": {
       "enabled": true,
       "priority": 3,
