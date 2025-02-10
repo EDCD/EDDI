@@ -164,8 +164,13 @@ namespace Eddi
             Logging.Error($"Unhandled exception: {ex.Message}.", ex);
         }
 
-        public static void ApplyAnyOverrideCulture(EDDIConfiguration configuration)
+        public static void ApplyAnyOverrideCulture(EDDIConfiguration configuration = null)
         {
+            if ( configuration is null )
+            {
+                configuration = ConfigService.Instance.eddiConfiguration;
+            }
+
             try
             {
                 // we are using the InvariantCulture name "" to mean user's culture
@@ -186,7 +191,7 @@ namespace Eddi
             OverrideThreadCulture(ci);
         }
 
-        public static void OverrideThreadCulture(CultureInfo ci)
+        private static void OverrideThreadCulture(CultureInfo ci)
         {
             if (ci == null) { return; }
             Thread.CurrentThread.CurrentCulture = ci;

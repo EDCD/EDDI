@@ -177,7 +177,7 @@ namespace EddiVoiceAttackResponder
 
             // This thread is invoked from VoiceAttack and may by invoked with the system default culture
             // so make sure that we're using our assigned culture.
-//            App.OverrideThreadCulture(App.overrideCulture);
+            App.ApplyAnyOverrideCulture();
 
             try
             {
