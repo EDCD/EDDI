@@ -488,12 +488,21 @@ namespace EddiSpeechResponder
             speechResponderHelpWindow.Show();
         }
 
-        private void SearchFilterText_OnTextChanged(object sender, TextChangedEventArgs e)
+        private async void SearchFilterText_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            using (ScriptsView.DeferRefresh())
+            filterTxt = searchFilterText.Text;
+            await ApplyFilterAsync();
+        }
+
+        private async Task ApplyFilterAsync ()
+        {
+            await Task.Delay( 300 ); // Debounce delay
+            if ( filterTxt == searchFilterText.Text ) // Ensure the filter text hasn't changed during the delay
             {
-                filterTxt = searchFilterText.Text;
-                ScriptsView.Filter = scriptsData_Filter;
+                using ( ScriptsView.DeferRefresh() )
+                {
+                    ScriptsView.Filter = scriptsData_Filter;
+                }
             }
         }
 
@@ -503,13 +512,10 @@ namespace EddiSpeechResponder
             if (!(sender is Script script)) { return true; }
 
             // If filter applies, filter items.
-            if ((script.Name?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false)
-                || (script.Description?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false)
-                || (script.Value?.ToLowerInvariant().Contains(filterTxt.ToLowerInvariant()) ?? false))
-            {
-                return true;
-            }
-            return false;
+            var lowerFilterTxt = filterTxt.ToLowerInvariant();
+            return script.Name?.IndexOf( lowerFilterTxt, StringComparison.OrdinalIgnoreCase ) >= 0
+                   || script.Description?.IndexOf( lowerFilterTxt, StringComparison.OrdinalIgnoreCase ) >= 0
+                   || script.Value?.IndexOf( lowerFilterTxt, StringComparison.OrdinalIgnoreCase ) >= 0;
         }
 
         private void EnableAll_Clicked(object sender, RoutedEventArgs e) 
