@@ -61,6 +61,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Power salary claimed` obsolete script removed.
       * `Ship refuelled` script updated to no longer suppress 5T refueling increments.
       * `Signal detected` script updated to incorporate additional signal types and Powerplay details. 
+      * `System report` script updated to omit power information now covered by the `Powerplay report` script.
   * Powerplay 2.0 Known Issues
     * No journal or status event is written for updates to the commander's merit count throughout the game session.
     * No journal or status event is written for updates to the commander's power rank throughout the game session.
