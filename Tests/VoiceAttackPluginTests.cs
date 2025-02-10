@@ -153,7 +153,7 @@ namespace Tests
 
             dynamic vaProxy = new MockVAProxy();
             var mockVAProxy = (MockVAProxy)vaProxy;
-            VoiceAttackVariables.setDictionaryValues( dict, "state", ref vaProxy );
+            VoiceAttackVariables.setDictionaryValues( dict, "state", vaProxy );
             Assert.AreEqual( dict.FirstOrDefault( kv => kv.Key == varName ).Value?.ToString(), mockVAProxy.GetText( "EDDI state " + varName ) );
             Assert.AreEqual( decimalResult is null 
                 ? null 
@@ -343,7 +343,7 @@ namespace Tests
             Assert.IsNotNull( krait );
             Assert.IsNotNull( cobraMk3 );
 
-            VoiceAttackVariables.setShipValues( krait, "Ship", ref vaProxy );
+            VoiceAttackVariables.setShipValues( krait, "Ship", vaProxy );
             Assert.AreEqual( "Krait Mk. II", mockVAProxy.GetText( "Ship model" ) );
             Assert.AreEqual( "The Impact Kraiter", mockVAProxy.GetText("Ship name") );
             Assert.AreEqual( "TK-29K", mockVAProxy.GetText("Ship ident") );
@@ -368,7 +368,7 @@ namespace Tests
             Assert.AreEqual( 310425, mockVAProxy.GetDecimal("Ship large hardpoint 0 module cost") );
             Assert.AreEqual( 344916, mockVAProxy.GetDecimal("Ship large hardpoint 0 module value") );
 
-            VoiceAttackVariables.setShipValues( cobraMk3, "Ship", ref vaProxy );
+            VoiceAttackVariables.setShipValues( cobraMk3, "Ship", vaProxy );
             Assert.AreEqual( "Cobra Mk. III", mockVAProxy.GetText("Ship model") );
             Assert.AreEqual( "The Dynamo", mockVAProxy.GetText("Ship name") );
             Assert.AreEqual( "TK-20C", mockVAProxy.GetText("Ship ident") );

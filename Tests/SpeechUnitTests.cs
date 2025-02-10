@@ -147,7 +147,7 @@ namespace Tests
             var pathingResults = new HashSet<string>();
             for ( var i = 0; i < 1000; i++)
             {
-                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackInvokationHandler.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -168,7 +168,7 @@ namespace Tests
             var pathingResults = new HashSet<string>();
             for ( var i = 0; i < 1000; i++)
             {
-                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackInvokationHandler.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -197,7 +197,7 @@ namespace Tests
             var pathingResults = new HashSet<string>();
             for ( var i = 0; i < 1000; i++)
             {
-                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackInvokationHandler.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -218,7 +218,7 @@ namespace Tests
             var pathingResults = new HashSet<string>();
             for ( var i = 0; i < 10000; i++)
             {
-                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackInvokationHandler.SpeechFromScript(pathingString);
                 pathingResults.Add( pathedString );
                 if ( pathedString == "Seven")
                 {
@@ -244,7 +244,7 @@ namespace Tests
             var pathingResults = new HashSet<string>();
             for (var i = 0; i < 1000; i++)
             {
-                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackInvokationHandler.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -262,7 +262,7 @@ namespace Tests
             var pathingResults = new HashSet<string>();
             for (var i = 0; i < 1000; i++)
             {
-                var pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                var pathedString = VoiceAttackInvokationHandler.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 

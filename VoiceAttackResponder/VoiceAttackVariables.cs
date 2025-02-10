@@ -16,20 +16,20 @@ namespace EddiVoiceAttackResponder
 {
     public class VoiceAttackVariables
     {
-        private static dynamic VaProxy;
+        private static dynamic VaProxy => VoiceAttackPlugin.VaProxy;
 
         // The following variables notify changes via `PropertyChanged`
         private static readonly Dictionary<string, Action> StandardValues = new Dictionary<string, Action>
         {
-            { nameof(EDDI.Instance.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref VaProxy) },
-            { nameof(EDDI.Instance.LastStarSystem), () => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref VaProxy) },
-            { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref VaProxy) },
-            { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref VaProxy) },
+            { nameof(EDDI.Instance.CurrentStarSystem), () => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", VaProxy) },
+            { nameof(EDDI.Instance.LastStarSystem), () => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", VaProxy) },
+            { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", VaProxy) },
+            { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", VaProxy) },
             { nameof(EDDI.Instance.DestinationDistanceLy), () => VaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
-            { nameof(EDDI.Instance.SquadronStarSystem), () => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref VaProxy) },
+            { nameof(EDDI.Instance.SquadronStarSystem), () => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", VaProxy) },
             { nameof(EDDI.Instance.HomeStarSystem), () =>
                 {
-                    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref VaProxy);
+                    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", VaProxy);
 
                     // Backwards-compatibility with 1.x documented variables
                     try
@@ -46,19 +46,19 @@ namespace EddiVoiceAttackResponder
                         Logging.Error("Failed to set 1.x home system values", ex);
                     }
                 } },
-            { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref VaProxy) },
-            { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station", ref VaProxy) },
-            { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station", ref VaProxy) },
-            { nameof(EDDI.Instance.Cmdr), () => setCommanderValues(EDDI.Instance.Cmdr, ref VaProxy) },
-            { nameof(EDDI.Instance.FleetCarrier), () => setFleetCarrierValues(EDDI.Instance.FleetCarrier, "Carrier", ref VaProxy) },
-            { nameof(EDDI.Instance.CurrentShip), () => setShipValues(EDDI.Instance.CurrentShip, "Ship", ref VaProxy) },
+            { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", VaProxy) },
+            { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station", VaProxy) },
+            { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station", VaProxy) },
+            { nameof(EDDI.Instance.Cmdr), () => setCommanderValues(EDDI.Instance.Cmdr, VaProxy) },
+            { nameof(EDDI.Instance.FleetCarrier), () => setFleetCarrierValues(EDDI.Instance.FleetCarrier, "Carrier", VaProxy) },
+            { nameof(EDDI.Instance.CurrentShip), () => setShipValues(EDDI.Instance.CurrentShip, "Ship", VaProxy) },
             { nameof(EDDI.Instance.Environment), () => VaProxy.SetText("Environment", EDDI.Instance.Environment) },
             { nameof(EDDI.Instance.Vehicle), () => VaProxy.SetText("Vehicle", EDDI.Instance.Vehicle) },
             { nameof(EDDI.Instance.inHorizons), () => VaProxy.SetBoolean("horizons", EDDI.Instance.inHorizons) },
             { nameof(EDDI.Instance.inOdyssey), () => VaProxy.SetBoolean("odyssey", EDDI.Instance.inOdyssey) },
         };
 
-        protected static void updateStandardValues(PropertyChangedEventArgs eventArgs, ref dynamic vaProxy)
+        protected internal static void updateStandardValues(PropertyChangedEventArgs eventArgs, dynamic vaProxy)
         {
             // Update select values when triggered by a `PropertyChanged` event
             foreach (var standardValue in StandardValues)
@@ -81,13 +81,12 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
             vaProxy.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
             vaProxy.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
-            setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", ref vaProxy );
-            setStationValues(NavigationService.Instance.SearchStation, "Search station", ref vaProxy );
+            setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system", vaProxy );
+            setStationValues(NavigationService.Instance.SearchStation, "Search station", vaProxy );
         }
 
-        protected static void initializeStandardValues( dynamic vaProxy )
+        protected internal static void initializeStandardValues()
         {
-            VaProxy = vaProxy;
             foreach (var standardValue in StandardValues)
             {
                 try
@@ -102,14 +101,14 @@ namespace EddiVoiceAttackResponder
             VaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
         }
 
-        protected static void updateConfigurationValues ( object sender, PropertyChangedEventArgs e )
+        protected internal static void updateConfigurationValues ( object sender, PropertyChangedEventArgs e )
         {
             if ( sender is ConfigService configService )
             {
                 if ( e.PropertyName.Equals( nameof( CargoMonitorConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                 {
                     var cargoConfig = configService.cargoMonitorConfiguration;
-                    setCargo( cargoConfig, ref VaProxy );
+                    setCargo( cargoConfig, VaProxy );
                     return;
                 }
 
@@ -117,15 +116,15 @@ namespace EddiVoiceAttackResponder
                 {
                     var shipConfig = configService.shipMonitorConfiguration;
                     var currentShip = shipConfig.shipyard.FirstOrDefault( s => s.LocalId == shipConfig.currentshipid );
-                    setShipValues( currentShip, "Ship", ref VaProxy );
-                    Task.Run( () => setShipyardValues( shipConfig.shipyard?.ToList(), ref VaProxy ) );
+                    setShipValues( currentShip, "Ship", VaProxy );
+                    Task.Run( () => setShipyardValues( shipConfig.shipyard?.ToList(), VaProxy ) );
                     return;
                 }
             }
         }
 
         // Set values from a dictionary
-        public static void setDictionaryValues ( IDictionary<string, object> dict, string prefix, ref dynamic vaProxy )
+        public static void setDictionaryValues ( IDictionary<string, object> dict, string prefix, dynamic vaProxy )
         {
             foreach ( var key in dict.Keys )
             {
@@ -190,7 +189,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Set values for a station</summary>
-        protected static void setStationValues(Station station, string prefix, ref dynamic vaProxy)
+        protected static void setStationValues(Station station, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting station information");
 
@@ -215,7 +214,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set station information");
         }
 
-        protected static void setCommanderValues(Commander cmdr, ref dynamic vaProxy)
+        protected static void setCommanderValues(Commander cmdr, dynamic vaProxy)
         {
             try
             {
@@ -253,17 +252,17 @@ namespace EddiVoiceAttackResponder
                 // Backwards-compatibility with 1.x
                 vaProxy.SetText("System rank", cmdr?.title);
 
-                setStatus(ref vaProxy, "Operational");
+                setStatus(vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setStatus(ref vaProxy, "Failed to set commander information", e);
+                setStatus(vaProxy, "Failed to set commander information", e);
             }
 
             Logging.Debug("Set commander information");
         }
 
-        public static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
+        public static void setShipValues(Ship ship, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting ship information (" + prefix + ")");
             try
@@ -350,11 +349,11 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetDecimal(prefix + " distance", ship.distance);
                 }
 
-                setStatus(ref vaProxy, "Operational");
+                setStatus(vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setStatus(ref vaProxy, "Failed to set ship information", e);
+                setStatus(vaProxy, "Failed to set ship information", e);
             }
 
             Logging.Debug("Set ship information");
@@ -449,14 +448,14 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetText(name + " station discount (spoken)", (string)null);
         }
 
-        protected static void setShipyardValues(List<Ship> shipyard, ref dynamic vaProxy)
+        protected static void setShipyardValues(List<Ship> shipyard, dynamic vaProxy)
         {
             if (shipyard != null)
             {
                 int currentStoredShip = 1;
                 foreach (var StoredShip in shipyard)
                 {
-                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
+                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, vaProxy);
                     currentStoredShip++;
                 }
 
@@ -464,7 +463,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        protected static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
+        protected static void setStarSystemValues(StarSystem system, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting system information (" + prefix + ")");
             try
@@ -517,11 +516,11 @@ namespace EddiVoiceAttackResponder
                     }
                     setBodyValues(primaryBody, prefix + " main star", vaProxy);
                 }
-                setStatus(ref vaProxy, "Operational");
+                setStatus(vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setStatus(ref vaProxy, "Failed to set system information", e);
+                setStatus(vaProxy, "Failed to set system information", e);
             }
             Logging.Debug("Set system information (" + prefix + ")");
         }
@@ -535,7 +534,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set body information (" + prefix + ")");
         }
 
-        protected static void setDetailedBodyValues(Body body, string prefix, ref dynamic vaProxy)
+        protected static void setDetailedBodyValues(Body body, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting current stellar body information");
             vaProxy.SetText(prefix + " type", (body?.bodyType ?? BodyType.None).localizedName);
@@ -595,7 +594,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set body information (" + prefix + ")");
         }
 
-        private static void setFleetCarrierValues(FleetCarrier fleetCarrier, string prefix, ref dynamic vaProxy)
+        private static void setFleetCarrierValues(FleetCarrier fleetCarrier, string prefix, dynamic vaProxy)
         {
             if (fleetCarrier is null) { return; }
             var variables = new MetaVariables(fleetCarrier.GetType(), fleetCarrier);
@@ -632,12 +631,12 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        protected static void setCAPIState(bool caPIactive, ref dynamic vaProxy)
+        protected internal static void setCAPIState(bool caPIactive, dynamic vaProxy)
         {
             vaProxy.SetBoolean("cAPI active", caPIactive);
         }
 
-        protected static void setSpeechState(PropertyChangedEventArgs eventArgs)
+        protected internal static void setSpeechState(PropertyChangedEventArgs eventArgs)
         {
             if (eventArgs.PropertyName == nameof(SpeechService.Instance.eddiSpeaking).Split('.').Last())
             {
@@ -656,7 +655,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        protected static void setStatus(ref dynamic vaProxy, string status, Exception exception = null)
+        protected internal static void setStatus(dynamic vaProxy, string status, Exception exception = null)
         {
             vaProxy.SetText("EDDI status", status);
             if (exception is null)
@@ -743,12 +742,12 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception e)
             {
-                setStatus(ref VaProxy, "Failed to set real-time status information", e);
+                setStatus(VaProxy, "Failed to set real-time status information", e);
                 Logging.Error( "Failed to set real-time status information", e );
             }
         }
 
-        protected static void setCargo( CargoMonitorConfiguration cargoConfig, ref dynamic vaProxy )
+        protected static void setCargo( CargoMonitorConfiguration cargoConfig, dynamic vaProxy )
         {
             try
             {

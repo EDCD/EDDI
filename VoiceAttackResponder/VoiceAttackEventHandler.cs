@@ -11,13 +11,12 @@ namespace EddiVoiceAttackResponder
 {
     internal class VoiceAttackEventHandler
     {
-        private dynamic VaProxy;
+        private dynamic VaProxy => VoiceAttackPlugin.VaProxy;
         private readonly ConcurrentDictionary<string, TaskQueue<Event>> taskQueues = new ConcurrentDictionary<string, TaskQueue<Event>>();
         private readonly CancellationTokenSource consumerCancellationTS = new CancellationTokenSource(); // This must be static so that it is visible to child threads and tasks
 
-        public VoiceAttackEventHandler(dynamic vaProxy )
+        public VoiceAttackEventHandler()
         {
-            VaProxy = vaProxy;
             Logging.Debug( "Started VoiceAttack event handler" );
         }
 

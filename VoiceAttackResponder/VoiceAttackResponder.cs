@@ -3,9 +3,11 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using System;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiVoiceAttackResponder
 {
     /// <summary>
