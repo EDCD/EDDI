@@ -204,8 +204,8 @@ namespace EddiJournalMonitor
 
                                     // Get station services data
                                     data.TryGetValue("StationServices", out object val);
-                                    List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
-                                    List<StationService> stationServices = new List<StationService>();
+                                    var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+                                    var stationServices = new List<StationService>();
                                     foreach (string service in stationservices)
                                     {
                                         stationServices.Add(StationService.FromEDName(service));
@@ -213,9 +213,9 @@ namespace EddiJournalMonitor
 
                                     // Get station economies and their shares
                                     data.TryGetValue("StationEconomies", out object val2);
-                                    List<object> economies = val2 as List<object> ?? new List<object>();
-                                    List<EconomyShare> Economies = new List<EconomyShare>();
-                                    foreach (Dictionary<string, object> economyshare in economies)
+                                    var economies = val2 as List<object> ?? new List<object>();
+                                    var Economies = new List<EconomyShare>();
+                                    foreach (var economyshare in economies.Cast<IDictionary<string, object>>() )
                                     {
                                         Economy economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
                                         economy.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
@@ -433,8 +433,8 @@ namespace EddiJournalMonitor
                                     // Get station economies and their shares
                                     data.TryGetValue("StationEconomies", out object val2);
                                     List<object> economies = val2 as List<object> ?? new List<object>();
-                                    List<EconomyShare> Economies = new List<EconomyShare>();
-                                    foreach (Dictionary<string, object> economyshare in economies)
+                                    var Economies = new List<EconomyShare>();
+                                    foreach (var economyshare in economies.Cast<IDictionary<string, object>>() )
                                     {
                                         var economyShare = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
                                         economyShare.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
@@ -446,11 +446,11 @@ namespace EddiJournalMonitor
                                     }
 
                                     // If landed
-                                    decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
                                     // Parse factions array data
-                                    List<Faction> factions = new List<Faction>();
+                                    var factions = new List<Faction>();
                                     data.TryGetValue("Factions", out object factionsVal);
                                     if (factionsVal != null)
                                     {
@@ -458,7 +458,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Parse conflicts array data
-                                    List<Conflict> conflicts = new List<Conflict>();
+                                    var conflicts = new List<Conflict>();
                                     data.TryGetValue("Conflicts", out object conflictsVal);
                                     if (conflictsVal != null)
                                     {
@@ -500,7 +500,7 @@ namespace EddiJournalMonitor
                                     var shared = val != null && (long)val == 1;
 
                                     long reward;
-                                    List<Reward> rewards = new List<Reward>();
+                                    var rewards = new List<Reward>();
 
                                     if (data.ContainsKey("Reward"))
                                     {
@@ -512,7 +512,7 @@ namespace EddiJournalMonitor
                                             // 0-credit reward; ignore
                                             break;
                                         }
-                                        string factionName = GetFactionName(data, "Faction");
+                                        var factionName = GetFactionName(data, "Faction");
                                         rewards.Add(new Reward(factionName, reward));
                                     }
                                     else
@@ -526,10 +526,10 @@ namespace EddiJournalMonitor
                                         }
                                         // Obtain list of rewards
                                         data.TryGetValue("Rewards", out val);
-                                        List<object> rewardsData = (List<object>)val;
+                                        var rewardsData = (List<object>)val;
                                         if (rewardsData != null)
                                         {
-                                            foreach (Dictionary<string, object> rewardData in rewardsData)
+                                            foreach (var rewardData in rewardsData.Cast<IDictionary<string, object>>() )
                                             {
                                                 string factionName = GetFactionName(rewardData, "Faction");
                                                 rewardData.TryGetValue("Reward", out val);
@@ -695,7 +695,7 @@ namespace EddiJournalMonitor
                                     var compartments = new List<Compartment>();
                                     if (modulesData != null)
                                     {
-                                        foreach (Dictionary<string, object> moduleData in modulesData)
+                                        foreach (var moduleData in modulesData.Cast<IDictionary<string, object>>() )
                                         {
                                             // Common items
                                             var slot = JsonParsing.getString(moduleData, "Slot");
@@ -736,7 +736,7 @@ namespace EddiJournalMonitor
                                             {
                                                 engineeringData.TryGetValue("Modifiers", out object modifiersVal);
                                                 var modifiersData = (List<object>)modifiersVal;
-                                                foreach (Dictionary<string, object> modifier in modifiersData)
+                                                foreach (var modifier in modifiersData.Cast<IDictionary<string, object>>() )
                                                 {
                                                     try
                                                     {
@@ -1032,29 +1032,29 @@ namespace EddiJournalMonitor
                                     List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
                                     if (parentsVal != null)
                                     {
-                                        foreach (IDictionary<string, object> parent in (List<object>)parentsVal)
+                                        foreach (var parent in ((List<object>)parentsVal).Cast<IDictionary<string, object>>() )
                                         {
                                             parents.Add(parent);
                                         }
                                     }
 
                                     // Scan status
-                                    bool? alreadydiscovered = scantype == "NavBeaconDetail" ? true : JsonParsing.getOptionalBool(data, "WasDiscovered");
-                                    bool? alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped");
+                                    var alreadydiscovered = scantype == "NavBeaconDetail" ? true : JsonParsing.getOptionalBool(data, "WasDiscovered");
+                                    var alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped");
 
                                     // Rings
                                     data.TryGetValue("Rings", out object val);
-                                    List<object> ringsData = (List<object>)val;
-                                    List<Ring> rings = new List<Ring>();
+                                    var ringsData = (List<object>)val;
+                                    var rings = new List<Ring>();
                                     if (ringsData != null)
                                     {
-                                        foreach (Dictionary<string, object> ringData in ringsData)
+                                        foreach (var ringData in ringsData.Cast<IDictionary<string, object>>() )
                                         {
-                                            string ringName = JsonParsing.getString(ringData, "Name");
-                                            RingComposition ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
-                                            decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
-                                            decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
-                                            decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
+                                            var ringName = JsonParsing.getString(ringData, "Name");
+                                            var ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
+                                            var ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
+                                            var ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
+                                            var ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
 
                                             rings.Add(new Ring(ringName, ringComposition, ringMassMegaTons, ringInnerRadiusKm, ringOuterRadiusKm));
                                         }
@@ -1063,15 +1063,15 @@ namespace EddiJournalMonitor
                                     if (data.ContainsKey("StarType"))
                                     {
                                         // Star
-                                        string stellarclass = JsonParsing.getString(data, "StarType");
-                                        int? stellarsubclass = JsonParsing.getOptionalInt(data, "Subclass");
-                                        decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
-                                        decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
-                                        string luminosityClass = JsonParsing.getString(data, "Luminosity");
+                                        var stellarclass = JsonParsing.getString(data, "StarType");
+                                        var stellarsubclass = JsonParsing.getOptionalInt(data, "Subclass");
+                                        var stellarMass = JsonParsing.getDecimal(data, "StellarMass");
+                                        var absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
+                                        var luminosityClass = JsonParsing.getString(data, "Luminosity");
                                         data.TryGetValue("Age_MY", out val);
-                                        long ageMegaYears = (long)val;
+                                        var ageMegaYears = (long)val;
 
-                                        Body star = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped)
+                                        var star = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped)
                                         {
                                             scannedDateTime = (DateTime?)timestamp
                                         };
@@ -1082,38 +1082,38 @@ namespace EddiJournalMonitor
                                     else if (data.ContainsKey("PlanetClass"))
                                     {
                                         // Body
-                                        bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock") ?? false;
+                                       var tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock") ?? false;
 
-                                        PlanetClass planetClass = PlanetClass.FromEDName(JsonParsing.getString(data, "PlanetClass")) ?? PlanetClass.None;
-                                        decimal? earthMass = JsonParsing.getOptionalDecimal(data, "MassEM");
+                                        var planetClass = PlanetClass.FromEDName(JsonParsing.getString(data, "PlanetClass")) ?? PlanetClass.None;
+                                        var earthMass = JsonParsing.getOptionalDecimal(data, "MassEM");
 
                                         // MKW: Gravity in the Journal is in m/s; must convert it to G
-                                        decimal gravity = ConstantConverters.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
+                                        var gravity = ConstantConverters.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
 
-                                        decimal? pressureAtm = ConstantConverters.pascals2atm(JsonParsing.getOptionalDecimal(data, "SurfacePressure"));
+                                        var pressureAtm = ConstantConverters.pascals2atm(JsonParsing.getOptionalDecimal(data, "SurfacePressure"));
 
-                                        bool? landable = JsonParsing.getOptionalBool(data, "Landable") ?? false;
+                                        var landable = JsonParsing.getOptionalBool(data, "Landable") ?? false;
 
-                                        ReserveLevel reserveLevel = ReserveLevel.FromEDName(JsonParsing.getString(data, "ReserveLevel"));
+                                        var reserveLevel = ReserveLevel.FromEDName(JsonParsing.getString(data, "ReserveLevel"));
 
                                         // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
                                         // properties, so we use them in preference to "Atmosphere"
 
                                         // Gas giants may receive an empty string in place of an atmosphere class string. Fix it, since gas giants definitely have atmospheres. 
-                                        AtmosphereClass atmosphereClass = planetClass.invariantName.Contains("gas giant") && JsonParsing.getString(data, "AtmosphereType") == string.Empty
+                                        var atmosphereClass = planetClass.invariantName.Contains("gas giant") && JsonParsing.getString(data, "AtmosphereType") == string.Empty
                                             ? AtmosphereClass.FromEDName("GasGiant")
                                             : AtmosphereClass.FromEDName(JsonParsing.getString(data, "AtmosphereType")) ?? AtmosphereClass.None;
 
                                         data.TryGetValue("AtmosphereComposition", out val);
-                                        List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();
+                                        var atmosphereCompositions = new List<AtmosphereComposition>();
                                         if (val != null)
                                         {
                                             if (val is List<object> atmosJson)
                                             {
-                                                foreach (Dictionary<string, object> atmoJson in atmosJson)
+                                                foreach (var atmoJson in atmosJson.Cast<IDictionary<string, object>>() )
                                                 {
-                                                    string edComposition = JsonParsing.getString(atmoJson, "Name");
-                                                    decimal? percent = JsonParsing.getOptionalDecimal(atmoJson, "Percent");
+                                                    var edComposition = JsonParsing.getString(atmoJson, "Name");
+                                                    var percent = JsonParsing.getOptionalDecimal(atmoJson, "Percent");
                                                     if (edComposition != null && percent != null)
                                                     {
                                                         atmosphereCompositions.Add(new AtmosphereComposition(edComposition, (decimal)percent));
@@ -1127,13 +1127,13 @@ namespace EddiJournalMonitor
                                         }
 
                                         data.TryGetValue("Composition", out val);
-                                        List<SolidComposition> solidCompositions = new List<SolidComposition>();
+                                        var solidCompositions = new List<SolidComposition>();
                                         if (val != null)
                                         {
                                             if (val is Dictionary<string, object> bodyCompsJson)
                                             {
-                                                IDictionary<string, object> compositionData = (IDictionary<string, object>)val;
-                                                foreach (KeyValuePair<string, object> kv in compositionData)
+                                                var compositionData = (IDictionary<string, object>)val;
+                                                foreach (var kv in compositionData)
                                                 {
                                                     string edComposition = kv.Key;
                                                     // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
@@ -1151,16 +1151,16 @@ namespace EddiJournalMonitor
                                         }
 
                                         data.TryGetValue("Materials", out val);
-                                        List<MaterialPresence> materials = new List<MaterialPresence>();
+                                       var materials = new List<MaterialPresence>();
                                         if (val != null)
                                         {
                                             if (val is Dictionary<string, object>)
                                             {
                                                 // 2.2 style
-                                                IDictionary<string, object> materialsData = (IDictionary<string, object>)val;
-                                                foreach (KeyValuePair<string, object> kv in materialsData)
+                                                var materialsData = (IDictionary<string, object>)val;
+                                                foreach (var kv in materialsData)
                                                 {
-                                                    Material material = Material.FromEDName(kv.Key);
+                                                    var material = Material.FromEDName(kv.Key);
                                                     if (material != null)
                                                     {
                                                         materials.Add(new MaterialPresence(material, JsonParsing.getDecimal("Amount", kv.Value)));
@@ -1169,18 +1169,18 @@ namespace EddiJournalMonitor
                                             }
                                             else if (val is List<object> materialsJson) // 2.3 style
                                             {
-                                                foreach (Dictionary<string, object> materialJson in materialsJson)
+                                                foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
                                                 {
-                                                    Material material = Material.FromEDName((string)materialJson["Name"]);
+                                                    var material = Material.FromEDName((string)materialJson["Name"]);
                                                     materials.Add(new MaterialPresence(material, JsonParsing.getDecimal(materialJson, "Percent")));
                                                 }
                                             }
                                         }
 
-                                        TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
-                                        Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
+                                        var terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
+                                        var volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        Body body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped)
+                                        var body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped)
                                         {
                                             scannedDateTime = (DateTime?)timestamp
                                         };
@@ -1299,21 +1299,21 @@ namespace EddiJournalMonitor
                                 break;
                             case "StoredShips":
                                 {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    string station = JsonParsing.getString(data, "StationName");
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var station = JsonParsing.getString(data, "StationName");
 
-                                    List<Ship> shipyard = new List<Ship>();
+                                    var shipyard = new List<Ship>();
                                     foreach (var type in Enum.GetNames(typeof(ShipyardType)))
                                     {
                                         data.TryGetValue(type, out object val);
-                                        List<object> shipsData = (List<object>)val;
+                                        var shipsData = (List<object>)val;
                                         if (shipsData != null)
                                         {
-                                            foreach (Dictionary<string, object> shipData in shipsData)
+                                            foreach (var shipData in shipsData.Cast<IDictionary<string, object>>() )
                                             {
-                                                string shipType = JsonParsing.getString(shipData, "ShipType");
-                                                Ship ship = ShipDefinitions.FromEDModel(shipType);
+                                                var shipType = JsonParsing.getString(shipData, "ShipType");
+                                                var ship = ShipDefinitions.FromEDModel(shipType);
                                                 if (ship != null)
                                                 {
                                                     ship.LocalId = JsonParsing.getInt(shipData, "ShipID");
@@ -1343,19 +1343,19 @@ namespace EddiJournalMonitor
                                 break;
                             case "StoredModules":
                                 {
-                                    List<StoredModule> storedModules = new List<StoredModule>();
+                                    var storedModules = new List<StoredModule>();
 
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    string station = JsonParsing.getString(data, "StationName");
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var station = JsonParsing.getString(data, "StationName");
 
                                     data.TryGetValue("Items", out object val);
-                                    List<object> items = (List<object>)val;
+                                    var items = (List<object>)val;
                                     if (items != null)
                                     {
-                                        foreach (Dictionary<string, object> item in items)
+                                        foreach (var item in items.Cast<IDictionary<string, object>>() )
                                         {
-                                            string name = JsonParsing.getString(item, "Name");
+                                            var name = JsonParsing.getString(item, "Name");
                                             Module module = new Module(Module.FromEDName(name))
                                             {
                                                 hot = JsonParsing.getOptionalBool(item, "Hot") ?? false
@@ -1367,7 +1367,7 @@ namespace EddiJournalMonitor
                                             module.engineermodification = Blueprint.FromEDNameAndGrade(module.modificationEDName, module.engineerlevel) ?? Blueprint.None;
                                             module.engineerquality = module.modified ? JsonParsing.getDecimal(item, "Quality") : 0;
 
-                                            StoredModule storedModule = new StoredModule
+                                            var storedModule = new StoredModule
                                             {
                                                 module = module,
                                                 slot = JsonParsing.getInt(item, "StorageSlot"),
@@ -1406,13 +1406,13 @@ namespace EddiJournalMonitor
                                     }
 
                                     data.TryGetValue("Commodities", out val);
-                                    List<object> commodities = (List<object>)val;
-                                    List<CommodityAmount> Commodities = new List<CommodityAmount>();
-                                    foreach (Dictionary<string, object> _commodity in commodities)
+                                    var commodities = (List<object>)val;
+                                    var Commodities = new List<CommodityAmount>();
+                                    foreach (var _commodity in commodities.Cast<IDictionary<string, object>>() )
                                     {
-                                        string commodityEdName = JsonParsing.getString(_commodity, "Name");
-                                        CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityEdName);
-                                        int count = JsonParsing.getInt(_commodity, "Count");
+                                        var commodityEdName = JsonParsing.getString(_commodity, "Name");
+                                        var commodity = CommodityDefinition.FromEDName(commodityEdName);
+                                        var count = JsonParsing.getInt(_commodity, "Count");
                                         if (commodity == null)
                                         {
                                             Logging.Info("Unknown commodity " + commodityEdName);
@@ -1422,13 +1422,13 @@ namespace EddiJournalMonitor
                                     }
 
                                     data.TryGetValue("Materials", out val);
-                                    List<object> materials = (List<object>)val;
-                                    List<MaterialAmount> Materials = new List<MaterialAmount>();
-                                    foreach (Dictionary<string, object> _material in materials)
+                                    var materials = (List<object>)val;
+                                    var Materials = new List<MaterialAmount>();
+                                    foreach (var _material in materials.Cast<IDictionary<string, object>>() )
                                     {
-                                        string materialEdName = JsonParsing.getString(_material, "Name");
-                                        Material material = Material.FromEDName(materialEdName);
-                                        int count = JsonParsing.getInt(_material, "Count");
+                                        var materialEdName = JsonParsing.getString(_material, "Name");
+                                        var material = Material.FromEDName(materialEdName);
+                                        var count = JsonParsing.getInt(_material, "Count");
                                         Materials.Add(new MaterialAmount(material, count));
                                     }
 
@@ -1522,21 +1522,19 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Items", out val);
                                     List<object> items = (List<object>)val;
 
-                                    List<string> slots = new List<string>();
-                                    List<Module> modules = new List<Module>();
+                                    var slots = new List<string>();
+                                    var modules = new List<Module>();
 
-                                    Module module = new Module();
                                     if (items != null)
                                     {
-
-                                        foreach (Dictionary<string, object> item in items)
+                                        foreach (var item in items.Cast<IDictionary<string, object>>() )
                                         {
-                                            string slot = JsonParsing.getString(item, "Slot");
+                                            var slot = JsonParsing.getString(item, "Slot");
                                             slots.Add(slot);
 
-                                            module = Module.FromEDName(JsonParsing.getString(item, "Name"));
+                                            var module = Module.FromEDName(JsonParsing.getString(item, "Name"));
                                             module.hot = JsonParsing.getBool(item, "Hot");
-                                            string engineerModifications = JsonParsing.getString(item, "EngineerModifications");
+                                            var engineerModifications = JsonParsing.getString(item, "EngineerModifications");
                                             module.modified = engineerModifications != null;
                                             module.engineerlevel = JsonParsing.getOptionalInt(item, "Level") ?? 0;
                                             module.engineerquality = JsonParsing.getOptionalDecimal(item, "Quality") ?? 0;
@@ -2322,7 +2320,7 @@ namespace EddiJournalMonitor
                                         // Multiple killers
                                         data.TryGetValue("Killers", out object val);
                                         List<object> killersData = (List<object>)val;
-                                        foreach (IDictionary<string, object> killerData in killersData)
+                                        foreach (var killerData in killersData.Cast<IDictionary<string, object>>() )
                                         {
                                             killers.Add(parseKiller(killerData, false));
                                         }
@@ -2454,12 +2452,12 @@ namespace EddiJournalMonitor
                                 break;
                             case "MultiSellExplorationData":
                                 {
-                                    List<string> systems = new List<string>();
+                                    var systems = new List<string>();
                                     data.TryGetValue("Discovered", out object val);
-                                    List<object> discovered = (List<object>)val;
-                                    foreach (Dictionary<string, object> discoveredSystem in discovered)
+                                    var discovered = (List<object>)val;
+                                    foreach (var discoveredSystem in discovered.Cast<IDictionary<string, object>>() )
                                     {
-                                        string system = JsonParsing.getString(discoveredSystem, "SystemName");
+                                        var system = JsonParsing.getString(discoveredSystem, "SystemName");
                                         if (!string.IsNullOrEmpty(system))
                                         {
                                             systems.Add(system);
@@ -2606,7 +2604,7 @@ namespace EddiJournalMonitor
                                         }
                                         else if (val is List<object> materialsJson) // 2.3 style
                                         {
-                                            foreach (Dictionary<string, object> materialJson in materialsJson)
+                                            foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
                                             {
                                                 var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
                                                 materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
@@ -2625,7 +2623,7 @@ namespace EddiJournalMonitor
                                         // This is a startup entry. 
                                         // Update engineer progress / status data
                                         List<object> engineers = (List<object>)val;
-                                        foreach (IDictionary<string, object> engineerData in engineers)
+                                        foreach (var engineerData in engineers.Cast<IDictionary<string, object>>())
                                         {
                                             Engineer engineer = parseEngineer(engineerData);
                                             if (!string.IsNullOrEmpty(engineer.name))
@@ -3087,35 +3085,35 @@ namespace EddiJournalMonitor
                             case "RedeemVoucher":
                                 {
 
-                                    string type = JsonParsing.getString(data, "Type");
-                                    List<Reward> rewards = new List<Reward>();
+                                    var type = JsonParsing.getString(data, "Type");
+                                    var rewards = new List<Reward>();
 
                                     // Obtain list of factions
                                     data.TryGetValue("Factions", out object val);
-                                    List<object> factionsData = (List<object>)val;
+                                    var factionsData = (List<object>)val;
                                     if (factionsData != null)
                                     {
-                                        foreach (Dictionary<string, object> rewardData in factionsData)
+                                        foreach (var rewardData in factionsData.Cast<IDictionary<string, object>>())
                                         {
-                                            string factionName = GetFactionName(rewardData, "Faction");
+                                            var factionName = GetFactionName(rewardData, "Faction");
                                             rewardData.TryGetValue("Amount", out val);
-                                            long factionReward = (long)val;
+                                            var factionReward = (long)val;
 
                                             rewards.Add(new Reward(factionName, factionReward));
                                         }
                                     }
                                     else
                                     {
-                                        string factionName = GetFactionName(data, "Faction");
+                                        var factionName = GetFactionName(data, "Faction");
                                         data.TryGetValue("Amount", out val);
-                                        long factionReward = (long)val;
+                                        var factionReward = (long)val;
 
                                         rewards.Add(new Reward(factionName, factionReward));
                                     }
                                     data.TryGetValue("Amount", out val);
-                                    long amount = (long)val;
+                                    var amount = (long)val;
 
-                                    decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+                                    var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
 
                                     if (type == "bounty")
                                     {
@@ -3476,9 +3474,9 @@ namespace EddiJournalMonitor
                                     var permitsAwardedData = (List<object>)val;
                                     if (permitsAwardedData != null)
                                     {
-                                        foreach (Dictionary<string, object> permitAwardedData in permitsAwardedData)
+                                        foreach (var permitAwardedData in permitsAwardedData.Cast<IDictionary<string, object>>() )
                                         {
-                                            string permitAwarded = JsonParsing.getString(permitAwardedData, "Name");
+                                            var permitAwarded = JsonParsing.getString(permitAwardedData, "Name");
                                             permitsAwarded.Add(permitAwarded);
                                         }
                                     }
@@ -3488,11 +3486,11 @@ namespace EddiJournalMonitor
                                     var commodityRewardsData = (List<object>)val;
                                     if (commodityRewardsData != null)
                                     {
-                                        foreach (Dictionary<string, object> commodityRewardData in commodityRewardsData)
+                                        foreach (var commodityRewardData in commodityRewardsData.Cast<IDictionary<string, object>>() )
                                         {
-                                            CommodityDefinition rewardCommodity = CommodityDefinition.FromEDName(JsonParsing.getString(commodityRewardData, "Name"));
+                                            var rewardCommodity = CommodityDefinition.FromEDName(JsonParsing.getString(commodityRewardData, "Name"));
                                             commodityRewardData.TryGetValue("Count", out val);
-                                            int count = (int)(long)val;
+                                            var count = (int)(long)val;
                                             commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
                                         }
                                     }
@@ -3503,12 +3501,12 @@ namespace EddiJournalMonitor
                                     var materialsRewardsData = (List<object>)val;
                                     if (materialsRewardsData != null)
                                     {
-                                        foreach (Dictionary<string, object> materialsRewardData in materialsRewardsData)
+                                        foreach (var materialsRewardData in materialsRewardsData.Cast<IDictionary<string, object>>() )
                                         {
                                             var m = JsonParsing.getString(materialsRewardData, "Name");
                                             var fallbackM = JsonParsing.getString(materialsRewardData, "Name_Localised");
                                             materialsRewardData.TryGetValue("Count", out val);
-                                            int count = (int)(long)val;
+                                            var count = (int)(long)val;
 
                                             if (!string.IsNullOrEmpty(m))
                                             {
@@ -3533,7 +3531,7 @@ namespace EddiJournalMonitor
                                     var missionFactionEffectsData = (List<object>)val;
                                     if (missionFactionEffectsData != null)
                                     {
-                                        foreach (Dictionary<string, object> missionFactionEffectData in missionFactionEffectsData)
+                                        foreach (var missionFactionEffectData in missionFactionEffectsData.Cast<IDictionary<string, object>>() )
                                         {
                                             var effectFaction = JsonParsing.getString(missionFactionEffectData, "Faction");
                                             var reputationPlusses = JsonParsing.getString(missionFactionEffectData, "Reputation");
@@ -3543,7 +3541,7 @@ namespace EddiJournalMonitor
                                             var effectsData = (List<object>)val;
                                             if (effectsData != null)
                                             {
-                                                foreach (Dictionary<string, object> effectData in effectsData)
+                                                foreach (var effectData in effectsData.Cast<IDictionary<string, object>>() )
                                                 {
                                                     var edEffect = JsonParsing.getString(effectData, "Effect");
                                                     var localizedEffect = JsonParsing.getString(effectData, "Effect_Localised");
@@ -3556,7 +3554,7 @@ namespace EddiJournalMonitor
                                             var influencesData = (List<object>)val;
                                             if (influencesData != null)
                                             {
-                                                foreach (Dictionary<string, object> influenceData in influencesData)
+                                                foreach (var influenceData in influencesData.Cast<IDictionary<string, object>>() )
                                                 {
                                                     var influencedSystemAddress = JsonParsing.getULong(influenceData, "SystemAddress");
                                                     var influencePlusses = JsonParsing.getString(influenceData, "Influence");
@@ -3731,10 +3729,10 @@ namespace EddiJournalMonitor
                                 break;
                             case "Synthesis":
                                 {
-                                    string synthesis = JsonParsing.getString(data, "Name");
+                                    var synthesis = JsonParsing.getString(data, "Name");
 
                                     data.TryGetValue("Materials", out object val);
-                                    List<MaterialAmount> materials = new List<MaterialAmount>();
+                                    var materials = new List<MaterialAmount>();
                                     // 2.2 style
                                     if (val is Dictionary<string, object> materialsData)
                                     {
@@ -3742,16 +3740,16 @@ namespace EddiJournalMonitor
                                         {
                                             foreach (KeyValuePair<string, object> materialData in materialsData)
                                             {
-                                                Material material = Material.FromEDName(materialData.Key);
+                                                var material = Material.FromEDName(materialData.Key);
                                                 materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
                                             }
                                         }
                                     }
                                     else if (val is List<object> materialsJson) // 2.3 style
                                     {
-                                        foreach (Dictionary<string, object> materialJson in materialsJson)
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
                                         {
-                                            Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
                                             materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                         }
                                     }
@@ -3762,15 +3760,15 @@ namespace EddiJournalMonitor
                                 break;
                             case "Materials":
                                 {
-                                    List<MaterialAmount> materials = new List<MaterialAmount>();
+                                    var materials = new List<MaterialAmount>();
 
                                     data.TryGetValue("Raw", out object val);
                                     if (val != null)
                                     {
-                                        List<object> materialsJson = (List<object>)val;
-                                        foreach (Dictionary<string, object> materialJson in materialsJson)
+                                        var materialsJson = (List<object>)val;
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
                                         {
-                                            Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
                                             materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                         }
                                     }
@@ -3778,10 +3776,10 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Manufactured", out val);
                                     if (val != null)
                                     {
-                                        List<object> materialsJson = (List<object>)val;
-                                        foreach (Dictionary<string, object> materialJson in materialsJson)
+                                        var materialsJson = (List<object>)val;
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
                                         {
-                                            Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
                                             materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                         }
                                     }
@@ -3789,10 +3787,10 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Encoded", out val);
                                     if (val != null)
                                     {
-                                        List<object> materialsJson = (List<object>)val;
-                                        foreach (Dictionary<string, object> materialJson in materialsJson)
+                                        var materialsJson = (List<object>)val;
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
                                         {
-                                            Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
                                             materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                         }
                                     }
@@ -3805,18 +3803,18 @@ namespace EddiJournalMonitor
                                 {
                                     var inventory = new List<CargoInfoItem>();
 
-                                    string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
-                                    int cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
+                                    var vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
+                                    var cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
                                     data.TryGetValue("Inventory", out object val);
                                     if (val != null)
                                     {
-                                        List<object> inventoryJson = (List<object>)val;
-                                        foreach (Dictionary<string, object> cargoJson in inventoryJson)
+                                        var inventoryJson = (List<object>)val;
+                                        foreach (var cargoJson in inventoryJson.Cast<IDictionary<string, object>>() )
                                         {
-                                            string name = JsonParsing.getString(cargoJson, "Name");
-                                            long? missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
-                                            int count = JsonParsing.getInt(cargoJson, "Count");
-                                            int stolen = JsonParsing.getInt(cargoJson, "Stolen");
+                                            var name = JsonParsing.getString(cargoJson, "Name");
+                                            var missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
+                                            var count = JsonParsing.getInt(cargoJson, "Count");
+                                            var stolen = JsonParsing.getInt(cargoJson, "Stolen");
                                             var info = new CargoInfoItem(name, missionid, count, stolen);
                                             inventory.Add(info);
                                         }
@@ -3991,23 +3989,22 @@ namespace EddiJournalMonitor
                             case "FSSBodySignals":
                                 {
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string bodyName = JsonParsing.getString(data, "BodyName");
-                                    long bodyId = JsonParsing.getLong(data, "BodyID");
+                                    var bodyName = JsonParsing.getString(data, "BodyName");
+                                    var bodyId = JsonParsing.getLong(data, "BodyID");
                                     data.TryGetValue("Signals", out object signalsVal);
 
                                     // These are surface signal sources from a body that we've scanned
-                                    List<SignalAmount> surfaceSignals = new List<SignalAmount>();
-                                    foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+                                    var surfaceSignals = new List<SignalAmount>();
+                                    foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
                                     {
-                                        SignalSource source;
-                                        string signalSource = JsonParsing.getString(signal, "Type");
-                                        source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                        var signalSource = JsonParsing.getString(signal, "Type");
+                                        var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
                                         var localizedName = JsonParsing.getString(data, "Type_Localised");
                                         if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
                                         {
                                             source.fallbackLocalizedName = localizedName;
                                         }
-                                        int amount = JsonParsing.getInt(signal, "Count");
+                                        var amount = JsonParsing.getInt(signal, "Count");
                                         surfaceSignals.Add(new SignalAmount(source, amount));
                                     }
                                     surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
@@ -4025,13 +4022,13 @@ namespace EddiJournalMonitor
                                     if (bodyName.EndsWith(" Ring"))
                                     {
                                         // This is the mining hotspots from a ring that we've mapped
-                                        List<CommodityAmount> hotspots = new List<CommodityAmount>();
-                                        foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+                                        var hotspots = new List<CommodityAmount>();
+                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>() )
                                         {
-                                            string commodityEdName = JsonParsing.getString(signal, "Type");
-                                            CommodityDefinition type = CommodityDefinition.FromEDName(commodityEdName);
+                                            var commodityEdName = JsonParsing.getString(signal, "Type");
+                                            var type = CommodityDefinition.FromEDName(commodityEdName);
                                             type.fallbackLocalizedName = JsonParsing.getString(signal, "Type_Localised");
-                                            int amount = JsonParsing.getInt(signal, "Count");
+                                            var amount = JsonParsing.getInt(signal, "Count");
                                             hotspots.Add(new CommodityAmount(type, amount));
                                         }
                                         hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
@@ -4052,18 +4049,17 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // This is surface signal sources from a body that we've mapped
-                                        List<SignalAmount> surfaceSignals = new List<SignalAmount>();
-                                        foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+                                        var surfaceSignals = new List<SignalAmount>();
+                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
                                         {
-                                            SignalSource source;
-                                            string signalSource = JsonParsing.getString(signal, "Type");
-                                            source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                            var signalSource = JsonParsing.getString(signal, "Type");
+                                            var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
                                             var localizedName = JsonParsing.getString(data, "Type_Localised");
                                             if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
                                             {
                                                 source.fallbackLocalizedName = localizedName;
                                             }
-                                            int amount = JsonParsing.getInt(signal, "Count");
+                                            var amount = JsonParsing.getInt(signal, "Count");
                                             surfaceSignals.Add(new SignalAmount(source, amount));
                                         }
                                         surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
@@ -5269,7 +5265,7 @@ namespace EddiJournalMonitor
             List<Conflict> conflicts = new List<Conflict>();
             if ( conflictsVal is List<object> conflictsList )
             {
-                foreach ( IDictionary<string, object> conflictDetail in conflictsList )
+                foreach ( var conflictDetail in conflictsList.Cast<IDictionary<string, object>>() )
                 {
                     FactionState conflictType =
                         FactionState.FromEDName( JsonParsing.getString( conflictDetail, "WarType" ) ) ??
@@ -5365,7 +5361,7 @@ namespace EddiJournalMonitor
                 {
                     // Station controlling faction government is not directly available in 'Location' event
                     // so we have to find and match the faction name through the factions list.
-                    foreach ( IDictionary<string, object> factionDetail in factionsList )
+                    foreach ( var factionDetail in factionsList.Cast<IDictionary<string, object>>() )
                     {
                         var fName = JsonParsing.getString( factionDetail, "Name" );
                         if ( fName == faction.name )
@@ -5412,7 +5408,7 @@ namespace EddiJournalMonitor
             List<Faction> factions = new List<Faction>();
             if ( factionsVal is List<object> factionsList )
             {
-                foreach ( IDictionary<string, object> factionDetail in factionsList )
+                foreach ( var factionDetail in factionsList.Cast<IDictionary<string, object>>() )
                 {
                     // Core data
                     string fName = JsonParsing.getString( factionDetail, "Name" );
@@ -5444,7 +5440,7 @@ namespace EddiJournalMonitor
                     if ( activeStatesVal != null )
                     {
                         var activeStatesList = (List<object>)activeStatesVal;
-                        foreach ( IDictionary<string, object> activeState in activeStatesList )
+                        foreach ( var activeState in activeStatesList.Cast<IDictionary<string, object>>() )
                         {
                             factionPresense.ActiveStates.Add(
                                 FactionState.FromEDName( JsonParsing.getString( activeState, "State" ) ) ??
@@ -5457,7 +5453,7 @@ namespace EddiJournalMonitor
                     if ( pendingStatesVal != null )
                     {
                         var pendingStatesList = (List<object>)pendingStatesVal;
-                        foreach ( IDictionary<string, object> pendingState in pendingStatesList )
+                        foreach ( var pendingState in pendingStatesList.Cast<IDictionary<string, object>>() )
                         {
                             FactionTrendingState pTrendingState = new FactionTrendingState(
                                 FactionState.FromEDName( JsonParsing.getString( pendingState, "State" ) ) ??
@@ -5473,7 +5469,7 @@ namespace EddiJournalMonitor
                     if ( recoveringStatesVal != null )
                     {
                         var recoveringStatesList = (List<object>)recoveringStatesVal;
-                        foreach ( IDictionary<string, object> recoveringState in recoveringStatesList )
+                        foreach ( var recoveringState in recoveringStatesList.Cast<IDictionary<string, object>>() )
                         {
                             FactionTrendingState rTrendingState = new FactionTrendingState(
                                 FactionState.FromEDName( JsonParsing.getString( recoveringState, "State" ) ) ??
