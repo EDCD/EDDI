@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Caching;
 
 namespace EddiDataProviderService
@@ -17,13 +18,29 @@ namespace EddiDataProviderService
             cacheItemPolicy.SlidingExpiration = TimeSpan.FromSeconds( expirationSeconds );
         }
 
+        /// <summary>
+        /// Add or update a faction in the cache retaining any faction presence information
+        /// </summary>
+        /// <param name="faction"></param>
         public void AddOrUpdate ( Faction faction )
         {
             if ( faction is null ) { return; }
+
+            Faction oldFaction = null;
             if ( factionCache.Contains( faction.name ) )
             {
+                oldFaction = factionCache.Get( faction.name ) as Faction;
                 factionCache.Remove( faction.name );
             }
+
+            if(oldFaction != null )
+            {
+                foreach ( var oldPresence in oldFaction.presences.Where(p => !faction.presences.Select(op => op.systemAddress).Contains(p.systemAddress) ) )
+                {
+                    faction.presences.Add( oldPresence );
+                }
+            }
+
             factionCache.Add( faction.name, faction, cacheItemPolicy );
         }
 
