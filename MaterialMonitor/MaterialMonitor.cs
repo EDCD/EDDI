@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -33,7 +34,7 @@ namespace EddiMaterialMonitor
 
         // The material monitor both consumes and emits events, but only one for a given event.  We hold any pending events here so
         // they are fired at the correct time
-        private readonly ConcurrentQueue<Event> pendingEvents = new ConcurrentQueue<Event>();
+        private readonly ConcurrentQueue<Event> generatedEvents = new ConcurrentQueue<Event>();
 
         public string MonitorName()
         {
@@ -147,28 +148,23 @@ namespace EddiMaterialMonitor
 
         }
 
-        // Flush any pending events
+        // Flush any generated events asynchronously
         public void PostHandle(Event @event)
         {
-            // Spin out event in to a different thread to stop blocking
-            Thread thread = new Thread(() =>
+            try
             {
-                try
+                Task.Run( () =>
                 {
-                    while (pendingEvents.TryDequeue(out Event pendingEvent))
+                    while ( generatedEvents.TryDequeue( out var pendingEvent ) )
                     {
-                        EDDI.Instance.enqueueEvent(pendingEvent);
+                        EDDI.Instance.enqueueEvent( pendingEvent );
                     }
-                }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-            })
+                } );
+            }
+            catch ( OperationCanceledException oce )
             {
-                IsBackground = true
-            };
-            thread.Start();
+                Logging.Debug( "Task cancelled.", oce );
+            }
         }
 
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
@@ -351,17 +347,17 @@ namespace EddiMaterialMonitor
                 if (ma.maximum != null && incMaterialThreshold(previous, ma.amount, ma.maximum))
                 {
                     // We have crossed the high water threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
+                    generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
                 if (ma.desired != null && incMaterialThreshold(previous, ma.amount, ma.desired))
                 {
                     // We have crossed the desired threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
+                    generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
                 if (ma.minimum != null && incMaterialThreshold(previous, ma.amount, ma.minimum))
                 {
                     // We have crossed the minimum threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Minimum", (int)ma.minimum, ma.amount, "Increase") { fromLoad = fromLogLoad });
+                    generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, material, "Minimum", (int)ma.minimum, ma.amount, "Increase") { fromLoad = fromLogLoad });
                 }
             }
         }
@@ -390,17 +386,17 @@ namespace EddiMaterialMonitor
                 if (ma.minimum != null && decMaterialThreshold(previous, ma.amount, ma.minimum))
                 {
                     // We have crossed the minimum threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
+                    generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
                 if (ma.desired != null && decMaterialThreshold(previous, ma.amount, ma.desired))
                 {
                     // We have crossed the desired threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease") { fromLoad = fromLogLoad });
+                    generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
                 if (ma.maximum != null && decMaterialThreshold(previous, ma.amount, ma.maximum))
                 {
                     // We have crossed the maximum threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
+                    generatedEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                 }
             }
         }
