@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -130,8 +131,52 @@ namespace EddiCrimeMonitor
 
         private void postHandleShipSwappedEvent()
         {
-            // Update stations in minor faction records
-            UpdateStations();
+            // Update stations in minor faction records asynchronounsly
+            Task.Run( () =>
+            {
+                lock ( recordLock )
+                {
+                    foreach ( var record in criminalrecord.ToList() )
+                    {
+                        var Allegiance = Superpower.FromNameOrEdName(record.faction);
+                        if ( Allegiance == null )
+                        {
+                            record.station = GetFactionStation( record.system );
+                        }
+                    }
+                }
+            } );
+        }
+
+        internal void postHandleShipTargetedEvent ( ShipTargetedEvent @event )
+        {
+            // System targets list may be 're-built' for the current system from Log Load
+            var currentSystem = EDDI.Instance?.CurrentStarSystem;
+            if ( @event.targetlocked )
+            {
+                var target = new Target();
+                if ( @event.scanstage >= 1 )
+                {
+                    lock ( recordLock )
+                    {
+                        target = shipTargets.FirstOrDefault( t => t.name == @event.name );
+                        if ( target == null )
+                        {
+                            target = new Target( @event.name, @event.CombatRank, @event.ship );
+                            shipTargets.Add( target );
+                        }
+                    }
+                }
+                if ( @event.scanstage >= 3 && target.LegalStatus == null )
+                {
+                    target.faction = @event.faction;
+                    target.Power = @event.Power;
+                    target.LegalStatus = @event.LegalStatus;
+                    target.bounty = @event.bounty;
+                    target.Allegiance = currentSystem?.factions.FirstOrDefault( f => f.name == @event.faction )?.Allegiance ??
+                                        EDDI.Instance?.DataProvider.FetchFactionByName( @event.faction )?.Allegiance;
+                }
+            }
         }
 
         public void PreHandle(Event @event)
@@ -212,34 +257,9 @@ namespace EddiCrimeMonitor
 
         internal void _handleJumpedEvent()
         {
-            shipTargets.Clear();
-        }
-
-        internal void postHandleShipTargetedEvent(ShipTargetedEvent @event)
-        {
-            // System targets list may be 're-built' for the current system from Log Load
-            var currentSystem = EDDI.Instance?.CurrentStarSystem;
-            if ( @event.targetlocked )
+            lock ( recordLock )
             {
-                var target = new Target();
-                if (@event.scanstage >= 1)
-                {
-                    target = shipTargets.FirstOrDefault(t => t.name == @event.name);
-                    if (target == null)
-                    {
-                        target = new Target(@event.name, @event.CombatRank, @event.ship);
-                        shipTargets.Add(target);
-                    }
-                }
-                if (@event.scanstage >= 3 && target.LegalStatus == null)
-                {
-                    target.faction = @event.faction;
-                    target.Power = @event.Power;
-                    target.LegalStatus = @event.LegalStatus;
-                    target.bounty = @event.bounty;
-                    target.Allegiance = currentSystem?.factions.FirstOrDefault( f => f.name == @event.faction )?.Allegiance ??
-                                        EDDI.Instance?.DataProvider.FetchFactionByName( @event.faction )?.Allegiance;
-                }
+                shipTargets.Clear();
             }
         }
 
@@ -474,7 +494,11 @@ namespace EddiCrimeMonitor
             var currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
 
             // Get victim allegiance from the 'Ship targeted' data
-            var target = shipTargets.FirstOrDefault(t => t.name == @event.victim);
+            Target target;
+            lock ( recordLock )
+            {
+                target = shipTargets.FirstOrDefault(t => t.name == @event.victim);
+            }
 
             // Create a bounty report and add it to our record
             var report = new FactionReport(@event.timestamp, true, crime, currentSystem, @event.bounty)
@@ -774,15 +798,15 @@ namespace EddiCrimeMonitor
 
         public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
-            lock (recordLock)
+            lock ( recordLock )
             {
                 return new Dictionary<string, Tuple<Type, object>>
                 {
-                    ["criminalrecord"] = new Tuple<Type, object>(typeof(List<FactionRecord>), criminalrecord.ToList()),
-                    ["claims"] = new Tuple<Type, object>(typeof(long), claims),
-                    ["fines"] = new Tuple<Type, object>(typeof(long), fines),
-                    ["bounties"] = new Tuple<Type, object>(typeof(long), bounties ),
-                    ["shiptargets"] = new Tuple<Type, object>(typeof(List<Target>), shipTargets.ToList())
+                    [ "criminalrecord" ] = new Tuple<Type, object>( typeof(List<FactionRecord>), criminalrecord.ToList() ),
+                    [ "claims" ] = new Tuple<Type, object>( typeof(long), claims ),
+                    [ "fines" ] = new Tuple<Type, object>( typeof(long), fines ),
+                    [ "bounties" ] = new Tuple<Type, object>( typeof(long), bounties ),
+                    [ "shiptargets" ] = new Tuple<Type, object>( typeof(List<Target>), shipTargets.ToList() )
                 };
             }
         }
@@ -1069,8 +1093,8 @@ namespace EddiCrimeMonitor
             {
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
-                LandingPadSize padSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
-                List<Station> factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false)
+                var padSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
+                var factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false)
                     ? factionStarSystem.stations.ToList()
                     : factionStarSystem.orbitalstations;
                 factionStations = factionStations
@@ -1081,8 +1105,8 @@ namespace EddiCrimeMonitor
                     .ToList();
 
                 // Build list to find the faction station nearest to the main star
-                SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
-                foreach (Station station in factionStations)
+                var nearestList = new SortedList<decimal, string>();
+                foreach (var station in factionStations)
                 {
                     if (!nearestList.ContainsKey(station.distancefromstar ?? 0))
                     {
@@ -1094,29 +1118,6 @@ namespace EddiCrimeMonitor
                 return nearestList.Values.FirstOrDefault();
             }
             return null;
-        }
-
-        public void UpdateStations()
-        {
-            Thread stationUpdateThread = new Thread(() =>
-            {
-                lock (recordLock)
-                {
-                    foreach (FactionRecord record in criminalrecord.ToList())
-                    {
-                        var Allegiance = Superpower.FromNameOrEdName(record.faction);
-                        if (Allegiance == null)
-                        {
-                            record.station = GetFactionStation(record.system);
-                        }
-                    }
-                }
-                writeRecord();
-            })
-            {
-                IsBackground = true
-            };
-            stationUpdateThread.Start();
         }
 
         private string FindHomeSystem(string faction, List<string> factionSystems)
