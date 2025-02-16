@@ -1,0 +1,1167 @@
+{
+  "count": 1,
+  "from": 0,
+  "reference": {
+    "id64": 10477373803,
+    "name": "Sol",
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "results": [
+    {
+      "allegiance": "Empire",
+      "bodies": [
+        {
+          "distance_to_arrival": 0.0,
+          "estimated_mapping_value": 4588,
+          "estimated_scan_value": 1210,
+          "id": 5581611930322,
+          "id64": 5581611930322,
+          "is_main_star": true,
+          "name": "Calennero",
+          "subtype": "K (Yellow-Orange) Star",
+          "type": "Star"
+        },
+        {
+          "distance_to_arrival": 1346.412355,
+          "estimated_mapping_value": 3654,
+          "estimated_scan_value": 930,
+          "id": 180149566706750162,
+          "id64": 180149566706750162,
+          "is_main_star": null,
+          "name": "Calennero 1",
+          "subtype": "Gas giant with water-based life",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1345.438826,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 216178363725714130,
+          "id64": 216178363725714130,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 1,
+              "subtype": "Sulphur Dioxide Gas Vent",
+              "type": "Gas Vent",
+              "value": 0
+            },
+            {
+              "count": 1,
+              "subtype": "Iron Magma Lava Spout",
+              "type": "Lava Spout",
+              "value": 0
+            },
+            {
+              "count": 2,
+              "subtype": "Surface Station",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 1 a",
+          "subtype": "Rocky body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1344.64439,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 252207160744678098,
+          "id64": 252207160744678098,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 1,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            },
+            {
+              "count": 2,
+              "subtype": "Surface Station",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 1 b",
+          "subtype": "Rocky body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1343.384898,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 288235957763642066,
+          "id64": 288235957763642066,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 2,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            },
+            {
+              "count": 2,
+              "subtype": "Surface Station",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 1 c",
+          "subtype": "Rocky body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1339.122643,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 324264754782606034,
+          "id64": 324264754782606034,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 3,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 1 d",
+          "subtype": "Rocky body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1338.882726,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 360293551801570002,
+          "id64": 360293551801570002,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 3,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            },
+            {
+              "count": 1,
+              "subtype": "Surface Station",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 1 e",
+          "subtype": "Rocky body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1338.924132,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 396322348820533970,
+          "id64": 396322348820533970,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 2,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 1 e a",
+          "subtype": "Rocky body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1359.627094,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 432351145839497938,
+          "id64": 432351145839497938,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 1,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 1 f",
+          "subtype": "Rocky body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1747.828495,
+          "estimated_mapping_value": 3611,
+          "estimated_scan_value": 917,
+          "id": 612495130934317778,
+          "id64": 612495130934317778,
+          "is_main_star": null,
+          "name": "Calennero 2",
+          "subtype": "Gas giant with water-based life",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1746.585073,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 720581521991209682,
+          "id64": 720581521991209682,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 2,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            },
+            {
+              "count": 1,
+              "subtype": "Surface Station",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 2 a",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 1746.740356,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 756610319010173650,
+          "id64": 756610319010173650,
+          "is_main_star": null,
+          "name": "Calennero 2 b",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 2301.335634,
+          "estimated_mapping_value": 3604,
+          "estimated_scan_value": 915,
+          "id": 864696710067065554,
+          "id64": 864696710067065554,
+          "is_main_star": null,
+          "name": "Calennero 3",
+          "subtype": "Gas giant with water-based life",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 2300.54706,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 972783101123957458,
+          "id64": 972783101123957458,
+          "is_main_star": null,
+          "name": "Calennero 3 a",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 2303.553034,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 1008811898142921426,
+          "id64": 1008811898142921426,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 1,
+              "subtype": "Settlement",
+              "type": "Surface Station",
+              "value": 0
+            },
+            {
+              "count": 2,
+              "subtype": "Carbon Dioxide Ice Fumarole",
+              "type": "Fumarole",
+              "value": 0
+            },
+            {
+              "count": 3,
+              "subtype": "Carbon Dioxide Ice Geyser",
+              "type": "Geyser",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 3 b",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 2299.95324,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 1044840695161885394,
+          "id64": 1044840695161885394,
+          "is_main_star": null,
+          "landmark_value": 0,
+          "landmarks": [
+            {
+              "count": 1,
+              "subtype": "Surface Station",
+              "type": "Surface Station",
+              "value": 0
+            }
+          ],
+          "name": "Calennero 3 c",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 2301.458805,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 1080869492180849362,
+          "id64": 1080869492180849362,
+          "is_main_star": null,
+          "name": "Calennero 3 d",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 2354.498843,
+          "estimated_mapping_value": 13075,
+          "estimated_scan_value": 3599,
+          "id": 1116898289199813330,
+          "id64": 1116898289199813330,
+          "is_main_star": null,
+          "name": "Calennero 4",
+          "subtype": "Class I gas giant",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 2354.11382,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 1188955883237741266,
+          "id64": 1188955883237741266,
+          "is_main_star": null,
+          "name": "Calennero 4 a",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 3237.508229,
+          "estimated_mapping_value": 2488,
+          "estimated_scan_value": 580,
+          "id": 1224984680256705234,
+          "id64": 1224984680256705234,
+          "is_main_star": null,
+          "name": "Calennero 5",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 3236.453166,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 1333071071313597138,
+          "id64": 1333071071313597138,
+          "is_main_star": null,
+          "name": "Calennero 5 a",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 3238.142418,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 1369099868332561106,
+          "id64": 1369099868332561106,
+          "is_main_star": null,
+          "name": "Calennero 5 b",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        },
+        {
+          "distance_to_arrival": 3236.000442,
+          "estimated_mapping_value": 2221,
+          "estimated_scan_value": 500,
+          "id": 1405128665351525074,
+          "id64": 1405128665351525074,
+          "is_main_star": null,
+          "name": "Calennero 5 c",
+          "subtype": "Icy body",
+          "terraforming_state": "Not terraformable",
+          "type": "Planet"
+        }
+      ],
+      "body_count": 23,
+      "controlling_minor_faction": "Lavigny's Legion",
+      "controlling_minor_faction_state": "None",
+      "controlling_power": "A. Lavigny-Duval",
+      "distance": 144.218983613029,
+      "estimated_mapping_value": 68777,
+      "estimated_scan_value": 16651,
+      "government": "Patronage",
+      "id": "JbJ8CZUBsj8Wc1n0mDe9",
+      "id64": 5581611930322,
+      "known_permit": false,
+      "landmark_value": 0,
+      "minor_faction_presences": [
+        {
+          "influence": 0.056056,
+          "name": "Bajauie Empire Party",
+          "state": "Election"
+        },
+        {
+          "influence": 0.01001,
+          "name": "Calennero Crew",
+          "state": "Outbreak"
+        },
+        {
+          "influence": 0.096096,
+          "name": "Calennero Shared",
+          "state": "Civil Unrest"
+        },
+        {
+          "influence": 0.01001,
+          "name": "Calennero State Industries",
+          "state": "Outbreak"
+        },
+        {
+          "influence": 0.06006,
+          "name": "Chapterhouse of Inquisition",
+          "state": "War"
+        },
+        {
+          "influence": 0.06006,
+          "name": "Imperial Privateers",
+          "state": "War"
+        },
+        {
+          "influence": 0.60961,
+          "name": "Lavigny's Legion",
+          "state": "None"
+        },
+        {
+          "influence": 0.098098,
+          "name": "Shield of the Empire",
+          "state": "Election"
+        }
+      ],
+      "name": "Calennero",
+      "needs_permit": false,
+      "population": 62784,
+      "power": [
+        "A. Lavigny-Duval"
+      ],
+      "power_state": "Stronghold",
+      "primary_economy": "Extraction",
+      "region": "Inner Orion Spur",
+      "secondary_economy": "High Tech",
+      "security": "Low",
+      "stations": [
+        {
+          "distance_to_arrival": 3237.480684,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3707057664,
+          "medium_pads": 4,
+          "name": "K1G-92Z",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2312.955165,
+          "has_large_pad": true,
+          "has_market": true,
+          "has_shipyard": true,
+          "large_pads": 8,
+          "market_id": 3702197248,
+          "medium_pads": 4,
+          "name": "K9V-46B",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2353.332033,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3224793088,
+          "medium_pads": 1,
+          "name": "Bolkow Terminal",
+          "small_pads": 2,
+          "type": "Outpost"
+        },
+        {
+          "distance_to_arrival": 1747.995691,
+          "has_large_pad": true,
+          "has_market": true,
+          "has_outfitting": true,
+          "has_shipyard": true,
+          "large_pads": 8,
+          "market_id": 3709820672,
+          "medium_pads": 4,
+          "name": "V1Q-41Y",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 3238.911208,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3703432704,
+          "medium_pads": 4,
+          "name": "FNT-10Z",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 178.973052,
+          "has_large_pad": true,
+          "has_market": true,
+          "has_outfitting": true,
+          "has_shipyard": true,
+          "large_pads": 8,
+          "market_id": 3702832384,
+          "medium_pads": 4,
+          "name": "K1H-33Z",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2332.367019,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3708156928,
+          "medium_pads": 4,
+          "name": "X6N-72F",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 0.0,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3702757632,
+          "medium_pads": 4,
+          "name": "N6N-3XZ",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 44.386784,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3708469760,
+          "medium_pads": 4,
+          "name": "T2G-NKK",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2321.797416,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3700954880,
+          "medium_pads": 4,
+          "name": "M6K-G5Z",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 1347.526839,
+          "has_large_pad": true,
+          "has_market": true,
+          "has_shipyard": true,
+          "large_pads": 8,
+          "market_id": 3702974208,
+          "medium_pads": 4,
+          "name": "Q5X-14J",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2346.208299,
+          "has_large_pad": true,
+          "has_market": true,
+          "has_outfitting": true,
+          "has_shipyard": true,
+          "large_pads": 8,
+          "market_id": 3706058240,
+          "medium_pads": 4,
+          "name": "FZF-NVZ",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2301.475633,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3710328320,
+          "medium_pads": 4,
+          "name": "J3M-B6X",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2353.166282,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3701749504,
+          "medium_pads": 4,
+          "name": "X1H-LXL",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 1747.828332,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3703182592,
+          "medium_pads": 4,
+          "name": "V4V-46V",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 0.0,
+          "has_large_pad": true,
+          "has_market": true,
+          "has_shipyard": true,
+          "large_pads": 8,
+          "market_id": 3710887680,
+          "medium_pads": 4,
+          "name": "W8V-62W",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2344.044157,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3704753408,
+          "medium_pads": 4,
+          "name": "J0K-8HT",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 2279.173642,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 8,
+          "market_id": 3706490880,
+          "medium_pads": 4,
+          "name": "T9J-47H",
+          "small_pads": 4,
+          "type": "Drake-Class Carrier"
+        },
+        {
+          "distance_to_arrival": 1346.151702,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860385792,
+          "medium_pads": 0,
+          "name": "Ren Mining Installation",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1345.871416,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860385280,
+          "medium_pads": 0,
+          "name": "Pidmohylny Dredging Hub",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1345.697779,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860386048,
+          "medium_pads": 0,
+          "name": "Owusu Industrial Plant",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1347.520074,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860385536,
+          "medium_pads": 0,
+          "name": "Peralta Prospecting Complex",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1344.495666,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860382720,
+          "medium_pads": 0,
+          "name": "Berezuk Excavation Station",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1344.768719,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860382464,
+          "medium_pads": 0,
+          "name": "Toure Drilling Site",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1348.016052,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860382208,
+          "medium_pads": 0,
+          "name": "Guzman Biochemical Installation",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1345.437219,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860382976,
+          "medium_pads": 0,
+          "name": "Rossi Prospecting Enterprise",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1352.128186,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860385024,
+          "medium_pads": 0,
+          "name": "Christensson Dredging Enterprise",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1341.389944,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860384256,
+          "medium_pads": 0,
+          "name": "Maiga Genetics Lab",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1349.245133,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860384768,
+          "medium_pads": 0,
+          "name": "Davis Extraction Base",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1341.357798,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860384512,
+          "medium_pads": 0,
+          "name": "Navarrete Drilling Base",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1347.699364,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860387328,
+          "medium_pads": 0,
+          "name": "Gunther Drilling Exchange",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1343.012873,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860387072,
+          "medium_pads": 0,
+          "name": "Batra Dredging Territory",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1353.615705,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860386816,
+          "medium_pads": 0,
+          "name": "Kuhn Institution",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1355.536819,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860389632,
+          "medium_pads": 0,
+          "name": "Carvalho Mineralogic Reserve",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1348.823596,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860389120,
+          "medium_pads": 0,
+          "name": "Aloisio Drilling Hub",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1336.858179,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860388864,
+          "medium_pads": 0,
+          "name": "Moy Analytics",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1353.48162,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860389376,
+          "medium_pads": 0,
+          "name": "Courbet Drilling Exploration",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1354.321921,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860381952,
+          "medium_pads": 1,
+          "name": "Woods Excavation Complex",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1337.100277,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860381696,
+          "medium_pads": 1,
+          "name": "Ptaszynski Extraction Enterprise",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1336.80941,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860381184,
+          "medium_pads": 0,
+          "name": "Estrada Dredging Site",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1355.455835,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860381440,
+          "medium_pads": 0,
+          "name": "Sommer Excavation Hub",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1341.830328,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860380928,
+          "medium_pads": 0,
+          "name": "Prohasko Analysis Enterprise",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1357.905648,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860387584,
+          "medium_pads": 0,
+          "name": "Arnold Research Site",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1332.613587,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860388096,
+          "medium_pads": 0,
+          "name": "Brinkmann Excavation Facility",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1348.415625,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860387840,
+          "medium_pads": 0,
+          "name": "Madan Dredging Site",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1747.059904,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860383744,
+          "medium_pads": 0,
+          "name": "Sung Engineering Installation",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1746.344857,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860383488,
+          "medium_pads": 0,
+          "name": "Burke Industrial Facility",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1746.585073,
+          "has_large_pad": false,
+          "market_id": 3516401408,
+          "name": "MacDonald Hub"
+        },
+        {
+          "distance_to_arrival": 1749.457711,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860383232,
+          "medium_pads": 0,
+          "name": "Datta Medical",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1746.263404,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860384000,
+          "medium_pads": 0,
+          "name": "Thompson Chemical Silo",
+          "small_pads": 0,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 1750.568203,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860386560,
+          "medium_pads": 0,
+          "name": "Ross Biochemical Centre",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 2303.830235,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860389888,
+          "medium_pads": 0,
+          "name": "Horwood Biological Institution",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 2305.512287,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860390144,
+          "medium_pads": 0,
+          "name": "Kulish Research Complex",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 2304.586148,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860386304,
+          "medium_pads": 0,
+          "name": "Sankoh Astrophysics Complex",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 2308.155641,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860388352,
+          "medium_pads": 0,
+          "name": "Eesuola Biological Assembly",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 3236.000628,
+          "has_large_pad": true,
+          "has_market": true,
+          "large_pads": 1,
+          "market_id": 3860388608,
+          "medium_pads": 0,
+          "name": "Hakimi Genetics Installation",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 3241.113636,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860390656,
+          "medium_pads": 0,
+          "name": "Xiang Analytics Enterprise",
+          "small_pads": 1,
+          "type": "Settlement"
+        },
+        {
+          "distance_to_arrival": 3234.384739,
+          "has_large_pad": false,
+          "has_market": true,
+          "large_pads": 0,
+          "market_id": 3860390400,
+          "medium_pads": 0,
+          "name": "Davis's Medicines",
+          "small_pads": 3,
+          "type": "Settlement"
+        }
+      ],
+      "thargoid_war_failure_state": "None",
+      "thargoid_war_state": "None",
+      "thargoid_war_success_state": "None",
+      "updated_at": "2025-02-14 20:57:17+00",
+      "x": 104.15625,
+      "y": -99.5625,
+      "z": -6.15625
+    }
+  ],
+  "search": {
+    "filters": {
+      "minor_faction_presences": {
+        "value": [
+          "Calennero Crew"
+        ]
+      }
+    },
+    "page": 0,
+    "size": 500,
+    "sort": [
+      {
+        "controlling_minor_faction": {
+          "direction": "asc"
+        }
+      }
+    ]
+  },
+  "search_reference": "EE55626A-EC0C-11EF-BA15-9CF3CF4570EA",
+  "size": 500
+}

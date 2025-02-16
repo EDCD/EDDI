@@ -76,12 +76,19 @@ namespace Tests
                 }
 
                 var content = CannedContent[resourceString];
-                IRestResponse restResponse = new RestResponse
-                {
-                    Content = content,
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode = HttpStatusCode.OK,
-                };
+                IRestResponse restResponse = content is null
+                    ? new RestResponse
+                    {
+                        Content = string.Empty,
+                        ResponseStatus = ResponseStatus.Error,
+                        StatusCode = HttpStatusCode.InternalServerError
+                    }
+                    : new RestResponse
+                    {
+                        Content = content, 
+                        ResponseStatus = ResponseStatus.Completed, 
+                        StatusCode = HttpStatusCode.OK
+                    };
                 return restResponse;
             }
             catch ( KeyNotFoundException knfe )

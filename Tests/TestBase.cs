@@ -1,5 +1,4 @@
-﻿using EddiBgsService;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiConfigService;
 using EddiCore;
 using EddiDataProviderService;
@@ -23,16 +22,13 @@ namespace Tests
 {
     public class TestBase
     {
-        internal static readonly FakeBgsRestClient fakeBgsRestClient = new FakeBgsRestClient();
-        internal static readonly BgsService fakeBgsService = new BgsService( fakeBgsRestClient );
-
         internal static readonly FakeSpanshRestClient fakeSpanshRestClient = new FakeSpanshRestClient();
         internal static readonly SpanshService fakeSpanshService = new SpanshService( fakeSpanshRestClient );
 
         internal static readonly FakeEdsmRestClient fakeEdsmRestClient = new FakeEdsmRestClient();
         internal static readonly StarMapService fakeEdsmService = new StarMapService(fakeEdsmRestClient);
 
-        internal static StarSystemSqLiteRepository fakeStarSystemSqLiteRepository = new StarSystemSqLiteRepository( true );
+        internal static readonly StarSystemSqLiteRepository fakeStarSystemSqLiteRepository = new StarSystemSqLiteRepository( true );
 
         internal void MakeSafe()
         {
@@ -51,7 +47,7 @@ namespace Tests
 
         internal DataProviderService ConfigureTestDataProvider ()
         {
-            return new DataProviderService( fakeBgsService, fakeEdsmService, fakeSpanshService, fakeStarSystemSqLiteRepository );
+            return new DataProviderService( fakeEdsmService, fakeSpanshService, fakeStarSystemSqLiteRepository );
         }
 
         public static T DeserializeJsonResource<T>(byte[] data, JsonSerializerSettings settings = null) where T : class

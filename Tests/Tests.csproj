@@ -22,7 +22,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <ProjectReference Include="..\BgsService\EddiBgsService.csproj" />
     <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj" />
     <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
     <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj" />

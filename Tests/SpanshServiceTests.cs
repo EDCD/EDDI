@@ -193,7 +193,7 @@ namespace Tests
             Assert.AreEqual(-5513.09375M, result.Waypoints[258].z);
         }
 
-        [ TestMethod ]
+        [ TestMethod, DoNotParallelize ]
         public void TestSpanshSystemDumpSol ()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
@@ -217,7 +217,7 @@ namespace Tests
             Assert.AreEqual( "Federation", result.Faction.Allegiance.invariantName );
             Assert.AreEqual( "Democracy", result.Faction.Government.invariantName );
             Assert.AreEqual( "Boom", result.Faction.presences[ 0 ].FactionState.invariantName );
-            Assert.AreEqual( 0.341633M, result.Faction.presences[ 0 ].influence );
+            Assert.AreEqual( 34.1633M, result.Faction.presences[ 0 ].influence );
             Assert.AreEqual( 6, result.factions.Count );
             Assert.IsNotNull( result.Power );
             Assert.AreEqual( "Jerome Archer", result.Power.invariantName );
@@ -586,6 +586,36 @@ namespace Tests
             Assert.IsNotNull( station );
             Assert.AreEqual( "Daedalus", station.name );
             Assert.AreEqual( "Orbis Starport", station.Model.invariantName );
+        }
+
+        [TestMethod]
+        public void TestFactionFromName ()
+        {
+            // Arrange
+            EDDI.Instance.DataProvider = ConfigureTestDataProvider();
+            fakeSpanshRestClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"Radio Sidewinder Crew\"]}},\"size\":500,\"page\":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
+            fakeSpanshRestClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"No such faction\"]}},\"size\":500,\"page\":0}", null );
+
+            // Act
+            var faction1 = fakeSpanshService.GetFactionByName( "Radio Sidewinder Crew" );
+            var faction2 = EDDI.Instance.DataProvider.spanshService.GetFactionByName( "No such faction" );
+            var faction3 = EDDI.Instance.DataProvider.spanshService.GetFactionByName( null );
+
+            // Assert
+            Assert.IsNotNull( faction1 );
+            Assert.AreEqual( "Radio Sidewinder Crew", faction1.name );
+            Assert.AreEqual( "Democracy", faction1.Government.invariantName );
+            Assert.AreEqual( "Independent", faction1.Allegiance.invariantName );
+            Assert.AreNotEqual( DateTime.MinValue, faction1.updatedAt );
+            Assert.AreEqual( 53, faction1.presences.Count );
+            var presence = faction1.presences.FirstOrDefault(p => p.systemName == "Tachmetae");
+            Assert.IsNotNull( presence );
+            Assert.AreEqual( FactionState.None, presence.FactionState );
+            Assert.AreEqual( 83.3831M, presence.influence );
+            
+            // Return null if the faction cannot be found
+            Assert.IsNull( faction2 );
+            Assert.IsNull( faction3 );
         }
     }
 }

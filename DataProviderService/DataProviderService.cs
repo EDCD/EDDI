@@ -1,5 +1,4 @@
-﻿using EddiBgsService;
-using EddiConfigService;
+﻿using EddiConfigService;
 using EddiDataDefinitions;
 using EddiSpanshService;
 using EddiStarMapService;
@@ -19,7 +18,6 @@ namespace EddiDataProviderService
     /// <summary>Access data services. Prefer our cache and local database wherever possible.</summary>
     public class DataProviderService
     {
-        internal readonly BgsService bgsService;
         internal readonly StarMapService edsmService;
         internal readonly SpanshService spanshService;
         internal readonly StarSystemSqLiteRepository starSystemRepository;
@@ -29,12 +27,11 @@ namespace EddiDataProviderService
 
         public static bool unitTesting;
 
-        public DataProviderService ( BgsService bgsService = null, StarMapService edsmService = null,
+        public DataProviderService ( StarMapService edsmService = null,
             SpanshService spanshService = null, StarSystemSqLiteRepository starSystemRepository = null )
         {
-            factionCache = new FactionCache( 600 ); // Keep a cache of factions for 10 minutes
+            factionCache = new FactionCache( 3600 ); // Keep a cache of factions for 1 hour
             starSystemCache = new StarSystemCache( 300 ); // Keep a cache of star systems for 5 minutes
-            this.bgsService = bgsService ?? new BgsService();
             this.edsmService = edsmService ?? new StarMapService();
             this.spanshService = spanshService ?? new SpanshService();
             this.starSystemRepository = starSystemRepository ?? new StarSystemSqLiteRepository(unitTesting);
@@ -458,28 +455,6 @@ namespace EddiDataProviderService
 
         #endregion
 
-        #region EliteBGS Endpoints
-
-        [CanBeNull]
-        public Faction FetchFactionByName ( string factionName, string presenceSystemName = null )
-        {
-            if ( string.IsNullOrEmpty( factionName ) ) { return null; }
-
-            // First try to fetch the faction from the cache
-            if ( factionCache.TryGet(factionName, out var faction) )
-            {
-                return faction;
-            }
-
-            // While it is possible to obtain faction data from Spansh, Spansh does not have a dedicated endpoint for faction data.
-            // In benchmarking conducted Dec. 2024 it was both slower and less comprehensive than EliteBGS.
-            faction = bgsService.GetFactionByName( factionName, presenceSystemName );
-            factionCache.AddOrUpdate(faction);
-            return faction;
-        }
-
-        #endregion
-
         #region Spansh Endpoints
 
         public NavWaypointCollection FetchCarrierRoute ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
@@ -552,6 +527,29 @@ namespace EddiDataProviderService
 
                 return new NavWaypoint( systemName, systemAddress, systemX, systemY, systemZ );
             }
+        }
+
+        [CanBeNull]
+        public Faction FetchFactionByName ( string factionName, string presenceSystemName = null )
+        {
+            if ( string.IsNullOrEmpty( factionName ) ) { return null; }
+
+            // First try to fetch the faction from the cache
+            if ( factionCache.TryGet( factionName, out var faction ) )
+            {
+                return faction;
+            }
+
+            // Next, try to fetch the faction from Spansh
+            faction = spanshService.GetFactionByName( factionName, presenceSystemName );
+
+            // If we've successfully retrieved the faction then update our cache
+            if ( faction != null )
+            {
+                factionCache.AddOrUpdate( faction );
+            }
+
+            return faction;
         }
 
         #endregion

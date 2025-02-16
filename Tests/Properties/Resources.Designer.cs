@@ -63,26 +63,6 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] bgsFaction {
-            get {
-                object obj = ResourceManager.GetObject("bgsFaction", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] bgsFactionResponse {
-            get {
-                object obj = ResourceManager.GetObject("bgsFactionResponse", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         public static byte[] capi_market_fleet_carrier {
             get {
                 object obj = ResourceManager.GetObject("capi_market_fleet_carrier", resourceCulture);
@@ -276,6 +256,26 @@ namespace Tests.Properties {
         public static byte[] SpanshQueryBodyScoopableStar {
             get {
                 object obj = ResourceManager.GetObject("SpanshQueryBodyScoopableStar", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SpanshQueryFactionCalenneroCrew {
+            get {
+                object obj = ResourceManager.GetObject("SpanshQueryFactionCalenneroCrew", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] SpanshQueryFactionRadioSidewinderCrew {
+            get {
+                object obj = ResourceManager.GetObject("SpanshQueryFactionRadioSidewinderCrew", resourceCulture);
                 return ((byte[])(obj));
             }
         }

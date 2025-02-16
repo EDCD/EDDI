@@ -70,8 +70,6 @@ We would like to express our gratitude to the various products, services, and AP
 [![https://www.jetbrains.com/?from=EDDI](images/jetbrains_100x100.png)](https://www.jetbrains.com/?from=EDDI)
 [![https://www.rollbar.com](images/rollbar_100x100.png)](https://www.rollbar.com)
 
-- https://www.appveyor.com/
-- https://elitebgs.app/api/ebgs
 - https://github.com/r3c/cottle
 - https://github.com/icsharpcode/AvalonEdit
 - https://github.com/JamesNK/Newtonsoft.Json
