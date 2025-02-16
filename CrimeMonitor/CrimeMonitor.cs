@@ -277,15 +277,15 @@ namespace EddiCrimeMonitor
 
         internal void _handleBondAwardedEvent(BondAwardedEvent @event)
         {
-            var currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
+            var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
 
             // Get the victim faction data
-            var faction = EDDI.Instance?.DataProvider.FetchFactionByName( @event.victimfaction );
+            var faction = EDDI.Instance.DataProvider.FetchFactionByName( @event.victimfaction );
 
             var report = new FactionReport(@event.timestamp, false, Crime.None, currentSystem, @event.reward)
             {
-                station = EDDI.Instance?.CurrentStation?.name,
-                body = EDDI.Instance?.CurrentStellarBody?.bodyname,
+                station = EDDI.Instance.CurrentStation?.name,
+                body = EDDI.Instance.CurrentStellarBody?.bodyname,
                 victim = @event.victimfaction,
                 victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
             };
@@ -382,21 +382,21 @@ namespace EddiCrimeMonitor
         internal void _handleBountyAwardedEvent(BountyAwardedEvent @event, bool test = false)
         {
             // 20% bonus for Arissa Lavigny-Duval 'controlled' and 'exploited' systems
-            var currentSystem = EDDI.Instance?.CurrentStarSystem;
+            var currentSystem = EDDI.Instance.CurrentStarSystem;
 
             // Default to 1.0 for unit testing
             var bonus = (!test && currentSystem?.Power == Power.ALavignyDuval) ? 1.2 : 1.0;
 
             // Get the victim faction data
-            var faction = EDDI.Instance?.DataProvider.FetchFactionByName( @event.faction );
+            var faction = EDDI.Instance.DataProvider.FetchFactionByName( @event.faction );
 
             foreach (var reward in @event.rewards.ToList())
             {
                 var amount = Convert.ToInt64(reward.amount * bonus);
                 var report = new FactionReport(@event.timestamp, true, Crime.None, currentSystem?.systemname, amount)
                 {
-                    station = EDDI.Instance?.CurrentStation?.name,
-                    body = EDDI.Instance?.CurrentStellarBody?.bodyname,
+                    station = EDDI.Instance.CurrentStation?.name,
+                    body = EDDI.Instance.CurrentStellarBody?.bodyname,
                     victim = @event.faction,
                     victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
                 };
@@ -493,7 +493,7 @@ namespace EddiCrimeMonitor
         {
             crimeAuthorityFaction = @event.faction;
             var crime = Crime.FromEDName(@event.crimetype);
-            var currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
+            var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
 
             // Get victim allegiance from the 'Ship targeted' data
             Target target;
@@ -505,8 +505,8 @@ namespace EddiCrimeMonitor
             // Create a bounty report and add it to our record
             var report = new FactionReport(@event.timestamp, true, crime, currentSystem, @event.bounty)
             {
-                station = EDDI.Instance?.CurrentStation?.name,
-                body = EDDI.Instance?.CurrentStellarBody?.bodyname,
+                station = EDDI.Instance.CurrentStation?.name,
+                body = EDDI.Instance.CurrentStellarBody?.bodyname,
                 victim = @event.victim,
                 victimAllegiance = (target?.Allegiance ?? Superpower.None).invariantName
             };
@@ -608,11 +608,11 @@ namespace EddiCrimeMonitor
         {
             crimeAuthorityFaction = @event.faction;
             Crime crime = Crime.FromEDName(@event.crimetype);
-            string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
+            string currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
             FactionReport report = new FactionReport(@event.timestamp, false, crime, currentSystem, @event.fine)
             {
-                station = EDDI.Instance?.CurrentStation?.name,
-                body = EDDI.Instance?.CurrentStellarBody?.bodyname,
+                station = EDDI.Instance.CurrentStation?.name,
+                body = EDDI.Instance.CurrentStellarBody?.bodyname,
                 victim = @event.victim
             };
 
@@ -991,12 +991,12 @@ namespace EddiCrimeMonitor
 
             if (mission?.faction != null)
             {
-                string currentSystem = EDDI.Instance?.CurrentStarSystem?.systemname;
+                string currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
 
                 FactionReport report = new FactionReport(timestamp, false, Crime.MissionFine, currentSystem, fine)
                 {
-                    station = EDDI.Instance?.CurrentStation?.name,
-                    body = EDDI.Instance?.CurrentStellarBody?.bodyname,
+                    station = EDDI.Instance.CurrentStation?.name,
+                    body = EDDI.Instance.CurrentStellarBody?.bodyname,
                 };
 
                 var record = GetRecordWithFaction(mission.faction) ?? 
@@ -1022,7 +1022,7 @@ namespace EddiCrimeMonitor
             if (record == null || string.IsNullOrEmpty(record.faction) || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
 
             // Get the faction and set faction record values
-            var faction = EDDI.Instance?.DataProvider.FetchFactionByName( record.faction );
+            var faction = EDDI.Instance.DataProvider.FetchFactionByName( record.faction );
             record.Allegiance = faction?.Allegiance ?? Superpower.None;
 
             // Check faction with archived home systems
@@ -1095,8 +1095,8 @@ namespace EddiCrimeMonitor
             {
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
-                var padSize = EDDI.Instance?.CurrentShip?.Size ?? LandingPadSize.Large;
-                var factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && (EDDI.Instance?.inHorizons ?? false)
+                var padSize = EDDI.Instance.CurrentShip?.Size ?? LandingPadSize.Large;
+                var factionStations = !ConfigService.Instance.navigationMonitorConfiguration.prioritizeOrbitalStations && EDDI.Instance.inHorizons
                     ? factionStarSystem.stations.ToList()
                     : factionStarSystem.orbitalstations;
                 factionStations = factionStations

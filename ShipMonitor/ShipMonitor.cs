@@ -360,7 +360,7 @@ namespace EddiShipMonitor
                     if (storedShip != null && EDDI.Instance.CurrentStarSystem != null)
                     {
                         // Set location of stored ship to the current system
-                        storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem, EDDI.Instance?.CurrentStation?.name, EDDI.Instance?.CurrentStation?.marketId );
+                        storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem, EDDI.Instance.CurrentStation?.name, EDDI.Instance.CurrentStation?.marketId );
                         storedShip.distance = 0;
                     }
                 }
@@ -391,7 +391,7 @@ namespace EddiShipMonitor
                 updatedAt = @event.timestamp;
 
                 // Set ship hull and module health with a profile refresh before we write the stored ship.
-                EDDI.Instance?.refreshProfile();
+                EDDI.Instance.refreshProfile();
 
                 // Update our current ship
                 SetCurrentShip(@event.shipid, @event.edModel);
@@ -403,10 +403,10 @@ namespace EddiShipMonitor
                     if (storedShip != null)
                     {
                         // Set location of stored ship to the current system
-                        if ( EDDI.Instance?.CurrentStarSystem != null )
+                        if ( EDDI.Instance.CurrentStarSystem != null )
                         {
                             storedShip.StoredLocation = new Ship.Location( EDDI.Instance.CurrentStarSystem,
-                                EDDI.Instance?.CurrentStation?.name, EDDI.Instance?.CurrentStation?.marketId );
+                                EDDI.Instance.CurrentStation?.name, EDDI.Instance.CurrentStation?.marketId );
                             storedShip.distance = 0;
                         }
                     }
@@ -615,7 +615,7 @@ namespace EddiShipMonitor
                 {
                     // Update ship location data in the event
                     var quickSystems =
-                        EDDI.Instance?.DataProvider.GetOrFetchQuickStarSystems(
+                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystems(
                             @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false ) ??
                         new List<StarSystem>();
 
@@ -628,12 +628,12 @@ namespace EddiShipMonitor
                             ship.StoredLocation = systemData is null || stationData is null
                                 ? null
                                 : new Ship.Location( systemData, stationData?.name, stationData?.marketId );
-                            ship.distance = ship.DistanceLY( EDDI.Instance?.CurrentStarSystem );
+                            ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
                         }
                         else
                         {
                             ship.StoredLocation =
-                                EDDI.Instance?.CurrentStarSystem is null || EDDI.Instance.CurrentStation is null
+                                EDDI.Instance.CurrentStarSystem is null || EDDI.Instance.CurrentStation is null
                                     ? null
                                     : new Ship.Location(
                                         EDDI.Instance.CurrentStarSystem,
@@ -701,7 +701,7 @@ namespace EddiShipMonitor
                 if (@event.storedmodules != null)
                 {
                     var quickSystems =
-                        EDDI.Instance?.DataProvider.GetOrFetchQuickStarSystems(
+                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystems(
                             @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), false ) ?? new List<StarSystem>();
                     foreach ( var module in @event.storedmodules )
                     {

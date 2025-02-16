@@ -134,7 +134,7 @@ namespace EddiNavigationMonitor
                 {
                     var @event = NavigationService.Instance.NavQuery(QueryType.carrier, destinationSystemArg, originSystemArg, usedCapacity, null, true);
                     if (@event == null) { return; }
-                    EDDI.Instance?.enqueueEvent(@event);
+                    EDDI.Instance.enqueueEvent(@event);
                 });
             }
             await Task.WhenAll(searchTask);

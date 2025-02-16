@@ -2400,7 +2400,7 @@ namespace EddiJournalMonitor
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
 
                                     // Target may be either a ring or a body
-                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
+                                    var system = EDDI.Instance.CurrentStarSystem;
                                     Body body = null;
 
                                     if (system != null && bodyName.EndsWith(" Ring"))
@@ -3372,7 +3372,7 @@ namespace EddiJournalMonitor
 
                                             // Set mission origin to to the current system & station
                                             originsystem = EDDI.Instance.CurrentStarSystem?.systemname,
-                                            originstation = EDDI.Instance?.CurrentStation?.name,
+                                            originstation = EDDI.Instance.CurrentStation?.name,
 
                                             // Missions with engineering rewards
                                             CommodityDefinition = commodity,
@@ -3803,7 +3803,7 @@ namespace EddiJournalMonitor
                                 {
                                     var inventory = new List<CargoInfoItem>();
 
-                                    var vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
+                                    var vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance.Vehicle;
                                     var cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
                                     data.TryGetValue("Inventory", out object val);
                                     if (val != null)
@@ -4033,7 +4033,7 @@ namespace EddiJournalMonitor
                                         }
                                         hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
 
-                                        var ring = EDDI.Instance?.CurrentStarSystem?.bodies?
+                                        var ring = EDDI.Instance.CurrentStarSystem?.bodies?
                                             .Where(b => b.rings.Any())
                                             .SelectMany(b => b?.rings)?
                                             .FirstOrDefault(r => r.name == bodyName);

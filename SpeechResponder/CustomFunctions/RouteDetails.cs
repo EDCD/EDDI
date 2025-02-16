@@ -124,7 +124,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 string result = null;
                 if ( @event != null)
                 {
-                    EDDI.Instance?.enqueueEvent(@event);
+                    EDDI.Instance.enqueueEvent(@event);
                     result = @event.system;
                 }
                 return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );

@@ -356,7 +356,7 @@ namespace EddiNavigationMonitor
                 {
                     var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg, null, null, true);
                     if (@event == null) { return; }
-                    EDDI.Instance?.enqueueEvent(@event);
+                    EDDI.Instance.enqueueEvent(@event);
                 });
             }
             await Task.WhenAll(searchTask);
@@ -452,11 +452,11 @@ namespace EddiNavigationMonitor
         {
             if (GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button)
             {
-                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.cancel, null, null, null, null, true));
+                EDDI.Instance.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.cancel, null, null, null, null, true));
             }
             else
             {
-                EDDI.Instance?.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.set, null, null, null, null, true));
+                EDDI.Instance.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.set, null, null, null, null, true));
             }
         }
 
