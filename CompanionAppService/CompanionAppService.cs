@@ -432,7 +432,8 @@ namespace EddiCompanionAppService
             DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
             if (DateTime.UtcNow > expiry)
             {
-                // Our access token has expired. Use our refresh token to obtain a new access token.
+                // Our access token either has expired or shall expire within the next minute.
+                // Use our refresh token to obtain a new access token.
                 RefreshToken();
             }
             if (CurrentState != State.Authorized)
@@ -467,7 +468,7 @@ namespace EddiCompanionAppService
             }
             catch (WebException wex)
             {
-                Logging.Warn(wex.Message, wex);
+                throw new EliteDangerousCompanionAppErrorException( wex.Message, wex );
             }
             return null;
         }
