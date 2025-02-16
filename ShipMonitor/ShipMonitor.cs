@@ -37,6 +37,7 @@ namespace EddiShipMonitor
         internal int? currentShipId;
 
         private const int profileRefreshDelaySeconds = 20;
+        private readonly CancellationTokenSource profileRefreshCancellationTokenSource = new CancellationTokenSource();
 
         private static readonly object shipyardLock = new object();
         public event EventHandler ShipyardUpdatedEvent;
@@ -99,6 +100,7 @@ namespace EddiShipMonitor
 
         public void Stop()
         {
+            profileRefreshCancellationTokenSource.Cancel();
         }
 
         public void Reload()
@@ -226,6 +228,10 @@ namespace EddiShipMonitor
             else if (@event is StoredModulesEvent storedModulesEvent)
             {
                 handleStoredModulesEvent(storedModulesEvent);
+            }
+            else if ( @event is StoredShipsEvent storedShipsEvent )
+            {
+                handleStoredShipsEvent( storedShipsEvent );
             }
             else if (@event is BountyIncurredEvent bountyIncurredEvent)
             {
@@ -597,6 +603,93 @@ namespace EddiShipMonitor
                 ship.hardpoints = hardpoints;
 
                 return ship;
+            }
+        }
+
+        private void handleStoredShipsEvent ( StoredShipsEvent @event )
+        {
+            if ( @event.timestamp > updatedAt )
+            {
+                updatedAt = @event.timestamp;
+                if ( @event.shipyard != null )
+                {
+                    // Update ship location data in the event
+                    var quickSystems =
+                        EDDI.Instance?.DataProvider.GetOrFetchQuickStarSystems(
+                            @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false ) ??
+                        new List<StarSystem>();
+
+                    foreach ( var ship in @event.shipyard )
+                    {
+                        if ( !string.IsNullOrEmpty( ship.starsystem ) )
+                        {
+                            var systemData = quickSystems.FirstOrDefault( sys => sys.systemname == @event.system);
+                            var stationData = systemData?.stations?.FirstOrDefault( s => s.marketId == ship.marketid );
+                            ship.StoredLocation = systemData is null || stationData is null
+                                ? null
+                                : new Ship.Location( systemData, stationData?.name, stationData?.marketId );
+                            ship.distance = ship.DistanceLY( EDDI.Instance?.CurrentStarSystem );
+                        }
+                        else
+                        {
+                            ship.StoredLocation =
+                                EDDI.Instance?.CurrentStarSystem is null || EDDI.Instance.CurrentStation is null
+                                    ? null
+                                    : new Ship.Location(
+                                        EDDI.Instance.CurrentStarSystem,
+                                        EDDI.Instance.CurrentStation.name,
+                                        EDDI.Instance.CurrentStation.marketId );
+                            ship.distance = 0;
+                        }
+                    }
+
+                    //Check for ships missing from the shipyard
+                    foreach ( var shipInEvent in @event.shipyard )
+                    {
+                        var shipInYard = GetShip(shipInEvent.LocalId);
+
+                        // Add ship from the event if not in shipyard
+                        if ( shipInYard == null )
+                        {
+                            shipInEvent.Role = Role.MultiPurpose;
+                            AddShip( shipInEvent );
+                        }
+
+                        // Update ship in the shipyard to latest data
+                        else
+                        {
+                            if ( !string.IsNullOrEmpty( shipInEvent.name ) )
+                            {
+                                shipInYard.name = shipInEvent.name;
+                            }
+                            shipInYard.value = shipInEvent.value;
+                            shipInYard.hot = shipInEvent.hot;
+                            shipInYard.intransit = shipInEvent.intransit;
+                            shipInYard.StoredLocation = shipInEvent.StoredLocation;
+                            shipInYard.distance = shipInEvent.distance;
+                            shipInYard.transferprice = shipInEvent.transferprice;
+                            shipInYard.transfertime = shipInEvent.transfertime;
+                        }
+                    }
+
+                    // Prune ships no longer in the shipyard
+                    var idsToRemove = new List<int>(shipyard.Count);
+                    foreach ( var shipInYard in shipyard )
+                    {
+                        // Ignore current ship, since (obviously) it's not stored
+                        if ( shipInYard.LocalId == currentShipId )
+                        { continue; }
+
+                        var shipInEvent = @event.shipyard.FirstOrDefault(s => s.LocalId == shipInYard.LocalId);
+                        if ( shipInEvent == null )
+                        {
+                            idsToRemove.Add( shipInYard.LocalId );
+                        }
+                    }
+                    _RemoveShips( idsToRemove );
+
+                    if ( !@event.fromLoad ) { writeShips(); }
+                }
             }
         }
 
@@ -1072,10 +1165,6 @@ namespace EddiShipMonitor
             {
                 posthandleShipRepairDroneEvent( shipRepairDroneEvent );
             }
-            else if ( @event is StoredShipsEvent storedShipsEvent )
-            {
-                posthandleStoredShipsEvent( storedShipsEvent );
-            }
             else if ( @event is UndockedEvent undockedEvent )
             {
                 posthandleUndockedEvent( undockedEvent );
@@ -1086,7 +1175,7 @@ namespace EddiShipMonitor
         {
             if (!@event.fromLoad)
             {
-                /// The ship may have Frontier API specific data, request a profile refresh from the Frontier API shortly after switching
+                // The ship may have Frontier API specific data, request a profile refresh from the Frontier API shortly after switching
                 refreshProfileDelayed();
             }
         }
@@ -1098,94 +1187,7 @@ namespace EddiShipMonitor
             // Set ship hull and module health with a profile refresh.
             if ( !@event.fromLoad )
             {
-                EDDI.Instance?.refreshProfile();
-            }
-        }
-
-        private void posthandleStoredShipsEvent ( StoredShipsEvent @event )
-        {
-            if ( @event.timestamp > updatedAt )
-            {
-                updatedAt = @event.timestamp;
-                if ( @event.shipyard != null )
-                {
-                    //Update ship location data in the event
-                    var quickSystems =
-                        EDDI.Instance?.DataProvider.GetOrFetchQuickStarSystems(
-                            @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false ) ??
-                        new List<StarSystem>();
-                    foreach ( var ship in @event.shipyard )
-                    {
-                        if ( !string.IsNullOrEmpty( ship.starsystem ) )
-                        {
-                            var systemData = quickSystems.FirstOrDefault( sys => sys.systemname == @event.system);
-                            var stationData = systemData?.stations?.FirstOrDefault( s => s.marketId == ship.marketid );
-                            ship.StoredLocation = systemData is null || stationData is null
-                                ? null
-                                : new Ship.Location( systemData, stationData?.name, stationData?.marketId );
-                            ship.distance = ship.DistanceLY( EDDI.Instance?.CurrentStarSystem );
-                        }
-                        else
-                        {
-                            ship.StoredLocation =
-                                EDDI.Instance?.CurrentStarSystem is null || EDDI.Instance.CurrentStation is null
-                                    ? null
-                                    : new Ship.Location(
-                                        EDDI.Instance.CurrentStarSystem,
-                                        EDDI.Instance.CurrentStation.name,
-                                        EDDI.Instance.CurrentStation.marketId );
-                            ship.distance = 0;
-                        }
-                    }
-
-                    //Check for ships missing from the shipyard
-                    foreach ( var shipInEvent in @event.shipyard )
-                    {
-                        var shipInYard = GetShip(shipInEvent.LocalId);
-
-                        // Add ship from the event if not in shipyard
-                        if ( shipInYard == null )
-                        {
-                            shipInEvent.Role = Role.MultiPurpose;
-                            AddShip( shipInEvent );
-                        }
-
-                        // Update ship in the shipyard to latest data
-                        else
-                        {
-                            if ( !string.IsNullOrEmpty( shipInEvent.name ) )
-                            {
-                                shipInYard.name = shipInEvent.name;
-                            }
-                            shipInYard.value = shipInEvent.value;
-                            shipInYard.hot = shipInEvent.hot;
-                            shipInYard.intransit = shipInEvent.intransit;
-                            shipInYard.StoredLocation = shipInEvent.StoredLocation;
-                            shipInYard.distance = shipInEvent.distance;
-                            shipInYard.transferprice = shipInEvent.transferprice;
-                            shipInYard.transfertime = shipInEvent.transfertime;
-                        }
-                    }
-
-                    // Prune ships no longer in the shipyard
-                    var idsToRemove = new List<int>(shipyard.Count);
-                    foreach ( var shipInYard in shipyard )
-                    {
-                        // Ignore current ship, since (obviously) it's not stored
-                        if ( shipInYard.LocalId == currentShipId )
-                        { continue; }
-
-                        var shipInEvent = @event.shipyard.FirstOrDefault(s => s.LocalId == shipInYard.LocalId);
-                        if ( shipInEvent == null )
-                        {
-                            idsToRemove.Add( shipInYard.LocalId );
-                        }
-                    }
-                    _RemoveShips( idsToRemove );
-
-                    if ( !@event.fromLoad )
-                    { writeShips(); }
-                }
+                refreshProfileDelayed();
             }
         }
 
@@ -1194,7 +1196,7 @@ namespace EddiShipMonitor
             // Call refreshProfile() to ensure that our ship is up-to-date
             if ( !@event.fromLoad )
             {
-                EDDI.Instance?.refreshProfile();
+                refreshProfileDelayed();
             }
         }
 
@@ -1905,17 +1907,22 @@ namespace EddiShipMonitor
             return edModel.Contains("_taxi");
         }
 
-        private Task _refreshProfileDelayed;
         private void refreshProfileDelayed()
         {
-            if (_refreshProfileDelayed == null || _refreshProfileDelayed.IsCompleted)
+            if ( !profileRefreshCancellationTokenSource.IsCancellationRequested )
             {
-                _refreshProfileDelayed = new Task(() =>
+                try
                 {
-                    Task.Delay(TimeSpan.FromSeconds(profileRefreshDelaySeconds));
-                    EDDI.Instance.refreshProfile();
-                });
-                _refreshProfileDelayed.Start();
+                    Task.Run( async () =>
+                    {
+                        await Task.Delay( TimeSpan.FromSeconds( profileRefreshDelaySeconds ) );
+                        EDDI.Instance.refreshProfile();
+                    }, profileRefreshCancellationTokenSource.Token );
+                }
+                catch ( OperationCanceledException )
+                {
+                    // Nothing to do here, the task was cancelled.
+                }
             }
         }
 
