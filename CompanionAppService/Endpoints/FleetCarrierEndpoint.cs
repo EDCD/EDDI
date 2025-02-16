@@ -56,6 +56,9 @@ namespace EddiCompanionAppService.Endpoints
             {
                 // not Logging.Error as telemetry is getting spammed when the server is down
                 Logging.Warn(ex.Message);
+
+                // Reset the timestamp so that we wait for a cooldown before we try again
+                cachedFleetCarrierTimeStamp = DateTime.UtcNow;
             }
             return cachedFleetCarrierJson;
         }

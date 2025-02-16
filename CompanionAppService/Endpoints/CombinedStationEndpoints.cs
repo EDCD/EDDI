@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using EddiCompanionAppService.Exceptions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace EddiCompanionAppService.Endpoints
 {
     public class CombinedStationEndpoints : Endpoint
     {
+        private const string MARKET_URL = "/market";
+        private const string SHIPYARD_URL = "/shipyard";
+
         // We cache the profile to avoid spamming the service
         private JObject cachedStationJson;
         private DateTime cachedStationTimeStamp;
@@ -43,33 +47,44 @@ namespace EddiCompanionAppService.Endpoints
                 // Make sure that the Frontier API is configured to return data for the correct commander
                 if (string.IsNullOrEmpty(profileCmdrName) || profileCmdrName == expectedCommanderName)
                 {
-                    // If we're docked, the lastStation information should be located within the lastSystem identified by the profile
-                    // Make sure the profile is caught up to the game state
-                    var marketJson = new MarketEndpoint().GetMarket();
-                    var shipyardJson = new ShipyardEndpoint().GetShipyard();
-                    if ((docked || onFoot) &&
-                        !string.IsNullOrEmpty(profileSystemName) &&
-                        expectedStarSystemName == profileSystemName &&
-                        profileStationName == expectedStationName &&
-                        marketJson != null && profileStationName == marketJson["name"]?.ToString() &&
-                        shipyardJson != null && profileStationName == shipyardJson["name"]?.ToString())
+                    try
                     {
-                        // Data is up to date, we can proceed
-                        retries = 0;
-                        cachedStationJson = new JObject
+                        // If we're docked, the lastStation information should be located within the lastSystem identified by the profile
+                        // Make sure the profile is caught up to the game state
+                        var marketJson = GetMarket();
+                        var shipyardJson = GetShipyard();
+                        if ( ( docked || onFoot ) &&
+                             !string.IsNullOrEmpty( profileSystemName ) &&
+                             expectedStarSystemName == profileSystemName &&
+                             profileStationName == expectedStationName &&
+                             marketJson != null && profileStationName == marketJson[ "name" ]?.ToString() &&
+                             shipyardJson != null && profileStationName == shipyardJson[ "name" ]?.ToString() )
                         {
-                            { "profileJson", profileJson },
-                            { "marketJson", marketJson },
-                            { "shipyardJson", shipyardJson }
-                        };
-                        cachedStationTimeStamp = new List<DateTime?>
-                        {
-                            profileJson["timestamp"]?.ToObject<DateTime?>(), 
-                            marketJson["timestamp"]?.ToObject<DateTime?>(), 
-                            shipyardJson["timestamp"]?.ToObject<DateTime?>()
-                        }.OrderByDescending(d => d).FirstOrDefault() ?? DateTime.MinValue;
-                        StationUpdatedEvent?.Invoke(this, new CompanionApiEndpointEventArgs( profileJson, marketJson, shipyardJson, null));
-                        return cachedStationJson;
+                            // Data is up to date, we can proceed
+                            retries = 0;
+                            cachedStationJson = new JObject
+                            {
+                                { "profileJson", profileJson },
+                                { "marketJson", marketJson },
+                                { "shipyardJson", shipyardJson }
+                            };
+                            cachedStationTimeStamp = new List<DateTime?>
+                            {
+                                profileJson["timestamp"]?.ToObject<DateTime?>(),
+                                marketJson["timestamp"]?.ToObject<DateTime?>(),
+                                shipyardJson["timestamp"]?.ToObject<DateTime?>()
+                            }.OrderByDescending( d => d ).FirstOrDefault() ?? DateTime.MinValue;
+                            StationUpdatedEvent?.Invoke( this, new CompanionApiEndpointEventArgs( profileJson, marketJson, shipyardJson, null ) );
+                            return cachedStationJson;
+                        }
+                    }
+                    catch ( EliteDangerousCompanionAppException ex )
+                    {
+                        // not Logging.Error as telemetry is getting spammed when the server is down
+                        Logging.Warn( ex.Message );
+
+                        // Reset the timestamp so that we wait for a cooldown before we try again
+                        cachedStationTimeStamp = DateTime.UtcNow;
                     }
                 }
                 else
@@ -85,6 +100,24 @@ namespace EddiCompanionAppService.Endpoints
             retries += 1;
             Thread.Sleep(TimeSpan.FromSeconds(10));
             return GetCombinedStation(expectedCommanderName, expectedStarSystemName, expectedStationName);
+        }
+
+        private JObject GetMarket ()
+        {
+            Logging.Debug( $"Getting {MARKET_URL} data" );
+            var result = GetEndpoint( MARKET_URL );
+            Logging.Debug( $"{MARKET_URL} returned: ", result );
+
+            return result;
+        }
+
+        private JObject GetShipyard ()
+        {
+            Logging.Debug( $"Getting {SHIPYARD_URL} data" );
+            var result = GetEndpoint( SHIPYARD_URL );
+            Logging.Debug( $"{SHIPYARD_URL} returned: ", result );
+
+            return result;
         }
     }
 }
