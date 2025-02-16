@@ -2973,7 +2973,7 @@ namespace EddiCore
         /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
         public void RefreshFleetCarrierFromFrontierAPI(bool forceRefresh = false)
         {
-            if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
+            if ( _fleetCarrier != null && CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
             {
                 var frontierApiCarrierJson = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
                 if (frontierApiCarrierJson != null)
@@ -2981,20 +2981,10 @@ namespace EddiCore
                     var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
 
                     // Update our Fleet Carrier object
-                    if ( _fleetCarrier is null )
+                    LockManager.GetLock( nameof( FleetCarrier ), () =>
                     {
-                        LockManager.GetLock( nameof( FleetCarrier ), () =>
-                        {
-                            _fleetCarrier = new FleetCarrier( frontierApiCarrierJson, timestamp );
-                        } );
-                    }
-                    else
-                    {
-                        LockManager.GetLock( nameof( FleetCarrier ), () =>
-                        {
-                            _fleetCarrier?.UpdateFrom( frontierApiCarrierJson, timestamp );
-                        } );
-                    }
+                        FleetCarrier?.UpdateFrom( frontierApiCarrierJson, timestamp );
+                    } );
                     UpdateFleetCarrierConfig();
                 }
             }
