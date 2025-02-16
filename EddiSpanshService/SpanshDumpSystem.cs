@@ -164,7 +164,7 @@ namespace EddiSpanshService
                             FactionState =
                                 FactionState.FromName( f[ "state" ]?.ToString() ) ??
                                 FactionState.None,
-                            influence = f[ "influence" ]?.ToObject<decimal?>(),
+                            influence = f[ "influence" ]?.ToObject<decimal?>() * 100,
                             updatedAt = JsonParsing.getDateTime("date", data)
                         }
                     }
