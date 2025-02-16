@@ -70,7 +70,14 @@ namespace EddiSpanshService
                 }
                 if ( !response.IsSuccessful )
                 {
-                    Logging.Warn( $"Spansh API responded with: {response.StatusCode} - {response.StatusDescription}", response );
+                    if ( response.ErrorException != null )
+                    {
+                        Logging.Warn( $"Spansh API responded with: {response.ResponseStatus.ToString()} - {response.ErrorException.Message}", response );
+                    }
+                    else
+                    {
+                        Logging.Warn( $"Spansh API responded with: {response.StatusCode} - {response.StatusDescription}", response );
+                    }
                     return false;
                 }
                 if ( string.IsNullOrEmpty( response.Content ) )
