@@ -19,7 +19,7 @@ namespace EddiDataProviderService
         }
 
         /// <summary>
-        /// Add or update a faction in the cache retaining any faction presence information
+        /// Add or update a faction in the cache. Retain faction presence information
         /// </summary>
         /// <param name="faction"></param>
         public void AddOrUpdate ( Faction faction )
@@ -35,13 +35,53 @@ namespace EddiDataProviderService
 
             if(oldFaction != null )
             {
-                foreach ( var oldPresence in oldFaction.presences.Where(p => !faction.presences.Select(op => op.systemAddress).Contains(p.systemAddress) ) )
-                {
-                    faction.presences.Add( oldPresence );
-                }
+                faction = PreservePresenceData(faction, oldFaction);
             }
 
             factionCache.Add( faction.name, faction, cacheItemPolicy );
+        }
+
+        private static Faction PreservePresenceData(Faction faction, Faction oldFaction)
+        {
+            foreach ( var oldPresence in oldFaction.presences )
+            {
+                foreach ( var presence in faction.presences )
+                {
+                    if ( presence.systemAddress == oldPresence.systemAddress )
+                    {
+                        if ( presence.influence is null && oldPresence.influence != null )
+                        {
+                            presence.influence = oldPresence.influence;
+                        }
+                        if ( presence.Happiness is null && oldPresence.Happiness != null )
+                        {
+                            presence.Happiness = oldPresence.Happiness;
+                        }
+                        if ( !presence.ActiveStates.Any() && oldPresence.ActiveStates.Any() )
+                        {
+                            presence.ActiveStates = oldPresence.ActiveStates;
+                        }
+                        if ( !presence.PendingStates.Any() && oldPresence.PendingStates.Any() )
+                        {
+                            presence.PendingStates = oldPresence.PendingStates;
+                        }
+                        if ( !presence.RecoveringStates.Any() && oldPresence.RecoveringStates.Any() )
+                        {
+                            presence.RecoveringStates = oldPresence.RecoveringStates;
+                        }
+                        if ( !presence.squadronhomesystem && oldPresence.squadronhomesystem )
+                        {
+                            presence.squadronhomesystem = oldPresence.squadronhomesystem;
+                        }
+                        if ( !presence.squadronhappiestsystem && oldPresence.squadronhappiestsystem )
+                        {
+                            presence.squadronhappiestsystem = oldPresence.squadronhappiestsystem;
+                        }
+                    }
+                }
+            }
+
+            return faction;
         }
 
         public void AddOrUpdate ( IEnumerable<Faction> factions )
