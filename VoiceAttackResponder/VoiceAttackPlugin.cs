@@ -154,9 +154,7 @@ namespace EddiVoiceAttackResponder
             voiceAttackEventHandler.Handle( @event );
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:Remove unused parameter", Justification = "VA API" )]
-        // ReSharper disable once UnusedMember.Global
-        // ReSharper disable once UnusedParameter.Global - VoiceAttack API
+        // ReSharper disable once UnusedMember.Global - VoiceAttack API
         public static void VA_Exit1(dynamic vaProxy)
         {
             lock ( vaProxyLock )
