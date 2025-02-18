@@ -381,6 +381,11 @@ namespace EddiCompanionAppService
                     throw new EliteDangerousCompanionAppAuthenticationException( "Refresh token not valid, need full login" );
                 }
 
+                if ( webException.Status == WebExceptionStatus.Timeout )
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException( "Request timed out" );
+                }
+
                 Logging.Warn( webException.Message, webException );
             }
 
@@ -541,18 +546,17 @@ namespace EddiCompanionAppService
         // Obtain a response, ensuring that we obtain the response's cookies
         private HttpWebResponse GetResponse(HttpWebRequest request)
         {
-            HttpWebResponse response;
             try
             {
-                response = (HttpWebResponse)request.GetResponse();
+                var response = request.GetResponse();
+                Logging.Debug( $"Response from {request.Address} is: ", response );
+                return response as HttpWebResponse;
             }
             catch (WebException wex)
             {
-                response = (HttpWebResponse)wex.Response;
-                Logging.Warn( wex.Message, response );
+                Logging.Warn( wex.Message, wex );
             }
-            Logging.Debug($"Response from {request.Address} is: ", response);
-            return response;
+            return null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
