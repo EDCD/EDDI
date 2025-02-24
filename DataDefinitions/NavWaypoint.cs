@@ -130,6 +130,14 @@ namespace EddiDataDefinitions
             return Functions.StellarDistanceLy( x, y, z, other.x, other.y, other.z );
         }
 
+        #region Overrides of Object
+
+        public override string ToString () => systemName;
+
+        #endregion
+
+        #region PropertyChanged Event Handler
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -137,5 +145,7 @@ namespace EddiDataDefinitions
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }
