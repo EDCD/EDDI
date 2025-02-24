@@ -516,10 +516,10 @@ namespace EddiShipMonitor
                 ship.maxjumprange = @event.maxjumprange;
                 ship.health = @event.hullhealth;
 
-                // Calculate and update our commander's insurance rate
-                if ( @event.value > 0 && EDDI.Instance.Cmdr != null )
+                // Calculate and update our insurance rate
+                if ( @event.value > 0 )
                 {
-                    EDDI.Instance.Cmdr.insurance = Math.Round((decimal)@event.rebuy / (@event.value ?? 0), 2);
+                    ConfigService.Instance.shipMonitorConfiguration.insurance = Math.Round((decimal)@event.rebuy / (@event.value ?? 0), 2);
                 }
 
                 // Set the standard modules

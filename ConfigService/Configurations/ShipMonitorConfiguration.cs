@@ -17,6 +17,7 @@ namespace EddiConfigService.Configurations
         public int? currentshipid { get; set; }
         public ObservableCollection<Ship> shipyard { get; set; } = new ObservableCollection<Ship>();
         public List<StoredModule> storedmodules { get; set; } = new List<StoredModule>();
+        public decimal insurance { get; set; } = 0.05M;
         public DateTime updatedat { get; set; } = DateTime.MinValue;
 
         [OnDeserialized]
