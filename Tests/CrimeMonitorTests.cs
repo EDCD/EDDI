@@ -278,7 +278,7 @@ namespace Tests
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             fakeSpanshRestClient.Expect( "dump/5581611930322", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpCalenerro ) );
-            EDDI.Instance.CurrentStarSystem = fakeSpanshService.GetStarSystem( 5581611930322 );
+            EDDI.Instance.CurrentStarSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem( 5581611930322 );
 
             line = "{ \"timestamp\":\"2019-04-24T00:13:35Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"federation_corvette\", \"Ship_Localised\":\"Federal Corvette\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Kurt Pettersen;\", \"PilotName_Localised\":\"Kurt Pettersen\", \"PilotRank\":\"Deadly\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Calennero Crew\", \"LegalStatus\":\"Wanted\", \"Bounty\":295785 }";
             events = JournalMonitor.ParseJournalEntry(line);

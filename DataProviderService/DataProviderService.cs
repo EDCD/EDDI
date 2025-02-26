@@ -112,7 +112,7 @@ namespace EddiDataProviderService
                     results.AddRange( fetchedSystems );
                     
                     // Save changes to our star systems
-                    starSystemRepository.SaveStarSystems( fetchedSystems );
+                    SaveStarSystems( fetchedSystems );
                 }
 
                 if ( missingSystems().Any() )
@@ -430,12 +430,12 @@ namespace EddiDataProviderService
         public void SaveStarSystem ( StarSystem starSystem )
         {
             if ( starSystem == null ) { return; }
-            starSystemRepository.SaveStarSystems( new List<StarSystem> { starSystem } );
+            SaveStarSystems( new List<StarSystem> { starSystem } );
         }
 
         public void SaveStarSystems ( List<StarSystem> starSystems )
         {
-            if ( !starSystems.Any() || unitTesting ) { return; }
+            if ( !starSystems.Any() ) { return; }
 
             // Update any faction and star systems in our short term faction and star system caches to minimize repeat deserialization
             foreach ( var starSystem in starSystems )
@@ -443,6 +443,8 @@ namespace EddiDataProviderService
                 factionCache.AddOrUpdate( starSystem.factions );
                 starSystemCache.AddOrUpdate( starSystem );
             }
+
+            if ( unitTesting ) { return; }
 
             starSystemRepository.SaveStarSystems( starSystems );
         }

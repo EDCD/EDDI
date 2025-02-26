@@ -151,34 +151,31 @@ namespace EddiCrimeMonitor
         internal void postHandleShipTargetedEvent ( ShipTargetedEvent @event )
         {
             // System targets list may be 're-built' for the current system from Log Load
-            Task.Run( () =>
+            if ( @event.targetlocked )
             {
-                if ( @event.targetlocked )
+                var target = new Target();
+                if ( @event.scanstage >= 1 )
                 {
-                    var target = new Target();
-                    if ( @event.scanstage >= 1 )
+                    lock ( recordLock )
                     {
-                        lock ( recordLock )
+                        target = shipTargets.FirstOrDefault( t => t.name == @event.name );
+                        if ( target == null )
                         {
-                            target = shipTargets.FirstOrDefault( t => t.name == @event.name );
-                            if ( target == null )
-                            {
-                                target = new Target( @event.name, @event.CombatRank, @event.ship );
-                                shipTargets.Add( target );
-                            }
+                            target = new Target( @event.name, @event.CombatRank, @event.ship );
+                            shipTargets.Add( target );
                         }
                     }
-                    if ( @event.scanstage >= 3 && target.LegalStatus == null )
-                    {
-                        var faction = EDDI.Instance.DataProvider.FetchFactionByName( @event.faction );
-                        target.faction = @event.faction;
-                        target.Power = @event.Power;
-                        target.LegalStatus = @event.LegalStatus;
-                        target.bounty = @event.bounty;
-                        target.Allegiance = faction?.Allegiance;
-                    }
                 }
-            } );
+                if ( @event.scanstage >= 3 && target.LegalStatus == null )
+                {
+                    var faction = EDDI.Instance.DataProvider.FetchFactionByName( @event.faction );
+                    target.faction = @event.faction;
+                    target.Power = @event.Power;
+                    target.LegalStatus = @event.LegalStatus;
+                    target.bounty = @event.bounty;
+                    target.Allegiance = faction?.Allegiance;
+                }
+            }
         }
 
         public void PreHandle(Event @event)
