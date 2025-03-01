@@ -441,5 +441,8 @@
     <value>Assinatura de Disparo de Armas da Potência</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="EXT_PANEL_ColonisationBeacon_Site" xml:space="preserve">
+    <value>Sinalizador de Colonização do Sistema</value>
+    <comment>System Colonisation Beacon signal source</comment>
+  </data>
 </root>
