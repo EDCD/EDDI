@@ -268,6 +268,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Colonization Suite.
+        /// </summary>
+        public static string ColonisationSuite {
+            get {
+                return ResourceManager.GetString("ColonisationSuite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Coloured string lights.
         /// </summary>
         public static string Colouredstringlights {

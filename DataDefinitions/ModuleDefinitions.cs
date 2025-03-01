@@ -1140,6 +1140,7 @@ namespace EddiDataDefinitions
         public static readonly Module cobramkv_armour_grade3 = new Module( "cobramkv_armour_grade3", "MilitaryGradeComposite", 1, "I", 890515 );
         public static readonly Module cobramkv_armour_mirrored = new Module( "cobramkv_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 2077867 );
         public static readonly Module cobramkv_armour_reactive = new Module( "cobramkv_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 2332158 );
+        public static readonly Module Int_Colonisation = new Module( "Int_Colonisation", "ColonisationSuite", 1, "I", 0 );
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
