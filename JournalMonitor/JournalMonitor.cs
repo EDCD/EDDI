@@ -197,10 +197,8 @@ namespace EddiJournalMonitor
                                     switch ( stationName )
                                     {
                                         case "Stronghold Carrier":
-                                            stationTypeEdName = StationModel.Megaship.edname;
-                                            break;
                                         case "System Colonisation Ship":
-                                            stationTypeEdName = StationModel.SystemColonisationShip.edname;
+                                            stationTypeEdName = StationModel.Megaship.edname;
                                             break;
                                         default:
                                             stationTypeEdName = JsonParsing.getString( data, "StationType" );
