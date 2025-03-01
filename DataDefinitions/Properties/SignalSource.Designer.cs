@@ -178,6 +178,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System Colonisation Beacon.
+        /// </summary>
+        public static string EXT_PANEL_ColonisationBeacon_Site {
+            get {
+                return ResourceManager.GetString("EXT_PANEL_ColonisationBeacon_Site", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capital Ship.
         /// </summary>
         public static string FIXED_EVENT_CAPSHIP {

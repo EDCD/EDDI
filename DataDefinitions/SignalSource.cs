@@ -106,6 +106,8 @@ namespace EddiDataDefinitions
             var WrecksSidewinder = new SignalSource("Wrecks_Sidewinder");
 
             var ArmedRevolt = new SignalSource("Gro_controlScenarioTitle");
+
+            var ColonizationBeacon = new SignalSource( "EXT_PANEL_ColonisationBeacon_Site" );
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
