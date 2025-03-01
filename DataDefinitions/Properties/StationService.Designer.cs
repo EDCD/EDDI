@@ -133,6 +133,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Construction Services.
+        /// </summary>
+        public static string ColonisationContribution {
+            get {
+                return ResourceManager.GetString("ColonisationContribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commodities.
         /// </summary>
         public static string Commodities {
@@ -340,11 +349,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refinery Contact.
+        /// </summary>
+        public static string Refinery {
+            get {
+                return ResourceManager.GetString("Refinery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refuel.
         /// </summary>
         public static string Refuel {
             get {
                 return ResourceManager.GetString("Refuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Colonisation station service.
+        /// </summary>
+        public static string RegisteringColonisation {
+            get {
+                return ResourceManager.GetString("RegisteringColonisation", resourceCulture);
             }
         }
         

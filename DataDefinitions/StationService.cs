@@ -21,6 +21,7 @@ namespace EddiDataDefinitions
             CarrierFuel = new StationService("CarrierFuel");
             CarrierManagement = new StationService("CarrierManagement");
             CarrierVendor = new StationService("CarrierVendor");
+            ColonisationContribution = new StationService( "ColonisationContribution" );
             Commodities = new StationService("Commodities");
             Contacts = new StationService("Contacts");
             CrewLounge = new StationService("CrewLounge");
@@ -43,7 +44,9 @@ namespace EddiDataDefinitions
             PioneerSupplies = new StationService("PioneerSupplies");
             PowerPlay = new StationService("Powerplay");
             Rearm = new StationService("Rearm");
+            Refinery = new StationService( "Refinery" );
             Refuel = new StationService("Refuel");
+            RegisteringColonisation = new StationService( "RegisteringColonisation" );
             Repair = new StationService("Repair");
             Research = new StationService("Research");
             SearchAndRescue = new StationService("SearchAndRescue");
@@ -68,6 +71,7 @@ namespace EddiDataDefinitions
         public static readonly StationService CarrierFuel;
         public static readonly StationService CarrierManagement;
         public static readonly StationService CarrierVendor;
+        public static readonly StationService ColonisationContribution;
         public static readonly StationService Commodities;
         public static readonly StationService Contacts;
         public static readonly StationService CrewLounge;
@@ -90,7 +94,9 @@ namespace EddiDataDefinitions
         public static readonly StationService PioneerSupplies;
         public static readonly StationService PowerPlay;
         public static readonly StationService Rearm;
+        public static readonly StationService Refinery;
         public static readonly StationService Refuel;
+        public static readonly StationService RegisteringColonisation;
         public static readonly StationService Repair;
         public static readonly StationService Research;
         public static readonly StationService SearchAndRescue;
