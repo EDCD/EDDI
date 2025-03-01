@@ -184,20 +184,32 @@ namespace EddiJournalMonitor
                         {
                             case "Docked":
                                 {
-                                    string systemName = JsonParsing.getString(data, "StarSystem");
-                                    ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    string stationName = JsonParsing.getString(data, "StationName");
+                                    var systemName = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    var stationName = JsonParsing.getString(data, "StationName");
 
                                     // Normalize Powerplay Stronghold Carrier names
                                     stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
 
-                                    // Stronghold carriers may be reported with an incorrect StationType. Fix that here.
-                                    var stationTypeEdName = stationName == "Stronghold Carrier" ? StationModel.Megaship.edname : JsonParsing.getString( data, "StationType" );
-                                    StationModel stationModel = StationModel.FromEDName(stationTypeEdName) ?? StationModel.None;
-
-                                    Faction controllingfaction = GetFaction(data, "Station", systemName, systemAddress);
-                                    decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
+                                    // Fix known incorrectly reported StationType values.
+                                    string stationTypeEdName;
+                                    switch ( stationName )
+                                    {
+                                        case "Stronghold Carrier":
+                                            stationTypeEdName = StationModel.Megaship.edname;
+                                            break;
+                                        case "System Colonisation Ship":
+                                            stationTypeEdName = StationModel.SystemColonisationShip.edname;
+                                            break;
+                                        default:
+                                            stationTypeEdName = JsonParsing.getString( data, "StationType" );
+                                            break;
+                                    }
+                                    var stationModel = StationModel.FromEDName(stationTypeEdName) ?? StationModel.None;
+                                    
+                                    var controllingfaction = GetFaction(data, "Station", systemName, systemAddress);
+                                    var distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                     // Get station landing pads data
                                     var landingPads = GetLandingPads(data);

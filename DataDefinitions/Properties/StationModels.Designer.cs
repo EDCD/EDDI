@@ -194,5 +194,14 @@ namespace EddiDataDefinitions.Properties {
                 return ResourceManager.GetString("SurfaceStation", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Colonisation Ship.
+        /// </summary>
+        public static string SystemColonisationShip {
+            get {
+                return ResourceManager.GetString("SystemColonisationShip", resourceCulture);
+            }
+        }
     }
 }

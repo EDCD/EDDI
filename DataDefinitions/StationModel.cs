@@ -28,6 +28,7 @@ namespace EddiDataDefinitions
         public static readonly StationModel OutpostScientific = new StationModel("OutpostScientific");
         public static readonly StationModel FleetCarrier = new StationModel("FleetCarrier");
         public static readonly StationModel OnFootSettlement = new StationModel("OnFootSettlement");
+        public static readonly StationModel SystemColonisationShip = new StationModel( "SystemColonisationShip" );
 
         // dummy used to ensure that the static constructor has run
         public StationModel() : this("")
