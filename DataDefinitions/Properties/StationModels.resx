@@ -177,10 +177,6 @@
     <value>Settlement</value>
     <comment>An Odyssey style Settlement</comment>
   </data>
-  <data name="SystemColonisationShip" xml:space="preserve">
-    <value>System Colonisation Ship</value>
-    <comment>System Colonisation Ship dockable station type</comment>
-  </data>
   <data name="SpaceConstructionDepot" xml:space="preserve">
     <value>Orbital Construction Site</value>
     <comment>Orbital Construction Site station model</comment>
