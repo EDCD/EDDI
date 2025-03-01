@@ -139,10 +139,10 @@
     <value>Welt mit hochwertigen Metallen</value>
   </data>
   <data name="IcyBody" xml:space="preserve">
-    <value>Eisplanet</value>
+    <value>Eisiger Körper</value>
   </data>
   <data name="MetalRichBody" xml:space="preserve">
-    <value>Metallreicher Planet</value>
+    <value>Metallreicher Körper</value>
   </data>
   <data name="RockyBody" xml:space="preserve">
     <value>Felsiger Körper</value>
