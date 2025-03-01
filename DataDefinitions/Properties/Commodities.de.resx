@@ -1881,5 +1881,8 @@
     <value>Lavignys strategische Berichte</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="Steel" xml:space="preserve">
+    <value>Stahl</value>
+    <comment>Steel commodity</comment>
+  </data>
 </root>
