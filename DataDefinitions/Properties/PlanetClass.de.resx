@@ -139,16 +139,16 @@
     <value>Welt mit hochwertigen Metallen</value>
   </data>
   <data name="IcyBody" xml:space="preserve">
-    <value>Eisiger Körper</value>
+    <value>Eisplanet</value>
   </data>
   <data name="MetalRichBody" xml:space="preserve">
     <value>Metallreicher Körper</value>
   </data>
   <data name="RockyBody" xml:space="preserve">
-    <value>Felsiger Körper</value>
+    <value>Gesteinsplanet</value>
   </data>
   <data name="RockyIceBody" xml:space="preserve">
-    <value>Felsige Eiswelt</value>
+    <value>Felsiger Eisplanet</value>
   </data>
   <data name="SudarskyClassIGasGiant" xml:space="preserve">
     <value>Klasse I Gasriese</value>
