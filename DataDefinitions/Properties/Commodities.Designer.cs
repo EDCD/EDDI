@@ -1681,6 +1681,33 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kaine Aid Supplies.
+        /// </summary>
+        public static string KaineAidSupplies {
+            get {
+                return ResourceManager.GetString("KaineAidSupplies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kaine Lobbying Material.
+        /// </summary>
+        public static string KaineLobbyingMaterial {
+            get {
+                return ResourceManager.GetString("KaineLobbyingMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kaine Misinformation.
+        /// </summary>
+        public static string KaineMisinformation {
+            get {
+                return ResourceManager.GetString("KaineMisinformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kamitra Cigars.
         /// </summary>
         public static string KamitraCigars {
@@ -1803,6 +1830,15 @@ namespace EddiDataDefinitions.Properties {
         public static string lavignygarisonsupplies {
             get {
                 return ResourceManager.GetString("lavignygarisonsupplies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lavigny Strategic Reports.
+        /// </summary>
+        public static string LavignyStrategicReports {
+            get {
+                return ResourceManager.GetString("LavignyStrategicReports", resourceCulture);
             }
         }
         
@@ -2707,7 +2743,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hudson&apos;s Field Supplies.
+        ///   Looks up a localized string similar to Archer&apos;s Field Supplies.
         /// </summary>
         public static string RepublicanFieldSupplies {
             get {
@@ -2716,7 +2752,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hudson Garrison Supplies.
+        ///   Looks up a localized string similar to Archer Garrison Supplies.
         /// </summary>
         public static string RepublicanGarisonSupplies {
             get {
@@ -2734,7 +2770,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hudson&apos;s Restricted Intel.
+        ///   Looks up a localized string similar to Archer&apos;s Restricted Intel.
         /// </summary>
         public static string RestrictedIntel {
             get {
@@ -3045,6 +3081,15 @@ namespace EddiDataDefinitions.Properties {
         public static string SpacePioneerRelics {
             get {
                 return ResourceManager.GetString("SpacePioneerRelics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steel.
+        /// </summary>
+        public static string Steel {
+            get {
+                return ResourceManager.GetString("Steel", resourceCulture);
             }
         }
         

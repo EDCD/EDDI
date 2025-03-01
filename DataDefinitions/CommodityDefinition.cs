@@ -592,6 +592,9 @@ namespace EddiDataDefinitions
         public static CommodityDefinition PlatinumAloy =
             new CommodityDefinition( 128793114, " PlatinumAloy ", Metals, 18333, true );
 
+        public static CommodityDefinition Steel =
+            new CommodityDefinition( 129031238, "Steel", Metals, 4179, false );
+
         #endregion
 
         #region Minerals
@@ -683,8 +686,11 @@ namespace EddiDataDefinitions
         public static CommodityDefinition Alexandrite =
             new CommodityDefinition( 128924331, " Alexandrite ", Minerals, 217192, false );
 
-        public static CommodityDefinition
-            Opal = new CommodityDefinition( 128924332, " Opal ", Minerals, 135218, false );
+        public static CommodityDefinition Opal = 
+            new CommodityDefinition( 128924332, " Opal ", Minerals, 135218, false );
+
+        public static CommodityDefinition Haematite =
+            new CommodityDefinition( 129031327, " Haematite ", Minerals, 1791, false );
 
         #endregion
 
