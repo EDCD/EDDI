@@ -70,6 +70,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Construction.
+        /// </summary>
+        public static string Construction {
+            get {
+                return ResourceManager.GetString("Construction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Damaged.
         /// </summary>
         public static string Damaged {

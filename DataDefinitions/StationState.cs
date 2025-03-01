@@ -14,6 +14,7 @@ namespace EddiDataDefinitions
         }
 
         public static readonly StationState Abandoned = new StationState ( "Abandoned" );
+        public static readonly StationState Construction = new StationState ( "Construction" );
         public static readonly StationState Damaged = new StationState ( "Damaged" );
         public static readonly StationState NormalOperation = new StationState ( "NormalOperation" );
         public static readonly StationState UnderAttack = new StationState ( "UnderAttack" );

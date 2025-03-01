@@ -121,6 +121,10 @@
     <value>Abandoned</value>
     <comment>StationState Abandoned</comment>
   </data>
+  <data name="Construction" xml:space="preserve">
+    <value>Construction</value>
+    <comment>Construction station state</comment>
+  </data>
   <data name="Damaged" xml:space="preserve">
     <value>Damaged</value>
     <comment>StationState Damaged</comment>
