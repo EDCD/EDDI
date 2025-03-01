@@ -469,18 +469,21 @@ namespace EddiCore
                 CompanionAppService.Instance.gameIsBeta = false;
 
                 var configuration = ConfigService.Instance.eddiConfiguration;
+                var cmdrConfiguration = ConfigService.Instance.commanderConfiguration;
                 Logging.Verbose = configuration.Debug;
 
                 // Retrieve commander data
                 Cmdr = new Commander
                     {
-                        name = configuration.CommanderName, phoneticName = configuration.PhoneticName, gender = configuration.Gender,
-                        squadronname = configuration.SquadronName,
-                        squadronid = configuration.SquadronID,
-                        squadronrank = configuration.SquadronRank,
-                        squadronallegiance = configuration.SquadronAllegiance,
-                        squadronpower = configuration.SquadronPower,
-                        squadronfaction = configuration.SquadronFaction
+                        name = cmdrConfiguration.commanderName, 
+                        phoneticName = cmdrConfiguration.phoneticName, 
+                        gender = cmdrConfiguration.gender,
+                        squadronname = cmdrConfiguration.squadronName,
+                        squadronid = cmdrConfiguration.squadronID,
+                        squadronrank = cmdrConfiguration.SquadronRank,
+                        squadronallegiance = cmdrConfiguration.SquadronAllegiance,
+                        squadronpower = cmdrConfiguration.SquadronPower,
+                        squadronfaction = cmdrConfiguration.squadronFaction
                     };
                 FleetCarrier = configuration.fleetCarrier;
 
@@ -508,8 +511,8 @@ namespace EddiCore
                 // Tasks we can start asynchronously and don't need to wait for
                 Task.Run( () =>
                 {
-                    setHomeSystem( configuration.HomeSystemAddress );
-                    setHomeStation( configuration );
+                    setHomeSystem( cmdrConfiguration.homeSystemAddress );
+                    setHomeStation( cmdrConfiguration );
                 }, eventHandlerTS.Token ).ConfigureAwait( false );
                 Task.Run(() => updateDestinationSystem( configuration.DestinationSystemAddress, configuration.DestinationSystem), eventHandlerTS.Token).ConfigureAwait(false);
                 Task.Run(async () =>
@@ -1714,9 +1717,9 @@ namespace EddiCore
                 Cmdr.powerrating = 0;
 
                 // Store power merits
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                var configuration = ConfigService.Instance.commanderConfiguration;
                 configuration.powerMerits = Cmdr.powermerits;
-                ConfigService.Instance.eddiConfiguration = configuration;
+                ConfigService.Instance.commanderConfiguration = configuration;
             }
 
             return true;
@@ -1731,9 +1734,9 @@ namespace EddiCore
                 Cmdr.powerrating = 0;
 
                 // Store power merits
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                var configuration = ConfigService.Instance.commanderConfiguration;
                 configuration.powerMerits = Cmdr.powermerits;
-                ConfigService.Instance.eddiConfiguration = configuration;
+                ConfigService.Instance.commanderConfiguration = configuration;
             }
 
             return true;
@@ -1748,9 +1751,9 @@ namespace EddiCore
                 Cmdr.powermerits = @event.merits;
 
                 // Store power merits
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-                configuration.powerMerits = @event.merits;
-                ConfigService.Instance.eddiConfiguration = configuration;
+                var configuration = ConfigService.Instance.commanderConfiguration;
+                configuration.powerMerits = Cmdr.powermerits;
+                ConfigService.Instance.commanderConfiguration = configuration;
 
                 return true;
             }
@@ -3325,12 +3328,12 @@ namespace EddiCore
                     HomeStarSystem = newSystem;
                     Logging.Debug( "Home star system is " + HomeStarSystem.systemname );
 
-                    var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-                    eddiConfiguration.HomeSystem = newSystem.systemname;
-                    eddiConfiguration.HomeSystemAddress = newSystem.systemAddress;
-                    eddiConfiguration.HomeStation = null;
-                    eddiConfiguration.HomeStationMarketID = null;
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    var configuration = ConfigService.Instance.commanderConfiguration;
+                    configuration.homeSystemName = newSystem.systemname;
+                    configuration.homeSystemAddress = newSystem.systemAddress;
+                    configuration.homeStationName = null;
+                    configuration.homeStationMarketID = null;
+                    ConfigService.Instance.commanderConfiguration = configuration;
                     return;
                 }
             }
@@ -3340,19 +3343,18 @@ namespace EddiCore
             }
         }
 
-        public EDDIConfiguration setHomeStation(EDDIConfiguration configuration)
+        public CommanderConfiguration setHomeStation( CommanderConfiguration configuration )
         {
-            if (!string.IsNullOrEmpty(configuration.HomeStation) && HomeStarSystem?.stations != null)
+            if ( configuration.homeStationMarketID != null && HomeStarSystem?.stations != null)
             {
-                var homeStationName = configuration.HomeStation.Trim();
                 foreach (Station station in HomeStarSystem.stations)
                 {
-                    if (station.name == homeStationName)
+                    if (station.marketId == configuration.homeStationMarketID)
                     {
                         HomeStation = station;
                         Logging.Debug("Home station is " + HomeStation.name);
-                        configuration.HomeStation = station.name;
-                        configuration.HomeStationMarketID = station.marketId;
+                        configuration.homeStationName = station.name;
+                        configuration.homeStationMarketID = station.marketId;
                         break;
                     }
                 }

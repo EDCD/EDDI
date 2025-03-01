@@ -1,6 +1,5 @@
 ﻿using CommanderMonitor;
 using EddiConfigService;
-using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -135,13 +134,13 @@ namespace EddiCommanderMonitor
 
         private bool handleSquadronRankEvent ( SquadronRankEvent @event )
         {
-            SquadronRank rank = SquadronRank.FromRank(@event.newrank + 1);
+            var rank = SquadronRank.FromRank(@event.newrank + 1);
 
             // Update the configuration file
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            configuration.SquadronName = @event.name;
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            configuration.squadronName = @event.name;
             configuration.SquadronRank = rank;
-            ConfigService.Instance.eddiConfiguration = configuration;
+            ConfigService.Instance.commanderConfiguration = configuration;
 
             // Update the squadron UI data
             Application.Current?.Dispatcher?.InvokeAsync( () =>
@@ -149,7 +148,7 @@ namespace EddiCommanderMonitor
                 if ( Application.Current?.MainWindow != null )
                 {
                     ( (ConfigurationWindow)ConfigurationTabItem() ).eddiSquadronNameText.Text = @event.name;
-                    ( (ConfigurationWindow)ConfigurationTabItem() ).squadronRankDropDown.SelectedItem = rank.localizedName;
+                    ( (ConfigurationWindow)ConfigurationTabItem() ).squadronRankDropDown.SelectedItem = rank;
                 }
             } );
 
@@ -164,13 +163,13 @@ namespace EddiCommanderMonitor
 
         private void handleSquadronStartupEvent ( SquadronStartupEvent @event )
         {
-            SquadronRank rank = SquadronRank.FromRank(@event.rank + 1);
+            var rank = SquadronRank.FromRank(@event.rank + 1);
 
             // Update the configuration file
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
-            configuration.SquadronName = @event.name;
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            configuration.squadronName = @event.name;
             configuration.SquadronRank = rank;
-            ConfigService.Instance.eddiConfiguration = configuration;
+            ConfigService.Instance.commanderConfiguration = configuration;
 
             // Update the squadron UI data
             Application.Current?.Dispatcher?.InvokeAsync( () =>
@@ -178,7 +177,7 @@ namespace EddiCommanderMonitor
                 if ( Application.Current?.MainWindow != null )
                 {
                     ( (ConfigurationWindow)ConfigurationTabItem() ).eddiSquadronNameText.Text = @event.name;
-                    ( (ConfigurationWindow)ConfigurationTabItem() ).squadronRankDropDown.SelectedItem = rank.localizedName;
+                    ( (ConfigurationWindow)ConfigurationTabItem() ).squadronRankDropDown.SelectedItem = rank;
                 }
             } );
 
@@ -192,16 +191,16 @@ namespace EddiCommanderMonitor
 
         private void handleSquadronStatusEvent ( SquadronStatusEvent @event )
         {
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+            var configuration = ConfigService.Instance.commanderConfiguration;
 
             switch ( @event.status )
             {
                 case "created":
                     {
-                        SquadronRank rank = SquadronRank.FromRank(1);
+                        var rank = SquadronRank.FromRank(1);
 
                         // Update the configuration file
-                        configuration.SquadronName = @event.name;
+                        configuration.squadronName = @event.name;
                         configuration.SquadronRank = rank;
 
                         // Update the squadron UI data
@@ -210,7 +209,7 @@ namespace EddiCommanderMonitor
                             if ( Application.Current?.MainWindow != null )
                             {
                                 ( (ConfigurationWindow)ConfigurationTabItem() ).eddiSquadronNameText.Text = @event.name;
-                                ( (ConfigurationWindow)ConfigurationTabItem() ).squadronRankDropDown.SelectedItem = rank.localizedName;
+                                ( (ConfigurationWindow)ConfigurationTabItem() ).squadronRankDropDown.SelectedItem = rank;
                                 configuration = ( (ConfigurationWindow)ConfigurationTabItem() ).resetSquadronRank( configuration );
                             }
                         } );
@@ -226,7 +225,7 @@ namespace EddiCommanderMonitor
                 case "joined":
                     {
                         // Update the configuration file
-                        configuration.SquadronName = @event.name;
+                        configuration.squadronName = @event.name;
 
                         // Update the squadron UI data
                         Application.Current?.Dispatcher?.InvokeAsync( () =>
@@ -249,8 +248,8 @@ namespace EddiCommanderMonitor
                 case "left":
                     {
                         // Update the configuration file
-                        configuration.SquadronName = null;
-                        configuration.SquadronID = null;
+                        configuration.squadronName = null;
+                        configuration.squadronID = null;
 
                         // Update the squadron UI data
                         Application.Current?.Dispatcher?.InvokeAsync( () =>
@@ -271,7 +270,7 @@ namespace EddiCommanderMonitor
                         break;
                     }
             }
-            ConfigService.Instance.eddiConfiguration = configuration;
+            ConfigService.Instance.commanderConfiguration = configuration;
         }
 
         public void setSquadronSystem ( ulong? newSystemAddress )
@@ -287,13 +286,13 @@ namespace EddiCommanderMonitor
             {
                 if ( newSystem.systemAddress != EDDI.Instance.SquadronStarSystem?.systemAddress )
                 {
-                    EDDI.Instance.SquadronStarSystem = newSystem;
-                    Logging.Debug( $"Squadron star system set to: {newSystemAddress} ({EDDI.Instance.SquadronStarSystem.systemname})" );
+                    SquadronStarSystem = newSystem;
+                    Logging.Debug( $"Squadron star system set to: {newSystemAddress} ({SquadronStarSystem?.systemname})" );
 
-                    var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-                    eddiConfiguration.SquadronSystem = newSystem.systemname;
-                    eddiConfiguration.SquadronSystemAddress = newSystem.systemAddress;
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    var configuration = ConfigService.Instance.commanderConfiguration;
+                    configuration.squadronSystemName = newSystem.systemname;
+                    configuration.squadronSystemAddress = newSystem.systemAddress;
+                    ConfigService.Instance.commanderConfiguration = configuration;
                 }
             }
             else
@@ -306,12 +305,12 @@ namespace EddiCommanderMonitor
         {
             if ( faction != null )
             {
-                EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+                var configuration = ConfigService.Instance.commanderConfiguration;
 
                 //Update the squadron faction, if changed
-                if ( configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name )
+                if ( configuration.squadronFaction == null || configuration.squadronFaction != faction.name )
                 {
-                    configuration.SquadronFaction = faction.name;
+                    configuration.squadronFaction = faction.name;
 
                     Application.Current?.Dispatcher?.InvokeAsync( () =>
                     {
@@ -331,22 +330,20 @@ namespace EddiCommanderMonitor
                 if ( ( faction.presences.FirstOrDefault( p => p.systemAddress == systemAddress )?.squadronhomesystem ?? false ) )
                 {
                     // Update the squadron system data, if changed
-                    string system = EDDI.Instance.CurrentStarSystem?.systemname;
-                    if ( configuration.SquadronSystem == null || configuration.SquadronSystem != system )
+                    if ( configuration.squadronSystemAddress == null || configuration.squadronSystemAddress != EDDI.Instance.CurrentStarSystem?.systemAddress )
                     {
-                        configuration.SquadronSystem = system;
-                        configuration.SquadronSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
+                        configuration.squadronSystemAddress = EDDI.Instance.CurrentStarSystem?.systemAddress;
 
                         Application.Current?.Dispatcher?.InvokeAsync( () =>
                         {
                             if ( Application.Current?.MainWindow != null )
                             {
-                                ( (ConfigurationWindow)ConfigurationTabItem() ).squadronSystemDropDown.Text = system;
+                                ( (ConfigurationWindow)ConfigurationTabItem() ).squadronSystemDropDown.Text = EDDI.Instance.CurrentStarSystem?.systemname;
                                 ( (ConfigurationWindow)ConfigurationTabItem() ).ConfigureSquadronFactionOptions();
                             }
                         } );
 
-                        setSquadronSystem( configuration.SquadronSystemAddress );
+                        setSquadronSystem( configuration.squadronSystemAddress );
                     }
 
                     //Update the squadron allegiance, if changed
@@ -386,7 +383,7 @@ namespace EddiCommanderMonitor
                         }
                     }
                 }
-                ConfigService.Instance.eddiConfiguration = configuration;
+                ConfigService.Instance.commanderConfiguration = configuration;
             }
         }
 

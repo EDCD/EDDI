@@ -1,5 +1,6 @@
 ﻿using EddiConfigService.Configurations;
 using JetBrains.Annotations;
+using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,16 @@ namespace EddiConfigService
             set
             {
                 currentConfigs[nameof(cargoMonitorConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public CommanderConfiguration commanderConfiguration
+        {
+            get => currentConfigs[ nameof( commanderConfiguration ) ] as CommanderConfiguration;
+            set
+            {
+                currentConfigs[ nameof( commanderConfiguration ) ] = value;
                 OnPropertyChanged();
             }
         }
@@ -136,7 +147,7 @@ namespace EddiConfigService
             }
         }
 
-        /// <summary>Saves configurations from the specified data directory</summary>
+        /// <summary>Reads configurations from the specified data directory</summary>
         private ConcurrentDictionary<string, Config> ReadConfigurations(string directory = null)
         {
             if (string.IsNullOrEmpty(directory))
@@ -144,9 +155,10 @@ namespace EddiConfigService
                 // Use our current commander data directory, unless directed otherwise
                 directory = GetDataDirectory(commanderFID);
             }
-            return new ConcurrentDictionary<string, Config> (new Dictionary<string, Config>
+            var configs = new ConcurrentDictionary<string, Config> (new Dictionary<string, Config>
             {
                 {nameof(cargoMonitorConfiguration), FromFile<CargoMonitorConfiguration>(directory)},
+                {nameof(commanderConfiguration), FromFile<CommanderConfiguration>(directory)},
                 {nameof(crimeMonitorConfiguration), FromFile<CrimeMonitorConfiguration>(directory)},
                 {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
                 {nameof(edsmConfiguration), FromFile<StarMapConfiguration>(directory)},
@@ -159,6 +171,76 @@ namespace EddiConfigService
                 {nameof(shipMonitorConfiguration), FromFile<ShipMonitorConfiguration>(directory)},
                 {nameof(speechResponderConfiguration), FromFile<SpeechResponderConfiguration>(directory)}
             });
+
+            ConvertLegacyConfigData(configs);
+
+            return configs;
+        }
+
+        private void ConvertLegacyConfigData(ConcurrentDictionary<string, Config> configs)
+        {
+            // Convert legacy data saved in the EDDI configuration to the Commander configuration
+            if ( configs[ nameof( commanderConfiguration ) ] is CommanderConfiguration commanderConfig && 
+                 configs[ nameof( eddiConfiguration ) ]._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData )
+            {
+                if ( eddiConfigAdditionalData.TryGetValue( "CommanderName", out var commanderName ) )
+                {
+                    commanderConfig.commanderName = commanderName.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "Gender", out var gender ) )
+                {
+                    commanderConfig.gender = gender.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "homeSystemAddress", out var homeSystemAddress ) )
+                {
+                    commanderConfig.homeSystemAddress = homeSystemAddress.ToObject<ulong?>();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "homeStationMarketID", out var homeStationMarketID ) )
+                {
+                    commanderConfig.homeStationMarketID = homeStationMarketID.ToObject<long?>();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "PhoneticName", out var phoneticName ) )
+                {
+                    commanderConfig.phoneticName = phoneticName.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "powerMerits", out var powerMerits ) )
+                {
+                    commanderConfig.powerMerits = powerMerits.ToObject<int?>();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "squadronName", out var squadronName ) )
+                {
+                    commanderConfig.squadronName = squadronName.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "squadronID", out var squadronID ) )
+                {
+                    commanderConfig.squadronID = squadronID.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "squadronRank", out var squadronRank ) )
+                {
+                    commanderConfig.squadronRank = squadronRank.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "squadronAllegiance", out var squadronAllegiance ) )
+                {
+                    commanderConfig.squadronAllegiance = squadronAllegiance.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "squadronPower", out var squadronPower ) )
+                {
+                    commanderConfig.squadronPower = squadronPower.ToString();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "squadronSystemAddress", out var squadronSystemAddress ) )
+                {
+                    commanderConfig.squadronSystemAddress = squadronSystemAddress.ToObject<ulong?>();
+                }
+                if ( eddiConfigAdditionalData.TryGetValue( "squadronFaction", out var squadronFaction ) )
+                {
+                    commanderConfig.squadronFaction = squadronFaction.ToString();
+                }
+            }
+
+            foreach ( var config in configs )
+            {
+                config.Value._additionalData = null;
+            }
         }
 
         #endregion

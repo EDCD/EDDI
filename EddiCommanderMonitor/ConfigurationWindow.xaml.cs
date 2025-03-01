@@ -26,158 +26,57 @@ namespace CommanderMonitor
         {
             InitializeComponent();
 
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var configuration = ConfigService.Instance.commanderConfiguration;
+
+            ConfigureCommanderNameOptions( configuration );
+            ConfigureCommanderGenderOptions( configuration );
 
             // Setup home system & station from config file
-            homeSystemDropDown.ItemsSource = new List<string> { eddiConfiguration.HomeSystem ?? string.Empty };
-            homeSystemDropDown.SelectedItem = eddiConfiguration.HomeSystem ?? string.Empty;
-            ConfigureHomeStationOptions();
-            homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation ?? EddiCommanderMonitor.Properties.Resources.no_station;
-            if ( eddiConfiguration.Gender == "Female" )
-            {
-                eddiGenderFemale.IsChecked = true;
-            }
-            else if ( eddiConfiguration.Gender == "Male" )
-            {
-                eddiGenderMale.IsChecked = true;
-            }
-            else
-            {
-                eddiGenderNeither.IsChecked = true;
-            }
-            eddiCommanderPhoneticNameText.Text = eddiConfiguration.PhoneticName ?? string.Empty;
-            eddiSquadronNameText.Text = eddiConfiguration.SquadronName ?? string.Empty;
-            eddiSquadronIDText.Text = eddiConfiguration.SquadronID ?? string.Empty;
-            squadronRankDropDown.SelectedItem = ( eddiConfiguration.SquadronRank ?? SquadronRank.None ).localizedName;
-            ConfigureSquadronRankOptions( eddiConfiguration );
+            homeSystemDropDown.Text = configuration.homeSystemName ?? string.Empty;
+            ConfigureHomeStationOptions( configuration );
 
-            // Setup squadron home system from config file
-            squadronSystemDropDown.ItemsSource = new List<string> { eddiConfiguration.SquadronSystem ?? string.Empty };
-            squadronSystemDropDown.SelectedItem = eddiConfiguration.SquadronSystem ?? string.Empty;
+            ConfigureSquadronOptions( configuration );
+            }
 
-            squadronFactionDropDown.SelectedItem = eddiConfiguration.SquadronFaction ?? Power.None.localizedName;
-            squadronPowerDropDown.SelectedItem = ( eddiConfiguration.SquadronPower ?? Power.None ).localizedName;
-            ConfigureSquadronPowerOptions( eddiConfiguration );
-        }
+        #region Commander Name
 
-        // Handle changes to the editable home system combo box
-        private void HomeSystemText_TextChanged ( object sender, TextChangedEventArgs e )
+        private void ConfigureCommanderNameOptions ( CommanderConfiguration configuration )
         {
-            if ( sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded )
-            { return; }
-
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            void changeHandler ()
-            {
-                // Reset the home station due to selecting new home system
-                if ( eddiConfiguration.HomeStation != null )
-                {
-                    eddiConfiguration.HomeStation = null;
-                    homeStationDropDown.SelectedItem = EddiCommanderMonitor.Properties.Resources.no_station;
-                    ConfigureHomeStationOptions();
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-                }
-            }
-            homeSystemDropDown.TextDidChange( sender, e, eddiConfiguration.HomeSystem, changeHandler );
-        }
-
-        private void HomeSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
-        {
-            if ( sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded )
-            { return; }
-
-            void changeHandler ( NavWaypoint newValue )
-            {
-                // Update configuration to new home system
-                EDDI.Instance.setHomeSystem( newValue.systemAddress );
-
-                // Update station options for new system
-                ConfigureHomeStationOptions();
-            }
-            homeSystemDropDown.SelectionDidChange( changeHandler );
-        }
-
-        private void HomeSystemDropDown_LostFocus ( object sender, RoutedEventArgs e )
-        {
-            if ( sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded )
-            { return; }
-
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            homeSystemDropDown.DidLoseFocus( oldValue: eddiConfiguration.HomeSystem );
-        }
-
-        private void ConfigureHomeStationOptions ()
-        {
-            var homeStationOptions = new List<string> { EddiCommanderMonitor.Properties.Resources.no_station };
-            if ( EDDI.Instance.HomeStarSystem?.stations != null )
-            {
-                var systemStations = EDDI.Instance.HomeStarSystem.stations
-                    .OrderBy(s => s.name).Select( s => s.name );
-                homeStationOptions.AddRange( systemStations );
-            }
-
-            // sort but leave "No Station" at the top
-            homeStationDropDown.ItemsSource = homeStationOptions;
-        }
-
-        private void homeStationDropDownUpdated ( object sender, SelectionChangedEventArgs e )
-        {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            string homeStationName = homeStationDropDown.SelectedItem?.ToString();
-            if ( eddiConfiguration.HomeStation != homeStationName )
-            {
-                eddiConfiguration.HomeStation = homeStationName == EddiCommanderMonitor.Properties.Resources.no_station ? null : homeStationName;
-                eddiConfiguration = EDDI.Instance.setHomeStation( eddiConfiguration );
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            }
-        }
-
-        private void isMale_Checked ( object sender, RoutedEventArgs e )
-        {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Gender = "Male";
-            ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-        }
-
-        private void isFemale_Checked ( object sender, RoutedEventArgs e )
-        {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Gender = "Female";
-            ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            if ( EDDI.Instance.Cmdr != null )
-            {
-                EDDI.Instance.Cmdr.gender = "Female";
-            }
-        }
-
-        private void isNeitherGender_Checked ( object sender, RoutedEventArgs e )
-        {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Gender = "Neither";
-            ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            if ( EDDI.Instance.Cmdr != null )
-            {
-                EDDI.Instance.Cmdr.gender = "Neither";
-            }
+            eddiCommanderPhoneticNameText.Text = configuration.phoneticName ?? string.Empty;
         }
 
         private void commanderPhoneticNameChanged ( object sender, TextChangedEventArgs e )
         {
             // Replace any spaces, maintaining the original caret position
-            int caretIndex = eddiCommanderPhoneticNameText.CaretIndex;
+            var caretIndex = eddiCommanderPhoneticNameText.CaretIndex;
             eddiCommanderPhoneticNameText.Text = eddiCommanderPhoneticNameText.Text.Replace( " ", "ˈ" );
             eddiCommanderPhoneticNameText.CaretIndex = Math.Max( caretIndex, eddiCommanderPhoneticNameText.Text.Length );
 
             // Update our config file
             if ( eddiCommanderPhoneticNameText.IsLoaded )
             {
-                EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-                if ( eddiConfiguration.PhoneticName != eddiCommanderPhoneticNameText.Text )
+                var configuration = ConfigService.Instance.commanderConfiguration;
+                if ( configuration.phoneticName != eddiCommanderPhoneticNameText.Text )
                 {
-                    eddiConfiguration.PhoneticName = string.IsNullOrWhiteSpace( eddiCommanderPhoneticNameText.Text ) ? string.Empty : eddiCommanderPhoneticNameText.Text.Trim();
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    configuration.phoneticName = string.IsNullOrWhiteSpace( eddiCommanderPhoneticNameText.Text ) ? string.Empty : eddiCommanderPhoneticNameText.Text.Trim();
+                    ConfigService.Instance.commanderConfiguration = configuration;
                 }
             }
+        }
+
+        private void eddiCommanderPhoneticNameText_LostFocus ( object sender, RoutedEventArgs e )
+        {
+            // Discard invalid results
+            if ( eddiCommanderPhoneticNameText.Text == string.Empty )
+            {
+                var configuration = ConfigService.Instance.commanderConfiguration;
+                configuration.phoneticName = null;
+                ConfigService.Instance.commanderConfiguration = configuration;
+                if ( EDDI.Instance.Cmdr != null )
+                {
+                    EDDI.Instance.Cmdr.phoneticName = string.Empty;
+            }
+        }
         }
 
         private void eddiCmdrPhoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
@@ -189,56 +88,153 @@ namespace CommanderMonitor
         {
             IpaResourcesWindow IpaResources = new IpaResourcesWindow();
             IpaResources.Show();
+            }
+
+        #endregion
+
+        #region Commander Gender
+
+        private void ConfigureCommanderGenderOptions ( CommanderConfiguration configuration )
+        {
+            if ( configuration.gender == "Female" )
+            {
+                eddiGenderFemale.IsChecked = true;
+            }
+            else if ( configuration.gender == "Male" )
+            {
+                eddiGenderMale.IsChecked = true;
+        }
+            else
+            {
+                eddiGenderNeither.IsChecked = true;
+            }
+        }
+
+        private void isMale_Checked ( object sender, RoutedEventArgs e )
+        {
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            configuration.gender = "Male";
+            ConfigService.Instance.commanderConfiguration = configuration;
+        }
+
+        private void isFemale_Checked ( object sender, RoutedEventArgs e )
+        {
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            configuration.gender = "Female";
+            ConfigService.Instance.commanderConfiguration = configuration;
+            if ( EDDI.Instance.Cmdr != null )
+            {
+                EDDI.Instance.Cmdr.gender = "Female";
+            }
+        }
+
+        private void isNeitherGender_Checked ( object sender, RoutedEventArgs e )
+        {
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            configuration.gender = "Neither";
+            ConfigService.Instance.commanderConfiguration = configuration;
+            if ( EDDI.Instance.Cmdr != null )
+            {
+                EDDI.Instance.Cmdr.gender = "Neither";
+            }
+        }
+
+        #endregion
+
+        #region Home System / Station
+
+        // Handle changes to the editable home system combo box
+        private void HomeSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
+            {
+            try
+                {
+                if ( sender is StarSystemComboBox starSystemComboBox )
+                {
+                    if ( !starSystemComboBox.IsLoaded )
+                    { return; }
+
+                    // Update configuration to new home system
+                    if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
+                    {
+                        var newHomeSystem = e.AddedItems[0] as NavWaypoint;
+                        EDDI.Instance.setHomeSystem( newHomeSystem?.systemAddress );
+                        ConfigureHomeStationOptions( ConfigService.Instance.commanderConfiguration );
+                }
+            }
+        }
+            catch ( Exception ex )
+        {
+                Logging.Error( ex.Message, ex );
+        }
+        }
+
+        private void ConfigureHomeStationOptions ( CommanderConfiguration configuration )
+        {
+            homeStationDropDown.Text = configuration.homeStationName ?? EddiCommanderMonitor.Properties.Resources.no_station;
+
+            var homeStationOptions = new List<string> { EddiCommanderMonitor.Properties.Resources.no_station };
+            if ( EDDI.Instance.HomeStarSystem?.stations != null )
+        {
+                var systemStations = EDDI.Instance.HomeStarSystem.stations
+                    .OrderBy(s => s.name).Select( s => s.name );
+                homeStationOptions.AddRange( systemStations );
+            }
+
+            // sort but leave "No Station" at the top
+            homeStationDropDown.ItemsSource = homeStationOptions;
+                }
+
+        private void homeStationDropDownUpdated ( object sender, SelectionChangedEventArgs e )
+                {
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            string homeStationName = homeStationDropDown.SelectedItem?.ToString();
+            if ( configuration.homeStationName != homeStationName )
+            {
+                configuration.homeStationName = homeStationName == EddiCommanderMonitor.Properties.Resources.no_station ? null : homeStationName;
+                configuration = EDDI.Instance.setHomeStation( configuration );
+                ConfigService.Instance.commanderConfiguration = configuration;
+                }
+            }
+
+        #endregion
+
+        #region Squadron
+
+        private void ConfigureSquadronOptions ( CommanderConfiguration configuration )
+        {
+            // Setup squadron home system from config file
+            squadronSystemDropDown.Text = configuration.squadronSystemName ?? string.Empty;
+
+            eddiSquadronNameText.Text = configuration.squadronName ?? string.Empty;
+            eddiSquadronIDText.Text = configuration.squadronID ?? string.Empty;
+
+            ConfigureSquadronRankOptions( configuration );
+
+            squadronFactionDropDown.Text = configuration.squadronFaction ?? Power.None.localizedName;
+            squadronPowerDropDown.Text = ( configuration.SquadronPower ?? Power.None ).localizedName;
+            ConfigureSquadronPowerOptions( configuration );
         }
 
         private void squadronNameChanged ( object sender, TextChangedEventArgs e )
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            if ( eddiConfiguration.SquadronName != eddiSquadronNameText.Text )
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            if ( configuration.squadronName != eddiSquadronNameText.Text )
             {
-                eddiConfiguration.SquadronName = string.IsNullOrWhiteSpace( eddiSquadronNameText.Text ) ? null : eddiSquadronNameText.Text.Trim();
-                if ( eddiConfiguration.SquadronName == null )
+                configuration.squadronName = string.IsNullOrWhiteSpace( eddiSquadronNameText.Text ) ? null : eddiSquadronNameText.Text.Trim();
+                if ( configuration.squadronName == null )
                 {
-                    eddiConfiguration.SquadronID = null;
+                    configuration.squadronID = null;
                     eddiSquadronIDText.Text = string.Empty;
 
                     squadronSystemDropDown.Text = string.Empty;
                 }
-                eddiConfiguration = resetSquadronRank( eddiConfiguration );
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                configuration = resetSquadronRank( configuration );
+                ConfigService.Instance.commanderConfiguration = configuration;
 
                 if ( EDDI.Instance.Cmdr != null )
-                {
-                    EDDI.Instance.Cmdr.squadronname = eddiConfiguration.SquadronName;
-                }
-            }
-        }
-
-        private void eddiCommanderPhoneticNameText_LostFocus ( object sender, RoutedEventArgs e )
         {
-            // Discard invalid results
-            if ( eddiCommanderPhoneticNameText.Text == string.Empty )
-            {
-                EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-                eddiConfiguration.PhoneticName = null;
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-                if ( EDDI.Instance.Cmdr != null )
-                {
-                    EDDI.Instance.Cmdr.phoneticName = string.Empty;
-                }
+                    EDDI.Instance.Cmdr.squadronname = configuration.squadronName;
             }
-        }
-
-        private void CommanderDetailsTab_GotFocus ( object sender, RoutedEventArgs e )
-        {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            if ( eddiConfiguration.SquadronName != eddiSquadronNameText.Text )
-            {
-                eddiSquadronNameText.Text = eddiConfiguration.SquadronName;
-            }
-            if ( eddiConfiguration.SquadronID != eddiSquadronIDText.Text )
-            {
-                eddiSquadronIDText.Text = eddiConfiguration.SquadronID;
             }
         }
 
@@ -247,9 +243,9 @@ namespace CommanderMonitor
             // Discard invalid results
             if ( eddiSquadronNameText.Text == string.Empty )
             {
-                EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-                eddiConfiguration.SquadronName = null;
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                var configuration = ConfigService.Instance.commanderConfiguration;
+                configuration.squadronName = null;
+                ConfigService.Instance.commanderConfiguration = configuration;
                 if ( EDDI.Instance.Cmdr != null )
                 {
                     EDDI.Instance.Cmdr.squadronname = string.Empty;
@@ -259,15 +255,15 @@ namespace CommanderMonitor
 
         private void squadronIDChanged ( object sender, TextChangedEventArgs e )
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            if ( eddiConfiguration.SquadronID != eddiSquadronIDText.Text )
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            if ( configuration.squadronID != eddiSquadronIDText.Text )
             {
-                eddiConfiguration.SquadronID = string.IsNullOrWhiteSpace( eddiSquadronIDText.Text ) ? null : eddiSquadronIDText.Text.Trim();
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                configuration.squadronID = string.IsNullOrWhiteSpace( eddiSquadronIDText.Text ) ? null : eddiSquadronIDText.Text.Trim();
+                ConfigService.Instance.commanderConfiguration = configuration;
 
                 if ( EDDI.Instance.Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronid = eddiConfiguration.SquadronID;
+                    EDDI.Instance.Cmdr.squadronid = configuration.squadronID;
                 }
             }
         }
@@ -275,103 +271,74 @@ namespace CommanderMonitor
         private void eddiSquadronIDText_LostFocus ( object sender, RoutedEventArgs e )
         {
             // Discard invalid results
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            if ( eddiConfiguration.SquadronID != null )
+            var configuration = ConfigService.Instance.commanderConfiguration;
+            if ( configuration.squadronID != null )
             {
-                if ( eddiConfiguration.SquadronID.Contains( " " ) || eddiConfiguration.SquadronID.Length > 4 )
+                if ( configuration.squadronID.Contains( " " ) || configuration.squadronID.Length > 4 )
                 {
-                    eddiConfiguration.SquadronID = null;
+                    configuration.squadronID = null;
                     squadronSystemDropDown.Text = string.Empty;
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    ConfigService.Instance.commanderConfiguration = configuration;
                 }
             }
         }
 
         private void squadronRankDropDownUpdated ( object sender, SelectionChangedEventArgs e )
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var configuration = ConfigService.Instance.commanderConfiguration;
             string squadronRank = squadronRankDropDown.SelectedItem.ToString();
 
-            if ( eddiConfiguration.SquadronRank.edname != squadronRank )
+            if ( configuration.SquadronRank.edname != squadronRank )
             {
-                eddiConfiguration.SquadronRank = SquadronRank.FromName( squadronRank );
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                configuration.SquadronRank = SquadronRank.FromName( squadronRank );
+                ConfigService.Instance.commanderConfiguration = configuration;
 
                 if ( EDDI.Instance.Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronrank = eddiConfiguration.SquadronRank;
+                    EDDI.Instance.Cmdr.squadronrank = configuration.SquadronRank;
                 }
             }
         }
 
         // Handle changes to the editable squadron system combo box
-        private void SquadronSystemText_TextChanged ( object sender, TextChangedEventArgs e )
-        {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            string oldValue = eddiConfiguration.SquadronSystem;
-            void changeHandler ()
-            {
-                // Reset the squadron data due to selecting new squadron system
-                if ( eddiConfiguration.SquadronFaction != null )
-                {
-                    eddiConfiguration.SquadronFaction = null;
-
-                    eddiConfiguration.SquadronAllegiance = Superpower.None;
-                    eddiConfiguration.SquadronPower = Power.None;
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-
-                    squadronFactionDropDown.SelectedItem = Power.None.localizedName;
-                    ConfigureSquadronFactionOptions();
-                    squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower.localizedName;
-                    ConfigureSquadronPowerOptions( eddiConfiguration );
-
-                    if ( EDDI.Instance.Cmdr != null )
-                    {
-                        EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
-                        EDDI.Instance.Cmdr.squadronpower = Power.None;
-                    }
-
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-                }
-            }
-            squadronSystemDropDown.TextDidChange( sender, e, oldValue, changeHandler );
-        }
-
         private void SquadronSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
         {
-            void changeHandler ( NavWaypoint newValue )
+            try
             {
-                // Update configuration to new squadron system
-                commanderMonitor().setSquadronSystem( newValue.systemAddress );
+                if ( sender is StarSystemComboBox starSystemComboBox )
+                {
+                    if ( !starSystemComboBox.IsLoaded )
+                    { return; }
+
+                    // Update configuration to new home system
+                    if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
+                    {
+                        var newSquadronSystem = e.AddedItems[0] as NavWaypoint;
+                        commanderMonitor().setSquadronSystem( newSquadronSystem?.systemAddress );
 
                 // Update squadron faction options for new system
                 ConfigureSquadronFactionOptions();
             }
-
-            if ( sender is StarSystemComboBox comboBox && comboBox.IsLoaded )
-            {
-                squadronSystemDropDown.SelectionDidChange( changeHandler );
             }
         }
-
-        private void SquadronSystemDropDown_LostFocus ( object sender, RoutedEventArgs e )
+            catch ( Exception ex )
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            squadronSystemDropDown.DidLoseFocus( oldValue: eddiConfiguration.SquadronSystem );
+                Logging.Error( ex.Message, ex );
+        }
         }
 
         private void squadronFactionDropDownUpdated ( object sender, SelectionChangedEventArgs e )
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var configuration = ConfigService.Instance.commanderConfiguration;
             string squadronFaction = squadronFactionDropDown.SelectedItem?.ToString(); // This can be a localized "None"
 
-            if ( eddiConfiguration.SquadronFaction != squadronFaction )
+            if ( configuration.squadronFaction != squadronFaction )
             {
-                eddiConfiguration.SquadronFaction = squadronFaction == Power.None.localizedName ? null : squadronFaction;
+                configuration.squadronFaction = squadronFaction == Power.None.localizedName ? null : squadronFaction;
 
                 if ( EDDI.Instance.Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronfaction = eddiConfiguration.SquadronFaction;
+                    EDDI.Instance.Cmdr.squadronfaction = configuration.squadronFaction;
                 }
 
                 if ( squadronFaction != Power.None.localizedName )
@@ -379,10 +346,10 @@ namespace CommanderMonitor
                     var system = EDDI.Instance.SquadronStarSystem;
                     Faction faction = system?.factions.Find(f => f.name == squadronFaction);
 
-                    if ( faction != null && eddiConfiguration.SquadronAllegiance != faction.Allegiance )
+                    if ( faction != null && configuration.SquadronAllegiance != faction.Allegiance )
                     {
-                        eddiConfiguration.SquadronAllegiance = faction.Allegiance;
-                        ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                        configuration.SquadronAllegiance = faction.Allegiance;
+                        ConfigService.Instance.commanderConfiguration = configuration;
 
                         if ( EDDI.Instance.Cmdr != null )
                         {
@@ -390,13 +357,13 @@ namespace CommanderMonitor
                         }
 
                         squadronPowerDropDown.SelectedItem = Power.None.localizedName;
-                        ConfigureSquadronPowerOptions( eddiConfiguration );
+                        ConfigureSquadronPowerOptions( configuration );
                     }
                 }
                 else
                 {
-                    eddiConfiguration.SquadronAllegiance = Superpower.None;
-                    ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                    configuration.SquadronAllegiance = Superpower.None;
+                    ConfigService.Instance.commanderConfiguration = configuration;
 
                     if ( EDDI.Instance.Cmdr != null )
                     {
@@ -404,43 +371,46 @@ namespace CommanderMonitor
                     }
 
                     squadronPowerDropDown.SelectedItem = Power.None.localizedName;
-                    ConfigureSquadronPowerOptions( eddiConfiguration );
+                    ConfigureSquadronPowerOptions( configuration );
                 }
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                ConfigService.Instance.commanderConfiguration = configuration;
             }
         }
 
         private void squadronPowerDropDownUpdated ( object sender, SelectionChangedEventArgs e )
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var configuration = ConfigService.Instance.commanderConfiguration;
             string squadronPower = squadronPowerDropDown.SelectedItem?.ToString();
 
-            if ( ( eddiConfiguration.SquadronPower?.localizedName ?? "" ) != squadronPower )
+            if ( ( configuration.SquadronPower?.localizedName ?? "" ) != squadronPower )
             {
-                eddiConfiguration.SquadronPower = Power.FromName( squadronPower );
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                configuration.SquadronPower = Power.FromName( squadronPower );
+                ConfigService.Instance.commanderConfiguration = configuration;
 
                 if ( EDDI.Instance.Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronpower = eddiConfiguration.SquadronPower;
+                    EDDI.Instance.Cmdr.squadronpower = configuration.SquadronPower;
                 }
             }
         }
 
-        private void ConfigureSquadronRankOptions ( EDDIConfiguration configuration )
+        private void ConfigureSquadronRankOptions ( CommanderConfiguration configuration )
         {
-            List<string> SquadronRankOptions = new List<string>();
+            squadronRankDropDown.DisplayMemberPath = nameof( SquadronRank.localizedName );
 
-            foreach ( SquadronRank squadronrank in SquadronRank.AllOfThem )
+            var SquadronRankOptions = new List<SquadronRank>();
+            foreach ( var squadronrank in SquadronRank.AllOfThem )
             {
-                if ( configuration.SquadronName == null && squadronrank != SquadronRank.None )
+                if ( configuration.squadronName == null && squadronrank != SquadronRank.None )
                 {
                     break;
                 }
-                SquadronRankOptions.Add( squadronrank.localizedName );
+                SquadronRankOptions.Add( squadronrank );
             }
+
             // Don't sort
             squadronRankDropDown.ItemsSource = SquadronRankOptions;
+            squadronRankDropDown.SelectedIndex = SquadronRankOptions.IndexOf( configuration.SquadronRank ?? SquadronRank.None );
         }
 
         public void ConfigureSquadronFactionOptions ()
@@ -455,9 +425,9 @@ namespace CommanderMonitor
             squadronFactionDropDown.ItemsSource = squadronFactionOptions;
         }
 
-        public void ConfigureSquadronPowerOptions ( EDDIConfiguration configuration )
+        public void ConfigureSquadronPowerOptions ( CommanderConfiguration configuration )
         {
-            List<string> SquadronPowerOptions = new List<string>
+            var SquadronPowerOptions = new List<string>
             {
                 Power.None.localizedName
             };
@@ -476,9 +446,9 @@ namespace CommanderMonitor
             squadronPowerDropDown.ItemsSource = SquadronPowerOptions;
         }
 
-        public EDDIConfiguration resetSquadronRank ( EDDIConfiguration configuration )
+        public CommanderConfiguration resetSquadronRank ( CommanderConfiguration configuration )
         {
-            if ( configuration.SquadronName == null )
+            if ( configuration.squadronName == null )
             {
                 configuration.SquadronRank = SquadronRank.None;
                 squadronRankDropDown.SelectedItem = configuration.SquadronRank.localizedName;
@@ -487,5 +457,7 @@ namespace CommanderMonitor
 
             return configuration;
         }
+
+        #endregion
     }
 }

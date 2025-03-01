@@ -74,13 +74,11 @@
                                   IsEditable="True"
                                   IsReadOnly="False"
                                   IsTextSearchEnabled="False"
-                                  TextBoxBase.TextChanged="HomeSystemText_TextChanged"
                                   Grid.Row="2"
                                   Grid.Column="1"
                                   Grid.ColumnSpan ="3"
                                   Margin="0, 5"
                                   VerticalContentAlignment="Center"
-                                  LostFocus="HomeSystemDropDown_LostFocus"
                                   SelectionChanged="HomeSystemDropDown_SelectionChanged"/>
             <Label x:Name ="eddiHomeStationLabel" Grid.Row="3" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_home_station}"/>
             <ComboBox x:Name="homeStationDropDown" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan ="2" Margin="0, 5" VerticalContentAlignment="Center" SelectionChanged="homeStationDropDownUpdated"/>
@@ -126,13 +124,11 @@
                                   IsEditable="True"
                                   IsReadOnly="False"
                                   IsTextSearchEnabled="False"
-                                  TextBoxBase.TextChanged="SquadronSystemText_TextChanged"
                                   Grid.Row="12"
                                   Grid.Column="1"
                                   Grid.ColumnSpan ="3"
                                   Margin="0, 5"
                                   VerticalContentAlignment="Center"
-                                  LostFocus="SquadronSystemDropDown_LostFocus"
                                   SelectionChanged="SquadronSystemDropDown_SelectionChanged" x:FieldModifier="public" />
             <Label x:Name ="eddiSquadronFactionLabel" Grid.Row="13" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_faction}" />
             <ComboBox x:Name="squadronFactionDropDown" Grid.Row="13" Grid.Column="1" Grid.ColumnSpan ="2" Margin="0, 5" VerticalContentAlignment="Center" SelectionChanged="squadronFactionDropDownUpdated"
