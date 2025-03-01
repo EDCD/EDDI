@@ -136,7 +136,7 @@
     <value>Heliumreicher Gasriese</value>
   </data>
   <data name="HighMetalContentBody" xml:space="preserve">
-    <value>Planet mit hochwertigen Metallen</value>
+    <value>Welt mit hochwertigen Metallen</value>
   </data>
   <data name="IcyBody" xml:space="preserve">
     <value>Eisplanet</value>
@@ -148,7 +148,7 @@
     <value>Felsiger Körper</value>
   </data>
   <data name="RockyIceBody" xml:space="preserve">
-    <value>Felsiger Eisplanet</value>
+    <value>Felsige Eiswelt</value>
   </data>
   <data name="SudarskyClassIGasGiant" xml:space="preserve">
     <value>Klasse I Gasriese</value>
