@@ -3,6 +3,7 @@ using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechService;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,9 @@ namespace CommanderMonitor
             return (EddiCommanderMonitor.CommanderMonitor)EDDI.Instance.ObtainMonitor( "Commander monitor" );
         }
 
+        [CanBeNull]
+        internal StarSystem SquadronStarSystem => commanderMonitor().SquadronStarSystem;
+
         public ConfigurationWindow ()
         {
             InitializeComponent();
@@ -36,7 +40,7 @@ namespace CommanderMonitor
             ConfigureHomeStationOptions( configuration );
 
             ConfigureSquadronOptions( configuration );
-            }
+        }
 
         #region Commander Name
 
@@ -75,8 +79,8 @@ namespace CommanderMonitor
                 if ( EDDI.Instance.Cmdr != null )
                 {
                     EDDI.Instance.Cmdr.phoneticName = string.Empty;
+                }
             }
-        }
         }
 
         private void eddiCmdrPhoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
@@ -88,7 +92,7 @@ namespace CommanderMonitor
         {
             IpaResourcesWindow IpaResources = new IpaResourcesWindow();
             IpaResources.Show();
-            }
+        }
 
         #endregion
 
@@ -103,7 +107,7 @@ namespace CommanderMonitor
             else if ( configuration.gender == "Male" )
             {
                 eddiGenderMale.IsChecked = true;
-        }
+            }
             else
             {
                 eddiGenderNeither.IsChecked = true;
@@ -145,9 +149,9 @@ namespace CommanderMonitor
 
         // Handle changes to the editable home system combo box
         private void HomeSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
-            {
+        {
             try
-                {
+            {
                 if ( sender is StarSystemComboBox starSystemComboBox )
                 {
                     if ( !starSystemComboBox.IsLoaded )
@@ -159,13 +163,13 @@ namespace CommanderMonitor
                         var newHomeSystem = e.AddedItems[0] as NavWaypoint;
                         EDDI.Instance.setHomeSystem( newHomeSystem?.systemAddress );
                         ConfigureHomeStationOptions( ConfigService.Instance.commanderConfiguration );
+                    }
                 }
             }
-        }
             catch ( Exception ex )
-        {
+            {
                 Logging.Error( ex.Message, ex );
-        }
+            }
         }
 
         private void ConfigureHomeStationOptions ( CommanderConfiguration configuration )
@@ -174,7 +178,7 @@ namespace CommanderMonitor
 
             var homeStationOptions = new List<string> { EddiCommanderMonitor.Properties.Resources.no_station };
             if ( EDDI.Instance.HomeStarSystem?.stations != null )
-        {
+            {
                 var systemStations = EDDI.Instance.HomeStarSystem.stations
                     .OrderBy(s => s.name).Select( s => s.name );
                 homeStationOptions.AddRange( systemStations );
@@ -182,10 +186,10 @@ namespace CommanderMonitor
 
             // sort but leave "No Station" at the top
             homeStationDropDown.ItemsSource = homeStationOptions;
-                }
+        }
 
         private void homeStationDropDownUpdated ( object sender, SelectionChangedEventArgs e )
-                {
+        {
             var configuration = ConfigService.Instance.commanderConfiguration;
             string homeStationName = homeStationDropDown.SelectedItem?.ToString();
             if ( configuration.homeStationName != homeStationName )
@@ -193,8 +197,8 @@ namespace CommanderMonitor
                 configuration.homeStationName = homeStationName == EddiCommanderMonitor.Properties.Resources.no_station ? null : homeStationName;
                 configuration = EDDI.Instance.setHomeStation( configuration );
                 ConfigService.Instance.commanderConfiguration = configuration;
-                }
             }
+        }
 
         #endregion
 
@@ -232,9 +236,9 @@ namespace CommanderMonitor
                 ConfigService.Instance.commanderConfiguration = configuration;
 
                 if ( EDDI.Instance.Cmdr != null )
-        {
+                {
                     EDDI.Instance.Cmdr.squadronname = configuration.squadronName;
-            }
+                }
             }
         }
 
@@ -316,15 +320,15 @@ namespace CommanderMonitor
                         var newSquadronSystem = e.AddedItems[0] as NavWaypoint;
                         commanderMonitor().setSquadronSystem( newSquadronSystem?.systemAddress );
 
-                // Update squadron faction options for new system
-                ConfigureSquadronFactionOptions();
+                        // Update squadron faction options for new system
+                        ConfigureSquadronFactionOptions();
+                    }
+                }
             }
-            }
-        }
             catch ( Exception ex )
-        {
+            {
                 Logging.Error( ex.Message, ex );
-        }
+            }
         }
 
         private void squadronFactionDropDownUpdated ( object sender, SelectionChangedEventArgs e )
@@ -343,7 +347,7 @@ namespace CommanderMonitor
 
                 if ( squadronFaction != Power.None.localizedName )
                 {
-                    var system = EDDI.Instance.SquadronStarSystem;
+                    var system = SquadronStarSystem;
                     Faction faction = system?.factions.Find(f => f.name == squadronFaction);
 
                     if ( faction != null && configuration.SquadronAllegiance != faction.Allegiance )
@@ -416,9 +420,9 @@ namespace CommanderMonitor
         public void ConfigureSquadronFactionOptions ()
         {
             var squadronFactionOptions = new List<string> { Power.None.localizedName };
-            if ( EDDI.Instance.SquadronStarSystem != null )
+            if ( SquadronStarSystem != null )
             {
-                var starSystemFactions = EDDI.Instance.SquadronStarSystem.factions
+                var starSystemFactions = SquadronStarSystem.factions
                     .OrderBy( s => s.name ).Select( s => s.name );
                 squadronFactionOptions.AddRange( starSystemFactions );
             }

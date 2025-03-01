@@ -26,7 +26,6 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", VaProxy) },
             { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", VaProxy) },
             { nameof(EDDI.Instance.DestinationDistanceLy), () => VaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
-            { nameof(EDDI.Instance.SquadronStarSystem), () => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", VaProxy) },
             { nameof(EDDI.Instance.HomeStarSystem), () =>
                 {
                     setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", VaProxy);
@@ -466,7 +465,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        protected static void setStarSystemValues(StarSystem system, string prefix, dynamic vaProxy)
+        protected internal static void setStarSystemValues(StarSystem system, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting system information (" + prefix + ")");
             try

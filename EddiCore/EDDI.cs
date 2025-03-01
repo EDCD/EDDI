@@ -206,24 +206,6 @@ namespace EddiCore
         }
         private Station homeStation;
 
-        [CanBeNull]
-        public StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
-        {
-            get => squadronStarSystem;
-            set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (squadronStarSystem != null) { squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                squadronStarSystem = value;
-                OnPropertyChanged();
-            }
-        }
-        private StarSystem squadronStarSystem;
-
         // Destination variables
         [CanBeNull]
         public StarSystem DestinationStarSystem

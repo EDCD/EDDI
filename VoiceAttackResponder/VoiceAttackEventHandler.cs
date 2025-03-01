@@ -1,4 +1,5 @@
 ﻿using EddiCore;
+using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.Collections.Concurrent;
@@ -97,6 +98,33 @@ namespace EddiVoiceAttackResponder
 
                 // Retrieve and clear variables from prior iterations of the same event
                 clearPriorEventValues( @event.type );
+
+                // Update monitor variables
+                foreach ( var monitor in EDDI.Instance.monitors )
+                {
+                    foreach ( var kv in monitor.GetVariables() )
+                    {
+                        var variableName = kv.Key;
+                        var variableType = kv.Value.Item1;
+                        var variableValue = kv.Value.Item2;
+
+                        if ( variableValue is StarSystem starSystem )
+                        {
+                            VoiceAttackVariables.setStarSystemValues( starSystem, variableName, VaProxy );
+                        }
+                        else
+                        {
+                            var values = new MetaVariables(variableType, variableValue)
+                                .Results
+                                .AsVoiceAttackVariables("EDDI", variableName);
+                            foreach ( var var in values )
+                            {
+                                var.Set( VaProxy );
+                                currentVariables[ var.key ] = var;
+                            }
+                        }
+                    }
+                }
 
                 // Prepare and update this event's variable values
                 // Save the updated state of our event variables

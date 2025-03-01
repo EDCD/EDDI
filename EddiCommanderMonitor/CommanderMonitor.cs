@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -17,35 +18,53 @@ using Utilities;
 namespace EddiCommanderMonitor
 {
     [UsedImplicitly]
-    public class CommanderMonitor : IEddiMonitor
+    public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
+
+        [CanBeNull]
+        public StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
+        {
+            get => squadronStarSystem;
+            set
+            {
+                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
+                {
+                    OnPropertyChanged();
+                }
+                if ( squadronStarSystem != null )
+                { squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if ( value != null )
+                { value.PropertyChanged += childPropertyChangedHandler; }
+                squadronStarSystem = value;
+                OnPropertyChanged();
+            }
+        }
+        private StarSystem squadronStarSystem;
+
         public string MonitorName () => "Commander monitor";
 
-        public string LocalizedMonitorName () => EddiCommanderMonitor.Properties.Resources.MonitorName;
+        public string LocalizedMonitorName () => Properties.Resources.MonitorName;
 
-        public string MonitorDescription () => EddiCommanderMonitor.Properties.Resources.MonitorDescription;
+        public string MonitorDescription () => Properties.Resources.MonitorDescription;
 
         public bool IsRequired () => true;
 
         public bool NeedsStart () => false;
 
-        public void Start ()
-        {
-            Reload();
-        }
+        public void Start () => Reload();
 
         public void Stop ()
         { }
 
         public void Reload ()
-        {
-            var configuration = ConfigService.Instance.eddiConfiguration;
-            setSquadronSystem( configuration.SquadronSystemAddress );
-        }
+        { }
 
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {
-            return null;
+            return new Dictionary<string, Tuple<Type, object>>()
+            {
+                { "squadronsystem", new Tuple<Type, object>( typeof(StarSystem), SquadronStarSystem ) }
+            };
         }
 
         public UserControl ConfigurationTabItem () => new ConfigurationWindow();
@@ -284,7 +303,7 @@ namespace EddiCommanderMonitor
             //Ignore null & empty systems
             if ( newSystem?.bodies.Count > 0 )
             {
-                if ( newSystem.systemAddress != EDDI.Instance.SquadronStarSystem?.systemAddress )
+                if ( newSystem.systemAddress != SquadronStarSystem?.systemAddress )
                 {
                     SquadronStarSystem = newSystem;
                     Logging.Debug( $"Squadron star system set to: {newSystemAddress} ({SquadronStarSystem?.systemname})" );
@@ -297,7 +316,7 @@ namespace EddiCommanderMonitor
             }
             else
             {
-                EDDI.Instance.SquadronStarSystem = null;
+                SquadronStarSystem = null;
             }
         }
 
@@ -395,5 +414,21 @@ namespace EddiCommanderMonitor
 
         public void HandleProfile ( JObject profile )
         { }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged ( [CallerMemberName] string propertyName = null )
+        {
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+        }
+
+        protected bool SetField<T> ( ref T field, T value, [CallerMemberName] string propertyName = null )
+        {
+            if ( EqualityComparer<T>.Default.Equals( field, value ) )
+                return false;
+            field = value;
+            OnPropertyChanged( propertyName );
+            return true;
+        }
     }
 }

@@ -264,11 +264,6 @@ namespace EddiSpeechResponder.ScriptResolverService
                 dict[ "homestation" ] = new Tuple<Type, Value>( typeof( Station ), Value.FromReflection(EDDI.Instance.HomeStation, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
-            if ( EDDI.Instance.SquadronStarSystem != null )
-            {
-                dict[ "squadronsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.SquadronStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
             if ( EDDI.Instance.CurrentStarSystem != null )
             {
                 dict[ "system" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.CurrentStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
