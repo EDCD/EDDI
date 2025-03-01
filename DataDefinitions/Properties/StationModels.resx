@@ -181,4 +181,12 @@
     <value>System Colonisation Ship</value>
     <comment>System Colonisation Ship dockable station type</comment>
   </data>
+  <data name="SpaceConstructionDepot" xml:space="preserve">
+    <value>Orbital Construction Site</value>
+    <comment>Orbital Construction Site station model</comment>
+  </data>
+  <data name="PlanetaryConstructionDepot" xml:space="preserve">
+    <value>Planetary Construction Site</value>
+    <comment>Planetary Construction Site station model</comment>
+  </data>
 </root>

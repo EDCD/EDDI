@@ -187,6 +187,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Planetary Construction Site.
+        /// </summary>
+        public static string PlanetaryConstructionDepot {
+            get {
+                return ResourceManager.GetString("PlanetaryConstructionDepot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Orbital Construction Site.
+        /// </summary>
+        public static string SpaceConstructionDepot {
+            get {
+                return ResourceManager.GetString("SpaceConstructionDepot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Surface Station.
         /// </summary>
         public static string SurfaceStation {
