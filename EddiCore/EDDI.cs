@@ -512,12 +512,13 @@ namespace EddiCore
                     setHomeStation( configuration );
                 }, eventHandlerTS.Token ).ConfigureAwait( false );
                 Task.Run(() => updateDestinationSystem( configuration.DestinationSystemAddress, configuration.DestinationSystem), eventHandlerTS.Token).ConfigureAwait(false);
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     // Set up the Frontier API service
                     // Try to carry out initial population of the Frontier API profile
                     try
                     {
+                        await Task.Delay( 500 );
                         refreshProfile();
                     }
                     catch (Exception ex)
