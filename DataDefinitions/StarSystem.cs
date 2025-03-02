@@ -589,5 +589,11 @@ namespace EddiDataDefinitions
         }
 
         #endregion
+
+        #region Overrides of Object
+
+        public override string ToString () => systemname;
+
+        #endregion
     }
 }

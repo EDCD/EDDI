@@ -76,5 +76,49 @@ namespace System
         {
             return dec.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// Calculates the Levenshtein Distance between two strings (e.g. the number of edits required to transform one string into another). Lower values indicate more similarity. Typical usage is for creating an ordered list of values sorted by similarity to a target value.
+        /// </summary>
+        /// <param name="sourceString"></param>
+        /// <param name="targetString"></param>
+        /// <param name="comparisonType"></param>
+        /// <returns></returns>
+        public static int LevenshteinDistance ( this string sourceString, string targetString, StringComparison comparisonType = StringComparison.InvariantCultureIgnoreCase )
+        {
+            var sourceStringLength = sourceString.Length;
+            var targetStringLength = targetString.Length;
+            var arrayDistance = new int[sourceStringLength + 1, targetStringLength + 1];
+
+            if ( sourceStringLength == 0 )
+            {
+                return targetStringLength;
+            }
+            if ( targetStringLength == 0 )
+            {
+                return sourceStringLength;
+            }
+
+            for ( var i = 0; i <= sourceStringLength; i++ )
+            {
+                arrayDistance[ i, 0 ] = i;
+            }
+
+            for ( var j = 0; j <= targetStringLength; j++ )
+            {
+                arrayDistance[ 0, j ] = j;
+            }
+
+            for ( var i = 1; i <= sourceStringLength; i++ )
+            {
+                for ( var j = 1; j <= targetStringLength; j++ )
+                {
+                    var cost = string.Equals( targetString[j - 1].ToString(), sourceString[i - 1].ToString(), comparisonType ) ? 0 : 1;
+                    arrayDistance[ i, j ] = Math.Min( Math.Min( arrayDistance[ i - 1, j ] + 1, arrayDistance[ i, j - 1 ] + 1 ), arrayDistance[ i - 1, j - 1 ] + cost );
+                }
+            }
+
+            return arrayDistance[ sourceStringLength, targetStringLength ];
+        }
     }
 }

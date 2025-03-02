@@ -86,6 +86,7 @@ namespace EddiCrimeMonitor
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(criminalrecord, recordLock); });
             }
         }
+
         public bool NeedsStart()
         {
             // We don't actively do anything, just listen to events

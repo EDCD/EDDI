@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace EddiConfigService.Configurations
@@ -130,5 +131,7 @@ namespace EddiConfigService.Configurations
         public string squadronFaction { get; set; }
 
         #endregion
+
+        public DateTime updatedat { get; set; }
     }
 }

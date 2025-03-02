@@ -23,12 +23,12 @@ namespace EddiNavigationMonitor
     {
         private Task searchTask;
 
-        private NavigationMonitor navigationMonitor()
+        private NavigationMonitor navigationMonitor ()
         {
-            return (NavigationMonitor)EDDI.Instance.ObtainMonitor("Navigation monitor");
+            return (NavigationMonitor)EDDI.Instance.ObtainMonitor( "Navigation monitor" );
         }
 
-        public PlotShipControl()
+        public PlotShipControl ()
         {
             InitializeComponent();
             plottedRouteData.ItemsSource = navigationMonitor().PlottedRoute.Waypoints;
@@ -37,28 +37,28 @@ namespace EddiNavigationMonitor
 
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             prioritizeOrbitalStations.IsChecked = navConfig.prioritizeOrbitalStations;
-            maxSearchDistanceInt.Text = (navConfig.maxSearchDistanceFromStarLs ?? 0).ToString(CultureInfo.InvariantCulture);
+            maxSearchDistanceInt.Text = ( navConfig.maxSearchDistanceFromStarLs ?? 0 ).ToString( CultureInfo.InvariantCulture );
             searchSystemDropDown.Text = navConfig.searchQuerySystemArg;
             searchStationDropDown.Text = navConfig.searchQueryStationArg;
 
-            if (!Enum.TryParse(navConfig.searchQuery, out QueryType queryType))
+            if ( !Enum.TryParse( navConfig.searchQuery, out QueryType queryType ) )
             {
                 queryType = QueryType.route;
             }
             searchGroupDropDown.SelectedItem = queryType.Group();
             searchQueryDropDown.SelectedItem = queryType;
-            configureSearchArgumentOptions(queryType);
-            configureRoutePlotterColumns(queryType);
-            UpdateGuidanceLock(navigationMonitor().PlottedRoute.GuidanceEnabled);
+            configureSearchArgumentOptions( queryType );
+            configureRoutePlotterColumns( queryType );
+            UpdateGuidanceLock( navigationMonitor().PlottedRoute.GuidanceEnabled );
             ClearRouteButton.IsEnabled = navigationMonitor().PlottedRoute.Waypoints.Count > 0;
 
             NavigationService.Instance.PropertyChanged += OnNavServiceChange;
             navigationMonitor().PlottedRoute.PropertyChanged += OnPlottedRouteChanged;
         }
 
-        private void UpdateGuidanceLock(bool guidanceEnabled)
+        private void UpdateGuidanceLock ( bool guidanceEnabled )
         {
-            if (guidanceEnabled)
+            if ( guidanceEnabled )
             {
                 GuidanceButton.Content = Properties.NavigationMonitor.disable_guidance_button;
                 GuidanceButton.ToolTip = Properties.NavigationMonitor.disable_guidance_button_tooltip;
@@ -79,7 +79,7 @@ namespace EddiNavigationMonitor
             SearchButton.IsEnabled = !guidanceEnabled;
         }
 
-        private void OnPlottedRouteChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPlottedRouteChanged ( object sender, PropertyChangedEventArgs e )
         {
             if ( !( sender is NavWaypointCollection navWaypointCollection ) )
             {
@@ -88,30 +88,30 @@ namespace EddiNavigationMonitor
 
             switch ( e.PropertyName )
             {
-                case nameof(NavWaypointCollection.GuidanceEnabled):
-                {
-                    Dispatcher.InvokeAsync( () =>
+                case nameof( NavWaypointCollection.GuidanceEnabled ):
                     {
-                        UpdateGuidanceLock( navWaypointCollection.GuidanceEnabled );
-                    } );
-                    break;
-                }
-                case nameof(NavWaypointCollection.Waypoints):
-                {
-                    Dispatcher.InvokeAsync( () =>
+                        Dispatcher.InvokeAsync( () =>
+                        {
+                            UpdateGuidanceLock( navWaypointCollection.GuidanceEnabled );
+                        } );
+                        break;
+                    }
+                case nameof( NavWaypointCollection.Waypoints ):
                     {
-                        ClearRouteButton.IsEnabled = navWaypointCollection.Waypoints.Count > 0;
-                    } );
-                    break;
-                }
+                        Dispatcher.InvokeAsync( () =>
+                        {
+                            ClearRouteButton.IsEnabled = navWaypointCollection.Waypoints.Count > 0;
+                        } );
+                        break;
+                    }
             }
         }
 
-        private void OnNavServiceChange(object sender, PropertyChangedEventArgs e)
+        private void OnNavServiceChange ( object sender, PropertyChangedEventArgs e )
         {
             // Don't update the UI while guidance is locked.
             var config = ConfigService.Instance.navigationMonitorConfiguration;
-            if (config.plottedRouteList != null && config.plottedRouteList.GuidanceEnabled)
+            if ( config.plottedRouteList != null && config.plottedRouteList.GuidanceEnabled )
             {
                 return;
             }
@@ -119,104 +119,104 @@ namespace EddiNavigationMonitor
             switch ( e.PropertyName )
             {
                 case nameof( NavigationService.Instance.IsWorking ):
-                {
-                    if ( NavigationService.Instance.IsWorking )
                     {
-                        Dispatcher.InvokeAsync( () =>
+                        if ( NavigationService.Instance.IsWorking )
                         {
-                            SearchProgressBar.Visibility = Visibility.Visible;
-                        } );
-                    }
-                    else
-                    {
-                        Dispatcher.InvokeAsync( () =>
+                            Dispatcher.InvokeAsync( () =>
+                            {
+                                SearchProgressBar.Visibility = Visibility.Visible;
+                            } );
+                        }
+                        else
                         {
-                            SearchProgressBar.Visibility = Visibility.Collapsed;
-                        } );
+                            Dispatcher.InvokeAsync( () =>
+                            {
+                                SearchProgressBar.Visibility = Visibility.Collapsed;
+                            } );
+                        }
+                        break;
                     }
-                    break;
-                }
                 case nameof( NavigationService.Instance.LastQuery ):
-                {
-                    var queryType = NavigationService.Instance.LastQuery;
-                    Dispatcher.InvokeAsync( () =>
                     {
-                        searchGroupDropDown.SelectedItem = queryType.Group();
-                        searchQueryDropDown.SelectedItem = queryType;
-                        configureSearchArgumentOptions( queryType );
-                        configureRoutePlotterColumns( queryType );
-                    } );
-                    break;
-                }
+                        var queryType = NavigationService.Instance.LastQuery;
+                        Dispatcher.InvokeAsync( () =>
+                        {
+                            searchGroupDropDown.SelectedItem = queryType.Group();
+                            searchQueryDropDown.SelectedItem = queryType;
+                            configureSearchArgumentOptions( queryType );
+                            configureRoutePlotterColumns( queryType );
+                        } );
+                        break;
+                    }
                 case nameof( NavigationService.Instance.LastQuerySystemArg ):
-                {
-                    var querySystem = NavigationService.Instance.LastQuerySystemArg;
-                    Dispatcher.InvokeAsync( () =>
                     {
-                        if ( searchSystemDropDown.Text != querySystem )
+                        var querySystem = NavigationService.Instance.LastQuerySystemArg;
+                        Dispatcher.InvokeAsync( () =>
                         {
-                            searchSystemDropDown.Text = querySystem;
-                        }
-                    } );
-                    break;
-                }
+                            if ( searchSystemDropDown.Text != querySystem )
+                            {
+                                searchSystemDropDown.Text = querySystem;
+                            }
+                        } );
+                        break;
+                    }
                 case nameof( NavigationService.Instance.LastQueryStationArg ):
-                {
-                    var queryStation = NavigationService.Instance.LastQueryStationArg;
-                    Dispatcher.InvokeAsync( () =>
                     {
-                        if ( searchStationDropDown.Text != queryStation )
+                        var queryStation = NavigationService.Instance.LastQueryStationArg;
+                        Dispatcher.InvokeAsync( () =>
                         {
-                            searchStationDropDown.Text = queryStation;
-                        }
-                    } );
-                    break;
-                }
+                            if ( searchStationDropDown.Text != queryStation )
+                            {
+                                searchStationDropDown.Text = queryStation;
+                            }
+                        } );
+                        break;
+                    }
             }
         }
 
-        private void prioritizeOrbitalStationsEnabled(object sender, RoutedEventArgs e)
+        private void prioritizeOrbitalStationsEnabled ( object sender, RoutedEventArgs e )
         {
             updateOrbitalStationsCheckbox();
         }
 
-        private void prioritizeOrbitalStationsDisabled(object sender, RoutedEventArgs e)
+        private void prioritizeOrbitalStationsDisabled ( object sender, RoutedEventArgs e )
         {
             updateOrbitalStationsCheckbox();
         }
 
-        private void updateOrbitalStationsCheckbox()
+        private void updateOrbitalStationsCheckbox ()
         {
             var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
             bool isChecked = prioritizeOrbitalStations.IsChecked ?? false;
-            if (navConfig.prioritizeOrbitalStations != isChecked)
+            if ( navConfig.prioritizeOrbitalStations != isChecked )
             {
                 navConfig.prioritizeOrbitalStations = isChecked;
                 navigationMonitor().WriteNavConfig();
             }
         }
 
-        private void maxSearchDistance_KeyDown(object sender, KeyEventArgs e)
+        private void maxSearchDistance_KeyDown ( object sender, KeyEventArgs e )
         {
-            if (e.Key == Key.Return)
+            if ( e.Key == Key.Return )
             {
                 maxStationDistance_Changed();
             }
         }
 
-        private void maxSearchDistance_LostFocus(object sender, RoutedEventArgs e)
+        private void maxSearchDistance_LostFocus ( object sender, RoutedEventArgs e )
         {
             maxStationDistance_Changed();
         }
 
-        private void maxStationDistance_Changed()
+        private void maxStationDistance_Changed ()
         {
             try
             {
                 var navConfig = ConfigService.Instance.navigationMonitorConfiguration;
                 int? distance = string.IsNullOrWhiteSpace(maxSearchDistanceInt.Text)
                     ? 10000 : Convert.ToInt32(maxSearchDistanceInt.Text, CultureInfo.InvariantCulture);
-                if (distance != navConfig.maxSearchDistanceFromStarLs)
+                if ( distance != navConfig.maxSearchDistanceFromStarLs )
                 {
                     navConfig.maxSearchDistanceFromStarLs = distance;
                     navigationMonitor().WriteNavConfig();
@@ -228,40 +228,40 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void ConfigureSearchGroupOptions()
+        private void ConfigureSearchGroupOptions ()
         {
-            searchGroupDropDown.ItemsSource = ((QueryGroup[])Enum.GetValues(typeof(QueryGroup)))
-                .OrderBy(g => g.LocalizedName());
+            searchGroupDropDown.ItemsSource = ( (QueryGroup[])Enum.GetValues( typeof( QueryGroup ) ) )
+                .OrderBy( g => g.LocalizedName() );
         }
 
-        private void searchGroupDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        private void searchGroupDropDownUpdated ( object sender, SelectionChangedEventArgs e )
         {
             var queryGroup = (QueryGroup)searchGroupDropDown.SelectedItem;
-            ConfigureSearchQueryOptions(queryGroup);
+            ConfigureSearchQueryOptions( queryGroup );
 
             // Set the default query
             searchQueryDropDown.SelectedItem = queryGroup.DefaultQueryType();
         }
 
-        private void ConfigureSearchQueryOptions(QueryGroup queryGroup)
+        private void ConfigureSearchQueryOptions ( QueryGroup queryGroup )
         {
-            searchQueryDropDown.ItemsSource = queryGroup.QueryTypes().OrderBy(t => t.LocalizedName());
+            searchQueryDropDown.ItemsSource = queryGroup.QueryTypes().OrderBy( t => t.LocalizedName() );
         }
 
-        private void searchQueryDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        private void searchQueryDropDownUpdated ( object sender, SelectionChangedEventArgs e )
         {
-            if (searchQueryDropDown.SelectedItem != null)
+            if ( searchQueryDropDown.SelectedItem != null )
             {
-                configureSearchArgumentOptions((QueryType)searchQueryDropDown.SelectedItem);
+                configureSearchArgumentOptions( (QueryType)searchQueryDropDown.SelectedItem );
                 ConfigService.Instance.navigationMonitorConfiguration.searchQuery =
                     searchQueryDropDown.SelectedItem.ToString();
             }
         }
 
-        private void configureRoutePlotterColumns(QueryType queryType)
+        private void configureRoutePlotterColumns ( QueryType queryType )
         {
             // Configure view by query type
-            switch (queryType)
+            switch ( queryType )
             {
                 case QueryType.encoded:
                 case QueryType.facilitator:
@@ -288,12 +288,12 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void configureSearchArgumentOptions(QueryType queryType)
+        private void configureSearchArgumentOptions ( QueryType queryType )
         {
             NavigationService.Instance.LastQuerySystemArg = string.Empty;
             NavigationService.Instance.LastQueryStationArg = string.Empty;
 
-            switch (queryType)
+            switch ( queryType )
             {
                 case QueryType.encoded:
                 case QueryType.facilitator:
@@ -341,158 +341,146 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private async void executeSearch(object sender, RoutedEventArgs e)
+        private async void executeSearch ( object sender, RoutedEventArgs e )
         {
             var systemArg = searchSystemDropDown.Text;
             var stationArg = searchStationDropDown.Text == Properties.NavigationMonitor.no_station
                 ? null
                 : searchStationDropDown.Text;
             QueryType queryType = (QueryType)searchQueryDropDown.SelectedItem;
-            if (searchTask?.Status == TaskStatus.Running)
+            if ( searchTask?.Status == TaskStatus.Running )
             { }
             else
             {
-                searchTask = Task.Run(() =>
+                searchTask = Task.Run( () =>
                 {
                     var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg, null, null, true);
-                    if (@event == null) { return; }
-                    EDDI.Instance.enqueueEvent(@event);
-                });
+                    if ( @event == null )
+                    { return; }
+                    EDDI.Instance.enqueueEvent( @event );
+                } );
             }
-            await Task.WhenAll(searchTask);
+            await Task.WhenAll( searchTask );
         }
 
-        private void SearchSystemText_TextChanged(object sender, TextChangedEventArgs e)
+        private void SearchSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
         {
-            if (sender is StarSystemComboBox starSystemComboBox)
+            try
             {
-                if (!starSystemComboBox.IsLoaded) { return; }
-
-                void changeHandler()
+                if ( sender is StarSystemComboBox starSystemComboBox )
                 {
-                    // Reset the search station due to selecting new search system
-                    if (searchStationDropDown.Visibility == Visibility.Visible && NavigationService.Instance.LastQueryStationArg != null)
+                    if ( !starSystemComboBox.IsLoaded )
+                    { return; }
+
+                    // Update configuration to new home system
+                    if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
                     {
-                        NavigationService.Instance.LastQueryStationArg = null;
-                        searchStationDropDown.SelectedItem = Properties.NavigationMonitor.no_station;
-                        ConfigureSearchStationOptions(null);
+                        var newValue = e.AddedItems[0] as NavWaypoint;
+
+                        // Update to new search system
+                        NavigationService.Instance.LastQuerySystemArg = newValue?.systemName;
+
+                        // Update station options for new system
+                        ConfigureSearchStationOptions( NavigationService.Instance.LastQuerySystemArg );
                     }
                 }
-
-                searchSystemDropDown.TextDidChange(sender, e, NavigationService.Instance.LastQuerySystemArg, changeHandler);
             }
-        }
-
-        private void SearchSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is StarSystemComboBox starSystemComboBox && !starSystemComboBox.IsLoaded) { return; }
-
-            void changeHandler(NavWaypoint newValue)
+            catch ( Exception ex )
             {
-                // Update to new search system
-                NavigationService.Instance.LastQuerySystemArg = newValue.systemName;
-
-                // Update station options for new system
-                ConfigureSearchStationOptions(NavigationService.Instance.LastQuerySystemArg);
+                Logging.Error( ex.Message, ex );
             }
-            searchSystemDropDown.SelectionDidChange(changeHandler);
         }
 
-        private void SearchSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
-        {
-            searchSystemDropDown.DidLoseFocus(oldValue: NavigationService.Instance.LastQuerySystemArg);
-        }
-
-        private void ConfigureSearchStationOptions(string system)
+        private void ConfigureSearchStationOptions ( string system )
         {
             List<string> searchStationOptions = new List<string>
                 {
                     Properties.NavigationMonitor.no_station
                 };
 
-            if (searchStationDropDown.Visibility == Visibility.Visible && !string.IsNullOrEmpty(system))
+            if ( searchStationDropDown.Visibility == Visibility.Visible && !string.IsNullOrEmpty( system ) )
             {
                 var searchSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem(system);
-                if (searchSystem?.stations != null)
+                if ( searchSystem?.stations != null )
                 {
-                    foreach (var station in searchSystem.stations.Where(s => !s.IsCarrier() && !s.IsMegaShip()))
+                    foreach ( var station in searchSystem.stations.Where( s => !s.IsCarrier() && !s.IsMegaShip() ) )
                     {
-                        searchStationOptions.Add(station.name);
+                        searchStationOptions.Add( station.name );
                     }
                 }
             }
             // sort but leave "No Station" at the top
-            searchStationOptions.Sort(1, searchStationOptions.Count - 1, null);
+            searchStationOptions.Sort( 1, searchStationOptions.Count - 1, null );
             searchStationDropDown.ItemsSource = searchStationOptions;
         }
 
-        private void searchStationDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        private void searchStationDropDownUpdated ( object sender, SelectionChangedEventArgs e )
         {
             string searchStationName = searchStationDropDown.SelectedItem?.ToString();
-            if (NavigationService.Instance.LastQueryStationArg != searchStationName)
+            if ( NavigationService.Instance.LastQueryStationArg != searchStationName )
             {
                 NavigationService.Instance.LastQueryStationArg = searchStationName == Properties.NavigationMonitor.no_station ? null : searchStationName;
             }
         }
 
-        private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
+        private void EnsureValidInteger ( object sender, TextCompositionEventArgs e )
         {
             // Match valid characters
             Regex regex = new Regex(@"[0-9]");
             // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch(e.Text);
+            e.Handled = !regex.IsMatch( e.Text );
         }
 
-        private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        private void DataGrid_LoadingRow ( object sender, DataGridRowEventArgs e )
         {
-            e.Row.Header = (e.Row.GetIndex()).ToString();
+            e.Row.Header = ( e.Row.GetIndex() ).ToString();
         }
 
-        private void GuidanceButton_Click(object sender, RoutedEventArgs e)
+        private void GuidanceButton_Click ( object sender, RoutedEventArgs e )
         {
-            if (GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button)
+            if ( GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button )
             {
-                EDDI.Instance.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.cancel, null, null, null, null, true));
+                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQuery( QueryType.cancel, null, null, null, null, true ) );
             }
             else
             {
-                EDDI.Instance.enqueueEvent(NavigationService.Instance.NavQuery(QueryType.set, null, null, null, null, true));
+                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQuery( QueryType.set, null, null, null, null, true ) );
             }
         }
 
-        private void ClearRouteButton_Click(object sender, RoutedEventArgs e)
+        private void ClearRouteButton_Click ( object sender, RoutedEventArgs e )
         {
-            if (plottedRouteData.Items.Count > 0)
+            if ( plottedRouteData.Items.Count > 0 )
             {
-                if (navigationMonitor().PlottedRoute.GuidanceEnabled)
+                if ( navigationMonitor().PlottedRoute.GuidanceEnabled )
                 {
-                    NavigationService.Instance.NavQuery(QueryType.cancel, null, null, null, null, true);
+                    NavigationService.Instance.NavQuery( QueryType.cancel, null, null, null, null, true );
                 }
                 navigationMonitor().PlottedRoute.Waypoints.Clear();
                 navigationMonitor().WriteNavConfig();
             }
         }
 
-        private void addBookmark(object sender, RoutedEventArgs e)
+        private void addBookmark ( object sender, RoutedEventArgs e )
         {
-            if (Parent is TabItem parentTab && parentTab.Parent is TabControl parentTabControl)
+            if ( Parent is TabItem parentTab && parentTab.Parent is TabControl parentTabControl )
             {
-                if (parentTabControl.Parent is DockPanel dockPanel)
+                if ( parentTabControl.Parent is DockPanel dockPanel )
                 {
-                    if (dockPanel.Parent is ConfigurationWindow configurationWindow)
+                    if ( dockPanel.Parent is ConfigurationWindow configurationWindow )
                     {
-                        configurationWindow.SwitchToTab(Properties.NavigationMonitor.tab_bookmarks);
-                        configurationWindow.addBookmark(sender, e);
+                        configurationWindow.SwitchToTab( Properties.NavigationMonitor.tab_bookmarks );
+                        configurationWindow.addBookmark( sender, e );
                     }
                 }
             }
         }
 
-        private void copySystemNameToClipboard(object sender, RoutedEventArgs e)
+        private void copySystemNameToClipboard ( object sender, RoutedEventArgs e )
         {
-            if (sender is Button button)
+            if ( sender is Button button )
             {
-                if (button.DataContext is NavWaypoint navWaypoint)
+                if ( button.DataContext is NavWaypoint navWaypoint )
                 {
                     try
                     {

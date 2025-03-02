@@ -23,6 +23,9 @@ namespace EddiSpanshService
         // The default timeout for requests to Spansh. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
         private const int DefaultTimeoutMilliseconds = 10000;
 
+        // The number of times to retry a failed request
+        private const int maxRetries = 3;
+
         private class SpanshRestClient : ISpanshRestClient
         {
             private readonly RestClient restClient;
@@ -39,7 +42,18 @@ namespace EddiSpanshService
 
             public IRestResponse<T> Execute<T> ( IRestRequest request )
             {
-                var response = restClient.Execute<T>( request );
+                IRestResponse<T> response = null;
+                var retryCount = 0;
+                while ( retryCount < maxRetries )
+                {
+                    response = restClient.Execute<T>( request );
+                    if ( response.IsSuccessful )
+                    {
+                        return response;
+                    }
+                    retryCount++;
+                    Thread.Sleep( 20^retryCount ); // Wait for 500 milliseconds before retrying
+                }
                 return response;
             }
 

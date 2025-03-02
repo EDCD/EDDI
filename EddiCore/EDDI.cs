@@ -1,6 +1,5 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
-using EddiConfigService.Configurations;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -174,7 +173,7 @@ namespace EddiCore
         public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
         {
             get => homeStarSystem;
-            private set
+            set
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
@@ -192,7 +191,7 @@ namespace EddiCore
         public Station HomeStation
         {
             get => homeStation;
-            private set
+            set
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
@@ -238,11 +237,10 @@ namespace EddiCore
         private decimal destinationDistanceLy;
 
         // Information obtained from the player journal
-        [CanBeNull]
         public Commander Cmdr // Also includes information from the configuration and companion app service
         {
             get => cmdr;
-            private set
+            set
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
                 {
@@ -375,7 +373,7 @@ namespace EddiCore
             {
                 if ( _fleetCarrier is null )
                 {
-                    RefreshFleetCarrierFromFrontierAPI( true );
+                    Task.Run( () => RefreshFleetCarrierFromFrontierAPIAsync( true ) ).ConfigureAwait( true );
                 }
                 return _fleetCarrier;
             }
@@ -451,10 +449,11 @@ namespace EddiCore
                 CompanionAppService.Instance.gameIsBeta = false;
 
                 var configuration = ConfigService.Instance.eddiConfiguration;
-                var cmdrConfiguration = ConfigService.Instance.commanderConfiguration;
                 Logging.Verbose = configuration.Debug;
+                FleetCarrier = configuration.fleetCarrier;
 
                 // Retrieve commander data
+                var cmdrConfiguration = ConfigService.Instance.commanderConfiguration;
                 Cmdr = new Commander
                     {
                         name = cmdrConfiguration.commanderName, 
@@ -467,7 +466,6 @@ namespace EddiCore
                         squadronpower = cmdrConfiguration.SquadronPower,
                         squadronfaction = cmdrConfiguration.squadronFaction
                     };
-                FleetCarrier = configuration.fleetCarrier;
 
                 // We always start in normal space
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
@@ -491,12 +489,8 @@ namespace EddiCore
                 Task.WaitAll(essentialAsyncTasks.ToArray(), eventHandlerTS.Token );
 
                 // Tasks we can start asynchronously and don't need to wait for
-                Task.Run( () =>
-                {
-                    setHomeSystem( cmdrConfiguration.homeSystemAddress );
-                    setHomeStation( cmdrConfiguration );
-                }, eventHandlerTS.Token ).ConfigureAwait( false );
-                Task.Run(() => updateDestinationSystem( configuration.DestinationSystemAddress, configuration.DestinationSystem), eventHandlerTS.Token).ConfigureAwait(false);
+                Task.Run( () => updateDestinationSystem( configuration.DestinationSystemAddress,
+                        configuration.DestinationSystem ), eventHandlerTS.Token ).ConfigureAwait( false );
                 Task.Run(async () =>
                 {
                     // Set up the Frontier API service
@@ -504,7 +498,7 @@ namespace EddiCore
                     try
                     {
                         await Task.Delay( 500 );
-                        refreshProfile();
+                        await refreshProfileAsync();
                     }
                     catch (Exception ex)
                     {
@@ -514,7 +508,7 @@ namespace EddiCore
                     if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         Logging.Info("EDDI access to the Frontier API is enabled.");
-                        RefreshFleetCarrierFromFrontierAPI(true);
+                        await RefreshFleetCarrierFromFrontierAPIAsync(true);
                     }
                     else
                     {
@@ -584,7 +578,7 @@ namespace EddiCore
             if (oldstate != CompanionAppService.State.Authorized && 
                 newstate is CompanionAppService.State.Authorized)
             {
-                RefreshFleetCarrierFromFrontierAPI(true);
+                Task.Run( () => RefreshFleetCarrierFromFrontierAPIAsync( true ) ).ConfigureAwait( false );
             }
         }
 
@@ -981,17 +975,9 @@ namespace EddiCore
                     {
                         passEvent = eventEnteredNormalSpace(enteredNormalSpaceEvent);
                     }
-                    else if (@event is CommanderLoadingEvent commanderLoadingEvent)
-                    {
-                        passEvent = eventCommanderLoading(commanderLoadingEvent);
-                    }
                     else if (@event is CommanderContinuedEvent commanderContinuedEvent)
                     {
                         passEvent = eventCommanderContinued(commanderContinuedEvent);
-                    }
-                    else if (@event is CommanderRatingsEvent commanderRatingsEvent)
-                    {
-                        passEvent = eventCommanderRatings(commanderRatingsEvent);
                     }
                     else if (@event is CrewJoinedEvent crewJoinedEvent)
                     {
@@ -1065,22 +1051,6 @@ namespace EddiCore
                     {
                         passEvent = eventSystemScanComplete(systemScanComplete);
                     }
-                    else if (@event is PowerplayEvent powerplayEvent)
-                    {
-                        passEvent = eventPowerplay(powerplayEvent);
-                    }
-                    else if (@event is PowerJoinedEvent powerJoinedEvent)
-                    {
-                        passEvent = eventPowerJoined(powerJoinedEvent);
-                    }
-                    else if (@event is PowerLeftEvent powerLeftEvent)
-                    {
-                        passEvent = eventPowerLeft();
-                    }
-                    else if (@event is PowerVoucherReceivedEvent powerVoucherReceivedEvent)
-                    {
-                        passEvent = eventPowerVoucherReceived(powerVoucherReceivedEvent);
-                    }
                     else if (@event is CarrierBankTransferEvent carrierBankTransferEvent)
                     {
                         passEvent = eventCarrierBankTransfer(carrierBankTransferEvent);
@@ -1132,10 +1102,6 @@ namespace EddiCore
                     else if (@event is EmbarkEvent embarkEvent)
                     {
                         passEvent = eventEmbark(embarkEvent);
-                    }
-                    else if (@event is CommanderPromotionEvent commanderPromotionEvent)
-                    {
-                        passEvent = eventCommanderPromotion(commanderPromotionEvent);
                     }
                     else if (@event is UnderAttackEvent underAttackEvent)
                     {
@@ -1326,11 +1292,6 @@ namespace EddiCore
             }
             FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
 
-            if ( Cmdr != null )
-            {
-                Cmdr.credits = carrierBankTransferEvent.cmdrBalance;
-            }
-
             UpdateFleetCarrierConfig();
             return true;
         }
@@ -1370,61 +1331,6 @@ namespace EddiCore
                 && ( underAttackEvent.timestamp - lastEvent.timestamp ).TotalSeconds < 10
             ));
             return passEvent;
-        }
-
-        private bool eventCommanderPromotion(CommanderPromotionEvent commanderPromotionEvent)
-        {
-            // Capture commander ratings and add them to the commander object
-            if (commanderPromotionEvent.ratingObject is CombatRating combatRating)
-            {
-                // There is a bug with the journal where it reports superpower increases in rank as combat increases
-                // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
-                if (Cmdr?.combatrating == null || commanderPromotionEvent.rank != Cmdr.combatrating.localizedName)
-                {
-                    // Real event. 
-                    if (Cmdr != null) { Cmdr.combatrating = combatRating; }
-                    return true;
-                }
-                // False event
-                return false;
-            }
-            if (commanderPromotionEvent.ratingObject is CQCRating cqcRating)
-            {
-                if (Cmdr != null) { Cmdr.cqcrating = cqcRating; }
-                return true;
-            }
-            if (commanderPromotionEvent.ratingObject is EmpireRating empireRating)
-            {
-                if (Cmdr != null) { Cmdr.empirerating = empireRating; }
-                return true;
-            }
-            if (commanderPromotionEvent.ratingObject is ExplorationRating explorationRating)
-            {
-                if (Cmdr != null) { Cmdr.explorationrating = explorationRating; }
-                return true;
-            }
-            if (commanderPromotionEvent.ratingObject is ExobiologistRating exobiologistRating)
-            {
-                if (Cmdr != null) { Cmdr.exobiologistrating = exobiologistRating; }
-                return true;
-            }
-            if (commanderPromotionEvent.ratingObject is FederationRating federationRating)
-            {
-                if (Cmdr != null) { Cmdr.federationrating = federationRating; }
-                return true;
-            }
-            if (commanderPromotionEvent.ratingObject is MercenaryRating mercenaryRating)
-            {
-                if (Cmdr != null) { Cmdr.mercenaryrating = mercenaryRating; }
-                return true;
-            }
-            if (commanderPromotionEvent.ratingObject is TradeRating tradeRating)
-            {
-                // Capture commander ratings and add them to the commander object
-                if (Cmdr != null) { Cmdr.traderating = tradeRating; }
-                return true;
-            }
-            return false;
         }
 
         private bool eventDisembark() 
@@ -1650,15 +1556,7 @@ namespace EddiCore
                 {
                     // Refresh station data
                     if (@event.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                    Thread updateThread = new Thread(() =>
-                    {
-                        Thread.Sleep(5000);
-                        conditionallyRefreshStationProfile();
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    updateThread.Start();
+                    Task.Run( async () => await conditionallyRefreshStationProfileAsync() ).ConfigureAwait( false );
                 }
             }
             else
@@ -1679,70 +1577,6 @@ namespace EddiCore
                 FleetCarrier.nextStarSystem = @event.systemname;
             }
             return true;
-        }
-
-        private bool eventPowerVoucherReceived(PowerVoucherReceivedEvent @event)
-        {
-            if ( Cmdr != null )
-            {
-                Cmdr.Power = @event.Power;
-            }
-            return true;
-        }
-
-        private bool eventPowerLeft()
-        {
-            if ( Cmdr != null )
-            {
-                Cmdr.Power = Power.None;
-                Cmdr.powermerits = null;
-                Cmdr.powerrating = 0;
-
-                // Store power merits
-                var configuration = ConfigService.Instance.commanderConfiguration;
-                configuration.powerMerits = Cmdr.powermerits;
-                ConfigService.Instance.commanderConfiguration = configuration;
-            }
-
-            return true;
-        }
-
-        private bool eventPowerJoined(PowerJoinedEvent @event)
-        {
-            if ( Cmdr != null )
-            {
-                Cmdr.Power = @event.Power;
-                Cmdr.powermerits = 0;
-                Cmdr.powerrating = 0;
-
-                // Store power merits
-                var configuration = ConfigService.Instance.commanderConfiguration;
-                configuration.powerMerits = Cmdr.powermerits;
-                ConfigService.Instance.commanderConfiguration = configuration;
-            }
-
-            return true;
-        }
-
-        private bool eventPowerplay(PowerplayEvent @event)
-        {
-            if (Cmdr != null)
-            {
-                Cmdr.Power = @event.Power;
-                Cmdr.powerrating = @event.rank;
-                Cmdr.powermerits = @event.merits;
-
-                // Store power merits
-                var configuration = ConfigService.Instance.commanderConfiguration;
-                configuration.powerMerits = Cmdr.powermerits;
-                ConfigService.Instance.commanderConfiguration = configuration;
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         internal bool eventSystemScanComplete(SystemScanComplete @event)
@@ -1828,16 +1662,23 @@ namespace EddiCore
 
         private async void OnEvent(Event @event)
         {
-            // We send the event to all monitors to ensure that their info is up-to-date
-            // All changes to state must be handled here, so this must be synchronous
-            passToMonitorPreHandlers(@event);
+            try
+            {
+                // We send the event to all monitors to ensure that their info is up-to-date
+                // All changes to state must be handled here, so this must be synchronous
+                passToMonitorPreHandlers(@event);
 
-            // Now we pass the data to the responders to process asynchronously, waiting for all to complete
-            // Responders must not change global states.
-            await passToRespondersAsync(@event);
+                // Now we pass the data to the responders to process asynchronously, waiting for all to complete
+                // Responders must not change global states.
+                await passToRespondersAsync(@event);
 
-            // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
-            await passToMonitorPostHandlersAsync(@event);
+                // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
+                await passToMonitorPostHandlersAsync(@event);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error( "Failed to pass event to all monitors and responders", ex );
+            }
         }
 
         private void passToMonitorPreHandlers(Event @event)
@@ -1857,7 +1698,7 @@ namespace EddiCore
 
         private async Task passToRespondersAsync(Event @event)
         {
-            List<Task> responderTasks = new List<Task>();
+            var responderTasks = new List<Task>();
             foreach (IEddiResponder responder in activeResponders)
             {
                 var responderTask = Task.Run(() =>
@@ -1878,7 +1719,7 @@ namespace EddiCore
 
         private async Task passToMonitorPostHandlersAsync(Event @event)
         {
-            List<Task> monitorTasks = new List<Task>();
+            var monitorTasks = new List<Task>();
             foreach (IEddiMonitor monitor in activeMonitors)
             {
                 var monitorTask = Task.Run(() =>
@@ -1998,13 +1839,9 @@ namespace EddiCore
                     if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized )
                     {
                         // Refresh station data
-                        if ( theEvent.fromLoad )
-                        {
-                            return true;
-                        } // Don't fire this event when loading pre-existing logs
+                        if ( theEvent.fromLoad ) { return true; } // Don't fire this event when loading pre-existing logs
 
-                        Thread updateThread = new Thread( conditionallyRefreshStationProfile ) { IsBackground = true };
-                        updateThread.Start();
+                        Task.Run( async () => { await conditionallyRefreshStationProfileAsync(); } ).ConfigureAwait(false);
                     }
                 }
                 else if ( theEvent.latitude != null && theEvent.longitude != null )
@@ -2116,11 +1953,8 @@ namespace EddiCore
                     {
                         // Refresh station data
                         if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
-                        var updateThread = new Thread(conditionallyRefreshStationProfile)
-                        {
-                            IsBackground = true
-                        };
-                        updateThread.Start();
+
+                        Task.Run( async () => { await conditionallyRefreshStationProfileAsync(); } ).ConfigureAwait( false );
                     }
                 }
             }
@@ -2386,8 +2220,6 @@ namespace EddiCore
             {
                 updateDestinationSystem( null);
             }
-
-            setCommanderTitle();
         }
 
         private void updateCurrentStellarBody(string bodyName, string systemName, ulong systemAddress)
@@ -2640,21 +2472,6 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCommanderLoading(CommanderLoadingEvent theEvent)
-        {
-            // Set our commander name and ID
-            if ( Cmdr != null )
-            {
-                if ( Cmdr.name != theEvent.name )
-                {
-                    Cmdr.name = theEvent.name;
-                    ObtainResponder( "EDSM Responder" )?.Reload();
-                }
-                Cmdr.EDID = theEvent.frontierID;
-            }
-            return true;
-        }
-
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // Set Vehicle state for commander from ship model
@@ -2685,38 +2502,12 @@ namespace EddiCore
             // If we see this it means that we aren't in Telepresence
             inTelepresence = false;
 
-            // Set our commander name and ID
-            if ( Cmdr != null )
-            {
-                if ( Cmdr.name != theEvent.commander )
-                {
-                    Cmdr.name = theEvent.commander;
-                    ObtainResponder( "EDSM Responder" ).Reload();
-                }
-                Cmdr.EDID = theEvent.frontierID;
-            }
-
             // Identify active game version
             inHorizons = theEvent.horizons;
             inOdyssey = theEvent.odyssey;
             gameBuild = theEvent.gamebuild;
             gameVersion = theEvent.gameversion;
 
-            return true;
-        }
-
-        private bool eventCommanderRatings(CommanderRatingsEvent theEvent)
-        {
-            // Capture commander ratings and add them to the commander object
-            if (Cmdr != null)
-            {
-                Cmdr.combatrating = theEvent.combat;
-                Cmdr.traderating = theEvent.trade;
-                Cmdr.explorationrating = theEvent.exploration;
-                Cmdr.cqcrating = theEvent.cqc;
-                Cmdr.empirerating = theEvent.empire;
-                Cmdr.federationrating = theEvent.federation;
-            }
             return true;
         }
 
@@ -2855,14 +2646,14 @@ namespace EddiCore
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
-        public bool refreshProfile(bool refreshStation = false)
+        public async Task<bool> refreshProfileAsync(bool refreshStation = false)
         {
             bool success = true;
             if (!CompanionAppService.unitTesting && CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
             {
                 try
                 {
-                    var profileJson = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
+                    var profileJson = await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync();
                     if (profileJson != null)
                     {
                         var profile = FrontierApiProfile.FromJson(profileJson);
@@ -2884,8 +2675,6 @@ namespace EddiCore
 
                         if (CurrentStarSystem == null)
                         {
-                            setCommanderTitle();
-
                             if (profile.docked && profile.currentStarSystem == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)
                             {
                                 // Only set the current station if it is not present, otherwise we leave it to events
@@ -2903,11 +2692,7 @@ namespace EddiCore
                         if (refreshStation && CurrentStation != null && Environment == Constants.ENVIRONMENT_DOCKED)
                         {
                             // Refresh station data
-                            Thread updateThread = new Thread(() => conditionallyRefreshStationProfile())
-                            {
-                                IsBackground = true
-                            };
-                            updateThread.Start();
+                            await conditionallyRefreshStationProfileAsync();
                         }
 
                         if (updatedCurrentStarSystem)
@@ -2957,11 +2742,11 @@ namespace EddiCore
         }
 
         /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
-        public void RefreshFleetCarrierFromFrontierAPI(bool forceRefresh = false)
+        public async Task RefreshFleetCarrierFromFrontierAPIAsync(bool forceRefresh = false)
         {
             if ( _fleetCarrier != null && CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
             {
-                var frontierApiCarrierJson = CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrier(forceRefresh);
+                var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh);
                 if (frontierApiCarrierJson != null)
                 {
                     var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
@@ -2993,28 +2778,6 @@ namespace EddiCore
         public decimal getSystemDistance(StarSystem curr, StarSystem dest)
         {
             return curr?.DistanceFromStarSystem(dest) ?? 0;
-        }
-
-        /// <summary>Work out the title for the commander in the current system</summary>
-        private const int minEmpireRankForTitle = 3;
-        private const int minFederationRankForTitle = 1;
-        private void setCommanderTitle()
-        {
-            if (Cmdr != null)
-            {
-                Cmdr.title = EddiCore.Properties.Resources.Commander;
-                if (CurrentStarSystem != null)
-                {
-                    if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
-                    {
-                        Cmdr.title = Cmdr.federationrating.localizedName;
-                    }
-                    else if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Empire" && Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle)
-                    {
-                        Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -3173,7 +2936,7 @@ namespace EddiCore
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
         /// </summary>
-        private void conditionallyRefreshStationProfile()
+        private async Task conditionallyRefreshStationProfileAsync()
         {
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
@@ -3202,8 +2965,7 @@ namespace EddiCore
 
                     // We do need to fetch an updated station profile; do so
                     Logging.Debug("Starting conditional station profile fetch");
-                    var result =
-                        CompanionAppService.Instance.CombinedStationEndpoints.GetCombinedStation(
+                    var result = await CompanionAppService.Instance.CombinedStationEndpoints.GetCombinedStationAsync(
                             Cmdr?.name, CurrentStarSystem?.systemname, CurrentStation?.name);
                     if (result != null)
                     {
@@ -3292,56 +3054,6 @@ namespace EddiCore
             configuration.DestinationSystem = destinationSystem;
             configuration.DestinationSystemAddress = destinationSystemAddress;
             ConfigService.Instance.eddiConfiguration = configuration;
-        }
-
-        public void setHomeSystem ( ulong? newSystemAddress )
-        {
-            StarSystem newSystem = null;
-            if ( newSystemAddress != null )
-            {
-                newSystem = DataProvider.GetOrFetchStarSystem( (ulong)newSystemAddress );
-            }
-
-            //Ignore null & empty systems
-            if ( newSystem?.bodies?.Count > 0 )
-            {
-                if ( newSystem.systemAddress != HomeStarSystem?.systemAddress )
-                {
-                    HomeStarSystem = newSystem;
-                    Logging.Debug( "Home star system is " + HomeStarSystem.systemname );
-
-                    var configuration = ConfigService.Instance.commanderConfiguration;
-                    configuration.homeSystemName = newSystem.systemname;
-                    configuration.homeSystemAddress = newSystem.systemAddress;
-                    configuration.homeStationName = null;
-                    configuration.homeStationMarketID = null;
-                    ConfigService.Instance.commanderConfiguration = configuration;
-                    return;
-                }
-            }
-            else
-            {
-                HomeStarSystem = null;
-            }
-        }
-
-        public CommanderConfiguration setHomeStation( CommanderConfiguration configuration )
-        {
-            if ( configuration.homeStationMarketID != null && HomeStarSystem?.stations != null)
-            {
-                foreach (Station station in HomeStarSystem.stations)
-                {
-                    if (station.marketId == configuration.homeStationMarketID)
-                    {
-                        HomeStation = station;
-                        Logging.Debug("Home station is " + HomeStation.name);
-                        configuration.homeStationName = station.name;
-                        configuration.homeStationMarketID = station.marketId;
-                        break;
-                    }
-                }
-            }
-            return configuration;
         }
 
         private void UpdateFleetCarrierConfig()

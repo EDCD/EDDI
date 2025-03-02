@@ -59,26 +59,22 @@
                                              IsEditable="True"
                                              IsReadOnly="False"
                                              IsTextSearchEnabled="False"
-                                             TextBoxBase.TextChanged="OriginSystemText_TextChanged"
                                              Grid.Row="1"
                                              Grid.Column="1"
                                              MinWidth="100"
                                              Margin="0, 7"
                                              VerticalContentAlignment="Center"
-                                             LostFocus="OriginSystemText_LostFocus"
                                              SelectionChanged="OriginSystemText_SelectionChanged"/>
                     <TextBlock Grid.Column="3" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" Text="{x:Static resx:NavigationMonitor.carrier_destination_system_textbox_desc}" VerticalAlignment="Center" />
                     <eddi:StarSystemComboBox x:Name="destinationSystemDropDown"
                                       IsEditable="True"
                                       IsReadOnly="False"
                                       IsTextSearchEnabled="False"
-                                      TextBoxBase.TextChanged="DestinationSystemText_TextChanged"
                                       Grid.Row="1"
                                       Grid.Column="4"
                                       MinWidth="100"
                                       Margin="0, 7"
                                       VerticalContentAlignment="Center"
-                                      LostFocus="DestinationSystemText_LostFocus"
                                       SelectionChanged="DestinationSystemText_SelectionChanged"/>
                     <TextBlock Grid.Column="6" Grid.Row="1" TextWrapping="Wrap" MinWidth="40" Margin="5, 0" Text="{x:Static resx:NavigationMonitor.carrier_current_load_textbox_desc}" VerticalAlignment="Center" />
                     <TextBox x:Name="carrierCurrentLoad" Grid.Column="7" Grid.Row="1"

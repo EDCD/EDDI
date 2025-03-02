@@ -66,13 +66,11 @@
                                       IsEditable="True"
                                       IsReadOnly="False"
                                       IsTextSearchEnabled="False"
-                                      TextBoxBase.TextChanged="SearchSystemText_TextChanged"
                                       Grid.Row="0"
                                       Grid.Column="1"
                                       MinWidth="175"
                                       Margin="10, 7"
                                       VerticalContentAlignment="Center"
-                                      LostFocus="SearchSystemDropDown_LostFocus"
                                       SelectionChanged="SearchSystemDropDown_SelectionChanged"/>
                     <Label x:Name ="navSearchStationLabel" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="{x:Static resx:NavigationMonitor.station_textbox_desc}"/>
                     <ComboBox x:Name="searchStationDropDown" Grid.Row="0" Grid.Column="3" MinWidth="175" Margin="10, 5" VerticalContentAlignment="Center" SelectionChanged="searchStationDropDownUpdated"/>
