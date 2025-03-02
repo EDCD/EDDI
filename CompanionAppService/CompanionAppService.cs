@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -20,7 +20,6 @@ namespace EddiCompanionAppService
     {
         // Implementation instructions from Frontier: https://hosting.zaonce.net/docs/oauth2/instructions.html
         private static readonly string LIVE_SERVER = "https://companion.orerve.net";
-        internal static readonly string LEGACY_SERVER = "https://legacy-companion.orerve.net";
         private static readonly string BETA_SERVER = "https://pts-companion.orerve.net";
         private static readonly string AUTH_SERVER = "https://auth.frontierstore.net";
         private static readonly string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
@@ -30,10 +29,7 @@ namespace EddiCompanionAppService
         private static readonly string AUDIENCE = "audience=all";
         private static readonly string SCOPE = "scope=capi auth";
 
-        // This API uses different endpoints for the "live" galaxy (currently game version 4.0 or later) or "legacy" galaxy.
-        private static readonly System.Version minLiveGameVersion = new System.Version(4, 0);
-        private static System.Version currentGameVersion { get; set; }
-
+        private static readonly HttpClient httpClient = new HttpClient();
         private readonly CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
@@ -60,7 +56,7 @@ namespace EddiCompanionAppService
             protected internal set
             {
                 if (_currentState == value) { return; }
-                State oldState = _currentState;
+                var oldState = _currentState;
                 _currentState = value;
                 StateChanged?.Invoke(oldState, _currentState);
                 OnPropertyChanged();
@@ -111,7 +107,7 @@ namespace EddiCompanionAppService
         private CompanionAppService()
         {
             Credentials = CompanionAppCredentials.Load();
-            string appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
+            var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
             void logger(string message) => Logging.Error(message);
             URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrl, logger, appPath);
             clientID = ClientId.ID;
@@ -165,18 +161,7 @@ namespace EddiCompanionAppService
         {
             return gameIsBeta 
                 ? BETA_SERVER 
-                : currentGameVersion != null && currentGameVersion < minLiveGameVersion 
-                    ? LEGACY_SERVER 
-                    : LIVE_SERVER;
-        }
-
-        public static void SetGameVersion(System.Version version)
-        {
-            currentGameVersion = version;
-            if (currentGameVersion != null && currentGameVersion < minLiveGameVersion)
-            {
-                Logging.Warn($"Service operating in LEGACY mode. Game version is {currentGameVersion}, LIVE endpoints require version {minLiveGameVersion} or later.");
-            }
+                : LIVE_SERVER;
         }
 
         ///<summary>Log in. Throws an exception if it fails</summary>
@@ -195,8 +180,8 @@ namespace EddiCompanionAppService
             }
 
             CurrentState = State.AwaitingCallback;
-            string codeChallenge = createAndRememberChallenge();
-            string webURL = $"{AUTH_SERVER}{AUTH_URL}" + $"?response_type=code&{AUDIENCE}&{SCOPE}&client_id={clientID}&code_challenge={codeChallenge}&code_challenge_method=S256&state={authSessionID}&redirect_uri={Uri.EscapeDataString(CALLBACK_URL)}";
+            var codeChallenge = createAndRememberChallenge();
+            var webURL = $"{AUTH_SERVER}{AUTH_URL}" + $"?response_type=code&{AUDIENCE}&{SCOPE}&client_id={clientID}&code_challenge={codeChallenge}&code_challenge_method=S256&state={authSessionID}&redirect_uri={Uri.EscapeDataString(CALLBACK_URL)}";
             try
             {
                 Process.Start( webURL );
@@ -223,41 +208,32 @@ namespace EddiCompanionAppService
                 authSessionID = base64UrlEncode( rawAuthSessionID );
             }
 
-            byte[] byteVerifier = Encoding.ASCII.GetBytes(verifier);
-            byte[] hash = SHA256.Create().ComputeHash(byteVerifier);
-            string codeChallenge = base64UrlEncode(hash);
+            var byteVerifier = Encoding.ASCII.GetBytes(verifier);
+            var hash = SHA256.Create().ComputeHash(byteVerifier);
+            var codeChallenge = base64UrlEncode(hash);
             return codeChallenge;
         }
 
         private string base64UrlEncode(byte[] blob)
         {
-            string base64 = Convert.ToBase64String(blob, Base64FormattingOptions.None);
+            var base64 = Convert.ToBase64String(blob, Base64FormattingOptions.None);
             return base64.Replace('+', '-').Replace('/', '_').Replace("=", "");
         }
 
-        private void handleCallbackUrl(string url)
+        private void handleCallbackUrl ( string url )
         {
-            Logging.Debug("Received callback");
+            Logging.Debug( "Received callback" );
             // NB any user can send an arbitrary URL from the Windows Run dialog, so it must be treated as untrusted
             try
             {
                 string code = codeFromCallback(url);
 
-                var request = GetRequest(AUTH_SERVER + TOKEN_URL);
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.Method = "POST";
-                request.KeepAlive = false;
-                request.AllowAutoRedirect = true;
-                byte[] data = Encoding.UTF8.GetBytes($"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString(CALLBACK_URL)}");
-                request.ContentLength = data.Length;
-                using (Stream dataStream = request.GetRequestStream())
-                {
-                    dataStream.Write(data, 0, data.Length);
-                }
+                var request = new HttpRequestMessage(HttpMethod.Post, AUTH_SERVER + TOKEN_URL);
+                request.Content = new StringContent( $"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString( CALLBACK_URL )}", Encoding.UTF8, "application/x-www-form-urlencoded" );
 
                 Task.Run( async () =>
                 {
-                    using ( var response = await GetResponseAsync( request ) )
+                    using ( var response = await httpClient.SendAsync( request ) )
                     {
                         if ( response?.StatusCode == null )
                         {
@@ -267,7 +243,7 @@ namespace EddiCompanionAppService
 
                         if ( response.StatusCode == HttpStatusCode.OK )
                         {
-                            var responseData = getResponseData( response );
+                            var responseData = await response.Content.ReadAsStringAsync();
                             var json = JObject.Parse( responseData );
                             Credentials.refreshToken = (string)json[ "refresh_token" ];
                             Credentials.accessToken = (string)json[ "access_token" ];
@@ -288,7 +264,7 @@ namespace EddiCompanionAppService
                     }
                 } ).ConfigureAwait( true );
             }
-            catch (Exception)
+            catch ( Exception )
             {
                 CurrentState = State.LoggedOut;
             }
@@ -301,54 +277,52 @@ namespace EddiCompanionAppService
                 throw new EliteDangerousCompanionAppAuthenticationException("Malformed callback URL from Frontier");
             }
 
-            Dictionary<string, string> paramsDict = ParseQueryString(url);
+            var paramsDict = ParseQueryString(url);
             if (authSessionID == null || !paramsDict.ContainsKey("state") || paramsDict["state"] != authSessionID)
             {
                 throw new EliteDangerousCompanionAppAuthenticationException("Unexpected callback URL from Frontier");
             }
 
-            if (!paramsDict.ContainsKey("code"))
+            if (!paramsDict.TryGetValue("code", out var callback))
             {
-                if (!paramsDict.TryGetValue("error_description", out string desc))
+                if (!paramsDict.TryGetValue("error_description", out var desc))
                 {
                     paramsDict.TryGetValue("error", out desc);
                 }
                 desc = desc ?? "no error description";
                 throw new EliteDangerousCompanionAppAuthenticationException($"Negative response from Frontier: {desc}");
             }
-            return paramsDict["code"];
+            return callback;
         }
 
         private Dictionary<string, string> ParseQueryString(string url)
         {
             // Sadly System.Web.HttpUtility.ParseQueryString() is not available to us
             // https://stackoverflow.com/questions/659887/get-url-parameters-from-a-string-in-net
-            Uri myUri = new Uri(url);
-            string query = myUri.Query.TrimStart('?');
-            string[] queryParams = query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            var myUri = new Uri(url);
+            var query = myUri.Query.TrimStart('?');
+            var queryParams = query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
             var paramValuePairs = queryParams.Select(parameter => parameter.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries));
             var sanitizedValuePairs = paramValuePairs.GroupBy(
                 parts => parts[0],
-                parts => parts.Length > 2 ? string.Join("=", parts, 1, parts.Length - 1) : (parts.Length > 1 ? parts[1] : ""));
-            Dictionary<string, string> paramsDict = sanitizedValuePairs.ToDictionary(
+                parts => parts.Length > 2 ? string.Join("=", parts, 1, parts.Length - 1) : parts.Length > 1 ? parts[1] : "");
+            var paramsDict = sanitizedValuePairs.ToDictionary(
                 grouping => grouping.Key,
                 grouping => string.Join(",", grouping));
             return paramsDict;
         }
 
 #pragma warning disable IDE0051 // Remove unused private members - Preserve unusued method as it may be useful for future debug testing
+        // ReSharper disable once UnusedMember.Local
         private async Task<JObject> DecodeTokenAsync()
 #pragma warning restore IDE0051 // Remove unused private members
         {
             if (Credentials.accessToken == null) { return null; }
 
-            var request = (HttpWebRequest)WebRequest.Create(AUTH_SERVER + DECODE_URL);
-            request.AllowAutoRedirect = true;
-            request.Timeout = 10000;
-            request.ReadWriteTimeout = 10000;
-            request.Headers["Authorization"] = $"Bearer {Credentials.accessToken}";
+            var request = new HttpRequestMessage(HttpMethod.Get, AUTH_SERVER + DECODE_URL);
+            request.Headers.Add( "Authorization", $"Bearer {Credentials.accessToken}" );
 
-            using (HttpWebResponse response = await GetResponseAsync(request))
+            using (var response = await httpClient.SendAsync( request ) )
             {
                 if (response == null)
                 {
@@ -360,78 +334,61 @@ namespace EddiCompanionAppService
                 {
                     return null;
                 }
-                return JObject.Parse(getResponseData(response));
+                return JObject.Parse(await response.Content.ReadAsStringAsync());
             }
         }
 
-        private async Task RefreshTokenAsync()
+        private async Task RefreshTokenAsync ()
         {
-            if (clientID == null)
+            if ( clientID == null )
             {
-                throw new EliteDangerousCompanionAppAuthenticationException("Client ID is not configured");
+                throw new EliteDangerousCompanionAppAuthenticationException( "Client ID is not configured" );
             }
-            if (Credentials.refreshToken == null)
+            if ( Credentials.refreshToken == null )
             {
-                throw new EliteDangerousCompanionAppAuthenticationException("Refresh token not found, need full login");
+                throw new EliteDangerousCompanionAppAuthenticationException( "Refresh token not found, need full login" );
             }
 
             CurrentState = State.TokenRefresh;
-            var request = GetRequest(AUTH_SERVER + TOKEN_URL);
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.Method = "POST";
-            var data = Encoding.UTF8.GetBytes($"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}");
-            request.ContentLength = data.Length;
+            var request = new HttpRequestMessage(HttpMethod.Post, AUTH_SERVER + TOKEN_URL);
+            request.Content = new StringContent( $"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}", Encoding.UTF8, "application/x-www-form-urlencoded" );
 
             try
             {
-                using ( var dataStream = request.GetRequestStream() )
+                using ( var response = await httpClient.SendAsync( request ) )
                 {
-                    dataStream.Write( data, 0, data.Length );
-                }
-            }
-            catch ( WebException webException )
-            {
-                if ( webException.Status == WebExceptionStatus.TrustFailure  )
-                {
-                    throw new EliteDangerousCompanionAppAuthenticationException( "Refresh token not valid, need full login" );
-                }
-
-                if ( webException.Status == WebExceptionStatus.Timeout )
-                {
-                    throw new EliteDangerousCompanionAppAuthenticationException( "Request timed out" );
-                }
-
-                Logging.Warn( webException.Message, webException );
-            }
-
-            using ( var response = await GetResponseAsync(request) )
-            {
-                if (response == null)
-                {
-                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                }
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    var responseData = getResponseData(response);
-                    var json = JObject.Parse(responseData);
-                    Credentials.refreshToken = (string)json["refresh_token"];
-                    Credentials.accessToken = (string)json["access_token"];
-                    Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds((double)json["expires_in"]);
-                    Credentials.Save();
-                    if (Credentials.accessToken == null)
+                    if ( response == null )
+                    {
+                        throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
+                    }
+                    if ( response.StatusCode == HttpStatusCode.OK )
+                    {
+                        var responseData = await response.Content.ReadAsStringAsync();
+                        var json = JObject.Parse(responseData);
+                        Credentials.refreshToken = (string)json[ "refresh_token" ];
+                        Credentials.accessToken = (string)json[ "access_token" ];
+                        Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds( (double)json[ "expires_in" ] );
+                        Credentials.Save();
+                        if ( Credentials.accessToken == null )
+                        {
+                            CurrentState = State.ConnectionLost;
+                            CurrentState = State.LoggedOut;
+                            throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
+                        }
+                        CurrentState = State.Authorized;
+                    }
+                    else
                     {
                         CurrentState = State.ConnectionLost;
                         CurrentState = State.LoggedOut;
-                        throw new EliteDangerousCompanionAppAuthenticationException("Access token not found");
+                        throw new EliteDangerousCompanionAppAuthenticationException( "Invalid refresh token" );
                     }
-                    CurrentState = State.Authorized;
                 }
-                else
-                {
-                    CurrentState = State.ConnectionLost;
-                    CurrentState = State.LoggedOut;
-                    throw new EliteDangerousCompanionAppAuthenticationException("Invalid refresh token");
-                }
+            }
+            catch ( HttpRequestException ex )
+            {
+                Logging.Warn( ex.Message, ex );
+                throw new EliteDangerousCompanionAppAuthenticationException( "Request failed", ex );
             }
         }
 
@@ -447,21 +404,21 @@ namespace EddiCompanionAppService
             Logging.Debug( "Credentials cleared" );
         }
 
-        protected internal async Task<Tuple<string, DateTime>> obtainDataAsync(string url)
+        protected internal async Task<Tuple<string, DateTime>> obtainDataAsync ( string url )
         {
-            var expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
-            if (DateTime.UtcNow > expiry)
+            var expiry = Credentials.tokenExpiry.AddSeconds(-60);
+            if ( DateTime.UtcNow > expiry )
             {
                 // Our access token either has expired or shall expire within the next minute.
                 // Use our refresh token to obtain a new access token.
                 await RefreshTokenAsync();
             }
-            if (CurrentState != State.Authorized)
+            if ( CurrentState != State.Authorized )
             {
                 // Happens if there is a problem with the API.  Logging in again might clear this...
                 CurrentState = State.ConnectionLost;
                 relogin();
-                if (CurrentState != State.Authorized)
+                if ( CurrentState != State.Authorized )
                 {
                     // No luck; give up
                     Logout();
@@ -471,32 +428,28 @@ namespace EddiCompanionAppService
 
             try
             {
-                var request = GetRequest(url);
-                using (var response = await GetResponseAsync(request))
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Add( "Authorization", $"Bearer {Credentials.accessToken}" );
+
+                using ( var response = await httpClient.SendAsync( request ) )
                 {
-                    if (response == null)
+                    if ( response == null )
                     {
-                        Logging.Debug("Failed to contact API server");
-                        throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                        Logging.Debug( "Failed to contact API server" );
+                        throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
                     }
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    if ( response.StatusCode == HttpStatusCode.OK )
                     {
-                        var timestamp = DateTime.Parse(response.Headers.Get("date") ?? string.Empty).ToUniversalTime();
-                        return new Tuple<string, DateTime>(getResponseData(response), timestamp);
+                        var timestamp = DateTime.Parse(response.Headers.GetValues("date").FirstOrDefault() ?? string.Empty).ToUniversalTime();
+                        var responseData = await response.Content.ReadAsStringAsync();
+                        return new Tuple<string, DateTime>( responseData, timestamp );
                     }
                 }
             }
-            catch ( WebException ex ) when ( ex.Status == WebExceptionStatus.Timeout )
+            catch ( HttpRequestException ex )
             {
-                Logging.Warn( "Request timed out. Please check your network connection." );
-            }
-            catch ( WebException ex ) when ( ex.Status == WebExceptionStatus.ConnectionClosed )
-            {
-                Logging.Warn( "Connection was closed unexpectedly." );
-            }
-            catch (WebException wex)
-            {
-                throw new EliteDangerousCompanionAppErrorException( wex.Message, wex );
+                Logging.Warn( ex.Message, ex );
+                throw new EliteDangerousCompanionAppErrorException( ex.Message, ex );
             }
             return null;
         }
@@ -517,78 +470,6 @@ namespace EddiCompanionAppService
                 Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
             }
-        }
-
-        /**
-         * Obtain the response data from an HTTP web response
-         */
-        private string getResponseData(HttpWebResponse response)
-        {
-            if (response is null) { return null; }
-            // Obtain and parse our response
-            var encoding = response.CharacterSet == ""
-                    ? Encoding.UTF8
-                    : Encoding.GetEncoding(response.CharacterSet ?? string.Empty);
-
-            Logging.Debug("Reading response");
-            using (var stream = response.GetResponseStream())
-            {
-                if (stream == null)
-                {
-                    Logging.Warn("No response stream");
-                    return null;
-                }
-                var reader = new StreamReader(stream, encoding);
-                string data = reader.ReadToEnd();
-                if (string.IsNullOrEmpty(data) || data.Trim() == "")
-                {
-                    Logging.Warn("No data returned");
-                    return null;
-                }
-                Logging.Debug("Data is:", data);
-                return data;
-            }
-        }
-
-        // Set up a request with the correct parameters for talking to the companion app
-        private HttpWebRequest GetRequest(string url)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.AllowAutoRedirect = true;
-            request.Timeout = 10000;
-            request.ReadWriteTimeout = 10000;
-            request.UserAgent = $"EDCD-{Constants.EDDI_NAME}-{Constants.EDDI_VERSION.ShortString}";
-            if (CurrentState == State.Authorized)
-            {
-                request.Headers["Authorization"] = $"Bearer {Credentials.accessToken}";
-            }
-
-            return request;
-        }
-
-        // Obtain a response, ensuring that we obtain the response's cookies
-        private async Task<HttpWebResponse> GetResponseAsync ( HttpWebRequest request, int maxRetries = 3 )
-        {
-            int retries = 0;
-            while ( retries < maxRetries )
-            {
-                try
-                {
-                    var response = await request.GetResponseAsync();
-                    Logging.Debug( $"Response from {request.Address} is: ", response );
-                    return response as HttpWebResponse;
-                }
-                catch ( WebException ex ) when ( ex.Status == WebExceptionStatus.Timeout || ex.Status == WebExceptionStatus.ConnectionClosed )
-                {
-                    retries++;
-                    if ( retries >= maxRetries )
-                    {
-                        throw;
-                    }
-                    System.Threading.Thread.Sleep( (int)Math.Pow( 2, retries ) * 1000 ); // Exponential backoff
-                }
-            }
-            return null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
