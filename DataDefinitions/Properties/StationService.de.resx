@@ -298,6 +298,9 @@
     <comment>Station Service: Fleet Carrier Management</comment>
   </data>
   
-  
+  <data name="Refinery" xml:space="preserve">
+    <value>Raffineriekontakt</value>
+    <comment>Refinery Contact station service</comment>
+  </data>
   
 </root>
