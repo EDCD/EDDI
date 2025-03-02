@@ -177,6 +177,12 @@
     <value>Siedlung</value>
     <comment>An Odyssey style Settlement</comment>
   </data>
-  
-  
+  <data name="SpaceConstructionDepot" xml:space="preserve">
+    <value>Orbitale Baustelle</value>
+    <comment>Orbital Construction Site station model</comment>
+  </data>
+  <data name="PlanetaryConstructionDepot" xml:space="preserve">
+    <value>Planetare Baustelle</value>
+    <comment>Planetary Construction Site station model</comment>
+  </data>
 </root>
