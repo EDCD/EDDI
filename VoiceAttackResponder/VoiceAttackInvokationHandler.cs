@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
 using EddiSpeechResponder;
@@ -360,12 +361,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Entered" );
             try
             {
-                if ( EDDI.Instance.Cmdr?.InaraID == null )
+                var inaraID = ConfigService.Instance.inaraConfiguration.inaraID;
+                if ( inaraID is null )
                 {
                     Logging.Debug( "No information on Inara commander" );
                     return;
                 }
-                string cmdrUri = $"https://inara.cz/elite/cmdr/{EDDI.Instance.Cmdr.InaraID}/";
+                string cmdrUri = $"https://inara.cz/elite/cmdr/{inaraID}/";
                 OpenOrStoreURI( ref vaProxy, cmdrUri );
                 VoiceAttackVariables.setStatus( vaProxy, "Operational" );
             }
@@ -680,13 +682,13 @@ namespace EddiVoiceAttackResponder
             }
 
             string cmdrScript;
-            if ( string.IsNullOrEmpty( EDDI.Instance.Cmdr?.name ) )
+            if ( string.IsNullOrEmpty( ConfigService.Instance.commanderConfiguration.commanderName ) )
             {
                 cmdrScript = EddiCore.Properties.Resources.Commander;
             }
             else
             {
-                cmdrScript = EDDI.Instance.Cmdr.phoneticname;
+                cmdrScript = ConfigService.Instance.commanderConfiguration.phoneticName;
             }
             script = script.Replace( "$-", cmdrScript );
 

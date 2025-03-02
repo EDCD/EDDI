@@ -273,13 +273,14 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " model", ship?.model);
                 vaProxy.SetText(prefix + " model (spoken)", ship?.SpokenModel());
 
-                if (EDDI.Instance.Cmdr?.name != null)
+                var cmdrName = ConfigService.Instance.commanderConfiguration.commanderName;
+                if ( cmdrName != null )
                 {
-                    vaProxy.SetText(prefix + " callsign",
-                        ship?.manufacturer + " " + EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
-                    vaProxy.SetText(prefix + " callsign (spoken)",
+                    vaProxy.SetText( prefix + " callsign",
+                        ship?.manufacturer + " " + cmdrName.Substring( 0, 3 ).ToUpperInvariant() );
+                    vaProxy.SetText( prefix + " callsign (spoken)",
                         ship?.SpokenManufacturer() + " " +
-                        Translations.ICAO(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
+                        Translations.ICAO( cmdrName.Substring( 0, 3 ).ToUpperInvariant() ) );
                 }
 
                 vaProxy.SetText(prefix + " name", ship?.name);

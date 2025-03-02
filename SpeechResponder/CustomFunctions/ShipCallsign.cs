@@ -41,7 +41,7 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 default:
                     // CommanderName
-                    return phoneticCallsign(ship, EDDI.Instance.Cmdr?.name);
+                    return phoneticCallsign(ship, ConfigService.Instance.commanderConfiguration.commanderName );
                 case 1:
                     // Variant: ShipName
                     return phoneticCallsign(ship, ship?.name);

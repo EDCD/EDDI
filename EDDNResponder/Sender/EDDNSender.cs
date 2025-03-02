@@ -1,4 +1,5 @@
-﻿using EddiCore;
+﻿using EddiConfigService;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEddnResponder.Toolkit;
 using Newtonsoft.Json;
@@ -51,16 +52,16 @@ namespace EddiEddnResponder.Sender
             // Uploader ID is a hash of the commander's name
             //System.Security.Cryptography.SHA256Managed crypt = new System.Security.Cryptography.SHA256Managed();
             //StringBuilder hash = new StringBuilder();
-            //string uploader = (EDDI.Instance.Cmdr == null ? "commander" : EDDI.Instance.Cmdr.name);
+            //string uploader = (ConfigService.Instance.commanderConfiguration.commanderName == null ? "commander" : ConfigService.Instance.commanderConfiguration.commanderName);
             //byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(uploader), 0, Encoding.UTF8.GetByteCount(uploader));
             //foreach (byte theByte in crypto)
             //{
             //    hash.Append(theByte.ToString("x2"));
             //}
             //return hash.ToString();
-            return string.IsNullOrEmpty(EDDI.Instance.Cmdr?.name) 
+            return string.IsNullOrEmpty( ConfigService.Instance.commanderConfiguration.commanderName ) 
                 ? "Unknown commander" 
-                : EDDI.Instance.Cmdr.name;
+                : ConfigService.Instance.commanderConfiguration.commanderName;
         }
 
         private static EDDNHeader generateHeader(GameVersionAugmenter gameVersion, string gameVersionOverride = null)

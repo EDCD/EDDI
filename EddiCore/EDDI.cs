@@ -2658,19 +2658,6 @@ namespace EddiCore
                     {
                         var profile = FrontierApiProfile.FromJson(profileJson);
 
-                        // Update our commander object
-                        var updatedCmdr = Commander.FromFrontierApiCmdr(Cmdr, profile.Cmdr, profile.timestamp, JournalTimeStamp, out bool cmdrMatches);
-
-                        // Stop if the commander returned from the profile does not match our expected commander name
-                        if ( !cmdrMatches )
-                        {
-                            Logging.Debug( "Skipping profile update - Frontier API commander information doesn't match journal information" );
-                            return false;
-                        }
-
-                        Logging.Debug( "Commander information updated from Frontier API; updating local copy" );
-                        Cmdr = updatedCmdr;
-
                         bool updatedCurrentStarSystem = false;
 
                         if (CurrentStarSystem == null)
@@ -2965,8 +2952,9 @@ namespace EddiCore
 
                     // We do need to fetch an updated station profile; do so
                     Logging.Debug("Starting conditional station profile fetch");
+                    var commanderName = ConfigService.Instance.commanderConfiguration.commanderName;
                     var result = await CompanionAppService.Instance.CombinedStationEndpoints.GetCombinedStationAsync(
-                            Cmdr?.name, CurrentStarSystem?.systemname, CurrentStation?.name);
+                        commanderName, CurrentStarSystem?.systemname, CurrentStation?.name);
                     if (result != null)
                     {
                         var profile = FrontierApiProfile.FromJson(result["profileJson"]?.ToObject<JObject>());

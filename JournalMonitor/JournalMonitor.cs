@@ -643,7 +643,8 @@ namespace EddiJournalMonitor
                                     }
                                     if (rating != null)
                                     {
-                                        events.Add(new CommanderPromotionEvent(timestamp, rating, EDDI.Instance.Cmdr.gender) { raw = line, fromLoad = fromLogLoad });
+                                        var genderPreference = ConfigService.Instance.commanderConfiguration.gender;
+                                        events.Add(new CommanderPromotionEvent(timestamp, rating, genderPreference) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
                                 }

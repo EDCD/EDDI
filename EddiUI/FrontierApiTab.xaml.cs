@@ -1,4 +1,5 @@
 ﻿using EddiCompanionAppService;
+using EddiConfigService;
 using EddiCore;
 using EddiSpeechService;
 using System.Security.Principal;
@@ -29,7 +30,7 @@ namespace EddiUI
             if ( oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized )
             {
-                SpeechService.Instance.Say( null, string.Format( Properties.Resources.frontier_api_ok, EDDI.Instance.Cmdr?.phoneticname ), 0 );
+                SpeechService.Instance.Say( null, string.Format( Properties.Resources.frontier_api_ok, ConfigService.Instance.commanderConfiguration.phoneticName ), 0 );
                 SpeechService.Instance.Say( null, Properties.Resources.frontier_api_close_browser, 0 );
             }
             else if ( oldState == CompanionAppService.State.LoggedOut &&

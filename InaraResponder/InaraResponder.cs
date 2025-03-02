@@ -85,12 +85,6 @@ namespace EddiInaraResponder
                 config.inaraID = cmdr.id;
                 ConfigService.Instance.inaraConfiguration = config;
             }
-
-            if ( EDDI.Instance.Cmdr != null )
-            {
-                // Also write the Inara ID to the commander so that it can be used to construct custom profile lookups in VoiceAttack.
-                EDDI.Instance.Cmdr.InaraID = config.inaraID;
-            }
         }
 
         public UserControl ConfigurationTabItem()
