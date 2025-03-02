@@ -297,10 +297,16 @@
     <value>Träger-Management</value>
     <comment>Station Service: Fleet Carrier Management</comment>
   </data>
-  
+  <data name="RegisteringColonisation" xml:space="preserve">
+    <value>Systembesiedelung</value>
+    <comment>System Colonisation</comment>
+  </data>
   <data name="Refinery" xml:space="preserve">
     <value>Raffineriekontakt</value>
     <comment>Refinery Contact station service</comment>
   </data>
-  
+  <data name="ColonisationContribution" xml:space="preserve">
+    <value>Baudienstleistungen</value>
+    <comment>Construction Services station service</comment>
+  </data>
 </root>
