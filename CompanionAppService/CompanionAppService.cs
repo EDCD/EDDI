@@ -228,8 +228,12 @@ namespace EddiCompanionAppService
             {
                 string code = codeFromCallback(url);
 
-                var request = new HttpRequestMessage(HttpMethod.Post, AUTH_SERVER + TOKEN_URL);
-                request.Content = new StringContent( $"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString( CALLBACK_URL )}", Encoding.UTF8, "application/x-www-form-urlencoded" );
+                var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL )
+                {
+                    Content = new StringContent(
+                        $"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString( CALLBACK_URL )}",
+                        Encoding.UTF8, "application/x-www-form-urlencoded" )
+                };
 
                 Task.Run( async () =>
                 {
@@ -350,8 +354,12 @@ namespace EddiCompanionAppService
             }
 
             CurrentState = State.TokenRefresh;
-            var request = new HttpRequestMessage(HttpMethod.Post, AUTH_SERVER + TOKEN_URL);
-            request.Content = new StringContent( $"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}", Encoding.UTF8, "application/x-www-form-urlencoded" );
+            var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL )
+            {
+                Content = new StringContent(
+                    $"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}",
+                    Encoding.UTF8, "application/x-www-form-urlencoded" )
+            };
 
             try
             {
