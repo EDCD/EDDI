@@ -703,7 +703,7 @@ namespace EddiShipMonitor
                 {
                     var quickSystems =
                         EDDI.Instance.DataProvider.GetOrFetchQuickStarSystems(
-                            @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), false ) ?? new List<StarSystem>();
+                            @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), true ) ?? new List<StarSystem>();
                     foreach ( var module in @event.storedmodules )
                     {
                         var moduleSystem = quickSystems.FirstOrDefault( system => system.systemname == module.system );
