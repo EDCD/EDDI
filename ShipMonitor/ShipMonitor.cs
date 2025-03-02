@@ -391,7 +391,8 @@ namespace EddiShipMonitor
                 updatedAt = @event.timestamp;
 
                 // Set ship hull and module health with a profile refresh before we write the stored ship.
-                EDDI.Instance.refreshProfile();
+                var refreshFromProfileTask = Task.Run( async () => await EDDI.Instance.RefreshFleetCarrierFromFrontierAPIAsync() );
+                Task.WaitAll( refreshFromProfileTask );
 
                 // Update our current ship
                 SetCurrentShip(@event.shipid, @event.edModel);
@@ -1916,7 +1917,7 @@ namespace EddiShipMonitor
                     Task.Run( async () =>
                     {
                         await Task.Delay( TimeSpan.FromSeconds( profileRefreshDelaySeconds ) );
-                        EDDI.Instance.refreshProfile();
+                        await EDDI.Instance.refreshProfileAsync();
                     }, profileRefreshCancellationTokenSource.Token );
                 }
                 catch ( OperationCanceledException )

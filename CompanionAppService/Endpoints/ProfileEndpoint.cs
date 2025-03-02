@@ -1,6 +1,7 @@
 ﻿using EddiCompanionAppService.Exceptions;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiCompanionAppService.Endpoints
@@ -22,7 +23,7 @@ namespace EddiCompanionAppService.Endpoints
         /// </summary>
         /// <param name="forceRefresh"></param>
         /// <returns></returns>
-        public JObject GetProfile(bool forceRefresh = false)
+        public async Task<JObject> GetProfileAsync(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
             {
@@ -34,7 +35,7 @@ namespace EddiCompanionAppService.Endpoints
             try
             {
                 Logging.Debug($"Getting {PROFILE_URL} data");
-                var result = GetEndpoint(PROFILE_URL);
+                var result = await GetEndpointAsync(PROFILE_URL);
 
                 if ( result is null )
                 {

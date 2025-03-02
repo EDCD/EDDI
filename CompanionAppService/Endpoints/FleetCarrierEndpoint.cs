@@ -1,6 +1,7 @@
 ﻿using EddiCompanionAppService.Exceptions;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiCompanionAppService.Endpoints
@@ -22,7 +23,7 @@ namespace EddiCompanionAppService.Endpoints
         /// </summary>
         /// <param name="forceRefresh"></param>
         /// <returns></returns>
-        public JObject GetFleetCarrier(bool forceRefresh = false)
+        public async Task<JObject> GetFleetCarrierAsync(bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedFleetCarrierExpires > DateTime.UtcNow)
             {
@@ -34,7 +35,7 @@ namespace EddiCompanionAppService.Endpoints
             try
             {
                 Logging.Debug($"Getting {FLEETCARRIER_URL} data");
-                var result = GetEndpoint(FLEETCARRIER_URL);
+                var result = await GetEndpointAsync(FLEETCARRIER_URL);
 
                 if ( result is null )
                 {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiCompanionAppService.Endpoints
@@ -26,7 +27,7 @@ namespace EddiCompanionAppService.Endpoints
         /// <summary>
         /// Returns combined profile, market, and shipyard data (verifying that the data is synchronized to expected values between endpoints)
         /// </summary>
-        public JObject GetCombinedStation(string expectedCommanderName, string expectedStarSystemName, string expectedStationName, bool forceRefresh = false)
+        public async Task<JObject> GetCombinedStationAsync(string expectedCommanderName, string expectedStarSystemName, string expectedStationName, bool forceRefresh = false)
         {
             if ((!forceRefresh) && cachedStationExpires > DateTime.UtcNow)
             {
@@ -34,7 +35,7 @@ namespace EddiCompanionAppService.Endpoints
                 return cachedStationJson;
             }
 
-            var profileJson = CompanionAppService.Instance.ProfileEndpoint.GetProfile();
+            var profileJson = await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync();
             if (profileJson != null)
             {
                 var profileCmdrName = profileJson["commander"]?["name"]?.ToString();
@@ -51,8 +52,8 @@ namespace EddiCompanionAppService.Endpoints
                     {
                         // If we're docked, the lastStation information should be located within the lastSystem identified by the profile
                         // Make sure the profile is caught up to the game state
-                        var marketJson = GetMarket();
-                        var shipyardJson = GetShipyard();
+                        var marketJson = await GetMarketAsync();
+                        var shipyardJson = await GetShipyardAsync();
                         if ( ( docked || onFoot ) &&
                              !string.IsNullOrEmpty( profileSystemName ) &&
                              expectedStarSystemName == profileSystemName &&
@@ -99,22 +100,22 @@ namespace EddiCompanionAppService.Endpoints
             if (retries >= 5) { return null; }
             retries += 1;
             Thread.Sleep(TimeSpan.FromSeconds(10));
-            return GetCombinedStation(expectedCommanderName, expectedStarSystemName, expectedStationName);
+            return await GetCombinedStationAsync(expectedCommanderName, expectedStarSystemName, expectedStationName);
         }
 
-        private JObject GetMarket ()
+        private async Task<JObject> GetMarketAsync ()
         {
             Logging.Debug( $"Getting {MARKET_URL} data" );
-            var result = GetEndpoint( MARKET_URL );
+            var result = await GetEndpointAsync( MARKET_URL );
             Logging.Debug( $"{MARKET_URL} returned: ", result );
 
             return result;
         }
 
-        private JObject GetShipyard ()
+        private async Task<JObject> GetShipyardAsync ()
         {
             Logging.Debug( $"Getting {SHIPYARD_URL} data" );
-            var result = GetEndpoint( SHIPYARD_URL );
+            var result = await GetEndpointAsync( SHIPYARD_URL );
             Logging.Debug( $"{SHIPYARD_URL} returned: ", result );
 
             return result;

@@ -209,7 +209,7 @@ namespace EddiNavigationMonitor
             {
                 if (!@event.fromLoad)
                 {
-                    EDDI.Instance.RefreshFleetCarrierFromFrontierAPI();
+                    Task.Run( async () => await EDDI.Instance.RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
                 }
             }
             else if (@event is NavRouteEvent navRouteEvent)

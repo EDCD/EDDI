@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiCompanionAppService
@@ -9,13 +10,13 @@ namespace EddiCompanionAppService
     {
         public delegate void EndpointEventHandler(object sender, CompanionApiEndpointEventArgs e);
 
-        protected JObject GetEndpoint(string endpointURL)
+        protected async Task<JObject> GetEndpointAsync(string endpointURL)
         {
             if ( CompanionAppService.unitTesting ) { return null; }
 
             JObject newJson;
 
-            var result = CompanionAppService.Instance.obtainData( CompanionAppService.Instance.ServerURL() + endpointURL );
+            var result = await CompanionAppService.Instance.obtainDataAsync( CompanionAppService.Instance.ServerURL() + endpointURL );
             if ( result is null ) { return null; }
 
             var data = result.Item1;

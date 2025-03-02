@@ -11,6 +11,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiCompanionAppService
@@ -125,16 +126,23 @@ namespace EddiCompanionAppService
                 return;
             }
 
-            try
+            Task.Run( async () =>
             {
-                // Our access token may have expired. Use our refresh token to obtain a new access token.
-                RefreshToken();
-            }
-            catch (Exception)
-            {
-                if (Credentials.refreshToken != null) { CurrentState = State.ConnectionLost; }
-                CurrentState = State.LoggedOut;
-            }
+                try
+                {
+                    // Our access token may have expired. Use our refresh token to obtain a new access token.
+                    await RefreshTokenAsync();
+                }
+                catch ( Exception )
+                {
+                    if ( Credentials.refreshToken != null )
+                    {
+                        CurrentState = State.ConnectionLost;
+                    }
+
+                    CurrentState = State.LoggedOut;
+                }
+            } ).ConfigureAwait( false );
         }
 
         public void Dispose()
@@ -235,7 +243,7 @@ namespace EddiCompanionAppService
             {
                 string code = codeFromCallback(url);
 
-                HttpWebRequest request = GetRequest(AUTH_SERVER + TOKEN_URL);
+                var request = GetRequest(AUTH_SERVER + TOKEN_URL);
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.Method = "POST";
                 request.KeepAlive = false;
@@ -247,31 +255,38 @@ namespace EddiCompanionAppService
                     dataStream.Write(data, 0, data.Length);
                 }
 
-                using (HttpWebResponse response = GetResponse(request))
+                Task.Run( async () =>
                 {
-                    if (response?.StatusCode == null)
+                    using ( var response = await GetResponseAsync( request ) )
                     {
-                        throw new EliteDangerousCompanionAppAuthenticationException("Failed to contact authorization server");
-                    }
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        string responseData = getResponseData(response);
-                        JObject json = JObject.Parse(responseData);
-                        Credentials.refreshToken = (string)json["refresh_token"];
-                        Credentials.accessToken = (string)json["access_token"];
-                        Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds((double)json["expires_in"]);
-                        Credentials.Save();
-                        if (Credentials.accessToken == null)
+                        if ( response?.StatusCode == null )
                         {
-                            throw new EliteDangerousCompanionAppAuthenticationException("Access token not found");
+                            throw new EliteDangerousCompanionAppAuthenticationException(
+                                "Failed to contact authorization server" );
                         }
-                        CurrentState = State.Authorized;
+
+                        if ( response.StatusCode == HttpStatusCode.OK )
+                        {
+                            var responseData = getResponseData( response );
+                            var json = JObject.Parse( responseData );
+                            Credentials.refreshToken = (string)json[ "refresh_token" ];
+                            Credentials.accessToken = (string)json[ "access_token" ];
+                            Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds( (double)json[ "expires_in" ] );
+                            Credentials.Save();
+                            if ( Credentials.accessToken == null )
+                            {
+                                throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
+                            }
+
+                            CurrentState = State.Authorized;
+                        }
+                        else
+                        {
+                            throw new EliteDangerousCompanionAppAuthenticationException(
+                                "Invalid refresh token from authorization server" );
+                        }
                     }
-                    else
-                    {
-                        throw new EliteDangerousCompanionAppAuthenticationException("Invalid refresh token from authorization server");
-                    }
-                }
+                } ).ConfigureAwait( true );
             }
             catch (Exception)
             {
@@ -322,18 +337,18 @@ namespace EddiCompanionAppService
         }
 
 #pragma warning disable IDE0051 // Remove unused private members - Preserve unusued method as it may be useful for future debug testing
-        private JObject DecodeToken()
+        private async Task<JObject> DecodeTokenAsync()
 #pragma warning restore IDE0051 // Remove unused private members
         {
             if (Credentials.accessToken == null) { return null; }
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(AUTH_SERVER + DECODE_URL);
+            var request = (HttpWebRequest)WebRequest.Create(AUTH_SERVER + DECODE_URL);
             request.AllowAutoRedirect = true;
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;
             request.Headers["Authorization"] = $"Bearer {Credentials.accessToken}";
 
-            using (HttpWebResponse response = GetResponse(request))
+            using (HttpWebResponse response = await GetResponseAsync(request))
             {
                 if (response == null)
                 {
@@ -349,7 +364,7 @@ namespace EddiCompanionAppService
             }
         }
 
-        private void RefreshToken()
+        private async Task RefreshTokenAsync()
         {
             if (clientID == null)
             {
@@ -389,7 +404,7 @@ namespace EddiCompanionAppService
                 Logging.Warn( webException.Message, webException );
             }
 
-            using ( var response = GetResponse(request) )
+            using ( var response = await GetResponseAsync(request) )
             {
                 if (response == null)
                 {
@@ -432,14 +447,14 @@ namespace EddiCompanionAppService
             Logging.Debug( "Credentials cleared" );
         }
 
-        protected internal Tuple<string, DateTime> obtainData(string url)
+        protected internal async Task<Tuple<string, DateTime>> obtainDataAsync(string url)
         {
-            DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
+            var expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
             if (DateTime.UtcNow > expiry)
             {
                 // Our access token either has expired or shall expire within the next minute.
                 // Use our refresh token to obtain a new access token.
-                RefreshToken();
+                await RefreshTokenAsync();
             }
             if (CurrentState != State.Authorized)
             {
@@ -457,7 +472,7 @@ namespace EddiCompanionAppService
             try
             {
                 var request = GetRequest(url);
-                using (var response = GetResponse(request))
+                using (var response = await GetResponseAsync(request))
                 {
                     if (response == null)
                     {
@@ -470,6 +485,14 @@ namespace EddiCompanionAppService
                         return new Tuple<string, DateTime>(getResponseData(response), timestamp);
                     }
                 }
+            }
+            catch ( WebException ex ) when ( ex.Status == WebExceptionStatus.Timeout )
+            {
+                Logging.Warn( "Request timed out. Please check your network connection." );
+            }
+            catch ( WebException ex ) when ( ex.Status == WebExceptionStatus.ConnectionClosed )
+            {
+                Logging.Warn( "Connection was closed unexpectedly." );
             }
             catch (WebException wex)
             {
@@ -530,7 +553,7 @@ namespace EddiCompanionAppService
         // Set up a request with the correct parameters for talking to the companion app
         private HttpWebRequest GetRequest(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
             request.AllowAutoRedirect = true;
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;
@@ -544,17 +567,26 @@ namespace EddiCompanionAppService
         }
 
         // Obtain a response, ensuring that we obtain the response's cookies
-        private HttpWebResponse GetResponse(HttpWebRequest request)
+        private async Task<HttpWebResponse> GetResponseAsync ( HttpWebRequest request, int maxRetries = 3 )
         {
-            try
+            int retries = 0;
+            while ( retries < maxRetries )
             {
-                var response = request.GetResponse();
-                Logging.Debug( $"Response from {request.Address} is: ", response );
-                return response as HttpWebResponse;
-            }
-            catch (WebException wex)
-            {
-                Logging.Warn( wex.Message, wex );
+                try
+                {
+                    var response = await request.GetResponseAsync();
+                    Logging.Debug( $"Response from {request.Address} is: ", response );
+                    return response as HttpWebResponse;
+                }
+                catch ( WebException ex ) when ( ex.Status == WebExceptionStatus.Timeout || ex.Status == WebExceptionStatus.ConnectionClosed )
+                {
+                    retries++;
+                    if ( retries >= maxRetries )
+                    {
+                        throw;
+                    }
+                    System.Threading.Thread.Sleep( (int)Math.Pow( 2, retries ) * 1000 ); // Exponential backoff
+                }
             }
             return null;
         }

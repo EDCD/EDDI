@@ -269,9 +269,9 @@ namespace EddiVoiceAttackResponder
         /// <summary>Force-update EDDI's information</summary>
         private static void InvokeUpdateProfile ()
         {
-            Task.Run( () =>
+            Task.Run( async () =>
             {
-                EDDI.Instance.refreshProfile( true );
+                await EDDI.Instance.refreshProfileAsync( true );
             } );
         }
 
