@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Construction Services.
+        ///   Looks up a localized string similar to Colonisation Services.
         /// </summary>
         public static string ColonisationContribution {
             get {
@@ -142,7 +142,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commodities.
+        ///   Looks up a localized string similar to Market.
         /// </summary>
         public static string Commodities {
             get {
@@ -250,15 +250,6 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Market.
-        /// </summary>
-        public static string Market {
-            get {
-                return ResourceManager.GetString("Market", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Material Trader.
         /// </summary>
         public static string MaterialTrader {
@@ -286,7 +277,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Module Packs.
+        ///   Looks up a localized string similar to Fleet Carrier Administration.
         /// </summary>
         public static string ModulePacks {
             get {
@@ -367,7 +358,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System Colonisation station service.
+        ///   Looks up a localized string similar to System Colonisation.
         /// </summary>
         public static string RegisteringColonisation {
             get {

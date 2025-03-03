@@ -134,7 +134,7 @@
     <comment>Station Service: BlackMarket</comment>
   </data>
   <data name="Commodities" xml:space="preserve">
-    <value>Commodities</value>
+    <value>Market</value>
     <comment>Station Service: Commodities</comment>
   </data>
   <data name="Contacts" xml:space="preserve">
@@ -250,7 +250,7 @@
     <comment>Station Service: Livery</comment>
   </data>
   <data name="ModulePacks" xml:space="preserve">
-    <value>Module Packs</value>
+    <value>Fleet Carrier Administration</value>
     <comment>Station Service: ModulePacks</comment>
   </data>
   <data name="VoucherRedemption" xml:space="preserve">
@@ -285,10 +285,6 @@
     <value>Captain</value>
     <comment>Station Service "Captain" - the service representing the captain of a fleet carrier</comment>
   </data>
-  <data name="Market" xml:space="preserve">
-    <value>Market</value>
-    <comment>Station service: Market</comment>
-  </data>
   <data name="FleetCarrierFuel" xml:space="preserve">
     <value>Fleet Carrier Fuel</value>
     <comment>Station Service: Fleet Carrier Fuel</comment>
@@ -298,15 +294,15 @@
     <comment>Station Service: Fleet Carrier Management</comment>
   </data>
   <data name="RegisteringColonisation" xml:space="preserve">
-    <value>System Colonisation station service</value>
-    <comment>System Colonisation</comment>
+    <value>System Colonisation</value>
+    <comment>Station Service: System Colonisation</comment>
   </data>
   <data name="Refinery" xml:space="preserve">
     <value>Refinery Contact</value>
-    <comment>Refinery Contact station service</comment>
+    <comment>Station Service:Refinery</comment>
   </data>
   <data name="ColonisationContribution" xml:space="preserve">
-    <value>Construction Services</value>
-    <comment>Construction Services station service</comment>
+    <value>Colonisation Services</value>
+    <comment>Station Service: ColonisationContribution</comment>
   </data>
 </root>

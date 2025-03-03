@@ -131,7 +131,8 @@ namespace EddiDataDefinitions
         {
             // Spansh localized names can vary slightly from the expected invariant names, normalize any differences here
             return ResourceBasedLocalizedEDName<StationService>.FromName(name
-                .Replace( "Autodock", "Auto Dock" )
+                .Replace( "Autodock", AutoDock.invariantName )
+                .Replace( "Fleet Carrier Fuel", CarrierFuel.invariantName )
             );
         }
     }
