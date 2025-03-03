@@ -202,17 +202,18 @@ namespace EddiCompanionAppService
 
         private string FromDdeStringHandle(IntPtr handle)
         {
-            byte[] raw = DataFromDdeHandle(handle);
+            var raw = DataFromDdeHandle(handle);
             char[] trimNulls = { '\0' };
-            string s = System.Text.Encoding.Unicode.GetString(raw).TrimEnd(trimNulls);
+            var s = System.Text.Encoding.Unicode.GetString(raw).TrimEnd(trimNulls);
             return s;
         }
 
         private byte[] DataFromDdeHandle(IntPtr handle)
         {
-            uint size = NativeMethods.DdeGetData(handle, null, 0, 0);
-            byte[] buffer = new byte[size];
-            size = NativeMethods.DdeGetData(handle, buffer, size, 0);
+            // DdeGetData fills the buffer.
+            var size = NativeMethods.DdeGetData(handle, null, 0, 0);
+            var buffer = new byte[size];
+            NativeMethods.DdeGetData(handle, buffer, size, 0);
             return buffer;
         }
 

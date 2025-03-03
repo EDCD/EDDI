@@ -86,7 +86,8 @@ namespace EddiSpanshService
                 {
                     if ( response.ErrorException != null )
                     {
-                        Logging.Warn( $"Spansh API responded with: {response.ResponseStatus.ToString()} - {response.ErrorException.Message}", response );
+                        Logging.Warn( $"Spansh API responded with: {response.ResponseStatus} - {response.ErrorException.Message}",
+                            response );
                     }
                     else
                     {

@@ -151,7 +151,7 @@ namespace EddiCore
 
         private TextBoxBaseUserChangeTracker textBoxBaseUserChangeTracker;
         private readonly UserChange<bool> IsDropDownOpen_UserChange;
-        private DispatcherTimer debounceTimer;
+        private readonly DispatcherTimer debounceTimer;
 
         /// <summary>
         /// Triggers on lost focus or enter key pressed, if the selected item changed since the last time focus was lost or enter was pressed.
