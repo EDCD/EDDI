@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -102,7 +103,7 @@ namespace EddiVoiceAttackResponder
                 // Update monitor variables
                 foreach ( var monitor in EDDI.Instance.monitors )
                 {
-                    foreach ( var kv in monitor.GetVariables() )
+                    foreach ( var kv in monitor.GetVariables() ?? new Dictionary<string, Tuple<Type, object>>() )
                     {
                         var variableName = kv.Key;
                         var variableType = kv.Value.Item1;
