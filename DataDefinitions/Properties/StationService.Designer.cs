@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Colonisation Services.
+        ///   Looks up a localized string similar to Construction Services.
         /// </summary>
         public static string ColonisationContribution {
             get {

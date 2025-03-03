@@ -302,7 +302,7 @@
     <comment>Station Service:Refinery</comment>
   </data>
   <data name="ColonisationContribution" xml:space="preserve">
-    <value>Colonisation Services</value>
+    <value>Construction Services</value>
     <comment>Station Service: ColonisationContribution</comment>
   </data>
 </root>
