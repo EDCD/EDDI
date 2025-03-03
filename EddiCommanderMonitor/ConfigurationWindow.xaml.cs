@@ -95,7 +95,7 @@ namespace CommanderMonitor
 
         private void phoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
         {
-            SpeechService.Instance.Say( null, EDDI.Instance.Cmdr?.SpokenName(), 0 );
+            SpeechService.Instance.Say( null, commanderMonitor().Cmdr?.SpokenName(), 0 );
         }
 
         private void ipaClicked ( object sender, RoutedEventArgs e )
@@ -136,9 +136,9 @@ namespace CommanderMonitor
             var configuration = ConfigService.Instance.commanderConfiguration;
             configuration.gender = "Female";
             ConfigService.Instance.commanderConfiguration = configuration;
-            if ( EDDI.Instance.Cmdr != null )
+            if ( commanderMonitor().Cmdr != null )
             {
-                EDDI.Instance.Cmdr.gender = "Female";
+                commanderMonitor().Cmdr.gender = "Female";
             }
         }
 
@@ -147,9 +147,9 @@ namespace CommanderMonitor
             var configuration = ConfigService.Instance.commanderConfiguration;
             configuration.gender = "Neither";
             ConfigService.Instance.commanderConfiguration = configuration;
-            if ( EDDI.Instance.Cmdr != null )
+            if ( commanderMonitor().Cmdr != null )
             {
-                EDDI.Instance.Cmdr.gender = "Neither";
+                commanderMonitor().Cmdr.gender = "Neither";
             }
         }
 
@@ -242,9 +242,9 @@ namespace CommanderMonitor
                 configuration = resetSquadronRank( configuration );
                 ConfigService.Instance.commanderConfiguration = configuration;
 
-                if ( EDDI.Instance.Cmdr != null )
+                if ( commanderMonitor().Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronname = configuration.squadronName;
+                    commanderMonitor().Cmdr.squadronname = configuration.squadronName;
                 }
             }
         }
@@ -257,9 +257,9 @@ namespace CommanderMonitor
                 var configuration = ConfigService.Instance.commanderConfiguration;
                 configuration.squadronName = null;
                 ConfigService.Instance.commanderConfiguration = configuration;
-                if ( EDDI.Instance.Cmdr != null )
+                if ( commanderMonitor().Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronname = string.Empty;
+                    commanderMonitor().Cmdr.squadronname = string.Empty;
                 }
             }
         }
@@ -272,9 +272,9 @@ namespace CommanderMonitor
                 configuration.squadronID = string.IsNullOrWhiteSpace( eddiSquadronIDText.Text ) ? null : eddiSquadronIDText.Text.Trim();
                 ConfigService.Instance.commanderConfiguration = configuration;
 
-                if ( EDDI.Instance.Cmdr != null )
+                if ( commanderMonitor().Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronid = configuration.squadronID;
+                    commanderMonitor().Cmdr.squadronid = configuration.squadronID;
                 }
             }
         }
@@ -316,9 +316,9 @@ namespace CommanderMonitor
                 configuration.SquadronRank = SquadronRank.FromName( squadronRank );
                 ConfigService.Instance.commanderConfiguration = configuration;
 
-                if ( EDDI.Instance.Cmdr != null )
+                if ( commanderMonitor().Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronrank = configuration.SquadronRank;
+                    commanderMonitor().Cmdr.squadronrank = configuration.SquadronRank;
                 }
             }
         }
@@ -404,17 +404,17 @@ namespace CommanderMonitor
                     {
                         // A faction is selected
                         configuration.squadronFaction = selectedFaction.name;
-                        if ( EDDI.Instance.Cmdr != null )
+                        if ( commanderMonitor().Cmdr != null )
                         {
-                            EDDI.Instance.Cmdr.squadronfaction = selectedFaction.name;
+                            commanderMonitor().Cmdr.squadronfaction = selectedFaction.name;
                         }
 
                         if ( configuration.SquadronAllegiance != selectedFaction.Allegiance )
                         {
                             configuration.SquadronAllegiance = selectedFaction.Allegiance;
-                            if ( EDDI.Instance.Cmdr != null )
+                            if ( commanderMonitor().Cmdr != null )
                             {
-                                EDDI.Instance.Cmdr.squadronallegiance = selectedFaction.Allegiance;
+                                commanderMonitor().Cmdr.squadronallegiance = selectedFaction.Allegiance;
                             }
                             ConfigureSquadronPowerOptions( configuration.SquadronAllegiance, Power.None );
                         }
@@ -426,10 +426,10 @@ namespace CommanderMonitor
                         configuration.squadronFaction = null;
                         ConfigService.Instance.commanderConfiguration = configuration;
 
-                        if ( EDDI.Instance.Cmdr != null )
+                        if ( commanderMonitor().Cmdr != null )
                         {
-                            EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
-                            EDDI.Instance.Cmdr.squadronfaction = null;
+                            commanderMonitor().Cmdr.squadronallegiance = Superpower.None;
+                            commanderMonitor().Cmdr.squadronfaction = null;
                         }
 
                         ConfigureSquadronPowerOptions( configuration.SquadronAllegiance, Power.None );
@@ -474,9 +474,9 @@ namespace CommanderMonitor
                         configuration.SquadronPower = selectedPower;
                         ConfigService.Instance.commanderConfiguration = configuration;
 
-                        if ( EDDI.Instance.Cmdr != null )
+                        if ( commanderMonitor().Cmdr != null )
                         {
-                            EDDI.Instance.Cmdr.squadronpower = configuration.SquadronPower;
+                            commanderMonitor().Cmdr.squadronpower = configuration.SquadronPower;
                         }
                     }
                 }

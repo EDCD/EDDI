@@ -21,7 +21,7 @@ namespace EddiCommanderMonitor
     [UsedImplicitly]
     public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
-        private Commander Cmdr => EDDI.Instance.Cmdr;
+        internal Commander Cmdr => EDDI.Instance.Cmdr;
         private static readonly object commanderLock = new object();
 
         [CanBeNull]
@@ -334,10 +334,10 @@ namespace EddiCommanderMonitor
                 var rank = SquadronRank.FromRank( @event.newrank + 1 );
 
                 // Update the commander object, if it exists
-                if ( EDDI.Instance.Cmdr != null )
+                if ( Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronname = @event.name;
-                    EDDI.Instance.Cmdr.squadronrank = rank;
+                    Cmdr.squadronname = @event.name;
+                    Cmdr.squadronrank = rank;
                     WriteCommander();
                 }
 
@@ -360,10 +360,10 @@ namespace EddiCommanderMonitor
                 var rank = SquadronRank.FromRank( @event.rank + 1 );
 
                 // Update the commander object, if it exists
-                if ( EDDI.Instance.Cmdr != null )
+                if ( Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronname = @event.name;
-                    EDDI.Instance.Cmdr.squadronrank = rank;
+                    Cmdr.squadronname = @event.name;
+                    Cmdr.squadronrank = rank;
                     WriteCommander();
                 }
 
@@ -405,10 +405,10 @@ namespace EddiCommanderMonitor
                         } );
 
                         // Update the commander object, if it exists
-                        if ( EDDI.Instance.Cmdr != null )
+                        if ( Cmdr != null )
                         {
-                            EDDI.Instance.Cmdr.squadronname = @event.name;
-                            EDDI.Instance.Cmdr.squadronrank = rank;
+                            Cmdr.squadronname = @event.name;
+                            Cmdr.squadronrank = rank;
                         }
                         break;
                     }
@@ -427,9 +427,9 @@ namespace EddiCommanderMonitor
                         } );
 
                         // Update the commander object, if it exists
-                        if ( EDDI.Instance.Cmdr != null )
+                        if ( Cmdr != null )
                         {
-                            EDDI.Instance.Cmdr.squadronname = @event.name;
+                            Cmdr.squadronname = @event.name;
                         }
                         break;
                     }
@@ -453,9 +453,9 @@ namespace EddiCommanderMonitor
                         } );
 
                         // Update the commander object, if it exists
-                        if ( EDDI.Instance.Cmdr != null )
+                        if ( Cmdr != null )
                         {
-                            EDDI.Instance.Cmdr.squadronname = null;
+                            Cmdr.squadronname = null;
                         }
                         break;
                     }
@@ -572,11 +572,11 @@ namespace EddiCommanderMonitor
             return update;
         }
 
-        private static void setSquadronFaction(Faction squadronFaction)
+        private void setSquadronFaction(Faction squadronFaction)
         {
-            if ( string.IsNullOrEmpty( EDDI.Instance.Cmdr.squadronfaction ) || EDDI.Instance.Cmdr.squadronfaction != squadronFaction.name )
+            if ( string.IsNullOrEmpty( Cmdr.squadronfaction ) || Cmdr.squadronfaction != squadronFaction.name )
             {
-                EDDI.Instance.Cmdr.squadronfaction = squadronFaction.name;
+                Cmdr.squadronfaction = squadronFaction.name;
 
                 Application.Current?.Dispatcher?.InvokeAsync( () =>
                 {
@@ -637,7 +637,7 @@ namespace EddiCommanderMonitor
             } );
         }
 
-        private static void setSquadronAllegiance(Superpower allegiance = null)
+        private void setSquadronAllegiance(Superpower allegiance = null)
         {
             var configuration = ConfigService.Instance.commanderConfiguration;
 
@@ -646,14 +646,14 @@ namespace EddiCommanderMonitor
                 configuration.SquadronAllegiance = allegiance;
                 ConfigService.Instance.commanderConfiguration = configuration;
 
-                if ( EDDI.Instance.Cmdr != null )
+                if ( Cmdr != null )
                 {
-                    EDDI.Instance.Cmdr.squadronallegiance = allegiance;
+                    Cmdr.squadronallegiance = allegiance;
                 }
             }
         }
 
-        private static void setSquadronPower(Power power = null)
+        private void setSquadronPower(Power power = null)
         {
             var configuration = ConfigService.Instance.commanderConfiguration;
 
