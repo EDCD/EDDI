@@ -414,13 +414,14 @@ namespace EddiCompanionAppService
 
         protected internal async Task<Tuple<string, DateTime>> obtainDataAsync ( string url )
         {
-            var expiry = Credentials.tokenExpiry.AddSeconds(-60);
+            var expiry = Credentials.tokenExpiry.AddSeconds( -60 );
             if ( DateTime.UtcNow > expiry )
             {
                 // Our access token either has expired or shall expire within the next minute.
                 // Use our refresh token to obtain a new access token.
                 await RefreshTokenAsync();
             }
+
             if ( CurrentState != State.Authorized )
             {
                 // Happens if there is a problem with the API.  Logging in again might clear this...
@@ -434,31 +435,46 @@ namespace EddiCompanionAppService
                 }
             }
 
-            try
+            var maxRetries = 3;
+            var delay = 1000; // Initial delay in milliseconds
+            for ( var retry = 0; retry < maxRetries; retry++ )
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, url);
-                request.Headers.Add( "Authorization", $"Bearer {Credentials.accessToken}" );
-
-                using ( var response = await httpClient.SendAsync( request ) )
+                try
                 {
-                    if ( response == null )
+                    var request = new HttpRequestMessage( HttpMethod.Get, url );
+                    request.Headers.Add( "Authorization", $"Bearer {Credentials.accessToken}" );
+
+                    using ( var response = await httpClient.SendAsync( request ) )
                     {
-                        Logging.Debug( "Failed to contact API server" );
-                        throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
-                    }
-                    if ( response.StatusCode == HttpStatusCode.OK )
-                    {
-                        var timestamp = DateTime.Parse(response.Headers.GetValues("date").FirstOrDefault() ?? string.Empty).ToUniversalTime();
-                        var responseData = await response.Content.ReadAsStringAsync();
-                        return new Tuple<string, DateTime>( responseData, timestamp );
+                        if ( response == null )
+                        {
+                            Logging.Debug( "Failed to contact API server" );
+                            throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
+                        }
+
+                        if ( response.StatusCode == HttpStatusCode.OK )
+                        {
+                            var timestamp = DateTime
+                                .Parse( response.Headers.GetValues( "date" ).FirstOrDefault() ?? string.Empty )
+                                .ToUniversalTime();
+                            var responseData = await response.Content.ReadAsStringAsync();
+                            return new Tuple<string, DateTime>( responseData, timestamp );
+                        }
                     }
                 }
+                catch ( HttpRequestException ex )
+                {
+                    Logging.Warn( $"Attempt {retry + 1} failed: {ex.Message}", ex );
+                    if ( retry == maxRetries - 1 )
+                    {
+                        throw new EliteDangerousCompanionAppErrorException( ex.Message, ex );
+                    }
+                }
+
+                await Task.Delay( delay );
+                delay *= 2; // Exponential backoff
             }
-            catch ( HttpRequestException ex )
-            {
-                Logging.Warn( ex.Message, ex );
-                throw new EliteDangerousCompanionAppErrorException( ex.Message, ex );
-            }
+
             return null;
         }
 
