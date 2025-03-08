@@ -75,7 +75,7 @@ namespace EddiSpanshService
                     searchFilters.Add( "system_name", new { value = new[] { presenceSystemName } } );
                 }
 
-                var stationsQueryResult = Query( QueryGroup.stations, searchFilters, 1 )?[ "results" ]?[ 0 ];
+                var stationsQueryResult = Query( QueryGroup.stations, searchFilters, 1 )?[ "results" ]?.FirstOrDefault();
                 controllingMinorFactionData = stationsQueryResult;
             }
 
