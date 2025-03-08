@@ -166,7 +166,7 @@ namespace EddiVoiceAttackResponder
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
             // Cancel event queue threads and wait for them to complete
-            voiceAttackEventHandler.StopEventHandling();
+            voiceAttackEventHandler?.StopEventHandling();
 
             // Unsubscribe from events
             VoiceAttackResponder.RaiseEvent -= OnRaiseEvent;
