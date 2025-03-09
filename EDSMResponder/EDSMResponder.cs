@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -54,7 +55,14 @@ namespace EddiEdsmResponder
 
         public void Stop()
         {
-            edsmService?.StopJournalSync();
+            Task.WaitAll( Task.Run( async () =>
+            {
+                if ( edsmService != null )
+                {
+                    await edsmService.StopJournalAsync();
+
+                }
+            } ) );
             // Stop flight log synchronization
             updateThread?.Abort();
             updateThread = null;
