@@ -261,7 +261,7 @@ namespace EddiCommanderMonitor
 
         private void handleJumpedEvent ( JumpedEvent @event )
         {
-            SetCommanderTitle( @event.controllingfaction.Allegiance );
+            SetCommanderTitle( @event.controllingfaction?.Allegiance );
             if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
