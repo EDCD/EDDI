@@ -537,8 +537,11 @@ namespace EddiDataDefinitions
         {
             var builder = stations.ToBuilder();
             var index = builder.FindIndex( s => s.marketId == marketId );
-            builder.RemoveAt( index );
-            stations = builder.ToImmutable();
+            if ( index >= 0 )
+            {
+                builder.RemoveAt( index );
+                stations = builder.ToImmutable();
+            }
         }
 
         public void AddOrUpdateSignalSource ( SignalSource signalSource )
