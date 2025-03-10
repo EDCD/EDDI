@@ -121,6 +121,10 @@
     <value>被废弃</value>
     <comment>StationState Abandoned</comment>
   </data>
+  <data name="Construction" xml:space="preserve">
+    <value>建筑</value>
+    <comment>Construction station state</comment>
+  </data>
   <data name="Damaged" xml:space="preserve">
     <value>已损坏</value>
     <comment>StationState Damaged</comment>
