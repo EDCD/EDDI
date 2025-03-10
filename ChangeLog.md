@@ -17,11 +17,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added star system property `contestingpowers`.
     * Removed the `permitname` property from the `system` object (permit data is now calculated and permit names are not stored / not always known).
   * Events
-    * `Carrier jumped` event updated to expose new Powerplay properties.
+    * `Carrier jumped` event updated to expose new Powerplay properties and additional faction properties.
+    * `Entered signal source` event removed and replaced by `Destination arrived` event.
     * `Fuel scoop` event added.
     * `Holoscreen hacked` event added. 
-    * `Jumped` event updated to expose new Powerplay properties.
-    * `Location` event updated to expose new Powerplay properties.
+    * `Jumped` event updated to expose new Powerplay properties and additional faction properties.
+    * `Location` event updated to expose new Powerplay properties and additional faction properties.
     * `Material collected` event updated to include a new `total` property.
     * `Material discarded` event updated to include a new `total` property.
     * `Material donated` event updated to include a new `total` property.
