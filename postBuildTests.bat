@@ -27,7 +27,7 @@ FOR /f "usebackq tokens=*" %%i IN (
 :: We need to apply batch file rules for escaping certain characters in our command (using "^"), ref. https://www.robvanderwoude.com/escapechars.php
 IF %buildConfiguration%=="Release" (
   :: Run all tests except Speech tests 
-  SET "testCaseFilter=^/TestCaseFilter:""TestCategory!=Speech"""
+  SET "testCaseFilter=^/TestCaseFilter:""TestCategory!=SpeechTests"""
 ) ELSE (
   :: Run just our Credentials and Doc Generation tests
   SET "testCaseFilter=^/TestCaseFilter:""TestCategory=Credentials""^|""TestCategory=DocGen"""
