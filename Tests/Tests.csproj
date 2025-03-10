@@ -61,10 +61,10 @@
       <Version>7.0.4</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestAdapter">
-      <Version>3.7.0</Version>
+      <Version>3.8.2</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
-      <Version>3.7.0</Version>
+      <Version>3.8.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
