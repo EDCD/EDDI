@@ -380,7 +380,7 @@ namespace Tests
             Assert.AreEqual("Multipurpose", Role.MultiPurpose.edname);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestShipMonitorDeserializationMatchesSerialization()
         {
             var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
