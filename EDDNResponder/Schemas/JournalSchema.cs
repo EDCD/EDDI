@@ -36,8 +36,8 @@ namespace EddiEddnResponder.Schemas
                 data = eddnState.GameVersion.AugmentVersion( data );
                 data = eddnState.Location.AugmentStarPos( data );
                 data = eddnState.Location.AugmentStarSystemName( data );
-                data = eddnState.PowerPlay.AugmentPledgeState( data );
-
+                data = eddnState.PowerPlay.AugmentPledgeState( data ); // FDev have promised journal updates which shall make this irrelevant.
+                
                 EDDNSender.SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data, eddnState);
                 return true;
             }
