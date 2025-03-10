@@ -441,4 +441,8 @@
     <value>Tracciato di Arma di una Potenza</value>
     <comment>Powerplay</comment>
   </data>
+  <data name="EXT_PANEL_ColonisationBeacon_Site" xml:space="preserve">
+    <value>Radiofaro di Colonizzazione del Sistema</value>
+    <comment>System Colonisation Beacon signal source</comment>
+  </data>
 </root>
