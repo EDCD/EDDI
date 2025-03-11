@@ -127,11 +127,11 @@
     <comment>RouteDetails `farthest` query description</comment>
   </data>
   <data name="query_type_most" xml:space="preserve">
-    <value>Route der häufigsten Missionen</value>
+    <value>Route häufigster Missionen</value>
     <comment>RouteDetails `farthest` query description</comment>
   </data>
   <data name="query_type_nearest" xml:space="preserve">
-    <value>Route der nähesten Missionen</value>
+    <value>Route naher Missionen</value>
     <comment>RouteDetails `nearest` query description</comment>
   </data>
   <data name="query_type_route" xml:space="preserve">
@@ -143,7 +143,7 @@
     <comment>RouteDetails `source` query description</comment>
   </data>
   <data name="query_type_encoded" xml:space="preserve">
-    <value>Händler - kodiertes Material</value>
+    <value>Händler - verschlüsselt</value>
     <comment>RouteDetails `encoded` query description</comment>
   </data>
   <data name="query_type_facilitator" xml:space="preserve">
