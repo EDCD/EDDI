@@ -657,4 +657,8 @@
     <value>Concord-Kanone</value>
     <comment>Powerplay module</comment>
   </data>
+  <data name="ColonisationSuite" xml:space="preserve">
+    <value>Systembesiedelungs-Suite</value>
+    <comment>Colonization Suite module</comment>
+  </data>
 </root>
