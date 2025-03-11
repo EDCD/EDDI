@@ -147,6 +147,7 @@ Por favor, feche a outra instância e tente novamente.</value>
   </data>
   <data name="done" xml:space="preserve">
     <value>concluído</value>
+    <comment>Logs have been compressed and prepared for export (after clicking the button on EDDI's main tab to report an issue)</comment>
   </data>
   <data name="downloading_upgrade" xml:space="preserve">
     <value>Baixando atualização.</value>
@@ -200,6 +201,7 @@ Por favor, feche a outra instância e tente novamente.</value>
   </data>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Conexão reiniciada.</value>
+    <comment>The Frontier API connection has been reset</comment>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Se você estiver usando o VoiceAttack, feche esta janela antes de o iniciar, para que suas alterações entrem em vigor. Você pode acessar esta janela a partir do VoiceAttack com o comando 'Configure EDDI'.</value>
