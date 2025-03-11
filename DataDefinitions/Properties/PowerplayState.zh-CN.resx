@@ -124,9 +124,15 @@
     <value>有争议的</value>
   </data>
   <data name="Exploited" xml:space="preserve">
-    <value>傀儡</value>
+    <value>被掠夺的</value>
   </data>
-  
-  
-  
+  <data name="Headquarters" xml:space="preserve">
+    <value>指挥中枢</value>
+  </data>
+  <data name="Fortified" xml:space="preserve">
+    <value>已强化</value>
+  </data>
+  <data name="Stronghold" xml:space="preserve">
+    <value>据点</value>
+  </data>
 </root>

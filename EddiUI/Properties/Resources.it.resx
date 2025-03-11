@@ -144,6 +144,10 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
     <value>Completato</value>
     <comment>This is the adjective not the verb</comment>
   </data>
+  <data name="done" xml:space="preserve">
+    <value>Fatto</value>
+    <comment>Logs have been compressed and prepared for export (after clicking the button on EDDI's main tab to report an issue)</comment>
+  </data>
   <data name="downloading_upgrade" xml:space="preserve">
     <value>Aggiornamento in download.</value>
   </data>
@@ -193,6 +197,10 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Si prega di autenticare la connessione di EDDI alla Chiave API Frontier.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Connessione ristabilita.</value>
+    <comment>The Frontier API connection has been reset</comment>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Se si sta usando VoiceAttack è necessario chiudere questa finestra PRIMA di avviare VoiceAttack per far si che i cambiamenti apportati abbiano effetto. Questa finestra è visibile dall'interno di VoiceAttack con il comando 'Configura EDDI'.</value>

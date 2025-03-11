@@ -183,7 +183,15 @@
   <data name="p5" xml:space="preserve">
     <value>EDDI 可以将您的船舶数据导出到Coriolis或 EDShipyard（第三方工具）。 选择您喜欢的工具。</value>
   </data>
-  
-  
-  
+  <data name="header_distanceLY" xml:space="preserve">
+    <value>距离 (LY)</value>
+    <comment>Header column to indicate the distance of the ship in light years from your current location</comment>
+  </data>
+  <data name="extra_details_tooltip" xml:space="preserve">
+    <value>显示或隐藏所选飞船的额外细节</value>
+  </data>
+  <data name="header_station_name" xml:space="preserve">
+    <value>站点</value>
+    <comment>Header column identifying stored ship station name</comment>
+  </data>
 </root>

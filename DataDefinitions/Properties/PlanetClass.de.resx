@@ -142,10 +142,10 @@
     <value>Eisplanet</value>
   </data>
   <data name="MetalRichBody" xml:space="preserve">
-    <value>Metallreicher Planet</value>
+    <value>Metallreicher Körper</value>
   </data>
   <data name="RockyBody" xml:space="preserve">
-    <value>Felsiger Körper</value>
+    <value>Gesteinsplanet</value>
   </data>
   <data name="RockyIceBody" xml:space="preserve">
     <value>Felsiger Eisplanet</value>

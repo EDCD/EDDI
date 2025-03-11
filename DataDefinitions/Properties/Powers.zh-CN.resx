@@ -153,6 +153,10 @@
   <data name="None" xml:space="preserve">
     <value>无</value>
   </data>
-  
-  
+  <data name="NakatoKaine" xml:space="preserve">
+    <value>纳卡托·凯恩</value>
+  </data>
+  <data name="JeromeArcher" xml:space="preserve">
+    <value>杰罗米·阿彻</value>
+  </data>
 </root>
