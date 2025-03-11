@@ -124,7 +124,7 @@
     <value>Sie können den Namen eines bestimmten Systems und einer Station in diesem System, das Sie als Ihr Zuhause betrachten, angeben. Wenn Sie dies tun, werden die Informationen über dieses System und diese Station den Ansprechpartnern von EDDI zur Verfügung gestellt.</value>
   </data>
   <data name="MonitorName" xml:space="preserve">
-    <value>! Kommandant</value>
+    <value>'Überwachung Kommandant</value>
   </data>
   <data name="no_station" xml:space="preserve">
     <value>Keine Station</value>
