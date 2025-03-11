@@ -425,8 +425,24 @@
     <value>远古探针</value>
     <comment>Ancient Probe</comment>
   </data>
-  
-  
-  
-  
+  <data name="USS_Type_PowerEmissions" xml:space="preserve">
+    <value>势力残骸信号</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerConvoy" xml:space="preserve">
+    <value>势力护航</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerplayConvoyDistressSignal" xml:space="preserve">
+    <value>势力护航求救信号</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="USS_Type_PowerWeaponsFire" xml:space="preserve">
+    <value>势力武器发射信号</value>
+    <comment>Powerplay</comment>
+  </data>
+  <data name="EXT_PANEL_ColonisationBeacon_Site" xml:space="preserve">
+    <value>星系殖民信标</value>
+    <comment>System Colonisation Beacon signal source</comment>
+  </data>
 </root>
