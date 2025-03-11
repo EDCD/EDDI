@@ -152,5 +152,7 @@
   <data name="UNKNOWN" xml:space="preserve">
     <value>未知船只</value>
   </data>
-  
+  <data name="Thargoid" xml:space="preserve">
+    <value>八角舰船</value>
+  </data>
 </root>
