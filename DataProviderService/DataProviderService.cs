@@ -72,12 +72,35 @@ namespace EddiDataProviderService
             return GetOrFetchStarSystems( new[] { systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails )?.FirstOrDefault();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="systemName"></param>
+        /// <param name="fetchIfMissing"></param>
+        /// <param name="refreshIfOutdated"></param>
+        /// <param name="showMarketDetails"></param>
+        /// <returns></returns>
         public StarSystem GetOrFetchStarSystem ( string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
         {
             if ( string.IsNullOrEmpty( systemName ) ) { return null; }
-            var system = GetOrFetchSystemWaypoint( systemName );
-            if ( system is null ) { return null; }
-            return GetOrFetchStarSystems( new[] { system.systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails )?.FirstOrDefault();
+
+            // Fetch from cached systems
+            if ( starSystemCache.TryGet( systemName, out var cachedSystem ) ) { return cachedSystem; }
+
+            // Fetch from the local database. If there is more than one result, return the most recent result (by visits and then by update time)
+            var sqlStarSystems = GetSqlStarSystems( new[] { systemName }, out _, refreshIfOutdated );
+            if ( sqlStarSystems.Any() )
+            {
+                return sqlStarSystems
+                    .OrderByDescending( s => s.lastVisitSeconds ?? 0 )
+                    .ThenByDescending( s => s.updatedat ?? 0 )
+                    .FirstOrDefault();
+            }
+
+            // Fetch from external data sources (when so instructed)
+            var fetchedWaypoint = GetOrFetchSystemWaypoint( systemName );
+            if ( fetchedWaypoint is null ) { return null; }
+            return GetOrFetchStarSystems( new[] { fetchedWaypoint.systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails )?.FirstOrDefault();
         }
 
         public List<StarSystem> GetOrFetchStarSystems ( ulong[] systemAddresses, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
@@ -270,9 +293,19 @@ namespace EddiDataProviderService
 
         internal List<StarSystem> GetSqlStarSystems ( ulong[] systemAddresses, out List<DatabaseStarSystem> dbStarSystems, bool refreshIfOutdated = true )
         {
-            var results = new List<StarSystem>();
             dbStarSystems = starSystemRepository.GetSqlStarSystems( systemAddresses );
+            return DeserializeSqlStarSystems( dbStarSystems, refreshIfOutdated );
+        }
 
+        internal List<StarSystem> GetSqlStarSystems ( string[] systemNames, out List<DatabaseStarSystem> dbStarSystems, bool refreshIfOutdated = true )
+        {
+            dbStarSystems = starSystemRepository.GetSqlStarSystems( systemNames );
+            return DeserializeSqlStarSystems( dbStarSystems, refreshIfOutdated );
+        }
+
+        private List<StarSystem> DeserializeSqlStarSystems ( List<DatabaseStarSystem> dbStarSystems, bool refreshIfOutdated )
+        {
+            var results = new List<StarSystem>();
             foreach ( var dbStarSystem in dbStarSystems )
             {
                 if ( refreshIfOutdated && dbStarSystem.lastUpdated < DateTime.UtcNow.AddHours( -1 ) )
@@ -283,7 +316,7 @@ namespace EddiDataProviderService
 
                 // Deserialize the result
                 var result = DeserializeStarSystem(dbStarSystem.systemAddress, dbStarSystem.systemJson);
-                
+
                 // Exclude null results and results with missing coordinates (forcing a refresh from another source)
                 if ( result?.x != null && result.y != null && result.z != null )
                 {

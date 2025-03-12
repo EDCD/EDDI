@@ -115,10 +115,24 @@ namespace EddiDataProviderService
         {
             var results = new List<DatabaseStarSystem>();
             if ( !File.Exists( DbFile ) ) { return results; }
-
             if ( !systemAddresses.Any() ) { return results; }
-
             results = ReadStarSystems( systemAddresses );
+            FixLegacyDbStarSystemData(results);
+            return results;
+        }
+
+        public List<DatabaseStarSystem> GetSqlStarSystems ( string[] systemNames )
+        {
+            var results = new List<DatabaseStarSystem>();
+            if ( !File.Exists( DbFile ) ) { return results; }
+            if ( !systemNames.Any() ) { return results; }
+            results = ReadStarSystems( systemNames );
+            FixLegacyDbStarSystemData( results );
+            return results;
+        }
+
+        private static void FixLegacyDbStarSystemData ( List<DatabaseStarSystem> results )
+        {
             foreach ( var dbStarSystem in results )
             {
                 if ( !string.IsNullOrEmpty( dbStarSystem.systemJson ) )
@@ -131,8 +145,6 @@ namespace EddiDataProviderService
                         dbStarSystem.systemJson?.Replace( @"""InterstellarFactorsContact""", @"""Facilitator""" );
                 }
             }
-
-            return results;
         }
 
         [NotNull, ItemNotNull]
@@ -164,6 +176,45 @@ namespace EddiDataProviderService
                             catch (SQLiteException sqle )
                             {
                                 Logging.Warn($"Problem reading data for star system '{systemAddress}' from database.", sqle );
+                            }
+                        }
+                        transaction.Commit();
+                    }
+                }
+            }
+            return results;
+        }
+
+        [NotNull, ItemNotNull]
+        private List<DatabaseStarSystem> ReadStarSystems ( string[] systemNames )
+        {
+            if ( !systemNames.Any() )
+            { return new List<DatabaseStarSystem>(); }
+
+            var results = new List<DatabaseStarSystem>();
+            using ( var con = SimpleDbConnection() )
+            {
+                con.Open();
+                using ( var cmd = new SQLiteCommand( con ) )
+                {
+                    using ( var transaction = con.BeginTransaction() )
+                    {
+                        foreach ( var systemName in systemNames.Where( sName => !string.IsNullOrEmpty(sName) ) )
+                        {
+                            try
+                            {
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue( "@name", systemName );
+                                cmd.CommandText = SELECT_SQL + WHERE_NAME;
+                                var result = ReadStarSystemEntry( cmd );
+                                if ( result != null )
+                                {
+                                    results.Add( result );
+                                }
+                            }
+                            catch ( SQLiteException sqle )
+                            {
+                                Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", sqle );
                             }
                         }
                         transaction.Commit();
