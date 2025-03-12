@@ -155,6 +155,9 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="download_failed" xml:space="preserve">
     <value>Download fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
   </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDI Status: </value>
+  </data>
   <data name="failed" xml:space="preserve">
     <value>fehlgeschlagen</value>
   </data>
@@ -170,6 +173,9 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="frontierApiNotEnabled" xml:space="preserve">
     <value>Nicht möglich</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Frontier API Status:</value>
   </data>
   <data name="frontier_api_admin_mode" xml:space="preserve">
     <value>EDDI wird im Administratormodus ausgeführt. Der Administratormodus blockiert möglicherweise die Nachrichtenübertragung von Ihrem Browser zu EDDI und führt dazu, dass die Anmeldung fehlschlägt.</value>
@@ -228,13 +234,13 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
     <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Funktionen.</value>
   </data>
   <data name="paragraph_1" xml:space="preserve">
-    <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten "! Commander Details", "! Frontier API" und "! Text-to-Speech". Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen!</value>
+    <value>Ein Programm-Bereich enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten "Kommandant", "Frontier API" und "Text-to-Speech". Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen!</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit " 'Überwachung" beginnen. Sie enthalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+    <value>Eine zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit " 'Überwachung" beginnen. Sie enthalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit " Info an..." bzw. " Sprachausgabe auf..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit "Info an..." bzw. "Sprachausgabe"). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
@@ -279,6 +285,9 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="tab_frontier_desc" xml:space="preserve">
     <value>Die Frontier API ermöglicht EDDI Informationen über Ihre Schiffe, den Markt der aktuellen Station und andere Dinge zu erhalten. Diese Daten sind an anderer Stelle nicht verfügbar. Wenn Sie möchten, dass EDDI diese Informationen verwenden kann, müssen Sie auf die Schaltfläche Login klicken und EDDI für diese Daten auf dem Server von Frontier autorisieren.</value>
   </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
   <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
     <value>Die Frontier API ist in dieser EDDI Version nicht möglich.</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
@@ -294,6 +303,9 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   </data>
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>Verzerren Sie die Stimme bei Schiffsschäden:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Text-to-Speech</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>EDDI kann die Aussprache laut ICAO verwenden, zum Beispiel "alpha" statt "A", wenn man Stern- und Körpernamen sagt. Dies kann das Verständnis der Systemnamen erleichtern, dauert jedoch länger. Wenn Sie die ICAO-Aussprache hören möchten, aktivieren Sie die Option unten. Beachten Sie, dass dies nicht funktioniert, wenn Sie die phonetische Sprache oben deaktiviert haben.</value>
