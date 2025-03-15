@@ -95,7 +95,10 @@ namespace CommanderMonitor
 
         private void phoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
         {
-            SpeechService.Instance.Say( null, commanderMonitor().Cmdr?.SpokenName(), 0 );
+            Application.Current.Dispatcher.Invoke( () =>
+            {
+                SpeechService.Instance.Say( null, commanderMonitor().Cmdr?.SpokenName(), 0 );
+            } );
         }
 
         private void ipaClicked ( object sender, RoutedEventArgs e )

@@ -629,7 +629,7 @@ namespace EddiSpeechService
                 try
                 {
                     discardPendingSegments = true;
-                    if ( activeSpeechTS.Keys is ICollection<ISoundOut> keysToRemove )
+                    if ( activeSpeechTS.Keys is ICollection<ISoundOut> keysToRemove  && keysToRemove.Any() )
                     {
                         keysToRemove.AsParallel().ForAll( key =>
                         {

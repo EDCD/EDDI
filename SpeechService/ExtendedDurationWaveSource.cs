@@ -1,5 +1,6 @@
 ﻿using CSCore;
 using System;
+using Utilities;
 
 namespace EddiSpeechService
 {
@@ -10,7 +11,14 @@ namespace EddiSpeechService
 
         public ExtendedDurationWaveSource(IWaveSource waveSource, int milliSecondsToExtend) : base(waveSource)
         {
-            bytesToExtend = (int)waveSource.GetRawElements(milliSecondsToExtend);
+            try
+            {
+                bytesToExtend = (int)waveSource.GetRawElements( milliSecondsToExtend );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( "Unable to extend wave source duration", ex );
+            }
             Length = base.Length + bytesToExtend;
         }
 
