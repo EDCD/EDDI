@@ -7,20 +7,31 @@ namespace EddiDataDefinitions
 {
     public class Faction
     {
+
         [PublicAPI( "The name of the faction" )]
         public string name { get; set; }
 
-        [PublicAPI( "The allegiance of the faction, if known, as an object" )]
-        public Superpower Allegiance { get; set; }
+        [ PublicAPI( "The allegiance of the faction, if known, as an object" ) ]
+        public Superpower Allegiance
+        {
+            get => _allegiance ?? Superpower.None;
+            set => _allegiance = value;
+        }
+        private Superpower _allegiance;
 
         [PublicAPI( "The localized allegiance of the faction, if known" ), JsonIgnore, Obsolete("Please use Allegiance instead")]
-        public string allegiance => (Allegiance ?? Superpower.None).localizedName;
+        public string allegiance => Allegiance.localizedName;
 
-        [PublicAPI( "The government of the faction, if known, as an object" )]
-        public Government Government { get; set; }
+        [ PublicAPI( "The government of the faction, if known, as an object" ) ]
+        public Government Government
+        {
+            get => _government ?? Government.None;
+            set => _government = value;
+        }
+        private Government _government;
 
         [PublicAPI( "The localized government of the faction, if known" ), JsonIgnore, Obsolete("Please use Government instead")]
-        public string government => (Government ?? Government.None).localizedName;
+        public string government => Government.localizedName;
 
         [PublicAPI( "Your reputation with the faction, out of 100%" )]
         public decimal? myreputation { get; set; }

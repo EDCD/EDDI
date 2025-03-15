@@ -13,8 +13,17 @@ namespace EddiDataDefinitions
     public class Station : INotifyPropertyChanged
     {
         /// <summary>The name</summary>
-        [PublicAPI]
-        public string name { get; set; }
+        [ PublicAPI ]
+        public string name
+        {
+            get => !string.IsNullOrEmpty( localizedName ) ? localizedName : _name;
+            set => _name = value;
+        }
+
+        private string _name;
+
+        /// <summary>The localized name, if any</summary>
+        public string localizedName { get; set; }
 
         /// <summary>The controlling faction</summary>
         [PublicAPI]
@@ -65,13 +74,20 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public long? marketId { get; set; }
 
+        public StationState stationState
+        {
+            get => _stationState ?? StationState.NormalOperation; 
+            set => _stationState = value;
+        }
+        private StationState _stationState;
+
         /// <summary>A list of the services offered by this station</summary>
         public List<StationService> stationServices
         {
-            get => _stationServices;
+            get => _stationServices ?? new List<StationService>();
             set { _stationServices = value; OnPropertyChanged();}
         }
-        private List<StationService> _stationServices = new List<StationService>();
+        private List<StationService> _stationServices;
 
         /// <summary>A localized list of the services offered by this station</summary>
         [PublicAPI]
@@ -159,7 +175,7 @@ namespace EddiDataDefinitions
         [ PublicAPI ]
         public StationModel Model
         {
-            get => _model;
+            get => _model ?? StationModel.None;
             set
             {
                 if ( value == StationModel.FleetCarrier )
@@ -170,8 +186,7 @@ namespace EddiDataDefinitions
                 _model = value;
             }
         }
-
-        private StationModel _model = StationModel.None;
+        private StationModel _model;
 
         /// <summary>What is the largest ship that can land here?</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use LargestPad instead")]

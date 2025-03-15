@@ -188,6 +188,7 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     var stationName = JsonParsing.getString(data, "StationName");
+                                    var stationLocalizedName = JsonParsing.getString(data, "StationName_Localised");
 
                                     // Normalize Powerplay Stronghold Carrier names
                                     stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
@@ -236,16 +237,32 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    bool cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
-                                    bool wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
-                                    bool activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
+                                    var cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
+                                    var wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
+                                    var activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
 
                                     var stationStateEdName = JsonParsing.getString( data, "StationState" );
                                     var stationState = string.IsNullOrEmpty( stationStateEdName )
                                         ? StationState.NormalOperation
                                         : StationState.FromEDName( stationStateEdName );
 
-                                    events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, controllingfaction, Economies, distancefromstar, stationServices, cockpitBreach, wanted, activeFine, landingPads) { raw = line, fromLoad = fromLogLoad });
+                                    var station = new Station()
+                                    {
+                                        name = stationName,
+                                        localizedName = stationLocalizedName,
+                                        marketId = marketId,
+                                        systemname = systemName,
+                                        systemAddress = systemAddress,
+                                        Model = stationModel,
+                                        Faction = controllingfaction,
+                                        stationServices = stationServices,
+                                        stationState = stationState,
+                                        economyShares = Economies,
+                                        distancefromstar = distancefromstar,
+                                        landingPads = landingPads
+                                    };
+
+                                    events.Add(new DockedEvent(timestamp, station, cockpitBreach, wanted, activeFine) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

@@ -1895,71 +1895,45 @@ namespace EddiCore
             return passEvent;
         }
 
-        private bool eventDocked(DockedEvent theEvent)
+        private bool eventDocked ( DockedEvent @event )
         {
-            bool passEvent = !string.IsNullOrEmpty(theEvent.station);
-            updateCurrentSystem(theEvent.system, theEvent.systemAddress );
+            updateCurrentSystem( @event.system, @event.systemAddress );
 
-            if (CurrentStarSystem != null)
+            if ( CurrentStarSystem == null ) { return false; }
+
+            var station = CurrentStarSystem.stations.Find( s => s.marketId == @event.Station.marketId );
+            if ( Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId )
             {
-                var station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
-                if (Environment == Constants.ENVIRONMENT_DOCKED && CurrentStation?.marketId == station?.marketId)
-                {
-                    // We are already at this station
-                    Logging.Debug("Already at station " + theEvent.station);
-                    passEvent = false;
-                }
-                else
-                {
-                    // Update the station
-                    Logging.Debug("Now at station " + theEvent.station);
-                    if (station == null)
-                    {
-                        // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                        station = new Station
-                        {
-                            name = theEvent.station,
-                            systemname = theEvent.system,
-                            systemAddress = theEvent.systemAddress
-                        };
-                        CurrentStarSystem.AddOrUpdateStation( station );
-                    }
-                }
-
-                // We are docked
-                if (station != null)
-                {
-                    Environment = Constants.ENVIRONMENT_DOCKED;
-
-                    // Not all stations in our database will have a system address or market id, so we set them here
-                    station.systemAddress = theEvent.systemAddress;
-                    station.marketId = theEvent.marketId;
-
-                    // Information from the event might be more current than our data source so use it in preference
-                    station.Faction = theEvent.controllingfaction;
-                    station.stationServices = theEvent.stationServices;
-                    station.economyShares = theEvent.economyShares;
-
-                    // Update other station information available from the event
-                    station.Model = theEvent.stationModel;
-                    station.stationServices = theEvent.stationServices;
-                    station.distancefromstar = theEvent.distancefromstar;
-                    station.landingPads = theEvent.landingPads;
-
-                    CurrentStation = station;
-
-                    // Kick off the profile refresh if the companion API is available
-                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
-                    {
-                        // Refresh station data
-                        if (theEvent.fromLoad || !passEvent) { return false; } // Don't fire this event when loading pre-existing logs or if we were already at this station
-
-                        Task.Run( async () => { await conditionallyRefreshStationProfileAsync(); } ).ConfigureAwait( false );
-                    }
-                }
+                // We are already at this station
+                Logging.Debug( $"Already at station {@event.station} ({@event.marketId})." );
+                return false;
             }
 
-            return passEvent;
+            // Update the station
+            Logging.Debug( $"Now at station {@event.station} ({@event.marketId})." );
+            if ( station == null && @event.Station != null )
+            {
+                // This station is unknown to us
+                station = @event.Station;
+            }
+
+            Environment = Constants.ENVIRONMENT_DOCKED;
+            CurrentStarSystem.AddOrUpdateStation( station );
+            CurrentStation = station;
+
+            // Kick off the profile refresh if the companion API is available
+            if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized )
+            {
+                // Refresh station data
+                if ( @event.fromLoad )
+                {
+                    return false;
+                } // Don't fire this event when loading pre-existing logs or if we were already at this station
+
+                Task.Run( async () => { await conditionallyRefreshStationProfileAsync(); } ).ConfigureAwait( false );
+            }
+
+            return true;
         }
 
         private bool eventUndocked()
