@@ -89,6 +89,11 @@ namespace CommanderMonitor
                 {
                     configuration.phoneticName = string.IsNullOrWhiteSpace( phoneticNameTextBox.Text ) ? string.Empty : phoneticNameTextBox.Text.Trim();
                     ConfigService.Instance.commanderConfiguration = configuration;
+
+                    if ( commanderMonitor().Cmdr != null )
+                    {
+                        commanderMonitor().Cmdr.phoneticName = configuration.phoneticName;
+                    }
                 }
             }
         }

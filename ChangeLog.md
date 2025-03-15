@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.1.1-a1
   * Core
     * Added a speculative fix for failed `SystemDetails` lookups in new / unexplored star systems.
+  * Commander Monitor
+    * Fix an issue with saving / rendering phonetic commander names (#2706).
   * Speech Responder
     * Custom Functions
       * `BodyDetails` function revised to accept either body ID and system address numeric values or body and system name values. The numeric system address value is more efficient for lookups and is recommended when available.
