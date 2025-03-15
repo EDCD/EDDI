@@ -111,11 +111,15 @@ namespace EddiSpanshService
                 {
                     name = stationData[ "name" ]?.ToString(),
                     marketId = stationData[ "market_id" ]?.ToObject<long?>(),
-                    Model = FromSpanshStationModel( stationData[ "type" ]?.ToString() ) ?? StationModel.OnFootSettlement,
+                    Model = FromSpanshStationModel( stationData[ "type" ]?.ToString() ) ?? 
+                            StationModel.OnFootSettlement,
                     landingPads = new StationLandingPads(
                         stationData[ "small_pads" ]?.ToObject<int?>() ?? 0,
                         stationData[ "medium_pads" ]?.ToObject<int?>() ?? 0,
-                        stationData[ "large_pads" ]?.ToObject<int?>() ?? 0 )
+                        stationData[ "large_pads" ]?.ToObject<int?>() ?? 0 ),
+                    stationServices = stationData[ "services" ]?
+                        .Select( t => StationService.FromName( t.ToString() ) )
+                        .ToList() ?? new List<StationService>()
                 };
                 station.hasdocking = ( station.landingPads.Large + station.landingPads.Medium + station.landingPads.Small ) > 0;
                 return station;

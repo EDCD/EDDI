@@ -454,17 +454,11 @@ namespace Tests
             Assert.AreEqual("Democracy", theEvent.controllingfaction.Government.invariantName);
             Assert.AreEqual("Federation", theEvent.controllingfaction.Allegiance.invariantName);
             Assert.AreEqual(21, theEvent.stationservices.Count);
-            Assert.AreEqual(2, theEvent.economyShares.Count);
-            Assert.AreEqual("Refinery", theEvent.economyShares[0].economy.invariantName);
-            Assert.AreEqual(0.84M, theEvent.economyShares[0].proportion);
-            Assert.AreEqual("Refinery", theEvent.economyShares[1].economy.invariantName);
-            Assert.AreEqual(0.16M, theEvent.economyShares[1].proportion);
+            Assert.AreEqual(1, theEvent.economyShares.Count);
 
-            // The Station definition should consolidate the economy shares above. Test that now. 
-            var testStation = new Station { name = "testStation", economyShares = theEvent.economyShares };
-            Assert.AreEqual(1, testStation.economyShares.Count);
-            Assert.AreEqual("Refinery", testStation.economyShares[0].economy.invariantName);
-            Assert.AreEqual(1.00M, testStation.economyShares[0].proportion);
+            // The Station definition should consolidate the economy shares. 
+            Assert.AreEqual("Refinery", theEvent.economyShares[0].economy.invariantName);
+            Assert.AreEqual(1.00M, theEvent.economyShares[0].proportion);
         }
 
         [TestMethod]
