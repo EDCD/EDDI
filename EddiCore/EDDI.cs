@@ -609,7 +609,7 @@ namespace EddiCore
 
                     if (!enabled && !monitor.IsRequired())
                     {
-                        Logging.Debug(monitor.MonitorName() + " is disabled; not starting");
+                        Logging.Info( monitor.MonitorName() + " is disabled; not starting");
                     }
                     else
                     {
@@ -643,7 +643,7 @@ namespace EddiCore
 
                     if (!enabled)
                     {
-                        Logging.Debug(responder.ResponderName() + " is disabled; not starting");
+                        Logging.Info(responder.ResponderName() + " is disabled; not starting");
                     }
                     else
                     {
@@ -2784,7 +2784,6 @@ namespace EddiCore
             Type pluginType = typeof(IEddiMonitor);
             foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
             {
-                Logging.Debug("Checking potential plugin at " + file.FullName);
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(file.FullName);
@@ -2868,7 +2867,6 @@ namespace EddiCore
             Type pluginType = typeof(IEddiResponder);
             foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
             {
-                Logging.Debug("Checking potential plugin at " + file.FullName);
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(file.FullName);
