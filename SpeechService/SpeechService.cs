@@ -362,7 +362,7 @@ namespace EddiSpeechService
                     statement = SpeechFormatter.StripRadioTags( statement );
                 }
 
-                bool isVoice = statement.Contains("<voice") || radio; 
+                bool isVoice = statement.Contains("<voice"); 
                 if (isVoice)
                 {
                     // This is a voice override
