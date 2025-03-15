@@ -14,8 +14,14 @@ namespace EddiEvents
         [PublicAPI("The name of the star system where the ship has touched down")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system where the ship has touched down" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The name of the body where the ship has touched down")]
         public string bodyname { get; private set; }
+
+        [PublicAPI( "The numeric ID of the body where the ship has touched down" )]
+        public long? bodyId { get; private set; }
 
         [PublicAPI("The longitude from where the ship has touched down")]
         public decimal? longitude { get; private set; }
@@ -38,11 +44,7 @@ namespace EddiEvents
         // Not intended to be user facing
 
         public SignalSource nearestDestination { get; private set; }
-
-        public ulong systemAddress { get; private set; }
-
-        public long? bodyId { get; private set; }
-
+        
         public bool? onstation { get; private set; } // Always false, since `Touchdown` is currently only ever triggered when touching down on a body
 
         public bool? onplanet { get; private set; } // Always true, since `Touchdown` is currently only ever triggered when touching down on a body

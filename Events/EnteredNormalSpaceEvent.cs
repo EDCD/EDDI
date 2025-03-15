@@ -14,14 +14,20 @@ namespace EddiEvents
         [PublicAPI("The system at which the commander has entered normal space")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system at which the commander has entered normal space" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The localized type of the nearest body to the commander when entering normal space")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         [PublicAPI("The invariant type of the nearest body to the commander when entering normal space")]
         public string bodytype_invariant => (bodyType ?? BodyType.None).invariantName;
 
-        [PublicAPI("The nearest body to the commander when entering normal space")]
+        [PublicAPI("The nearest body to the commander when entering normal space (if any)")]
         public string bodyname { get; private set; }
+
+        [PublicAPI( "The numeric ID of the nearest body to the commander when entering normal space (if any)" )]
+        public long? bodyId { get; private set; }
 
         [PublicAPI("True if the ship is an transport (e.g. taxi or dropship)")]
         public bool? taxi { get; private set; }
@@ -39,11 +45,7 @@ namespace EddiEvents
 
         // Variables below are not intended to be user facing
 
-        public ulong systemAddress { get; private set; }
-
         public BodyType bodyType { get; private set; }
-
-        public long? bodyId { get; private set; }
 
         public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, long? bodyId, BodyType bodyType, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {

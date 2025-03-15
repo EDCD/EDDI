@@ -15,12 +15,13 @@ namespace EddiEvents
         [PublicAPI("The ring where hotspots were detected")]
         public string bodyname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system where hotspots were detected" )]
+        public ulong? systemAddress { get; private set; }
+
         [PublicAPI("A list of ring hotspots (as objects with properties 'commodity' and 'amount')")]
         public List<CommodityAmount> hotspots { get; private set; }
 
         // Not intended to be user facing
-
-        public ulong? systemAddress { get; private set; }
 
         public long bodyId { get; private set; }
 

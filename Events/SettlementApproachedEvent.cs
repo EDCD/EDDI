@@ -24,6 +24,15 @@ namespace EddiEvents
         [ PublicAPI( "The name of the body containing the settlement" ) ]
         public string bodyname { get; private set; }
 
+        [PublicAPI( "The numeric ID of the body containing the settlement" )]
+        public long? bodyId { get; private set; }
+
+        [PublicAPI( "The numeric ID of the station, if the settlement is a station" )]
+        public long? marketId { get; private set; } // Tourist beacons and guardian structures are reported as settlements without MarketID 
+
+        [PublicAPI( "The numeric system address of the star system" )]
+        public ulong systemAddress { get; private set; }
+
         [ PublicAPI( "The latitude coordinate of the settlement (if given)" ) ]
         public decimal? latitude { get; private set; }
 
@@ -36,7 +45,7 @@ namespace EddiEvents
         [PublicAPI( "The secondary economy of the settlement the commander is approaching, when applicable" )]
         public string secondeconomy => economyShares.Count > 1 ? ( economyShares[ 1 ]?.economy ?? Economy.None ).localizedName : Economy.None.localizedName;
 
-        [ PublicAPI( "A list of possible services available at the settlement: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue, TechBroker, MaterialTrader" ) ]
+        [ PublicAPI( "A list of possible services available at the settlement (when the settlement is a station)" ) ]
         public List<string> stationservices => stationServices.Select( s => s.localizedName ).ToList();
 
         // Faction properties
@@ -51,12 +60,6 @@ namespace EddiEvents
         public string government => ( controllingFaction?.Government ?? Government.None ).localizedName;
 
         // Not intended to be user facing
-
-        public long? marketId { get; private set; } // Tourist beacons and guardian structures are reported as settlements without MarketID 
-
-        public ulong systemAddress { get; private set; }
-
-        public long? bodyId { get; private set; }
 
         public Faction controllingFaction { get; private set; }
 

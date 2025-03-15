@@ -38,6 +38,12 @@ namespace EddiEvents
         [PublicAPI("The name of the star that has been scanned")]
         public string bodyname => star?.bodyname;
 
+        [PublicAPI( "The numeric ID of the star that has been scanned" )]
+        public long? bodyId => star?.bodyId;
+
+        [PublicAPI( "The numeric system address of the system containing the scanned star" )]
+        public ulong? systemAddress => star?.systemAddress;
+
         [PublicAPI("The apparent colour of the star that has been scanned")]
         public string chromaticity => star?.chromaticity;
 
@@ -167,8 +173,6 @@ namespace EddiEvents
         // Variables below are not intended to be user facing
 
         public bool? alreadymapped => star?.alreadymapped;
-
-        public long? bodyId => star?.bodyId;
 
         public DateTime? mapped => star?.mappedDateTime;
 

@@ -14,11 +14,20 @@ namespace EddiEvents
         [PublicAPI("The name of the star system in which the commander is embarking")]
         public string systemname { get; }
 
+        [PublicAPI( "The numeric system address of the star system from which the commander is embarking" )]
+        public ulong systemAddress { get;}
+
         [PublicAPI("The name of the body from which the commander is embarking (if any)")]
         public string bodyname { get; private set; }
 
+        [PublicAPI( "The numeric ID of the body from which the commander is embarking (if any)" )]
+        public int? bodyId { get; }
+
         [PublicAPI("The name of the station from which the commander is embarking (if any)")]
         public string station { get; private set; }
+
+        [PublicAPI( "The numeric ID of the station from which the commander is embarking (if any)" )]
+        public long? marketId { get; }
 
         [PublicAPI("The type of station from which the commander is embarking (if any)")]
         public string stationtype => (stationModel ?? StationModel.None).localizedName;
@@ -43,12 +52,6 @@ namespace EddiEvents
 
         // Not intended to be user facing
         public int? toLocalId { get; }
-
-        public ulong systemAddress { get;}
-
-        public int? bodyId { get; }
-
-        public long? marketId { get; }
 
         public StationModel stationModel { get; }
 

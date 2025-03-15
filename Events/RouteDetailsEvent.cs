@@ -19,8 +19,14 @@ namespace EddiEvents
         [PublicAPI("The next star system waypoint in the route")]
         public string system { get; private set; }
 
+        [PublicAPI( "The numeric system address of the next star system waypoint in the route" )]
+        public ulong? systemAddress { get; private set; }
+
         [PublicAPI("The station returned from the search, if applicable")]
         public string station { get; private set; }
+
+        [PublicAPI( "The numeric ID of the station returned from the search, if applicable" )]
+        public long? marketId { get; private set; }
 
         [PublicAPI("A list of the system names which are visited during the route, if applicable")]
         public List<string> route => (Route ?? new NavWaypointCollection()).Waypoints.Select(r => r.systemName).ToList();
@@ -43,10 +49,6 @@ namespace EddiEvents
         // Not intended to be user facing
         public NavWaypointCollection Route { get; private set; }
 
-        public ulong? systemAddress { get; private set; }
-
-        public long? marketID { get; private set; }
-
         public RouteDetailsEvent ( DateTime timestamp, string routetype, string systemName, ulong? systemAddress,
             string stationName, long? marketId, NavWaypointCollection route, long count, List<long> missionIds ) : base(timestamp, NAME)
         {
@@ -54,7 +56,7 @@ namespace EddiEvents
             this.system = systemName;
             this.systemAddress = systemAddress;
             this.station = stationName;
-            this.marketID = marketId;
+            this.marketId = marketId;
             this.Route = route;
             this.count = count;
             this.missionids = missionIds ?? new List<long>();

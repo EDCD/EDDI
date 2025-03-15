@@ -26,8 +26,14 @@ namespace EddiEvents
         [PublicAPI("The name of the body that has been scanned")]
         public string bodyname => body?.bodyname;
 
+        [PublicAPI( "The numeric ID of the body that has been scanned" )]
+        public long? bodyId => body.bodyId;
+
         [PublicAPI("The name of the system containing the scanned body")]
         public string systemname => body?.systemname;
+
+        [PublicAPI("The numeric system address of the system containing the scanned body")]
+        public ulong? systemAddress => body.systemAddress;
 
         [PublicAPI("The short name of the body, less the system name")]
         public string shortname => body?.shortname;
@@ -162,8 +168,6 @@ namespace EddiEvents
 
         public Body body { get; private set; }
 
-        public long? bodyId => body.bodyId;
-        
         public List<IDictionary<string, object>> parents => body.parents;
 
         public AtmosphereClass atmosphereclass => body.atmosphereclass;
@@ -171,8 +175,6 @@ namespace EddiEvents
         public PlanetClass planetClass => body.planetClass;
         
         public TerraformState terraformState => body.terraformState;
-
-        public ulong? systemAddress => body.systemAddress;
 
         // Deprecated, maintained for compatibility with user scripts
 

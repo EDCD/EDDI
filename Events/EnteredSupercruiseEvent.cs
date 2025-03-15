@@ -13,6 +13,9 @@ namespace EddiEvents
         [PublicAPI("The system at which the commander has entered supercruise")]
         public string system { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system at which the commander has entered supercruise" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("True if the ship is a transport (e.g. taxi or dropship)")]
         public bool? taxi { get; private set; }
 
@@ -20,8 +23,6 @@ namespace EddiEvents
         public bool? multicrew { get; private set; }
 
         // Not intended to be user facing
-
-        public ulong systemAddress { get; private set; }
 
         public EnteredSupercruiseEvent(DateTime timestamp, string system, ulong systemAddress, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {

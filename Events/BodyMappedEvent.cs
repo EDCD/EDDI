@@ -14,46 +14,52 @@ namespace EddiEvents
 
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
-        [PublicAPI("The name of the body that has been scanned")]
+        [PublicAPI("The name of the body that has been mapped")]
         public string bodyname => body?.bodyname ?? bodyName;
 
-        [PublicAPI("The name of the system containing the scanned body")]
+        [PublicAPI( "The numeric ID of the body that has been mapped" )]
+        public long? bodyId => body.bodyId;
+
+        [PublicAPI("The name of the system containing the mapped body")]
         public string systemname => body?.systemname;
+
+        [PublicAPI( "The numeric system address of the system containing the mapped body" )]
+        public ulong systemAddress { get; private set; }
 
         [PublicAPI("The short name of the body, less the system name")]
         public string shortname => body?.shortname;
 
-        [PublicAPI("The body type of the body that has been scanned (e.g. 'Planet', 'Moon', 'Star' etc.)")]
+        [PublicAPI("The body type of the body that has been mapped (e.g. 'Planet', 'Moon', 'Star' etc.)")]
         public string bodytype => (body?.bodyType ?? BodyType.None).localizedName;
 
-        [PublicAPI("The type of body that has been scanned (High metal content body etc)")]
+        [PublicAPI("The type of body that has been mapped (High metal content body etc)")]
         public string planettype => (body?.planetClass ?? PlanetClass.None).localizedName;  // This matches the object property reported from the BodyDetails() function
 
-        [PublicAPI("The mass of the body that has been scanned, relative to Earth's mass")]
+        [PublicAPI("The mass of the body that has been mapped, relative to Earth's mass")]
         public decimal? earthmass => body?.earthmass;
 
         [PublicAPI("The cumulative probability describing the body's mass, relative to other bodies of the same planet type")]
         public decimal? massprobability => body?.massprobability;
 
-        [PublicAPI("The radius of the body that has been scanned, in kilometres")]
+        [PublicAPI("The radius of the body that has been mapped, in kilometres")]
         public decimal? radius => body?.radius;
 
         [PublicAPI("The cumulative probability describing the body's radius, relative to other bodies of the same planet type")]
         public decimal? radiusprobability => body?.radiusprobability;
 
-        [PublicAPI("The surface gravity of the body that has been scanned, relative to Earth's gravity")]
+        [PublicAPI("The surface gravity of the body that has been mapped, relative to Earth's gravity")]
         public decimal? gravity => body?.gravity;
 
         [PublicAPI("The cumulative probability describing the body's gravity, relative to other bodies of the same planet type")]
         public decimal? gravityprobability => body?.gravityprobability;
 
-        [PublicAPI("The surface temperature of the body that has been scanned, in Kelvin (only available if DSS equipped)")]
+        [PublicAPI("The surface temperature of the body that has been mapped, in Kelvin (only available if DSS equipped)")]
         public decimal? temperature => body?.temperature;
 
         [PublicAPI("The cumulative probability describing the body's temperature, relative to other bodies of the same planet type")]
         public decimal? tempprobability => body?.tempprobability;
 
-        [PublicAPI("The surface pressure of the body that has been scanned, in Earth atmospheres (only available if DSS equipped)")]
+        [PublicAPI("The surface pressure of the body that has been mapped, in Earth atmospheres (only available if DSS equipped)")]
         public decimal? pressure => body?.pressure;
 
         [PublicAPI("The cumulative probability describing the body's atmospheric pressure, relative to other bodies of the same planet type")]
@@ -65,16 +71,16 @@ namespace EddiEvents
         [PublicAPI("True if the body is landable (only available if DSS equipped)")]
         public bool? landable => body?.landable;
 
-        [PublicAPI("The atmosphere of the body that has been scanned (only available if DSS equipped)")]
+        [PublicAPI("The atmosphere of the body that has been mapped (only available if DSS equipped)")]
         public string atmosphere => (body?.atmosphereclass ?? AtmosphereClass.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        [PublicAPI("The composition of the atmosphere of the body that has been scanned (array of objects) (only available if DSS equipped)")]
+        [PublicAPI("The composition of the atmosphere of the body that has been mapped (array of objects) (only available if DSS equipped)")]
         public List<AtmosphereComposition> atmospherecompositions => body?.atmospherecompositions;
 
-        [PublicAPI("The composition of the body's solids that has been scanned (array of objects) (only available if DSS equipped)")]
+        [PublicAPI("The composition of the body's solids that has been mapped (array of objects) (only available if DSS equipped)")]
         public List<SolidComposition> solidcompositions => body?.solidcompositions;
 
-        [PublicAPI("The volcanism of the body that has been scanned (only available if DSS equipped)")]
+        [PublicAPI("The volcanism of the body that has been mapped (only available if DSS equipped)")]
         public Volcanism volcanism => body?.volcanism;
 
         [PublicAPI("The distance in LS from the main star")]
@@ -122,7 +128,7 @@ namespace EddiEvents
         [PublicAPI("The level of reserves in the rings if applicable (Pristine/Major/Common/Low/Depleted)")]
         public string reserves => (body?.reserveLevel ?? ReserveLevel.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        [PublicAPI("A list of materials present on the body that has been scanned")]
+        [PublicAPI("A list of materials present on the body that has been mapped")]
         public List<MaterialPresence> materials => body?.materials;
 
         [PublicAPI("Whether the body can be, is in the process of, or has been terraformed (only available if DSS equipped)")]
@@ -168,8 +174,6 @@ namespace EddiEvents
 
         public Body body { get; private set; }
         
-        public ulong systemAddress { get; private set; }
-
         public BodyMappedEvent(DateTime timestamp, string bodyName, Body body, ulong systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
             this.bodyName = bodyName;

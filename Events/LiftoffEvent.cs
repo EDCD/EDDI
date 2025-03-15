@@ -14,8 +14,14 @@ namespace EddiEvents
         [PublicAPI("The name of the star system from where the ship has lifted off")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system from where the ship has lifted off" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The name of the body from where the ship has lifted off")]
         public string bodyname { get; private set; }
+
+        [PublicAPI( "The numeric ID of the body from where the ship has lifted off" )]
+        public long? bodyId { get; private set; }
 
         [PublicAPI("The longitude from where the ship has lifted off")]
         public decimal? longitude { get; private set; }
@@ -39,13 +45,9 @@ namespace EddiEvents
 
         public SignalSource nearestDestination { get; private set; }
 
-        public ulong systemAddress { get; private set; }
-
         public bool? onstation { get; private set; } // Always false, since `Liftoff` is currently only ever triggered when lifting off from a body
 
         public bool? onplanet { get; private set; } // Always true, since `Liftoff` is currently only ever triggered when lifting off from a body
-
-        public long? bodyId { get; private set; }
 
         public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, ulong systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
         {

@@ -17,6 +17,9 @@ namespace EddiEvents
         [PublicAPI("The system at which the commander is currently located")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system at which the commander is currently located" )]
+        public ulong? systemAddress { get; private set; }
+
         [PublicAPI("The type of the nearest body to the commander")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
@@ -32,8 +35,6 @@ namespace EddiEvents
         public string body => bodyname;
 
         // Variables below are not intended to be user facing
-
-        public ulong? systemAddress { get; private set; }
 
         public BodyType bodyType { get; private set; }
 

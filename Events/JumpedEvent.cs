@@ -19,6 +19,9 @@ namespace EddiEvents
         [PublicAPI("The name of the system to which the commander has jumped")]
         public string system { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system to which the commander has jumped" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The X co-ordinate of the system to which the commander has jumped")]
         public decimal x { get; private set; }
 
@@ -107,8 +110,6 @@ namespace EddiEvents
         // These properties are not intended to be user facing
 
         public int? boostused { get; private set; }
-
-        public ulong systemAddress { get; private set; }
 
         public Economy Economy { get; private set; }
 

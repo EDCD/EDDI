@@ -252,7 +252,7 @@ namespace EddiNavigationService
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
 
                     // Update the global `SearchSystem` and `SearchStation` variables
-                    UpdateSearchData(result.systemAddress, result.marketID);
+                    UpdateSearchData(result.systemAddress, result.marketId);
                 }
             }
 

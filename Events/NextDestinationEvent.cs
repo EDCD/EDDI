@@ -17,10 +17,13 @@ namespace EddiEvents
         [PublicAPI("The localized name of the next in-system destination, if known")]
         public string localizedName { get; private set; }
 
-        [PublicAPI("If the destination is an body")] 
+        [PublicAPI( "The numeric ID of the destination body (if the destination is a body)" )]
+        public int? bodyId { get; private set; }
+
+        [PublicAPI("If the destination is a body")] 
         public bool isBody => body != null;
 
-        [PublicAPI("If the destination is an station (including megaship or fleet carrier)")]
+        [PublicAPI("If the destination is a station (including megaship or fleet carrier)")]
         public bool isStation => station != null;
 
         [PublicAPI("If the destination is a signal source")]
@@ -29,10 +32,10 @@ namespace EddiEvents
         [PublicAPI("If the destination is a Point of Interest / miscellaneous location")]
         public bool isPOI => body == null && station == null && signalSource == null;
 
-        // Not intended to be user facing
+        [PublicAPI( "The numeric system address of the star system" )]
         public ulong? systemAddress { get; private set; }
 
-        public int? bodyId { get; private set; }
+        // Not intended to be user facing
 
         public Body body { get; private set; }
 

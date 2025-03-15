@@ -13,8 +13,7 @@ namespace EddiEvents
         [PublicAPI("The number of bodies included in the scan dump")]
         public int numbodies { get; private set; }
 
-        // Not intended to be user facing
-
+        [PublicAPI( "The numeric system address of the star system where the nav beacon is located" )]
         public ulong systemAddress { get; private set; }
 
         public NavBeaconScanEvent(DateTime timestamp, ulong systemAddress, int numbodies) : base(timestamp, NAME)

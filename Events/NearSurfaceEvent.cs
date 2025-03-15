@@ -17,8 +17,14 @@ namespace EddiEvents
         [PublicAPI("The name of the starsystem")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The name of the body")]
         public string bodyname { get; private set; }
+
+        [PublicAPI( "The numeric ID of the body" )]
+        public long? bodyId { get; private set; }
 
         [PublicAPI("The short name of the body, less the system name")]
         public string shortname => Body.GetShortName(bodyname, systemname);
@@ -30,12 +36,6 @@ namespace EddiEvents
         
         [Obsolete("Use bodyname instead")]
         public string body => bodyname;
-
-        // Variables below are not intended to be user facing
-
-        public ulong systemAddress { get; private set; }
-
-        public long? bodyId { get; private set; }
 
         public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string systemName, ulong systemAddress, string bodyName, long? bodyId) : base(timestamp, NAME)
         {

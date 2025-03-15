@@ -13,12 +13,11 @@ namespace EddiEvents
         [PublicAPI("The name of the scanned system")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the scanned star system" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The count of bodies from the scanned system")]
         public int count { get; private set; }
-
-        // Not intended to be user facing
-
-        public ulong systemAddress { get; private set; }
 
         public SystemScanComplete(DateTime timestamp, string systemname, ulong systemAddress, int count) : base(timestamp, NAME)
         {

@@ -13,13 +13,13 @@ namespace EddiEvents
         [PublicAPI("The name of the star system where the commander is deployed")]
         public string systemname { get; }
 
+        [PublicAPI( "The numeric system address of the star system where the commander is deployed" )]
+        public ulong systemAddress { get; }
+
         [PublicAPI("The name of the body where the commander is deployed")]
         public string bodyname { get; private set; }
 
-        // Not intended to be user facing
-
-        public ulong systemAddress { get; }
-
+        [PublicAPI( "The numeric ID of the body where the commander is deployed" )]
         public int? bodyId { get; }
 
         public DropshipDeploymentEvent(DateTime timestamp, string system, ulong systemAddress, string body, int? bodyId) : base(timestamp, NAME)

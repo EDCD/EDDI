@@ -15,11 +15,17 @@ namespace EddiEvents
 
         [PublicAPI("The name of the system in which the carrier is located after a successful jump")]
         public string systemname { get; private set; }
+        
+        [PublicAPI( "The numeric system address of the system in which the carrier is located after a successful jump" )]
+        public ulong systemAddress { get; private set; }
 
         // Body variables
 
         [PublicAPI("The nearest body to the carrier, if any, after a successful jump")]
         public string bodyname { get; private set; }
+
+        [PublicAPI( "The numeric ID of the body nearest body to the carrier, if any, after a successful jump" )]
+        public long? bodyId { get; private set; }
 
         [PublicAPI("The type of the body nearest to the carrier, if any (Star, Planet. etc.), after a successful jump  (only available if docked during the jump)")]
         public string bodytype => bodyType?.localizedName;
@@ -34,12 +40,8 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public ulong systemAddress { get; private set; }
-
         public BodyType bodyType { get; private set; }
-
-        public long? bodyId { get; private set; }
-
+        
         public long? carrierId { get; private set; }
 
         public StationModel carrierType { get; private set; }

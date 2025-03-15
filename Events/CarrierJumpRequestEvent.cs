@@ -16,19 +16,21 @@ namespace EddiEvents
         [PublicAPI("The name of the destination star system")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the destination star system" )]
+        public ulong? systemAddress { get; private set; }
+
         // Body variables
 
         [PublicAPI("The name of the destination body, if any")]
         public string bodyname { get; private set; }
 
+        [PublicAPI( "The numeric ID of the destination body, if any" )]
+        public long? bodyId { get; private set; }
+
         [PublicAPI("The short name of the destination body, if any")]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
         // These properties are not intended to be user facing
-
-        public ulong? systemAddress { get; private set; }
-
-        public long? bodyId { get; private set; }
 
         public long? carrierId { get; private set; }
 

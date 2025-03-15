@@ -7,9 +7,40 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added a speculative fix for failed `SystemDetails` lookups in new / unexplored star systems.
   * Speech Responder
     * Custom Functions
-      * `BodyDetails` function revised to accept either body ID and system address numeric values or body and system name values.
-      * `StationDetails` function revised to accept either market ID and system address numeric values or station and system name values.
-      * `SystemDetails` function revised to accept either a numeric system address or a system name value.
+      * `BodyDetails` function revised to accept either body ID and system address numeric values or body and system name values. The numeric system address value is more efficient for lookups and is recommended when available.
+      * `StationDetails` function revised to accept either market ID and system address numeric values or station and system name values. The numeric system address value is more efficient for lookups and is recommended when available.
+      * `SystemDetails` function revised to accept either a numeric system address or a system name value. The numeric system address value is more efficient for lookups and is recommended when available.
+    * Events
+      * `Body mapped` updated to include `systemAddress` and `bodyId` properties.
+      * `Body scanned` updated to include `systemAddress` and `bodyId` properties.
+      * `Carrier cooldown` updated to include `systemAddress` and `bodyId` properties.
+      * `Carrier jumped` updated to include `systemAddress` and `bodyId` properties.
+      * `Carrier jump engaged` updated to include `systemAddress`, `bodyId`, `originSystemName`, and `originSystemAddress` properties.
+      * `Carrier jump request` updated to include `systemAddress` and `bodyId` properties.
+      * `Carrier purchased` updated to include a `systemAddress` property.
+      * `Disembark` updated to include `systemAddress`, `marketId` and `bodyId` properties.
+      * `Docked` updated to include a `systemAddress` property.
+      * `Dropship deployment` updated to include `systemAddress` and `bodyId` properties.
+      * `Embark` updated to include `systemAddress`, `marketId` and `bodyId` properties.
+      * `Entered normal space` updated to include `systemAddress` and `bodyId` properties.
+      * `Entered supercruise` updated to include a `systemAddress` property.
+      * `FSD engaged` updated to include a `systemAddress` property.
+      * `FSD target` updated to include a `systemAddress` property.
+      * `Glide` updated to include a `systemAddress` property.
+      * `Jumped` updated to include a `systemAddress` property.
+      * `Liftoff` updated to include `systemAddress` and `bodyId` properties.
+      * `Location` updated to include `systemAddress` and `bodyId` properties.
+      * `Nav beacon scan` updated to include a `systemAddress` property.
+      * `Near surface` updated to include `systemAddress` and `bodyId` properties.
+      * `Next destination` updated to include `systemAddress` and `bodyId` properties.
+      * `Ring hotspots` updated to include a `systemAddress` property.
+      * `Ring mapped` updated to include a `systemAddress` property.
+      * `Route details` updated to include `systemAddress` and `marketId` properties.
+      * `Settlement approached` updated to include `systemAddress`, `marketId` and `bodyId` properties.
+      * `Star scanned` updated to include `systemAddress` and `bodyId` properties.
+      * `Surface signals` updated to include `systemAddress` and `bodyId` properties.
+      * `System scan complete` updated to include a `systemAddress` property.
+      * `Touchdown` updated to include `systemAddress` and `bodyId` properties.
 
 ## 4.1.0
   * Core
@@ -1739,10 +1770,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added CargoDetails() and HaulageDetails() functions for Cottle scripting.
   * EDSM responder
     * Fixed a crash when parsing an invalid EDSM configuration.
-    * Now sends SystemAddress and MarketId information.
+    * Now sends SystemAddress and marketId information.
   * EDDN responder
     * Removed the `Wanted` tag from the data we send to EDDN, since all data submissions should be anonymized.
-    * Now sends SystemAddress and MarketId information.
+    * Now sends SystemAddress and marketId information.
     * Alpha and beta builds will now use EDDN's test endpoints.
   * Ship monitor
     * EDDI will now open shipyard links to coriolis.io rather than edcd.coriolis.io (at Coriolis dev's request). 

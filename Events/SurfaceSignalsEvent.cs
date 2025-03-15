@@ -18,14 +18,14 @@ namespace EddiEvents
         [PublicAPI("The body where surface signals were detected")]
         public string bodyname { get; private set; }
 
+        [PublicAPI( "The numeric ID of the body where surface signals were detected" )]
+        public long bodyId { get; private set; }
+
+        [PublicAPI( "The numeric system address of the star system containing the surface signal" )]
+        public ulong? systemAddress { get; private set; }
+
         [PublicAPI("A list of signals (as objects)")]
         public List<SignalAmount> surfacesignals { get; private set; }
-
-        // Not intended to be user facing
-        
-        public ulong? systemAddress { get; private set; }
-        
-        public long bodyId { get; private set; }
 
         public SurfaceSignalsEvent(DateTime timestamp, string detectionType, ulong? systemAddress, string bodyName, long bodyId, List<SignalAmount> surfaceSignals) : base(timestamp, NAME)
         {

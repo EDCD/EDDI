@@ -18,6 +18,9 @@ namespace EddiEvents
         [PublicAPI("The name of the system into which the carrier has jumped")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the system into which the carrier has jumped" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The X co-ordinate of the system into which the carrier has jumped")]
         public decimal x { get; private set; }
 
@@ -84,6 +87,9 @@ namespace EddiEvents
         [PublicAPI("The nearest body to the carrier, if any")]
         public string bodyname { get; private set; }
 
+        [PublicAPI( "The numeric ID of the body nearest body to the carrier, if any" )]
+        public long? bodyId { get; private set; }
+
         [PublicAPI("The type of the body nearest to the carrier, if any")]
         public string bodytype => bodyType?.localizedName;
 
@@ -104,8 +110,6 @@ namespace EddiEvents
 
         public bool onFoot { get; private set; }
 
-        public ulong systemAddress { get; private set; }
-
         public long? carrierId { get; private set; }
 
         public Economy systemEconomy { get; private set; }
@@ -117,8 +121,6 @@ namespace EddiEvents
         public SecurityLevel securityLevel { get; private set; }
 
         public BodyType bodyType { get; private set; }
-
-        public long? bodyId { get; private set; }
         
         public Faction carrierFaction { get; private set; }
 

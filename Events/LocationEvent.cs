@@ -16,6 +16,9 @@ namespace EddiEvents
         [PublicAPI("The name of the system in which the commander is located")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system in which the commander is located" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The X co-ordinate of the system in which the commander is located")]
         public decimal x { get; private set; }
 
@@ -30,6 +33,9 @@ namespace EddiEvents
 
         [PublicAPI("The nearest body to the commander")]
         public string bodyname { get; private set; }
+
+        [PublicAPI( "The numeric ID of the body nearest to the commander (if any)" )]
+        public long? bodyId { get; private set; }
 
         [PublicAPI("The type of the nearest body to the commander")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
@@ -143,8 +149,6 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public ulong systemAddress { get; private set; }
-
         public Economy Economy { get; private set; }
 
         public Economy Economy2 { get; private set; }
@@ -162,8 +166,6 @@ namespace EddiEvents
         public List<StationService> stationServices { get; private set; }
 
         public BodyType bodyType { get; private set; }
-
-        public long? bodyId { get; private set; }
 
         public bool taxi { get; private set; }
         

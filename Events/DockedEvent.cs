@@ -16,10 +16,13 @@ namespace EddiEvents
         [PublicAPI("The system at which the commander has docked")]
         public string system { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system where the commander has docked" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The station at which the commander has docked")]
         public string station { get; private set; }
 
-        [PublicAPI("The market ID of station at which the commander has docked")]
+        [PublicAPI("The numeric market ID of station at which the commander has docked")]
         public long? marketId { get; private set; }
 
         [ PublicAPI( "The state of the station (e.g. \"Abandoned\", \"Damaged\", \"Normal Operation\", \"Under Attack\", \"Under Repairs\")" ) ]
@@ -64,8 +67,6 @@ namespace EddiEvents
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 
         // These properties are not intended to be user facing
-
-        public ulong systemAddress { get; private set; }
 
         public StationModel stationModel { get; private set; }
 

@@ -14,6 +14,9 @@ namespace EddiEvents
         [PublicAPI("The name of the ring that was mapped")]
         public string ringname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system where the ring was mapped" )]
+        public ulong systemAddress { get; private set; }
+
         [PublicAPI("The reserve level of the ring that was mapped, if the parent body has already been scanned")]
         public string reserves => body?.reserveLevel?.localizedName;
 
@@ -40,8 +43,6 @@ namespace EddiEvents
         public Ring ring { get; private set; }
 
         public Body body { get; private set; }
-
-        public ulong systemAddress { get; private set; }
 
         public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, ulong systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {

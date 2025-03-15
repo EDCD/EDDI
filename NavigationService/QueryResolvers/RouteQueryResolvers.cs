@@ -147,8 +147,8 @@ namespace EddiNavigationService.QueryResolvers
             Enum.TryParse( config?.searchQuery, out QueryType lastQuery );
             var @event = NavigationService.Instance.NavQuery(lastQuery, config?.searchQuerySystemArg, config?.searchQuerySystemArg, config?.maxSearchDistanceFromStarLs, config?.prioritizeOrbitalStations);
             if ( @event is null ) { return null; }
-            EDDI.Instance.enqueueEvent( new RouteDetailsEvent( DateTime.UtcNow, QueryType.recalculating.ToString(), @event.system, @event.systemAddress, @event.station, @event.marketID, @event.Route, @event.count, @event.missionids ) );
-            return new RouteDetailsEvent( DateTime.UtcNow, config?.searchQuery, @event.system, @event.systemAddress, @event.station, @event.marketID, @event.Route, @event.count, @event.missionids );
+            EDDI.Instance.enqueueEvent( new RouteDetailsEvent( DateTime.UtcNow, QueryType.recalculating.ToString(), @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids ) );
+            return new RouteDetailsEvent( DateTime.UtcNow, config?.searchQuery, @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids );
 
         }
     }

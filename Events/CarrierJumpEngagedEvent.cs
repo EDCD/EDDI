@@ -11,15 +11,29 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when your fleet carrier performs a jump";
         public static CarrierJumpEngagedEvent SAMPLE = new CarrierJumpEngagedEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Ageno", 18262335038849, "Aparctias", 0, 3700571136);
 
-        // System variables
+        // Destination System variables
 
         [PublicAPI("The name of the destination star system")]
         public string systemname { get; private set; }
+
+        [PublicAPI( "The numeric system address of the destination star system" )]
+        public ulong systemAddress { get; private set; }
+
+        // Origin System variables
+
+        [PublicAPI( "The name of the origin star system" )]
+        public string originSystemName { get; private set; }
+
+        [PublicAPI( "The numeric ID of the origin star system" )]
+        public ulong originSystemAddress { get; private set; }
 
         // Body variables
 
         [PublicAPI("The name of the destination body, if any")]
         public string bodyname { get; private set; }
+
+        [PublicAPI( "The numeric ID of the destination body, if any" )]
+        public long? bodyId { get; private set; }
 
         [PublicAPI("The short name of the destination body, if any")]
         public string shortname => Body.GetShortName(bodyname, systemname);
@@ -31,15 +45,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public ulong systemAddress { get; private set; }
-        
-        public long? bodyId { get; private set; }
-        
         public long? carrierId { get; private set; }
-        
-        public string originSystemName { get; private set; }
-        
-        public ulong originSystemAddress { get; private set; }
 
         public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, ulong systemAddress, string originSystemName, ulong originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
         {

@@ -15,6 +15,9 @@ namespace EddiEvents
         [PublicAPI("The name of the system in which the carrier is located after purchase")]
         public string systemname { get; private set; }
 
+        [PublicAPI( "The numeric system address of the star system in which the carrier is located after purchase" )]
+        public ulong systemAddress { get; private set; }
+
         // Carrier variables
 
         [PublicAPI("The callsign (alphanumeric designation) of the carrier")]
@@ -24,8 +27,6 @@ namespace EddiEvents
         public long? price { get; private set; }
 
         // These properties are not intended to be user facing
-
-        public ulong systemAddress { get; private set; }
 
         public long? carrierId { get; private set; }
 
