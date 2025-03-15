@@ -348,9 +348,11 @@ namespace EddiCompanionAppService
             {
                 throw new EliteDangerousCompanionAppAuthenticationException( "Client ID is not configured" );
             }
+
             if ( Credentials.refreshToken == null )
             {
-                throw new EliteDangerousCompanionAppAuthenticationException( "Refresh token not found, need full login" );
+                throw new EliteDangerousCompanionAppAuthenticationException(
+                    "Refresh token not found, need full login" );
             }
 
             CurrentState = State.TokenRefresh;
@@ -361,42 +363,53 @@ namespace EddiCompanionAppService
                     Encoding.UTF8, "application/x-www-form-urlencoded" )
             };
 
-            try
+            const int maxRetries = 3;
+            var delay = 1000; // Initial delay in milliseconds
+
+            for ( var retry = 0; retry < maxRetries; retry++ )
             {
-                using ( var response = await httpClient.SendAsync( request ) )
+                try
                 {
-                    if ( response == null )
+                    using ( var response = await httpClient.SendAsync( request ) )
                     {
-                        throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
-                    }
-                    if ( response.StatusCode == HttpStatusCode.OK )
-                    {
-                        var responseData = await response.Content.ReadAsStringAsync();
-                        var json = JObject.Parse(responseData);
-                        Credentials.refreshToken = (string)json[ "refresh_token" ];
-                        Credentials.accessToken = (string)json[ "access_token" ];
-                        Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds( (double)json[ "expires_in" ] );
-                        Credentials.Save();
-                        if ( Credentials.accessToken == null )
+                        if ( response == null )
                         {
-                            CurrentState = State.ConnectionLost;
-                            CurrentState = State.LoggedOut;
-                            throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
+                            throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
                         }
-                        CurrentState = State.Authorized;
+
+                        if ( response.StatusCode == HttpStatusCode.OK )
+                        {
+                            var responseData = await response.Content.ReadAsStringAsync();
+                            var json = JObject.Parse( responseData );
+                            Credentials.refreshToken = (string)json[ "refresh_token" ];
+                            Credentials.accessToken = (string)json[ "access_token" ];
+                            Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds( (double)json[ "expires_in" ] );
+                            Credentials.Save();
+                            if ( Credentials.accessToken == null )
+                            {
+                                CurrentState = State.ConnectionLost;
+                                CurrentState = State.LoggedOut;
+                                throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
+                            }
+
+                            CurrentState = State.Authorized;
+                            return;
+                        }
                     }
-                    else
+                }
+                catch ( Exception ex )
+                {
+                    if ( retry == (maxRetries - 1) )
                     {
                         CurrentState = State.ConnectionLost;
                         CurrentState = State.LoggedOut;
-                        throw new EliteDangerousCompanionAppAuthenticationException( "Invalid refresh token" );
+                        throw new EliteDangerousCompanionAppAuthenticationException( "Request failed after multiple attempts", ex );
                     }
+                    Logging.Warn( $"Attempt {retry + 1} failed: {ex.Message}", ex );
                 }
-            }
-            catch ( HttpRequestException ex )
-            {
-                Logging.Warn( ex.Message, ex );
-                throw new EliteDangerousCompanionAppAuthenticationException( "Request failed", ex );
+
+                await Task.Delay( delay );
+                delay *= 2; // Exponential backoff
             }
         }
 
