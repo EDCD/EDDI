@@ -20,9 +20,19 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             try
             {
-                var result = values.Count == 0 
-                    ? EDDI.Instance.CurrentStarSystem 
-                    : EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[0].AsString );
+                StarSystem result;
+                if ( values.Count == 0 )
+                {
+                    result = EDDI.Instance.CurrentStarSystem;
+                }
+                else if ( ulong.TryParse( values[ 0 ].AsString, out var systemAddress ) )
+                {
+                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress, true, false );
+                }
+                else
+                {
+                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[ 0 ].AsString, true, false );
+                }
 
                 var distanceFromHome = result?.DistanceFromStarSystem(EDDI.Instance.HomeStarSystem);
                 if (distanceFromHome != null)
@@ -31,7 +41,9 @@ namespace EddiSpeechResponder.CustomFunctions
                     result.distancefromhome = distanceFromHome;
                 }
 
-                return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+                return result is null 
+                    ? Value.EmptyMap 
+                    : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
             }
             catch (Exception e)
             {

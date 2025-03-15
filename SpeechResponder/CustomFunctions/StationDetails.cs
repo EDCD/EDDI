@@ -18,15 +18,11 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( Station );
         public IFunction function => Function.CreateNativeMinMax( ( runtime, values, writer ) =>
         {
-            Station result;
-            if (values.Count == 0 || (values.Count > 0 && values[0].AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant()))
-            {
-                result = EDDI.Instance.CurrentStation;
-            }
-            else
+            Station station;
+            if ( values.Any() )
             {
                 StarSystem system;
-                if (values.Count == 1 || (values.Count > 1 && values[1].AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant()))
+                if ( values.Count < 2 || string.IsNullOrEmpty( values[ 1 ].AsString ) )
                 {
                     // Current system
                     system = EDDI.Instance.CurrentStarSystem;
@@ -34,11 +30,24 @@ namespace EddiSpeechResponder.CustomFunctions
                 else
                 {
                     // Named system
-                    system = EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[1].AsString );
+                    system = ulong.TryParse( values[ 1 ].AsString, out var systemAddress )
+                        ? EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress, true, false )
+                        : EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[ 1 ].AsString, true, false );
                 }
-                result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name?.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
+
+                station = long.TryParse( values[ 0 ].AsString, out var marketID )
+                    ? system?.stations?.Find( v => v.marketId == marketID )
+                    : system?.stations?.Find( v =>
+                        v.name?.ToLowerInvariant() == values[ 0 ].AsString?.ToLowerInvariant() );
             }
-            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+            else
+            {
+                station = EDDI.Instance.CurrentStation;
+            }
+
+            return station is null 
+                ? Value.EmptyMap 
+                : Value.FromReflection( station, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 1, 2);
     }
 }

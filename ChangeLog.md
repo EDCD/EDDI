@@ -2,6 +2,15 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.1-a1
+  * Core
+    * Added a speculative fix for failed `SystemDetails` lookups in new / unexplored star systems.
+  * Speech Responder
+    * Custom Functions
+      * `BodyDetails` function revised to accept either body ID and system address numeric values or body and system name values.
+      * `StationDetails` function revised to accept either market ID and system address numeric values or station and system name values.
+      * `SystemDetails` function revised to accept either a numeric system address or a system name value.
+
 ## 4.1.0
   * Core
     * Added `Coriolis (Beta)` export target to Ship Monitor and `coriolisbeta` plugin command.

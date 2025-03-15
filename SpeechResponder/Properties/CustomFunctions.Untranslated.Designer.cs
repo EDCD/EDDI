@@ -79,12 +79,12 @@ namespace EddiSpeechResponder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This function will provide full information for a body given its name.
         ///
-        ///BodyDetails() takes a single mandatory argument of the name of the body for which you want more information.  If the body is not in the current system then it can be provided with a second parameter of the name of the system.
+        ///BodyDetails() takes a single mandatory argument of either the name or numeric ID of the body for which you want more information.  If the body is not in the current system then it can be provided with a second parameter of either the name or numeric address of the system.
         ///
         ///Common usage of this is to provide further information about a body, for example:
         ///
         ///    {set body to BodyDetails(&quot;Earth&quot;, &quot;Sol&quot;)}
-        ///    Earth is {body.distancefromstar} light years from the system&apos;s main star..
+        ///    {body.name} is {body.dista [rest of string was truncated]&quot;;.
         /// </summary>
         public static string BodyDetails {
             get {
@@ -818,12 +818,11 @@ namespace EddiSpeechResponder.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This function will provide full information for a station given its name and optional system.
         ///
-        ///StationDetails() takes a single mandatory argument of the name of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name of the system.
+        ///StationDetails() takes a single mandatory argument of either the name or numeric ID of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name or numeric address of the system.
         ///
         ///Common usage of this is to provide further information about a station, for example:
         ///
-        ///    {set station to StationDetails(&quot;Jameson Memorial&quot;, &quot;Shinrarta Dezhra&quot;)}
-        ///    Jameson  [rest of string was truncated]&quot;;.
+        ///    {set station to StationDetails(&quot;Jameson Memor [rest of string was truncated]&quot;;.
         /// </summary>
         public static string StationDetails {
             get {
@@ -845,13 +844,15 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This function will provide full information for a star system given its name.
+        ///   Looks up a localized string similar to This function will provide full information for a star system.
         ///
-        ///SystemDetails() takes a single argument of the star system for which you want more information.
+        ///SystemDetails() takes a single argument of either the star system name or numeric address for which you want more information.
         ///
         ///Common usage of this is to provide further information about a star system, for example:
         ///
-        ///    Sol has {len(SystemDetails(&quot;Sol&quot;).bodies)} bodies..
+        ///    Sol has {len(SystemDetails(&quot;Sol&quot;).bodies)} bodies.
+        ///
+        ///    Alioth has {len(SystemDetails(1109989017963).bodies)} bodies..
         /// </summary>
         public static string SystemDetails {
             get {

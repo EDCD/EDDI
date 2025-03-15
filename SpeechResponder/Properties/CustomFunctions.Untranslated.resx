@@ -130,12 +130,15 @@ Common usage of this is to provide further information about a blueprint, for ex
   <data name="BodyDetails" xml:space="preserve">
     <value>This function will provide full information for a body given its name.
 
-BodyDetails() takes a single mandatory argument of the name of the body for which you want more information.  If the body is not in the current system then it can be provided with a second parameter of the name of the system.
+BodyDetails() takes a single mandatory argument of either the name or numeric ID of the body for which you want more information.  If the body is not in the current system then it can be provided with a second parameter of either the name or numeric address of the system.
 
 Common usage of this is to provide further information about a body, for example:
 
     {set body to BodyDetails("Earth", "Sol")}
-    Earth is {body.distancefromstar} light years from the system's main star.</value>
+    {body.name} is {body.distancefromstar} light seconds from the system's main star.
+
+    {set body to BodyDetails(3, 10477373803)}
+    {body.name}  is {body.distancefromstar} light seconds from the system's main star.</value>
   </data>
   <data name="CargoDetails" xml:space="preserve">
     <value>This function will provide full information for a cargo, carried in the commander's hold.
@@ -525,7 +528,7 @@ SecurityLevelDetails() takes a single argument of the security level for which y
 At current this does not have a lot of use as the security level object only contains its name, but this may be expanded in future.</value>
   </data>
   <data name="SetState" xml:space="preserve">
-	  <value>This function will set a session state value. The value will be available in future scripts or child scripts throughout the remainder of the EDDI session as a property of the persistent 'state' object. If you wish to refer to the stored value in the same script where it was stored then please retrieve the value using the 'GetState' function.
+    <value>This function will set a session state value. The value will be available in future scripts or child scripts throughout the remainder of the EDDI session as a property of the persistent 'state' object. If you wish to refer to the stored value in the same script where it was stored then please retrieve the value using the 'GetState' function.
 
 SetState takes two arguments: the name of the state value to set, and its value.  The name of the state value will be converted to lower-case and spaces changed to underscores.  The value must be either a boolean, a number, a string, or a null / void value; other values will be ignored.
 
@@ -626,12 +629,15 @@ At current this does not have a lot of use as the state object only contains its
   <data name="StationDetails" xml:space="preserve">
     <value>This function will provide full information for a station given its name and optional system.
 
-StationDetails() takes a single mandatory argument of the name of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name of the system.
+StationDetails() takes a single mandatory argument of either the name or numeric ID of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name or numeric address of the system.
 
 Common usage of this is to provide further information about a station, for example:
 
     {set station to StationDetails("Jameson Memorial", "Shinrarta Dezhra")}
-    Jameson Memorial is {station.distancefromstar} light years from the system's main star.</value>
+    {station.name} is {station.distancefromstar} light seconds from the system's main star.
+
+    {set station to StationDetails(128666762, 3932277478106)}
+    {station.name} is {station.distancefromstar} light seconds from the system's main star.</value>
   </data>
   <data name="SuperpowerDetails" xml:space="preserve">
     <value>This function will provide full information for a superpower given its name.
@@ -641,13 +647,15 @@ SuperpowerDetails() takes a single argument of the superpower for which you want
 At current this does not have a lot of use as the superpower object only contains its name but this may be expanded in future.</value>
   </data>
   <data name="SystemDetails" xml:space="preserve">
-    <value>This function will provide full information for a star system given its name.
+    <value>This function will provide full information for a star system.
 
-SystemDetails() takes a single argument of the star system for which you want more information.
+SystemDetails() takes a single argument of either the star system name or numeric address for which you want more information.
 
 Common usage of this is to provide further information about a star system, for example:
 
-    Sol has {len(SystemDetails("Sol").bodies)} bodies.</value>
+    Sol has {len(SystemDetails("Sol").bodies)} bodies.
+
+    Alioth has {len(SystemDetails(1109989017963).bodies)} bodies.</value>
   </data>
   <data name="TradeRatingDetails" xml:space="preserve">
     <value>This function will provide full information for a trade rating given its name.

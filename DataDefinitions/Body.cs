@@ -598,8 +598,11 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use bodytype instead - type creates a collision with Event.type.")]
         public string type => bodytype;
 
-        [JsonIgnore, Obsolete("Please use bodyType instead")]
+        [JsonIgnore, Obsolete("Please use bodyType instead.")]
         public BodyType Type => bodyType;
+
+        [JsonIgnore, Obsolete( "Please use distance instead." ), JetBrains.Annotations.UsedImplicitly]
+        public decimal? distancefromstar => distance;
 
         // Density
         private decimal? GetDensity()
