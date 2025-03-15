@@ -1,10 +1,10 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report a bug and help us improve
 title: ''
+type: Bug
 labels: ''
 assignees: ''
-
 ---
 
 ## What's Wrong (please be as specific as possible)
