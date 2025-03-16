@@ -254,6 +254,18 @@ namespace EddiCommanderMonitor
 
             var configuration = ConfigService.Instance.commanderConfiguration;
 
+            // Legacy configurations may not have system address values stored. Fix that here.
+            if ( configuration.homeSystemAddress is null && !string.IsNullOrEmpty(configuration.homeSystemName) )
+            {
+                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.homeSystemName );
+                configuration.homeSystemAddress = wp.systemAddress;
+            }
+            if ( configuration.squadronSystemAddress is null && !string.IsNullOrEmpty( configuration.squadronSystemName ) )
+            {
+                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.squadronSystemName );
+                configuration.squadronSystemAddress = wp.systemAddress;
+            }
+
             setHomeSystem( configuration.homeSystemAddress );
             setHomeStation( configuration.homeStationMarketID );
             setSquadronSystem( configuration.squadronSystemAddress, configuration.squadronFaction );
