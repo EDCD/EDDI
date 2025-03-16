@@ -287,11 +287,11 @@ namespace EddiSpeechService
             }
         }
 
-        internal bool checkSpeechInterrupt ( int priority )
+        internal bool checkSpeechInterrupt ( int peekedSpeechPriority )
         {
             // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
             // Priority 5 speech in interruptable by any higher priority speech. 
-            if ( priority <= 1 || ( activeSpeechPriority >= 5 && priority < 5 ) )
+            if ( ( activeSpeechPriority > peekedSpeechPriority && peekedSpeechPriority <= 1 ) || ( activeSpeechPriority >= 5 && peekedSpeechPriority < 5 ) )
             {
                 return true;
             }

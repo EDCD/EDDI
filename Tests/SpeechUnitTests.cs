@@ -73,6 +73,7 @@ namespace Tests
             var priority4speech = new EddiSpeech("Priority 2", null, 4);
             var priority2speech = new EddiSpeech("Priority 4", null, 2);
             var priority1speech = new EddiSpeech("Priority 1", null, 1);
+            var priority0speech = new EddiSpeech("Priority 0", null, 0);
 
             // Set up priority 5 speech
             speechService.activeSpeechPriority = priority5speech.priority;
@@ -90,6 +91,17 @@ namespace Tests
 
             // Check that priority 4 speech IS interrupted by priority 1 speech.
             Assert.IsTrue( speechService.checkSpeechInterrupt( priority1speech.priority ) );
+
+            // Check that priority 1 speech IS NOT interrupted by priority 1 speech.
+            speechService.activeSpeechPriority = priority1speech.priority;
+            Assert.IsFalse( speechService.checkSpeechInterrupt( priority1speech.priority ) );
+
+            // Check that priority 1 speech IS interrupted by priority 0 speech.
+            Assert.IsTrue( speechService.checkSpeechInterrupt( priority0speech.priority ) );
+
+            // Check that priority 0 speech IS NOT interrupted by priority 0 speech.
+            speechService.activeSpeechPriority = priority0speech.priority;
+            Assert.IsFalse( speechService.checkSpeechInterrupt( priority0speech.priority ) );
         }
 
         [TestMethod]
