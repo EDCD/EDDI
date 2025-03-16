@@ -43,6 +43,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Surface signals` updated to include `systemAddress` and `bodyId` properties.
       * `System scan complete` updated to include a `systemAddress` property.
       * `Touchdown` updated to include `systemAddress` and `bodyId` properties.
+    * Scripts
+      * `System report` updated for slightly better grammar if there is a problem classifying stations. 
 
 ## 4.1.0
   * Core
