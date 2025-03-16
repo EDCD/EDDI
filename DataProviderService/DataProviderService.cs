@@ -119,7 +119,7 @@ namespace EddiDataProviderService
             // Fetch from external data providers (when so instructed)
             if ( missingSystems().Any() && fetchIfMissing )
             {
-                var fetchedSystems = FetchSystemsData( missingSystems(), showMarketDetails );
+                var fetchedSystems = FetchSystemsData( missingSystems(), showMarketDetails ) ?? new List<StarSystem>();
                 if ( fetchedSystems?.Count > 0 )
                 {
                     // Synchronize EDSM visits and comments
@@ -329,10 +329,9 @@ namespace EddiDataProviderService
 
         internal static List<StarSystem> PreserveUnsyncedProperties ( List<StarSystem> updatedSystems, List<DatabaseStarSystem> databaseStarSystems )
         {
-            if ( updatedSystems is null ) { return new List<StarSystem>(); }
-            foreach ( var updatedSystem in updatedSystems )
+            foreach ( var updatedSystem in updatedSystems ?? new List<StarSystem>() )
             {
-                foreach ( var databaseStarSystem in databaseStarSystems )
+                foreach ( var databaseStarSystem in databaseStarSystems ?? new List<DatabaseStarSystem>() )
                 {
                     if ( updatedSystem.systemAddress == databaseStarSystem.systemAddress )
                     {
@@ -348,7 +347,7 @@ namespace EddiDataProviderService
                     }
                 }
             }
-            return updatedSystems;
+            return updatedSystems ?? new List<StarSystem>();
         }
 
         internal static void PreserveSystemProperties ( StarSystem updatedSystem, IDictionary<string, object> oldStarSystem )
