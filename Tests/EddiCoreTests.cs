@@ -23,7 +23,7 @@ namespace Tests
             MakeSafe();
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestKeepAlive()
         {
             var monitor = EDDI.Instance.monitors.FirstOrDefault(m => m.MonitorName() == "Journal monitor");

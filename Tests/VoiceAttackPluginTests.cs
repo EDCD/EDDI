@@ -320,7 +320,7 @@ namespace Tests
             }
         }
 
-        [ TestMethod ]
+        [ TestMethod, DoNotParallelize ]
         public void TestVAShip ()
         {
             dynamic vaProxy = new MockVAProxy();
