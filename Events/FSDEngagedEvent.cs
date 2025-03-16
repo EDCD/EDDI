@@ -8,7 +8,13 @@ namespace EddiEvents
     {
         public const string NAME = "FSD engaged";
         public const string DESCRIPTION = "Triggered when your FSD has engaged";
-        public const string SAMPLE = @"{""timestamp"":""2016-08-09T08:46:29Z"",""event"":""StartJump"",""JumpType"":""Hyperspace"",""StarClass"":""L"",""StarSystem"":""LFT 926""}";
+        public static readonly string[] SAMPLES =
+        {
+            @"{ ""timestamp"":""2016-08-09T08:46:29Z"",""event"":""StartJump"",""JumpType"":""Hyperspace"",""StarClass"":""L"",""StarSystem"":""LFT 926""}",
+            @"{ ""timestamp"":""2024-11-10T05:18:53Z"", ""event"":""StartJump"", ""JumpType"":""Hyperspace"", ""Taxi"":false, ""StarSystem"":""La Rochelle"", ""SystemAddress"":9467047454121, ""StarClass"":""M"" }",
+            @"{ ""timestamp"":""2024-11-10T05:49:23Z"", ""event"":""StartJump"", ""JumpType"":""Hyperspace"", ""Taxi"":false, ""StarSystem"":""Carener"", ""SystemAddress"":8879945552602, ""StarClass"":""K"" }",
+            @"{ ""timestamp"":""2023-08-13T09:44:18Z"", ""event"":""StartJump"", ""JumpType"":""Hyperspace"", ""Taxi"":true, ""StarSystem"":""LHS 547"", ""SystemAddress"":7268024133033, ""StarClass"":""M"" }"
+        };
 
         [PublicAPI("The target frame (Supercruise/Hyperspace)")]
         public string target { get; private set; }
