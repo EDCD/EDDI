@@ -45,7 +45,7 @@ namespace EddiDataProviderService
         {
             if ( !string.IsNullOrEmpty( systemName ) && starSystemNameCache.Contains( systemName ) )
             {
-                if ( starSystemCache.Get( systemName ) is ulong systemAddress )
+                if ( starSystemNameCache.Get( systemName ) is ulong systemAddress )
                 {
                     return TryGet( systemAddress, out result );
                 }
