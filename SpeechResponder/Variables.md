@@ -61,7 +61,11 @@ An engineer object
 
   - *name* - the name of the engineer
   - *systemname* - the name of the star system at which the engineer resides
+  - *systemAddress* - the numeric address of the star system at which the engineer resides
   - *stationname* - the name of the station at which the engineer resides
+  - *marketId* - the numeric ID of the station at which the engineer resides
+  - *bodyname* - the name of the body at which the engineer resides
+  - *bodyId* - the numeric ID of the body at which the engineer resides
   - *rank* - the rank of your relationship with the engineer
   - *stage* - the current stage of your relations with the engineer (e.g. Invited/Known/Unlocked/Barred)
   - *rankprogress* - the percentage towards your next rank with the engineer
