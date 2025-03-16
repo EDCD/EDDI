@@ -356,12 +356,6 @@ namespace EddiCompanionAppService
             }
 
             CurrentState = State.TokenRefresh;
-            var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL )
-            {
-                Content = new StringContent(
-                    $"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}",
-                    Encoding.UTF8, "application/x-www-form-urlencoded" )
-            };
 
             const int maxRetries = 3;
             var delay = 1000; // Initial delay in milliseconds
@@ -370,6 +364,13 @@ namespace EddiCompanionAppService
             {
                 try
                 {
+                    var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL )
+                    {
+                        Content = new StringContent(
+                            $"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}",
+                            Encoding.UTF8, "application/x-www-form-urlencoded" )
+                    };
+
                     using ( var response = await httpClient.SendAsync( request ) )
                     {
                         if ( response == null )
