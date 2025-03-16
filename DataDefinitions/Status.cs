@@ -281,8 +281,8 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public decimal? fuel => fuelInTanks + fuelInReservoir;
 
-        [PublicAPI]
-        public decimal? fuel_percent { get; set; }
+        [ PublicAPI ] // Randomize at-rest fuel for speech tests.
+        public decimal? fuel_percent { get; set; } = new Random().Next( 1, 100 );
 
         public int? fuel_percentile => fuel_percent is null 
             ? null 
