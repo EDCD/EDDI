@@ -47,6 +47,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Carrier jump engaged` updated to remove excess "welcome home" statement and invoke `System report` when applicable.
       * `Carrier jumped` updated to remove segments already voiced by `Carrier jump engaged`.
       * `FSD engaged` updated to remove excess "welcome home" statement and invoke `System report` when applicable.
+      * `Jumped` updated to remove segments already voiced by `FSD engaged`.
       * `System report` updated for slightly better grammar if there is a problem classifying stations. 
 
 ## 4.1.0
