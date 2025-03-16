@@ -44,6 +44,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `System scan complete` updated to include a `systemAddress` property.
       * `Touchdown` updated to include `systemAddress` and `bodyId` properties.
     * Scripts
+      * `Carrier jump engaged` updated to remove excess "welcome home" statement and invoke `System report` when applicable.
       * `System report` updated for slightly better grammar if there is a problem classifying stations. 
 
 ## 4.1.0
