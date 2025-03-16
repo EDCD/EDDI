@@ -27,11 +27,11 @@ namespace EddiSpeechResponder.CustomFunctions
                 }
                 else if ( ulong.TryParse( values[ 0 ].AsString, out var systemAddress ) )
                 {
-                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress, true, false );
+                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress, true, true );
                 }
                 else
                 {
-                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[ 0 ].AsString, true, false );
+                    result = EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[ 0 ].AsString, true, true );
                 }
 
                 var distanceFromHome = result?.DistanceFromStarSystem(EDDI.Instance.HomeStarSystem);
