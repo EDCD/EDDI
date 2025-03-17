@@ -175,14 +175,14 @@ namespace EddiUI
             InitializeComponent();
             DataContext = EDDI.Instance;
 
-            // Start the EDDI instance
-            EDDI.Instance.Start();
+            versionText.Text = Constants.EDDI_VERSION.ToString();
+            Title = "EDDI v." + Constants.EDDI_VERSION;
+            setStatusInfo();
+            CompanionAppService.Instance.StateChanged += ( s, e ) => setStatusInfo();
 
             // Configure the EDDI tab
-            setStatusInfo();
-
             // Need to set up the correct information in the hero text depending on from where we were started
-            if (EDDI.FromVA)
+            if ( EDDI.FromVA)
             {
                 // Allow the EDDI VA plugin to change window state
                 VaWindowStateChange += OnVaWindowStateChange;
@@ -195,10 +195,10 @@ namespace EddiUI
                 chooseLanguageText.Text = Properties.Resources.choose_lang_label;
             }
 
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
-            List<LanguageDef> langs = GetAvailableLangs(); // already correctly sorted
+            var langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
             chooseLanguageDropDown.SelectedItem = string.IsNullOrEmpty(eddiConfiguration.OverrideCulture) 
@@ -206,14 +206,15 @@ namespace EddiUI
                 : langs.Find(l => l.ci.Name == eddiConfiguration.OverrideCulture);
             chooseLanguageDropDown.SelectionChanged += (sender, e) =>
             {
-                LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
+                var cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
                 eddiConfiguration.OverrideCulture = cultureDef.ci.Name;
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
             };
 
             LoadAndSortTabs(eddiConfiguration);
-
             RestoreWindowState();
+
+            // Start the EDDI instance
             EDDI.Instance.Start();
         }
 
@@ -447,9 +448,6 @@ namespace EddiUI
         // Set the fields relating to status information
         private void setStatusInfo()
         {
-            versionText.Text = Constants.EDDI_VERSION.ToString();
-            Title = "EDDI v." + Constants.EDDI_VERSION;
-
             if (EddiUpgrader.UpgradeVersion != null)
             {
                 statusText.Text = string.Format(Properties.Resources.update_message, EddiUpgrader.UpgradeVersion);
