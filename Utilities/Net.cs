@@ -83,6 +83,11 @@ namespace Utilities
             {
                 var fileName = Path.GetTempPath() + @"\" + name;
                 var response = await new HttpClient().GetAsync(uri);
+                if ( !response.IsSuccessStatusCode )
+                {
+                    Logging.Error( $"Failed to download update file. Status code: {response.StatusCode}" );
+                    return null;
+                }
                 using (var fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write))
                 {
                     await response.Content.CopyToAsync(fs);
