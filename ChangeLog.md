@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.2
+  * Speech Responder
+    * Scripts
+      * `Ship fsd` updated to remove a debug override which should have been removed prior to release.
+
 ## 4.1.1
   * Core
     * Added a speculative fix for failed `SystemDetails` lookups in new / unexplored star systems.
