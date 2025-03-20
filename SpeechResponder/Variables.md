@@ -748,10 +748,12 @@ Any values might be missing, depending on EDDI's configuration.
   - *near_surface* - a boolean value indicating whether the commander is near a landable surface (within it's gravity well)
   - *overheating* - a boolean value indicating whether the commander's vehicle is overheating
   - *low_fuel* - a boolean value indicating whether the commander has less than 25% fuel remaining
-  - *fsd_status* - the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
+  - *fsd_status* - the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", "masslock", "hyperspace", or "supercruise"
   - *fsd_hyperdrive_charging* - a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
+  - *fsd_supercruise_assist* - a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
+  - *fsd_supercruise_boosting* - a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
   - *srv_drive_assist* - a boolean value indicating whether SRV drive assist is active
-  - *srv_highbeam* - true if the lights in your SRV are set to the high beam mode.
+  - *srv_high_beams* - true if the lights in your SRV are set to the high beam mode.
   - *srv_under_ship* - a boolean value indicating whether the SRV in within the proximity zone around the ship
   - *srv_turret_deployed* - a boolean value indicating whether the SRV's turret has been deployed
   - *srv_handbrake_activated* - a boolean value indicating whether the SRV's handbrake has been activated
@@ -763,7 +765,7 @@ Any values might be missing, depending on EDDI's configuration.
   - *hardpoints_deployed* - a boolean value indicating whether hardpoints are currently deployed
   - *flight_assist_off* - a boolean value indicating whether flight assistance has been deactivated
   - *supercruise* - a boolean value indicating whether the ship is currently in supercruise
-  - *hyperspace* - true if jumping between star systems
+  - *hyperspace* - a boolean value indicating whether the ship is currently jumping between star systems
   - *shields_up* - a boolean value indicating whether the ship's shields are maintaining their integrity
   - *landing_gear_down* - a boolean value indicating whether the ship's landing gears have been deployed
   - *landed* - a boolean value indicating whether the ship is currently landed (on a surface)
@@ -790,12 +792,13 @@ Any values might be missing, depending on EDDI's configuration.
   - *altitude* - a decimal value indicating the ship's current altitude (if in flight near a surface)
   - *heading* - a decimal value indicating the ship's current heading (if near a surface)
   - *slope* - a decimal value indicating the ship's current slope relative to the horizon (if near a surface)
+  - *gliding* - true if your ship is in glide mode near a planet surface.
   - *analysis_mode* - a boolean value indicating whether the ship's HUD is currently in Analysis Mode
   - *night_vision* - a boolean value indicating whether night vision is currently active
   - *fuel* - a decimal value indicating the ship's current fuel (including fuel in the active fuel reservoir)
   - *fuel_percent* - a decimal percent value calculated from your current total fuel capacity
   - *fuel_seconds* - an integer value projecting the time remaining before you run out of fuel, in seconds
-  - *cargo_carried* - an integer value of the current cargo you are carrying
+  - *cargo_carried* - the tons of cargo you are currently carrying
   - *legalstatus* - the ship's current legal status. Can be one of 
     - "Clean", 
     - "Illegal cargo", 
@@ -807,8 +810,6 @@ Any values might be missing, depending on EDDI's configuration.
   - *bodyname* - the name of the current body (if landed or in an srv)
   - *planetradius* - the radius of the current body (if landed or in an srv)
   - *altitude_from_average_radius* - true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
-  - *hyperspace* - true if jumping between star systems.
-  - *srv_highbeam* - true if the lights in your SRV are set to the high beam mode.
   - *on_foot_in_station* - true if you've disembarked at a station.
   - *on_foot_on_planet* - true if you've disembarked on a planet surface.
   - *on_foot_in_hangar* - true if you've disembarked in a vehicle hangar.
@@ -816,14 +817,20 @@ Any values might be missing, depending on EDDI's configuration.
   - *aim_down_sight* - true if you are on foot and aiming through a scope.
   - *low_oxygen* - true if you are on foot and oxygen is running low.
   - *low_health* - true if you are on foot and health is running low.
+  - *oxygen* - a decimal value indicating your current oxygen level (when on foot).
+  - *health* - a decimal value indicating your current health level (when on foot).
   - *on_foot_temperature* - the environment temperature when on foot. May be one of "very cold", "cold", "temperate", "hot", or "very hot".
+  - *temperature* - a decimal value indicating the current surface temperature in Kelvin (when on foot)
+  - *gravity* - a decimal value indicating the surface gravity relative to 1G (when on foot).
+  - *selected_weapon* - the model of your current selected weapon (when on foot)
   - *destination_name* - the currently selected destination (including in-system destinations).
   - *destination_localized_name* - the localized name of the currently selected destination, if available.
   - *credit_balance* - the current credit balance of the commander, if available.
   - *breathable_atmosphere* - true if you are on foot in an area with a breathable atmosphere.
   - *telepresence_multicrew* - true if you are participating in telepresence multicrew.
   - *physical_multicrew* - true if you are participating in physical multicrew.
-
+  - *npc_crew_active* - true if at least one NPC crew member is assigned to active duty on your ship.
+  
 ---
 ## Traffic
 

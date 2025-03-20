@@ -3,10 +3,23 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 4.1.2
+  * Core
+    * Status object
+      * `gliding` added. This is a boolean value indicating whether your ship is in glide mode near a planet surface.
+      * `fsd_supercruise_assist` added. This is a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
+      * `fsd_supercruise_boosting` added. This is a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
+      * `fsd_status` updated to add states for `hyperdrive` and `supercruise`.
+      * `gravity` added. This is a decimal value indicating the surface gravity relative to 1G (when on foot).
+      * `health` added. This is a decimal value indicating your current health level (when on foot).
+      * `npc_crew_active` added. This is a boolean value indicating whether at least one NPC crew member is assigned to active duty on your ship.
+      * `oxygen` added. This is a decimal value indicating your current oxygen level (when on foot).
+      * `selected_weapon` the model of your current selected weapon (when on foot).
+      * `srv_high_beams` documentation updated. Was incorrectly documented as `srv_highbeam`.
+      * `temperature` added. This is a decimal value indicating the current surface temperature in Kelvin (when on foot).
   * Speech Responder
     * Scripts
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release.
-
+      
 ## 4.1.1
   * Core
     * Added a speculative fix for failed `SystemDetails` lookups in new / unexplored star systems.
