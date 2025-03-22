@@ -4,11 +4,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.1.2
   * Core
-    * Status object
+    * Fixed a bug that could cause multiple instances of monitor and responder threads to run simultaneously. (#2713)
+    * Updated the Status object
       * `gliding` added. This is a boolean value indicating whether your ship is in glide mode near a planet surface.
       * `fsd_supercruise_assist` added. This is a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
       * `fsd_supercruise_boosting` added. This is a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
-      * `fsd_status` updated to add states for `hyperdrive` and `supercruise`.
+      * `fsd_status` updated to add `hyperdrive` and `supercruise`.
       * `gravity` added. This is a decimal value indicating the surface gravity relative to 1G (when on foot).
       * `health` added. This is a decimal value indicating your current health level (when on foot).
       * `npc_crew_active` added. This is a boolean value indicating whether at least one NPC crew member is assigned to active duty on your ship.

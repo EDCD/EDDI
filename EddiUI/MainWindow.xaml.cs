@@ -175,6 +175,9 @@ namespace EddiUI
             InitializeComponent();
             DataContext = EDDI.Instance;
 
+            // Start the EDDI instance
+            EDDI.Instance.Start();
+
             versionText.Text = Constants.EDDI_VERSION.ToString();
             Title = "EDDI v." + Constants.EDDI_VERSION;
             setStatusInfo();
@@ -213,9 +216,6 @@ namespace EddiUI
 
             LoadAndSortTabs(eddiConfiguration);
             RestoreWindowState();
-
-            // Start the EDDI instance
-            EDDI.Instance.Start();
         }
 
         class TabItemComparer : Comparer<TabItem>

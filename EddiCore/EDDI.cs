@@ -609,18 +609,22 @@ namespace EddiCore
 
                     if (!enabled && !monitor.IsRequired())
                     {
-                        Logging.Info( monitor.MonitorName() + " is disabled; not starting");
+                        Logging.Info( $"{monitor.MonitorName()} is disabled; not starting" );
+                    }
+                    else if ( activeMonitors.Any( m => m.MonitorName() == monitor.MonitorName() ) )
+                    {
+                        Logging.Warn( $"{monitor.MonitorName()} is already running." );
                     }
                     else
                     {
-                        activeMonitors.Add(monitor);
-                        if (monitor.NeedsStart())
+                        activeMonitors.Add( monitor );
+                        if ( monitor.NeedsStart() )
                         {
                             var monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
                             {
                                 IsBackground = true
                             };
-                            Logging.Info("Starting keepalive for " + monitor.MonitorName());
+                            Logging.Info( "Starting keepalive for " + monitor.MonitorName() );
                             monitorThread.Name = monitor.MonitorName();
                             monitorThread.Start();
                         }
@@ -643,7 +647,11 @@ namespace EddiCore
 
                     if (!enabled)
                     {
-                        Logging.Info(responder.ResponderName() + " is disabled; not starting");
+                        Logging.Info( $"{responder.ResponderName()} is disabled; not starting" );
+                    }
+                    else if ( activeResponders.Any( r => r.ResponderName() == responder.ResponderName() ) )
+                    {
+                        Logging.Warn( $"{responder.ResponderName()} is already running." );
                     }
                     else
                     {
