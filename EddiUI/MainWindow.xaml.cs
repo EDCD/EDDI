@@ -448,33 +448,37 @@ namespace EddiUI
         // Set the fields relating to status information
         private void setStatusInfo()
         {
-            if (EddiUpgrader.UpgradeVersion != null)
+            // The calling thread for this method may not have direct access to the dispatcher so we invoke the dispatcher here.
+            System.Windows.Application.Current.Dispatcher.InvokeAsync( () =>
             {
-                statusText.Text = string.Format(Properties.Resources.update_message, EddiUpgrader.UpgradeVersion);
-                // Do not show upgrade button if EDDI is started from VA
-                upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
-            }
-            else
-            {
-                upgradeButton.Visibility = Visibility.Collapsed;
-                var capiState = CompanionAppService.Instance.CurrentState;
-                if (!EDDI.running)
+                if ( EddiUpgrader.UpgradeVersion != null )
                 {
-                    statusText.Text = Properties.Resources.safe_mode;
-                }
-                else if (capiState == CompanionAppService.State.NoClientIDConfigured)
-                {
-                    statusText.Text = Properties.Resources.frontier_api_not_enabled;
-                }
-                else if (capiState != CompanionAppService.State.Authorized)
-                {
-                    statusText.Text = Properties.Resources.frontier_api_nok;
+                    statusText.Text = string.Format( Properties.Resources.update_message, EddiUpgrader.UpgradeVersion );
+                    // Do not show upgrade button if EDDI is started from VA
+                    upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
                 }
                 else
                 {
-                    statusText.Text = Properties.Resources.operational;
+                    upgradeButton.Visibility = Visibility.Collapsed;
+                    var capiState = CompanionAppService.Instance.CurrentState;
+                    if ( !EDDI.running )
+                    {
+                        statusText.Text = Properties.Resources.safe_mode;
+                    }
+                    else if ( capiState == CompanionAppService.State.NoClientIDConfigured )
+                    {
+                        statusText.Text = Properties.Resources.frontier_api_not_enabled;
+                    }
+                    else if ( capiState != CompanionAppService.State.Authorized )
+                    {
+                        statusText.Text = Properties.Resources.frontier_api_nok;
+                    }
+                    else
+                    {
+                        statusText.Text = Properties.Resources.operational;
+                    }
                 }
-            }
+            } );
         }
 
         // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has

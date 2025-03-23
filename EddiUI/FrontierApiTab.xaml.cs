@@ -20,13 +20,7 @@ namespace EddiUI
 
         private void companionApiStatusChanged ( CompanionAppService.State oldState, CompanionAppService.State newState )
         {
-            // The calling thread for this method may not have direct access to the MainWindow dispatcher so we invoke the dispatcher here.
-            Application.Current?.Dispatcher?.InvokeAsync( () =>
-            {
-                MainWindow mainwindow = (MainWindow)Application.Current?.MainWindow;
-                mainwindow?.Dispatcher?.InvokeAsync( setStatusInfo );
-            } );
-
+            setStatusInfo();
             if ( oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized )
             {
@@ -43,35 +37,40 @@ namespace EddiUI
         // Set the fields relating to status information
         private void setStatusInfo ()
         {
-            switch ( CompanionAppService.Instance.CurrentState )
+            // The calling thread for this method may not have direct access to the dispatcher so we invoke the dispatcher here.
+            Application.Current.Dispatcher.InvokeAsync( () =>
             {
-                case CompanionAppService.State.LoggedOut:
-                case CompanionAppService.State.ConnectionLost:
-                    companionAppStatusValue.Text = Properties.Resources.frontierApiNotConnected;
-                    companionAppButton.Content = Properties.Resources.login;
-                    companionAppButton.IsEnabled = !EDDI.FromVA;
-                    companionAppText.Text = !EDDI.FromVA ? "" : Properties.Resources.frontier_api_cant_login_from_va;
-                    break;
-                case CompanionAppService.State.AwaitingCallback:
-                    companionAppStatusValue.Text = Properties.Resources.frontierApiConnecting;
-                    companionAppButton.Content = Properties.Resources.reset_button;
-                    companionAppButton.IsEnabled = true;
-                    companionAppText.Text = Properties.Resources.frontier_api_please_authenticate;
-                    break;
-                case CompanionAppService.State.Authorized:
-                case CompanionAppService.State.TokenRefresh:
-                    companionAppStatusValue.Text = Properties.Resources.frontierApiConnected;
-                    companionAppButton.Content = Properties.Resources.reset_button;
-                    companionAppButton.IsEnabled = true;
-                    companionAppText.Text = Properties.Resources.tab_frontier_reset_desc;
-                    break;
-                case CompanionAppService.State.NoClientIDConfigured:
-                    companionAppStatusValue.Text = Properties.Resources.frontierApiNotEnabled;
-                    companionAppButton.Content = Properties.Resources.login;
-                    companionAppButton.IsEnabled = false;
-                    companionAppText.Text = Properties.Resources.tab_frontier_not_enabled_desc;
-                    break;
-            }
+                switch ( CompanionAppService.Instance.CurrentState )
+                {
+                    case CompanionAppService.State.LoggedOut:
+                    case CompanionAppService.State.ConnectionLost:
+                        companionAppStatusValue.Text = Properties.Resources.frontierApiNotConnected;
+                        companionAppButton.Content = Properties.Resources.login;
+                        companionAppButton.IsEnabled = !EDDI.FromVA;
+                        companionAppText.Text =
+                            !EDDI.FromVA ? "" : Properties.Resources.frontier_api_cant_login_from_va;
+                        break;
+                    case CompanionAppService.State.AwaitingCallback:
+                        companionAppStatusValue.Text = Properties.Resources.frontierApiConnecting;
+                        companionAppButton.Content = Properties.Resources.reset_button;
+                        companionAppButton.IsEnabled = true;
+                        companionAppText.Text = Properties.Resources.frontier_api_please_authenticate;
+                        break;
+                    case CompanionAppService.State.Authorized:
+                    case CompanionAppService.State.TokenRefresh:
+                        companionAppStatusValue.Text = Properties.Resources.frontierApiConnected;
+                        companionAppButton.Content = Properties.Resources.reset_button;
+                        companionAppButton.IsEnabled = true;
+                        companionAppText.Text = Properties.Resources.tab_frontier_reset_desc;
+                        break;
+                    case CompanionAppService.State.NoClientIDConfigured:
+                        companionAppStatusValue.Text = Properties.Resources.frontierApiNotEnabled;
+                        companionAppButton.Content = Properties.Resources.login;
+                        companionAppButton.IsEnabled = false;
+                        companionAppText.Text = Properties.Resources.tab_frontier_not_enabled_desc;
+                        break;
+                }
+            } );
         }
 
         // Handle changes to the Frontier API tab
