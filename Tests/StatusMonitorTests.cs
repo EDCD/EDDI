@@ -202,7 +202,7 @@ namespace Tests
             Assert.IsFalse(status.near_surface);
             Assert.IsFalse(status.overheating);
             Assert.IsFalse(status.low_fuel);
-            Assert.AreEqual("ready", status.fsd_status);
+            Assert.AreEqual("supercruise", status.fsd_status);
             Assert.IsFalse(status.srv_drive_assist);
             Assert.IsFalse(status.srv_under_ship);
             Assert.IsFalse(status.srv_turret_deployed);
