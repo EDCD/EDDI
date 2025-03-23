@@ -356,7 +356,7 @@ Data is primarily updated from the `Carrier stats` event and Frontier API data i
   * {BOOL:ipa active}: true if phonetic speech ssml tags are currently enabled
   * {BOOL:horizons}: true if the Horizons expansion is currently active
   * {BOOL:odyssey}: true if the Odyssey expansion is currently active
-  * {TXT:EDDI uri}: uri's for EDDB, EDShipyard, and EDSM are written here when the appropriate plugin command is invoked.
+  * {TXT:EDDI uri}: uri's for Inara, Coriolis, and EDShipyard are written here when the appropriate plugin command is invoked.
   * {BOOL:EDDI speaking}: true if EDDI is currently speaking
   * {TXT:EDDI version}: The currently active version of EDDI
 
