@@ -58,10 +58,13 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {BOOL:Status low fuel} a boolean value indicating whether the commander has less than 25% fuel remaining
   * {TXT:Status fsd status} the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
   * {BOOL:Status fsd hyperdrive charging} a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
+  * {BOOL:Status fsd supercruise assist} a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
+  * {BOOL:Status fsd supercruise boosting} a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
   * {BOOL:Status srv drive assist} a boolean value indicating whether SRV drive assist is active
   * {BOOL:Status srv under ship} a boolean value indicating whether the SRV in within the proximity zone around the ship
   * {BOOL:Status srv turret deployed} a boolean value indicating whether the SRV's turret has been deployed
   * {BOOL:Status srv handbrake activated} a boolean value indicating whether the SRV's handbrake has been activated
+  * {BOOL:Status srv high beams} true if the lights in your SRV are set to the high beam mode.
   * {BOOL:Status scooping fuel} a boolean value indicating whether the ship is currently scooping fuel
   * {BOOL:Status silent running} a boolean value indicating whether silent running is active
   * {BOOL:Status cargo scoop deployed} a boolean value indicating whether the cargo scoop has been deployed
@@ -70,6 +73,7 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {BOOL:Status hardpoints deployed} a boolean value indicating whether hardpoints are currently deployed
   * {BOOL:Status flight assist off} a boolean value indicating whether flight assistance has been deactivated
   * {BOOL:Status supercruise} a boolean value indicating whether the ship is currently in supercruise
+  * {BOOL:Status hyperspace} a boolean value indicating whether the ship is currently jumping between star systems
   * {BOOL:Status shields up} a boolean value indicating whether the ship's shields are maintaining their integrity
   * {BOOL:Status landing gear down} a boolean value indicating whether the ship's landing gears have been deployed
   * {BOOL:Status landed} a boolean value indicating whether the ship is currently landed (on a surface)
@@ -96,10 +100,18 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {BOOL:Status altitude from average radius} true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
   * {BOOL:Status on foot in station} true if you've disembarked at a station.
   * {BOOL:Status on foot on planet} true if you've disembarked on a planet surface.
+  * {BOOL:Status on foot in hangar} true if you've disembarked in a vehicle hangar.
+  * {BOOL:Status on foot social space} true if you've disembarked to a social space (e.g. station concourse).
+  * {BOOL:Status on foot exterior} true if you've disembarked to an exterior space.
   * {BOOL:Status aim down sight} true if you are on foot and aiming through a scope.
   * {BOOL:Status low oxygen} true if you are on foot and oxygen is running low.
   * {BOOL:Status low health} true if you are on foot and health is running low.
   * {TXT:Status on foot temperature} the environment temperature when on foot. May be one of "very cold", "cold", "temperate", "hot", or "very hot".
+  * {BOOL:Status gliding} true if your ship is in glide mode near a planet surface.
+  * {BOOL:Status breathable atmosphere} true if you are on foot in an area with a breathable atmosphere.
+  * {BOOL:Status telepresence multicrew} true if you are participating in telepresence multicrew.
+  * {BOOL:Status physical multicrew} true if you are participating in physical multicrew.
+  * {BOOL:Status npc crew active} true if at least one NPC crew member is assigned to active duty on your ship.
   * {TXT:Status destination} the currently selected destination (including in-system destinations)
   * {TXT:Status localized destination} the localized name of the currently selected destination, if available
 

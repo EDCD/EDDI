@@ -194,7 +194,7 @@ namespace EddiDataDefinitions
         [PublicAPI( @"true if you've disembarked in a vehicle hangar." )]
         public bool on_foot_in_hangar => (flags2 & Flags2.OnFootInHangar) != 0;
 
-        [PublicAPI( @"true if you've disembarked to a social space." )]
+        [PublicAPI( @"true if you've disembarked to a social space (e.g. station concourse)." )]
         public bool on_foot_social_space => (flags2 & Flags2.OnFootInSocialSpace) != 0;
 
         [PublicAPI(@"true if you've disembarked to an exterior space.")]
@@ -217,7 +217,7 @@ namespace EddiDataDefinitions
             ( flags2 & Flags2.VeryHot ) != 0 ? "very hot" :
             "temperate";
 
-        [PublicAPI(@"true if your ship is in glide mode near a planet surface")]
+        [PublicAPI(@"true if your ship is in glide mode near a planet surface.")]
         public bool gliding => (flags2 & Flags2.GlideMode) != 0;
 
         [PublicAPI( @"true if you are on foot in an area with a breathable atmosphere." )]
@@ -235,13 +235,13 @@ namespace EddiDataDefinitions
         // Variables set from pips (these are not always present in the event)
 
         [ PublicAPI( @"a decimal value indicating the power distributor allocation to systems" ) ]
-        public decimal? pips_sys = 0;
+        public decimal? system_pips = 0;
 
         [ PublicAPI( @"a decimal value indicating the power distributor allocation to engines" ) ]
-        public decimal? pips_eng = 0;
+        public decimal? engine_pips = 0;
 
         [ PublicAPI( @"a decimal value indicating the power distributor allocation to weapons" ) ]
-        public decimal? pips_wea = 0;
+        public decimal? weapon_pips = 0;
 
         // Variables set directly from the event (these are not always present in the event)
 

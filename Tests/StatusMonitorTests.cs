@@ -103,9 +103,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("temperate", status.on_foot_temperature);
             Assert.IsFalse(status.hardpoints_deployed);
-            Assert.AreEqual(2M, status.pips_sys);
-            Assert.AreEqual(4M, status.pips_eng);
-            Assert.AreEqual(0M, status.pips_wea);
+            Assert.AreEqual(2M, status.system_pips);
+            Assert.AreEqual(4M, status.engine_pips);
+            Assert.AreEqual(0M, status.weapon_pips);
             Assert.AreEqual(0, status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.AreEqual(32M, status.fuelInTanks);
@@ -167,9 +167,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("temperate", status.on_foot_temperature);
             Assert.IsFalse(status.hardpoints_deployed);
-            Assert.AreEqual(2M, status.pips_sys);
-            Assert.AreEqual(2M, status.pips_eng);
-            Assert.AreEqual(2M, status.pips_wea);
+            Assert.AreEqual(2M, status.system_pips);
+            Assert.AreEqual(2M, status.engine_pips);
+            Assert.AreEqual(2M, status.weapon_pips);
             Assert.AreEqual(0, status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.AreEqual(8M, status.fuelInTanks);
@@ -231,9 +231,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("temperate", status.on_foot_temperature);
             Assert.IsFalse(status.hardpoints_deployed);
-            Assert.AreEqual(2M, status.pips_sys);
-            Assert.AreEqual(2M, status.pips_eng);
-            Assert.AreEqual(2M, status.pips_wea);
+            Assert.AreEqual(2M, status.system_pips);
+            Assert.AreEqual(2M, status.engine_pips);
+            Assert.AreEqual(2M, status.weapon_pips);
             Assert.AreEqual(0, status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.AreEqual(8M, status.fuelInTanks);
@@ -295,9 +295,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("temperate", status.on_foot_temperature);
             Assert.IsTrue(status.hardpoints_deployed);
-            Assert.AreEqual(1M, status.pips_sys);
-            Assert.AreEqual(4M, status.pips_eng);
-            Assert.AreEqual(1M, status.pips_wea);
+            Assert.AreEqual(1M, status.system_pips);
+            Assert.AreEqual(4M, status.engine_pips);
+            Assert.AreEqual(1M, status.weapon_pips);
             Assert.AreEqual(0, status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.AreEqual(0M, status.fuelInTanks);
@@ -359,9 +359,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("temperate", status.on_foot_temperature);
             Assert.IsFalse(status.hardpoints_deployed);
-            Assert.AreEqual(2M, status.pips_sys);
-            Assert.AreEqual(4M, status.pips_eng);
-            Assert.AreEqual(0M, status.pips_wea);
+            Assert.AreEqual(2M, status.system_pips);
+            Assert.AreEqual(4M, status.engine_pips);
+            Assert.AreEqual(0M, status.weapon_pips);
             Assert.AreEqual(0, status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.AreEqual(32M, status.fuelInTanks);
@@ -423,9 +423,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("temperate", status.on_foot_temperature);
             Assert.IsFalse(status.hardpoints_deployed);
-            Assert.AreEqual(3.5M, status.pips_sys);
-            Assert.AreEqual(2M, status.pips_eng);
-            Assert.AreEqual(0.5M, status.pips_wea);
+            Assert.AreEqual(3.5M, status.system_pips);
+            Assert.AreEqual(2M, status.engine_pips);
+            Assert.AreEqual(0.5M, status.weapon_pips);
             Assert.AreEqual(0, status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.AreEqual(0M, status.fuelInTanks);
@@ -487,9 +487,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("cold", status.on_foot_temperature);
             Assert.IsFalse(status.hardpoints_deployed);
-            Assert.IsNull(status.pips_sys);
-            Assert.IsNull(status.pips_eng);
-            Assert.IsNull(status.pips_wea);
+            Assert.IsNull(status.system_pips);
+            Assert.IsNull(status.engine_pips);
+            Assert.IsNull(status.weapon_pips);
             Assert.IsNull(status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.IsNull(status.fuelInTanks);
@@ -556,9 +556,9 @@ namespace Tests
             Assert.IsFalse(status.low_health);
             Assert.AreEqual("temperate", status.on_foot_temperature);
             Assert.IsFalse(status.hardpoints_deployed);
-            Assert.IsNull(status.pips_sys);
-            Assert.IsNull(status.pips_eng);
-            Assert.IsNull(status.pips_wea);
+            Assert.IsNull(status.system_pips);
+            Assert.IsNull(status.engine_pips);
+            Assert.IsNull(status.weapon_pips);
             Assert.IsNull(status.firegroup);
             Assert.AreEqual("none", status.gui_focus);
             Assert.IsNull(status.fuelInTanks);
@@ -670,9 +670,9 @@ namespace Tests
             var line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":0, \"GuiFocus\":0 }";
             var status = statusService.ParseStatusEntry(line);
 
-            Assert.AreEqual(2.5M, status.pips_sys);
-            Assert.AreEqual(1M, status.pips_eng);
-            Assert.AreEqual(2.5M, status.pips_wea);
+            Assert.AreEqual(2.5M, status.system_pips);
+            Assert.AreEqual(1M, status.engine_pips);
+            Assert.AreEqual(2.5M, status.weapon_pips);
         }
 
         [TestMethod]

@@ -7,20 +7,37 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that could cause multiple instances of monitor and responder threads to run simultaneously. (#2713)
     * Fixed a bug that was preventing sending data to EDDN. (#2714)
     * Updated the Status object
-      * `gliding` added. This is a boolean value indicating whether your ship is in glide mode near a planet surface.
       * `fsd_supercruise_assist` added. This is a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
       * `fsd_supercruise_boosting` added. This is a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
       * `fsd_status` updated to add `hyperdrive` and `supercruise`.
+      * `gliding` added. This is a boolean value indicating whether your ship is in glide mode near a planet surface.
       * `gravity` added. This is a decimal value indicating the surface gravity relative to 1G (when on foot).
       * `health` added. This is a decimal value indicating your current health level (when on foot).
       * `npc_crew_active` added. This is a boolean value indicating whether at least one NPC crew member is assigned to active duty on your ship.
       * `oxygen` added. This is a decimal value indicating your current oxygen level (when on foot).
+      * `pips_sys` renamed to `system_pips`
+      * `pips_eng` renamed to `engine_pips`
+      * `pips_wea` renamed to `weapon_pips`
       * `selected_weapon` the model of your current selected weapon (when on foot).
       * `srv_high_beams` documentation updated. Was incorrectly documented as `srv_highbeam`.
       * `temperature` added. This is a decimal value indicating the current surface temperature in Kelvin (when on foot).
   * Speech Responder
     * Scripts
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release.
+  * VoiceAttack responder
+    * Updated the available status variables
+      * `{BOOL:Status breathable atmosphere}` true if you are on foot in an area with a breathable atmosphere.
+      * `{BOOL:Status fsd supercruise assist}` a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
+      * `{BOOL:Status fsd supercruise boosting}` a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
+      * `{BOOL:Status gliding}` true if your ship is in glide mode near a planet surface.
+      * `{BOOL:Status hyperspace}` a boolean value indicating whether the ship is currently jumping between star systems
+      * `{BOOL:Status on foot exterior}` true if you've disembarked to an exterior space.
+      * `{BOOL:Status on foot in hangar}` true if you've disembarked in a vehicle hangar.
+      * `{BOOL:Status on foot social space}` true if you've disembarked to a social space (e.g. station concourse).
+      * `{BOOL:Status physical multicrew}` true if you are participating in physical multicrew.
+      * `{BOOL:Status npc crew active}` true if at least one NPC crew member is assigned to active duty on your ship.
+      * `{BOOL:Status srv high beams}` true if the lights in your SRV are set to the high beam mode.
+      * `{BOOL:Status telepresence multicrew}` true if you are participating in telepresence multicrew.
       
 ## 4.1.1
   * Core

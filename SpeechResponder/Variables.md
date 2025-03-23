@@ -770,9 +770,9 @@ Any values might be missing, depending on EDDI's configuration.
   - *landing_gear_down* - a boolean value indicating whether the ship's landing gears have been deployed
   - *landed* - a boolean value indicating whether the ship is currently landed (on a surface)
   - *docked* - a boolean value indicating whether the ship is currently docked (at a station)
-  - *pips_sys* - a decimal value indicating the power distributor allocation to systems
-  - *pips_eng* - a decimal value indicating the power distributor allocation to engines
-  - *pips_wea* - a decimal value indicating the power distributor allocation to weapons
+  - *system_pips* - a decimal value indicating the power distributor allocation to systems
+  - *engine_pips* - a decimal value indicating the power distributor allocation to engines
+  - *weapon_pips_* - a decimal value indicating the power distributor allocation to weapons
   - *firegroup* - an integer value indicating the ship's currently selected firegroup
   - *gui_focus* - the commander's current focus. Can be one of 
     - "none", 

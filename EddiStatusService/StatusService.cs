@@ -190,9 +190,9 @@ namespace EddiStatusService
 
                     data.TryGetValue("Pips", out object val);
                     List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
-                    status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
-                    status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
-                    status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
+                    status.system_pips = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
+                    status.engine_pips = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
+                    status.weapon_pips = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
 
                     status.firegroup = JsonParsing.getOptionalInt(data, "FireGroup");
                     int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
