@@ -237,11 +237,20 @@ namespace EddiDataDefinitions
         [ PublicAPI( @"a decimal value indicating the power distributor allocation to systems" ) ]
         public decimal? system_pips = 0;
 
+        [Obsolete(@"please use system_pips instead.")]
+        public decimal? pips_sys => system_pips;
+
         [ PublicAPI( @"a decimal value indicating the power distributor allocation to engines" ) ]
         public decimal? engine_pips = 0;
 
+        [Obsolete( @"please use engine_pips instead." )]
+        public decimal? pips_eng => engine_pips;
+
         [ PublicAPI( @"a decimal value indicating the power distributor allocation to weapons" ) ]
         public decimal? weapon_pips = 0;
+
+        [Obsolete( @"please use weapon_pips instead." )]
+        public decimal? pips_wea => weapon_pips;
 
         // Variables set directly from the event (these are not always present in the event)
 
