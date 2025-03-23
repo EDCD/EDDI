@@ -61,7 +61,7 @@ namespace EddiEddnResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send station, jump, and scan information to EDDN. EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as star system information tools such as EDDB..
+        ///   Looks up a localized string similar to Send station, jump, and scan information to EDDN. EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as star system information tools such as inara.cz and spansh.co.uk..
         /// </summary>
         public static string desc {
             get {
