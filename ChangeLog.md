@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.1.2
   * Core
     * Fixed a bug that could cause multiple instances of monitor and responder threads to run simultaneously. (#2713)
+    * Fixed a bug that was preventing sending data to EDDN. (#2714)
     * Updated the Status object
       * `gliding` added. This is a boolean value indicating whether your ship is in glide mode near a planet surface.
       * `fsd_supercruise_assist` added. This is a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.

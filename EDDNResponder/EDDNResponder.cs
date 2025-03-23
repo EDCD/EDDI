@@ -4,7 +4,6 @@ using EddiDataDefinitions;
 using EddiEddnResponder.Properties;
 using EddiEddnResponder.Sender;
 using EddiEvents;
-using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -40,23 +39,6 @@ namespace EddiEddnResponder
         public string ResponderDescription()
         {
             return EddnResources.desc;
-        }
-
-        [UsedImplicitly]
-        public EDDNResponder()
-        { }
-
-        public EDDNResponder(bool unitTesting = false)
-        {
-            EDDNSender.unitTesting = unitTesting;
-
-            // Populate our schemas list
-            GetSchemas();
-            
-            // Handle Companion App station data
-            CompanionAppService.Instance.CombinedStationEndpoints.StationUpdatedEvent += FrontierApiOnStationUpdatedEvent;
-            
-            Logging.Info($"Initialized {ResponderName()}");
         }
 
         private void FrontierApiOnStationUpdatedEvent(object sender, CompanionApiEndpointEventArgs e)
@@ -127,11 +109,21 @@ namespace EddiEddnResponder
 
         public bool Start()
         {
+            // Populate our schemas list
+            GetSchemas();
+
+            // Handle Companion App station data
+            CompanionAppService.Instance.CombinedStationEndpoints.StationUpdatedEvent += FrontierApiOnStationUpdatedEvent;
+
+            Logging.Info( $"Initialized {ResponderName()}" );
+
             return true;
         }
 
-        public void Stop()
-        { }
+        public void Stop ()
+        {
+            CompanionAppService.Instance.CombinedStationEndpoints.StationUpdatedEvent -= FrontierApiOnStationUpdatedEvent;
+        }
 
         public void Reload()
         { }
@@ -164,6 +156,20 @@ namespace EddiEddnResponder
                     }
                 }
             }
+
+            if ( !schemas.Any() )
+            {
+                Logging.Warn( "Failed to load EDDN journal schemas." );
+            }
+            if ( !capiSchemas.Any() )
+            {
+                Logging.Warn( "Failed to load EDDN Frontier API schemas." );
+            }
+        }
+
+        internal void SetUnitTesting(bool unitTesting)
+        {
+            EDDNSender.unitTesting = unitTesting;
         }
 
         public UserControl ConfigurationTabItem()

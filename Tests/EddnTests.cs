@@ -34,7 +34,9 @@ namespace Tests
             fakeSpanshRestClient.Expect( "system/35835461971465", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemOmegaSector_DM_M_b7_16 ) );
             fakeSpanshRestClient.Expect( "system/3107509474002", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemArtemis ) );
 
-            var responder = new EDDNResponder(true);
+            var responder = new EDDNResponder();
+            responder.SetUnitTesting(true);
+            responder.Start();
             return responder;
         }
 
