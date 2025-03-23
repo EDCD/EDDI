@@ -9,13 +9,10 @@ namespace EddiEddnResponder
 
         public readonly LocationAugmenter Location;
 
-        public readonly PowerPlayAugmenter PowerPlay;
-
         public EDDNState()
         {
             GameVersion = new GameVersionAugmenter();
             Location = new LocationAugmenter();
-            PowerPlay = new PowerPlayAugmenter();
         }
 
         /// <summary>
@@ -26,7 +23,6 @@ namespace EddiEddnResponder
         {
             GameVersion = eddnState.GameVersion;
             Location = eddnState.Location;
-            PowerPlay = eddnState.PowerPlay;
         }
 
         public void GetStateInfo ( string edType, IDictionary<string, object> data )
@@ -36,9 +32,6 @@ namespace EddiEddnResponder
 
             // Attempt to obtain available location data from the active event 
             Location.GetLocationInfo( edType, data );
-
-            // Attempt to obtain information on the commander's PowerPlay participation
-            PowerPlay.GetInfo( edType );
         }
     }
 }
