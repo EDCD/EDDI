@@ -3895,6 +3895,15 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "PowerplayMerits":
+                                {
+                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+                                    var meritsGained = JsonParsing.getInt( data, "MeritsGained" );
+                                    var meritsTotal = JsonParsing.getInt( data, "TotalMerits" );
+                                    events.Add(new PowerMeritsEvent(timestamp, power, meritsGained, meritsTotal ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
                             case "PowerplayCollect":
                                 {
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));

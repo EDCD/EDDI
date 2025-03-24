@@ -2369,6 +2369,15 @@
       "default": true,
       "includes": null
     },
+    "Power merits": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Power merits",
+      "description": "Triggered when you are awarded merits by your pledged Powerplay power"
+    },
     "Power micro resources collected": {
       "enabled": true,
       "priority": 3,

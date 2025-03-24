@@ -121,6 +121,10 @@ namespace EddiCommanderMonitor
             {
                 handlePowerLeftEvent( powerLeftEvent );
             }
+            else if ( @event is PowerMeritsEvent powerMeritsEvent )
+            {
+                handlePowerMeritsEvent( powerMeritsEvent );
+            }
             else if ( @event is PowerplayEvent powerplayEvent )
             {
                 handlePowerPlayEvent( powerplayEvent );
@@ -315,6 +319,16 @@ namespace EddiCommanderMonitor
                 Cmdr.Power = Power.None;
                 Cmdr.powermerits = null;
                 Cmdr.powerrating = 0;
+                WriteCommander();
+            }
+        }
+
+        private void handlePowerMeritsEvent ( PowerMeritsEvent @event )
+        {
+            if ( @event.timestamp >= updatedAt )
+            {
+                Cmdr.Power = @event.Power;
+                Cmdr.powermerits = @event.total;
                 WriteCommander();
             }
         }
