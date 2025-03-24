@@ -304,6 +304,7 @@ namespace Tests
         {
             dynamic vaProxy = new MockVAProxy();
             var mockVAProxy = (MockVAProxy)vaProxy;
+            VoiceAttackPlugin.VaProxy = mockVAProxy;
 
             // Read from our test item "shipMonitor.json"
             var configuration = new ShipMonitorConfiguration();
@@ -322,7 +323,7 @@ namespace Tests
             Assert.IsNotNull( krait );
             Assert.IsNotNull( cobraMk3 );
 
-            VoiceAttackVariables.setShipValues( krait, "Ship", vaProxy );
+            VoiceAttackVariables.setShipValues( krait, "Ship" );
             Assert.AreEqual( "Krait Mk. II", mockVAProxy.GetText( "Ship model" ) );
             Assert.AreEqual( "The Impact Kraiter", mockVAProxy.GetText("Ship name") );
             Assert.AreEqual( "TK-29K", mockVAProxy.GetText("Ship ident") );
@@ -347,7 +348,7 @@ namespace Tests
             Assert.AreEqual( 310425, mockVAProxy.GetDecimal("Ship large hardpoint 0 module cost") );
             Assert.AreEqual( 344916, mockVAProxy.GetDecimal("Ship large hardpoint 0 module value") );
 
-            VoiceAttackVariables.setShipValues( cobraMk3, "Ship", vaProxy );
+            VoiceAttackVariables.setShipValues( cobraMk3, "Ship" );
             Assert.AreEqual( "Cobra Mk. III", mockVAProxy.GetText("Ship model") );
             Assert.AreEqual( "The Dynamo", mockVAProxy.GetText("Ship name") );
             Assert.AreEqual( "TK-20C", mockVAProxy.GetText("Ship ident") );

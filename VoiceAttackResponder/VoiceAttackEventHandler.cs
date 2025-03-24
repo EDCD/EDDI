@@ -111,7 +111,7 @@ namespace EddiVoiceAttackResponder
 
                         if ( variableValue is StarSystem starSystem )
                         {
-                            VoiceAttackVariables.setStarSystemValues( starSystem, variableName, VaProxy );
+                            VoiceAttackVariables.setStarSystemValues( starSystem, variableName );
                         }
                         else
                         {
