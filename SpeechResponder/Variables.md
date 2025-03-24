@@ -748,10 +748,12 @@ Any values might be missing, depending on EDDI's configuration.
   - *near_surface* - a boolean value indicating whether the commander is near a landable surface (within it's gravity well)
   - *overheating* - a boolean value indicating whether the commander's vehicle is overheating
   - *low_fuel* - a boolean value indicating whether the commander has less than 25% fuel remaining
-  - *fsd_status* - the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", "masslock", "hyperspace", or "supercruise"
+  - *fsd_cooldown* - a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise.
   - *fsd_hyperdrive_charging* - a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
+  - *fsd_mass_locked* - a boolean value indicating whether the FSD is currently mass locked.
   - *fsd_supercruise_assist* - a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
   - *fsd_supercruise_boosting* - a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
+  - *fsd_supercruise_charging* - a boolean value indicating whether the FSD is currently charging for a jump to supercruise.
   - *srv_drive_assist* - a boolean value indicating whether SRV drive assist is active
   - *srv_high_beams* - true if the lights in your SRV are set to the high beam mode.
   - *srv_under_ship* - a boolean value indicating whether the SRV in within the proximity zone around the ship

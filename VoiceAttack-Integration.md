@@ -50,16 +50,18 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {DEC:Insurance}: the percentage insurance excess for the commander (usually 5, 3.75 or 2.5)
 
 ## Status Variables
-  * {TXT:Status vehicle}: the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
-  * {BOOL:Status being interdicted} a boolean value indicating whether the commander is currently being interdicted
-  * {BOOL:Status in danger} a boolean value indicating whether the commander is currently in danger
-  * {BOOL:Status near surface} a boolean value indicating whether the commander is near a landable surface (within it's gravity well)
-  * {BOOL:Status overheating} a boolean value indicating whether the commander's vehicle is overheating
-  * {BOOL:Status low fuel} a boolean value indicating whether the commander has less than 25% fuel remaining
-  * {TXT:Status fsd status} the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
+  * {TXT:Status vehicle}: the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter".
+  * {BOOL:Status being interdicted} a boolean value indicating whether the commander is currently being interdicted.
+  * {BOOL:Status in danger} a boolean value indicating whether the commander is currently in danger.
+  * {BOOL:Status near surface} a boolean value indicating whether the commander is near a landable surface (within it's gravity well).
+  * {BOOL:Status overheating} a boolean value indicating whether the commander's vehicle is overheating.
+  * {BOOL:Status low fuel} a boolean value indicating whether the commander has less than 25% fuel remaining.
+  * {BOOL:Status fsd cooldown} a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise.
   * {BOOL:Status fsd hyperdrive charging} a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
+  * {BOOL:Status mass locked} a boolean value indicating whether the FSD is currently mass locked.
   * {BOOL:Status fsd supercruise assist} a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
   * {BOOL:Status fsd supercruise boosting} a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
+  * {BOOL:Status fsd supercruise charging} a boolean value indicating whether the FSD is currently charging for a jump to supercruise.
   * {BOOL:Status srv drive assist} a boolean value indicating whether SRV drive assist is active
   * {BOOL:Status srv under ship} a boolean value indicating whether the SRV in within the proximity zone around the ship
   * {BOOL:Status srv turret deployed} a boolean value indicating whether the SRV's turret has been deployed

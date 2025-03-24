@@ -269,32 +269,11 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestVAShipFSDEvent()
-        {
-            dynamic vaProxy = new MockVAProxy();
-            var mockVAProxy = (MockVAProxy)vaProxy;
-            // Test a generated variable name from overlapping strings.
-            // The prefix "EDDI ship fsd" should be merged with the formatted child key "fsd status" to yield "EDDI ship fsd status".
-            var ev = new ShipFsdEvent (DateTime.UtcNow, "ready");
-            var vars = new MetaVariables(ev.GetType(), ev).Results;
-            
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(vaProxy); }
-            Assert.AreEqual(2, vaVars.Count);
-            Assert.AreEqual("ready", mockVAProxy.GetText("EDDI ship fsd status"));
-            foreach (var variable in vaVars)
-            {
-                Assert.IsTrue(mockVAProxy.ContainsKey(variable.key), "Unmatched key");
-            }
-        }
-
-        [TestMethod]
         public void TestVACommodityEjectedEvent()
         {
             dynamic vaProxy = new MockVAProxy();
             var mockVAProxy = (MockVAProxy)vaProxy;
             // Test a generated variable name from overlapping strings.
-            // The prefix "EDDI ship fsd" should be merged with the formatted child key "fsd status" to yield "EDDI ship fsd status".
             var ev = new CommodityEjectedEvent(DateTime.UtcNow, CommodityDefinition.FromEDName("Water"), 5, null, true);
 
             var vars = new MetaVariables(ev.GetType(), ev).Results;

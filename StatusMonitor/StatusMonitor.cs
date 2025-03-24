@@ -20,7 +20,6 @@ namespace EddiStatusMonitor
     {
         // Miscellaneous tracking
         private decimal preScoopFuelInTanks;
-        private bool jumping;
         private string lastDestinationPOI;
         private string lastMusicTrack;
 
@@ -141,32 +140,26 @@ namespace EddiStatusMonitor
                 var deployable = !status.srv_under_ship;
                 events.Add( new SRVTurretDeployableEvent( status.timestamp, deployable ) );
             }
-            if ( status.fsd_status != lastStatus.fsd_status
-                 && status.vehicle == Constants.VEHICLE_SHIP
-                 && !status.docked )
+            if (status.vehicle == Constants.VEHICLE_SHIP && !status.docked )
             {
-                if ( status.fsd_status == "ready" )
+                if ( status.fsd_cooldown != lastStatus.fsd_cooldown ||
+                     status.fsd_hyperdrive_charging != lastStatus.fsd_hyperdrive_charging ||
+                     status.fsd_mass_locked != lastStatus.fsd_mass_locked ||
+                     status.fsd_supercruise_assist != lastStatus.fsd_supercruise_assist ||
+                     status.fsd_supercruise_boosting != lastStatus.fsd_supercruise_boosting ||
+                     status.fsd_supercruise_charging != lastStatus.fsd_supercruise_charging ||
+                     status.hyperspace != lastStatus.hyperspace ||
+                     status.supercruise != lastStatus.supercruise )
                 {
-                    switch ( lastStatus.fsd_status )
-                    {
-                        case "charging":
-                            if ( !jumping && status.supercruise == lastStatus.supercruise )
-                            {
-                                events.Add( new ShipFsdEvent( status.timestamp, "charging cancelled" ) );
-                            }
-                            jumping = false;
-                            break;
-                        case "cooldown":
-                            events.Add( new ShipFsdEvent( status.timestamp, "cooldown complete" ) );
-                            break;
-                        case "masslock":
-                            events.Add( new ShipFsdEvent( status.timestamp, "masslock cleared" ) );
-                            break;
-                    }
-                }
-                else
-                {
-                    events.Add( new ShipFsdEvent( status.timestamp, status.fsd_status, status.fsd_hyperdrive_charging ) );
+                    events.Add( new ShipFsdEvent( status.timestamp, 
+                        status.fsd_cooldown, lastStatus.fsd_cooldown, 
+                        status.fsd_hyperdrive_charging, lastStatus.fsd_hyperdrive_charging,
+                        status.hyperspace, lastStatus.hyperspace,
+                        status.fsd_mass_locked, lastStatus.fsd_mass_locked,
+                        status.supercruise, lastStatus.supercruise,
+                        status.fsd_supercruise_assist, lastStatus.fsd_supercruise_assist,
+                        status.fsd_supercruise_boosting, lastStatus.fsd_supercruise_boosting,
+                        status.fsd_supercruise_charging, lastStatus.fsd_supercruise_charging ) );
                 }
             }
             if ( status.vehicle == lastStatus.vehicle ) // 'low fuel' is 25% or less
@@ -362,10 +355,6 @@ namespace EddiStatusMonitor
             {
                 handleEnteredNormalSpaceEvent( enteredNormalSpaceEvent );
             }
-            else if ( @event is FSDEngagedEvent fsdEngagedEvent )
-            {
-                handleFSDEngagedEvent( fsdEngagedEvent );
-            }
             else if ( @event is MusicEvent musicEvent )
             {
                 handleMusicEvent( musicEvent );
@@ -403,15 +392,6 @@ namespace EddiStatusMonitor
         {
             // We can derive a "Glide" event from the context in our status
             StatusService.Instance.lastEnteredNormalSpaceEvent = @event;
-        }
-
-        internal void handleFSDEngagedEvent( FSDEngagedEvent @event )
-        {
-            if (@event.target == "Hyperspace")
-            {
-                jumping = true;
-            }
-            EDDI.Instance.enqueueEvent(new ShipFsdEvent( @event.timestamp, "charging complete" ) { fromLoad = @event.fromLoad });
         }
 
         internal void handleMusicEvent ( MusicEvent @event )

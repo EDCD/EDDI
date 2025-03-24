@@ -175,22 +175,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestShipFSDEvent()
-        {
-            var entry = new KeyValuePair<string, Type>("Ship fsd", typeof(ShipFsdEvent));
-            var vars = new MetaVariables(entry.Value, null).Results;
-
-            var cottleVars = vars.AsCottleVariables();
-            Assert.AreEqual(2, cottleVars.Count);
-            Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "fsd_status"));
-
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
-            var fsdstatus = vaVars.FirstOrDefault( k => k.key == "EDDI ship fsd status" );
-            Assert.IsNotNull(fsdstatus);
-            Assert.AreEqual(typeof(string), fsdstatus.variableType);
-        }
-
-        [TestMethod]
         public void TestCommodityEjectedEvent()
         {
             var entry = new KeyValuePair<string, Type>("Commodity ejected", typeof(CommodityEjectedEvent));

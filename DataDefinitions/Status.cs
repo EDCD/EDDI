@@ -101,24 +101,24 @@ namespace EddiDataDefinitions
 
         [PublicAPI( @"a boolean value indicating whether the commander has less than 25% fuel remaining" )]
         public bool low_fuel => (flags & Flags.LowFuel) != 0;
-
-        [ PublicAPI( @"the current status of the ship's frame shift drive. Can be one of ""ready"", ""cooldown"", ""charging"", ""masslock"", ""hyperspace"", or ""supercruise""" ) ]
-        public string fsd_status =>
-            ( flags & Flags.FsdCooldown ) != 0 ? "cooldown" :
-            ( flags & Flags.FsdCharging ) != 0 ? "charging" :
-            ( flags & Flags.FsdMassLocked ) != 0 ? "masslock" :
-            ( flags & Flags.Hyperspace ) != 0 ? "hyperspace" :
-            ( flags & Flags.Supercruise ) != 0 ? "supercruise" :
-            "ready";
+        
+        [PublicAPI( @"a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise." )]
+        public bool fsd_cooldown => ( flags & Flags.FsdCooldown ) != 0;
 
         [PublicAPI( @"a boolean value indicating whether the FSD is currently charging for a jump to hyperspace." )] 
         public bool fsd_hyperdrive_charging => (flags2 & Flags2.FsdHyperDriveCharging) != 0;
 
-        [PublicAPI( @"a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated." )]
-        public bool fsd_supercruise_boosting => ( flags2 & Flags2.FsdSupercruiseBoost ) != 0;
+        [PublicAPI( @"a boolean value indicating whether the FSD is currently mass locked." )]
+        public bool fsd_mass_locked => ( flags & Flags.FsdMassLocked ) != 0;
 
         [PublicAPI( @"a boolean value indicating whether FSD supercruise assist (SCA) mode is activated." )]
         public bool fsd_supercruise_assist => ( flags2 & Flags2.FsdSupercruiseAssist ) != 0;
+
+        [PublicAPI( @"a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated." )]
+        public bool fsd_supercruise_boosting => ( flags2 & Flags2.FsdSupercruiseBoost ) != 0;
+
+        [PublicAPI( @"a boolean value indicating whether the FSD is currently charging for a jump to supercruise." )]
+        public bool fsd_supercruise_charging => !fsd_hyperdrive_charging && ( flags & Flags.FsdCharging ) != 0;
 
         [PublicAPI( @"a boolean value indicating whether SRV drive assist is active" )]
         public bool srv_drive_assist => (flags & Flags.SrvDriveAssist) != 0 && (flags & Flags.InSRV) != 0;

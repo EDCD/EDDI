@@ -6,10 +6,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Fixed a bug that could cause multiple instances of monitor and responder threads to run simultaneously. (#2713)
     * Fixed a bug that was preventing sending data to EDDN. (#2714)
-    * Updated the Status object
+    * Status object updated
+      * `fsd_cooldown` added. This is a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise.
+      * `fsd_mass_locked` added. This is a boolean value indicating whether the FSD is currently mass locked.
       * `fsd_supercruise_assist` added. This is a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
-      * `fsd_supercruise_boosting` added. This is a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
-      * `fsd_status` updated to add `hyperdrive` and `supercruise`.
+      * `fsd_supercruise_boosting` added. This is a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.      
+      * `fsd_supercruise_charging` added. This is a boolean value indicating whether the FSD is currently charging for a jump to supercruise.
+      * `fsd_status` removed and replaced with boolean values.
       * `gliding` added. This is a boolean value indicating whether your ship is in glide mode near a planet surface.
       * `gravity` added. This is a decimal value indicating the surface gravity relative to 1G (when on foot).
       * `health` added. This is a decimal value indicating your current health level (when on foot).
@@ -21,16 +24,21 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `selected_weapon` the model of your current selected weapon (when on foot).
       * `srv_high_beams` documentation updated. Was incorrectly documented as `srv_highbeam`.
       * `temperature` added. This is a decimal value indicating the current surface temperature in Kelvin (when on foot).
+  * Events
+    * `Ship fsd` updated to replace the `fsd status` string and `hyperdrive_charging` boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO).
   * Speech Responder
     * Scripts
       * `Crew check` added. (#2033)
-      * `Ship fsd` updated to remove a debug override which should have been removed prior to release.
+      * `Ship fsd` updated to remove a debug override which should have been removed prior to release and to reference newly minted boolean variables.
       * `Ship loadout` updated to invoke `Crew check` (for non-localized personalities only)
   * VoiceAttack responder
     * Updated the available status variables
       * `{BOOL:Status breathable atmosphere}` true if you are on foot in an area with a breathable atmosphere.
+      * `{BOOL:Status fsd cooldown}` a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise.
+      * `{BOOL:Status mass locked}` a boolean value indicating whether the FSD is currently mass locked.
       * `{BOOL:Status fsd supercruise assist}` a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
       * `{BOOL:Status fsd supercruise boosting}` a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
+      * `{BOOL:Status fsd supercruise charging}` a boolean value indicating whether the FSD is currently charging for a jump to supercruise.
       * `{BOOL:Status gliding}` true if your ship is in glide mode near a planet surface.
       * `{BOOL:Status hyperspace}` a boolean value indicating whether the ship is currently jumping between star systems
       * `{BOOL:Status on foot exterior}` true if you've disembarked to an exterior space.
@@ -40,6 +48,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `{BOOL:Status npc crew active}` true if at least one NPC crew member is assigned to active duty on your ship.
       * `{BOOL:Status srv high beams}` true if the lights in your SRV are set to the high beam mode.
       * `{BOOL:Status telepresence multicrew}` true if you are participating in telepresence multicrew.
+      * `{TXT:Status fsd status}` removed and replaced with boolean values.
       
 ## 4.1.1
   * Core
