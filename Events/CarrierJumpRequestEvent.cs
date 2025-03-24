@@ -32,7 +32,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
 
-        public long? carrierId { get; private set; }
+        public long? carrierID { get; private set; }
 
         public CarrierJumpRequestEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
         {
@@ -45,7 +45,7 @@ namespace EddiEvents
             this.bodyId = bodyId;
 
             // Carrier
-            this.carrierId = carrierId;
+            this.carrierID = carrierId;
         }
     }
 }

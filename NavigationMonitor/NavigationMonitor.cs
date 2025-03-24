@@ -200,19 +200,7 @@ namespace EddiNavigationMonitor
 
         public void PostHandle(Event @event)
         {
-            if (@event is CarrierJumpRequestEvent
-                || @event is CarrierJumpEngagedEvent
-                || @event is CarrierJumpedEvent
-                || @event is CarrierPurchasedEvent
-                || @event is CarrierStatsEvent
-                || @event is CommanderContinuedEvent)
-            {
-                if (!@event.fromLoad)
-                {
-                    Task.Run( async () => await EDDI.Instance.RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
-                }
-            }
-            else if (@event is NavRouteEvent navRouteEvent)
+            if (@event is NavRouteEvent navRouteEvent)
             {
                 posthandleNavRouteEvent(navRouteEvent);
             }
@@ -234,7 +222,7 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpRequestEvent(CarrierJumpRequestEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
+            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierID);
             updatedCarrier.nextStarSystem = @event.systemname;
             EDDI.Instance.FleetCarrier = updatedCarrier;
             if (!@event.fromLoad && @event.timestamp >= updateDat)

@@ -133,6 +133,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCore", "EddiCore\EddiCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCommanderMonitor", "CommanderMonitor\EddiCommanderMonitor.csproj", "{E3D9C296-531F-89D6-F137-E577B5266996}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiFleetCarrierMonitor", "FleetCarrierMonitor\EddiFleetCarrierMonitor.csproj", "{D7225D92-7E51-431E-B91B-DD3D7CCB59F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -271,6 +273,10 @@ Global
 		{E3D9C296-531F-89D6-F137-E577B5266996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3D9C296-531F-89D6-F137-E577B5266996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3D9C296-531F-89D6-F137-E577B5266996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7225D92-7E51-431E-B91B-DD3D7CCB59F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7225D92-7E51-431E-B91B-DD3D7CCB59F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7225D92-7E51-431E-B91B-DD3D7CCB59F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7225D92-7E51-431E-B91B-DD3D7CCB59F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -301,12 +307,13 @@ Global
 		{EEB0110F-5ABF-466B-BE85-D5BD21A57CD5} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
 		{7D25AF37-6EF2-4210-B079-14672BECDBB0} = {DBAE065B-DD96-4349-9189-D0935280BB0B}
 		{E3D9C296-531F-89D6-F137-E577B5266996} = {7511F244-BC52-4F4A-ABBE-3956957B4F1B}
+		{D7225D92-7E51-431E-B91B-DD3D7CCB59F1} = {7511F244-BC52-4F4A-ABBE-3956957B4F1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_SortFileContentOnSave = True
-		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
-		RESX_ShowErrorsInErrorList = False
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_TaskErrorCategory = Message
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
+		RESX_SortFileContentOnSave = True
 	EndGlobalSection
 EndGlobal

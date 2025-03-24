@@ -369,14 +369,7 @@ namespace EddiCore
         [CanBeNull]
         public FleetCarrier FleetCarrier
         {
-            get
-            {
-                if ( _fleetCarrier is null )
-                {
-                    Task.Run( () => RefreshFleetCarrierFromFrontierAPIAsync( true ) ).ConfigureAwait( true );
-                }
-                return _fleetCarrier;
-            }
+            get => _fleetCarrier;
             set
             {
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
@@ -504,19 +497,11 @@ namespace EddiCore
                     {
                         Logging.Debug("Failed to obtain Frontier API profile: " + ex);
                     }
-
-                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
-                    {
-                        Logging.Info("EDDI access to the Frontier API is enabled.");
-                        await RefreshFleetCarrierFromFrontierAPIAsync(true);
-                    }
-                    else
-                    {
-                        Logging.Info("EDDI access to the Frontier API is not enabled.");
-                    }
+                    Logging.Info( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized
+                        ? "EDDI access to the Frontier API is enabled."
+                        : "EDDI access to the Frontier API is not enabled." );
                 }, eventHandlerTS.Token ).ConfigureAwait(false);
 
-                CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
                 StatusService.Instance.StatusChanged += OnStatusChangedAsync;
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
@@ -569,16 +554,6 @@ namespace EddiCore
                         }
                     } ).ConfigureAwait(false );
                 }
-            }
-        }
-
-        private void OnCompanionAppServiceStateChanged(CompanionAppService.State oldstate, CompanionAppService.State newstate)
-        {
-            // Obtain fleet carrier data once the Frontier API connects
-            if (oldstate != CompanionAppService.State.Authorized && 
-                newstate is CompanionAppService.State.Authorized)
-            {
-                Task.Run( () => RefreshFleetCarrierFromFrontierAPIAsync( true ) ).ConfigureAwait( false );
             }
         }
 
@@ -1059,26 +1034,6 @@ namespace EddiCore
                     {
                         passEvent = eventSystemScanComplete(systemScanComplete);
                     }
-                    else if (@event is CarrierBankTransferEvent carrierBankTransferEvent)
-                    {
-                        passEvent = eventCarrierBankTransfer(carrierBankTransferEvent);
-                    }
-                    else if (@event is CarrierDecommissionCancelledEvent carrierDecommissionCancelledEvent)
-                    {
-                        passEvent = eventCarrierDecommissionCancelled(carrierDecommissionCancelledEvent);
-                    }
-                    else if (@event is CarrierDecommissionScheduledEvent carrierDecommissionScheduledEvent)
-                    {
-                        passEvent = eventCarrierDecommissionScheduled(carrierDecommissionScheduledEvent);
-                    }
-                    else if (@event is CarrierDockingPermissionEvent carrierDockingPermissionEvent)
-                    {
-                        passEvent = eventCarrierDockingPermission(carrierDockingPermissionEvent);
-                    }
-                    else if (@event is CarrierFuelDepositEvent carrierDepositFuelEvent)
-                    {
-                        passEvent = eventCarrierDepositFuel(carrierDepositFuelEvent);
-                    }
                     else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
                     {
                         passEvent = eventCarrierJumpEngaged(carrierJumpEngagedEvent);
@@ -1086,22 +1041,6 @@ namespace EddiCore
                     else if (@event is CarrierJumpedEvent carrierJumpedEvent)
                     {
                         passEvent = eventCarrierJumped(carrierJumpedEvent);
-                    }
-                    else if ( @event is CarrierJumpRequestEvent carrierJumpRequestEvent )
-                    {
-                        passEvent = eventCarrierJumpRequest( carrierJumpRequestEvent );
-                    }
-                    else if (@event is CarrierFinanceEvent carrierFinanceEvent)
-                    {
-                        passEvent = eventCarrierFinance(carrierFinanceEvent);
-                    }
-                    else if (@event is CarrierStatsEvent carrierStatsEvent)
-                    {
-                        passEvent = eventCarrierStats(carrierStatsEvent);
-                    }
-                    else if (@event is CarrierNameChangeEvent carrierNameChangeEvent)
-                    {
-                        passEvent = eventCarrierNameChange(carrierNameChangeEvent);
                     }
                     else if (@event is DisembarkEvent disembarkEvent)
                     {
@@ -1198,112 +1137,6 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCarrierStats(CarrierStatsEvent carrierStatsEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierStatsEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierStatsEvent.carrierID);
-            }
-
-            FleetCarrier.name = carrierStatsEvent.name;
-            FleetCarrier.callsign = carrierStatsEvent.callsign;
-            FleetCarrier.dockingAccess = carrierStatsEvent.dockingAccess;
-            FleetCarrier.notoriousAccess = carrierStatsEvent.notoriousAccess;
-            FleetCarrier.fuel = carrierStatsEvent.fuel;
-            FleetCarrier.usedCapacity = carrierStatsEvent.usedCapacity;
-            FleetCarrier.freeCapacity = carrierStatsEvent.freeCapacity;
-            FleetCarrier.bankBalance = carrierStatsEvent.bankBalance;
-            FleetCarrier.bankReservedBalance = carrierStatsEvent.bankReservedBalance;
-            FleetCarrier.bankPurchaseAllocationsBalance = carrierStatsEvent.bankBalance -
-                                                          carrierStatsEvent.bankReservedBalance -
-                                                          carrierStatsEvent.bankAvailableBalance;
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
-        private bool eventCarrierNameChange(CarrierNameChangeEvent carrierNameChangeEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierNameChangeEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierNameChangeEvent.carrierID);
-            }
-            FleetCarrier.name = carrierNameChangeEvent.name;
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
-        private bool eventCarrierFinance(CarrierFinanceEvent carrierFinanceEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierFinanceEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierFinanceEvent.carrierID);
-            }
-            FleetCarrier.bankBalance = carrierFinanceEvent.bankBalance;
-            FleetCarrier.bankReservedBalance = carrierFinanceEvent.bankReservedBalance;
-            FleetCarrier.bankPurchaseAllocationsBalance = carrierFinanceEvent.bankBalance
-                                                          - carrierFinanceEvent.bankReservedBalance
-                                                          - carrierFinanceEvent.bankAvailableBalance;
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
-        private bool eventCarrierDockingPermission(CarrierDockingPermissionEvent carrierDockingPermissionEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierDockingPermissionEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierDockingPermissionEvent.carrierID);
-            }
-            FleetCarrier.dockingAccess = carrierDockingPermissionEvent.dockingAccess;
-            FleetCarrier.notoriousAccess = carrierDockingPermissionEvent.allowNotorious;
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
-        private bool eventCarrierDepositFuel(CarrierFuelDepositEvent carrierFuelDepositEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierFuelDepositEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierFuelDepositEvent.carrierID);
-            }
-            FleetCarrier.fuel = carrierFuelDepositEvent.total;
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
-        private bool eventCarrierDecommissionScheduled(CarrierDecommissionScheduledEvent carrierDecommissionScheduledEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierDecommissionScheduledEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierDecommissionScheduledEvent.carrierID);
-            }
-            FleetCarrier.state = "pendingDecommission";
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
-        private bool eventCarrierDecommissionCancelled(CarrierDecommissionCancelledEvent carrierDecommissionCancelledEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierDecommissionCancelledEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierDecommissionCancelledEvent.carrierID);
-            }
-            FleetCarrier.state = "normalOperation";
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
-        private bool eventCarrierBankTransfer(CarrierBankTransferEvent carrierBankTransferEvent)
-        {
-            if (FleetCarrier is null || FleetCarrier.carrierID != carrierBankTransferEvent.carrierID)
-            {
-                FleetCarrier = new FleetCarrier(carrierBankTransferEvent.carrierID);
-            }
-            FleetCarrier.bankBalance = carrierBankTransferEvent.bankBalance;
-
-            UpdateFleetCarrierConfig();
-            return true;
-        }
-
         private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)
         {
             if (CurrentStarSystem?.systemAddress == settlementApproachedEvent.systemAddress
@@ -1372,13 +1205,7 @@ namespace EddiCore
 
         private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event)
         {
-            if ( FleetCarrier != null )
-            {
-                FleetCarrier.currentStarSystem = @event.systemname;
-                FleetCarrier.nextStarSystem = null;
-            }
-
-            // Only update our information if we are still docked at the carrier
+            // Update our current environment, vehicle, and station information if we are still docked at the carrier
             if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation?.marketId)
             {
                 // We are in witch space and in the ship.
@@ -1443,12 +1270,7 @@ namespace EddiCore
         private bool eventCarrierJumped(CarrierJumpedEvent @event)
         {
             Logging.Info( "Carrier jumped to: " + @event.systemname );
-            if ( FleetCarrier != null )
-            {
-                FleetCarrier.currentStarSystem = @event.systemname;
-                FleetCarrier.nextStarSystem = null;
-            }
-
+            
             if ( @event.docked || @event.onFoot )
             {
                 // We are either docked and in a ship or on foot and in normal space.
@@ -1575,15 +1397,6 @@ namespace EddiCore
                 throw new NotImplementedException();
             }
 
-            return true;
-        }
-
-        private bool eventCarrierJumpRequest ( CarrierJumpRequestEvent @event )
-        {
-            if ( FleetCarrier != null )
-            {
-                FleetCarrier.nextStarSystem = @event.systemname;
-            }
             return true;
         }
 
@@ -2710,26 +2523,6 @@ namespace EddiCore
             return success;
         }
 
-        /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
-        public async Task RefreshFleetCarrierFromFrontierAPIAsync(bool forceRefresh = false)
-        {
-            if ( _fleetCarrier != null && CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
-            {
-                var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh);
-                if (frontierApiCarrierJson != null)
-                {
-                    var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
-
-                    // Update our Fleet Carrier object
-                    LockManager.GetLock( nameof( FleetCarrier ), () =>
-                    {
-                        FleetCarrier?.UpdateFrom( frontierApiCarrierJson, timestamp );
-                    } );
-                    UpdateFleetCarrierConfig();
-                }
-            }
-        }
-
         private void setSystemDistanceFromHome(StarSystem system)
         {
             if (system is null || HomeStarSystem is null) { return; }
@@ -3022,16 +2815,6 @@ namespace EddiCore
             configuration.DestinationSystem = destinationSystem;
             configuration.DestinationSystemAddress = destinationSystemAddress;
             ConfigService.Instance.eddiConfiguration = configuration;
-        }
-
-        private void UpdateFleetCarrierConfig()
-        {
-            var configuration = ConfigService.Instance.eddiConfiguration;
-            if (configuration.fleetCarrier != FleetCarrier)
-            {
-                configuration.fleetCarrier = FleetCarrier;
-                ConfigService.Instance.eddiConfiguration = configuration;
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
