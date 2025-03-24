@@ -251,11 +251,18 @@ namespace EddiShipMonitor
                 {
                     foreach ( var ship in shipyard )
                     {
-                        if ( ship.StoredLocation.marketId == @event.carrierID )
+                        // Ignore our current active ship
+                        if ( ship.LocalId == currentShipId ) { continue; }
+
+                        // Update stored locations of ships docked on this fleet carrier
+                        if ( ship.StoredLocation != null && ship.StoredLocation.marketId == @event.carrierID )
                         {
                             ship.StoredLocation = new Ship.Location( @event.systemname, @event.systemAddress, @event.x,
                                 @event.y, @event.z, @event.carriername, @event.carrierID );
-                            ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                            if ( EDDI.Instance.CurrentStarSystem != null )
+                            {
+                                ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                            }
                         }
                     }
                     writeShips();
