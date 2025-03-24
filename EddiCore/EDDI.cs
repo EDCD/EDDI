@@ -1539,8 +1539,8 @@ namespace EddiCore
                         // Update station controlling faction data
                         foreach (Station station in CurrentStarSystem.stations)
                         {
-                            Faction stationFaction =
-                                @event.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                            Faction stationFaction = @event.factions
+                                .FirstOrDefault(f => f.name == station.Faction?.name);
                             if (stationFaction != null)
                             {
                                 station.Faction = stationFaction;
