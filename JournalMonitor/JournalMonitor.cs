@@ -444,7 +444,8 @@ namespace EddiJournalMonitor
                                     long? population = JsonParsing.getOptionalLong(data, "Population");
 
                                     // If docked
-                                    string station = JsonParsing.getString(data, "StationName");
+                                    var stationLocalizedName = JsonParsing.getString(data, "StationName_Localised");
+                                    string station = stationLocalizedName ?? JsonParsing.getString(data, "StationName");
                                     StationModel stationtype = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
 
