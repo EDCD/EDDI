@@ -2504,7 +2504,7 @@ namespace EddiJournalMonitor
                             case "Market":
                                 {
                                     long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName");
+                                    string station = JsonParsing.getString(data, "StationName_Localised") ?? JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     if (MarketInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
                                     {
