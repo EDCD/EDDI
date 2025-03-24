@@ -14,7 +14,11 @@ namespace EddiDataDefinitions
         private string _name;
         private string _callsign;
         private string _currentStarSystem;
+        private ulong? _currentStarSystemAddress;
+        private long? _currentBodyID;
         private string _nextStarSystem;
+        private ulong? _nextStarSystemAddress;
+        private long? _nextBodyID; 
         private int _fuel;
         private int _fuelInCargo;
         private string _state;
@@ -81,6 +85,30 @@ namespace EddiDataDefinitions
             }
         }
 
+        [PublicAPI( "The numeric system address of the star system where the carrier is located" )]
+        public ulong? currentStarSystemAddress
+        {
+            get => _currentStarSystemAddress;
+            set
+            {
+                if ( value == _currentStarSystemAddress ) return;
+                _currentStarSystemAddress = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [PublicAPI( "The numeric ID of the body the carrier is orbiting" )]
+        public long? currentBodyID
+        {
+            get => _currentBodyID;
+            set
+            {
+                if ( value == _currentBodyID ) return;
+                _currentBodyID = value;
+                OnPropertyChanged();
+            }
+        }
+
         [PublicAPI("The next scheduled location (star system) of the carrier, if any")]
         public string nextStarSystem
         {
@@ -89,6 +117,30 @@ namespace EddiDataDefinitions
             {
                 if (value == _nextStarSystem) return;
                 _nextStarSystem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [PublicAPI( "The numeric system address of the next scheduled star system where the carrier shall be located" )]
+        public ulong? nextStarSystemAddress
+        {
+            get => _nextStarSystemAddress;
+            set
+            {
+                if ( value == _nextStarSystemAddress ) return;
+                _nextStarSystemAddress = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [PublicAPI( "The numeric ID of the next scheduled body the carrier shall orbit" )]
+        public long? nextBodyID
+        {
+            get => _nextBodyID;
+            set
+            {
+                if ( value == _nextBodyID ) return;
+                _nextBodyID = value;
                 OnPropertyChanged();
             }
         }
@@ -302,6 +354,20 @@ namespace EddiDataDefinitions
 
         // Methods
 
+        public void SetCurrentLocation ( ulong? systemAddress, string systemName, long? bodyID )
+        {
+            currentStarSystemAddress = systemAddress;
+            currentStarSystem = systemName;
+            currentBodyID = bodyID;
+        }
+
+        public void SetNextLocation ( ulong? systemAddress, string systemName, long? bodyID )
+        {
+            nextStarSystemAddress = systemAddress;
+            nextStarSystem = systemName;
+            nextBodyID = bodyID;
+        }
+
         public void UpdateFrom(JObject newJson, DateTime newTimeStamp)
         {
             try
@@ -349,7 +415,6 @@ namespace EddiDataDefinitions
                 }
 
                 name = ConvertHexString(newJson["name"]["vanityName"]?.ToString());
-                currentStarSystem = newJson["currentStarSystem"]?.ToString();
                 fuel = int.Parse(newJson["fuel"]?.ToString() ?? string.Empty);
                 state = newJson["state"]?.ToString();
                 dockingAccess = newJson["dockingAccess"]?.ToString();
@@ -370,9 +435,6 @@ namespace EddiDataDefinitions
                     reservedSpace +
                     crew;
                 freeCapacity = newJson["capacity"]?["freeSpace"]?.ToObject<int>() ?? 0;
-
-                // Itinerary
-                nextStarSystem = newJson["itinerary"]?["currentJump"]?.ToString();
 
                 // Finances
                 bankBalance = newJson["finance"]?["bankBalance"]?.ToObject<long>() ?? 0;

@@ -403,13 +403,13 @@ namespace EddiInaraResponder
 
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
         {
-            if ( @event.carrierId is null ) { return; } // We cannot update the carrier when carrier data is not present in the event
+            if ( @event.carrierID is null ) { return; } // We cannot update the carrier when carrier data is not present in the event
             var eventData = new Dictionary<string, object>()
             {
                 { "starsystemName", @event.systemname },
                 { "starsystemCoords", new [] { @event.x, @event.y, @event.z } },
                 { "stationName", @event.carriername },
-                { "marketID", @event.carrierId }
+                { "marketID", @event.carrierID }
             };
             var currentShip = EDDI.Instance.CurrentShip;
             if (!string.IsNullOrEmpty(currentShip?.EDName))

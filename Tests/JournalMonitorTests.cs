@@ -1486,7 +1486,7 @@ namespace Tests
             Assert.IsTrue(@event.docked);
             Assert.AreEqual("G53-K3Q", @event.carriername);
             Assert.AreEqual("Fleet Carrier", @event.carrierType.invariantName);
-            Assert.AreEqual(3700571136, @event.carrierId);
+            Assert.AreEqual(3700571136, @event.carrierID);
             Assert.AreEqual("FleetCarrier", @event.carrierFaction.name);
             Assert.AreEqual("Private Ownership", @event.carrierFaction.Government.invariantName);
             Assert.AreEqual(17, @event.carrierServices.Count);
@@ -1528,7 +1528,7 @@ namespace Tests
             Assert.IsTrue(@event.onFoot);
             Assert.IsNull(@event.carriername);
             Assert.IsNull(@event.carrierType?.invariantName);
-            Assert.IsNull(@event.carrierId);
+            Assert.IsNull(@event.carrierID);
             Assert.IsNull(@event.carrierFaction?.name);
             Assert.IsNull(@event.carrierFaction?.Government.invariantName);
             Assert.AreEqual(0, @event.carrierServices.Count);

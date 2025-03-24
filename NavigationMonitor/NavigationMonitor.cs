@@ -140,37 +140,13 @@ namespace EddiNavigationMonitor
         public void PreHandle(Event @event)
         {
             // Handle the events that we care about
-            if (@event is CarrierJumpRequestEvent carrierJumpRequestEvent)
-            {
-                handleCarrierJumpRequestEvent(carrierJumpRequestEvent);
-            }
-            else if (@event is CarrierJumpCancelledEvent carrierJumpCancelledEvent)
-            {
-                handleCarrierJumpCancelledEvent(carrierJumpCancelledEvent);
-            }
-            else if (@event is CarrierJumpedEvent carrierJumpedEvent)
+            if (@event is CarrierJumpedEvent carrierJumpedEvent)
             {
                 handleCarrierJumpedEvent(carrierJumpedEvent);
             }
             else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
             {
                 handleCarrierJumpEngagedEvent(carrierJumpEngagedEvent);
-            }
-            else if (@event is CarrierPurchasedEvent carrierPurchasedEvent)
-            {
-                handleCarrierPurchasedEvent(carrierPurchasedEvent);
-            }
-            else if (@event is CarrierStatsEvent carrierStatsEvent)
-            {
-                handleCarrierStatsEvent(carrierStatsEvent);
-            }
-            else if (@event is CommodityPurchasedEvent commodityPurchasedEvent)
-            {
-                handleCommodityPurchasedEvent(commodityPurchasedEvent);
-            }
-            else if (@event is CommoditySoldEvent commoditySoldEvent)
-            {
-                handleCommoditySoldEvent(commoditySoldEvent);
             }
             else if (@event is DockedEvent dockedEvent)
             {
@@ -220,47 +196,13 @@ namespace EddiNavigationMonitor
 
         #region handledEvents
 
-        private void handleCarrierJumpRequestEvent(CarrierJumpRequestEvent @event)
-        {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierID);
-            updatedCarrier.nextStarSystem = @event.systemname;
-            EDDI.Instance.FleetCarrier = updatedCarrier;
-            if (!@event.fromLoad && @event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                WriteNavConfig();
-            }
-        }
-
-        private void handleCarrierJumpCancelledEvent(CarrierJumpCancelledEvent @event)
-        {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
-            updatedCarrier.nextStarSystem = null;
-            EDDI.Instance.FleetCarrier = updatedCarrier;
-            if (!@event.fromLoad && @event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                WriteNavConfig();
-            }
-        }
-
         private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
         {
-            if ( @event.carrierId is null ) { return; } // We cannot update the carrier when carrier data is not present in the event
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId) { name = @event.carriername };
-            updatedCarrier.currentStarSystem = @event.systemname;
-            updatedCarrier.Market.name = @event.carriername;
-            updatedCarrier.nextStarSystem = null;
-            EDDI.Instance.FleetCarrier = updatedCarrier;
-
             UpdateStellarLocationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad);
         }
 
         private void handleCarrierJumpEngagedEvent(CarrierJumpEngagedEvent @event)
         {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierId);
-            updatedCarrier.currentStarSystem = @event.systemname;
-            EDDI.Instance.FleetCarrier = updatedCarrier;
             UpdateCarrierRouteLocationData(@event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad);
         }
 
@@ -274,66 +216,6 @@ namespace EddiNavigationMonitor
                 {
                     updateDat = timestamp;
                     WriteNavConfig();
-                }
-            }
-        }
-
-        private void handleCarrierPurchasedEvent(CarrierPurchasedEvent @event)
-        {
-            EDDI.Instance.FleetCarrier = new FleetCarrier(@event.carrierId) { callsign = @event.callsign, currentStarSystem = @event.systemname };
-            if (!@event.fromLoad && @event.timestamp >= updateDat)
-            {
-                updateDat = @event.timestamp;
-                WriteNavConfig();
-            }
-        }
-
-        private void handleCarrierStatsEvent(CarrierStatsEvent @event)
-        {
-            var updatedCarrier = FleetCarrier?.Copy() ?? new FleetCarrier(@event.carrierID) { callsign = @event.callsign, name = @event.name };
-            updatedCarrier.dockingAccess = @event.dockingAccess;
-            updatedCarrier.notoriousAccess = @event.notoriousAccess;
-            updatedCarrier.fuel = @event.fuel;
-            updatedCarrier.usedCapacity = @event.usedCapacity;
-            updatedCarrier.freeCapacity = @event.freeCapacity;
-            updatedCarrier.bankBalance = @event.bankBalance;
-            updatedCarrier.bankReservedBalance = @event.bankReservedBalance;
-            EDDI.Instance.FleetCarrier = updatedCarrier;
-            if (!@event.fromLoad && @event.timestamp >= updateDat) 
-            {
-                updateDat = @event.timestamp;
-                WriteNavConfig(); 
-            }
-        }
-
-        private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
-        {
-            if (FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID)
-            {
-                if (@event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium")
-                {
-                    FleetCarrier.fuelInCargo -= @event.amount;
-                    if (!@event.fromLoad && @event.timestamp >= updateDat)
-                    {
-                        updateDat = @event.timestamp;
-                        WriteNavConfig();
-                    }
-                }
-            }
-        }
-
-        private void handleCommoditySoldEvent(CommoditySoldEvent @event)
-        {
-            if (FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID)
-            {
-                if (@event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium")
-                {
-                    FleetCarrier.fuelInCargo += @event.amount;
-                    if (!@event.fromLoad && @event.timestamp >= updateDat)
-                    {
-                        updateDat = @event.timestamp;
-                        WriteNavConfig();
-                    }
                 }
             }
         }
@@ -359,7 +241,6 @@ namespace EddiNavigationMonitor
                     // If we are at our fleet carrier, make sure that the carrier location is up to date.
                     if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
                     {
-                        FleetCarrier.currentStarSystem = @event.system;
                         UpdateCarrierRouteLocationData( @event.timestamp, @event.system, @event.systemAddress, @event.fromLoad );
                     }
                 }
@@ -375,7 +256,6 @@ namespace EddiNavigationMonitor
                 // If we are at our fleet carrier, make sure that the carrier location is up to date.
                 if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
                 {
-                    FleetCarrier.currentStarSystem = @event.systemname;
                     UpdateCarrierRouteLocationData( @event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad );
                 }
             }

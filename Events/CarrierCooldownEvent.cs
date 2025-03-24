@@ -17,7 +17,7 @@ namespace EddiEvents
         public string systemname { get; private set; }
         
         [PublicAPI( "The numeric system address of the system in which the carrier is located after a successful jump" )]
-        public ulong systemAddress { get; private set; }
+        public ulong? systemAddress { get; private set; }
 
         // Body variables
 
@@ -46,7 +46,7 @@ namespace EddiEvents
 
         public StationModel carrierType { get; private set; }
 
-        public CarrierCooldownEvent(DateTime timestamp, long? carrierId, string systemName, ulong systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType) : base(timestamp, NAME)
+        public CarrierCooldownEvent(DateTime timestamp, long? carrierId, string systemName, ulong? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;

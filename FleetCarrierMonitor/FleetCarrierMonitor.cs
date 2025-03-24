@@ -46,6 +46,12 @@ namespace EddiFleetCarrierMonitor
 
         public void PreHandle ( Event @event )
         {
+            if ( FleetCarrier != null && @event.timestamp < FleetCarrier.timestamp )
+            {
+                // We only want to update the FleetCarrier object with new events
+                return;
+            }
+
             if ( @event is CarrierBankTransferEvent carrierBankTransferEvent )
             {
                 handleCarrierBankTransferEvent( carrierBankTransferEvent );
@@ -82,6 +88,10 @@ namespace EddiFleetCarrierMonitor
             {
                 handleCarrierJumpRequestEvent( carrierJumpRequestEvent );
             }
+            else if ( @event is CarrierLocationEvent carrierLocationEvent )
+            {
+                handleCarrierLocationEvent( carrierLocationEvent );
+            }
             else if ( @event is CarrierNameChangeEvent carrierNameChangeEvent )
             {
                 handleCarrierNameChangeEvent( carrierNameChangeEvent );
@@ -89,6 +99,23 @@ namespace EddiFleetCarrierMonitor
             else if ( @event is CarrierStatsEvent carrierStatsEvent )
             {
                 handleCarrierStatsEvent( carrierStatsEvent );
+            }
+            else if ( @event is CommodityPurchasedEvent commodityPurchasedEvent )
+            {
+                handleCommodityPurchasedEvent( commodityPurchasedEvent );
+            }
+            else if ( @event is CommoditySoldEvent commoditySoldEvent )
+            {
+                handleCommoditySoldEvent( commoditySoldEvent );
+            }
+            else if ( @event is LocationEvent locationEvent )
+            {
+                handleLocationEvent( locationEvent );
+            }
+
+            if ( FleetCarrier != null )
+            {
+                FleetCarrier.timestamp = @event.timestamp;
             }
         }
 
@@ -183,20 +210,29 @@ namespace EddiFleetCarrierMonitor
 
         private void handleCarrierJumpedEvent ( CarrierJumpedEvent @event )
         {
-            if ( FleetCarrier != null )
+            // This can trigger for a carrier where we're a passenger and not the owner
+            if ( FleetCarrier != null && FleetCarrier.carrierID == @event.carrierID )
             {
-                FleetCarrier.currentStarSystem = @event.systemname;
-                FleetCarrier.nextStarSystem = null;
+                FleetCarrier.name = @event.carriername;
+                FleetCarrier.Market.name = @event.carriername;
+                FleetCarrier.Market.marketId = @event.carrierID;
+                FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
+                FleetCarrier.SetNextLocation( null, null, null );
                 UpdateFleetCarrierConfig();
             }
         }
 
         private void handleCarrierJumpEngagedEvent ( CarrierJumpEngagedEvent @event )
         {
+            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            {
+                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+            }
+
             if ( FleetCarrier != null )
             {
-                FleetCarrier.currentStarSystem = @event.systemname;
-                FleetCarrier.nextStarSystem = null;
+                FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
+                FleetCarrier.SetNextLocation( null, null, null );
                 UpdateFleetCarrierConfig();
             }
         }
@@ -210,7 +246,22 @@ namespace EddiFleetCarrierMonitor
 
             if ( FleetCarrier != null )
             {
-                FleetCarrier.nextStarSystem = @event.systemname;
+                FleetCarrier.SetNextLocation( @event.systemAddress, @event.systemname, @event.bodyId );
+                UpdateFleetCarrierConfig();
+            }
+        }
+
+        private void handleCarrierLocationEvent ( CarrierLocationEvent @event )
+        {
+            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            {
+                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+            }
+
+            if ( FleetCarrier != null )
+            {
+                FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyID );
+                FleetCarrier.SetNextLocation( null, null, null );
                 UpdateFleetCarrierConfig();
             }
         }
@@ -250,6 +301,40 @@ namespace EddiFleetCarrierMonitor
                 FleetCarrier.bankPurchaseAllocationsBalance = @event.bankBalance -
                                                               @event.bankReservedBalance -
                                                               @event.bankAvailableBalance;
+                UpdateFleetCarrierConfig();
+            }
+        }
+
+        private void handleCommodityPurchasedEvent ( CommodityPurchasedEvent @event )
+        {
+            if ( FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID )
+            {
+                if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
+                {
+                    FleetCarrier.fuelInCargo -= @event.amount;
+                    UpdateFleetCarrierConfig();
+                }
+            }
+        }
+
+        private void handleCommoditySoldEvent ( CommoditySoldEvent @event )
+        {
+            if ( FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID )
+            {
+                if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
+                {
+                    FleetCarrier.fuelInCargo += @event.amount;
+                    UpdateFleetCarrierConfig();
+                }
+            }
+        }
+
+        private void handleLocationEvent ( LocationEvent @event )
+        {
+            // If we are at our fleet carrier, make sure that the carrier location is up to date.
+            if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
+            {
+                FleetCarrier.SetCurrentLocation(@event.systemAddress, @event.systemname, @event.bodyId);
                 UpdateFleetCarrierConfig();
             }
         }
@@ -316,11 +401,13 @@ namespace EddiFleetCarrierMonitor
         private void UpdateFleetCarrierConfig ()
         {
             var configuration = ConfigService.Instance.eddiConfiguration;
-            if ( configuration.fleetCarrier != FleetCarrier )
+            if ( configuration.fleetCarrier.timestamp != FleetCarrier.timestamp )
             {
                 configuration.fleetCarrier = FleetCarrier;
                 ConfigService.Instance.eddiConfiguration = configuration;
             }
+
+            EDDI.Instance.OnPropertyChanged( nameof(EDDI.Instance.FleetCarrier) );
         }
     }
 }

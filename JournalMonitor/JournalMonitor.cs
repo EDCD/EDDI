@@ -4564,7 +4564,7 @@ namespace EddiJournalMonitor
                                         {
                                             int timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
                                             await Task.Delay(timeMs);
-                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, EDDI.Instance.FleetCarrier?.currentStarSystem, 0, null, null, null, EDDI.Instance.FleetCarrier?.callsign, StationModel.FleetCarrier ) { fromLoad = fromLogLoad });
+                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, EDDI.Instance.FleetCarrier?.currentStarSystem, EDDI.Instance.FleetCarrier?.currentStarSystemAddress, null, EDDI.Instance.FleetCarrier?.currentBodyID, null, EDDI.Instance.FleetCarrier?.callsign, StationModel.FleetCarrier ) { fromLoad = fromLogLoad });
                                         }).ConfigureAwait(false);
                                     }
                                 }
@@ -4902,6 +4902,16 @@ namespace EddiJournalMonitor
                                     var carrierReserveBalance = JsonParsing.getLong(data, "ReserveBalance");
                                     var carrierAvailableBalance = JsonParsing.getLong(data, "CarrierAvailableBalance");
                                     events.Add(new CarrierFinanceEvent(timestamp, carrierID, taxRate, reservePercent, carrierBalance, carrierReserveBalance, carrierAvailableBalance) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CarrierLocation":
+                                {
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var systemName = JsonParsing.getString(data, "SystemName");
+                                    var bodyId = JsonParsing.getLong(data, "BodyID");
+                                    events.Add(new CarrierLocationEvent(timestamp, carrierID, systemAddress, systemName, bodyId) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;

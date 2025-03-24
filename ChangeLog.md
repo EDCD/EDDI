@@ -25,6 +25,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `srv_high_beams` documentation updated. Was incorrectly documented as `srv_highbeam`.
       * `temperature` added. This is a decimal value indicating the current surface temperature in Kelvin (when on foot).
   * Events
+    * `Carrier location` added, triggered at startup and shortly before your fleet carrier arrives at a new destination.
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.
     * `Power rank` added, triggered when you are awarded a new rank by your pledged Powerplay power
     * `Ship fsd` updated to replace the `fsd status` string and `hyperdrive_charging` boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO).

@@ -1206,7 +1206,7 @@ namespace EddiCore
         private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event)
         {
             // Update our current environment, vehicle, and station information if we are still docked at the carrier
-            if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierId == CurrentStation?.marketId)
+            if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierID == CurrentStation?.marketId)
             {
                 // We are in witch space and in the ship.
                 @event.docked = true;
@@ -1222,14 +1222,14 @@ namespace EddiCore
                 };
 
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
-                CurrentStarSystem?.RemoveStation( @event.carrierId ?? 0 );
+                CurrentStarSystem?.RemoveStation( @event.carrierID ?? 0 );
 
                 // Set the destination system as the current star system
                 updateCurrentSystem(@event.systemname, @event.systemAddress);
 
                 // Update our station information
-                CurrentStation = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId) ?? new Station();
-                CurrentStation.marketId = @event.carrierId;
+                CurrentStation = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID) ?? new Station();
+                CurrentStation.marketId = @event.carrierID;
                 CurrentStation.systemname = @event.systemname;
                 CurrentStation.systemAddress = @event.systemAddress;
 
@@ -1240,8 +1240,8 @@ namespace EddiCore
             {
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 var starSystem = DataProvider.GetOrFetchStarSystem(@event.originSystemAddress);
-                var carrier = starSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierId);
-                starSystem?.RemoveStation( @event.carrierId ?? 0 );
+                var carrier = starSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID);
+                starSystem?.RemoveStation( @event.carrierID ?? 0 );
                 // Save the carrier to the updated star system
                 if ( carrier != null)
                 {
@@ -1282,7 +1282,7 @@ namespace EddiCore
 
                 // There's a journal bug here where carrier market information is missing if we are on foot but present if we are docked
                 // so we fall back to our saved FleetCarrier object information if event information is missing.
-                var carrierID = @event.carrierId ?? FleetCarrier?.carrierID;
+                var carrierID = @event.carrierID ?? FleetCarrier?.carrierID;
                 var carrierCallsign = @event.carriername ?? FleetCarrier?.callsign;
 
                 // Remove the carrier from the current star system or last star system
@@ -2820,7 +2820,7 @@ namespace EddiCore
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null) 
+        public virtual void OnPropertyChanged([CallerMemberName]string propertyName = null) 
         { 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

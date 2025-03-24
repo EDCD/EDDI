@@ -442,6 +442,15 @@
       "default": true,
       "includes": null
     },
+    "Carrier location": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Carrier location",
+      "description": "Triggered at startup and shortly before your fleet carrier arrives at a new destination"
+    },
     "Carrier name changed": {
       "name": "Carrier name changed",
       "description": "Triggered when your fleet carrier’s name is changed",

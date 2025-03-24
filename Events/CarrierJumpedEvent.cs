@@ -114,7 +114,7 @@ namespace EddiEvents
 
         public bool onFoot { get; private set; }
 
-        public long? carrierId { get; private set; }
+        public long? carrierID { get; private set; }
 
         public Economy systemEconomy { get; private set; }
 
@@ -172,7 +172,7 @@ namespace EddiEvents
             // Carrier
             this.docked = docked;
             this.onFoot = onFoot;
-            this.carrierId = carrierId;
+            this.carrierID = carrierId;
             this.carriername = carrierName;
             this.carrierType = carrierId is null ? null : carrierType ?? StationModel.FleetCarrier;
             this.carrierFaction = stationFaction;

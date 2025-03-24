@@ -251,10 +251,10 @@ namespace EddiShipMonitor
                 {
                     foreach ( var ship in shipyard )
                     {
-                        if ( ship.StoredLocation.marketId == @event.carrierId )
+                        if ( ship.StoredLocation.marketId == @event.carrierID )
                         {
                             ship.StoredLocation = new Ship.Location( @event.systemname, @event.systemAddress, @event.x,
-                                @event.y, @event.z, @event.carriername, @event.carrierId );
+                                @event.y, @event.z, @event.carriername, @event.carrierID );
                             ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
                         }
                     }

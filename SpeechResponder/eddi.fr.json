@@ -371,6 +371,15 @@
       "name": "Carrier jumped",
       "description": "Triggered when you are docked at a fleet carrier as it completes a jump"
     },
+    "Carrier location": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Carrier location",
+      "description": "Triggered at startup and shortly before your fleet carrier arrives at a new destination"
+    },
     "Carrier name changed": {
       "enabled": true,
       "priority": 3,
