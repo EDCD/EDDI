@@ -3881,6 +3881,28 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "PowerplayCollect":
+                                {
+                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
+                                    commodity.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
+                                    data.TryGetValue( "Count", out object val );
+                                    var amount = (int)(long)val;
+                                    events.Add( new PowerCommodityObtainedEvent( timestamp, power, commodity, amount ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
+                            case "PowerplayDeliver":
+                                {
+                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
+                                    commodity.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
+                                    data.TryGetValue( "Count", out object val );
+                                    var amount = (int)(long)val;
+                                    events.Add( new PowerCommodityDeliveredEvent( timestamp, power, commodity, amount ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
                             case "PowerplayJoin":
                                 {
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
@@ -3904,25 +3926,11 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "PowerplayCollect":
+                            case "PowerplayRank":
                                 {
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
-                                    commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
-                                    data.TryGetValue("Count", out object val);
-                                    var amount = (int)(long)val;
-                                    events.Add(new PowerCommodityObtainedEvent(timestamp, power, commodity, amount) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "PowerplayDeliver":
-                                {
-                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
-                                    commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
-                                    data.TryGetValue("Count", out object val);
-                                    var amount = (int)(long)val;
-                                    events.Add(new PowerCommodityDeliveredEvent(timestamp, power, commodity, amount) { raw = line, fromLoad = fromLogLoad });
+                                    var rank = JsonParsing.getInt( data, "Rank" );
+                                    events.Add( new PowerRankEvent( timestamp, power, rank ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;

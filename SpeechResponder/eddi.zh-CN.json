@@ -1904,6 +1904,15 @@
       "name": "Power micro resources delivered",
       "description": "Triggered when delivering micro resources to a Powerplay contact"
     },
+    "Power rank": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Power rank",
+      "description": "Triggered when you are awarded a new rank by your pledged Powerplay power"
+    },
     "Power voucher received": {
       "enabled": true,
       "priority": 3,

@@ -129,6 +129,10 @@ namespace EddiCommanderMonitor
             {
                 handlePowerPlayEvent( powerplayEvent );
             }
+            else if ( @event is PowerRankEvent powerRankEvent )
+            {
+                handlePowerRankEvent( powerRankEvent );
+            }
             else if ( @event is PowerVoucherReceivedEvent powerVoucherReceivedEvent )
             {
                 handlePowerVoucherReceivedEvent( powerVoucherReceivedEvent );
@@ -340,6 +344,16 @@ namespace EddiCommanderMonitor
                 Cmdr.Power = @event.Power;
                 Cmdr.powerrating = @event.rank;
                 Cmdr.powermerits = @event.merits;
+                WriteCommander();
+            }
+        }
+
+        private void handlePowerRankEvent ( PowerRankEvent @event )
+        {
+            if ( @event.timestamp >= updatedAt )
+            {
+                Cmdr.Power = @event.Power;
+                Cmdr.powerrating = @event.rank;
                 WriteCommander();
             }
         }
