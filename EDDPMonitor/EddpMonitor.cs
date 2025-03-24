@@ -48,7 +48,7 @@ namespace EddiEddpMonitor
 
         public bool IsRequired()
         {
-            return false;
+            return true; // By making this monitor required with no ConfigurationWindow we can hide it from the UI
         }
 
         public bool NeedsStart()
@@ -87,7 +87,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public System.Windows.Controls.UserControl ConfigurationTabItem()
         {
-            return new ConfigurationWindow();
+            return null; // new ConfigurationWindow(); 
         }
 
         private void monitor()
