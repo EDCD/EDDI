@@ -23,7 +23,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `temperature` added. This is a decimal value indicating the current surface temperature in Kelvin (when on foot).
   * Speech Responder
     * Scripts
+      * `Crew check` added. (#2033)
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release.
+      * `Ship loadout` updated to invoke `Crew check` (for non-localized personalities only)
   * VoiceAttack responder
     * Updated the available status variables
       * `{BOOL:Status breathable atmosphere}` true if you are on foot in an area with a breathable atmosphere.

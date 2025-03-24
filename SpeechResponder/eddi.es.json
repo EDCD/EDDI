@@ -702,6 +702,15 @@
       "default": true,
       "includes": null
     },
+    "Crew check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Might be a taxi or multicrew session. We ignore those. We only want this when we're in our own ship. }\r\n{if vehicle = \"Ship\" && ship && status:\r\n\r\n    {if len(ship.compartments) > 0:\r\n        {for compartment in ship.compartments:\r\n            {if compartment.module && compartment.module.basename = \"FighterHangar\":    \r\n                {set fighter_hangar_present to true}\r\n            }\r\n        }\r\n    }\r\n    \r\n    {if fighter_hangar_present:\r\n        {if status.npc_crew_active:\r\n            {_ Crew is active }\r\n        |else:\r\n            {OneOf(\"Your {Occasionally(2, 'fighter')} crew awaits assignment {F('Honorific')}\")}.\r\n        }\r\n    }\r\n}",
+      "default": true,
+      "name": "Crew check",
+      "description": "Check for active NPC crew members"
+    },
     "Crew fired": {
       "name": "Crew fired",
       "description": "Se activa cuando despides a alguien de tu tripulación",
