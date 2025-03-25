@@ -133,7 +133,10 @@
     <value>Mercado Negro</value>
     <comment>Station Service: BlackMarket</comment>
   </data>
-  
+  <data name="Commodities" xml:space="preserve">
+    <value>Mercado</value>
+    <comment>Station Service: Commodities</comment>
+  </data>
   <data name="Contacts" xml:space="preserve">
     <value>Contatos</value>
     <comment>Station Service: Contacts</comment>
@@ -246,7 +249,10 @@
     <value>Projeto</value>
     <comment>Station Service: Livery</comment>
   </data>
-  
+  <data name="ModulePacks" xml:space="preserve">
+    <value>Administração do Porta Frotas</value>
+    <comment>Station Service: ModulePacks</comment>
+  </data>
   <data name="VoucherRedemption" xml:space="preserve">
     <value>Escritório de Resgate</value>
     <comment>Station Service: VoucherRedemption</comment>
@@ -287,7 +293,10 @@
     <value>Gerenciamento do Porta Frota</value>
     <comment>Station Service: Fleet Carrier Management</comment>
   </data>
-  
+  <data name="RegisteringColonisation" xml:space="preserve">
+    <value>Colonização de Sistema</value>
+    <comment>Station Service: System Colonisation</comment>
+  </data>
   <data name="Refinery" xml:space="preserve">
     <value>Contato da Refinaria</value>
     <comment>Station Service:Refinery</comment>
