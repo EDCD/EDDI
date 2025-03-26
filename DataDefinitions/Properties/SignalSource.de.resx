@@ -426,7 +426,7 @@
     <comment>Ancient Probe</comment>
   </data>
   <data name="USS_Type_PowerEmissions" xml:space="preserve">
-    <value>Wracksignaturen der Macht</value>
+    <value>Macht-Wrack-Signatur</value>
     <comment>Powerplay</comment>
   </data>
   <data name="USS_Type_PowerConvoy" xml:space="preserve">
