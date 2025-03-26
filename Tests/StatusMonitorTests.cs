@@ -38,6 +38,9 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "masslock", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
@@ -80,7 +83,9 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
-            Assert.IsFalse( status.fsd_cooldown );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "masslock", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete            Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
             Assert.IsFalse( status.fsd_supercruise_assist );
@@ -150,6 +155,9 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "masslock", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
@@ -220,6 +228,9 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "supercruise", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -290,6 +301,9 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsTrue( status.low_fuel ); // Always true in a fighter since the fighter has no main fuel tank
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "ready", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -360,6 +374,9 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "masslock", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsTrue( status.fsd_mass_locked );
@@ -430,6 +447,9 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "ready", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -500,6 +520,9 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "ready", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -575,6 +598,9 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "ready", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -646,6 +672,9 @@ namespace Tests
             Assert.IsFalse( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "ready", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );
@@ -684,6 +713,9 @@ namespace Tests
             Assert.IsTrue( status.near_surface );
             Assert.IsFalse( status.overheating );
             Assert.IsFalse( status.low_fuel );
+#pragma warning disable CS0612 // Type or member is obsolete
+            Assert.AreEqual( "ready", status.fsd_status );
+#pragma warning restore CS0612 // Type or member is obsolete
             Assert.IsFalse( status.fsd_cooldown );
             Assert.IsFalse( status.fsd_hyperdrive_charging );
             Assert.IsFalse( status.fsd_mass_locked );

@@ -102,5 +102,20 @@ namespace EddiEvents
             this.is_supercruise_charging = isSupercruiseCharging;
             this.was_supercruise_charging = wasSupercruiseCharging;
         }
+
+        [ Obsolete, PublicAPI( @"(OBSOLETE) ""The status of your ship's fsd as a string ('cooldown', 'cooldown complete', 'charging', 'charging cancelled', 'charging complete', 'masslock', or 'masslock cleared')" ) ]
+        public string fsd_status =>
+            is_cooldown ? "cooldown" :
+            is_hyperdrive_charging || is_supercruise_charging ? "charging" :
+            is_mass_locked ? "masslock" :
+            is_hyperspace ? "hyperspace" :
+            is_supercruise ? "supercruise" :
+            was_supercruise_charging || was_hyperdrive_charging ? "charging cancelled" :
+            was_cooldown ? "cooldown complete" :
+            was_mass_locked ? "masslock cleared" :
+            "ready";
+        
+        [ Obsolete, PublicAPI( "(OBSOLETE) True if the FSD is currently charging for a jump to hyperspace." ) ]
+        public bool hyperdrive_charging => is_hyperdrive_charging;
     }
 }

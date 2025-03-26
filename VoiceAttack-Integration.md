@@ -56,9 +56,10 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {BOOL:Status near surface} a boolean value indicating whether the commander is near a landable surface (within it's gravity well).
   * {BOOL:Status overheating} a boolean value indicating whether the commander's vehicle is overheating.
   * {BOOL:Status low fuel} a boolean value indicating whether the commander has less than 25% fuel remaining.
+  * {TXT:Status fsd status} (OBSOLETE) the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
   * {BOOL:Status fsd cooldown} a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise.
   * {BOOL:Status fsd hyperdrive charging} a boolean value indicating whether the FSD is currently charging for a jump to hyperspace.
-  * {BOOL:Status mass locked} a boolean value indicating whether the FSD is currently mass locked.
+  * {BOOL:Status fsd mass locked} a boolean value indicating whether the FSD is currently mass locked.
   * {BOOL:Status fsd supercruise assist} a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
   * {BOOL:Status fsd supercruise boosting} a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.
   * {BOOL:Status fsd supercruise charging} a boolean value indicating whether the FSD is currently charging for a jump to supercruise.

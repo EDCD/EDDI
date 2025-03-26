@@ -12,7 +12,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `fsd_supercruise_assist` added. This is a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
       * `fsd_supercruise_boosting` added. This is a boolean value indicating whether FSD supercruise overdrive (SCO) mode is activated.      
       * `fsd_supercruise_charging` added. This is a boolean value indicating whether the FSD is currently charging for a jump to supercruise.
-      * `fsd_status` removed and replaced with boolean values.
+      * `fsd_status` is now obsolete and not recommended for continued use.
       * `gliding` added. This is a boolean value indicating whether your ship is in glide mode near a planet surface.
       * `gravity` added. This is a decimal value indicating the surface gravity relative to 1G (when on foot).
       * `health` added. This is a decimal value indicating your current health level (when on foot).
@@ -28,7 +28,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Carrier location` added, triggered at startup and shortly before your fleet carrier arrives at a new destination.
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.
     * `Power rank` added, triggered when you are awarded a new rank by your pledged Powerplay power
-    * `Ship fsd` updated to replace the `fsd status` string and `hyperdrive_charging` boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO).
+    * `Ship fsd` updated to add boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO). The `fsd status` string and `hyperdrive_charging` variables are obsolete and not recommended for continued use.
   * Speech Responder
     * Scripts
       * `Crew check` added. (#2033)
@@ -51,7 +51,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `{BOOL:Status npc crew active}` true if at least one NPC crew member is assigned to active duty on your ship.
       * `{BOOL:Status srv high beams}` true if the lights in your SRV are set to the high beam mode.
       * `{BOOL:Status telepresence multicrew}` true if you are participating in telepresence multicrew.
-      * `{TXT:Status fsd status}` removed and replaced with boolean values.
+      * `{TXT:Status fsd status}` is now obsolete and not recommended for continued use.
       
 ## 4.1.1
   * Core

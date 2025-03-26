@@ -101,7 +101,16 @@ namespace EddiDataDefinitions
 
         [PublicAPI( @"a boolean value indicating whether the commander has less than 25% fuel remaining" )]
         public bool low_fuel => (flags & Flags.LowFuel) != 0;
-        
+
+        [Obsolete, PublicAPI( @"(OBSOLETE) the current status of the ship's frame shift drive. Can be one of ""ready"", ""cooldown"", ""charging"", ""masslock"", ""hyperspace"", or ""supercruise""" )]
+        public string fsd_status =>
+            fsd_cooldown ? "cooldown" :
+            ( flags & Flags.FsdCharging ) != 0 ? "charging" :
+            fsd_mass_locked ? "masslock" :
+            hyperspace ? "hyperspace" :
+            supercruise ? "supercruise" :
+            "ready";
+
         [PublicAPI( @"a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise." )]
         public bool fsd_cooldown => ( flags & Flags.FsdCooldown ) != 0;
 

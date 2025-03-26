@@ -605,8 +605,7 @@ namespace EddiVoiceAttackResponder
 
         public static void setStatusValues ( Status status, string prefix )
         {
-            if ( status == null )
-            { return; }
+            if ( status == null ) { return; }
             var variables = new MetaVariables(status.GetType(), status);
             if ( TrySetFromMetaVariables( prefix, variables ) )
             {
