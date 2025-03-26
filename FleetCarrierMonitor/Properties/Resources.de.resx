@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="monitorDescription" xml:space="preserve">
+    <value>Dieser Monitor verfolgt Änderungen zu Ihrem Flottenträger, falls zutreffend.</value>
+  </data>
+  <data name="monitorName" xml:space="preserve">
+    <value>'Überwachung des FC'</value>
+  </data>
 </root>
