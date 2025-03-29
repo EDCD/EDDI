@@ -445,4 +445,8 @@
     <value>System Colonisation Beacon</value>
     <comment>System Colonisation Beacon signal source</comment>
   </data>
+  <data name="EXT_PANEL_ColonisationShip" xml:space="preserve">
+    <value>System Colonisation Ship</value>
+    <comment>System Colonisation Ship</comment>
+  </data>
 </root>

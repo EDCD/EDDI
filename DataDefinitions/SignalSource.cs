@@ -108,6 +108,7 @@ namespace EddiDataDefinitions
             var ArmedRevolt = new SignalSource("Gro_controlScenarioTitle");
 
             var ColonizationBeacon = new SignalSource( "EXT_PANEL_ColonisationBeacon_Site" );
+            var ColonizationShip = new SignalSource("EXT_PANEL_ColonisationShip");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
@@ -174,9 +175,9 @@ namespace EddiDataDefinitions
 
             // Signal names can mix symbolic and proper names, e.g. "INV Audacious Dream $Warzone_TG_Med;",
             // so use regex to separate any symbolic names from proper names.
-            var regex = new Regex("\\$.*;");
+            var regex = new Regex(@"\$.*;");
             var match = regex.Match(from);
-
+            
             if (match.Success && from.Length > match.Value.Length)
             {
                 // This appears to be a mixed name, look for the symbolic portion only then
