@@ -42,6 +42,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Engineer report` updated to revise context inputs.
       * `Entered normal space` updated to revise context outputs.
       * `FSD engaged` updated to revise context outputs and fix references to entering and leaving superpower space. 
+      * `Glide` updated to revise context outputs.
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release and to reference newly minted boolean variables.
       * `Ship loadout` updated to invoke `Crew check` (for non-localized personalities only)
   * VoiceAttack responder
