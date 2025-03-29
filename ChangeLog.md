@@ -36,7 +36,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * `Carrier jump engaged` updated to revise context outputs.
       * `Carrier jumped` updated to revise context outputs.
+      * `Commander continued` updated to revise context outputs.
       * `Crew check` added. (#2033)
+      * `Discovery scan` updated to revise context inputs.
+      * `Engineer report` updated to revise context inputs.
+      * `Entered normal space` updated to revise context outputs.
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release and to reference newly minted boolean variables.
       * `Ship loadout` updated to invoke `Crew check` (for non-localized personalities only)
   * VoiceAttack responder
