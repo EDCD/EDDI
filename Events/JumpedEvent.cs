@@ -95,7 +95,7 @@ namespace EddiEvents
             .ToList();
 
         [PublicAPI( "(Only when pledged) The state of powerplay efforts within the star system" )]
-        public string powerstate => ( PowerState ?? PowerplayState.None ).localizedName;
+        public string powerstate => ( PowerState ?? PowerplayState.Unoccupied ).localizedName;
 
         [PublicAPI( "(Only when pledged) The powerplay power controlling the star system, if any, as an object. If the star system is `Contested`, this will be empty" )]
         public Power Power { get; private set; }

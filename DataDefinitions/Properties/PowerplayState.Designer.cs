@@ -97,20 +97,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
-        /// </summary>
-        public static string None {
-            get {
-                return ResourceManager.GetString("None", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Stronghold.
         /// </summary>
         public static string Stronghold {
             get {
                 return ResourceManager.GetString("Stronghold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unoccupied.
+        /// </summary>
+        public static string Unoccupied {
+            get {
+                return ResourceManager.GetString("Unoccupied", resourceCulture);
             }
         }
     }

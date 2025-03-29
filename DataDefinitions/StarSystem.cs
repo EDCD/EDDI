@@ -148,7 +148,7 @@ namespace EddiDataDefinitions
         [ Utilities.PublicAPI( "(When pledged) The state of powerplay efforts within the star system, as an object" ) ]
         public PowerplayState powerState
         {
-            get => _powerState ?? PowerplayState.None;
+            get => _powerState ?? PowerplayState.Unoccupied;
             set => _powerState = value;
         }
         private PowerplayState _powerState;

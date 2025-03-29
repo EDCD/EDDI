@@ -5293,17 +5293,24 @@ namespace EddiJournalMonitor
             }
             
             var edState = JsonParsing.getString( data, "PowerplayState" );
-            if ( systemAddress == controllingPower?.hqSystemAddress && edState == "Stronghold" )
+            if ( !string.IsNullOrEmpty(edState) )
             {
-                powerplayState = PowerplayState.Headquarters;
-            }
-            else if ( edState is "Unoccupied" && powerplayPowers.Count > 1 )
-            {
-                powerplayState = PowerplayState.Contested;
+                if ( systemAddress == controllingPower?.hqSystemAddress && edState == PowerplayState.Stronghold.invariantName )
+                {
+                    powerplayState = PowerplayState.Headquarters;
+                }
+                else if ( edState == PowerplayState.Unoccupied.invariantName && powerplayPowers.Count > 1 )
+                {
+                    powerplayState = PowerplayState.Contested;
+                }
+                else
+                {
+                    powerplayState = PowerplayState.FromEDName( edState );
+                }                
             }
             else
             {
-                powerplayState = PowerplayState.FromEDName( edState ) ?? PowerplayState.None;
+                powerplayState = PowerplayState.Unoccupied;
             }
         }
 
