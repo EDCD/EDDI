@@ -102,26 +102,34 @@ namespace EddiEvents
         [PublicAPI("A list of conflict objects describing any conflicts between factions in the system, if any")]
         public List<Conflict> conflicts { get; private set; }
 
-        // Powerplay properties (only when pledged)
+        // Powerplay properties
 
-        [PublicAPI( "(Only when pledged) The localized powerplay power controlling the star system, if any. If the star system is `Contested`, this will be empty" )]
+        [PublicAPI( "The localized powerplay power controlling the star system, if any.  If the star system is `Unoccupied` or `Contested` then this will be empty." )]
         public string power => ( Power ?? Power.None ).localizedName;
 
-        [PublicAPI( "(Only when pledged) The localized names of powerplay powers contesting control of the star system, if any" )]
+        [PublicAPI( "The localized names of powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any" )]
+        public List<string> nearbypowers => NearbyPowers?
+            .Select( p => p.localizedName )
+            .ToList();
+
+        [PublicAPI( "The localized names of powerplay powers contesting control of an uncontrolled star system, if any" )]
         public List<string> contestingpowers => ContestingPowers?
             .Select( p => p.localizedName )
             .ToList();
 
-        [PublicAPI("(Only when pledged) The state of powerplay efforts within the star system")]
+        [PublicAPI( "The localized state of powerplay efforts within the star system" )]
         public string powerstate => ( PowerState ?? PowerplayState.Unoccupied ).localizedName;
 
-        [PublicAPI( "(Only when pledged) The powerplay power controlling the star system, if any, as an object. If the star system is `Contested`, this will be empty" )]
+        [PublicAPI( "The powerplay power controlling the star system, if any, as an object." )]
         public Power Power { get; private set; }
 
-        [PublicAPI( "(Only when pledged) Powerplay powers contesting control of the star system, if any, as objects" )]
+        [PublicAPI( "Powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any, as objects" )]
+        public List<Power> NearbyPowers { get; set; }
+
+        [PublicAPI( "Powerplay powers contesting control of an uncontrolled star system, if any, as objects" )]
         public List<Power> ContestingPowers { get; set; }
 
-        [PublicAPI( "(Only when pledged) The state of powerplay efforts within the star system, as an object" )]
+        [PublicAPI( "The state of powerplay efforts within the star system, as an object" )]
         public PowerplayState PowerState { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
@@ -213,7 +221,7 @@ namespace EddiEvents
             this.factions = factions ?? new List<Faction>();
             this.conflicts = conflicts ?? new List<Conflict>();
             this.Power = controllingPower;
-            this.ContestingPowers = powerplayPowers?
+            this.NearbyPowers = powerplayPowers?
                 .Where( p => p.edname != Power?.edname )
                 .ToList();
             this.PowerState = powerplayState;

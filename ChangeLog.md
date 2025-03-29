@@ -6,7 +6,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Fixed a bug that could cause multiple instances of monitor and responder threads to run simultaneously. (#2713)
     * Fixed a bug that was preventing sending data to EDDN. (#2714)
-    * Status object updated
+    * `Starsystem` object updated
+      * `NearbyPowers` and `nearbypowers` added. These are lists of powerplay powers having star systems with acquisition radii which overlap the star system, either as objects or as strings.
+    * `Status` object updated
       * `fsd_cooldown` added. This is a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise.
       * `fsd_mass_locked` added. This is a boolean value indicating whether the FSD is currently mass locked.
       * `fsd_supercruise_assist` added. This is a boolean value indicating whether FSD supercruise assist (SCA) mode is activated.
@@ -27,7 +29,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * System location tracking now updates the current and last star system when initiating a jump to hyperspace rather than when arriving.
     * The power play state `None` has been replaced by `Unoccupied` to better match the in-game UI.
   * Events
+    * `Carrier jumped` updated to add `NearbyPowers` and `nearbypowers` properties. 
     * `Carrier location` added, triggered at startup and shortly before your fleet carrier arrives at a new destination.
+    * `Jumped` updated to add `NearbyPowers` and `nearbypowers` properties. 
+    * `Location` updated to add `NearbyPowers` and `nearbypowers` properties. 
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.
     * `Power rank` added, triggered when you are awarded a new rank by your pledged Powerplay power
     * `Ship fsd` updated to add boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO). The `fsd status` string and `hyperdrive_charging` variables are obsolete and not recommended for continued use.

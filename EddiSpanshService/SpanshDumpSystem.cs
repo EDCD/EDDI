@@ -121,11 +121,11 @@ namespace EddiSpanshService
 
                     starSystem.Power = Power.FromName( data[ "controllingPower" ]?.ToString() );
                     starSystem.powerState = PowerplayState.FromName( data[ "powerState" ]?.ToString() );
-                    var contestingPowers = data[ "powers" ]?
+                    var nearbyPowers = data[ "powers" ]?
                                                .Select( t => Power.FromName( t.ToString() ) )
                                                .Where( p => p != starSystem.Power )
                                                .ToHashSet() ?? new HashSet<Power>();
-                    starSystem.ContestingPowers = contestingPowers.ToList();
+                    starSystem.NearbyPowers = nearbyPowers.ToList();
                 }
 
                 // Get bodies

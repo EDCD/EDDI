@@ -132,20 +132,13 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI( "The localized security level in the star system (Low, Medium, High)" ), JsonIgnore]
         public string security => ( securityLevel ?? SecurityLevel.None ).localizedName;
 
-        [ Utilities.PublicAPI(
-              "(When pledged) The powerplay power controlling the star system, if any, as an object. If the star system is `Contested`, this will be empty" ),
-          JsonIgnore ]
-        public Power Power
-        {
-            get => _Power ?? Power.None;
-            set => _Power = value;
-        }
-        private Power _Power;
+        [ Utilities.PublicAPI( "The powerplay power controlling the star system, if any, as an object." ), JsonIgnore, CanBeNull ]
+        public Power Power { get; set; }
 
-        [Utilities.PublicAPI( "(When pledged) The localized powerplay power controlling the star system, if any. If the star system is `Contested`, this will be empty" ), JsonIgnore]
-        public string power => Power.localizedName;
+        [Utilities.PublicAPI( "The localized powerplay power controlling the star system, if any.  If the star system is `Unoccupied` or `Contested` then this will be empty." ), JsonIgnore]
+        public string power => (Power ?? Power.None).localizedName;
 
-        [ Utilities.PublicAPI( "(When pledged) The state of powerplay efforts within the star system, as an object" ) ]
+        [ Utilities.PublicAPI( "The state of powerplay efforts within the star system, as an object" ) ]
         public PowerplayState powerState
         {
             get => _powerState ?? PowerplayState.Unoccupied;
@@ -153,13 +146,21 @@ namespace EddiDataDefinitions
         }
         private PowerplayState _powerState;
 
-        [Utilities.PublicAPI( "(When pledged) The localized state of powerplay efforts within the star system" ), JsonIgnore]
+        [Utilities.PublicAPI( "The localized state of powerplay efforts within the star system" ), JsonIgnore]
         public string powerstate => powerState.localizedName;
 
-        [Utilities.PublicAPI( "(When pledged) Powerplay powers contesting control of the star system, if any, as objects" )]
+        [Utilities.PublicAPI( "Powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any, as objects" )]
+        public List<Power> NearbyPowers { get; set; } = new List<Power>();
+
+        [Utilities.PublicAPI( "The localized names of powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any" )]
+        public List<string> nearbypowers => NearbyPowers?
+            .Select( p => p.localizedName )
+            .ToList();
+
+        [Utilities.PublicAPI( "Powerplay powers contesting control of an uncontrolled star system, if any, as objects" )]
         public List<Power> ContestingPowers { get; set; } = new List<Power>();
 
-        [Utilities.PublicAPI( "(When pledged) The localized names of powerplay powers contesting control of the star system, if any" )]
+        [Utilities.PublicAPI( "The localized names of powerplay powers contesting control of an uncontrolled star system, if any" )]
         public List<string> contestingpowers => ContestingPowers?
             .Select( p => p.localizedName )
             .ToList();

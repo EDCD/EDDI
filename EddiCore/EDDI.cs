@@ -1372,7 +1372,7 @@ namespace EddiCore
 
                     // (When pledged) Powerplay information
                     CurrentStarSystem.Power = @event.Power;
-                    CurrentStarSystem.ContestingPowers = @event.ContestingPowers;
+                    CurrentStarSystem.NearbyPowers = @event.NearbyPowers;
                     CurrentStarSystem.powerState = @event.PowerState ?? CurrentStarSystem.powerState;
 
                     // Update to most recent information
@@ -1624,7 +1624,7 @@ namespace EddiCore
 
                 // (When pledged) Powerplay information
                 CurrentStarSystem.Power = theEvent.Power;
-                CurrentStarSystem.ContestingPowers = theEvent.ContestingPowers;
+                CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
                 CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
 
                 if ( theEvent.docked )
@@ -2197,7 +2197,7 @@ namespace EddiCore
 
                 // (When pledged) Powerplay information
                 CurrentStarSystem.Power = theEvent.Power;
-                CurrentStarSystem.ContestingPowers = theEvent.ContestingPowers;
+                CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
                 CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
 
                 // Update to most recent information

@@ -227,7 +227,7 @@ namespace Tests
                 {
                     "Edmund Mahon", 
                     "Yuri Grom"
-                }.All( n => result.ContestingPowers.Select( p => p.invariantName ).Contains( n ) ) );
+                }.All( n => result.NearbyPowers.Select( p => p.invariantName ).Contains( n ) ) );
             Assert.IsNotNull( result.securityLevel );
             Assert.AreEqual( "High", result.securityLevel.invariantName );
             Assert.AreEqual( 22780919531L, result.population );
