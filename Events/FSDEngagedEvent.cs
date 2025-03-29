@@ -26,7 +26,7 @@ namespace EddiEvents
         public string systemname { get; private set; }
 
         [PublicAPI( "The numeric system address of the destination star system (only if type is Hyperspace)" )]
-        public ulong systemAddress { get; private set; } // Only set when the fsd target is hyperspace
+        public ulong? systemAddress { get; private set; } // Only set when the fsd target is hyperspace
 
         [PublicAPI( "True if traveling via taxi" )]
         public bool taxijump { get; private set; }
@@ -35,7 +35,7 @@ namespace EddiEvents
 
         [ Obsolete ] public string system => systemname;
 
-        public FSDEngagedEvent(DateTime timestamp, string jumptype, string systemName, ulong systemAddress, string stellarclass, bool isTaxi) : base(timestamp, NAME)
+        public FSDEngagedEvent(DateTime timestamp, string jumptype, string systemName, ulong? systemAddress, string stellarclass, bool isTaxi) : base(timestamp, NAME)
         {
             this.target = jumptype;
             this.systemname = systemName;

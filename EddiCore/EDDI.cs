@@ -2057,7 +2057,10 @@ namespace EddiCore
             }
 
             // Set the destination system as the current star system
-            updateCurrentSystem( @event.systemname, @event.systemAddress );
+            if ( @event.systemAddress != null )
+            {
+                updateCurrentSystem( @event.systemname, (ulong)@event.systemAddress );
+            }
 
             // Remove information about the current station and stellar body 
             CurrentStation = null;
