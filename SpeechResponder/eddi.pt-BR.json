@@ -1991,7 +1991,7 @@
 			"enabled": true,
 			"priority": 3,
 			"responder": true,
-			"script": "{_ Next jump }\r\n{_ Triggered when selecting a star system to jump to }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_remaining_jumps', event.remainingjumpsinroute)}\r\n{SetState('eddi_context_selected_system_name', event.system)}",
+			"script": "{_ Context }\r\n{SetState('eddi_context_selected_system_name', event.system)}\r\n{SetState('eddi_context_selected_system_address', event.systemAddress)}",
 			"name": "Next jump",
 			"description": "Triggered when selecting a star system to jump to",
 			"default": true
