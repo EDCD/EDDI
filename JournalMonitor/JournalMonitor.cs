@@ -5297,7 +5297,7 @@ namespace EddiJournalMonitor
             {
                 powerplayState = PowerplayState.Headquarters;
             }
-            else if ( edState is "Uncontrolled" && powerplayPowers.Count > 1 )
+            else if ( edState is "Unoccupied" && powerplayPowers.Count > 1 )
             {
                 powerplayState = PowerplayState.Contested;
             }
