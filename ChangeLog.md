@@ -54,6 +54,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `System report` updated to revise context inputs.
       * `System scan complete` updated to revise context inputs.
       * `System state changed` updated to rename `system` variable to `systemName`.
+      * `System state report` updated to revise context inputs.
   * VoiceAttack responder
     * Updated the available status variables
       * `{BOOL:Status breathable atmosphere}` true if you are on foot in an area with a breathable atmosphere.
