@@ -1993,7 +1993,7 @@ namespace EddiJournalMonitor
                                     string target = JsonParsing.getString(data, "JumpType");
                                     string stellarclass = JsonParsing.getString(data, "StarClass");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress"); // Present when the FSD target is hyperspace
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress"); // Present when the FSD target is hyperspace
                                     var isTaxi = JsonParsing.getOptionalBool( data, "Taxi" ) ?? false;
                                     events.Add(new FSDEngagedEvent(timestamp, target, system, systemAddress, stellarclass, isTaxi) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;

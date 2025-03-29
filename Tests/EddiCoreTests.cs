@@ -114,6 +114,7 @@ namespace Tests
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             fakeSpanshRestClient.Expect( "dump/2868635641225", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpCephei_Sector_DQ_Y ) );
             fakeSpanshRestClient.Expect( "dump/560216410467", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpHP_8525 ) );
+            fakeSpanshRestClient.Expect( "dump/33656303199641", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpLHS_20 ) );
 
             var line1 = @"{ ""timestamp"":""2024-02-20T11:10:24Z"", ""event"":""FSDJump"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""Cephei Sector DQ-Y b1"", ""SystemAddress"":2868635641225, ""StarPos"":[-93.31250,31.00000,-73.00000], ""SystemAllegiance"":""Thargoid"", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""Нет"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""Нет"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""Нет"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Анархия"", ""Population"":0, ""Body"":""Cephei Sector DQ-Y b1 A"", ""BodyID"":1, ""BodyType"":""Star"", ""ThargoidWar"":{ ""CurrentState"":""Thargoid_Controlled"", ""NextStateSuccess"":"""", ""NextStateFailure"":""Thargoid_Controlled"", ""SuccessStateReached"":false, ""WarProgress"":0.000224, ""RemainingPorts"":0, ""EstimatedRemainingTime"":""0 Days"" }, ""JumpDist"":6.076, ""FuelUsed"":0.359144, ""FuelLevel"":31.640856 }";
             var event1 = (JumpedEvent)JournalMonitor.ParseJournalEntry(line1)[0];
@@ -130,6 +131,11 @@ namespace Tests
             Assert.IsNotNull( event3 );
             Assert.IsInstanceOfType( event3, typeof( JumpedEvent ) );
 
+            var line3a = @"{ ""timestamp"":""2020-11-20T02:15:00Z"", ""event"":""StartJump"", ""JumpType"":""Hyperspace"", ""StarSystem"":""LHS 20"", ""SystemAddress"":33656303199641, ""StarClass"":""M"" }";
+            var event3a = (FSDEngagedEvent)JournalMonitor.ParseJournalEntry(line3a)[0];
+            Assert.IsNotNull( event3a );
+            Assert.IsInstanceOfType( event3a, typeof( FSDEngagedEvent ) );
+
             // Standard jump to Cephei Sector DQ-Y b1. Environment is supercruise.
             EDDI.Instance.eventJumped( @event1 );
             Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, EDDI.Instance.Environment );
@@ -143,6 +149,7 @@ namespace Tests
             Assert.AreEqual( 560216410467UL, EDDI.Instance.CurrentStarSystem.systemAddress );
 
             // Hyperdiction in HIP 8525. Environment is normal space rather than supercruise.
+            EDDI.Instance.eventFSDEngaged( @event3a );
             EDDI.Instance.eventJumped( @event3 );
             Assert.AreEqual( Constants.ENVIRONMENT_NORMAL_SPACE, EDDI.Instance.Environment );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );

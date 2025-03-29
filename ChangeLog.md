@@ -24,6 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `selected_weapon` the model of your current selected weapon (when on foot).
       * `srv_high_beams` documentation updated. Was incorrectly documented as `srv_highbeam`.
       * `temperature` added. This is a decimal value indicating the current surface temperature in Kelvin (when on foot).
+    * System location tracking now updates the current and last star system when initiating a jump to hyperspace rather than when arriving.
   * Events
     * `Carrier location` added, triggered at startup and shortly before your fleet carrier arrives at a new destination.
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.

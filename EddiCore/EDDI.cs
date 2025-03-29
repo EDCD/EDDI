@@ -2044,7 +2044,7 @@ namespace EddiCore
             }
         }
 
-        private bool eventFSDEngaged(FSDEngagedEvent @event)
+        internal bool eventFSDEngaged(FSDEngagedEvent @event)
         {
             // Keep track of our environment
             if (@event.target == "Supercruise")
@@ -2055,7 +2055,10 @@ namespace EddiCore
             {
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
             }
-            
+
+            // Set the destination system as the current star system
+            updateCurrentSystem( @event.systemname, @event.systemAddress );
+
             // Remove information about the current station and stellar body 
             CurrentStation = null;
             CurrentStellarBody = null;
@@ -2116,6 +2119,8 @@ namespace EddiCore
 
         internal bool eventJumped(JumpedEvent theEvent)
         {
+            bool passEvent;
+
             if ( theEvent.taxi is true )
             {
                 Vehicle = Constants.VEHICLE_TAXI;
@@ -2129,7 +2134,7 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
             }
 
-            if ( CurrentStarSystem?.systemAddress > 0 && CurrentStarSystem.systemAddress == theEvent.systemAddress )
+            if ( LastStarSystem?.systemAddress > 0 && LastStarSystem.systemAddress == theEvent.systemAddress )
             {
                 // Thargoid Hyperdiction
                 Logging.Info( $"Jump Interrupted: Hyperdicted in {theEvent.system}" );
@@ -2140,7 +2145,7 @@ namespace EddiCore
                 // Generate a hyperdiction event
                 enqueueEvent(new HyperdictedEvent( theEvent.timestamp, theEvent.fuelused, theEvent.fuelremaining, theEvent.boostused, theEvent.taxi, theEvent.multicrew, theEvent.ThargoidWar ) { raw = null, fromLoad = theEvent.fromLoad } );
 
-                return false;
+                passEvent = false;
             }
             else
             {
@@ -2150,52 +2155,55 @@ namespace EddiCore
                 // After jump has completed we are always in supercruise
                 Environment = Constants.ENVIRONMENT_SUPERCRUISE;
 
-                updateCurrentSystem( theEvent.system, theEvent.systemAddress );
-                if ( CurrentStarSystem != null )
+                passEvent = true;
+            }
+
+            updateCurrentSystem( theEvent.system, theEvent.systemAddress );
+            if ( CurrentStarSystem != null )
+            {
+                CurrentStarSystem.systemAddress = theEvent.systemAddress;
+                CurrentStarSystem.x = theEvent.x;
+                CurrentStarSystem.y = theEvent.y;
+                CurrentStarSystem.z = theEvent.z;
+                CurrentStarSystem.Faction = theEvent.controllingfaction;
+                CurrentStarSystem.conflicts = theEvent.conflicts;
+                CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
+
+                // Update system faction data if available
+                if ( theEvent.factions != null )
                 {
-                    CurrentStarSystem.systemAddress = theEvent.systemAddress;
-                    CurrentStarSystem.x = theEvent.x;
-                    CurrentStarSystem.y = theEvent.y;
-                    CurrentStarSystem.z = theEvent.z;
-                    CurrentStarSystem.Faction = theEvent.controllingfaction;
-                    CurrentStarSystem.conflicts = theEvent.conflicts;
-                    CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
+                    CurrentStarSystem.factions = theEvent.factions;
 
-                    // Update system faction data if available
-                    if ( theEvent.factions != null )
+                    // Update station controlling faction data
+                    foreach ( var station in CurrentStarSystem.stations )
                     {
-                        CurrentStarSystem.factions = theEvent.factions;
-
-                        // Update station controlling faction data
-                        foreach ( var station in CurrentStarSystem.stations )
+                        var stationFaction = theEvent.factions.Find(f => f.name == station?.Faction?.name);
+                        if ( stationFaction != null )
                         {
-                            var stationFaction = theEvent.factions.Find(f => f.name == station?.Faction?.name);
-                            if ( stationFaction != null )
-                            {
-                                station.Faction = stationFaction;
-                            }
+                            station.Faction = stationFaction;
                         }
                     }
-
-                    CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
-                    CurrentStarSystem.securityLevel = theEvent.securityLevel;
-                    if ( theEvent.population != null )
-                    {
-                        CurrentStarSystem.population = theEvent.population;
-                    }
-
-                    // (When pledged) Powerplay information
-                    CurrentStarSystem.Power = theEvent.Power;
-                    CurrentStarSystem.ContestingPowers = theEvent.ContestingPowers;
-                    CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
-
-                    // Update to most recent information
-                    CurrentStarSystem.visitLog.Add( theEvent.timestamp );
-                    CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
-                    DataProvider.SaveStarSystem( CurrentStarSystem );
                 }
-                return true;
+
+                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+                CurrentStarSystem.securityLevel = theEvent.securityLevel;
+                if ( theEvent.population != null )
+                {
+                    CurrentStarSystem.population = theEvent.population;
+                }
+
+                // (When pledged) Powerplay information
+                CurrentStarSystem.Power = theEvent.Power;
+                CurrentStarSystem.ContestingPowers = theEvent.ContestingPowers;
+                CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
+
+                // Update to most recent information
+                CurrentStarSystem.visitLog.Add( theEvent.timestamp );
+                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
+                DataProvider.SaveStarSystem( CurrentStarSystem );
             }
+
+            return passEvent;
         }
 
         private bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
