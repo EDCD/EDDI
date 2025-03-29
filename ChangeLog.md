@@ -51,6 +51,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Ship loadout` updated to invoke `Crew check` (for non-localized personalities only)
       * `Ship swapped` updated remove obsolete crew reminder.
       * `System materials report` updated to revise context inputs.
+      * `System report` updated to revise context inputs.
   * VoiceAttack responder
     * Updated the available status variables
       * `{BOOL:Status breathable atmosphere}` true if you are on foot in an area with a breathable atmosphere.
