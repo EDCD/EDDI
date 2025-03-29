@@ -35,6 +35,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `EngineerDetails` function revised to accept either the name of an engineer, system name in which the engineer resides, or a numeric system address for the system were the engineer resides.
     * Scripts
       * `Carrier jump engaged` updated to revise context outputs.
+      * `Carrier jumped` updated to revise context outputs.
       * `Crew check` added. (#2033)
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release and to reference newly minted boolean variables.
       * `Ship loadout` updated to invoke `Crew check` (for non-localized personalities only)
