@@ -31,6 +31,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Power rank` added, triggered when you are awarded a new rank by your pledged Powerplay power
     * `Ship fsd` updated to add boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO). The `fsd status` string and `hyperdrive_charging` variables are obsolete and not recommended for continued use.
   * Speech Responder
+    * Custom Functions
+      * `EngineerDetails` function revised to accept either the name of an engineer, system name in which the engineer resides, or a numeric system address for the system were the engineer resides.
     * Scripts
       * `Crew check` added. (#2033)
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release and to reference newly minted boolean variables.

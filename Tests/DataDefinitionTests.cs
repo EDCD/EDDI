@@ -626,19 +626,87 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestEngineerNullLocation()
+        public void TestEngineerConstructor ()
         {
-            // Test that we can gracefully handle situations where we want to look up an engineer location and not all known engineers have a known location.
-            Engineer.AddOrUpdate(new Engineer("NoSuchEngineer", 999999, "Known", null, null));
-            try
-            {
-                var engineer = Engineer.FromSystemName("NoSuchSystem");
-                Assert.IsNull(engineer);
-            }
-            catch (Exception)
-            {
-                Assert.Fail();
-            }
+            // Arrange
+            var name = "Test Engineer";
+            long id = 12345;
+            var stage = "Test Stage";
+            int? rankProgress = 50;
+            int? rank = 5;
+
+            // Act
+            var engineer = new Engineer(name, id, stage, rankProgress, rank);
+
+            // Assert
+            Assert.AreEqual( name, engineer.name );
+            Assert.AreEqual( id, engineer.id );
+            Assert.AreEqual( stage, engineer.stage );
+            Assert.AreEqual( rankProgress, engineer.rankprogress );
+            Assert.AreEqual( rank, engineer.rank );
+        }
+
+        [TestMethod]
+        public void TestEngineerFromName ()
+        {
+            // Arrange
+            string name = "Didi Vatermann";
+
+            // Act
+            var engineer = Engineer.FromName(name);
+
+            // Assert
+            Assert.IsNotNull( engineer );
+            Assert.AreEqual( name, engineer.name );
+        }
+
+        [TestMethod]
+        public void TestEngineerFromSystemAddress ()
+        {
+            // Arrange
+            ulong systemAddress = 3932277478114;
+
+            // Act
+            var engineer = Engineer.FromSystemAddress(systemAddress);
+
+            // Assert
+            Assert.IsNotNull( engineer );
+            Assert.AreEqual( systemAddress, engineer.systemAddress );
+        }
+
+        [TestMethod]
+        public void TestEngineerFromNameOrId ()
+        {
+            // Arrange
+            string name = "Didi Vatermann";
+            long id = 300000;
+
+            // Act
+            var engineer = Engineer.FromNameOrId(name, id);
+
+            // Assert
+            Assert.IsNotNull( engineer );
+            Assert.AreEqual( name, engineer.name );
+            Assert.AreEqual( id, engineer.id );
+        }
+
+        [TestMethod]
+        public void TestEngineerAddOrUpdate ()
+        {
+            // Arrange
+            var engineer = new Engineer("Test Engineer", 12345, "Test Stage", 50, 5);
+
+            // Act
+            Engineer.AddOrUpdate( engineer );
+            var updatedEngineer = Engineer.FromNameOrId("Test Engineer", 12345);
+
+            // Assert
+            Assert.IsNotNull( updatedEngineer );
+            Assert.AreEqual( engineer.name, updatedEngineer.name );
+            Assert.AreEqual( engineer.id, updatedEngineer.id );
+            Assert.AreEqual( engineer.stage, updatedEngineer.stage );
+            Assert.AreEqual( engineer.rankprogress, updatedEngineer.rankprogress );
+            Assert.AreEqual( engineer.rank, updatedEngineer.rank );
         }
 
         [ TestMethod ]

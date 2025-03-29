@@ -1,4 +1,5 @@
 ﻿using Cottle;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
@@ -16,7 +17,19 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( Engineer );
         public IFunction function => Function.CreateNative1( ( runtime, input, writer ) =>
         {
-            Engineer result = Engineer.FromName(input.AsString) ?? Engineer.FromSystemName(input.AsString);
+            var result = Engineer.FromName(input.AsString);
+            if ( result is null )
+            {
+                var starSystem = ulong.TryParse( input.AsString, out var systemAddress ) 
+                    ? EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress, true, true ) 
+                    : EDDI.Instance.DataProvider.GetOrFetchStarSystem( input.AsString, true, true );
+
+                if ( starSystem != null )
+                {
+                    result = Engineer.FromSystemAddress( starSystem.systemAddress );
+                }
+            }
+
             return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         });
     }

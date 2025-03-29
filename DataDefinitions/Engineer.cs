@@ -21,7 +21,7 @@ namespace EddiDataDefinitions
         public string systemname { get; private set; }
 
         [PublicAPI]
-        public long systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         [PublicAPI]
         public string stationname { get; private set; }
@@ -68,7 +68,7 @@ namespace EddiDataDefinitions
             this.minorSpecialties = ENGINEERS.SingleOrDefault(e => e.id == engineerId)?.minorSpecialties;
         }
 
-        private Engineer ( long engineerId, string engineerName, string systemName, long systemAddress,
+        private Engineer ( long engineerId, string engineerName, string systemName, ulong systemAddress,
             string stationName, long marketId, string bodyName, int bodyId, HashSet<EngineerSpecialty> majorSpecialties,
             HashSet<EngineerSpecialty> minorSpecialties )
         {
@@ -129,28 +129,28 @@ namespace EddiDataDefinitions
         public static Engineer FromName(string from)
         {
             if (string.IsNullOrEmpty(from)) { return null; }
-            Engineer result = ENGINEERS.FirstOrDefault(v => v.name.Equals(from, StringComparison.InvariantCultureIgnoreCase));
+            var result = ENGINEERS.FirstOrDefault(v => v.name.Equals(from, StringComparison.InvariantCultureIgnoreCase));
             if (result == null)
             {
                 Logging.Debug("Unknown Engineer name " + from);
             }
             return result;
         }
-
-        public static Engineer FromSystemName(string from)
+        
+        public static Engineer FromSystemAddress(ulong from)
         {
-            if (string.IsNullOrEmpty(from)) { return null; }
-            Engineer result = ENGINEERS.FirstOrDefault(v => v.systemname?.Equals(from, StringComparison.InvariantCultureIgnoreCase) ?? false);
+            if (from <= 0) { return null; }
+            var result = ENGINEERS.FirstOrDefault(v => v.systemAddress == from);
             if (result == null)
             {
-                Logging.Debug("Unknown Engineer system name " + from);
+                Logging.Debug("Unknown Engineer system address " + from);
             }
             return result;
         }
 
         public static Engineer FromNameOrId(string from, long id)
         {
-            Engineer result = ENGINEERS.FirstOrDefault(v => v.id == id);
+            var result = ENGINEERS.FirstOrDefault(v => v.id == id);
             if (result == null)
             {
                 result = ENGINEERS.FirstOrDefault(v => v.name == from);
