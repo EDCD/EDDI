@@ -1374,6 +1374,10 @@ namespace EddiCore
                     CurrentStarSystem.Power = @event.Power;
                     CurrentStarSystem.NearbyPowers = @event.NearbyPowers;
                     CurrentStarSystem.powerState = @event.PowerState ?? CurrentStarSystem.powerState;
+                    CurrentStarSystem.powerAcquisitionProgress = @event.powerAcquisitionProgress;
+                    CurrentStarSystem.powerControlProgress = @event.powerControlProgress;
+                    CurrentStarSystem.powerReinforcementControlPoints = @event.powerReinforcementControlPoints;
+                    currentStarSystem.powerUnderminingControlPoints = @event.powerUnderminingControlPoints;
 
                     // Update to most recent information
                     CurrentStarSystem.visitLog.Add(@event.timestamp);
@@ -1626,6 +1630,10 @@ namespace EddiCore
                 CurrentStarSystem.Power = theEvent.Power;
                 CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
                 CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
+                CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
+                CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
+                CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
+                currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
 
                 if ( theEvent.docked )
                 {
@@ -2195,10 +2203,14 @@ namespace EddiCore
                     CurrentStarSystem.population = theEvent.population;
                 }
 
-                // (When pledged) Powerplay information
+                // Powerplay information
                 CurrentStarSystem.Power = theEvent.Power;
                 CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
-                CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
+                CurrentStarSystem.powerState = theEvent.PowerState;
+                CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
+                CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
+                CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
+                currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
 
                 // Update to most recent information
                 CurrentStarSystem.visitLog.Add( theEvent.timestamp );

@@ -7,7 +7,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that could cause multiple instances of monitor and responder threads to run simultaneously. (#2713)
     * Fixed a bug that was preventing sending data to EDDN. (#2714)
     * `Starsystem` object updated
+      * `ContestingPowers` and `contestingpowers` updated. These are now lists of powerplay powers with at least 30% progress towards acquisition of the star system, if any, either as objects or as strings, in descending order.
       * `NearbyPowers` and `nearbypowers` added. These are lists of powerplay powers having star systems with acquisition radii which overlap the star system, either as objects or as strings.
+      * `powerAcquisitionProgress` added. This is the progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects where the key is the power (as an object) and the value is the percent progress towards achieving the control score threshold.
+      * `powerControlProgress` added. This is the percent progress of the controlling power, if any, in consolidating control over the star system. Values below 0% indicate a reduction in the control level at the end of the cycle while values above 100% indicate an increase in the control level at the end of the cycle (if the current control state is less than 'Stronghold').
+      * `powerReinforcementControlPoints` added. This is control points accumulated by the controlling power via powerplay reinforcement activities during the current cycle.
+      * `powerUnderminingControlPoints` added. This is the control points lost by the controlling power via powerplay undermining activities during the current cycle.
     * `Status` object updated
       * `fsd_cooldown` added. This is a boolean value indicating whether the FSD is currently cooling down after a jump to hyperspace or supercruise.
       * `fsd_mass_locked` added. This is a boolean value indicating whether the FSD is currently mass locked.
@@ -29,13 +34,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * System location tracking now updates the current and last star system when initiating a jump to hyperspace rather than when arriving.
     * The power play state `None` has been replaced by `Unoccupied` to better match the in-game UI.
   * Events
-    * `Carrier jumped` updated to add `NearbyPowers` and `nearbypowers` properties. 
+    * `Carrier jumped` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Carrier location` added, triggered at startup and shortly before your fleet carrier arrives at a new destination.
-    * `Jumped` updated to add `NearbyPowers` and `nearbypowers` properties. 
-    * `Location` updated to add `NearbyPowers` and `nearbypowers` properties. 
+    * `Jumped` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
+    * `Location` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.
     * `Power rank` added, triggered when you are awarded a new rank by your pledged Powerplay power
-    * `Ship fsd` updated to add boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO). The `fsd status` string and `hyperdrive_charging` variables are obsolete and not recommended for continued use.
+    * `Ship fsd` revised to add boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO). The `fsd status` string and `hyperdrive_charging` variables are obsolete and not recommended for continued use.
   * Speech Responder
     * Custom Functions
       * `EngineerDetails` function revised to accept either the name of an engineer, system name in which the engineer resides, or a numeric system address for the system were the engineer resides.
@@ -52,7 +57,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Jumped` updated to revise context outputs.
       * `Location` updated to revise context outputs.
       * `Next jump` updated to revise context outputs.
-      * `Powerplay report` updated to revise context inputs.
+      * `Powerplay report` updated to revise context inputs, add additional variety and depth, and fix a missed powerplay name pronunciation correction. (#2717)
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release and to reference newly minted boolean variables.
       * `Ship loadout` updated to invoke `Crew check` (for non-localized personalities only)
       * `Ship swapped` updated remove obsolete crew reminder.

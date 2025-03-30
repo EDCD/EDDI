@@ -395,7 +395,11 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Powerplay data (if pledged)
-                                    GetPowerplayData(data, systemAddress, out Power controllingPower, out List<Power> powerplayPowers, out PowerplayState powerplayState);
+                                    GetPowerplayData( data, systemAddress, out Power controllingPower,
+                                        out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState,
+                                        out Dictionary<Power, decimal> powerAcquisitionProgress,
+                                        out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
+                                        out int powerplayUnderminingControlPoints );
 
                                     // Thargoid war data (if any)
                                     GetThargoidWarData( data, out ThargoidWar thargoidWar );
@@ -403,7 +407,15 @@ namespace EddiJournalMonitor
                                     bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, controllingPower, powerplayPowers, powerplayState, taxi, multicrew, thargoidWar) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add( new JumpedEvent( timestamp, systemName, systemAddress, x, y, z,
+                                        starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction,
+                                        factions, conflicts, economy, economy2, security, population, controllingPower,
+                                        powersInAcquisitionRange, powerplayState, powerAcquisitionProgress,
+                                        powerplayControlProgress, powerplayReinforcementControlPoints,
+                                        powerplayUnderminingControlPoints, taxi, multicrew, thargoidWar )
+                                    {
+                                        raw = line, fromLoad = fromLogLoad
+                                    } );
                                 }
                                 handled = true;
                                 break;
@@ -494,7 +506,11 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out Power controllingPower, out List<Power> powerplayPowers, out PowerplayState powerplayState );
+                                    GetPowerplayData( data, systemAddress, out Power controllingPower,
+                                        out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState,
+                                        out Dictionary<Power, decimal> powerAcquisitionProgress,
+                                        out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
+                                        out int powerplayUnderminingControlPoints );
 
                                     bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
                                     bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
@@ -508,11 +524,28 @@ namespace EddiJournalMonitor
                                     // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
-                                        events.Add(new CarrierJumpedEvent(timestamp, systemName, systemAddress, x, y, z, body, bodyId, bodyType, docked, onFoot, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, controllingPower, powerplayPowers, powerplayState, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add( new CarrierJumpedEvent( timestamp, systemName, systemAddress, x, y,
+                                            z, body, bodyId, bodyType, docked, onFoot, station, stationtype, marketId,
+                                            stationServices, systemfaction, stationfaction, factions, conflicts,
+                                            Economies, economy, economy2, security, population, controllingPower,
+                                            powersInAcquisitionRange, powerplayState,
+                                            powerAcquisitionProgress, powerplayControlProgress,
+                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                                            thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
                                     }
                                     else
                                     {
-                                        events.Add(new LocationEvent(timestamp, systemName, systemAddress, x, y, z, distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked, station, stationtype, marketId, stationServices, systemfaction, stationfaction, factions, conflicts, Economies, economy, economy2, security, population, controllingPower, powerplayPowers, powerplayState, taxi, multicrew, inSRV, onFoot, thargoidWar ) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add( new LocationEvent( timestamp, systemName, systemAddress, x, y, z,
+                                            distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked,
+                                            station, stationtype, marketId, stationServices, systemfaction,
+                                            stationfaction, factions, conflicts, Economies, economy, economy2, security,
+                                            population, controllingPower, powersInAcquisitionRange, powerplayState,
+                                            powerAcquisitionProgress, powerplayControlProgress,
+                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                                            taxi, multicrew, inSRV, onFoot, thargoidWar )
+                                        {
+                                            raw = line, fromLoad = fromLogLoad
+                                        } );
                                     }
                                 }
                                 handled = true;
@@ -4424,7 +4457,11 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out Power controllingPower, out List<Power> powerplayPowers, out var powerplayState );
+                                    GetPowerplayData( data, systemAddress, out Power controllingPower,
+                                        out List<Power> powersInAcquisitionRange, out var powerplayState,
+                                        out Dictionary<Power, decimal> powerAcquisitionProgress,
+                                        out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
+                                        out int powerplayUnderminingControlPoints );
 
                                     // Thargoid war data (if any)
                                     GetThargoidWarData( data, out var thargoidWar );
@@ -4436,10 +4473,10 @@ namespace EddiJournalMonitor
                                         bodyName, bodyId, bodyType, docked, onFoot, carrierName, carrierType, carrierId,
                                         stationServices, systemfaction, stationFaction, factions, conflicts,
                                         stationEconomies, systemEconomy, systemEconomy2, systemSecurity,
-                                        systemPopulation, controllingPower, powerplayPowers, powerplayState, thargoidWar )
-                                    {
-                                        raw = line, fromLoad = fromLogLoad
-                                    } );
+                                        systemPopulation, controllingPower, powersInAcquisitionRange, powerplayState,
+                                        powerAcquisitionProgress, powerplayControlProgress,
+                                        powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                                        thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
 
                                     // Generate secondary event when the carrier jump cooldown completes
                                     if ( carrierId != null &&
@@ -5278,40 +5315,78 @@ namespace EddiJournalMonitor
             }
         }
 
-        private static void GetPowerplayData ( IDictionary<string, object> data, ulong systemAddress, out Power controllingPower, out List<Power> powerplayPowers, out PowerplayState powerplayState )
+        private static void GetPowerplayData ( IDictionary<string, object> data, ulong systemAddress, 
+            out Power controllingPower, out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState, 
+            out Dictionary<Power, decimal> powerAcquisitionProgress, out decimal controlProgress, out int reinforcementControlPoints, out int underminingControlPoints )
         {
             controllingPower = Power.FromEDName( JsonParsing.getString( data, "ControllingPower" ) );
-            powerplayPowers = new List<Power>();
+
+            // This is a list of all powers within range to acquire this star system
+            powersInAcquisitionRange = new List<Power>();
             data.TryGetValue( "Powers", out object powersVal );
-            // There can be more than one power listed for a system when the system is being contested
             if ( powersVal is List<object> powerNames )
             {
                 foreach ( var powerName in powerNames )
                 {
-                    powerplayPowers.Add( Power.FromEDName( (string)powerName ) );
+                    powersInAcquisitionRange.Add( Power.FromEDName( (string)powerName ) );
                 }
             }
-            
-            var edState = JsonParsing.getString( data, "PowerplayState" );
-            if ( !string.IsNullOrEmpty(edState) )
+
+            // While the system is not controlled by any power there is a `PowerplayConflictProgress` key which measures the progress of each power towards control of that star system
+            powerAcquisitionProgress = new Dictionary<Power, decimal>();
+            if ( data.TryGetValue( "PowerplayConflictProgress", out var conflictProgressData ) && 
+                 conflictProgressData is KeyValuePair<string, decimal> conflictProgress )
             {
-                if ( systemAddress == controllingPower?.hqSystemAddress && edState == PowerplayState.Stronghold.invariantName )
-                {
-                    powerplayState = PowerplayState.Headquarters;
-                }
-                else if ( edState == PowerplayState.Unoccupied.invariantName && powerplayPowers.Count > 1 )
-                {
-                    powerplayState = PowerplayState.Contested;
-                }
-                else
-                {
-                    powerplayState = PowerplayState.FromEDName( edState );
-                }                
+                // Convert percent progress values from a 0-1 scale to 0-100.
+                // Values over 100% are permitted and indicate that the power has exceeded the threshold to take control of the system.
+                powerAcquisitionProgress.Add( Power.FromEDName(conflictProgress.Key), conflictProgress.Value * 100 );
             }
-            else
+            powerAcquisitionProgress = powerAcquisitionProgress
+                .OrderByDescending( p => p.Value )
+                .ToDictionary( x => x.Key, x => x.Value );
+
+            powerplayState = PowerplayState.FromEDName( JsonParsing.getString( data, "PowerplayState" ) );
+
+            // There is a special 'Contested' powerplay state which applies when more than one power has achieved at least 30% progress towards control
+            if ( powerplayState == PowerplayState.Unoccupied && powerAcquisitionProgress.Count( p => p.Value >= 30 ) > 1 )
             {
-                powerplayState = PowerplayState.Unoccupied;
+                powerplayState = PowerplayState.Contested;
             }
+
+            // There is a special 'Headquarters' powerplay state which applies to the power's headquarters system. This system cannot be undermined.
+            if ( powerplayState == PowerplayState.Stronghold && systemAddress == controllingPower?.hqSystemAddress )
+            {
+                powerplayState = PowerplayState.Headquarters;
+            }
+
+            // While the system is controlled by a power there is a `PowerplayStateControlProgress` key which measures progress towards or away from control of that star system
+            controlProgress = JsonParsing.getOptionalDecimal( data, "PowerplayStateControlProgress" ) ?? 0;
+            // Control progress seems to be affected by an overflow error which needs correction.
+            if ( controlProgress > 4000 )
+            {
+                // Negative values indicate a reduction to the next lowest level of control of the system at the end of the cycle.
+                // Positive values over 100% indicate an increase to the level of control of the system at the end of the cycle.
+                var scale = 120000;
+                if ( powerplayState == PowerplayState.Exploited )
+                {
+                    scale = 350000;
+                }
+                else if ( powerplayState == PowerplayState.Fortified )
+                {
+                    scale = 650000;
+                }
+                else if ( powerplayState == PowerplayState.Stronghold )
+                {
+                    scale = 1000000;
+                }
+                controlProgress -= ( (decimal)uint.MaxValue + 1 ) / scale;
+            }
+            // Convert percent progress values from a 0-1 scale to 0-100.
+            controlProgress *= 100;
+
+            // While the system is controlled by a power there are `PowerplayStateReinforcement` and `PowerplayStateUndermining` keys which record control points contributed by agents either reinforcing or undermining system control in the current cycle.
+            reinforcementControlPoints = JsonParsing.getOptionalInt( data, "PowerplayStateReinforcement" ) ?? 0;
+            underminingControlPoints = JsonParsing.getOptionalInt( data, "PowerplayStateUndermining" ) ?? 0;
         }
 
         private static Superpower GetAllegiance(IDictionary<string, object> data, string key)

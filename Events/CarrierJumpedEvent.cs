@@ -74,7 +74,7 @@ namespace EddiEvents
             .Select( p => p.localizedName )
             .ToList();
 
-        [PublicAPI( "The localized names of powerplay powers contesting control of an uncontrolled star system, if any" )]
+        [PublicAPI( "The localized names of powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, in descending order" )]
         public List<string> contestingpowers => ContestingPowers?
             .Select( p => p.localizedName )
             .ToList();
@@ -88,11 +88,26 @@ namespace EddiEvents
         [PublicAPI( "Powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any, as objects" )]
         public List<Power> NearbyPowers { get; set; }
 
-        [PublicAPI( "Powerplay powers contesting control of an uncontrolled star system, if any, as objects" )]
-        public List<Power> ContestingPowers { get; set; }
+        [PublicAPI( "Powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, as objects, in descending order" )]
+        public List<Power> ContestingPowers => powerAcquisitionProgress?
+            .Where( kvp => kvp.Value >= 30 )
+            .Select( kvp => kvp.Key )
+            .ToList() ?? new List<Power>();
 
         [PublicAPI( "The state of powerplay efforts within the star system, as an object" )]
         public PowerplayState PowerState { get; private set; }
+
+        [PublicAPI( "The progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects where the key is the power (as an object) and the value is the percent progress towards achieving the control score threshold" )]
+        public Dictionary<Power, decimal> powerAcquisitionProgress { get; private set; }
+
+        [PublicAPI( "The percent progress of the controlling power, if any, in consolidating control over the star system. Values below 0% indicate a reduction in the control level at the end of the cycle while values above 100% indicate an increase in the control level at the end of the cycle (if the current control state is less than 'Stronghold')" )]
+        public decimal powerControlProgress { get; set; }
+
+        [PublicAPI( "The control points accumulated by the controlling power via powerplay reinforcement activities during the current cycle" )]
+        public int powerReinforcementControlPoints { get; set; }
+
+        [PublicAPI( "The control points lost by the controlling power via powerplay undermining activities during the current cycle" )]
+        public int powerUnderminingControlPoints { get; set; }
 
         // Body variables
 
@@ -143,14 +158,14 @@ namespace EddiEvents
         public List<EconomyShare> carrierEconomies { get; private set; }
 
         public CarrierJumpedEvent ( DateTime timestamp, string systemName, ulong systemAddress, decimal x, decimal y,
-            decimal z,
-            string bodyName, long? bodyId, BodyType bodyType, bool docked, bool onFoot,
-            string carrierName, StationModel carrierType, long? carrierId, List<StationService> stationServices,
-            Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
+            decimal z, string bodyName, long? bodyId, BodyType bodyType, bool docked, bool onFoot, string carrierName,
+            StationModel carrierType, long? carrierId, List<StationService> stationServices, Faction systemFaction,
+            Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy systemEconomy, Economy systemEconomy2,
-            SecurityLevel systemSecurity, long? systemPopulation,
-            Power controllingPower,
-            List<Power> powerplayPowers, PowerplayState powerplayState, ThargoidWar thargoidWar ) : base(timestamp, NAME)
+            SecurityLevel systemSecurity, long? systemPopulation, Power controllingPower, List<Power> powerplayPowers,
+            PowerplayState powerplayState, Dictionary<Power, decimal> powerAcquisitionProgress,
+            decimal powerplayControlProgress, int powerplayReinforcementControlPoints,
+            int powerplayUnderminingControlPoints, ThargoidWar thargoidWar ) : base( timestamp, NAME )
         {
             // System
             this.systemname = systemName;
@@ -165,11 +180,6 @@ namespace EddiEvents
             this.population = systemPopulation;
             this.factions = factions ?? new List<Faction>();
             this.conflicts = conflicts ?? new List<Conflict>();
-            this.Power = controllingPower;
-            this.NearbyPowers = powerplayPowers?
-                .Where( p => p.edname != Power?.edname )
-                .ToList();
-            this.PowerState = powerplayState;
             this.ThargoidWar = thargoidWar;
 
             // Body
@@ -186,6 +196,17 @@ namespace EddiEvents
             this.carrierFaction = stationFaction;
             this.carrierServices = stationServices ?? new List<StationService>();
             this.carrierEconomies = stationEconomies ?? new List<EconomyShare>();
+
+            // Powerplay
+            this.Power = controllingPower;
+            this.NearbyPowers = powerplayPowers?
+                .Where( p => p.edname != Power?.edname )
+                .ToList();
+            this.PowerState = powerplayState ?? PowerplayState.Unoccupied;
+            this.powerAcquisitionProgress = powerAcquisitionProgress;
+            this.powerControlProgress = powerplayControlProgress;
+            this.powerReinforcementControlPoints = powerplayReinforcementControlPoints;
+            this.powerUnderminingControlPoints = powerplayUnderminingControlPoints;
         }
     }
 }

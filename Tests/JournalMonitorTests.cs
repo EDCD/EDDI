@@ -1548,7 +1548,7 @@ namespace Tests
             Assert.AreEqual(2, @event.bodyId);
             Assert.AreEqual("Star", @event.bodyType.invariantName);
             Assert.IsNull(@event.Power?.invariantName);
-            Assert.AreEqual("None", @event.PowerState.invariantName);
+            Assert.AreEqual("Unoccupied", @event.PowerState.invariantName);
             Assert.AreEqual(0, @event.factions.Count);
             Assert.IsNull(@event.controllingsystemfaction?.name);
             Assert.AreEqual(0, @event.conflicts.Count);

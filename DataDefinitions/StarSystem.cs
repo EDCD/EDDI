@@ -135,7 +135,7 @@ namespace EddiDataDefinitions
         [ Utilities.PublicAPI( "The powerplay power controlling the star system, if any, as an object." ), JsonIgnore, CanBeNull ]
         public Power Power { get; set; }
 
-        [Utilities.PublicAPI( "The localized powerplay power controlling the star system, if any.  If the star system is `Unoccupied` or `Contested` then this will be empty." ), JsonIgnore]
+        [Utilities.PublicAPI( "The localized powerplay power controlling the star system, if any. If the star system is `Unoccupied` or `Contested` then this will be empty." ), JsonIgnore]
         public string power => (Power ?? Power.None).localizedName;
 
         [ Utilities.PublicAPI( "The state of powerplay efforts within the star system, as an object" ) ]
@@ -152,18 +152,33 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI( "Powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any, as objects" )]
         public List<Power> NearbyPowers { get; set; } = new List<Power>();
 
-        [Utilities.PublicAPI( "The localized names of powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any" )]
+        [Utilities.PublicAPI( "The localized names of powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any" ), JsonIgnore]
         public List<string> nearbypowers => NearbyPowers?
             .Select( p => p.localizedName )
             .ToList();
 
-        [Utilities.PublicAPI( "Powerplay powers contesting control of an uncontrolled star system, if any, as objects" )]
-        public List<Power> ContestingPowers { get; set; } = new List<Power>();
+        [Utilities.PublicAPI( "Powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, as objects, in descending order" ), JsonIgnore]
+        public List<Power> ContestingPowers => powerAcquisitionProgress?
+            .Where( kvp => kvp.Value >= 30 )
+            .Select( kvp => kvp.Key )
+            .ToList() ?? new List<Power>();
 
-        [Utilities.PublicAPI( "The localized names of powerplay powers contesting control of an uncontrolled star system, if any" )]
+        [Utilities.PublicAPI( "The localized names of powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, in descending order" ), JsonIgnore]
         public List<string> contestingpowers => ContestingPowers?
             .Select( p => p.localizedName )
             .ToList();
+
+        [Utilities.PublicAPI( "The percent progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects where the key is the power (as an object) and the value is the percent progress towards achieving the control score threshold" )]
+        public Dictionary<Power, decimal> powerAcquisitionProgress { get; set; }
+
+        [Utilities.PublicAPI( "The percent progress of the controlling power, if any, in consolidating control over the star system. Values below 0% indicate a reduction in the control level at the end of the cycle while values above 100% indicate an increase in the control level at the end of the cycle (if the current control state is less than 'Stronghold')" )]
+        public decimal powerControlProgress { get; set; }
+
+        [Utilities.PublicAPI( "The control points accumulated by the controlling power via powerplay reinforcement activities during the current cycle" )]
+        public int powerReinforcementControlPoints { get; set; }
+
+        [Utilities.PublicAPI( "The control points lost by the controlling power via powerplay undermining activities during the current cycle" )]
+        public int powerUnderminingControlPoints { get; set; }
 
         // Faction details
         [Utilities.PublicAPI( "The star system controlling faction, if any, as an object" ), CanBeNull]
@@ -367,25 +382,25 @@ namespace EddiDataDefinitions
         {
             lock ( _bodiesLock )
             {
-            var builder = bodies.ToBuilder();
-            internalAddOrUpdateBody( body, builder );
-            builder.Sort( Body.CompareById );
-            bodies = builder.ToImmutable();
-        }
+                var builder = bodies.ToBuilder();
+                internalAddOrUpdateBody( body, builder );
+                builder.Sort( Body.CompareById );
+                bodies = builder.ToImmutable();
+            }
         }
 
         public void AddOrUpdateBodies ( IEnumerable<Body> newOrUpdatedBodies )
         {
             lock ( _bodiesLock )
-        {
-            var builder = bodies.ToBuilder();
-                foreach ( var newOrUpdatedBody in newOrUpdatedBodies )
             {
+                var builder = bodies.ToBuilder();
+                foreach ( var newOrUpdatedBody in newOrUpdatedBodies )
+                {
                     internalAddOrUpdateBody( newOrUpdatedBody, builder );
+                }
+                builder.Sort( Body.CompareById );
+                bodies = builder.ToImmutable();
             }
-            builder.Sort( Body.CompareById );
-            bodies = builder.ToImmutable();
-        }
         }
 
         private void internalAddOrUpdateBody ( Body newOrUpdatedBody, ImmutableList<Body>.Builder builder )
@@ -511,25 +526,25 @@ namespace EddiDataDefinitions
         {
             lock ( _stationsLock )
             {
-            var builder = stations.ToBuilder();
-            internalAddOrUpdateStation( newOrUpdatedStation, builder );
-            builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
-            stations = builder.ToImmutable();
-        }
+                var builder = stations.ToBuilder();
+                internalAddOrUpdateStation( newOrUpdatedStation, builder );
+                builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
+                stations = builder.ToImmutable();
+            }
         }
 
         public void AddOrUpdateStations ( IEnumerable<Station> newOrUpdatedStations )
         {
             lock ( _stationsLock )
             {
-            var builder = stations.ToBuilder();
+                var builder = stations.ToBuilder();
                 foreach ( var newOrUpdatedStation in newOrUpdatedStations )
-            {
+                {
                     internalAddOrUpdateStation( newOrUpdatedStation, builder );
-            }
+                }
                 builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
-            stations = builder.ToImmutable();
-        }
+                stations = builder.ToImmutable();
+            }
         }
 
         private void internalAddOrUpdateStation ( Station newOrUpdatedStation, ImmutableList<Station>.Builder builder )
