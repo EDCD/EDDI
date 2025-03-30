@@ -48,6 +48,7 @@ namespace Utilities
         {
             try
             {
+                var sourceThreadID = Thread.CurrentThread.ManagedThreadId;
                 Task.Run(async () =>
                 {
                     Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -62,7 +63,7 @@ namespace Utilities
                         {
                             if (Verbose)
                             {
-                                WriteToLog(timestamp, errorlevel, message, preppedData);
+                                WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
                             }
                             HandleTelemetry( errorlevel, message, timestamp, false, preppedData );
                             break;
@@ -70,14 +71,14 @@ namespace Utilities
                         case ErrorLevel.Info:
                         case ErrorLevel.Warning:
                         {
-                            WriteToLog(timestamp, errorlevel, message, preppedData);
+                            WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
                             HandleTelemetry( errorlevel, message, timestamp, false, preppedData );
                             break;
                         }
                         case ErrorLevel.Error:
                         case ErrorLevel.Critical:
                         {
-                            WriteToLog(timestamp, errorlevel, message, preppedData);
+                            WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
                             HandleTelemetry( errorlevel, message, timestamp, true, preppedData );
                             break;
                         }
@@ -146,11 +147,9 @@ namespace Utilities
 
         private static readonly object logLock = new object();
 
-        private static void WriteToLog ( string timestamp, ErrorLevel errorlevel, string message, object preppedData = null )
+        private static void WriteToLog ( string timestamp, int? threadID, ErrorLevel errorlevel, string message, object preppedData = null )
         {
-            var str = $"{timestamp} [{errorlevel}] {message}" + ( preppedData != null
-                ? $": {Redaction.RedactEnvironmentVariables( JsonConvert.SerializeObject( preppedData ) )}"
-                : null );
+            var str = $"{timestamp} {( threadID is null ? "" : $"[{threadID}] " )}[{errorlevel}] {message}{( preppedData != null ? $": {Redaction.RedactEnvironmentVariables( JsonConvert.SerializeObject( preppedData ) )}" : null )}";
             if ( string.IsNullOrEmpty( str ) ) { return; }
 
             lock ( logLock )
@@ -184,8 +183,7 @@ namespace Utilities
                     {
                         if ( !string.IsNullOrEmpty( anonymousTelemetryID ) )
                         {
-                            WriteToLog( timestamp, errorlevel,
-                                $"Reporting error to telemetry service, anonymous ID {anonymousTelemetryID}: {message}" );
+                            WriteToLog( timestamp, null, errorlevel, $"Reporting error to telemetry service, anonymous ID {anonymousTelemetryID}: {message}" );
                         }
                         ReportTelemetryEvent( errorlevel, message, preppedData );
                     }
