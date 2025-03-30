@@ -38,8 +38,6 @@ namespace EddiVoiceAttackResponder
         internal static dynamic VaProxy;
         internal static readonly object vaProxyLock = new object();
 
-        private static VoiceAttackEventHandler voiceAttackEventHandler;
-
         // ReSharper disable once MemberCanBePrivate.Global - VA Interface Member
         public static void VA_Init1(dynamic vaProxy)
         {
@@ -79,10 +77,6 @@ namespace EddiVoiceAttackResponder
 
                     // Set initial values for standard variables
                     VoiceAttackVariables.initializeStandardValues();
-
-                    // Set up our event responder.
-                    voiceAttackEventHandler = new VoiceAttackEventHandler();
-                    VoiceAttackResponder.RaiseEvent += OnRaiseEvent;
 
                     // Add notifiers for changes in variables we want to react to 
                     // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
@@ -161,11 +155,6 @@ namespace EddiVoiceAttackResponder
             VoiceAttackVariables.updateStandardValues( e, VaProxy );
         }
 
-        private static void OnRaiseEvent ( object s, Event @event )
-        {
-            voiceAttackEventHandler.Handle( @event );
-        }
-
         // ReSharper disable once UnusedMember.Global - VoiceAttack API
         public static void VA_Exit1(dynamic vaProxy)
         {
@@ -176,11 +165,7 @@ namespace EddiVoiceAttackResponder
 
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
-            // Cancel event queue threads and wait for them to complete
-            voiceAttackEventHandler?.StopEventHandling();
-
             // Unsubscribe from events
-            VoiceAttackResponder.RaiseEvent -= OnRaiseEvent;
             EDDI.Instance.PropertyChanged -= OnEddiPropertyChanged;
             EDDI.Instance.State.CollectionChanged -=OnEddiStateCollectionChanged;
             EDDI.Instance.State.PropertyChanged -= OnEddiStatePropertyChanged;

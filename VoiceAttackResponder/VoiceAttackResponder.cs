@@ -2,7 +2,6 @@
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
-using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using Utilities;
@@ -15,12 +14,7 @@ namespace EddiVoiceAttackResponder
     /// </summary>
     class VoiceAttackResponder : IEddiResponder
     {
-        public static event EventHandler<Event> RaiseEvent;
-
-        protected virtual void OnEvent(EventArgs @eventArgs, Event @event)
-        {
-            RaiseEvent?.Invoke(@eventArgs, @event);
-        }
+        private static VoiceAttackEventHandler voiceAttackEventHandler;
 
         public string ResponderName()
         {
@@ -48,14 +42,16 @@ namespace EddiVoiceAttackResponder
             {
                 return;
             }
-
-            OnEvent(EventArgs.Empty, @event);
+            voiceAttackEventHandler.Handle( @event );
         }
 
         public bool Start()
         {
             if (App.FromVA)
             {
+                // Set up our event responder.
+                voiceAttackEventHandler = new VoiceAttackEventHandler();
+
                 return true;
             }
             else
@@ -64,8 +60,11 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public void Stop()
-        { }
+        public void Stop ()
+        {
+            // Cancel event queue threads and wait for them to complete
+            voiceAttackEventHandler?.StopEventHandling();
+        }
 
         public void Reload()
         { }
