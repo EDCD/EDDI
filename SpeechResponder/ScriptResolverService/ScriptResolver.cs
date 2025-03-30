@@ -104,10 +104,6 @@ namespace EddiSpeechResponder.ScriptResolverService
                 templateBuilder.Append(scriptObject?.Name, script, false);
                 script = templateBuilder.Render();
 
-                Logging.Debug(
-                    $"Resolving {( isTopLevelScript ? "top level " : "" )}script {scriptObject?.Name}: {script}",
-                    context );
-
                 //If this is not a top level script then we need to preserve escape sequence characters (\).
                 if ( !isTopLevelScript )
                 {
@@ -140,9 +136,10 @@ namespace EddiSpeechResponder.ScriptResolverService
                 if ( isTopLevelScript )
                 {
                     result = Regex.Replace( result, " +", " " ).Replace( " ,", "," ).Replace( " .", "." ).Trim();
-                    Logging.Debug( $"Turned {scriptObject?.Name} script into speech '{result}'" );
                     result = result.Trim() == "" ? null : result.Trim();
                 }
+
+                Logging.Debug( $"Turned {( isTopLevelScript ? $"top level {scriptObject?.Name}" : "" )}script {script} into speech '{result}'" );
 
                 if ( isTopLevelScript && result != null )
                 {
