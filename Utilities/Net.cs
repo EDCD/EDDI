@@ -71,7 +71,7 @@ namespace Utilities
 
             if (attempts >= 10 && ex != null)
             {
-                Logging.Warn(ex.Message);
+                Logging.Warn(ex.Message, ex);
             }
 
             return data;
