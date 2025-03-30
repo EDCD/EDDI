@@ -352,6 +352,9 @@ namespace EddiDataDefinitions
 
         #region Methods
 
+        private readonly object _bodiesLock = new object();
+        private readonly object _stationsLock = new object();
+
         public Body BodyWithID ( long? bodyID )
         {
             if ( bodyID is null )
@@ -362,21 +365,27 @@ namespace EddiDataDefinitions
 
         public void AddOrUpdateBody ( Body body )
         {
+            lock ( _bodiesLock )
+            {
             var builder = bodies.ToBuilder();
             internalAddOrUpdateBody( body, builder );
             builder.Sort( Body.CompareById );
             bodies = builder.ToImmutable();
         }
+        }
 
-        public void AddOrUpdateBodies ( IEnumerable<Body> newBodies )
+        public void AddOrUpdateBodies ( IEnumerable<Body> newOrUpdatedBodies )
+        {
+            lock ( _bodiesLock )
         {
             var builder = bodies.ToBuilder();
-            foreach ( Body body in newBodies )
+                foreach ( var newOrUpdatedBody in newOrUpdatedBodies )
             {
-                internalAddOrUpdateBody( body, builder );
+                    internalAddOrUpdateBody( newOrUpdatedBody, builder );
             }
             builder.Sort( Body.CompareById );
             bodies = builder.ToImmutable();
+        }
         }
 
         private void internalAddOrUpdateBody ( Body newOrUpdatedBody, ImmutableList<Body>.Builder builder )
@@ -500,21 +509,27 @@ namespace EddiDataDefinitions
 
         public void AddOrUpdateStation ( Station newOrUpdatedStation )
         {
+            lock ( _stationsLock )
+            {
             var builder = stations.ToBuilder();
             internalAddOrUpdateStation( newOrUpdatedStation, builder );
             builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
             stations = builder.ToImmutable();
         }
+        }
 
         public void AddOrUpdateStations ( IEnumerable<Station> newOrUpdatedStations )
         {
-            var builder = stations.ToBuilder();
-            foreach ( var station in newOrUpdatedStations )
+            lock ( _stationsLock )
             {
-                internalAddOrUpdateStation( station, builder );
+            var builder = stations.ToBuilder();
+                foreach ( var newOrUpdatedStation in newOrUpdatedStations )
+            {
+                    internalAddOrUpdateStation( newOrUpdatedStation, builder );
             }
-            builder.Sort( (lhs, rhs) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
+                builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
             stations = builder.ToImmutable();
+        }
         }
 
         private void internalAddOrUpdateStation ( Station newOrUpdatedStation, ImmutableList<Station>.Builder builder )
