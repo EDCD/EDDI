@@ -26,7 +26,7 @@ namespace EddiVoiceAttackResponder
         private readonly ConcurrentDictionary<string, VoiceAttackVariable> currentVariables = new ConcurrentDictionary<string, VoiceAttackVariable>();
 
         // If running VoiceAttack version 1.7.4 or later then we should use the more modern API endpoints
-        private bool useLegacyVACommandAPI => EDDI.Instance.vaVersion?.CompareTo( new System.Version( 1, 7, 4 ) ) <= 0;
+        private bool useLegacyVACommandAPI => (VaProxy.VAVersion as System.Version)?.CompareTo( new System.Version( 1, 7, 4 ) ) <= 0;
 
         public void Handle ( Event theEvent )
         {

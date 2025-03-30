@@ -46,12 +46,29 @@ namespace EddiVoiceAttackResponder
             // Initialize and launch an EDDI instance without opening the main window
             // VoiceAttack commands will be used to manipulate the window state.
 
-            if (App.AlreadyRunning()) { return; }
-
             lock ( vaProxyLock )
             {
                 VaProxy = vaProxy;
-                App.VaProxy = vaProxy;
+                App.FromVA = true;
+            }
+
+            while ( App.AlreadyRunning() )
+            {
+                VaProxy.WriteToLog( "An instance of the EDDI application is already running.", "red" );
+                var result = MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
+                                             "the open EDDI application and click OK to continue. " +
+                                             "If you click CANCEL, the EDDI VoiceAttack plugin will not be fully initialized.",
+                        "EDDI Instance Exists",
+                        MessageBoxButton.OKCancel, MessageBoxImage.Information);
+
+                // Any response will require the mutex to be reset
+                App.eddiMutex.Close();
+
+                if ( MessageBoxResult.Cancel == result )
+                {
+                    VaProxy.WriteToLog( "EDDI initialization cancelled by user.", "red" );
+                    return;
+                }
             }
 
             App.vaStartup = () =>
@@ -104,12 +121,7 @@ namespace EddiVoiceAttackResponder
                     // Fire an event once the VA plugin is initialized
                     EDDI.Instance.enqueueEvent(new VAInitializedEvent(DateTime.UtcNow));
 
-                    // Set a variable indicating the version of VoiceAttack in use
-                    if ( vaProxy.VAVersion is System.Version version )
-                    {
-                        EDDI.Instance.vaVersion = version;
-                    }
-
+                    Logging.Info( $"VoiceAttack version: {vaProxy.VAVersion as System.Version}" );
                     Logging.Info("EDDI VoiceAttack plugin initialization complete");
                 }
                 catch (Exception e)
@@ -160,7 +172,6 @@ namespace EddiVoiceAttackResponder
             lock ( vaProxyLock )
             {
                 VaProxy = vaProxy;
-                App.VaProxy = vaProxy;
             }
 
             Logging.Info("EDDI VoiceAttack plugin exiting");
@@ -203,15 +214,7 @@ namespace EddiVoiceAttackResponder
             lock ( vaProxyLock )
             {
                 VaProxy = vaProxy;
-                App.VaProxy = vaProxy;
             }
-
-            Logging.Debug("Invoked with context " + (string)vaProxy.Context);
-
-            // This thread is invoked from VoiceAttack and may by invoked with the system default culture
-            // so make sure that we're using our assigned culture.
-            App.ApplyAnyOverrideCulture();
-
             VoiceAttackInvokationHandler.HandleInvokedCommand(vaProxy);
         }
     }

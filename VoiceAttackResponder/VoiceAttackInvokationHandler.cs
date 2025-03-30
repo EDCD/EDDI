@@ -1,4 +1,5 @@
-﻿using EddiConfigService;
+﻿using Eddi;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
@@ -24,6 +25,12 @@ namespace EddiVoiceAttackResponder
 
         public static void HandleInvokedCommand(dynamic vaProxy)
         {
+            // This thread is invoked from VoiceAttack and may by invoked with the system default culture
+            // so make sure that we're using our assigned culture.
+            App.ApplyAnyOverrideCulture();
+
+            Logging.Debug( "Invoked with context " + (string)vaProxy.Context );
+
             try
             {
                 switch (((string)vaProxy.Context)?.ToLowerInvariant())

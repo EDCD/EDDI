@@ -524,12 +524,7 @@ namespace EddiUI
         private async void createGithubIssueClicked(object sender, RoutedEventArgs e)
         {
             // Write out useful information to the log before proceeding
-            Logging.Info("EDDI version: " + Constants.EDDI_VERSION);
-            if (EDDI.FromVA)
-            {
-                Logging.Info("VoiceAttack version: " + EDDI.Instance.vaVersion);
-            }
-
+            Logging.Info( $"EDDI version: {Constants.EDDI_VERSION}" );
             Logging.Info( $"Commander name: {ConfigService.Instance.commanderConfiguration.commanderName ?? "null"}" );
             Logging.Info( $"Default UI culture: {CultureInfo.DefaultThreadCurrentUICulture?.IetfLanguageTag ?? "automatic"}" );
             Logging.Info( $"Current UI culture: {CultureInfo.CurrentUICulture.IetfLanguageTag}" );
