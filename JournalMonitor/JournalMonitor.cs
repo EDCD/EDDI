@@ -397,7 +397,7 @@ namespace EddiJournalMonitor
                                     // Powerplay data (if pledged)
                                     GetPowerplayData( data, systemAddress, out Power controllingPower,
                                         out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState,
-                                        out Dictionary<Power, decimal> powerAcquisitionProgress,
+                                        out List<PowerAcquisitionProgress> powerAcquisitionProgress,
                                         out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
                                         out int powerplayUnderminingControlPoints );
 
@@ -508,7 +508,7 @@ namespace EddiJournalMonitor
                                     // Powerplay data (if pledged)
                                     GetPowerplayData( data, systemAddress, out Power controllingPower,
                                         out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState,
-                                        out Dictionary<Power, decimal> powerAcquisitionProgress,
+                                        out List<PowerAcquisitionProgress> powerAcquisitionProgress,
                                         out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
                                         out int powerplayUnderminingControlPoints );
 
@@ -4459,7 +4459,7 @@ namespace EddiJournalMonitor
                                     // Powerplay data (if pledged)
                                     GetPowerplayData( data, systemAddress, out Power controllingPower,
                                         out List<Power> powersInAcquisitionRange, out var powerplayState,
-                                        out Dictionary<Power, decimal> powerAcquisitionProgress,
+                                        out List<PowerAcquisitionProgress> powerAcquisitionProgress,
                                         out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
                                         out int powerplayUnderminingControlPoints );
 
@@ -5317,7 +5317,7 @@ namespace EddiJournalMonitor
 
         private static void GetPowerplayData ( IDictionary<string, object> data, ulong systemAddress, 
             out Power controllingPower, out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState, 
-            out Dictionary<Power, decimal> powerAcquisitionProgress, out decimal controlProgress, out int reinforcementControlPoints, out int underminingControlPoints )
+            out List<PowerAcquisitionProgress> powerAcquisitionProgress, out decimal controlProgress, out int reinforcementControlPoints, out int underminingControlPoints )
         {
             controllingPower = Power.FromEDName( JsonParsing.getString( data, "ControllingPower" ) );
 
@@ -5333,22 +5333,25 @@ namespace EddiJournalMonitor
             }
 
             // While the system is not controlled by any power there is a `PowerplayConflictProgress` key which measures the progress of each power towards control of that star system
-            powerAcquisitionProgress = new Dictionary<Power, decimal>();
+            powerAcquisitionProgress = new List<PowerAcquisitionProgress>();
             if ( data.TryGetValue( "PowerplayConflictProgress", out var conflictProgressData ) && 
-                 conflictProgressData is KeyValuePair<string, decimal> conflictProgress )
+                 conflictProgressData is Dictionary<string, decimal> conflictProgress )
             {
-                // Convert percent progress values from a 0-1 scale to 0-100.
-                // Values over 100% are permitted and indicate that the power has exceeded the threshold to take control of the system.
-                powerAcquisitionProgress.Add( Power.FromEDName(conflictProgress.Key), conflictProgress.Value * 100 );
+                foreach ( var kvp in conflictProgress )
+                {
+                    // Convert percent progress values from a 0-1 scale to 0-100.
+                    // Values over 100% are permitted and indicate that the power has exceeded the threshold to take control of the system.
+                    powerAcquisitionProgress.Add( new PowerAcquisitionProgress( kvp.Key, kvp.Value * 100 ) );
+                }
             }
             powerAcquisitionProgress = powerAcquisitionProgress
-                .OrderByDescending( p => p.Value )
-                .ToDictionary( x => x.Key, x => x.Value );
+                .OrderByDescending( p => p.progress )
+                .ToList();
 
             powerplayState = PowerplayState.FromEDName( JsonParsing.getString( data, "PowerplayState" ) );
 
             // There is a special 'Contested' powerplay state which applies when more than one power has achieved at least 30% progress towards control
-            if ( powerplayState == PowerplayState.Unoccupied && powerAcquisitionProgress.Count( p => p.Value >= 30 ) > 1 )
+            if ( powerplayState == PowerplayState.Unoccupied && powerAcquisitionProgress.Count( p => p.progress >= 30 ) > 1 )
             {
                 powerplayState = PowerplayState.Contested;
             }

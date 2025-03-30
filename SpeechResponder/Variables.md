@@ -471,7 +471,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
   - *powerstate* - The localized state of powerplay efforts within the star system
   - *contestingpowers* - The localized names of powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, in descending order
   - *nearbypowers* - The localized names of powerplay powers having star systems with acquisition radii which overlap the star system, less the controlling power, if any 
-  - *powerAcquisitionProgress* - The percent progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects where the key is the power (as an object) and the value is the percent progress towards achieving the control score threshold
+  - *powerAcquisitionProgress* - The progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects with keys Power (as an object) and progress (as a percent)
   - *powerControlProgress* - The percent progress of the controlling power, if any, in consolidating control over the star system. Values below 0% indicate a reduction in the control level at the end of the cycle while values above 100% indicate an increase in the control level at the end of the cycle (if the current control state is less than 'Stronghold')
   - *powerReinforcementControlPoints* - The control points accumulated by the controlling power via powerplay reinforcement activities during the current cycle
   - *powerUnderminingControlPoints* - The control points lost by the controlling power via powerplay undermining activities during the current cycle

@@ -126,9 +126,9 @@ namespace EddiSpanshService
                         .Where( p => p != starSystem.Power )
                         .ToHashSet() ?? new HashSet<Power>() ).ToList();
                     starSystem.powerAcquisitionProgress = data[ "powerConflictProgress" ]?
-                        .ToDictionary( p => Power.FromName( p[ "power" ]?.ToString() ), p => p[ "progress" ].ToObject<decimal>() * 100 )
-                        .OrderByDescending( p => p.Value )
-                        .ToDictionary( x => x.Key, x => x.Value ) ?? new Dictionary<Power, decimal>();
+                        .Select( p => new PowerAcquisitionProgress( p[ "power" ]?.ToString(), p[ "progress" ].ToObject<decimal>() * 100 ) )
+                        .OrderByDescending( p => p.progress )
+                        .ToList() ?? new List<PowerAcquisitionProgress>();
                     starSystem.powerControlProgress = data[ "powerStateControlProgress" ]?.ToObject<decimal?>() ?? 0;
                     starSystem.powerReinforcementControlPoints = data[ "powerStateReinforcement" ]?.ToObject<int?>() ?? 0;
                     starSystem.powerUnderminingControlPoints = data[ "powerStateUndermining" ]?.ToObject<int?>() ?? 0;

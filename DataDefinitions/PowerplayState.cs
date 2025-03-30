@@ -27,7 +27,7 @@
         public PowerplayState () : this("")
         { }
 
-        private PowerplayState(string edname) : base(edname, edname)
+        private PowerplayState(string edname) : base(edname, edname.Replace("None", "Unoccupied"))
         { }
     }
 }

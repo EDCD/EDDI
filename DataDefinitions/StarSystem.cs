@@ -159,8 +159,8 @@ namespace EddiDataDefinitions
 
         [Utilities.PublicAPI( "Powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, as objects, in descending order" ), JsonIgnore]
         public List<Power> ContestingPowers => powerAcquisitionProgress?
-            .Where( kvp => kvp.Value >= 30 )
-            .Select( kvp => kvp.Key )
+            .Where( kvp => kvp.progress >= 30 )
+            .Select( kvp => kvp.Power )
             .ToList() ?? new List<Power>();
 
         [Utilities.PublicAPI( "The localized names of powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, in descending order" ), JsonIgnore]
@@ -168,8 +168,8 @@ namespace EddiDataDefinitions
             .Select( p => p.localizedName )
             .ToList();
 
-        [Utilities.PublicAPI( "The percent progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects where the key is the power (as an object) and the value is the percent progress towards achieving the control score threshold" )]
-        public Dictionary<Power, decimal> powerAcquisitionProgress { get; set; }
+        [Utilities.PublicAPI( "The progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects with keys Power (as an object) and progress (as a percent)" )]
+        public List<PowerAcquisitionProgress> powerAcquisitionProgress { get; set; }
 
         [Utilities.PublicAPI( "The percent progress of the controlling power, if any, in consolidating control over the star system. Values below 0% indicate a reduction in the control level at the end of the cycle while values above 100% indicate an increase in the control level at the end of the cycle (if the current control state is less than 'Stronghold')" )]
         public decimal powerControlProgress { get; set; }

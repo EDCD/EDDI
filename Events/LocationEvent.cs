@@ -128,15 +128,15 @@ namespace EddiEvents
 
         [PublicAPI( "Powerplay powers with at least 30% progress towards acquiring control of an uncontrolled star system, if any, as objects, in descending order" )]
         public List<Power> ContestingPowers => powerAcquisitionProgress?
-            .Where( kvp => kvp.Value >= 30 )
-            .Select( kvp => kvp.Key )
+            .Where( kvp => kvp.progress >= 30 )
+            .Select( kvp => kvp.Power )
             .ToList() ?? new List<Power>();
 
         [PublicAPI( "The state of powerplay efforts within the star system, as an object" )]
         public PowerplayState PowerState { get; private set; }
 
-        [PublicAPI("The progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects where the key is the power (as an object) and the value is the percent progress towards achieving the control score threshold")]
-        public Dictionary<Power, decimal> powerAcquisitionProgress { get; private set; }
+        [PublicAPI( "The progress of nearby powerplay powers towards obtaining control of the star system, as a list of objects with keys Power (as an object) and progress (as a percent)" )]
+        public List<PowerAcquisitionProgress> powerAcquisitionProgress { get; private set; }
 
         [PublicAPI( "The percent progress of the controlling power, if any, in consolidating control over the star system. Values below 0% indicate a reduction in the control level at the end of the cycle while values above 100% indicate an increase in the control level at the end of the cycle (if the current control state is less than 'Stronghold')" )]
         public decimal powerControlProgress { get; set; }
@@ -204,7 +204,7 @@ namespace EddiEvents
             Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy economy, Economy economy2, SecurityLevel security, long? population,
             Power controllingPower, List<Power> powerplayPowers, PowerplayState powerplayState,
-            Dictionary<Power, decimal> powerAcquisitionProgress,
+            List<PowerAcquisitionProgress> powerAcquisitionProgress,
             decimal powerplayControlProgress, int powerplayReinforcementControlPoints,
             int powerplayUnderminingControlPoints, bool taxi, bool multicrew, bool inSRV,
             bool onFoot, ThargoidWar thargoidWar ) : base( timestamp, NAME )

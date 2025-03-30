@@ -232,7 +232,7 @@ namespace Tests
                     "Zemina Torval"
                 }.All( n => result.NearbyPowers.Select( p => p.invariantName ).Contains( n ) ) );
             Assert.AreEqual( 0, result.ContestingPowers.Count );
-            Assert.IsFalse( result.powerAcquisitionProgress.Keys.Any() );
+            Assert.IsFalse( result.powerAcquisitionProgress.Any() );
             Assert.AreEqual( 1.056486M, result.powerControlProgress );
             Assert.AreEqual( 82633, result.powerReinforcementControlPoints );
             Assert.AreEqual( 26147, result.powerUnderminingControlPoints );
