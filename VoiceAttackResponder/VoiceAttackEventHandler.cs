@@ -25,9 +25,6 @@ namespace EddiVoiceAttackResponder
         // We'll maintain a referenceable list of variables that we've set from events
         private readonly ConcurrentDictionary<string, VoiceAttackVariable> currentVariables = new ConcurrentDictionary<string, VoiceAttackVariable>();
 
-        // If running VoiceAttack version 1.7.4 or later then we should use the more modern API endpoints
-        private bool useLegacyVACommandAPI => (VaProxy.VAVersion as System.Version)?.CompareTo( new System.Version( 1, 7, 4 ) ) <= 0;
-
         public void Handle ( Event theEvent )
         {
             if ( theEvent is null || consumerCancellationTS.IsCancellationRequested ) { return; }
@@ -57,17 +54,12 @@ namespace EddiVoiceAttackResponder
                         {
                             Logging.Debug( $"Passing event {@event.type} to VoiceAttack", @event );
                             await Task.Run( () => updateValuesOnEvent( @event ) );
-                            var isCommandFound = TryTriggerVACommands( @event );
-                            // We need to wait until each event is no longer active before moving to the next from the same
-                            // queue / event type so that variables aren't overwritten before VoiceAttack can respond.
-                            // Other queues / event types will be able to continue processing events while we wait.
-                            var isCommandExecuting = true;
-                            while ( isCommandFound && isCommandExecuting )
+                            if ( TryTriggerVACommands( @event ) )
                             {
-                                await Task.Delay( 25 );
-                                isCommandExecuting = useLegacyVACommandAPI 
-                                    ? VaProxy.CommandActive( "((EDDI " + @event.type.ToLowerInvariant() + "))" ) 
-                                    : VaProxy.Command.Active( "((EDDI " + @event.type.ToLowerInvariant() + "))" );
+                                // We need to wait until each event is no longer active before moving to the next from the same
+                                // queue / event type so that variables aren't overwritten before VoiceAttack can respond.
+                                // Other queues / event types will be able to continue processing events while we wait.
+                                await VoiceAttackPlugin.WaitForCommandExecutionAsync( $"((EDDI {@event.type.ToLowerInvariant()}))" );                                
                             }
                         }
                     }
@@ -95,7 +87,7 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Debug( $"Processing EDDI event {@event.type}:", @event );
                 var startTime = DateTime.UtcNow;
-                VaProxy.SetText( "EDDI event", @event.type );
+                VoiceAttackPlugin.SetText( "EDDI event", @event.type );
 
                 // Retrieve and clear variables from prior iterations of the same event
                 clearPriorEventValues( @event.type );
@@ -166,27 +158,19 @@ namespace EddiVoiceAttackResponder
 
         private bool TryTriggerVACommands ( Event @event )
         {
-            string commandName = "((EDDI " + @event.type.ToLowerInvariant() + "))";
+            var commandName = $"((EDDI {@event.type.ToLowerInvariant()}))";
             try
             {
                 // Fire local command if present  
-                Logging.Debug( "Searching for command " + commandName );
-                var commandExists = useLegacyVACommandAPI
-                    ? VaProxy.CommandExists( commandName )
-                    : VaProxy.Command.Exists( commandName );
-                if ( commandExists ) 
+                if ( VoiceAttackPlugin.CommandExists( commandName ) ) 
                 {
-                    Logging.Debug( "Found command " + commandName );
-                    if ( useLegacyVACommandAPI )
-                    {
-                        VaProxy.ExecuteCommand( commandName );
-                    }
-                    else
-                    {
-                        VaProxy.Command.Execute( commandName );
-                    }
-                    Logging.Info( "Executed command " + commandName );
+                    VoiceAttackPlugin.ExecuteCommand( commandName );
+                    Logging.Info( $"Executed command '{commandName}'" );
                     return true;
+                }
+                else
+                {
+                    Logging.Debug( $"Command '{commandName}' not found." );
                 }
             }
             catch ( Exception ex )

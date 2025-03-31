@@ -24,85 +24,92 @@ namespace Tests
         private readonly Dictionary<string, bool?> vaBooleans = new Dictionary<string, bool?>();
         private readonly Dictionary<string, DateTime?> vaDates = new Dictionary<string, DateTime?>();
 
+        [ UsedImplicitly ] 
+        public System.Version VAVersion => new System.Version( 1, 16, 0 );
+
         [ UsedImplicitly ]
         public void WriteToLog ( string msg, string color = null )
         {
             vaLog.Add( new KeyValuePair<string, string>( msg, color ) );
         }
 
-        [ UsedImplicitly ]
-        public string GetText ( string varName )
+        #pragma warning disable IDE0060
+
+        [UsedImplicitly]
+        public string GetText ( string varName, bool retrieveFromProfile = false )
         {
             return vaStrings.TryGetValue( varName, out var s ) ? s : null;
         }
 
         [ UsedImplicitly ]
-        public void SetText ( string varName, object value )
+        public void SetText ( string varName, object value, bool saveToProfile = false )
         {
             vaStrings[ varName ] = value?.ToString();
         }
 
         [ UsedImplicitly ]
-        public int? GetInt ( string varName )
+        public int? GetInt ( string varName, bool retrieveFromProfile = false )
         {
             return vaIntegers.TryGetValue(varName, out var i) ? i : null;
         }
 
         [ UsedImplicitly ]
-        public void SetInt ( string varName, int? value )
+        public void SetInt ( string varName, int? value, bool saveToProfile = false )
         {
             vaIntegers[ varName ] = value;
         }
 
         [ UsedImplicitly ]
-        public short? GetSmallInt ( string varName )
+        public short? GetSmallInt ( string varName, bool retrieveFromProfile = false )
         {
             return vaShorts.TryGetValue( varName, out var sh ) ? sh : null;
         }
 
         [ UsedImplicitly ]
-        public void SetSmallInt ( string varName, short? value )
+        public void SetSmallInt ( string varName, short? value, bool saveToProfile = false )
         {
             vaShorts[ varName ] = value;
         }
 
         [ UsedImplicitly ]
-        public bool? GetBoolean ( string varName )
+        public bool? GetBoolean ( string varName, bool retrieveFromProfile = false )
         {
             return vaBooleans.TryGetValue( varName, out var b ) ? b : null;
         }
 
         [ UsedImplicitly ]
-        public void SetBoolean ( string varName, bool? value )
+        public void SetBoolean ( string varName, bool? value, bool saveToProfile = false )
         {
             vaBooleans[ varName ] = value;
         }
 
         [ UsedImplicitly ]
-        public decimal? GetDecimal ( string varName )
+        public decimal? GetDecimal ( string varName, bool retrieveFromProfile = false )
         {
             return vaDecimals.TryGetValue( varName, out var d ) ? d : null;
         }
 
         [ UsedImplicitly ]
-        public void SetDecimal ( string varName, decimal? value )
+        public void SetDecimal ( string varName, decimal? value, bool saveToProfile = false )
         {
             vaDecimals[ varName ] = value;
         }
 
         [ UsedImplicitly ]
-        public DateTime? GetDate ( string varName )
+        public DateTime? GetDate ( string varName, bool retrieveFromProfile = false )
         {
             return vaDates.TryGetValue( varName, out var dt ) ? dt : null;
         }
 
         [ UsedImplicitly ]
-        public void SetDate ( string varName, DateTime? value )
+        public void SetDate ( string varName, DateTime? value, bool saveToProfile = false )
         {
             vaDates[ varName ] = value;
         }
 
-        [ UsedImplicitly ]
+        #pragma warning restore IDE0060
+
+        [UsedImplicitly ]
         public bool ContainsKey ( string varName )
         {
             return vaStrings.ContainsKey( varName ) || 
@@ -117,10 +124,21 @@ namespace Tests
     [TestClass, TestCategory("UnitTests")]
     public class VoiceAttackPluginTests : TestBase
     {
-        [TestInitialize]
-        public void start()
+        private MockVAProxy mockVAProxy;
+
+        [ TestInitialize]
+        public void Start()
         {
             MakeSafe();
+            ResetVaProxy();
+        }
+
+        [TestCleanup]
+        public void ResetVaProxy ()
+        {
+            dynamic vaProxy = new MockVAProxy();
+            mockVAProxy = (MockVAProxy)vaProxy;
+            VoiceAttackPlugin.VaProxy = mockVAProxy;
         }
 
         [DataTestMethod]
@@ -151,9 +169,7 @@ namespace Tests
                 [ "10" ] = string.Empty,
             };
 
-            dynamic vaProxy = new MockVAProxy();
-            var mockVAProxy = (MockVAProxy)vaProxy;
-            VoiceAttackVariables.setDictionaryValues( dict, "state", vaProxy );
+            VoiceAttackVariables.setDictionaryValues( dict, "state" );
             Assert.AreEqual( dict.FirstOrDefault( kv => kv.Key == varName ).Value?.ToString(), mockVAProxy.GetText( "EDDI state " + varName ) );
             Assert.AreEqual( decimalResult is null 
                 ? null 
@@ -172,8 +188,6 @@ namespace Tests
         [TestMethod]
         public void TestVAExplorationDataSoldEvent()
         {
-            dynamic vaProxy = new MockVAProxy();
-            var mockVAProxy = (MockVAProxy)vaProxy;
             var line = @"{ ""timestamp"":""2016-09-23T18:57:55Z"", ""event"":""SellExplorationData"", ""Systems"":[ ""Gamma Tucanae"", ""Rho Capricorni"", ""Dain"", ""Col 285 Sector BR-S b18-0"", ""LP 571-80"", ""Kawilocidi"", ""Irulachan"", ""Alrai Sector MC-M a7-0"", ""Col 285 Sector FX-Q b19-5"", ""Col 285 Sector EX-Q b19-7"", ""Alrai Sector FB-O a6-3"" ], ""Discovered"":[ ""Irulachan"" ], ""BaseValue"":63573, ""Bonus"":1445, ""TotalEarnings"":65018 }";
             var events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
@@ -184,7 +198,7 @@ namespace Tests
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
             var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(vaProxy); }
+            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
             Assert.AreEqual(15, vaVars.Count);
             Assert.AreEqual("Gamma Tucanae", mockVAProxy.GetText("EDDI exploration data sold systems 1"));
             Assert.AreEqual("Rho Capricorni", mockVAProxy.GetText("EDDI exploration data sold systems 2"));
@@ -210,8 +224,6 @@ namespace Tests
         [TestMethod]
         public void TestVADiscoveryScanEvent()
         {
-            dynamic vaProxy = new MockVAProxy();
-            var mockVAProxy = (MockVAProxy)vaProxy;
             var line = @"{ ""timestamp"":""2019-10-26T02:15:49Z"", ""event"":""FSSDiscoveryScan"", ""Progress"":0.439435, ""BodyCount"":7, ""NonBodyCount"":3, ""SystemName"":""Outotz WO-A d1"", ""SystemAddress"":44870715523 }";
             var events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
@@ -226,7 +238,7 @@ namespace Tests
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
             var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(vaProxy); }
+            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
             Assert.AreEqual(2, vaVars.Count);
             Assert.AreEqual(7, mockVAProxy.GetInt( "EDDI discovery scan totalbodies"));
             Assert.AreEqual(3, mockVAProxy.GetInt("EDDI discovery scan nonbodies"));
@@ -240,8 +252,6 @@ namespace Tests
         [TestMethod]
         public void TestVAAsteroidProspectedEvent()
         {
-            dynamic vaProxy = new MockVAProxy();
-            var mockVAProxy = (MockVAProxy)vaProxy;
             var line = "{ \"timestamp\":\"2020-04-10T02:32:21Z\", \"event\":\"ProspectedAsteroid\", \"Materials\":[ { \"Name\":\"LowTemperatureDiamond\", \"Name_Localised\":\"Low Temperature Diamonds\", \"Proportion\":26.078022 }, { \"Name\":\"HydrogenPeroxide\", \"Name_Localised\":\"Hydrogen Peroxide\", \"Proportion\":10.189009 } ], \"MotherlodeMaterial\":\"Alexandrite\", \"Content\":\"$AsteroidMaterialContent_Low;\", \"Content_Localised\":\"Material Content: Low\", \"Remaining\":90.000000 }";
             var events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
@@ -252,7 +262,7 @@ namespace Tests
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
             var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(vaProxy); }
+            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
             Assert.AreEqual(8, vaVars.Count);
             Assert.AreEqual(90M, mockVAProxy.GetDecimal("EDDI asteroid prospected remaining"));
             Assert.AreEqual("Alexandrite", mockVAProxy.GetText("EDDI asteroid prospected motherlode"));
@@ -271,8 +281,6 @@ namespace Tests
         [TestMethod]
         public void TestVACommodityEjectedEvent()
         {
-            dynamic vaProxy = new MockVAProxy();
-            var mockVAProxy = (MockVAProxy)vaProxy;
             // Test a generated variable name from overlapping strings.
             var ev = new CommodityEjectedEvent(DateTime.UtcNow, CommodityDefinition.FromEDName("Water"), 5, null, true);
 
@@ -287,7 +295,7 @@ namespace Tests
             Assert.IsTrue((bool)(cottleVars.FirstOrDefault(k => k.key == "abandoned")?.value ?? false));
 
             var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(vaProxy); }
+            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
             Assert.AreEqual(4, vaVars.Count);
             Assert.AreEqual("Water", mockVAProxy.GetText("EDDI commodity ejected commodity"));
             Assert.AreEqual(5, mockVAProxy.GetInt("EDDI commodity ejected amount"));
@@ -302,10 +310,6 @@ namespace Tests
         [ TestMethod, DoNotParallelize ]
         public void TestVAShip ()
         {
-            dynamic vaProxy = new MockVAProxy();
-            var mockVAProxy = (MockVAProxy)vaProxy;
-            VoiceAttackPlugin.VaProxy = mockVAProxy;
-
             // Read from our test item "shipMonitor.json"
             var configuration = new ShipMonitorConfiguration();
             try

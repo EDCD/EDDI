@@ -20,64 +20,63 @@ namespace EddiVoiceAttackResponder
 {
     internal class VoiceAttackInvokationHandler
     {
-        private static dynamic VaProxy => VoiceAttackPlugin.VaProxy;
         private static readonly Random random = new Random();
 
-        public static void HandleInvokedCommand(dynamic vaProxy)
+        public static void HandleInvokedCommand(string context)
         {
             // This thread is invoked from VoiceAttack and may by invoked with the system default culture
             // so make sure that we're using our assigned culture.
             App.ApplyAnyOverrideCulture();
 
-            Logging.Debug( "Invoked with context " + (string)vaProxy.Context );
+            Logging.Debug( $"Invoked with context '{context}'" );
 
             try
             {
-                switch (((string)vaProxy.Context)?.ToLowerInvariant())
+                switch (context?.ToLowerInvariant())
                 {
                     case "coriolis":
-                        InvokeCoriolis( ref vaProxy );
+                        InvokeCoriolis();
                         break;
                     case "coriolisbeta":
-                        InvokeCoriolis( ref vaProxy, true );
+                        InvokeCoriolis( true );
                         break;
                     case "inaracarrier":
-                        InvokeInaraFleetCarrier( ref vaProxy );
+                        InvokeInaraFleetCarrier();
                         break;
                     case "inaraprofile":
-                        InvokeInaraProfile( ref vaProxy );
+                        InvokeInaraProfile();
                         break;
                     case "inarasystem":
                     case "eddbsystem": // Redirect to Inara
-                        InvokeInaraSystem( ref vaProxy );
+                        InvokeInaraSystem();
                         break;
                     case "inarastation":
                     case "eddbstation": // Redirect to Inara
-                        InvokeInaraStation( ref vaProxy );
+                        InvokeInaraStation();
                         break;
                     case "edshipyard":
-                        InvokeEDShipyard(ref vaProxy);
+                        InvokeEDShipyard();
                         break;
                     case "profile":
                         InvokeUpdateProfile();
                         break;
                     case "say":
-                        InvokeSay(ref vaProxy);
+                        InvokeSay();
                         break;
                     case "speech":
-                        InvokeSpeech(ref vaProxy);
+                        InvokeSpeech();
                         break;
                     case "system comment":
-                        InvokeStarMapSystemComment(ref vaProxy);
+                        InvokeStarMapSystemComment();
                         break;
                     case "initialize eddi":
-                        if (VoiceAttackPlugin.VaProxy != null && Application.Current != null)
+                        if (App.FromVA && Application.Current != null)
                         {
-                            vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
+                            VoiceAttackPlugin.WriteToLog("The EDDI plugin is fully operational.", "green");
                         }
                         else
                         {
-                            VoiceAttackPlugin.VA_Init1(vaProxy);  // Attempt initialization again to see if it works this time...
+                            VoiceAttackPlugin.VA_Init1(null);  // Attempt initialization again to see if it works this time...
                         }
                         break;
                     case "configuration":
@@ -87,58 +86,58 @@ namespace EddiVoiceAttackResponder
                     case "configurationclose":
                         // Ignore any attempt to access the EDDI UI if VA
                         // doesn't own the EDDI instance.
-                        if (VoiceAttackPlugin.VaProxy != null && Application.Current != null)
+                        if (App.FromVA && Application.Current != null)
                         {
-                            InvokeConfiguration(ref vaProxy);
+                            InvokeConfiguration(context);
                         }
                         else
                         {
-                            vaProxy.WriteToLog("The EDDI plugin is not fully initialized.", "red");
+                            VoiceAttackPlugin.WriteToLog("The EDDI plugin is not fully initialized.", "red");
                         }
                         break;
                     case "shutup":
-                        InvokeShutUp(ref vaProxy);
+                        InvokeShutUp();
                         break;
                     case "setstate":
-                        InvokeSetState(ref vaProxy);
+                        InvokeSetState();
                         break;
                     case "disablespeechresponder":
-                        InvokeDisableSpeechResponder(ref vaProxy);
+                        InvokeDisableSpeechResponder();
                         break;
                     case "enablespeechresponder":
-                        InvokeEnableSpeechResponder(ref vaProxy);
+                        InvokeEnableSpeechResponder();
                         break;
                     case "setspeechresponderpersonality":
-                        InvokeSetSpeechResponderPersonality(ref vaProxy);
+                        InvokeSetSpeechResponderPersonality();
                         break;
                     case "jumpdetails":
-                        InvokeJumpDetails(ref vaProxy);
+                        InvokeJumpDetails();
                         break;
                     case "transmit":
-                        InvokeTransmit(ref vaProxy);
+                        InvokeTransmit();
                         break;
                     case "missionsroute":
                     case "route":
-                        InvokeRouteDetails(ref vaProxy);
+                        InvokeRouteDetails();
                         break;
                     case "inara":
-                        InvokeInaraProfileDetails(ref vaProxy);
+                        InvokeInaraProfileDetails();
                         break;
                     case "volume":
-                        InvokeVolume(ref vaProxy);
+                        InvokeVolume();
                         break;
                 }
             }
             catch (Exception e)
             {
-                Logging.Error("Failed to invoke context " + vaProxy.Context, e);
-                vaProxy.WriteToLog("Failed to invoke context " + vaProxy.Context, "red");
+                Logging.Error( $"Failed to invoke context '{context}'", e);
+                VoiceAttackPlugin.WriteToLog( $"Failed to invoke context '{context}'", "red");
             }
         }
 
-        private static void InvokeVolume ( ref dynamic vaProxy )
+        private static void InvokeVolume ()
         {
-            int? volumeInt = vaProxy.GetInt("Volume");
+            int? volumeInt = VoiceAttackPlugin.GetInt("Volume");
 
             if ( SpeechService.Instance.Configuration == null )
             { return; }
@@ -171,9 +170,9 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        private static void InvokeInaraProfileDetails ( ref dynamic vaProxy )
+        private static void InvokeInaraProfileDetails ()
         {
-            string commanderName = vaProxy.GetText("Name");
+            string commanderName = VoiceAttackPlugin.GetText("Name");
             if ( commanderName == null )
             {
                 return;
@@ -184,7 +183,7 @@ namespace EddiVoiceAttackResponder
                 var result = inaraService.GetCommanderProfile(commanderName);
                 if ( result != null )
                 {
-                    OpenOrStoreURI( ref vaProxy, result.url );
+                    OpenOrStoreURI( result.url );
                 }
                 else
                 {
@@ -197,19 +196,17 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void InvokeConfiguration ( ref dynamic vaProxy )
+        private static void InvokeConfiguration ( string context )
         {
-            string config = (string)vaProxy.Context;
-
             if ( Application.Current?.Dispatcher != null
                 && ( Application.Current?.Dispatcher?.Invoke( () => Application.Current.MainWindow == null ) ?? false )
-                && config != "configuration" )
+                && context != "configuration" )
             {
-                vaProxy.WriteToLog( "The EDDI configuration window is not open.", "orange" );
+                VoiceAttackPlugin.WriteToLog( "The EDDI configuration window is not open.", "orange" );
                 return;
             }
 
-            switch ( config )
+            switch ( context )
             {
                 case "configuration":
                     if ( Application.Current?.Dispatcher != null )
@@ -226,8 +223,8 @@ namespace EddiVoiceAttackResponder
                                 else
                                 {
                                     // Tell the configuration UI to restore its window if minimized
-                                    setWindowState( VaProxy, WindowState.Minimized, true, false );
-                                    VaProxy.WriteToLog( "The EDDI configuration window is already open.", "orange" );
+                                    setWindowState( WindowState.Minimized, true, false );
+                                    VoiceAttackPlugin.WriteToLog( "The EDDI configuration window is already open.", "orange" );
                                 }
                             }
                             catch ( Exception ex )
@@ -238,31 +235,31 @@ namespace EddiVoiceAttackResponder
                     }
                     break;
                 case "configurationminimize":
-                    setWindowState( vaProxy, WindowState.Minimized );
+                    setWindowState( WindowState.Minimized );
                     break;
                 case "configurationmaximize":
-                    setWindowState( vaProxy, WindowState.Maximized );
+                    setWindowState( WindowState.Maximized );
                     break;
                 case "configurationrestore":
-                    setWindowState( vaProxy, WindowState.Normal );
+                    setWindowState( WindowState.Normal );
                     break;
                 case "configurationclose":
                     Application.Current?.Dispatcher?.InvokeAsync( () => Application.Current?.MainWindow?.Hide() );
                     break;
                 default:
-                    vaProxy.WriteToLog( "Plugin context \"" + (string)vaProxy.Context + "\" not recognized.", "orange" );
+                    VoiceAttackPlugin.WriteToLog( $"Plugin context '{context}' not recognized.", "orange" );
                     break;
             }
         }
 
         // Set main window minimize, maximize and normal states. Ignore and warn
         // if the main window is blocked waiting for a modal dialog to close.
-        private static void setWindowState ( dynamic vaProxy, WindowState newState, bool minimizeCheck = false, bool warn = true )
+        private static void setWindowState ( WindowState newState, bool minimizeCheck = false, bool warn = true )
         {
             if ( EDDI.Instance.SpeechResponderModalWait && warn )
             {
                 System.Media.SystemSounds.Beep.Play();
-                vaProxy.WriteToLog( "The EDDI window state cannot be changed at this time.", "orange" );
+                VoiceAttackPlugin.WriteToLog( "The EDDI window state cannot be changed at this time.", "orange" );
             }
             else
             {
@@ -283,18 +280,18 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        private static void OpenOrStoreURI ( ref dynamic vaProxy, string systemUri )
+        private static void OpenOrStoreURI ( string systemUri )
         {
-            if ( vaProxy.GetBoolean( "EDDI open uri in browser" ) != false )
+            if ( VoiceAttackPlugin.GetBoolean( "EDDI open uri in browser" ) != false )
             {
                 Logging.Debug( "Starting process with uri " + systemUri );
-                HandleUri( ref vaProxy, systemUri );
+                HandleUri( systemUri );
             }
             Logging.Debug( "Writing URI to `{TXT:EDDI uri}`: " + systemUri );
-            vaProxy.SetText( "EDDI uri", systemUri );
+            VoiceAttackPlugin.SetText( "EDDI uri", systemUri );
         }
 
-        public static void InvokeInaraSystem ( ref dynamic vaProxy )
+        public static void InvokeInaraSystem ()
         {
             Logging.Debug( "Entered" );
             try
@@ -305,17 +302,17 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string systemUri = $"https://inara.cz/elite/starsystem/?search={EDDI.Instance.CurrentStarSystem.systemAddress}";
-                OpenOrStoreURI( ref vaProxy, systemUri );
-                VoiceAttackVariables.setStatus( vaProxy, "Operational" );
+                OpenOrStoreURI( systemUri );
+                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to send system data to Inara", e );
+                VoiceAttackVariables.setStatus( "Failed to send system data to Inara", e );
             }
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeInaraStation ( ref dynamic vaProxy )
+        public static void InvokeInaraStation ()
         {
             Logging.Debug( "Entered" );
             try
@@ -332,17 +329,17 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string stationUri = $"https://inara.cz/elite/station/?search={EDDI.Instance.CurrentStation.marketId}";
-                OpenOrStoreURI( ref vaProxy, stationUri );
-                VoiceAttackVariables.setStatus( vaProxy, "Operational" );
+                OpenOrStoreURI( stationUri );
+                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to send station data to Inara", e );
+                VoiceAttackVariables.setStatus( "Failed to send station data to Inara", e );
             }
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeInaraFleetCarrier ( ref dynamic vaProxy )
+        public static void InvokeInaraFleetCarrier ()
         {
             Logging.Debug( "Entered" );
             try
@@ -353,17 +350,17 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string carrierUri = $"https://inara.cz/elite/cmdr-fleetcarrier/?search={EDDI.Instance.FleetCarrier.callsign}";
-                OpenOrStoreURI( ref vaProxy, carrierUri );
-                VoiceAttackVariables.setStatus( vaProxy, "Operational" );
+                OpenOrStoreURI( carrierUri );
+                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to send fleet carrier data to Inara", e );
+                VoiceAttackVariables.setStatus( "Failed to send fleet carrier data to Inara", e );
             }
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeInaraProfile ( ref dynamic vaProxy )
+        public static void InvokeInaraProfile ()
         {
             Logging.Debug( "Entered" );
             try
@@ -375,17 +372,17 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string cmdrUri = $"https://inara.cz/elite/cmdr/{inaraID}/";
-                OpenOrStoreURI( ref vaProxy, cmdrUri );
-                VoiceAttackVariables.setStatus( vaProxy, "Operational" );
+                OpenOrStoreURI( cmdrUri );
+                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to send Inara commander data to Inara", e );
+                VoiceAttackVariables.setStatus( "Failed to send Inara commander data to Inara", e );
             }
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeCoriolis ( ref dynamic vaProxy, bool beta = false )
+        public static void InvokeCoriolis ( bool beta = false )
         {
             Logging.Debug( "Entered" );
             try
@@ -397,17 +394,17 @@ namespace EddiVoiceAttackResponder
                 }
 
                 var shipUri = EDDI.Instance.CurrentShip.CoriolisUri(beta);
-                OpenOrStoreURI( ref vaProxy, shipUri );
-                VoiceAttackVariables.setStatus( vaProxy, "Operational" );
+                OpenOrStoreURI( shipUri );
+                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to send ship data to coriolis", e );
+                VoiceAttackVariables.setStatus( "Failed to send ship data to coriolis", e );
             }
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeEDShipyard ( ref dynamic vaProxy )
+        public static void InvokeEDShipyard ()
         {
             Logging.Debug( "Entered" );
             try
@@ -419,12 +416,12 @@ namespace EddiVoiceAttackResponder
                 }
 
                 string shipUri = EDDI.Instance.CurrentShip.EDShipyardUri();
-                OpenOrStoreURI( ref vaProxy, shipUri );
-                VoiceAttackVariables.setStatus( vaProxy, "Operational" );
+                OpenOrStoreURI( shipUri );
+                VoiceAttackVariables.setStatus( "Operational" );
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to send ship data to coriolis", e );
+                VoiceAttackVariables.setStatus( "Failed to send ship data to coriolis", e );
             }
             Logging.Debug( "Leaving" );
         }
@@ -432,9 +429,9 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Handle a URI, either sending it to the default web browser or putting it on the clipboard
         /// </summary>
-        private static void HandleUri ( ref dynamic vaProxy, string uri )
+        private static void HandleUri ( string uri )
         {
-            bool? useClipboard = vaProxy.GetBoolean("EDDI use clipboard");
+            bool? useClipboard = VoiceAttackPlugin.GetBoolean("EDDI use clipboard");
             if ( useClipboard != null && useClipboard == true )
             {
                 Thread thread = new Thread(() =>
@@ -464,19 +461,19 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary>
-        public static void InvokeSay ( ref dynamic vaProxy )
+        public static void InvokeSay ()
         {
             try
             {
-                string script = vaProxy.GetText("Script");
+                string script = VoiceAttackPlugin.GetText("Script");
                 if ( script == null )
                 {
                     return;
                 }
 
-                int? priority = vaProxy.GetInt("Priority") ?? 3;
+                int? priority = VoiceAttackPlugin.GetInt("Priority") ?? 3;
 
-                string voice = vaProxy.GetText("Voice");
+                string voice = VoiceAttackPlugin.GetText("Voice");
 
                 string speech = SpeechFromScript(script);
 
@@ -490,24 +487,24 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to run EDDI's internal speech system (say)", e );
+                VoiceAttackVariables.setStatus( "Failed to run EDDI's internal speech system (say)", e );
             }
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary> 
-        public static void InvokeTransmit ( ref dynamic vaProxy )
+        public static void InvokeTransmit ()
         {
             try
             {
-                string script = vaProxy.GetText("Script");
+                string script = VoiceAttackPlugin.GetText("Script");
                 if ( script == null )
                 {
                     return;
                 }
 
-                int? priority = vaProxy.GetInt("Priority") ?? 3;
+                int? priority = VoiceAttackPlugin.GetInt("Priority") ?? 3;
 
-                string voice = vaProxy.GetText("Voice");
+                string voice = VoiceAttackPlugin.GetText("Voice");
 
                 string speech = SpeechFromScript(script);
 
@@ -521,14 +518,14 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to run EDDI's internal speech system (transmit)", e );
+                VoiceAttackVariables.setStatus( "Failed to run EDDI's internal speech system (transmit)", e );
             }
         }
 
         /// <summary>
         /// Stop talking
         /// </summary>
-        public static void InvokeShutUp ( ref dynamic vaProxy )
+        public static void InvokeShutUp ()
         {
             try
             {
@@ -537,24 +534,24 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to shut up", e );
+                VoiceAttackVariables.setStatus( "Failed to shut up", e );
             }
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary>
-        public static void InvokeSpeech ( ref dynamic vaProxy )
+        public static void InvokeSpeech ()
         {
             try
             {
-                string script = vaProxy.GetText("Script");
+                string script = VoiceAttackPlugin.GetText("Script");
                 if ( script == null )
                 {
                     return;
                 }
 
-                int? priority = vaProxy.GetInt("Priority");
+                int? priority = VoiceAttackPlugin.GetInt("Priority");
 
-                string voice = vaProxy.GetText("Voice");
+                string voice = VoiceAttackPlugin.GetText("Voice");
 
                 var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
                 if ( speechResponder == null )
@@ -574,11 +571,11 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to run internal speech system", e );
+                VoiceAttackVariables.setStatus( "Failed to run internal speech system", e );
             }
         }
 
-        public static void InvokeDisableSpeechResponder ( ref dynamic vaProxy )
+        public static void InvokeDisableSpeechResponder ()
         {
             try
             {
@@ -588,11 +585,11 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to disable speech responder", e );
+                VoiceAttackVariables.setStatus( "Failed to disable speech responder", e );
             }
         }
 
-        public static void InvokeEnableSpeechResponder ( ref dynamic vaProxy )
+        public static void InvokeEnableSpeechResponder ()
         {
             try
             {
@@ -600,13 +597,13 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to enable speech responder", e );
+                VoiceAttackVariables.setStatus( "Failed to enable speech responder", e );
             }
         }
 
-        public static void InvokeSetSpeechResponderPersonality ( ref dynamic vaProxy )
+        public static void InvokeSetSpeechResponderPersonality ()
         {
-            string personality = vaProxy.GetText("Personality");
+            string personality = VoiceAttackPlugin.GetText("Personality");
             try
             {
                 var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
@@ -614,15 +611,15 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to set speech responder personality", e );
+                VoiceAttackVariables.setStatus( "Failed to set speech responder personality", e );
             }
         }
 
-        public static void InvokeSetState ( ref dynamic vaProxy )
+        public static void InvokeSetState ()
         {
             try
             {
-                string name = vaProxy.GetText("State variable");
+                string name = VoiceAttackPlugin.GetText("State variable");
                 if ( string.IsNullOrEmpty( name ) )
                 {
                     Logging.Info( "No value in the VoiceAttack text variable 'State variable'; nothing to set" );
@@ -632,35 +629,28 @@ namespace EddiVoiceAttackResponder
                 // State variable names are lower-case
                 string stateVariableName = name.ToLowerInvariant().Replace(" ", "_");
 
-                string strValue = vaProxy.GetText(name);
+                string strValue = VoiceAttackPlugin.GetText(name);
                 if ( strValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = strValue;
                     return;
                 }
 
-                int? shortValue = vaProxy.GetSmallInt(name);
-                if ( shortValue != null )
-                {
-                    EDDI.Instance.State[ stateVariableName ] = shortValue;
-                    return;
-                }
-
-                int? intValue = vaProxy.GetInt(name);
+                int? intValue = VoiceAttackPlugin.GetInt(name);
                 if ( intValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = intValue;
                     return;
                 }
 
-                bool? boolValue = vaProxy.GetBoolean(name);
+                bool? boolValue = VoiceAttackPlugin.GetBoolean(name);
                 if ( boolValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = boolValue;
                     return;
                 }
 
-                decimal? decValue = vaProxy.GetDecimal(name);
+                decimal? decValue = VoiceAttackPlugin.GetDecimal(name);
                 if ( decValue != null )
                 {
                     EDDI.Instance.State[ stateVariableName ] = decValue;
@@ -672,7 +662,7 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to set state", e );
+                VoiceAttackVariables.setStatus( "Failed to set state", e );
             }
         }
 
@@ -739,11 +729,11 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Send a comment to the starmap service and store locally
         /// </summary>
-        public static void InvokeStarMapSystemComment ( ref dynamic vaProxy )
+        public static void InvokeStarMapSystemComment ()
         {
             try
             {
-                string comment = vaProxy.GetText("EDDI system comment");
+                string comment = VoiceAttackPlugin.GetText("EDDI system comment");
                 if ( comment == null )
                 {
                     return;
@@ -764,45 +754,45 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to store system comment", e );
+                VoiceAttackVariables.setStatus( "Failed to store system comment", e );
             }
         }
 
-        public static void InvokeJumpDetails ( ref dynamic vaProxy )
+        public static void InvokeJumpDetails ()
         {
             try
             {
-                string type = vaProxy.GetText("Type variable");
+                string type = VoiceAttackPlugin.GetText("Type variable");
                 if ( !string.IsNullOrEmpty( type ) )
                 {
                     var detail = EDDI.Instance.CurrentShip?.JumpDetails(type);
-                    vaProxy.SetDecimal( "Ship jump detail distance", detail?.distance );
-                    vaProxy.SetInt( "Ship jump detail jumps", detail?.jumps );
-                    vaProxy.SetText( "Type variable", null );
+                    VoiceAttackPlugin.SetDecimal( "Ship jump detail distance", detail?.distance );
+                    VoiceAttackPlugin.SetInt( "Ship jump detail jumps", detail?.jumps );
+                    VoiceAttackPlugin.SetText( "Type variable", null );
                 }
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to get jump details", e );
+                VoiceAttackVariables.setStatus( "Failed to get jump details", e );
             }
         }
 
-        public static void InvokeRouteDetails ( ref dynamic vaProxy )
+        public static void InvokeRouteDetails ()
         {
             try
             {
-                string type = vaProxy.GetText("Type variable");
-                string string0 = vaProxy.GetText("System variable");
-                string string1 = vaProxy.GetText("System variable 2") ?? vaProxy.GetText("Station variable");
-                decimal? numeric = vaProxy.GetDecimal("Numeric variable");
-                bool? boolean = vaProxy.GetBoolean ("Boolean variable");
+                string type = VoiceAttackPlugin.GetText("Type variable");
+                string string0 = VoiceAttackPlugin.GetText("System variable");
+                string string1 = VoiceAttackPlugin.GetText("System variable 2") ?? VoiceAttackPlugin.GetText("Station variable");
+                decimal? numeric = VoiceAttackPlugin.GetDecimal("Numeric variable");
+                bool? boolean = VoiceAttackPlugin.GetBoolean ("Boolean variable");
 
-                vaProxy.SetText( "Type variable", null );
-                vaProxy.SetText( "System variable", null );
-                vaProxy.SetText( "System variable 2", null );
-                vaProxy.SetText( "Station variable", null );
-                vaProxy.SetDecimal( "Numeric variable", null );
-                vaProxy.SetBoolean( "Boolean variable", null );
+                VoiceAttackPlugin.SetText( "Type variable", null );
+                VoiceAttackPlugin.SetText( "System variable", null );
+                VoiceAttackPlugin.SetText( "System variable 2", null );
+                VoiceAttackPlugin.SetText( "Station variable", null );
+                VoiceAttackPlugin.SetDecimal( "Numeric variable", null );
+                VoiceAttackPlugin.SetBoolean( "Boolean variable", null );
 
                 if ( Enum.TryParse( type, true, out QueryType result ) )
                 {
@@ -819,7 +809,7 @@ namespace EddiVoiceAttackResponder
             }
             catch ( Exception e )
             {
-                VoiceAttackVariables.setStatus( vaProxy, "Failed to get route", e );
+                VoiceAttackVariables.setStatus( "Failed to get route", e );
             }
         }
 

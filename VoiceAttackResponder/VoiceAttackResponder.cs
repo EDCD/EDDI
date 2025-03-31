@@ -78,10 +78,7 @@ namespace EddiVoiceAttackResponder
         {
             if ( App.FromVA )
             {
-                lock ( VoiceAttackPlugin.vaProxyLock )
-                {
-                    VoiceAttackVariables.setStatusValues( status, "Status" );
-                }
+                VoiceAttackVariables.setStatusValues( status, "Status" );
             }
         }
     }
