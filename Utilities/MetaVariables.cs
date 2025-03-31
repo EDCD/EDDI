@@ -1,11 +1,9 @@
 ﻿using JetBrains.Annotations;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Utilities
 {
@@ -304,169 +302,6 @@ namespace Utilities
         }
     }
 
-    public class VoiceAttackVariable
-    {
-        public string eventType { get; }
-
-        /// <summary> The full key used to access the variable in VoiceAttack, including any applicable prefix </summary>
-        public string key { get; }
-
-        /// <summary> The variable type </summary>
-        public Type variableType { get; set; }
-
-        /// <summary> The variable's description (if any) </summary>
-        public string description { get; }
-
-        /// <summary> The value to write (if any) </summary>
-        public object value { get; set; }
-
-        public VoiceAttackVariable(string startingPrefix, string eventType, List<string> keysPath, Type variableType, string description, object value = null)
-        {
-            // Build the full key
-            this.key = startingPrefix; // Set our starting prefix
-            keysPath = keysPath.Prepend(eventType?.ToLowerInvariant()).ToList();
-            keysPath.RemoveAll(string.IsNullOrEmpty); // Remove any empty keys from the path
-            foreach (var keySegment in keysPath)
-            {
-                // Generate a variable name from the prefix and key. 
-                var childKey = AddSpacesToTitleCasedName(keySegment).Replace("_", " ").ToLowerInvariant();
-
-                // Only append the portion of the formatted key which isn't redundant with the current prefix.
-                this.key = ConcatOverlappingNames(this.key, childKey);
-            }
-            this.key = key
-                .Replace(MetaVariables.indexMarker, @"\<index\>"); // Format index values for VoiceAttack
-
-            this.eventType = eventType;
-            this.description = description;
-
-            // Convert doubles, floats, and longs to decimals
-            if (value is null && (variableType == typeof(double) || variableType == typeof(float) || variableType == typeof(long) || variableType == typeof(ulong)))
-            {
-                this.value = null;
-                this.variableType = typeof(decimal);
-            }
-            else if ( variableType == typeof( IEnumerable<> ))
-            {
-                if ( value is null )
-                {
-                    this.value = null;
-                    this.variableType = typeof( int );
-                }
-                if ( value is int count )
-                {
-                    this.value = count;
-                    this.variableType = typeof( int );
-                }
-            }
-            else if (value is double d)
-            {
-                this.value = Convert.ToDecimal(d);
-                this.variableType = typeof(decimal);
-            }
-            else if (value is float f)
-            {
-                this.value = Convert.ToDecimal(f);
-                this.variableType = typeof(decimal);
-            }
-            else if (value is long l)
-            {
-                this.value = Convert.ToDecimal(l);
-                this.variableType = typeof(decimal);
-            }
-            else if (value is ulong ul)
-            {
-                this.value = Convert.ToDecimal(ul);
-                this.variableType = typeof(decimal);
-            }
-            else
-            {
-                this.value = value;
-                this.variableType = variableType;
-            }
-        }
-
-        private static string AddSpacesToTitleCasedName(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return "";
-            }
-
-            StringBuilder newText = new StringBuilder(text.Length * 2);
-            newText.Append(text[0]);
-            for (int i = 1; i < text.Length; i++)
-            {
-                if (char.IsUpper(text[i]) && text[i - 1] != ' ' && !char.IsUpper(text[i - 1]))
-                {
-                    newText.Append(' ');
-                }
-                newText.Append(text[i]);
-            }
-            return newText.ToString();
-        }
-
-        private static string ConcatOverlappingNames(string prefix, string childKey)
-        {
-            // For a prefix of "AA BB CC" and a childKey of "BB CC DD", return "AA BB CC DD"
-            var skip = 0;
-            if (!prefix.EndsWith(" ")) { prefix += " "; }
-            while (skip < childKey.Length
-                || (prefix.Skip(skip).Count() - 1) > childKey.Length
-                || (prefix.Skip(skip).Zip(childKey, (a, b) => a.Equals(b)).Any(x => !x) && skip < prefix.Length))
-            {
-                skip++;
-            }
-            return string.Concat(prefix.Take(skip).Concat(childKey));
-        }
-
-        public void Set(dynamic vaProxy)
-        {
-            // Variable type must be one of "string", "int", "bool", "decimal", "double", "long", or "DateTime"
-            try
-            {
-                // Set final values
-                if (variableType is null)
-                {
-                    // No idea what it might have been so reset everything
-                    vaProxy.SetText(key, null);
-                    vaProxy.SetInt(key, null);
-                    vaProxy.SetDecimal(key, null);
-                    vaProxy.SetBoolean(key, null);
-                    vaProxy.SetDate(key, null);
-                }
-                else if (variableType == typeof(string))
-                {
-                    vaProxy.SetText(key, (string)value);
-                }
-                else if (variableType == typeof(int))
-                {
-                    vaProxy.SetInt(key, (int?)value);
-                }
-                else if (variableType == typeof(bool))
-                {
-                    vaProxy.SetBoolean(key, (bool?)value);
-                }
-                else if (variableType == typeof(decimal))
-                {
-                    vaProxy.SetDecimal(key, (decimal?)value);
-                }
-                else if (variableType == typeof(DateTime))
-                {
-                    vaProxy.SetDate(key, (DateTime?)value);
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid type");
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Error($@"Failed to write VoiceAttack value for {(variableType is null ? "<null type>" : variableType.ToString())} key '{key}' with value {JsonConvert.SerializeObject(value)}", ex);
-            }
-        }
-    }
-
     [UsedImplicitly]
     public static class MetaVariablesExtensions
     {
@@ -475,14 +310,6 @@ namespace Utilities
             return source
                 .Where(v => v.keysPath.Last() != MetaVariables.indexMarker) // Exclude index values in Cottle
                 .Select(v => new CottleVariable(v.keysPath, v.description, v.value))
-                .ToList();
-        }
-
-        public static List<VoiceAttackVariable> AsVoiceAttackVariables(this List<MetaVariable> source, string startingPrefix, string eventType = null)
-        {
-            return source
-                .Where(v => ( v.type != typeof(object) ) )
-                .Select(v => new VoiceAttackVariable(startingPrefix, eventType, v.keysPath, v.type, v.description, v.value))
                 .ToList();
         }
     }

@@ -13,7 +13,6 @@ namespace EddiVoiceAttackResponder
 {
     internal class VoiceAttackEventHandler
     {
-        private dynamic VaProxy => VoiceAttackPlugin.VaProxy;
         private readonly ConcurrentDictionary<string, TaskQueue<Event>> taskQueues = new ConcurrentDictionary<string, TaskQueue<Event>>();
         private readonly CancellationTokenSource consumerCancellationTS = new CancellationTokenSource(); // This must be static so that it is visible to child threads and tasks
 
@@ -107,12 +106,11 @@ namespace EddiVoiceAttackResponder
                         }
                         else
                         {
-                            var values = new MetaVariables(variableType, variableValue)
-                                .Results
-                                .AsVoiceAttackVariables("EDDI", variableName);
+                            var values = VoiceAttackVariables.Convert(
+                                new MetaVariables( variableType, variableValue ).Results, "EDDI", variableName );
                             foreach ( var var in values )
                             {
-                                var.Set( VaProxy );
+                                var.Set();
                                 currentVariables[ var.key ] = var;
                             }
                         }
@@ -121,12 +119,10 @@ namespace EddiVoiceAttackResponder
 
                 // Prepare and update this event's variable values
                 // Save the updated state of our event variables
-                var eventVariables = new MetaVariables(@event.GetType(), @event)
-                    .Results
-                    .AsVoiceAttackVariables("EDDI", @event.type);
+                var eventVariables = VoiceAttackVariables.Convert( new MetaVariables(@event.GetType(), @event).Results, "EDDI", @event.type);
                 foreach ( var var in eventVariables )
                 {
-                    var.Set( VaProxy );
+                    var.Set();
                     currentVariables[var.key] = var;
                 }
                 Logging.Debug( $"Set VoiceAttack variables for EDDI event {@event.type}", eventVariables );
@@ -147,7 +143,7 @@ namespace EddiVoiceAttackResponder
                              .Where( v => v.eventType == eventType && v.value != null ) )
                 {
                     variable.value = null;
-                    variable.Set( VaProxy );
+                    variable.Set();
                 }
             }
             catch ( Exception ex )

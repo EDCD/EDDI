@@ -60,13 +60,13 @@ namespace Tests
         }
 
         [ UsedImplicitly ]
-        public short? GetSmallInt ( string varName, bool retrieveFromProfile = false )
+        public short? GetSmallInt ( string varName )
         {
             return vaShorts.TryGetValue( varName, out var sh ) ? sh : null;
         }
 
         [ UsedImplicitly ]
-        public void SetSmallInt ( string varName, short? value, bool saveToProfile = false )
+        public void SetSmallInt ( string varName, short? value )
         {
             vaShorts[ varName ] = value;
         }
@@ -197,8 +197,8 @@ namespace Tests
 
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
+            var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
+            foreach (var @var in vaVars) { @var.Set(); }
             Assert.AreEqual(15, vaVars.Count);
             Assert.AreEqual("Gamma Tucanae", mockVAProxy.GetText("EDDI exploration data sold systems 1"));
             Assert.AreEqual("Rho Capricorni", mockVAProxy.GetText("EDDI exploration data sold systems 2"));
@@ -237,8 +237,8 @@ namespace Tests
 
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
+            var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
+            foreach (var @var in vaVars) { @var.Set(); }
             Assert.AreEqual(2, vaVars.Count);
             Assert.AreEqual(7, mockVAProxy.GetInt( "EDDI discovery scan totalbodies"));
             Assert.AreEqual(3, mockVAProxy.GetInt("EDDI discovery scan nonbodies"));
@@ -261,8 +261,8 @@ namespace Tests
 
             var vars = new MetaVariables(ev.GetType(), ev).Results;
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
+            var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
+            foreach (var @var in vaVars) { @var.Set(); }
             Assert.AreEqual(8, vaVars.Count);
             Assert.AreEqual(90M, mockVAProxy.GetDecimal("EDDI asteroid prospected remaining"));
             Assert.AreEqual("Alexandrite", mockVAProxy.GetText("EDDI asteroid prospected motherlode"));
@@ -294,8 +294,8 @@ namespace Tests
             Assert.IsNull(cottleVars.FirstOrDefault(k => k.key == "missionid")?.value);
             Assert.IsTrue((bool)(cottleVars.FirstOrDefault(k => k.key == "abandoned")?.value ?? false));
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", ev.type);
-            foreach (var @var in vaVars) { @var.Set(mockVAProxy); }
+            var vaVars = VoiceAttackVariables.Convert(vars, "EDDI", ev.type);
+            foreach (var @var in vaVars) { @var.Set(); }
             Assert.AreEqual(4, vaVars.Count);
             Assert.AreEqual("Water", mockVAProxy.GetText("EDDI commodity ejected commodity"));
             Assert.AreEqual(5, mockVAProxy.GetInt("EDDI commodity ejected amount"));

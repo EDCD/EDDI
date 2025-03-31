@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
+using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
@@ -35,7 +36,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"items[\<index\>].title"));
             Assert.IsNotNull(cottleVars.TrueForAll(v => v.value == null));
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
+            var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
             Assert.AreEqual(7, vaVars.Count);
             var category = vaVars.FirstOrDefault( k => k.key == @"EDDI galnet news published items \<index\> category" );
             Assert.IsNotNull( category );
@@ -72,7 +73,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == @"deployable")?.key);
             Assert.IsTrue(cottleVars.TrueForAll(v => v.value == null));
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
+            var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
             Assert.AreEqual(1, vaVars.Count);
             var var = vaVars.FirstOrDefault( k => k.key == @"EDDI srv turret deployable" );
             Assert.IsNotNull(var);
@@ -94,7 +95,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "bonus"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "total"));
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
+            var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
             Assert.AreEqual(5, vaVars.Count);
             var index = vaVars.FirstOrDefault( k => k.key == "EDDI exploration data sold systems \\<index\\>" );
             Assert.IsNotNull( index );
@@ -126,7 +127,7 @@ namespace Tests
             Assert.IsNull(cottleVars.FirstOrDefault(k => k.key == "progress"));
             Assert.IsTrue(cottleVars.TrueForAll(v => v.value == null));
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
+            var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
             Assert.AreEqual(2, vaVars.Count);
             var totalbodies = vaVars.FirstOrDefault( k => k.key == "EDDI discovery scan totalbodies" );
             Assert.IsNotNull( totalbodies );
@@ -152,7 +153,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "remaining"));
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "motherlode"));
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
+            var vaVars = VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
             Assert.AreEqual(6, vaVars.Count);
             var commodity = vaVars.FirstOrDefault( k => k.key == "EDDI asteroid prospected commodities \\<index\\> commodity" );
             Assert.IsNotNull( commodity );
@@ -198,7 +199,7 @@ namespace Tests
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "missionid")?.description);
             Assert.IsNotNull(cottleVars.FirstOrDefault(k => k.key == "abandoned")?.description);
 
-            var vaVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
+            var vaVars =VoiceAttackVariables.Convert(vars,"EDDI", entry.Key);
             Assert.AreEqual(4, vaVars.Count);
             var commodity = vaVars.FirstOrDefault( k => k.key == "EDDI commodity ejected commodity" );
             Assert.IsNotNull( commodity );
@@ -230,13 +231,12 @@ namespace Tests
         [ TestMethod ]
         public void TestRouteDetailsEvent ()
         {
-            dynamic mockVaProxy = new MockVAProxy();
             var entry = new KeyValuePair<string, Type>( "Route details", typeof(RouteDetailsEvent) );
             var vars = new MetaVariables( entry.Value, new RouteDetailsEvent(DateTime.MinValue, "set", "Shinrarta Dezhra", 3932277478106U, "Jameson Memorial", 128666762, new NavWaypointCollection(), 0, null ) ).Results;
-            var vaVars = vars.AsVoiceAttackVariables( string.Empty, entry.Key );
+            var vaVars = VoiceAttackVariables.Convert(vars,string.Empty, entry.Key );
             try
             {
-                vaVars.ForEach( v => v.Set( mockVaProxy ) );
+                vaVars.ForEach( v => v.Set() );
             }
             catch ( Exception e )
             {

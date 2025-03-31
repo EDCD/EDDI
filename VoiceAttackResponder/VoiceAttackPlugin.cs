@@ -308,7 +308,7 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                return VaProxy.GetInt( key, retrieveFromProfile ) ?? VaProxy.GetSmallInt( key );
+                return VaProxy.GetInt( key, retrieveFromProfile );
             }
         }
 
@@ -352,7 +352,7 @@ namespace EddiVoiceAttackResponder
             }
         }
         
-        public static void SetSmallInt ( string key, short? value, bool saveToProfile = false )
+        public static void SetSmallInt ( string key, short? value )
         {
             lock ( vaProxyLock )
             {
@@ -362,7 +362,7 @@ namespace EddiVoiceAttackResponder
                 {
                     return;
                 }
-                VaProxy.SetSmallInt( key, value, saveToProfile );
+                VaProxy.SetSmallInt( key, value );
             }
         }
 

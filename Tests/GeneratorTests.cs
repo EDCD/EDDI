@@ -1,5 +1,6 @@
 ﻿using EddiEvents;
 using EddiSpeechResponder.ScriptResolverService;
+using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace Tests
 
                 var vars = new MetaVariables(entry.Value).Results;
                 var CottleVars = vars.AsCottleVariables();
-                var VoiceAttackVars = vars.AsVoiceAttackVariables("EDDI", entry.Key);
+                var VoiceAttackVars = VoiceAttackVariables.Convert(vars, "EDDI", entry.Key);
 
                 if (!vars.Any())
                 {

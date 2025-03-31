@@ -147,12 +147,12 @@ namespace EddiVoiceAttackResponder
                     VoiceAttackPlugin.SetBoolean( varname, d != 0 );
                     if ( d <= int.MaxValue )
                     {
-                        VoiceAttackPlugin.SetInt( varname, Convert.ToInt32( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
+                        VoiceAttackPlugin.SetInt( varname, System.Convert.ToInt32( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
                     }
 
                     if ( d <= short.MaxValue )
                     {
-                        VoiceAttackPlugin.SetSmallInt( varname, Convert.ToInt16( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
+                        VoiceAttackPlugin.SetSmallInt( varname, System.Convert.ToInt16( Math.Round( d, MidpointRounding.AwayFromZero ) ) );
                     }
                 }
                 else
@@ -617,7 +617,7 @@ namespace EddiVoiceAttackResponder
 
         private static bool TrySetFromMetaVariables ( string prefix, MetaVariables variables )
         {
-            var va_vars = variables.Results.AsVoiceAttackVariables( prefix );
+            var va_vars = Convert( variables.Results, prefix );
             try
             {
                 foreach ( var variable in va_vars )
@@ -703,6 +703,14 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Error("Failed to set ship cargo values", ex);
             }
+        }
+
+        public static List<VoiceAttackVariable> Convert ( List<MetaVariable> source, string startingPrefix, string eventType = null )
+        {
+            return source
+                .Where( v => ( v.type != typeof( object ) ) )
+                .Select( v => new VoiceAttackVariable( startingPrefix, eventType, v.keysPath, v.type, v.description, v.value ) )
+                .ToList();
         }
     }
 }
