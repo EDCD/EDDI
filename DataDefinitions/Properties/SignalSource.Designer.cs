@@ -178,6 +178,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Beacon Deployment Site.
+        /// </summary>
+        public static string EXT_PANEL_ColonisationBeacon_DeploymentSite {
+            get {
+                return ResourceManager.GetString("EXT_PANEL_ColonisationBeacon_DeploymentSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System Colonisation Beacon.
         /// </summary>
         public static string EXT_PANEL_ColonisationBeacon_Site {

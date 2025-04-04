@@ -107,6 +107,7 @@ namespace EddiDataDefinitions
 
             var ArmedRevolt = new SignalSource("Gro_controlScenarioTitle");
 
+            var ColonizationBeaconDeploymentSite = new SignalSource( "EXT_PANEL_ColonisationBeacon_DeploymentSite" );
             var ColonizationBeacon = new SignalSource( "EXT_PANEL_ColonisationBeacon_Site" );
             var ColonizationShip = new SignalSource("EXT_PANEL_ColonisationShip");
         }

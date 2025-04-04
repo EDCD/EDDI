@@ -308,4 +308,7 @@
   <data name="EXT_PANEL_ColonisationShip" xml:space="preserve">
     <value />
   </data>
+  <data name="EXT_PANEL_ColonisationBeacon_DeploymentSite" xml:space="preserve">
+    <value />
+  </data>
 </root>
