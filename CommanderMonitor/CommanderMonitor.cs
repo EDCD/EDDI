@@ -164,7 +164,10 @@ namespace EddiCommanderMonitor
 
         private void handleCarrierJumpedEvent ( CarrierJumpedEvent @event )
         {
-            SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
+            if ( @event.controllingsystemfaction != null )
+            {
+                SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
+            }
             if ( ( @event.docked || @event.onFoot ) && @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt && 
@@ -281,7 +284,10 @@ namespace EddiCommanderMonitor
 
         private void handleJumpedEvent ( JumpedEvent @event )
         {
-            SetCommanderTitle( @event.controllingfaction?.Allegiance );
+            if ( @event.controllingfaction != null )
+            {
+                SetCommanderTitle( @event.controllingfaction?.Allegiance );
+            }
             if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
@@ -294,7 +300,10 @@ namespace EddiCommanderMonitor
 
         private void handleLocationEvent ( LocationEvent @event )
         {
-            SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
+            if ( @event.controllingsystemfaction != null )
+            {
+                SetCommanderTitle( @event.controllingsystemfaction.Allegiance );
+            }
             if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
