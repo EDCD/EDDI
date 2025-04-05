@@ -1769,6 +1769,13 @@ namespace EddiCore
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             CurrentStation = null;
+
+            // 
+            Task.Run( async () =>
+            {
+                await Task.Delay( TimeSpan.FromSeconds( 30 ) ); 
+                await conditionallyRefreshStationProfileAsync(true); } ).ConfigureAwait( false );
+
             return true;
         }
 
@@ -2719,7 +2726,7 @@ namespace EddiCore
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
         /// </summary>
-        private async Task conditionallyRefreshStationProfileAsync()
+        private async Task conditionallyRefreshStationProfileAsync(bool forceUpdate = false)
         {
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
@@ -2733,7 +2740,7 @@ namespace EddiCore
                     }
 
                     // Make sure that our endpoints have not been recently updated (within the last 300 seconds)
-                    if ( CurrentStation != null )
+                    if ( !forceUpdate && CurrentStation != null )
                     {
                         var lastCommodityUpdateSeconds = Convert.ToInt64( CurrentStation.commoditiesupdatedat ?? 0 );
                         var lastOutfittingUpdateSeconds = Convert.ToInt64( CurrentStation.outfittingupdatedat ?? 0 );
@@ -2775,10 +2782,8 @@ namespace EddiCore
 
                         // We have the required station information
                         Logging.Debug("Current station matches profile information; updating info");
-                        Station station =
-                            CurrentStarSystem?.stations.Find(s => s.name == profileStation.name);
-                        station = profileStation.UpdateStation(
-                            profileStation.commoditiesupdatedat, station);
+                        var station = CurrentStarSystem?.stations.Find(s => s.name == profileStation.name);
+                        profileStation.UpdateStation( profileStation.commoditiesupdatedat, station);
 
                         // Update the current station information in our backend DB
                         Logging.Debug("Star system information updated from Frontier API server; updating local copy");
