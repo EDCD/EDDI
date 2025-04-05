@@ -13,7 +13,7 @@ namespace EddiEddnResponder.Schemas
     [UsedImplicitly]
     public class CommoditySchema : ISchema, ICapiSchema
     {
-        public List<string> edTypes => new List<string> { "Market" };
+        public List<string> edTypes => new List<string> { "Market", "MarketBuy", "MarketSell" };
 
         // Track this so that we do not send duplicate data from the journal and from CAPI.
         private long? lastSentMarketID;
@@ -28,6 +28,15 @@ namespace EddiEddnResponder.Schemas
 
                 var marketID = JsonParsing.getLong(data, "MarketID");
                 var timestamp = JsonParsing.getDateTime( "timestamp", data );
+
+                // Reset message suppression if we've transacted with the market
+                if ( marketID == lastSentMarketID &&
+                     ( edType.Equals( "MarketBuy" ) ||
+                       edType.Equals( "MarketSell" ) ) )
+                {
+                    lastSentDateTime = null;
+                    return true;
+                }
 
                 // Suppress repetitious messages less than 2 minutes apart.
                 if ( lastSentMarketID == marketID && timestamp < ( lastSentDateTime + TimeSpan.FromMinutes( 2 ) ) )
