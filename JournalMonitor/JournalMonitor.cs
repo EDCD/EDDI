@@ -439,7 +439,13 @@ namespace EddiJournalMonitor
 
                                     // If docked
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationtype);
+                                    string stationName = null;
+                                    string stationLocalizedName = null;
+                                    StationModel stationtype = null;
+                                    if ( marketId != null )
+                                    {
+                                        GetStationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
+                                    }
 
                                     // Get station services data
                                     data.TryGetValue("StationServices", out val);
@@ -3325,10 +3331,9 @@ namespace EddiJournalMonitor
                                 break;
                             case "MissionAccepted":
                                 {
-                                    data.TryGetValue("MissionID", out object val);
-                                    var missionid = (ulong)val;
-                                    data.TryGetValue("Expiry", out val);
-                                    DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
+                                    var missionid = JsonParsing.getULong( data, "MissionID" );
+                                    data.TryGetValue("Expiry", out object val);
+                                    DateTime? expiry = (DateTime?)val;
                                     var name = JsonParsing.getString(data, "Name");
                                     var localisedname = JsonParsing.getString(data, "LocalisedName");
                                     if (!string.IsNullOrEmpty(localisedname))
@@ -3481,11 +3486,9 @@ namespace EddiJournalMonitor
                                 break;
                             case "MissionCompleted":
                                 {
-                                    data.TryGetValue("MissionID", out object val);
-                                    var missionid = (ulong)val;
+                                    var missionid = JsonParsing.getULong(data, "MissionID");
                                     var name = JsonParsing.getString(data, "Name");
-                                    data.TryGetValue("Reward", out val);
-                                    var reward = (val == null ? 0 : (long)val);
+                                    var reward = JsonParsing.getOptionalLong( data, "Reward" ) ?? 0;
                                     var donation = JsonParsing.getOptionalLong(data, "Donated") ?? 0;
                                     var faction = GetFactionName(data, "Faction");
 
@@ -3510,11 +3513,10 @@ namespace EddiJournalMonitor
                                             commodity.fallbackLocalizedName = fallbackC;
                                         }
                                     }
-                                    data.TryGetValue("Count", out val);
-                                    var amount = (int?)(long?)val;
+                                    var amount = JsonParsing.getOptionalInt(data, "Count");
 
                                     var permitsAwarded = new List<string>();
-                                    data.TryGetValue("PermitsAwarded", out val);
+                                    data.TryGetValue("PermitsAwarded", out object val);
                                     var permitsAwardedData = (List<object>)val;
                                     if (permitsAwardedData != null)
                                     {
@@ -3533,8 +3535,7 @@ namespace EddiJournalMonitor
                                         foreach (var commodityRewardData in commodityRewardsData.Cast<IDictionary<string, object>>() )
                                         {
                                             var rewardCommodity = CommodityDefinition.FromEDName(JsonParsing.getString(commodityRewardData, "Name"));
-                                            commodityRewardData.TryGetValue("Count", out val);
-                                            var count = (int)(long)val;
+                                            var count = JsonParsing.getOptionalInt(commodityRewardData, "Count") ?? 0;
                                             commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
                                         }
                                     }
@@ -3616,19 +3617,16 @@ namespace EddiJournalMonitor
                                 break;
                             case "MissionAbandoned":
                                 {
-                                    data.TryGetValue("MissionID", out object val);
-                                    var missionid = (ulong)val;
-                                    string name = JsonParsing.getString(data, "Name");
-                                    data.TryGetValue("Fine", out val);
-                                    long fine = val == null ? 0 : (long)val;
+                                    var missionid = JsonParsing.getULong(data, "MissionID");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var fine = JsonParsing.getOptionalLong(data, "Fine") ?? 0;
                                     events.Add(new MissionAbandonedEvent(timestamp, missionid, name, fine) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "MissionRedirected":
                                 {
-                                    data.TryGetValue("MissionID", out object val);
-                                    var missionid = (ulong)val;
+                                    var missionid = JsonParsing.getULong(data, "MissionID");
                                     string name = JsonParsing.getString(data, "Name");
                                     string newdestinationstation = JsonParsing.getString(data, "NewDestinationStation");
                                     string olddestinationstation = JsonParsing.getString(data, "OldDestinationStation");
@@ -3640,13 +3638,10 @@ namespace EddiJournalMonitor
                                 break;
                             case "MissionFailed":
                                 {
-                                    data.TryGetValue("MissionID", out object val);
-                                    var missionid = (ulong)val;
-                                    string name = JsonParsing.getString(data, "Name");
-                                    data.TryGetValue("Fine", out val);
-                                    long fine = val == null ? 0 : (long)val;
+                                    var missionid = JsonParsing.getULong(data, "MissionID");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var fine = JsonParsing.getOptionalLong(data, "Fine") ?? 0;
                                     events.Add(new MissionFailedEvent(timestamp, missionid, name, fine) { raw = line, fromLoad = fromLogLoad });
-
                                 }
                                 handled = true;
                                 break;
