@@ -26,10 +26,10 @@ namespace EddiEvents
 
         public StationModel stationDefinition { get; private set; }
 
-        public DockingGrantedEvent(DateTime timestamp, string station, string stationType, long marketId, int landingpad) : base(timestamp, NAME)
+        public DockingGrantedEvent(DateTime timestamp, string station, StationModel stationType, long marketId, int landingpad) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationDefinition = StationModel.FromEDName(stationType);
+            this.stationDefinition = stationType;
             this.marketId = marketId;
             this.landingpad = landingpad;
         }

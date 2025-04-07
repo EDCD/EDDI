@@ -25,10 +25,10 @@ namespace EddiEvents
 
         public StationLandingPads landingPads { get; private set; }
 
-        public DockingRequestedEvent(DateTime timestamp, string station, string stationType, long marketId, StationLandingPads landingPads ) : base(timestamp, NAME)
+        public DockingRequestedEvent(DateTime timestamp, string station, StationModel stationType, long marketId, StationLandingPads landingPads ) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationDefinition = StationModel.FromEDName(stationType);
+            this.stationDefinition = stationType;
             this.marketId = marketId;
             this.landingPads = landingPads;
         }

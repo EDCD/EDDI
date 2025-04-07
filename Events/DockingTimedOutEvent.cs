@@ -20,10 +20,10 @@ namespace EddiEvents
         // Not intended to be user facing
         public StationModel stationDefinition { get; private set; }
 
-        public DockingTimedOutEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
+        public DockingTimedOutEvent(DateTime timestamp, string station, StationModel stationType ) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationDefinition = StationModel.FromEDName(stationType);
+            this.stationDefinition = stationType;
         }
     }
 }

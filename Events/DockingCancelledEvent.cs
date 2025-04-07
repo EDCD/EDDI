@@ -23,10 +23,10 @@ namespace EddiEvents
 
         public StationModel stationDefinition { get; private set; }
 
-        public DockingCancelledEvent(DateTime timestamp, string station, string stationType, long? marketId) : base(timestamp, NAME)
+        public DockingCancelledEvent(DateTime timestamp, string station, StationModel stationType, long? marketId) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationDefinition = StationModel.FromEDName(stationType);
+            this.stationDefinition = stationType;
             this.marketId = marketId;
         }
     }

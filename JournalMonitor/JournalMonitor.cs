@@ -187,26 +187,8 @@ namespace EddiJournalMonitor
                                     var systemName = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    var stationName = JsonParsing.getString(data, "StationName");
-                                    var stationLocalizedName = JsonParsing.getString(data, "StationName_Localised");
+                                    GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationModel);
 
-                                    // Normalize Powerplay Stronghold Carrier names
-                                    stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
-
-                                    // Fix known incorrectly reported StationType values.
-                                    string stationTypeEdName;
-                                    switch ( stationName )
-                                    {
-                                        case "Stronghold Carrier":
-                                        case "System Colonisation Ship":
-                                            stationTypeEdName = StationModel.Megaship.edname;
-                                            break;
-                                        default:
-                                            stationTypeEdName = JsonParsing.getString( data, "StationType" );
-                                            break;
-                                    }
-                                    var stationModel = StationModel.FromEDName(stationTypeEdName) ?? StationModel.None;
-                                    
                                     var controllingfaction = GetFaction(data, "Station", systemName, systemAddress);
                                     var distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
@@ -456,10 +438,8 @@ namespace EddiJournalMonitor
                                     long? population = JsonParsing.getOptionalLong(data, "Population");
 
                                     // If docked
-                                    var stationLocalizedName = JsonParsing.getString(data, "StationName_Localised");
-                                    string station = stationLocalizedName ?? JsonParsing.getString(data, "StationName");
-                                    StationModel stationtype = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                     long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationtype);
 
                                     // Get station services data
                                     data.TryGetValue("StationServices", out val);
@@ -525,7 +505,7 @@ namespace EddiJournalMonitor
                                     if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
                                     {
                                         events.Add( new CarrierJumpedEvent( timestamp, systemName, systemAddress, x, y,
-                                            z, body, bodyId, bodyType, docked, onFoot, station, stationtype, marketId,
+                                            z, body, bodyId, bodyType, docked, onFoot, stationLocalizedName ?? stationName, stationtype, marketId,
                                             stationServices, systemfaction, stationfaction, factions, conflicts,
                                             Economies, economy, economy2, security, population, controllingPower,
                                             powersInAcquisitionRange, powerplayState,
@@ -537,7 +517,7 @@ namespace EddiJournalMonitor
                                     {
                                         events.Add( new LocationEvent( timestamp, systemName, systemAddress, x, y, z,
                                             distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked,
-                                            station, stationtype, marketId, stationServices, systemfaction,
+                                            stationLocalizedName ?? stationName, stationtype, marketId, stationServices, systemfaction,
                                             stationfaction, factions, conflicts, Economies, economy, economy2, security,
                                             population, controllingPower, powersInAcquisitionRange, powerplayState,
                                             powerAcquisitionProgress, powerplayControlProgress,
@@ -2161,52 +2141,47 @@ namespace EddiJournalMonitor
                                 break;
                             case "DockingRequested":
                                 {
-                                    string stationName = JsonParsing.getString(data, "StationName");
-                                    string stationType = JsonParsing.getString(data, "StationType");
                                     long marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
 
                                     // Get station landing pads data
                                     var landingPads = GetLandingPads(data);
 
-                                    events.Add(new DockingRequestedEvent(timestamp, stationName, stationType, marketId, landingPads) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new DockingRequestedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPads) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "DockingGranted":
                                 {
-                                    string stationName = JsonParsing.getString(data, "StationName");
-                                    string stationType = JsonParsing.getString(data, "StationType");
                                     long marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     data.TryGetValue("LandingPad", out object val);
                                     int landingPad = (int)(long)val;
-                                    events.Add(new DockingGrantedEvent(timestamp, stationName, stationType, marketId, landingPad) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new DockingGrantedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPad) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "DockingDenied":
                                 {
-                                    string stationName = JsonParsing.getString(data, "StationName");
-                                    string stationType = JsonParsing.getString(data, "StationType");
                                     long marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     string reason = JsonParsing.getString(data, "Reason");
-                                    events.Add(new DockingDeniedEvent(timestamp, stationName, stationType, marketId, reason) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new DockingDeniedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, reason) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "DockingCancelled":
                                 {
-                                    string stationName = JsonParsing.getString(data, "StationName");
-                                    string stationType = JsonParsing.getString(data, "StationType");
-                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    events.Add(new DockingCancelledEvent(timestamp, stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
+                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    events.Add(new DockingCancelledEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "DockingTimeout":
                                 {
-                                    string stationName = JsonParsing.getString(data, "StationName");
-                                    string stationType = JsonParsing.getString(data, "StationType");
-                                    events.Add(new DockingTimedOutEvent(timestamp, stationName, stationType) { raw = line, fromLoad = fromLogLoad });
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    events.Add(new DockingTimedOutEvent(timestamp, stationLocalizedName ?? stationName, stationType) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -5242,6 +5217,29 @@ namespace EddiJournalMonitor
                 Logging.Error($"Exception whilst parsing journal line {line}", ex);
             }
             return events;
+        }
+
+        private static void GetStationNameAndType(IDictionary<string, object> data, out string stationName, out string stationLocalizedName,
+            out StationModel stationModel)
+        {
+            stationName = JsonParsing.getString(data, "StationName");
+            stationLocalizedName = JsonParsing.getString(data, "StationName_Localised");
+
+            // Normalize Powerplay Stronghold Carrier names
+            stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
+
+            // Fix known incorrectly reported StationType values.
+            string stationTypeEdName;
+            if ( stationName == "Stronghold Carrier" || stationName.StartsWith( "$EXT_PANEL_ColonisationShip" ) )
+            {
+                stationTypeEdName = StationModel.Megaship.edname;
+            }
+            else
+            {
+                stationTypeEdName = JsonParsing.getString( data, "StationType" );
+            }
+
+            stationModel = StationModel.FromEDName(stationTypeEdName) ?? StationModel.None;
         }
 
         private static StationLandingPads GetLandingPads (IDictionary<string, object> data)
