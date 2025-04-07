@@ -1769,13 +1769,6 @@ namespace EddiCore
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             CurrentStation = null;
-
-            // 
-            Task.Run( async () =>
-            {
-                await Task.Delay( TimeSpan.FromSeconds( 30 ) ); 
-                await conditionallyRefreshStationProfileAsync(true); } ).ConfigureAwait( false );
-
             return true;
         }
 
@@ -2726,7 +2719,7 @@ namespace EddiCore
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
         /// </summary>
-        private async Task conditionallyRefreshStationProfileAsync(bool forceUpdate = false)
+        public async Task conditionallyRefreshStationProfileAsync(bool forceUpdate = false)
         {
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
@@ -2740,13 +2733,13 @@ namespace EddiCore
                     }
 
                     // Make sure that our endpoints have not been recently updated (within the last 300 seconds)
-                    if ( !forceUpdate && CurrentStation != null )
+                    if ( CurrentStation != null )
                     {
                         var lastCommodityUpdateSeconds = Convert.ToInt64( CurrentStation.commoditiesupdatedat ?? 0 );
                         var lastOutfittingUpdateSeconds = Convert.ToInt64( CurrentStation.outfittingupdatedat ?? 0 );
                         var lastShipyardUpdateSeconds = Convert.ToInt64( CurrentStation.shipyardupdatedat ?? 0 );
                         var mostRecentMarketUpdateSeconds = Math.Max( Math.Max( lastCommodityUpdateSeconds, lastOutfittingUpdateSeconds ), lastShipyardUpdateSeconds );
-                        if ( ( Dates.fromDateTimeToSeconds( DateTime.UtcNow ) - mostRecentMarketUpdateSeconds ) < 300 )
+                        if ( !forceUpdate && ( Dates.fromDateTimeToSeconds( DateTime.UtcNow ) - mostRecentMarketUpdateSeconds ) < 300 )
                         {
                             Logging.Debug( "Skipping conditional station profile fetch - data was already very recently updated" );
                             return;

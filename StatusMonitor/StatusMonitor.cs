@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -91,6 +92,15 @@ namespace EddiStatusMonitor
             {
                 lastStatus = currentStatus;
                 currentStatus = status;
+            }
+
+            if ( status.docked && status.gui_focus == "none" && lastStatus.gui_focus == "station services" )
+            {
+                // Detect that we've left the station menu and may be preparing to leave the station
+                Task.Run( async () =>
+                {
+                    await EDDI.Instance.conditionallyRefreshStationProfileAsync( true );
+                } ).ConfigureAwait( false );
             }
 
             // Update vehicle information
