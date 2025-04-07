@@ -394,6 +394,9 @@ namespace EddiMissionMonitor
                 // If the mission exists in the log, update status
                 if (missionEntry != null)
                 {
+                    missionEntry.name = mission.name;
+                    missionEntry.localisedname = mission.localisedname;
+
                     switch (mission.statusEDName)
                     {
                         case "Active":
