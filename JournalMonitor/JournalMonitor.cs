@@ -3252,7 +3252,7 @@ namespace EddiJournalMonitor
                                         MissionStatus.Complete
                                     };
 
-                                    List<Mission> missions = new List<Mission>();
+                                    var missions = new List<Mission>();
                                     foreach (var status in possibleStatuses)
                                     {
                                         data.TryGetValue(status.invariantName, out object val);
@@ -3260,17 +3260,25 @@ namespace EddiJournalMonitor
 
                                         foreach (object mission in missionLog)
                                         {
-                                            Dictionary<string, object> missionProperties = (Dictionary<string, object>)mission;
-                                            long missionId = JsonParsing.getLong(missionProperties, "MissionID");
-                                            string name = JsonParsing.getString(missionProperties, "Name");
-                                            decimal expires = JsonParsing.getDecimal(missionProperties, "Expires");
-                                            DateTime expiry = DateTime.UtcNow.AddSeconds((double)expires);
+                                            var missionProperties = (Dictionary<string, object>)mission;
+                                            var missionId = JsonParsing.getLong(missionProperties, "MissionID");
+                                            var name = JsonParsing.getString(missionProperties, "Name");
+                                            var localizedName = JsonParsing.getString(missionProperties, "Name_Localised");
+                                            var expires = JsonParsing.getDecimal(missionProperties, "Expires");
+
+                                            // Colonization missions use the actual unit timestamp rather than a timestamp offset so we need to handle those as a special case.
+                                            var expiry = name == "$Mission_Colonisation_Initial_Name;"
+                                                ? Dates.fromTimestamp( Convert.ToInt64( expires ) ) ?? DateTime.MinValue
+                                                : timestamp.AddSeconds( (double)expires );
 
                                             // If mission is 'Active' and expires = 0, then set status to 'Claim'
-                                            MissionStatus missionStatus = status == MissionStatus.Active && expires == 0 
+                                            var missionStatus = status == MissionStatus.Active && expires == 0 
                                                 ? MissionStatus.Claim: 
                                                 status;
-                                            Mission newMission = new Mission(missionId, name, expiry, missionStatus);
+                                            var newMission = new Mission( missionId, name, expiry, missionStatus )
+                                            {
+                                                localisedname = localizedName
+                                            };
                                             if (newMission == null)
                                             {
                                                 // Mal-formed mission
