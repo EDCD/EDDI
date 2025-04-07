@@ -8,7 +8,7 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         [JsonProperty]
-        public long? missionid { get; set; }
+        public ulong? missionid { get; set; }
 
         [JsonProperty]
         public int count { get; set; }
@@ -27,7 +27,7 @@ namespace EddiDataDefinitions
             this.stolen = cargoInfoItem.stolen;
         }
 
-        public CargoInfoItem(string Name, long? MissionID, int Count, int Stolen)
+        public CargoInfoItem(string Name, ulong? MissionID, int Count, int Stolen)
         {
             this.name = Name;
             this.missionid = MissionID;

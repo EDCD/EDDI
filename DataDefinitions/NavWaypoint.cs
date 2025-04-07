@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
     public class NavWaypoint : INotifyPropertyChanged
     {
         private bool _visited;
-        private List<long> _missionids = new List<long>();
+        private List<ulong> _missionids = new List<ulong>();
         private bool? _isScoopable;
         private bool _hasNeutronStar;
 
@@ -74,7 +74,7 @@ namespace EddiDataDefinitions
         // Info seeded from other monitors
         public bool isMissionSystem => missionids?.Any() ?? false;
 
-        public List<long> missionids
+        public List<ulong> missionids
         {
             get => _missionids;
             set { _missionids = value; OnPropertyChanged();}

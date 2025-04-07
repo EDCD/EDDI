@@ -970,7 +970,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private bool handleMissionFine(DateTime timestamp, long missionid, long fine)
+        private bool handleMissionFine(DateTime timestamp, ulong missionid, long fine)
         {
             bool update = false;
             var mission = ConfigService.Instance.missionMonitorConfiguration

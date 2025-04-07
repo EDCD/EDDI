@@ -26,7 +26,7 @@ namespace EddiNavigationService.QueryResolvers
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.All( m => m.sourcesystem == null ) ) { return null; }
 
-            var haulageMissionIds = new HashSet<long>(); // List of mission IDs for the next system
+            var haulageMissionIds = new HashSet<ulong>(); // List of mission IDs for the next system
             var sortedSourceSystems = new SortedList<decimal, NavWaypoint>();
 
             // The route will start in the current system

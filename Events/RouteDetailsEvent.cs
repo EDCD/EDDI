@@ -41,7 +41,7 @@ namespace EddiEvents
         public decimal routedistance => Route?.RouteDistance ?? 0;
 
         [PublicAPI("The mission ID(s) associated with the next waypoint star system, if applicable")]
-        public List<long> missionids { get; private set; }
+        public List<ulong> missionids { get; private set; }
 
         [PublicAPI("Required total tritium required to complete the route, if applicable")]
         public int? tritiumused => routetype == "carrier" ? Route.RouteFuelTotal : null;
@@ -50,7 +50,7 @@ namespace EddiEvents
         public NavWaypointCollection Route { get; private set; }
 
         public RouteDetailsEvent ( DateTime timestamp, string routetype, string systemName, ulong? systemAddress,
-            string stationName, long? marketId, NavWaypointCollection route, long count, List<long> missionIds ) : base(timestamp, NAME)
+            string stationName, long? marketId, NavWaypointCollection route, long count, List<ulong> missionIds ) : base(timestamp, NAME)
         {
             this.routetype = routetype;
             this.system = systemName;
@@ -59,7 +59,7 @@ namespace EddiEvents
             this.marketId = marketId;
             this.Route = route;
             this.count = count;
-            this.missionids = missionIds ?? new List<long>();
+            this.missionids = missionIds ?? new List<ulong>();
         }
     }
 }

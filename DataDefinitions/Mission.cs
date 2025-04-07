@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
     {
         // The mission ID
         [Utilities.PublicAPI]
-        public long missionid { get; private set; }
+        public ulong missionid { get; private set; }
 
         // The name of the mission
         [Utilities.PublicAPI]
@@ -485,7 +485,7 @@ namespace EddiDataDefinitions
 
         [JsonConstructor]
         // Main Constructor
-        public Mission(long MissionId, string Name, DateTime? expiry, MissionStatus Status, string notes = null, bool Shared = false)
+        public Mission(ulong MissionId, string Name, DateTime? expiry, MissionStatus Status, string notes = null, bool Shared = false)
         {
             this.missionid = MissionId;
             this.name = Name;

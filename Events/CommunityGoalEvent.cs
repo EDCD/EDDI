@@ -33,7 +33,7 @@ namespace EddiEvents
         public List<CGUpdate> updates { get; private set; }
 
         [PublicAPI("The unique id of the goal")]
-        public long cgid => goal.cgid;
+        public ulong cgid => goal.cgid;
 
         [PublicAPI("The description of the goal")]
         public string name => goal.name;

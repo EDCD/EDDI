@@ -18,13 +18,13 @@ namespace EddiEvents
         public bool stolen { get; }
 
         [PublicAPI("ID of the mission-related commodity, if applicable")]
-        public long? missionid { get; }
+        public ulong? missionid { get; }
 
         // Not intended to be user facing
 
         public CommodityDefinition commodityDefinition { get; }
 
-        public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, long? missionid, bool stolen) : base(timestamp, NAME)
+        public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, ulong? missionid, bool stolen) : base(timestamp, NAME)
         {
             this.commodityDefinition = commodity;
             this.missionid = missionid;

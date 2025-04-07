@@ -19,7 +19,7 @@ namespace EddiSpeechResponder.CustomFunctions
         public IFunction function => Function.CreateNative1( ( runtime, missionID, writer ) =>
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration?.missions.ToList();
-            var result = missions?.FirstOrDefault(v => v.missionid == Convert.ToInt64( missionID.AsNumber ) );
+            var result = missions?.FirstOrDefault(v => v.missionid == Convert.ToUInt64( missionID.AsNumber ) );
             return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         });
     }

@@ -1701,7 +1701,7 @@ namespace Tests
             var events = JournalMonitor.ParseJournalEntry(line);
             var @event = (CommunityGoalsEvent)events[0];
             var goal = @event.goals[0];
-            Assert.AreEqual(641, goal.cgid);
+            Assert.AreEqual(641U, goal.cgid);
             Assert.AreEqual("Defence of the Galactic Summit", goal.name);
             Assert.AreEqual("Sirius", goal.system);
             Assert.AreEqual("Spirit of Laelaps", goal.station);

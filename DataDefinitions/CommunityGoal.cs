@@ -8,7 +8,7 @@ namespace EddiDataDefinitions
     public class CommunityGoal
     {
         [JsonProperty("CGID")]
-        public int cgid { get; set; }
+        public ulong cgid { get; set; }
 
         [JsonProperty("Title")]
         public string name { get; set; }

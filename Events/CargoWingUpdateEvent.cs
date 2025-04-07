@@ -12,7 +12,7 @@ namespace EddiEvents
         public const string SAMPLE = null;
 
         [PublicAPI("The ID of the mission")]
-        public long? missionid { get; private set; }
+        public ulong? missionid { get; private set; }
 
         [PublicAPI("The update type. 'Collect' or 'Deliver'")]
         public string updatetype { get; private set; }
@@ -36,7 +36,7 @@ namespace EddiEvents
 
         public CommodityDefinition commodityDefinition { get; private set; }
 
-        public CargoWingUpdateEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
+        public CargoWingUpdateEvent(DateTime timestamp, ulong? missionid, string updatetype, CommodityDefinition commodity, int? amount, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.updatetype = updatetype;

@@ -272,7 +272,7 @@ namespace EddiCargoMonitor
                         new Cargo( @event.commodityDefinition?.edname );
             if ( @event.missionid != null )
             {
-                cargo.AddDetailedQty( (long)@event.missionid, 1 );
+                cargo.AddDetailedQty( (ulong)@event.missionid, 1 );
             }
             else if ( @event.stolen )
             {
@@ -300,7 +300,7 @@ namespace EddiCargoMonitor
             var cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if ( @event.missionid != null )
             {
-                cargo?.RemoveDetailedQty( (long)@event.missionid, @event.amount );
+                cargo?.RemoveDetailedQty( (ulong)@event.missionid, @event.amount );
             }
             else
             {
@@ -645,7 +645,7 @@ namespace EddiCargoMonitor
         }
 
         [CanBeNull]
-        public Cargo GetCargoWithMissionId ( long missionid, out int amount )
+        public Cargo GetCargoWithMissionId ( ulong missionid, out int amount )
         {
             amount = 0;
             foreach ( var cargo in inventory.ToList() )
@@ -662,7 +662,7 @@ namespace EddiCargoMonitor
 
         private void UpdateCargoFromInfo ( Cargo cargo, List<CargoInfoItem> infoList )
         {
-            cargo.missionCargo = infoList.Where( i => i.missionid != null ).ToDictionary( i => (long)i.missionid, i => i.count );
+            cargo.missionCargo = infoList.Where( i => i.missionid != null ).ToDictionary( i => (ulong)i.missionid, i => i.count );
             cargo.stolen = infoList.Where( i => i.missionid == null ).Sum( i => i.stolen );
             cargo.owned = infoList.Sum( i => i.count ) - cargo.haulage - cargo.stolen;
         }

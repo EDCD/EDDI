@@ -53,7 +53,7 @@ namespace EddiNavigationService.QueryResolvers
                         : EDDI.Instance.DataProvider.FetchStationWaypoint( lastWaypoint.x, lastWaypoint.y, lastWaypoint.z,
                             new Dictionary<string, object> { { "name", new { value = new[] { stationName } } } } );
 
-                    return new RouteDetailsEvent( DateTime.UtcNow, QueryType.set.ToString(), firstUnvisitedWaypoint?.systemName, firstUnvisitedWaypoint?.systemAddress, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.stationName : null, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.marketID : null, navRouteList, navRouteList.Waypoints.Count, firstUnvisitedWaypoint?.missionids ?? new List<long>() );
+                    return new RouteDetailsEvent( DateTime.UtcNow, QueryType.set.ToString(), firstUnvisitedWaypoint?.systemName, firstUnvisitedWaypoint?.systemAddress, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.stationName : null, firstUnvisitedWaypoint?.systemAddress == dest.systemAddress ? dest.marketID : null, navRouteList, navRouteList.Waypoints.Count, firstUnvisitedWaypoint?.missionids ?? new List<ulong>() );
 
                 }
             }

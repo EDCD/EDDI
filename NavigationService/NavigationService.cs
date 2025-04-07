@@ -259,11 +259,11 @@ namespace EddiNavigationService
             return result;
         }
 
-        internal static List<long> GetSystemMissionIds(string system)
+        internal static List<ulong> GetSystemMissionIds(string system)
         {
             var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
             var missions = missionsConfig.missions.ToList();
-            var missionids = new List<long>();       // List of mission IDs for the system
+            var missionids = new List<ulong>();       // List of mission IDs for the system
 
             if (system != null)
             {

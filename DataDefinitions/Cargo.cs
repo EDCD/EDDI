@@ -83,7 +83,7 @@ namespace EddiDataDefinitions
 
         // Mission items on board (with MissionID and count)
         [JsonProperty, PublicAPI( "A dictionary where the key is a mission ID and the value is the amount of cargo associated with that mission ID")]
-        public Dictionary<long, int> missionCargo
+        public Dictionary<ulong, int> missionCargo
         {
             get => _missionCargo;
             set
@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
                 NotifyPropertyChanged( nameof( haulage ) );
             }
         }
-        private Dictionary<long, int> _missionCargo = new Dictionary<long, int>();
+        private Dictionary<ulong, int> _missionCargo = new Dictionary<ulong, int>();
 
         [JsonProperty, PublicAPI] 
         public int need
@@ -220,7 +220,7 @@ namespace EddiDataDefinitions
         /// <summary> Add mission cargo </summary>
         /// <param name="missionID">Add mission cargo by mission ID</param>
         /// <param name="acquistionAmount">The amount of cargo to add</param>
-        public void AddDetailedQty ( long missionID, int acquistionAmount )
+        public void AddDetailedQty ( ulong missionID, int acquistionAmount )
         {
             if ( missionCargo.ContainsKey( missionID ) )
             {
@@ -256,7 +256,7 @@ namespace EddiDataDefinitions
         /// <summary> Remove mission cargo </summary>
         /// <param name="missionID">Remove mission cargo by mission ID</param>
         /// <param name="removedAmount">The amount of cargo to remove</param>
-        public void RemoveDetailedQty ( long missionID, int removedAmount )
+        public void RemoveDetailedQty ( ulong missionID, int removedAmount )
         {
             if ( missionCargo.ContainsKey( missionID ) )
             {

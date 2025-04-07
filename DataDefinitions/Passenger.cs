@@ -18,7 +18,7 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing
 
-        public long missionid { get; set; }
+        public ulong missionid { get; set; }
 
         public Passenger() { }
 
@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
             this.amount = Passenger.amount;
         }
 
-        public Passenger(long MissionId, string Type, bool VIP, bool Wanted, int Amount)
+        public Passenger(ulong MissionId, string Type, bool VIP, bool Wanted, int Amount)
         {
             this.missionid = MissionId;
             this.type = Type;

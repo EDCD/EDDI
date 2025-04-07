@@ -362,7 +362,7 @@ namespace Tests
             Assert.AreEqual(1, events.Count);
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             Assert.AreEqual(1, missionMonitor.missions.Count);
-            Assert.AreEqual(619, missionMonitor.missions[0].missionid);
+            Assert.AreEqual(619U, missionMonitor.missions[0].missionid);
             Assert.AreEqual("Federal Initiative to Deliver Supplies for Marlinist Refugees", missionMonitor.missions[0].localisedname);
             Assert.AreEqual("LFT 625", missionMonitor.missions[0].originsystem);
 
