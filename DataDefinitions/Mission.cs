@@ -21,7 +21,9 @@ namespace EddiDataDefinitions
             get => _name;
             set
             {
-                _name = value;
+                _name = value?
+                    .Replace( "$", "" )
+                    .Replace( ";", "" );
                 OnPropertyChanged();
             }
         }
@@ -217,8 +219,7 @@ namespace EddiDataDefinitions
 
         private FactionState GetFactionState ( string missionName )
         {
-            if ( string.IsNullOrEmpty( missionName ) )
-            { return null; }
+            if ( string.IsNullOrEmpty( missionName ) ) { return null; }
 
             // Get the faction state (Boom, Bust, Civil War, etc), if available
             var elements = missionName.Split( '_' );
@@ -232,8 +233,7 @@ namespace EddiDataDefinitions
                 var factionState = FactionState
                     .AllOfThem
                     .FirstOrDefault(s => s.edname.ToLowerInvariant() == element);
-                if ( factionState != null )
-                { return factionState; }
+                if ( factionState != null ) { return factionState; }
             }
 
             return null;
@@ -329,10 +329,10 @@ namespace EddiDataDefinitions
                         tidiedName = tidiedName
                             .Replace( prefixSuffix.Item2, "" );
                     }
-                    break;
+                    return tidiedName;
                 }
             }
-            return tidiedName;
+            return null;
         }
 
         #endregion
@@ -418,11 +418,11 @@ namespace EddiDataDefinitions
                         tidiedName = tidiedName
                             .Replace( prefixSuffix.Item2, "" );
                     }
-                    break;
+                    return tidiedName;
                 }
             }
 
-            return tidiedName;
+            return null;
         }
 
         #endregion

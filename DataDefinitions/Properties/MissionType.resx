@@ -127,7 +127,7 @@
     <value>Assassination</value>
   </data>
   <data name="Wing" xml:space="preserve">
-	  <value>Wing</value>
+    <value>Wing</value>
   </data>
   <data name="Collect" xml:space="preserve">
     <value>Collection</value>
@@ -157,16 +157,19 @@
     <value>Massacre</value>
   </data>
   <data name="Thargoid" xml:space="preserve">
-	  <value>Thargoid</value><comment>e.g. massacre of thargoid targets</comment>
+    <value>Thargoid</value>
+    <comment>e.g. massacre of thargoid targets</comment>
   </data>
   <data name="Mining" xml:space="preserve">
     <value>Mining</value>
   </data>
   <data name="Bulk" xml:space="preserve">
-	  <value>Bulk Transport</value><comment>e.g. of passengers</comment>
+    <value>Bulk Transport</value>
+    <comment>e.g. of passengers</comment>
   </data>
   <data name="VIP" xml:space="preserve">
-	  <value>Transport VIP</value><comment>e.g. VIP passenger</comment>
+    <value>Transport VIP</value>
+    <comment>e.g. VIP passenger</comment>
   </data>
   <data name="Piracy" xml:space="preserve">
     <value>Piracy</value>
@@ -221,7 +224,8 @@
     <value>Imperial Navy Contract</value>
   </data>
   <data name="Megaship" xml:space="preserve">
-	  <value>Megaship</value><comment>e.g. hack or disable missions targeting a megaship</comment>
+    <value>Megaship</value>
+    <comment>e.g. hack or disable missions targeting a megaship</comment>
   </data>
   <data name="Founder" xml:space="preserve">
     <value>Founder</value>
@@ -238,12 +242,12 @@
     <value>Covert</value>
   </data>
   <data name="Download" xml:space="preserve">
-	  <value>Download</value>
-	  <comment>On-foot hack type</comment>
+    <value>Download</value>
+    <comment>On-foot hack type</comment>
   </data>
   <data name="Upload" xml:space="preserve">
-	  <value>Upload</value>
-	  <comment>On-foot hack type</comment>
+    <value>Upload</value>
+    <comment>On-foot hack type</comment>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Offline Settlement</value>
@@ -307,7 +311,8 @@
     <comment>e.g. rescue from a burning station</comment>
   </data>
   <data name="Evacuation" xml:space="preserve">
-	  <value>Evacuation</value><comment>e.g. of passengers</comment>
+    <value>Evacuation</value>
+    <comment>e.g. of passengers</comment>
   </data>
   <data name="Alert" xml:space="preserve">
     <value>Alert</value>
@@ -317,9 +322,15 @@
     <comment>Massacre type</comment>
   </data>
   <data name="Contact" xml:space="preserve">
-	  <value>Contact</value><comment>e.g. mission assigned by an on-foot contact</comment>
+    <value>Contact</value>
+    <comment>e.g. mission assigned by an on-foot contact</comment>
   </data>
   <data name="Sabotage" xml:space="preserve">
-	  <value>Sabotage</value><comment>e.g. on-foot settlement sabotage mission</comment>
+    <value>Sabotage</value>
+    <comment>e.g. on-foot settlement sabotage mission</comment>
+  </data>
+  <data name="Colonisation" xml:space="preserve">
+    <value>Colonisation</value>
+    <comment>Colonisation mission type (e.g. "Construct primary port")</comment>
   </data>
 </root>

@@ -48,6 +48,7 @@ namespace EddiDataDefinitions
         public static MissionType Altruism = new MissionType( "Altruism", true, false, true );
         public static MissionType Assassinate = new MissionType( "Assassinate", true, false, true );
         public static MissionType Collect = new MissionType( "Collect", true, true, true );
+        public static MissionType Colonisation = new MissionType( "Colonisation", false, false, false );
         public static MissionType CommunityGoal = new MissionType( "CommunityGoal", false, false, true );
         public static MissionType Courier = new MissionType( "Courier", false, false, true );
         public static MissionType Delivery = new MissionType( "Delivery", false, true, true );
@@ -167,6 +168,7 @@ namespace EddiDataDefinitions
             elements.RemoveAll( t =>
                 t == "mission" ||
                 t == "arriving" ||
+                t == "initial" ||
                 t == "leaving" ||
                 t == "plural" ||
                 t == "name" ||

@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -127,7 +127,7 @@
     <value>Assassinato</value>
   </data>
   <data name="Wing" xml:space="preserve">
-	  <value>Esquadrão</value>
+    <value>Esquadrão</value>
   </data>
   <data name="Collect" xml:space="preserve">
     <value>Coleta</value>
@@ -157,16 +157,19 @@
     <value>Massacre</value>
   </data>
   <data name="Thargoid" xml:space="preserve">
-	  <value>Thargoid</value><comment>e.g. massacre of thargoid targets</comment>
+    <value>Thargoid</value>
+    <comment>e.g. massacre of thargoid targets</comment>
   </data>
   <data name="Mining" xml:space="preserve">
     <value>Mineração</value>
   </data>
   <data name="Bulk" xml:space="preserve">
-	  <value>Transporte em Massa</value><comment>e.g. of passengers</comment>
+    <value>Transporte em Massa</value>
+    <comment>e.g. of passengers</comment>
   </data>
   <data name="VIP" xml:space="preserve">
-	  <value>Transporte VIP</value><comment>e.g. VIP passenger</comment>
+    <value>Transporte VIP</value>
+    <comment>e.g. VIP passenger</comment>
   </data>
   <data name="Piracy" xml:space="preserve">
     <value>Pirataria</value>
@@ -221,7 +224,8 @@
     <value>Contrato da Marinha Imperial</value>
   </data>
   <data name="Megaship" xml:space="preserve">
-	  <value>Meganave</value><comment>e.g. hack or disable missions targeting a megaship</comment>
+    <value>Meganave</value>
+    <comment>e.g. hack or disable missions targeting a megaship</comment>
   </data>
   <data name="Founder" xml:space="preserve">
     <value>Fundador</value>
@@ -238,12 +242,12 @@
     <value>Disfarçada</value>
   </data>
   <data name="Download" xml:space="preserve">
-	  <value>Download</value>
-	  <comment>On-foot hack type</comment>
+    <value>Download</value>
+    <comment>On-foot hack type</comment>
   </data>
   <data name="Upload" xml:space="preserve">
-	  <value>Upload</value>
-	  <comment>On-foot hack type</comment>
+    <value>Upload</value>
+    <comment>On-foot hack type</comment>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Assentamento Desativado</value>
@@ -307,7 +311,8 @@
     <comment>e.g. rescue from a burning station</comment>
   </data>
   <data name="Evacuation" xml:space="preserve">
-	  <value>Evacuação</value><comment>e.g. of passengers</comment>
+    <value>Evacuação</value>
+    <comment>e.g. of passengers</comment>
   </data>
   <data name="Alert" xml:space="preserve">
     <value>Alerta</value>
@@ -317,9 +322,14 @@
     <comment>Massacre type</comment>
   </data>
   <data name="Contact" xml:space="preserve">
-	  <value>Contato</value><comment>e.g. mission assigned by an on-foot contact</comment>
+    <value>Contato</value>
+    <comment>e.g. mission assigned by an on-foot contact</comment>
   </data>
   <data name="Sabotage" xml:space="preserve">
-	  <value>Sabotagem</value><comment>e.g. on-foot settlement sabotage mission</comment>
+    <value>Sabotagem</value>
+    <comment>e.g. on-foot settlement sabotage mission</comment>
+  </data>
+  <data name="Colonisation" xml:space="preserve">
+    <value />
   </data>
 </root>

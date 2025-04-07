@@ -142,6 +142,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Colonisation.
+        /// </summary>
+        internal static string Colonisation {
+            get {
+                return ResourceManager.GetString("Colonisation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Community Goal.
         /// </summary>
         internal static string CommunityGoal {
