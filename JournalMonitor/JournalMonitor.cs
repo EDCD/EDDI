@@ -4934,8 +4934,8 @@ namespace EddiJournalMonitor
                             case "CarrierFinance":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var taxRate = JsonParsing.getInt(data, "TaxRate");
-                                    var reservePercent = JsonParsing.getInt(data, "ReservePercent");
+                                    var taxRate = JsonParsing.getOptionalInt(data, "TaxRate") ?? 0;
+                                    var reservePercent = JsonParsing.getOptionalInt(data, "ReservePercent") ?? 0;
                                     var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
                                     var carrierReserveBalance = JsonParsing.getLong(data, "ReserveBalance");
                                     var carrierAvailableBalance = JsonParsing.getLong(data, "CarrierAvailableBalance");
