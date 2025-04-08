@@ -1140,7 +1140,13 @@ namespace EddiDataDefinitions
         public static readonly Module cobramkv_armour_grade3 = new Module( "cobramkv_armour_grade3", "MilitaryGradeComposite", 1, "I", 890515 );
         public static readonly Module cobramkv_armour_mirrored = new Module( "cobramkv_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 2077867 );
         public static readonly Module cobramkv_armour_reactive = new Module( "cobramkv_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 2332158 );
-        public static readonly Module Int_Colonisation = new Module( "Int_Colonisation", "ColonisationSuite", 1, "I", 0 );
+
+        // Needs costing
+        public static readonly Module corsair_armour_grade1 = new Module( "corsair_armour_grade1", "LightweightAlloy", 1, "I", 0 );
+        public static readonly Module corsair_armour_grade2 = new Module( "corsair_armour_grade2", "ReinforcedAlloy", 1, "I", 0 );
+        public static readonly Module corsair_armour_grade3 = new Module( "corsair_armour_grade3", "MilitaryGradeComposite", 1, "I", 0 );
+        public static readonly Module corsair_armour_mirrored = new Module( "corsair_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 0 );
+        public static readonly Module corsair_armour_reactive = new Module( "corsair_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 0 );
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
@@ -1155,7 +1161,7 @@ namespace EddiDataDefinitions
         public static readonly Module Int_CargoRack_Size2_Class1_free = new Module( "Int_CargoRack_Size2_Class1_free", "CargoRack", 2, "E", 0);
         public static readonly Module Int_FuelTank_Size1_Class3_free = new Module( "Int_FuelTank_Size1_Class3_free", "FuelTank", 1, "C", 0);
 
-        // Items for which we are awaiting FD IDs
+        // COVAS voices
         public static readonly Module VoicePack_Verity = new Module( "VoicePack_Verity", "Verity", 1, "I", 0);
         public static readonly Module VoicePack_Victor = new Module( "VoicePack_Victor", "Victor", 1, "I", 0);
         public static readonly Module VoicePack_Celeste = new Module( "VoicePack_Celeste", "Celeste", 1, "I", 0);
@@ -1209,6 +1215,8 @@ namespace EddiDataDefinitions
         public static readonly Module Type8_Cockpit = new Module( "Type8_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module Mandalay_Cockpit = new Module( "Mandalay_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module CobraMkv_Cockpit = new Module( "CobraMkv_Cockpit", "CockpitCanopy", 1, "I", 0);
+        public static readonly Module Corsair_Cockpit = new Module( "Corsair_Cockpit", "CockpitCanopy", 1, "I", 0);
+        public static readonly Module Int_Colonisation = new Module( "Int_Colonisation", "ColonisationSuite", 1, "I", 0 );
 
         // Fighter modules
         public static readonly Module Empire_Fighter_Cockpit = new Module( "Empire_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0);
