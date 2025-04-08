@@ -171,6 +171,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to your.
         /// </summary>
+        public static string yourCorsair {
+            get {
+                return ResourceManager.GetString("yourCorsair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
         public static string yourDBS {
             get {
                 return ResourceManager.GetString("yourDBS", resourceCulture);
