@@ -1140,13 +1140,11 @@ namespace EddiDataDefinitions
         public static readonly Module cobramkv_armour_grade3 = new Module( "cobramkv_armour_grade3", "MilitaryGradeComposite", 1, "I", 890515 );
         public static readonly Module cobramkv_armour_mirrored = new Module( "cobramkv_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 2077867 );
         public static readonly Module cobramkv_armour_reactive = new Module( "cobramkv_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 2332158 );
-
-        // Needs costing
         public static readonly Module corsair_armour_grade1 = new Module( "corsair_armour_grade1", "LightweightAlloy", 1, "I", 0 );
-        public static readonly Module corsair_armour_grade2 = new Module( "corsair_armour_grade2", "ReinforcedAlloy", 1, "I", 0 );
-        public static readonly Module corsair_armour_grade3 = new Module( "corsair_armour_grade3", "MilitaryGradeComposite", 1, "I", 0 );
-        public static readonly Module corsair_armour_mirrored = new Module( "corsair_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 0 );
-        public static readonly Module corsair_armour_reactive = new Module( "corsair_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 0 );
+        public static readonly Module corsair_armour_grade2 = new Module( "corsair_armour_grade2", "ReinforcedAlloy", 1, "I", 31721900 );
+        public static readonly Module corsair_armour_grade3 = new Module( "corsair_armour_grade3", "MilitaryGradeComposite", 1, "I", 71374271 );
+        public static readonly Module corsair_armour_mirrored = new Module( "corsair_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 166539967 );
+        public static readonly Module corsair_armour_reactive = new Module( "corsair_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 186921288 );
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
