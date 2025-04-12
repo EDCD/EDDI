@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
 {
     [PublicAPI]
-    public class ColonizationClaimProcessedEvent : Event
+    public class ColonisationClaimProcessedEvent : Event
     {
         public const string NAME = "Colonisation claim processed";
         public const string DESCRIPTION = "Triggered when staking or releasing a claim to colonise a star system";
@@ -23,11 +24,20 @@ namespace EddiEvents
         [PublicAPI("True when staking a claim and false when releasing a claim")]
         public bool claimStaked { get; private set; }
 
-        public ColonizationClaimProcessedEvent ( DateTime timestamp, string systemname, ulong systemAddress, bool claimStaked ) : base( timestamp, NAME )
+        public ColonisationClaimProcessedEvent ( DateTime timestamp, string systemname, ulong systemAddress, bool claimStaked ) : base( timestamp, NAME )
         {
             this.systemname = systemname;
             this.systemAddress = systemAddress;
             this.claimStaked = claimStaked;
+        }
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var starSystem = JsonParsing.getString( data, "StarSystem" );
+            var starSystemAddress = JsonParsing.getULong( data, "SystemAddress" );
+            var isClaim = edType == "ColonisationSystemClaim"; // False when releasing a claim
+            events.Add( new ColonisationClaimProcessedEvent( timestamp, starSystem, starSystemAddress, isClaim ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

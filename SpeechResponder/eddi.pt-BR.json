@@ -460,6 +460,15 @@
 			"name": "Colonisation claim processed",
 			"description": "Triggered when staking or releasing a claim to colonise a star system"
 		},
+		"Colonisation contribution": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": "{_ Set up a simple function to create descriptions for each transferred commodity }\r\n\r\n{set parseItem(contribution) to:\r\n    {if contribution.amount = 1: \r\n        {set tonnes to \" tonne \"}\r\n    |else: \r\n        {set tonnes to \" tonnes \"}\r\n    }\r\n    {set item to cat(contribution.amount, tonnes, \" of \", contribution.commodity)}\r\n    {return item}\r\n}\r\n\r\n{_ Generate a list of contributed commodities }\r\n{set contributions to []}\r\n{for contribution in event.contributions:\r\n    {set contributions to cat(contributions, [parseItem(contribution)])}\r\n}\r\n\r\n{_ Begin speaking }\r\n{OneOf(\r\n    \"You have {OneOf('contributed', 'donated')} {List(contributions)} towards colonization of {OneOf('this star system', P(system.systemname, 'starsystem'))}\",\r\n    \"{List(contributions)} {OneOf('contributed', 'donated')} towards colonization of {OneOf('this star system', P(system.systemname, 'starsystem'))}\"\r\n)}",
+			"default": true,
+			"name": "Colonisation contribution",
+			"description": "Triggered when contributing commodities towards construction in colonised star system"
+		},
 		"Commander continued": {
 			"enabled": true,
 			"priority": 3,
