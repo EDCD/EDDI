@@ -29,7 +29,7 @@ namespace EddiEvents
             this.contributions = commodityAmounts;
         }
 
-        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             var marketID = JsonParsing.getLong( data, "MarketID" );
             var commodityAmounts = new List<CommodityAmount>();

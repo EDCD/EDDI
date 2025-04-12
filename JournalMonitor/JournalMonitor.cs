@@ -5131,7 +5131,7 @@ namespace EddiJournalMonitor
                                 handled = ColonisationClaimProcessedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "ColonisationContribution": 
-                                handled = ColonisationContributionEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
+                                handled = ColonisationContributionEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
 
                             // we silently ignore these, but forward them to the responders
