@@ -26,10 +26,6 @@ namespace EddiConfigService.Configurations
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
 
-        /// <summary>the current export target for the shipyard</summary>
-        [JsonProperty("exporttarget")]
-        public string exporttarget { get; set; }
-
         [JsonProperty("OverrideCulture")]
         public string OverrideCulture { get; set; }
 
@@ -53,7 +49,6 @@ namespace EddiConfigService.Configurations
             Debug = false;
             Beta = false;
             Plugins = new Dictionary<string, bool>();
-            exporttarget = "Coriolis";
             DisableTelemetry = false;
 
             // Window defaults

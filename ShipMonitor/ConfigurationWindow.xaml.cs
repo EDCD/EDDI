@@ -1,5 +1,4 @@
 ﻿using EddiConfigService;
-using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechService;
@@ -26,15 +25,15 @@ namespace EddiShipMonitor
         {
             InitializeComponent();
             shipData.ItemsSource = shipMonitor().shipyard;
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            string exportTarget = eddiConfiguration.exporttarget;
+            var config = ConfigService.Instance.shipMonitorConfiguration;
+            var exportTarget = config.exporttarget;
 
             // handle migration
             if (exportTarget == "EDShipyard")
             {
                 exportTarget = "EDSY";
-                eddiConfiguration.exporttarget = exportTarget;
-                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+                config.exporttarget = exportTarget;
+                ConfigService.Instance.shipMonitorConfiguration = config;
             }
 
             Logging.Debug("Export target from configuration: " + exportTarget);
@@ -43,12 +42,12 @@ namespace EddiShipMonitor
 
         private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
         {
-            string exportTarget = (string)((ComboBox)e.Source).SelectedValue;
+            var exportTarget = (string)((ComboBox)e.Source).SelectedValue;
             Logging.Debug("Export target: " + exportTarget);
 
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.exporttarget = string.IsNullOrWhiteSpace(exportTarget) ? null : exportTarget.Trim();
-            ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+            var config = ConfigService.Instance.shipMonitorConfiguration;
+            config.exporttarget = string.IsNullOrWhiteSpace(exportTarget) ? null : exportTarget.Trim();
+            ConfigService.Instance.shipMonitorConfiguration = config;
         }
 
         private void ipaClicked(object sender, RoutedEventArgs e)
@@ -68,11 +67,11 @@ namespace EddiShipMonitor
 
         private void exportShip(object sender, RoutedEventArgs e)
         {
-            Ship ship = (Ship)((Button)e.Source).DataContext;
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+            var ship = (Ship)((Button)e.Source).DataContext;
+            var config = ConfigService.Instance.shipMonitorConfiguration;
 
             string uri;
-            switch (eddiConfiguration.exporttarget)
+            switch (config.exporttarget)
             {
                 case "EDShipyard":
                 case "EDSY":
@@ -88,10 +87,10 @@ namespace EddiShipMonitor
                     break;
 
                 default:
-                    throw new NotImplementedException($"Export target {eddiConfiguration.exporttarget} not recognized.");
+                    throw new NotImplementedException($"Export target {config.exporttarget} not recognized.");
             }
 
-            Logging.Debug("Export target is " + eddiConfiguration.exporttarget + ", URI is " + uri);
+            Logging.Debug("Export target is " + config.exporttarget + ", URI is " + uri);
 
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try

@@ -15,9 +15,16 @@ namespace EddiConfigService.Configurations
     public class ShipMonitorConfiguration : Config
     {
         public int? currentshipid { get; set; }
+
         public ObservableCollection<Ship> shipyard { get; set; } = new ObservableCollection<Ship>();
+
         public List<StoredModule> storedmodules { get; set; } = new List<StoredModule>();
+
+        /// <summary>the current export target for the shipyard</summary>
+        public string exporttarget { get; set; } = "Coriolis";
+
         public decimal insurance { get; set; } = 0.05M;
+
         public DateTime updatedat { get; set; } = DateTime.MinValue;
 
         [OnDeserialized]
