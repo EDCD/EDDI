@@ -5126,6 +5126,19 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "ColonisationSystemClaim":
+                            case "ColonisationSystemClaimRelease":
+                                {
+                                    var systemName = JsonParsing.getString( data, "StarSystem" );
+                                    var systemAddress = JsonParsing.getULong( data, "SystemAddress" );
+
+                                    // Set a variable to indicate whether we are staking a claim or releasing a claim
+                                    var claimStaked = edType == "ColonisationSystemClaim"; 
+
+                                    events.Add( new ColonizationClaimProcessedEvent( timestamp, systemName, systemAddress, claimStaked ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
 
                             // we silently ignore these, but forward them to the responders
                             case "CodexDiscovery":

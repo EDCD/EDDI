@@ -451,6 +451,15 @@
 			"description": "Triggered when your ship's cockpit is broken",
 			"default": true
 		},
+		"Colonisation claim processed": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": "{set systemName to OneOf(\r\n    \"the {P(event.systemname, 'starsystem')} system\", \r\n    \"{P(event.systemname, 'starsystem')}\"\r\n)}\r\n\r\n{if event.claimStaked:\r\n    {OneOf(\r\n        \"Claim processed\"\r\n        \"Claim registered\"\r\n        \"Claim successfully processed\"\r\n        \"You have registered your claim for {systemName}\",\r\n        \"You have staked your claim for {systemName}\"\r\n     )}\r\n    {Occasionally(2, \"{F('Honorific')}\")}.\r\n    {OneOf(\r\n        \"Colonisation beacon issued. Deployment must begin within the next 24 hours.\"\r\n        \"You have 24 hours to deploy the colonisation beacon you have been issued.\",\r\n        \"You have 24 hours to deploy your colonisation beacon.\"\r\n    )}\r\n|else:\r\n    {OneOf(\r\n        \"You have released your claim for {systemName}\",\r\n        \"Claim cancelled\"\r\n        \"Claim released\"\r\n    )}\r\n    {Occasionally(2, \"{F('Honorific')}\")}.\r\n}\r\n",
+			"default": true,
+			"name": "Colonisation claim processed",
+			"description": "Triggered when staking or releasing a claim to colonise a star system"
+		},
 		"Commander continued": {
 			"enabled": true,
 			"priority": 3,

@@ -36,6 +36,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Events
     * `Carrier jumped` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Carrier location` added, triggered at startup and shortly before your fleet carrier arrives at a new destination.
+    * `Colonisation claim processed` added, triggered when staking or releasing a claim to colonise a star system.
     * `Jumped` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Location` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.
