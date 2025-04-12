@@ -16,6 +16,16 @@ namespace EddiFleetCarrierMonitor
     [ UsedImplicitly ]
     public class FleetCarrierMonitor : IEddiMonitor
     {
+        public FleetCarrierMonitor ()
+        {
+            Task.Run( async () =>
+            {
+                EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
+                await RefreshFleetCarrierFromFrontierAPIAsync( true );
+            } ).ConfigureAwait( false );
+            CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
+        }
+
         private FleetCarrier FleetCarrier => EDDI.Instance.FleetCarrier;
 
         public string MonitorName () => "Fleet Carrier Monitor";
@@ -29,18 +39,14 @@ namespace EddiFleetCarrierMonitor
         public bool NeedsStart () => false;
 
         public void Start ()
-        {
-            CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
-            Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync( true ) ).ConfigureAwait( true );
-        }
+        { }
 
-        public void Stop ()
-        {
-            CompanionAppService.Instance.StateChanged -= OnCompanionAppServiceStateChanged;
-        }
+        public void Stop () => WriteConfiguration();
 
         public void Reload ()
-        { }
+        {
+            Logging.Info( $"Reloaded {MonitorName()}" );
+        }
 
         public UserControl ConfigurationTabItem () => null;
 
@@ -129,7 +135,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.bankBalance = @event.bankBalance;
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -143,7 +149,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.state = "normalOperation";
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -157,7 +163,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.state = "pendingDecommission";
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -172,7 +178,7 @@ namespace EddiFleetCarrierMonitor
             {
                 FleetCarrier.dockingAccess = @event.dockingAccess;
                 FleetCarrier.notoriousAccess = @event.allowNotorious;
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -190,7 +196,7 @@ namespace EddiFleetCarrierMonitor
                 FleetCarrier.bankPurchaseAllocationsBalance = @event.bankBalance
                                                               - @event.bankReservedBalance
                                                               - @event.bankAvailableBalance;
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -204,7 +210,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.fuel = @event.total;
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -218,7 +224,7 @@ namespace EddiFleetCarrierMonitor
                 FleetCarrier.Market.marketId = @event.carrierID;
                 FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
                 FleetCarrier.SetNextLocation( null, null, null );
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -233,7 +239,7 @@ namespace EddiFleetCarrierMonitor
             {
                 FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
                 FleetCarrier.SetNextLocation( null, null, null );
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -247,7 +253,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.SetNextLocation( @event.systemAddress, @event.systemname, @event.bodyId );
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -262,7 +268,7 @@ namespace EddiFleetCarrierMonitor
             {
                 FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyID );
                 FleetCarrier.SetNextLocation( null, null, null );
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -276,7 +282,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.name = @event.name;
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -301,7 +307,7 @@ namespace EddiFleetCarrierMonitor
                 FleetCarrier.bankPurchaseAllocationsBalance = @event.bankBalance -
                                                               @event.bankReservedBalance -
                                                               @event.bankAvailableBalance;
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -312,7 +318,7 @@ namespace EddiFleetCarrierMonitor
                 if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
                 {
                     FleetCarrier.fuelInCargo -= @event.amount;
-                    UpdateFleetCarrierConfig();
+                    WriteConfiguration();
                 }
             }
         }
@@ -324,7 +330,7 @@ namespace EddiFleetCarrierMonitor
                 if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
                 {
                     FleetCarrier.fuelInCargo += @event.amount;
-                    UpdateFleetCarrierConfig();
+                    WriteConfiguration();
                 }
             }
         }
@@ -335,7 +341,7 @@ namespace EddiFleetCarrierMonitor
             if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
             {
                 FleetCarrier.SetCurrentLocation(@event.systemAddress, @event.systemname, @event.bodyId);
-                UpdateFleetCarrierConfig();
+                WriteConfiguration();
             }
         }
 
@@ -358,7 +364,7 @@ namespace EddiFleetCarrierMonitor
         public void HandleProfile ( JObject profile )
         {
             // By the time the profile gets here the FleetCarrier onject is already updated and we just need to save it.
-            UpdateFleetCarrierConfig();
+            WriteConfiguration();
         }
 
         public void HandleStatus ( Status status )
@@ -394,20 +400,24 @@ namespace EddiFleetCarrierMonitor
                     {
                         FleetCarrier?.UpdateFrom( frontierApiCarrierJson, timestamp );
                     } );
+                    WriteConfiguration();
                 }
             }
         }
 
-        private void UpdateFleetCarrierConfig ()
+        private void WriteConfiguration ()
         {
-            var configuration = ConfigService.Instance.eddiConfiguration;
-            if ( configuration.fleetCarrier.timestamp != FleetCarrier.timestamp )
+            LockManager.GetLock( nameof( FleetCarrier ), () =>
             {
-                configuration.fleetCarrier = FleetCarrier;
-                ConfigService.Instance.eddiConfiguration = configuration;
-            }
+                var configuration = ConfigService.Instance.fleetCarrierConfiguration;
+                if ( configuration.fleetCarrier?.timestamp < FleetCarrier?.timestamp )
+                {
+                    configuration.fleetCarrier = FleetCarrier;
+                    ConfigService.Instance.fleetCarrierConfiguration = configuration;
+                }
 
-            EDDI.Instance.OnPropertyChanged( nameof(EDDI.Instance.FleetCarrier) );
+                EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.FleetCarrier ) );
+            } );
         }
     }
 }

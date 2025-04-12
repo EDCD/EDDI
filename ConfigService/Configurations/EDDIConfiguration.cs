@@ -1,5 +1,4 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -47,9 +46,6 @@ namespace EddiConfigService.Configurations
 
         [JsonProperty("MainWindowPosition")]
         public Rect MainWindowPosition { get; set; }
-
-        // Fleet Carrier
-        public FleetCarrier fleetCarrier { get; set; }
 
         // Default
         public EDDIConfiguration()

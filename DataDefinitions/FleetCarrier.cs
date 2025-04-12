@@ -345,13 +345,6 @@ namespace EddiDataDefinitions
             this.carrierID = carrierID;
         }
 
-        public FleetCarrier (JObject newJson, DateTime newTimeStamp)
-        {
-            json = newJson;
-            timestamp = newTimeStamp;
-            UpdateFrom(newJson, newTimeStamp);
-        }
-
         // Methods
 
         public void SetCurrentLocation ( ulong? systemAddress, string systemName, long? bodyID )

@@ -1,4 +1,5 @@
 ﻿using EddiConfigService.Configurations;
+using EddiDataDefinitions;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
@@ -63,6 +64,16 @@ namespace EddiConfigService
             set
             {
                 currentConfigs[nameof(eddpConfiguration)] = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public FleetCarrierConfiguration fleetCarrierConfiguration
+        {
+            get => currentConfigs[ nameof( fleetCarrierConfiguration ) ] as FleetCarrierConfiguration;
+            set
+            {
+                currentConfigs[ nameof( fleetCarrierConfiguration ) ] = value;
                 OnPropertyChanged();
             }
         }
@@ -163,6 +174,7 @@ namespace EddiConfigService
                 {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
                 {nameof(edsmConfiguration), FromFile<StarMapConfiguration>(directory)},
                 {nameof(eddpConfiguration), FromFile<EddpConfiguration>(directory)},
+                {nameof(fleetCarrierConfiguration), FromFile<FleetCarrierConfiguration>(directory)},
                 {nameof(galnetConfiguration), FromFile<GalnetConfiguration>(directory)},
                 {nameof(inaraConfiguration), FromFile<InaraConfiguration>(directory)},
                 {nameof(materialMonitorConfiguration), FromFile<MaterialMonitorConfiguration>(directory)},
@@ -180,60 +192,75 @@ namespace EddiConfigService
         private void ConvertLegacyConfigData(ConcurrentDictionary<string, Config> configs)
         {
             // Convert legacy data saved in the EDDI configuration to the Commander configuration
-            if ( configs[ nameof( commanderConfiguration ) ] is CommanderConfiguration commanderConfig && 
-                 configs[ nameof( eddiConfiguration ) ]._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData )
+            if ( configs[ nameof( commanderConfiguration ) ] is CommanderConfiguration commanderConfig )
             {
-                if ( eddiConfigAdditionalData.TryGetValue( "CommanderName", out var commanderName ) )
+                if (configs[ nameof( eddiConfiguration ) ]._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData)
                 {
-                    commanderConfig.commanderName = commanderName.ToString();
+                    if ( eddiConfigAdditionalData.TryGetValue( "CommanderName", out var commanderName ) )
+                    {
+                        commanderConfig.commanderName = commanderName.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "Gender", out var gender ) )
+                    {
+                        commanderConfig.gender = gender.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "homeSystemAddress", out var homeSystemAddress ) )
+                    {
+                        commanderConfig.homeSystemAddress = homeSystemAddress.ToObject<ulong?>();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "homeStationMarketID", out var homeStationMarketID ) )
+                    {
+                        commanderConfig.homeStationMarketID = homeStationMarketID.ToObject<long?>();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "PhoneticName", out var phoneticName ) )
+                    {
+                        commanderConfig.phoneticName = phoneticName.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "powerMerits", out var powerMerits ) )
+                    {
+                        commanderConfig.powerMerits = powerMerits.ToObject<int?>();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "squadronName", out var squadronName ) )
+                    {
+                        commanderConfig.squadronName = squadronName.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "squadronID", out var squadronID ) )
+                    {
+                        commanderConfig.squadronID = squadronID.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "squadronRank", out var squadronRank ) )
+                    {
+                        commanderConfig.squadronRank = squadronRank.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "squadronAllegiance", out var squadronAllegiance ) )
+                    {
+                        commanderConfig.squadronAllegiance = squadronAllegiance.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "squadronPower", out var squadronPower ) )
+                    {
+                        commanderConfig.squadronPower = squadronPower.ToString();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "squadronSystemAddress", out var squadronSystemAddress ) )
+                    {
+                        commanderConfig.squadronSystemAddress = squadronSystemAddress.ToObject<ulong?>();
+                    }
+                    if ( eddiConfigAdditionalData.TryGetValue( "squadronFaction", out var squadronFaction ) )
+                    {
+                        commanderConfig.squadronFaction = squadronFaction.ToString();
+                    }
                 }
-                if ( eddiConfigAdditionalData.TryGetValue( "Gender", out var gender ) )
+            }
+
+            // Convert legacy data saved in the EDDI configuration to the Fleet Carrier configuration
+            if ( configs[ nameof(fleetCarrierConfiguration) ] is FleetCarrierConfiguration fleetCarrierConfig )
+            {
+                if (configs[ nameof(eddiConfiguration) ]._additionalData is IDictionary<string, JToken>
+                    eddiConfigAdditionalData)
                 {
-                    commanderConfig.gender = gender.ToString();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "homeSystemAddress", out var homeSystemAddress ) )
-                {
-                    commanderConfig.homeSystemAddress = homeSystemAddress.ToObject<ulong?>();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "homeStationMarketID", out var homeStationMarketID ) )
-                {
-                    commanderConfig.homeStationMarketID = homeStationMarketID.ToObject<long?>();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "PhoneticName", out var phoneticName ) )
-                {
-                    commanderConfig.phoneticName = phoneticName.ToString();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "powerMerits", out var powerMerits ) )
-                {
-                    commanderConfig.powerMerits = powerMerits.ToObject<int?>();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "squadronName", out var squadronName ) )
-                {
-                    commanderConfig.squadronName = squadronName.ToString();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "squadronID", out var squadronID ) )
-                {
-                    commanderConfig.squadronID = squadronID.ToString();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "squadronRank", out var squadronRank ) )
-                {
-                    commanderConfig.squadronRank = squadronRank.ToString();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "squadronAllegiance", out var squadronAllegiance ) )
-                {
-                    commanderConfig.squadronAllegiance = squadronAllegiance.ToString();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "squadronPower", out var squadronPower ) )
-                {
-                    commanderConfig.squadronPower = squadronPower.ToString();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "squadronSystemAddress", out var squadronSystemAddress ) )
-                {
-                    commanderConfig.squadronSystemAddress = squadronSystemAddress.ToObject<ulong?>();
-                }
-                if ( eddiConfigAdditionalData.TryGetValue( "squadronFaction", out var squadronFaction ) )
-                {
-                    commanderConfig.squadronFaction = squadronFaction.ToString();
+                    if ( eddiConfigAdditionalData.TryGetValue( "fleetCarrier", out var fleetCarrier ) )
+                    {
+                        fleetCarrierConfig.fleetCarrier = fleetCarrier.ToObject<FleetCarrier>();
+                    }
                 }
             }
 

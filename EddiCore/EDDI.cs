@@ -443,7 +443,6 @@ namespace EddiCore
 
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Logging.Verbose = configuration.Debug;
-                FleetCarrier = configuration.fleetCarrier;
 
                 // Retrieve commander data
                 var cmdrConfiguration = ConfigService.Instance.commanderConfiguration;
