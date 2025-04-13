@@ -452,6 +452,15 @@
       "name": "Colonisation claim processed",
       "description": "Triggered when staking or releasing a claim to colonise a star system"
     },
+    "Colonisation construction depot": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Set up a simple function to create descriptions for each needed commodity }\r\n{set parseItem(need) to:\r\n    {if need.amount = 1: \r\n        {set tonnes to \" tonne \"}\r\n    |else: \r\n        {set tonnes to \" tonnes \"}\r\n    }\r\n    {set item to cat(need.amount, tonnes, \" of \", need.commodity)}\r\n    {return item}\r\n}\r\n\r\n{_ Generate a list of needed commodities }\r\n{set needs to []}\r\n{for need in event.needs:\r\n    {set needs to cat(needs, [parseItem(need)])}\r\n}\r\n\r\n{_ Speak }\r\n\r\n{if event.isCompleted:\r\n    Construction complete\r\n|elif event.isFailed:\r\n    Construction \r\n    {OneOf(\"has failed\", \"was unsuccessful\")}\r\n|else:\r\n    {Occasionally(2, \"Construction is\")} {Occasionally(2, \"now\")} {floor(event.progress)} percent complete\r\n}\r\n{Occasionally(2, F(\"Honorific\"))}.\r\n\r\n{_ Report on still needed commodities (if we haven't already done so within the past 120 seconds) }\r\n{if !event.isCompleted && !event.isFailed && SecondsSince(0) > (state.colonisation_construction_depot_last + 120):\r\n    {if len(needs) > 3:\r\n        The most needed commodities are {List(slice(needs, 0, 3))}.\r\n    |elif len(needs) = 1:\r\n        The only commodity still needed is {needs[0]}.\r\n    |else:\r\n        Still needed are {List(needs)}.\r\n    }\r\n}\r\n{SetState(\"colonisation_construction_depot_last\", SecondsSince(0))}",
+      "default": true,
+      "name": "Colonisation construction depot",
+      "description": "Triggered when progress is updated at the colonisation construction depot where you are docked"
+    },
     "Colonisation contribution": {
       "enabled": true,
       "priority": 3,

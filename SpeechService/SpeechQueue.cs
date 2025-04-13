@@ -133,6 +133,7 @@ namespace EddiSpeechService
             string[] eventTypes = new string[]
                 {
                     "Cargo scoop",
+                    "Colonisation construction depot",
                     "Docking denied",
                     "Docking requested",
                     "Glide",

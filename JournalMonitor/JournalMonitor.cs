@@ -5133,11 +5133,13 @@ namespace EddiJournalMonitor
                             case "ColonisationContribution": 
                                 handled = ColonisationContributionEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
+                            case "ColonisationConstructionDepot":
+                                handled = ColonisationConstructionDepotEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
 
                             // we silently ignore these, but forward them to the responders
                             case "CodexDiscovery":
                             case "CodexEntry":
-                            case "ColonisationConstructionDepot":
                             case "ModuleBuyAndStore":
                             case "RestockVehicle":
                             case "ScanOrganic":
