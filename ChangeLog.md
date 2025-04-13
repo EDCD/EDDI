@@ -40,6 +40,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Colonisation contribution` added, triggered when contributing commodities towards construction in a colonised star system.
     * `Jumped` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Location` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
+    * `Market information updated` revised to add `marketID`, `stationName`, and `systemName` properties.
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.
     * `Power rank` added, triggered when you are awarded a new rank by your pledged Powerplay power
     * `Ship fsd` revised to add boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO). The `fsd status` string and `hyperdrive_charging` variables are obsolete and not recommended for continued use.

@@ -1872,7 +1872,7 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new market data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, new HashSet<string> { "market" }) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.marketId, theEvent.station, theEvent.system, new HashSet<string> { "market" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -1922,7 +1922,7 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new outfitting data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, new HashSet<string> { "outfitting" }) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.marketId, theEvent.station, theEvent.system,new HashSet<string> { "outfitting" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
@@ -1971,7 +1971,7 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new shipyard data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, new HashSet<string> { "shipyard" }) { raw = theEvent.raw });
+                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.marketId, theEvent.station, theEvent.system, new HashSet<string> { "shipyard" }) { raw = theEvent.raw });
                     return true;
                 }
                 else
