@@ -3,13 +3,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace EddiSpanshService
 {
     public partial class SpanshService
     {
-        [SuppressMessage("ReSharper", "InconsistentNaming")]
         public enum QueryGroup
         {
             bodies, 
