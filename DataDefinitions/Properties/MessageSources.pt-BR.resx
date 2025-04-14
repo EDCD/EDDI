@@ -183,7 +183,9 @@
   <data name="PowersPirate" xml:space="preserve">
     <value>Agente de poder rival</value>
   </data>
-  
+  <data name="PowersSecurity" xml:space="preserve">
+    <value>Força de Segurança da Potência</value>
+  </data>
   <data name="Propagandist" xml:space="preserve">
     <value>Propagandista</value>
   </data>
