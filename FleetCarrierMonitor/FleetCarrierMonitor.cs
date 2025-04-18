@@ -398,7 +398,13 @@ namespace EddiFleetCarrierMonitor
                     // Update our Fleet Carrier object
                     LockManager.GetLock( nameof( FleetCarrier ), () =>
                     {
-                        FleetCarrier?.UpdateFrom( frontierApiCarrierJson, timestamp );
+                        FleetCarrier.UpdateFrom( frontierApiCarrierJson, timestamp );
+
+                        // Get location data
+                        var wp = EDDI.Instance.DataProvider
+                            .GetOrFetchSystemWaypoint( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
+                        FleetCarrier.currentStarSystemAddress = wp?.systemAddress;
+                        FleetCarrier.currentStarSystem = wp?.systemName ?? frontierApiCarrierJson[ "currentStarSystem" ]?.ToString();
                     } );
                     WriteConfiguration();
                 }
