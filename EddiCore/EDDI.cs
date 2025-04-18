@@ -923,7 +923,7 @@ namespace EddiCore
                     }
                     else if (@event is UndockedEvent undockedEvent)
                     {
-                        passEvent = eventUndocked();
+                        passEvent = eventUndocked(undockedEvent);
                     }
                     else if (@event is DockingRequestedEvent dockingRequestedEvent)
                     {
@@ -1385,11 +1385,11 @@ namespace EddiCore
                 }
                 
                 // Kick off the profile refresh if the companion API is available
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && carrierID != null)
                 {
                     // Refresh station data
                     if (@event.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                    Task.Run( async () => await conditionallyRefreshStationProfileAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await conditionallyRefreshStationProfileAsync( @event.systemname, @event.carrierID ?? 0 ) ).ConfigureAwait( false );
                 }
             }
             else
@@ -1637,14 +1637,12 @@ namespace EddiCore
                 if ( theEvent.docked )
                 {
                     // Update the station
-                    string stationName = theEvent.station;
-
-                    Logging.Debug( "Now at station " + stationName );
-                    Station station = CurrentStarSystem.stations.Find( s => s.name == stationName );
+                    Logging.Debug( "Now at station " + theEvent.station );
+                    var station = CurrentStarSystem.stations.Find( s => s.marketId == theEvent.marketId );
                     if ( station == null )
                     {
                         // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                        station = new Station { name = stationName, systemname = theEvent.systemname, systemAddress = theEvent.systemAddress };
+                        station = new Station { name = theEvent.station, marketId = theEvent.marketId, systemname = theEvent.systemname, systemAddress = theEvent.systemAddress };
                         CurrentStarSystem.AddOrUpdateStation( station );
                     }
 
@@ -1655,7 +1653,6 @@ namespace EddiCore
                     if ( !theEvent.taxi && !theEvent.multicrew ) { Vehicle = Constants.VEHICLE_SHIP; }
 
                     // Update station properties known from this event
-                    station.marketId = theEvent.marketId;
                     station.systemAddress = theEvent.systemAddress;
                     station.Faction = theEvent.controllingstationfaction;
                     station.Model = theEvent.stationModel;
@@ -1664,12 +1661,12 @@ namespace EddiCore
                     CurrentStation = station;
 
                     // Kick off the profile refresh if the companion API is available
-                    if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized )
+                    if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && theEvent.marketId != null )
                     {
                         // Refresh station data
                         if ( theEvent.fromLoad ) { return true; } // Don't fire this event when loading pre-existing logs
 
-                        Task.Run( async () => { await conditionallyRefreshStationProfileAsync(); } ).ConfigureAwait(false);
+                        Task.Run( async () => { await conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 ); } ).ConfigureAwait(false);
                     }
                 }
                 else if ( theEvent.latitude != null && theEvent.longitude != null )
@@ -1750,7 +1747,7 @@ namespace EddiCore
             CurrentStation = station;
 
             // Kick off the profile refresh if the companion API is available
-            if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized )
+            if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && @event.marketId != null )
             {
                 // Refresh station data
                 if ( @event.fromLoad )
@@ -1758,16 +1755,29 @@ namespace EddiCore
                     return false;
                 } // Don't fire this event when loading pre-existing logs or if we were already at this station
 
-                Task.Run( async () => { await conditionallyRefreshStationProfileAsync(); } ).ConfigureAwait( false );
+                Task.Run( async () => { await conditionallyRefreshStationProfileAsync( @event.system, @event.marketId ?? 0 ); } ).ConfigureAwait( false );
             }
 
             return true;
         }
 
-        private bool eventUndocked()
+        private bool eventUndocked(UndockedEvent @event)
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             CurrentStation = null;
+
+            // Kick off the profile refresh if the companion API is available
+            if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && @event.marketId != null && CurrentStarSystem != null )
+            {
+                // Refresh station data
+                if ( @event.fromLoad )
+                {
+                    return false;
+                } // Don't fire this event when loading pre-existing logs or if we were already at this station
+
+                Task.Run( async () => { await conditionallyRefreshStationProfileAsync( CurrentStarSystem.systemname, @event.marketId ?? 0 ); } ).ConfigureAwait( false );
+            }
+
             return true;
         }
 
@@ -1845,13 +1855,6 @@ namespace EddiCore
             // Don't proceed if loading pre-existing logs
             if (theEvent.fromLoad) { return false; }
 
-            // Don't proceed if the CompanionAppService is active and its data has not yet expired
-            if ( CompanionAppService.Instance.active &&
-                 DateTime.UtcNow < CompanionAppService.Instance.CombinedStationEndpoints.cachedStationExpires )
-            {
-                return false;
-            }
-
             // Don't proceed if the event data isn't what we expect
             if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
@@ -1872,7 +1875,13 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new market data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.marketId, theEvent.station, theEvent.system, new HashSet<string> { "market" }) { raw = theEvent.raw });
+                    // Don't proceed if the data was already recently updated (within the past 120 seconds)
+                    if ( ( CurrentStation.commoditiesupdatedat + 120 ) < Dates.fromDateTimeToSeconds( theEvent.timestamp ) )
+                    {
+                        enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
+                            theEvent.station, theEvent.system, new HashSet<string> { "market" } ) { raw = theEvent.raw } );
+                    }
+
                     return true;
                 }
                 else
@@ -1893,13 +1902,6 @@ namespace EddiCore
         {
             // Don't proceed when loading pre-existing logs
             if (theEvent.fromLoad) { return false; }
-
-            // Don't proceed if the CompanionAppService is active and its data has not yet expired
-            if ( CompanionAppService.Instance.active &&
-                 DateTime.UtcNow < CompanionAppService.Instance.CombinedStationEndpoints.cachedStationExpires )
-            {
-                return false;
-            }
 
             // Don't proceed if the event data isn't what we expect
             if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
@@ -1922,7 +1924,16 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new outfitting data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.marketId, theEvent.station, theEvent.system,new HashSet<string> { "outfitting" }) { raw = theEvent.raw });
+                    // Don't proceed if the data was already recently updated (within the past 120 seconds)
+                    if ( ( CurrentStation.outfittingupdatedat + 120 ) < Dates.fromDateTimeToSeconds( theEvent.timestamp ) )
+                    {
+                        enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
+                            theEvent.station, theEvent.system, new HashSet<string> { "outfitting" } )
+                        {
+                            raw = theEvent.raw
+                        } );
+                    }
+
                     return true;
                 }
                 else
@@ -1944,13 +1955,6 @@ namespace EddiCore
             // Don't proceed when loading pre-existing logs
             if (theEvent.fromLoad) { return false; }
 
-            // Don't proceed if the CompanionAppService is active and its data has not yet expired
-            if ( CompanionAppService.Instance.active &&
-                 DateTime.UtcNow < CompanionAppService.Instance.CombinedStationEndpoints.cachedStationExpires )
-            {
-                return false;
-            }
-
             // Don't proceed if the event data isn't what we expect
             if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
@@ -1971,7 +1975,16 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new shipyard data
-                    enqueueEvent(new MarketInformationUpdatedEvent(theEvent.timestamp, theEvent.marketId, theEvent.station, theEvent.system, new HashSet<string> { "shipyard" }) { raw = theEvent.raw });
+                    // Don't proceed if the data was already recently updated (within the past 120 seconds)
+                    if ( ( CurrentStation.shipyardupdatedat + 120 ) < Dates.fromDateTimeToSeconds( theEvent.timestamp ) )
+                    {
+                        enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
+                            theEvent.station, theEvent.system, new HashSet<string> { "shipyard" } )
+                        {
+                            raw = theEvent.raw
+                        } );
+                    }
+
                     return true;
                 }
                 else
@@ -2475,7 +2488,7 @@ namespace EddiCore
                     {
                         var profile = FrontierApiProfile.FromJson(profileJson);
 
-                        bool updatedCurrentStarSystem = false;
+                        var updatedCurrentStarSystem = false;
 
                         if (CurrentStarSystem == null)
                         {
@@ -2496,7 +2509,7 @@ namespace EddiCore
                         if (refreshStation && CurrentStation != null && Environment == Constants.ENVIRONMENT_DOCKED)
                         {
                             // Refresh station data
-                            await conditionallyRefreshStationProfileAsync();
+                            await conditionallyRefreshStationProfileAsync( profile.currentStarSystem, profile.LastStationMarketID ?? 0 );
                         }
 
                         if (updatedCurrentStarSystem)
@@ -2505,7 +2518,7 @@ namespace EddiCore
                             DataProvider.SaveStarSystem(CurrentStarSystem);
                         }
 
-                        foreach (IEddiMonitor monitor in activeMonitors)
+                        foreach (var monitor in activeMonitors)
                         {
                             try
                             {
@@ -2718,7 +2731,7 @@ namespace EddiCore
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
         /// </summary>
-        public async Task conditionallyRefreshStationProfileAsync(bool forceUpdate = false)
+        public async Task conditionallyRefreshStationProfileAsync ( string expectedSystemName, long expectedLastMarketID, bool forceUpdate = false, JObject profileJson = null )
         {
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
@@ -2731,55 +2744,26 @@ namespace EddiCore
                         return;
                     }
 
-                    // Make sure that our endpoints have not been recently updated (within the last 300 seconds)
-                    if ( CurrentStation != null )
-                    {
-                        var lastCommodityUpdateSeconds = Convert.ToInt64( CurrentStation.commoditiesupdatedat ?? 0 );
-                        var lastOutfittingUpdateSeconds = Convert.ToInt64( CurrentStation.outfittingupdatedat ?? 0 );
-                        var lastShipyardUpdateSeconds = Convert.ToInt64( CurrentStation.shipyardupdatedat ?? 0 );
-                        var mostRecentMarketUpdateSeconds = Math.Max( Math.Max( lastCommodityUpdateSeconds, lastOutfittingUpdateSeconds ), lastShipyardUpdateSeconds );
-                        if ( !forceUpdate && ( Dates.fromDateTimeToSeconds( DateTime.UtcNow ) - mostRecentMarketUpdateSeconds ) < 300 )
-                        {
-                            Logging.Debug( "Skipping conditional station profile fetch - data was already very recently updated" );
-                            return;
-                        }
-                    }
-
                     // We do need to fetch an updated station profile; do so
                     Logging.Debug("Starting conditional station profile fetch");
                     var commanderName = ConfigService.Instance.commanderConfiguration.commanderName;
                     var result = await CompanionAppService.Instance.CombinedStationEndpoints.GetCombinedStationAsync(
-                        commanderName, CurrentStarSystem?.systemname, CurrentStation?.name);
+                        commanderName, expectedSystemName, expectedLastMarketID, forceUpdate, profileJson);
                     if (result != null)
                     {
-                        var profile = FrontierApiProfile.FromJson(result["profileJson"]?.ToObject<JObject>());
                         var profileStation = FrontierApiStation.FromJson(result["marketJson"]?.ToObject<JObject>(), result["shipyardJson"]?.ToObject<JObject>());
 
-                        // Post an update event\
-                        var updates = new HashSet<string>();
-                        if (profileStation.eddnCommodityMarketQuotes != null)
-                        {
-                            updates.Add("market");
-                        }
-                        if (profileStation.outfitting != null)
-                        {
-                            updates.Add("outfitting");
-                        }
-                        if (profileStation.ships != null)
-                        {
-                            updates.Add("shipyard");
-                        }
-                        var @event = new MarketInformationUpdatedEvent( profile.timestamp, updates);
-                        enqueueEvent(@event);
-
                         // We have the required station information
-                        Logging.Debug("Current station matches profile information; updating info");
-                        var station = CurrentStarSystem?.stations.Find(s => s.name == profileStation.name);
-                        profileStation.UpdateStation( profileStation.commoditiesupdatedat, station);
+                        var station = CurrentStarSystem?.stations.Find(s => s.marketId == profileStation.marketId);
+                        if ( station != null )
+                        {
+                            Logging.Debug( "Current station matches profile information; updating info" );
+                            profileStation.UpdateStation( profileStation.commoditiesupdatedat, station );
 
-                        // Update the current station information in our backend DB
-                        Logging.Debug("Star system information updated from Frontier API server; updating local copy");
-                        DataProvider.SaveStarSystem(CurrentStarSystem);
+                            // Update the current station information in our backend DB
+                            Logging.Debug( "Star system information updated from Frontier API server; updating local copy" );
+                            DataProvider.SaveStarSystem( CurrentStarSystem );
+                        }
                     }
                 }
                 catch (Exception ex)
