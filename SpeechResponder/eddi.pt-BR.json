@@ -451,6 +451,15 @@
 			"description": "Triggered when your ship's cockpit is broken",
 			"default": true
 		},
+		"Colonisation beacon deployed": {
+			"enabled": true,
+			"priority": 3,
+			"responder": true,
+			"script": null,
+			"default": true,
+			"name": "Colonisation beacon deployed",
+			"description": "Triggered when you deploy a colonisation beacon"
+		},
 		"Colonisation claim processed": {
 			"enabled": true,
 			"priority": 3,

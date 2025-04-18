@@ -36,6 +36,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Events
     * `Carrier jumped` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Carrier location` added, triggered at startup and shortly before your fleet carrier arrives at a new destination.
+    * `Colonisation beacon deployed` added, triggered when you deploy a colonisation beacon.
     * `Colonisation claim processed` added, triggered when staking or releasing a claim to colonise a star system.
     * `Colonisation construction depot` added, triggered when progress is updated at the colonisation construction depot where you are docked.
     * `Colonisation contribution` added, triggered when contributing commodities towards construction in a colonised star system.
