@@ -194,6 +194,7 @@ Please close the other instance and try again.</value>
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Your connection to the Frontier API is operational, Commander {0}.</value>
+    <comment>`{0}` in this string is replaced by the commander's name.</comment>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Please authenticate EDDI's connection to the Frontier API.</value>
