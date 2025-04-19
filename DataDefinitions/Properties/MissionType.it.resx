@@ -329,5 +329,8 @@
     <value>Sabotaggio</value>
     <comment>e.g. on-foot settlement sabotage mission</comment>
   </data>
-  
+  <data name="Colonisation" xml:space="preserve">
+    <value>Colonizzazione</value>
+    <comment>Colonisation mission type (e.g. "Construct primary port")</comment>
+  </data>
 </root>
