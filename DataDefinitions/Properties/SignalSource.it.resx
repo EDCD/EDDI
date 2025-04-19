@@ -449,5 +449,8 @@
     <value>Nave di colonizzazione del Sistema</value>
     <comment>System Colonisation Ship</comment>
   </data>
-  
+  <data name="EXT_PANEL_ColonisationBeacon_DeploymentSite" xml:space="preserve">
+    <value>Sito di dislocamento del radiofaro</value>
+    <comment>Colonization beacon deployment site signal source</comment>
+  </data>
 </root>
