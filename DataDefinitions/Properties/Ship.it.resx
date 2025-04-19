@@ -294,5 +294,8 @@ If transporting via taxi or dropship</comment>
     <value>la sua</value>
     <comment>e.g. *your* Mandalay</comment>
   </data>
-  
+  <data name="yourCorsair" xml:space="preserve">
+    <value>la sua</value>
+    <comment>e.g. *your* Corsair</comment>
+  </data>
 </root>
