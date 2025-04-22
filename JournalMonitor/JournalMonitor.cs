@@ -2020,9 +2020,10 @@ namespace EddiJournalMonitor
                                 break;
                             case "ReceiveText":
                                 {
-                                    string from = JsonParsing.getString(data, "From");
-                                    string channel = JsonParsing.getString(data, "Channel");
-                                    string message = JsonParsing.getString(data, "Message");
+                                    var from = JsonParsing.getString(data, "From");
+                                    var localizedFrom = JsonParsing.getString(data, "From_Localised");
+                                    var channel = JsonParsing.getString(data, "Channel");
+                                    var message = JsonParsing.getString(data, "Message");
                                     MessageChannel messageChannel;
                                     MessageSource source;
 
@@ -2063,7 +2064,7 @@ namespace EddiJournalMonitor
                                             source = MessageSource.Commander;
                                         }
                                         messageChannel = MessageChannel.FromEDName(channel ?? "multicrew");
-                                        events.Add(new MessageReceivedEvent(timestamp, from, source, true, messageChannel, message) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, true, messageChannel, message) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
@@ -2076,13 +2077,12 @@ namespace EddiJournalMonitor
                                         else if (from.Contains("ShipName_") || from.Contains("_Scenario_"))
                                         {
                                             source = MessageSource.FromMessage(from, message);
-                                            from = JsonParsing.getString(data, "From");
-                                            if (!string.IsNullOrEmpty(JsonParsing.getString(data, "From_Localised")))
+                                            if (!string.IsNullOrEmpty(localizedFrom))
                                             {
                                                 // This is an NPC with a symbolic name
                                                 from = NpcAuthorityShip.EDNameExists(from) 
                                                     ? NpcAuthorityShip.FromEDName(from)?.localizedName 
-                                                    : JsonParsing.getString(data, "From_Localised");
+                                                    : localizedFrom;
                                             }
                                         }
                                         else if (from.StartsWith("$Name_AX_Military; "))
@@ -2099,7 +2099,7 @@ namespace EddiJournalMonitor
                                             source = MessageSource.NPC;
                                         }
                                         messageChannel = MessageChannel.FromEDName(channel);
-                                        events.Add(new MessageReceivedEvent(timestamp, from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised"), EDDI.Instance.CurrentStarSystem, EDDI.Instance.CurrentStellarBody, EDDI.Instance.CurrentStation) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised"), EDDI.Instance.CurrentStarSystem, EDDI.Instance.CurrentStellarBody, EDDI.Instance.CurrentStation) { raw = line, fromLoad = fromLogLoad });
 
                                         // See if we also want to spawn a specific event as well?
                                         if (message == "$STATION_NoFireZone_entered;" && EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
@@ -2117,21 +2117,20 @@ namespace EddiJournalMonitor
                                         else if (message.Contains("_StartInterdiction") || message.Contains("_Hitman_Interdiction"))
                                         {
                                             // Find out who is doing the interdicting
-                                            MessageSource by = MessageSource.FromMessage(from, message);
-
-                                            events.Add(new NPCInterdictionCommencedEvent(timestamp, by) { raw = line, fromLoad = fromLogLoad });
+                                            source = MessageSource.FromMessage(from, message);
+                                            events.Add(new NPCInterdictionCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
                                         }
                                         else if (message.Contains("_Attack") || message.Contains("_OnAttackStart") || message.Contains("AttackRun") || message.Contains("OnDeclarePiracyAttack"))
                                         {
                                             // Find out who is doing the attacking
-                                            MessageSource by = MessageSource.FromMessage(from, message);
-                                            events.Add(new NPCAttackCommencedEvent(timestamp, by) { raw = line, fromLoad = fromLogLoad });
+                                            source = MessageSource.FromMessage(from, message);
+                                            events.Add(new NPCAttackCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
                                         }
                                         else if (message.Contains("_OnStartScanCargo"))
                                         {
                                             // Find out who is doing the scanning
-                                            MessageSource by = MessageSource.FromMessage(from, message);
-                                            events.Add(new NPCCargoScanCommencedEvent(timestamp, by) { raw = line, fromLoad = fromLogLoad });
+                                            source = MessageSource.FromMessage(from, message);
+                                            events.Add(new NPCCargoScanCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
                                 }

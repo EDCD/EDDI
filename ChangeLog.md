@@ -43,6 +43,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Jumped` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Location` revised to update `ContestingPowers` and `contestingpowers` and add `NearbyPowers`, `nearbypowers`, `powerAcquisitionProgress`, `powerControlProgress`, `powerReinforcementControlPoints`, and `powerUnderminingControlPoints` properties. 
     * `Market information updated` revised to add `marketID`, `stationName`, and `systemName` properties.
+    * `NPC attack commenced` updated to add a `from` property with the name of the npc source.
+    * `NPC interdiction commenced` updated to add a `from` property with the name of the npc source.
+    * `NPC cargo scan commenced` updated to add a `from` property with the name of the npc source.
     * `Power merits` added, triggered when you are awarded merits by your pledged Powerplay power.
     * `Power rank` added, triggered when you are awarded a new rank by your pledged Powerplay power
     * `Ship fsd` revised to add boolean value with boolean variables for the current and prior state of various fsd properties including supercruise assist (SCA) and supercruise overdrive (SCO). The `fsd status` string and `hyperdrive_charging` variables are obsolete and not recommended for continued use.
