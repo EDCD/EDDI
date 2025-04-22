@@ -3715,7 +3715,7 @@ namespace EddiJournalMonitor
                                     {
                                         if (itemsVal is List<object> itemEDNames)
                                         {
-                                            events.Add(new ShipRepairedEvent(timestamp, itemEDNames.ConvertAll(o => o.ToString()).ToList(), price) { raw = line, fromLoad = fromLogLoad });
+                                            events.Add(new ShipRepairedEvent(timestamp, itemEDNames.ConvertAll(o => o.ToString()), price) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
                                     else

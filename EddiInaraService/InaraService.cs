@@ -182,7 +182,6 @@ namespace EddiInaraService
             else
             {
                 ReEnqueueAPIEvents( events );
-                return inaraResponses;
             }
 
             return inaraResponses;
