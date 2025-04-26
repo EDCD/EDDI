@@ -76,7 +76,7 @@ namespace EddiSpeechService
             Ship ship = speech.ship;
             speech.echoDelay = echoDelayForShip(ship);
             speech.chorusLevel = chorusLevelForShip(ship);
-            speech.reverbLevel = reverbLevelForShip(ship);
+            speech.reverbLevel = reverbLevelForShip();
             speech.distortionLevel = distortionLevelForShip(ship);
             speech.compressionLevel = 0;
             return speech;
@@ -110,7 +110,7 @@ namespace EddiSpeechService
             return (int)(60 * (Math.Max(fxLevel(distortionLevelForShip(ship)), (decimal)Configuration.EffectsLevel) / 100M));
         }
 
-        private int reverbLevelForShip(Ship ship)
+        private int reverbLevelForShip()
         {
             // This is not affected by ship parameters
             return (int)(80 * ((decimal)Configuration.EffectsLevel) / 100M);

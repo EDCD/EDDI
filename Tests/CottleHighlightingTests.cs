@@ -35,7 +35,7 @@ namespace Tests
         [TestMethod]
         public void TestSetUnsupportedColorKey()
         {
-            Assert.ThrowsException<KeyNotFoundException>(
+            Assert.ThrowsExactly<KeyNotFoundException>(
                 () => cottleHighlighting.SetBackgroundColor("NotInTheGrammar", Colors.BlanchedAlmond)
                 );
         }
