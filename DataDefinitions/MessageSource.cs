@@ -117,7 +117,8 @@
             {
                 by = PassengerLiner;
             }
-            else if (message.StartsWith("$Pirate"))
+            else if (message.StartsWith("$Pirate") && 
+                     !from.StartsWith( "$ShipName_PowersSecurity" ) )
             {
                 by = Pirate;
             }
@@ -135,15 +136,16 @@
             }
             else if (message.StartsWith("$PowersAssassin"))
             {
-                by = PowersAssassin;  // Power play specific
+                by = PowersAssassin;  // Power play specific, i.e. "Rival power's agent"
             }
-            else if (message.StartsWith("$PowersPirate"))
+            else if (message.StartsWith("$PowersPirate") || 
+                     (message.StartsWith( "$Pirate" ) && from.StartsWith( "$ShipName_PowersSecurity" ) ) )
             {
-                by = PowersPirate; // Power play specific
+                by = PowersPirate; // Power play specific, i.e. "Rival power's agent"
             }
             else if (message.StartsWith("$PowersSecurity"))
             {
-                by = PowersSecurity; // Power play specific
+                by = PowersSecurity; // Power play specific, i.e. Power Security Force". May be friendly, hostile, or ambiguous. 
             }
             else if (message.StartsWith("$Propagandist"))
             {

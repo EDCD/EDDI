@@ -64,6 +64,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Glide` updated to revise context outputs.
       * `Jumped` updated to revise context outputs.
       * `Location` updated to revise context outputs.
+      * `Message received` updated to add a new message source "Power Security Force" (to distinguish from "Rival Power's Agent" in cases where the message sender isn't necessarily from a rival power)
       * `Next jump` updated to revise context outputs.
       * `Powerplay report` updated to revise context inputs, add additional variety and depth, and fix a missed powerplay name pronunciation correction. (#2717)
       * `Ship fsd` updated to remove a debug override which should have been removed prior to release and to reference newly minted boolean variables.

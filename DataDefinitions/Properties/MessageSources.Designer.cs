@@ -277,7 +277,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rival power&apos;s agent.
+        ///   Looks up a localized string similar to Power Security Force.
         /// </summary>
         public static string PowersSecurity {
             get {
