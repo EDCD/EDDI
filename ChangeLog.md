@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.3
+  * Core
+    * Fixed a bug preventing version 4.1.2 from running for some users. (#2726)
+    
 ## 4.1.2
   * Core
     * Fixed a bug that could cause multiple instances of monitor and responder threads to run simultaneously. (#2713)

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "4.1.2"
+#define MyAppVersion "4.1.3"
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
@@ -85,6 +85,7 @@ Type: files; Name: "{app}\*.pdb"
 Type: files; Name: "{userappdata}\EDDI\credentials.json"
 Type: files; Name: "{userappdata}\EDDI\elite.json"
 Type: files; Name: "{userappdata}\EDDI\galnet"
+Type: filesandordirs; Name: "{localappdata}\Eddi"; Check: ShouldDeleteLocalConfig
 
 ; Remove sensitive data on uninstall
 [UninstallDelete]
@@ -116,3 +117,10 @@ Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "UR
 Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
+
+[Code]
+function ShouldDeleteLocalConfig: Boolean;
+begin
+  ; This section is used to remove old local config settings in version 4.1.3 only.
+  Result := ExpandConstant('{#MyAppVersion}') = '4.1.3';
+end;
