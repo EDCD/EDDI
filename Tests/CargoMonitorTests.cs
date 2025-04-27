@@ -81,7 +81,7 @@ namespace Tests
             Assert.AreEqual(11912, cargo.price);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestCargoEventsScenario()
         {
             // 'Startup' CargoEvent
