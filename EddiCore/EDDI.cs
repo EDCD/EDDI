@@ -166,6 +166,8 @@ namespace EddiCore
 
         public DataProviderService DataProvider { get; internal set; } = new DataProviderService();
 
+        public HotkeyManager HotkeyManager { get; set; } = new HotkeyManager();
+
         public System.Version vaVersion { get; set; }
 
         // Information obtained from the configuration
