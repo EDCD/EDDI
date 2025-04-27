@@ -37,6 +37,17 @@ namespace EddiVoiceAttackResponder
         }
 
         internal static dynamic VaProxy;
+        internal static System.Version VaVersion
+        {
+            get
+            {
+                lock ( vaProxyLock )
+                {
+                    return VaProxy?.VAVersion as System.Version;
+                }
+            }
+        }
+
         internal static readonly object vaProxyLock = new object();
 
         // ReSharper disable once MemberCanBePrivate.Global - VA Interface Member
@@ -210,20 +221,19 @@ namespace EddiVoiceAttackResponder
             VoiceAttackInvokationHandler.HandleInvokedCommand(vaProxy.Context);
         }
 
-        #region Command Interactions
-
-        // If running VoiceAttack version 1.7.4 or later then we should use the more modern API endpoints
-        private static bool useLegacyVACommandAPI
+        private static bool IsVaVersionSameOrNewer ( System.Version minVersion )
         {
-            get
+            lock ( vaProxyLock )
             {
-                lock ( vaProxyLock )
-                {
-                    return ( VaProxy.VAVersion as System.Version )?.CompareTo( new System.Version( 1, 7, 4 ) ) <= 0;
-                }
+                return ( VaVersion )?.CompareTo( minVersion ) >= 0;
             }
         }
 
+        #region Command Interactions
+
+        // If running VoiceAttack version 1.7.4 or later then we should use the more modern command API endpoints
+        private static readonly System.Version commandApiVaVersion = new System.Version( 1, 7, 4 );
+        
         public static async Task WaitForCommandExecutionAsync ( string commandName )
         {
             var isCommandExecuting = true;
@@ -232,9 +242,9 @@ namespace EddiVoiceAttackResponder
                 await Task.Delay( 25 );
                 lock ( vaProxyLock )
                 {
-                    isCommandExecuting = useLegacyVACommandAPI
-                        ? VaProxy.CommandActive( commandName )
-                        : VaProxy.Command.Active( commandName );
+                    isCommandExecuting = IsVaVersionSameOrNewer( commandApiVaVersion )
+                        ? VaProxy.Command.Active( commandName )
+                        : VaProxy.CommandActive( commandName );
                 }
             }
         }
@@ -243,9 +253,9 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                return useLegacyVACommandAPI
-                    ? VaProxy.CommandExists( commandName )
-                    : VaProxy.Command.Exists( commandName );
+                return IsVaVersionSameOrNewer( commandApiVaVersion )
+                    ? VaProxy.Command.Exists( commandName )
+                    : VaProxy.CommandExists( commandName );
             }
         }
 
@@ -253,13 +263,14 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                if ( useLegacyVACommandAPI )
+                if ( IsVaVersionSameOrNewer( commandApiVaVersion ) )
                 {
-                    VaProxy.ExecuteCommand( commandName );
+                    VaProxy.Command.Execute( commandName );
                 }
                 else
                 {
-                    VaProxy.Command.Execute( commandName );
+                    // Use the legacy endpoint
+                    VaProxy.ExecuteCommand( commandName );
                 }
             }
         }
@@ -280,11 +291,20 @@ namespace EddiVoiceAttackResponder
 
         #region Variable Interactions
 
+        // If running VoiceAttack version 1.10.4 or later then we should use the more modern variable API endpoints
+        private static readonly System.Version variableApiVaVersion = new System.Version( 1, 10, 4 );
+
         public static bool? GetBoolean ( string key, bool retrieveFromProfile = false )
         {
             lock ( vaProxyLock )
             {
-                return VaProxy.GetBoolean( key, retrieveFromProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    return VaProxy.GetBoolean( key, retrieveFromProfile );
+                }
+
+                // Use the legacy endpoint
+                return VaProxy.GetBoolean( key );
             }
         }
 
@@ -292,7 +312,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                return VaProxy.GetDate( key, retrieveFromProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    return VaProxy.GetDate( key, retrieveFromProfile );
+                }
+
+                // Use the legacy endpoint
+                return VaProxy.GetDate( key );
             }
         }
 
@@ -300,7 +326,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                return VaProxy.GetDecimal( key, retrieveFromProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    return VaProxy.GetDecimal( key, retrieveFromProfile );
+                }
+
+                // Use the legacy endpoint
+                return VaProxy.GetDecimal( key );
             }
         }
 
@@ -308,7 +340,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                return VaProxy.GetInt( key, retrieveFromProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    return VaProxy.GetInt( key, retrieveFromProfile );
+                }
+
+                // Use the legacy endpoint
+                return VaProxy.GetInt( key );
             }
         }
 
@@ -316,7 +354,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                return VaProxy.GetText( key, retrieveFromProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    return VaProxy.GetText( key, retrieveFromProfile );
+                }
+
+                // Use the legacy endpoint
+                return VaProxy.GetText( key );
             }
         }
 
@@ -324,7 +368,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                VaProxy.SetBoolean( key, value, saveToProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    VaProxy.SetBoolean( key, value, saveToProfile );
+                }
+
+                // Use the legacy endpoint
+                VaProxy.SetBoolean( key, value );
             }
         }
 
@@ -332,7 +382,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                VaProxy.SetDate( key, value, saveToProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    VaProxy.SetDate( key, value, saveToProfile );
+                }
+
+                // Use the legacy endpoint
+                VaProxy.SetDate( key, value );
             }
         }
 
@@ -340,7 +396,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                VaProxy.SetDecimal( key, value, saveToProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    VaProxy.SetDecimal( key, value, saveToProfile );
+                }
+
+                // Use the legacy endpoint
+                VaProxy.SetDecimal( key, value );
             }
         }
 
@@ -348,7 +410,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                VaProxy.SetInt( key, value, saveToProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    VaProxy.SetInt( key, value, saveToProfile );
+                }
+
+                // Use the legacy endpoint
+                VaProxy.SetInt( key, value );
             }
         }
         
@@ -358,10 +426,12 @@ namespace EddiVoiceAttackResponder
             {
                 // SmallInt values are deprecated in VoiceAttack version 2 and later. 
                 // We should only use them if the VA version is less than 2.0.0
-                if ( (VaProxy.VAVersion as System.Version)?.CompareTo( new System.Version( 2, 0, 0 ) ) >= 0 )
+                if ( IsVaVersionSameOrNewer( new System.Version( 2, 0, 0 ) ) )
                 {
                     return;
                 }
+
+                // Use the legacy endpoint
                 VaProxy.SetSmallInt( key, value );
             }
         }
@@ -370,7 +440,13 @@ namespace EddiVoiceAttackResponder
         {
             lock ( vaProxyLock )
             {
-                VaProxy.SetText( key, value, saveToProfile );
+                if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
+                {
+                    VaProxy.SetText( key, value, saveToProfile );
+                }
+
+                // Use the legacy endpoint
+                VaProxy.SetText( key, value );
             }
         }
 
