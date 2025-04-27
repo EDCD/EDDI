@@ -377,6 +377,11 @@ namespace EddiDataDefinitions
             _ = new Blueprint( 128740124, "WakeScannerFastScan3", "SensorFastScan", 3 );
             _ = new Blueprint( 128740125, "WakeScannerFastScan4", "SensorFastScan", 4 );
             _ = new Blueprint( 128740126, "WakeScannerFastScan5", "SensorFastScan", 5 );
+            _ = new Blueprint( 129034962, "SensorFastScan", "SensorFastScan", 1 );
+            _ = new Blueprint( 129034963, "SensorFastScan", "SensorFastScan", 2 );
+            _ = new Blueprint( 129034964, "SensorFastScan", "SensorFastScan", 3 );
+            _ = new Blueprint( 129034965, "SensorFastScan", "SensorFastScan", 4 );
+            _ = new Blueprint( 129034966, "SensorFastScan", "SensorFastScan", 5 );
             _ = new Blueprint( 128740669, "SensorLightWeight1", "SensorLightWeight", 1 );
             _ = new Blueprint( 128740670, "SensorLightWeight2", "SensorLightWeight", 2 );
             _ = new Blueprint( 128740671, "SensorLightWeight3", "SensorLightWeight", 3 );
