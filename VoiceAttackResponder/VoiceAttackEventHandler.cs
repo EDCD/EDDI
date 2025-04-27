@@ -190,7 +190,18 @@ namespace EddiVoiceAttackResponder
                 } ),
                 Task.Delay( 500 )
             );
-            foreach ( var q in taskQueues.Values ) { q.CompleteAdding(); q.Dispose(); }
+            foreach ( var q in taskQueues.Values )
+            {
+                try
+                {
+                    q.CompleteAdding();
+                    q.Dispose();
+                }
+                catch ( Exception )
+                {
+                    // We are stopping event handling. Nothing to do here.
+                }
+            }
         }
     }
 
