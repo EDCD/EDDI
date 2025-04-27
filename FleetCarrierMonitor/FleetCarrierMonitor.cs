@@ -390,7 +390,7 @@ namespace EddiFleetCarrierMonitor
         {
             try
             {
-                if ( CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
+                if ( FleetCarrier != null && CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
                 {
                     var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh);
                     if ( frontierApiCarrierJson != null )
