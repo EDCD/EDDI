@@ -65,21 +65,21 @@ namespace Utilities
                             {
                                 WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
                             }
-                            HandleTelemetry( errorlevel, message, timestamp, false, preppedData );
+                            HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, false, preppedData );
                             break;
                         }
                         case ErrorLevel.Info:
                         case ErrorLevel.Warning:
                         {
                             WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
-                            HandleTelemetry( errorlevel, message, timestamp, false, preppedData );
+                            HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, false, preppedData );
                             break;
                         }
                         case ErrorLevel.Error:
                         case ErrorLevel.Critical:
                         {
                             WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
-                            HandleTelemetry( errorlevel, message, timestamp, true, preppedData );
+                            HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, true, preppedData );
                             break;
                         }
                     }
@@ -172,8 +172,7 @@ namespace Utilities
             }
         }
 
-        private static void HandleTelemetry ( ErrorLevel errorlevel, string message, string timestamp, bool reportTelemetry,
-            Dictionary<string, object> preppedData )
+        private static void HandleTelemetry ( ErrorLevel errorlevel, int sourceThreadID, string message, string timestamp, bool reportTelemetry, Dictionary<string, object> preppedData )
         {
             if ( TelemetryEnabled )
             {
@@ -183,7 +182,7 @@ namespace Utilities
                     {
                         if ( !string.IsNullOrEmpty( anonymousTelemetryID ) )
                         {
-                            WriteToLog( timestamp, null, errorlevel, $"Reporting error to telemetry service, anonymous ID {anonymousTelemetryID}: {message}" );
+                            WriteToLog( timestamp, sourceThreadID, errorlevel, $"Reporting error to telemetry service, anonymous ID {anonymousTelemetryID}: {message}" );
                         }
                         ReportTelemetryEvent( errorlevel, message, preppedData );
                     }
