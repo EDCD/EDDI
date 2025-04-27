@@ -611,46 +611,68 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                Logging.Error( "Failed to set real-time status information" );
+                Logging.Warn( "Failed to set real-time status information" );
             }
         }
 
         private static bool TrySetFromMetaVariables ( string prefix, MetaVariables variables )
         {
-            var va_vars = Convert( variables.Results, prefix );
+            List<VoiceAttackVariable> va_vars = null;
             try
+            {
+                va_vars = Convert( variables.Results, prefix );
+            }
+            catch ( Exception e )
+            {
+                var exDict = new Dictionary<string, object>
+                {
+                    { "MetaVariables", variables },
+                    { "Exception", e }
+                };
+                Logging.Error( "Failed to convert MetaVariables to VoiceAttack variables", exDict );
+            }
+
+            if ( va_vars != null )
             {
                 foreach ( var variable in va_vars )
                 {
-                    if ( variable.variableType == typeof(string) )
+                    try
                     {
-                        VoiceAttackPlugin.SetText( variable.key, variable.value as string );
+                        if ( variable.variableType == typeof(string) )
+                        {
+                            VoiceAttackPlugin.SetText( variable.key, variable.value as string );
+                        }
+                        else if ( variable.variableType == typeof(int) )
+                        {
+                            VoiceAttackPlugin.SetInt( variable.key, variable.value as int? );
+                        }
+                        else if ( variable.variableType == typeof(bool) )
+                        {
+                            VoiceAttackPlugin.SetBoolean( variable.key, variable.value as bool? );
+                        }
+                        else if ( variable.variableType == typeof(decimal) )
+                        {
+                            VoiceAttackPlugin.SetDecimal( variable.key, variable.value as decimal? );
+                        }
+                        else if ( variable.variableType == typeof(DateTime) )
+                        {
+                            VoiceAttackPlugin.SetDate( variable.key, variable.value as DateTime? );
+                        }
                     }
-                    else if ( variable.variableType == typeof(int) )
+                    catch ( Exception ex )
                     {
-                        VoiceAttackPlugin.SetInt( variable.key, variable.value as int? );
-                    }
-                    else if ( variable.variableType == typeof(bool) )
-                    {
-                        VoiceAttackPlugin.SetBoolean( variable.key, variable.value as bool? );
-                    }
-                    else if ( variable.variableType == typeof(decimal) )
-                    {
-                        VoiceAttackPlugin.SetDecimal( variable.key, variable.value as decimal? );
-                    }
-                    else if ( variable.variableType == typeof(DateTime) )
-                    {
-                        VoiceAttackPlugin.SetDate( variable.key, variable.value as DateTime? );
+                        var exDict = new Dictionary<string, object>
+                        {
+                            { "VoiceAttackVariable", variable }, 
+                            { "Exception", ex }
+                        };
+                        Logging.Error( ex.Message, exDict );
+                        return false;
                     }
                 }
+            }
 
-                return true;
-            }
-            catch ( Exception ex )
-            {
-                Logging.Warn( ex.Message, ex );
-                return false;
-            }
+            return true;
         }
 
         protected internal static void setCAPIState(bool caPIactive)
