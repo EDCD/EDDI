@@ -388,26 +388,33 @@ namespace EddiFleetCarrierMonitor
         /// <summary>Obtain fleet carrier information from the companion API and use it to refresh our own data</summary>
         private async Task RefreshFleetCarrierFromFrontierAPIAsync ( bool forceRefresh = false )
         {
-            if ( CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
+            try
             {
-                var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh);
-                if ( frontierApiCarrierJson != null )
+                if ( CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
                 {
-                    var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
-
-                    // Update our Fleet Carrier object
-                    LockManager.GetLock( nameof( FleetCarrier ), () =>
+                    var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh);
+                    if ( frontierApiCarrierJson != null )
                     {
-                        FleetCarrier.UpdateFrom( frontierApiCarrierJson, timestamp );
+                        var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
 
-                        // Get location data
-                        var wp = EDDI.Instance.DataProvider
-                            .GetOrFetchSystemWaypoint( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
-                        FleetCarrier.currentStarSystemAddress = wp?.systemAddress;
-                        FleetCarrier.currentStarSystem = wp?.systemName ?? frontierApiCarrierJson[ "currentStarSystem" ]?.ToString();
-                    } );
-                    WriteConfiguration();
+                        // Update our Fleet Carrier object
+                        LockManager.GetLock( nameof( FleetCarrier ), () =>
+                        {
+                            FleetCarrier.UpdateFrom( frontierApiCarrierJson, timestamp );
+
+                            // Get location data
+                            var wp = EDDI.Instance.DataProvider
+                                .GetOrFetchSystemWaypoint( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
+                            FleetCarrier.currentStarSystemAddress = wp?.systemAddress;
+                            FleetCarrier.currentStarSystem = wp?.systemName ?? frontierApiCarrierJson[ "currentStarSystem" ]?.ToString();
+                        } );
+                        WriteConfiguration();
+                    }
                 }
+            }
+            catch ( OperationCanceledException )
+            {
+                // Nothing to do here, the task was cancelled.
             }
         }
 
