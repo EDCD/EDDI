@@ -118,8 +118,8 @@ Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; V
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
 
-[Code]
 ; This section is used to remove old local config settings in version 4.1.3 only.
+[Code]
 function ShouldDeleteLocalConfig: Boolean;
 begin
   Result := ExpandConstant('{#MyAppVersion}') = '4.1.3';
