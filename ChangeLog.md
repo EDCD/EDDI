@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.1.3
   * Core
     * Fixed a bug preventing version 4.1.2 from running for some users. (#2726)
+    * Various bug fixes from telemetry. 
     
 ## 4.1.2
   * Core
