@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedCatalysers" xml:space="preserve">
-    <value>Fortschr. Katalysatoren</value>
+    <value>Fortschrittliche Katalysatoren</value>
     <comment>Commodity AdvancedCatalysers</comment>
   </data>
   <data name="AdvancedMedicines" xml:space="preserve">
@@ -694,7 +694,7 @@
     <comment>Commodity Indium</comment>
   </data>
   <data name="InsulatingMembrane" xml:space="preserve">
-    <value>Isoliermembran</value>
+    <value>Isoliermembranen</value>
     <comment>Commodity InsulatingMembrane</comment>
   </data>
   <data name="IonDistributor" xml:space="preserve">
@@ -1146,7 +1146,7 @@
     <comment>Commodity StructuralRegulators</comment>
   </data>
   <data name="Superconductors" xml:space="preserve">
-    <value>Supraleiter</value>
+    <value>Supra-Leiter</value>
     <comment>Commodity Superconductors</comment>
   </data>
   <data name="SurfaceStabilisers" xml:space="preserve">
