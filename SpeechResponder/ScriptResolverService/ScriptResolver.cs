@@ -180,7 +180,9 @@ namespace EddiSpeechResponder.ScriptResolverService
                     scriptName = "this script";
                 }
 
-                var rejectedSubstring = script.Substring( e.LocationStart, e.LocationLength );
+                var rejectedSubstring = e.LocationStart >= 0 && script.Length >= (e.LocationStart + e.LocationLength)
+                    ? script.Substring( e.LocationStart, e.LocationLength )
+                    : string.Empty;
                 Logging.Warn( $"Failed to resolve {scriptName} at line {scriptLine}. {e}" );
                 return $"There is a problem with {scriptName} at line {scriptLine}. {errorTranslation( e.Message + rejectedSubstring )}";
             }
