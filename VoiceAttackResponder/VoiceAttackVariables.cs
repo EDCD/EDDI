@@ -273,11 +273,9 @@ namespace EddiVoiceAttackResponder
                 var cmdrName = ConfigService.Instance.commanderConfiguration.commanderName;
                 if ( cmdrName != null )
                 {
-                    VoiceAttackPlugin.SetText( prefix + " callsign",
-                        ship?.manufacturer + " " + cmdrName.Substring( 0, 3 ).ToUpperInvariant() );
-                    VoiceAttackPlugin.SetText( prefix + " callsign (spoken)",
-                        ship?.SpokenManufacturer() + " " +
-                        Translations.ICAO( cmdrName.Substring( 0, 3 ).ToUpperInvariant() ) );
+                    var cmdrNamePrefix = cmdrName.Length >= 3 ? cmdrName.Substring( 0, 3 ).ToUpperInvariant() : cmdrName.ToUpperInvariant();
+                    VoiceAttackPlugin.SetText( prefix + " callsign", ship?.manufacturer + " " + cmdrNamePrefix );
+                    VoiceAttackPlugin.SetText( prefix + " callsign (spoken)", ship?.SpokenManufacturer() + " " + Translations.ICAO( cmdrNamePrefix ) );
                 }
 
                 VoiceAttackPlugin.SetText(prefix + " name", ship?.name);
