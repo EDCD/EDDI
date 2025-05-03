@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.4
+  * Events
+    * `Ship fsd` revised to add back the missing `fsd status` value `charging complete`.
+
 ## 4.1.3
   * Core
     * Fixed a bug preventing version 4.1.2 from running for some users. (#2726)
