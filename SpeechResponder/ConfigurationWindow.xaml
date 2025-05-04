@@ -255,7 +255,7 @@
                                 <Button.IsEnabled>
                                     <MultiBinding Converter="{StaticResource booleanAndConverter }">
                                         <Binding Path="PersonalityIsCustom"/>
-                                        <Binding Path="IsResettableOrDeletable"/>
+                                        <Binding Path="IsNotDefault"/>
                                     </MultiBinding>
                                 </Button.IsEnabled>
                                 <Button.Style>

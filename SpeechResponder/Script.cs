@@ -40,7 +40,7 @@ namespace EddiSpeechResponder
         public int? Priority
         {
             get => responder ? priority : null; // Invoked scripts have no independent priority
-            set { priority = value; OnPropertyChanged(); }
+            set { priority = value ?? ( responder ? (int?)3 : null ); OnPropertyChanged(); }
         }
 
         [JsonProperty("responder")]
@@ -77,15 +77,12 @@ namespace EddiSpeechResponder
         public string includes { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public bool IsResettableOrDeletable
-        {
-            get { resettableOrDeletable = !Default || (!Responder && string.IsNullOrWhiteSpace(defaultValue)); return resettableOrDeletable; }
-            set { resettableOrDeletable = value; OnPropertyChanged(); }
-        }
-        [JsonIgnore]
         public bool IsResettable => Responder || (!Responder && !string.IsNullOrWhiteSpace(defaultValue));
         [JsonIgnore]
+        public bool IsNotDefault => !Default;
+        [JsonIgnore]
         public bool HasValue => script != null;
+
         [JsonIgnore]
         private string name;
         [JsonIgnore]
@@ -93,16 +90,14 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private bool enabled;
         [JsonIgnore]
-        private int? priority = 3;
+        private int? priority;
         [JsonIgnore]
         private bool responder;
         [JsonIgnore]
         private string script;
-        [JsonIgnore]
-        private bool resettableOrDeletable;
 
         [ JsonIgnore ] 
-        public bool PersonalityIsCustom { get; set; } = true;
+        public bool PersonalityIsCustom { get; set; }
 
         public Script(string name, string description, bool responder, string script, int? priority = 3, string defaultScript = null)
         {

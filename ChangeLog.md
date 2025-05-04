@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.1.4
   * Events
     * `Ship fsd` revised to add back the missing `fsd status` value `charging complete`.
+  * Speech Responder
+    * Fixed the default script being editable.
 
 ## 4.1.3
   * Core

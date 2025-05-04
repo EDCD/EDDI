@@ -424,16 +424,17 @@ namespace EddiSpeechResponder
                      !kv.Value.Default )
                 {
                     var script = kv.Value;
-                    script.PersonalityIsCustom = personality.IsCustom;
                     fixedScripts.Add( kv.Key, script );
                 }
             }
 
-            // Sort scripts and save to file. Set the `PersonalityIsCustom` property.
+            // Set the `PersonalityIsCustom` property.
             foreach ( var kv in fixedScripts )
             {
                 kv.Value.PersonalityIsCustom = personality.IsCustom;
             }
+
+            // Sort scripts and save to file. 
             personality.Scripts = fixedScripts
                 .OrderBy(s => s.Key)
                 .ToDictionary(s => s.Key, s => s.Value);
