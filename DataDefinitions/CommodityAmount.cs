@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -18,9 +19,10 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string edname => commodityDefinition.edname;
 
-        public CommodityAmount(CommodityDefinition commodity, int amount)
+        public CommodityAmount( [JetBrains.Annotations.NotNull] CommodityDefinition commodity, int amount)
         {
-            this.commodityDefinition = commodity;
+            this.commodityDefinition = commodity ??
+                                       throw new ArgumentNullException( nameof(commodity), @"Commodity cannot be null." );
             this.amount = amount;
         }
     }

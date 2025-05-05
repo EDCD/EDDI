@@ -1434,17 +1434,17 @@ namespace EddiJournalMonitor
                                 break;
                             case "TechnologyBroker":
                                 {
-                                    string brokerType = JsonParsing.getString(data, "BrokerType");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    var brokerType = JsonParsing.getString(data, "BrokerType");
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
 
                                     data.TryGetValue("ItemsUnlocked", out object val);
-                                    List<object> itemsUnlocked = (List<object>)val;
-                                    List<Module> items = new List<Module>();
-                                    foreach (object item in itemsUnlocked)
+                                    var itemsUnlocked = (List<object>)val;
+                                    var items = new List<Module>();
+                                    foreach (var item in itemsUnlocked)
                                     {
-                                        Dictionary<string, object> itemProperties = (Dictionary<string, object>)item;
-                                        string moduleEdName = JsonParsing.getString(itemProperties, "Name");
-                                        Module module = Module.FromEDName(moduleEdName);
+                                        var itemProperties = (Dictionary<string, object>)item;
+                                        var moduleEdName = JsonParsing.getString(itemProperties, "Name");
+                                        var module = Module.FromEDName(moduleEdName);
                                         if (module == null)
                                         {
                                             // Unknown module
@@ -1463,8 +1463,8 @@ namespace EddiJournalMonitor
                                         var count = JsonParsing.getInt(_commodity, "Count");
                                         if (commodity == null)
                                         {
-                                            Logging.Info("Unknown commodity " + commodityEdName);
                                             Logging.Info("Unknown commodity " + commodityEdName, JsonConvert.SerializeObject(_commodity));
+                                            continue;
                                         }
                                         Commodities.Add(new CommodityAmount(commodity, count));
                                     }
@@ -2568,28 +2568,28 @@ namespace EddiJournalMonitor
                                 break;
                             case "EngineerContribution":
                                 {
-                                    string name = JsonParsing.getString(data, "Engineer");
-                                    long engineerId = JsonParsing.getLong(data, "EngineerID");
-                                    Engineer engineer = Engineer.FromNameOrId(name, engineerId);
+                                    var name = JsonParsing.getString(data, "Engineer");
+                                    var engineerId = JsonParsing.getLong(data, "EngineerID");
+                                    var engineer = Engineer.FromNameOrId(name, engineerId);
 
-                                    string contributionType =
-                                        JsonParsing.getString(data,
-                                            "Type"); // (Commodity, materials, Credits, Bond, Bounty)
-                                    int amount = JsonParsing.getInt(data, "Quantity");
-                                    int total = JsonParsing.getInt(data, "TotalQuantity");
+                                    var contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+                                    var amount = JsonParsing.getInt(data, "Quantity");
+                                    var total = JsonParsing.getInt(data, "TotalQuantity");
                                     switch (contributionType)
                                     {
                                         case "Commodity":
                                             {
-                                                string edname = JsonParsing.getString(data, "Commodity");
-                                                CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
+                                                var edname = JsonParsing.getString(data, "Commodity");
+                                                var commodityDef = CommodityDefinition.FromEDName( edname );
+                                                var commodity = new CommodityAmount(commodityDef, amount);
                                                 events.Add(new EngineerContributedEvent(timestamp, engineer, contributionType, amount, total, commodity, null) { raw = line, fromLoad = fromLogLoad });
                                             }
                                             break;
                                         case "Materials":
                                             {
-                                                string edname = JsonParsing.getString(data, "Material");
-                                                MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
+                                                var edname = JsonParsing.getString(data, "Material");
+                                                var materialDef = Material.FromEDName( edname );
+                                                var material = new MaterialAmount(materialDef, amount);
                                                 events.Add(new EngineerContributedEvent(timestamp, engineer, contributionType, amount, total, null, material) { raw = line, fromLoad = fromLogLoad });
                                             }
                                             break;
@@ -2630,7 +2630,7 @@ namespace EddiJournalMonitor
                                             foreach (KeyValuePair<string, object> used in usedData)
                                             {
                                                 // Used could be a material or a commodity
-                                                CommodityDefinition commodity = CommodityDefinition.FromEDName(used.Key);
+                                                var commodity = CommodityDefinition.FromEDName(used.Key);
                                                 if (commodity.Category != null)
                                                 {
                                                     // This is a real commodity
@@ -3535,7 +3535,10 @@ namespace EddiJournalMonitor
                                         {
                                             var rewardCommodity = CommodityDefinition.FromEDName(JsonParsing.getString(commodityRewardData, "Name"));
                                             var count = JsonParsing.getOptionalInt(commodityRewardData, "Count") ?? 0;
-                                            commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
+                                            if ( rewardCommodity != null )
+                                            {
+                                                commodityrewards.Add( new CommodityAmount( rewardCommodity, count ) );
+                                            }
                                         }
                                     }
 

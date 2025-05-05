@@ -1526,11 +1526,13 @@ namespace EddiDataDefinitions
             }
         }
 
-        new public static CommodityDefinition FromEDName ( string rawName )
+        public static new CommodityDefinition FromEDName ( [JetBrains.Annotations.NotNull] string rawName )
         {
-            if ( string.IsNullOrEmpty( rawName ) ) { return null; }
-
-            string edName = NormalizedName( rawName );
+            if ( string.IsNullOrEmpty( rawName ) )
+            {
+                throw new ArgumentNullException( nameof( rawName ), @"Commodity 'rawName' value is invalid" );
+            }
+            var edName = NormalizedName( rawName );
             return ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName( edName );
         }
 
@@ -1539,10 +1541,10 @@ namespace EddiDataDefinitions
             if ( string.IsNullOrEmpty( edName ) ) { return false; }
 
             return AllOfThem.Any( v =>
-                string.Equals( v.edname, titiedEDName( edName ), StringComparison.InvariantCultureIgnoreCase ) );
+                string.Equals( v.edname, tidiedEDName( edName ), StringComparison.InvariantCultureIgnoreCase ) );
         }
 
-        private static string titiedEDName ( string edName )
+        private static string tidiedEDName ( string edName )
         {
             return edName?.ToLowerInvariant().Replace( "$", "" ).Replace( ";", "" ).Replace( "_name", "" );
         }
