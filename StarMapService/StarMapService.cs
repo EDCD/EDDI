@@ -146,6 +146,7 @@ namespace EddiStarMapService
         {
             if ( syncCancellationTS is null || syncCancellationTS.IsCancellationRequested )
             {
+                syncCancellationTS = new CancellationTokenSource();
                 Logging.Debug( "Enabling EDSM Responder event sync." );
                 Task.Run( BackgroundJournalSync ).ConfigureAwait( false );
             }
@@ -167,66 +168,61 @@ namespace EddiStarMapService
         {
             try
             {
-                using ( syncCancellationTS = new CancellationTokenSource() )
+                // Pause a short time to allow any initial events to build in the queue before our first sync
+                await Task.Delay( startupDelayMilliSeconds, syncCancellationTS.Token ).ConfigureAwait( false );
+                await Task.Run( async () =>
                 {
-
-                    // Pause a short time to allow any initial events to build in the queue before our first sync
-                    await Task.Delay( startupDelayMilliSeconds, syncCancellationTS.Token ).ConfigureAwait( false );
-                    await Task.Run( async () =>
+                    // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                    // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
+                    var holdingQueue = new List<IDictionary<string, object>>();
+                    try
                     {
-                        // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-                        // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
-                        var holdingQueue = new List<IDictionary<string, object>>();
-                        try
+                        Logging.Debug( "Sending queued events to EDSM: ", queuedEvents );
+                        foreach ( var pendingEvent in queuedEvents.GetConsumingEnumerable(
+                                     syncCancellationTS.Token ) )
                         {
-                            Logging.Debug( "Sending queued events to EDSM: ", queuedEvents );
-                            foreach ( var pendingEvent in queuedEvents.GetConsumingEnumerable(
-                                         syncCancellationTS.Token ) )
+                            holdingQueue.Add( pendingEvent );
+
+                            if ( queuedEvents.Count == 0 )
                             {
-                                holdingQueue.Add( pendingEvent );
-
-                                if ( queuedEvents.Count == 0 )
+                                // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
+                                await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait( false );
+                                if ( queuedEvents.Count > 0 )
                                 {
-                                    // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
-                                    await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait( false );
-                                    if ( queuedEvents.Count > 0 )
-                                    {
-                                        continue;
-                                    }
+                                    continue;
+                                }
 
-                                    // No additional events registered, send any events we have in our holding queue
-                                    if ( holdingQueue.Count > 0 )
-                                    {
-                                        var sendingQueue = holdingQueue.ToList();
-                                        await Task.Run( async () => await SendEventsAsync( sendingQueue ),
-                                                syncCancellationTS.Token )
-                                            .ConfigureAwait( false );
-                                        await Task.Delay( syncIntervalMilliSeconds, syncCancellationTS.Token )
-                                            .ConfigureAwait( false );
-                                    }
+                                // No additional events registered, send any events we have in our holding queue
+                                if ( holdingQueue.Count > 0 )
+                                {
+                                    var sendingQueue = holdingQueue.ToList();
+                                    await Task.Run( async () => await SendEventsAsync( sendingQueue ),
+                                            syncCancellationTS.Token )
+                                        .ConfigureAwait( false );
+                                    await Task.Delay( syncIntervalMilliSeconds, syncCancellationTS.Token )
+                                        .ConfigureAwait( false );
                                 }
                             }
                         }
-                        catch ( OperationCanceledException )
+                    }
+                    catch ( OperationCanceledException )
+                    {
+                        // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                        if ( !queuedEvents.IsAddingCompleted )
                         {
-                            // Operation was cancelled. Return any events we've extracted back to the primary queue.
-                            if ( !queuedEvents.IsAddingCompleted )
+                            foreach ( var pendingEvent in holdingQueue )
                             {
-                                foreach ( var pendingEvent in holdingQueue )
-                                {
-                                    queuedEvents.Add( pendingEvent );
-                                }
+                                queuedEvents.Add( pendingEvent );
                             }
                         }
-                        catch ( Exception ex )
-                        {
-                            Logging.Error( ex.Message, ex );
-                        }
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Error( ex.Message, ex );
+                    }
 
-                        holdingQueue.Clear();
-                    } ).ConfigureAwait( false );
-
-                }
+                    holdingQueue.Clear();
+                } ).ConfigureAwait( false );
             }
             catch ( TaskCanceledException )
             {
