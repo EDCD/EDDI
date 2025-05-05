@@ -376,7 +376,10 @@ namespace EddiCargoMonitor
         internal void _handleCargoDepotEvent ( CargoDepotEvent @event )
         {
             var cargo = GetCargoWithMissionId( @event.missionid, out _ ) ??
-                        new Cargo( @event.commodityDefinition.edname );
+                        ( @event.commodityDefinition is null ? null : new Cargo( @event.commodityDefinition.edname ) );
+
+            if ( cargo == null ) { return; }
+
             switch ( @event.updatetype )
             {
                 case "Collect":

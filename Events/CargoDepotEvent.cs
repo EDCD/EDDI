@@ -1,10 +1,10 @@
 ﻿using EddiDataDefinitions;
+using JetBrains.Annotations;
 using System;
-using Utilities;
 
 namespace EddiEvents
 {
-    [PublicAPI]
+    [Utilities.PublicAPI]
     public class CargoDepotEvent : Event
     {
         public const string NAME = "Cargo depot";
@@ -16,35 +16,35 @@ namespace EddiEvents
             "{ \"timestamp\":\"2020-06-02T08:29:27Z\", \"event\":\"CargoDepot\", \"MissionID\":585994997, \"UpdateType\":\"Deliver\", \"CargoType\":\"FoodCartridges\", \"CargoType_Localised\":\"Food Cartridges\", \"Count\":96, \"StartMarketID\":3222037248, \"EndMarketID\":3223259392, \"ItemsCollected\":96, \"ItemsDelivered\":96, \"TotalItemsToDeliver\":108, \"Progress\":0.000000 }"
         };
 
-        [PublicAPI("The ID of the mission")]
+        [Utilities.PublicAPI("The ID of the mission")]
         public ulong missionid { get; private set; }
 
-        [PublicAPI("The update type. One of: 'Collect', 'Deliver', 'WingUpdate'")]
+        [Utilities.PublicAPI("The update type. One of: 'Collect', 'Deliver', 'WingUpdate'")]
         public string updatetype { get; private set; }
 
-        [PublicAPI("The type of cargo (commodity)")]
+        [Utilities.PublicAPI("The type of cargo (commodity)")]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        [PublicAPI("The Market ID of the 'collection' mission depot, 0 if not applicable")]
+        [Utilities.PublicAPI("The Market ID of the 'collection' mission depot, 0 if not applicable")]
         public long startmarketid { get; private set; }
 
-        [PublicAPI("The Market ID of the 'delivery' mission depot")]
+        [Utilities.PublicAPI("The Market ID of the 'delivery' mission depot")]
         public long endmarketid { get; private set; }
 
-        [PublicAPI("The amount of cargo being collected or delivered for this event")]
+        [Utilities.PublicAPI("The amount of cargo being collected or delivered for this event"), CanBeNull]
         public int? amount { get; private set; }
 
-        [PublicAPI("The total amount of cargo collected")]
+        [Utilities.PublicAPI("The total amount of cargo collected")]
         public int collected { get; private set; }
 
-        [PublicAPI("The total amount of cargo delivered")]
+        [Utilities.PublicAPI("The total amount of cargo delivered")]
         public int delivered { get; private set; }
 
-        [PublicAPI("The total amount of cargo to deliver to complete the mission")]
+        [Utilities.PublicAPI("The total amount of cargo to deliver to complete the mission")]
         public int totaltodeliver { get; private set; }
 
         // Not intended to be user facing
-        
+        [CanBeNull]
         public CommodityDefinition commodityDefinition { get; private set; }
         
         public CargoDepotEvent(DateTime timestamp, ulong missionid, string updatetype, CommodityDefinition commodity, int? amount, long startmarketid, long endmarketid, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
