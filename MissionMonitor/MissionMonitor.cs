@@ -981,10 +981,10 @@ namespace EddiMissionMonitor
                 updateDat = missionsConfig.updatedat;
 
                 // Build a new missions log
-                List<Mission> newMissions = new List<Mission>();
+                var newMissions = new List<Mission>();
 
                 // Start with the missions we have in the log
-                foreach (Mission mission in missionsConfig.missions)
+                foreach (var mission in missionsConfig.missions)
                 {
                     newMissions.Add(mission);
                 }
@@ -994,9 +994,9 @@ namespace EddiMissionMonitor
 
                 // Update the missions log 
                 missions.Clear();
-                foreach (Mission mission in newMissions)
+                foreach (var mission in newMissions)
                 {
-                    missions.Add(mission);
+                    AddMission(mission);
                 }
             }
         }

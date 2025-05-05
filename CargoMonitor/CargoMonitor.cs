@@ -677,7 +677,7 @@ namespace EddiCargoMonitor
                 var missionsConfig = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
                 var missions = missionsConfig
                     .Where( m =>
-                        m.CommodityDefinition != null &&
+                        m?.CommodityDefinition != null &&
                         m.amount != null &&
                         m.delivered < m.amount &&
                         !m.communal )
