@@ -43,7 +43,7 @@ namespace EddiEddnResponder.Schemas
                         var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                         handledData["timestamp"] = data["timestamp"];
                         handledData["systemName"] = data["StarSystem"];
-                        handledData["stationName"] = data["StationName"];
+                        handledData["stationName"] = data["StationName"].ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
                         handledData["marketId"] = data["MarketID"];
                         handledData["allowCobraMkIV"] = data["AllowCobraMkIV"];
                         handledData["ships"] = ships
@@ -75,7 +75,7 @@ namespace EddiEddnResponder.Schemas
                 if (shipyardJson?["ships"] is null || eddnState?.GameVersion is null) { return null; }
 
                 var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-                var stationName = shipyardJson["name"].ToString();
+                var stationName = shipyardJson["name"].ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
                 var marketID = shipyardJson["id"].ToObject<long>();
                 var timestamp = shipyardJson["timestamp"].ToObject<DateTime?>();
                 var allowCobraMkIV = profileJson?["commander"]?["capabilities"]?["AllowCobraMkIV"]?.ToObject<bool?>() ?? false;

@@ -120,8 +120,8 @@ namespace EddiEddnResponder.Toolkit
                     case "Location":
                     {
                         marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                        stationName = JsonParsing.getString(data, "StationName");
-                        break;
+                        stationName = JsonParsing.getString(data, "StationName").TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
+                            break;
                     }
                     case "FSDJump":
                     case "Undock":
