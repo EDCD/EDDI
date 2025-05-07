@@ -5,6 +5,7 @@ using EddiCore.Upgrader;
 using EddiEvents;
 using EddiSpeechService;
 using JetBrains.Annotations;
+using Microsoft.CSharp.RuntimeBinder;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -300,7 +301,14 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    return VaProxy.GetBoolean( key, retrieveFromProfile );
+                    try
+                    {
+                        return VaProxy.GetBoolean( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -314,7 +322,14 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    return VaProxy.GetDate( key, retrieveFromProfile );
+                    try
+                    {
+                        return VaProxy.GetDate( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -328,7 +343,14 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    return VaProxy.GetDecimal( key, retrieveFromProfile );
+                    try
+                    {
+                        return VaProxy.GetDecimal( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -342,7 +364,14 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    return VaProxy.GetInt( key, retrieveFromProfile );
+                    try
+                    {
+                        return VaProxy.GetInt( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -356,7 +385,14 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    return VaProxy.GetText( key, retrieveFromProfile );
+                    try
+                    {
+                        return VaProxy.GetText( key, retrieveFromProfile );
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -370,7 +406,15 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    VaProxy.SetBoolean( key, value, saveToProfile );
+                    try
+                    {
+                        VaProxy.SetBoolean( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -384,7 +428,15 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    VaProxy.SetDate( key, value, saveToProfile );
+                    try
+                    {
+                        VaProxy.SetDate( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -398,7 +450,15 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    VaProxy.SetDecimal( key, value, saveToProfile );
+                    try
+                    {
+                        VaProxy.SetDecimal( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
@@ -412,14 +472,22 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    VaProxy.SetInt( key, value, saveToProfile );
+                    try
+                    {
+                        VaProxy.SetInt( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
                 VaProxy.SetInt( key, value );
             }
         }
-        
+
         public static void SetSmallInt ( string key, short? value )
         {
             lock ( vaProxyLock )
@@ -442,7 +510,15 @@ namespace EddiVoiceAttackResponder
             {
                 if ( IsVaVersionSameOrNewer( variableApiVaVersion ) )
                 {
-                    VaProxy.SetText( key, value, saveToProfile );
+                    try
+                    {
+                        VaProxy.SetText( key, value, saveToProfile );
+                        return;
+                    }
+                    catch ( RuntimeBinderException )
+                    {
+                        // We'll need to use the legacy endpoint
+                    }
                 }
 
                 // Use the legacy endpoint
