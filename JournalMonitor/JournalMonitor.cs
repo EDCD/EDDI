@@ -424,7 +424,7 @@ namespace EddiJournalMonitor
                                     var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
                                     if ( bodyType == BodyType.Planet )
                                     {
-                                        bodyType = EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress )?
+                                        bodyType = EDDI.Instance.DataProvider.GetOrCreateStarSystem( systemAddress, systemName )?
                                                        .bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
                                                    bodyType;
                                     }
@@ -4375,7 +4375,7 @@ namespace EddiJournalMonitor
                                     if ( bodyType == BodyType.Planet )
                                     {
                                         bodyType = EDDI.Instance.DataProvider
-                                                       .GetOrFetchStarSystem( systemAddress )?
+                                                       .GetOrCreateStarSystem( systemAddress, systemName )?
                                                        .bodies.FirstOrDefault( b =>
                                                            b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
                                                    bodyType;
@@ -4496,7 +4496,7 @@ namespace EddiJournalMonitor
                                     // There is a bug in the journal output where "Body" can be missing but "BodyID" can be present. Try to Work around that here.
                                     if (string.IsNullOrEmpty(bodyName) && systemAddress > 0)
                                     {
-                                        var starSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem(systemAddress, true, true);
+                                        var starSystem = EDDI.Instance.DataProvider.GetOrCreateStarSystem( systemAddress, systemName );
                                         bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
                                     }
 

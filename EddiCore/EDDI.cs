@@ -1213,12 +1213,7 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
 
                 // Make sure we have at least basic information about the destination star system
-                NextStarSystem = DataProvider.GetOrFetchStarSystem( @event.systemAddress ) ?? 
-                                 new StarSystem()
-                {
-                    systemname = @event.systemname,
-                    systemAddress = @event.systemAddress
-                };
+                NextStarSystem = DataProvider.GetOrCreateStarSystem( @event.systemAddress, @event.systemname );
 
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 CurrentStarSystem?.RemoveStation( @event.carrierID ?? 0 );
@@ -1238,9 +1233,9 @@ namespace EddiCore
             else if (!string.IsNullOrEmpty(@event.originSystemName))
             {
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
-                var starSystem = DataProvider.GetOrFetchStarSystem(@event.originSystemAddress);
-                var carrier = starSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID);
-                starSystem?.RemoveStation( @event.carrierID ?? 0 );
+                var originStarSystem = DataProvider.GetOrFetchStarSystem(@event.originSystemAddress);
+                var carrier = originStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID);
+                originStarSystem?.RemoveStation( @event.carrierID ?? 0 );
                 // Save the carrier to the updated star system
                 if ( carrier != null)
                 {
@@ -1249,19 +1244,16 @@ namespace EddiCore
                     if (@event.systemAddress == CurrentStarSystem?.systemAddress)
                     {
                         CurrentStarSystem?.AddOrUpdateStation( carrier );
-                        DataProvider.SaveStarSystem(starSystem);
+                        DataProvider.SaveStarSystem(originStarSystem);
                     }
                     else
                     {
-                        var updatedStarSystem = DataProvider.GetOrFetchStarSystem(@event.systemAddress);
-                        if (updatedStarSystem != null)
-                        {
+                        var updatedStarSystem = DataProvider.GetOrCreateStarSystem( @event.systemAddress, @event.systemname );
                             updatedStarSystem.AddOrUpdateStation( carrier);
                             DataProvider.SaveStarSystem(updatedStarSystem);
                         }
                     }
                 }
-            }
 
             return true;
         }
@@ -1326,9 +1318,8 @@ namespace EddiCore
                 updateCurrentSystem(@event.systemname, @event.systemAddress );
 
                 // Update our system properties
-                if (CurrentStarSystem != null)
-                {
-                    CurrentStarSystem.systemAddress = @event.systemAddress;
+                if ( CurrentStarSystem is null ) { return false; }
+
                     CurrentStarSystem.x = @event.x;
                     CurrentStarSystem.y = @event.y;
                     CurrentStarSystem.z = @event.z;
@@ -1343,7 +1334,7 @@ namespace EddiCore
                     }
 
                     // Update the mutable system data from the journal
-                    if (@event.population != null)
+                if ( @event.population != null )
                     {
                         CurrentStarSystem.population = @event.population;
                         CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
@@ -1352,17 +1343,17 @@ namespace EddiCore
                     }
 
                     // Update system faction data if available
-                    if (@event.factions != null)
+                if ( @event.factions != null )
                     {
                         CurrentStarSystem.factions = @event.factions;
                         CurrentStarSystem.conflicts = @event.conflicts;
 
                         // Update station controlling faction data
-                        foreach (Station station in CurrentStarSystem.stations)
+                    foreach ( var station in CurrentStarSystem.stations )
                         {
-                            Faction stationFaction = @event.factions
-                                .FirstOrDefault(f => f.name == station.Faction?.name);
-                            if (stationFaction != null)
+                        var stationFaction = @event.factions
+                            .FirstOrDefault( f => f.name == station.Faction?.name );
+                        if ( stationFaction != null )
                             {
                                 station.Faction = stationFaction;
                             }
@@ -1379,10 +1370,9 @@ namespace EddiCore
                     currentStarSystem.powerUnderminingControlPoints = @event.powerUnderminingControlPoints;
 
                     // Update to most recent information
-                    CurrentStarSystem.visitLog.Add(@event.timestamp);
-                    CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds(@event.timestamp);
-                    DataProvider.SaveStarSystem(CurrentStarSystem);
-                }
+                CurrentStarSystem.visitLog.Add( @event.timestamp );
+                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( @event.timestamp );
+                DataProvider.SaveStarSystem( CurrentStarSystem );
                 
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && carrierID != null)
@@ -1587,11 +1577,9 @@ namespace EddiCore
             Logging.Info($"Vehicle mode is {Vehicle}");
 
             updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
-            if ( CurrentStarSystem != null )
-            {
-                // Our data source may not include the system address
-                CurrentStarSystem.systemAddress = theEvent.systemAddress;
-                // Always update the current system with the current co-ordinates, just in case things have changed
+            if ( CurrentStarSystem is null ) { return false; }
+
+            // Always update the current system with the current co-ordinates, just in case things have changed or coordinates are not yet known
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
@@ -2001,7 +1989,7 @@ namespace EddiCore
             return false;
         }
 
-        internal void updateCurrentSystem(string systemName, ulong systemAddress)
+        internal void updateCurrentSystem([NotNull] string systemName, ulong systemAddress)
         {
             if ( string.IsNullOrEmpty(systemName) || CurrentStarSystem?.systemAddress == systemAddress )
             {
@@ -2026,8 +2014,7 @@ namespace EddiCore
             }
             else
             {
-                CurrentStarSystem = DataProvider.GetOrFetchStarSystem( systemAddress ) ?? 
-                                    new StarSystem { systemname = systemName, systemAddress = systemAddress};
+                CurrentStarSystem = DataProvider.GetOrCreateStarSystem( systemAddress, systemName );
             }
 
             // If we've arrived at our destination system then clear it
@@ -2040,12 +2027,10 @@ namespace EddiCore
         private void updateCurrentStellarBody(string bodyName, string systemName, ulong systemAddress)
         {
             // Make sure our system information is up to date
-            if (CurrentStarSystem == null || CurrentStarSystem.systemAddress != systemAddress)
-            {
-                updateCurrentSystem(systemName, systemAddress);
-            }
+            updateCurrentSystem( systemName, systemAddress );
+
             // Update the body 
-            if (CurrentStarSystem != null)
+            if ( CurrentStarSystem != null)
             {
                 var body = CurrentStarSystem.bodies?.Find(s => s.bodyname == bodyName);
                 if (body == null)
@@ -2092,7 +2077,7 @@ namespace EddiCore
         private bool eventFSDTarget(FSDTargetEvent @event)
         {
             // Set and prepare data about the next star system
-            NextStarSystem = DataProvider.GetOrFetchStarSystem(@event.systemAddress );
+            NextStarSystem = DataProvider.GetOrCreateStarSystem( @event.systemAddress, @event.system );
             if (NextStarSystem != null && !NextStarSystem.bodies.Any(b => b.mainstar ?? false))
             {
                 // This system is unknown to us, might not be recorded, or we might not have connectivity.  Use a placeholder main star
@@ -2182,8 +2167,7 @@ namespace EddiCore
             }
 
             updateCurrentSystem( theEvent.system, theEvent.systemAddress );
-            if ( CurrentStarSystem != null )
-            {
+            if ( CurrentStarSystem is null ) { return false; }
                 CurrentStarSystem.systemAddress = theEvent.systemAddress;
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;

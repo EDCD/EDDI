@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ## 4.1.4
+  * Core
+    * Made EDDI more aggressive in creating new star system entries for unknown systems (when there is sufficient data to do so). (#2733)
   * Events
     * `Ship fsd` revised to add back the missing `fsd status` value `charging complete`.
   * Speech Responder

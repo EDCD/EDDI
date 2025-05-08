@@ -42,22 +42,27 @@ namespace EddiDataProviderService
             return spanshService.GetWaypointsBySystemName( systemName ).ToList();
         }
 
+        [NotNull]
+        public StarSystem GetOrCreateStarSystem ( ulong systemAddress, string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
+        {
+            return GetOrCreateStarSystems( new Dictionary<ulong, string> { { systemAddress, systemName } }, fetchIfMissing, refreshIfOutdated, showMarketDetails ).First();
+        }
+
+        [ItemNotNull]
         public List<StarSystem> GetOrCreateStarSystems ( Dictionary<ulong, string> requestedSystems,
-            bool fetchIfMissing = false, bool refreshIfOutdated = true, bool showMarketDetails = false )
+            bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
         {
             var results = new List<StarSystem>();
-            if ( !requestedSystems.Any() ) { return new List<StarSystem>(); }
+            if ( !requestedSystems.Any() ) { return results; }
 
-            var missingSystems = requestedSystems.Where( k => results.All( s => s.systemAddress != k.Key ) )
+            Dictionary<ulong, string> missingSystems () => requestedSystems
+                .Where( k => results.All( s => s.systemAddress != k.Key ) )
                 .ToDictionary( k => k.Key, v => v.Value );
 
-            if ( fetchIfMissing )
-            {
-                results = GetOrFetchStarSystems( missingSystems.Keys.ToArray(), true, refreshIfOutdated, showMarketDetails ) ?? new List<StarSystem>();
-            }
+            results = GetOrFetchStarSystems( missingSystems().Keys.ToArray(), fetchIfMissing, refreshIfOutdated, showMarketDetails ) ?? new List<StarSystem>();
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
-            var createdStarSystems = missingSystems
+            var createdStarSystems = missingSystems()
                 .Select( s => new StarSystem { systemname = s.Value, systemAddress = s.Key } )
                 .ToList();
             results.AddRange( createdStarSystems );
