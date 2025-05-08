@@ -1,5 +1,4 @@
 ﻿using EddiConfigService;
-using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -1367,20 +1366,20 @@ namespace EddiShipMonitor
             }
         }
 
-        private void writeShips()
+        private void writeShips ()
         {
-            lock (shipyardLock)
+            var configuration = ConfigService.Instance.shipMonitorConfiguration;
+            lock ( shipyardLock )
             {
                 // Write ship configuration with current inventory
-                var configuration = new ShipMonitorConfiguration()
-                {
-                    currentshipid = currentShipId,
-                    shipyard = shipyard,
-                    storedmodules = storedmodules,
-                    updatedat = updatedAt
-                };
-                ConfigService.Instance.shipMonitorConfiguration = configuration;
+                configuration.currentshipid = currentShipId;
+                configuration.shipyard = shipyard;
+                configuration.storedmodules = storedmodules;
+                configuration.updatedat = updatedAt;
             }
+
+            ConfigService.Instance.shipMonitorConfiguration = configuration;
+
             // Make sure the UI is up to date
             RaiseOnUIThread(ShipyardUpdatedEvent, shipyard);
         }

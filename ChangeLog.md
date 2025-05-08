@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Made EDDI more aggressive in creating new star system entries for unknown systems (when there is sufficient data to do so). (#2733)
   * Events
     * `Ship fsd` revised to add back the missing `fsd status` value `charging complete`.
+  * Ship Monitor
+    * Fixed a bug causing the ship export target to revert to Coriolis after some UI actions. (#2732)
   * Speech Responder
     * Fixed the default script being editable.
 
