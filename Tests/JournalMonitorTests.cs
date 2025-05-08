@@ -2047,15 +2047,15 @@ namespace Tests
 
             Assert.AreEqual(engineer, @event.Engineer.name);
             Assert.AreEqual(contributiontype, @event.contributiontype);
-            var commodityDefinition = CommodityDefinition.FromEDName(@event.commodityAmount?.edname);
-            if (commodityDefinition != null)
+            if ( @event.commodityAmount != null )
             {
+                var commodityDefinition = CommodityDefinition.FromEDName(@event.commodityAmount.edname);
                 Assert.AreEqual(commodity, commodityDefinition.invariantName);
                 Assert.AreEqual(category, commodityDefinition.Category.invariantName);
             }
-            var materialDefinition = Material.FromEDName(@event.materialAmount?.edname);
-            if (materialDefinition != null)
+            if ( @event.materialAmount != null )
             {
+                var materialDefinition = Material.FromEDName(@event.materialAmount.edname);
                 Assert.AreEqual(material, materialDefinition.invariantName);
                 Assert.AreEqual(category, materialDefinition.Category.invariantName);
             }
