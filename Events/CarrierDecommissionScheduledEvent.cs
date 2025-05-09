@@ -14,28 +14,27 @@ namespace EddiEvents
         public ulong refund { get; private set; }
 
         [PublicAPI("The total days until the fleet carrier is decommissioned, expressed as a decimal")]
-        public decimal? totalDays { get; private set; }
+        public decimal? totalDays => Convert.ToDecimal( decommissionTimespan?.TotalDays ?? 0 );
 
         [PublicAPI("The days component of the time remaining before the fleet carrier is decommissioned")]
-        public int? days { get; private set; }
+        public int? days => decommissionTimespan?.Days ?? 0;
 
         [PublicAPI("The hours component of the time remaining before the fleet carrier is decommissioned")]
-        public int? hours { get; private set; }
+        public int? hours => decommissionTimespan?.Hours ?? 0;
 
         [PublicAPI("The minutes component of the time remaining before the fleet carrier is decommissioned")]
-        public int? minutes { get; private set; }
-        
+        public int? minutes => decommissionTimespan?.Minutes ?? 0;
+
         // Not intended to be user facing
         public long? carrierID { get; private set; }
+
+        public TimeSpan? decommissionTimespan { get; private set; }
 
         public CarrierDecommissionScheduledEvent(DateTime timestamp, long? carrierId, ulong refund, TimeSpan? decommissionTimespan) : base(timestamp, NAME)
         {
             carrierID = carrierId;
             this.refund = refund;
-            this.totalDays = Convert.ToDecimal(decommissionTimespan?.TotalDays ?? 0);
-            this.days = decommissionTimespan?.Days ?? 0;
-            this.hours = decommissionTimespan?.Hours ?? 0;
-            this.minutes = decommissionTimespan?.Minutes ?? 0;
+            this.decommissionTimespan = decommissionTimespan;
         }
     }
 }

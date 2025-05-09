@@ -337,6 +337,8 @@ namespace EddiDataDefinitions
 
         public DateTime timestamp { get; set; } // When the raw data was obtained
 
+        public DateTime? DecomissionDateTime { get; set; } // When the carrier shall be decommissioned, if decommisioning is scheduled.
+
         // Constructors
 
         [JsonConstructor]

@@ -26,7 +26,11 @@ namespace EddiFleetCarrierMonitor
             CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
         }
 
-        private FleetCarrier FleetCarrier => EDDI.Instance.FleetCarrier;
+        private FleetCarrier FleetCarrier
+        {
+            get => EDDI.Instance.FleetCarrier;
+            set => EDDI.Instance.FleetCarrier = value;
+        }
 
         public string MonitorName () => "Fleet Carrier Monitor";
 
@@ -55,6 +59,13 @@ namespace EddiFleetCarrierMonitor
             if ( @event.timestamp < FleetCarrier?.timestamp )
             {
                 // We only want to update the FleetCarrier object with new events
+                return;
+            }
+
+            if ( @event.timestamp > FleetCarrier?.DecomissionDateTime )
+            {
+                // The FleetCarrier has been decommisioned. We need to remove its configuration.
+                ConfigService.Instance.fleetCarrierConfiguration = null;
                 return;
             }
 
@@ -149,6 +160,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.state = "normalOperation";
+                FleetCarrier.DecomissionDateTime = null;
                 WriteConfiguration();
             }
         }
@@ -163,6 +175,7 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.state = "pendingDecommission";
+                FleetCarrier.DecomissionDateTime = @event.timestamp + @event.decommissionTimespan;
                 WriteConfiguration();
             }
         }
@@ -390,12 +403,14 @@ namespace EddiFleetCarrierMonitor
         {
             try
             {
-                if ( FleetCarrier != null && CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
+                if ( CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
                 {
                     var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh);
                     if ( frontierApiCarrierJson != null )
                     {
                         var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
+                        var carrierID = frontierApiCarrierJson[ "market" ]?[ "id" ]?.ToObject<long?>();
+                        if ( FleetCarrier is null ) { FleetCarrier = new FleetCarrier( carrierID ); }
 
                         // Update our Fleet Carrier object
                         LockManager.GetLock( nameof( FleetCarrier ), () =>
