@@ -2211,7 +2211,6 @@ namespace EddiCore
                 CurrentStarSystem.visitLog.Add( theEvent.timestamp );
                 CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
                 DataProvider.SaveStarSystem( CurrentStarSystem );
-            }
 
             return passEvent;
         }
@@ -2220,11 +2219,6 @@ namespace EddiCore
         {
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             updateCurrentSystem(theEvent.system, theEvent.systemAddress );
-
-            if ( CurrentStarSystem != null )
-            {
-                CurrentStarSystem.systemAddress = theEvent.systemAddress;
-            }
 
             if (theEvent.taxi is true)
             {
