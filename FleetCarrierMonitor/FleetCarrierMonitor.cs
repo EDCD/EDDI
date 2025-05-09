@@ -52,7 +52,7 @@ namespace EddiFleetCarrierMonitor
 
         public void PreHandle ( Event @event )
         {
-            if ( FleetCarrier != null && @event.timestamp < FleetCarrier.timestamp )
+            if ( @event.timestamp < FleetCarrier?.timestamp )
             {
                 // We only want to update the FleetCarrier object with new events
                 return;
