@@ -1677,7 +1677,6 @@ namespace EddiCore
                 // Update to most recent information
                 CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
                 DataProvider.SaveStarSystem( CurrentStarSystem );
-            }
 
             return true;
         }
