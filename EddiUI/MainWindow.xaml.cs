@@ -162,8 +162,6 @@ namespace EddiUI
             }
         }
 
-        private bool runBetaCheck = false;
-
         public MainWindow()
         {
             if (!EDDI.FromVA)
@@ -199,8 +197,8 @@ namespace EddiUI
             }
 
             var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
-            eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
+            eddiVerboseLogging.IsChecked = eddiConfiguration.VerboseLogging;
+            eddiBetaProgramme.IsChecked = eddiConfiguration.AcceptsBetaReleases;
             var langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
@@ -398,50 +396,52 @@ namespace EddiUI
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked ?? false;
-            Logging.Verbose = eddiConfiguration.Debug;
+            eddiConfiguration.VerboseLogging = eddiVerboseLogging.IsChecked ?? false;
+            Logging.Verbose = eddiConfiguration.VerboseLogging;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
         }
 
         private void verboseLoggingDisabled(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked ?? false;
-            Logging.Verbose = eddiConfiguration.Debug;
+            eddiConfiguration.VerboseLogging = eddiVerboseLogging.IsChecked ?? false;
+            Logging.Verbose = eddiConfiguration.VerboseLogging;
             ConfigService.Instance.eddiConfiguration = eddiConfiguration;
         }
 
-        private void betaProgrammeEnabled(object sender, RoutedEventArgs e)
+        private async void betaProgrammeEnabled(object sender, RoutedEventArgs e)
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked ?? false;
-            ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            if (runBetaCheck)
+            try
             {
+                var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+                eddiConfiguration.AcceptsBetaReleases = eddiBetaProgramme.IsChecked ?? false;
+                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+
                 // Because we have changed to wanting beta upgrades we need to re-check upgrade information
-                EddiUpgrader.CheckUpgrade();
+                await EddiUpgrader.CheckUpgrade();
                 setStatusInfo();
             }
-            else
+            catch (Exception ex)
             {
-                runBetaCheck = true;
+                Logging.Error(ex.Message, ex);
             }
         }
 
-        private void betaProgrammeDisabled ( object sender, RoutedEventArgs e )
+        private async void betaProgrammeDisabled ( object sender, RoutedEventArgs e )
         {
-            EDDIConfiguration eddiConfiguration = ConfigService.Instance.eddiConfiguration;
-            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked ?? false;
-            ConfigService.Instance.eddiConfiguration = eddiConfiguration;
-            if ( runBetaCheck )
+            try
             {
+                var eddiConfiguration = ConfigService.Instance.eddiConfiguration;
+                eddiConfiguration.AcceptsBetaReleases = eddiBetaProgramme.IsChecked ?? false;
+                ConfigService.Instance.eddiConfiguration = eddiConfiguration;
+
                 // Because we have changed to not wanting beta upgrades we need to re-check upgrade information
-                EddiUpgrader.CheckUpgrade();
+                await EddiUpgrader.CheckUpgrade();
                 setStatusInfo();
             }
-            else
+            catch (Exception ex)
             {
-                runBetaCheck = true;
+                Logging.Error( ex.Message, ex );
             }
         }
 

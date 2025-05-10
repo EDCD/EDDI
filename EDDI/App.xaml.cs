@@ -38,12 +38,12 @@ namespace Eddi
                 return;
             }
 
-            App app = new App();
+            var app = new App();
             app.Exit += OnExit;
 
             // Prepare to start the application
             Logging.IncrementLogs(); // Increment to a new log file.
-            EDDIConfiguration configuration = ConfigService.Instance.eddiConfiguration;
+            var configuration = ConfigService.Instance.eddiConfiguration;
             if (configuration != null && !configuration.DisableTelemetry)
             {
                 StartTelemetryService(); // do immediately to initialize error reporting
@@ -51,12 +51,7 @@ namespace Eddi
             ApplyAnyOverrideCulture(configuration); // this must be done before any UI is generated
 
             // Start by fetching information from the update server, and handling appropriately
-            EddiUpgrader.CheckUpgrade();
-            if ( EddiUpgrader.UpgradeRequired)
-            {
-                // We are too old to continue; initialize in a "safe mode". 
-                EDDI.Init(true);
-            }
+            EddiUpgrader.CheckUpgrade().GetAwaiter().GetResult();
 
             if (FromVA)
             {

@@ -129,7 +129,7 @@ namespace EddiCore
         // True if we have been started by VoiceAttack
         public static bool FromVA;
 
-        public static void Init(bool safeMode)
+        public static void Init()
         {
             if (instance == null)
             {
@@ -138,7 +138,7 @@ namespace EddiCore
                     if (instance == null)
                     {
                         Logging.Debug("No EDDI instance: creating one");
-                        instance = new EDDI(safeMode);
+                        instance = new EDDI();
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace EddiCore
         {
             get
             {
-                Init(false);
+                Init();
                 return instance;
             }
         }
@@ -430,9 +430,9 @@ namespace EddiCore
 
         private string multicrewVehicleHolder;
 
-        private EDDI(bool safeMode)
+        private EDDI()
         {
-            running = !safeMode;
+            running = true;
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
@@ -442,7 +442,7 @@ namespace EddiCore
                 CompanionAppService.Instance.gameIsBeta = false;
 
                 var configuration = ConfigService.Instance.eddiConfiguration;
-                Logging.Verbose = configuration.Debug;
+                Logging.Verbose = configuration.VerboseLogging;
 
                 // Retrieve commander data
                 var cmdrConfiguration = ConfigService.Instance.commanderConfiguration;

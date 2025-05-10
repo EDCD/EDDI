@@ -105,24 +105,11 @@ namespace EddiVoiceAttackResponder
                     EddiConfigService.ConfigService.Instance.PropertyChanged += VoiceAttackVariables.updateConfigurationValues;
 
                     // Display instance information if available
-                    if (EddiUpgrader.UpgradeRequired)
+                    if ( EddiUpgrader.UpgradeAvailable )
                     {
-                        WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
-                        string msg = Properties.VoiceAttack.run_eddi_standalone;
-                        SpeechService.Instance.Say(null, msg, 0);
-                    }
-                    else if (EddiUpgrader.UpgradeAvailable)
-                    {
-                        WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
-                        string msg = Properties.VoiceAttack.run_eddi_standalone;
-                        SpeechService.Instance.Say(null, msg, 0);
-                    }
-
-                    if (EddiUpgrader.Motd != null)
-                    {
-                        WriteToLog("Message from EDDI: " + EddiUpgrader.Motd, "black");
-                        string msg = String.Format(EddiCore.Properties.Resources.msg_from_eddi, EddiUpgrader.Motd);
-                        SpeechService.Instance.Say(null, msg, 0);
+                        WriteToLog( $"EDDI version {EddiUpgrader.UpgradeVersion} is now available. Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange" );
+                        var msg = Properties.VoiceAttack.run_eddi_standalone;
+                        SpeechService.Instance.Say( null, msg, 0 );
                     }
 
                     WriteToLog("The EDDI plugin is fully operational.", "green");

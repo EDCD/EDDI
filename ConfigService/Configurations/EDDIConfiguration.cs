@@ -15,10 +15,10 @@ namespace EddiConfigService.Configurations
         public ulong? DestinationSystemAddress { get; set; }
 
         [JsonProperty("debug")]
-        public bool Debug { get; set; }
+        public bool VerboseLogging { get; set; }
 
         [JsonProperty("beta")]
-        public bool Beta { get; set; }
+        public bool AcceptsBetaReleases { get; set; }
 
         [JsonProperty("DisableTelemetry")]
         public bool DisableTelemetry { get; set; }
@@ -46,8 +46,8 @@ namespace EddiConfigService.Configurations
         // Default
         public EDDIConfiguration()
         {
-            Debug = false;
-            Beta = false;
+            VerboseLogging = false;
+            AcceptsBetaReleases = false;
             Plugins = new Dictionary<string, bool>();
             DisableTelemetry = false;
 
