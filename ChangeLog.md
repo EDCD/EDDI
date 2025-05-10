@@ -13,6 +13,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug causing the ship export target to revert to Coriolis after some UI actions. (#2732)
   * Speech Responder
     * Fixed the default script being editable.
+  * VoiceAttack responder
+    * Updated the available status variables
+      * `{TXT:Status destination name}` was incorrectly documented as `{TXT:Status destination}`.
+      * `{TXT:Status localized destination name}` was incorrectly documented as `{TXT:Status localized destination}`.
 
 ## 4.1.3
   * Core

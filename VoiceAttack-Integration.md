@@ -115,8 +115,8 @@ Where values are indexed (the compartments on a ship for example), the zero-base
   * {BOOL:Status telepresence multicrew} true if you are participating in telepresence multicrew.
   * {BOOL:Status physical multicrew} true if you are participating in physical multicrew.
   * {BOOL:Status npc crew active} true if at least one NPC crew member is assigned to active duty on your ship.
-  * {TXT:Status destination} the currently selected destination (including in-system destinations)
-  * {TXT:Status localized destination} the localized name of the currently selected destination, if available
+  * {TXT:Status destination name} the currently selected destination (including in-system destinations)
+  * {TXT:Status localized destination name} the localized name of the currently selected destination, if available
 
 ## Ship Variables
 Note: "Tiny" hardpoints are utility slots.
