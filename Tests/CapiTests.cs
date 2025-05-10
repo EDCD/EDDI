@@ -235,7 +235,7 @@ namespace Tests
                 stockbracket = CommodityBracket.Medium, 
                 StatusFlags = new HashSet<string>() { "Producer" }
             }.DeepEquals(updatedStation.commodities.FirstOrDefault(c => c.EliteID == 128961249)));
-            Assert.AreEqual(42558, CommodityDefinition.FromEDName("Tritium").avgprice); 
+            Assert.AreEqual(42558, CommodityDefinition.FromEDName("Tritium")?.avgprice); 
             Assert.AreEqual(6, updatedStation.prohibited.Count);
             Assert.IsTrue(CommodityDefinition.FromEDName("Tobacco").DeepEquals(updatedStation.prohibited.FirstOrDefault(p => p.EliteID == 128049213)));
             Assert.AreEqual(Dates.fromDateTimeToSeconds(marketTimestamp), updatedStation.commoditiesupdatedat);

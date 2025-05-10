@@ -2050,14 +2050,14 @@ namespace Tests
             if ( @event.commodityAmount != null )
             {
                 var commodityDefinition = CommodityDefinition.FromEDName(@event.commodityAmount.edname);
-                Assert.AreEqual(commodity, commodityDefinition.invariantName);
-                Assert.AreEqual(category, commodityDefinition.Category.invariantName);
+                Assert.AreEqual(commodity, commodityDefinition?.invariantName);
+                Assert.AreEqual(category, commodityDefinition?.Category.invariantName);
             }
             if ( @event.materialAmount != null )
             {
                 var materialDefinition = Material.FromEDName(@event.materialAmount.edname);
-                Assert.AreEqual(material, materialDefinition.invariantName);
-                Assert.AreEqual(category, materialDefinition.Category.invariantName);
+                Assert.AreEqual(material, materialDefinition?.invariantName);
+                Assert.AreEqual(category, materialDefinition?.Category.invariantName);
             }
             Assert.AreEqual(amount, @event.amount);
             Assert.AreEqual(total, @event.total);

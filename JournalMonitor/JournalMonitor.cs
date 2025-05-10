@@ -5707,7 +5707,10 @@ namespace EddiJournalMonitor
             var fallbackCategoryName = JsonParsing.getString(resourceData, "Category_Localised");
             if ( microResource.Category is null )
             { microResource.Category = MicroResourceCategory.FromEDName( category ); }
-            microResource.Category.fallbackLocalizedName = fallbackCategoryName;
+            if ( microResource.Category != null )
+            {
+                microResource.Category.fallbackLocalizedName = fallbackCategoryName;
+            }
             return microResource;
         }
 

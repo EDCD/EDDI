@@ -58,11 +58,15 @@ namespace EddiEvents
                         if ( resourceVal is IDictionary<string, object> resource )
                         {
                             var commodity = CommodityDefinition.FromEDName( JsonParsing.getString( resource, "Name" ) );
-                            commodity.fallbackLocalizedName = JsonParsing.getString( resource, "Name_Localised" );
-                            var amount = JsonParsing.getInt( resource, "RequiredAmount" ) - JsonParsing.getInt( resource, "ProvidedAmount" );
-                            if ( amount > 0 )
+                            if ( commodity != null )
                             {
-                                requiredResources.Add( new CommodityAmount( commodity, amount ) );
+                                commodity.fallbackLocalizedName = JsonParsing.getString( resource, "Name_Localised" );
+                                var amount = JsonParsing.getInt( resource, "RequiredAmount" ) -
+                                             JsonParsing.getInt( resource, "ProvidedAmount" );
+                                if ( amount > 0 )
+                                {
+                                    requiredResources.Add( new CommodityAmount( commodity, amount ) );
+                                }
                             }
                         }
                     }

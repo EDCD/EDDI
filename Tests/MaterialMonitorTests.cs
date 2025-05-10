@@ -49,11 +49,11 @@ namespace Tests
             var zirconiumAmount = config.materials[1];
             Assert.AreEqual("zirconium", zirconiumAmount.edname);
             Assert.AreEqual(13, zirconiumAmount.amount);
-            Assert.AreEqual(EddiDataDefinitions.Properties.Materials.zirconium, Material.FromEDName(config.materials[1].edname).localizedName);
+            Assert.AreEqual(EddiDataDefinitions.Properties.Materials.zirconium, Material.FromEDName(config.materials[1].edname)?.localizedName);
             Assert.AreEqual(100, config.materials[1].maximum);
             Assert.AreEqual(50, config.materials[1].desired);
             Assert.IsNull(config.materials[1].minimum);
-            Assert.AreEqual(EddiDataDefinitions.Properties.MaterialCategories.Element, Material.FromEDName(config.materials[1].edname).Category.localizedName);
+            Assert.AreEqual(EddiDataDefinitions.Properties.MaterialCategories.Element, Material.FromEDName(config.materials[1].edname)?.Category.localizedName);
         }
 
         [TestMethod]

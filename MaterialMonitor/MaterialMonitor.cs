@@ -322,7 +322,7 @@ namespace EddiMaterialMonitor
             lock (inventoryLock)
             {
                 var material = Material.FromEDName(edname);
-                var ma = inventory.FirstOrDefault(inv => inv.edname == material.edname);
+                var ma = inventory.FirstOrDefault(inv => inv.edname == material?.edname);
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to 0
@@ -334,10 +334,10 @@ namespace EddiMaterialMonitor
 
                 // Calculate a hard maximum storage limit for the material from its rarity level
                 var max = 300;
-                var rarityLevel = Material.FromEDName(ma.edname).Rarity.level;
+                var rarityLevel = Material.FromEDName(ma.edname)?.Rarity.level ?? 0;
                 if (rarityLevel > 0)
                 {
-                    max = (-50 * rarityLevel) + 350;
+                    max = (-50 * rarityLevel ) + 350;
                 }
 
                 // Add our amount, not exceeding our storage maximum
@@ -370,7 +370,7 @@ namespace EddiMaterialMonitor
             lock (inventoryLock)
             {
                 var material = Material.FromEDName(edname);
-                var ma = inventory.FirstOrDefault(inv => inv.edname == material.edname);
+                var ma = inventory.FirstOrDefault(inv => inv.edname == material?.edname);
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to amount
@@ -423,7 +423,7 @@ namespace EddiMaterialMonitor
             lock (inventoryLock)
             {
                 Material material = Material.FromEDName(edname);
-                MaterialAmount ma = inventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
+                MaterialAmount ma = inventory.FirstOrDefault( inv => inv.edname == material?.edname );
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to amount
@@ -481,7 +481,7 @@ namespace EddiMaterialMonitor
                         // Set material maximums if they aren't already defined
                         if (ma2.maximum == null)
                         {
-                            int rarityLevel = Material.FromEDName(ma2.edname).Rarity.level;
+                            int rarityLevel = Material.FromEDName(ma2.edname)?.Rarity.level ?? 0;
                             if (rarityLevel > 0)
                             {
                                 ma2.maximum = (-50 * rarityLevel) + 350;

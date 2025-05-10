@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -114,7 +115,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public readonly string basename;
 
-        [PublicAPI, JsonIgnore]
+        [Utilities.PublicAPI, JsonIgnore]
         public string invariantName => resourceManager.GetString(basename, CultureInfo.InvariantCulture) ?? fallbackInvariantName ?? basename;
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string fallbackLocalizedName { get; set; } = null;
 
-        [PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
+        [Utilities.PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;
 
         public override string ToString()
@@ -179,6 +180,7 @@ namespace EddiDataDefinitions
             return result;
         }
 
+        [CanBeNull]
         public static T FromEDName(string from)
         {
             EnsureSubClassStaticConstructorHasRun();

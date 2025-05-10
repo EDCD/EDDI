@@ -29,7 +29,7 @@ namespace EddiEvents
         public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long fine) : base(timestamp, NAME)
         {
             this.crimetype = crimetype;
-            this.crime = Crime.FromEDName(crimetype).localizedName;
+            this.crime = Crime.FromEDName(crimetype)?.localizedName;
             this.faction = faction;
             this.victim = victim;
             this.fine = fine;

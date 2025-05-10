@@ -19,14 +19,14 @@ namespace Tests
         public void TestDataDefinitionReactiveArmour()
         {
             var commodity = CommodityDefinition.FromEDName("$ReactiveArmour_Name;");
-            Assert.AreEqual("Reactive Armour", commodity.invariantName);
+            Assert.AreEqual("Reactive Armour", commodity?.invariantName);
         }
 
         [TestMethod]
         public void TestDataDefinitionUnknownName()
         {
             var commodity = CommodityDefinition.FromEDName("$MagicStuff_Name;");
-            Assert.AreEqual("magicstuff", commodity.invariantName);
+            Assert.AreEqual("magicstuff", commodity?.invariantName);
         }
 
         [TestMethod]
@@ -58,16 +58,16 @@ namespace Tests
         public void TestGovernmentKnownEDName()
         {
             var govt = Government.FromEDName("$government_Anarchy");
-            Assert.AreEqual("Anarchy", govt.basename);
-            Assert.AreEqual("Anarchy", govt.invariantName);
+            Assert.AreEqual("Anarchy", govt?.basename);
+            Assert.AreEqual("Anarchy", govt?.invariantName);
         }
 
         [TestMethod]
         public void TestGovernmentMissingNameFallback()
         {
             var govt = Government.FromEDName("$government_NoSuchAnimal");
-            Assert.AreEqual("NoSuchAnimal", govt.basename);
-            Assert.AreEqual("NoSuchAnimal", govt.localizedName);
+            Assert.AreEqual("NoSuchAnimal", govt?.basename);
+            Assert.AreEqual("NoSuchAnimal", govt?.localizedName);
         }
 
         [TestMethod]
@@ -83,25 +83,25 @@ namespace Tests
         public void TestCommodityTea()
         {
             var trinket = CommodityDefinition.FromEDName("Tea");
-            Assert.AreEqual("Tea", trinket.edname);
-            Assert.AreEqual("Tea", trinket.invariantName);
+            Assert.AreEqual("Tea", trinket?.edname);
+            Assert.AreEqual("Tea", trinket?.invariantName);
         }
 
         [TestMethod]
         public void TestCommodityDrones()
         {
             var trinket = CommodityDefinition.FromEDName("Drones");
-            Assert.AreEqual("Drones", trinket.edname);
-            Assert.AreEqual("Limpet", trinket.invariantName);
-            Assert.AreEqual("Non-marketable", trinket.Category.invariantName);
+            Assert.AreEqual("Drones", trinket?.edname);
+            Assert.AreEqual("Limpet", trinket?.invariantName);
+            Assert.AreEqual("Non-marketable", trinket?.Category.invariantName);
         }
 
         [TestMethod]
         public void TestCommodityTrinketsOfFortune()
         {
             var trinket = CommodityDefinition.FromEDName("TrinketsOfFortune");
-            Assert.AreEqual("TrinketsOfFortune", trinket.edname);
-            Assert.AreEqual("Trinkets Of Hidden Fortune", trinket.invariantName);
+            Assert.AreEqual("TrinketsOfFortune", trinket?.edname);
+            Assert.AreEqual("Trinkets Of Hidden Fortune", trinket?.invariantName);
         }
 
         [TestMethod]

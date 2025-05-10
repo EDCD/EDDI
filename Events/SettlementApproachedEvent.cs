@@ -73,8 +73,11 @@ namespace EddiEvents
             if ( settlementName.Contains("$") && !string.IsNullOrEmpty( localizedName ) )
             {
                 var signalName = SignalSource.FromEDName( settlementName );
-                signalName.fallbackLocalizedName = localizedName;
-                this.name = signalName.localizedName;
+                if ( signalName != null )
+                {
+                    signalName.fallbackLocalizedName = localizedName;
+                    this.name = signalName.localizedName;
+                }
             }
             else
             {

@@ -11,7 +11,7 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when you drop into normal space at your selected destination";
         public static readonly object[] SAMPLES =
             {
-                new DestinationArrivedEvent(Dates.FromString("2024-05-05T23:39:27Z") ?? DateTime.UtcNow, SignalSource.FromEDName("$USS_Type_Salvage;").invariantName, SignalSource.FromEDName("$USS_Type_Salvage;").localizedName, 4 ) { isSignalSource = true },
+                new DestinationArrivedEvent(Dates.FromString("2024-05-05T23:39:27Z") ?? DateTime.UtcNow, SignalSource.FromEDName("$USS_Type_Salvage;")?.invariantName, SignalSource.FromEDName("$USS_Type_Salvage;")?.localizedName, 4 ) { isSignalSource = true },
                 @"{ ""timestamp"":""2024-04-21T00:35:05Z"", ""event"":""SupercruiseDestinationDrop"", ""Type"":""$FIXED_EVENT_PROBE;"", ""Type_Localised"":""Ancient probe"", ""Threat"":0 }",
                 @"{ ""timestamp"":""2023-08-13T04:49:05Z"", ""event"":""SupercruiseDestinationDrop"", ""Type"":""ANDROMEDA GALAXY Q1Y-T0H"", ""Threat"":0, ""MarketID"":3703720704 }",
                 @"{ ""timestamp"":""2023-07-24T05:54:13Z"", ""event"":""SupercruiseDestinationDrop"", ""Type"":""Rorschach Hub"", ""Threat"":0, ""MarketID"":3224110080 }"

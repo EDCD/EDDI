@@ -29,7 +29,7 @@ namespace EddiEvents
         public BountyIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long bounty) : base(timestamp, NAME)
         {
             this.crimetype = crimetype;
-            this.crime = Crime.FromEDName(crimetype).localizedName;
+            this.crime = Crime.FromEDName(crimetype)?.localizedName;
             this.faction = faction;
             this.victim = victim;
             this.bounty = bounty;

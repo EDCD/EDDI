@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -115,35 +116,35 @@ namespace EddiDataDefinitions
         public static readonly SignalSource UnidentifiedSignalSource;
         public static readonly SignalSource GenericSignalSource;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public SignalType signalType { get; set; }
         
         public int index;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string spawningFaction { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public string spawningPower => SpawningPower?.localizedName ?? Power.None.localizedName;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Power SpawningPower { get; set; }
 
-        [ PublicAPI ] 
+        [ Utilities.PublicAPI ] 
         public string opposingPower => OpposingPower?.localizedName ?? Power.None.localizedName;
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public Power OpposingPower { get; set; }
 
         public DateTime? expiry { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public int? threatLevel { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public bool? isStation { get; set; }
 
-        [PublicAPI]
+        [Utilities.PublicAPI]
         public FactionState spawningState { get; set; }
 
         public long? systemAddress { get; set; }
@@ -160,6 +161,7 @@ namespace EddiDataDefinitions
             this.altEdName = altEdName;
         }
 
+        [CanBeNull]
         public static new SignalSource FromEDName(string from)
         {
             if (from == null) return null;
@@ -185,10 +187,10 @@ namespace EddiDataDefinitions
                 // prepend and append any proper names that were previously set aside
                 var symbolicFrom = match.Value;
                 var symbolicResult = FromEDName(symbolicFrom.Trim());
-                result = new SignalSource(from.Replace(symbolicFrom, symbolicResult.invariantName).Trim())
+                result = new SignalSource(from.Replace(symbolicFrom, symbolicResult?.invariantName).Trim())
                 {
-                    fallbackInvariantName = from.Replace(symbolicFrom, symbolicResult.invariantName).Trim(),
-                    fallbackLocalizedName = from.Replace(symbolicFrom, symbolicResult.localizedName).Trim()
+                    fallbackInvariantName = from.Replace(symbolicFrom, symbolicResult?.invariantName).Trim(),
+                    fallbackLocalizedName = from.Replace(symbolicFrom, symbolicResult?.localizedName).Trim()
                 };
             }
             else
@@ -288,10 +290,13 @@ namespace EddiDataDefinitions
             }
 
             // Include our index value with our result
-            result.index = indexResult;
-            result.threatLevel = threatLvl;
-
-            return result;
+            if ( result != null )
+            {
+                result.index = indexResult;
+                result.threatLevel = threatLvl;
+                return result;
+            }
+            return null;
         }
 
         public static SignalSource FromStationEDName(string from, string signalTypeEdName)

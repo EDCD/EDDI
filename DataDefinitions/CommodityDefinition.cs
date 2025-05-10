@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1416,20 +1417,20 @@ namespace EddiDataDefinitions
 
         #endregion
 
-        [ PublicAPI, JsonProperty( "category" ) ]
+        [ Utilities.PublicAPI, JsonProperty( "category" ) ]
         public readonly CommodityCategory Category;
 
         public string category => Category.localizedName;
 
-        [ PublicAPI( "True if the commodity is a rare market commodity" ) ]
+        [ Utilities.PublicAPI( "True if the commodity is a rare market commodity" ) ]
         public readonly bool rare;
 
-        [ PublicAPI( "True if the commodity is known to be corrosive" ) ]
+        [ Utilities.PublicAPI( "True if the commodity is known to be corrosive" ) ]
         public readonly bool corrosive;
 
         // The average price of a commodity can change - thus this cannot be read only.
         // Instead, this value should be updated whenever revised data is received.
-        [ PublicAPI( "The latest known average market price for the commodity" ) ]
+        [ Utilities.PublicAPI( "The latest known average market price for the commodity" ) ]
         public decimal avgprice { get; set; }
 
         // Not intended to be user facing
@@ -1526,12 +1527,10 @@ namespace EddiDataDefinitions
             }
         }
 
-        public static new CommodityDefinition FromEDName ( [JetBrains.Annotations.NotNull] string rawName )
+        [CanBeNull]
+        public static new CommodityDefinition FromEDName ( string rawName )
         {
-            if ( string.IsNullOrEmpty( rawName ) )
-            {
-                throw new ArgumentNullException( nameof( rawName ), @"Commodity 'rawName' value is invalid" );
-            }
+            if ( string.IsNullOrEmpty( rawName ) ) { return null; }
             var edName = NormalizedName( rawName );
             return ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName( edName );
         }
@@ -1539,7 +1538,6 @@ namespace EddiDataDefinitions
         public static bool EDNameExists ( string edName )
         {
             if ( string.IsNullOrEmpty( edName ) ) { return false; }
-
             return AllOfThem.Any( v =>
                 string.Equals( v.edname, tidiedEDName( edName ), StringComparison.InvariantCultureIgnoreCase ) );
         }

@@ -42,9 +42,13 @@ namespace EddiEvents
                         if ( contributionVal is IDictionary<string, object> contribution )
                         {
                             var commodity = CommodityDefinition.FromEDName( JsonParsing.getString(contribution, "Name") );
-                            commodity.fallbackLocalizedName = JsonParsing.getString( contribution, "Name_Localised" );
-                            var amount = JsonParsing.getInt(contribution, "Amount");
-                            commodityAmounts.Add( new CommodityAmount( commodity, amount ) );
+                            if ( commodity != null )
+                            {
+                                commodity.fallbackLocalizedName =
+                                    JsonParsing.getString( contribution, "Name_Localised" );
+                                var amount = JsonParsing.getInt( contribution, "Amount" );
+                                commodityAmounts.Add( new CommodityAmount( commodity, amount ) );
+                            }
                         }
                     }
                     events.Add( new ColonisationContributionEvent( timestamp, marketID, commodityAmounts ) { raw = line, fromLoad = fromLogLoad } );
