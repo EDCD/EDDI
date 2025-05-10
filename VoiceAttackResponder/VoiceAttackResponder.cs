@@ -31,11 +31,6 @@ namespace EddiVoiceAttackResponder
             return Properties.VoiceAttack.desc;
         }
 
-        public VoiceAttackResponder()
-        {
-            Logging.Info("Started VoiceAttack responder");
-        }
-
         public void Handle(Event @event)
         {
             if ( !App.FromVA || @event.fromLoad || @event is UnhandledEvent )
@@ -51,7 +46,7 @@ namespace EddiVoiceAttackResponder
             {
                 // Set up our event responder.
                 voiceAttackEventHandler = new VoiceAttackEventHandler();
-
+                Logging.Info( "Started VoiceAttack responder" );
                 return true;
             }
             else

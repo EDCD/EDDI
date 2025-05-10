@@ -139,7 +139,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                     result = result.Trim() == "" ? null : result.Trim();
                 }
 
-                Logging.Debug( $"Turned {( isTopLevelScript ? $"top level {scriptObject?.Name}" : "" )}script {script} into speech '{result}'" );
+                Logging.Debug( $"Turned {( isTopLevelScript ? $"top level '{scriptObject?.Name}" : "" )}' script '{script}' into speech '{result}'" );
 
                 if ( isTopLevelScript && result != null )
                 {
