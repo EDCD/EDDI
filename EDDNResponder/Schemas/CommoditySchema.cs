@@ -54,7 +54,7 @@ namespace EddiEddnResponder.Schemas
                     var handledData = new Dictionary<string, object>() as IDictionary<string, object>;
                     handledData["timestamp"] = data["timestamp"];
                     handledData["systemName"] = data["StarSystem"];
-                    handledData["stationName"] = data["StationName"].ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
+                    handledData["stationName"] = data["StationName"]?.ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
                     handledData["stationType"] = data["StationType"]; // market.json specific
                     handledData["marketId"] = data["MarketID"];
                     handledData["commodities"] = JArray.FromObject(data["Items"])
@@ -111,7 +111,7 @@ namespace EddiEddnResponder.Schemas
                 if (marketJson?["commodities"] is null || eddnState?.GameVersion is null) { return null; }
 
                 var systemName = profileJson?["lastSystem"]?["name"]?.ToString();
-                var stationName = marketJson["name"].ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
+                var stationName = marketJson["name"]?.ToString().TrimEnd( '+', ' ' ); // Remove any +++ at the end of the station name
                 var marketID = marketJson["id"].ToObject<long>();
                 var timestamp = marketJson["timestamp"].ToObject<DateTime?>();
 
