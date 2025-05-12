@@ -723,13 +723,16 @@ namespace EddiCore
             {
                 lock (responderLock)
                 {
-                    responder.Stop();
-                    ConcurrentBag<IEddiResponder> newResponders = new ConcurrentBag<IEddiResponder>();
+                    // Remove the responder from the active list.
+                    var newResponders = new ConcurrentBag<IEddiResponder>();
                     while (activeResponders.TryTake(out IEddiResponder item))
                     {
                         if (item != responder) { newResponders.Add(item); }
                     }
                     activeResponders = newResponders;
+
+                    // Stop the responder only after it's been removed from the active list.
+                    responder.Stop();
                 }
             }
         }
@@ -756,13 +759,16 @@ namespace EddiCore
             {
                 lock (monitorLock)
                 {
-                    monitor.Stop();
-                    ConcurrentBag<IEddiMonitor> newMonitors = new ConcurrentBag<IEddiMonitor>();
+                    // Remove the monitor from the active list.
+                    var newMonitors = new ConcurrentBag<IEddiMonitor>();
                     while (activeMonitors.TryTake(out IEddiMonitor item))
                     {
                         if (item != monitor) { newMonitors.Add(item); }
                     }
                     activeMonitors = newMonitors;
+
+                    // Stop the monitor only after it's been removed from the active list.
+                    monitor.Stop();
                 }
             }
         }
@@ -770,7 +776,7 @@ namespace EddiCore
         /// <summary> Enable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
         public void EnableMonitor(string invariantName)
         {
-            IEddiMonitor monitor = ObtainMonitor(invariantName);
+            var monitor = ObtainMonitor(invariantName);
             if (monitor != null)
             {
                 if (!activeMonitors.Contains(monitor))
@@ -778,7 +784,7 @@ namespace EddiCore
                     if (monitor.NeedsStart())
                     {
                         activeMonitors.Add(monitor);
-                        Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
+                        var monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
                         {
                             IsBackground = true
                         };
@@ -817,12 +823,12 @@ namespace EddiCore
         {
             try
             {
-                int failureCount = 0;
+                var failureCount = 0;
                 while (running && failureCount < 5 && activeMonitors.FirstOrDefault(m => m.MonitorName() == name) != null)
                 {
                     try
                     {
-                        Thread monitorThread = new Thread(() => start())
+                        var monitorThread = new Thread(() => start())
                         {
                             Name = name,
                             IsBackground = true
