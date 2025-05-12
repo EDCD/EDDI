@@ -335,6 +335,12 @@ namespace EddiDataDefinitions
             Model == StationModel.SurfaceStation && 
             hasdocking != true; }
 
+        #region MarketInformationUpdated
+        [JsonIgnore] public bool marketUpdatedThisVisit { get; set; }
+        [JsonIgnore] public bool outfittingUpdatedThisVisit { get; set; }
+        [JsonIgnore] public bool shipyardUpdatedThisVisit { get; set; }
+        #endregion
+
         #region Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 

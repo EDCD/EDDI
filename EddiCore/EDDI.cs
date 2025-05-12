@@ -1249,11 +1249,11 @@ namespace EddiCore
                     else
                     {
                         var updatedStarSystem = DataProvider.GetOrCreateStarSystem( @event.systemAddress, @event.systemname );
-                            updatedStarSystem.AddOrUpdateStation( carrier);
-                            DataProvider.SaveStarSystem(updatedStarSystem);
-                        }
+                        updatedStarSystem.AddOrUpdateStation( carrier);
+                        DataProvider.SaveStarSystem(updatedStarSystem);
                     }
                 }
+            }
 
             return true;
         }
@@ -1320,60 +1320,60 @@ namespace EddiCore
                 // Update our system properties
                 if ( CurrentStarSystem is null ) { return false; }
 
-                    CurrentStarSystem.x = @event.x;
-                    CurrentStarSystem.y = @event.y;
-                    CurrentStarSystem.z = @event.z;
+                CurrentStarSystem.x = @event.x;
+                CurrentStarSystem.y = @event.y;
+                CurrentStarSystem.z = @event.z;
 
-                    // Update Thargoid war data, when available
-                    CurrentStarSystem.ThargoidWar = @event.ThargoidWar;
+                // Update Thargoid war data, when available
+                CurrentStarSystem.ThargoidWar = @event.ThargoidWar;
 
-                    if ( currentStation != null )
-                    {
-                        // Add our carrier to the new current star system
-                        CurrentStarSystem.AddOrUpdateStation( CurrentStation );
-                    }
+                if ( currentStation != null )
+                {
+                    // Add our carrier to the new current star system
+                    CurrentStarSystem.AddOrUpdateStation( CurrentStation );
+                }
 
-                    // Update the mutable system data from the journal
+                // Update the mutable system data from the journal
                 if ( @event.population != null )
-                    {
-                        CurrentStarSystem.population = @event.population;
-                        CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
-                        CurrentStarSystem.securityLevel = @event.securityLevel;
-                        CurrentStarSystem.Faction = @event.controllingsystemfaction;
-                    }
+                {
+                    CurrentStarSystem.population = @event.population;
+                    CurrentStarSystem.Economies = new List<Economy> { @event.systemEconomy, @event.systemEconomy2 };
+                    CurrentStarSystem.securityLevel = @event.securityLevel;
+                    CurrentStarSystem.Faction = @event.controllingsystemfaction;
+                }
 
-                    // Update system faction data if available
+                // Update system faction data if available
                 if ( @event.factions != null )
-                    {
-                        CurrentStarSystem.factions = @event.factions;
-                        CurrentStarSystem.conflicts = @event.conflicts;
+                {
+                    CurrentStarSystem.factions = @event.factions;
+                    CurrentStarSystem.conflicts = @event.conflicts;
 
-                        // Update station controlling faction data
+                    // Update station controlling faction data
                     foreach ( var station in CurrentStarSystem.stations )
-                        {
+                    {
                         var stationFaction = @event.factions
                             .FirstOrDefault( f => f.name == station.Faction?.name );
                         if ( stationFaction != null )
-                            {
-                                station.Faction = stationFaction;
-                            }
+                        {
+                            station.Faction = stationFaction;
                         }
                     }
+                }
 
-                    // (When pledged) Powerplay information
-                    CurrentStarSystem.Power = @event.Power;
-                    CurrentStarSystem.NearbyPowers = @event.NearbyPowers;
-                    CurrentStarSystem.powerState = @event.PowerState ?? CurrentStarSystem.powerState;
-                    CurrentStarSystem.powerAcquisitionProgress = @event.powerAcquisitionProgress;
-                    CurrentStarSystem.powerControlProgress = @event.powerControlProgress;
-                    CurrentStarSystem.powerReinforcementControlPoints = @event.powerReinforcementControlPoints;
-                    currentStarSystem.powerUnderminingControlPoints = @event.powerUnderminingControlPoints;
+                // (When pledged) Powerplay information
+                CurrentStarSystem.Power = @event.Power;
+                CurrentStarSystem.NearbyPowers = @event.NearbyPowers;
+                CurrentStarSystem.powerState = @event.PowerState ?? CurrentStarSystem.powerState;
+                CurrentStarSystem.powerAcquisitionProgress = @event.powerAcquisitionProgress;
+                CurrentStarSystem.powerControlProgress = @event.powerControlProgress;
+                CurrentStarSystem.powerReinforcementControlPoints = @event.powerReinforcementControlPoints;
+                currentStarSystem.powerUnderminingControlPoints = @event.powerUnderminingControlPoints;
 
-                    // Update to most recent information
+                // Update to most recent information
                 CurrentStarSystem.visitLog.Add( @event.timestamp );
                 CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( @event.timestamp );
                 DataProvider.SaveStarSystem( CurrentStarSystem );
-                
+
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && carrierID != null)
                 {
@@ -1580,103 +1580,103 @@ namespace EddiCore
             if ( CurrentStarSystem is null ) { return false; }
 
             // Always update the current system with the current co-ordinates, just in case things have changed or coordinates are not yet known
-                CurrentStarSystem.x = theEvent.x;
-                CurrentStarSystem.y = theEvent.y;
-                CurrentStarSystem.z = theEvent.z;
+            CurrentStarSystem.x = theEvent.x;
+            CurrentStarSystem.y = theEvent.y;
+            CurrentStarSystem.z = theEvent.z;
 
-                // Update Thargoid war data, as applicable
-                CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
+            // Update Thargoid war data, as applicable
+            CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
 
-                // Update the mutable system data from the journal
-                if ( theEvent.population != null )
+            // Update the mutable system data from the journal
+            if ( theEvent.population != null )
+            {
+                CurrentStarSystem.population = theEvent.population;
+                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+                CurrentStarSystem.securityLevel = theEvent.securityLevel;
+                CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
+            }
+
+            // Update system faction data if available
+            if ( theEvent.factions != null )
+            {
+                CurrentStarSystem.factions = theEvent.factions;
+                CurrentStarSystem.conflicts = theEvent.conflicts;
+
+                // Update station controlling faction data
+                foreach ( var station in CurrentStarSystem.stations )
                 {
-                    CurrentStarSystem.population = theEvent.population;
-                    CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
-                    CurrentStarSystem.securityLevel = theEvent.securityLevel;
-                    CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
-                }
-
-                // Update system faction data if available
-                if ( theEvent.factions != null )
-                {
-                    CurrentStarSystem.factions = theEvent.factions;
-                    CurrentStarSystem.conflicts = theEvent.conflicts;
-
-                    // Update station controlling faction data
-                    foreach ( var station in CurrentStarSystem.stations )
+                    var stationFaction = theEvent.factions.FirstOrDefault( f => f.name == station?.Faction?.name );
+                    if ( stationFaction != null )
                     {
-                        var stationFaction = theEvent.factions.FirstOrDefault( f => f.name == station?.Faction?.name );
-                        if ( stationFaction != null )
-                        {
-                            station.Faction = stationFaction;
-                        }
+                        station.Faction = stationFaction;
                     }
                 }
+            }
 
-                // (When pledged) Powerplay information
-                CurrentStarSystem.Power = theEvent.Power;
-                CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
-                CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
-                CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
-                CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
-                CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
-                currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
+            // (When pledged) Powerplay information
+            CurrentStarSystem.Power = theEvent.Power;
+            CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
+            CurrentStarSystem.powerState = theEvent.PowerState ?? CurrentStarSystem.powerState;
+            CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
+            CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
+            CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
+            currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
 
-                if ( theEvent.docked )
+            if ( theEvent.docked )
+            {
+                // Update the station
+                Logging.Debug( "Now at station " + theEvent.station );
+                var station = CurrentStarSystem.stations.Find( s => s.marketId == theEvent.marketId );
+                if ( station == null )
                 {
-                    // Update the station
-                    Logging.Debug( "Now at station " + theEvent.station );
-                    var station = CurrentStarSystem.stations.Find( s => s.marketId == theEvent.marketId );
-                    if ( station == null )
-                    {
-                        // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                        station = new Station { name = theEvent.station, marketId = theEvent.marketId, systemname = theEvent.systemname, systemAddress = theEvent.systemAddress };
-                        CurrentStarSystem.AddOrUpdateStation( station );
-                    }
-
-                    // We are docked
-                    Environment = Constants.ENVIRONMENT_DOCKED;
-
-                    // If we're not in a taxi or multicrew then we're in our own ship.
-                    if ( !theEvent.taxi && !theEvent.multicrew ) { Vehicle = Constants.VEHICLE_SHIP; }
-
-                    // Update station properties known from this event
-                    station.systemAddress = theEvent.systemAddress;
-                    station.Faction = theEvent.controllingstationfaction;
-                    station.Model = theEvent.stationModel;
-                    station.distancefromstar = theEvent.distancefromstar;
-
-                    CurrentStation = station;
-
-                    // Kick off the profile refresh if the companion API is available
-                    if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && theEvent.marketId != null )
-                    {
-                        // Refresh station data
-                        if ( theEvent.fromLoad ) { return true; } // Don't fire this event when loading pre-existing logs
-
-                        Task.Run( async () => { await conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 ); } ).ConfigureAwait(false);
-                    }
-                }
-                else if ( theEvent.latitude != null && theEvent.longitude != null )
-                {
-                    Environment = Constants.ENVIRONMENT_LANDED;
-                }
-                else
-                {
-                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                    station = new Station { name = theEvent.station, marketId = theEvent.marketId, systemname = theEvent.systemname, systemAddress = theEvent.systemAddress };
+                    CurrentStarSystem.AddOrUpdateStation( station );
                 }
 
-                if ( theEvent.bodyname != null && ( theEvent.bodyType == BodyType.Moon ||
-                                                    theEvent.bodyType == BodyType.Planet ) )
-                {
-                    // Update the body 
-                    Logging.Debug( "Now at body " + theEvent.bodyname );
-                    updateCurrentStellarBody( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
-                }
+                // We are docked
+                Environment = Constants.ENVIRONMENT_DOCKED;
 
-                // Update to most recent information
-                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
-                DataProvider.SaveStarSystem( CurrentStarSystem );
+                // If we're not in a taxi or multicrew then we're in our own ship.
+                if ( !theEvent.taxi && !theEvent.multicrew ) { Vehicle = Constants.VEHICLE_SHIP; }
+
+                // Update station properties known from this event
+                station.systemAddress = theEvent.systemAddress;
+                station.Faction = theEvent.controllingstationfaction;
+                station.Model = theEvent.stationModel;
+                station.distancefromstar = theEvent.distancefromstar;
+
+                CurrentStation = station;
+
+                // Kick off the profile refresh if the companion API is available
+                if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized && theEvent.marketId != null )
+                {
+                    // Refresh station data
+                    if ( theEvent.fromLoad ) { return true; } // Don't fire this event when loading pre-existing logs
+
+                    Task.Run( async () => { await conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 ); } ).ConfigureAwait(false);
+                }
+            }
+            else if ( theEvent.latitude != null && theEvent.longitude != null )
+            {
+                Environment = Constants.ENVIRONMENT_LANDED;
+            }
+            else
+            {
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+            }
+
+            if ( theEvent.bodyname != null && ( theEvent.bodyType == BodyType.Moon ||
+                                                theEvent.bodyType == BodyType.Planet ) )
+            {
+                // Update the body 
+                Logging.Debug( "Now at body " + theEvent.bodyname );
+                updateCurrentStellarBody( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
+            }
+
+            // Update to most recent information
+            CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
+            DataProvider.SaveStarSystem( CurrentStarSystem );
 
             return true;
         }
@@ -1751,6 +1751,12 @@ namespace EddiCore
         private bool eventUndocked(UndockedEvent @event)
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+            if ( CurrentStation != null )
+            {
+                CurrentStation.marketUpdatedThisVisit = false;
+                CurrentStation.outfittingUpdatedThisVisit = false;
+                CurrentStation.shipyardUpdatedThisVisit = false;
+            }
             CurrentStation = null;
 
             // Kick off the profile refresh if the companion API is available
@@ -1862,9 +1868,10 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new market data
-                    // Don't proceed if the data was already recently updated (within the past 120 seconds)
-                    if ( ( CurrentStation.commoditiesupdatedat + 120 ) < Dates.fromDateTimeToSeconds( theEvent.timestamp ) )
+                    // Don't proceed if the data was already updated this visit
+                    if ( !currentStation.marketUpdatedThisVisit )
                     {
+                        currentStation.marketUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
                             theEvent.station, theEvent.system, new HashSet<string> { "market" } ) { raw = theEvent.raw } );
                     }
@@ -1911,9 +1918,10 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new outfitting data
-                    // Don't proceed if the data was already recently updated (within the past 120 seconds)
-                    if ( ( CurrentStation.outfittingupdatedat + 120 ) < Dates.fromDateTimeToSeconds( theEvent.timestamp ) )
+                    // Don't proceed if the data was already updated this visit
+                    if ( !currentStation.outfittingUpdatedThisVisit )
                     {
+                        currentStation.outfittingUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
                             theEvent.station, theEvent.system, new HashSet<string> { "outfitting" } )
                         {
@@ -1962,9 +1970,10 @@ namespace EddiCore
                     DataProvider.SaveStarSystem(CurrentStarSystem);
 
                     // Post an update event for new shipyard data
-                    // Don't proceed if the data was already recently updated (within the past 120 seconds)
-                    if ( ( CurrentStation.shipyardupdatedat + 120 ) < Dates.fromDateTimeToSeconds( theEvent.timestamp ) )
+                    // Don't proceed if the data was already updated this visit
+                    if ( !currentStation.shipyardUpdatedThisVisit )
                     {
+                        currentStation.shipyardUpdatedThisVisit = true;
                         enqueueEvent( new MarketInformationUpdatedEvent( theEvent.timestamp, theEvent.marketId,
                             theEvent.station, theEvent.system, new HashSet<string> { "shipyard" } )
                         {
@@ -2167,50 +2176,50 @@ namespace EddiCore
 
             updateCurrentSystem( theEvent.system, theEvent.systemAddress );
             if ( CurrentStarSystem is null ) { return false; }
-                CurrentStarSystem.systemAddress = theEvent.systemAddress;
-                CurrentStarSystem.x = theEvent.x;
-                CurrentStarSystem.y = theEvent.y;
-                CurrentStarSystem.z = theEvent.z;
-                CurrentStarSystem.Faction = theEvent.controllingfaction;
-                CurrentStarSystem.conflicts = theEvent.conflicts;
-                CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
+            CurrentStarSystem.systemAddress = theEvent.systemAddress;
+            CurrentStarSystem.x = theEvent.x;
+            CurrentStarSystem.y = theEvent.y;
+            CurrentStarSystem.z = theEvent.z;
+            CurrentStarSystem.Faction = theEvent.controllingfaction;
+            CurrentStarSystem.conflicts = theEvent.conflicts;
+            CurrentStarSystem.ThargoidWar = theEvent.ThargoidWar;
 
-                // Update system faction data if available
-                if ( theEvent.factions != null )
+            // Update system faction data if available
+            if ( theEvent.factions != null )
+            {
+                CurrentStarSystem.factions = theEvent.factions;
+
+                // Update station controlling faction data
+                foreach ( var station in CurrentStarSystem.stations )
                 {
-                    CurrentStarSystem.factions = theEvent.factions;
-
-                    // Update station controlling faction data
-                    foreach ( var station in CurrentStarSystem.stations )
+                    var stationFaction = theEvent.factions.Find(f => f.name == station?.Faction?.name);
+                    if ( stationFaction != null )
                     {
-                        var stationFaction = theEvent.factions.Find(f => f.name == station?.Faction?.name);
-                        if ( stationFaction != null )
-                        {
-                            station.Faction = stationFaction;
-                        }
+                        station.Faction = stationFaction;
                     }
                 }
+            }
 
-                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
-                CurrentStarSystem.securityLevel = theEvent.securityLevel;
-                if ( theEvent.population != null )
-                {
-                    CurrentStarSystem.population = theEvent.population;
-                }
+            CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+            CurrentStarSystem.securityLevel = theEvent.securityLevel;
+            if ( theEvent.population != null )
+            {
+                CurrentStarSystem.population = theEvent.population;
+            }
 
-                // Powerplay information
-                CurrentStarSystem.Power = theEvent.Power;
-                CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
-                CurrentStarSystem.powerState = theEvent.PowerState;
-                CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
-                CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
-                CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
-                currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
+            // Powerplay information
+            CurrentStarSystem.Power = theEvent.Power;
+            CurrentStarSystem.NearbyPowers = theEvent.NearbyPowers;
+            CurrentStarSystem.powerState = theEvent.PowerState;
+            CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
+            CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
+            CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
+            currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
 
-                // Update to most recent information
-                CurrentStarSystem.visitLog.Add( theEvent.timestamp );
-                CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
-                DataProvider.SaveStarSystem( CurrentStarSystem );
+            // Update to most recent information
+            CurrentStarSystem.visitLog.Add( theEvent.timestamp );
+            CurrentStarSystem.updatedat = Dates.fromDateTimeToSeconds( theEvent.timestamp );
+            DataProvider.SaveStarSystem( CurrentStarSystem );
 
             return passEvent;
         }
