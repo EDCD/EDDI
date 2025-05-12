@@ -75,13 +75,14 @@ namespace EddiEvents
                     {
                         events.Add( new ColonisationConstructionDepotEvent( timestamp, marketID, progress, constructionComplete, constructionFailed, requiredResources )
                         {
-                            raw = line, fromLoad = fromLogLoad
+                            raw = line,
+                            fromLoad = fromLogLoad
                         } );
-
-                        // Set up suppression in case of repetitious and unchanged data.
-                        lastMarketID = marketID;
-                        lastRequiredResourceAmount = requiredResources.Sum( r => r.amount );
                     }
+
+                    // Set up suppression in case of repetitious and unchanged data.
+                    lastMarketID = marketID;
+                    lastRequiredResourceAmount = requiredResources.Sum( r => r.amount );
                 }
             }
             return true;
