@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace EddiJournalMonitor
         private const int pollingIntervalActiveMs = 100;
         private const int pollingIntervalRelaxedMs = 5000;
 
+        private readonly BlockingCollection<JournalChunk> journalQueue = new BlockingCollection<JournalChunk>();
+        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
         // Keep track of status
         private bool running;
 
@@ -31,6 +35,40 @@ namespace EddiJournalMonitor
             Directory = directory;
             Filter = new Regex(filter);
             Callback = callback;
+
+            // Start a background task to process the queue
+            Task.Run( () => ProcessQueue( cancellationTokenSource.Token ) );
+        }
+
+        private class JournalChunk
+        {
+            internal readonly IEnumerable<string> lines;
+            internal readonly bool isLoadEvent;
+
+            public JournalChunk( IEnumerable<string> lines, bool isLoadEvent )
+            {
+                this.lines = lines;
+                this.isLoadEvent = isLoadEvent;
+            }
+        }
+
+        private void ProcessQueue ( CancellationToken cancellationToken )
+        {
+            try
+            {
+                while ( !cancellationToken.IsCancellationRequested )
+                {
+                    // Take a line from the queue (blocks if empty)
+                    var chunk = journalQueue.Take(cancellationToken);
+
+                    // Process the line (wrap in a collection to match the callback signature)
+                    Callback( chunk.lines, chunk.isLoadEvent );
+                }
+            }
+            catch ( OperationCanceledException )
+            {
+                // Graceful exit when cancellation is requested
+            }
         }
 
         protected void start(bool readAllOnLoad = false)
@@ -127,73 +165,74 @@ namespace EddiJournalMonitor
             }
         }
 
-        private void Read(long seekPos, int readLen, FileInfo fileInfo, bool isLoadEvent)
+        private void Read ( long seekPos, int readLen, FileInfo fileInfo, bool isLoadEvent )
         {
-            using (var fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using ( var fs = fileInfo.Open( FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
             {
-                fs.Seek(seekPos, SeekOrigin.Begin);
+                fs.Seek( seekPos, SeekOrigin.Begin );
                 var bytes = new byte[readLen];
                 var haveRead = 0;
-                while (haveRead < readLen)
+                while ( haveRead < readLen )
                 {
-                    haveRead += fs.Read(bytes, haveRead, readLen - haveRead);
-                    fs.Seek(seekPos + haveRead, SeekOrigin.Begin);
+                    haveRead += fs.Read( bytes, haveRead, readLen - haveRead );
+                    fs.Seek( seekPos + haveRead, SeekOrigin.Begin );
                 }
                 // Convert bytes to string
                 var s = Encoding.UTF8.GetString(bytes);
-                var lines = Regex.Split(s, "\r?\n");
-                Callback( lines.Where( l => l != "" ), isLoadEvent );
+                var lines = Regex.Split(s, "\r?\n").Where(l => !string.IsNullOrEmpty(l));
+
+                // Enqueue lines into the blocking collection
+                journalQueue.Add( new JournalChunk( lines, isLoadEvent ) );
             }
         }
 
-        private void ReadLastCommanderLoad(FileInfo fileInfo, bool isLoadEvent)
+        private void ReadLastCommanderLoad ( FileInfo fileInfo, bool isLoadEvent )
         {
             long seekPos = 0;
 
-            using (var fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using ( var fs = fileInfo.Open( FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
             {
-                fs.Seek(seekPos, SeekOrigin.Begin);
+                fs.Seek( seekPos, SeekOrigin.Begin );
                 var bytes = new byte[fileInfo.Length];
                 var haveRead = 0;
-                while (haveRead < fileInfo.Length)
+                while ( haveRead < fileInfo.Length )
                 {
-                    haveRead += fs.Read(bytes, haveRead, (int)fileInfo.Length - haveRead);
-                    fs.Seek(seekPos + haveRead, SeekOrigin.Begin);
+                    haveRead += fs.Read( bytes, haveRead, (int)fileInfo.Length - haveRead );
+                    fs.Seek( seekPos + haveRead, SeekOrigin.Begin );
                 }
                 // Convert bytes to strings
                 var s = Encoding.UTF8.GetString(bytes);
                 var lines = Regex.Split(s, "\r?\n")
-                    .Select( (v, i) => new { Key = i, Value = v })
-                    .ToDictionary(kv => kv.Key, kv => kv.Value );
+                    .Where(l => !string.IsNullOrEmpty(l))
+                    .ToList();
 
                 // First line should be a file header
-                var firstLine = lines.Any() ? lines.FirstOrDefault().Value : null;
-                if (!string.IsNullOrEmpty(firstLine) && firstLine.Contains("Fileheader"))
+                var firstLine = lines.FirstOrDefault();
+                if ( !string.IsNullOrEmpty( firstLine ) && firstLine.Contains( "Fileheader" ) )
                 {
-                    // Pass this along as an event
-                    Callback( new[] { firstLine }, isLoadEvent);
+                    // Enqueue the header line
+                    journalQueue.Add( new JournalChunk( new [] { firstLine }, isLoadEvent) );
                 }
 
                 // Find the latest "Commander" event, written at the start of the Load Game process
-                // (whenever loading from the main menu) 
-                var lastLoadLine = lines
-                    .LastOrDefault( x => x.Value.Contains(@"""event"":""Commander""") );
-
-                if (lastLoadLine.Value != null)
+                var lastLoadLineIndex = lines.FindLastIndex(line => line.Contains(@"""event"":""Commander"""));
+                if ( lastLoadLineIndex >= 0 )
                 {
-                    Task.Run(() =>
-                    {
-                        Callback( lines
-                            .Where(l => l.Key >= lastLoadLine.Key )
-                            .Select(l => l.Value), isLoadEvent );
-                    });
+                    // Enqueue all lines from the last "Commander" event onward
+                    journalQueue.Add(new JournalChunk( lines.Skip( lastLoadLineIndex ), isLoadEvent ) );
                 }
             }
         }
 
-        protected void stop()
+        protected void stop ()
         {
             running = false;
+
+            // Stop queuing new journal chunks for processing
+            cancellationTokenSource.Cancel();
+
+            // Complete adding to the queue to unblock any waiting threads
+            journalQueue.CompleteAdding();
         }
 
         /// <summary>Find the latest file in a given directory matching a given expression, or null if no such file exists</summary>
