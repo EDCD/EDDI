@@ -377,23 +377,14 @@ namespace EddiDataProviderService
             }
         }
 
-        internal static void PreserveBodyProperties ( StarSystem updatedSystem, IDictionary<string, object> oldStarSystem )
+        internal static void PreserveBodyProperties ( StarSystem updatedSystem,
+            IDictionary<string, object> oldStarSystem )
         {
             // Carry over Body properties that we want to preserve (e.g. exploration data)
             oldStarSystem.TryGetValue( "bodies", out object bodiesVal );
-            try
+            if ( bodiesVal is List<object> bodyVals )
             {
-                if ( bodiesVal != null )
-                {
-                    var oldBodiesString = JsonConvert.SerializeObject(bodiesVal);
-                    Logging.Debug( $"Reading old body properties from {updatedSystem.systemname} from database", oldBodiesString );
-                    var oldBodies = JsonConvert.DeserializeObject<List<Body>>(oldBodiesString);
-                    updatedSystem.PreserveBodyData( oldBodies, updatedSystem.bodies );
-                }
-            }
-            catch ( Exception e ) when ( e is JsonReaderException || e is JsonWriterException || e is JsonException )
-            {
-                Logging.Error( $"Failed to read exploration data for bodies in {updatedSystem.systemname} from database.", e );
+                updatedSystem.PreserveBodyData( bodyVals, updatedSystem.bodies );
             }
         }
 

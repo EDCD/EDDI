@@ -438,25 +438,41 @@ namespace EddiDataDefinitions
             bodies = builder.ToImmutable();
         }
 
-        public void PreserveBodyData ( List<Body> oldBodies, ImmutableList<Body> newBodies )
+        public void PreserveBodyData ( List<object> oldBodies, ImmutableList<Body> newBodies )
         {
             // Update `bodies` with new data, except preserve properties not available via the server
             var newBodyBuilder = newBodies.ToBuilder();
-            foreach ( Body oldBody in oldBodies )
+            foreach ( var oldBodyVal in oldBodies )
             {
-                if ( newBodyBuilder.Any( b => b.bodyname == oldBody.bodyname ) )
+                try
                 {
-                    int index = newBodyBuilder.FindIndex(b => b.bodyname == oldBody.bodyname);
-                    newBodyBuilder[ index ] = PreserveBodyData( oldBody, newBodyBuilder[ index ] );
-                }
-                else
-                {
-                    // `newBodies` did not contain the `oldBody` so we add it here, provided we've
-                    // scanned the body ourselves so that we're confident that our old data is accurate. 
-                    if ( oldBody.scannedDateTime != null )
+                    var oldBodyString = JsonConvert.SerializeObject(oldBodyVal);
+                    var oldBody = JsonConvert.DeserializeObject<Body>(oldBodyString);
+
+                    if ( newBodyBuilder.Any( b => b.bodyname == oldBody.bodyname ) )
                     {
-                        newBodyBuilder.Add( oldBody );
+                        var index = newBodyBuilder.FindIndex( b => b.bodyname == oldBody.bodyname );
+                        newBodyBuilder[ index ] = PreserveBodyData( oldBody, newBodyBuilder[ index ] );
                     }
+                    else
+                    {
+                        // `newBodies` did not contain the `oldBody` so we add it here, provided we've
+                        // scanned the body ourselves so that we're confident that our old data is accurate. 
+                        if ( oldBody.scannedDateTime != null )
+                        {
+                            newBodyBuilder.Add( oldBody );
+                        }
+                    }
+                }
+                catch ( Exception e )
+                {
+                    var dict = new Dictionary<string, object>()
+                    {
+                        { "oldBody", JsonConvert.SerializeObject( oldBodyVal ) },
+                        { "exception", e }
+
+                    };
+                    Logging.Debug( "Failed to read old body properties from database", dict );
                 }
             }
             newBodyBuilder.Sort( Body.CompareById );
