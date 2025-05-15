@@ -9,20 +9,21 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public string commodity => commodityDefinition.localizedName;
 
-        [PublicAPI]
+        [PublicAPI, JsonProperty]
         public int amount { get; }
 
         // Not intended to be user facing
 
-        public CommodityDefinition commodityDefinition { get; }
+        [JsonProperty]
+        public CommodityDefinition commodityDefinition { get; set; }
 
         [JsonIgnore]
         public string edname => commodityDefinition.edname;
 
-        public CommodityAmount( [JetBrains.Annotations.NotNull] CommodityDefinition commodity, int amount)
+        public CommodityAmount( [JetBrains.Annotations.NotNull] CommodityDefinition commodityDefinition, int amount)
         {
-            this.commodityDefinition = commodity ??
-                                       throw new ArgumentNullException( nameof(commodity), @"Commodity cannot be null." );
+            this.commodityDefinition = commodityDefinition ??
+                                       throw new ArgumentNullException( nameof(commodityDefinition), @"Commodity definition cannot be null." );
             this.amount = amount;
         }
     }
