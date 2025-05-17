@@ -141,7 +141,7 @@ namespace EddiSpeechResponder
 
         private void RegisterHotkey ()
         {
-            if ( currentKeyGesture != null && actionComboBox.SelectedItem is KeyValuePair<string, Action> hotkeyAction )
+            if ( IsActive && currentKeyGesture != null && actionComboBox.SelectedItem is KeyValuePair<string, Action> hotkeyAction )
             {
                 // Register the hotkey
                 EDDI.Instance.HotkeyManager.RegisterHotkey( currentKeyGesture, hotkeyAction.Value );
