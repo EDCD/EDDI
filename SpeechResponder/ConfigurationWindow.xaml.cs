@@ -439,11 +439,29 @@ namespace EddiSpeechResponder
             EDDI.Instance.SpeechResponderModalWait = true;
             var window = new HotkeysWindow()
             {
-                Owner = Window.GetWindow(this)
+                Owner = Window.GetWindow(this), 
+                SizeToContent = SizeToContent.WidthAndHeight, 
+                ResizeMode = ResizeMode.NoResize 
             };
             try
             {
-                window.ShowDialog();
+                if ( window.ShowDialog() ?? false )
+                {
+                    // Register the new hotkey configuration
+                    foreach ( var actionKeyGesture in window.HotkeyActionCollection.HotkeyActions )
+                    {
+                        if ( actionKeyGesture.KeyGesture is null )
+                        {
+                            EDDI.Instance.HotkeyManager.UnregisterHotkey( actionKeyGesture.Name );
+                        }
+                        else
+                        {
+                            EDDI.Instance.HotkeyManager.RegisterHotkey( actionKeyGesture.Name, actionKeyGesture.KeyGesture, actionKeyGesture.Action );
+                        }
+                    }
+
+                    // TODO: Save the hotkey configuration
+                }
             }
             catch ( Win32Exception ex )
             {
