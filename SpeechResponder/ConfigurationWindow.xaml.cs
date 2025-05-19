@@ -437,7 +437,9 @@ namespace EddiSpeechResponder
         private void configureHotkeysButtonClicked ( object sender, RoutedEventArgs e )
         {
             EDDI.Instance.SpeechResponderModalWait = true;
-            var window = new HotkeysWindow()
+            var hkm = EDDI.Instance.HotkeyManager;
+
+            var window = new HotkeysWindow( hkm )
             {
                 Owner = Window.GetWindow(this), 
                 SizeToContent = SizeToContent.WidthAndHeight, 
@@ -450,17 +452,15 @@ namespace EddiSpeechResponder
                     // Register the new hotkey configuration
                     foreach ( var actionKeyGesture in window.HotkeyActionCollection.HotkeyActions )
                     {
-                        if ( actionKeyGesture.KeyGesture is null )
+                        // Unregister the old hotkey if it exists
+                        hkm.UnregisterHotkey( actionKeyGesture.Name );
+
+                        // Assign a new hotkey if a gesture is set
+                        if ( actionKeyGesture.KeyGesture != null )
                         {
-                            EDDI.Instance.HotkeyManager.UnregisterHotkey( actionKeyGesture.Name );
-                        }
-                        else
-                        {
-                            EDDI.Instance.HotkeyManager.RegisterHotkey( actionKeyGesture.Name, actionKeyGesture.KeyGesture, actionKeyGesture.Action );
+                            hkm.RegisterHotkey( actionKeyGesture.Name, actionKeyGesture.KeyGesture );
                         }
                     }
-
-                    // TODO: Save the hotkey configuration
                 }
             }
             catch ( Win32Exception ex )

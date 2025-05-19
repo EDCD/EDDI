@@ -43,6 +43,11 @@ namespace EddiConfigService.Configurations
         [JsonProperty("MainWindowPosition")]
         public Rect MainWindowPosition { get; set; }
 
+        // Hotkeys
+
+        [ JsonProperty( "Hotkeys" ) ]
+        public Dictionary<string, string> Hotkeys { get; set; } = new Dictionary<string, string>();
+
         // Default
         public EDDIConfiguration()
         {
