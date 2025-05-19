@@ -2,8 +2,10 @@
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiCore.Hotkeys
 {
     public class HotkeyManager
