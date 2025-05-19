@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
+using EddiCore.Hotkeys;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;

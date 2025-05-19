@@ -1,5 +1,4 @@
-﻿using EddiCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace EddiSpeechResponder
+namespace EddiCore.Hotkeys
 {
     public partial class HotkeysWindow : Window
     {
