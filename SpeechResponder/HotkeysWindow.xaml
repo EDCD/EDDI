@@ -10,36 +10,27 @@
         FocusManager.FocusedElement="{Binding ElementName=actionComboBox}"
         WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow"
-        KeyDown="RegisterHotkeyButton_KeyDown"
-        KeyUp="RegisterHotkeyButton_KeyUp"
-        Height="150" Width="300"
+        KeyDown="HotkeysWindow_KeyDown"
+        KeyUp="HotkeysWindow_KeyUp"
         >
-    <Grid Margin="5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <!--<RowDefinition Height="*"/>-->
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="Action:" Margin="5" />
-        <ComboBox x:Name="actionComboBox" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" MinWidth="200" SelectionChanged="ActionComboBoxOnSelectionChanged"/>
-        <TextBlock x:Name="hotkeyTextBlock" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Margin="5" MinWidth="200" />
-        <!--<Button x:Name="registerHotkeyButton" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Margin="5" MinWidth="200" IsEnabled="False" Content="Register hotkey"  Click="RegisterHotkeyButton_Click" KeyDown="RegisterHotkeyButton_KeyDown" KeyUp="RegisterHotkeyButton_KeyUp"/>-->
-        <UniformGrid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Rows="1" Columns="2" HorizontalAlignment="Center" Margin="5">
-            <Button x:Name="acceptButton" IsDefault="True"
+    <StackPanel Orientation="Vertical" Margin="5">
+        <StackPanel Orientation="Horizontal" >
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Action:" Margin="5" />
+            <ComboBox x:Name="actionComboBox" MinWidth="220" SelectionChanged="ActionComboBoxOnSelectionChanged" Margin="5"/>
+            <Button HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="Clear" Click="ClearHotkeyButton_Click" MinWidth ="60" Margin="5" />
+        </StackPanel>
+        <TextBlock x:Name="hotkeyTextBlock" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Margin="5" MinWidth="200" TextWrapping="Wrap" />
+        <UniformGrid Rows="1" Columns="2" HorizontalAlignment="Center" Margin="5, 0" >
+            <Button IsDefault="True"
                     Content="{x:Static resx:SpeechResponder.button_ok}" 
                     VerticalAlignment="Top" 
                     Click="acceptButtonClick" 
-                    Margin="10" MinWidth ="90"/>
-            <Button x:Name="cancelButton" IsCancel="True"
+                    Margin="5" MinWidth ="60"/>
+            <Button IsCancel="True"
                     Content="{x:Static resx:SpeechResponder.button_cancel}" 
                     VerticalAlignment="Top" 
                     Click="cancelButtonClick" 
-                    Margin="10" MinWidth ="90"/>
+                    Margin="5" MinWidth ="60"/>
         </UniformGrid>
-    </Grid>
+    </StackPanel>
 </Window>
