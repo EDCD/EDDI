@@ -231,7 +231,7 @@ namespace EddiUI
 
         private void OnUnloaded ( object sender, RoutedEventArgs e )
         {
-            EDDI.Instance.HotkeyManager.UnregisterAllHotKeys();
+            EDDI.Instance.HotkeyManager.UnregisterAllHotkeys();
         }
 
         class TabItemComparer : Comparer<TabItem>

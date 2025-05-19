@@ -1,5 +1,4 @@
 ﻿using EddiCore;
-using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,13 +10,16 @@ using System.Windows.Input;
 
 namespace EddiSpeechResponder
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class HotkeysWindow : Window
     {
-        public HotkeysWindow ()
+        private HotkeyManager hotkeyManager { get; }
+        public HotkeyActionCollection HotkeyActionCollection { get; }
+
+        public HotkeysWindow ( HotkeyManager hkm )
         {
+            hotkeyManager = hkm;
+            HotkeyActionCollection = hkm.Hotkeys.Collection;
+
             InitializeComponent();
             actionComboBox.SelectedIndex = 0;
 
@@ -27,24 +29,6 @@ namespace EddiSpeechResponder
 
         private readonly HashSet<Key> pressedKeys = new HashSet<Key>();
         private KeyGesture currentKeyGesture;
-
-        public readonly HotkeyActionCollection HotkeyActionCollection = new HotkeyActionCollection(
-            new List<HotkeyAction>
-            {
-                new HotkeyAction( "EnableEventResponses", "Enable Event Responses", () =>
-                {
-                    EDDI.Instance.State[ "speechresponder_quiet" ] = false;
-                } ),
-                new HotkeyAction( "DisableEventResponses", "Disable Event Responses", () =>
-                {
-                    EDDI.Instance.State[ "speechresponder_quiet" ] = true;
-                    SpeechService.Instance.ShutUp();
-                } ),
-                new HotkeyAction( "Shutup", "Stop the Current Speech", () =>
-                {
-                    SpeechService.Instance.ShutUp();
-                } )
-            } );
 
         private void ConfigureHotkeys ()
         {
@@ -90,7 +74,7 @@ namespace EddiSpeechResponder
             if ( pressedKeys.Add( key ) )
             {
                 // Validate the key and modifier combination
-                if ( IsValidKeyGesture( pressedKeys, modifiers ) )
+                if ( IsKeyGestureValid( pressedKeys, modifiers ) )
                 {
                     // Create a KeyGesture
                     currentKeyGesture = new KeyGesture( key, modifiers );
@@ -109,18 +93,14 @@ namespace EddiSpeechResponder
             }
         }
 
-        private bool IsValidKeyGesture ( HashSet<Key> keys, ModifierKeys modifiers )
+        private bool IsKeyGestureValid ( HashSet<Key> keys, ModifierKeys modifiers )
         {
             var modifierKeySet = new HashSet<Key>
             {
-                Key.LeftCtrl,
-                Key.RightCtrl,
-                Key.LeftAlt,
-                Key.RightAlt,
-                Key.LeftShift,
-                Key.RightShift,
-                Key.LWin,
-                Key.RWin
+                Key.LeftCtrl, Key.RightCtrl,
+                Key.LeftAlt, Key.RightAlt,
+                Key.LeftShift, Key.RightShift,
+                Key.LWin, Key.RWin
             };
             var primaryKeys = keys.Except( modifierKeySet ).ToList();
 
@@ -150,16 +130,13 @@ namespace EddiSpeechResponder
             }
 
             // Disallow Shift as the only modifier for alphanumerics, numpad, and Oem keys
-            if ( modifiers == ModifierKeys.Shift )
+            if ( modifiers == ModifierKeys.Shift && ( ( key >= Key.A && key <= Key.Z ) ||
+                                                      ( key >= Key.D0 && key <= Key.D9 ) ||
+                                                      ( key >= Key.NumPad0 && key <= Key.NumPad9 ) ||
+                                                      key.ToString().StartsWith( "Oem" ) ) )
             {
-                if ( ( key >= Key.A && key <= Key.Z ) ||
-                     ( key >= Key.D0 && key <= Key.D9 ) ||
-                     ( key >= Key.NumPad0 && key <= Key.NumPad9 ) ||
-                     key.ToString().StartsWith( "Oem" ) )
-                {
-                    hotkeyTextBlock.Text = "Please add another modifier key (Ctrl, Alt).";
-                    return false;
-                }
+                hotkeyTextBlock.Text = "Please add another modifier key (Ctrl, Alt).";
+                return false;
             }
 
             // Disallow reserved/system shortcuts
@@ -172,13 +149,11 @@ namespace EddiSpeechResponder
             }
 
             // Disallow duplicate hotkeys
-            if ( actionComboBox.SelectedItem is HotkeyAction selectedAction )
+            if ( actionComboBox.SelectedItem is HotkeyAction selectedAction && 
+                 HotkeyActionCollection.IsKeyGestureAssigned(selectedAction.Name, key, modifiers) )
             {
-                if ( HotkeyActionCollection.IsKeyGestureAssigned(selectedAction.Name, key, modifiers) )
-                {
-                    hotkeyTextBlock.Text = "This key combination is already assigned to another action.";
-                    return false;
-                }
+                hotkeyTextBlock.Text = "This key combination is already assigned to another action.";
+                return false;
             }
 
             // If all checks pass, the combination is valid
@@ -240,55 +215,6 @@ namespace EddiSpeechResponder
             {
                 hotkeyAction.KeyGesture = null;
             }
-        }
-    }
-
-    public class HotkeyAction
-    {
-        public string Name { get; set; }
-        public string DisplayName { get; set; }
-        public Action Action { get; set; }
-        public KeyGesture KeyGesture { get; set; }
-
-        public HotkeyAction ( string name, string displayName, Action action, KeyGesture keyGesture = null )
-        {
-            Name = name;
-            DisplayName = displayName;
-            Action = action;
-            KeyGesture = keyGesture;
-        }
-    }
-
-    public class HotkeyActionCollection
-    {
-        public List<HotkeyAction> HotkeyActions { get; }
-
-        public HotkeyActionCollection ( List<HotkeyAction> hotkeyActions )
-        {
-            HotkeyActions = hotkeyActions;
-        }
-
-        public void AddGesture ( string name, KeyGesture gesture )
-        {
-            var action = HotkeyActions.FirstOrDefault( a => a.Name == name );
-            if ( action != null )
-            {
-                action.KeyGesture = gesture;
-            }
-        }
-
-        public bool IsKeyGestureAssigned (string name, Key key, ModifierKeys modifiers )
-        {
-            var action = HotkeyActions.FirstOrDefault( a => a.Name == name );
-            if ( action != null )
-            {
-                return HotkeyActions.Any( a =>
-                    a.Name != name && 
-                    a.KeyGesture != null && 
-                    a.KeyGesture.Key == key &&
-                    a.KeyGesture.Modifiers == modifiers );
-            }
-            return false;
         }
     }
 }
