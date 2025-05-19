@@ -1,9 +1,8 @@
-﻿<Window x:Class="EddiSpeechResponder.HotkeysWindow"
+﻿<Window x:Class="EddiCore.Hotkeys.HotkeysWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
         mc:Ignorable="d"
         Title="Configure Hotkeys" 
         FocusManager.FocusedElement="{Binding ElementName=actionComboBox}"
@@ -16,17 +15,20 @@
         <StackPanel Orientation="Horizontal" >
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Action:" Margin="5" />
             <ComboBox x:Name="actionComboBox" MinWidth="220" SelectionChanged="ActionComboBoxOnSelectionChanged" Margin="5"/>
-            <Button HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Content="Clear" Click="ClearHotkeyButton_Click" MinWidth ="60" Margin="5" />
+            <Button VerticalAlignment="Center" 
+                    Content="Clear" 
+                    Click="ClearHotkeyButton_Click" 
+                    Margin="5" MinWidth ="60" />
         </StackPanel>
         <TextBlock x:Name="hotkeyTextBlock" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Margin="5" MinWidth="200" TextWrapping="Wrap" />
         <UniformGrid Rows="1" Columns="2" HorizontalAlignment="Center" Margin="5, 0" >
             <Button IsDefault="True"
-                    Content="{x:Static resx:SpeechResponder.button_ok}" 
+                    Content="OK" 
                     VerticalAlignment="Top" 
                     Click="acceptButtonClick" 
                     Margin="5" MinWidth ="60"/>
             <Button IsCancel="True"
-                    Content="{x:Static resx:SpeechResponder.button_cancel}" 
+                    Content="Cancel" 
                     VerticalAlignment="Top" 
                     Click="cancelButtonClick" 
                     Margin="5" MinWidth ="60"/>
