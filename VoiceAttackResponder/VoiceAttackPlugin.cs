@@ -164,11 +164,6 @@ namespace EddiVoiceAttackResponder
         // ReSharper disable once UnusedMember.Global - VoiceAttack API
         public static void VA_Exit1(dynamic vaProxy)
         {
-            lock ( vaProxyLock )
-            {
-                VaProxy = vaProxy;
-            }
-
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
             // Unsubscribe from events
