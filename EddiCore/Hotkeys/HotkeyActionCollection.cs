@@ -20,7 +20,10 @@ namespace EddiCore.Hotkeys
             {
                 action.KeyGesture = gesture;
                 action.id = id;
+                return;
             }
+
+            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
         }
 
         public void AddId ( string name, int id )
@@ -29,7 +32,10 @@ namespace EddiCore.Hotkeys
             if ( action != null )
             {
                 action.id = id;
+                return;
             }
+
+            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
         }
 
         public void ClearAllKeyGestures ()
@@ -51,7 +57,8 @@ namespace EddiCore.Hotkeys
                     a.KeyGesture.Key == key &&
                     a.KeyGesture.Modifiers == modifiers );
             }
-            return false;
+
+            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
         }
 
         public void RemoveKeyGestures ( string name )
@@ -60,8 +67,11 @@ namespace EddiCore.Hotkeys
             if ( action != null )
             {
                 action.id = null;
-                action.KeyGesture = null;                
+                action.KeyGesture = null;     
+                return;
             }
+
+            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
         }
 
         public bool TryGetValue ( string name, out HotkeyAction action )

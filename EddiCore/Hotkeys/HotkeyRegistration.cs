@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
+using Utilities;
 
 namespace EddiCore.Hotkeys
 {
@@ -36,14 +37,22 @@ namespace EddiCore.Hotkeys
 
         public void RegisterHotkey ( string name, KeyGesture keyGesture )
         {
-            if ( TryRegisterHotkey ( name, keyGesture, out var id ) )
+            try
             {
-                Collection.AddGesture( name, keyGesture, id );
-                ConfigService.Instance.eddiConfiguration.Hotkeys.Add( name, HotkeyConverter.ToString( keyGesture ) );
+                if ( TryRegisterHotkey( name, keyGesture, out var id ) )
+                {
+                    Collection.AddGesture( name, keyGesture, id );
+                    ConfigService.Instance.eddiConfiguration.Hotkeys.Add( name,
+                        HotkeyConverter.ToString( keyGesture ) );
+                }
+                else
+                {
+                    throw new InvalidOperationException( "Hotkey registration failed." );
+                }
             }
-            else
+            catch ( Exception e )
             {
-                throw new InvalidOperationException( "Hotkey registration failed." );
+                Logging.Error(e.Message, e);
             }
         }
 
