@@ -655,19 +655,22 @@ namespace EddiCore
 
         public void Stop()
         {
-            running = false; // Otherwise keepalive restarts them
-            Utilities.TelemetryService.Telemetry.Stop();
-            eventHandlerTS.Cancel();
-            foreach ( IEddiResponder responder in responders )
+            if ( running )
             {
-                DisableResponder( responder.ResponderName() );
-            }
-            foreach ( IEddiMonitor monitor in monitors )
-            {
-                DisableMonitor( monitor.MonitorName() );
-            }
+                running = false; // Otherwise keepalive restarts them
+                Utilities.TelemetryService.Telemetry.Stop();
+                eventHandlerTS.Cancel();
+                foreach ( IEddiResponder responder in responders )
+                {
+                    DisableResponder( responder.ResponderName() );
+                }
+                foreach ( IEddiMonitor monitor in monitors )
+                {
+                    DisableMonitor( monitor.MonitorName() );
+                }
 
-            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
+                Logging.Info( Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped" );
+            }
         }
 
         /// <summary>
