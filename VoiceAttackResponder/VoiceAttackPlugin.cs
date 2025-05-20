@@ -19,19 +19,19 @@ namespace EddiVoiceAttackResponder
     [UsedImplicitly]
     public class VoiceAttackPlugin
     {
-        // ReSharper disable once UnusedMember.Global - VA Interface Member
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static string VA_DisplayName()
         {
             return Constants.EDDI_NAME + " " + Constants.EDDI_VERSION;
         }
 
-        // ReSharper disable once UnusedMember.Global - VA Interface Member
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static string VA_DisplayInfo()
         {
             return Constants.EDDI_NAME + "\r\nVersion " + Constants.EDDI_VERSION;
         }
 
-        // ReSharper disable once UnusedMember.Global - VA Interface Member
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static Guid VA_Id()
         {
             return new Guid("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
@@ -51,7 +51,7 @@ namespace EddiVoiceAttackResponder
 
         internal static readonly object vaProxyLock = new object();
 
-        // ReSharper disable once MemberCanBePrivate.Global - VA Interface Member
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Init1(dynamic vaProxy)
         {
             // Initialize and launch an EDDI instance without opening the main window
@@ -161,8 +161,8 @@ namespace EddiVoiceAttackResponder
             VoiceAttackVariables.updateStandardValues( e );
         }
 
-        // ReSharper disable once UnusedMember.Global - VoiceAttack API
-        public static void VA_Exit1(dynamic vaProxy)
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
+        public static void VA_Exit1( dynamic _ )
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
@@ -190,11 +190,11 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        [UsedImplicitly]
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_StopCommand()
         { }
 
-        [UsedImplicitly]
+        [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Invoke1(dynamic vaProxy)
         {
             lock ( vaProxyLock )
