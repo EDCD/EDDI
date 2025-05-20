@@ -66,7 +66,7 @@ namespace Utilities.TelemetryService
                 var loggerOptions = new RollbarLoggerConfig( TelemetryTokens.rollbarToken, Constants.EDDI_VERSION.ToString() );
                 var loggerDataSecurityOptions = new RollbarDataSecurityOptions(
                     PersonDataCollectionPolicies.None,
-                    IpAddressCollectionPolicy.DoNotCollect,
+                    IpAddressCollectionPolicy.CollectAnonymized,
                     new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID" } );
                 var assyMetadataAttributes = Assembly.GetExecutingAssembly()?.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
                 var loggerPayloadOptions = new RollbarPayloadAdditionOptions()
