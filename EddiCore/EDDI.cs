@@ -34,12 +34,12 @@ namespace EddiCore
     public class EDDI: INotifyPropertyChanged
     {
         // True if the Speech Responder tab is waiting on a modal dialog window. Accessed by VoiceAttack plugin.
-        public bool SpeechResponderModalWait { get; set; } = false;
+        public bool SpeechResponderModalWait { get; set; }
 
         private static bool started;
         public static bool running = true;
 
-        public bool inTelepresence { get; private set; } = false;
+        public bool inTelepresence { get; private set; }
 
         public bool inHorizons 
         {
@@ -63,12 +63,12 @@ namespace EddiCore
         } 
         private bool _inOdyssey = true;
 
-        public bool gameIsBeta { get; internal set; } = false;
+        public bool gameIsBeta { get; internal set; }
 
-        public string gameVersion
+        private string gameVersion
         {
             get => _gameVersion;
-            private set
+            set
             {
                 _gameVersion = value;
                 SetGameVersion(value);
@@ -79,7 +79,7 @@ namespace EddiCore
         public System.Version GameVersion { get; private set; }
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
-        public readonly System.Version minGameVersion = new System.Version(4, 0);
+        private readonly System.Version minGameVersion = new System.Version(4, 0);
 
         private void SetGameVersion(string v)
         {
@@ -118,7 +118,7 @@ namespace EddiCore
         /// <summary>
         /// Set this prior to setting the game version so that services requiring both receive correct data.
         /// </summary>
-        public string gameBuild { get; private set; }
+        private string gameBuild { get; set; }
 
         static EDDI()
         {
@@ -129,7 +129,7 @@ namespace EddiCore
         // True if we have been started by VoiceAttack
         public static bool FromVA;
 
-        public static void Init()
+        private static void Init()
         {
             if (instance == null)
             {
@@ -165,8 +165,6 @@ namespace EddiCore
         private static readonly object responderLock = new object();
 
         public DataProviderService DataProvider { get; internal set; } = new DataProviderService();
-
-        public System.Version vaVersion { get; set; }
 
         // Information obtained from the configuration
         [CanBeNull]
@@ -404,10 +402,8 @@ namespace EddiCore
             }
         }
 
-        public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
-
         // Information from the last events of each type that we've received (for reference)
-        public ConcurrentDictionary<string, Event> lastEventOfType { get; set; } = new ConcurrentDictionary<string, Event>();
+        public ConcurrentDictionary<string, Event> lastEventOfType { get; } = new ConcurrentDictionary<string, Event>();
 
         // Current vehicle of player
         public string Vehicle
@@ -421,12 +417,12 @@ namespace EddiCore
         }
         private string vehicle = Constants.VEHICLE_SHIP;
 
-        public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
+        public readonly ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         // The event queue
-        internal BlockingCollection<Event> eventQueue { get; } = new BlockingCollection<Event>();
+        private BlockingCollection<Event> eventQueue { get; } = new BlockingCollection<Event>();
         private readonly CancellationTokenSource eventHandlerTS = new CancellationTokenSource();
-        private Task eventConsumerThread = null;
+        private Task eventConsumerThread;
 
         private string multicrewVehicleHolder;
 
@@ -513,46 +509,52 @@ namespace EddiCore
 
         private async void OnStatusChangedAsync ( object sender, EventArgs e )
         {
-            if ( sender is Status status )
+            try
             {
-                foreach ( var monitor in activeMonitors )
+                if ( sender is Status status )
                 {
-                    await Task.Run( () =>
+                    foreach ( var monitor in activeMonitors )
                     {
-                        try
+                        await Task.Run( () =>
                         {
-                            monitor.HandleStatus( status );
-                        }
-                        catch ( Exception exception )
-                        {
-                            var dict = new Dictionary<string, object>
+                            try
                             {
-                                [ "status" ] = status, [ "exception" ] = exception
-                            };
-                            Logging.Error( $"{monitor.MonitorName()} failed to handle status", dict );
-                        }
-                    } ).ConfigureAwait( false );
-                }
+                                monitor.HandleStatus( status );
+                            }
+                            catch ( Exception exception )
+                            {
+                                var dict = new Dictionary<string, object>
+                                {
+                                    [ "status" ] = status, [ "exception" ] = exception
+                                };
+                                Logging.Error( $"{monitor.MonitorName()} failed to handle status", dict );
+                            }
+                        } ).ConfigureAwait( false );
+                    }
 
-                foreach ( var responder in activeResponders )
-                {
-                    await Task.Run( () =>
+                    foreach ( var responder in activeResponders )
                     {
-                        try
+                        await Task.Run( () =>
                         {
-                            responder.HandleStatus( status );
-                        }
-                        catch ( Exception exception )
-                        {
-                            var dict = new Dictionary<string, object>
+                            try
                             {
-                                [ "status" ] = status,
-                                [ "exception" ] = exception
-                            };
-                            Logging.Error( $"{responder.ResponderName()} failed to handle status", dict );
-                        }
-                    } ).ConfigureAwait(false );
+                                responder.HandleStatus( status );
+                            }
+                            catch ( Exception exception )
+                            {
+                                var dict = new Dictionary<string, object>
+                                {
+                                    [ "status" ] = status, [ "exception" ] = exception
+                                };
+                                Logging.Error( $"{responder.ResponderName()} failed to handle status", dict );
+                            }
+                        } ).ConfigureAwait( false );
+                    }
                 }
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( "Unhandled exception in OnStatusChangedAsync", ex );
             }
         }
 
@@ -564,7 +566,7 @@ namespace EddiCore
             return true;
 #else
             // use test endpoints if the game is in beta
-            return EDDI.Instance.gameIsBeta;
+            return Instance.gameIsBeta;
 #endif
         }
 
@@ -607,7 +609,7 @@ namespace EddiCore
 
                 foreach (var responder in responders)
                 {
-                    if ( !EDDI.FromVA && responder.ResponderName() == "VoiceAttack responder" )
+                    if ( !FromVA && responder.ResponderName() == "VoiceAttack responder" )
                     {
                         // When we are not running from VoiceAttack then we skip starting the VoiceAttack responder.
                         continue;
@@ -917,7 +919,7 @@ namespace EddiCore
                 {
                     Logging.Debug("Handling event: ", @event);
                     // We have some additional processing to do for a number of events
-                    bool passEvent = true;
+                    var passEvent = true;
                     if (@event is FileHeaderEvent fileHeaderEvent)
                     {
                         passEvent = eventFileHeader(fileHeaderEvent);
@@ -972,21 +974,21 @@ namespace EddiCore
                     }
                     else if (@event is CrewJoinedEvent crewJoinedEvent)
                     {
-                        passEvent = eventCrewJoined();
+                        passEvent = eventCrewJoined( crewJoinedEvent );
                     }
-                    else if (@event is CrewLeftEvent crewLeftEvent)
+                    else if (@event is CrewLeftEvent )
                     {
                         passEvent = eventCrewLeft();
                     }
-                    else if (@event is EnteredCQCEvent enteredCqcEvent)
+                    else if (@event is EnteredCQCEvent )
                     {
                         passEvent = eventEnteredCQC();
                     }
-                    else if (@event is SRVLaunchedEvent srvLaunchedEvent)
+                    else if (@event is SRVLaunchedEvent )
                     {
                         passEvent = eventSRVLaunched();
                     }
-                    else if (@event is SRVDockedEvent srvDockedEvent)
+                    else if (@event is SRVDockedEvent )
                     {
                         passEvent = eventSRVDocked();
                     }
@@ -994,7 +996,7 @@ namespace EddiCore
                     {
                         passEvent = eventFighterLaunched(fighterLaunchedEvent);
                     }
-                    else if (@event is FighterDockedEvent fighterDockedEvent)
+                    else if (@event is FighterDockedEvent )
                     {
                         passEvent = eventFighterDocked();
                     }
@@ -1010,7 +1012,7 @@ namespace EddiCore
                     {
                         passEvent = eventBodyMapped(bodyMappedEvent);
                     }
-                    else if (@event is VehicleDestroyedEvent vehicleDestroyedEvent)
+                    else if (@event is VehicleDestroyedEvent )
                     {
                         passEvent = eventVehicleDestroyed();
                     }
@@ -1050,7 +1052,7 @@ namespace EddiCore
                     {
                         passEvent = eventCarrierJumped(carrierJumpedEvent);
                     }
-                    else if (@event is DisembarkEvent disembarkEvent)
+                    else if (@event is DisembarkEvent )
                     {
                         passEvent = eventDisembark();
                     }
@@ -2069,14 +2071,9 @@ namespace EddiCore
         internal bool eventFSDEngaged(FSDEngagedEvent @event)
         {
             // Keep track of our environment
-            if (@event.target == "Supercruise")
-            {
-                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-            }
-            else
-            {
-                Environment = Constants.ENVIRONMENT_WITCH_SPACE;
-            }
+            Environment = @event.target == "Supercruise" 
+                ? Constants.ENVIRONMENT_SUPERCRUISE 
+                : Constants.ENVIRONMENT_WITCH_SPACE;
 
             // Set the destination system as the current star system
             if ( @event.systemAddress != null )
@@ -2116,20 +2113,17 @@ namespace EddiCore
         {
             // Test whether we're in beta by checking the filename, version described by the header,
             // and certain version / build combinations. Test the most common situations first.
-            gameIsBeta =
-                (
-                    @event.filename.Contains("Alpha") ||
-                    @event.filename.Contains("Beta") ||
-                    @event.version.Contains("Beta") ||
-                    @event.version.Contains("Alpha") ||
-                    (
-                        @event.version.Contains("2.2") &&
-                        (
-                            @event.build.Contains("r121645/r0") ||
-                            @event.build.Contains("r129516/r0")
-                        )
-                    )
-                );
+            gameIsBeta = @event.filename.Contains("Alpha") ||
+                         @event.filename.Contains("Beta") ||
+                         @event.version.Contains("Beta") ||
+                         @event.version.Contains("Alpha") ||
+                         (
+                             @event.version.Contains("2.2") &&
+                             (
+                                 @event.build.Contains("r121645/r0") ||
+                                 @event.build.Contains("r129516/r0")
+                             )
+                         );
             CompanionAppService.Instance.gameIsBeta = gameIsBeta;
             if (gameIsBeta)
             {
@@ -2280,9 +2274,9 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCrewJoined()
+        private bool eventCrewJoined(CrewJoinedEvent @event)
         {
-            inTelepresence = true;
+            inTelepresence = @event.telepresence ?? false;
             multicrewVehicleHolder = Vehicle;
             Vehicle = Constants.VEHICLE_MULTICREW;
             Logging.Info("Entering multicrew session");
@@ -2359,16 +2353,9 @@ namespace EddiCore
 
         private bool eventFighterLaunched(FighterLaunchedEvent theEvent)
         {
-            if (theEvent.playercontrolled)
-            {
-                // We are in the fighter
-                Vehicle = Constants.VEHICLE_FIGHTER;
-            }
-            else
-            {
-                // We are (still) in the ship
-                Vehicle = Constants.VEHICLE_SHIP;
-            }
+            Vehicle = theEvent.playercontrolled 
+                ? Constants.VEHICLE_FIGHTER // We are in the fighter
+                : Constants.VEHICLE_SHIP; // We are (still) in the ship
             return true;
         }
 
@@ -2473,82 +2460,84 @@ namespace EddiCore
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public async Task<bool> refreshProfileAsync(bool refreshStation = false)
         {
-            bool success = true;
-            if (!CompanionAppService.unitTesting && CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized)
+            if ( CompanionAppService.unitTesting ||
+                 CompanionAppService.Instance?.CurrentState != CompanionAppService.State.Authorized )
             {
-                try
+                return true;
+            }
+
+            var success = true;
+            try
+            {
+                var profileJson = await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync();
+                if (profileJson != null)
                 {
-                    var profileJson = await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync();
-                    if (profileJson != null)
+                    var profile = FrontierApiProfile.FromJson(profileJson);
+
+                    var updatedCurrentStarSystem = false;
+
+                    if (CurrentStarSystem == null && 
+                        profile.docked && profile.currentStarSystem == CurrentStarSystem?.systemname && 
+                        CurrentStarSystem?.stations != null)
                     {
-                        var profile = FrontierApiProfile.FromJson(profileJson);
-
-                        var updatedCurrentStarSystem = false;
-
-                        if (CurrentStarSystem == null)
+                        // Only set the current station if it is not present, otherwise we leave it to events
+                        CurrentStation = CurrentStation ?? CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
+                            ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
+                        if (CurrentStation != null)
                         {
-                            if (profile.docked && profile.currentStarSystem == CurrentStarSystem?.systemname && CurrentStarSystem?.stations != null)
+                            Logging.Debug("Set current station to " + CurrentStation.name);
+                            CurrentStation.updatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
+                            updatedCurrentStarSystem = true;
+                        }
+                    }
+
+                    if (refreshStation && CurrentStation != null && Environment == Constants.ENVIRONMENT_DOCKED)
+                    {
+                        // Refresh station data
+                        await conditionallyRefreshStationProfileAsync( profile.currentStarSystem, profile.LastStationMarketID ?? 0 );
+                    }
+
+                    if (updatedCurrentStarSystem)
+                    {
+                        Logging.Debug( "Star system information updated from Frontier API; updating local copy" );
+                        DataProvider.SaveStarSystem(CurrentStarSystem);
+                    }
+
+                    foreach (var monitor in activeMonitors)
+                    {
+                        try
+                        {
+                            Thread monitorThread = new Thread(() =>
                             {
-                                // Only set the current station if it is not present, otherwise we leave it to events
-                                CurrentStation = CurrentStation ?? CurrentStarSystem.stations.FirstOrDefault(s => s.marketId == profile.LastStationMarketID)
-                                                 ?? CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStationName);
-                                if (CurrentStation != null)
+                                try
                                 {
-                                    Logging.Debug("Set current station to " + CurrentStation.name);
-                                    CurrentStation.updatedat = Dates.fromDateTimeToSeconds(DateTime.UtcNow);
-                                    updatedCurrentStarSystem = true;
+                                    monitor.HandleProfile(profile.json);
                                 }
-                            }
-                        }
-
-                        if (refreshStation && CurrentStation != null && Environment == Constants.ENVIRONMENT_DOCKED)
-                        {
-                            // Refresh station data
-                            await conditionallyRefreshStationProfileAsync( profile.currentStarSystem, profile.LastStationMarketID ?? 0 );
-                        }
-
-                        if (updatedCurrentStarSystem)
-                        {
-                            Logging.Debug( "Star system information updated from Frontier API; updating local copy" );
-                            DataProvider.SaveStarSystem(CurrentStarSystem);
-                        }
-
-                        foreach (var monitor in activeMonitors)
-                        {
-                            try
-                            {
-                                Thread monitorThread = new Thread(() =>
+                                catch (Exception ex)
                                 {
-                                    try
-                                    {
-                                        monitor.HandleProfile(profile.json);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Logging.Warn($"Monitor {monitor.MonitorName()} failed to handle Frontier API update", ex);
-                                        success = false;
-                                    }
-                                })
-                                {
-                                    Name = monitor.MonitorName(),
-                                    IsBackground = true
-                                };
-                                monitorThread.Start();
-                            }
-                            catch (ThreadAbortException tax)
+                                    Logging.Warn($"Monitor {monitor.MonitorName()} failed to handle Frontier API update", ex);
+                                    success = false;
+                                }
+                            })
                             {
-                                Thread.ResetAbort();
-                                Logging.Debug("Thread aborted", tax);
-                                success = false;
-                            }
+                                Name = monitor.MonitorName(),
+                                IsBackground = true
+                            };
+                            monitorThread.Start();
+                        }
+                        catch (ThreadAbortException tax)
+                        {
+                            Thread.ResetAbort();
+                            Logging.Debug("Thread aborted", tax);
+                            success = false;
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logging.Error("Exception obtaining profile", ex);
-                    success = false;
-                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Exception obtaining profile", ex);
+                success = false;
             }
             return success;
         }
@@ -2560,14 +2549,14 @@ namespace EddiCore
             Logging.Debug("Distance from home is " + system.distancefromhome);
         }
 
-        public void setSystemDistanceFromDestination(StarSystem system)
+        private void setSystemDistanceFromDestination(StarSystem system)
         {
             if (DestinationStarSystem is null) { return; }
             DestinationDistanceLy = getSystemDistance(system, DestinationStarSystem);
             Logging.Debug("Distance from destination system is " + DestinationDistanceLy);
         }
 
-        public decimal getSystemDistance(StarSystem curr, StarSystem dest)
+        private decimal getSystemDistance(StarSystem curr, StarSystem dest)
         {
             return curr?.DistanceFromStarSystem(dest) ?? 0;
         }
@@ -2594,25 +2583,22 @@ namespace EddiCore
                     Assembly assembly = Assembly.LoadFrom(file.FullName);
                     foreach (Type type in assembly.GetTypes())
                     {
-                        if (type.IsInterface || type.IsAbstract)
+                        if ( !type.IsInterface && !type.IsAbstract )
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            if (type.GetInterface(pluginType.FullName) != null)
+                            if ( type.GetInterface( pluginType.FullName ) != null )
                             {
                                 try
                                 {
-                                    Logging.Debug("Instantiating monitor plugin at " + file.FullName);
-                                    IEddiMonitor monitor = type.InvokeMember(null,
-                                                               BindingFlags.CreateInstance,
-                                                               null, null, null) as IEddiMonitor;
-                                    foundMonitors.Add(monitor);
+                                    Logging.Debug( "Instantiating monitor plugin at " + file.FullName );
+                                    IEddiMonitor monitor = type.InvokeMember( null,
+                                        BindingFlags.CreateInstance,
+                                        null, null, null ) as IEddiMonitor;
+                                    foundMonitors.Add( monitor );
                                 }
-                                catch (TargetInvocationException)
+                                catch ( TargetInvocationException )
                                 {
-                                    Logging.Warn($"Error loading {file.Name}. Failed to load {type.Name} from {type.Assembly}.");
+                                    Logging.Warn(
+                                        $"Error loading {file.Name}. Failed to load {type.Name} from {type.Assembly}." );
                                 }
                             }
                         }
@@ -2638,17 +2624,17 @@ namespace EddiCore
                         }
                         sb.AppendLine();
                     }
-                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb.ToString());
+                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb);
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(EddiCore.Properties.Resources.problem_load_monitor_file, dir.FullName);
+                    string msg = string.Format(Properties.Resources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(EddiCore.Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    string msg = string.Format(Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, 0);
                 }
@@ -2677,19 +2663,15 @@ namespace EddiCore
                     Assembly assembly = Assembly.LoadFrom(file.FullName);
                     foreach (Type type in assembly.GetTypes())
                     {
-                        if (type.IsInterface || type.IsAbstract || pluginType.FullName is null )
+                        if ( !type.IsInterface && !type.IsAbstract && !( pluginType.FullName is null ) )
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            if (type.GetInterface(pluginType.FullName) != null)
+                            if ( type.GetInterface( pluginType.FullName ) != null )
                             {
-                                Logging.Debug("Instantiating responder plugin at " + file.FullName);
-                                IEddiResponder responder = type.InvokeMember(type.Name,
-                                                           BindingFlags.CreateInstance,
-                                                           null, null, null) as IEddiResponder;
-                                foundResponders.Add(responder);
+                                Logging.Debug( "Instantiating responder plugin at " + file.FullName );
+                                IEddiResponder responder = type.InvokeMember( type.Name,
+                                    BindingFlags.CreateInstance,
+                                    null, null, null ) as IEddiResponder;
+                                foundResponders.Add( responder );
                             }
                         }
                     }
@@ -2715,7 +2697,7 @@ namespace EddiCore
                         }
                         sb.AppendLine();
                     }
-                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb.ToString());
+                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb);
                 }
             }
             return foundResponders;
@@ -2726,7 +2708,7 @@ namespace EddiCore
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
         /// </summary>
-        public async Task conditionallyRefreshStationProfileAsync ( string expectedSystemName, long expectedLastMarketID, bool forceUpdate = false, JObject profileJson = null )
+        private async Task conditionallyRefreshStationProfileAsync ( string expectedSystemName, long expectedLastMarketID, bool forceUpdate = false, JObject profileJson = null )
         {
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {

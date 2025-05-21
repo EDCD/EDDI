@@ -167,17 +167,9 @@ namespace EddiJournalMonitor
                     }
 
                     // Get the `edType`
-                    string edType = JsonParsing.getString(data, "event");
-                    if (edType == "Fileheader")
-                    {
-                        EDDI.Instance.JournalTimeStamp = DateTime.MinValue;
-                    }
-                    else
-                    {
-                        EDDI.Instance.JournalTimeStamp = timestamp;
-                    }
-
-                    bool handled = false;
+                    var edType = JsonParsing.getString(data, "event");
+                    
+                    var handled = false;
                     try
                     {
                         switch (edType)
