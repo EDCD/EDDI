@@ -79,13 +79,16 @@ namespace EddiNavigationMonitor
         private void LoadMonitor()
         {
             ReadNavConfig();
-            GetGalacticPOIs();
+            Task.Run( GetGalacticPOIsAsync );
         }
 
-        private void GetGalacticPOIs()
+        private async Task GetGalacticPOIsAsync()
         {
             // Build a Galactic POI list
-            GalacticPOIs = EDAstro.GetPOIs();
+            foreach (var navBookmark in await EDAstro.GetPOIsAsync() )
+            {
+                GalacticPOIs.Add( navBookmark );
+            }
             GetBookmarkExtras(GalacticPOIs);
         }
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiNavigationService
@@ -12,11 +13,11 @@ namespace EddiNavigationService
     public static class EDAstro
     {
         private const string GalacticPOI_URI = "https://edastro.com/poi/json/combined";
-        public static ObservableCollection<NavBookmark> GetPOIs()
+        public static async Task<ObservableCollection<NavBookmark>> GetPOIsAsync()
         {
             var galacticPOIs = new ObservableCollection<NavBookmark>();
 
-            var jsonString = Net.DownloadString(GalacticPOI_URI);
+            var jsonString = await Net.DownloadStringAsync(GalacticPOI_URI);
             if (!string.IsNullOrEmpty(jsonString))
             {
                 var jArray = JArray.Parse(jsonString);
