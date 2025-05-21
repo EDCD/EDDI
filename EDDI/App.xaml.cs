@@ -25,8 +25,8 @@ namespace Eddi
         public static bool FromVA { get; set; }
         public static Action vaStartup;
 
-        [STAThread]
-        public static void Main()
+        [ STAThread ]
+        public static void Main ()
         {
             if ( !FromVA && AlreadyRunning() )
             {
@@ -44,27 +44,49 @@ namespace Eddi
             // Prepare to start the application
             Logging.IncrementLogs(); // Increment to a new log file.
             var configuration = ConfigService.Instance.eddiConfiguration;
-            if (configuration != null && !configuration.DisableTelemetry)
+            if ( configuration != null && !configuration.DisableTelemetry )
             {
                 StartTelemetryService(); // do immediately to initialize error reporting
             }
-            ApplyAnyOverrideCulture(configuration); // this must be done before any UI is generated
+
+            ApplyAnyOverrideCulture( configuration ); // this must be done before any UI is generated
 
             // Start by fetching information from the update server, and handling appropriately
             EddiUpgrader.CheckUpgrade().GetAwaiter().GetResult();
 
-            if (FromVA)
+            try
             {
-                // Start with the MainWindow hidden
-                EDDI.FromVA = FromVA;
-                app.MainWindow = new MainWindow();
-                vaStartup?.Invoke();
-                app.Run();
+                if ( FromVA )
+                {
+                    // Start with the MainWindow hidden
+                    EDDI.FromVA = FromVA;
+                    app.MainWindow = new MainWindow();
+                    vaStartup?.Invoke();
+                    app.Run();
+                }
+                else
+                {
+                    // Start by displaying the MainWindow
+                    app.Run( new MainWindow() );
+                }
             }
-            else
+            catch ( Exception e )
             {
-                // Start by displaying the MainWindow
-                app.Run(new MainWindow());
+                // Catch exceptions from the main UI thread
+                CrashLogger( e );
+
+                // Attempt to restart the UI
+                if ( FromVA )
+                {
+                    // Start with the MainWindow hidden
+                    app.MainWindow = new MainWindow();
+                    app.Run();
+                }
+                else
+                {
+                    // Start by displaying the MainWindow
+                    app.Run( new MainWindow() );
+                }
             }
         }
 
@@ -99,10 +121,6 @@ namespace Eddi
             {
                 CrashLogger(args.Exception);
             };
-            Current.DispatcherUnhandledException += (sender, args) =>
-            {
-                CrashLogger(args.Exception);
-            };
             // Catch and send unhandled exceptions from non-UI threads
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
@@ -125,7 +143,7 @@ namespace Eddi
             // Suppress uncaught Rollbar internal HTTP exceptions
             if ( ex is AggregateException aex && 
                  aex.InnerException is HttpRequestException hre && 
-                 hre.StackTrace.Contains("Rollbar") )
+                 ( hre.StackTrace?.Contains("Rollbar") ?? false ) )
             {
                 return;
             }
