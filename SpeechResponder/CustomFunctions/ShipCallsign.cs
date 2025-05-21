@@ -51,7 +51,7 @@ namespace EddiSpeechResponder.CustomFunctions
             }
         }, 0, 2);
 
-        private static string phoneticCallsign(Ship ship, string id)
+        internal static string phoneticCallsign(Ship ship, string id)
         {
             if (string.IsNullOrEmpty(ship?.manufacturer) || string.IsNullOrEmpty(id)) { return string.Empty; }
 

@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:Eddi"
              StartupUri="EddiUI.MainWindow.xaml">
     <Application.Resources>
-
     </Application.Resources>
 </Application>

@@ -8,9 +8,8 @@ namespace Tests
         [TestMethod]
         public void TestClientIDNotNull()
         {
-            var clientIDClass = new PrivateType(typeof(EddiCompanionAppService.ClientId));
-            var clientID = clientIDClass.GetStaticField("ID");
-            Assert.IsInstanceOfType(clientID, typeof(string));
+            var clientID = EddiCompanionAppService.ClientId.ID;
+            Assert.IsInstanceOfType( clientID, typeof(string));
             Assert.IsNotNull( clientID );
         }
     }

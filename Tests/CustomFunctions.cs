@@ -35,8 +35,7 @@ namespace Tests
         public void TestShipCallsignFunction(string shipModel, string id, string expected)
         {
             var ship = ShipDefinitions.FromEDModel(shipModel);
-            var privateType = new PrivateType(typeof(ShipCallsign));
-            Assert.AreEqual(expected, (string)privateType.InvokeStatic("phoneticCallsign", new object[] { ship, id }));
+            Assert.AreEqual( expected, ShipCallsign.phoneticCallsign( ship, id ) );
         }
 
         [DataTestMethod]

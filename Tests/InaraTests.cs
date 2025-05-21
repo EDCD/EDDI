@@ -28,9 +28,8 @@ namespace Tests
                 new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object> { { "searchName", "Artie" } }),
                 new InaraAPIEvent(DateTime.UtcNow, "addCommanderCombatDeath", new Dictionary<string, object> { { "starsystemName", "LP 932-12" }, { "opponentName", "Vincent Van Stoi" } })
             };
-            var privateInaraService = new PrivateObject(typeof(InaraService));
-            var results = (List<InaraAPIEvent>)privateInaraService.Invoke("IndexAndFilterAPIEvents", inaraAPIEvents, new InaraConfiguration() );
-
+            
+            var results = ((InaraService)inaraService).IndexAndFilterAPIEvents( inaraAPIEvents, new InaraConfiguration() );
             if (results?.Count == 2)
             {
                 // Check that appropriate response IDs were assigned to each API event

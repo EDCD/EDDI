@@ -2482,9 +2482,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestRepeatedShipShutdownEvents ()
         {
-            var privateType = new PrivateType( typeof(JournalMonitor) );
-            // ReSharper disable once AssignNullToNotNullAttribute - CancellationTokenSource is nullable.
-            privateType.SetStaticFieldOrProperty( "ShipShutdownCancellationTokenSource", null );
+            JournalMonitor.ShipShutdownCancellationTokenSource = null;
 
             // Trigger a `ShipShutdown` event.
             var events = JournalMonitor.ParseJournalEntries( new [] {@"{ ""timestamp"":""2023-11-24T20:22:45Z"", ""event"":""SystemsShutdown"" }" } );
@@ -2508,9 +2506,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestShipShutdownThargoidTitanPulse ()
         {
-            var privateType = new PrivateType( typeof(JournalMonitor) );
-            // ReSharper disable once AssignNullToNotNullAttribute - CancellationTokenSource is nullable.
-            privateType.SetStaticFieldOrProperty( "ShipShutdownCancellationTokenSource", null );
+            JournalMonitor.ShipShutdownCancellationTokenSource = null;
 
             //The `SystemsShutdown` event should be ignored because it is followed immediately by a `MaterialCollected` event for the material `tg_shutdowndata` and no shutdown in fact occurs for this circumstance.
             var lines = new[]

@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace EddiSpeechResponder
 {
-    using resx = Properties.SpeechResponder;
+    using resX = Properties.SpeechResponder;
 
     /// <summary>
     /// Interaction logic for CopyPersonalityWindow.xaml
@@ -114,12 +114,12 @@ namespace EddiSpeechResponder
 
             if (string.IsNullOrEmpty(trimmedName))
             {
-                return resx.validation_tooltip_name_empty;
+                return resX.validation_tooltip_name_empty;
             }
 
             if (existingNames.Contains(trimmedName))
             {
-                return resx.validation_tooltip_name_taken;
+                return resX.validation_tooltip_name_taken;
             }
 
             return string.Empty;

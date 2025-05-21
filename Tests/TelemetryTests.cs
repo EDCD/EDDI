@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace Tests
@@ -13,8 +12,7 @@ namespace Tests
     {
         private Dictionary<string, object> PrepTelemetryData(object data)
         {
-            var privateType = new PrivateType(typeof(Logging));
-            var result = (Task<Dictionary<string, object>>)privateType.InvokeStatic("PrepareData", JToken.FromObject(data) );
+            var result = Logging.PrepareData( JToken.FromObject( data ) );
             return result.Result;
         }
 

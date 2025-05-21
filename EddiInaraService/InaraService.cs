@@ -187,7 +187,7 @@ namespace EddiInaraService
             return inaraResponses;
         }
 
-        private List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
+        internal List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
         {
             // If we don't have a commander name then only use `get` events and re-enqueue the rest.
             if (string.IsNullOrEmpty(inaraConfiguration.commanderName))

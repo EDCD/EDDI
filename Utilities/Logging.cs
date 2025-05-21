@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Utilities.TelemetryService;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace Utilities
 {
     public class Logging : Telemetry
@@ -99,7 +100,7 @@ namespace Utilities
             return message;
         }
 
-        private static async Task<Dictionary<string, object>> PrepareData ( [ CanBeNull ] JToken data )
+        internal static async Task<Dictionary<string, object>> PrepareData ( [ CanBeNull ] JToken data )
         {
             if ( data == null ) { return null; }
 

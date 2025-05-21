@@ -9,6 +9,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
+[assembly: InternalsVisibleTo("Tests")]
 namespace EddiJournalMonitor
 {
     public class JournalMonitor : LogMonitor, IEddiMonitor
@@ -37,7 +39,7 @@ namespace EddiJournalMonitor
         private static readonly Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources =
             new Dictionary<long, CancellationTokenSource>();
 
-        private static CancellationTokenSource ShipShutdownCancellationTokenSource;
+        internal static CancellationTokenSource ShipShutdownCancellationTokenSource;
 
         private static void ForwardJournalEntries ( IList<string> lines, Action<Event> callback, bool isLogLoadEventBatch )
         {
