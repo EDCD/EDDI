@@ -8,7 +8,7 @@ using System.Windows.Interop;
 
 namespace Tests
 {
-    [TestClass, TestCategory( "UnitTests" )]
+    [STATestClass, TestCategory( "UnitTests" )]
     public class EddiCoreHotkeyTests : TestBase
     {
         private List<HotkeyAction> hotkeyActions => new List<HotkeyAction>
