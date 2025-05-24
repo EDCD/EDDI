@@ -12,9 +12,7 @@ namespace EddiSpeechService.SpeechEffects
 {
     public static class SpeechFX
     {
-        private static SpeechServiceConfiguration Configuration => SpeechService.Instance.Configuration;
-
-        public static IWaveProvider addEffectsToSource ( Stream stream, int chorusLevel, int reverbLevel, int echoDelay, int distortionLevel, bool radio )
+        public static IWaveProvider addEffectsToSource ( Stream stream, int targetVolume, int fxLevel, int distortionLevel, int echoDelay, bool radio )
         {
             using ( var source = new WaveFileReader( stream ) )
             {
@@ -32,12 +30,14 @@ namespace EddiSpeechService.SpeechEffects
 
                 var signal = new DiscreteSignal( source.WaveFormat.SampleRate, trimmedBuffer );
                 var sampleRate = source.WaveFormat.SampleRate;
-                var damageAdjustedFxLevel = FxParameters.DamageAdjustedFxLevel( distortionLevel, Configuration.EffectsLevel );
+                var damageAdjustedFxLevel = FxParameters.DamageAdjustedFxLevel( distortionLevel, fxLevel );
 
-                Logging.Debug( $"Effects level is {damageAdjustedFxLevel}, chorus level is {chorusLevel}, reverb level is {reverbLevel}, echo delay is {echoDelay}" );
+                Logging.Debug( $"Effects level is {damageAdjustedFxLevel}, echo delay is {echoDelay}" );
+
+                var resolvedReverbLevel = 0;
 
                 // Chorus - We always apply chorus effects.
-                signal = ApplyChorus(signal, chorusLevel, damageAdjustedFxLevel, sampleRate);
+                signal = ApplyChorus(signal, damageAdjustedFxLevel, sampleRate, out var resolvedChorusLevel);
 
                 // Radio (highpass)
                 if ( radio )
@@ -51,13 +51,13 @@ namespace EddiSpeechService.SpeechEffects
                     signal = ApplyEcho( signal, echoDelay, sampleRate );
 
                     // Reverb
-                    signal = ApplyReverb( signal, reverbLevel, damageAdjustedFxLevel, sampleRate );
+                    signal = ApplyReverb( signal, damageAdjustedFxLevel, sampleRate, out resolvedReverbLevel );
 
                     // Distortion (apply last)
                     signal = ApplyDamageDistortion( signal, distortionLevel );
                 }
 
-                signal = new DiscreteSignal( signal.SamplingRate, NormalizeSamples( signal ) );
+                signal = new DiscreteSignal( signal.SamplingRate, NormalizeSamples( signal, targetVolume ) );
 
                 // Generate the processed signal in mono
                 var processedSampleProvider = new DiscreteSignalSampleProvider( signal ).ToMono();
@@ -71,7 +71,7 @@ namespace EddiSpeechService.SpeechEffects
                 // Convert to 16-bit PCM (typical format for standard audio)
                 IWaveProvider waveProvider = new SampleToWaveProvider16( processedSampleProvider );
 
-                if ( chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0 )
+                if ( resolvedChorusLevel != 0 || resolvedReverbLevel != 0 || echoDelay != 0 )
                 {
                     var extMs = Convert.ToInt32( 500 + Math.Max( 0, ( damageAdjustedFxLevel - 50 ) * 10 ) );
                     Logging.Debug( "Extending duration by " + extMs + "ms" );
@@ -82,12 +82,13 @@ namespace EddiSpeechService.SpeechEffects
             }
         }
 
-        private static DiscreteSignal ApplyChorus ( DiscreteSignal signal, int chorusLevel, int damageAdjustedFxLevel, int sampleRate )
+        private static DiscreteSignal ApplyChorus ( DiscreteSignal signal, int damageAdjustedFxLevel, int sampleRate, out int resolvedChorusLevel )
         {
-            if ( chorusLevel != 0 )
+            resolvedChorusLevel = (int)( 60 * ( damageAdjustedFxLevel / 100M ) );
+            if ( resolvedChorusLevel != 0 )
             {
-                var rate = Math.Max( 0.1f, chorusLevel / 20f ); // e.g., 1–5 Hz Frequency scaling
-                var width = Math.Max(0.005f, damageAdjustedFxLevel / 10f * .001f); // 5-10 ms delay
+                var rate = Math.Max( 0.1f, resolvedChorusLevel / 20f ); // e.g., 1–5 Hz Frequency scaling
+                var width = Math.Max(0.005f, resolvedChorusLevel / 10f * .001f); // 5-10 ms delay
 
                 var chorus = new ChorusEffect( sampleRate, new[] { rate }, new[] { width } );
                 chorus.WetDryMix( damageAdjustedFxLevel / 100f );
@@ -143,14 +144,15 @@ namespace EddiSpeechService.SpeechEffects
             return signal;
         }
 
-        private static DiscreteSignal ApplyReverb ( DiscreteSignal signal, int reverbLevel, int damageAdjustedFxLevel, int sampleRate )
+        private static DiscreteSignal ApplyReverb ( DiscreteSignal signal, int damageAdjustedFxLevel, int sampleRate, out int resolvedReverbLevel )
         {
-            if ( reverbLevel != 0 )
+            resolvedReverbLevel = (int)( 80 * ( damageAdjustedFxLevel / 100M ) );
+            if ( resolvedReverbLevel != 0 )
             {
                 // Map reverbLevel to number of echoes and decay
-                var numEchoes = 1 + ( reverbLevel / 50 ); // 1 to 3 echoes
-                var baseDecay = 0.1f + ( 0.2f * ( reverbLevel / 100f ) ); // 0.1 to 0.3
-                var baseDelayMs = 30 + (int)( 120 * ( reverbLevel / 100f ) ); // 30ms to 150ms
+                var numEchoes = 1 + ( resolvedReverbLevel / 50 ); // 1 to 3 echoes
+                var baseDecay = 0.1f + ( 0.2f * ( resolvedReverbLevel / 100f ) ); // 0.1 to 0.3
+                var baseDelayMs = 30 + (int)( 120 * ( resolvedReverbLevel / 100f ) ); // 30ms to 150ms
 
                 for ( var i = 0; i < numEchoes; i++ )
                 {
@@ -166,7 +168,7 @@ namespace EddiSpeechService.SpeechEffects
             return signal;
         }
 
-        private static float[] NormalizeSamples ( DiscreteSignal signal )
+        private static float[] NormalizeSamples ( DiscreteSignal signal, int targetVolume )
         {
             var samples = signal.Samples;
 
@@ -189,7 +191,7 @@ namespace EddiSpeechService.SpeechEffects
                 }
             }
 
-            var volumeScale = Math.Max(0, Math.Min(100, Configuration.Volume)) / 100f;
+            var volumeScale = Math.Max(0, Math.Min(100, targetVolume)) / 100f;
             for ( var i = 0; i < samples.Length; i++ )
             {
                 // Apply configuration volume scaling (percent 0-100)

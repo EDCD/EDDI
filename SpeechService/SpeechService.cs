@@ -225,8 +225,7 @@ namespace EddiSpeechService
             if (string.IsNullOrEmpty(message)) { return; }
 
             // Queue the current speech
-            var queuingSpeech = new EddiSpeech( message, voice, priority, eventType, 
-                Configuration.EffectsLevel, ship?.Size, ship?.health, radio, Configuration.DistortOnDamage );
+            var queuingSpeech = new EddiSpeech( message, voice, priority, eventType, ship?.Size, ship?.health, radio, Configuration.DistortOnDamage );
             speechQueue.Enqueue( queuingSpeech );
 
             // Check the first item in the speech queue
@@ -298,12 +297,13 @@ namespace EddiSpeechService
             return false;
         }
 
-        public static void Speak(EddiSpeech speech)
+        public void Speak(EddiSpeech speech)
         {
-            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.radio, speech.priority);
+            Instance.Speak(speech.message, speech.voice, Configuration.EffectsLevel, Configuration.Volume, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
         }
 
-        public void Speak(string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, bool radio = false, int priority = 3)
+        public void Speak ( string speech, string defaultVoice, int fxLevel, int volume = 95, 
+            int distortionLevel = 0, int echoDelay = 0, int priority = 3, bool radio = false )
         {
             if (speech == null || speech.Trim() == "") { return; }
 
@@ -314,19 +314,19 @@ namespace EddiSpeechService
             }
 
             discardPendingSegments = false;
-            List<string> segments = SpeechFormatter.SeparateSpeechSegments(speech);
+            var segments = SpeechFormatter.SeparateSpeechSegments(speech);
 
-            foreach (string segment in segments)
+            foreach (var segment in segments)
             {
                 if ( discardPendingSegments )  { continue; }
 
                 string voice = null;
-                string statement = segment;
+                var statement = segment;
 
-                bool isAudio = segment.Contains("<audio"); // This is an audio file, we will disable voice effects processing
+                var isAudio = segment.Contains("<audio"); // This is an audio file, we will disable voice effects processing
                 if (isAudio)
                 {
-                    SpeechFormatter.UnpackAudioTags(segment, out string fileName, out bool async, out decimal? volumeOverride);
+                    SpeechFormatter.UnpackAudioTags(segment, out var fileName, out var async, out var volumeOverride);
                     try
                     {
                         // Play the audio, waiting for the audio to complete unless we're in async mode
@@ -355,21 +355,21 @@ namespace EddiSpeechService
                     continue;
                 }
 
-                bool isRadio = statement.Contains("<transmit") || radio; 
+                var isRadio = statement.Contains("<transmit") || radio; 
                 if (isRadio)
                 {
                     // This is a radio transmission, we will enable radio voice effects processing
                     statement = SpeechFormatter.StripRadioTags( statement );
                 }
 
-                bool isVoice = statement.Contains("<voice"); 
+                var isVoice = statement.Contains("<voice"); 
                 if (isVoice)
                 {
                     // This is a voice override
                     SpeechFormatter.UnpackVoiceTags( statement, out voice, out statement );
                 }
 
-                using (Stream stream = getSpeechStream(voice ?? defaultVoice, statement))
+                using (var stream = getSpeechStream(voice ?? defaultVoice, statement))
                 {
                     if (stream == null)
                     {
@@ -388,14 +388,14 @@ namespace EddiSpeechService
                     Logging.Debug("Seeking back to the beginning of the stream");
                     stream.Seek(0, SeekOrigin.Begin);
 
-                    var provider = SpeechFX.addEffectsToSource(stream, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
+                    var provider = SpeechFX.addEffectsToSource(stream, volume, fxLevel, distortionLevel, echoDelay, isRadio );
                     PlaySpeechStreamAsync( provider, priority ).GetAwaiter().GetResult();
                 }
             }
         }
         
         // Obtain the speech memory stream
-        public Stream getSpeechStream ( string requestedVoice, string speech )
+        private Stream getSpeechStream ( string requestedVoice, string speech )
         {
             try
             {

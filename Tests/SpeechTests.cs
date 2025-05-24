@@ -29,7 +29,7 @@ namespace Tests
         [DataRow( @"<phoneme alphabet=""ipa"" ph=""iˈlɛktrə"">Electra</phoneme>" )]
         public void TestPhonetics (string inputSpeech)
         {
-            SpeechService.Speak(new EddiSpeech(inputSpeech));
+            SpeechService.Instance.Speak(new EddiSpeech(inputSpeech));
         }
 
         [TestMethod, DoNotParallelize]
@@ -126,17 +126,8 @@ namespace Tests
         [DataRow( 100 )]
         public void TestDamageDistortion (int shipHealth)
         {
-            var speech = new EddiSpeech( $"Systems at {shipHealth}%.", null, 0, null, 
-                50, LandingPadSize.Large, shipHealth, false, true );
-            SpeechService.Speak( speech );
-        }
-
-        [TestMethod, DoNotParallelize]
-        public void TestVariants ()
-        {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), "Welcome to your Vulture.  Weapons online." );
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Python" ), "Welcome to your Python.  Scanning at full range." );
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Anaconda" ), "Welcome to your Anaconda.  All systems operational." );
+            var speech = new EddiSpeech( $"Systems at {shipHealth}%.", null, 0, null, LandingPadSize.Large, shipHealth, false, true );
+            SpeechService.Instance.Speak( speech );
         }
 
         [DataTestMethod, DoNotParallelize]
@@ -146,9 +137,9 @@ namespace Tests
         [DataRow( 60 )]
         [DataRow( 80 )]
         [DataRow( 100 )]
-        public void TestChorus ( int chorusLevel )
+        public void TestFxLevel ( int fxLevel )
         {
-            SpeechService.Instance.Speak( $"Chorus level {chorusLevel}", null, 0, 0, chorusLevel, 0, false, 0 );
+            SpeechService.Instance.Speak( $"Effects level {fxLevel}", null, fxLevel );
         }
 
         [DataTestMethod, DoNotParallelize]
@@ -156,7 +147,7 @@ namespace Tests
         [DataRow( "Anaconda golf foxtrot lima one niner six eight returning from orbit." )]
         public void TestRadio (string msg)
         {
-            SpeechService.Speak(new EddiSpeech(msg, radio: true));
+            SpeechService.Instance.Speak(new EddiSpeech(msg, radio: true));
         }
 
         [DataTestMethod, DoNotParallelize]
@@ -166,36 +157,14 @@ namespace Tests
         public void TestEchoDelay (int landingPadSize)
         {
             var shipSize = LandingPadSize.AllOfThem.First( s => s.sizeIndex == landingPadSize );
-            SpeechService.Speak( new EddiSpeech( $"Echo delay for a {shipSize} ship.", shipSize: shipSize ) );
-        }
-
-        [TestMethod, DoNotParallelize]
-        public void TestDropOff ()
-        {
-            var synth = new SpeechSynthesizer();
-            using ( var stream = new MemoryStream() )
-            {
-                synth.SetOutputToWaveStream( stream );
-                synth.Speak( "Testing drop-off." );
-                stream.Seek( 0, SeekOrigin.Begin );
-                var source = new WaveFileReader(stream);
-                var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-                var soundOut = new WasapiOut();
-                soundOut.Init( source );
-                soundOut.PlaybackStopped += ( s, e ) => waitHandle.Set();
-                soundOut.Play();
-                waitHandle.WaitOne();
-                soundOut.Dispose();
-                source.Dispose();
-            }
-            SpeechService.Instance.Speak( "Testing drop-off.", null, 50, 1, 30, 40, true, 0 );
+            SpeechService.Instance.Speak( new EddiSpeech( $"Echo delay for a {shipSize} ship.", shipSize: shipSize ) );
         }
 
         [TestMethod, DoNotParallelize]
         public void TestSpeechNullInvalidVoice ()
         {
-            SpeechService.Speak( new EddiSpeech( "Testing null voice", null ) );
-            SpeechService.Speak( new EddiSpeech( "Testing non-valid voice", "No such voice" ) );
+            SpeechService.Instance.Speak( new EddiSpeech( "Testing null voice", null ) );
+            SpeechService.Instance.Speak( new EddiSpeech( "Testing non-valid voice", "No such voice" ) );
         }
     }
 }

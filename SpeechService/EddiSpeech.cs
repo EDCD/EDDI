@@ -11,13 +11,11 @@ namespace EddiSpeechService
         public string eventType { get; private set; }
 
         // Calculated SpeechFX data
-        public int echoDelay { get; set; }
-        public int chorusLevel { get; set; }
-        public int reverbLevel { get; set; }
-        public int distortionLevel { get; set; }
+        public int echoDelay { get; }
+        public int distortionLevel { get; }
 
         public EddiSpeech ( string message, string voice = null, int priority = 3,
-            string eventType = null, int configFxLevel = 0, LandingPadSize shipSize = null,
+            string eventType = null, LandingPadSize shipSize = null,
             decimal? shipHealth = 100M, bool radio = false, bool distortOnDamage = false )
         {
             this.message = message;
@@ -27,16 +25,8 @@ namespace EddiSpeechService
             this.eventType = eventType;
 
             // Resolve the SpeechFX settings
-            this.echoDelay = GetEchoDelay( shipSize );
-            this.chorusLevel = GetChorusLevel( configFxLevel );
-            this.reverbLevel = GetReverbLevel( configFxLevel );
-            this.distortionLevel = GetDistortionLevel( distortOnDamage, shipHealth );
-        }
-
-        private static int GetChorusLevel ( int configFxLevel )
-        {
-            // This is not affected by ship parameters
-            return (int)( 60 * ( configFxLevel / 100M ) );
+            echoDelay = GetEchoDelay( shipSize );
+            distortionLevel = GetDistortionLevel( distortOnDamage, shipHealth );
         }
 
         private static int GetDistortionLevel ( bool distortOnDamage, decimal? shipHealth )
@@ -72,12 +62,6 @@ namespace EddiSpeechService
             }
 
             return echoDelayMs;
-        }
-
-        private static int GetReverbLevel ( int configFxLevel )
-        {
-            // This is not affected by ship parameters
-            return (int)( 80 * ( configFxLevel / 100M ) );
         }
     }
 }
