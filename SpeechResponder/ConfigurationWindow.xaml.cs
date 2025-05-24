@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Utilities;
 
@@ -453,13 +454,16 @@ namespace EddiSpeechResponder
                     // Register the new hotkey configuration
                     foreach ( var actionKeyGesture in window.HotkeyActionCollection.HotkeyActions )
                     {
+                        string name = actionKeyGesture.Name;
+                        KeyGesture gesture = actionKeyGesture.KeyGesture;
+
                         // Unregister the old hotkey if it exists
-                        hkm.UnregisterHotkey( actionKeyGesture.Name );
+                        hkm.UnregisterHotkey( name );
 
                         // Assign a new hotkey if a gesture is set
-                        if ( actionKeyGesture.KeyGesture != null )
+                        if ( gesture != null )
                         {
-                            hkm.RegisterHotkey( actionKeyGesture.Name, actionKeyGesture.KeyGesture );
+                            hkm.RegisterHotkey( name, gesture );
                         }
                     }
                 }
