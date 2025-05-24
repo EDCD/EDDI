@@ -142,7 +142,7 @@ namespace EddiSpeechService
                 if (IsWindowsMediaSynthesizerSupported())
                 {
                     // Prep the Windows.Media.SpeechSynthesis synthesizer
-                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore, lexiconSchemas);
+                    windowsMediaSynth = new WindowsMediaSynthesizer(ref voiceStore);
                 }
             }
             catch (Exception e)
@@ -153,7 +153,7 @@ namespace EddiSpeechService
             // Prep the System.Speech synthesizer
             try
             {
-                systemSpeechSynth = new SystemSpeechSynthesizer( ref voiceStore, lexiconSchemas );
+                systemSpeechSynth = new SystemSpeechSynthesizer( ref voiceStore );
             }
             catch ( ThreadAbortException )
             {
@@ -827,7 +827,7 @@ namespace EddiSpeechService
         internal string cultureTwoLetterISOLanguageName;
         internal string cultureIetfLanguageTag;
 
-        internal VoiceDetails( string displayName, string gender, CultureInfo Culture, string synthType, XmlSchemaSet lexiconSchemas )
+        internal VoiceDetails( string displayName, string gender, CultureInfo Culture, string synthType )
         {
             this.name = displayName;
             this.gender = gender;

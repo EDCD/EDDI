@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 using Utilities;
 
 namespace EddiSpeechService.SpeechSynthesizers
@@ -28,7 +27,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             }
         }
 
-        public SystemSpeechSynthesizer ( ref HashSet<VoiceDetails> voiceStore, XmlSchemaSet lexiconSchemas )
+        public SystemSpeechSynthesizer ( ref HashSet<VoiceDetails> voiceStore )
         {
             bool TrySystemVoice ( VoiceDetails voiceDetails )
             {
@@ -69,7 +68,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                     Logging.Debug( $"Found voice: {voice.VoiceInfo.Name}", voice.VoiceInfo );
 
                     var voiceDetails = new VoiceDetails( voice.VoiceInfo.Name, voice.VoiceInfo.Gender.ToString(),
-                        voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System), lexiconSchemas );
+                        voice.VoiceInfo.Culture ?? CultureInfo.InvariantCulture, nameof(System) );
 
                     // Skip duplicates of voices already added from Windows.Media.SpeechSynthesis
                     // (for example, if OneCore voices have been added to System.Speech with a registry edit)
