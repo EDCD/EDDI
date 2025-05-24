@@ -48,7 +48,7 @@ namespace EddiSpeechService.SpeechEffects
                 else
                 {
                     // Echo
-                    signal = ApplyEcho( signal, echoDelay, damageAdjustedFxLevel, sampleRate );
+                    signal = ApplyEcho( signal, echoDelay, sampleRate );
 
                     // Reverb
                     signal = ApplyReverb( signal, reverbLevel, damageAdjustedFxLevel, sampleRate );
@@ -111,7 +111,7 @@ namespace EddiSpeechService.SpeechEffects
             return signal;
         }
 
-        private static DiscreteSignal ApplyEcho ( DiscreteSignal signal, int echoDelayMs, int damageAdjustedFxLevel, int sampleRate )
+        private static DiscreteSignal ApplyEcho ( DiscreteSignal signal, int echoDelayMs, int sampleRate )
         {
             if ( echoDelayMs != 0 )
             {
@@ -119,7 +119,7 @@ namespace EddiSpeechService.SpeechEffects
                 var delaySampleRate = Convert.ToInt32( sampleRate * 0.15 );
                 var echo = new EchoEffect( delaySampleRate, echoDelayMs / 1000.0f );
                 // The "wetDryMix" mix is the percent of added echo, with 0 indicating no added echo.
-                echo.WetDryMix( 0.10f * damageAdjustedFxLevel / 100f );
+                echo.WetDryMix( 0.5f );
                 signal = echo.ApplyTo( signal );
             }
 

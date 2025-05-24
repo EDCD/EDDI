@@ -59,7 +59,7 @@ namespace EddiSpeechService
             {
                 if ( size == LandingPadSize.Small )
                 {
-                    echoDelayMs = 150;
+                    echoDelayMs = 100;
                 }
                 else if ( size == LandingPadSize.Medium )
                 {
@@ -67,14 +67,14 @@ namespace EddiSpeechService
                 }
                 else if ( size == LandingPadSize.Large )
                 {
-                    echoDelayMs = 400;
+                    echoDelayMs = 300;
                 }
             }
 
             return echoDelayMs;
         }
 
-        internal static int GetReverbLevel ( int configFxLevel )
+        private static int GetReverbLevel ( int configFxLevel )
         {
             // This is not affected by ship parameters
             return (int)( 80 * ( configFxLevel / 100M ) );
