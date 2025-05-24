@@ -24,7 +24,7 @@ namespace EddiCore.Hotkeys
 
         internal void RegisterAll ()
         {
-            foreach ( var configuredHotkey in ConfigService.Instance.eddiConfiguration.Hotkeys )
+            foreach ( var configuredHotkey in ConfigService.Instance.eddiConfiguration.GetHotkeysCopy() )
             {
                 if ( Collection.TryGetValue( configuredHotkey.Key, out var hotkeyAction ) )
                 {
@@ -40,8 +40,7 @@ namespace EddiCore.Hotkeys
                 if ( TryRegisterHotkey( name, keyGesture, out var id ) )
                 {
                     Collection.AddGesture( name, keyGesture, id );
-                    ConfigService.Instance.eddiConfiguration.Hotkeys.Add( name,
-                        HotkeyConverter.ToString( keyGesture ) );
+                    ConfigService.Instance.eddiConfiguration.AddHotkey( name, HotkeyConverter.ToString( keyGesture ) );
                 }
                 else
                 {
@@ -95,7 +94,7 @@ namespace EddiCore.Hotkeys
             if ( TryUnregisterHotkey( name ) )
             {
                 Collection.RemoveKeyGestures( name );
-                ConfigService.Instance.eddiConfiguration.Hotkeys.Remove( name );
+                ConfigService.Instance.eddiConfiguration.RemoveHotkey( name );
             }
         }
 

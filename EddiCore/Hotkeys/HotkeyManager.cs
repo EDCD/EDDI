@@ -1,5 +1,4 @@
-﻿using EddiConfigService;
-using EddiSpeechService;
+﻿using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -32,8 +31,6 @@ namespace EddiCore.Hotkeys
 
         public void SetHandle ( IntPtr newHandle )
         {
-            ConfigService.Instance.eddiConfiguration.Hotkeys = ConfigService.Instance.eddiConfiguration.Hotkeys ??
-                                                               new Dictionary<string, string>();
             Hotkeys?.UnregisterAll();
             Hotkeys = new HotkeyRegistration( newHandle, new HotkeyActionCollection( HotkeyActions ) );
             Hotkeys.RegisterAll();

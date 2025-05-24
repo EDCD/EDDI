@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Windows;
 
 namespace EddiConfigService.Configurations
@@ -45,8 +46,11 @@ namespace EddiConfigService.Configurations
 
         // Hotkeys
 
-        [ JsonProperty( "Hotkeys" ) ]
-        public Dictionary<string, string> Hotkeys { get; set; } = new Dictionary<string, string>();
+        [JsonProperty( "Hotkeys" )]
+        private ImmutableDictionary<string, string> Hotkeys = ImmutableDictionary<string, string>.Empty;
+        public ImmutableDictionary<string, string> GetHotkeysCopy () => Hotkeys;
+        public void AddHotkey ( string name, string gesture ) => Hotkeys = Hotkeys.Add( name, gesture );
+        public void RemoveHotkey ( string name ) => Hotkeys = Hotkeys.Remove( name );
 
         // Default
         public EDDIConfiguration()
