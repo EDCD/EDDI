@@ -32,12 +32,12 @@ namespace EddiSpeechService.SpeechEffects
 
                 var signal = new DiscreteSignal( source.WaveFormat.SampleRate, trimmedBuffer );
                 var sampleRate = source.WaveFormat.SampleRate;
-                var effectsLevel = FxParameters.fxLevel( distortionLevel );
+                var damageAdjustedFxLevel = FxParameters.DamageAdjustedFxLevel( distortionLevel, Configuration.EffectsLevel );
 
-                Logging.Debug( $"Effects level is {effectsLevel}, chorus level is {chorusLevel}, reverb level is {reverbLevel}, echo delay is {echoDelay}" );
+                Logging.Debug( $"Effects level is {damageAdjustedFxLevel}, chorus level is {chorusLevel}, reverb level is {reverbLevel}, echo delay is {echoDelay}" );
 
                 // Chorus - We always apply chorus effects.
-                signal = ApplyChorus(signal, chorusLevel, effectsLevel, sampleRate);
+                signal = ApplyChorus(signal, chorusLevel, damageAdjustedFxLevel, sampleRate);
 
                 // Radio (highpass)
                 if ( radio )
@@ -48,10 +48,10 @@ namespace EddiSpeechService.SpeechEffects
                 else
                 {
                     // Echo
-                    signal = ApplyEcho( signal, echoDelay, effectsLevel, sampleRate );
+                    signal = ApplyEcho( signal, echoDelay, damageAdjustedFxLevel, sampleRate );
 
                     // Reverb
-                    signal = ApplyReverb( signal, reverbLevel, effectsLevel, sampleRate );
+                    signal = ApplyReverb( signal, reverbLevel, damageAdjustedFxLevel, sampleRate );
 
                     // Distortion (apply last)
                     signal = ApplyDamageDistortion( signal, distortionLevel );
@@ -73,7 +73,7 @@ namespace EddiSpeechService.SpeechEffects
 
                 if ( chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0 )
                 {
-                    var extMs = Convert.ToInt32( 500 + Math.Max( 0, ( effectsLevel - 50 ) * 10 ) );
+                    var extMs = Convert.ToInt32( 500 + Math.Max( 0, ( damageAdjustedFxLevel - 50 ) * 10 ) );
                     Logging.Debug( "Extending duration by " + extMs + "ms" );
                     waveProvider = new ExtendedDurationWaveProvider( waveProvider, extMs );
                 }
@@ -82,15 +82,15 @@ namespace EddiSpeechService.SpeechEffects
             }
         }
 
-        private static DiscreteSignal ApplyChorus ( DiscreteSignal signal, int chorusLevel, int effectsLevel, int sampleRate )
+        private static DiscreteSignal ApplyChorus ( DiscreteSignal signal, int chorusLevel, int damageAdjustedFxLevel, int sampleRate )
         {
             if ( chorusLevel != 0 )
             {
                 var rate = Math.Max( 0.1f, chorusLevel / 20f ); // e.g., 1–5 Hz Frequency scaling
-                var width = Math.Max(0.005f, effectsLevel / 10f * .001f); // 5-10 ms delay
+                var width = Math.Max(0.005f, damageAdjustedFxLevel / 10f * .001f); // 5-10 ms delay
 
                 var chorus = new ChorusEffect( sampleRate, new[] { rate }, new[] { width } );
-                chorus.WetDryMix( effectsLevel / 100f );
+                chorus.WetDryMix( damageAdjustedFxLevel / 100f );
                 signal = chorus.ApplyTo( signal );
             }
 
@@ -111,7 +111,7 @@ namespace EddiSpeechService.SpeechEffects
             return signal;
         }
 
-        private static DiscreteSignal ApplyEcho ( DiscreteSignal signal, int echoDelayMs, int effectsLevel, int sampleRate )
+        private static DiscreteSignal ApplyEcho ( DiscreteSignal signal, int echoDelayMs, int damageAdjustedFxLevel, int sampleRate )
         {
             if ( echoDelayMs != 0 )
             {
@@ -119,7 +119,7 @@ namespace EddiSpeechService.SpeechEffects
                 var delaySampleRate = Convert.ToInt32( sampleRate * 0.15 );
                 var echo = new EchoEffect( delaySampleRate, echoDelayMs / 1000.0f );
                 // The "wetDryMix" mix is the percent of added echo, with 0 indicating no added echo.
-                echo.WetDryMix( 0.10f * effectsLevel / 100f );
+                echo.WetDryMix( 0.10f * damageAdjustedFxLevel / 100f );
                 signal = echo.ApplyTo( signal );
             }
 
@@ -143,7 +143,7 @@ namespace EddiSpeechService.SpeechEffects
             return signal;
         }
 
-        private static DiscreteSignal ApplyReverb ( DiscreteSignal signal, int reverbLevel, int effectsLevel, int sampleRate )
+        private static DiscreteSignal ApplyReverb ( DiscreteSignal signal, int reverbLevel, int damageAdjustedFxLevel, int sampleRate )
         {
             if ( reverbLevel != 0 )
             {
@@ -158,7 +158,7 @@ namespace EddiSpeechService.SpeechEffects
                     var decay = baseDecay * (float)Math.Pow( 0.3, i ); // each echo decays more
                     var delaySamples = (int)( sampleRate * ( delayMs / 1000.0 ) );
                     var echo = new EchoEffect( delaySamples, decay );
-                    echo.WetDryMix( effectsLevel / 100f );
+                    echo.WetDryMix( damageAdjustedFxLevel / 100f );
                     signal = echo.ApplyTo( signal );
                 }
             }

@@ -225,7 +225,8 @@ namespace EddiSpeechService
             if (string.IsNullOrEmpty(message)) { return; }
 
             // Queue the current speech
-            var queuingSpeech = new EddiSpeech(message, ship, priority, voice, radio, eventType);
+            var queuingSpeech = new EddiSpeech( message, voice, priority, eventType, 
+                Configuration.EffectsLevel, ship?.Size, ship?.health, radio, Configuration.DistortOnDamage );
             speechQueue.Enqueue( queuingSpeech );
 
             // Check the first item in the speech queue
@@ -299,10 +300,10 @@ namespace EddiSpeechService
 
         public static void Speak(EddiSpeech speech)
         {
-            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority);
+            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.radio, speech.priority);
         }
 
-        public void Speak(string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3)
+        public void Speak(string speech, string defaultVoice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, bool radio = false, int priority = 3)
         {
             if (speech == null || speech.Trim() == "") { return; }
 
