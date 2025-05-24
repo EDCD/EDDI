@@ -28,9 +28,7 @@ namespace EddiCore.Hotkeys
             {
                 if ( Collection.TryGetValue( configuredHotkey.Key, out var hotkeyAction ) )
                 {
-                    TryRegisterHotkey( hotkeyAction.Name, HotkeyConverter.FromString( configuredHotkey.Value ),
-                        out var id );
-                    Collection.AddId( hotkeyAction.Name, id );
+                    RegisterHotkey( hotkeyAction.Name, HotkeyConverter.FromString( configuredHotkey.Value ) );
                 }
             }
         }
