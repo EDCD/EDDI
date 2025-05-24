@@ -1,12 +1,11 @@
-﻿using CSCore;
-using CSCore.Codecs;
-using CSCore.Codecs.WAV;
-using CSCore.SoundOut;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
+using EddiSpeechService.SpeechEffects;
 using EddiSpeechService.SpeechPreparation;
 using EddiSpeechService.SpeechSynthesizers;
 using JetBrains.Annotations;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -29,7 +28,7 @@ using Utilities;
 namespace EddiSpeechService
 {
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
-    public partial class SpeechService : INotifyPropertyChanged, IDisposable
+    public class SpeechService : INotifyPropertyChanged, IDisposable
     {
         private const float ActiveSpeechFadeOutMilliseconds = 250;
 
@@ -64,8 +63,8 @@ namespace EddiSpeechService
         internal int activeSpeechPriority;
         private static bool discardPendingSegments;
 
-        private readonly ConcurrentDictionary<ISoundOut, CancellationTokenSource> activeSpeechTS = new ConcurrentDictionary<ISoundOut, CancellationTokenSource>();
-        private readonly ConcurrentDictionary<ISoundOut, CancellationTokenSource> activeAudioTS = new ConcurrentDictionary<ISoundOut, CancellationTokenSource>();
+        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeSpeechTS = new ConcurrentDictionary<IWavePlayer, CancellationTokenSource>();
+        private readonly ConcurrentDictionary<IWavePlayer, CancellationTokenSource> activeAudioTS = new ConcurrentDictionary<IWavePlayer, CancellationTokenSource>();
 
         public readonly SpeechQueue speechQueue = new SpeechQueue();
 
@@ -388,10 +387,8 @@ namespace EddiSpeechService
                     Logging.Debug("Seeking back to the beginning of the stream");
                     stream.Seek(0, SeekOrigin.Begin);
 
-                    IWaveSource source = new WaveFileReader(stream);
-                    source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
-
-                    PlaySpeechStream(source, priority);
+                    var provider = SpeechFX.addEffectsToSource(stream, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
+                    PlaySpeechStreamAsync( provider, priority ).GetAwaiter().GetResult();
                 }
             }
         }
@@ -503,33 +500,46 @@ namespace EddiSpeechService
             return false;
         }
 
-        private ISoundOut GetSoundOut ( IWaveSource source )
+        private IWavePlayer GetSoundOut ( IWaveProvider provider )
         {
-            if ( WasapiOut.IsSupportedOnCurrentPlatform )
+            // Try WASAPI first
+            try
             {
-                var soundOut = new WasapiOut();
-                if ( TryInitializeSoundOut( soundOut, source ) )
+                var wasapiOut = new WasapiOut();
+                if ( TryInitializeSoundOut( wasapiOut, provider ) )
                 {
-                    return soundOut;
+                    return wasapiOut;
                 }
                 Logging.Warn( "Falling back to legacy DirectSoundOut." );
             }
-
-            var directSoundOut = new DirectSoundOut();
-            if ( TryInitializeSoundOut( directSoundOut, source ) )
+            catch ( Exception ex )
             {
-                return directSoundOut;
+                Logging.Warn( "WASAPI output initialization failed, falling back to DirectSoundOut.", ex );
             }
 
-            Logging.Warn("Unable to initialize any playback device.");
+            // Fallback: DirectSoundOut
+            try
+            {
+                var directSoundOut = new DirectSoundOut();
+                if ( TryInitializeSoundOut( directSoundOut, provider ) )
+                {
+                    return directSoundOut;
+                }
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( "DirectSoundOut output initialization failed.", ex );
+            }
+
+            Logging.Warn( "Unable to initialize any playback device." );
             return null;
         }
 
-        private static bool TryInitializeSoundOut ( ISoundOut soundOut, IWaveSource source )
+        private static bool TryInitializeSoundOut ( IWavePlayer soundOut, IWaveProvider provider )
         {
             try
             {
-                soundOut.Initialize( source );
+                soundOut.Init( provider );
             }
             catch ( COMException ce )
             {
@@ -541,11 +551,15 @@ namespace EddiSpeechService
                 Logging.Warn( $"Failed to initialize. {ice.Message} ", ice );
                 return false;
             }
-
+            catch ( Exception ex )
+            {
+                Logging.Warn( $"Failed to initialize sound output: {ex.Message}", ex );
+                return false;
+            }
             return true;
         }
 
-        private static void FadeOut ( ISoundOut soundOut )
+        private static void FadeOut ( IWavePlayer soundOut )
         {
             if ( soundOut?.PlaybackState == PlaybackState.Playing )
             {
@@ -561,63 +575,98 @@ namespace EddiSpeechService
 
         #region Speech
 
-        private void PlaySpeechStream(IWaveSource source, int priority)
+        private async Task PlaySpeechStreamAsync ( IWaveProvider provider, int priority )
         {
-            try
+            var fadeProvider = new FadeInOutSampleProvider( provider.ToSampleProvider() );
+            using ( var soundOut = GetSoundOut( fadeProvider.ToWaveProvider() ) )
             {
-                if ( !( source?.Length > 0 ) )
+                if ( soundOut is null ) { return; }
+                var cancellationTokenSource = new CancellationTokenSource();
+
+                try
                 {
-                    Logging.Debug( "Skipping empty speech." );
-                    return;
-                }
+                    await StartSpeechAsync( soundOut, priority, cancellationTokenSource );
 
-                var waitTime = source.GetTime(source.Length);
+                    // Estimate total duration in milliseconds
+                    var totalDurationMs = (provider as WaveStream)?.TotalTime.TotalMilliseconds
+                                          ?? 0;
+                    var fadeOutMs = (int)ActiveSpeechFadeOutMilliseconds;
+                    var fadeOutStartMs = Math.Max(0, totalDurationMs - fadeOutMs);
 
-                using ( var soundOut = GetSoundOut( source ) )
-                {
-                    if ( soundOut is null ) { return; }
-                    var cancellationTokenSource = new CancellationTokenSource();
-                    StartSpeech( soundOut, priority, cancellationTokenSource );
-
-                    // Fade out and stop the speech once it completes. Complete early if cancellation is requested.
-                    try
+                    // Start fade-out before playback ends
+                    var fadeOutTask = Task.Run(async () =>
                     {
-                        Logging.Debug( $"Waiting for speech - {waitTime.Milliseconds} ms (unless ended early)" );
-                        Task.Delay( waitTime, cancellationTokenSource.Token ).GetAwaiter().GetResult();
-                    }
-                    catch ( OperationCanceledException )
-                    {
-                        // Nothing to do here, we're just making sure that speech completed early is handled gracefully.
-                    }
-
-                    Logging.Debug( "Finished waiting for speech" );
-                    FadeOut( soundOut );
-                    lock ( activeSpeechLock )
-                    {
-                        if ( activeSpeechTS.TryRemove( soundOut, out var ts ) )
+                        if (fadeOutStartMs > 0)
                         {
-                            ts.Dispose();
+                            await Task.Delay((int)fadeOutStartMs, cancellationTokenSource.Token);
+                            fadeProvider.BeginFadeOut(fadeOutMs);
                         }
-                        OnPropertyChanged( nameof( eddiSpeaking ) );
+                    }, cancellationTokenSource.Token);
+
+                    // Wait for playback to finish or cancellation
+                    while ( soundOut.PlaybackState == PlaybackState.Playing )
+                    {
+                        await Task.Delay( 10, cancellationTokenSource.Token );
                     }
+
+                    // Ensure fade-out is complete
+                    await fadeOutTask.ContinueWith( _ => { }, TaskScheduler.Default );
                 }
-            }
-            catch ( Exception e )
-            {
-                Logging.Error( "Speech playback failed.", e );
+                catch ( OperationCanceledException )
+                {
+                    // Fade out on cancellation
+                    fadeProvider.BeginFadeOut( ActiveSpeechFadeOutMilliseconds );
+                    // ReSharper disable once MethodSupportsCancellation
+                    await Task.Delay( (int)ActiveSpeechFadeOutMilliseconds );
+                }
+                catch ( Exception e )
+                {
+                    Logging.Error( "Speech playback failed.", e );
+                }
+
+                // Dispose of completed speech
+                lock ( activeSpeechLock )
+                {
+                    if ( activeSpeechTS.TryRemove( soundOut, out var ts ) )
+                    {
+                        ts.Dispose();
+                    }
+
+                    OnPropertyChanged( nameof( eddiSpeaking ) );
+                }
             }
         }
 
-        private void StartSpeech ( ISoundOut soundout, int priority, CancellationTokenSource cancellationTokenSource )
+        private async Task StartSpeechAsync ( IWavePlayer soundOut, int priority, CancellationTokenSource cancellationTokenSource )
         {
-            while ( eddiSpeaking ) { Thread.Sleep( 10 ); }
-            lock ( activeSpeechLock )
+            try
             {
-                activeSpeechTS.TryAdd( soundout, cancellationTokenSource );
-                OnPropertyChanged( nameof( eddiSpeaking ) );
-                Logging.Debug( "Setting active speech and playing sound buffer" );
-                activeSpeechPriority = priority;
-                soundout.Play();
+                // Wait for any currently playing speech to finish
+                while ( eddiSpeaking )
+                {
+                    await Task.Delay( 10, cancellationTokenSource.Token );
+                }
+
+                lock ( activeSpeechLock )
+                {
+                    // Track the active speech output and its cancellation token
+                    activeSpeechTS.TryAdd( soundOut, cancellationTokenSource );
+
+                    // Set the current speech priority
+                    activeSpeechPriority = priority;
+
+                    Logging.Debug( "Setting active speech and playing sound buffer" );
+
+                    // Start playback
+                    soundOut.Play();
+
+                    // Notify listeners that speech state has changed
+                    OnPropertyChanged( nameof(eddiSpeaking) );
+                }
+            }
+            catch ( OperationCanceledException )
+            {
+                // Operation cancelled. End gracefully.
             }
         }
 
@@ -629,7 +678,7 @@ namespace EddiSpeechService
                 try
                 {
                     discardPendingSegments = true;
-                    if ( activeSpeechTS.Keys is ICollection<ISoundOut> keysToRemove  && keysToRemove.Any() )
+                    if ( activeSpeechTS.Keys is ICollection<IWavePlayer> keysToRemove  && keysToRemove.Any() )
                     {
                         keysToRemove.AsParallel().ForAll( key =>
                         {
@@ -664,33 +713,13 @@ namespace EddiSpeechService
         {
             try
             {
-                IWaveSource audioSource;
-                string absolutePath = Files.GetAbsoluteFilePath( Constants.DATA_DIR, fileName );
-                try
-                {
-                    audioSource = CodecFactory.Instance.GetCodec( absolutePath );
-                }
-                catch ( FileNotFoundException fnfe )
-                {
-                    Say( null, $"Audio file not found at {fnfe.FileName}.", 0 );
-                    Logging.Warn( fnfe.Message, fnfe );
-                    return;
-                }
-                catch ( NotSupportedException e )
-                {
-                    Say( null, "Audio file format not supported.", 0 );
-                    Logging.Warn( $"Skipping unsupported audio file {fileName}.", e );
-                    return;
-                }
-                if ( !( audioSource?.Length > 0 ) ) { return; }
-
-                var waitTime = audioSource.GetTime( audioSource.Length );
-
+                string absolutePath = Files.GetAbsoluteFilePath(Constants.DATA_DIR, fileName);
+                using ( var audioSource = new AudioFileReader( absolutePath ) )
                 using ( var soundOut = GetSoundOut( audioSource ) )
                 {
-                    if ( soundOut is null ) { return; }
+                    if ( soundOut == null ) { return; }
 
-                    Logging.Debug($"Beginning audio playback for {fileName}.");
+                    Logging.Debug( $"Beginning audio playback for {fileName}." );
 
                     if ( volumeOverride != null )
                     {
@@ -699,20 +728,21 @@ namespace EddiSpeechService
 
                     soundOut.Play();
 
-                    // Fade out and stop the audio once it completes. Complete early if cancellation is requested.
                     var cancellationTokenSource = new CancellationTokenSource();
                     lock ( activeAudioLock )
                     {
-                        activeAudioTS.TryAdd(soundOut, cancellationTokenSource );
+                        activeAudioTS.TryAdd( soundOut, cancellationTokenSource );
                     }
+
                     try
                     {
-                        Logging.Debug( $"Waiting for audio - {waitTime.Milliseconds} ms (unless ended early)." );
+                        var waitTime = audioSource.TotalTime;
+                        Logging.Debug( $"Waiting for audio - {waitTime.TotalMilliseconds} ms (unless ended early)." );
                         Task.Delay( waitTime, cancellationTokenSource.Token ).GetAwaiter().GetResult();
                     }
                     catch ( OperationCanceledException )
                     {
-                        // Nothing to do here, we're just making sure that audio completed early is handled gracefully.
+                        // Graceful exit on cancellation
                     }
 
                     Logging.Debug( $"Ending audio playback for {fileName}." );
@@ -726,9 +756,19 @@ namespace EddiSpeechService
                     }
                 }
             }
+            catch ( FileNotFoundException fnfe )
+            {
+                Say( null, $"Audio file not found at {fnfe.FileName}.", 0 );
+                Logging.Warn( fnfe.Message, fnfe );
+            }
+            catch ( NotSupportedException e )
+            {
+                Say( null, "Audio file format not supported.", 0 );
+                Logging.Warn( $"Skipping unsupported audio file {fileName}.", e );
+            }
             catch ( Exception e )
             {
-                Logging.Error("Audio playback failed.", e);            
+                Logging.Error( "Audio playback failed.", e );
             }
         }
 

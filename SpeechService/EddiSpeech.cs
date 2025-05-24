@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using EddiSpeechService.SpeechEffects;
 
 namespace EddiSpeechService
 {
@@ -27,7 +28,8 @@ namespace EddiSpeechService
             this.radio = radio;
             this.eventType = eventType;
 
-            EddiSpeech speech = SpeechService.Instance.GetSpeechFX(this);
+            // Get the SpeechFX settings
+            var speech = FxParameters.GetSpeechFX(this);
             this.echoDelay = speech.echoDelay;
             this.chorusLevel = speech.chorusLevel;
             this.reverbLevel = speech.reverbLevel;
