@@ -2,9 +2,9 @@
 using System.Globalization;
 using Utilities;
 
-namespace EddiSpeechService
+namespace EddiSpeechService.SpeechConversions
 {
-    public static partial class Translations
+    public static partial class SpeechConversions
     {
         /// <summary>
         /// Present a number's approximate value in a format suitable for text-to-speech

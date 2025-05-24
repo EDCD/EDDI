@@ -1,6 +1,6 @@
-﻿namespace EddiSpeechService
+﻿namespace EddiSpeechService.SpeechConversions
 {
-    public static partial class Translations
+    public static partial class SpeechConversions
     {
         /// <summary>Fix up power names</summary>
         public static string getPhoneticPower(string power)

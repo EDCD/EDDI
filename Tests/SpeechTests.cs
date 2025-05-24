@@ -1,111 +1,86 @@
-﻿using CSCore;
-using CSCore.Codecs.WAV;
-using CSCore.SoundOut;
-using CSCore.Streams.Effects;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NAudio.Wave;
 using System.IO;
+using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading;
-using Utilities;
 
 namespace Tests
 {
-    [TestClass, TestCategory("SpeechTests")]
+    [TestClass, TestCategory( "SpeechTests" )]
     public class SpeechTests : TestBase
     {
         [TestInitialize]
-        public void start()
+        public void start ()
         {
             MakeSafe();
         }
 
-        [TestMethod]
-        public void TestPhonemes()
+        [DataTestMethod, DoNotParallelize]
+        [DataRow( "This is your <phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme>." )]
+        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system." )]
+        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system." )]
+        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"bliːiː\">Bleae</phoneme> <phoneme alphabet=\"ipa\" ph=\"θuːə\">Thua</phoneme> system." )]
+        [DataRow( "You are travelling to the Amnemoi system." )]
+        [DataRow( "You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system." )]
+        [DataRow( @"Destination confirmed. your <phoneme alphabet=""ipa"" ph=""ˈkəʊbrə"">cobra</phoneme> <phoneme alphabet=""ipa"" ph=""mɑːk"">Mk.</phoneme> <phoneme alphabet=""ipa"" ph=""θriː"">III</phoneme> is travelling to the L T T 1 7 8 6 8 system. This is your first visit to this system. L T T 1 7 8 6 8 is a Federation Corporate with a population of Over 65 thousand souls, aligned to <phoneme alphabet=""ipa"" ph=""fəˈlɪʃɪə"">Felicia</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwɪntəs"">Winters</phoneme>. Kungurutii Gold Power Org is the immediate faction. There are 2 orbital stations and a single planetary station in this system." )]
+        [DataRow( @"<phoneme alphabet=""ipa"" ph=""iˈlɛktrə"">Electra</phoneme>" )]
+        public void TestPhonetics (string inputSpeech)
         {
-            EventWaitHandle waitHandle = new AutoResetEvent(false);
-
-            using (var stream = new MemoryStream())
-            using (var synth = new SpeechSynthesizer())
-            {
-                synth.SetOutputToWaveStream(stream);
-
-                //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>This is your <phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme>.</s></speak>");
-
-                //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system.</s></speak>");
-                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system.</s></speak>");
-                //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"bliːiː\">Bleae</phoneme> <phoneme alphabet=\"ipa\" ph=\"θuːə\">Thua</phoneme> system.</s></speak>");
-                //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the Amnemoi system.</s></speak>");
-                //synth.Speak("You are travelling to the Barnard's Star system.");
-                stream.Seek(0, SeekOrigin.Begin);
-
-                IWaveSource source = new WaveFileReader(stream);
-
-                var soundOut = new WasapiOut();
-                soundOut.Stopped += (s, e) => waitHandle.Set();
-
-                soundOut.Initialize(source);
-                soundOut.Play();
-
-                waitHandle.WaitOne();
-                soundOut.Dispose();
-                source.Dispose();
-            }
+            SpeechService.Instance.Speak(new EddiSpeech(inputSpeech));
         }
 
-        [TestMethod]
-        public void TestSagAStar()
+        [TestMethod, DoNotParallelize]
+        public void TestSagAStar ()
         {
             var SagI = "Sagittarius A*";
-            var translated = Translations.GetTranslation(SagI);
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Vulture" ), translated);
+            var translated = SpeechConversions.GetTranslation(SagI);
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), translated );
         }
 
-        [TestMethod]
-        public void TestSsml1()
+        [DataTestMethod, DoNotParallelize]
+        [DataRow( "Vulture", @"<break time=""100ms""/>Fred's ship." )]
+        [DataRow( "Vulture", @"<break time=""100ms""/>7 < 10." )]
+        [DataRow( "Vulture", @"<break time=""100ms""/>He said ""Foo""." )]
+        public void TestSsml (string edModel, string ssml)
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>Fred's ship.");
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( edModel ), ssml );
         }
 
-        [TestMethod]
-        public void TestSsml2()
+        [TestMethod, DoNotParallelize]
+        public void TestSsml2 ()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>7 < 10.");
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>We're on our way to " + SpeechConversions.GetTranslation( "i Bootis" ) + "." );
         }
 
-        [TestMethod]
-        public void TestSsml3()
+        [TestMethod, DoNotParallelize]
+        public void TestSsml3 ()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>He said ""Foo"".");
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Anaconda" ), "You are travelling to the " + SpeechConversions.GetTranslation( "Hotas" ) + " system." );
         }
 
-        [TestMethod]
-        public void TestSsml4()
-        {
-            Logging.Verbose = true;
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>We're on our way to " + Translations.GetTranslation("i Bootis") + ".");
-        }
-
-        [TestMethod]
-        public void TestAudio()
+        [TestMethod, DoNotParallelize]
+        public void TestAudio ()
         {
             EventWaitHandle waitHandle = new AutoResetEvent(false);
 
-            using (var stream = new MemoryStream())
-            using (var synth = new SpeechSynthesizer())
+            using ( var stream = new MemoryStream() )
+            using ( var synth = new SpeechSynthesizer() )
             {
-                synth.SetOutputToWaveStream(stream);
+                synth.SetOutputToWaveStream( stream );
 
-                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s><audio src=\"C:\\Users\\jgm\\Desktop\\positive.wav\"/>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system.</s></speak>");
-                stream.Seek(0, SeekOrigin.Begin);
+                synth.SpeakSsml( "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s><audio src=\"C:\\Users\\jgm\\Desktop\\positive.wav\"/>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system.</s></speak>" );
+                stream.Seek( 0, SeekOrigin.Begin );
 
-                IWaveSource source = new WaveFileReader(stream);
+                var source = new WaveFileReader(stream);
 
                 var soundOut = new WasapiOut();
-                soundOut.Stopped += (s, e) => waitHandle.Set();
+                soundOut.PlaybackStopped += ( s, e ) => waitHandle.Set();
 
-                soundOut.Initialize(source);
+                soundOut.Init( source );
                 soundOut.Play();
 
                 waitHandle.WaitOne();
@@ -114,20 +89,14 @@ namespace Tests
             }
         }
 
-        [TestMethod]
-        public void TestCallsign()
+        [TestMethod, DoNotParallelize]
+        public void TestCallsign ()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Vulture" ), Translations.ICAO("GAB-1655"));
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), SpeechConversions.ICAO( "GAB-1655" ) );
         }
 
-        [TestMethod]
-        public void TestSsml()
-        {
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Anaconda" ), "You are travelling to the " + Translations.GetTranslation("Hotas") + " system.");
-        }
-
-        [TestMethod]
-        public void TestPowerplay()
+        [TestMethod, DoNotParallelize]
+        public void TestPowerplay ()
         {
             var ship = ShipDefinitions.FromEDModel( "Anaconda" );
             var speaker = SpeechService.Instance;
@@ -143,193 +112,60 @@ namespace Tests
                 "Zemina Torval",
                 "Li Yong-Rui"
             };
-            foreach (var powerName in powerNames)
+            foreach ( var powerName in powerNames )
             {
-                speaker.Say(ship, Translations.getPhoneticPower(powerName) + ".");
+                speaker.Say( ship, SpeechConversions.getPhoneticPower( powerName ) + "." );
             }
         }
 
-        [TestMethod]
-        public void TestExtendedSource()
+        [DataTestMethod, DoNotParallelize]
+        [DataRow( 0 )]
+        [DataRow( 20 )]
+        [DataRow( 40 )]
+        [DataRow( 60 )]
+        [DataRow( 80 )]
+        [DataRow( 100 )]
+        public void TestDamageDistortion (int shipHealth)
         {
-            EventWaitHandle waitHandle = new AutoResetEvent(false);
-
-            using (var stream = new MemoryStream())
-            using (var synth = new SpeechSynthesizer())
-            {
-                synth.SetOutputToWaveStream(stream);
-                synth.Speak("Test.");
-                stream.Seek(0, SeekOrigin.Begin);
-
-                IWaveSource source = new ExtendedDurationWaveSource(new WaveFileReader(stream), 2000).AppendSource(x => new DmoWavesReverbEffect(x) { ReverbMix = -10 });
-
-                var soundOut = new WasapiOut();
-                soundOut.Stopped += (s, e) => waitHandle.Set();
-
-                soundOut.Initialize(source);
-                soundOut.Play();
-
-                waitHandle.WaitOne();
-                soundOut.Dispose();
-                source.Dispose();
-            }
+            var speech = new EddiSpeech( $"Systems at {shipHealth}%.", null, 0, null, LandingPadSize.Large, shipHealth, false, true );
+            SpeechService.Instance.Speak( speech );
         }
 
-        [TestMethod]
-        public void TestDamage()
+        [DataTestMethod, DoNotParallelize]
+        [DataRow( 0 )]
+        [DataRow( 20 )]
+        [DataRow( 40 )]
+        [DataRow( 60 )]
+        [DataRow( 80 )]
+        [DataRow( 100 )]
+        public void TestFxLevel ( int fxLevel )
         {
-            var ship = ShipDefinitions.FromEDModel( "Anaconda" );
-            var origHealth = ship.health;
-            ship.health = 100;
-            SpeechService.Instance.Say(ship, "Systems fully operational.");
-            ship.health = 80;
-            SpeechService.Instance.Say(ship, "Systems at 80%.");
-            ship.health = 60;
-            SpeechService.Instance.Say(ship, "Systems at 60%.");
-            ship.health = 40;
-            SpeechService.Instance.Say(ship, "Systems at 40%.");
-            ship.health = 20;
-            SpeechService.Instance.Say(ship, "Systems at 20%.");
-            ship.health = 0;
-            SpeechService.Instance.Say(ship, "Systems critical.");
-            ship.health = origHealth;
+            SpeechService.Instance.Speak( $"Effects level {fxLevel}", null, fxLevel );
         }
 
-        [TestMethod]
-        public void TestVariants()
+        [DataTestMethod, DoNotParallelize]
+        [DataRow( "Your python has touched down." )]
+        [DataRow( "Anaconda golf foxtrot lima one niner six eight returning from orbit." )]
+        public void TestRadio (string msg)
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Vulture" ), "Welcome to your Vulture.  Weapons online.");
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Python" ), "Welcome to your Python.  Scanning at full range.");
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Anaconda" ), "Welcome to your Anaconda.  All systems operational.");
+            SpeechService.Instance.Speak(new EddiSpeech(msg, radio: true));
         }
 
-        [TestMethod]
-        public void TestChorus()
+        [DataTestMethod, DoNotParallelize]
+        [DataRow( 1 )]
+        [DataRow( 2 )]
+        [DataRow( 3 )]
+        public void TestEchoDelay (int landingPadSize)
         {
-            SpeechService.Instance.Speak("Chorus level 0", null, 0, 0, 0, 0, 0, true);
-            SpeechService.Instance.Speak("Chorus level 20", null, 0, 0, 20, 0, 0, true);
-            SpeechService.Instance.Speak("Chorus level 40", null, 0, 0, 40, 0, 0, true);
-            SpeechService.Instance.Speak("Chorus level 60", null, 0, 0, 60, 0, 0, true);
-            SpeechService.Instance.Speak("Chorus level 80", null, 0, 0, 80, 0, 0, true);
-            SpeechService.Instance.Speak("Chorus level 100", null, 0, 0, 100, 0, 0, true);
+            var shipSize = LandingPadSize.AllOfThem.First( s => s.sizeIndex == landingPadSize );
+            SpeechService.Instance.Speak( new EddiSpeech( $"Echo delay for a {shipSize} ship.", shipSize: shipSize ) );
         }
 
-        [TestMethod]
-        public void TestSendAndReceive()
+        [TestMethod, DoNotParallelize]
+        public void TestSpeechNullInvalidVoice ()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEDModel( "Python" ), "Anaconda golf foxtrot lima one niner six eight returning from orbit.", 3, null, true);
-        }
-
-        [TestMethod]
-        public void TestSpeech()
-        {
-            var synth = new SpeechSynthesizer();
-            using (var stream = new MemoryStream())
-            {
-                synth.SetOutputToWaveStream(stream);
-                synth.Speak("This is a test.");
-                stream.Seek(0, SeekOrigin.Begin);
-                IWaveSource source = new WaveFileReader(stream);
-                var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-                var soundOut = new WasapiOut();
-                var echoSource = new DmoEchoEffect(source);
-                soundOut.Initialize(echoSource);
-                soundOut.Stopped += (s, e) => waitHandle.Set();
-                soundOut.Play();
-                waitHandle.WaitOne();
-                soundOut.Dispose();
-                source.Dispose();
-            }
-        }
-
-        [TestMethod]
-        public void TestDropOff()
-        {
-            var synth = new SpeechSynthesizer();
-            using (var stream = new MemoryStream())
-            {
-                synth.SetOutputToWaveStream(stream);
-                synth.Speak("Testing drop-off.");
-                stream.Seek(0, SeekOrigin.Begin);
-                IWaveSource source = new WaveFileReader(stream);
-                var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-                var soundOut = new WasapiOut();
-                soundOut.Initialize(source);
-                soundOut.Stopped += (s, e) => waitHandle.Set();
-                soundOut.Play();
-                waitHandle.WaitOne();
-                soundOut.Dispose();
-                source.Dispose();
-            }
-            SpeechService.Instance.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, true);
-        }
-
-        [TestMethod]
-        public void TestSpeechServicePhonemes()
-        {
-            Logging.Verbose = true;
-            SpeechService.Instance.Speak("You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.", null, 50, 1, 30, 40, 0, true);
-        }
-
-        [TestMethod]
-        public void TestSpeechServiceQueue()
-        {
-            var thread1 = new Thread(() => SpeechService.Instance.Say(null, "Hello."))
-            {
-                IsBackground = true
-            };
-
-            var thread2 = new Thread(() => SpeechService.Instance.Say(null, "Goodbye."))
-            {
-                IsBackground = true
-            };
-
-            thread1.Start();
-            thread2.Start();
-
-            thread1.Join();
-            thread2.Join();
-        }
-
-        [TestMethod]
-        public void TestSpeechServicePhonetics1()
-        {
-            SpeechService.Instance.Say(null, @"Destination confirmed. your <phoneme alphabet=""ipa"" ph=""ˈkəʊbrə"">cobra</phoneme> <phoneme alphabet=""ipa"" ph=""mɑːk"">Mk.</phoneme> <phoneme alphabet=""ipa"" ph=""θriː"">III</phoneme> is travelling to the L T T 1 7 8 6 8 system. This is your first visit to this system. L T T 1 7 8 6 8 is a Federation Corporate with a population of Over 65 thousand souls, aligned to <phoneme alphabet=""ipa"" ph=""fəˈlɪʃɪə"">Felicia</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwɪntəs"">Winters</phoneme>. Kungurutii Gold Power Org is the immediate faction. There are 2 orbital stations and a single planetary station in this system.");
-        }
-
-        [TestMethod]
-        public void TestSpeechServiceStress()
-        {
-            Logging.Verbose = true;
-            for (var i = 0; i < 3; i++)
-            {
-                SpeechService.Instance.Say(null, "A two-second test.");
-            }
-
-            Thread.Sleep(5000);
-        }
-
-        [TestMethod]
-        public void TestSpeechServiceRadio()
-        {
-            Logging.Verbose = true;
-            SpeechService.Instance.Say(null, "Your python has touched down.", 3, null, true);
-        }
-
-        [TestMethod]
-        public void TestSpeechNullInvalidVoice()
-        {
-            // Test null voice
-            SpeechService.Instance.Say(null, "Testing null voice", 3, null, false);
-            // Test invalid voice
-            SpeechService.Instance.Say(null, "Testing invalid voice", 3, "No such voice", false);
-        }
-
-        [TestMethod]
-        public void TestSpeechPhonemes()
-        {
-            var line = @"<phoneme alphabet=""ipa"" ph=""iˈlɛktrə"">Electra</phoneme>";
-            SpeechService.Instance.Speak(line, null, 0, 40, 0, 0, 0);
+            SpeechService.Instance.Speak( new EddiSpeech( "Testing null voice", null ) );
+            SpeechService.Instance.Speak( new EddiSpeech( "Testing non-valid voice", "No such voice" ) );
         }
     }
 }

@@ -5,34 +5,63 @@ namespace EddiSpeechService
     public class EddiSpeech
     {
         public string message { get; private set; }
-        public Ship ship { get; private set; }
         public int priority { get; private set; }
         public string voice { get; private set; }
         public bool radio { get; private set; }
         public string eventType { get; private set; }
 
         // Calculated SpeechFX data
-        public int echoDelay { get; set; }
-        public int chorusLevel { get; set; }
-        public int reverbLevel { get; set; }
-        public int distortionLevel { get; set; }
-        public int compressionLevel { get; set; }
+        public int echoDelay { get; }
+        public int distortionLevel { get; }
 
-        public EddiSpeech(string message, Ship ship = null, int priority = 3, string voice = null, bool radio = false, string eventType = null)
+        public EddiSpeech ( string message, string voice = null, int priority = 3,
+            string eventType = null, LandingPadSize shipSize = null,
+            decimal? shipHealth = 100M, bool radio = false, bool distortOnDamage = false )
         {
             this.message = message;
-            this.ship = ship;
             this.priority = priority;
             this.voice = voice;
             this.radio = radio;
             this.eventType = eventType;
 
-            EddiSpeech speech = SpeechService.Instance.GetSpeechFX(this);
-            this.echoDelay = speech.echoDelay;
-            this.chorusLevel = speech.chorusLevel;
-            this.reverbLevel = speech.reverbLevel;
-            this.distortionLevel = speech.distortionLevel;
-            this.compressionLevel = speech.compressionLevel;
+            // Resolve the SpeechFX settings
+            echoDelay = GetEchoDelay( shipSize );
+            distortionLevel = GetDistortionLevel( distortOnDamage, shipHealth );
+        }
+
+        private static int GetDistortionLevel ( bool distortOnDamage, decimal? shipHealth )
+        {
+            // This is affected by ship health
+            var distortionLevel = 0;
+            if ( shipHealth != null && distortOnDamage )
+            {
+                distortionLevel = ( 100 - (int)shipHealth );
+            }
+
+            return distortionLevel;
+        }
+
+        private static int GetEchoDelay ( LandingPadSize size )
+        {
+            // this is affected by ship size
+            var echoDelayMs = 0; // Default
+            if ( size != null )
+            {
+                if ( size == LandingPadSize.Small )
+                {
+                    echoDelayMs = 100;
+                }
+                else if ( size == LandingPadSize.Medium )
+                {
+                    echoDelayMs = 200;
+                }
+                else if ( size == LandingPadSize.Large )
+                {
+                    echoDelayMs = 300;
+                }
+            }
+
+            return echoDelayMs;
         }
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace EddiSpeechService
+namespace EddiSpeechService.SpeechConversions
 {
-    public static partial class Translations
+    public static partial class SpeechConversions
     {
         // Fixes to avoid issues with some of the more strangely-named systems
         private static readonly Dictionary<string, string> STAR_SYSTEM_FIXES = new Dictionary<string, string>()

@@ -1,5 +1,6 @@
 ﻿using EddiSpeechResponder;
 using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,8 +32,8 @@ namespace Tests
         public void TestSpeechPriority(string message1, string message2, int priority1, int priority2, string expectedResult1, string expectedResult2 )
         {
             var speechService = new SpeechService();
-            var speech1 = new EddiSpeech(message1, null, priority1);
-            var speech2 = new EddiSpeech(message2, null, priority2);
+            var speech1 = new EddiSpeech(message1, priority: priority1, shipSize: null );
+            var speech2 = new EddiSpeech(message2, priority: priority2, shipSize: null );
 
             if ( speechService.speechQueue is null )
             {
@@ -69,11 +70,11 @@ namespace Tests
         {
             var speechService = new SpeechService();
 
-            var priority5speech = new EddiSpeech("Priority 5", null, 5);
-            var priority4speech = new EddiSpeech("Priority 2", null, 4);
-            var priority2speech = new EddiSpeech("Priority 4", null, 2);
-            var priority1speech = new EddiSpeech("Priority 1", null, 1);
-            var priority0speech = new EddiSpeech("Priority 0", null, 0);
+            var priority5speech = new EddiSpeech("Priority 5", priority: 5, shipSize: null );
+            var priority4speech = new EddiSpeech("Priority 2", priority: 4, shipSize: null );
+            var priority2speech = new EddiSpeech("Priority 4", priority: 2, shipSize: null );
+            var priority1speech = new EddiSpeech("Priority 1", priority: 1, shipSize: null );
+            var priority0speech = new EddiSpeech("Priority 0", priority: 0, shipSize: null );
 
             // Set up priority 5 speech
             speechService.activeSpeechPriority = priority5speech.priority;
@@ -107,7 +108,7 @@ namespace Tests
         [TestMethod]
         public void TestClearSpeechQueue()
         {
-            var speech = new EddiSpeech("Priority 3", null, 3);
+            var speech = new EddiSpeech("Priority 3", priority: 3, shipSize: null );
             var speechQueue = new SpeechQueue();
             Assert.IsNotNull(speechQueue.priorityQueues.ElementAtOrDefault(speech.priority));
 
@@ -122,9 +123,9 @@ namespace Tests
         [TestMethod]
         public void TestFilterSpeechQueue()
         {
-            var speech1 = new EddiSpeech("Jumped", null, 3, null, false, "FSD engaged");
-            var speech2 = new EddiSpeech("Refueled", null, 3, null, false, "Ship refueled");
-            var speech3 = new EddiSpeech("Scanned", null, 3, null, false, "Body scan");
+            var speech1 = new EddiSpeech("Jumped", voice: null, priority: 3, eventType: "FSD engaged", shipSize: null, radio: false );
+            var speech2 = new EddiSpeech("Refueled", voice: null, priority: 3, eventType: "Ship refueled", shipSize: null, radio: false );
+            var speech3 = new EddiSpeech("Scanned", voice: null, priority: 3, eventType: "Body scan", shipSize: null, radio: false );
 
             var speechQueue = new SpeechQueue();
             Assert.IsNotNull(speechQueue.priorityQueues.ElementAtOrDefault(3));
@@ -284,14 +285,14 @@ namespace Tests
         [TestMethod]
         public void TestSectorTranslations()
         {
-            Assert.AreEqual("Swoiwns <say-as interpret-as=\"characters\">N</say-as> <say-as interpret-as=\"characters\">Y</say-as> dash <say-as interpret-as=\"characters\">B</say-as> <say-as interpret-as=\"characters\">a</say-as> 95 dash 0", Translations.GetTranslation("Swoiwns NY-B a95-0"));
-            Assert.AreEqual("<say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">M</say-as> 5 2 8 7", Translations.GetTranslation("PPM 5287"));
+            Assert.AreEqual("Swoiwns <say-as interpret-as=\"characters\">N</say-as> <say-as interpret-as=\"characters\">Y</say-as> dash <say-as interpret-as=\"characters\">B</say-as> <say-as interpret-as=\"characters\">a</say-as> 95 dash 0", SpeechConversions.GetTranslation("Swoiwns NY-B a95-0"));
+            Assert.AreEqual("<say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">M</say-as> 5 2 8 7", SpeechConversions.GetTranslation("PPM 5287"));
         }
 
         [TestMethod]
         public void TestTranslationVesper()
         {
-            Assert.AreEqual( "Vesper M 4", Translations.GetTranslation("VESPER-M4") );
+            Assert.AreEqual( "Vesper M 4", SpeechConversions.GetTranslation("VESPER-M4") );
         }
 
         [ TestMethod ]
@@ -299,9 +300,9 @@ namespace Tests
         {
             var speechQueue = new SpeechQueue();
             speechQueue.DequeueAllSpeech();
-            speechQueue.Enqueue( new EddiSpeech( "Test speech 1", null, 3, null, false, null ) );
-            speechQueue.Enqueue( new EddiSpeech( "Test speech 2", null, 4, null, false, "Hull damaged" ) );
-            speechQueue.Enqueue( new EddiSpeech( "Test speech 3", null, 3, null, false, "Body scanned" ) );
+            speechQueue.Enqueue( new EddiSpeech( "Test speech 1", voice: null, priority: 3, eventType: null, shipSize: null, radio: false ) );
+            speechQueue.Enqueue( new EddiSpeech( "Test speech 2", voice: null, priority: 4, eventType: "Hull damaged", shipSize: null, radio: false ) );
+            speechQueue.Enqueue( new EddiSpeech( "Test speech 3", voice: null, priority: 3, eventType: "Body scanned", shipSize: null, radio: false ) );
 
             Assert.AreEqual( 3, speechQueue.priorityQueues.SelectMany( q => q ).Count() );
             try

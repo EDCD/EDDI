@@ -1,4 +1,4 @@
-﻿using EddiSpeechService;
+﻿using EddiSpeechService.SpeechConversions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -15,13 +15,13 @@ namespace Tests
         [DataRow("$@!^", "")]
         public void TestICAO(string source, string expected)
         {
-            Assert.AreEqual(expected, Translations.ICAO(source));
+            Assert.AreEqual(expected, SpeechConversions.ICAO(source));
         }
 
         [TestMethod]
         public void TestTranslateCallsigns()
         {
-            Assert.AreEqual("<phoneme alphabet=\"ipa\" ph=\"ɡɒlf\">golf</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈælfə\">alpha</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈeksˈrei\">x-ray</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈzɪərəʊ\">zero</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈfoʊ.ər\">fawer</phoneme>", Translations.ICAO("GAX-1094"));
+            Assert.AreEqual("<phoneme alphabet=\"ipa\" ph=\"ɡɒlf\">golf</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈælfə\">alpha</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈeksˈrei\">x-ray</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈzɪərəʊ\">zero</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈfoʊ.ər\">fawer</phoneme>", SpeechConversions.ICAO("GAX-1094"));
         }
 
         [DataTestMethod]
@@ -55,8 +55,8 @@ namespace Tests
         )]
         public void TestTranslateBody(string source, string expected, string expectedICAO)
         {
-            Assert.AreEqual(expected, Translations.GetTranslation(source));
-            Assert.AreEqual(expectedICAO, Translations.GetTranslation(source, true));
+            Assert.AreEqual(expected, SpeechConversions.GetTranslation(source));
+            Assert.AreEqual(expectedICAO, SpeechConversions.GetTranslation(source, true));
         }
 
         [DataTestMethod]
@@ -102,8 +102,8 @@ namespace Tests
         )]
         public void TestTranslateShortBody(string source, string expected, string expectedICAO)
         {
-            Assert.AreEqual(expected, Translations.GetTranslation(source));
-            Assert.AreEqual(expectedICAO, Translations.GetTranslation(source, true));
+            Assert.AreEqual(expected, SpeechConversions.GetTranslation(source));
+            Assert.AreEqual(expectedICAO, SpeechConversions.GetTranslation(source, true));
         }
 
         [DataTestMethod]
@@ -153,8 +153,8 @@ namespace Tests
         )]
         public void TestTranslateStarSystemWithICAO(string source, string expected, string expectedICAO)
         {
-            Assert.AreEqual(expected, Translations.GetTranslation(source));
-            Assert.AreEqual(expectedICAO, Translations.GetTranslation(source, true));
+            Assert.AreEqual(expected, SpeechConversions.GetTranslation(source));
+            Assert.AreEqual(expectedICAO, SpeechConversions.GetTranslation(source, true));
         }
 
         [DataTestMethod]
@@ -172,35 +172,35 @@ namespace Tests
         [DataRow( "ADS 9338 AC", @"<say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">D</say-as> <say-as interpret-as=""characters"">S</say-as> 9 3 3 8 <say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">C</say-as>" )]
         public void TestTranslateStarSystems(string source, string expected)
         {
-            Assert.AreEqual(expected, Translations.GetTranslation(source));
+            Assert.AreEqual(expected, SpeechConversions.GetTranslation(source));
         }
 
         [TestMethod]
         public void TestTranslateStation()
         {
-            Assert.AreEqual("Or-bis Starport", Translations.GetTranslation("Orbis Starport"));
-            Assert.AreEqual("Mega-ship", Translations.GetTranslation("Megaship"));
+            Assert.AreEqual("Or-bis Starport", SpeechConversions.GetTranslation("Orbis Starport"));
+            Assert.AreEqual("Mega-ship", SpeechConversions.GetTranslation("Megaship"));
         }
 
         [TestMethod]
         public void TestTranslateRing()
         {
-            Assert.AreEqual(@"Oponner 6 <say-as interpret-as=""characters"">A</say-as> Ring", Translations.GetTranslation("Oponner 6 A Ring"));
-            Assert.AreEqual(@"Oponner <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Ring", Translations.GetTranslation("Oponner 6 A Ring", true));
+            Assert.AreEqual(@"Oponner 6 <say-as interpret-as=""characters"">A</say-as> Ring", SpeechConversions.GetTranslation("Oponner 6 A Ring"));
+            Assert.AreEqual(@"Oponner <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Ring", SpeechConversions.GetTranslation("Oponner 6 A Ring", true));
         }
 
         [TestMethod]
         public void TestTranslateBelt()
         {
-            Assert.AreEqual(@"Wolf 2 0 2 <say-as interpret-as=""characters"">A</say-as> Belt Cluster 1", Translations.GetTranslation("Wolf 202 A Belt Cluster 1"));
-            Assert.AreEqual(@"Wolf <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Belt Cluster <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>", Translations.GetTranslation("Wolf 202 A Belt Cluster 1", true));
+            Assert.AreEqual(@"Wolf 2 0 2 <say-as interpret-as=""characters"">A</say-as> Belt Cluster 1", SpeechConversions.GetTranslation("Wolf 202 A Belt Cluster 1"));
+            Assert.AreEqual(@"Wolf <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Belt Cluster <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>", SpeechConversions.GetTranslation("Wolf 202 A Belt Cluster 1", true));
         }
 
         [TestMethod]
         public void TestSpokenShipModel()
         {
-            var fromEDName = Translations.GetTranslation("CobraMkIII");
-            var fromName = Translations.GetTranslation("Cobra Mk. III");
+            var fromEDName = SpeechConversions.GetTranslation("CobraMkIII");
+            var fromName = SpeechConversions.GetTranslation("Cobra Mk. III");
             var expected = "<phoneme alphabet=\"ipa\" ph=\"ˈkəʊbrə\">cobra</phoneme> " + "<phoneme alphabet=\"ipa\" ph=\"mɑːk\">Mark</phoneme> " + "<phoneme alphabet=\"ipa\" ph=\"θriː\">3</phoneme>";
             Assert.AreEqual(expected, fromEDName);
             Assert.AreEqual(expected, fromName);
@@ -209,7 +209,7 @@ namespace Tests
         [TestMethod]
         public void TestSpokenShipManufacturer()
         {
-            var fromName = Translations.GetTranslation("Lakon Spaceways");
+            var fromName = SpeechConversions.GetTranslation("Lakon Spaceways");
             var expected = "<phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme> " + "<phoneme alphabet=\"ipa\" ph=\"speɪsweɪz\">Spaceways</phoneme>";
             Assert.AreEqual(expected, fromName);
         }
@@ -217,7 +217,7 @@ namespace Tests
         [TestMethod]
         public void TestTranslateOrigamiAerospaceIndustries()
         {
-            Assert.AreEqual("ORIGAMI AEROSPACE INDUSTRIES", Translations.GetTranslation("ORIGAMI AEROSPACE INDUSTRIES", false, "faction"));
+            Assert.AreEqual("ORIGAMI AEROSPACE INDUSTRIES", SpeechConversions.GetTranslation("ORIGAMI AEROSPACE INDUSTRIES", false, "faction"));
         }
     }
 }

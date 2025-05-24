@@ -1,6 +1,6 @@
 ﻿using Cottle;
 using EddiSpeechResponder.ScriptResolverService;
-using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using JetBrains.Annotations;
 using System;
 
@@ -20,7 +20,7 @@ namespace EddiSpeechResponder.CustomFunctions
             if (string.IsNullOrEmpty(value)) { return ""; }
 
             // Translate to ICAO, removing anything that isn't alphanumeric
-            return Translations.ICAO( value.ToUpperInvariant().Replace( "[^A-Z0-9]", "" ) );
+            return SpeechConversions.ICAO( value.ToUpperInvariant().Replace( "[^A-Z0-9]", "" ) );
         });
     }
 }
