@@ -13,14 +13,23 @@
         >
     <StackPanel Orientation="Vertical" Margin="5">
         <StackPanel Orientation="Horizontal" >
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Action:" Margin="5" />
-            <ComboBox x:Name="actionComboBox" MinWidth="220" SelectionChanged="ActionComboBoxOnSelectionChanged" Margin="5"/>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Action:" MinWidth="42" Margin="5" />
+            <ComboBox x:Name="actionComboBox" MinWidth="273" SelectionChanged="ActionComboBoxOnSelectionChanged" Margin="5"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Hotkey:" MinWidth="42" Margin="5" />
+            <Border BorderThickness="0.5" Margin="5,5,5,5" BorderBrush="Black" Background="DarkGray">
+                <TextBlock x:Name="hotkeyTextBlock" 
+                    Text="Press the desired key combination."
+                    HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" 
+                    Background="WhiteSmoke" 
+                    Margin="1" MinWidth="200" TextWrapping="Wrap" />
+            </Border>
             <Button VerticalAlignment="Center" 
                     Content="Clear" 
                     Click="ClearHotkeyButton_Click" 
                     Margin="5" MinWidth ="60" />
         </StackPanel>
-        <TextBlock x:Name="hotkeyTextBlock" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Margin="5" MinWidth="200" TextWrapping="Wrap" />
         <UniformGrid Rows="1" Columns="2" HorizontalAlignment="Center" Margin="5, 0" >
             <Button IsDefault="True"
                     Content="OK" 
