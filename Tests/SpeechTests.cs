@@ -3,9 +3,9 @@ using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NAudio.Wave;
 using System.IO;
+using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading;
-using Utilities;
 
 namespace Tests
 {
@@ -19,43 +19,17 @@ namespace Tests
         }
 
         [DataTestMethod, DoNotParallelize]
-        [DataRow( "This is your <phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme>.", true )]
-        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system.", true )]
-        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system.", true )]
-        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"bliːiː\">Bleae</phoneme> <phoneme alphabet=\"ipa\" ph=\"θuːə\">Thua</phoneme> system.", true )]
-        [DataRow( "You are travelling to the Amnemoi system.", false )]
-        public void TestStarSystemPhonemes (string inputSpeech, bool useSSML)
+        [DataRow( "This is your <phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme>." )]
+        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system." )]
+        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system." )]
+        [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"bliːiː\">Bleae</phoneme> <phoneme alphabet=\"ipa\" ph=\"θuːə\">Thua</phoneme> system." )]
+        [DataRow( "You are travelling to the Amnemoi system." )]
+        [DataRow( "You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system." )]
+        [DataRow( @"Destination confirmed. your <phoneme alphabet=""ipa"" ph=""ˈkəʊbrə"">cobra</phoneme> <phoneme alphabet=""ipa"" ph=""mɑːk"">Mk.</phoneme> <phoneme alphabet=""ipa"" ph=""θriː"">III</phoneme> is travelling to the L T T 1 7 8 6 8 system. This is your first visit to this system. L T T 1 7 8 6 8 is a Federation Corporate with a population of Over 65 thousand souls, aligned to <phoneme alphabet=""ipa"" ph=""fəˈlɪʃɪə"">Felicia</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwɪntəs"">Winters</phoneme>. Kungurutii Gold Power Org is the immediate faction. There are 2 orbital stations and a single planetary station in this system." )]
+        [DataRow( @"<phoneme alphabet=""ipa"" ph=""iˈlɛktrə"">Electra</phoneme>" )]
+        public void TestPhonetics (string inputSpeech)
         {
-            EventWaitHandle waitHandle = new AutoResetEvent(false);
-
-            using ( var stream = new MemoryStream() )
-            using ( var synth = new SpeechSynthesizer() )
-            {
-                synth.SetOutputToWaveStream( stream );
-
-                if ( useSSML )
-                {
-                    synth.SpeakSsml($"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"https://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\">{inputSpeech}</speak>" );
-                }
-                else
-                {
-                    synth.Speak( inputSpeech );
-                }
-
-                stream.Seek( 0, SeekOrigin.Begin );
-
-                var source = new WaveFileReader(stream);
-
-                var soundOut = new WasapiOut();
-                soundOut.PlaybackStopped += ( s, e ) => waitHandle.Set();
-
-                soundOut.Init( source );
-                soundOut.Play();
-
-                waitHandle.WaitOne();
-                soundOut.Dispose();
-                source.Dispose();
-            }
+            SpeechService.Speak(new EddiSpeech(inputSpeech));
         }
 
         [TestMethod, DoNotParallelize]
@@ -78,7 +52,6 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestSsml2 ()
         {
-            Logging.Verbose = true;
             SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>We're on our way to " + Translations.GetTranslation( "i Bootis" ) + "." );
         }
 
@@ -178,21 +151,22 @@ namespace Tests
             SpeechService.Instance.Speak( $"Chorus level {chorusLevel}", null, 0, 0, chorusLevel, 0, false, 0 );
         }
 
-        [TestMethod, DoNotParallelize]
-        public void TestRadio ()
+        [DataTestMethod, DoNotParallelize]
+        [DataRow( "Your python has touched down." )]
+        [DataRow( "Anaconda golf foxtrot lima one niner six eight returning from orbit." )]
+        public void TestRadio (string msg)
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Python" ), "Anaconda golf foxtrot lima one niner six eight returning from orbit.", 3, null, true );
+            SpeechService.Speak(new EddiSpeech(msg, radio: true));
         }
 
         [DataTestMethod, DoNotParallelize]
-        [DataRow( 0 )]
-        [DataRow( 100 )]
-        [DataRow( 200 )]
-        [DataRow( 400 )]
-        [DataRow( 800 )]
-        public void TestEchoDelay (int echoDelayMs)
+        [DataRow( 1 )]
+        [DataRow( 2 )]
+        [DataRow( 3 )]
+        public void TestEchoDelay (int landingPadSize)
         {
-            SpeechService.Instance.Speak( $"Echo delay {echoDelayMs}", null, echoDelayMs, 0, 0, 0, false, 0 );
+            var shipSize = LandingPadSize.AllOfThem.First( s => s.sizeIndex == landingPadSize );
+            SpeechService.Speak( new EddiSpeech( $"Echo delay for a {shipSize} ship.", shipSize: shipSize ) );
         }
 
         [TestMethod, DoNotParallelize]
@@ -218,71 +192,10 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestSpeechServicePhonemes ()
-        {
-            Logging.Verbose = true;
-            SpeechService.Instance.Speak( "You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.", null, 50, 1, 30, 40, true, 0 );
-        }
-
-        [TestMethod, DoNotParallelize]
-        public void TestSpeechServiceQueue ()
-        {
-            var thread1 = new Thread(() => SpeechService.Instance.Say(null, "Hello."))
-            {
-                IsBackground = true
-            };
-
-            var thread2 = new Thread(() => SpeechService.Instance.Say(null, "Goodbye."))
-            {
-                IsBackground = true
-            };
-
-            thread1.Start();
-            thread2.Start();
-
-            thread1.Join();
-            thread2.Join();
-        }
-
-        [TestMethod, DoNotParallelize]
-        public void TestSpeechServicePhonetics1 ()
-        {
-            SpeechService.Instance.Say( null, @"Destination confirmed. your <phoneme alphabet=""ipa"" ph=""ˈkəʊbrə"">cobra</phoneme> <phoneme alphabet=""ipa"" ph=""mɑːk"">Mk.</phoneme> <phoneme alphabet=""ipa"" ph=""θriː"">III</phoneme> is travelling to the L T T 1 7 8 6 8 system. This is your first visit to this system. L T T 1 7 8 6 8 is a Federation Corporate with a population of Over 65 thousand souls, aligned to <phoneme alphabet=""ipa"" ph=""fəˈlɪʃɪə"">Felicia</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwɪntəs"">Winters</phoneme>. Kungurutii Gold Power Org is the immediate faction. There are 2 orbital stations and a single planetary station in this system." );
-        }
-
-        [TestMethod, DoNotParallelize]
-        public void TestSpeechServiceStress ()
-        {
-            Logging.Verbose = true;
-            for ( var i = 0; i < 3; i++ )
-            {
-                SpeechService.Instance.Say( null, "A two-second test." );
-            }
-
-            Thread.Sleep( 5000 );
-        }
-
-        [TestMethod, DoNotParallelize]
-        public void TestSpeechServiceRadio ()
-        {
-            Logging.Verbose = true;
-            SpeechService.Instance.Say( null, "Your python has touched down.", 3, null, true );
-        }
-
-        [TestMethod, DoNotParallelize]
         public void TestSpeechNullInvalidVoice ()
         {
-            // Test null voice
-            SpeechService.Instance.Say( null, "Testing null voice", 3, null, false );
-            // Test invalid voice
-            SpeechService.Instance.Say( null, "Testing invalid voice", 3, "No such voice", false );
-        }
-
-        [TestMethod, DoNotParallelize]
-        public void TestSpeechPhonemes ()
-        {
-            var line = @"<phoneme alphabet=""ipa"" ph=""iˈlɛktrə"">Electra</phoneme>";
-            SpeechService.Instance.Speak( line, null, 0, 40, 0, 0, false, 0 );
+            SpeechService.Speak( new EddiSpeech( "Testing null voice", null ) );
+            SpeechService.Speak( new EddiSpeech( "Testing non-valid voice", "No such voice" ) );
         }
     }
 }
