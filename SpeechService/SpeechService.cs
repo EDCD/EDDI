@@ -388,7 +388,7 @@ namespace EddiSpeechService
                     Logging.Debug("Seeking back to the beginning of the stream");
                     stream.Seek(0, SeekOrigin.Begin);
 
-                    var provider = SpeechFX.addEffectsToSource(stream, volume, fxLevel, distortionLevel, echoDelay, isRadio );
+                    var provider = SpeechFx.addEffectsToSource(stream, volume, fxLevel, distortionLevel, echoDelay, isRadio );
                     PlaySpeechStreamAsync( provider, priority ).GetAwaiter().GetResult();
                 }
             }

@@ -1,6 +1,6 @@
 ﻿using Cottle;
 using EddiSpeechResponder.ScriptResolverService;
-using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using JetBrains.Annotations;
 using System;
 
@@ -13,6 +13,6 @@ namespace EddiSpeechResponder.CustomFunctions
         public FunctionCategory Category => FunctionCategory.Utility;
         public string description => Properties.CustomFunctions_Untranslated.Humanise;
         public Type ReturnType => typeof( string );
-        public IFunction function => Function.CreateNative1( ( runtime, input, writer ) => Translations.Humanize( (decimal?)Convert.ToDecimal( input.AsNumber ) ) );
+        public IFunction function => Function.CreateNative1( ( runtime, input, writer ) => SpeechConversions.Humanize( (decimal?)Convert.ToDecimal( input.AsNumber ) ) );
     }
 }

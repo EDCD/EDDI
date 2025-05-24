@@ -1,8 +1,8 @@
 ﻿using EddiDataDefinitions;
 
-namespace EddiSpeechService
+namespace EddiSpeechService.SpeechConversions
 {
-    public static partial class Translations
+    public static partial class SpeechConversions
     {
         public static string getPhoneticPlanetClass(string val)
         {

@@ -3,10 +3,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace EddiSpeechService
+namespace EddiSpeechService.SpeechConversions
 {
     /// <summary>Translations for Elite items for text-to-speech</summary>
-    public static partial class Translations
+    public static partial class SpeechConversions
     {
         public static string GetTranslation(string val, bool useICAO = false, string type = null)
         {

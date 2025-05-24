@@ -1,6 +1,7 @@
 ﻿using Cottle;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using JetBrains.Annotations;
 using System;
 
@@ -17,7 +18,7 @@ namespace EddiSpeechResponder.CustomFunctions
         {
             if ( string.IsNullOrEmpty( input.AsString ) ) { return ""; }
             var useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
-            return Translations.sayAsLettersOrNumbers( input.AsString, false, useICAO );
+            return SpeechConversions.sayAsLettersOrNumbers( input.AsString, false, useICAO );
         });
     }
 }

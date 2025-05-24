@@ -10,7 +10,7 @@ using WaveFormat = NAudio.Wave.WaveFormat;
 
 namespace EddiSpeechService.SpeechEffects
 {
-    public static class SpeechFX
+    public static class SpeechFx
     {
         public static IWaveProvider addEffectsToSource ( Stream stream, int targetVolume, int fxLevel, int distortionLevel, int echoDelay, bool radio )
         {
@@ -30,32 +30,23 @@ namespace EddiSpeechService.SpeechEffects
 
                 var signal = new DiscreteSignal( source.WaveFormat.SampleRate, trimmedBuffer );
                 var sampleRate = source.WaveFormat.SampleRate;
-                var damageAdjustedFxLevel = FxParameters.DamageAdjustedFxLevel( distortionLevel, fxLevel );
+                var damageAdjustedFxLevel = DamageAdjustedFxLevel( distortionLevel, fxLevel );
 
                 Logging.Debug( $"Effects level is {damageAdjustedFxLevel}, echo delay is {echoDelay}" );
 
-                var resolvedReverbLevel = 0;
-
-                // Chorus - We always apply chorus effects.
+                // Chorus
                 signal = ApplyChorus(signal, damageAdjustedFxLevel, sampleRate, out var resolvedChorusLevel);
 
-                // Radio (highpass)
-                if ( radio )
-                {
-                    signal = ApplyRadio(signal, sampleRate);
-                }
-                // We only have distortion, echo, and reverb if we're not transmitting or receiving
-                else
-                {
-                    // Echo
-                    signal = ApplyEcho( signal, echoDelay, sampleRate );
+                // Reverb
+                signal = ApplyReverb( signal, damageAdjustedFxLevel, sampleRate, out var resolvedReverbLevel );
 
-                    // Reverb
-                    signal = ApplyReverb( signal, damageAdjustedFxLevel, sampleRate, out resolvedReverbLevel );
+                // Distortion
+                signal = ApplyDamageDistortion( signal, distortionLevel );
 
-                    // Distortion (apply last)
-                    signal = ApplyDamageDistortion( signal, distortionLevel );
-                }
+                // Either apply a radio effect or an echo effect as appropriate
+                signal = radio 
+                    ? ApplyRadio(signal, sampleRate) 
+                    : ApplyEcho( signal, echoDelay, sampleRate );
 
                 signal = new DiscreteSignal( signal.SamplingRate, NormalizeSamples( signal, targetVolume ) );
 
@@ -80,6 +71,18 @@ namespace EddiSpeechService.SpeechEffects
 
                 return waveProvider;
             }
+        }
+
+        private static int DamageAdjustedFxLevel ( decimal distortionLevel, int configFxLevel )
+        {
+            // Effects level can be increased, e.g. by damage if distortion is enabled
+            var bonusFX = 0;
+            if ( distortionLevel > 0 )
+            {
+                bonusFX = (int)decimal.Round( distortionLevel / 100M * ( 100M - configFxLevel ) );
+            }
+
+            return configFxLevel + bonusFX;
         }
 
         private static DiscreteSignal ApplyChorus ( DiscreteSignal signal, int damageAdjustedFxLevel, int sampleRate, out int resolvedChorusLevel )

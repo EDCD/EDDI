@@ -1,6 +1,7 @@
 ﻿using Cottle;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using JetBrains.Annotations;
 using System;
 
@@ -18,7 +19,7 @@ namespace EddiSpeechResponder.CustomFunctions
             var val = values[0].AsString;
             var type = values.Count > 1 ? values[1].AsString : null;
             var useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
-            return Translations.GetTranslation(val, useICAO, type);
+            return SpeechConversions.GetTranslation(val, useICAO, type);
         }, 1, 2);
     }
 }

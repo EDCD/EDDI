@@ -5,6 +5,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
 using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +33,7 @@ namespace EddiVoiceAttackResponder
                     try
                     {
                         VoiceAttackPlugin.SetText("Home system", EDDI.Instance.HomeStarSystem?.systemname);
-                        VoiceAttackPlugin.SetText("Home system (spoken)", Translations.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
+                        VoiceAttackPlugin.SetText("Home system (spoken)", SpeechConversions.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
                         if (EDDI.Instance.HomeStation != null)
                         {
                                 VoiceAttackPlugin.SetText("Home station", EDDI.Instance.HomeStation?.name);
@@ -234,9 +235,9 @@ namespace EddiVoiceAttackResponder
                 VoiceAttackPlugin.SetInt("Exobiologist rating", cmdr?.exobiologistrating?.rank);
                 VoiceAttackPlugin.SetText("Exobiologist rank", cmdr?.exobiologistrating?.localizedName);
                 VoiceAttackPlugin.SetDecimal("Credits", cmdr?.credits);
-                VoiceAttackPlugin.SetText("Credits (spoken)", Translations.Humanize(cmdr?.credits));
+                VoiceAttackPlugin.SetText("Credits (spoken)", SpeechConversions.Humanize(cmdr?.credits));
                 VoiceAttackPlugin.SetDecimal("Debt", cmdr?.debt);
-                VoiceAttackPlugin.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
+                VoiceAttackPlugin.SetText("Debt (spoken)", SpeechConversions.Humanize(cmdr?.debt));
                 VoiceAttackPlugin.SetText("Title", cmdr?.title ?? EddiCore.Properties.Resources.Commander);
                 VoiceAttackPlugin.SetText("Gender", cmdr?.gender ?? EddiCore.Properties.Resources.commander_gender_n);
                 VoiceAttackPlugin.SetText("Squadron name", cmdr?.squadronname);
@@ -275,23 +276,23 @@ namespace EddiVoiceAttackResponder
                 {
                     var cmdrNamePrefix = cmdrName.Length >= 3 ? cmdrName.Substring( 0, 3 ).ToUpperInvariant() : cmdrName.ToUpperInvariant();
                     VoiceAttackPlugin.SetText( prefix + " callsign", ship?.manufacturer + " " + cmdrNamePrefix );
-                    VoiceAttackPlugin.SetText( prefix + " callsign (spoken)", ship?.SpokenManufacturer() + " " + Translations.ICAO( cmdrNamePrefix ) );
+                    VoiceAttackPlugin.SetText( prefix + " callsign (spoken)", ship?.SpokenManufacturer() + " " + SpeechConversions.ICAO( cmdrNamePrefix ) );
                 }
 
                 VoiceAttackPlugin.SetText(prefix + " name", ship?.name);
                 VoiceAttackPlugin.SetText(prefix + " name (spoken)", ship?.phoneticName);
                 VoiceAttackPlugin.SetText(prefix + " ident", ship?.ident);
-                VoiceAttackPlugin.SetText(prefix + " ident (spoken)", Translations.ICAO(ship?.ident, false));
+                VoiceAttackPlugin.SetText(prefix + " ident (spoken)", SpeechConversions.ICAO(ship?.ident, false));
                 VoiceAttackPlugin.SetText(prefix + " role", ship?.Role?.localizedName);
                 VoiceAttackPlugin.SetText(prefix + " size", ship?.Size?.localizedName);
                 VoiceAttackPlugin.SetDecimal(prefix + " value", ship?.value);
-                VoiceAttackPlugin.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
+                VoiceAttackPlugin.SetText(prefix + " value (spoken)", SpeechConversions.Humanize(ship?.value));
                 VoiceAttackPlugin.SetDecimal(prefix + " hull value", ship?.hullvalue);
-                VoiceAttackPlugin.SetText(prefix + " hull value (spoken)", Translations.Humanize(ship?.hullvalue));
+                VoiceAttackPlugin.SetText(prefix + " hull value (spoken)", SpeechConversions.Humanize(ship?.hullvalue));
                 VoiceAttackPlugin.SetDecimal(prefix + " modules value", ship?.modulesvalue);
-                VoiceAttackPlugin.SetText(prefix + " modules value (spoken)", Translations.Humanize(ship?.modulesvalue));
+                VoiceAttackPlugin.SetText(prefix + " modules value (spoken)", SpeechConversions.Humanize(ship?.modulesvalue));
                 VoiceAttackPlugin.SetDecimal(prefix + " rebuy", ship?.rebuy);
-                VoiceAttackPlugin.SetText(prefix + " rebuy (spoken)", Translations.Humanize(ship?.rebuy));
+                VoiceAttackPlugin.SetText(prefix + " rebuy (spoken)", SpeechConversions.Humanize(ship?.rebuy));
                 VoiceAttackPlugin.SetDecimal(prefix + " health", ship?.health);
                 VoiceAttackPlugin.SetInt(prefix + " cargo capacity", ship?.cargocapacity);
                 VoiceAttackPlugin.SetBoolean(prefix + " hot", ship?.hot);
@@ -427,7 +428,7 @@ namespace EddiVoiceAttackResponder
                         {
                             // And it's cheaper
                             VoiceAttackPlugin.SetDecimal(name + " station discount", existing.price - Module.price);
-                            VoiceAttackPlugin.SetText(name + " station discount (spoken)", Translations.Humanize(existing.price - Module.price));
+                            VoiceAttackPlugin.SetText(name + " station discount (spoken)", SpeechConversions.Humanize(existing.price - Module.price));
                         }
                         return;
                     }
@@ -460,9 +461,9 @@ namespace EddiVoiceAttackResponder
             try
             {
                 VoiceAttackPlugin.SetText(prefix + " name", system?.systemname);
-                VoiceAttackPlugin.SetText(prefix + " name (spoken)", Translations.getPhoneticStarSystem(system?.systemname));
+                VoiceAttackPlugin.SetText(prefix + " name (spoken)", SpeechConversions.getPhoneticStarSystem(system?.systemname));
                 VoiceAttackPlugin.SetDecimal(prefix + " population", system?.population);
-                VoiceAttackPlugin.SetText(prefix + " population (spoken)", Translations.Humanize(system?.population));
+                VoiceAttackPlugin.SetText(prefix + " population (spoken)", SpeechConversions.Humanize(system?.population));
                 VoiceAttackPlugin.SetText(prefix + " allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
                 VoiceAttackPlugin.SetText(prefix + " government", (system?.Faction?.Government ?? Government.None).localizedName);
                 VoiceAttackPlugin.SetText(prefix + " faction", system?.Faction?.name);
@@ -471,7 +472,7 @@ namespace EddiVoiceAttackResponder
                     .FirstOrDefault(p => p.systemAddress == system.systemAddress)?.FactionState ?? FactionState.None).localizedName);
                 VoiceAttackPlugin.SetText(prefix + " security", system?.security);
                 VoiceAttackPlugin.SetText(prefix + " power", system?.power);
-                VoiceAttackPlugin.SetText(prefix + " power (spoken)", Translations.getPhoneticPower(EDDI.Instance.CurrentStarSystem?.power));
+                VoiceAttackPlugin.SetText(prefix + " power (spoken)", SpeechConversions.getPhoneticPower(EDDI.Instance.CurrentStarSystem?.power));
                 VoiceAttackPlugin.SetText(prefix + " power state", system?.powerstate);
                 VoiceAttackPlugin.SetBoolean(prefix + " requires permit", system?.requirespermit);
                 VoiceAttackPlugin.SetDecimal(prefix + " X", system?.x);

@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NAudio.Wave;
 using System.IO;
@@ -36,7 +37,7 @@ namespace Tests
         public void TestSagAStar ()
         {
             var SagI = "Sagittarius A*";
-            var translated = Translations.GetTranslation(SagI);
+            var translated = SpeechConversions.GetTranslation(SagI);
             SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), translated );
         }
 
@@ -52,13 +53,13 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestSsml2 ()
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>We're on our way to " + Translations.GetTranslation( "i Bootis" ) + "." );
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>We're on our way to " + SpeechConversions.GetTranslation( "i Bootis" ) + "." );
         }
 
         [TestMethod, DoNotParallelize]
         public void TestSsml3 ()
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Anaconda" ), "You are travelling to the " + Translations.GetTranslation( "Hotas" ) + " system." );
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Anaconda" ), "You are travelling to the " + SpeechConversions.GetTranslation( "Hotas" ) + " system." );
         }
 
         [TestMethod, DoNotParallelize]
@@ -91,7 +92,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestCallsign ()
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), Translations.ICAO( "GAB-1655" ) );
+            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), SpeechConversions.ICAO( "GAB-1655" ) );
         }
 
         [TestMethod, DoNotParallelize]
@@ -113,7 +114,7 @@ namespace Tests
             };
             foreach ( var powerName in powerNames )
             {
-                speaker.Say( ship, Translations.getPhoneticPower( powerName ) + "." );
+                speaker.Say( ship, SpeechConversions.getPhoneticPower( powerName ) + "." );
             }
         }
 

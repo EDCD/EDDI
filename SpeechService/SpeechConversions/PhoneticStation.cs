@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace EddiSpeechService
+namespace EddiSpeechService.SpeechConversions
 {
-    public static partial class Translations
+    public static partial class SpeechConversions
     {
         // Fixes to avoid issues with pronunciation of station model names
         private static readonly Dictionary<string, string> STATION_MODEL_FIXES = new Dictionary<string, string>()

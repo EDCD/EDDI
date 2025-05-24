@@ -3,7 +3,7 @@ using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.ScriptResolverService;
-using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using JetBrains.Annotations;
 using System;
 using System.Linq;
@@ -102,7 +102,7 @@ namespace EddiSpeechResponder.CustomFunctions
         private static string Get3LeadingCharacters(string input)
         {
             // Obtain the first three characters of the input string, zero padded and converted to ICAO (e.g. "A" becomes "Alpha Zero Zero")
-            return Translations.ICAO(new Regex("[^a-zA-Z0-9]")
+            return SpeechConversions.ICAO(new Regex("[^a-zA-Z0-9]")
                 .Replace(input, "")
                 .ToUpperInvariant()
                 .PadRight(3, '0')

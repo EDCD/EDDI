@@ -1,5 +1,6 @@
 ﻿using EddiSpeechResponder;
 using EddiSpeechService;
+using EddiSpeechService.SpeechConversions;
 using EddiSpeechService.SpeechPreparation;
 using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -284,14 +285,14 @@ namespace Tests
         [TestMethod]
         public void TestSectorTranslations()
         {
-            Assert.AreEqual("Swoiwns <say-as interpret-as=\"characters\">N</say-as> <say-as interpret-as=\"characters\">Y</say-as> dash <say-as interpret-as=\"characters\">B</say-as> <say-as interpret-as=\"characters\">a</say-as> 95 dash 0", Translations.GetTranslation("Swoiwns NY-B a95-0"));
-            Assert.AreEqual("<say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">M</say-as> 5 2 8 7", Translations.GetTranslation("PPM 5287"));
+            Assert.AreEqual("Swoiwns <say-as interpret-as=\"characters\">N</say-as> <say-as interpret-as=\"characters\">Y</say-as> dash <say-as interpret-as=\"characters\">B</say-as> <say-as interpret-as=\"characters\">a</say-as> 95 dash 0", SpeechConversions.GetTranslation("Swoiwns NY-B a95-0"));
+            Assert.AreEqual("<say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">P</say-as> <say-as interpret-as=\"characters\">M</say-as> 5 2 8 7", SpeechConversions.GetTranslation("PPM 5287"));
         }
 
         [TestMethod]
         public void TestTranslationVesper()
         {
-            Assert.AreEqual( "Vesper M 4", Translations.GetTranslation("VESPER-M4") );
+            Assert.AreEqual( "Vesper M 4", SpeechConversions.GetTranslation("VESPER-M4") );
         }
 
         [ TestMethod ]

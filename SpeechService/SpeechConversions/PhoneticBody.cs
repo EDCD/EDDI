@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace EddiSpeechService
+namespace EddiSpeechService.SpeechConversions
 {
-    public static partial class Translations
+    public static partial class SpeechConversions
     {
         /// <summary>Fix up body names</summary>
         private static string getPhoneticBody(string body, bool useICAO = false)
