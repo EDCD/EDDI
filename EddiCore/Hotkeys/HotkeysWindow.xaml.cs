@@ -213,6 +213,7 @@ namespace EddiCore.Hotkeys
             if ( actionComboBox.SelectedItem is HotkeyAction hotkeyAction )
             {
                 hotkeyAction.KeyGesture = null;
+                hotkeyTextBlock.Text = "Press the desired key combination.";
             }
         }
     }
