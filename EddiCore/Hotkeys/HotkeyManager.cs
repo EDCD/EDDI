@@ -11,16 +11,16 @@ namespace EddiCore.Hotkeys
     {
         private static readonly List<HotkeyAction> HotkeyActions = new List<HotkeyAction>
         {
-            new HotkeyAction( "EnableEventResponses", "Enable Event Responses", () =>
+            new HotkeyAction( "EnableEventResponses", Properties.Resources.hotkey_definition_enable_speech, () =>
             {
                 EDDI.Instance.State[ "speechresponder_quiet" ] = false;
             } ),
-            new HotkeyAction( "DisableEventResponses", "Disable Event Responses", () =>
+            new HotkeyAction( "DisableEventResponses", Properties.Resources.hotkey_definition_disable_speech, () =>
             {
                 EDDI.Instance.State[ "speechresponder_quiet" ] = true;
                 SpeechService.Instance.ShutUp();
             } ),
-            new HotkeyAction( "Shutup", "Stop the Current Speech", () =>
+            new HotkeyAction( "Shutup", Properties.Resources.hotkey_definition_stop_speech, () =>
             {
                 SpeechService.Instance.ShutUp();
             } )

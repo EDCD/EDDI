@@ -44,7 +44,7 @@ namespace EddiCore.Hotkeys
             {
                 hotkeyTextBlock.Text = selectedAction.KeyGesture != null
                     ? selectedAction.KeyGesture.GetDisplayStringForCulture( CultureInfo.CurrentCulture )
-                    : "Press the desired key combination.";
+                    : Properties.Resources.hotkey_input_prompt;
             }
         }
 
@@ -55,11 +55,11 @@ namespace EddiCore.Hotkeys
             {
                 pressedKeys.Clear();
                 currentKeyGesture = null;
-                hotkeyTextBlock.Text = "Hotkey registration canceled.";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_cancelled;
                 Task.Run( () =>
                 {
                     Task.Delay( TimeSpan.FromSeconds( 5 ) );
-                    hotkeyTextBlock.Text = "Press the desired key combination.";
+                    hotkeyTextBlock.Text = Properties.Resources.hotkey_input_prompt;
                 } );
                 e.Handled = true;
                 return;
@@ -106,14 +106,14 @@ namespace EddiCore.Hotkeys
             // Disallow combinations with only modifier keys
             if ( primaryKeys.Count == 0 )
             {
-                hotkeyTextBlock.Text = "A non-modifier key is required.";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_need_nonmodifier;
                 return false;
             }
 
             // Disallow combinations with multiple primary keys
             if ( primaryKeys.Count > 1 )
             {
-                hotkeyTextBlock.Text = "Only one non-modifier key is permitted.";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_need_one_nonmodifier;
                 return false;
             }
 
@@ -124,7 +124,7 @@ namespace EddiCore.Hotkeys
             if ( modifiers == ModifierKeys.None &&
                  ( ( key >= Key.A && key <= Key.Z ) || ( key >= Key.D0 && key <= Key.D9 ) ) )
             {
-                hotkeyTextBlock.Text = "Please add a modifier key (Ctrl, Alt, Shift).";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_need_modifier;
                 return false;
             }
 
@@ -134,7 +134,7 @@ namespace EddiCore.Hotkeys
                                                       ( key >= Key.NumPad0 && key <= Key.NumPad9 ) ||
                                                       key.ToString().StartsWith( "Oem" ) ) )
             {
-                hotkeyTextBlock.Text = "Please add another modifier key (Ctrl, Alt).";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_need_more_modifiers;
                 return false;
             }
 
@@ -143,7 +143,7 @@ namespace EddiCore.Hotkeys
                  ( modifiers == ( ModifierKeys.Control | ModifierKeys.Alt ) && key == Key.Delete ) ||
                  ( modifiers == ModifierKeys.Control && ( key == Key.C || key == Key.V || key == Key.X ) ) )
             {
-                hotkeyTextBlock.Text = "This key combination is reserved by the system.";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_reserved;
                 return false;
             }
 
@@ -151,7 +151,7 @@ namespace EddiCore.Hotkeys
             if ( actionComboBox.SelectedItem is HotkeyAction selectedAction && 
                  HotkeyActionCollection.IsKeyGestureAssigned(selectedAction.Name, key, modifiers) )
             {
-                hotkeyTextBlock.Text = "This key combination is already assigned to another action.";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_already_used;
                 return false;
             }
 
@@ -176,7 +176,7 @@ namespace EddiCore.Hotkeys
                 }
                 else
                 {
-                    hotkeyTextBlock.Text = "Press the desired key combination.";
+                    hotkeyTextBlock.Text = Properties.Resources.hotkey_input_prompt;
                 }
             }
 
@@ -213,7 +213,7 @@ namespace EddiCore.Hotkeys
             if ( actionComboBox.SelectedItem is HotkeyAction hotkeyAction )
             {
                 hotkeyAction.KeyGesture = null;
-                hotkeyTextBlock.Text = "Press the desired key combination.";
+                hotkeyTextBlock.Text = Properties.Resources.hotkey_input_prompt;
             }
         }
     }
