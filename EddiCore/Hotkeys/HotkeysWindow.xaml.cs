@@ -75,15 +75,22 @@ namespace EddiCore.Hotkeys
                 // Validate the key and modifier combination
                 if ( IsKeyGestureValid( pressedKeys, modifiers ) )
                 {
-                    // Create a KeyGesture
-                    currentKeyGesture = new KeyGesture( key, modifiers );
+                    try
+                    {
+                        // Create a KeyGesture
+                        currentKeyGesture = new KeyGesture( key, modifiers );
 
-                    // Display the hotkey in the TextBlock
-                    hotkeyTextBlock.Text = currentKeyGesture.GetDisplayStringForCulture( CultureInfo.CurrentCulture ) ??
-                                           currentKeyGesture.GetDisplayStringForCulture( CultureInfo.InvariantCulture );
+                        // Display the hotkey in the TextBlock
+                        hotkeyTextBlock.Text = currentKeyGesture.GetDisplayStringForCulture( CultureInfo.CurrentCulture ) ??
+                                               currentKeyGesture.GetDisplayStringForCulture( CultureInfo.InvariantCulture );
 
-                    // Prevent the default behavior
-                    e.Handled = true;
+                        // Prevent the default behavior
+                        e.Handled = true;
+                    }
+                    catch ( System.NotSupportedException )
+                    {
+                        currentKeyGesture = null;
+                    }
                 }
                 else
                 {
