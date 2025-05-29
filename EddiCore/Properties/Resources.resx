@@ -145,6 +145,70 @@ Please close the other instance and try again.</value>
   <data name="download_failed" xml:space="preserve">
     <value>Download failed. Please try again later.</value>
   </data>
+  <data name="hotkey_action_label" xml:space="preserve">
+    <value>Action:</value>
+    <comment>Label for the dropdown menu of actions</comment>
+  </data>
+  <data name="hotkey_cancel_button" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="hotkey_clear_button" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="hotkey_definition_disable_speech" xml:space="preserve">
+    <value>Disable Speech</value>
+    <comment>hotkey that disables the Speech Manager</comment>
+  </data>
+  <data name="hotkey_definition_enable_speech" xml:space="preserve">
+    <value>Enable Speech</value>
+    <comment>hotkey that enables the Speech Manager</comment>
+  </data>
+  <data name="hotkey_definition_stop_speech" xml:space="preserve">
+    <value>Stop the Current Speech</value>
+    <comment>hotkey that stops the current speech</comment>
+  </data>
+  <data name="hotkey_hotkey_label" xml:space="preserve">
+    <value>Hotkey:</value>
+    <comment>Label for the selected hotkey</comment>
+  </data>
+  <data name="hotkey_input_need_more_modifiers" xml:space="preserve">
+    <value>Please add another modifier key (Ctrl, Alt).</value>
+    <comment>Shown when the hotkey combination needs a modifier key besides Shift</comment>
+  </data>
+  <data name="hotkey_input_already_used" xml:space="preserve">
+    <value>This key combination is already assigned to another action.</value>
+    <comment>Shown when the user tries to input a combination that is already in use</comment>
+  </data>
+  <data name="hotkey_input_cancelled" xml:space="preserve">
+    <value>Hotkey registration cancelled.</value>
+    <comment>Shown when the users cancels hotkey registration by pressing Escape</comment>
+  </data>
+  <data name="hotkey_input_need_modifier" xml:space="preserve">
+    <value>Please add a modifier key (Ctrl, Alt, Shift).</value>
+    <comment>Shown when the hotkey combination needs a modifier key</comment>
+  </data>
+  <data name="hotkey_input_need_nonmodifier" xml:space="preserve">
+    <value>A non-modifier key is required.</value>
+    <comment>Shown when the user is pressing only modifier keys</comment>
+  </data>
+  <data name="hotkey_input_need_one_nonmodifier" xml:space="preserve">
+    <value>Only one non-modifier key is permitted.</value>
+    <comment>Shown when the user is pressing more than one modifier key</comment>
+  </data>
+  <data name="hotkey_input_prompt" xml:space="preserve">
+    <value>Press the desired key combination.</value>
+  </data>
+  <data name="hotkey_input_reserved" xml:space="preserve">
+    <value>This key combination is reserved by the system.</value>
+    <comment>Shown when the user tries to input a reserved key combination</comment>
+  </data>
+  <data name="hotkey_ok_button" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="hotkey_window_title" xml:space="preserve">
+    <value>Configure Hotkeys</value>
+    <comment>The title of the Configure Hotkeys window</comment>
+  </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Mandatory Eddi upgrade to {0} is required.</value>
   </data>

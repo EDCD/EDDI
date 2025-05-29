@@ -1,0 +1,47 @@
+﻿<Window x:Class="EddiCore.Hotkeys.HotkeysWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resx="clr-namespace:EddiCore.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static resx:Resources.hotkey_window_title}"
+        FocusManager.FocusedElement="{Binding ElementName=actionComboBox}"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow"
+        KeyDown="HotkeysWindow_KeyDown"
+        KeyUp="HotkeysWindow_KeyUp"
+        >
+    <StackPanel Orientation="Vertical" Margin="5">
+        <StackPanel Orientation="Horizontal" >
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Static resx:Resources.hotkey_action_label}" MinWidth="42" Margin="5" />
+            <ComboBox x:Name="actionComboBox" MinWidth="273" SelectionChanged="ActionComboBoxOnSelectionChanged" Margin="5"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Static resx:Resources.hotkey_hotkey_label}" MinWidth="42" Margin="5" />
+            <Border BorderThickness="0.5" Margin="5,5,5,5" BorderBrush="Black" Background="DarkGray">
+                <TextBlock x:Name="hotkeyTextBlock" 
+                    Text="{x:Static resx:Resources.hotkey_input_prompt}"
+                    HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" 
+                    Background="WhiteSmoke" 
+                    Margin="1" MinWidth="200" TextWrapping="Wrap" />
+            </Border>
+            <Button VerticalAlignment="Center" 
+                    Content="{x:Static resx:Resources.hotkey_clear_button}" 
+                    Click="ClearHotkeyButton_Click" 
+                    Margin="5" MinWidth ="60" />
+        </StackPanel>
+        <UniformGrid Rows="1" Columns="2" HorizontalAlignment="Center" Margin="5, 0" >
+            <Button IsDefault="True"
+                    Content="{x:Static resx:Resources.hotkey_ok_button}" 
+                    VerticalAlignment="Top" 
+                    Click="acceptButtonClick" 
+                    Margin="5" MinWidth ="60"/>
+            <Button IsCancel="True"
+                    Content="{x:Static resx:Resources.hotkey_cancel_button}" 
+                    VerticalAlignment="Top" 
+                    Click="cancelButtonClick" 
+                    Margin="5" MinWidth ="60"/>
+        </UniformGrid>
+    </StackPanel>
+</Window>

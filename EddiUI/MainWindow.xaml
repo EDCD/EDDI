@@ -1,12 +1,16 @@
-﻿<Window x:Class="EddiUI.MainWindow"
+﻿<Window x:Class="EddiUI.MainWindow" 
+        Title="EDDI" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EddiUI"
         xmlns:resx="clr-namespace:EddiUI.Properties"
-        mc:Ignorable="d"
-        Title="EDDI" ResizeMode="CanResizeWithGrip" Width="928" Height="600" MinWidth="928" MinHeight="600">
+        mc:Ignorable="d" 
+        ResizeMode="CanResizeWithGrip" 
+        Width="928" Height="600" MinWidth="928" MinHeight="600" 
+        Loaded="MainWindow_Loaded"
+        Unloaded="OnUnloaded">
     <Window.Resources>
         <!-- Colors and simple brushes -->
         <Color x:Key="DeepPurple" A="0xff" R="0x43" G="0x35" B="0x5d"/>

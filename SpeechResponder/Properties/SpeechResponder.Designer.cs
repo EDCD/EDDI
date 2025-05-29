@@ -97,6 +97,15 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configure Hotkeys.
+        /// </summary>
+        public static string button_hotkeys {
+            get {
+                return ResourceManager.GetString("button_hotkeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create new script.
         /// </summary>
         public static string button_new {

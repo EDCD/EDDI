@@ -1,5 +1,6 @@
 ﻿using EddiConfigService;
 using EddiCore;
+using EddiCore.Hotkeys;
 using EddiEvents;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Utilities;
 
@@ -400,7 +402,7 @@ namespace EddiSpeechResponder
         {
             if (SpeechResponder?.Personalities is null) { return; }
             EDDI.Instance.SpeechResponderModalWait = true;
-            CopyPersonalityWindow window = new CopyPersonalityWindow(SpeechResponder.Personalities)
+            var window = new CopyPersonalityWindow(SpeechResponder.Personalities)
             {
                 Owner = Window.GetWindow(this)
             };
@@ -430,6 +432,45 @@ namespace EddiSpeechResponder
                 case MessageBoxResult.Yes:
                     SpeechResponder.RemoveCurrentPersonality();
                     break;
+            }
+            EDDI.Instance.SpeechResponderModalWait = false;
+        }
+
+        private void configureHotkeysButtonClicked ( object sender, RoutedEventArgs e )
+        {
+            EDDI.Instance.SpeechResponderModalWait = true;
+            var hkm = EDDI.Instance.HotkeyManager;
+
+            var window = new HotkeysWindow( hkm )
+            {
+                Owner = Window.GetWindow(this), 
+                SizeToContent = SizeToContent.WidthAndHeight, 
+                ResizeMode = ResizeMode.NoResize 
+            };
+            try
+            {
+                if ( window.ShowDialog() ?? false )
+                {
+                    // Register the new hotkey configuration
+                    foreach ( var actionKeyGesture in window.HotkeyActionCollection.HotkeyActions )
+                    {
+                        string name = actionKeyGesture.Name;
+                        KeyGesture gesture = actionKeyGesture.KeyGesture;
+
+                        // Unregister the old hotkey if it exists
+                        hkm.UnregisterHotkey( name );
+
+                        // Assign a new hotkey if a gesture is set
+                        if ( gesture != null )
+                        {
+                            hkm.RegisterHotkey( name, gesture );
+                        }
+                    }
+                }
+            }
+            catch ( Win32Exception ex )
+            {
+                Logging.Warn( ex.Message, ex );
             }
             EDDI.Instance.SpeechResponderModalWait = false;
         }

@@ -135,6 +135,159 @@ namespace EddiCore.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action:.
+        /// </summary>
+        public static string hotkey_action_label {
+            get {
+                return ResourceManager.GetString("hotkey_action_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string hotkey_cancel_button {
+            get {
+                return ResourceManager.GetString("hotkey_cancel_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string hotkey_clear_button {
+            get {
+                return ResourceManager.GetString("hotkey_clear_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Speech.
+        /// </summary>
+        public static string hotkey_definition_disable_speech {
+            get {
+                return ResourceManager.GetString("hotkey_definition_disable_speech", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Speech.
+        /// </summary>
+        public static string hotkey_definition_enable_speech {
+            get {
+                return ResourceManager.GetString("hotkey_definition_enable_speech", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop the Current Speech.
+        /// </summary>
+        public static string hotkey_definition_stop_speech {
+            get {
+                return ResourceManager.GetString("hotkey_definition_stop_speech", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotkey:.
+        /// </summary>
+        public static string hotkey_hotkey_label {
+            get {
+                return ResourceManager.GetString("hotkey_hotkey_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This key combination is already assigned to another action..
+        /// </summary>
+        public static string hotkey_input_already_used {
+            get {
+                return ResourceManager.GetString("hotkey_input_already_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotkey registration cancelled..
+        /// </summary>
+        public static string hotkey_input_cancelled {
+            get {
+                return ResourceManager.GetString("hotkey_input_cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please add a modifier key (Ctrl, Alt, Shift)..
+        /// </summary>
+        public static string hotkey_input_need_modifier {
+            get {
+                return ResourceManager.GetString("hotkey_input_need_modifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please add another modifier key (Ctrl, Alt)..
+        /// </summary>
+        public static string hotkey_input_need_more_modifiers {
+            get {
+                return ResourceManager.GetString("hotkey_input_need_more_modifiers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A non-modifier key is required..
+        /// </summary>
+        public static string hotkey_input_need_nonmodifier {
+            get {
+                return ResourceManager.GetString("hotkey_input_need_nonmodifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only one non-modifier key is permitted..
+        /// </summary>
+        public static string hotkey_input_need_one_nonmodifier {
+            get {
+                return ResourceManager.GetString("hotkey_input_need_one_nonmodifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press the desired key combination..
+        /// </summary>
+        public static string hotkey_input_prompt {
+            get {
+                return ResourceManager.GetString("hotkey_input_prompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This key combination is reserved by the system..
+        /// </summary>
+        public static string hotkey_input_reserved {
+            get {
+                return ResourceManager.GetString("hotkey_input_reserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string hotkey_ok_button {
+            get {
+                return ResourceManager.GetString("hotkey_ok_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Hotkeys.
+        /// </summary>
+        public static string hotkey_window_title {
+            get {
+                return ResourceManager.GetString("hotkey_window_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mandatory Eddi upgrade to {0} is required..
         /// </summary>
         public static string mandatory_upgrade {

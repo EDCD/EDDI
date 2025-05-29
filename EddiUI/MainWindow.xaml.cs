@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using Utilities;
 
@@ -214,6 +215,23 @@ namespace EddiUI
 
             LoadAndSortTabs(eddiConfiguration);
             RestoreWindowState();
+        }
+
+        private void MainWindow_Loaded ( object sender, RoutedEventArgs e )
+        {
+            // Set up our hotkey manager
+            var helper = new WindowInteropHelper(this);
+            EDDI.Instance.HotkeyManager.SetHandle( helper.Handle );
+            HwndSource.FromHwnd( helper.Handle )?.AddHook( WndProc );
+            IntPtr WndProc ( IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
+            {
+                return EDDI.Instance.HotkeyManager.HandleHotkeyMessage( msg, wParam, ref handled );
+            }
+        }
+
+        private void OnUnloaded ( object sender, RoutedEventArgs e )
+        {
+            EDDI.Instance.HotkeyManager.UnregisterAllHotkeys();
         }
 
         class TabItemComparer : Comparer<TabItem>

@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
+using EddiCore.Hotkeys;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -165,6 +166,8 @@ namespace EddiCore
         private static readonly object responderLock = new object();
 
         public DataProviderService DataProvider { get; internal set; } = new DataProviderService();
+        public HotkeyManager HotkeyManager { get; set; } = new HotkeyManager();
+
 
         // Information obtained from the configuration
         [CanBeNull]
