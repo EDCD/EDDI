@@ -10,7 +10,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Enabling speech
       * Disabling speech
       * Stopping the current speech.
-  
+    * These can be configured in the Speech Responder tab, via a new button "Configure Hotkeys". Allowable hotkeys are:
+      * F-keys (F1-F12 etc) with or without modifiers
+      * Numpad keys with or without modifiers
+      * Other keys with at least one modifier from Ctrl and Alt, e.g. Ctrl+A, Ctrl+Shift+A, Ctrl+Shift+Alt+A.
+	  * However certain combos such as Ctrl+C and Ctrl+Alt+Del are reserved by the operating system.
+
 ## 4.1.4
   * Core
     * Made EDDI more aggressive in creating new star system entries for unknown systems (when there is sufficient data to do so). (#2733)
