@@ -129,7 +129,9 @@
   <data name="button_delete" xml:space="preserve">
     <value>Cancella personalità</value>
   </data>
-  
+  <data name="button_hotkeys" xml:space="preserve">
+    <value>Configura Scorciatoie</value>
+  </data>
   <data name="button_new" xml:space="preserve">
     <value>Crea un nuovo Script</value>
   </data>
@@ -242,7 +244,7 @@
     <comment>tooltip that appears when the search filter textbox is selected</comment>
   </data>
   <data name="speechResponderHelp" xml:space="preserve">
-    <value>Leggi qui delle funzioni del Risponditore automatico.</value>
+    <value>Leggi le funzioni dell'Assistente vocale</value>
   </data>
   <data name="speechResponderHelpHere" xml:space="preserve">
     <value>Qui.</value>
