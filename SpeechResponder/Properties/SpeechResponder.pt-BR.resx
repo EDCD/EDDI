@@ -129,7 +129,9 @@
   <data name="button_delete" xml:space="preserve">
     <value>Excluir personalidade</value>
   </data>
-  
+  <data name="button_hotkeys" xml:space="preserve">
+    <value>Configurar Teclas de Atalho</value>
+  </data>
   <data name="button_new" xml:space="preserve">
     <value>Criar novo script</value>
   </data>
