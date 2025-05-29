@@ -158,7 +158,7 @@ namespace Tests
             ConfigService.Instance.missionMonitorConfiguration = data;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestMissionEventsScenario()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();

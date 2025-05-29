@@ -168,7 +168,6 @@ namespace EddiCore
         public DataProviderService DataProvider { get; internal set; } = new DataProviderService();
         public HotkeyManager HotkeyManager { get; set; } = new HotkeyManager();
 
-
         // Information obtained from the configuration
         [CanBeNull]
         public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system

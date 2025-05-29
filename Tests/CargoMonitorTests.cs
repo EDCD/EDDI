@@ -144,7 +144,7 @@ namespace Tests
             Assert.AreEqual( 0, cargo.stolen + cargo.haulage );
         }
 
-        [ TestMethod ]
+        [TestMethod, DoNotParallelize]
         public void TestCommodityEjectedEvent ()
         {
             var line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":52, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":20, \"Stolen\":0 } ] }";
@@ -191,7 +191,7 @@ namespace Tests
             Assert.IsNull( cargo );
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void TestCargoMissionScenario()
         {
             // CargoEvent
