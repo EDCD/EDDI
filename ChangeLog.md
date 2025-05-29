@@ -5,7 +5,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.1.5
   * Core
     * Replaced the legacy `CSCore` voice effect library with the more modern `NAudio` library. You may notice some changes in the sound of your voice effects, particularly if you have enabled the option to add distortion in response to ship damage.
-
+  * Speech Responder
+    * Added user-configurable hotkey support for the following actions:
+      * Enabling speech
+      * Disabling speech
+      * Stopping the current speech.
+  
 ## 4.1.4
   * Core
     * Made EDDI more aggressive in creating new star system entries for unknown systems (when there is sufficient data to do so). (#2733)
