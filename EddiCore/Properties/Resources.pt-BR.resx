@@ -145,6 +145,70 @@ Por favor, feche a outra instância e tente novamente.</value>
   <data name="download_failed" xml:space="preserve">
     <value>Dowload falhou. Por favor, tente novamente mais tarde.</value>
   </data>
+  <data name="hotkey_action_label" xml:space="preserve">
+    <value>Ação:</value>
+    <comment>Label for the dropdown menu of actions</comment>
+  </data>
+  <data name="hotkey_cancel_button" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="hotkey_clear_button" xml:space="preserve">
+    <value>Limpar</value>
+  </data>
+  <data name="hotkey_definition_disable_speech" xml:space="preserve">
+    <value>Desativar Fala</value>
+    <comment>hotkey that disables the Speech Manager</comment>
+  </data>
+  <data name="hotkey_definition_enable_speech" xml:space="preserve">
+    <value>Ativar Fala</value>
+    <comment>hotkey that enables the Speech Manager</comment>
+  </data>
+  <data name="hotkey_definition_stop_speech" xml:space="preserve">
+    <value>Parar a Fala Atual</value>
+    <comment>hotkey that stops the current speech</comment>
+  </data>
+  <data name="hotkey_hotkey_label" xml:space="preserve">
+    <value>Tecla de Atalho:</value>
+    <comment>Label for the selected hotkey</comment>
+  </data>
+  <data name="hotkey_input_need_more_modifiers" xml:space="preserve">
+    <value>Por favor, adicione outra tecla modificadora (Ctrl, Alt).</value>
+    <comment>Shown when the hotkey combination needs a modifier key besides Shift</comment>
+  </data>
+  <data name="hotkey_input_already_used" xml:space="preserve">
+    <value>Esta combinação de teclas já está atribuída a outra ação.</value>
+    <comment>Shown when the user tries to input a combination that is already in use</comment>
+  </data>
+  <data name="hotkey_input_cancelled" xml:space="preserve">
+    <value>Registro de tecla de atalho cancelado.</value>
+    <comment>Shown when the users cancels hotkey registration by pressing Escape</comment>
+  </data>
+  <data name="hotkey_input_need_modifier" xml:space="preserve">
+    <value>Por favor, adicione uma tecla modificadora (Ctrl, Alt, Shift).</value>
+    <comment>Shown when the hotkey combination needs a modifier key</comment>
+  </data>
+  <data name="hotkey_input_need_nonmodifier" xml:space="preserve">
+    <value>Uma tecla não-modificadora é necessária.</value>
+    <comment>Shown when the user is pressing only modifier keys</comment>
+  </data>
+  <data name="hotkey_input_need_one_nonmodifier" xml:space="preserve">
+    <value>Apenas uma tecla não-modificadora é permitida.</value>
+    <comment>Shown when the user is pressing more than one modifier key</comment>
+  </data>
+  <data name="hotkey_input_prompt" xml:space="preserve">
+    <value>Pressione a combinação de teclas desejada.</value>
+  </data>
+  <data name="hotkey_input_reserved" xml:space="preserve">
+    <value>Esta combinação de teclas é reservada pelo sistema.</value>
+    <comment>Shown when the user tries to input a reserved key combination</comment>
+  </data>
+  <data name="hotkey_ok_button" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="hotkey_window_title" xml:space="preserve">
+    <value>Configurar Teclas de Atalho</value>
+    <comment>The title of the Configure Hotkeys window</comment>
+  </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Atualização obrigatória do Eddi para {0} é necessária.</value>
   </data>

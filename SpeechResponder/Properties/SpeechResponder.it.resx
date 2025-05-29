@@ -129,6 +129,9 @@
   <data name="button_delete" xml:space="preserve">
     <value>Cancella personalità</value>
   </data>
+  <data name="button_hotkeys" xml:space="preserve">
+    <value>Configura Scorciatoie</value>
+  </data>
   <data name="button_new" xml:space="preserve">
     <value>Crea un nuovo Script</value>
   </data>
@@ -140,6 +143,12 @@
   </data>
   <data name="compare_script_title" xml:space="preserve">
     <value>Comparazione con lo Script di default</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>Disabilitare tutti gli scripts basati su eventi</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>Abilitare tutti gli scripts basati su eventi</value>
   </data>
   <data name="default_is_read_only" xml:space="preserve">
     <value>La personalità di default non può essere modificata. Se desideri apportarvi dei cambiamenti, creane una copia.</value>
@@ -178,21 +187,67 @@
   <data name="header_enabled" xml:space="preserve">
     <value>Abilitato</value>
   </data>
+  <data name="header_include" xml:space="preserve">
+	  <value>Includi</value>
+  </data>
   <data name="header_name" xml:space="preserve">
     <value>Nome</value>
+  </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>Priorità</value>
   </data>
   <data name="help_button" xml:space="preserve">
     <value>Aiuto</value>
   </data>
+  <data name="localizedAnd" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EEDI ha recuperato uno Script che stavi modificando quando il programma si è chiuso inaspettatamente. Vuoi riaprirlo?</value>
+  </data>
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>Script Recuperato</value>
+  </data>
+  <data name="messagebox_script_name_already_in_use" xml:space="preserve">
+	  <value>Esiste già uno script con questo nome.</value>
+  </data>
+  <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
+	  <value>Il nome dello script non può contenere</value><comment>e.g. The script name may not contain ';'.</comment>
+  </data>
+  <data name="messagebox_script_name_required" xml:space="preserve">
+	  <value>È necessario dare un nome allo script.</value>
+  </data>
+  <data name="messagebox_unable_to_save_script" xml:space="preserve">
+	  <value>Impossibile salvare lo script.</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Assistente Vocale</value>
+  </data>
+  <data name="reset_script" xml:space="preserve">
+    <value>Reset</value>
   </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>Ripristina impostazioni predefinite</value>
   </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>Sei sicuro di voler resettare lo script "{0}"?</value>
+  </data>
   <data name="script_variables_button" xml:space="preserve">
     <value>Variabili</value>
     <comment>button that shows help for script variables</comment>
+  </data>
+  <data name="search_filter" xml:space="preserve">
+    <value>Filtro:</value>
+  </data>
+  <data name="search_filter_tooltip" xml:space="preserve">
+    <value>FIltra i risultati in base al nome, alla descrizione, o al testo dello script.</value>
+    <comment>tooltip that appears when the search filter textbox is selected</comment>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Leggi le funzioni dell'Assistente vocale</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>Qui.</value>
   </data>
   <data name="subs" xml:space="preserve">
     <value>Produce una copia scritta delle stringhe lette dall'assistente vocale nel file %APPDATA%\EDDI\speechresponder.out</value>
@@ -206,35 +261,8 @@
   <data name="test_script_button" xml:space="preserve">
     <value>Testa lo script</value>
   </data>
-  <data name="view_script" xml:space="preserve">
-    <value>Visualizza</value>
-  </data>
-  <data name="view_script_title" xml:space="preserve">
-    <value>Visualizza Script</value>
-  </data>
-  <data name="header_priority" xml:space="preserve">
-    <value>Priorità</value>
-  </data>
-  <data name="speechResponderHelp" xml:space="preserve">
-    <value>Leggi qui delle funzioni del Risponditore automatico.</value>
-  </data>
-  <data name="speechResponderHelpHere" xml:space="preserve">
-    <value>Qui.</value>
-  </data>
-  <data name="localizedAnd" xml:space="preserve">
-    <value>e</value>
-  </data>
-  <data name="reset_script" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="reset_script_message" xml:space="preserve">
-    <value>Sei sicuro di voler resettare lo script "{0}"?</value>
-  </data>
-  <data name="messagebox_recoveredScript_title" xml:space="preserve">
-    <value>Script Recuperato</value>
-  </data>
-  <data name="messagebox_recoveredScript" xml:space="preserve">
-    <value>EEDI ha recuperato uno Script che stavi modificando quando il programma si è chiuso inaspettatamente. Vuoi riaprirlo?</value>
+  <data name="tooltip_include" xml:space="preserve">
+	  <value>Gli script qui elencati devono essere eseguiti prima dello script di primo livello. Questo può essere usato per impostare le preferenze o creare funzioni che possono essere riutilizzate tra più script. Separa i nomi di più script usando ';' come separatore.</value>
   </data>
   <data name="validation_tooltip_name_empty" xml:space="preserve">
     <value>Si prega di inserire un nome</value>
@@ -242,35 +270,10 @@
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>Questo nome è già stato usato; si prega di sceglierne un altro</value>
   </data>
-  <data name="search_filter" xml:space="preserve">
-    <value>Filtro:</value>
+  <data name="view_script" xml:space="preserve">
+    <value>Visualizza</value>
   </data>
-  <data name="context_menu_enable_all" xml:space="preserve">
-    <value>Abilitare tutti gli scripts basati su eventi</value>
-  </data>
-  <data name="context_menu_disable_all" xml:space="preserve">
-    <value>Disabilitare tutti gli scripts basati su eventi</value>
-  </data>
-  <data name="search_filter_tooltip" xml:space="preserve">
-    <value>FIltra i risultati in base al nome, alla descrizione, o al testo dello script.</value>
-    <comment>tooltip that appears when the search filter textbox is selected</comment>
-  </data>
-  <data name="messagebox_unable_to_save_script" xml:space="preserve">
-	  <value>Impossibile salvare lo script.</value>
-  </data>
-  <data name="messagebox_script_name_required" xml:space="preserve">
-	  <value>È necessario dare un nome allo script.</value>
-  </data>
-  <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
-	  <value>Il nome dello script non può contenere</value><comment>e.g. The script name may not contain ';'.</comment>
-  </data>
-  <data name="messagebox_script_name_already_in_use" xml:space="preserve">
-	  <value>Esiste già uno script con questo nome.</value>
-  </data>
-  <data name="header_include" xml:space="preserve">
-	  <value>Includi</value>
-  </data>
-  <data name="tooltip_include" xml:space="preserve">
-	  <value>Gli script qui elencati devono essere eseguiti prima dello script di primo livello. Questo può essere usato per impostare le preferenze o creare funzioni che possono essere riutilizzate tra più script. Separa i nomi di più script usando ';' come separatore.</value>
+  <data name="view_script_title" xml:space="preserve">
+    <value>Visualizza Script</value>
   </data>
 </root>

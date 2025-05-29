@@ -144,6 +144,70 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
   <data name="download_failed" xml:space="preserve">
     <value>Download fallito. Si prega di riprovare più tardi.</value>
   </data>
+  <data name="hotkey_action_label" xml:space="preserve">
+    <value>Azione:</value>
+    <comment>Label for the dropdown menu of actions</comment>
+  </data>
+  <data name="hotkey_cancel_button" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="hotkey_clear_button" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
+  <data name="hotkey_definition_disable_speech" xml:space="preserve">
+    <value>Disabilita l'Assistente vocale</value>
+    <comment>hotkey that disables the Speech Manager</comment>
+  </data>
+  <data name="hotkey_definition_enable_speech" xml:space="preserve">
+    <value>Abilita l'Assistente Vocale</value>
+    <comment>hotkey that enables the Speech Manager</comment>
+  </data>
+  <data name="hotkey_definition_stop_speech" xml:space="preserve">
+    <value>Interrompe il messaggio vocale corrente</value>
+    <comment>hotkey that stops the current speech</comment>
+  </data>
+  <data name="hotkey_hotkey_label" xml:space="preserve">
+    <value>Scorciatoia:</value>
+    <comment>Label for the selected hotkey</comment>
+  </data>
+  <data name="hotkey_input_need_more_modifiers" xml:space="preserve">
+    <value>Si prega di aggiungere un altro tasto modificatore (Ctrl, Alt).</value>
+    <comment>Shown when the hotkey combination needs a modifier key besides Shift</comment>
+  </data>
+  <data name="hotkey_input_already_used" xml:space="preserve">
+    <value>Questa combinazione di tasti è già assegnata ad un'altra azione.</value>
+    <comment>Shown when the user tries to input a combination that is already in use</comment>
+  </data>
+  <data name="hotkey_input_cancelled" xml:space="preserve">
+    <value>Registrazione della scorciatoia annullata.</value>
+    <comment>Shown when the users cancels hotkey registration by pressing Escape</comment>
+  </data>
+  <data name="hotkey_input_need_modifier" xml:space="preserve">
+    <value>Si prega di aggiungere un tasto modificatore (Ctrl, Alt, Maiusc).</value>
+    <comment>Shown when the hotkey combination needs a modifier key</comment>
+  </data>
+  <data name="hotkey_input_need_nonmodifier" xml:space="preserve">
+    <value>È necessario un tasto non modificatore.</value>
+    <comment>Shown when the user is pressing only modifier keys</comment>
+  </data>
+  <data name="hotkey_input_need_one_nonmodifier" xml:space="preserve">
+    <value>È consentito soltanto un tasto non modificatore.</value>
+    <comment>Shown when the user is pressing more than one modifier key</comment>
+  </data>
+  <data name="hotkey_input_prompt" xml:space="preserve">
+    <value>Premere la combinazione di tasti desiderata.</value>
+  </data>
+  <data name="hotkey_input_reserved" xml:space="preserve">
+    <value>Questa combinazione di tasti è riservata dal sistema.</value>
+    <comment>Shown when the user tries to input a reserved key combination</comment>
+  </data>
+  <data name="hotkey_ok_button" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="hotkey_window_title" xml:space="preserve">
+    <value>Configura Scorciatoie</value>
+    <comment>The title of the Configure Hotkeys window</comment>
+  </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Aggiornamento alla versione {0} di EDDI obbligatorio.</value>
   </data>

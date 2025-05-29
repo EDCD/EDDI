@@ -129,6 +129,7 @@
   <data name="button_delete" xml:space="preserve">
     <value>删除人格</value>
   </data>
+  
   <data name="button_new" xml:space="preserve">
     <value>创建新脚本</value>
   </data>
@@ -140,6 +141,12 @@
   </data>
   <data name="compare_script_title" xml:space="preserve">
     <value>与默认脚本比较</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>停用所有基于事件的脚本</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>启用所有基于事件的脚本</value>
   </data>
   <data name="default_is_read_only" xml:space="preserve">
     <value>无法修改默认人格。 如果您想进行更改，请创建一个副本。</value>
@@ -178,21 +185,67 @@
   <data name="header_enabled" xml:space="preserve">
     <value>启用</value>
   </data>
+  <data name="header_include" xml:space="preserve">
+	  <value>包含</value>
+  </data>
   <data name="header_name" xml:space="preserve">
     <value>名称</value>
+  </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>优先级</value>
   </data>
   <data name="help_button" xml:space="preserve">
     <value>帮助</value>
   </data>
+  <data name="localizedAnd" xml:space="preserve">
+    <value>和</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDI 已恢复程序意外关闭时正在编辑的脚本。 你想重新打开它吗？</value>
+  </data>
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>被恢复的脚本</value>
+  </data>
+  <data name="messagebox_script_name_already_in_use" xml:space="preserve">
+	  <value>脚本名称已被使用。</value>
+  </data>
+  <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
+	  <value>脚本名称中不能包含</value><comment>e.g. The script name may not contain ';'.</comment>
+  </data>
+  <data name="messagebox_script_name_required" xml:space="preserve">
+	  <value>必须设置脚本名称。</value>
+  </data>
+  <data name="messagebox_unable_to_save_script" xml:space="preserve">
+	  <value>无法保存脚本。</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>语音响应器</value>
+  </data>
+  <data name="reset_script" xml:space="preserve">
+    <value>重置</value>
   </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>重置为默认</value>
   </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>您是否确定重置脚本"{0}"</value>
+  </data>
   <data name="script_variables_button" xml:space="preserve">
     <value>变量</value>
     <comment>button that shows help for script variables</comment>
+  </data>
+  <data name="search_filter" xml:space="preserve">
+    <value>过滤器：</value>
+  </data>
+  <data name="search_filter_tooltip" xml:space="preserve">
+    <value>按脚本的名称、描述或全文筛选结果。</value>
+    <comment>tooltip that appears when the search filter textbox is selected</comment>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>了解语音响应器的功能</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>这里。</value>
   </data>
   <data name="subs" xml:space="preserve">
     <value>将语音的文本副本写入文件 %APPDATA%\EDDI\speechresponder.out</value>
@@ -206,35 +259,8 @@
   <data name="test_script_button" xml:space="preserve">
     <value>测试脚本</value>
   </data>
-  <data name="view_script" xml:space="preserve">
-    <value>预览</value>
-  </data>
-  <data name="view_script_title" xml:space="preserve">
-    <value>预览脚本</value>
-  </data>
-  <data name="header_priority" xml:space="preserve">
-    <value>优先级</value>
-  </data>
-  <data name="speechResponderHelp" xml:space="preserve">
-    <value>了解语音响应器的功能</value>
-  </data>
-  <data name="speechResponderHelpHere" xml:space="preserve">
-    <value>这里。</value>
-  </data>
-  <data name="localizedAnd" xml:space="preserve">
-    <value>和</value>
-  </data>
-  <data name="reset_script" xml:space="preserve">
-    <value>重置</value>
-  </data>
-  <data name="reset_script_message" xml:space="preserve">
-    <value>您是否确定重置脚本"{0}"</value>
-  </data>
-  <data name="messagebox_recoveredScript_title" xml:space="preserve">
-    <value>被恢复的脚本</value>
-  </data>
-  <data name="messagebox_recoveredScript" xml:space="preserve">
-    <value>EDDI 已恢复程序意外关闭时正在编辑的脚本。 你想重新打开它吗？</value>
+  <data name="tooltip_include" xml:space="preserve">
+	  <value>这里指明的脚本必须在顶级脚本之前执行。 这可以用于设置首选项或创建可以在多个脚本之间重新使用的函数。 使用分隔符“;”分隔多个脚本名称。</value>
   </data>
   <data name="validation_tooltip_name_empty" xml:space="preserve">
     <value>请提供一个名称</value>
@@ -242,35 +268,10 @@
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>那个名称已占用；请提供另一个</value>
   </data>
-  <data name="search_filter" xml:space="preserve">
-    <value>过滤器：</value>
+  <data name="view_script" xml:space="preserve">
+    <value>预览</value>
   </data>
-  <data name="context_menu_enable_all" xml:space="preserve">
-    <value>启用所有基于事件的脚本</value>
-  </data>
-  <data name="context_menu_disable_all" xml:space="preserve">
-    <value>停用所有基于事件的脚本</value>
-  </data>
-  <data name="search_filter_tooltip" xml:space="preserve">
-    <value>按脚本的名称、描述或全文筛选结果。</value>
-    <comment>tooltip that appears when the search filter textbox is selected</comment>
-  </data>
-  <data name="messagebox_unable_to_save_script" xml:space="preserve">
-	  <value>无法保存脚本。</value>
-  </data>
-  <data name="messagebox_script_name_required" xml:space="preserve">
-	  <value>必须设置脚本名称。</value>
-  </data>
-  <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
-	  <value>脚本名称中不能包含</value><comment>e.g. The script name may not contain ';'.</comment>
-  </data>
-  <data name="messagebox_script_name_already_in_use" xml:space="preserve">
-	  <value>脚本名称已被使用。</value>
-  </data>
-  <data name="header_include" xml:space="preserve">
-	  <value>包含</value>
-  </data>
-  <data name="tooltip_include" xml:space="preserve">
-	  <value>这里指明的脚本必须在顶级脚本之前执行。 这可以用于设置首选项或创建可以在多个脚本之间重新使用的函数。 使用分隔符“;”分隔多个脚本名称。</value>
+  <data name="view_script_title" xml:space="preserve">
+    <value>预览脚本</value>
   </data>
 </root>
