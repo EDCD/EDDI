@@ -129,6 +129,7 @@
   <data name="button_delete" xml:space="preserve">
     <value>Supprimer le profil</value>
   </data>
+  
   <data name="button_new" xml:space="preserve">
     <value>Créer un nouveau script</value>
   </data>
@@ -140,6 +141,12 @@
   </data>
   <data name="compare_script_title" xml:space="preserve">
     <value>Comparaison avec le script par défaut</value>
+  </data>
+  <data name="context_menu_disable_all" xml:space="preserve">
+    <value>Désactiver tous les scripts basés sur des événements</value>
+  </data>
+  <data name="context_menu_enable_all" xml:space="preserve">
+    <value>Activer tous les scripts basés sur des événements</value>
   </data>
   <data name="default_is_read_only" xml:space="preserve">
     <value>La personnalité par défaut ne peut être modifiée, Si vous voulez faire des modifications, veuillez créer une copie.</value>
@@ -178,21 +185,54 @@
   <data name="header_enabled" xml:space="preserve">
     <value>Activé</value>
   </data>
+  
   <data name="header_name" xml:space="preserve">
     <value>Nom</value>
+  </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>Priorité</value>
   </data>
   <data name="help_button" xml:space="preserve">
     <value>Aide</value>
   </data>
+  <data name="localizedAnd" xml:space="preserve">
+    <value>et</value>
+  </data>
+  <data name="messagebox_recoveredScript" xml:space="preserve">
+    <value>EDDI a récupéré un script qui était en cours d'édition lors de la fermeture inattendue du programme. Souhaitez-vous le réouvrir ?</value>
+  </data>
+  <data name="messagebox_recoveredScript_title" xml:space="preserve">
+    <value>Script récupéré</value>
+  </data>
+  
+  
+  
+  
   <data name="name" xml:space="preserve">
     <value>Répondeur vocal</value>
+  </data>
+  <data name="reset_script" xml:space="preserve">
+    <value>Réinitialiser</value>
   </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>Réinitialiser par défaut</value>
   </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>Êtes vous sur de vouloir réinitialiser le script "{0}" ?</value>
+  </data>
   <data name="script_variables_button" xml:space="preserve">
     <value>Variables</value>
     <comment>button that shows help for script variables</comment>
+  </data>
+  <data name="search_filter" xml:space="preserve">
+    <value>Filtre:</value>
+  </data>
+  
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Lire à propos des fonctions du répondeur vocale</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>ici.</value>
   </data>
   <data name="subs" xml:space="preserve">
     <value>Copier le texte des dialogues dans le fichier %APPDATA%\EDDI\speechresponder.out</value>
@@ -206,56 +246,17 @@
   <data name="test_script_button" xml:space="preserve">
     <value>Tester le script</value>
   </data>
-  <data name="view_script" xml:space="preserve">
-    <value>Voir</value>
-  </data>
-  <data name="view_script_title" xml:space="preserve">
-    <value>Voir Script</value>
-  </data>
-  <data name="header_priority" xml:space="preserve">
-    <value>Priorité</value>
-  </data>
-  <data name="speechResponderHelp" xml:space="preserve">
-    <value>Lire à propos des fonctions du répondeur vocale</value>
-  </data>
-  <data name="speechResponderHelpHere" xml:space="preserve">
-    <value>ici.</value>
-  </data>
-  <data name="localizedAnd" xml:space="preserve">
-    <value>et</value>
-  </data>
-  <data name="reset_script" xml:space="preserve">
-    <value>Réinitialiser</value>
-  </data>
-  <data name="reset_script_message" xml:space="preserve">
-    <value>Êtes vous sur de vouloir réinitialiser le script "{0}" ?</value>
-  </data>
-  <data name="messagebox_recoveredScript_title" xml:space="preserve">
-    <value>Script récupéré</value>
-  </data>
-  <data name="messagebox_recoveredScript" xml:space="preserve">
-    <value>EDDI a récupéré un script qui était en cours d'édition lors de la fermeture inattendue du programme. Souhaitez-vous le réouvrir ?</value>
-  </data>
+  
   <data name="validation_tooltip_name_empty" xml:space="preserve">
     <value>Veuillez saisir un nom</value>
   </data>
   <data name="validation_tooltip_name_taken" xml:space="preserve">
     <value>Ce nom est déjà pris; veuillez en fournir un autre</value>
   </data>
-  <data name="search_filter" xml:space="preserve">
-    <value>Filtre:</value>
+  <data name="view_script" xml:space="preserve">
+    <value>Voir</value>
   </data>
-  <data name="context_menu_enable_all" xml:space="preserve">
-    <value>Activer tous les scripts basés sur des événements</value>
+  <data name="view_script_title" xml:space="preserve">
+    <value>Voir Script</value>
   </data>
-  <data name="context_menu_disable_all" xml:space="preserve">
-    <value>Désactiver tous les scripts basés sur des événements</value>
-  </data>
-  
-  
-  
-  
-  
-  
-  
 </root>
