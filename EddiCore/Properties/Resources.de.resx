@@ -145,6 +145,9 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="download_failed" xml:space="preserve">
     <value>Download fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
   </data>
+  <data name="hotkey_cancel_button" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Ein obligatorisches Eddi-Upgrade auf {0} ist erforderlich.</value>
   </data>
