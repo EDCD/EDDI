@@ -77,7 +77,7 @@ namespace Utilities
                 }
                 if (!passProperty)
                 {
-                    Logging.Debug("Ignoring key " + eventProperty.Name);
+                    // Ignored Key
                 }
             }
 
@@ -96,7 +96,7 @@ namespace Utilities
                 }
                 if (!passField)
                 {
-                    Logging.Debug("Ignoring key " + eventField.Name);
+                    // Ignored Key
                 }
             }
 
@@ -113,7 +113,7 @@ namespace Utilities
                 // We ignore any key paths that we have already set elsewhere
                 if ( Results.FirstOrDefault( v => keysPath.SequenceEqual( v.keysPath) ) != null )
                 {
-                    Logging.Debug( "Skipping already-set key " + string.Join( "/", keysPath ) );
+                    // Skipping already-set key
                     return;
                 }
 
@@ -122,8 +122,6 @@ namespace Utilities
                     // Get the underlying type for nullable types
                     type = Nullable.GetUnderlyingType(type);
                 }
-
-                Logging.Debug($"Handling {type?.Name ?? "<null>"} key {key} in path {string.Join("/", keysPath)}", value);
 
                 if (type == typeof(bool))
                 {
@@ -201,7 +199,6 @@ namespace Utilities
                             foreach (object item in (IEnumerable)value)
                             {
                                 // Handle filled collections
-                                Logging.Debug("Handling element " + i++);
                                 var elementKeysPath = keysPath.ToList();
                                 elementKeysPath.Add(i.ToString());
                                 if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
@@ -232,8 +229,6 @@ namespace Utilities
                     }
                     else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
                     {
-                        Logging.Debug($"Found object '{type.Name}'");
-
                         // Add an object to represent the root name for the object in our docs
                         Results.Add(new MetaVariable(keysPath, typeof(object), description));
 
