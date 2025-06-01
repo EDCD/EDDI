@@ -22,8 +22,8 @@ namespace EddiJournalMonitor
         private const int pollingIntervalActiveMs = 100;
         private const int pollingIntervalRelaxedMs = 5000;
 
-        private readonly BlockingCollection<JournalChunk> journalQueue = new BlockingCollection<JournalChunk>();
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private BlockingCollection<JournalChunk> journalQueue = new BlockingCollection<JournalChunk>();
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         // Keep track of status
         private bool running;
@@ -35,9 +35,6 @@ namespace EddiJournalMonitor
             Directory = directory;
             Filter = new Regex(filter);
             Callback = callback;
-
-            // Start a background task to process the queue
-            Task.Run( () => ProcessQueue( cancellationTokenSource.Token ) );
         }
 
         private class JournalChunk
@@ -79,6 +76,19 @@ namespace EddiJournalMonitor
             }
 
             running = true;
+            cancellationTokenSource = new CancellationTokenSource();
+            journalQueue = new BlockingCollection<JournalChunk>();
+
+            // Start a background task to process the queue
+            try
+            {
+                Task.Run( () => ProcessQueue( cancellationTokenSource.Token ) );
+            }
+            catch ( OperationCanceledException )
+            {
+                // Operation cancelled, nothing to do here.
+            }
+
             long lastSize = 0;
             var activePolling = false;
 
