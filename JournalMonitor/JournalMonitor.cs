@@ -236,7 +236,7 @@ namespace EddiJournalMonitor
 
                                     var hullValue = JsonParsing.getOptionalLong(data, "HullValue");
                                     var modulesValue = JsonParsing.getOptionalLong(data, "ModulesValue");
-                                    var hullHealth = sensibleHealth((JsonParsing.getOptionalDecimal(data, "HullHealth") ?? 1) * 100);
+                                    var hullHealth = EventParsing.sensibleHealth((JsonParsing.getOptionalDecimal(data, "HullHealth") ?? 1) * 100);
                                     var unladenMass = JsonParsing.getOptionalDecimal(data, "UnladenMass") ?? 0;
                                     var maxJumpRange = JsonParsing.getOptionalDecimal(data, "MaxJumpRange") ?? 0;
 
@@ -420,7 +420,7 @@ namespace EddiJournalMonitor
                                             else
                                             {
                                                 // This is a compartment
-                                                var compartment = parseShipCompartment(ship, slot);
+                                                var compartment = EventParsing.ParseShipCompartment(ship, slot);
                                                 // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
 
                                                 var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
@@ -922,13 +922,13 @@ namespace EddiJournalMonitor
                                     var systemName = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationModel);
+                                    EventParsing.GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationModel);
 
-                                    var controllingfaction = GetFaction(data, "Station", systemName, systemAddress);
+                                    var controllingfaction = EventParsing.GetFaction(data, "Station", systemName, systemAddress, EDDI.Instance.CurrentStarSystem?.factions);
                                     var distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                     // Get station landing pads data
-                                    var landingPads = GetLandingPads(data);
+                                    var landingPads = EventParsing.GetLandingPads(data);
 
                                     // Get station services data
                                     data.TryGetValue("StationServices", out var val);
@@ -988,7 +988,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     events.Add(new DockingCancelledEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -998,7 +998,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     var reason = JsonParsing.getString(data, "Reason");
                                     events.Add(new DockingDeniedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, reason) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -1009,7 +1009,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     data.TryGetValue("LandingPad", out var val);
                                     var landingPad = (int)(long)val;
                                     events.Add(new DockingGrantedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPad) { raw = line, fromLoad = fromLogLoad });
@@ -1021,10 +1021,10 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
 
                                     // Get station landing pads data
-                                    var landingPads = GetLandingPads(data);
+                                    var landingPads = EventParsing.GetLandingPads(data);
 
                                     events.Add(new DockingRequestedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPads) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -1034,7 +1034,7 @@ namespace EddiJournalMonitor
                                 {
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     events.Add(new DockingTimedOutEvent(timestamp, stationLocalizedName ?? stationName, stationType) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -1053,7 +1053,6 @@ namespace EddiJournalMonitor
                                     var fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
                                     var boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
                                     var distance = JsonParsing.getDecimal(data, "JumpDist");
-                                    var controllingfaction = GetFaction(data, "System", systemName, systemAddress);
                                     var economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy")) ?? Economy.None;
                                     var economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy")) ?? Economy.None;
                                     var security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity")) ?? SecurityLevel.None;
@@ -1064,26 +1063,27 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Factions", out var factionsVal);
                                     if (factionsVal != null)
                                     {
-                                        factions = GetFactions(factionsVal, systemName, systemAddress);
+                                        factions = EventParsing.GetFactions(factionsVal, systemName, systemAddress);
                                     }
+                                    var controllingfaction = EventParsing.GetFaction(data, "System", systemName, systemAddress, factions);
 
                                     // Parse conflicts array data
                                     var conflicts = new List<Conflict>();
                                     data.TryGetValue("Conflicts", out var conflictsVal);
                                     if (conflictsVal != null)
                                     {
-                                        conflicts = GetConflicts(conflictsVal, factions);
+                                        conflicts = EventParsing.GetConflicts(conflictsVal, factions);
                                     }
 
                                     // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out var controllingPower,
+                                    EventParsing.GetPowerplayData( data, systemAddress, out var controllingPower,
                                         out var powersInAcquisitionRange, out var powerplayState,
                                         out var powerAcquisitionProgress,
                                         out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
                                         out var powerplayUnderminingControlPoints );
 
                                     // Thargoid war data (if any)
-                                    GetThargoidWarData( data, out var thargoidWar );
+                                    EventParsing.GetThargoidWarData( data, out var thargoidWar );
 
                                     var taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
@@ -1179,8 +1179,6 @@ namespace EddiJournalMonitor
                                     }
 
                                     var docked = JsonParsing.getBool(data, "Docked");
-                                    var systemfaction = GetFaction(data, "System", systemName, systemAddress);
-                                    var stationfaction = GetFaction(data, "Station", systemName, systemAddress);
                                     var economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                     var economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                     var security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
@@ -1193,7 +1191,7 @@ namespace EddiJournalMonitor
                                     StationModel stationtype = null;
                                     if ( marketId != null )
                                     {
-                                        GetStationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
+                                        EventParsing.GetStationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
                                     }
 
                                     // Get station services data
@@ -1229,19 +1227,21 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Factions", out var factionsVal);
                                     if (factionsVal != null)
                                     {
-                                        factions = GetFactions(factionsVal, systemName, systemAddress );
+                                        factions = EventParsing.GetFactions(factionsVal, systemName, systemAddress );
                                     }
+                                    var systemfaction = EventParsing.GetFaction(data, "System", systemName, systemAddress, factions);
+                                    var stationfaction = EventParsing.GetFaction(data, "Station", systemName, systemAddress, factions);
 
                                     // Parse conflicts array data
                                     var conflicts = new List<Conflict>();
                                     data.TryGetValue("Conflicts", out var conflictsVal);
                                     if (conflictsVal != null)
                                     {
-                                        conflicts = GetConflicts(conflictsVal, factions);
+                                        conflicts = EventParsing.GetConflicts(conflictsVal, factions);
                                     }
 
                                     // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out var controllingPower,
+                                    EventParsing.GetPowerplayData( data, systemAddress, out var controllingPower,
                                         out var powersInAcquisitionRange, out var powerplayState,
                                         out var powerAcquisitionProgress,
                                         out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
@@ -1253,7 +1253,7 @@ namespace EddiJournalMonitor
                                     var onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
                                     // Thargoid war data (if any)
-                                    GetThargoidWarData( data, out var thargoidWar );
+                                    EventParsing.GetThargoidWarData( data, out var thargoidWar );
 
                                     // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
                                     // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
@@ -1396,7 +1396,7 @@ namespace EddiJournalMonitor
                                     var target = JsonParsing.getString(data, "Target");
                                     var target_localised = JsonParsing.getString( data, "Target_Localised" );
                                     var victimName = JsonParsing.getString(data, "PilotName_Localised");
-                                    var victimFaction = GetFactionName(data, "VictimFaction");
+                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
 
                                     data.TryGetValue("SharedWithOthers", out var val);
                                     var shared = val != null && (long)val == 1;
@@ -1414,7 +1414,7 @@ namespace EddiJournalMonitor
                                             // 0-credit reward; ignore
                                             break;
                                         }
-                                        var factionName = GetFactionName(data, "Faction");
+                                        var factionName = EventParsing.GetFactionName(data, "Faction");
                                         rewards.Add(new Reward(factionName, reward));
                                     }
                                     else
@@ -1433,7 +1433,7 @@ namespace EddiJournalMonitor
                                         {
                                             foreach (var rewardData in rewardsData.Cast<IDictionary<string, object>>() )
                                             {
-                                                var factionName = GetFactionName(rewardData, "Faction");
+                                                var factionName = EventParsing.GetFactionName(rewardData, "Faction");
                                                 rewardData.TryGetValue("Reward", out val);
                                                 var factionReward = (long)val;
 
@@ -1450,8 +1450,8 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue( "Reward", out var val );
                                     var reward = (long)val;
-                                    var victimFaction = GetFactionName(data, "VictimFaction");
-                                    var awardingFaction = GetFactionName(data, "AwardingFaction");
+                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
+                                    var awardingFaction = EventParsing.GetFactionName(data, "AwardingFaction");
                                     events.Add( new BondAwardedEvent( timestamp, awardingFaction, victimFaction, reward ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
@@ -1528,8 +1528,8 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("Reward", out var val);
                                     var reward = (long)val;
-                                    var victimFaction = GetFactionName(data, "VictimFaction");
-                                    var awardingFaction = GetFactionName(data, "AwardingFaction");
+                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
+                                    var awardingFaction = EventParsing.GetFactionName(data, "AwardingFaction");
                                     events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -1562,7 +1562,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "HullDamage":
                                 {
-                                    var health = sensibleHealth(JsonParsing.getDecimal(data, "Health") * 100);
+                                    var health = EventParsing.sensibleHealth(JsonParsing.getDecimal(data, "Health") * 100);
                                     var piloted = JsonParsing.getOptionalBool(data, "PlayerPilot");
                                     var fighter = JsonParsing.getOptionalBool(data, "Fighter");
 
@@ -1597,7 +1597,7 @@ namespace EddiJournalMonitor
                                     var isThargoid = JsonParsing.getOptionalBool(data, "IsThargoid") ?? false;
                                     data.TryGetValue("CombatRank", out var val);
                                     var rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
                                     var power = JsonParsing.getString(data, "Power");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
@@ -1630,7 +1630,7 @@ namespace EddiJournalMonitor
                                     var iscommander = JsonParsing.getBool(data, "IsPlayer");
                                     data.TryGetValue("CombatRank", out var val);
                                     var rating = ( val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) ) );
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
                                     var power = JsonParsing.getString(data, "Power");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")))
@@ -1832,9 +1832,9 @@ namespace EddiJournalMonitor
 
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
-                                    var source = GetSignalSourceName(data);
+                                    var source = EventParsing.GetSignalSourceName(data);
 
-                                    source.spawningFaction = GetFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
+                                    source.spawningFaction = EventParsing.GetFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     source.SpawningPower = Power.FromEDName( JsonParsing.getString( data, "SpawningPower" ) ); // the Powerplay power, if relevant
                                     source.OpposingPower = Power.FromEDName( JsonParsing.getString( data, "OpposingPower" ) ); // the opposing Powerplay power, if relevant
 
@@ -2462,7 +2462,7 @@ namespace EddiJournalMonitor
 
                                     var name = JsonParsing.getString(data, "Name");
                                     var crewid = JsonParsing.getLong(data, "CrewID");
-                                    var role = getRole(data, "Role");
+                                    var role = EventParsing.ParseCrewRole(data, "Role");
                                     events.Add(new CrewAssignedEvent(timestamp, name, crewid, role) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2479,7 +2479,7 @@ namespace EddiJournalMonitor
                                 {
                                     var name = JsonParsing.getString(data, "Name");
                                     var crewid = JsonParsing.getLong(data, "CrewID");
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
                                     var price = JsonParsing.getLong(data, "Cost");
                                     var rating = CombatRating.FromRank(JsonParsing.getInt(data, "CombatRank"));
                                     events.Add(new CrewHiredEvent(timestamp, name, crewid, faction, price, rating) { raw = line, fromLoad = fromLogLoad });
@@ -2587,7 +2587,7 @@ namespace EddiJournalMonitor
                                         var engineers = (List<object>)val;
                                         foreach (var engineerData in engineers.Cast<IDictionary<string, object>>())
                                         {
-                                            var engineer = parseEngineer(engineerData);
+                                            var engineer = EventParsing.ParseEngineer(engineerData);
                                             if (!string.IsNullOrEmpty(engineer.name))
                                             {
                                                 Engineer.AddOrUpdate(engineer);
@@ -2599,7 +2599,7 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // This is a progress entry.
-                                        var engineer = parseEngineer(data);
+                                        var engineer = EventParsing.ParseEngineer(data);
                                         var lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id).Copy();
                                         Engineer.AddOrUpdate(engineer);
                                         if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
@@ -2757,7 +2757,7 @@ namespace EddiJournalMonitor
                                     {
                                         localisedname = Regex.Replace(localisedname, @"<.*?>", ""); // Mission localized names may have embedded HTML tags. If so then remove them.
                                     }
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
                                     var reward = JsonParsing.getOptionalInt(data, "Reward");
                                     var wing = JsonParsing.getBool(data, "Wing");
 
@@ -2801,7 +2801,7 @@ namespace EddiJournalMonitor
                                         // Missions with targets
                                         var target = JsonParsing.getString(data, "Target");
                                         var targettype = JsonParsing.getString(data, "TargetType");
-                                        var targetfaction = GetFactionName(data, "TargetFaction");
+                                        var targetfaction = EventParsing.GetFactionName(data, "TargetFaction");
                                         data.TryGetValue("KillCount", out val);
                                         if (val != null)
                                         {
@@ -2907,7 +2907,7 @@ namespace EddiJournalMonitor
                                     var name = JsonParsing.getString(data, "Name");
                                     var reward = JsonParsing.getOptionalLong( data, "Reward" ) ?? 0;
                                     var donation = JsonParsing.getOptionalLong(data, "Donated") ?? 0;
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
 
                                     // Missions with commodities (which may include on-foot micro-resources)
                                     var c = JsonParsing.getString(data, "Commodity");
@@ -3222,7 +3222,7 @@ namespace EddiJournalMonitor
                                     var amount = (long)val;
                                     var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     var allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
                                     int shipId;
                                     var shipIdLong = JsonParsing.getLong(data, "ShipID");
                                     if (shipIdLong > 4293000000)
@@ -3245,7 +3245,7 @@ namespace EddiJournalMonitor
                                     var amount = (long)val;
                                     var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     var allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
                                     var shipId = 0;
                                     var shipIdLong = JsonParsing.getLong(data, "ShipID");
                                     if (shipIdLong >= 4293000000)
@@ -3274,7 +3274,7 @@ namespace EddiJournalMonitor
                                     {
                                         foreach (var rewardData in factionsData.Cast<IDictionary<string, object>>())
                                         {
-                                            var factionName = GetFactionName(rewardData, "Faction");
+                                            var factionName = EventParsing.GetFactionName(rewardData, "Faction");
                                             rewardData.TryGetValue("Amount", out val);
                                             var factionReward = (long)val;
 
@@ -3283,7 +3283,7 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        var factionName = GetFactionName(data, "Faction");
+                                        var factionName = EventParsing.GetFactionName(data, "Faction");
                                         data.TryGetValue("Amount", out val);
                                         var factionReward = (long)val;
 
@@ -3722,7 +3722,7 @@ namespace EddiJournalMonitor
                                                 {
                                                     if ( res is IDictionary<string, object> microVal )
                                                     {
-                                                        var microResource = GetMicroResource( microVal );
+                                                        var microResource = EventParsing.GetMicroResource( microVal );
                                                         var amount = JsonParsing.getInt(microVal, "Count");
                                                         if ( microResource != null )
                                                         {
@@ -3833,7 +3833,7 @@ namespace EddiJournalMonitor
                                                 {
                                                     if ( res is IDictionary<string, object> microVal )
                                                     {
-                                                        var microResource = GetMicroResource( microVal );
+                                                        var microResource = EventParsing.GetMicroResource( microVal );
                                                         var amount = JsonParsing.getInt(microVal, "Count");
                                                         if ( microResource != null )
                                                         {
@@ -3993,7 +3993,6 @@ namespace EddiJournalMonitor
                                         Economy.FromEDName( JsonParsing.getString( data, "SystemEconomy" ) );
                                     var systemEconomy2 =
                                         Economy.FromEDName( JsonParsing.getString( data, "SystemSecondEconomy" ) );
-                                    var systemfaction = GetFaction( data, "System", systemName, systemAddress );
                                     var systemSecurity =
                                         SecurityLevel.FromEDName( JsonParsing.getString( data, "SystemSecurity" ) );
                                     systemSecurity.fallbackLocalizedName =
@@ -4019,7 +4018,6 @@ namespace EddiJournalMonitor
                                     var carrierName = JsonParsing.getString( data, "StationName" );
                                     var carrierType =
                                         StationModel.FromEDName( JsonParsing.getString( data, "StationType" ) );
-                                    var stationFaction = GetFaction( data, "Station", systemName, systemAddress );
 
                                     // Get carrier services data (may not be present when on-foot at a fleet carrier but not docked)
                                     var stationServices = new List<StationService>();
@@ -4057,26 +4055,28 @@ namespace EddiJournalMonitor
                                     data.TryGetValue( "Factions", out var factionsVal );
                                     if ( factionsVal != null )
                                     {
-                                        factions = GetFactions( factionsVal, systemName, systemAddress );
+                                        factions = EventParsing.GetFactions( factionsVal, systemName, systemAddress );
                                     }
+                                    var systemfaction = EventParsing.GetFaction( data, "System", systemName, systemAddress, factions );
+                                    var stationFaction = EventParsing.GetFaction( data, "Station", systemName, systemAddress, factions );
 
                                     // Parse conflicts array data
                                     var conflicts = new List<Conflict>();
                                     data.TryGetValue( "Conflicts", out var conflictsVal );
                                     if ( conflictsVal != null )
                                     {
-                                        conflicts = GetConflicts( conflictsVal, factions );
+                                        conflicts = EventParsing.GetConflicts( conflictsVal, factions );
                                     }
 
                                     // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out var controllingPower,
+                                    EventParsing.GetPowerplayData( data, systemAddress, out var controllingPower,
                                         out var powersInAcquisitionRange, out var powerplayState,
                                         out var powerAcquisitionProgress,
                                         out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
                                         out var powerplayUnderminingControlPoints );
 
                                     // Thargoid war data (if any)
-                                    GetThargoidWarData( data, out var thargoidWar );
+                                    EventParsing.GetThargoidWarData( data, out var thargoidWar );
 
                                     var docked = JsonParsing.getBool( data, "Docked" );
                                     var onFoot = JsonParsing.getOptionalBool( data, "OnFoot" ) ?? false;
@@ -4361,7 +4361,7 @@ namespace EddiJournalMonitor
                                                 {
                                                     if ( res is IDictionary<string, object> microVal )
                                                     {
-                                                        var microResource = GetMicroResource( microVal );
+                                                        var microResource = EventParsing.GetMicroResource( microVal );
                                                         var amount = JsonParsing.getInt(microVal, "Count");
                                                         if ( microResource != null )
                                                         {
@@ -4375,7 +4375,7 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        var microResource = GetMicroResource( data );
+                                        var microResource = EventParsing.GetMicroResource( data );
                                         var amount = JsonParsing.getInt( data, "Count" );
                                         var price = JsonParsing.getInt(data, "Price"); // Total price
                                         var resourceAmounts = new List<MicroResourceAmount> { new MicroResourceAmount( microResource, amount ) };
@@ -4554,7 +4554,7 @@ namespace EddiJournalMonitor
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                    var controllingFaction = GetFaction(data, "Station", EDDI.Instance.CurrentStarSystem?.systemname, systemAddress);
+                                    var controllingFaction = EventParsing.GetFaction(data, "Station", EDDI.Instance.CurrentStarSystem?.systemname, systemAddress, EDDI.Instance.CurrentStarSystem?.factions);
 
                                     // Get station services data
                                     var stationServices = new List<StationService>();
@@ -4645,7 +4645,7 @@ namespace EddiJournalMonitor
                                 {
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                    var role = getRole(data, "Role");
+                                    var role = EventParsing.ParseCrewRole(data, "Role");
                                     var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewRoleChangedEvent(timestamp, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -4663,7 +4663,7 @@ namespace EddiJournalMonitor
                                 {
                                     object val;
                                     var crimetype = JsonParsing.getString(data, "CrimeType");
-                                    var faction = GetFactionName(data, "Faction");
+                                    var faction = EventParsing.GetFactionName(data, "Faction");
                                     var victim = JsonParsing.getString(data, "Victim");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Victim_Localised")))
@@ -4717,7 +4717,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var name = JsonParsing.getString(data, "Crew");
-                                    var role = getRole(data, "Role");
+                                    var role = EventParsing.ParseCrewRole(data, "Role");
                                     var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -4747,8 +4747,8 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("Reward", out var val);
                                     var reward = (long)val;
-                                    var victimFaction = GetFactionName(data, "VictimFaction");
-                                    var payeeFaction = GetFactionName(data, "PayeeFaction");
+                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
+                                    var payeeFaction = EventParsing.GetFactionName(data, "PayeeFaction");
                                     events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -5473,490 +5473,6 @@ namespace EddiJournalMonitor
             return events;
         }
 
-        private static void GetStationNameAndType(IDictionary<string, object> data, out string stationName, out string stationLocalizedName,
-            out StationModel stationModel)
-        {
-            stationName = JsonParsing.getString(data, "StationName");
-            stationLocalizedName = JsonParsing.getString(data, "StationName_Localised");
-
-            // Normalize Powerplay Stronghold Carrier names
-            stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
-
-            // Fix known incorrectly reported StationType values.
-            string stationTypeEdName;
-            if ( stationName == "Stronghold Carrier" || stationName.StartsWith( "$EXT_PANEL_ColonisationShip" ) )
-            {
-                stationTypeEdName = StationModel.Megaship.edname;
-            }
-            else
-            {
-                stationTypeEdName = JsonParsing.getString( data, "StationType" );
-            }
-
-            stationModel = StationModel.FromEDName(stationTypeEdName) ?? StationModel.None;
-        }
-
-        private static StationLandingPads GetLandingPads (IDictionary<string, object> data)
-        {
-            var landingPads = new StationLandingPads();
-            if ( data.TryGetValue( "LandingPads", out var landingPadsObj ) && landingPadsObj is Dictionary<string, object> landingPadsDict )
-            {
-                if ( landingPadsDict.TryGetValue( "Small", out var smallPads ) )
-                {
-                    landingPads.Small = Convert.ToInt32( smallPads );
-                }
-                if ( landingPadsDict.TryGetValue( "Medium", out var mediumPads ) )
-                {
-                    landingPads.Medium = Convert.ToInt32( mediumPads );
-                }
-                if ( landingPadsDict.TryGetValue( "Large", out var largePads ) )
-                {
-                    landingPads.Large = Convert.ToInt32( largePads );
-                }
-            }
-            return landingPads;
-        }
-
-        private static void GetThargoidWarData ( IDictionary<string, object> data, out ThargoidWar thargoidWar )
-        {
-            thargoidWar = null;
-
-            if ( data.TryGetValue( "ThargoidWar", out object thargoidWarObj ) &&
-                 thargoidWarObj is IDictionary<string, object> thargoidWarData )
-            {
-                try
-                {
-                    var currentState = JsonParsing.getString( thargoidWarData, "CurrentState" );
-                    if ( string.IsNullOrEmpty( currentState ) )
-                    {
-                        return; 
-                    }
-                    var successState = JsonParsing.getString( thargoidWarData, "NextStateSuccess" );
-                    var failureState = JsonParsing.getString( thargoidWarData, "NextStateFailure" );
-
-                    thargoidWar = new ThargoidWar()
-                    {
-                        CurrentState = FactionState.FromEDName( currentState ) ?? FactionState.None,
-                        SuccessState = FactionState.FromEDName( successState ) ?? FactionState.None,
-                        FailureState = FactionState.FromEDName( failureState ) ?? FactionState.None,
-                        succeeded = JsonParsing.getBool( thargoidWarData, "SuccessStateReached" ),
-                        progress =
-                            Math.Min( JsonParsing.getDecimal( thargoidWarData, "WarProgress" ), 1 ) *
-                            100, // Multiply by 100 to convert from 0-1 scale to percentage, don't report values greater than 100%
-                    };
-                    
-                    // Remaining days is not always present
-                    var remainingDaysString = JsonParsing.getString( thargoidWarData, "EstimatedRemainingTime" );
-                    if ( !string.IsNullOrEmpty(remainingDaysString) )
-                    {
-                        thargoidWar.remainingDays = Convert.ToInt32( remainingDaysString
-                            .Replace( " Days", "" )
-                            .Replace( " Day", "" ) );
-                    }
-
-                    thargoidWar.remainingPorts = ( thargoidWar.CurrentState == FactionState.ThargoidProbing ||
-                                                   thargoidWar.CurrentState == FactionState.ThargoidRecovery )
-                        ? null
-                        : JsonParsing.getOptionalInt( thargoidWarData, "RemainingPorts" );
-                }
-                catch ( Exception e )
-                {
-                    Logging.Error(
-                        $"Failed to parse Thargoid war data: {JsonConvert.SerializeObject( thargoidWarData )}", e );
-                }
-            }
-        }
-
-        private static void GetPowerplayData ( IDictionary<string, object> data, ulong systemAddress, 
-            out Power controllingPower, out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState, 
-            out List<PowerAcquisitionProgress> powerAcquisitionProgress, out decimal controlProgress, out int reinforcementControlPoints, out int underminingControlPoints )
-        {
-            controllingPower = Power.FromEDName( JsonParsing.getString( data, "ControllingPower" ) );
-
-            // This is a list of all powers within range to acquire this star system
-            powersInAcquisitionRange = new List<Power>();
-            data.TryGetValue( "Powers", out object powersVal );
-            if ( powersVal is List<object> powerNames )
-            {
-                foreach ( var powerName in powerNames )
-                {
-                    powersInAcquisitionRange.Add( Power.FromEDName( (string)powerName ) );
-                }
-            }
-
-            // While the system is not controlled by any power there is a `PowerplayConflictProgress` key which measures the progress of each power towards control of that star system
-            powerAcquisitionProgress = new List<PowerAcquisitionProgress>();
-            if ( data.TryGetValue( "PowerplayConflictProgress", out var conflictProgressData ) && 
-                 conflictProgressData is Dictionary<string, decimal> conflictProgress )
-            {
-                foreach ( var kvp in conflictProgress )
-                {
-                    // Convert percent progress values from a 0-1 scale to 0-100.
-                    // Values over 100% are permitted and indicate that the power has exceeded the threshold to take control of the system.
-                    powerAcquisitionProgress.Add( new PowerAcquisitionProgress( kvp.Key, kvp.Value * 100 ) );
-                }
-            }
-            powerAcquisitionProgress = powerAcquisitionProgress
-                .OrderByDescending( p => p.progress )
-                .ToList();
-
-            powerplayState = PowerplayState.FromEDName( JsonParsing.getString( data, "PowerplayState" ) );
-
-            // There is a special 'Contested' powerplay state which applies when more than one power has achieved at least 30% progress towards control
-            if ( powerplayState == PowerplayState.Unoccupied && powerAcquisitionProgress.Count( p => p.progress >= 30 ) > 1 )
-            {
-                powerplayState = PowerplayState.Contested;
-            }
-
-            // There is a special 'Headquarters' powerplay state which applies to the power's headquarters system. This system cannot be undermined.
-            if ( powerplayState == PowerplayState.Stronghold && systemAddress == controllingPower?.hqSystemAddress )
-            {
-                powerplayState = PowerplayState.Headquarters;
-            }
-
-            // While the system is controlled by a power there is a `PowerplayStateControlProgress` key which measures progress towards or away from control of that star system
-            controlProgress = JsonParsing.getOptionalDecimal( data, "PowerplayStateControlProgress" ) ?? 0;
-            // Control progress seems to be affected by an overflow error which needs correction.
-            if ( controlProgress > 4000 )
-            {
-                // Negative values indicate a reduction to the next lowest level of control of the system at the end of the cycle.
-                // Positive values over 100% indicate an increase to the level of control of the system at the end of the cycle.
-                var scale = 120000;
-                if ( powerplayState == PowerplayState.Exploited )
-                {
-                    scale = 350000;
-                }
-                else if ( powerplayState == PowerplayState.Fortified )
-                {
-                    scale = 650000;
-                }
-                else if ( powerplayState == PowerplayState.Stronghold )
-                {
-                    scale = 1000000;
-                }
-                controlProgress -= ( (decimal)uint.MaxValue + 1 ) / scale;
-            }
-            // Convert percent progress values from a 0-1 scale to 0-100.
-            controlProgress *= 100;
-
-            // While the system is controlled by a power there are `PowerplayStateReinforcement` and `PowerplayStateUndermining` keys which record control points contributed by agents either reinforcing or undermining system control in the current cycle.
-            reinforcementControlPoints = JsonParsing.getOptionalInt( data, "PowerplayStateReinforcement" ) ?? 0;
-            underminingControlPoints = JsonParsing.getOptionalInt( data, "PowerplayStateUndermining" ) ?? 0;
-        }
-
-        private static Superpower GetAllegiance(IDictionary<string, object> data, string key)
-        {
-            data.TryGetValue(key, out object val);
-            // FD may send "" rather than null;
-            return Superpower.FromNameOrEdName(Convert.ToString(val));
-        }
-
-        private static List<Conflict> GetConflicts(object conflictsVal, List<Faction> factions)
-        {
-            if (conflictsVal is null || factions is null) { return null; }
-
-            List<Conflict> conflicts = new List<Conflict>();
-            if ( conflictsVal is List<object> conflictsList )
-            {
-                foreach ( var conflictDetail in conflictsList.Cast<IDictionary<string, object>>() )
-                {
-                    FactionState conflictType =
-                        FactionState.FromEDName( JsonParsing.getString( conflictDetail, "WarType" ) ) ??
-                        FactionState.None;
-                    string status = JsonParsing.getString( conflictDetail, "Status" );
-
-                    // Faction 1
-                    conflictDetail.TryGetValue( "Faction1", out object faction1Val );
-                    Dictionary<string, object> faction1Detail = (Dictionary<string, object>)faction1Val;
-                    string faction1Name = JsonParsing.getString( faction1Detail, "Name" );
-                    Faction faction1 = factions.Find( f => f.name == faction1Name );
-                    string faction1Stake = JsonParsing.getString( faction1Detail, "Stake" );
-                    int faction1DaysWon = JsonParsing.getInt( faction1Detail, "WonDays" );
-
-                    // Faction 2
-                    conflictDetail.TryGetValue( "Faction2", out object faction2Val );
-                    Dictionary<string, object> faction2Detail = (Dictionary<string, object>)faction2Val;
-                    string faction2Name = JsonParsing.getString( faction2Detail, "Name" );
-                    Faction faction2 = factions.Find( f => f.name == faction2Name );
-                    string faction2Stake = JsonParsing.getString( faction2Detail, "Stake" );
-                    int faction2DaysWon = JsonParsing.getInt( faction2Detail, "WonDays" );
-
-                    conflicts.Add( new Conflict( conflictType, status, faction1, faction1Stake, faction1DaysWon,
-                        faction2, faction2Stake, faction2DaysWon ) );
-                }
-            }
-
-            return conflicts;
-        }
-
-        private static string GetFactionName(IDictionary<string, object> data, string key)
-        {
-            string faction = JsonParsing.getString(data, key);
-            // Might be a superpower...
-            Superpower superpowerFaction = Superpower.FromNameOrEdName(faction);
-            return superpowerFaction?.invariantName ?? faction;
-        }
-
-        private static Faction GetFaction(IDictionary<string, object> data, string type, string systemName, ulong systemAddress)
-        {
-            Faction faction = null;
-
-            // Get the faction name and state
-            if (data.TryGetValue(type + "Faction", out object factionVal))
-            {
-                var factionName = string.Empty;
-                var factionState = FactionState.None;
-
-                if ( factionVal is Dictionary<string, object> factionData) // 3.3.03 or later journal
-                {
-                    factionName = JsonParsing.getString( factionData, "Name" );
-                    factionState = FactionState.FromEDName( JsonParsing.getString( factionData, "FactionState" ) ) ??
-                                   FactionState.None;
-                }
-                else if (factionVal is string s) // per-3.3.03 journal
-                {
-                    factionName = s;
-                }
-
-                if ( string.IsNullOrEmpty(factionName) )
-                {
-                    throw new ArgumentException( "Faction information could not be parsed" );
-                }
-
-                faction = EDDI.Instance.CurrentStarSystem?.factions.FirstOrDefault( f => f.name == factionName ) ??
-                          new Faction { name = factionName };
-
-                // Get the faction information specific to the star system
-                var factionPresense = faction.presences.FirstOrDefault( p => p.systemAddress == systemAddress );
-                if ( factionPresense is null && systemAddress > 0 )
-                {
-                    factionPresense = new FactionPresence()
-                    {
-                        systemName = systemName,
-                        systemAddress = systemAddress,
-                        FactionState = factionState
-                    };
-                    faction.presences.Add( factionPresense );
-                }
-
-                // Get the controlling faction (system or station) government
-                if ( data.TryGetValue( type + "Government", out _ ) )
-                {
-                    faction.Government = Government.FromEDName( JsonParsing.getString( data, type + "Government" ) ) ?? Government.None;
-                }
-
-                // Get the controlling faction (system or station) allegiance
-                if ( data.TryGetValue( type + "Allegiance", out _ ) )
-                {
-                    faction.Allegiance = GetAllegiance( data, type + "Allegiance" );
-                }
-                else if ( data.TryGetValue( "Factions", out var val ) && val is List<object> factionsList )
-                {
-                    // Station controlling faction government is not directly available in 'Location' event
-                    // so we have to find and match the faction name through the factions list.
-                    foreach ( var factionDetail in factionsList.Cast<IDictionary<string, object>>() )
-                    {
-                        var fName = JsonParsing.getString( factionDetail, "Name" );
-                        if ( fName == faction.name )
-                        {
-                            faction.Allegiance = GetAllegiance( factionDetail, "Allegiance" );
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // Since systems can have Guardian or Thargoid allegiance, treat these like factions for the purpose of
-            // allegiance and government (even when no human faction exists).
-            if ( data.TryGetValue( type + "Allegiance", out var allegianceVal ) )
-            {
-                if ( allegianceVal is string allegiance )
-                {
-                    if ( allegiance.Equals( Superpower.Thargoid.invariantName ) )
-                    {
-                        faction = new Faction
-                        {
-                            name = Superpower.Thargoid.localizedName,
-                            Allegiance = Superpower.Thargoid,
-                            Government = Government.None
-                        };
-                    }
-                    else if ( allegiance.Equals( Superpower.Guardian.invariantName ) )
-                    {
-                        faction = new Faction
-                        {
-                            name = Superpower.Guardian.localizedName,
-                            Allegiance = Superpower.Guardian,
-                            Government = Government.None
-                        };
-                    }
-                }
-            }
-
-            return faction;
-        }
-
-        private static List<Faction> GetFactions(object factionsVal, string systemName, ulong systemAddress)
-        {
-            List<Faction> factions = new List<Faction>();
-            if ( factionsVal is List<object> factionsList )
-            {
-                foreach ( var factionDetail in factionsList.Cast<IDictionary<string, object>>() )
-                {
-                    // Core data
-                    string fName = JsonParsing.getString( factionDetail, "Name" );
-                    FactionState fState =
-                        FactionState.FromEDName( JsonParsing.getString( factionDetail, "FactionState" ) ) ??
-                        FactionState.None;
-                    Government fGov =
-                        Government.FromEDName( JsonParsing.getString( factionDetail, "SystemGovernment" ) ) ??
-                        Government.None;
-                    decimal influence =
-                        JsonParsing.getDecimal( factionDetail, "Influence" ) * 100; // Convert from a 0-1 scale to 0-100
-                    Superpower fAllegiance = GetAllegiance( factionDetail, "Allegiance" );
-                    Happiness happiness =
-                        Happiness.FromEDName( JsonParsing.getString( factionDetail, "Happiness" ) ?? string.Empty );
-                    decimal myReputation = JsonParsing.getOptionalDecimal( factionDetail, "MyReputation" ) ?? 0;
-
-                    Faction fFaction = new Faction()
-                    {
-                        name = fName, Government = fGov, Allegiance = fAllegiance, myreputation = myReputation
-                    };
-
-                    FactionPresence factionPresense = new FactionPresence()
-                    {
-                        systemName = systemName, systemAddress = systemAddress, FactionState = fState, influence = influence, Happiness = happiness,
-                    };
-
-                    // Active states
-                    factionDetail.TryGetValue( "ActiveStates", out object activeStatesVal );
-                    if ( activeStatesVal != null )
-                    {
-                        var activeStatesList = (List<object>)activeStatesVal;
-                        foreach ( var activeState in activeStatesList.Cast<IDictionary<string, object>>() )
-                        {
-                            factionPresense.ActiveStates.Add(
-                                FactionState.FromEDName( JsonParsing.getString( activeState, "State" ) ) ??
-                                FactionState.None );
-                        }
-                    }
-
-                    // Pending states
-                    factionDetail.TryGetValue( "PendingStates", out object pendingStatesVal );
-                    if ( pendingStatesVal != null )
-                    {
-                        var pendingStatesList = (List<object>)pendingStatesVal;
-                        foreach ( var pendingState in pendingStatesList.Cast<IDictionary<string, object>>() )
-                        {
-                            FactionTrendingState pTrendingState = new FactionTrendingState(
-                                FactionState.FromEDName( JsonParsing.getString( pendingState, "State" ) ) ??
-                                FactionState.None,
-                                JsonParsing.getOptionalInt( pendingState, "Trend" )
-                            );
-                            factionPresense.PendingStates.Add( pTrendingState );
-                        }
-                    }
-
-                    // Recovering states
-                    factionDetail.TryGetValue( "RecoveringStates", out object recoveringStatesVal );
-                    if ( recoveringStatesVal != null )
-                    {
-                        var recoveringStatesList = (List<object>)recoveringStatesVal;
-                        foreach ( var recoveringState in recoveringStatesList.Cast<IDictionary<string, object>>() )
-                        {
-                            FactionTrendingState rTrendingState = new FactionTrendingState(
-                                FactionState.FromEDName( JsonParsing.getString( recoveringState, "State" ) ) ??
-                                FactionState.None,
-                                JsonParsing.getOptionalInt( recoveringState, "Trend" )
-                            );
-                            factionPresense.RecoveringStates.Add( rTrendingState );
-                        }
-                    }
-
-                    // Squadron data
-                    fFaction.squadronfaction = JsonParsing.getOptionalBool( factionDetail, "SquadronFaction" ) ?? false;
-                    factionPresense.squadronhappiestsystem =
-                        JsonParsing.getOptionalBool( factionDetail, "HappiestSystem" ) ?? false;
-                    factionPresense.squadronhomesystem =
-                        JsonParsing.getOptionalBool( factionDetail, "HomeSystem" ) ?? false;
-
-                    fFaction.presences.Add( factionPresense );
-                    factions.Add( fFaction );
-                }
-            }
-
-            return factions;
-        }
-
-        private static SignalSource GetSignalSourceName(IDictionary<string, object> data)
-        {
-            var signalTypeEdName = JsonParsing.getString( data, "SignalType" );
-
-            // The source may be a direct source or a USS. If a USS, we want the USS type.
-            
-            SignalSource source;
-            if ( JsonParsing.getString(data, "USSType") != null)
-            {
-                var signalSource = JsonParsing.getString(data, "USSType");
-                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                var localizedName = JsonParsing.getString(data, "USSType_Localised");
-                if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                {
-                    source.fallbackLocalizedName = localizedName;
-                }
-            }
-            else
-            {
-                var signalSource = JsonParsing.getString(data, "SignalName");
-                var isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
-                if (isStation)
-                {
-                    source = SignalSource.FromStationEDName(signalSource, signalTypeEdName);
-                }
-                else
-                {
-                    source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                    {
-                        source.fallbackLocalizedName = localizedName;
-                    }
-                }
-                source.isStation = isStation;
-            }
-
-            source.signalType = signalTypeEdName is null ? null : SignalType.FromEDName( signalTypeEdName );
-            
-            return source;
-        }
-
-        private static MicroResource GetMicroResource ( IDictionary<string, object> resourceData )
-        {
-            var edname = JsonParsing.getString(resourceData, "Name");
-            var microResource = MicroResource.FromEDName(edname);
-            if ( microResource is null )
-            { return null; }
-
-            var fallbackName = JsonParsing.getString(resourceData, "Name_Localised");
-            microResource.fallbackLocalizedName = fallbackName;
-
-            var category = JsonParsing.getString(resourceData, "Category");
-            var fallbackCategoryName = JsonParsing.getString(resourceData, "Category_Localised");
-            if ( microResource.Category is null )
-            { microResource.Category = MicroResourceCategory.FromEDName( category ); }
-            if ( microResource.Category != null )
-            {
-                microResource.Category.fallbackLocalizedName = fallbackCategoryName;
-            }
-            return microResource;
-        }
-
-        // Be sensible with health - round it unless it's very low
-        private static decimal sensibleHealth(decimal health)
-        {
-            return (health < 10 ? Math.Round(health, 1) : Math.Round(health));
-        }
-
         public string MonitorName()
         {
             return "Journal monitor";
@@ -6029,66 +5545,11 @@ namespace EddiJournalMonitor
         { }
 
         public void HandleStatus ( Status status )
-        {
-        }
+        { }
 
         public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             return null;
-        }
-
-        private static string getRole(IDictionary<string, object> data, string key)
-        {
-            string role = JsonParsing.getString(data, key);
-            if (role == "FireCon")
-            {
-                role = "Gunner";
-            }
-            else if (role == "FighterCon")
-            {
-                role = "Fighter";
-            }
-            return role;
-        }
-
-        private static Engineer parseEngineer(IDictionary<string, object> data)
-        {
-            string engineer = JsonParsing.getString(data, "Engineer");
-            long engineerId = JsonParsing.getLong(data, "EngineerID");
-            data.TryGetValue("Rank", out object rankVal);
-            int? rank = (int?)(long?)rankVal;
-            data.TryGetValue("RankProgress", out object rankProgressVal);
-            int? rankProgress = (int?)(long?)rankProgressVal;
-            string stage = JsonParsing.getString(data, "Progress");
-            return new Engineer(engineer, engineerId, stage, rankProgress, rank);
-        }
-
-        private static Compartment parseShipCompartment(string shipEDName, string slot)
-        {
-            Compartment compartment = new Compartment() { name = slot };
-
-            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-            if (slot.Contains("Slot"))
-            {
-                Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
-                if (matches.Success)
-                {
-                    compartment.size = Int32.Parse(matches.Groups[1].Value);
-                }
-            }
-            else if (slot.Contains("Military"))
-            {
-                var slotSize = ShipDefinitions.FromEDModel(shipEDName, false)?.militarysize;
-                if (slotSize is null)
-                {
-                    // We didn't expect to have a military slot on this ship.
-                    var data = new Dictionary<string, object>() { { "ShipEDName", shipEDName }, { "Slot", slot }, { "Exception", new ArgumentException() } };
-                    Logging.Error($"Unexpected military slot found in ship edName {shipEDName}.", data);
-                    return compartment;
-                }
-                compartment.size = (int)slotSize;
-            }
-            return compartment;
         }
     }
 }
