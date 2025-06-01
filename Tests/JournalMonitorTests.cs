@@ -1871,7 +1871,8 @@ namespace Tests
             var events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
             var @event = (DiedEvent)events[0];
-            Assert.AreEqual(expected, JsonConvert.SerializeObject(@event));
+            var actual = JsonConvert.SerializeObject( @event );
+            Assert.AreEqual(expected, actual);
         }
 
         [DataTestMethod]
