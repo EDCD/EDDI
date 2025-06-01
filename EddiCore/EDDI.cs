@@ -894,13 +894,13 @@ namespace EddiCore
             }
         }
 
-        private void dequeueEvents()
+        private async Task dequeueEvents()
         {
             try
             {
                 foreach (var @event in eventQueue.GetConsumingEnumerable(eventHandlerTS.Token))
                 {
-                    eventHandler(@event);
+                    await eventHandler( @event );
                 }
             }
             catch (OperationCanceledException)
@@ -910,9 +910,10 @@ namespace EddiCore
             }
         }
 
-        internal void eventHandler(Event @event)
+        internal async Task eventHandler( Event @event )
         {
             if (@event != null)
+            if ( @event != null )
             {
                 // Event handling is disabled when running a legacy game version.
                 if ( GameVersion != null && GameVersion < minGameVersion && !( @event is FileHeaderEvent ) ) { return; }
@@ -920,6 +921,7 @@ namespace EddiCore
                 try
                 {
                     Logging.Debug("Handling event: ", @event);
+
                     // We have some additional processing to do for a number of events
                     var passEvent = true;
                     if (@event is FileHeaderEvent fileHeaderEvent)
@@ -1078,7 +1080,7 @@ namespace EddiCore
                     // Additional processing is over, send to the event monitors and responders if required
                     if (passEvent)
                     {
-                        OnEvent(@event);
+                        await OnEvent( @event );
                     }
 
                     lastEventOfType[ @event.type ] = @event;
@@ -1098,7 +1100,8 @@ namespace EddiCore
 
         internal bool eventSignalDetected ( SignalDetectedEvent @event )
         {
-            if ( Instance.CurrentStarSystem != null && Instance.CurrentStarSystem.systemAddress == @event.systemAddress )
+            if ( Instance.CurrentStarSystem != null &&
+                 Instance.CurrentStarSystem.systemAddress == @event.systemAddress )
             {
                 @event.unique = !Instance.CurrentStarSystem.signalsources.Contains( @event.signalSource.localizedName );
                 Instance.CurrentStarSystem.AddOrUpdateSignalSource( @event.signalSource );
@@ -1487,7 +1490,7 @@ namespace EddiCore
             return passEvent;
         }
 
-        private async void OnEvent(Event @event)
+        private async Task OnEvent ( Event @event )
         {
             try
             {
@@ -1502,7 +1505,7 @@ namespace EddiCore
                 // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
                 await passToMonitorPostHandlersAsync(@event);
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
                 Logging.Error( "Failed to pass event to all monitors and responders", ex );
             }
@@ -1511,6 +1514,7 @@ namespace EddiCore
         private void passToMonitorPreHandlers(Event @event)
         {
             foreach (IEddiMonitor monitor in activeMonitors)
+            foreach ( var monitor in activeMonitors)
             {
                 try
                 {
@@ -1526,7 +1530,7 @@ namespace EddiCore
         private async Task passToRespondersAsync(Event @event)
         {
             var responderTasks = new List<Task>();
-            foreach (IEddiResponder responder in activeResponders)
+            foreach (var responder in activeResponders)
             {
                 var responderTask = Task.Run(() =>
                 {
@@ -1547,7 +1551,7 @@ namespace EddiCore
         private async Task passToMonitorPostHandlersAsync(Event @event)
         {
             var monitorTasks = new List<Task>();
-            foreach (IEddiMonitor monitor in activeMonitors)
+            foreach (var monitor in activeMonitors)
             {
                 var monitorTask = Task.Run(() =>
                 {
