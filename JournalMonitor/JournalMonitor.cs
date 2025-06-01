@@ -420,7 +420,7 @@ namespace EddiJournalMonitor
                                             else
                                             {
                                                 // This is a compartment
-                                                var compartment = EventParsing.ParseShipCompartment(ship, slot);
+                                                var compartment = EventParsing.ShipCompartment(ship, slot);
                                                 // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
 
                                                 var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
@@ -922,13 +922,13 @@ namespace EddiJournalMonitor
                                     var systemName = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    EventParsing.GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationModel);
+                                    EventParsing.StationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationModel);
 
-                                    var controllingfaction = EventParsing.GetFaction(data, "Station", systemName, systemAddress, EDDI.Instance.CurrentStarSystem?.factions);
+                                    var controllingfaction = EventParsing.Faction(data, "Station", systemName, systemAddress, EDDI.Instance.CurrentStarSystem?.factions);
                                     var distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                     // Get station landing pads data
-                                    var landingPads = EventParsing.GetLandingPads(data);
+                                    var landingPads = EventParsing.LandingPadsCollection(data);
 
                                     // Get station services data
                                     data.TryGetValue("StationServices", out var val);
@@ -988,7 +988,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     events.Add(new DockingCancelledEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -998,7 +998,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     var reason = JsonParsing.getString(data, "Reason");
                                     events.Add(new DockingDeniedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, reason) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -1009,7 +1009,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     data.TryGetValue("LandingPad", out var val);
                                     var landingPad = (int)(long)val;
                                     events.Add(new DockingGrantedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPad) { raw = line, fromLoad = fromLogLoad });
@@ -1021,10 +1021,10 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var marketId = JsonParsing.getLong(data, "MarketID");
-                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
 
                                     // Get station landing pads data
-                                    var landingPads = EventParsing.GetLandingPads(data);
+                                    var landingPads = EventParsing.LandingPadsCollection(data);
 
                                     events.Add(new DockingRequestedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPads) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -1034,7 +1034,7 @@ namespace EddiJournalMonitor
                                 {
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                    EventParsing.GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
                                     events.Add(new DockingTimedOutEvent(timestamp, stationLocalizedName ?? stationName, stationType) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -1063,27 +1063,27 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Factions", out var factionsVal);
                                     if (factionsVal != null)
                                     {
-                                        factions = EventParsing.GetFactions(factionsVal, systemName, systemAddress);
+                                        factions = EventParsing.Factions(factionsVal, systemName, systemAddress);
                                     }
-                                    var controllingfaction = EventParsing.GetFaction(data, "System", systemName, systemAddress, factions);
+                                    var controllingfaction = EventParsing.Faction(data, "System", systemName, systemAddress, factions);
 
                                     // Parse conflicts array data
                                     var conflicts = new List<Conflict>();
                                     data.TryGetValue("Conflicts", out var conflictsVal);
                                     if (conflictsVal != null)
                                     {
-                                        conflicts = EventParsing.GetConflicts(conflictsVal, factions);
+                                        conflicts = EventParsing.FactionConflicts(conflictsVal, factions);
                                     }
 
                                     // Powerplay data (if pledged)
-                                    EventParsing.GetPowerplayData( data, systemAddress, out var controllingPower,
+                                    EventParsing.PowerplayDetails( data, systemAddress, out var controllingPower,
                                         out var powersInAcquisitionRange, out var powerplayState,
                                         out var powerAcquisitionProgress,
                                         out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
                                         out var powerplayUnderminingControlPoints );
 
                                     // Thargoid war data (if any)
-                                    EventParsing.GetThargoidWarData( data, out var thargoidWar );
+                                    EventParsing.ThargoidWarData( data, out var thargoidWar );
 
                                     var taxi = JsonParsing.getOptionalBool(data, "Taxi");
                                     var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
@@ -1191,7 +1191,7 @@ namespace EddiJournalMonitor
                                     StationModel stationtype = null;
                                     if ( marketId != null )
                                     {
-                                        EventParsing.GetStationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
+                                        EventParsing.StationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
                                     }
 
                                     // Get station services data
@@ -1227,21 +1227,21 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Factions", out var factionsVal);
                                     if (factionsVal != null)
                                     {
-                                        factions = EventParsing.GetFactions(factionsVal, systemName, systemAddress );
+                                        factions = EventParsing.Factions(factionsVal, systemName, systemAddress );
                                     }
-                                    var systemfaction = EventParsing.GetFaction(data, "System", systemName, systemAddress, factions);
-                                    var stationfaction = EventParsing.GetFaction(data, "Station", systemName, systemAddress, factions);
+                                    var systemfaction = EventParsing.Faction(data, "System", systemName, systemAddress, factions);
+                                    var stationfaction = EventParsing.Faction(data, "Station", systemName, systemAddress, factions);
 
                                     // Parse conflicts array data
                                     var conflicts = new List<Conflict>();
                                     data.TryGetValue("Conflicts", out var conflictsVal);
                                     if (conflictsVal != null)
                                     {
-                                        conflicts = EventParsing.GetConflicts(conflictsVal, factions);
+                                        conflicts = EventParsing.FactionConflicts(conflictsVal, factions);
                                     }
 
                                     // Powerplay data (if pledged)
-                                    EventParsing.GetPowerplayData( data, systemAddress, out var controllingPower,
+                                    EventParsing.PowerplayDetails( data, systemAddress, out var controllingPower,
                                         out var powersInAcquisitionRange, out var powerplayState,
                                         out var powerAcquisitionProgress,
                                         out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
@@ -1253,7 +1253,7 @@ namespace EddiJournalMonitor
                                     var onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
 
                                     // Thargoid war data (if any)
-                                    EventParsing.GetThargoidWarData( data, out var thargoidWar );
+                                    EventParsing.ThargoidWarData( data, out var thargoidWar );
 
                                     // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
                                     // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
@@ -1396,7 +1396,7 @@ namespace EddiJournalMonitor
                                     var target = JsonParsing.getString(data, "Target");
                                     var target_localised = JsonParsing.getString( data, "Target_Localised" );
                                     var victimName = JsonParsing.getString(data, "PilotName_Localised");
-                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
+                                    var victimFaction = EventParsing.FactionName(data, "VictimFaction");
 
                                     data.TryGetValue("SharedWithOthers", out var val);
                                     var shared = val != null && (long)val == 1;
@@ -1414,7 +1414,7 @@ namespace EddiJournalMonitor
                                             // 0-credit reward; ignore
                                             break;
                                         }
-                                        var factionName = EventParsing.GetFactionName(data, "Faction");
+                                        var factionName = EventParsing.FactionName(data, "Faction");
                                         rewards.Add(new Reward(factionName, reward));
                                     }
                                     else
@@ -1433,7 +1433,7 @@ namespace EddiJournalMonitor
                                         {
                                             foreach (var rewardData in rewardsData.Cast<IDictionary<string, object>>() )
                                             {
-                                                var factionName = EventParsing.GetFactionName(rewardData, "Faction");
+                                                var factionName = EventParsing.FactionName(rewardData, "Faction");
                                                 rewardData.TryGetValue("Reward", out val);
                                                 var factionReward = (long)val;
 
@@ -1450,8 +1450,8 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue( "Reward", out var val );
                                     var reward = (long)val;
-                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
-                                    var awardingFaction = EventParsing.GetFactionName(data, "AwardingFaction");
+                                    var victimFaction = EventParsing.FactionName(data, "VictimFaction");
+                                    var awardingFaction = EventParsing.FactionName(data, "AwardingFaction");
                                     events.Add( new BondAwardedEvent( timestamp, awardingFaction, victimFaction, reward ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
@@ -1528,8 +1528,8 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("Reward", out var val);
                                     var reward = (long)val;
-                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
-                                    var awardingFaction = EventParsing.GetFactionName(data, "AwardingFaction");
+                                    var victimFaction = EventParsing.FactionName(data, "VictimFaction");
+                                    var awardingFaction = EventParsing.FactionName(data, "AwardingFaction");
                                     events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -1597,7 +1597,7 @@ namespace EddiJournalMonitor
                                     var isThargoid = JsonParsing.getOptionalBool(data, "IsThargoid") ?? false;
                                     data.TryGetValue("CombatRank", out var val);
                                     var rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
                                     var power = JsonParsing.getString(data, "Power");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
@@ -1630,7 +1630,7 @@ namespace EddiJournalMonitor
                                     var iscommander = JsonParsing.getBool(data, "IsPlayer");
                                     data.TryGetValue("CombatRank", out var val);
                                     var rating = ( val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) ) );
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
                                     var power = JsonParsing.getString(data, "Power");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")))
@@ -1832,9 +1832,9 @@ namespace EddiJournalMonitor
 
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
-                                    var source = EventParsing.GetSignalSourceName(data);
+                                    var source = EventParsing.SignalSource(data);
 
-                                    source.spawningFaction = EventParsing.GetFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
+                                    source.spawningFaction = EventParsing.FactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     source.SpawningPower = Power.FromEDName( JsonParsing.getString( data, "SpawningPower" ) ); // the Powerplay power, if relevant
                                     source.OpposingPower = Power.FromEDName( JsonParsing.getString( data, "OpposingPower" ) ); // the opposing Powerplay power, if relevant
 
@@ -2462,7 +2462,7 @@ namespace EddiJournalMonitor
 
                                     var name = JsonParsing.getString(data, "Name");
                                     var crewid = JsonParsing.getLong(data, "CrewID");
-                                    var role = EventParsing.ParseCrewRole(data, "Role");
+                                    var role = EventParsing.CrewRole(data, "Role");
                                     events.Add(new CrewAssignedEvent(timestamp, name, crewid, role) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2479,7 +2479,7 @@ namespace EddiJournalMonitor
                                 {
                                     var name = JsonParsing.getString(data, "Name");
                                     var crewid = JsonParsing.getLong(data, "CrewID");
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
                                     var price = JsonParsing.getLong(data, "Cost");
                                     var rating = CombatRating.FromRank(JsonParsing.getInt(data, "CombatRank"));
                                     events.Add(new CrewHiredEvent(timestamp, name, crewid, faction, price, rating) { raw = line, fromLoad = fromLogLoad });
@@ -2587,7 +2587,7 @@ namespace EddiJournalMonitor
                                         var engineers = (List<object>)val;
                                         foreach (var engineerData in engineers.Cast<IDictionary<string, object>>())
                                         {
-                                            var engineer = EventParsing.ParseEngineer(engineerData);
+                                            var engineer = EventParsing.Engineer(engineerData);
                                             if (!string.IsNullOrEmpty(engineer.name))
                                             {
                                                 Engineer.AddOrUpdate(engineer);
@@ -2599,7 +2599,7 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // This is a progress entry.
-                                        var engineer = EventParsing.ParseEngineer(data);
+                                        var engineer = EventParsing.Engineer(data);
                                         var lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id).Copy();
                                         Engineer.AddOrUpdate(engineer);
                                         if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
@@ -2757,7 +2757,7 @@ namespace EddiJournalMonitor
                                     {
                                         localisedname = Regex.Replace(localisedname, @"<.*?>", ""); // Mission localized names may have embedded HTML tags. If so then remove them.
                                     }
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
                                     var reward = JsonParsing.getOptionalInt(data, "Reward");
                                     var wing = JsonParsing.getBool(data, "Wing");
 
@@ -2801,7 +2801,7 @@ namespace EddiJournalMonitor
                                         // Missions with targets
                                         var target = JsonParsing.getString(data, "Target");
                                         var targettype = JsonParsing.getString(data, "TargetType");
-                                        var targetfaction = EventParsing.GetFactionName(data, "TargetFaction");
+                                        var targetfaction = EventParsing.FactionName(data, "TargetFaction");
                                         data.TryGetValue("KillCount", out val);
                                         if (val != null)
                                         {
@@ -2907,7 +2907,7 @@ namespace EddiJournalMonitor
                                     var name = JsonParsing.getString(data, "Name");
                                     var reward = JsonParsing.getOptionalLong( data, "Reward" ) ?? 0;
                                     var donation = JsonParsing.getOptionalLong(data, "Donated") ?? 0;
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
 
                                     // Missions with commodities (which may include on-foot micro-resources)
                                     var c = JsonParsing.getString(data, "Commodity");
@@ -3222,7 +3222,7 @@ namespace EddiJournalMonitor
                                     var amount = (long)val;
                                     var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     var allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
                                     int shipId;
                                     var shipIdLong = JsonParsing.getLong(data, "ShipID");
                                     if (shipIdLong > 4293000000)
@@ -3245,7 +3245,7 @@ namespace EddiJournalMonitor
                                     var amount = (long)val;
                                     var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
                                     var allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
                                     var shipId = 0;
                                     var shipIdLong = JsonParsing.getLong(data, "ShipID");
                                     if (shipIdLong >= 4293000000)
@@ -3274,7 +3274,7 @@ namespace EddiJournalMonitor
                                     {
                                         foreach (var rewardData in factionsData.Cast<IDictionary<string, object>>())
                                         {
-                                            var factionName = EventParsing.GetFactionName(rewardData, "Faction");
+                                            var factionName = EventParsing.FactionName(rewardData, "Faction");
                                             rewardData.TryGetValue("Amount", out val);
                                             var factionReward = (long)val;
 
@@ -3283,7 +3283,7 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        var factionName = EventParsing.GetFactionName(data, "Faction");
+                                        var factionName = EventParsing.FactionName(data, "Faction");
                                         data.TryGetValue("Amount", out val);
                                         var factionReward = (long)val;
 
@@ -3722,7 +3722,7 @@ namespace EddiJournalMonitor
                                                 {
                                                     if ( res is IDictionary<string, object> microVal )
                                                     {
-                                                        var microResource = EventParsing.GetMicroResource( microVal );
+                                                        var microResource = EventParsing.MicroResource( microVal );
                                                         var amount = JsonParsing.getInt(microVal, "Count");
                                                         if ( microResource != null )
                                                         {
@@ -3833,7 +3833,7 @@ namespace EddiJournalMonitor
                                                 {
                                                     if ( res is IDictionary<string, object> microVal )
                                                     {
-                                                        var microResource = EventParsing.GetMicroResource( microVal );
+                                                        var microResource = EventParsing.MicroResource( microVal );
                                                         var amount = JsonParsing.getInt(microVal, "Count");
                                                         if ( microResource != null )
                                                         {
@@ -4055,28 +4055,28 @@ namespace EddiJournalMonitor
                                     data.TryGetValue( "Factions", out var factionsVal );
                                     if ( factionsVal != null )
                                     {
-                                        factions = EventParsing.GetFactions( factionsVal, systemName, systemAddress );
+                                        factions = EventParsing.Factions( factionsVal, systemName, systemAddress );
                                     }
-                                    var systemfaction = EventParsing.GetFaction( data, "System", systemName, systemAddress, factions );
-                                    var stationFaction = EventParsing.GetFaction( data, "Station", systemName, systemAddress, factions );
+                                    var systemfaction = EventParsing.Faction( data, "System", systemName, systemAddress, factions );
+                                    var stationFaction = EventParsing.Faction( data, "Station", systemName, systemAddress, factions );
 
                                     // Parse conflicts array data
                                     var conflicts = new List<Conflict>();
                                     data.TryGetValue( "Conflicts", out var conflictsVal );
                                     if ( conflictsVal != null )
                                     {
-                                        conflicts = EventParsing.GetConflicts( conflictsVal, factions );
+                                        conflicts = EventParsing.FactionConflicts( conflictsVal, factions );
                                     }
 
                                     // Powerplay data (if pledged)
-                                    EventParsing.GetPowerplayData( data, systemAddress, out var controllingPower,
+                                    EventParsing.PowerplayDetails( data, systemAddress, out var controllingPower,
                                         out var powersInAcquisitionRange, out var powerplayState,
                                         out var powerAcquisitionProgress,
                                         out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
                                         out var powerplayUnderminingControlPoints );
 
                                     // Thargoid war data (if any)
-                                    EventParsing.GetThargoidWarData( data, out var thargoidWar );
+                                    EventParsing.ThargoidWarData( data, out var thargoidWar );
 
                                     var docked = JsonParsing.getBool( data, "Docked" );
                                     var onFoot = JsonParsing.getOptionalBool( data, "OnFoot" ) ?? false;
@@ -4361,7 +4361,7 @@ namespace EddiJournalMonitor
                                                 {
                                                     if ( res is IDictionary<string, object> microVal )
                                                     {
-                                                        var microResource = EventParsing.GetMicroResource( microVal );
+                                                        var microResource = EventParsing.MicroResource( microVal );
                                                         var amount = JsonParsing.getInt(microVal, "Count");
                                                         if ( microResource != null )
                                                         {
@@ -4375,7 +4375,7 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        var microResource = EventParsing.GetMicroResource( data );
+                                        var microResource = EventParsing.MicroResource( data );
                                         var amount = JsonParsing.getInt( data, "Count" );
                                         var price = JsonParsing.getInt(data, "Price"); // Total price
                                         var resourceAmounts = new List<MicroResourceAmount> { new MicroResourceAmount( microResource, amount ) };
@@ -4554,7 +4554,7 @@ namespace EddiJournalMonitor
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                    var controllingFaction = EventParsing.GetFaction(data, "Station", EDDI.Instance.CurrentStarSystem?.systemname, systemAddress, EDDI.Instance.CurrentStarSystem?.factions);
+                                    var controllingFaction = EventParsing.Faction(data, "Station", EDDI.Instance.CurrentStarSystem?.systemname, systemAddress, EDDI.Instance.CurrentStarSystem?.factions);
 
                                     // Get station services data
                                     var stationServices = new List<StationService>();
@@ -4645,7 +4645,7 @@ namespace EddiJournalMonitor
                                 {
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                    var role = EventParsing.ParseCrewRole(data, "Role");
+                                    var role = EventParsing.CrewRole(data, "Role");
                                     var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewRoleChangedEvent(timestamp, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -4663,7 +4663,7 @@ namespace EddiJournalMonitor
                                 {
                                     object val;
                                     var crimetype = JsonParsing.getString(data, "CrimeType");
-                                    var faction = EventParsing.GetFactionName(data, "Faction");
+                                    var faction = EventParsing.FactionName(data, "Faction");
                                     var victim = JsonParsing.getString(data, "Victim");
 
                                     if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Victim_Localised")))
@@ -4717,7 +4717,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var name = JsonParsing.getString(data, "Crew");
-                                    var role = EventParsing.ParseCrewRole(data, "Role");
+                                    var role = EventParsing.CrewRole(data, "Role");
                                     var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
                                     events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -4747,8 +4747,8 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("Reward", out var val);
                                     var reward = (long)val;
-                                    var victimFaction = EventParsing.GetFactionName(data, "VictimFaction");
-                                    var payeeFaction = EventParsing.GetFactionName(data, "PayeeFaction");
+                                    var victimFaction = EventParsing.FactionName(data, "VictimFaction");
+                                    var payeeFaction = EventParsing.FactionName(data, "PayeeFaction");
                                     events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
