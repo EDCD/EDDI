@@ -65,7 +65,10 @@ namespace EddiCommanderMonitor
 
         public void Reload ()
         {
-            ReadCommander();
+            lock ( commanderLock )
+            {
+                EDDI.Instance.Cmdr = ReadCommander();
+            }
             Logging.Info( $"Reloaded {MonitorName()}" );
         }
 
@@ -101,9 +104,9 @@ namespace EddiCommanderMonitor
             {
                 handleCommanderRatingsEvent( commanderRatingsEvent );
             }
-            else if ( @event is FileHeaderEvent )
+            else if ( @event is FriendsEvent friendsEvent )
             {
-                handleFileHeaderEvent();
+                handleFriendsEvent( friendsEvent );
             }
             else if ( @event is JumpedEvent jumpedEvent )
             {
@@ -180,17 +183,35 @@ namespace EddiCommanderMonitor
 
         private void handleCommanderLoadingEvent ( CommanderLoadingEvent @event )
         {
-            if ( @event.timestamp >= updatedAt )
+            var lastCommander = ReadCommander();
+            if ( lastCommander.EDID == @event.frontierID )
             {
+                // This is the same commander ID as before. We can load data using the existing configuration
+                var configuration = ConfigService.Instance.commanderConfiguration;
+
+                // Legacy configurations may not have system address values stored. Fix that here.
+                if ( configuration.homeSystemAddress is null && !string.IsNullOrEmpty( configuration.homeSystemName ) )
+                {
+                    var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.homeSystemName );
+                    configuration.homeSystemAddress = wp.systemAddress;
+                }
+
+                setHomeSystem( configuration.homeSystemAddress );
+                setHomeStation( configuration.homeStationMarketID );
+            }
+            else
+            {
+                // This is a new commander ID - update the configuration
                 Cmdr.name = @event.name;
                 Cmdr.EDID = @event.frontierID;
 
                 WriteCommander();
-                
-                if ( ConfigService.Instance.commanderConfiguration.commanderName != @event.name )
-                {
-                    EDDI.Instance.ObtainResponder( "EDSM Responder" ).Reload();
-                }
+            }
+
+            // We need to reload the EDSM responder if the commander name has changed
+            if ( ConfigService.Instance.commanderConfiguration.commanderName != @event.name )
+            {
+                EDDI.Instance.ObtainResponder( "EDSM Responder" ).Reload();
             }
         }
 
@@ -259,27 +280,32 @@ namespace EddiCommanderMonitor
             }
         }
 
-        private void handleFileHeaderEvent ()
+        private void handleFriendsEvent ( FriendsEvent @event )
         {
-            ReadCommander();
-
-            var configuration = ConfigService.Instance.commanderConfiguration;
-
-            // Legacy configurations may not have system address values stored. Fix that here.
-            if ( configuration.homeSystemAddress is null && !string.IsNullOrEmpty(configuration.homeSystemName) )
+            // Does this friend exist in our friends list?
+            if ( Cmdr != null )
             {
-                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.homeSystemName );
-                configuration.homeSystemAddress = wp.systemAddress;
-            }
-            if ( configuration.squadronSystemAddress is null && !string.IsNullOrEmpty( configuration.squadronSystemName ) )
-            {
-                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.squadronSystemName );
-                configuration.squadronSystemAddress = wp.systemAddress;
-            }
+                var friend = new Friend
+                {
+                    name = @event.name,
+                    status = @event.status
+                };
 
-            setHomeSystem( configuration.homeSystemAddress );
-            setHomeStation( configuration.homeStationMarketID );
-            setSquadronSystem( configuration.squadronSystemAddress, configuration.squadronFaction );
+                var index = Cmdr.friends.FindIndex( f => f.name == @event.name );
+                if ( index >= 0 )
+                {
+                    if ( Cmdr.friends[ index ].status != @event.status )
+                    {
+                        // This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
+                        Cmdr.friends[ index ] = friend;
+                    }
+                }
+                else
+                {
+                    // This is a new friend, add them to the list
+                    Cmdr.friends.Add( friend );
+                }
+            }
         }
 
         private void handleJumpedEvent ( JumpedEvent @event )
@@ -404,6 +430,18 @@ namespace EddiCommanderMonitor
 
         private void handleSquadronStartupEvent ( SquadronStartupEvent @event )
         {
+            var configuration = ConfigService.Instance.commanderConfiguration;
+
+            // Legacy configurations may not have system address values stored. Fix that here.
+            if ( configuration.squadronSystemAddress is null && !string.IsNullOrEmpty( configuration.squadronSystemName ) )
+            {
+                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.squadronSystemName );
+                configuration.squadronSystemAddress = wp.systemAddress;
+            }
+
+            // Set our squadron home star system
+            setSquadronSystem( configuration.squadronSystemAddress, configuration.squadronFaction );
+
             if ( @event.timestamp >= updatedAt )
             {
                 var rank = SquadronRank.FromRank( @event.rank + 1 );
@@ -785,38 +823,35 @@ namespace EddiCommanderMonitor
             }
         }
 
-        private void ReadCommander ( CommanderConfiguration configuration = null )
+        private Commander ReadCommander ( CommanderConfiguration configuration = null )
         {
             // Obtain current commander from our configuration
             configuration = configuration ?? ConfigService.Instance.commanderConfiguration;
-
-            lock ( commanderLock )
+            var commander = new Commander()
             {
-                EDDI.Instance.Cmdr = new Commander
-                {
-                    name = configuration.commanderName,
-                    credits = configuration.credits,
-                    friends = configuration.friends,
-                    EDID = configuration.frontierID,
-                    gender = configuration.gender,
-                    phoneticName = configuration.phoneticName,
+                name = configuration.commanderName,
+                credits = configuration.credits,
+                friends = configuration.friends,
+                EDID = configuration.frontierID,
+                gender = configuration.gender,
+                phoneticName = configuration.phoneticName,
 
-                    // Power information
-                    Power = configuration.Power,
-                    powermerits = configuration.powerMerits,
-                    powerrating = configuration.powerRank,
+                // Power information
+                Power = configuration.Power,
+                powermerits = configuration.powerMerits,
+                powerrating = configuration.powerRank,
 
-                    // Squadron information
-                    squadronname = configuration.squadronName,
-                    squadronid = configuration.squadronID,
-                    squadronrank = configuration.SquadronRank,
-                    squadronfaction = configuration.squadronFaction,
-                    squadronpower = configuration.SquadronPower,
-                    squadronallegiance = configuration.SquadronAllegiance
-                };
+                // Squadron information
+                squadronname = configuration.squadronName,
+                squadronid = configuration.squadronID,
+                squadronrank = configuration.SquadronRank,
+                squadronfaction = configuration.squadronFaction,
+                squadronpower = configuration.SquadronPower,
+                squadronallegiance = configuration.SquadronAllegiance
+            };
 
-                updatedAt = configuration.updatedat;
-            }
+            updatedAt = configuration.updatedat;
+            return commander;
         }
 
         public void WriteCommander ()

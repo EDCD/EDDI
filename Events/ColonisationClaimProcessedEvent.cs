@@ -33,10 +33,12 @@ namespace EddiEvents
 
         public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
             var starSystem = JsonParsing.getString( data, "StarSystem" );
             var starSystemAddress = JsonParsing.getULong( data, "SystemAddress" );
             var isClaim = edType == "ColonisationSystemClaim"; // False when releasing a claim
-            events.Add( new ColonisationClaimProcessedEvent( timestamp, starSystem, starSystemAddress, isClaim ) { raw = line, fromLoad = fromLogLoad } );
+            events.Add( new ColonisationClaimProcessedEvent( timestamp, starSystem, starSystemAddress, isClaim ) { raw = line, fromLoad = false } );
             return true;
         }
     }

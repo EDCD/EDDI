@@ -43,6 +43,8 @@ namespace EddiEvents
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
             var marketID = JsonParsing.getLong( data, "MarketID" );
             var progress = JsonParsing.getDecimal( data, "ConstructionProgress" ) * 100; // Convert from 0-1 to 0-100
             var constructionComplete = JsonParsing.getBool( data, "ConstructionComplete" );
@@ -76,7 +78,7 @@ namespace EddiEvents
                         events.Add( new ColonisationConstructionDepotEvent( timestamp, marketID, progress, constructionComplete, constructionFailed, requiredResources )
                         {
                             raw = line,
-                            fromLoad = fromLogLoad
+                            fromLoad = false
                         } );
                     }
 

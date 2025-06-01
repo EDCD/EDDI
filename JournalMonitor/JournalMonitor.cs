@@ -32,7 +32,7 @@ namespace EddiJournalMonitor
         /// <summary>
         /// Holds a delayed event until we see an event of the type specified
         /// </summary>
-        private static readonly ConcurrentDictionary<string, Event> DelayedEventHolder = new ConcurrentDictionary<string, Event>();
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new ConcurrentDictionary<string, ConcurrentBag<Event>>();
 
         private enum ShipyardType { [UsedImplicitly] ShipsHere, [UsedImplicitly] ShipsRemote }
 
@@ -50,9 +50,9 @@ namespace EddiJournalMonitor
             // Append any delayed events
             foreach ( var @event in events.ToList() )
             {
-                if ( DelayedEventHolder.TryRemove( @event.type, out var delayedEvent ) )
+                if ( DelayedEventHolder.TryRemove( @event.type, out var delayedEvents ) )
                 {
-                    events.Add( delayedEvent );
+                    events.AddRange( delayedEvents );
                 }
             }
 
@@ -135,23 +135,17 @@ namespace EddiJournalMonitor
 
         public static List<Event> ParseJournalEntry(string line, bool fromLogLoad = false, bool fromSpeechResponderTest = false )
         {
-            List<Event> events = new List<Event>();
+            var events = new List<Event>();
             try
             {
-                Match match = JsonRegex.Match(line);
+                var match = JsonRegex.Match(line);
                 if (match.Success)
                 {
                     Logging.Debug($"Received event: {line}");
-                    IDictionary<string, object> data = Deserializtion.DeserializeData(line);
-
-                    // Ignore specified log load events
-                    if (fromLogLoad && ignoredLogLoadEvents.Contains(JsonParsing.getString(data, "event")))
-                    {
-                        return events;
-                    }
+                    var data = Deserializtion.DeserializeData(line);
 
                     // Every event has a timestamp field
-                    DateTime timestamp = DateTime.UtcNow;
+                    var timestamp = DateTime.UtcNow;
                     try
                     {
                         timestamp = JsonParsing.getDateTime("timestamp", data);
@@ -176,543 +170,65 @@ namespace EddiJournalMonitor
                     {
                         switch (edType)
                         {
-                            case "Docked":
+                            #region Startup Events
+                              
+                            case "Cargo":
                                 {
-                                    var systemName = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationModel);
+                                    var inventory = new List<CargoInfoItem>();
 
-                                    var controllingfaction = GetFaction(data, "Station", systemName, systemAddress);
-                                    var distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
-
-                                    // Get station landing pads data
-                                    var landingPads = GetLandingPads(data);
-
-                                    // Get station services data
-                                    data.TryGetValue("StationServices", out object val);
-                                    var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
-                                    var stationServices = new List<StationService>();
-                                    foreach (string service in stationservices)
+                                    var vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance.Vehicle;
+                                    var cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
+                                    data.TryGetValue("Inventory", out var val);
+                                    if (val != null)
                                     {
-                                        stationServices.Add(StationService.FromEDName(service));
-                                    }
-
-                                    // Get station economies and their shares
-                                    data.TryGetValue("StationEconomies", out object val2);
-                                    var economies = val2 as List<object> ?? new List<object>();
-                                    var Economies = new List<EconomyShare>();
-                                    foreach (var economyshare in economies.Cast<IDictionary<string, object>>() )
-                                    {
-                                        Economy economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
-                                        economy.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
-                                        decimal share = JsonParsing.getDecimal(economyshare, "Proportion");
-                                        if (economy != Economy.None && share > 0)
+                                        var inventoryJson = (List<object>)val;
+                                        foreach (var cargoJson in inventoryJson.Cast<IDictionary<string, object>>() )
                                         {
-                                            Economies.Add(new EconomyShare(economy, share));
+                                            var name = JsonParsing.getString(cargoJson, "Name");
+                                            var missionid = JsonParsing.getOptionalULong(cargoJson, "MissionID");
+                                            var count = JsonParsing.getInt(cargoJson, "Count");
+                                            var stolen = JsonParsing.getInt(cargoJson, "Stolen");
+                                            var info = new CargoInfoItem(name, missionid, count, stolen);
+                                            inventory.Add(info);
                                         }
+                                        events.Add(new CargoEvent(timestamp, false, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
                                     }
-
-                                    var cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
-                                    var wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
-                                    var activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
-
-                                    var stationStateEdName = JsonParsing.getString( data, "StationState" );
-                                    var stationState = string.IsNullOrEmpty( stationStateEdName )
-                                        ? StationState.NormalOperation
-                                        : StationState.FromEDName( stationStateEdName );
-
-                                    var station = new Station()
+                                    else if (CargoInfo.TryFromFile(timestamp, vessel, cargocarried, out var info, out line))
                                     {
-                                        name = stationName,
-                                        localizedName = stationLocalizedName,
-                                        marketId = marketId,
-                                        systemname = systemName,
-                                        systemAddress = systemAddress,
-                                        Model = stationModel,
-                                        Faction = controllingfaction,
-                                        stationServices = stationServices,
-                                        stationState = stationState,
-                                        economyShares = Economies,
-                                        distancefromstar = distancefromstar,
-                                        landingPads = landingPads
-                                    };
-
-                                    events.Add(new DockedEvent(timestamp, station, cockpitBreach, wanted, activeFine) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Undocked":
-                                {
-                                    string stationName = JsonParsing.getString(data, "StationName");
-                                    long? marketId = JsonParsing.getLong(data, "MarketID");
-                                    events.Add(new UndockedEvent(timestamp, stationName, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Touchdown":
-                                {
-                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
-
-                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
-                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
-
-                                    // The nearest destination may be a specific destination name or a generic signal source.
-                                    // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
-                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
-                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
-                                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-                                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                                    {
-                                        nearestDestination.fallbackLocalizedName = localizedName;
-                                    }
-                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Liftoff":
-                                {
-                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
-
-                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
-                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
-
-                                    // The nearest destination may be a specific destination name or a generic signal source.
-                                    // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
-                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
-                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
-                                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
-                                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                                    {
-                                        nearestDestination.fallbackLocalizedName = localizedName;
-                                    }
-                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "SupercruiseEntry":
-                                {
-                                    string system = JsonParsing.getString(data, "StarySystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
-                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
-                                    events.Add(new EnteredSupercruiseEvent(timestamp, system, systemAddress, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "SupercruiseExit":
-                                {
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
-                                    if ( bodyType == BodyType.Planet )
-                                    {
-                                        bodyType = EDDI.Instance.CurrentStarSystem?.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
-                                                   bodyType;
-                                    }
-                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
-                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
-                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "FSDJump":
-                                {
-                                    string systemName = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    data.TryGetValue("StarPos", out object val);
-                                    List<object> starPos = (List<object>)val;
-                                    decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
-                                    decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
-                                    decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
-                                    string starName = JsonParsing.getString(data, "Body"); // Documented by the journal, but apparently never written. We can't rely on this being set.
-                                    decimal fuelUsed = JsonParsing.getDecimal(data, "FuelUsed");
-                                    decimal fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
-                                    int? boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
-                                    decimal distance = JsonParsing.getDecimal(data, "JumpDist");
-                                    Faction controllingfaction = GetFaction(data, "System", systemName, systemAddress);
-                                    Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy")) ?? Economy.None;
-                                    Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy")) ?? Economy.None;
-                                    SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity")) ?? SecurityLevel.None;
-                                    long? population = JsonParsing.getOptionalLong(data, "Population");
-
-                                    // Parse factions array data
-                                    List<Faction> factions = new List<Faction>();
-                                    data.TryGetValue("Factions", out object factionsVal);
-                                    if (factionsVal != null)
-                                    {
-                                        factions = GetFactions(factionsVal, systemName, systemAddress);
-                                    }
-
-                                    // Parse conflicts array data
-                                    List<Conflict> conflicts = new List<Conflict>();
-                                    data.TryGetValue("Conflicts", out object conflictsVal);
-                                    if (conflictsVal != null)
-                                    {
-                                        conflicts = GetConflicts(conflictsVal, factions);
-                                    }
-
-                                    // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out Power controllingPower,
-                                        out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState,
-                                        out List<PowerAcquisitionProgress> powerAcquisitionProgress,
-                                        out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
-                                        out int powerplayUnderminingControlPoints );
-
-                                    // Thargoid war data (if any)
-                                    GetThargoidWarData( data, out ThargoidWar thargoidWar );
-
-                                    bool? taxi = JsonParsing.getOptionalBool(data, "Taxi");
-                                    bool? multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
-
-                                    events.Add( new JumpedEvent( timestamp, systemName, systemAddress, x, y, z,
-                                        starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction,
-                                        factions, conflicts, economy, economy2, security, population, controllingPower,
-                                        powersInAcquisitionRange, powerplayState, powerAcquisitionProgress,
-                                        powerplayControlProgress, powerplayReinforcementControlPoints,
-                                        powerplayUnderminingControlPoints, taxi, multicrew, thargoidWar )
-                                    {
-                                        raw = line, fromLoad = fromLogLoad
-                                    } );
-                                }
-                                handled = true;
-                                break;
-                            case "Location":
-                                {
-                                    string systemName = JsonParsing.getString(data, "StarSystem");
-
-                                    if (systemName == "Training")
-                                    {
-                                        // Training system; ignore
-                                        break;
-                                    }
-
-                                    data.TryGetValue("StarPos", out object val);
-                                    List<object> starPos = (List<object>)val;
-                                    decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
-                                    decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
-                                    decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    decimal? distFromStarLs = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
-
-                                    string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
-                                    if ( bodyType == BodyType.Planet )
-                                    {
-                                        bodyType = EDDI.Instance.DataProvider.GetOrCreateStarSystem( systemAddress, systemName )?
-                                                       .bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
-                                                   bodyType;
-                                    }
-
-                                    bool docked = JsonParsing.getBool(data, "Docked");
-                                    Faction systemfaction = GetFaction(data, "System", systemName, systemAddress);
-                                    Faction stationfaction = GetFaction(data, "Station", systemName, systemAddress);
-                                    Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
-                                    Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
-                                    SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
-                                    long? population = JsonParsing.getOptionalLong(data, "Population");
-
-                                    // If docked
-                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    string stationName = null;
-                                    string stationLocalizedName = null;
-                                    StationModel stationtype = null;
-                                    if ( marketId != null )
-                                    {
-                                        GetStationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
-                                    }
-
-                                    // Get station services data
-                                    data.TryGetValue("StationServices", out val);
-                                    List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
-                                    List<StationService> stationServices = new List<StationService>();
-                                    foreach (string service in stationservices)
-                                    {
-                                        stationServices.Add(StationService.FromEDName(service));
-                                    }
-
-                                    // Get station economies and their shares
-                                    data.TryGetValue("StationEconomies", out object val2);
-                                    List<object> economies = val2 as List<object> ?? new List<object>();
-                                    var Economies = new List<EconomyShare>();
-                                    foreach (var economyshare in economies.Cast<IDictionary<string, object>>() )
-                                    {
-                                        var economyShare = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
-                                        economyShare.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
-                                        decimal share = JsonParsing.getDecimal(economyshare, "Proportion");
-                                        if (economyShare != Economy.None && share > 0)
-                                        {
-                                            Economies.Add(new EconomyShare(economyShare, share));
-                                        }
-                                    }
-
-                                    // If landed
-                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-
-                                    // Parse factions array data
-                                    var factions = new List<Faction>();
-                                    data.TryGetValue("Factions", out object factionsVal);
-                                    if (factionsVal != null)
-                                    {
-                                        factions = GetFactions(factionsVal, systemName, systemAddress );
-                                    }
-
-                                    // Parse conflicts array data
-                                    var conflicts = new List<Conflict>();
-                                    data.TryGetValue("Conflicts", out object conflictsVal);
-                                    if (conflictsVal != null)
-                                    {
-                                        conflicts = GetConflicts(conflictsVal, factions);
-                                    }
-
-                                    // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out Power controllingPower,
-                                        out List<Power> powersInAcquisitionRange, out PowerplayState powerplayState,
-                                        out List<PowerAcquisitionProgress> powerAcquisitionProgress,
-                                        out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
-                                        out int powerplayUnderminingControlPoints );
-
-                                    bool taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
-                                    bool multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
-                                    bool inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
-                                    bool onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
-
-                                    // Thargoid war data (if any)
-                                    GetThargoidWarData( data, out ThargoidWar thargoidWar );
-
-                                    // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
-                                    // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
-                                    if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
-                                    {
-                                        events.Add( new CarrierJumpedEvent( timestamp, systemName, systemAddress, x, y,
-                                            z, body, bodyId, bodyType, docked, onFoot, stationLocalizedName ?? stationName, stationtype, marketId,
-                                            stationServices, systemfaction, stationfaction, factions, conflicts,
-                                            Economies, economy, economy2, security, population, controllingPower,
-                                            powersInAcquisitionRange, powerplayState,
-                                            powerAcquisitionProgress, powerplayControlProgress,
-                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
-                                            thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
-                                    }
-                                    else
-                                    {
-                                        events.Add( new LocationEvent( timestamp, systemName, systemAddress, x, y, z,
-                                            distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked,
-                                            stationLocalizedName ?? stationName, stationtype, marketId, stationServices, systemfaction,
-                                            stationfaction, factions, conflicts, Economies, economy, economy2, security,
-                                            population, controllingPower, powersInAcquisitionRange, powerplayState,
-                                            powerAcquisitionProgress, powerplayControlProgress,
-                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
-                                            taxi, multicrew, inSRV, onFoot, thargoidWar )
-                                        {
-                                            raw = line, fromLoad = fromLogLoad
-                                        } );
+                                        events.Add(new CargoEvent(timestamp, true, vessel, info.Inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
                                     }
                                 }
                                 handled = true;
                                 break;
-                            case "Bounty":
+                            case "ClearSavedGame":
                                 {
-                                    var target = JsonParsing.getString(data, "Target");
-                                    var target_localised = JsonParsing.getString( data, "Target_Localised" );
-                                    var victimName = JsonParsing.getString(data, "PilotName_Localised");
-                                    var victimFaction = GetFactionName(data, "VictimFaction");
-
-                                    data.TryGetValue("SharedWithOthers", out object val);
-                                    var shared = val != null && (long)val == 1;
-
-                                    long reward;
-                                    var rewards = new List<Reward>();
-
-                                    if (data.ContainsKey("Reward"))
-                                    {
-                                        // Old-style
-                                        data.TryGetValue("Reward", out val);
-                                        reward = (long)val;
-                                        if (reward == 0)
-                                        {
-                                            // 0-credit reward; ignore
-                                            break;
-                                        }
-                                        var factionName = GetFactionName(data, "Faction");
-                                        rewards.Add(new Reward(factionName, reward));
-                                    }
-                                    else
-                                    {
-                                        data.TryGetValue("TotalReward", out val);
-                                        reward = (long)val;
-                                        if (reward == 0)
-                                        {
-                                            // 0-credit reward; ignore
-                                            break;
-                                        }
-                                        // Obtain list of rewards
-                                        data.TryGetValue("Rewards", out val);
-                                        var rewardsData = (List<object>)val;
-                                        if (rewardsData != null)
-                                        {
-                                            foreach (var rewardData in rewardsData.Cast<IDictionary<string, object>>() )
-                                            {
-                                                string factionName = GetFactionName(rewardData, "Faction");
-                                                rewardData.TryGetValue("Reward", out val);
-                                                long factionReward = (long)val;
-
-                                                rewards.Add(new Reward(factionName, factionReward));
-                                            }
-                                        }
-                                    }
-
-                                    events.Add(new BountyAwardedEvent(timestamp, target, target_localised, victimName, victimFaction, reward, rewards, shared) { raw = line, fromLoad = fromLogLoad });
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var frontierID = JsonParsing.getString(data, "FID");
+                                    events.Add(new ClearedSaveEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;       
+                            case "Commander":
+                                {
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var frontierID = JsonParsing.getString(data, "FID");
+                                    events.Add(new CommanderLoadingEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "CapShipBond":
-                            case "DatalinkVoucher":
-                            case "FactionKillBond":
+                            case "Fileheader":
                                 {
-                                    data.TryGetValue("Reward", out object val);
-                                    long reward = (long)val;
-                                    string victimFaction = GetFactionName(data, "VictimFaction");
-
-                                    if (data.ContainsKey("AwardingFaction"))
-                                    {
-                                        string awardingFaction = GetFactionName(data, "AwardingFaction");
-                                        events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else if (data.ContainsKey("PayeeFaction"))
-                                    {
-                                        string payeeFaction = GetFactionName(data, "PayeeFaction");
-                                        events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "CommitCrime":
-                                {
-                                    object val;
-                                    string crimetype = JsonParsing.getString(data, "CrimeType");
-                                    string faction = GetFactionName(data, "Faction");
-                                    string victim = JsonParsing.getString(data, "Victim");
-
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Victim_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        victim = NpcAuthorityShip.EDNameExists(victim)
-                                            ? NpcAuthorityShip.FromEDName(victim)?.localizedName
-                                            : JsonParsing.getString(data, "Victim_Localised");
-                                    }
-
-                                    // Might be a fine or a bounty
-                                    if (data.ContainsKey("Fine"))
-                                    {
-                                        data.TryGetValue("Fine", out val);
-                                        long fine = (long)val;
-                                        events.Add(new FineIncurredEvent(timestamp, crimetype, faction, victim, fine) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        data.TryGetValue("Bounty", out val);
-                                        long bounty = (long)val;
-                                        events.Add(new BountyIncurredEvent(timestamp, crimetype, faction, victim, bounty) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "Promotion":
-                                {
-                                    object rating = null;
-                                    if (data.TryGetValue("Combat", out object val))
-                                    {
-                                        rating = CombatRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    else if (data.TryGetValue("CQC", out val))
-                                    {
-                                        rating = CQCRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    else if (data.TryGetValue("Trade", out val))
-                                    {
-                                        rating = TradeRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    else if (data.TryGetValue("Explore", out val))
-                                    {
-                                        rating = ExplorationRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    else if (data.TryGetValue("Federation", out val))
-                                    {
-                                        rating = FederationRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    else if (data.TryGetValue("Empire", out val))
-                                    {
-                                        rating = EmpireRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    else if (data.TryGetValue("Soldier", out val))
-                                    {
-                                        rating = MercenaryRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    else if (data.TryGetValue("Exobiologist", out val))
-                                    {
-                                        rating = ExobiologistRating.FromRank(Convert.ToInt32(val));
-                                    }
-                                    if (rating != null)
-                                    {
-                                        var genderPreference = ConfigService.Instance.commanderConfiguration.gender;
-                                        events.Add(new CommanderPromotionEvent(timestamp, rating, genderPreference) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
-                                    }
-                                }
-                                break;
-                            case "CollectCargo":
-                                {
-                                    string commodityName = JsonParsing.getString(data, "Type");
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
-                                    if (commodity == null)
-                                    {
-                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
-                                    }
-                                    var missionid = JsonParsing.getOptionalULong(data, "MissionID");
-                                    bool stolen = JsonParsing.getBool(data, "Stolen");
-                                    events.Add(new CommodityCollectedEvent(timestamp, commodity, missionid, stolen) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "EjectCargo":
-                                {
-                                    string commodityName = JsonParsing.getString(data, "Type");
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
-                                    if (commodity == null)
-                                    {
-                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
-                                    }
-                                    long? missionid = JsonParsing.getOptionalLong(data, "MissionID");
-                                    data.TryGetValue("Count", out object val);
-                                    int amount = (int)(long)val;
-                                    bool abandoned = JsonParsing.getBool(data, "Abandoned");
-                                    events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, missionid, abandoned) { raw = line, fromLoad = fromLogLoad });
+                                    var filename = journalFileName;
+                                    var version = JsonParsing.getString(data, "gameversion")?.Trim();
+                                    var build = JsonParsing.getString(data, "build")?.Trim();
+                                    Logging.Info($"GameVersion: {version}, Build {build}.");
+                                    events.Add(new FileHeaderEvent(timestamp, filename, version, build) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "Loadout":
                                 {
-                                    data.TryGetValue("ShipID", out object val);
+                                    data.TryGetValue("ShipID", out var val);
                                     var shipId = (int)(long)val;
                                     var ship = JsonParsing.getString(data, "Ship");
                                     var shipName = JsonParsing.getString(data, "ShipName");
@@ -763,7 +279,7 @@ namespace EddiJournalMonitor
                                             var hopper = JsonParsing.getOptionalInt(moduleData, "AmmoInHopper");
 
                                             // Engineering modifications
-                                            moduleData.TryGetValue("Engineering", out object engineeringVal);
+                                            moduleData.TryGetValue("Engineering", out var engineeringVal);
                                             var modified = engineeringVal != null;
                                             var engineeringData = (Dictionary<string, object>)engineeringVal;
                                             var blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
@@ -776,7 +292,7 @@ namespace EddiJournalMonitor
                                             var modifiers = new List<EngineeringModifier>();
                                             if (modified)
                                             {
-                                                engineeringData.TryGetValue("Modifiers", out object modifiersVal);
+                                                engineeringData.TryGetValue("Modifiers", out var modifiersVal);
                                                 var modifiersData = (List<object>)modifiersVal;
                                                 foreach (var modifier in modifiersData.Cast<IDictionary<string, object>>() )
                                                 {
@@ -805,7 +321,7 @@ namespace EddiJournalMonitor
                                             if (slot.Contains("Hardpoint"))
                                             {
                                                 // This is a hardpoint
-                                                Hardpoint hardpoint = new Hardpoint() { name = slot };
+                                                var hardpoint = new Hardpoint() { name = slot };
                                                 if (hardpoint.name.StartsWith("Tiny"))
                                                 {
                                                     hardpoint.size = 0;
@@ -827,7 +343,7 @@ namespace EddiJournalMonitor
                                                     hardpoint.size = 4;
                                                 }
 
-                                                Module module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
+                                                var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
                                                 if (module.edname == null)
                                                 {
                                                     Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
@@ -904,10 +420,10 @@ namespace EddiJournalMonitor
                                             else
                                             {
                                                 // This is a compartment
-                                                Compartment compartment = parseShipCompartment(ship, slot);
+                                                var compartment = parseShipCompartment(ship, slot);
                                                 // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
 
-                                                Module module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
+                                                var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
                                                 if (module.edname == null)
                                                 {
                                                     Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
@@ -937,104 +453,1577 @@ namespace EddiJournalMonitor
                                     events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, hullHealth, unladenMass, maxJumpRange, rebuy, hot, compartments, hardpoints, paintjob) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
-                                break;
-                            case "ModuleInfo":
+                                break;      
+                            case "Materials":
                                 {
-                                    if (ModuleInfo.TryFromFile(timestamp, out var info, out line))
+                                    var materials = new List<MaterialAmount>();
+
+                                    data.TryGetValue("Raw", out var val);
+                                    if (val != null)
                                     {
-                                        events.Add(new ModuleInfoEvent(timestamp, info.Modules)
-                                            { raw = line, fromLoad = fromLogLoad });
+                                        var materialsJson = (List<object>)val;
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                                        {
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                        }
                                     }
+
+                                    data.TryGetValue("Manufactured", out val);
+                                    if (val != null)
+                                    {
+                                        var materialsJson = (List<object>)val;
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                                        {
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                        }
+                                    }
+
+                                    data.TryGetValue("Encoded", out val);
+                                    if (val != null)
+                                    {
+                                        var materialsJson = (List<object>)val;
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                                        {
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                        }
+                                    }
+
+                                    events.Add(new MaterialInventoryEvent(DateTime.UtcNow, materials) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "CockpitBreached":
+                            case "Missions":
                                 {
-                                    events.Add(new CockpitBreachedEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                    var possibleStatuses = new [] 
+                                    {
+                                        MissionStatus.Active, 
+                                        MissionStatus.Failed, 
+                                        MissionStatus.Complete
+                                    };
+
+                                    var missions = new List<Mission>();
+                                    foreach (var status in possibleStatuses)
+                                    {
+                                        data.TryGetValue(status.invariantName, out var val);
+                                        var missionLog = (List<object>)val;
+
+                                        foreach (var mission in missionLog)
+                                        {
+                                            var missionProperties = (Dictionary<string, object>)mission;
+                                            var missionId = JsonParsing.getULong(missionProperties, "MissionID");
+                                            var name = JsonParsing.getString(missionProperties, "Name");
+                                            var localizedName = JsonParsing.getString(missionProperties, "Name_Localised");
+                                            var expires = JsonParsing.getDecimal(missionProperties, "Expires");
+
+                                            // Colonization missions use the actual unit timestamp rather than a timestamp offset so we need to handle those as a special case.
+                                            var expiry = name == "$Mission_Colonisation_Initial_Name;"
+                                                ? Dates.fromTimestamp( Convert.ToInt64( expires ) ) ?? DateTime.MinValue
+                                                : timestamp.AddSeconds( (double)expires );
+
+                                            // If mission is 'Active' and expires = 0, then set status to 'Claim'
+                                            var missionStatus = status == MissionStatus.Active && expires == 0 
+                                                ? MissionStatus.Claim: 
+                                                status;
+                                            var newMission = new Mission( missionId, name, expiry, missionStatus )
+                                            {
+                                                localisedname = localizedName
+                                            };
+                                            if (newMission == null)
+                                            {
+                                                // Mal-formed mission
+                                                Logging.Error("Bad mission entry", mission);
+                                            }
+                                            else
+                                            {
+                                                missions.Add(newMission);
+                                            }
+                                        }
+                                    }
+                                    events.Add(new MissionsEvent(timestamp, missions) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
+                            case "NewCommander":
+                                {
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var frontierID = JsonParsing.getString(data, "FID");
+                                    var package = JsonParsing.getString(data, "Package");
+                                    events.Add(new CommanderStartedEvent(timestamp, name, frontierID, package) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "LoadGame":
+                                {
+                                    var commander = JsonParsing.getString(data, "Commander");
+                                    var frontierID = JsonParsing.getString(data, "FID");
+
+                                    // Active expansions
+                                    var horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false; // Whether the account has the Horizons DLC
+                                    var odyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false; // Whether the account has the Odyssey DLC
+                                    Logging.Info($"Active expansions... Horizons: {horizons}, Odyssey: {odyssey}.");
+
+                                    var shipEDModel = JsonParsing.getString(data, "Ship"); // This describes a vehicle, whether ship or otherwise.
+                                                                                       // If on foot this may be a suit & if in an SRV then this may be an SRV.
+                                    var shipName = JsonParsing.getString(data, "ShipName");
+                                    var shipIdent = JsonParsing.getString(data, "ShipIdent");
+                                    var shipId = JsonParsing.getOptionalLong(data, "ShipID"); // If on foot we'll get a suit ID here, which we need to treat as a long
+
+                                    // shipId may be null either if we're logging into CQC or if we're logging in while in an Apex taxi service
+                                    if (shipId == null)
+                                    {
+                                        if (!string.IsNullOrEmpty(shipEDModel) && shipEDModel.ToLowerInvariant().Contains("taxi"))
+                                        {
+                                            // This is a taxi
+                                        }
+                                        else
+                                        {
+                                            // The LoadGame event for entering CQC contains no ship details.
+                                            // We are entering CQC. Flag it back to EDDI so we can ignore everything that happens until
+                                            // we're out of CQC again
+                                            events.Add(new EnteredCQCEvent(timestamp, commander) { raw = line, fromLoad = fromLogLoad });
+                                            handled = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    var startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
+                                    var startDead = JsonParsing.getOptionalBool(data, "StartDead");
+
+                                    var credits = (long)JsonParsing.getOptionalLong(data, "Credits");
+                                    var loan = (long)JsonParsing.getOptionalLong(data, "Loan");
+
+                                    var fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
+                                    var fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
+
+                                    var version = JsonParsing.getString(data, "gameversion")?.Trim();
+                                    var build = JsonParsing.getString(data, "build")?.Trim();
+
+                                    var mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
+                                    var group = JsonParsing.getString(data, "Group"); // The name of the group, only if the mode is "Group" 
+
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, shipId, shipEDModel, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity, version, build) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Passengers":
+                                {
+                                    var passengers = new List<Passenger>();
+                                    data.TryGetValue("Manifest", out var val);
+                                    var passengerManifest = (List<object>)val;
+
+                                    foreach (var passenger in passengerManifest)
+                                    {
+                                        var passengerProperties = (Dictionary<string, object>)passenger;
+                                        var missionid = JsonParsing.getULong(passengerProperties, "MissionID");
+                                        var type = JsonParsing.getString(passengerProperties, "Type");
+                                        var vip = JsonParsing.getBool(passengerProperties, "VIP");
+                                        var wanted = JsonParsing.getBool(passengerProperties, "Wanted");
+                                        var amount = JsonParsing.getInt(passengerProperties, "Count");
+
+                                        var newPassenger = new Passenger(missionid, type, vip, wanted, amount);
+                                        if (newPassenger == null)
+                                        {
+                                            // Mal-formed mission
+                                            Logging.Error("Bad mission entry", passenger);
+                                        }
+                                        else
+                                        {
+                                            passengers.Add(newPassenger);
+                                        }
+                                    }
+                                    events.Add(new PassengersEvent(timestamp, passengers) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Powerplay":
+                                {
+                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+                                    var rank = JsonParsing.getInt(data, "Rank") + 1; // This is zero based in the journal but not in the Frontier API. Adding +1 here synchronizes the two.
+                                    var merits = JsonParsing.getInt(data, "Merits");
+                                    var timePledged = TimeSpan.FromSeconds(JsonParsing.getLong(data, "TimePledged"));
+                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, timePledged) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Progress":
+                                {
+                                    data.TryGetValue("Combat", out var val);
+                                    decimal combat = (long?)val ?? 0;
+                                    data.TryGetValue("Trade", out val);
+                                    decimal trade = (long?)val ?? 0;
+                                    data.TryGetValue("Explore", out val);
+                                    decimal exploration = (long?)val ?? 0;
+                                    data.TryGetValue("CQC", out val);
+                                    decimal cqc = (long?)val ?? 0;
+                                    data.TryGetValue("Empire", out val);
+                                    decimal empire = (long?)val ?? 0;
+                                    data.TryGetValue("Federation", out val);
+                                    decimal federation = (long?)val ?? 0;
+                                    data.TryGetValue("Soldier", out val);
+                                    decimal soldier = (long?)val ?? 0;
+                                    data.TryGetValue("Exobiologist", out val);
+                                    decimal exobiologist = (long?)val ?? 0;
+
+                                    events.Add(new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation, soldier, exobiologist) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Rank":
+                                {
+                                    data.TryGetValue("Combat", out var val);
+                                    var combat = CombatRating.FromRank((int)((long?)val ?? 0));
+                                    data.TryGetValue("Trade", out val);
+                                    var trade = TradeRating.FromRank((int)((long?)val ?? 0));
+                                    data.TryGetValue("Explore", out val);
+                                    var exploration = ExplorationRating.FromRank((int)((long?)val ?? 0));
+                                    data.TryGetValue("CQC", out val);
+                                    var cqc = CQCRating.FromRank((int)((long?)val ?? 0));
+                                    data.TryGetValue("Empire", out val);
+                                    var empire = EmpireRating.FromRank((int)((long?)val ?? 0));
+                                    data.TryGetValue("Federation", out val);
+                                    var federation = FederationRating.FromRank((int)((long?)val ?? 0));
+                                    data.TryGetValue("Soldier", out val);
+                                    var mercenary = MercenaryRating.FromRank((int)((long?)val ?? 0));
+                                    data.TryGetValue("Exobiologist", out val);
+                                    var exobiologist = ExobiologistRating.FromRank((int)((long?)val ?? 0));
+
+                                    events.Add(new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation, mercenary, exobiologist) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Reputation":
+                                {
+                                    var empire = JsonParsing.getOptionalDecimal(data, "Empire") ?? 0;
+                                    var federation = JsonParsing.getOptionalDecimal(data, "Federation") ?? 0;
+                                    var independent = JsonParsing.getOptionalDecimal(data, "Independent") ?? 0;
+                                    var alliance = JsonParsing.getOptionalDecimal(data, "Alliance") ?? 0;
+                                    events.Add(new CommanderReputationEvent(timestamp, empire, federation, independent, alliance) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SquadronStartup":
+                                {
+                                    var name = JsonParsing.getString(data, "SquadronName");
+                                    var rank = JsonParsing.getInt(data, "CurrentRank");
+
+                                    events.Add(new SquadronStartupEvent(timestamp, name, rank) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Statistics":
+                                {
+                                    var statistics = new Statistics();
+
+                                    data.TryGetValue("Bank_Account", out var bankAccountVal);
+                                    var bankaccount = (Dictionary<string, object>)bankAccountVal;
+                                    if (bankaccount?.Count > 0)
+                                    {
+                                        statistics.bankaccount.wealth = JsonParsing.getOptionalLong(bankaccount, "Current_Wealth");
+                                        statistics.bankaccount.spentonships = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ships");
+                                        statistics.bankaccount.spentonoutfitting = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Outfitting");
+                                        statistics.bankaccount.spentonrepairs = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Repairs");
+                                        statistics.bankaccount.spentonfuel = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Fuel");
+                                        statistics.bankaccount.spentonammoconsumables = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ammo_Consumables");
+                                        statistics.bankaccount.spentoninsurance = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Insurance");
+                                        statistics.bankaccount.insuranceclaims = JsonParsing.getOptionalLong(bankaccount, "Insurance_Claims");
+                                        statistics.bankaccount.ownedshipcount = JsonParsing.getOptionalLong(bankaccount, "Owned_Ship_Count");
+                                    }
+
+                                    data.TryGetValue("Combat", out var combatVal);
+                                    var combat = (Dictionary<string, object>)combatVal;
+                                    if (combat?.Count > 0)
+                                    {
+                                        statistics.combat.bountiesclaimed = JsonParsing.getOptionalLong(combat, "Bounties_Claimed");
+                                        statistics.combat.bountyhuntingprofit = JsonParsing.getOptionalDecimal(combat, "Bounty_Hunting_Profit");
+                                        statistics.combat.combatbonds = JsonParsing.getOptionalLong(combat, "Combat_Bonds");
+                                        statistics.combat.combatbondprofits = JsonParsing.getOptionalLong(combat, "Combat_Bond_Profits");
+                                        statistics.combat.assassinations = JsonParsing.getOptionalLong(combat, "Assassinations");
+                                        statistics.combat.assassinationprofits = JsonParsing.getOptionalLong(combat, "Assassination_Profits");
+                                        statistics.combat.highestsinglereward = JsonParsing.getOptionalLong(combat, "Highest_Single_Reward");
+                                        statistics.combat.skimmerskilled = JsonParsing.getOptionalLong(combat, "Skimmers_Killed");
+                                    }
+
+                                    data.TryGetValue("Crime", out var crimeVal);
+                                    var crime = (Dictionary<string, object>)crimeVal;
+                                    if (crime?.Count > 0)
+                                    {
+                                        statistics.crime.notoriety = JsonParsing.getOptionalInt(crime, "Notoriety");
+                                        statistics.crime.fines = JsonParsing.getOptionalLong(crime, "Fines");
+                                        statistics.crime.totalfines = JsonParsing.getOptionalLong(crime, "Total_Fines");
+                                        statistics.crime.bountiesreceived = JsonParsing.getOptionalLong(crime, "Bounties_Received");
+                                        statistics.crime.totalbounties = JsonParsing.getOptionalLong(crime, "Total_Bounties");
+                                        statistics.crime.highestbounty = JsonParsing.getOptionalLong(crime, "Highest_Bounty");
+                                    }
+
+                                    data.TryGetValue("Smuggling", out var smugglingVal);
+                                    var smuggling = (Dictionary<string, object>)smugglingVal;
+                                    if (smuggling?.Count > 0)
+                                    {
+                                        statistics.smuggling.blackmarketstradedwith = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Traded_With");
+                                        statistics.smuggling.blackmarketprofits = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Profits");
+                                        statistics.smuggling.resourcessmuggled = JsonParsing.getOptionalLong(smuggling, "Resources_Smuggled");
+                                        statistics.smuggling.averageprofit = JsonParsing.getOptionalDecimal(smuggling, "Average_Profit");
+                                        statistics.smuggling.highestsingletransaction = JsonParsing.getOptionalLong(smuggling, "Highest_Single_Transaction");
+                                    }
+
+                                    data.TryGetValue("Trading", out var tradingVal);
+                                    var trading = (Dictionary<string, object>)tradingVal;
+                                    if (trading?.Count > 0)
+                                    {
+                                        statistics.trading.marketstradedwith = JsonParsing.getOptionalLong(trading, "Markets_Traded_With");
+                                        statistics.trading.marketprofits = JsonParsing.getOptionalLong(trading, "Market_Profits");
+                                        statistics.trading.resourcestraded = JsonParsing.getOptionalLong(trading, "Resources_Traded");
+                                        statistics.trading.averageprofit = JsonParsing.getOptionalDecimal(trading, "Average_Profit");
+                                        statistics.trading.highestsingletransaction = JsonParsing.getOptionalLong(trading, "Highest_Single_Transaction");
+                                    }
+
+                                    data.TryGetValue("Mining", out var miningVal);
+                                    var mining = (Dictionary<string, object>)miningVal;
+                                    if (mining?.Count > 0)
+                                    {
+                                        statistics.mining.profits = JsonParsing.getOptionalLong(mining, "Mining_Profits");
+                                        statistics.mining.quantitymined = JsonParsing.getOptionalLong(mining, "Quantity_Mined");
+                                        statistics.mining.materialscollected = JsonParsing.getOptionalLong(mining, "Materials_Collected");
+                                    }
+
+                                    data.TryGetValue("Exploration", out var explorationVal);
+                                    var exploration = (Dictionary<string, object>)explorationVal;
+                                    if (exploration?.Count > 0)
+                                    {
+                                        statistics.exploration.systemsvisited = JsonParsing.getOptionalLong(exploration, "Systems_Visited");
+                                        statistics.exploration.profits = JsonParsing.getOptionalLong(exploration, "Exploration_Profits");
+                                        statistics.exploration.planetsscannedlevel2 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_2");
+                                        statistics.exploration.planetsscannedlevel3 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_3");
+                                        statistics.exploration.highestpayout = JsonParsing.getOptionalLong(exploration, "Highest_Payout");
+                                        statistics.exploration.totalhyperspacedistance = JsonParsing.getOptionalDecimal(exploration, "Total_Hyperspace_Distance");
+                                        statistics.exploration.totalhyperspacejumps = JsonParsing.getOptionalLong(exploration, "Total_Hyperspace_Jumps");
+                                        statistics.exploration.greatestdistancefromstart = JsonParsing.getOptionalDecimal(exploration, "Greatest_Distance_From_Start");
+                                        statistics.exploration.timeplayedseconds = JsonParsing.getOptionalLong(exploration, "Time_Played");
+                                    }
+
+                                    data.TryGetValue("Passengers", out var passengersVal);
+                                    var passengers = (Dictionary<string, object>)passengersVal;
+                                    if (passengers?.Count > 0)
+                                    {
+                                        statistics.passengers.accepted = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Accepted");
+                                        statistics.passengers.disgruntled = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Disgruntled");
+                                        statistics.passengers.bulk = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Bulk");
+                                        statistics.passengers.vip = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_VIP");
+                                        statistics.passengers.delivered = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Delivered");
+                                        statistics.passengers.ejected = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Ejected");
+                                    }
+
+                                    data.TryGetValue("Search_And_Rescue", out var searchAndRescueVal);
+                                    var searchAndRescue = (Dictionary<string, object>)searchAndRescueVal;
+                                    if (searchAndRescue?.Count > 0)
+                                    {
+                                        statistics.searchandrescue.traded = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Traded");
+                                        statistics.searchandrescue.profit = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Profit");
+                                        statistics.searchandrescue.count = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Count");
+                                    }
+
+                                    data.TryGetValue("TG_ENCOUNTERS", out var thargoidVal);
+                                    var thargoid = (Dictionary<string, object>)thargoidVal;
+                                    if (thargoid?.Count > 0)
+                                    {
+                                        statistics.thargoidencounters.wakesscanned = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_WAKES");
+                                        statistics.thargoidencounters.imprints = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_IMPRINT");
+                                        statistics.thargoidencounters.totalencounters = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_TOTAL");
+                                        statistics.thargoidencounters.lastsystem = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SYSTEM");
+                                        statistics.thargoidencounters.lastshipmodel = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SHIP");
+                                        var lastTimeStampString = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_TIMESTAMP");
+                                        statistics.thargoidencounters.lasttimestamp = !string.IsNullOrEmpty(lastTimeStampString) ? DateTime.Parse(lastTimeStampString) : (DateTime?)null;
+                                    }
+
+                                    data.TryGetValue("Crafting", out var craftingVal);
+                                    var crafting = (Dictionary<string, object>)craftingVal;
+                                    if (crafting?.Count > 0)
+                                    {
+                                        statistics.crafting.countofusedengineers = JsonParsing.getOptionalLong(crafting, "Count_Of_Used_Engineers");
+                                        statistics.crafting.recipesgenerated = JsonParsing.getOptionalLong(crafting, "Recipes_Generated");
+                                        statistics.crafting.recipesgeneratedrank1 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_1");
+                                        statistics.crafting.recipesgeneratedrank2 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_2");
+                                        statistics.crafting.recipesgeneratedrank3 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_3");
+                                        statistics.crafting.recipesgeneratedrank4 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_4");
+                                        statistics.crafting.recipesgeneratedrank5 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_5");
+                                    }
+
+                                    data.TryGetValue("Crew", out var crewVal);
+                                    var crew = (Dictionary<string, object>)crewVal;
+                                    if (crew?.Count > 0)
+                                    {
+                                        statistics.npccrew.totalwages = JsonParsing.getOptionalLong(crew, "NpcCrew_TotalWages");
+                                        statistics.npccrew.hired = JsonParsing.getOptionalLong(crew, "NpcCrew_Hired");
+                                        statistics.npccrew.fired = JsonParsing.getOptionalLong(crew, "NpcCrew_Fired");
+                                        statistics.npccrew.died = JsonParsing.getOptionalLong(crew, "NpcCrew_Died");
+                                    }
+
+                                    data.TryGetValue("Multicrew", out var multicrewVal);
+                                    var multicrew = (Dictionary<string, object>)multicrewVal;
+                                    if (multicrew?.Count > 0)
+                                    {
+                                        statistics.multicrew.timetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Time_Total");
+                                        statistics.multicrew.gunnertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Gunner_Time_Total");
+                                        statistics.multicrew.fightertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fighter_Time_Total");
+                                        statistics.multicrew.multicrewcreditstotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Credits_Total");
+                                        statistics.multicrew.multicrewfinestotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fines_Total");
+                                    }
+
+                                    data.TryGetValue("Material_Trader_Stats", out var materialTraderVal);
+                                    var materialtrader = (Dictionary<string, object>)materialTraderVal;
+                                    if (materialtrader?.Count > 0)
+                                    {
+                                        statistics.materialtrader.tradescompleted = JsonParsing.getOptionalLong(materialtrader, "Trades_Completed");
+                                        statistics.materialtrader.materialstraded = JsonParsing.getOptionalLong(materialtrader, "Materials_Traded");
+                                        statistics.materialtrader.encodedmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Encoded_Materials_Traded");
+                                        statistics.materialtrader.rawmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Raw_Materials_Traded");
+                                        statistics.materialtrader.grade1materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_1_Materials_Traded");
+                                        statistics.materialtrader.grade2materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_2_Materials_Traded");
+                                        statistics.materialtrader.grade3materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_3_Materials_Traded");
+                                        statistics.materialtrader.grade4materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_4_Materials_Traded");
+                                        statistics.materialtrader.grade5materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_5_Materials_Traded");
+                                    }
+
+                                    data.TryGetValue("CQC", out var cqcVal);
+                                    var cqc = (Dictionary<string, object>)cqcVal;
+                                    if (cqc?.Count > 0)
+                                    {
+                                        statistics.cqc.creditsearned = JsonParsing.getOptionalLong(cqc, "CQC_Credits_Earned");
+                                        statistics.cqc.timeplayedseconds = JsonParsing.getOptionalLong(cqc, "CQC_Time_Played");
+                                        statistics.cqc.killdeathratio = JsonParsing.getOptionalDecimal(cqc, "CQC_KD");
+                                        statistics.cqc.kills = JsonParsing.getOptionalLong(cqc, "CQC_Kills");
+                                        statistics.cqc.winlossratio = JsonParsing.getOptionalDecimal(cqc, "CQC_WL");
+                                    }
+
+                                    events.Add(new StatisticsEvent(timestamp, statistics) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+
+                            #endregion
+
+                            #region Travel Events
+
                             case "ApproachBody":
                                 {
-                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    var system = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     events.Add(new NearSurfaceEvent(timestamp, true, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Docked":
+                                {
+                                    var systemName = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    GetStationNameAndType(data, out var stationName, out var stationLocalizedName, out var stationModel);
+
+                                    var controllingfaction = GetFaction(data, "Station", systemName, systemAddress);
+                                    var distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
+
+                                    // Get station landing pads data
+                                    var landingPads = GetLandingPads(data);
+
+                                    // Get station services data
+                                    data.TryGetValue("StationServices", out var val);
+                                    var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+                                    var stationServices = new List<StationService>();
+                                    foreach (var service in stationservices)
+                                    {
+                                        stationServices.Add(StationService.FromEDName(service));
+                                    }
+
+                                    // Get station economies and their shares
+                                    data.TryGetValue("StationEconomies", out var val2);
+                                    var economies = val2 as List<object> ?? new List<object>();
+                                    var Economies = new List<EconomyShare>();
+                                    foreach (var economyshare in economies.Cast<IDictionary<string, object>>() )
+                                    {
+                                        var economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                                        economy.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
+                                        var share = JsonParsing.getDecimal(economyshare, "Proportion");
+                                        if (economy != Economy.None && share > 0)
+                                        {
+                                            Economies.Add(new EconomyShare(economy, share));
+                                        }
+                                    }
+
+                                    var cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
+                                    var wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
+                                    var activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
+
+                                    var stationStateEdName = JsonParsing.getString( data, "StationState" );
+                                    var stationState = string.IsNullOrEmpty( stationStateEdName )
+                                        ? StationState.NormalOperation
+                                        : StationState.FromEDName( stationStateEdName );
+
+                                    var station = new Station()
+                                    {
+                                        name = stationName,
+                                        localizedName = stationLocalizedName,
+                                        marketId = marketId,
+                                        systemname = systemName,
+                                        systemAddress = systemAddress,
+                                        Model = stationModel,
+                                        Faction = controllingfaction,
+                                        stationServices = stationServices,
+                                        stationState = stationState,
+                                        economyShares = Economies,
+                                        distancefromstar = distancefromstar,
+                                        landingPads = landingPads
+                                    };
+
+                                    events.Add(new DockedEvent(timestamp, station, cockpitBreach, wanted, activeFine) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DockingCancelled":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    events.Add(new DockingCancelledEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DockingDenied":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    var reason = JsonParsing.getString(data, "Reason");
+                                    events.Add(new DockingDeniedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, reason) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DockingGranted":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    data.TryGetValue("LandingPad", out var val);
+                                    var landingPad = (int)(long)val;
+                                    events.Add(new DockingGrantedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPad) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DockingRequested":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+
+                                    // Get station landing pads data
+                                    var landingPads = GetLandingPads(data);
+
+                                    events.Add(new DockingRequestedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPads) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DockingTimeout":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+                                    events.Add(new DockingTimedOutEvent(timestamp, stationLocalizedName ?? stationName, stationType) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;                                
+                            case "FSDJump":
+                                {
+                                    var systemName = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    data.TryGetValue("StarPos", out var val);
+                                    var starPos = (List<object>)val;
+                                    var x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
+                                    var y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
+                                    var z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
+                                    var starName = JsonParsing.getString(data, "Body"); // Documented by the journal, but apparently never written. We can't rely on this being set.
+                                    var fuelUsed = JsonParsing.getDecimal(data, "FuelUsed");
+                                    var fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
+                                    var boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
+                                    var distance = JsonParsing.getDecimal(data, "JumpDist");
+                                    var controllingfaction = GetFaction(data, "System", systemName, systemAddress);
+                                    var economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy")) ?? Economy.None;
+                                    var economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy")) ?? Economy.None;
+                                    var security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity")) ?? SecurityLevel.None;
+                                    var population = JsonParsing.getOptionalLong(data, "Population");
+
+                                    // Parse factions array data
+                                    var factions = new List<Faction>();
+                                    data.TryGetValue("Factions", out var factionsVal);
+                                    if (factionsVal != null)
+                                    {
+                                        factions = GetFactions(factionsVal, systemName, systemAddress);
+                                    }
+
+                                    // Parse conflicts array data
+                                    var conflicts = new List<Conflict>();
+                                    data.TryGetValue("Conflicts", out var conflictsVal);
+                                    if (conflictsVal != null)
+                                    {
+                                        conflicts = GetConflicts(conflictsVal, factions);
+                                    }
+
+                                    // Powerplay data (if pledged)
+                                    GetPowerplayData( data, systemAddress, out var controllingPower,
+                                        out var powersInAcquisitionRange, out var powerplayState,
+                                        out var powerAcquisitionProgress,
+                                        out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
+                                        out var powerplayUnderminingControlPoints );
+
+                                    // Thargoid war data (if any)
+                                    GetThargoidWarData( data, out var thargoidWar );
+
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+
+                                    events.Add( new JumpedEvent( timestamp, systemName, systemAddress, x, y, z,
+                                        starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction,
+                                        factions, conflicts, economy, economy2, security, population, controllingPower,
+                                        powersInAcquisitionRange, powerplayState, powerAcquisitionProgress,
+                                        powerplayControlProgress, powerplayReinforcementControlPoints,
+                                        powerplayUnderminingControlPoints, taxi, multicrew, thargoidWar )
+                                    {
+                                        raw = line, fromLoad = fromLogLoad
+                                    } );
+                                }
+                                handled = true;
+                                break;
+                            case "FSDTarget":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var systemName = JsonParsing.getString(data, "Name");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var remainingJumpsInRoute = JsonParsing.getOptionalInt(data, "RemainingJumpsInRoute") ?? 0;
+                                    var starclass = JsonParsing.getString(data, "StarClass");
+                                    events.Add(new FSDTargetEvent(timestamp, systemName, systemAddress, remainingJumpsInRoute, starclass) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "LeaveBody":
                                 {
-                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    var system = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     events.Add(new NearSurfaceEvent(timestamp, false, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "ApproachSettlement":
+                            case "Liftoff":
                                 {
-                                    // The settlement name may be a proper name or a symbolic name.
-                                    var settlementName = JsonParsing.getString(data, "Name").ReplaceEnd('+');
-
-                                    // Symbolic names may include a localized name which may have an number appended to it (e.g. "Ancient Ruins (3)".
-                                    // If so, remove the appended number.
-                                    var localizedName = JsonParsing.getString(data, "Name_Localised");
-                                    if ( !string.IsNullOrEmpty(localizedName) )
-                                    {
-                                        localizedName = Regex.Replace( localizedName, @"\s\(\d\)", "" ).Trim();
-                                    }
-
-                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID"); // Tourist beacons and guardian structures are reported as settlements without MarketID
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var bodyName = JsonParsing.getString(data, "BodyName");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-
                                     var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
 
-                                    var controllingFaction = GetFaction(data, "Station", EDDI.Instance.CurrentStarSystem?.systemname, systemAddress);
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+
+                                    // The nearest destination may be a specific destination name or a generic signal source.
+                                    // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
+                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
+                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
+                                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                    {
+                                        nearestDestination.fallbackLocalizedName = localizedName;
+                                    }
+                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Location":
+                                {
+                                    var systemName = JsonParsing.getString(data, "StarSystem");
+
+                                    if (systemName == "Training")
+                                    {
+                                        // Training system; ignore
+                                        break;
+                                    }
+
+                                    data.TryGetValue("StarPos", out var val);
+                                    var starPos = (List<object>)val;
+                                    var x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
+                                    var y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
+                                    var z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var distFromStarLs = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
+
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
+                                    if ( bodyType == BodyType.Planet )
+                                    {
+                                        bodyType = EDDI.Instance.DataProvider.GetOrCreateStarSystem( systemAddress, systemName )?
+                                                       .bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
+                                                   bodyType;
+                                    }
+
+                                    var docked = JsonParsing.getBool(data, "Docked");
+                                    var systemfaction = GetFaction(data, "System", systemName, systemAddress);
+                                    var stationfaction = GetFaction(data, "Station", systemName, systemAddress);
+                                    var economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
+                                    var economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
+                                    var security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
+                                    var population = JsonParsing.getOptionalLong(data, "Population");
+
+                                    // If docked
+                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    string stationName = null;
+                                    string stationLocalizedName = null;
+                                    StationModel stationtype = null;
+                                    if ( marketId != null )
+                                    {
+                                        GetStationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
+                                    }
 
                                     // Get station services data
+                                    data.TryGetValue("StationServices", out val);
+                                    var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
                                     var stationServices = new List<StationService>();
-                                    if ( data.TryGetValue( "StationServices", out var val ) )
+                                    foreach (var service in stationservices)
                                     {
-                                        stationServices = ( val as List<object> )
-                                            .Cast<string>()
-                                            .Select( StationService.FromEDName )
-                                            .ToList();
+                                        stationServices.Add(StationService.FromEDName(service));
                                     }
 
                                     // Get station economies and their shares
+                                    data.TryGetValue("StationEconomies", out var val2);
+                                    var economies = val2 as List<object> ?? new List<object>();
                                     var Economies = new List<EconomyShare>();
-                                    if ( data.TryGetValue( "StationEconomies", out var val2 ) )
+                                    foreach (var economyshare in economies.Cast<IDictionary<string, object>>() )
                                     {
-                                        var economies = ( val2 as List<object> )
-                                            .Cast<Dictionary<string, object>>();
-                                        foreach ( var economyshare in economies )
+                                        var economyShare = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                                        economyShare.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
+                                        var share = JsonParsing.getDecimal(economyshare, "Proportion");
+                                        if (economyShare != Economy.None && share > 0)
                                         {
-                                            var economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
-                                            economy.fallbackLocalizedName = JsonParsing.getString( economyshare, "Name_Localised" );
-                                            var share = JsonParsing.getDecimal(economyshare, "Proportion");
-                                            if ( economy != Economy.None && share > 0 )
+                                            Economies.Add(new EconomyShare(economyShare, share));
+                                        }
+                                    }
+
+                                    // If landed
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+
+                                    // Parse factions array data
+                                    var factions = new List<Faction>();
+                                    data.TryGetValue("Factions", out var factionsVal);
+                                    if (factionsVal != null)
+                                    {
+                                        factions = GetFactions(factionsVal, systemName, systemAddress );
+                                    }
+
+                                    // Parse conflicts array data
+                                    var conflicts = new List<Conflict>();
+                                    data.TryGetValue("Conflicts", out var conflictsVal);
+                                    if (conflictsVal != null)
+                                    {
+                                        conflicts = GetConflicts(conflictsVal, factions);
+                                    }
+
+                                    // Powerplay data (if pledged)
+                                    GetPowerplayData( data, systemAddress, out var controllingPower,
+                                        out var powersInAcquisitionRange, out var powerplayState,
+                                        out var powerAcquisitionProgress,
+                                        out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
+                                        out var powerplayUnderminingControlPoints );
+
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
+                                    var inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
+                                    var onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
+
+                                    // Thargoid war data (if any)
+                                    GetThargoidWarData( data, out var thargoidWar );
+
+                                    // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
+                                    // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
+                                    if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
+                                    {
+                                        events.Add( new CarrierJumpedEvent( timestamp, systemName, systemAddress, x, y,
+                                            z, body, bodyId, bodyType, docked, onFoot, stationLocalizedName ?? stationName, stationtype, marketId,
+                                            stationServices, systemfaction, stationfaction, factions, conflicts,
+                                            Economies, economy, economy2, security, population, controllingPower,
+                                            powersInAcquisitionRange, powerplayState,
+                                            powerAcquisitionProgress, powerplayControlProgress,
+                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                                            thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
+                                    }
+                                    else
+                                    {
+                                        events.Add( new LocationEvent( timestamp, systemName, systemAddress, x, y, z,
+                                            distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked,
+                                            stationLocalizedName ?? stationName, stationtype, marketId, stationServices, systemfaction,
+                                            stationfaction, factions, conflicts, Economies, economy, economy2, security,
+                                            population, controllingPower, powersInAcquisitionRange, powerplayState,
+                                            powerAcquisitionProgress, powerplayControlProgress,
+                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                                            taxi, multicrew, inSRV, onFoot, thargoidWar )
+                                        {
+                                            raw = line, fromLoad = fromLogLoad
+                                        } );
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "NavRoute":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    if ( NavRouteInfo.TryFromFile(timestamp, true, out var navRoute, out var rawRoute))
+                                    {
+                                        events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
+                                        handled = true;
+                                    }
+                                }
+                                break;
+                            case "NavRouteClear":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    if ( NavRouteInfo.TryFromFile(timestamp, false, out var navRoute, out var rawRoute))
+                                    {
+                                        events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
+                                        handled = true;
+                                    }
+                                }
+                                break;
+                            case "StartJump":
+                                {
+                                    var target = JsonParsing.getString(data, "JumpType");
+                                    var stellarclass = JsonParsing.getString(data, "StarClass");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress"); // Present only when the FSD target is hyperspace
+                                    var isTaxi = JsonParsing.getOptionalBool( data, "Taxi" ) ?? false;
+                                    events.Add(new FSDEngagedEvent(timestamp, target, system, systemAddress, stellarclass, isTaxi) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "SupercruiseEntry":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var system = JsonParsing.getString(data, "StarySystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    events.Add(new EnteredSupercruiseEvent(timestamp, system, systemAddress, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SupercruiseExit":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
+                                    if ( bodyType == BodyType.Planet )
+                                    {
+                                        bodyType = EDDI.Instance.CurrentStarSystem?.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
+                                                   bodyType;
+                                    }
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType, taxi, multicrew) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Touchdown":
+                                {
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+                                    var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
+
+                                    var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+                                    var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+
+                                    // The nearest destination may be a specific destination name or a generic signal source.
+                                    // Per the journal manual, the NearestDestination is included if within 50km of a location listed in the nav panel
+                                    var nearestdestination = JsonParsing.getString(data, "NearestDestination");
+                                    var nearestDestination = SignalSource.FromEDName(nearestdestination) ?? new SignalSource();
+                                    var localizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                    if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                    {
+                                        nearestDestination.fallbackLocalizedName = localizedName;
+                                    }
+                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, system, systemAddress, body, bodyId, onStation, onPlanet, taxi, multicrew, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Undocked":
+                                {
+                                    var stationName = JsonParsing.getString(data, "StationName");
+                                    long? marketId = JsonParsing.getLong(data, "MarketID");
+                                    events.Add(new UndockedEvent(timestamp, stationName, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+
+                            #endregion
+
+                            #region Combat (and Combat Reward) Events
+
+                            case "Bounty":
+                                {
+                                    var target = JsonParsing.getString(data, "Target");
+                                    var target_localised = JsonParsing.getString( data, "Target_Localised" );
+                                    var victimName = JsonParsing.getString(data, "PilotName_Localised");
+                                    var victimFaction = GetFactionName(data, "VictimFaction");
+
+                                    data.TryGetValue("SharedWithOthers", out var val);
+                                    var shared = val != null && (long)val == 1;
+
+                                    long reward;
+                                    var rewards = new List<Reward>();
+
+                                    if (data.ContainsKey("Reward"))
+                                    {
+                                        // Old-style
+                                        data.TryGetValue("Reward", out val);
+                                        reward = (long)val;
+                                        if (reward == 0)
+                                        {
+                                            // 0-credit reward; ignore
+                                            break;
+                                        }
+                                        var factionName = GetFactionName(data, "Faction");
+                                        rewards.Add(new Reward(factionName, reward));
+                                    }
+                                    else
+                                    {
+                                        data.TryGetValue("TotalReward", out val);
+                                        reward = (long)val;
+                                        if (reward == 0)
+                                        {
+                                            // 0-credit reward; ignore
+                                            break;
+                                        }
+                                        // Obtain list of rewards
+                                        data.TryGetValue("Rewards", out val);
+                                        var rewardsData = (List<object>)val;
+                                        if (rewardsData != null)
+                                        {
+                                            foreach (var rewardData in rewardsData.Cast<IDictionary<string, object>>() )
                                             {
-                                                Economies.Add( new EconomyShare( economy, share ) );
+                                                var factionName = GetFactionName(rewardData, "Faction");
+                                                rewardData.TryGetValue("Reward", out val);
+                                                var factionReward = (long)val;
+
+                                                rewards.Add(new Reward(factionName, factionReward));
                                             }
                                         }
                                     }
 
-                                    events.Add(new SettlementApproachedEvent(timestamp, settlementName, localizedName, marketId, controllingFaction, stationServices, Economies, systemAddress, bodyName, bodyId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new BountyAwardedEvent(timestamp, target, target_localised, victimName, victimFaction, reward, rewards, shared) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CapShipBond":
+                                {
+                                    data.TryGetValue( "Reward", out var val );
+                                    var reward = (long)val;
+                                    var victimFaction = GetFactionName(data, "VictimFaction");
+                                    var awardingFaction = GetFactionName(data, "AwardingFaction");
+                                    events.Add( new BondAwardedEvent( timestamp, awardingFaction, victimFaction, reward ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
+                            case "Died":
+                                {
+                                    Killer parseKiller (IDictionary<string, object> killerData, bool singleKiller)
+                                    {
+                                        // Property names differ if there is a single killer vs. multiple killers
+                                        var name = JsonParsing.getString(killerData, singleKiller ? "KillerName" : "Name");
+                                        if (!string.IsNullOrEmpty(JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised")))
+                                        {
+                                            // This is an NPC with a symbolic name
+                                            name = NpcAuthorityShip.EDNameExists(name)
+                                                ? NpcAuthorityShip.FromEDName(name)?.localizedName
+                                                : JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised");
+                                        }
+
+                                        var equipment = JsonParsing.getString(killerData, singleKiller ? "KillerShip" : "Ship"); // May be a ship, a suit, etc.
+                                        var rating = CombatRating.FromEDName(JsonParsing.getString(killerData, singleKiller ? "KillerRank" : "Rank"));
+                                        return new Killer(name, equipment, rating);
+                                    }
+
+                                    var killers = new List<Killer>();
+                                    if (data.ContainsKey("KillerName"))
+                                    {
+                                        // Single killer
+                                        killers.Add(parseKiller(data, true));
+                                    }
+                                    if (data.ContainsKey("killers"))
+                                    {
+                                        // Multiple killers
+                                        data.TryGetValue("Killers", out var val);
+                                        var killersData = (List<object>)val;
+                                        foreach (var killerData in killersData.Cast<IDictionary<string, object>>() )
+                                        {
+                                            killers.Add(parseKiller(killerData, false));
+                                        }
+                                    }
+                                    events.Add(new DiedEvent(timestamp, killers) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "EscapeInterdiction":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var interdictor = JsonParsing.getString(data, "Interdictor");
+                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
+                                    var isThargoid = JsonParsing.getOptionalBool(data, "isThargoid") ?? false;
+
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
+                                    {
+                                        // This is an NPC with a symbolic name
+                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
+                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
+                                            : JsonParsing.getString(data, "Interdictor_Localised");
+                                    }
+                                    else if ( isThargoid )
+                                    {
+                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
+                                    }
+                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor"))
+                                    {
+                                        // This matches the pattern for an unknown ship interdiction attempt
+                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
+                                    }
+
+                                    events.Add(new ShipInterdictedEvent(timestamp, false, false, iscommander, isThargoid, interdictor, null, null, null) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "FactionKillBond":
+                                {
+                                    data.TryGetValue("Reward", out var val);
+                                    var reward = (long)val;
+                                    var victimFaction = GetFactionName(data, "VictimFaction");
+                                    var awardingFaction = GetFactionName(data, "AwardingFaction");
+                                    events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "FighterDestroyed":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var vehicle = "fighter";
+                                    var fighterId = JsonParsing.getInt(data, "ID");
+                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, null, fighterId) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "HeatDamage":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    events.Add(new HeatDamageEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "HeatWarning":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    events.Add( new HeatWarningEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
+                            case "HullDamage":
+                                {
+                                    var health = sensibleHealth(JsonParsing.getDecimal(data, "Health") * 100);
+                                    var piloted = JsonParsing.getOptionalBool(data, "PlayerPilot");
+                                    var fighter = JsonParsing.getOptionalBool(data, "Fighter");
+
+                                    var vehicle = EDDI.Instance.Vehicle;
+                                    if ( piloted == false )
+                                    {
+                                        if ( fighter == true )
+                                        {
+                                            vehicle = Constants.VEHICLE_FIGHTER;
+                                        }
+                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SRV )
+                                        {
+                                            vehicle = Constants.VEHICLE_SHIP;
+                                        }
+                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
+                                        {
+                                            vehicle = Constants.VEHICLE_SRV;
+                                        }
+                                    }
+
+                                    events.Add(new HullDamagedEvent(timestamp, vehicle, piloted, health) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Interdicted":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var submitted = JsonParsing.getBool(data, "Submitted");
+                                    var interdictor = JsonParsing.getString(data, "Interdictor");
+                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
+                                    var isThargoid = JsonParsing.getOptionalBool(data, "IsThargoid") ?? false;
+                                    data.TryGetValue("CombatRank", out var val);
+                                    var rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
+                                    var faction = GetFactionName(data, "Faction");
+                                    var power = JsonParsing.getString(data, "Power");
+
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
+                                    {
+                                        // This is an NPC with a symbolic name
+                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
+                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
+                                            : JsonParsing.getString(data, "Interdictor_Localised");
+                                    }
+                                    else if ( isThargoid )
+                                    {
+                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
+                                    }
+                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor") && string.IsNullOrEmpty(faction))
+                                    {
+                                        // This matches the pattern for an unknown ship interdiction attempt
+                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
+                                    }
+
+                                    events.Add(new ShipInterdictedEvent(timestamp, true, submitted, iscommander, isThargoid, interdictor, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "Interdiction":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var success = JsonParsing.getBool(data, "Success");
+                                    var interdictee = JsonParsing.getString(data, "Interdicted");
+                                    var iscommander = JsonParsing.getBool(data, "IsPlayer");
+                                    data.TryGetValue("CombatRank", out var val);
+                                    var rating = ( val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) ) );
+                                    var faction = GetFactionName(data, "Faction");
+                                    var power = JsonParsing.getString(data, "Power");
+
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")))
+                                    {
+                                        // This is an NPC with a symbolic name
+                                        interdictee = NpcAuthorityShip.EDNameExists(interdictee) 
+                                            ? NpcAuthorityShip.FromEDName(interdictee)?.localizedName 
+                                            : JsonParsing.getString(data, "Interdicted_Localised");
+                                    }
+
+                                    events.Add(new ShipInterdictionEvent(timestamp, success, iscommander, interdictee, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "PVPKill":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var victim = JsonParsing.getString(data, "Victim");
+                                    data.TryGetValue("CombatRank", out var val);
+                                    var rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+
+                                    events.Add(new KilledEvent(timestamp, victim, rating) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "ShieldState":
+                                // As of September 2019, this event no longer appears to be written to the Player Journal.
+                                // We still generate an event via the Status Monitor.
+                                handled = true;
+                                break;
+                            case "ShipTargeted":
+                                {
+                                    var targetlocked = JsonParsing.getBool(data, "TargetLocked");
+
+                                    // Target locked
+                                    var scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
+                                    VehicleDefinition fighterDef = null;
+                                    Ship shipDef = null;
+                                    var vehicleEDName = JsonParsing.getString(data, "Ship");
+                                    if ( vehicleEDName != null)
+                                    {
+                                        if (vehicleEDName.Contains("fighter", StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            fighterDef = VehicleDefinition.FromEDName( vehicleEDName );
+                                            fighterDef.fallbackLocalizedName = JsonParsing.getString( data, "Ship_Localised" );
+                                        }
+                                        else
+                                        {
+                                            shipDef = ShipDefinitions.FromEDModel(vehicleEDName, false);
+                                            if ( shipDef is null )
+                                            {
+                                                shipDef = ShipDefinitions.FromEDModel( vehicleEDName, true );
+                                                shipDef.model = JsonParsing.getString( data, "Ship_Localised" );
+                                            }
+                                        }
+                                    }
+
+                                    // Scan stage >= 1
+                                    var name = JsonParsing.getString(data, "PilotName");
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "PilotName_Localised")))
+                                    {
+                                        // This is an NPC with a symbolic name
+                                        name = NpcAuthorityShip.EDNameExists(name) 
+                                            ? NpcAuthorityShip.FromEDName(name)?.localizedName 
+                                            : JsonParsing.getString(data, "PilotName_Localised");
+                                    }
+
+                                    // Sometimes we don't get a localized name when we ought to.
+                                    // Strip out any remaining unlocalized content in the name.
+                                    const string unlocalizedNameRegex = @"\$.+;";
+                                    if ( !string.IsNullOrEmpty(name) && Regex.IsMatch( name, unlocalizedNameRegex ) )
+                                    {
+                                        var tidiedName = Regex.Replace( name, unlocalizedNameRegex, "" ).Trim();
+                                        if ( !string.IsNullOrEmpty(tidiedName) )
+                                        {
+                                            name = tidiedName;
+                                        }
+                                    }
+
+                                    var rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
+
+                                    // Scan stage >= 2
+                                    var shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
+                                    var hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
+
+                                    // Scan stage >= 3
+                                    var faction = JsonParsing.getString(data, "Faction");
+                                    var legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalStatus"));
+                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+                                    var bounty = JsonParsing.getOptionalInt(data, "Bounty");
+                                    string subsystemName = null;
+                                    decimal? subSystemHealth = null;
+                                    if ( data.ContainsKey( "Subsystem" ) )
+                                    {
+                                        var subsystemEDName = JsonParsing.getString( data, "Subsystem" );
+                                        subsystemName = subsystemEDName.StartsWith( "$ext_drive" ) 
+                                            ? EddiDataDefinitions.Properties.Modules.Thrusters // The `ShipTargeted` event uses non-standard drive names
+                                            : Module.FromEDName( subsystemEDName )?.localizedName;
+                                        if ( string.IsNullOrEmpty(subsystemName) )
+                                        {
+                                            subsystemName = JsonParsing.getString( data, "Subsystem_Localised" );
+                                        }
+                                        subSystemHealth = JsonParsing.getOptionalDecimal( data, "SubsystemHealth" );
+                                    }
+
+                                    events.Add(new ShipTargetedEvent(timestamp, targetlocked, shipDef, fighterDef, scanstage, name, rank, faction, power, legalStatus, bounty, shieldHealth, hullHealth, subsystemName, subSystemHealth) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SRVDestroyed":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var vehicle = "srv";
+                                    var srvId = JsonParsing.getOptionalInt(data, "ID");
+                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
+                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "UnderAttack":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var target = JsonParsing.getString(data, "Target");
+                                    events.Add(new UnderAttackEvent(timestamp, target) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                    break;
+                                }
+
+                            #endregion
+
+                            #region Exploration
+
+                            case "BuyExplorationData":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var system = JsonParsing.getString(data, "System");
+                                    var price = JsonParsing.getLong(data, "Cost");
+                                    events.Add(new ExplorationDataPurchasedEvent(timestamp, system, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "FSSAllBodiesFound":
+                                {
+                                    var systemName = JsonParsing.getString(data, "SystemName");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var count = JsonParsing.getInt(data, "Count");
+                                    events.Add(new SystemScanComplete(timestamp, systemName, systemAddress, count) { raw = line, fromLoad = fromLogLoad });
+
+                                }
+                                handled = true;
+                                break;
+                            case "FSSBodySignals":
+                                {
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var bodyName = JsonParsing.getString(data, "BodyName");
+                                    var bodyId = JsonParsing.getLong(data, "BodyID");
+                                    data.TryGetValue("Signals", out var signalsVal);
+
+                                    // These are surface signal sources from a body that we've scanned
+                                    var surfaceSignals = new List<SignalAmount>();
+                                    foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
+                                    {
+                                        var signalSource = JsonParsing.getString(signal, "Type");
+                                        var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                        var localizedName = JsonParsing.getString(data, "Type_Localised");
+                                        if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                        {
+                                            source.fallbackLocalizedName = localizedName;
+                                        }
+                                        var amount = JsonParsing.getInt(signal, "Count");
+                                        surfaceSignals.Add(new SignalAmount(source, amount));
+                                    }
+                                    surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
+                                    events.Add(new SurfaceSignalsEvent(timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "FSSDiscoveryScan":
+                                {
+                                    // A journal error was introduced in Odyssey 4.0 Update 17
+                                    // where FSSDiscoveryScan would report zero bodies and infinite progress.
+                                    // Don't parse `Progress` unless `BodyCount` is greater than zero.
+
+                                    var bodyCount = JsonParsing.getInt(data, "BodyCount"); // total number of stellar bodies in system
+                                    var nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // total number of non-body signals found
+                                    var progress = bodyCount > 0 ? JsonParsing.getDecimal(data, "Progress") : 0; // value from 0-1
+                                    events.Add( new DiscoveryScanEvent( timestamp, progress, bodyCount, nonBodyCount ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
+                            case "FSSSignalDiscovered":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+
+                                    var source = GetSignalSourceName(data);
+
+                                    source.spawningFaction = GetFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
+                                    source.SpawningPower = Power.FromEDName( JsonParsing.getString( data, "SpawningPower" ) ); // the Powerplay power, if relevant
+                                    source.OpposingPower = Power.FromEDName( JsonParsing.getString( data, "OpposingPower" ) ); // the opposing Powerplay power, if relevant
+
+                                    var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
+                                    source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)(secondsRemaining));
+
+                                    var spawningstate = JsonParsing.getString(data, "SpawningState");
+                                    var normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
+                                    source.spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
+                                    source.spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
+
+                                    source.threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
+                                    
+                                    events.Add(new SignalDetectedEvent(timestamp, systemAddress, source) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "MaterialCollected":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
+                                    data.TryGetValue("Count", out var val);
+                                    var amount = (int)(long)val;
+                                    events.Add(new MaterialCollectedEvent(timestamp, material, amount) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "MaterialDiscarded":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
+                                    data.TryGetValue("Count", out var val);
+                                    var amount = (int)(long)val;
+                                    events.Add(new MaterialDiscardedEvent(timestamp, material, amount) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "MaterialDiscovered":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
+                                    events.Add(new MaterialDiscoveredEvent(timestamp, material) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "MultiSellExplorationData":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var systems = new List<string>();
+                                    data.TryGetValue("Discovered", out var val);
+                                    var discovered = (List<object>)val;
+                                    foreach (var discoveredSystem in discovered.Cast<IDictionary<string, object>>() )
+                                    {
+                                        var system = JsonParsing.getString(discoveredSystem, "SystemName");
+                                        if (!string.IsNullOrEmpty(system))
+                                        {
+                                            systems.Add(system);
+                                        }
+                                    }
+                                    data.TryGetValue("BaseValue", out val);
+                                    decimal reward = (long)val;
+                                    data.TryGetValue("Bonus", out val);
+                                    decimal bonus = (long)val;
+                                    data.TryGetValue("TotalEarnings", out val);
+                                    decimal total = (long)val;
+                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "NavBeaconScan":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    data.TryGetValue("NumBodies", out var val);
+                                    var numbodies = (int)(long)val;
+                                    events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SAAScanComplete":
+                                {
+                                    var bodyName = JsonParsing.getString(data, "BodyName");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var probesUsed = JsonParsing.getInt(data, "ProbesUsed");
+                                    var efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
+
+                                    // Target may be either a ring or a body
+                                    var system = EDDI.Instance.CurrentStarSystem;
+                                    Body body = null;
+
+                                    if (system != null && bodyName.EndsWith(" Ring"))
+                                    {
+                                        // We've mapped a ring. 
+                                        Ring ring = null;
+                                        var ringedBodies = system.bodies?.Where(b => b?.rings?.Count > 0).ToList();
+                                        foreach (var ringedBody in ringedBodies)
+                                        {
+                                            ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
+                                            if (ring != null)
+                                            {
+                                                body = ringedBody;
+                                                break;
+                                            }
+                                        }
+                                        events.Add(new RingMappedEvent(timestamp, bodyName, ring, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else
+                                    {
+                                        // Prepare updated map details to update the body in our star system
+                                        body = system?.BodyWithID(bodyId);
+                                        if (!(body is null))
+                                        {
+                                            body.scannedDateTime = body.scannedDateTime ?? timestamp;
+                                            body.mappedDateTime = timestamp;
+                                            body.mappedEfficiently = probesUsed <= efficiencyTarget;
+                                            events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                        }
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "SAASignalsFound":
+                                {
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var bodyName = JsonParsing.getString(data, "BodyName");
+                                    var bodyId = JsonParsing.getLong(data, "BodyID");
+                                    data.TryGetValue("Signals", out var signalsVal);
+
+                                    if (bodyName.EndsWith(" Ring"))
+                                    {
+                                        // This is the mining hotspots from a ring that we've mapped
+                                        var hotspots = new List<CommodityAmount>();
+                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>() )
+                                        {
+                                            var commodityEdName = JsonParsing.getString(signal, "Type");
+                                            var type = CommodityDefinition.FromEDName(commodityEdName);
+                                            type.fallbackLocalizedName = JsonParsing.getString(signal, "Type_Localised");
+                                            var amount = JsonParsing.getInt(signal, "Count");
+                                            hotspots.Add(new CommodityAmount(type, amount));
+                                        }
+                                        hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
+
+                                        var ring = EDDI.Instance.CurrentStarSystem?.bodies?
+                                            .Where(b => b.rings.Any())
+                                            .SelectMany(b => b?.rings)?
+                                            .FirstOrDefault(r => r.name == bodyName);
+                                        if (ring != null)
+                                        {
+                                            ring.mapped = timestamp;
+                                            ring.hotspots = hotspots;
+                                            EDDI.Instance.DataProvider.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
+                                        }
+
+                                        events.Add(new RingHotspotsEvent(timestamp, systemAddress, bodyName, bodyId, hotspots) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else
+                                    {
+                                        // This is surface signal sources from a body that we've mapped
+                                        var surfaceSignals = new List<SignalAmount>();
+                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
+                                        {
+                                            var signalSource = JsonParsing.getString(signal, "Type");
+                                            var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                            var localizedName = JsonParsing.getString(data, "Type_Localised");
+                                            if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
+                                            {
+                                                source.fallbackLocalizedName = localizedName;
+                                            }
+                                            var amount = JsonParsing.getInt(signal, "Count");
+                                            surfaceSignals.Add(new SignalAmount(source, amount));
+                                        }
+                                        surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
+                                        events.Add(new SurfaceSignalsEvent(timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                    }
                                 }
                                 handled = true;
                                 break;
                             case "Scan":
                                 {
-                                    string name = JsonParsing.getString(data, "BodyName");
-                                    string scantype = JsonParsing.getString(data, "ScanType");
+                                    var name = JsonParsing.getString(data, "BodyName");
+                                    var scantype = JsonParsing.getString(data, "ScanType");
 
-                                    string systemName = JsonParsing.getString(data, "StarSystem");
+                                    var systemName = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
                                     // Belt
@@ -1053,25 +2042,25 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Common items
-                                    decimal distanceLs = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
+                                    var distanceLs = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
                                     // Need to convert radius from meters (per journal) to kilometers
-                                    decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
+                                    var radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
                                     // Need to convert orbital period from seconds (per journal) to days
-                                    decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
+                                    var orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
                                     // Need to convert rotation period from seconds (per journal) to days
-                                    decimal? rotationPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "RotationPeriod"));
+                                    var rotationPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "RotationPeriod"));
                                     // Need to convert meters to light seconds
-                                    decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
-                                    decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
-                                    decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
-                                    decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
-                                    decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
+                                    var semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
+                                    var eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
+                                    var orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
+                                    var periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
+                                    var axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
                                     // Parent body types and IDs
-                                    data.TryGetValue("Parents", out object parentsVal);
-                                    List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
+                                    data.TryGetValue("Parents", out var parentsVal);
+                                    var parents = new List<IDictionary<string, object>>();
                                     if (parentsVal != null)
                                     {
                                         foreach (var parent in ((List<object>)parentsVal).Cast<IDictionary<string, object>>() )
@@ -1085,7 +2074,7 @@ namespace EddiJournalMonitor
                                     var alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped");
 
                                     // Rings
-                                    data.TryGetValue("Rings", out object val);
+                                    data.TryGetValue("Rings", out var val);
                                     var ringsData = (List<object>)val;
                                     var rings = new List<Ring>();
                                     if (ringsData != null)
@@ -1177,9 +2166,9 @@ namespace EddiJournalMonitor
                                                 var compositionData = (IDictionary<string, object>)val;
                                                 foreach (var kv in compositionData)
                                                 {
-                                                    string edComposition = kv.Key;
+                                                    var edComposition = kv.Key;
                                                     // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
-                                                    decimal percent = ((decimal)(double)kv.Value) * 100;
+                                                    var percent = ((decimal)(double)kv.Value) * 100;
                                                     if (edComposition != null)
                                                     {
                                                         solidCompositions.Add(new SolidComposition(edComposition, percent));
@@ -1232,1250 +2221,32 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 break;
-                            case "DatalinkScan":
+                            case "Screenshot":
                                 {
-                                    string message = JsonParsing.getString(data, "Message");
-                                    events.Add(new DatalinkMessageEvent(timestamp, message) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DataScanned":
-                                {
-                                    DataScan datalinktype = DataScan.FromEDName(JsonParsing.getString(data, "Type"));
-                                    events.Add(new DataScannedEvent(timestamp, datalinktype) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Shipyard":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    if (ShipyardInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
-                                    {
-                                        events.Add(new ShipyardEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "ShipyardBuy":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-
-                                    // We don't have a ship ID at this point so use the ship type
-                                    string ship = JsonParsing.getString(data, "ShipType");
-
-                                    data.TryGetValue("ShipPrice", out object val);
-                                    long price = (long)val;
-
-                                    data.TryGetValue("StoreShipID", out val);
-                                    int? storedShipId = (val == null ? (int?)null : (int)(long)val);
-                                    string storedShip = JsonParsing.getString(data, "StoreOldShip");
-
-                                    data.TryGetValue("SellShipID", out val);
-                                    int? soldShipId = (val == null ? (int?)null : (int)(long)val);
-                                    string soldShip = JsonParsing.getString(data, "SellOldShip");
-
-                                    data.TryGetValue("SellPrice", out val);
-                                    long? soldPrice = (long?)val;
-                                    events.Add(new ShipPurchasedEvent(timestamp, ship, price, soldShip, soldShipId, soldPrice, storedShip, storedShipId, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ShipyardNew":
-                            case "ShipRedeemed":
-                                {
-                                    data.TryGetValue("NewShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "ShipType");
-
-                                    events.Add(new ShipDeliveredEvent(timestamp, ship, shipId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ShipyardSell":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-
-                                    data.TryGetValue("SellShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "ShipType");
-                                    data.TryGetValue("ShipPrice", out val);
-                                    long price = (long)val;
-                                    string system = JsonParsing.getString(data, "System"); // Only written when the ship is in a different star system
-                                    events.Add(new ShipSoldEvent(timestamp, ship, shipId, price, system, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "SellShipOnRebuy":
-                                {
-                                    data.TryGetValue("SellShipId", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "ShipType");
-                                    data.TryGetValue("ShipPrice", out val);
-                                    long price = (long)val;
-                                    string system = JsonParsing.getString(data, "System");
-                                    events.Add(new ShipSoldOnRebuyEvent(timestamp, ship, shipId, price, system) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ShipyardSwap":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "ShipType");
-
-                                    data.TryGetValue("StoreShipID", out val);
-                                    int? storedShipId = (val == null ? (int?)null : (int)(long)val);
-                                    string storedShip = JsonParsing.getString(data, "StoreOldShip");
-
-                                    data.TryGetValue("SellShipID", out val);
-                                    int? soldShipId = (val == null ? (int?)null : (int)(long)val);
-                                    string soldShip = JsonParsing.getString(data, "SellOldShip");
-
-                                    events.Add(new ShipSwappedEvent(timestamp, ship, shipId, soldShip, soldShipId, storedShip, storedShipId, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "StoredShips":
-                                {
-                                    var marketId = JsonParsing.getLong(data, "MarketID");
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var station = JsonParsing.getString(data, "StationName");
-
-                                    var shipyard = new List<Ship>();
-                                    foreach (var type in Enum.GetNames(typeof(ShipyardType)))
-                                    {
-                                        data.TryGetValue(type, out object val);
-                                        var shipsData = (List<object>)val;
-                                        if (shipsData != null)
-                                        {
-                                            foreach (var shipData in shipsData.Cast<IDictionary<string, object>>() )
-                                            {
-                                                var shipType = JsonParsing.getString(shipData, "ShipType");
-                                                var ship = ShipDefinitions.FromEDModel(shipType);
-                                                if (ship != null)
-                                                {
-                                                    ship.LocalId = JsonParsing.getInt(shipData, "ShipID");
-                                                    ship.name = JsonParsing.getString(shipData, "Name");
-                                                    ship.value = JsonParsing.getLong(shipData, "Value");
-                                                    ship.hot = JsonParsing.getOptionalBool(shipData, "Hot") ?? false;
-                                                    ship.intransit = JsonParsing.getOptionalBool(shipData, "InTransit") ?? false;
-                                                    ship.transferprice = JsonParsing.getOptionalLong(shipData, "TransferPrice");
-                                                    ship.transfertime = JsonParsing.getOptionalLong(shipData, "TransferTime");
-
-                                                    var shipSystemName = JsonParsing.getString(shipData, "StarSystem");
-                                                    var shipMarketID = JsonParsing.getOptionalLong( shipData, "ShipMarketID" );
-                                                    var stationWaypoint = EDDI.Instance.DataProvider.GetOrFetchStationWaypoint(
-                                                            shipSystemName ?? system, shipMarketID ?? marketId );
-                                                    ship.StoredLocation = stationWaypoint is null 
-                                                        ? null 
-                                                        : new Ship.Location( stationWaypoint );
-                                                    ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
-                                                    shipyard.Add(ship);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipyard) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "StoredModules":
-                                {
-                                    var storedModules = new List<StoredModule>();
-
-                                    var marketId = JsonParsing.getLong(data, "MarketID");
-                                    var system = JsonParsing.getString(data, "StarSystem");
-                                    var station = JsonParsing.getString(data, "StationName");
-
-                                    data.TryGetValue("Items", out object val);
-                                    var items = (List<object>)val;
-                                    if (items != null)
-                                    {
-                                        foreach (var item in items.Cast<IDictionary<string, object>>() )
-                                        {
-                                            var name = JsonParsing.getString(item, "Name");
-                                            Module module = new Module(Module.FromEDName(name))
-                                            {
-                                                hot = JsonParsing.getOptionalBool(item, "Hot") ?? false
-                                            };
-                                            item.TryGetValue("EngineerModifications", out val);
-                                            module.modificationEDName = JsonParsing.getString(item, "EngineerModifications");
-                                            module.modified = !string.IsNullOrEmpty(module.modificationEDName);
-                                            module.engineerlevel = module.modified ? JsonParsing.getInt(item, "Level") : 0;
-                                            module.engineermodification = Blueprint.FromEDNameAndGrade(module.modificationEDName, module.engineerlevel) ?? Blueprint.None;
-                                            module.engineerquality = module.modified ? JsonParsing.getDecimal(item, "Quality") : 0;
-
-                                            var storedModule = new StoredModule
-                                            {
-                                                module = module,
-                                                slot = JsonParsing.getInt(item, "StorageSlot"),
-                                                intransit = JsonParsing.getOptionalBool(item, "InTransit") ?? false,
-                                                system = JsonParsing.getString(item, "StarSystem"),
-                                                marketid = JsonParsing.getOptionalLong(item, "MarketID"),
-                                                transfercost = JsonParsing.getOptionalLong(item, "TransferCost"),
-                                                transfertime = JsonParsing.getOptionalLong(item, "TransferTime")
-                                            };
-                                            storedModules.Add(storedModule);
-                                        }
-                                    }
-                                    events.Add(new StoredModulesEvent(timestamp, marketId, station, system, storedModules) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "TechnologyBroker":
-                                {
-                                    var brokerType = JsonParsing.getString(data, "BrokerType");
-                                    var marketId = JsonParsing.getLong(data, "MarketID");
-
-                                    data.TryGetValue("ItemsUnlocked", out object val);
-                                    var itemsUnlocked = (List<object>)val;
-                                    var items = new List<Module>();
-                                    foreach (var item in itemsUnlocked)
-                                    {
-                                        var itemProperties = (Dictionary<string, object>)item;
-                                        var moduleEdName = JsonParsing.getString(itemProperties, "Name");
-                                        var module = Module.FromEDName(moduleEdName);
-                                        if (module == null)
-                                        {
-                                            // Unknown module
-                                            Logging.Info("Unknown module " + moduleEdName, JsonConvert.SerializeObject(item));
-                                        }
-                                        items.Add(module);
-                                    }
-
-                                    data.TryGetValue("Commodities", out val);
-                                    var commodities = (List<object>)val;
-                                    var Commodities = new List<CommodityAmount>();
-                                    foreach (var _commodity in commodities.Cast<IDictionary<string, object>>() )
-                                    {
-                                        var commodityEdName = JsonParsing.getString(_commodity, "Name");
-                                        var commodity = CommodityDefinition.FromEDName(commodityEdName);
-                                        var count = JsonParsing.getInt(_commodity, "Count");
-                                        if (commodity == null)
-                                        {
-                                            Logging.Info("Unknown commodity " + commodityEdName, JsonConvert.SerializeObject(_commodity));
-                                            continue;
-                                        }
-                                        Commodities.Add(new CommodityAmount(commodity, count));
-                                    }
-
-                                    data.TryGetValue("Materials", out val);
-                                    var materials = (List<object>)val;
-                                    var Materials = new List<MaterialAmount>();
-                                    foreach (var _material in materials.Cast<IDictionary<string, object>>() )
-                                    {
-                                        var materialEdName = JsonParsing.getString(_material, "Name");
-                                        var material = Material.FromEDName(materialEdName);
-                                        var count = JsonParsing.getInt(_material, "Count");
-                                        Materials.Add(new MaterialAmount(material, count));
-                                    }
-
-                                    events.Add(new TechnologyBrokerEvent(timestamp, brokerType, marketId, items, Commodities, Materials) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ShipyardTransfer":
-                                {
-                                    long toMarketId = JsonParsing.getLong(data, "MarketID");
-                                    long fromMarketId = JsonParsing.getLong(data, "ShipMarketID");
-
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-
-                                    string system = JsonParsing.getString(data, "System");
-                                    decimal distance = JsonParsing.getDecimal(data, "Distance");
-                                    long? price = JsonParsing.getOptionalLong(data, "TransferPrice");
-                                    long? time = JsonParsing.getOptionalLong(data, "TransferTime");
-
-                                    var ship = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == shipId);
-                                    if (ship is null)
-                                    {
-                                        string shipEDModel = JsonParsing.getString(data, "ShipType");
-                                        ship = ShipDefinitions.FromEDModel(shipEDModel);
-                                        ship.LocalId = shipId;
-                                    }
-
-                                    events.Add(new ShipTransferInitiatedEvent(timestamp, ship, system, distance, price, time, fromMarketId, toMarketId) { raw = line, fromLoad = fromLogLoad });
-
-                                    // Generate secondary event when the ship is arriving
-                                    if (time.HasValue)
-                                    {
-                                        ShipArrived();
-                                        async void ShipArrived()
-                                        {
-                                            // Include the station and system at which the transfer will arrive
-                                            string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
-                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
-                                            await Task.Delay((int)time * 1000);
-                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId) { fromLoad = fromLogLoad });
-                                        }
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "FetchRemoteModule":
-                                {
-
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    Module module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
-                                    data.TryGetValue("TransferCost", out val);
-                                    long transferCost = (long)val;
-                                    long? transferTime = JsonParsing.getOptionalLong(data, "TransferTime");
-
-                                    // Probably not useful. We'll get these but we won't tell the end user about them
-                                    data.TryGetValue("StorageSlot", out val);
-                                    int storageSlot = (int)(long)val;
-                                    data.TryGetValue("ServerId", out val);
-                                    long serverId = (long)val;
-
-                                    events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line, fromLoad = fromLogLoad });
-
-                                    // Generate a secondary event when the module is arriving
-
-                                    if (transferTime.HasValue)
-                                    {
-                                        ModuleArrived();
-                                        async void ModuleArrived()
-                                        {
-                                            // Include the station and system at which the transfer will arrive
-                                            string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
-                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
-                                            await Task.Delay((int)transferTime * 1000);
-                                            EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation) { fromLoad = fromLogLoad });
-                                        }
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "MassModuleStore":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    data.TryGetValue("Items", out val);
-                                    List<object> items = (List<object>)val;
-
-                                    var slots = new List<string>();
-                                    var modules = new List<Module>();
-
-                                    if (items != null)
-                                    {
-                                        foreach (var item in items.Cast<IDictionary<string, object>>() )
-                                        {
-                                            var slot = JsonParsing.getString(item, "Slot");
-                                            slots.Add(slot);
-
-                                            var module = Module.FromEDName(JsonParsing.getString(item, "Name"));
-                                            module.hot = JsonParsing.getBool(item, "Hot");
-                                            var engineerModifications = JsonParsing.getString(item, "EngineerModifications");
-                                            module.modified = engineerModifications != null;
-                                            module.engineerlevel = JsonParsing.getOptionalInt(item, "Level") ?? 0;
-                                            module.engineerquality = JsonParsing.getOptionalDecimal(item, "Quality") ?? 0;
-                                            module.engineermodification = Blueprint.FromEDNameAndGrade( engineerModifications, Convert.ToInt32(Math.Floor(module.engineerquality)) );
-                                            modules.Add(module);
-                                        }
-                                    }
-
-                                    events.Add(new ModulesStoredEvent(timestamp, ship, shipId, slots, modules, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ModuleBuy":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    string slot = JsonParsing.getString(data, "Slot");
-                                    Module buyModule = Module.FromEDName(JsonParsing.getString(data, "BuyItem"));
-                                    data.TryGetValue("BuyPrice", out val);
-                                    long buyPrice = (long)val;
-                                    buyModule.price = buyPrice;
-
-                                    // Set retrieved module defaults
-                                    buyModule.enabled = true;
-                                    buyModule.priority = 1;
-                                    buyModule.health = 100;
-                                    buyModule.modified = false;
-
-                                    Module sellModule = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
-                                    long? sellPrice = JsonParsing.getOptionalLong(data, "SellPrice");
-                                    Module storedModule = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
-
-                                    events.Add(new ModulePurchasedEvent(timestamp, ship, shipId, slot, buyModule, buyPrice, sellModule, sellPrice, storedModule, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ModuleRetrieve":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    string slot = JsonParsing.getString(data, "Slot");
-                                    Module module = Module.FromEDName(JsonParsing.getString(data, "RetrievedItem"));
-                                    module.hot = JsonParsing.getBool(data, "Hot");
-                                    string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
-                                    module.modified = engineerModifications != null;
-                                    module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
-                                    module.engineermodification = Blueprint.FromEDNameAndGrade(engineerModifications, module.engineerlevel) ?? Blueprint.None;
-                                    module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
-
-                                    // Set retrieved module defaults
-                                    module.price = module.value;
-                                    module.enabled = true;
-                                    module.priority = 1;
-                                    module.health = 100;
-
-                                    // Set module cost
-                                    data.TryGetValue("Cost", out val);
-                                    long? cost = JsonParsing.getOptionalLong(data, "Cost");
-
-                                    Module swapoutModule = Module.FromEDName(JsonParsing.getString(data, "SwapOutItem"));
-
-                                    events.Add(new ModuleRetrievedEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, swapoutModule, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ModuleSell":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    string slot = JsonParsing.getString(data, "Slot");
-                                    Module module = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
-                                    data.TryGetValue("SellPrice", out val);
-                                    long price = (long)val;
-
-                                    events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ModuleSellRemote":
-                                {
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    Module module = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
-                                    data.TryGetValue("SellPrice", out val);
-                                    long price = (long)val;
-
-                                    // Probably not useful. We'll get these but we won't tell the end user about them
-                                    data.TryGetValue("StorageSlot", out val);
-                                    int storageSlot = (int)(long)val;
-                                    data.TryGetValue("ServerId", out val);
-                                    long serverId = (long)val;
-
-                                    events.Add(new ModuleSoldFromStorageEvent(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ModuleStore":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    string slot = JsonParsing.getString(data, "Slot");
-                                    Module module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
-                                    module.hot = JsonParsing.getBool(data, "Hot");
-                                    string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
-                                    module.modified = engineerModifications != null;
-                                    module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
-                                    module.engineermodification = Blueprint.FromEDNameAndGrade(engineerModifications, module.engineerlevel) ?? Blueprint.None;
-                                    module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
-
-                                    data.TryGetValue("Cost", out val);
-                                    long? cost = JsonParsing.getOptionalLong(data, "Cost");
-
-                                    Module replacementModule = Module.FromEDName(JsonParsing.getString(data, "ReplacementItem"));
-                                    if (replacementModule != null)
-                                    {
-                                        replacementModule.price = replacementModule.value;
-                                        replacementModule.enabled = true;
-                                        replacementModule.priority = 1;
-                                        replacementModule.health = 100;
-                                        replacementModule.modified = false;
-                                    }
-
-                                    events.Add(new ModuleStoredEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, replacementModule, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ModuleSwap":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-
-                                    string fromSlot = JsonParsing.getString(data, "FromSlot");
-                                    Module fromModule = Module.FromEDName(JsonParsing.getString(data, "FromItem"));
-                                    string toSlot = JsonParsing.getString(data, "ToSlot");
-                                    Module toModule = Module.FromEDName(JsonParsing.getString(data, "ToItem"));
-
-                                    events.Add(new ModuleSwappedEvent(timestamp, ship, shipId, fromSlot, fromModule, toSlot, toModule, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Outfitting":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    if (OutfittingInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
-                                    {
-                                        events.Add(new OutfittingEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "SetUserShipName":
-                                {
-                                    data.TryGetValue("ShipID", out object val);
-                                    int shipId = (int)(long)val;
-                                    string ship = JsonParsing.getString(data, "Ship");
-                                    string name = JsonParsing.getString(data, "UserShipName");
-                                    string ident = JsonParsing.getString(data, "UserShipId");
-
-                                    events.Add(new ShipRenamedEvent(timestamp, ship, shipId, name, ident) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Music":
-                                {
-                                    string musicTrack = JsonParsing.getString(data, "MusicTrack");
-                                    events.Add(new MusicEvent(timestamp, musicTrack) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "LaunchSRV":
-                                {
-                                    string loadout = JsonParsing.getString(data, "Loadout");
-                                    bool playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
-                                    int? id = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, vehicleDefinition, id) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DockSRV":
-                                {
-                                    int? srvId = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new SRVDockedEvent(timestamp, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "SRVDestroyed":
-                                {
-                                    string vehicle = "srv";
-                                    int? srvId = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "LaunchFighter":
-                                {
-                                    string loadout = JsonParsing.getString(data, "Loadout");
-                                    int fighterId = JsonParsing.getInt(data, "ID");
-                                    bool playerControlled = JsonParsing.getBool(data, "PlayerControlled");
-                                    events.Add(new FighterLaunchedEvent(timestamp, loadout, fighterId, playerControlled) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DockFighter":
-                                {
-                                    int fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new FighterDockedEvent(timestamp, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "FighterDestroyed":
-                                {
-                                    string vehicle = "fighter";
-                                    int fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, null, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "FighterRebuilt":
-                                {
-                                    string loadout = JsonParsing.getString(data, "Loadout");
-                                    int fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new FighterRebuiltEvent(timestamp, loadout, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "VehicleSwitch":
-                                {
-                                    string to = JsonParsing.getString(data, "To");
-                                    if (to == "Fighter")
-                                    {
-                                        events.Add(new ControllingFighterEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
-                                    }
-                                    else if (to == "Mothership")
-                                    {
-                                        events.Add(new ControllingShipEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
-                                    }
-                                }
-                                break;
-                            case "Interdicted":
-                                {
-                                    bool submitted = JsonParsing.getBool(data, "Submitted");
-                                    string interdictor = JsonParsing.getString(data, "Interdictor");
-                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
-                                    var isThargoid = JsonParsing.getOptionalBool(data, "IsThargoid") ?? false;
-                                    data.TryGetValue("CombatRank", out object val);
-                                    CombatRating rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
-                                    string faction = GetFactionName(data, "Faction");
-                                    string power = JsonParsing.getString(data, "Power");
-
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
-                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
-                                            : JsonParsing.getString(data, "Interdictor_Localised");
-                                    }
-                                    else if ( isThargoid )
-                                    {
-                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
-                                    }
-                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor") && string.IsNullOrEmpty(faction))
-                                    {
-                                        // This matches the pattern for an unknown ship interdiction attempt
-                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
-                                    }
-
-                                    events.Add(new ShipInterdictedEvent(timestamp, true, submitted, iscommander, isThargoid, interdictor, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "EscapeInterdiction":
-                                {
-                                    string interdictor = JsonParsing.getString(data, "Interdictor");
-                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
-                                    var isThargoid = JsonParsing.getOptionalBool(data, "isThargoid") ?? false;
-
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
-                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
-                                            : JsonParsing.getString(data, "Interdictor_Localised");
-                                    }
-                                    else if ( isThargoid )
-                                    {
-                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
-                                    }
-                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor"))
-                                    {
-                                        // This matches the pattern for an unknown ship interdiction attempt
-                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
-                                    }
-
-                                    events.Add(new ShipInterdictedEvent(timestamp, false, false, iscommander, isThargoid, interdictor, null, null, null) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "Interdiction":
-                                {
-                                    bool success = JsonParsing.getBool(data, "Success");
-                                    string interdictee = JsonParsing.getString(data, "Interdicted");
-                                    bool iscommander = JsonParsing.getBool(data, "IsPlayer");
-                                    data.TryGetValue("CombatRank", out object val);
-                                    var rating = ( val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) ) );
-                                    string faction = GetFactionName(data, "Faction");
-                                    string power = JsonParsing.getString(data, "Power");
-
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        interdictee = NpcAuthorityShip.EDNameExists(interdictee) 
-                                            ? NpcAuthorityShip.FromEDName(interdictee)?.localizedName 
-                                            : JsonParsing.getString(data, "Interdicted_Localised");
-                                    }
-
-                                    events.Add(new ShipInterdictionEvent(timestamp, success, iscommander, interdictee, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "PVPKill":
-                                {
-                                    string victim = JsonParsing.getString(data, "Victim");
-                                    data.TryGetValue("CombatRank", out object val);
-                                    CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
-
-                                    events.Add(new KilledEvent(timestamp, victim, rating) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "MaterialCollected":
-                                {
-                                    Material material = Material.FromEDName(JsonParsing.getString(data, "Name"));
-                                    data.TryGetValue("Count", out object val);
-                                    int amount = (int)(long)val;
-                                    events.Add(new MaterialCollectedEvent(timestamp, material, amount) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "MaterialDiscarded":
-                                {
-                                    Material material = Material.FromEDName(JsonParsing.getString(data, "Name"));
-                                    data.TryGetValue("Count", out object val);
-                                    int amount = (int)(long)val;
-                                    events.Add(new MaterialDiscardedEvent(timestamp, material, amount) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "MaterialDiscovered":
-                                {
-                                    Material material = Material.FromEDName(JsonParsing.getString(data, "Name"));
-                                    events.Add(new MaterialDiscoveredEvent(timestamp, material) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "MaterialTrade":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string traderType = JsonParsing.getString(data, "TraderType");
-
-                                    data.TryGetValue("Paid", out object val);
-                                    Dictionary<string, object> paid = (Dictionary<string, object>)val;
-
-                                    string materialEdName = JsonParsing.getString(paid, "Material");
-                                    Material materialPaid = Material.FromEDName(materialEdName);
-                                    int materialPaidQty = JsonParsing.getInt(paid, "Quantity");
-
-                                    if (materialPaid == null)
-                                    {
-                                        Logging.Info("Unknown material " + materialEdName);
-                                        Logging.Info("Unknown material " + materialEdName, JsonConvert.SerializeObject(paid));
-                                    }
-
-                                    data.TryGetValue("Received", out val);
-                                    Dictionary<string, object> received = (Dictionary<string, object>)val;
-
-                                    Material materialReceived = Material.FromEDName(JsonParsing.getString(received, "Material"));
-                                    int materialReceivedQty = JsonParsing.getInt(received, "Quantity");
-
-                                    if (materialReceived == null)
-                                    {
-                                        Logging.Info("Unknown material " + materialEdName, JsonConvert.SerializeObject(received));
-                                    }
-
-                                    events.Add(new MaterialTradedEvent(timestamp, marketId, traderType, materialPaid, materialPaidQty, materialReceived, materialReceivedQty) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-
-                                    break;
-                                }
-                            case "ScientificResearch":
-                                {
-                                    data.TryGetValue("Name", out object val);
-                                    Material material = Material.FromEDName(JsonParsing.getString(data, "Name"));
-                                    int amount = JsonParsing.getInt(data, "Count");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    events.Add(new MaterialDonatedEvent(timestamp, material, amount, marketId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "StartJump":
-                                {
-                                    string target = JsonParsing.getString(data, "JumpType");
-                                    string stellarclass = JsonParsing.getString(data, "StarClass");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress"); // Present only when the FSD target is hyperspace
-                                    var isTaxi = JsonParsing.getOptionalBool( data, "Taxi" ) ?? false;
-                                    events.Add(new FSDEngagedEvent(timestamp, target, system, systemAddress, stellarclass, isTaxi) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "ReceiveText":
-                                {
-                                    var from = JsonParsing.getString(data, "From");
-                                    var localizedFrom = JsonParsing.getString(data, "From_Localised");
-                                    var channel = JsonParsing.getString(data, "Channel");
-                                    var message = JsonParsing.getString(data, "Message");
-                                    MessageChannel messageChannel;
-                                    MessageSource source;
-
-                                    if (from == string.Empty && channel == "npc" && (message.StartsWith("$COMMS_entered") || message.StartsWith("$CHAT_Intro")))
-                                    {
-                                        // We can safely ignore system messages that initialize the chat system or announce that we entered a channel - no event is needed. 
-                                        handled = true;
-                                        break;
-                                    }
-
-                                    if (
-                                        channel == "player" ||
-                                        channel == "wing" ||
-                                        channel == "friend" ||
-                                        channel == "voicechat" ||
-                                        channel == "local" ||
-                                        channel == "squadron" ||
-                                        channel == "starsystem" ||
-                                        channel == null
-                                    )
-                                    {
-                                        // Give priority to player messages
-                                        if (string.IsNullOrEmpty(channel))
-                                        {
-                                            // Multicrew messages omit the `channel` property
-                                            source = MessageSource.CrewMate;
-                                        }
-                                        else if (channel == "squadron")
-                                        {
-                                            source = MessageSource.SquadronMate;
-                                        }
-                                        else if (channel == "wing")
-                                        {
-                                            source = MessageSource.WingMate;
-                                        }
-                                        else
-                                        {
-                                            source = MessageSource.Commander;
-                                        }
-                                        messageChannel = MessageChannel.FromEDName(channel ?? "multicrew");
-                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, true, messageChannel, message) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        // This is NPC speech.  What's the source?
-                                        if (from.Contains("npc_name_decorate"))
-                                        {
-                                            source = MessageSource.FromMessage(from, message);
-                                            from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
-                                        }
-                                        else if (from.Contains("ShipName_") || from.Contains("_Scenario_"))
-                                        {
-                                            source = MessageSource.FromMessage(from, message);
-                                            if (!string.IsNullOrEmpty(localizedFrom))
-                                            {
-                                                // This is an NPC with a symbolic name
-                                                from = NpcAuthorityShip.EDNameExists(from) 
-                                                    ? NpcAuthorityShip.FromEDName(from)?.localizedName 
-                                                    : localizedFrom;
-                                            }
-                                        }
-                                        else if (from.StartsWith("$Name_AX_Military; "))
-                                        {
-                                            source = MessageSource.FromMessage(from, message);
-                                            from = from.Replace("$Name_AX_Military; ", "");
-                                        }
-                                        else if (message.StartsWith("$STATION_") || message.Contains("$Docking"))
-                                        {
-                                            source = MessageSource.Station;
-                                        }
-                                        else
-                                        {
-                                            source = MessageSource.NPC;
-                                        }
-                                        messageChannel = MessageChannel.FromEDName(channel);
-                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised"), EDDI.Instance.CurrentStarSystem, EDDI.Instance.CurrentStellarBody, EDDI.Instance.CurrentStation) { raw = line, fromLoad = fromLogLoad });
-
-                                        // See if we also want to spawn a specific event as well?
-                                        if (message == "$STATION_NoFireZone_entered;" && EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
-                                        {
-                                            events.Add(new StationNoFireZoneEnteredEvent(timestamp, false) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                        else if (message == "$STATION_NoFireZone_entered_deployed;")
-                                        {
-                                            events.Add(new StationNoFireZoneEnteredEvent(timestamp, true) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                        else if (message == "$STATION_NoFireZone_exited;")
-                                        {
-                                            events.Add(new StationNoFireZoneExitedEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                        else if (message.Contains("_StartInterdiction") || message.Contains("_Hitman_Interdiction"))
-                                        {
-                                            // Find out who is doing the interdicting
-                                            source = MessageSource.FromMessage(from, message);
-                                            events.Add(new NPCInterdictionCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                        else if (message.Contains("_Attack") || message.Contains("_OnAttackStart") || message.Contains("AttackRun") || message.Contains("OnDeclarePiracyAttack"))
-                                        {
-                                            // Find out who is doing the attacking
-                                            source = MessageSource.FromMessage(from, message);
-                                            events.Add(new NPCAttackCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                        else if (message.Contains("_OnStartScanCargo"))
-                                        {
-                                            // Find out who is doing the scanning
-                                            source = MessageSource.FromMessage(from, message);
-                                            events.Add(new NPCCargoScanCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "SendText":
-                                {
-                                    string to = JsonParsing.getString(data, "To");
-                                    string message = JsonParsing.getString(data, "Message");
-                                    events.Add(new MessageSentEvent(timestamp, to, message) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DockingRequested":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
-
-                                    // Get station landing pads data
-                                    var landingPads = GetLandingPads(data);
-
-                                    events.Add(new DockingRequestedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPads) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DockingGranted":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
-                                    data.TryGetValue("LandingPad", out object val);
-                                    int landingPad = (int)(long)val;
-                                    events.Add(new DockingGrantedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPad) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DockingDenied":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
-                                    string reason = JsonParsing.getString(data, "Reason");
-                                    events.Add(new DockingDeniedEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId, reason) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DockingCancelled":
-                                {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
-                                    events.Add(new DockingCancelledEvent(timestamp, stationLocalizedName ?? stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DockingTimeout":
-                                {
-                                    GetStationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
-                                    events.Add(new DockingTimedOutEvent(timestamp, stationLocalizedName ?? stationName, stationType) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "MiningRefined":
-                                {
-                                    string commodityName = JsonParsing.getString(data, "Type");
-
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
-                                    if (commodity == null)
-                                    {
-                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
-                                    }
-                                    events.Add(new CommodityRefinedEvent(timestamp, commodity) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "HeatWarning":
-                                events.Add(new HeatWarningEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                handled = true;
-                                break;
-                            case "HeatDamage":
-                                events.Add(new HeatDamageEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                handled = true;
-                                break;
-                            case "HullDamage":
-                                {
-                                    decimal health = sensibleHealth(JsonParsing.getDecimal(data, "Health") * 100);
-                                    bool? piloted = JsonParsing.getOptionalBool(data, "PlayerPilot");
-                                    bool? fighter = JsonParsing.getOptionalBool(data, "Fighter");
-
-                                    string vehicle = EDDI.Instance.Vehicle;
-                                    if ( piloted == false )
-                                    {
-                                        if ( fighter == true )
-                                        {
-                                            vehicle = Constants.VEHICLE_FIGHTER;
-                                        }
-                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SRV )
-                                        {
-                                            vehicle = Constants.VEHICLE_SHIP;
-                                        }
-                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
-                                        {
-                                            vehicle = Constants.VEHICLE_SRV;
-                                        }
-                                    }
-
-                                    events.Add(new HullDamagedEvent(timestamp, vehicle, piloted, health) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ShieldState":
-                                // As of September 2019, this event no longer appears to be written to the Player Journal.
-                                // We still generate an event via the Status Monitor.
-                                break;
-                            case "ShipTargeted":
-                                {
-                                    var targetlocked = JsonParsing.getBool(data, "TargetLocked");
-
-                                    // Target locked
-                                    var scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
-                                    VehicleDefinition fighterDef = null;
-                                    Ship shipDef = null;
-                                    var vehicleEDName = JsonParsing.getString(data, "Ship");
-                                    if ( vehicleEDName != null)
-                                    {
-                                        if (vehicleEDName.Contains("fighter", StringComparison.InvariantCultureIgnoreCase))
-                                        {
-                                            fighterDef = VehicleDefinition.FromEDName( vehicleEDName );
-                                            fighterDef.fallbackLocalizedName = JsonParsing.getString( data, "Ship_Localised" );
-                                        }
-                                        else
-                                        {
-                                            shipDef = ShipDefinitions.FromEDModel(vehicleEDName, false);
-                                            if ( shipDef is null )
-                                            {
-                                                shipDef = ShipDefinitions.FromEDModel( vehicleEDName, true );
-                                                shipDef.model = JsonParsing.getString( data, "Ship_Localised" );
-                                            }
-                                        }
-                                    }
-
-                                    // Scan stage >= 1
-                                    var name = JsonParsing.getString(data, "PilotName");
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "PilotName_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        name = NpcAuthorityShip.EDNameExists(name) 
-                                            ? NpcAuthorityShip.FromEDName(name)?.localizedName 
-                                            : JsonParsing.getString(data, "PilotName_Localised");
-                                    }
-
-                                    // Sometimes we don't get a localized name when we ought to.
-                                    // Strip out any remaining unlocalized content in the name.
-                                    const string unlocalizedNameRegex = @"\$.+;";
-                                    if ( !string.IsNullOrEmpty(name) && Regex.IsMatch( name, unlocalizedNameRegex ) )
-                                    {
-                                        var tidiedName = Regex.Replace( name, unlocalizedNameRegex, "" ).Trim();
-                                        if ( !string.IsNullOrEmpty(tidiedName) )
-                                        {
-                                            name = tidiedName;
-                                        }
-                                    }
-
-                                    var rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
-
-                                    // Scan stage >= 2
-                                    var shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
-                                    var hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
-
-                                    // Scan stage >= 3
-                                    var faction = JsonParsing.getString(data, "Faction");
-                                    var legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalStatus"));
-                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    var bounty = JsonParsing.getOptionalInt(data, "Bounty");
-                                    string subsystemName = null;
-                                    decimal? subSystemHealth = null;
-                                    if ( data.ContainsKey( "Subsystem" ) )
-                                    {
-                                        var subsystemEDName = JsonParsing.getString( data, "Subsystem" );
-                                        subsystemName = subsystemEDName.StartsWith( "$ext_drive" ) 
-                                            ? EddiDataDefinitions.Properties.Modules.Thrusters // The `ShipTargeted` event uses non-standard drive names
-                                            : Module.FromEDName( subsystemEDName )?.localizedName;
-                                        if ( string.IsNullOrEmpty(subsystemName) )
-                                        {
-                                            subsystemName = JsonParsing.getString( data, "Subsystem_Localised" );
-                                        }
-                                        subSystemHealth = JsonParsing.getOptionalDecimal( data, "SubsystemHealth" );
-                                    }
-
-                                    events.Add(new ShipTargetedEvent(timestamp, targetlocked, shipDef, fighterDef, scanstage, name, rank, faction, power, legalStatus, bounty, shieldHealth, hullHealth, subsystemName, subSystemHealth) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "UnderAttack":
-                                {
-                                    string target = JsonParsing.getString(data, "Target");
-                                    events.Add(new UnderAttackEvent(timestamp, target) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                    break;
-                                }
-                            case "SelfDestruct":
-                                events.Add(new SelfDestructEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                handled = true;
-                                break;
-                            case "Died":
-                                {
-                                    Killer parseKiller(IDictionary<string, object> killerData, bool singleKiller)
-                                    {
-                                        // Property names differ if there is a single killer vs. multiple killers
-                                        var name = JsonParsing.getString(killerData, singleKiller ? "KillerName" : "Name");
-                                        if (!string.IsNullOrEmpty(JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised")))
-                                        {
-                                            // This is an NPC with a symbolic name
-                                            name = NpcAuthorityShip.EDNameExists(name)
-                                                ? NpcAuthorityShip.FromEDName(name)?.localizedName
-                                                : JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised");
-                                        }
-
-                                        var equipment = JsonParsing.getString(killerData, singleKiller ? "KillerShip" : "Ship"); // May be a ship, a suit, etc.
-                                        var rating = CombatRating.FromEDName(JsonParsing.getString(killerData, singleKiller ? "KillerRank" : "Rank"));
-                                        return new Killer(name, equipment, rating);
-                                    }
-
-                                    var killers = new List<Killer>();
-                                    if (data.ContainsKey("KillerName"))
-                                    {
-                                        // Single killer
-                                        killers.Add(parseKiller(data, true));
-                                    }
-                                    if (data.ContainsKey("killers"))
-                                    {
-                                        // Multiple killers
-                                        data.TryGetValue("Killers", out object val);
-                                        List<object> killersData = (List<object>)val;
-                                        foreach (var killerData in killersData.Cast<IDictionary<string, object>>() )
-                                        {
-                                            killers.Add(parseKiller(killerData, false));
-                                        }
-                                    }
-                                    events.Add(new DiedEvent(timestamp, killers) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Resurrect":
-                                {
-                                    var option = JsonParsing.getString(data, "Option");
-                                    var price = JsonParsing.getLong(data, "Cost");
-                                    events.Add(new RespawnedEvent(timestamp, option, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "NavBeaconScan":
-                                {
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    data.TryGetValue("NumBodies", out object val);
-                                    int numbodies = (int)(long)val;
-                                    events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "FSSDiscoveryScan":
-                                {
-                                    // A journal error was introduced in Odyssey 4.0 Update 17
-                                    // where FSSDiscoveryScan would report zero bodies and infinite progress.
-                                    // Don't parse `Progress` unless `BodyCount` is greater than zero.
-
-                                    int bodyCount = JsonParsing.getInt(data, "BodyCount"); // total number of stellar bodies in system
-                                    int nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // total number of non-body signals found
-                                    decimal progress = bodyCount > 0 ? JsonParsing.getDecimal(data, "Progress") : 0; // value from 0-1
-                                    events.Add( new DiscoveryScanEvent( timestamp, progress, bodyCount, nonBodyCount ) { raw = line, fromLoad = fromLogLoad } );
-                                }
-                                handled = true;
-                                break;
-                            case "FSSSignalDiscovered":
-                                {
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-
-                                    var source = GetSignalSourceName(data);
-
-                                    source.spawningFaction = GetFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
-                                    source.SpawningPower = Power.FromEDName( JsonParsing.getString( data, "SpawningPower" ) ); // the Powerplay power, if relevant
-                                    source.OpposingPower = Power.FromEDName( JsonParsing.getString( data, "OpposingPower" ) ); // the opposing Powerplay power, if relevant
-
-                                    var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
-                                    source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)(secondsRemaining));
-
-                                    string spawningstate = JsonParsing.getString(data, "SpawningState");
-                                    string normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
-                                    source.spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
-                                    source.spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
-
-                                    source.threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
-                                    
-                                    events.Add(new SignalDetectedEvent(timestamp, systemAddress, source) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "BuyExplorationData":
-                                {
-                                    string system = JsonParsing.getString(data, "System");
-                                    long price = JsonParsing.getLong(data, "Cost");
-                                    events.Add(new ExplorationDataPurchasedEvent(timestamp, system, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "SAAScanComplete":
-                                {
-                                    string bodyName = JsonParsing.getString(data, "BodyName");
-                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
-                                    int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
-
-                                    // Target may be either a ring or a body
-                                    var system = EDDI.Instance.CurrentStarSystem;
-                                    Body body = null;
-
-                                    if (system != null && bodyName.EndsWith(" Ring"))
-                                    {
-                                        // We've mapped a ring. 
-                                        Ring ring = null;
-                                        List<Body> ringedBodies = system.bodies?.Where(b => b?.rings?.Count > 0).ToList();
-                                        foreach (Body ringedBody in ringedBodies)
-                                        {
-                                            ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
-                                            if (ring != null)
-                                            {
-                                                body = ringedBody;
-                                                break;
-                                            }
-                                        }
-                                        events.Add(new RingMappedEvent(timestamp, bodyName, ring, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        // Prepare updated map details to update the body in our star system
-                                        body = system?.BodyWithID(bodyId);
-                                        if (!(body is null))
-                                        {
-                                            body.scannedDateTime = body.scannedDateTime ?? timestamp;
-                                            body.mappedDateTime = timestamp;
-                                            body.mappedEfficiently = probesUsed <= efficiencyTarget;
-                                            events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
-                                        }
-                                    }
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var filename = JsonParsing.getString(data, "Filename");
+                                    data.TryGetValue("Width", out var val);
+                                    var width = (int)(long)val;
+                                    data.TryGetValue("Height", out val);
+                                    var height = (int)(long)val;
+                                    var system = JsonParsing.getString(data, "System");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+
+                                    events.Add(new ScreenshotEvent(timestamp, filename, width, height, system, body, longitude, latitude) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "SellExplorationData":
                                 {
-                                    data.TryGetValue("Systems", out object val);
-                                    List<string> systems = ((List<object>)val).Cast<string>().ToList();
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    data.TryGetValue("Systems", out var val);
+                                    var systems = ((List<object>)val).Cast<string>().ToList();
                                     data.TryGetValue("Discovered", out val);
-                                    List<string> firsts = ((List<object>)val).Cast<string>().ToList();
+                                    var firsts = ((List<object>)val).Cast<string>().ToList();
                                     data.TryGetValue("BaseValue", out val);
                                     decimal reward = (long)val;
                                     data.TryGetValue("Bonus", out val);
@@ -2486,52 +2257,73 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "MultiSellExplorationData":
+
+                            #endregion
+
+                            #region Trade (and Mining) Events
+
+                            case "AsteroidCracked":
                                 {
-                                    var systems = new List<string>();
-                                    data.TryGetValue("Discovered", out object val);
-                                    var discovered = (List<object>)val;
-                                    foreach (var discoveredSystem in discovered.Cast<IDictionary<string, object>>() )
-                                    {
-                                        var system = JsonParsing.getString(discoveredSystem, "SystemName");
-                                        if (!string.IsNullOrEmpty(system))
-                                        {
-                                            systems.Add(system);
-                                        }
-                                    }
-                                    data.TryGetValue("BaseValue", out val);
-                                    decimal reward = (long)val;
-                                    data.TryGetValue("Bonus", out val);
-                                    decimal bonus = (long)val;
-                                    data.TryGetValue("TotalEarnings", out val);
-                                    decimal total = (long)val;
-                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var bodyName = JsonParsing.getString(data, "Body");
+                                    events.Add(new AsteroidCrackedEvent(timestamp, bodyName) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Market":
+                            case "BuyTradeData":
                                 {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName_Localised") ?? JsonParsing.getString(data, "StationName");
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    if (MarketInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var system = JsonParsing.getString(data, "System");
+                                    data.TryGetValue("Cost", out var val);
+                                    var price = (long)val;
+
+                                    events.Add(new TradeDataPurchasedEvent(timestamp, system, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CollectCargo":
+                                {
+                                    var commodityName = JsonParsing.getString(data, "Type");
+                                    var commodity = CommodityDefinition.FromEDName(commodityName);
+                                    if (commodity == null)
                                     {
-                                        events.Add(new MarketEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
+                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                     }
+                                    var missionid = JsonParsing.getOptionalULong(data, "MissionID");
+                                    var stolen = JsonParsing.getBool(data, "Stolen");
+                                    events.Add(new CommodityCollectedEvent(timestamp, commodity, missionid, stolen) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "EjectCargo":
+                                {
+                                    var commodityName = JsonParsing.getString(data, "Type");
+                                    var commodity = CommodityDefinition.FromEDName(commodityName);
+                                    if (commodity == null)
+                                    {
+                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
+                                    }
+                                    var missionid = JsonParsing.getOptionalLong(data, "MissionID");
+                                    data.TryGetValue("Count", out var val);
+                                    var amount = (int)(long)val;
+                                    var abandoned = JsonParsing.getBool(data, "Abandoned");
+                                    events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, missionid, abandoned) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "MarketBuy":
                                 {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string commodityName = JsonParsing.getString(data, "Type");
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var commodityName = JsonParsing.getString(data, "Type");
+                                    var commodity = CommodityDefinition.FromEDName(commodityName);
                                     if (commodity == null)
                                     {
                                         Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                     }
-                                    int amount = JsonParsing.getInt(data, "Count");
-                                    int price = JsonParsing.getInt(data, "BuyPrice");
+                                    var amount = JsonParsing.getInt(data, "Count");
+                                    var price = JsonParsing.getInt(data, "BuyPrice");
                                     events.Add(new CommodityPurchasedEvent(timestamp, marketId, commodity, amount, price) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2557,6 +2349,140 @@ namespace EddiJournalMonitor
                                     var blackmarket = JsonParsing.getOptionalBool(data, "BlackMarket") ?? false;
 
                                     events.Add(new CommoditySoldEvent(timestamp, marketId, commodity, amount, sellPrice, profit, illegal, stolen, blackmarket) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "MiningRefined":
+                                {
+                                    var commodityName = JsonParsing.getString(data, "Type");
+                                    var commodity = CommodityDefinition.FromEDName(commodityName);
+                                    if (commodity == null)
+                                    {
+                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
+                                    }
+                                    events.Add(new CommodityRefinedEvent(timestamp, commodity) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+
+                            #endregion
+
+                            #region Station Services Events
+
+                            case "BuyAmmo":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    data.TryGetValue("Cost", out var val);
+                                    var price = (long)val;
+                                    events.Add(new ShipRestockedEvent(timestamp, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "BuyDrones":
+                                {
+                                    data.TryGetValue("Count", out var val);
+                                    var amount = (int)(long)val;
+                                    data.TryGetValue("BuyPrice", out val);
+                                    var price = (int)(long)val;
+                                    events.Add(new LimpetPurchasedEvent(timestamp, amount, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;                                
+                            case "CargoDepot":
+                                {
+                                    var missionid = JsonParsing.getULong(data, "MissionID");
+                                    var updatetype = JsonParsing.getString(data, "UpdateType");
+                                    var startmarketid = JsonParsing.getLong(data, "StartMarketID");
+                                    var endmarketid = JsonParsing.getLong(data, "EndMarketID");
+                                    var collected = JsonParsing.getInt(data, "ItemsCollected");
+                                    var delivered = JsonParsing.getInt(data, "ItemsDelivered");
+                                    var totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
+
+                                    // Not available in 'WingUpdate'
+                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "CargoType"));
+                                    var amount = JsonParsing.getOptionalInt(data, "Count");
+
+                                    // The Progress value represents pending progress for goods in transit: (ItemsCollected-ItemsDelivered)/TotalItemsToDeliver
+
+                                    events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, startmarketid, endmarketid, collected, delivered, totaltodeliver) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CommunityGoal":
+                                {
+                                    // There may be multiple goals in each event.
+                                    data.TryGetValue("CurrentGoals", out var goalsVal);
+                                    var goalsJson = JsonConvert.SerializeObject(goalsVal);
+                                    var goals = JsonConvert.DeserializeObject<List<CommunityGoal>>(goalsJson);
+                                    events.Add(new CommunityGoalsEvent(timestamp, goals) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CommunityGoalDiscard":
+                                {
+                                    var cgid = JsonParsing.getULong(data, "CGID");
+                                    events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CommunityGoalJoin":
+                                {
+                                    var cgid = JsonParsing.getULong(data, "CGID");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var system = JsonParsing.getString(data, "System");
+
+                                    var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.Active)
+                                    {
+                                        localisedname = name,
+                                        destinationsystem = system,
+                                        originsystem = system,
+                                        communal = true
+                                    };
+
+                                    events.Add(new MissionAcceptedEvent(timestamp, mission) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CommunityGoalReward":
+                                {
+                                    var cgid = JsonParsing.getULong(data, "CGID");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var system = JsonParsing.getString(data, "System");
+                                    data.TryGetValue("Reward", out var val);
+                                    var reward = (val == null ? 0 : (long)val);
+
+                                    events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, null, true, reward, null, null, null, null, null, 0) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CrewAssign":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var crewid = JsonParsing.getLong(data, "CrewID");
+                                    var role = getRole(data, "Role");
+                                    events.Add(new CrewAssignedEvent(timestamp, name, crewid, role) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CrewFire":
+                                {
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var crewid = JsonParsing.getLong(data, "CrewID");
+                                    events.Add(new CrewFiredEvent(timestamp, name, crewid) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CrewHire":
+                                {
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var crewid = JsonParsing.getLong(data, "CrewID");
+                                    var faction = GetFactionName(data, "Faction");
+                                    var price = JsonParsing.getLong(data, "Cost");
+                                    var rating = CombatRating.FromRank(JsonParsing.getInt(data, "CombatRank"));
+                                    events.Add(new CrewHiredEvent(timestamp, name, crewid, faction, price, rating) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2605,7 +2531,7 @@ namespace EddiJournalMonitor
                                     var blueprintpEdName = JsonParsing.getString(data, "BlueprintName");
                                     var blueprintId = JsonParsing.getLong(data, "BlueprintID");
 
-                                    data.TryGetValue("Level", out object val);
+                                    data.TryGetValue("Level", out var val);
                                     var level = (int)(long)val;
 
                                     var quality = JsonParsing.getOptionalDecimal(data, "Quality");
@@ -2621,7 +2547,7 @@ namespace EddiJournalMonitor
                                         // 2.2 style
                                         if (val is Dictionary<string, object> usedData)
                                         {
-                                            foreach (KeyValuePair<string, object> used in usedData)
+                                            foreach (var used in usedData)
                                             {
                                                 // Used could be a material or a commodity
                                                 var commodity = CommodityDefinition.FromEDName(used.Key);
@@ -2653,15 +2579,15 @@ namespace EddiJournalMonitor
                                 break;
                             case "EngineerProgress":
                                 {
-                                    data.TryGetValue("Engineers", out object val);
+                                    data.TryGetValue("Engineers", out var val);
                                     if (val != null)
                                     {
                                         // This is a startup entry. 
                                         // Update engineer progress / status data
-                                        List<object> engineers = (List<object>)val;
+                                        var engineers = (List<object>)val;
                                         foreach (var engineerData in engineers.Cast<IDictionary<string, object>>())
                                         {
-                                            Engineer engineer = parseEngineer(engineerData);
+                                            var engineer = parseEngineer(engineerData);
                                             if (!string.IsNullOrEmpty(engineer.name))
                                             {
                                                 Engineer.AddOrUpdate(engineer);
@@ -2673,8 +2599,8 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // This is a progress entry.
-                                        Engineer engineer = parseEngineer(data);
-                                        Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id).Copy();
+                                        var engineer = parseEngineer(data);
+                                        var lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id).Copy();
                                         Engineer.AddOrUpdate(engineer);
                                         if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
                                         {
@@ -2688,645 +2614,143 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "LoadGame":
+                            case "FetchRemoteModule":
                                 {
-                                    string commander = JsonParsing.getString(data, "Commander");
-                                    string frontierID = JsonParsing.getString(data, "FID");
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                    // Active expansions
-                                    bool horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false; // Whether the account has the Horizons DLC
-                                    bool odyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false; // Whether the account has the Odyssey DLC
-                                    Logging.Info($"Active expansions... Horizons: {horizons}, Odyssey: {odyssey}.");
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
 
-                                    string shipEDModel = JsonParsing.getString(data, "Ship"); // This describes a vehicle, whether ship or otherwise.
-                                                                                       // If on foot this may be a suit & if in an SRV then this may be an SRV.
-                                    string shipName = JsonParsing.getString(data, "ShipName");
-                                    string shipIdent = JsonParsing.getString(data, "ShipIdent");
-                                    long? shipId = JsonParsing.getOptionalLong(data, "ShipID"); // If on foot we'll get a suit ID here, which we need to treat as a long
+                                    var module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
+                                    data.TryGetValue("TransferCost", out val);
+                                    var transferCost = (long)val;
+                                    var transferTime = JsonParsing.getOptionalLong(data, "TransferTime");
 
-                                    // shipId may be null either if we're logging into CQC or if we're logging in while in an Apex taxi service
-                                    if (shipId == null)
+                                    // Probably not useful. We'll get these but we won't tell the end user about them
+                                    data.TryGetValue("StorageSlot", out val);
+                                    var storageSlot = (int)(long)val;
+                                    data.TryGetValue("ServerId", out val);
+                                    var serverId = (long)val;
+
+                                    events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line, fromLoad = fromLogLoad });
+
+                                    // Generate a secondary event when the module is arriving
+
+                                    if (transferTime.HasValue)
                                     {
-                                        if (!string.IsNullOrEmpty(shipEDModel) && shipEDModel.ToLowerInvariant().Contains("taxi"))
+                                        ModuleArrived();
+                                        async void ModuleArrived()
                                         {
-                                            // This is a taxi
-                                        }
-                                        else
-                                        {
-                                            // The LoadGame event for entering CQC contains no ship details.
-                                            // We are entering CQC. Flag it back to EDDI so we can ignore everything that happens until
-                                            // we're out of CQC again
-                                            events.Add(new EnteredCQCEvent(timestamp, commander) { raw = line, fromLoad = fromLogLoad });
-                                            handled = true;
-                                            break;
-                                        }
-                                    }
-                                    
-                                    bool? startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
-                                    bool? startDead = JsonParsing.getOptionalBool(data, "StartDead");
-
-                                    long credits = (long)JsonParsing.getOptionalLong(data, "Credits");
-                                    long loan = (long)JsonParsing.getOptionalLong(data, "Loan");
-
-                                    decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
-                                    decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
-
-                                    string version = JsonParsing.getString(data, "gameversion")?.Trim();
-                                    string build = JsonParsing.getString(data, "build")?.Trim();
-
-                                    GameMode mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
-                                    string group = JsonParsing.getString(data, "Group"); // The name of the group, only if the mode is "Group" 
-
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, odyssey, shipId, shipEDModel, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity, version, build) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CrewHire":
-                                {
-                                    string name = JsonParsing.getString(data, "Name");
-                                    long crewid = JsonParsing.getLong(data, "CrewID");
-                                    string faction = GetFactionName(data, "Faction");
-                                    long price = JsonParsing.getLong(data, "Cost");
-                                    CombatRating rating = CombatRating.FromRank(JsonParsing.getInt(data, "CombatRank"));
-                                    events.Add(new CrewHiredEvent(timestamp, name, crewid, faction, price, rating) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CrewFire":
-                                {
-                                    string name = JsonParsing.getString(data, "Name");
-                                    long crewid = JsonParsing.getLong(data, "CrewID");
-                                    events.Add(new CrewFiredEvent(timestamp, name, crewid) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CrewAssign":
-                                {
-                                    string name = JsonParsing.getString(data, "Name");
-                                    long crewid = JsonParsing.getLong(data, "CrewID");
-                                    string role = getRole(data, "Role");
-                                    events.Add(new CrewAssignedEvent(timestamp, name, crewid, role) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "NpcCrewPaidWage":
-                                {
-                                    var name = JsonParsing.getString(data, "NpcCrewName");
-                                    var crewid = JsonParsing.getLong(data, "NpcCrewId");
-                                    var amount = JsonParsing.getLong(data, "Amount");
-                                    // Delay `Crew paid wage` events to occur after events where the commander receives a payment.
-                                    if ( amount > 0 )
-                                    {
-                                        var crewPaidWageEvent = new CrewPaidWageEvent( timestamp, name, crewid, amount ) { raw = line, fromLoad = fromLogLoad };
-                                        if ( fromSpeechResponderTest )
-                                        {
-                                            events.Add( crewPaidWageEvent );
-                                        }
-                                        else
-                                        {
-                                            Task.Run( async () =>
-                                            {
-                                                await Task.Delay( TimeSpan.FromSeconds( 6 ) ).ConfigureAwait( false );
-                                                EDDI.Instance.enqueueEvent( crewPaidWageEvent );
-                                            } );
+                                            // Include the station and system at which the transfer will arrive
+                                            var arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
+                                            var arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
+                                            await Task.Delay((int)transferTime * 1000);
+                                            EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation) { fromLoad = fromLogLoad });
                                         }
                                     }
                                 }
                                 handled = true;
                                 break;
-                            case "NpcCrewRank":
+                            case "Market":
                                 {
-                                    string name = JsonParsing.getString(data, "NpcCrewName");
-                                    long crewid = JsonParsing.getLong(data, "NpcCrewId");
-                                    data.TryGetValue("RankCombat", out object val);
-                                    CombatRating rating = CombatRating.FromRank(Convert.ToInt32(val));
-                                    events.Add(new CrewPromotionEvent(timestamp, name, crewid, rating) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "JoinACrew":
-                                {
-                                    string captain = JsonParsing.getString(data, "Captain");
-                                    captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewJoinedEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "QuitACrew":
-                                {
-                                    string captain = JsonParsing.getString(data, "Captain");
-                                    captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewLeftEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ChangeCrewRole":
-                                {
-                                    string role = getRole(data, "Role");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewRoleChangedEvent(timestamp, role, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CrewMemberJoins":
-                                {
-                                    string member = JsonParsing.getString(data, "Crew");
-                                    member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewMemberJoinedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CrewMemberQuits":
-                                {
-                                    string member = JsonParsing.getString(data, "Crew");
-                                    member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewMemberLeftEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CrewLaunchFighter":
-                                {
-                                    string name = JsonParsing.getString(data, "Crew");
-                                    int fighterId = JsonParsing.getInt(data, "ID");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewMemberLaunchedEvent(timestamp, name, fighterId, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                }
-                                handled = true;
-                                break;
-                            case "CrewMemberRoleChange":
-                                {
-                                    string name = JsonParsing.getString(data, "Crew");
-                                    string role = getRole(data, "Role");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "KickCrewMember":
-                                {
-                                    string member = JsonParsing.getString(data, "Crew");
-                                    member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewMemberRemovedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "EndCrewSession":
-                                {
-                                    var onCrime = JsonParsing.getOptionalBool(data, "OnCrime");
-                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
-                                    events.Add(new CrewSessionEndedEvent(timestamp, onCrime, telepresence) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "BuyAmmo":
-                                {
-                                    data.TryGetValue("Cost", out object val);
-                                    long price = (long)val;
-                                    events.Add(new ShipRestockedEvent(timestamp, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "BuyDrones":
-                                {
-                                    data.TryGetValue("Count", out object val);
-                                    int amount = (int)(long)val;
-                                    data.TryGetValue("BuyPrice", out val);
-                                    int price = (int)(long)val;
-                                    events.Add(new LimpetPurchasedEvent(timestamp, amount, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "SellDrones":
-                                {
-                                    data.TryGetValue("Count", out object val);
-                                    int amount = (int)(long)val;
-                                    data.TryGetValue("SellPrice", out val);
-                                    int price = (int)(long)val;
-                                    events.Add(new LimpetSoldEvent(timestamp, amount, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "LaunchDrone":
-                                {
-                                    string kind = JsonParsing.getString(data, "Type");
-                                    events.Add(new LimpetLaunchedEvent(timestamp, kind) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "ClearSavedGame":
-                                {
-                                    string name = JsonParsing.getString(data, "Name");
-                                    string frontierID = JsonParsing.getString(data, "FID");
-                                    events.Add(new ClearedSaveEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "NewCommander":
-                                {
-                                    string name = JsonParsing.getString(data, "Name");
-                                    string frontierID = JsonParsing.getString(data, "FID");
-                                    string package = JsonParsing.getString(data, "Package");
-                                    events.Add(new CommanderStartedEvent(timestamp, name, frontierID, package) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Progress":
-                                {
-                                    data.TryGetValue("Combat", out object val);
-                                    decimal combat = (long?)val ?? 0;
-                                    data.TryGetValue("Trade", out val);
-                                    decimal trade = (long?)val ?? 0;
-                                    data.TryGetValue("Explore", out val);
-                                    decimal exploration = (long?)val ?? 0;
-                                    data.TryGetValue("CQC", out val);
-                                    decimal cqc = (long?)val ?? 0;
-                                    data.TryGetValue("Empire", out val);
-                                    decimal empire = (long?)val ?? 0;
-                                    data.TryGetValue("Federation", out val);
-                                    decimal federation = (long?)val ?? 0;
-                                    data.TryGetValue("Soldier", out val);
-                                    decimal soldier = (long?)val ?? 0;
-                                    data.TryGetValue("Exobiologist", out val);
-                                    decimal exobiologist = (long?)val ?? 0;
-
-                                    events.Add(new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation, soldier, exobiologist) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Rank":
-                                {
-                                    data.TryGetValue("Combat", out object val);
-                                    CombatRating combat = CombatRating.FromRank((int)((long?)val ?? 0));
-                                    data.TryGetValue("Trade", out val);
-                                    TradeRating trade = TradeRating.FromRank((int)((long?)val ?? 0));
-                                    data.TryGetValue("Explore", out val);
-                                    ExplorationRating exploration = ExplorationRating.FromRank((int)((long?)val ?? 0));
-                                    data.TryGetValue("CQC", out val);
-                                    CQCRating cqc = CQCRating.FromRank((int)((long?)val ?? 0));
-                                    data.TryGetValue("Empire", out val);
-                                    EmpireRating empire = EmpireRating.FromRank((int)((long?)val ?? 0));
-                                    data.TryGetValue("Federation", out val);
-                                    FederationRating federation = FederationRating.FromRank((int)((long?)val ?? 0));
-                                    data.TryGetValue("Soldier", out val);
-                                    MercenaryRating mercenary = MercenaryRating.FromRank((int)((long?)val ?? 0));
-                                    data.TryGetValue("Exobiologist", out val);
-                                    ExobiologistRating exobiologist = ExobiologistRating.FromRank((int)((long?)val ?? 0));
-
-                                    events.Add(new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation, mercenary, exobiologist) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Screenshot":
-                                {
-                                    string filename = JsonParsing.getString(data, "Filename");
-                                    data.TryGetValue("Width", out object val);
-                                    int width = (int)(long)val;
-                                    data.TryGetValue("Height", out val);
-                                    int height = (int)(long)val;
-                                    string system = JsonParsing.getString(data, "System");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-
-                                    events.Add(new ScreenshotEvent(timestamp, filename, width, height, system, body, longitude, latitude) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "BuyTradeData":
-                                {
-                                    string system = JsonParsing.getString(data, "System");
-                                    data.TryGetValue("Cost", out object val);
-                                    long price = (long)val;
-
-                                    events.Add(new TradeDataPurchasedEvent(timestamp, system, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "PayBounties":
-                                {
-                                    data.TryGetValue("Amount", out object val);
-                                    long amount = (long)val;
-                                    decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
-                                    bool allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    string faction = GetFactionName(data, "Faction");
-                                    int shipId = 0;
-                                    var shipIdLong = JsonParsing.getLong(data, "ShipID");
-                                    if (shipIdLong > 4293000000)
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var station = JsonParsing.getString(data, "StationName_Localised") ?? JsonParsing.getString(data, "StationName");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    if (MarketInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
                                     {
-                                        // This is a suit loadout ID. Use a null value since bounties associated with the commander, rather than the ship, are being paid.
-                                        shipIdLong = -1;
+                                        events.Add(new MarketEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
                                     }
-                                    else
-                                    {
-                                        shipId = (int)shipIdLong;
-                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "MassModuleStore":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                    events.Add(new BountyPaidEvent(timestamp, amount, brokerpercentage, allBounties, faction, shipId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "PayFines":
-                                {
-                                    data.TryGetValue("Amount", out object val);
-                                    long amount = (long)val;
-                                    decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
-                                    bool allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
-                                    string faction = GetFactionName(data, "Faction");
-                                    int shipId = 0;
-                                    var shipIdLong = JsonParsing.getLong(data, "ShipID");
-                                    if (shipIdLong >= 4293000000)
-                                    {
-                                        // This is a suit loadout ID. Use a -1 value to signal that fines associated with the commander, rather than the ship, are being paid.
-                                        shipIdLong = -1;
-                                    }
-                                    else
-                                    {
-                                        shipId = (int)shipIdLong;
-                                    }
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
 
-                                    events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, allFines, faction, shipId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "RefuelPartial":
-                                {
-                                    decimal amount = JsonParsing.getDecimal(data, "Amount");
-                                    data.TryGetValue("Cost", out object val);
-                                    long price = (long)val;
+                                    data.TryGetValue("Items", out val);
+                                    var items = (List<object>)val;
 
-                                    events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null, false) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "RefuelAll":
-                                {
-                                    decimal amount = JsonParsing.getDecimal(data, "Amount");
-                                    data.TryGetValue("Cost", out object val);
-                                    long price = (long)val;
+                                    var slots = new List<string>();
+                                    var modules = new List<Module>();
 
-                                    events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null, true) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "FuelScoop":
-                                {
-                                    // We're handling this via the Status Monitor
-                                }
-                                handled = true;
-                                break;
-                            case "Friends":
-                                {
-                                    string status = JsonParsing.getString(data, "Status");
-                                    string name = JsonParsing.getString(data, "Name");
-                                    name = name.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    events.Add(new FriendsEvent(timestamp, name, status) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "JetConeBoost":
-                                {
-                                    decimal boost = JsonParsing.getDecimal(data, "BoostValue");
-                                    events.Add(new JetConeBoostEvent(timestamp, boost) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "JetConeDamage":
-                                {
-                                    string modulename = JsonParsing.getString(data, "Module");
-                                    Module module = Module.FromEDName(modulename);
-                                    if (module != null)
+                                    if (items != null)
                                     {
-                                        if (module.Mount != null)
+                                        foreach (var item in items.Cast<IDictionary<string, object>>() )
                                         {
-                                            // This is a weapon so provide a bit more information
-                                            string mount = module.mount;
-                                            modulename = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
-                                        }
-                                        else
-                                        {
-                                            modulename = module.localizedName;
+                                            var slot = JsonParsing.getString(item, "Slot");
+                                            slots.Add(slot);
+
+                                            var module = Module.FromEDName(JsonParsing.getString(item, "Name"));
+                                            module.hot = JsonParsing.getBool(item, "Hot");
+                                            var engineerModifications = JsonParsing.getString(item, "EngineerModifications");
+                                            module.modified = engineerModifications != null;
+                                            module.engineerlevel = JsonParsing.getOptionalInt(item, "Level") ?? 0;
+                                            module.engineerquality = JsonParsing.getOptionalDecimal(item, "Quality") ?? 0;
+                                            module.engineermodification = Blueprint.FromEDNameAndGrade( engineerModifications, Convert.ToInt32(Math.Floor(module.engineerquality)) );
+                                            modules.Add(module);
                                         }
                                     }
 
-                                    events.Add(new JetConeDamageEvent(timestamp, modulename, module) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new ModulesStoredEvent(timestamp, ship, shipId, slots, modules, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "RedeemVoucher":
+                            case "MaterialTrade":
                                 {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var traderType = JsonParsing.getString(data, "TraderType");
 
-                                    var type = JsonParsing.getString(data, "Type");
-                                    var rewards = new List<Reward>();
+                                    data.TryGetValue("Paid", out var val);
+                                    var paid = (Dictionary<string, object>)val;
 
-                                    // Obtain list of factions
-                                    data.TryGetValue("Factions", out object val);
-                                    var factionsData = (List<object>)val;
-                                    if (factionsData != null)
-                                    {
-                                        foreach (var rewardData in factionsData.Cast<IDictionary<string, object>>())
-                                        {
-                                            var factionName = GetFactionName(rewardData, "Faction");
-                                            rewardData.TryGetValue("Amount", out val);
-                                            var factionReward = (long)val;
+                                    var materialEdName = JsonParsing.getString(paid, "Material");
+                                    var materialPaid = Material.FromEDName(materialEdName);
+                                    var materialPaidQty = JsonParsing.getInt(paid, "Quantity");
 
-                                            rewards.Add(new Reward(factionName, factionReward));
-                                        }
-                                    }
-                                    else
+                                    if (materialPaid == null)
                                     {
-                                        var factionName = GetFactionName(data, "Faction");
-                                        data.TryGetValue("Amount", out val);
-                                        var factionReward = (long)val;
+                                        Logging.Info("Unknown material " + materialEdName);
+                                        Logging.Info("Unknown material " + materialEdName, JsonConvert.SerializeObject(paid));
+                                    }
 
-                                        rewards.Add(new Reward(factionName, factionReward));
-                                    }
-                                    data.TryGetValue("Amount", out val);
-                                    var amount = (long)val;
+                                    data.TryGetValue("Received", out val);
+                                    var received = (Dictionary<string, object>)val;
 
-                                    var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+                                    var materialReceived = Material.FromEDName(JsonParsing.getString(received, "Material"));
+                                    var materialReceivedQty = JsonParsing.getInt(received, "Quantity");
 
-                                    if (type == "bounty")
+                                    if (materialReceived == null)
                                     {
-                                        events.Add(new BountyRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
+                                        Logging.Info("Unknown material " + materialEdName, JsonConvert.SerializeObject(received));
                                     }
-                                    else if (type == "CombatBond")
-                                    {
-                                        events.Add(new BondRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else if (type == "trade")
-                                    {
-                                        events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else if (type == "codex" || type == "settlement" || type == "scannable")
-                                    {
-                                        events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        Logging.Warn("Unhandled voucher type " + type, line);
-                                    }
+
+                                    events.Add(new MaterialTradedEvent(timestamp, marketId, traderType, materialPaid, materialPaidQty, materialReceived, materialReceivedQty) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+
+                                    break;
                                 }
-                                handled = true;
-                                break;
-                            case "CommunityGoal":
-                                {
-                                    // There may be multiple goals in each event.
-                                    data.TryGetValue("CurrentGoals", out object goalsVal);
-                                    string goalsJson = JsonConvert.SerializeObject(goalsVal);
-                                    List<CommunityGoal> goals = JsonConvert.DeserializeObject<List<CommunityGoal>>(goalsJson);
-                                    events.Add(new CommunityGoalsEvent(timestamp, goals) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CommunityGoalJoin":
-                                {
-                                    var cgid = JsonParsing.getULong(data, "CGID");
-                                    var name = JsonParsing.getString(data, "Name");
-                                    var system = JsonParsing.getString(data, "System");
-
-                                    var mission = new Mission(cgid, "MISSION_CommunityGoal", null, MissionStatus.Active)
-                                    {
-                                        localisedname = name,
-                                        destinationsystem = system,
-                                        originsystem = system,
-                                        communal = true
-                                    };
-
-                                    events.Add(new MissionAcceptedEvent(timestamp, mission) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CommunityGoalDiscard":
-                                {
-                                    var cgid = JsonParsing.getULong(data, "CGID");
-                                    events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CommunityGoalReward":
-                                {
-                                    var cgid = JsonParsing.getULong(data, "CGID");
-                                    string name = JsonParsing.getString(data, "Name");
-                                    string system = JsonParsing.getString(data, "System");
-                                    data.TryGetValue("Reward", out object val);
-                                    long reward = (val == null ? 0 : (long)val);
-
-                                    events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, null, true, reward, null, null, null, null, null, 0) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CargoDepot":
+                            case "MissionAbandoned":
                                 {
                                     var missionid = JsonParsing.getULong(data, "MissionID");
-                                    var updatetype = JsonParsing.getString(data, "UpdateType");
-                                    var startmarketid = JsonParsing.getLong(data, "StartMarketID");
-                                    var endmarketid = JsonParsing.getLong(data, "EndMarketID");
-                                    var collected = JsonParsing.getInt(data, "ItemsCollected");
-                                    var delivered = JsonParsing.getInt(data, "ItemsDelivered");
-                                    var totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
-
-                                    // Not available in 'WingUpdate'
-                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "CargoType"));
-                                    var amount = JsonParsing.getOptionalInt(data, "Count");
-
-                                    // The Progress value represents pending progress for goods in transit: (ItemsCollected-ItemsDelivered)/TotalItemsToDeliver
-
-                                    events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, startmarketid, endmarketid, collected, delivered, totaltodeliver) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Missions":
-                                {
-                                    var possibleStatuses = new [] 
-                                    {
-                                        MissionStatus.Active, 
-                                        MissionStatus.Failed, 
-                                        MissionStatus.Complete
-                                    };
-
-                                    var missions = new List<Mission>();
-                                    foreach (var status in possibleStatuses)
-                                    {
-                                        data.TryGetValue(status.invariantName, out object val);
-                                        List<object> missionLog = (List<object>)val;
-
-                                        foreach (object mission in missionLog)
-                                        {
-                                            var missionProperties = (Dictionary<string, object>)mission;
-                                            var missionId = JsonParsing.getULong(missionProperties, "MissionID");
-                                            var name = JsonParsing.getString(missionProperties, "Name");
-                                            var localizedName = JsonParsing.getString(missionProperties, "Name_Localised");
-                                            var expires = JsonParsing.getDecimal(missionProperties, "Expires");
-
-                                            // Colonization missions use the actual unit timestamp rather than a timestamp offset so we need to handle those as a special case.
-                                            var expiry = name == "$Mission_Colonisation_Initial_Name;"
-                                                ? Dates.fromTimestamp( Convert.ToInt64( expires ) ) ?? DateTime.MinValue
-                                                : timestamp.AddSeconds( (double)expires );
-
-                                            // If mission is 'Active' and expires = 0, then set status to 'Claim'
-                                            var missionStatus = status == MissionStatus.Active && expires == 0 
-                                                ? MissionStatus.Claim: 
-                                                status;
-                                            var newMission = new Mission( missionId, name, expiry, missionStatus )
-                                            {
-                                                localisedname = localizedName
-                                            };
-                                            if (newMission == null)
-                                            {
-                                                // Mal-formed mission
-                                                Logging.Error("Bad mission entry", mission);
-                                            }
-                                            else
-                                            {
-                                                missions.Add(newMission);
-                                            }
-                                        }
-                                    }
-                                    events.Add(new MissionsEvent(timestamp, missions) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Passengers":
-                                {
-                                    List<Passenger> passengers = new List<Passenger>();
-                                    data.TryGetValue("Manifest", out object val);
-                                    List<object> passengerManifest = (List<object>)val;
-
-                                    foreach (object passenger in passengerManifest)
-                                    {
-                                        Dictionary<string, object> passengerProperties = (Dictionary<string, object>)passenger;
-                                        var missionid = JsonParsing.getULong(passengerProperties, "MissionID");
-                                        string type = JsonParsing.getString(passengerProperties, "Type");
-                                        bool vip = JsonParsing.getBool(passengerProperties, "VIP");
-                                        bool wanted = JsonParsing.getBool(passengerProperties, "Wanted");
-                                        int amount = JsonParsing.getInt(passengerProperties, "Count");
-
-                                        Passenger newPassenger = new Passenger(missionid, type, vip, wanted, amount);
-                                        if (newPassenger == null)
-                                        {
-                                            // Mal-formed mission
-                                            Logging.Error("Bad mission entry", passenger);
-                                        }
-                                        else
-                                        {
-                                            passengers.Add(newPassenger);
-                                        }
-                                    }
-                                    events.Add(new PassengersEvent(timestamp, passengers) { raw = line, fromLoad = fromLogLoad });
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var fine = JsonParsing.getOptionalLong(data, "Fine") ?? 0;
+                                    events.Add(new MissionAbandonedEvent(timestamp, missionid, name, fine) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "MissionAccepted":
                                 {
                                     var missionid = JsonParsing.getULong( data, "MissionID" );
-                                    data.TryGetValue("Expiry", out object val);
-                                    DateTime? expiry = (DateTime?)val;
+                                    data.TryGetValue("Expiry", out var val);
+                                    var expiry = (DateTime?)val;
                                     var name = JsonParsing.getString(data, "Name");
                                     var localisedname = JsonParsing.getString(data, "LocalisedName");
                                     if (!string.IsNullOrEmpty(localisedname))
@@ -3509,7 +2933,7 @@ namespace EddiJournalMonitor
                                     var amount = JsonParsing.getOptionalInt(data, "Count");
 
                                     var permitsAwarded = new List<string>();
-                                    data.TryGetValue("PermitsAwarded", out object val);
+                                    data.TryGetValue("PermitsAwarded", out var val);
                                     var permitsAwardedData = (List<object>)val;
                                     if (permitsAwardedData != null)
                                     {
@@ -3611,27 +3035,6 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "MissionAbandoned":
-                                {
-                                    var missionid = JsonParsing.getULong(data, "MissionID");
-                                    var name = JsonParsing.getString(data, "Name");
-                                    var fine = JsonParsing.getOptionalLong(data, "Fine") ?? 0;
-                                    events.Add(new MissionAbandonedEvent(timestamp, missionid, name, fine) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "MissionRedirected":
-                                {
-                                    var missionid = JsonParsing.getULong(data, "MissionID");
-                                    string name = JsonParsing.getString(data, "Name");
-                                    string newdestinationstation = JsonParsing.getString(data, "NewDestinationStation");
-                                    string olddestinationstation = JsonParsing.getString(data, "OldDestinationStation");
-                                    string newdestinationsystem = JsonParsing.getString(data, "NewDestinationSystem");
-                                    string olddestinationsystem = JsonParsing.getString(data, "OldDestinationSystem");
-                                    events.Add(new MissionRedirectedEvent(timestamp, missionid, name, newdestinationstation, olddestinationstation, newdestinationsystem, olddestinationsystem) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
                             case "MissionFailed":
                                 {
                                     var missionid = JsonParsing.getULong(data, "MissionID");
@@ -3641,73 +3044,311 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "SearchAndRescue":
+                            case "MissionRedirected":
                                 {
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string commodityName = JsonParsing.getString(data, "Name");
-                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Name"));
-                                    if (commodity == null)
-                                    {
-                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
-                                    }
-                                    data.TryGetValue("Count", out object val);
-                                    int? amount = (int?)(long?)val;
-                                    data.TryGetValue("Reward", out val);
-                                    long reward = (val == null ? 0 : (long)val);
-                                    events.Add(new SearchAndRescueEvent(timestamp, commodity, amount, reward, marketId) { raw = line, fromLoad = fromLogLoad });
+                                    var missionid = JsonParsing.getULong(data, "MissionID");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    var newdestinationstation = JsonParsing.getString(data, "NewDestinationStation");
+                                    var olddestinationstation = JsonParsing.getString(data, "OldDestinationStation");
+                                    var newdestinationsystem = JsonParsing.getString(data, "NewDestinationSystem");
+                                    var olddestinationsystem = JsonParsing.getString(data, "OldDestinationSystem");
+                                    events.Add(new MissionRedirectedEvent(timestamp, missionid, name, newdestinationstation, olddestinationstation, newdestinationsystem, olddestinationsystem) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "AfmuRepairs":
+                            case "ModuleBuy":
                                 {
-                                    string item = JsonParsing.getString(data, "Module");
-                                    // Item might be a module
-                                    Module module = Module.FromEDName(item);
-                                    if (module != null)
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
+
+                                    var slot = JsonParsing.getString(data, "Slot");
+                                    var buyModule = Module.FromEDName(JsonParsing.getString(data, "BuyItem"));
+                                    data.TryGetValue("BuyPrice", out val);
+                                    var buyPrice = (long)val;
+                                    buyModule.price = buyPrice;
+
+                                    // Set retrieved module defaults
+                                    buyModule.enabled = true;
+                                    buyModule.priority = 1;
+                                    buyModule.health = 100;
+                                    buyModule.modified = false;
+
+                                    var sellModule = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
+                                    var sellPrice = JsonParsing.getOptionalLong(data, "SellPrice");
+                                    var storedModule = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
+
+                                    events.Add(new ModulePurchasedEvent(timestamp, ship, shipId, slot, buyModule, buyPrice, sellModule, sellPrice, storedModule, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ModuleRetrieve":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
+
+                                    var slot = JsonParsing.getString(data, "Slot");
+                                    var module = Module.FromEDName(JsonParsing.getString(data, "RetrievedItem"));
+                                    module.hot = JsonParsing.getBool(data, "Hot");
+                                    var engineerModifications = JsonParsing.getString(data, "EngineerModifications");
+                                    module.modified = engineerModifications != null;
+                                    module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                    module.engineermodification = Blueprint.FromEDNameAndGrade(engineerModifications, module.engineerlevel) ?? Blueprint.None;
+                                    module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
+
+                                    // Set retrieved module defaults
+                                    module.price = module.value;
+                                    module.enabled = true;
+                                    module.priority = 1;
+                                    module.health = 100;
+
+                                    // Set module cost
+                                    data.TryGetValue("Cost", out val);
+                                    var cost = JsonParsing.getOptionalLong(data, "Cost");
+
+                                    var swapoutModule = Module.FromEDName(JsonParsing.getString(data, "SwapOutItem"));
+
+                                    events.Add(new ModuleRetrievedEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, swapoutModule, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ModuleSell":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
+
+                                    var slot = JsonParsing.getString(data, "Slot");
+                                    var module = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
+                                    data.TryGetValue("SellPrice", out val);
+                                    var price = (long)val;
+
+                                    events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ModuleSellRemote":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
+
+                                    var module = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
+                                    data.TryGetValue("SellPrice", out val);
+                                    var price = (long)val;
+
+                                    // Probably not useful. We'll get these but we won't tell the end user about them
+                                    data.TryGetValue("StorageSlot", out val);
+                                    var storageSlot = (int)(long)val;
+                                    data.TryGetValue("ServerId", out val);
+                                    var serverId = (long)val;
+
+                                    events.Add(new ModuleSoldFromStorageEvent(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ModuleStore":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
+
+                                    var slot = JsonParsing.getString(data, "Slot");
+                                    var module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
+                                    module.hot = JsonParsing.getBool(data, "Hot");
+                                    var engineerModifications = JsonParsing.getString(data, "EngineerModifications");
+                                    module.modified = engineerModifications != null;
+                                    module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                    module.engineermodification = Blueprint.FromEDNameAndGrade(engineerModifications, module.engineerlevel) ?? Blueprint.None;
+                                    module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
+
+                                    data.TryGetValue("Cost", out val);
+                                    var cost = JsonParsing.getOptionalLong(data, "Cost");
+
+                                    var replacementModule = Module.FromEDName(JsonParsing.getString(data, "ReplacementItem"));
+                                    if (replacementModule != null)
                                     {
-                                        if (module.Mount != null)
-                                        {
-                                            // This is a weapon so provide a bit more information
-                                            string mount;
-                                            if (module.Mount == ModuleMount.Fixed)
-                                            {
-                                                mount = "fixed";
-                                            }
-                                            else if (module.Mount == ModuleMount.Gimballed)
-                                            {
-                                                mount = "gimballed";
-                                            }
-                                            else
-                                            {
-                                                mount = "turreted";
-                                            }
-                                            item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
-                                        }
-                                        else
-                                        {
-                                            item = module.localizedName;
-                                        }
+                                        replacementModule.price = replacementModule.value;
+                                        replacementModule.enabled = true;
+                                        replacementModule.priority = 1;
+                                        replacementModule.health = 100;
+                                        replacementModule.modified = false;
                                     }
 
-                                    // There is an FDev bug that can set `FullyRepaired` to false even when the module health is full,
-                                    // so we work around this by relying on the `Health` property rather than the `FullyRepaired` property.
-                                    // This appears to be a unique problem with Module Reinforcement Packages.
+                                    events.Add(new ModuleStoredEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, replacementModule, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ModuleSwap":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
 
-                                    decimal health = JsonParsing.getDecimal(data, "Health");
-                                    bool repairedfully = health == 1M;
+                                    var fromSlot = JsonParsing.getString(data, "FromSlot");
+                                    var fromModule = Module.FromEDName(JsonParsing.getString(data, "FromItem"));
+                                    var toSlot = JsonParsing.getString(data, "ToSlot");
+                                    var toModule = Module.FromEDName(JsonParsing.getString(data, "ToItem"));
 
-                                    events.Add(new ShipAfmuRepairedEvent(timestamp, item, repairedfully, health) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new ModuleSwappedEvent(timestamp, ship, shipId, fromSlot, fromModule, toSlot, toModule, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Outfitting":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var station = JsonParsing.getString(data, "StationName");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    if (OutfittingInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
+                                    {
+                                        events.Add(new OutfittingEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "PayBounties":
+                                {
+                                    data.TryGetValue("Amount", out var val);
+                                    var amount = (long)val;
+                                    var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+                                    var allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
+                                    var faction = GetFactionName(data, "Faction");
+                                    int shipId;
+                                    var shipIdLong = JsonParsing.getLong(data, "ShipID");
+                                    if (shipIdLong > 4293000000)
+                                    {
+                                        // This is a suit loadout ID. Use a null value since bounties associated with the commander, rather than the ship, are being paid.
+                                        shipId = -1;
+                                    }
+                                    else
+                                    {
+                                        shipId = (int)shipIdLong;
+                                    }
+
+                                    events.Add(new BountyPaidEvent(timestamp, amount, brokerpercentage, allBounties, faction, shipId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "PayFines":
+                                {
+                                    data.TryGetValue("Amount", out var val);
+                                    var amount = (long)val;
+                                    var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+                                    var allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
+                                    var faction = GetFactionName(data, "Faction");
+                                    var shipId = 0;
+                                    var shipIdLong = JsonParsing.getLong(data, "ShipID");
+                                    if (shipIdLong >= 4293000000)
+                                    {
+                                        // This is a suit loadout ID. Use a -1 value to signal that fines associated with the commander, rather than the ship, are being paid.
+                                        shipIdLong = -1;
+                                    }
+                                    else
+                                    {
+                                        shipId = (int)shipIdLong;
+                                    }
+
+                                    events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, allFines, faction, shipId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "RedeemVoucher":
+                                {
+                                    var type = JsonParsing.getString(data, "Type");
+                                    var rewards = new List<Reward>();
+
+                                    // Obtain list of factions
+                                    data.TryGetValue("Factions", out var val);
+                                    var factionsData = (List<object>)val;
+                                    if (factionsData != null)
+                                    {
+                                        foreach (var rewardData in factionsData.Cast<IDictionary<string, object>>())
+                                        {
+                                            var factionName = GetFactionName(rewardData, "Faction");
+                                            rewardData.TryGetValue("Amount", out val);
+                                            var factionReward = (long)val;
+
+                                            rewards.Add(new Reward(factionName, factionReward));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var factionName = GetFactionName(data, "Faction");
+                                        data.TryGetValue("Amount", out val);
+                                        var factionReward = (long)val;
+
+                                        rewards.Add(new Reward(factionName, factionReward));
+                                    }
+                                    data.TryGetValue("Amount", out val);
+                                    var amount = (long)val;
+
+                                    var brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+
+                                    if (type == "bounty")
+                                    {
+                                        events.Add(new BountyRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else if (type == "CombatBond")
+                                    {
+                                        events.Add(new BondRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else if (type == "trade")
+                                    {
+                                        events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else if (type == "codex" || type == "settlement" || type == "scannable")
+                                    {
+                                        events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else
+                                    {
+                                        Logging.Warn("Unhandled voucher type " + type, line);
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "RefuelAll":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var amount = JsonParsing.getDecimal(data, "Amount");
+                                    data.TryGetValue("Cost", out var val);
+                                    var price = (long)val;
+
+                                    events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null, true) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "RefuelPartial":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var amount = JsonParsing.getDecimal(data, "Amount");
+                                    data.TryGetValue("Cost", out var val);
+                                    var price = (long)val;
+
+                                    events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null, false) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "Repair":
                                 {
-                                    data.TryGetValue("Cost", out object val);
-                                    long price = (long)val;
+                                    data.TryGetValue("Cost", out var val);
+                                    var price = (long)val;
 
                                     // Starting with version 3.7, the "Repair" event may contain one item or multiple items
                                     // Each item is either a description (e.g. all, wear, hull, paint) or the name of a module
-                                    data.TryGetValue("Items", out object itemsVal);
+                                    data.TryGetValue("Items", out var itemsVal);
                                     if (itemsVal != null)
                                     {
                                         if (itemsVal is List<object> itemEDNames)
@@ -3718,7 +3359,7 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // We have a single "item"
-                                        string itemEDName = JsonParsing.getString(data, "Item");
+                                        var itemEDName = JsonParsing.getString(data, "Item");
                                         if (!string.IsNullOrEmpty(itemEDName))
                                         {
                                             events.Add(new ShipRepairedEvent(timestamp, itemEDName, price) { raw = line, fromLoad = fromLogLoad });
@@ -3727,164 +3368,389 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "RepairDrone":
-                                {
-                                    decimal? hull = JsonParsing.getOptionalDecimal(data, "HullRepaired");
-                                    decimal? cockpit = JsonParsing.getOptionalDecimal(data, "CockpitRepaired");
-                                    decimal? corrosion = JsonParsing.getOptionalDecimal(data, "CorrosionRepaired");
-
-                                    events.Add(new ShipRepairDroneEvent(timestamp, hull, cockpit, corrosion) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
                             case "RepairAll":
                                 {
-                                    data.TryGetValue("Cost", out object val);
-                                    long price = (long)val;
+                                    data.TryGetValue("Cost", out var val);
+                                    var price = (long)val;
                                     events.Add(new ShipRepairedEvent(timestamp, "All", price) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "RebootRepair":
+                            case "ScientificResearch":
                                 {
-                                    // This event returns a list of slots rather than actual module ednames.
-                                    List<string> compartmentsJson = null;
-                                    data.TryGetValue( "Modules", out var val );
-                                    if ( val is List<string> ls )
+                                    data.TryGetValue("Name", out var val);
+                                    var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
+                                    var amount = JsonParsing.getInt(data, "Count");
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    events.Add(new MaterialDonatedEvent(timestamp, material, amount, marketId) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "SearchAndRescue":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var commodityName = JsonParsing.getString(data, "Name");
+                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Name"));
+                                    if (commodity == null)
                                     {
-                                        compartmentsJson = ls;
+                                        Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                     }
-                                    else if ( val is List<object> lo )
-                                    {
-                                        compartmentsJson = lo.Select( o => o.ToString() ).ToList();
-                                    }
-                                    events.Add(new ShipRebootedEvent( timestamp, compartmentsJson ) { raw = line, fromLoad = fromLogLoad });
+                                    data.TryGetValue("Count", out var val);
+                                    var amount = (int?)(long?)val;
+                                    data.TryGetValue("Reward", out val);
+                                    var reward = (val == null ? 0 : (long)val);
+                                    events.Add(new SearchAndRescueEvent(timestamp, commodity, amount, reward, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Synthesis":
+                            case "SellDrones":
                                 {
-                                    var synthesis = JsonParsing.getString(data, "Name");
+                                    data.TryGetValue("Count", out var val);
+                                    var amount = (int)(long)val;
+                                    data.TryGetValue("SellPrice", out val);
+                                    var price = (int)(long)val;
+                                    events.Add(new LimpetSoldEvent(timestamp, amount, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SellShipOnRebuy":
+                                {
+                                    data.TryGetValue("SellShipId", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "ShipType");
+                                    data.TryGetValue("ShipPrice", out val);
+                                    var price = (long)val;
+                                    var system = JsonParsing.getString(data, "System");
+                                    events.Add(new ShipSoldOnRebuyEvent(timestamp, ship, shipId, price, system) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SetUserShipName":
+                                {
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "Ship");
+                                    var name = JsonParsing.getString(data, "UserShipName");
+                                    var ident = JsonParsing.getString(data, "UserShipId");
 
-                                    data.TryGetValue("Materials", out object val);
-                                    var materials = new List<MaterialAmount>();
-                                    // 2.2 style
-                                    if (val is Dictionary<string, object> materialsData)
+                                    events.Add(new ShipRenamedEvent(timestamp, ship, shipId, name, ident) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Shipyard":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var station = JsonParsing.getString(data, "StationName");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    if (ShipyardInfo.TryFromFile(timestamp, system, station, marketId, out var info, out var raw))
                                     {
-                                        if (materialsData != null)
+                                        events.Add(new ShipyardEvent(timestamp, marketId, station, system, info) { raw = raw, fromLoad = fromLogLoad });
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "ShipyardBuy":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+
+                                    // We don't have a ship ID at this point so use the ship type
+                                    var ship = JsonParsing.getString(data, "ShipType");
+
+                                    data.TryGetValue("ShipPrice", out var val);
+                                    var price = (long)val;
+
+                                    data.TryGetValue("StoreShipID", out val);
+                                    var storedShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var storedShip = JsonParsing.getString(data, "StoreOldShip");
+
+                                    data.TryGetValue("SellShipID", out val);
+                                    var soldShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var soldShip = JsonParsing.getString(data, "SellOldShip");
+
+                                    data.TryGetValue("SellPrice", out val);
+                                    var soldPrice = (long?)val;
+                                    events.Add(new ShipPurchasedEvent(timestamp, ship, price, soldShip, soldShipId, soldPrice, storedShip, storedShipId, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ShipyardNew":
+                            case "ShipRedeemed":
+                                {
+                                    data.TryGetValue("NewShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "ShipType");
+
+                                    events.Add(new ShipDeliveredEvent(timestamp, ship, shipId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ShipyardSell":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+
+                                    data.TryGetValue("SellShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "ShipType");
+                                    data.TryGetValue("ShipPrice", out val);
+                                    var price = (long)val;
+                                    var system = JsonParsing.getString(data, "System"); // Only written when the ship is in a different star system
+                                    events.Add(new ShipSoldEvent(timestamp, ship, shipId, price, system, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ShipyardTransfer":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var toMarketId = JsonParsing.getLong(data, "MarketID");
+                                    var fromMarketId = JsonParsing.getLong(data, "ShipMarketID");
+
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+
+                                    var system = JsonParsing.getString(data, "System");
+                                    var distance = JsonParsing.getDecimal(data, "Distance");
+                                    var price = JsonParsing.getOptionalLong(data, "TransferPrice");
+                                    var time = JsonParsing.getOptionalLong(data, "TransferTime");
+
+                                    var ship = ConfigService.Instance.shipMonitorConfiguration?.shipyard.FirstOrDefault(s => s.LocalId == shipId);
+                                    if (ship is null)
+                                    {
+                                        var shipEDModel = JsonParsing.getString(data, "ShipType");
+                                        ship = ShipDefinitions.FromEDModel(shipEDModel);
+                                        ship.LocalId = shipId;
+                                    }
+
+                                    events.Add(new ShipTransferInitiatedEvent(timestamp, ship, system, distance, price, time, fromMarketId, toMarketId) { raw = line, fromLoad = fromLogLoad });
+
+                                    // Generate secondary event when the ship is arriving
+                                    if (time.HasValue)
+                                    {
+                                        ShipArrived();
+                                        async void ShipArrived()
                                         {
-                                            foreach (KeyValuePair<string, object> materialData in materialsData)
+                                            // Include the station and system at which the transfer will arrive
+                                            var arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
+                                            var arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
+                                            await Task.Delay((int)time * 1000);
+                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId) { fromLoad = fromLogLoad });
+                                        }
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "ShipyardSwap":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+
+                                    data.TryGetValue("ShipID", out var val);
+                                    var shipId = (int)(long)val;
+                                    var ship = JsonParsing.getString(data, "ShipType");
+
+                                    data.TryGetValue("StoreShipID", out val);
+                                    var storedShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var storedShip = JsonParsing.getString(data, "StoreOldShip");
+
+                                    data.TryGetValue("SellShipID", out val);
+                                    var soldShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var soldShip = JsonParsing.getString(data, "SellOldShip");
+
+                                    events.Add(new ShipSwappedEvent(timestamp, ship, shipId, soldShip, soldShipId, storedShip, storedShipId, marketId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "StoredModules":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var storedModules = new List<StoredModule>();
+
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var station = JsonParsing.getString(data, "StationName");
+
+                                    data.TryGetValue("Items", out var val);
+                                    var items = (List<object>)val;
+                                    if (items != null)
+                                    {
+                                        foreach (var item in items.Cast<IDictionary<string, object>>() )
+                                        {
+                                            var name = JsonParsing.getString(item, "Name");
+                                            var module = new Module(Module.FromEDName(name))
                                             {
-                                                var material = Material.FromEDName(materialData.Key);
-                                                materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                                hot = JsonParsing.getOptionalBool(item, "Hot") ?? false
+                                            };
+                                            item.TryGetValue("EngineerModifications", out val);
+                                            module.modificationEDName = JsonParsing.getString(item, "EngineerModifications");
+                                            module.modified = !string.IsNullOrEmpty(module.modificationEDName);
+                                            module.engineerlevel = module.modified ? JsonParsing.getInt(item, "Level") : 0;
+                                            module.engineermodification = Blueprint.FromEDNameAndGrade(module.modificationEDName, module.engineerlevel) ?? Blueprint.None;
+                                            module.engineerquality = module.modified ? JsonParsing.getDecimal(item, "Quality") : 0;
+
+                                            var storedModule = new StoredModule
+                                            {
+                                                module = module,
+                                                slot = JsonParsing.getInt(item, "StorageSlot"),
+                                                intransit = JsonParsing.getOptionalBool(item, "InTransit") ?? false,
+                                                system = JsonParsing.getString(item, "StarSystem"),
+                                                marketid = JsonParsing.getOptionalLong(item, "MarketID"),
+                                                transfercost = JsonParsing.getOptionalLong(item, "TransferCost"),
+                                                transfertime = JsonParsing.getOptionalLong(item, "TransferTime")
+                                            };
+                                            storedModules.Add(storedModule);
+                                        }
+                                    }
+                                    events.Add(new StoredModulesEvent(timestamp, marketId, station, system, storedModules) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "StoredShips":
+                                {
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var station = JsonParsing.getString(data, "StationName");
+
+                                    var shipyard = new List<Ship>();
+                                    foreach (var type in Enum.GetNames(typeof(ShipyardType)))
+                                    {
+                                        data.TryGetValue(type, out var val);
+                                        var shipsData = (List<object>)val;
+                                        if (shipsData != null)
+                                        {
+                                            foreach (var shipData in shipsData.Cast<IDictionary<string, object>>() )
+                                            {
+                                                var shipType = JsonParsing.getString(shipData, "ShipType");
+                                                var ship = ShipDefinitions.FromEDModel(shipType);
+                                                if (ship != null)
+                                                {
+                                                    ship.LocalId = JsonParsing.getInt(shipData, "ShipID");
+                                                    ship.name = JsonParsing.getString(shipData, "Name");
+                                                    ship.value = JsonParsing.getLong(shipData, "Value");
+                                                    ship.hot = JsonParsing.getOptionalBool(shipData, "Hot") ?? false;
+                                                    ship.intransit = JsonParsing.getOptionalBool(shipData, "InTransit") ?? false;
+                                                    ship.transferprice = JsonParsing.getOptionalLong(shipData, "TransferPrice");
+                                                    ship.transfertime = JsonParsing.getOptionalLong(shipData, "TransferTime");
+
+                                                    var shipSystemName = JsonParsing.getString(shipData, "StarSystem");
+                                                    var shipMarketID = JsonParsing.getOptionalLong( shipData, "ShipMarketID" );
+                                                    var stationWaypoint = EDDI.Instance.DataProvider.GetOrFetchStationWaypoint(
+                                                            shipSystemName ?? system, shipMarketID ?? marketId );
+                                                    ship.StoredLocation = stationWaypoint is null 
+                                                        ? null 
+                                                        : new Ship.Location( stationWaypoint );
+                                                    ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
+                                                    shipyard.Add(ship);
+                                                }
                                             }
                                         }
                                     }
-                                    else if (val is List<object> materialsJson) // 2.3 style
-                                    {
-                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
-                                        {
-                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
-                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
-                                        }
-                                    }
-
-                                    events.Add(new SynthesisedEvent(timestamp, synthesis, materials) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipyard) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Materials":
+                            case "TechnologyBroker":
                                 {
-                                    var materials = new List<MaterialAmount>();
+                                    var brokerType = JsonParsing.getString(data, "BrokerType");
+                                    var marketId = JsonParsing.getLong(data, "MarketID");
 
-                                    data.TryGetValue("Raw", out object val);
-                                    if (val != null)
+                                    data.TryGetValue("ItemsUnlocked", out var val);
+                                    var itemsUnlocked = (List<object>)val;
+                                    var items = new List<Module>();
+                                    foreach (var item in itemsUnlocked)
                                     {
-                                        var materialsJson = (List<object>)val;
-                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                                        var itemProperties = (Dictionary<string, object>)item;
+                                        var moduleEdName = JsonParsing.getString(itemProperties, "Name");
+                                        var module = Module.FromEDName(moduleEdName);
+                                        if (module == null)
                                         {
-                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
-                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                            // Unknown module
+                                            Logging.Info("Unknown module " + moduleEdName, JsonConvert.SerializeObject(item));
                                         }
+                                        items.Add(module);
                                     }
 
-                                    data.TryGetValue("Manufactured", out val);
-                                    if (val != null)
+                                    data.TryGetValue("Commodities", out val);
+                                    var commodities = (List<object>)val;
+                                    var Commodities = new List<CommodityAmount>();
+                                    foreach (var _commodity in commodities.Cast<IDictionary<string, object>>() )
                                     {
-                                        var materialsJson = (List<object>)val;
-                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                                        var commodityEdName = JsonParsing.getString(_commodity, "Name");
+                                        var commodity = CommodityDefinition.FromEDName(commodityEdName);
+                                        var count = JsonParsing.getInt(_commodity, "Count");
+                                        if (commodity == null)
                                         {
-                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
-                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                            Logging.Info("Unknown commodity " + commodityEdName, JsonConvert.SerializeObject(_commodity));
+                                            continue;
                                         }
+                                        Commodities.Add(new CommodityAmount(commodity, count));
                                     }
 
-                                    data.TryGetValue("Encoded", out val);
-                                    if (val != null)
+                                    data.TryGetValue("Materials", out val);
+                                    var materials = (List<object>)val;
+                                    var Materials = new List<MaterialAmount>();
+                                    foreach (var _material in materials.Cast<IDictionary<string, object>>() )
                                     {
-                                        var materialsJson = (List<object>)val;
-                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
-                                        {
-                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
-                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
-                                        }
+                                        var materialEdName = JsonParsing.getString(_material, "Name");
+                                        var material = Material.FromEDName(materialEdName);
+                                        var count = JsonParsing.getInt(_material, "Count");
+                                        Materials.Add(new MaterialAmount(material, count));
                                     }
 
-                                    events.Add(new MaterialInventoryEvent(DateTime.UtcNow, materials) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new TechnologyBrokerEvent(timestamp, brokerType, marketId, items, Commodities, Materials) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Cargo":
-                                {
-                                    var inventory = new List<CargoInfoItem>();
 
-                                    var vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance.Vehicle;
-                                    var cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
-                                    data.TryGetValue("Inventory", out object val);
-                                    if (val != null)
+                            #endregion
+
+                            #region Powerplay Events
+
+                            case "DeliverPowerMicroResources":
+                                {
+                                    // { "timestamp":"2024-10-19T15:01:28Z", "event":"DeliverPowerMicroResources", "TotalCount":2, "MicroResources":[ { "Name":"powerelectronics", "Name_Localised":"Electronics Package", "Category":"Item", "Count":2 } ], "MarketID":3223182848 }
+                                    if ( data.ContainsKey( "TotalCount" ) )
                                     {
-                                        var inventoryJson = (List<object>)val;
-                                        foreach (var cargoJson in inventoryJson.Cast<IDictionary<string, object>>() )
+                                        var marketID = JsonParsing.getLong( data, "MarketID" );
+                                        var resourceAmounts = new List<MicroResourceAmount>();
+                                        if ( data.TryGetValue( "MicroResources", out var val ) )
                                         {
-                                            var name = JsonParsing.getString(cargoJson, "Name");
-                                            var missionid = JsonParsing.getOptionalULong(cargoJson, "MissionID");
-                                            var count = JsonParsing.getInt(cargoJson, "Count");
-                                            var stolen = JsonParsing.getInt(cargoJson, "Stolen");
-                                            var info = new CargoInfoItem(name, missionid, count, stolen);
-                                            inventory.Add(info);
+                                            if ( val is List<object> listVal )
+                                            {
+                                                foreach ( var res in listVal )
+                                                {
+                                                    if ( res is IDictionary<string, object> microVal )
+                                                    {
+                                                        var microResource = GetMicroResource( microVal );
+                                                        var amount = JsonParsing.getInt(microVal, "Count");
+                                                        if ( microResource != null )
+                                                        {
+                                                            resourceAmounts.Add( new MicroResourceAmount( microResource, amount ) );
+                                                        }
+                                                    }
+                                                }
+                                                events.Add( new PowerMicroResourcesDeliveredEvent( timestamp, marketID, resourceAmounts ) { raw = line, fromLoad = fromLogLoad } );
+                                            }
                                         }
-                                        events.Add(new CargoEvent(timestamp, false, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
                                     }
-                                    else if (CargoInfo.TryFromFile(timestamp, vessel, cargocarried, out var info, out line))
+                                    else
                                     {
-                                        events.Add(new CargoEvent(timestamp, true, vessel, info.Inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
+                                        // We haven't seen this pattern before. Break unhandled.
+                                        break;
                                     }
                                 }
                                 handled = true;
                                 break;
-                            case "NavRoute":
+                            case "HoloscreenHacked":
                                 {
-                                    if (NavRouteInfo.TryFromFile(timestamp, true, out NavRouteInfo navRoute, out string rawRoute))
-                                    {
-                                        events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
-                                    }
-                                    else if (!fromLogLoad)
-                                    {
-                                        Logging.Warn("NavRoute.json was not updated. The read operation timed out.");
-                                    }
-                                }
-                                handled = true;
-                                break;
-                            case "NavRouteClear":
-                                {
-                                    if (NavRouteInfo.TryFromFile(timestamp, false, out NavRouteInfo navRoute, out string rawRoute))
-                                    {
-                                        events.Add(new NavRouteEvent(timestamp, navRoute.Route) { raw = rawRoute, fromLoad = fromLogLoad });
-                                    }
-                                    else if (!fromLogLoad)
-                                    {
-                                        Logging.Warn("NavRoute.json was not updated. The read operation timed out.");
-                                    }
+                                    // {"timestamp":"2024-10-22T20:40:06Z","event":"HoloscreenHacked","PowerBefore":"Aisling Duval","PowerAfter":"Yuri Grom"}
+
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+                                    
+                                    var powerBefore = Power.FromEDName( JsonParsing.getString( data, "PowerBefore" ) );
+                                    var powerAfter = Power.FromEDName( JsonParsing.getString( data, "PowerAfter" ) );
+                                    events.Add(new HoloscreenHackedEvent(timestamp, powerBefore, powerAfter) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3893,7 +3759,7 @@ namespace EddiJournalMonitor
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                     commodity.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
-                                    data.TryGetValue( "Count", out object val );
+                                    data.TryGetValue( "Count", out var val );
                                     var amount = (int)(long)val;
                                     events.Add( new PowerCommodityObtainedEvent( timestamp, power, commodity, amount ) { raw = line, fromLoad = fromLogLoad } );
                                 }
@@ -3904,7 +3770,7 @@ namespace EddiJournalMonitor
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                     commodity.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
-                                    data.TryGetValue( "Count", out object val );
+                                    data.TryGetValue( "Count", out var val );
                                     var amount = (int)(long)val;
                                     events.Add( new PowerCommodityDeliveredEvent( timestamp, power, commodity, amount ) { raw = line, fromLoad = fromLogLoad } );
                                 }
@@ -3943,22 +3809,55 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayVoucher":
                                 {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    data.TryGetValue("Systems", out object val);
+                                    data.TryGetValue("Systems", out var val);
                                     var systems = ((List<object>)val).Cast<string>().ToList();
                                     events.Add(new PowerVoucherReceivedEvent(timestamp, power, systems) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "SquadronStartup":
+                            case "RequestPowerMicroResources":
                                 {
-                                    string name = JsonParsing.getString(data, "SquadronName");
-                                    int rank = JsonParsing.getInt(data, "CurrentRank");
-
-                                    events.Add(new SquadronStartupEvent(timestamp, name, rank) { raw = line, fromLoad = fromLogLoad });
+                                    // {"timestamp":"2024-10-23T19:59:28Z","event":"RequestPowerMicroResources","TotalCount":3,"MicroResources":[{"Name":"powerspyware","Name_Localised":"Power Tracker Malware","Category":"Data","Count":3}],"MarketID":3930400257}
+                                    if ( data.ContainsKey( "TotalCount" ) )
+                                    {
+                                        var marketID = JsonParsing.getLong( data, "MarketID" );
+                                        var resourceAmounts = new List<MicroResourceAmount>();
+                                        if ( data.TryGetValue( "MicroResources", out var val ) )
+                                        {
+                                            if ( val is List<object> listVal )
+                                            {
+                                                foreach ( var res in listVal )
+                                                {
+                                                    if ( res is IDictionary<string, object> microVal )
+                                                    {
+                                                        var microResource = GetMicroResource( microVal );
+                                                        var amount = JsonParsing.getInt(microVal, "Count");
+                                                        if ( microResource != null )
+                                                        {
+                                                            resourceAmounts.Add( new MicroResourceAmount( microResource, amount ) );
+                                                        }
+                                                    }
+                                                }
+                                                events.Add( new PowerMicroResourcesCollectedEvent( timestamp, marketID, resourceAmounts ) { raw = line, fromLoad = fromLogLoad } );
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // We haven't seen this pattern before. Break unhandled.
+                                        break;
+                                    }
                                 }
                                 handled = true;
                                 break;
+
+                            #endregion
+
+                            #region Squadron Events
+
                             case "AppliedToSquadron":
                             case "DisbandedSquadron":
                             case "InvitedToSquadron":
@@ -3967,8 +3866,10 @@ namespace EddiJournalMonitor
                             case "LeftSquadron":
                             case "SquadronCreated":
                                 {
-                                    string name = JsonParsing.getString(data, "SquadronName");
-                                    string status = edType.Replace("Squadron", "")
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var name = JsonParsing.getString(data, "SquadronName");
+                                    var status = edType.Replace("Squadron", "")
                                         .Replace("To", "")
                                         .Replace("From", "")
                                         .ToLowerInvariant();
@@ -3980,360 +3881,98 @@ namespace EddiJournalMonitor
                             case "SquadronDemotion":
                             case "SquadronPromotion":
                                 {
-                                    string name = JsonParsing.getString(data, "SquadronName");
-                                    int oldrank = JsonParsing.getInt(data, "OldRank");
-                                    int newrank = JsonParsing.getInt(data, "NewRank");
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var name = JsonParsing.getString(data, "SquadronName");
+                                    var oldrank = JsonParsing.getInt(data, "OldRank");
+                                    var newrank = JsonParsing.getInt(data, "NewRank");
 
                                     events.Add(new SquadronRankEvent(timestamp, name, oldrank, newrank) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "SystemsShutdown":
+
+                            #endregion
+
+                            #region Fleet Carrier Events
+
+                            case "CarrierBankTransfer":
                                 {
-                                    if ( fromLogLoad || ShipShutdownCancellationTokenSource != null )
-                                    {
-                                        // Ignore events triggered by loag loads.
-                                        // Ignore repetitions when the ship is already in a shut-down state. 
-                                    }
-                                    else
-                                    {
-                                        events.Add( new ShipShutdownEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
-                                    }
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var deposit = JsonParsing.getOptionalULong(data, "Deposit");
+                                    var withdrawal = JsonParsing.getOptionalULong(data, "Withdraw");
+                                    var cmdrBalance = JsonParsing.getULong(data, "PlayerBalance");
+                                    var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
+                                    events.Add(new CarrierBankTransferEvent(timestamp, carrierID, deposit, withdrawal, cmdrBalance, carrierBalance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Fileheader":
+                            case "CarrierBuy":
                                 {
-                                    string filename = journalFileName;
-                                    string version = JsonParsing.getString(data, "gameversion")?.Trim();
-                                    string build = JsonParsing.getString(data, "build")?.Trim();
-                                    Logging.Info($"GameVersion: {version}, Build {build}.");
-                                    events.Add(new FileHeaderEvent(timestamp, filename, version, build) { raw = line, fromLoad = fromLogLoad });
+                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var carrierCallsign = JsonParsing.getString(data, "Callsign");
+                                    var carrierStarSystem = JsonParsing.getString(data, "Location");
+                                    var carrierSystemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var price = JsonParsing.getOptionalLong(data, "Price");
+                                    events.Add(new CarrierPurchasedEvent(timestamp, carrierID, carrierCallsign, carrierStarSystem, carrierSystemAddress, price) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Shutdown":
+                            case "CarrierCancelDecommission":
                                 {
-                                    events.Add(new ShutdownEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    events.Add(new CarrierDecommissionCancelledEvent(timestamp, carrierID) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "FSDTarget":
+                            case "CarrierCrewServices":
                                 {
-                                    string systemName = JsonParsing.getString(data, "Name");
-                                    ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    int remainingJumpsInRoute = JsonParsing.getOptionalInt(data, "RemainingJumpsInRoute") ?? 0;
-                                    string starclass = JsonParsing.getString(data, "StarClass");
-                                    events.Add(new FSDTargetEvent(timestamp, systemName, systemAddress, remainingJumpsInRoute, starclass) { raw = line, fromLoad = fromLogLoad });
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var operation = JsonParsing.getString(data, "Operation");
+                                    var crewRole = StationService.FromEDName(JsonParsing.getString(data, "CrewRole"));
+                                    var crewName = JsonParsing.getString(data, "CrewName");
+                                    events.Add(new CarrierServiceChangedEvent(timestamp, carrierID, operation, crewRole, crewName) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "FSSAllBodiesFound":
+                            case "CarrierDecommission":
                                 {
-                                    string systemName = JsonParsing.getString(data, "SystemName");
-                                    ulong systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    int count = JsonParsing.getInt(data, "Count");
-                                    events.Add(new SystemScanComplete(timestamp, systemName, systemAddress, count) { raw = line, fromLoad = fromLogLoad });
-
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var refund = JsonParsing.getULong(data, "ScrapRefund");
+                                    var decommissionTimespan = Dates.fromTimestamp(JsonParsing.getOptionalLong(data, "ScrapTime")) - timestamp;
+                                    events.Add(new CarrierDecommissionScheduledEvent(timestamp, carrierID, refund, decommissionTimespan) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "FSSBodySignals":
+                            case "CarrierDepositFuel":
                                 {
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var bodyName = JsonParsing.getString(data, "BodyName");
-                                    var bodyId = JsonParsing.getLong(data, "BodyID");
-                                    data.TryGetValue("Signals", out object signalsVal);
-
-                                    // These are surface signal sources from a body that we've scanned
-                                    var surfaceSignals = new List<SignalAmount>();
-                                    foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
-                                    {
-                                        var signalSource = JsonParsing.getString(signal, "Type");
-                                        var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                                        var localizedName = JsonParsing.getString(data, "Type_Localised");
-                                        if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                                        {
-                                            source.fallbackLocalizedName = localizedName;
-                                        }
-                                        var amount = JsonParsing.getInt(signal, "Count");
-                                        surfaceSignals.Add(new SignalAmount(source, amount));
-                                    }
-                                    surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                    events.Add(new SurfaceSignalsEvent(timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var amount = JsonParsing.getInt(data, "Amount");
+                                    var total = JsonParsing.getInt(data, "Total");
+                                    events.Add(new CarrierFuelDepositEvent(timestamp, carrierID, amount, total) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "SAASignalsFound":
+                            case "CarrierDockingPermission":
                                 {
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string bodyName = JsonParsing.getString(data, "BodyName");
-                                    long bodyId = JsonParsing.getLong(data, "BodyID");
-                                    data.TryGetValue("Signals", out object signalsVal);
-
-                                    if (bodyName.EndsWith(" Ring"))
-                                    {
-                                        // This is the mining hotspots from a ring that we've mapped
-                                        var hotspots = new List<CommodityAmount>();
-                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>() )
-                                        {
-                                            var commodityEdName = JsonParsing.getString(signal, "Type");
-                                            var type = CommodityDefinition.FromEDName(commodityEdName);
-                                            type.fallbackLocalizedName = JsonParsing.getString(signal, "Type_Localised");
-                                            var amount = JsonParsing.getInt(signal, "Count");
-                                            hotspots.Add(new CommodityAmount(type, amount));
-                                        }
-                                        hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
-
-                                        var ring = EDDI.Instance.CurrentStarSystem?.bodies?
-                                            .Where(b => b.rings.Any())
-                                            .SelectMany(b => b?.rings)?
-                                            .FirstOrDefault(r => r.name == bodyName);
-                                        if (ring != null)
-                                        {
-                                            ring.mapped = timestamp;
-                                            ring.hotspots = hotspots;
-                                            EDDI.Instance.DataProvider.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
-                                        }
-
-                                        events.Add(new RingHotspotsEvent(timestamp, systemAddress, bodyName, bodyId, hotspots) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        // This is surface signal sources from a body that we've mapped
-                                        var surfaceSignals = new List<SignalAmount>();
-                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
-                                        {
-                                            var signalSource = JsonParsing.getString(signal, "Type");
-                                            var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                                            var localizedName = JsonParsing.getString(data, "Type_Localised");
-                                            if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                                            {
-                                                source.fallbackLocalizedName = localizedName;
-                                            }
-                                            var amount = JsonParsing.getInt(signal, "Count");
-                                            surfaceSignals.Add(new SignalAmount(source, amount));
-                                        }
-                                        surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                        events.Add(new SurfaceSignalsEvent(timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
-                                    }
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var dockingAccess = JsonParsing.getString(data, "DockingAccess");
+                                    var allowNotorious = JsonParsing.getBool(data, "AllowNotorious");
+                                    events.Add(new CarrierDockingPermissionEvent(timestamp, carrierID, dockingAccess, allowNotorious) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Commander":
+                            case "CarrierFinance":
                                 {
-                                    string name = JsonParsing.getString(data, "Name");
-                                    string frontierID = JsonParsing.getString(data, "FID");
-                                    events.Add(new CommanderLoadingEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Statistics":
-                                {
-                                    Statistics statistics = new Statistics();
-
-                                    data.TryGetValue("Bank_Account", out object bankAccountVal);
-                                    Dictionary<string, object> bankaccount = (Dictionary<string, object>)bankAccountVal;
-                                    if (bankaccount?.Count > 0)
-                                    {
-                                        statistics.bankaccount.wealth = JsonParsing.getOptionalLong(bankaccount, "Current_Wealth");
-                                        statistics.bankaccount.spentonships = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ships");
-                                        statistics.bankaccount.spentonoutfitting = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Outfitting");
-                                        statistics.bankaccount.spentonrepairs = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Repairs");
-                                        statistics.bankaccount.spentonfuel = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Fuel");
-                                        statistics.bankaccount.spentonammoconsumables = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ammo_Consumables");
-                                        statistics.bankaccount.spentoninsurance = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Insurance");
-                                        statistics.bankaccount.insuranceclaims = JsonParsing.getOptionalLong(bankaccount, "Insurance_Claims");
-                                        statistics.bankaccount.ownedshipcount = JsonParsing.getOptionalLong(bankaccount, "Owned_Ship_Count");
-                                    }
-
-                                    data.TryGetValue("Combat", out object combatVal);
-                                    Dictionary<string, object> combat = (Dictionary<string, object>)combatVal;
-                                    if (combat?.Count > 0)
-                                    {
-                                        statistics.combat.bountiesclaimed = JsonParsing.getOptionalLong(combat, "Bounties_Claimed");
-                                        statistics.combat.bountyhuntingprofit = JsonParsing.getOptionalDecimal(combat, "Bounty_Hunting_Profit");
-                                        statistics.combat.combatbonds = JsonParsing.getOptionalLong(combat, "Combat_Bonds");
-                                        statistics.combat.combatbondprofits = JsonParsing.getOptionalLong(combat, "Combat_Bond_Profits");
-                                        statistics.combat.assassinations = JsonParsing.getOptionalLong(combat, "Assassinations");
-                                        statistics.combat.assassinationprofits = JsonParsing.getOptionalLong(combat, "Assassination_Profits");
-                                        statistics.combat.highestsinglereward = JsonParsing.getOptionalLong(combat, "Highest_Single_Reward");
-                                        statistics.combat.skimmerskilled = JsonParsing.getOptionalLong(combat, "Skimmers_Killed");
-                                    }
-
-                                    data.TryGetValue("Crime", out object crimeVal);
-                                    Dictionary<string, object> crime = (Dictionary<string, object>)crimeVal;
-                                    if (crime?.Count > 0)
-                                    {
-                                        statistics.crime.notoriety = JsonParsing.getOptionalInt(crime, "Notoriety");
-                                        statistics.crime.fines = JsonParsing.getOptionalLong(crime, "Fines");
-                                        statistics.crime.totalfines = JsonParsing.getOptionalLong(crime, "Total_Fines");
-                                        statistics.crime.bountiesreceived = JsonParsing.getOptionalLong(crime, "Bounties_Received");
-                                        statistics.crime.totalbounties = JsonParsing.getOptionalLong(crime, "Total_Bounties");
-                                        statistics.crime.highestbounty = JsonParsing.getOptionalLong(crime, "Highest_Bounty");
-                                    }
-
-                                    data.TryGetValue("Smuggling", out object smugglingVal);
-                                    Dictionary<string, object> smuggling = (Dictionary<string, object>)smugglingVal;
-                                    if (smuggling?.Count > 0)
-                                    {
-                                        statistics.smuggling.blackmarketstradedwith = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Traded_With");
-                                        statistics.smuggling.blackmarketprofits = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Profits");
-                                        statistics.smuggling.resourcessmuggled = JsonParsing.getOptionalLong(smuggling, "Resources_Smuggled");
-                                        statistics.smuggling.averageprofit = JsonParsing.getOptionalDecimal(smuggling, "Average_Profit");
-                                        statistics.smuggling.highestsingletransaction = JsonParsing.getOptionalLong(smuggling, "Highest_Single_Transaction");
-                                    }
-
-                                    data.TryGetValue("Trading", out object tradingVal);
-                                    Dictionary<string, object> trading = (Dictionary<string, object>)tradingVal;
-                                    if (trading?.Count > 0)
-                                    {
-                                        statistics.trading.marketstradedwith = JsonParsing.getOptionalLong(trading, "Markets_Traded_With");
-                                        statistics.trading.marketprofits = JsonParsing.getOptionalLong(trading, "Market_Profits");
-                                        statistics.trading.resourcestraded = JsonParsing.getOptionalLong(trading, "Resources_Traded");
-                                        statistics.trading.averageprofit = JsonParsing.getOptionalDecimal(trading, "Average_Profit");
-                                        statistics.trading.highestsingletransaction = JsonParsing.getOptionalLong(trading, "Highest_Single_Transaction");
-                                    }
-
-                                    data.TryGetValue("Mining", out object miningVal);
-                                    Dictionary<string, object> mining = (Dictionary<string, object>)miningVal;
-                                    if (mining?.Count > 0)
-                                    {
-                                        statistics.mining.profits = JsonParsing.getOptionalLong(mining, "Mining_Profits");
-                                        statistics.mining.quantitymined = JsonParsing.getOptionalLong(mining, "Quantity_Mined");
-                                        statistics.mining.materialscollected = JsonParsing.getOptionalLong(mining, "Materials_Collected");
-                                    }
-
-                                    data.TryGetValue("Exploration", out object explorationVal);
-                                    Dictionary<string, object> exploration = (Dictionary<string, object>)explorationVal;
-                                    if (exploration?.Count > 0)
-                                    {
-                                        statistics.exploration.systemsvisited = JsonParsing.getOptionalLong(exploration, "Systems_Visited");
-                                        statistics.exploration.profits = JsonParsing.getOptionalLong(exploration, "Exploration_Profits");
-                                        statistics.exploration.planetsscannedlevel2 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_2");
-                                        statistics.exploration.planetsscannedlevel3 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_3");
-                                        statistics.exploration.highestpayout = JsonParsing.getOptionalLong(exploration, "Highest_Payout");
-                                        statistics.exploration.totalhyperspacedistance = JsonParsing.getOptionalDecimal(exploration, "Total_Hyperspace_Distance");
-                                        statistics.exploration.totalhyperspacejumps = JsonParsing.getOptionalLong(exploration, "Total_Hyperspace_Jumps");
-                                        statistics.exploration.greatestdistancefromstart = JsonParsing.getOptionalDecimal(exploration, "Greatest_Distance_From_Start");
-                                        statistics.exploration.timeplayedseconds = JsonParsing.getOptionalLong(exploration, "Time_Played");
-                                    }
-
-                                    data.TryGetValue("Passengers", out object passengersVal);
-                                    Dictionary<string, object> passengers = (Dictionary<string, object>)passengersVal;
-                                    if (passengers?.Count > 0)
-                                    {
-                                        statistics.passengers.accepted = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Accepted");
-                                        statistics.passengers.disgruntled = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Disgruntled");
-                                        statistics.passengers.bulk = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Bulk");
-                                        statistics.passengers.vip = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_VIP");
-                                        statistics.passengers.delivered = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Delivered");
-                                        statistics.passengers.ejected = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Ejected");
-                                    }
-
-                                    data.TryGetValue("Search_And_Rescue", out object searchAndRescueVal);
-                                    Dictionary<string, object> searchAndRescue = (Dictionary<string, object>)searchAndRescueVal;
-                                    if (searchAndRescue?.Count > 0)
-                                    {
-                                        statistics.searchandrescue.traded = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Traded");
-                                        statistics.searchandrescue.profit = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Profit");
-                                        statistics.searchandrescue.count = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Count");
-                                    }
-
-                                    data.TryGetValue("TG_ENCOUNTERS", out object thargoidVal);
-                                    Dictionary<string, object> thargoid = (Dictionary<string, object>)thargoidVal;
-                                    if (thargoid?.Count > 0)
-                                    {
-                                        statistics.thargoidencounters.wakesscanned = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_WAKES");
-                                        statistics.thargoidencounters.imprints = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_IMPRINT");
-                                        statistics.thargoidencounters.totalencounters = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_TOTAL");
-                                        statistics.thargoidencounters.lastsystem = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SYSTEM");
-                                        statistics.thargoidencounters.lastshipmodel = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SHIP");
-                                        var lastTimeStampString = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_TIMESTAMP");
-                                        statistics.thargoidencounters.lasttimestamp = !string.IsNullOrEmpty(lastTimeStampString) ? DateTime.Parse(lastTimeStampString) : (DateTime?)null;
-                                    }
-
-                                    data.TryGetValue("Crafting", out object craftingVal);
-                                    Dictionary<string, object> crafting = (Dictionary<string, object>)craftingVal;
-                                    if (crafting?.Count > 0)
-                                    {
-                                        statistics.crafting.countofusedengineers = JsonParsing.getOptionalLong(crafting, "Count_Of_Used_Engineers");
-                                        statistics.crafting.recipesgenerated = JsonParsing.getOptionalLong(crafting, "Recipes_Generated");
-                                        statistics.crafting.recipesgeneratedrank1 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_1");
-                                        statistics.crafting.recipesgeneratedrank2 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_2");
-                                        statistics.crafting.recipesgeneratedrank3 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_3");
-                                        statistics.crafting.recipesgeneratedrank4 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_4");
-                                        statistics.crafting.recipesgeneratedrank5 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_5");
-                                    }
-
-                                    data.TryGetValue("Crew", out object crewVal);
-                                    Dictionary<string, object> crew = (Dictionary<string, object>)crewVal;
-                                    if (crew?.Count > 0)
-                                    {
-                                        statistics.npccrew.totalwages = JsonParsing.getOptionalLong(crew, "NpcCrew_TotalWages");
-                                        statistics.npccrew.hired = JsonParsing.getOptionalLong(crew, "NpcCrew_Hired");
-                                        statistics.npccrew.fired = JsonParsing.getOptionalLong(crew, "NpcCrew_Fired");
-                                        statistics.npccrew.died = JsonParsing.getOptionalLong(crew, "NpcCrew_Died");
-                                    }
-
-                                    data.TryGetValue("Multicrew", out object multicrewVal);
-                                    Dictionary<string, object> multicrew = (Dictionary<string, object>)multicrewVal;
-                                    if (multicrew?.Count > 0)
-                                    {
-                                        statistics.multicrew.timetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Time_Total");
-                                        statistics.multicrew.gunnertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Gunner_Time_Total");
-                                        statistics.multicrew.fightertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fighter_Time_Total");
-                                        statistics.multicrew.multicrewcreditstotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Credits_Total");
-                                        statistics.multicrew.multicrewfinestotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fines_Total");
-                                    }
-
-                                    data.TryGetValue("Material_Trader_Stats", out object materialTraderVal);
-                                    Dictionary<string, object> materialtrader = (Dictionary<string, object>)materialTraderVal;
-                                    if (materialtrader?.Count > 0)
-                                    {
-                                        statistics.materialtrader.tradescompleted = JsonParsing.getOptionalLong(materialtrader, "Trades_Completed");
-                                        statistics.materialtrader.materialstraded = JsonParsing.getOptionalLong(materialtrader, "Materials_Traded");
-                                        statistics.materialtrader.encodedmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Encoded_Materials_Traded");
-                                        statistics.materialtrader.rawmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Raw_Materials_Traded");
-                                        statistics.materialtrader.grade1materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_1_Materials_Traded");
-                                        statistics.materialtrader.grade2materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_2_Materials_Traded");
-                                        statistics.materialtrader.grade3materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_3_Materials_Traded");
-                                        statistics.materialtrader.grade4materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_4_Materials_Traded");
-                                        statistics.materialtrader.grade5materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_5_Materials_Traded");
-                                    }
-
-                                    data.TryGetValue("CQC", out object cqcVal);
-                                    Dictionary<string, object> cqc = (Dictionary<string, object>)cqcVal;
-                                    if (cqc?.Count > 0)
-                                    {
-                                        statistics.cqc.creditsearned = JsonParsing.getOptionalLong(cqc, "CQC_Credits_Earned");
-                                        statistics.cqc.timeplayedseconds = JsonParsing.getOptionalLong(cqc, "CQC_Time_Played");
-                                        statistics.cqc.killdeathratio = JsonParsing.getOptionalDecimal(cqc, "CQC_KD");
-                                        statistics.cqc.kills = JsonParsing.getOptionalLong(cqc, "CQC_Kills");
-                                        statistics.cqc.winlossratio = JsonParsing.getOptionalDecimal(cqc, "CQC_WL");
-                                    }
-
-                                    events.Add(new StatisticsEvent(timestamp, statistics) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Powerplay":
-                                {
-                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    var rank = JsonParsing.getInt(data, "Rank") + 1; // This is zero based in the journal but not in the Frontier API. Adding +1 here synchronizes the two.
-                                    var merits = JsonParsing.getInt(data, "Merits");
-                                    var timePledged = TimeSpan.FromSeconds(JsonParsing.getLong(data, "TimePledged"));
-                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, timePledged) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Reputation":
-                                {
-                                    decimal empire = JsonParsing.getOptionalDecimal(data, "Empire") ?? 0;
-                                    decimal federation = JsonParsing.getOptionalDecimal(data, "Federation") ?? 0;
-                                    decimal independent = JsonParsing.getOptionalDecimal(data, "Independent") ?? 0;
-                                    decimal alliance = JsonParsing.getOptionalDecimal(data, "Alliance") ?? 0;
-                                    events.Add(new CommanderReputationEvent(timestamp, empire, federation, independent, alliance) { raw = line, fromLoad = fromLogLoad });
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var taxRate = JsonParsing.getOptionalInt(data, "TaxRate") ?? 0;
+                                    var reservePercent = JsonParsing.getOptionalInt(data, "ReservePercent") ?? 0;
+                                    var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
+                                    var carrierReserveBalance = JsonParsing.getLong(data, "ReserveBalance");
+                                    var carrierAvailableBalance = JsonParsing.getLong(data, "CarrierAvailableBalance");
+                                    events.Add(new CarrierFinanceEvent(timestamp, carrierID, taxRate, reservePercent, carrierBalance, carrierReserveBalance, carrierAvailableBalance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4341,7 +3980,7 @@ namespace EddiJournalMonitor
                                 {
                                     // Get destination star system data
                                     var systemName = JsonParsing.getString( data, "StarSystem" );
-                                    data.TryGetValue( "StarPos", out object starposVal );
+                                    data.TryGetValue( "StarPos", out var starposVal );
                                     var starPos = (List<object>)starposVal;
                                     var x = Math.Round( JsonParsing.getDecimal( "X", starPos?[ 0 ] ) * 32 ) /
                                             (decimal)32.0;
@@ -4384,7 +4023,7 @@ namespace EddiJournalMonitor
 
                                     // Get carrier services data (may not be present when on-foot at a fleet carrier but not docked)
                                     var stationServices = new List<StationService>();
-                                    data.TryGetValue( "StationServices", out object stationserviceVal );
+                                    data.TryGetValue( "StationServices", out var stationserviceVal );
                                     var stationservices =
                                         ( stationserviceVal as List<object> )?.Cast<string>()?.ToList() ??
                                         new List<string>();
@@ -4394,7 +4033,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Get carrier economies and their shares (may not be present when on-foot at a fleet carrier but not docked)
-                                    data.TryGetValue( "StationEconomies", out object economiesVal );
+                                    data.TryGetValue( "StationEconomies", out var economiesVal );
                                     var economies = economiesVal as List<object> ?? new List<object>();
                                     var stationEconomies = new List<EconomyShare>();
                                     foreach ( var economyShareVal in economies )
@@ -4415,7 +4054,7 @@ namespace EddiJournalMonitor
 
                                     // Parse factions array data
                                     var factions = new List<Faction>();
-                                    data.TryGetValue( "Factions", out object factionsVal );
+                                    data.TryGetValue( "Factions", out var factionsVal );
                                     if ( factionsVal != null )
                                     {
                                         factions = GetFactions( factionsVal, systemName, systemAddress );
@@ -4423,18 +4062,18 @@ namespace EddiJournalMonitor
 
                                     // Parse conflicts array data
                                     var conflicts = new List<Conflict>();
-                                    data.TryGetValue( "Conflicts", out object conflictsVal );
+                                    data.TryGetValue( "Conflicts", out var conflictsVal );
                                     if ( conflictsVal != null )
                                     {
                                         conflicts = GetConflicts( conflictsVal, factions );
                                     }
 
                                     // Powerplay data (if pledged)
-                                    GetPowerplayData( data, systemAddress, out Power controllingPower,
-                                        out List<Power> powersInAcquisitionRange, out var powerplayState,
-                                        out List<PowerAcquisitionProgress> powerAcquisitionProgress,
-                                        out decimal powerplayControlProgress, out int powerplayReinforcementControlPoints,
-                                        out int powerplayUnderminingControlPoints );
+                                    GetPowerplayData( data, systemAddress, out var controllingPower,
+                                        out var powersInAcquisitionRange, out var powerplayState,
+                                        out var powerAcquisitionProgress,
+                                        out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
+                                        out var powerplayUnderminingControlPoints );
 
                                     // Thargoid war data (if any)
                                     GetThargoidWarData( data, out var thargoidWar );
@@ -4480,11 +4119,13 @@ namespace EddiJournalMonitor
                                 break;
                             case "CarrierJumpRequest":
                                 {
-                                    long carrierId = JsonParsing.getLong(data, "CarrierID");
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var carrierId = JsonParsing.getLong(data, "CarrierID");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string systemName = JsonParsing.getString(data, "SystemName");
-                                    string bodyName = JsonParsing.getString(data, "Body");
-                                    long bodyId = JsonParsing.getLong(data, "BodyID");
+                                    var systemName = JsonParsing.getString(data, "SystemName");
+                                    var bodyName = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getLong(data, "BodyID");
                                     var departureTime = JsonParsing.getDateTime( "DepartureTime", data );
 
                                     // There is a bug in the journal output where "Body" can be missing but "BodyID" can be present. Try to Work around that here.
@@ -4526,7 +4167,7 @@ namespace EddiJournalMonitor
                                                 await Task.Delay(timespan, carrierJumpCancellationTS.Token);
                                                 if ( EDDI.Instance.CurrentStarSystem != null )
                                                 {
-                                                    string originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
+                                                    var originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
                                                     var originSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
                                                 EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.Add(timespan), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
                                                 }
@@ -4562,7 +4203,9 @@ namespace EddiJournalMonitor
                                 break;
                             case "CarrierJumpCancelled":
                                 {
-                                    long carrierId = JsonParsing.getLong(data, "CarrierID");
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var carrierId = JsonParsing.getLong(data, "CarrierID");
                                     // Cancel any pending carrier jump related events
                                     if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
                                     {
@@ -4573,7 +4216,7 @@ namespace EddiJournalMonitor
                                     {
                                         Task.Run(async () =>
                                         {
-                                            int timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
+                                            var timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
                                             await Task.Delay(timeMs);
                                             EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, EDDI.Instance.FleetCarrier?.currentStarSystem, EDDI.Instance.FleetCarrier?.currentStarSystemAddress, null, EDDI.Instance.FleetCarrier?.currentBodyID, null, EDDI.Instance.FleetCarrier?.callsign, StationModel.FleetCarrier ) { fromLoad = fromLogLoad });
                                         }).ConfigureAwait(false);
@@ -4581,134 +4224,81 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "AsteroidCracked":
+                            case "CarrierLocation":
                                 {
-                                    string bodyName = JsonParsing.getString(data, "Body");
-                                    events.Add(new AsteroidCrackedEvent(timestamp, bodyName) { raw = line, fromLoad = fromLogLoad });
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var systemName = JsonParsing.getString(data, "SystemName");
+                                    var bodyId = JsonParsing.getLong(data, "BodyID");
+                                    events.Add(new CarrierLocationEvent(timestamp, carrierID, systemAddress, systemName, bodyId) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;
-                            case "ProspectedAsteroid":
+                            case "CarrierNameChange":
                                 {
-                                    data.TryGetValue("Materials", out object val); // (array of Name and Proportion)
-                                    List<CommodityPresence> commodities = new List<CommodityPresence>();
-                                    if (val is List<object> listVal)
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var callsign = JsonParsing.getString(data, "Callsign");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    events.Add(new CarrierNameChangeEvent(timestamp, carrierID, callsign, name) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CarrierStats":
+                                {
+                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var carrierCallsign = JsonParsing.getString(data, "Callsign");
+                                    var carrierName = JsonParsing.getString(data, "Name");
+
+                                    var dockingAccess = JsonParsing.getString(data, "DockingAccess");
+                                    var notoriousAccess = JsonParsing.getBool(data, "AllowNotorious");
+                                    var fuelLevel = JsonParsing.getInt(data, "FuelLevel");
+
+                                    var crewSpace = 0;
+                                    var cargoSpace = 0;
+                                    var cargoSpaceReserved = 0;
+                                    var shipPacks = 0;
+                                    var modulePacks = 0;
+                                    var freeSpace = 0;
+                                    if (data.TryGetValue("SpaceUsage", out var spaceUsage) && spaceUsage is Dictionary<string, object> space)
                                     {
-                                        foreach (var commodityVal in listVal)
-                                        {
-                                            if (commodityVal is Dictionary<string, object> commodityData)
-                                            {
-                                                string commodityEdName = JsonParsing.getString(commodityData, "Name");
-                                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityEdName);
-                                                decimal proportion = JsonParsing.getDecimal(commodityData, "Proportion"); // Out of 100
-                                                if (commodity != null)
-                                                {
-                                                    commodity.fallbackLocalizedName = JsonParsing.getString(commodityData, "Name_Localised");
-                                                    commodities.Add(new CommodityPresence(commodity, proportion));
-                                                }
-                                            }
-                                        }
+                                        crewSpace = JsonParsing.getInt(space, "Crew");
+                                        cargoSpace = JsonParsing.getInt(space, "Cargo");
+                                        cargoSpaceReserved = JsonParsing.getInt(space, "CargoSpaceReserved");
+                                        shipPacks = JsonParsing.getInt(space, "ShipPacks");
+                                        modulePacks = JsonParsing.getInt(space, "ModulePacks");
+                                        freeSpace = JsonParsing.getInt(space, "FreeSpace");
                                     }
-                                    string content = JsonParsing.getString(data, "Content"); // (a string representing High/Medium/Low material content)
-                                    var materialContent = new AsteroidMaterialContent(content)
-                                    {
-                                        fallbackLocalizedName = JsonParsing.getString(data, "Content_Localised")?.Replace("Material Content: ", "")
-                                    };
-                                    decimal remaining = JsonParsing.getDecimal(data, "Remaining"); // Out of 100
+                                    var usedSpace = crewSpace 
+                                                    + cargoSpace 
+                                                    + cargoSpaceReserved 
+                                                    + shipPacks 
+                                                    + modulePacks;
 
-                                    // If a motherlode commodity is present
-                                    CommodityDefinition motherlodeCommodityDefinition = null;
-                                    string motherlodeEDName = JsonParsing.getString(data, "MotherlodeMaterial");
-                                    if (!string.IsNullOrEmpty(motherlodeEDName))
+                                    long bankBalance = 0;
+                                    long bankReservedBalance = 0;
+                                    long bankAvailableBalance = 0;
+                                    if (data.TryGetValue("Finance", out var finances) && finances is Dictionary<string, object> finance)
                                     {
-                                        motherlodeCommodityDefinition = CommodityDefinition.FromEDName(motherlodeEDName);
+                                        bankBalance = JsonParsing.getLong(finance, "CarrierBalance");
+                                        bankReservedBalance = JsonParsing.getLong(finance, "ReserveBalance");
+                                        bankAvailableBalance = JsonParsing.getLong(finance, "AvailableBalance");
                                     }
 
-                                    events.Add(new AsteroidProspectedEvent(timestamp, commodities, materialContent, remaining, motherlodeCommodityDefinition) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "Disembark":
-                                {
-                                    bool fromSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
-                                    bool fromTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
-                                    bool fromMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
-                                    int? fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
-                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+                            #endregion
 
-                                    string station = JsonParsing.getString(data, "StationName"); // if at a station
-                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
-
-                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Embark":
-                                {
-                                    bool toSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
-                                    bool toTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
-                                    bool toMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
-                                    int? toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
-
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
-                                    bool? onStation = JsonParsing.getOptionalBool(data, "OnStation");
-                                    bool? onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
-
-                                    string station = JsonParsing.getString(data, "StationName"); // if at a station
-                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
-
-                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "BookDropship":
-                            case "BookTaxi":
-                                {
-                                    var type = edType.Replace("Book", "");
-                                    var price = JsonParsing.getOptionalInt(data, "Cost");
-                                    var system = JsonParsing.getString(data, "DestinationSystem");
-                                    var destination = JsonParsing.getString(data, "DestinationLocation");
-                                    events.Add(new BookTransportEvent(timestamp, type, price, system, destination) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CancelDropship":
-                            case "CancelTaxi":
-                                {
-                                    var type = edType.Replace("Cancel", "");
-                                    var refund = JsonParsing.getOptionalInt(data, "Refund");
-                                    events.Add(new CancelTransportEvent(timestamp, type, refund) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "DropshipDeploy":
-                                {
-                                    string system = JsonParsing.getString(data, "StarSystem");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    string body = JsonParsing.getString(data, "Body");
-                                    int? bodyId = JsonParsing.getOptionalInt(data, "BodyID");
-                                    // There are `OnStation` and `OnPlanet` properties, but these are
-                                    // always false and always true so we won't bother parsing them.
-
-                                    events.Add(new DropshipDeploymentEvent(timestamp, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
+                            #region Odyssey (On Foot) Events
+                                
                             case "Backpack":
                             case "ShipLocker":
                                 {
-                                    if (MicroResourceInfo.TryFromFile(timestamp, out var info, out line, $"{edType}.json"))
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    if ( MicroResourceInfo.TryFromFile(timestamp, out var info, out line, $"{edType}.json"))
                                     {
                                         if ( info is null ) { break; }
 
@@ -4737,6 +4327,19 @@ namespace EddiJournalMonitor
                                     var added = MicroResourceInfo.ReadMicroResources("Added", data);
                                     var removed = MicroResourceInfo.ReadMicroResources("Removed", data);
                                     events.Add(new BackpackChangedEvent(timestamp, added, removed) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "BookDropship":
+                            case "BookTaxi":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var type = edType.Replace("Book", "");
+                                    var price = JsonParsing.getOptionalInt(data, "Cost");
+                                    var system = JsonParsing.getString(data, "DestinationSystem");
+                                    var destination = JsonParsing.getString(data, "DestinationLocation");
+                                    events.Add(new BookTransportEvent(timestamp, type, price, system, destination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4793,150 +4396,78 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "CarrierBuy":
+                            case "CancelDropship":
+                            case "CancelTaxi":
                                 {
-                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
-                                    var carrierCallsign = JsonParsing.getString(data, "Callsign");
-                                    var carrierStarSystem = JsonParsing.getString(data, "Location");
-                                    var carrierSystemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var price = JsonParsing.getOptionalLong(data, "Price");
-                                    events.Add(new CarrierPurchasedEvent(timestamp, carrierID, carrierCallsign, carrierStarSystem, carrierSystemAddress, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierStats":
-                                {
-                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
-                                    var carrierCallsign = JsonParsing.getString(data, "Callsign");
-                                    var carrierName = JsonParsing.getString(data, "Name");
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
-                                    var dockingAccess = JsonParsing.getString(data, "DockingAccess");
-                                    var notoriousAccess = JsonParsing.getBool(data, "AllowNotorious");
-                                    var fuelLevel = JsonParsing.getInt(data, "FuelLevel");
+                                    var type = edType.Replace("Cancel", "");
+                                    var refund = JsonParsing.getOptionalInt(data, "Refund");
+                                    events.Add(new CancelTransportEvent(timestamp, type, refund) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Disembark":
+                                {
+                                    var fromSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
+                                    var fromTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
+                                    var fromMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
+                                    var fromLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
 
-                                    int crewSpace = 0;
-                                    int cargoSpace = 0;
-                                    int cargoSpaceReserved = 0;
-                                    int shipPacks = 0;
-                                    int modulePacks = 0;
-                                    int freeSpace = 0;
-                                    if (data.TryGetValue("SpaceUsage", out object spaceUsage) && spaceUsage is Dictionary<string, object> space)
-                                    {
-                                        crewSpace = JsonParsing.getInt(space, "Crew");
-                                        cargoSpace = JsonParsing.getInt(space, "Cargo");
-                                        cargoSpaceReserved = JsonParsing.getInt(space, "CargoSpaceReserved");
-                                        shipPacks = JsonParsing.getInt(space, "ShipPacks");
-                                        modulePacks = JsonParsing.getInt(space, "ModulePacks");
-                                        freeSpace = JsonParsing.getInt(space, "FreeSpace");
-                                    }
-                                    var usedSpace = crewSpace 
-                                                    + cargoSpace 
-                                                    + cargoSpaceReserved 
-                                                    + shipPacks 
-                                                    + modulePacks;
-
-                                    long bankBalance = 0;
-                                    long bankReservedBalance = 0;
-                                    long bankAvailableBalance = 0;
-                                    if (data.TryGetValue("Finance", out object finances) && finances is Dictionary<string, object> finance)
-                                    {
-                                        bankBalance = JsonParsing.getLong(finance, "CarrierBalance");
-                                        bankReservedBalance = JsonParsing.getLong(finance, "ReserveBalance");
-                                        bankAvailableBalance = JsonParsing.getLong(finance, "AvailableBalance");
-                                    }
-
-                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance ) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierBankTransfer":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var deposit = JsonParsing.getOptionalULong(data, "Deposit");
-                                    var withdrawal = JsonParsing.getOptionalULong(data, "Withdraw");
-                                    var cmdrBalance = JsonParsing.getULong(data, "PlayerBalance");
-                                    var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
-                                    events.Add(new CarrierBankTransferEvent(timestamp, carrierID, deposit, withdrawal, cmdrBalance, carrierBalance) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierCancelDecommission":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    events.Add(new CarrierDecommissionCancelledEvent(timestamp, carrierID) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierDecommission":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var refund = JsonParsing.getULong(data, "ScrapRefund");
-                                    var decommissionTimespan = Dates.fromTimestamp(JsonParsing.getOptionalLong(data, "ScrapTime")) - timestamp;
-                                    events.Add(new CarrierDecommissionScheduledEvent(timestamp, carrierID, refund, decommissionTimespan) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierCrewServices":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var operation = JsonParsing.getString(data, "Operation");
-                                    var crewRole = StationService.FromEDName(JsonParsing.getString(data, "CrewRole"));
-                                    var crewName = JsonParsing.getString(data, "CrewName");
-                                    events.Add(new CarrierServiceChangedEvent(timestamp, carrierID, operation, crewRole, crewName) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierDepositFuel":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var amount = JsonParsing.getInt(data, "Amount");
-                                    var total = JsonParsing.getInt(data, "Total");
-                                    events.Add(new CarrierFuelDepositEvent(timestamp, carrierID, amount, total) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierDockingPermission":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var dockingAccess = JsonParsing.getString(data, "DockingAccess");
-                                    var allowNotorious = JsonParsing.getBool(data, "AllowNotorious");
-                                    events.Add(new CarrierDockingPermissionEvent(timestamp, carrierID, dockingAccess, allowNotorious) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierFinance":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var taxRate = JsonParsing.getOptionalInt(data, "TaxRate") ?? 0;
-                                    var reservePercent = JsonParsing.getOptionalInt(data, "ReservePercent") ?? 0;
-                                    var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
-                                    var carrierReserveBalance = JsonParsing.getLong(data, "ReserveBalance");
-                                    var carrierAvailableBalance = JsonParsing.getLong(data, "CarrierAvailableBalance");
-                                    events.Add(new CarrierFinanceEvent(timestamp, carrierID, taxRate, reservePercent, carrierBalance, carrierReserveBalance, carrierAvailableBalance) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "CarrierLocation":
-                                {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var system = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var systemName = JsonParsing.getString(data, "SystemName");
-                                    var bodyId = JsonParsing.getLong(data, "BodyID");
-                                    events.Add(new CarrierLocationEvent(timestamp, carrierID, systemAddress, systemName, bodyId) { raw = line, fromLoad = fromLogLoad } );
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+
+                                    var station = JsonParsing.getString(data, "StationName"); // if at a station
+                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    var stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
+
+                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "CarrierNameChange":
+                            case "DropshipDeploy":
                                 {
-                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    var callsign = JsonParsing.getString(data, "Callsign");
-                                    var name = JsonParsing.getString(data, "Name");
-                                    events.Add(new CarrierNameChangeEvent(timestamp, carrierID, callsign, name) { raw = line, fromLoad = fromLogLoad });
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+                                    // There are `OnStation` and `OnPlanet` properties, but these are
+                                    // always false and always true so we won't bother parsing them.
+
+                                    events.Add(new DropshipDeploymentEvent(timestamp, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Embark":
+                                {
+                                    var toSRV = JsonParsing.getBool(data, "SRV"); // true if getting out of SRV, false if getting out of a ship 
+                                    var toTaxi = JsonParsing.getBool(data, "Taxi"); //  true when getting out of a transport ship (e.g. Apex Taxi or Frontline Solutions dropship)
+                                    var toMultiCrew = JsonParsing.getBool(data, "Multicrew"); //  true when getting out of another player’s vessel
+                                    var toLocalId = JsonParsing.getOptionalInt(data, "ID"); // player’s ship ID (if player's own vessel)
+
+                                    var system = JsonParsing.getString(data, "StarSystem");
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var body = JsonParsing.getString(data, "Body");
+                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+                                    var onStation = JsonParsing.getOptionalBool(data, "OnStation");
+                                    var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
+
+                                    var station = JsonParsing.getString(data, "StationName"); // if at a station
+                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                                    var stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
+
+                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "FCMaterials":
                                 {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
                                     var carrierID = JsonParsing.getLong(data, "MarketID");
                                     var carrierName = JsonParsing.getString(data, "CarrierName");
                                     var callsign = JsonParsing.getString(data, "CarrierID");
@@ -4955,41 +4486,105 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "SupercruiseDestinationDrop":
-                                {
-                                    // "Type" may be either a signal source or proper name.
-                                    // If proper name, it might be a fleet carrier with both name and ID.
-                                    var type = JsonParsing.getString( data, "Type" );
-                                    var typeLocalized = JsonParsing.getString( data, "Type_Localised" );
-                                    var threat = JsonParsing.getOptionalInt( data, "Threat" ) ?? 0; // Typically 0 except for USS drops.
-                                    var marketID = JsonParsing.getOptionalLong( data, "MarketID" );
 
-                                    if ( type.StartsWith("$") ) 
+                            #endregion
+
+                            #region Other (Miscellaneous) Events
+
+                            case "AfmuRepairs":
+                                {
+                                    var item = JsonParsing.getString(data, "Module");
+                                    // Item might be a module
+                                    var module = Module.FromEDName(item);
+                                    if (module != null)
                                     {
-                                        // Symbolic signal source name. Prefer our own localization and fallback using the provided localization string if needed.
-                                        var signalSource = SignalSource.FromEDName( type );
-                                        signalSource.fallbackLocalizedName = typeLocalized;
-                                        type = signalSource.invariantName;
-                                        typeLocalized = signalSource.localizedName;
-                                    }
-                                    else
-                                    {
-                                        // Destination might be a fleet carrier with name and carrier ID in a single string.
-                                        // Check and break apart if needed.
-                                        var fleetCarrierRegex = new Regex( "^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$" );
-                                        if ( string.IsNullOrEmpty( typeLocalized ) && fleetCarrierRegex.IsMatch( type ) )
+                                        if (module.Mount != null)
                                         {
-                                            // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
-                                            var fleetCarrierParts = fleetCarrierRegex.Matches( type )[ 0 ].Groups;
-                                            if ( fleetCarrierParts.Count == 3 )
+                                            // This is a weapon so provide a bit more information
+                                            string mount;
+                                            if (module.Mount == ModuleMount.Fixed)
                                             {
-                                                type = fleetCarrierParts[ 2 ].Value;
-                                                typeLocalized = fleetCarrierParts[ 1 ].Value;
+                                                mount = "fixed";
+                                            }
+                                            else if (module.Mount == ModuleMount.Gimballed)
+                                            {
+                                                mount = "gimballed";
+                                            }
+                                            else
+                                            {
+                                                mount = "turreted";
+                                            }
+                                            item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
+                                        }
+                                        else
+                                        {
+                                            item = module.localizedName;
+                                        }
+                                    }
+
+                                    // There is an FDev bug that can set `FullyRepaired` to false even when the module health is full,
+                                    // so we work around this by relying on the `Health` property rather than the `FullyRepaired` property.
+                                    // This appears to be a unique problem with Module Reinforcement Packages.
+
+                                    var health = JsonParsing.getDecimal(data, "Health");
+                                    var repairedfully = health == 1M;
+
+                                    events.Add(new ShipAfmuRepairedEvent(timestamp, item, repairedfully, health) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ApproachSettlement":
+                                {
+                                    // The settlement name may be a proper name or a symbolic name.
+                                    var settlementName = JsonParsing.getString(data, "Name").ReplaceEnd('+');
+
+                                    // Symbolic names may include a localized name which may have an number appended to it (e.g. "Ancient Ruins (3)".
+                                    // If so, remove the appended number.
+                                    var localizedName = JsonParsing.getString(data, "Name_Localised");
+                                    if ( !string.IsNullOrEmpty(localizedName) )
+                                    {
+                                        localizedName = Regex.Replace( localizedName, @"\s\(\d\)", "" ).Trim();
+                                    }
+
+                                    var marketId = JsonParsing.getOptionalLong(data, "MarketID"); // Tourist beacons and guardian structures are reported as settlements without MarketID
+                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+                                    var bodyName = JsonParsing.getString(data, "BodyName");
+                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+
+                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+
+                                    var controllingFaction = GetFaction(data, "Station", EDDI.Instance.CurrentStarSystem?.systemname, systemAddress);
+
+                                    // Get station services data
+                                    var stationServices = new List<StationService>();
+                                    if ( data.TryGetValue( "StationServices", out var val ) )
+                                    {
+                                        stationServices = ( val as List<object> )
+                                            .Cast<string>()
+                                            .Select( StationService.FromEDName )
+                                            .ToList();
+                                    }
+
+                                    // Get station economies and their shares
+                                    var Economies = new List<EconomyShare>();
+                                    if ( data.TryGetValue( "StationEconomies", out var val2 ) )
+                                    {
+                                        var economies = ( val2 as List<object> )
+                                            .Cast<Dictionary<string, object>>();
+                                        foreach ( var economyshare in economies )
+                                        {
+                                            var economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                                            economy.fallbackLocalizedName = JsonParsing.getString( economyshare, "Name_Localised" );
+                                            var share = JsonParsing.getDecimal(economyshare, "Proportion");
+                                            if ( economy != Economy.None && share > 0 )
+                                            {
+                                                Economies.Add( new EconomyShare( economy, share ) );
                                             }
                                         }
                                     }
 
-                                    events.Add( new DestinationArrivedEvent( timestamp, type, typeLocalized, threat, marketID ) { raw = line, fromLoad = fromLogLoad } );
+                                    events.Add(new SettlementApproachedEvent(timestamp, settlementName, localizedName, marketId, controllingFaction, stationServices, Economies, systemAddress, bodyName, bodyId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -5038,90 +4633,730 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        DelayedEventHolder[ CargoEvent.NAME ] = cargoTransferEvent;
+                                        if ( !DelayedEventHolder.TryAdd( CargoEvent.NAME, new ConcurrentBag<Event>( new[] { cargoTransferEvent } ) ) )
+                                        {
+                                            DelayedEventHolder[ CargoEvent.NAME ].Add( cargoTransferEvent );
+                                        }
                                     }
                                 }
                                 handled = true;
                                 break;
-                            case "HoloscreenHacked":
+                            case "ChangeCrewRole":
                                 {
-                                    // {"timestamp":"2024-10-22T20:40:06Z","event":"HoloscreenHacked","PowerBefore":"Aisling Duval","PowerAfter":"Yuri Grom"}
-                                    var powerBefore = Power.FromEDName( JsonParsing.getString( data, "PowerBefore" ) );
-                                    var powerAfter = Power.FromEDName( JsonParsing.getString( data, "PowerAfter" ) );
-                                    events.Add(new HoloscreenHackedEvent(timestamp, powerBefore, powerAfter) { raw = line, fromLoad = fromLogLoad });
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var role = getRole(data, "Role");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewRoleChangedEvent(timestamp, role, telepresence) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                            case "RequestPowerMicroResources":
+                            case "CockpitBreached":
                                 {
-                                    // {"timestamp":"2024-10-23T19:59:28Z","event":"RequestPowerMicroResources","TotalCount":3,"MicroResources":[{"Name":"powerspyware","Name_Localised":"Power Tracker Malware","Category":"Data","Count":3}],"MarketID":3930400257}
-                                    if ( data.ContainsKey( "TotalCount" ) )
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    events.Add(new CockpitBreachedEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CommitCrime":
+                                {
+                                    object val;
+                                    var crimetype = JsonParsing.getString(data, "CrimeType");
+                                    var faction = GetFactionName(data, "Faction");
+                                    var victim = JsonParsing.getString(data, "Victim");
+
+                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Victim_Localised")))
                                     {
-                                        var marketID = JsonParsing.getLong( data, "MarketID" );
-                                        var resourceAmounts = new List<MicroResourceAmount>();
-                                        if ( data.TryGetValue( "MicroResources", out var val ) )
+                                        // This is an NPC with a symbolic name
+                                        victim = NpcAuthorityShip.EDNameExists(victim)
+                                            ? NpcAuthorityShip.FromEDName(victim)?.localizedName
+                                            : JsonParsing.getString(data, "Victim_Localised");
+                                    }
+
+                                    // Might be a fine or a bounty
+                                    if (data.ContainsKey("Fine"))
+                                    {
+                                        data.TryGetValue("Fine", out val);
+                                        var fine = (long)val;
+                                        events.Add(new FineIncurredEvent(timestamp, crimetype, faction, victim, fine) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else
+                                    {
+                                        data.TryGetValue("Bounty", out val);
+                                        var bounty = (long)val;
+                                        events.Add(new BountyIncurredEvent(timestamp, crimetype, faction, victim, bounty) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "CrewLaunchFighter":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var name = JsonParsing.getString(data, "Crew");
+                                    var fighterId = JsonParsing.getInt(data, "ID");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberLaunchedEvent(timestamp, name, fighterId, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CrewMemberJoins":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var member = JsonParsing.getString(data, "Crew");
+                                    member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberJoinedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CrewMemberRoleChange":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var name = JsonParsing.getString(data, "Crew");
+                                    var role = getRole(data, "Role");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberRoleChangedEvent(timestamp, name, role, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "CrewMemberQuits":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var member = JsonParsing.getString(data, "Crew");
+                                    member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberLeftEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DatalinkScan":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var message = JsonParsing.getString(data, "Message");
+                                    events.Add(new DatalinkMessageEvent(timestamp, message) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DatalinkVoucher":
+                                {
+                                    data.TryGetValue("Reward", out var val);
+                                    var reward = (long)val;
+                                    var victimFaction = GetFactionName(data, "VictimFaction");
+                                    var payeeFaction = GetFactionName(data, "PayeeFaction");
+                                    events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DataScanned":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var datalinktype = DataScan.FromEDName(JsonParsing.getString(data, "Type"));
+                                    events.Add(new DataScannedEvent(timestamp, datalinktype) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DockFighter":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var fighterId = JsonParsing.getInt(data, "ID");
+                                    events.Add(new FighterDockedEvent(timestamp, fighterId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "DockSRV":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var srvId = JsonParsing.getOptionalInt(data, "ID");
+                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
+                                    events.Add(new SRVDockedEvent(timestamp, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "EndCrewSession":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var onCrime = JsonParsing.getOptionalBool(data, "OnCrime");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewSessionEndedEvent(timestamp, onCrime, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "FighterRebuilt":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var loadout = JsonParsing.getString(data, "Loadout");
+                                    var fighterId = JsonParsing.getInt(data, "ID");
+                                    events.Add(new FighterRebuiltEvent(timestamp, loadout, fighterId) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                }
+                                break;
+                            case "Friends":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var status = JsonParsing.getString(data, "Status");
+                                    var name = JsonParsing.getString(data, "Name");
+                                    name = name.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+                                    var @event = new FriendsEvent( timestamp, name, status ) { raw = line, fromLoad = fromLogLoad };
+
+                                    // Friends events can be written before the commander is loaded and need to be delayed until we have seen a "Commander" event
+                                    if ( EDDI.Instance.lastEventOfType.TryGetValue( CommanderLoadingEvent.NAME, out _ ) )
+                                    {
+                                        if ( !DelayedEventHolder.TryAdd( CommanderLoadingEvent.NAME, new ConcurrentBag<Event>( new[] { @event } ) ) )
                                         {
-                                            if ( val is List<object> listVal )
-                                            {
-                                                foreach ( var res in listVal )
-                                                {
-                                                    if ( res is IDictionary<string, object> microVal )
-                                                    {
-                                                        var microResource = GetMicroResource( microVal );
-                                                        var amount = JsonParsing.getInt(microVal, "Count");
-                                                        if ( microResource != null )
-                                                        {
-                                                            resourceAmounts.Add( new MicroResourceAmount( microResource, amount ) );
-                                                        }
-                                                    }
-                                                }
-                                                events.Add( new PowerMicroResourcesCollectedEvent( timestamp, marketID, resourceAmounts ) { raw = line, fromLoad = fromLogLoad } );
-                                            }
+                                            DelayedEventHolder[ CommanderLoadingEvent.NAME ].Add( @event );
                                         }
                                     }
                                     else
                                     {
-                                        // We haven't seen this pattern before. Break unhandled.
-                                        break;
+                                        events.Add( @event );
                                     }
                                 }
                                 handled = true;
                                 break;
-                            case "DeliverPowerMicroResources":
+                            case "FuelScoop":
                                 {
-                                    // { "timestamp":"2024-10-19T15:01:28Z", "event":"DeliverPowerMicroResources", "TotalCount":2, "MicroResources":[ { "Name":"powerelectronics", "Name_Localised":"Electronics Package", "Category":"Item", "Count":2 } ], "MarketID":3223182848 }
-                                    if ( data.ContainsKey( "TotalCount" ) )
+                                    // We're handling this via the Status Monitor
+                                }
+                                handled = true;
+                                break;
+                            case "JetConeBoost":
+                                {
+                                    var boost = JsonParsing.getDecimal(data, "BoostValue");
+                                    events.Add(new JetConeBoostEvent(timestamp, boost) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "JetConeDamage":
+                                {
+                                    var modulename = JsonParsing.getString(data, "Module");
+                                    var module = Module.FromEDName(modulename);
+                                    if (module != null)
                                     {
-                                        var marketID = JsonParsing.getLong( data, "MarketID" );
-                                        var resourceAmounts = new List<MicroResourceAmount>();
-                                        if ( data.TryGetValue( "MicroResources", out var val ) )
+                                        if (module.Mount != null)
                                         {
-                                            if ( val is List<object> listVal )
+                                            // This is a weapon so provide a bit more information
+                                            var mount = module.mount;
+                                            modulename = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
+                                        }
+                                        else
+                                        {
+                                            modulename = module.localizedName;
+                                        }
+                                    }
+
+                                    events.Add(new JetConeDamageEvent(timestamp, modulename, module) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "JoinACrew":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var captain = JsonParsing.getString(data, "Captain");
+                                    captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewJoinedEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "KickCrewMember":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var member = JsonParsing.getString(data, "Crew");
+                                    member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewMemberRemovedEvent(timestamp, member, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "LaunchDrone":
+                                {
+                                    var kind = JsonParsing.getString(data, "Type");
+                                    events.Add(new LimpetLaunchedEvent(timestamp, kind) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "LaunchFighter":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var loadout = JsonParsing.getString(data, "Loadout");
+                                    var fighterId = JsonParsing.getInt(data, "ID");
+                                    var playerControlled = JsonParsing.getBool(data, "PlayerControlled");
+                                    events.Add(new FighterLaunchedEvent(timestamp, loadout, fighterId, playerControlled) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "LaunchSRV":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var loadout = JsonParsing.getString(data, "Loadout");
+                                    var playercontrolled = JsonParsing.getBool(data, "PlayerControlled");
+                                    var id = JsonParsing.getOptionalInt(data, "ID");
+                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
+                                    events.Add(new SRVLaunchedEvent(timestamp, loadout, playercontrolled, vehicleDefinition, id) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ModuleInfo":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    if ( ModuleInfo.TryFromFile(timestamp, out var info, out line))
+                                    {
+                                        events.Add(new ModuleInfoEvent(timestamp, info.Modules)
+                                            { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "Music":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var musicTrack = JsonParsing.getString(data, "MusicTrack");
+                                    events.Add(new MusicEvent(timestamp, musicTrack) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "NpcCrewPaidWage":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var name = JsonParsing.getString(data, "NpcCrewName");
+                                    var crewid = JsonParsing.getLong(data, "NpcCrewId");
+                                    var amount = JsonParsing.getLong(data, "Amount");
+                                    // Delay `Crew paid wage` events to occur after events where the commander receives a payment.
+                                    if ( amount > 0 )
+                                    {
+                                        var crewPaidWageEvent = new CrewPaidWageEvent( timestamp, name, crewid, amount ) { raw = line, fromLoad = fromLogLoad };
+                                        if ( fromSpeechResponderTest )
+                                        {
+                                            events.Add( crewPaidWageEvent );
+                                        }
+                                        else
+                                        {
+                                            Task.Run( async () =>
                                             {
-                                                foreach ( var res in listVal )
+                                                await Task.Delay( TimeSpan.FromSeconds( 6 ) ).ConfigureAwait( false );
+                                                EDDI.Instance.enqueueEvent( crewPaidWageEvent );
+                                            } );
+                                        }
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "NpcCrewRank":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var name = JsonParsing.getString(data, "NpcCrewName");
+                                    var crewid = JsonParsing.getLong(data, "NpcCrewId");
+                                    data.TryGetValue("RankCombat", out var val);
+                                    var rating = CombatRating.FromRank(Convert.ToInt32(val));
+                                    events.Add(new CrewPromotionEvent(timestamp, name, crewid, rating) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Promotion":
+                                {
+                                    object rating = null;
+                                    if (data.TryGetValue("Combat", out var val))
+                                    {
+                                        rating = CombatRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("CQC", out val))
+                                    {
+                                        rating = CQCRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Trade", out val))
+                                    {
+                                        rating = TradeRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Explore", out val))
+                                    {
+                                        rating = ExplorationRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Federation", out val))
+                                    {
+                                        rating = FederationRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Empire", out val))
+                                    {
+                                        rating = EmpireRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Soldier", out val))
+                                    {
+                                        rating = MercenaryRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    else if (data.TryGetValue("Exobiologist", out val))
+                                    {
+                                        rating = ExobiologistRating.FromRank(Convert.ToInt32(val));
+                                    }
+                                    if (rating != null)
+                                    {
+                                        var genderPreference = ConfigService.Instance.commanderConfiguration.gender;
+                                        events.Add(new CommanderPromotionEvent(timestamp, rating, genderPreference) { raw = line, fromLoad = fromLogLoad });
+                                        handled = true;
+                                    }
+                                }
+                                break;
+                            case "ProspectedAsteroid":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    data.TryGetValue("Materials", out var val); // (array of Name and Proportion)
+                                    var commodities = new List<CommodityPresence>();
+                                    if (val is List<object> listVal)
+                                    {
+                                        foreach (var commodityVal in listVal)
+                                        {
+                                            if (commodityVal is Dictionary<string, object> commodityData)
+                                            {
+                                                var commodityEdName = JsonParsing.getString(commodityData, "Name");
+                                                var commodity = CommodityDefinition.FromEDName(commodityEdName);
+                                                var proportion = JsonParsing.getDecimal(commodityData, "Proportion"); // Out of 100
+                                                if (commodity != null)
                                                 {
-                                                    if ( res is IDictionary<string, object> microVal )
-                                                    {
-                                                        var microResource = GetMicroResource( microVal );
-                                                        var amount = JsonParsing.getInt(microVal, "Count");
-                                                        if ( microResource != null )
-                                                        {
-                                                            resourceAmounts.Add( new MicroResourceAmount( microResource, amount ) );
-                                                        }
-                                                    }
+                                                    commodity.fallbackLocalizedName = JsonParsing.getString(commodityData, "Name_Localised");
+                                                    commodities.Add(new CommodityPresence(commodity, proportion));
                                                 }
-                                                events.Add( new PowerMicroResourcesDeliveredEvent( timestamp, marketID, resourceAmounts ) { raw = line, fromLoad = fromLogLoad } );
                                             }
                                         }
                                     }
+                                    var content = JsonParsing.getString(data, "Content"); // (a string representing High/Medium/Low material content)
+                                    var materialContent = new AsteroidMaterialContent(content)
+                                    {
+                                        fallbackLocalizedName = JsonParsing.getString(data, "Content_Localised")?.Replace("Material Content: ", "")
+                                    };
+                                    var remaining = JsonParsing.getDecimal(data, "Remaining"); // Out of 100
+
+                                    // If a motherlode commodity is present
+                                    CommodityDefinition motherlodeCommodityDefinition = null;
+                                    var motherlodeEDName = JsonParsing.getString(data, "MotherlodeMaterial");
+                                    if (!string.IsNullOrEmpty(motherlodeEDName))
+                                    {
+                                        motherlodeCommodityDefinition = CommodityDefinition.FromEDName(motherlodeEDName);
+                                    }
+
+                                    events.Add(new AsteroidProspectedEvent(timestamp, commodities, materialContent, remaining, motherlodeCommodityDefinition) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "QuitACrew":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var captain = JsonParsing.getString(data, "Captain");
+                                    captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+                                    var telepresence = EDDI.Instance.inOdyssey ? JsonParsing.getOptionalBool(data, "Telepresence") : true;
+                                    events.Add(new CrewLeftEvent(timestamp, captain, telepresence) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "RebootRepair":
+                                {
+                                    // This event returns a list of slots rather than actual module ednames.
+                                    List<string> compartmentsJson = null;
+                                    data.TryGetValue( "Modules", out var val );
+                                    if ( val is List<string> ls )
+                                    {
+                                        compartmentsJson = ls;
+                                    }
+                                    else if ( val is List<object> lo )
+                                    {
+                                        compartmentsJson = lo.Select( o => o.ToString() ).ToList();
+                                    }
+                                    events.Add(new ShipRebootedEvent( timestamp, compartmentsJson ) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "ReceiveText":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var from = JsonParsing.getString(data, "From");
+                                    var localizedFrom = JsonParsing.getString(data, "From_Localised");
+                                    var channel = JsonParsing.getString(data, "Channel");
+                                    var message = JsonParsing.getString(data, "Message");
+                                    MessageChannel messageChannel;
+                                    MessageSource source;
+
+                                    if (from == string.Empty && channel == "npc" && (message.StartsWith("$COMMS_entered") || message.StartsWith("$CHAT_Intro")))
+                                    {
+                                        // We can safely ignore system messages that initialize the chat system or announce that we entered a channel - no event is needed. 
+                                        handled = true;
+                                        break;
+                                    }
+
+                                    if (
+                                        channel == "player" ||
+                                        channel == "wing" ||
+                                        channel == "friend" ||
+                                        channel == "voicechat" ||
+                                        channel == "local" ||
+                                        channel == "squadron" ||
+                                        channel == "starsystem" ||
+                                        channel == null
+                                    )
+                                    {
+                                        // Give priority to player messages
+                                        if (string.IsNullOrEmpty(channel))
+                                        {
+                                            // Multicrew messages omit the `channel` property
+                                            source = MessageSource.CrewMate;
+                                        }
+                                        else if (channel == "squadron")
+                                        {
+                                            source = MessageSource.SquadronMate;
+                                        }
+                                        else if (channel == "wing")
+                                        {
+                                            source = MessageSource.WingMate;
+                                        }
+                                        else
+                                        {
+                                            source = MessageSource.Commander;
+                                        }
+                                        messageChannel = MessageChannel.FromEDName(channel ?? "multicrew");
+                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, true, messageChannel, message) { raw = line, fromLoad = fromLogLoad });
+                                    }
                                     else
                                     {
-                                        // We haven't seen this pattern before. Break unhandled.
-                                        break;
+                                        // This is NPC speech.  What's the source?
+                                        if (from.Contains("npc_name_decorate"))
+                                        {
+                                            source = MessageSource.FromMessage(from, message);
+                                            from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
+                                        }
+                                        else if (from.Contains("ShipName_") || from.Contains("_Scenario_"))
+                                        {
+                                            source = MessageSource.FromMessage(from, message);
+                                            if (!string.IsNullOrEmpty(localizedFrom))
+                                            {
+                                                // This is an NPC with a symbolic name
+                                                from = NpcAuthorityShip.EDNameExists(from) 
+                                                    ? NpcAuthorityShip.FromEDName(from)?.localizedName 
+                                                    : localizedFrom;
+                                            }
+                                        }
+                                        else if (from.StartsWith("$Name_AX_Military; "))
+                                        {
+                                            source = MessageSource.FromMessage(from, message);
+                                            from = from.Replace("$Name_AX_Military; ", "");
+                                        }
+                                        else if (message.StartsWith("$STATION_") || message.Contains("$Docking"))
+                                        {
+                                            source = MessageSource.Station;
+                                        }
+                                        else
+                                        {
+                                            source = MessageSource.NPC;
+                                        }
+                                        messageChannel = MessageChannel.FromEDName(channel);
+                                        events.Add(new MessageReceivedEvent(timestamp, localizedFrom ?? from, source, false, messageChannel, JsonParsing.getString(data, "Message_Localised"), EDDI.Instance.CurrentStarSystem, EDDI.Instance.CurrentStellarBody, EDDI.Instance.CurrentStation) { raw = line, fromLoad = fromLogLoad });
+
+                                        // See if we also want to spawn a specific event as well?
+                                        if (message == "$STATION_NoFireZone_entered;" && EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
+                                        {
+                                            events.Add(new StationNoFireZoneEnteredEvent(timestamp, false) { raw = line, fromLoad = fromLogLoad });
+                                        }
+                                        else if (message == "$STATION_NoFireZone_entered_deployed;")
+                                        {
+                                            events.Add(new StationNoFireZoneEnteredEvent(timestamp, true) { raw = line, fromLoad = fromLogLoad });
+                                        }
+                                        else if (message == "$STATION_NoFireZone_exited;")
+                                        {
+                                            events.Add(new StationNoFireZoneExitedEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                        }
+                                        else if (message.Contains("_StartInterdiction") || message.Contains("_Hitman_Interdiction"))
+                                        {
+                                            // Find out who is doing the interdicting
+                                            source = MessageSource.FromMessage(from, message);
+                                            events.Add(new NPCInterdictionCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
+                                        }
+                                        else if (message.Contains("_Attack") || message.Contains("_OnAttackStart") || message.Contains("AttackRun") || message.Contains("OnDeclarePiracyAttack"))
+                                        {
+                                            // Find out who is doing the attacking
+                                            source = MessageSource.FromMessage(from, message);
+                                            events.Add(new NPCAttackCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
+                                        }
+                                        else if (message.Contains("_OnStartScanCargo"))
+                                        {
+                                            // Find out who is doing the scanning
+                                            source = MessageSource.FromMessage(from, message);
+                                            events.Add(new NPCCargoScanCommencedEvent(timestamp, localizedFrom ?? from, source ) { raw = line, fromLoad = fromLogLoad });
+                                        }
                                     }
                                 }
                                 handled = true;
                                 break;
+                            case "RepairDrone":
+                                {
+                                    var hull = JsonParsing.getOptionalDecimal(data, "HullRepaired");
+                                    var cockpit = JsonParsing.getOptionalDecimal(data, "CockpitRepaired");
+                                    var corrosion = JsonParsing.getOptionalDecimal(data, "CorrosionRepaired");
+
+                                    events.Add(new ShipRepairDroneEvent(timestamp, hull, cockpit, corrosion) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Resurrect":
+                                {
+                                    var option = JsonParsing.getString(data, "Option");
+                                    var price = JsonParsing.getLong(data, "Cost");
+                                    events.Add(new RespawnedEvent(timestamp, option, price) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SelfDestruct":
+                                {
+                                    events.Add( new SelfDestructEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
+                            case "SendText":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var to = JsonParsing.getString(data, "To");
+                                    var message = JsonParsing.getString(data, "Message");
+                                    events.Add(new MessageSentEvent(timestamp, to, message) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Shutdown":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    events.Add(new ShutdownEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Synthesis":
+                                {
+                                    var synthesis = JsonParsing.getString(data, "Name");
+
+                                    data.TryGetValue("Materials", out var val);
+                                    var materials = new List<MaterialAmount>();
+                                    // 2.2 style
+                                    if (val is Dictionary<string, object> materialsData)
+                                    {
+                                        if (materialsData != null)
+                                        {
+                                            foreach (var materialData in materialsData)
+                                            {
+                                                var material = Material.FromEDName(materialData.Key);
+                                                materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                            }
+                                        }
+                                    }
+                                    else if (val is List<object> materialsJson) // 2.3 style
+                                    {
+                                        foreach (var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                                        {
+                                            var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                        }
+                                    }
+
+                                    events.Add(new SynthesisedEvent(timestamp, synthesis, materials) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "SystemsShutdown":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    if ( ShipShutdownCancellationTokenSource != null )
+                                    {
+                                        // Ignore repetitions when the ship is already in a shut-down state. 
+                                    }
+                                    else
+                                    {
+                                        events.Add( new ShipShutdownEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
+                                    }
+                                }
+                                handled = true;
+                                break;
+                            case "VehicleSwitch":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    var to = JsonParsing.getString(data, "To");
+                                    if (to == "Fighter")
+                                    {
+                                        events.Add(new ControllingFighterEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                        handled = true;
+                                    }
+                                    else if (to == "Mothership")
+                                    {
+                                        events.Add(new ControllingShipEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
+                                        handled = true;
+                                    }
+                                }
+                                break;
+                            case "SupercruiseDestinationDrop":
+                                {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
+                                    // "Type" may be either a signal source or proper name.
+                                    // If proper name, it might be a fleet carrier with both name and ID.
+                                    var type = JsonParsing.getString( data, "Type" );
+                                    var typeLocalized = JsonParsing.getString( data, "Type_Localised" );
+                                    var threat = JsonParsing.getOptionalInt( data, "Threat" ) ?? 0; // Typically 0 except for USS drops.
+                                    var marketID = JsonParsing.getOptionalLong( data, "MarketID" );
+
+                                    if ( type.StartsWith("$") ) 
+                                    {
+                                        // Symbolic signal source name. Prefer our own localization and fallback using the provided localization string if needed.
+                                        var signalSource = SignalSource.FromEDName( type );
+                                        signalSource.fallbackLocalizedName = typeLocalized;
+                                        type = signalSource.invariantName;
+                                        typeLocalized = signalSource.localizedName;
+                                    }
+                                    else
+                                    {
+                                        // Destination might be a fleet carrier with name and carrier ID in a single string.
+                                        // Check and break apart if needed.
+                                        var fleetCarrierRegex = new Regex( "^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$" );
+                                        if ( string.IsNullOrEmpty( typeLocalized ) && fleetCarrierRegex.IsMatch( type ) )
+                                        {
+                                            // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
+                                            var fleetCarrierParts = fleetCarrierRegex.Matches( type )[ 0 ].Groups;
+                                            if ( fleetCarrierParts.Count == 3 )
+                                            {
+                                                type = fleetCarrierParts[ 2 ].Value;
+                                                typeLocalized = fleetCarrierParts[ 1 ].Value;
+                                            }
+                                        }
+                                    }
+
+                                    events.Add( new DestinationArrivedEvent( timestamp, type, typeLocalized, threat, marketID ) { raw = line, fromLoad = fromLogLoad } );
+                                }
+                                handled = true;
+                                break;
+
+                            #endregion
+
+                            #region Colonisation Events
+                            
                             case "ColonisationSystemClaim":
                             case "ColonisationSystemClaimRelease":
                                 handled = ColonisationClaimProcessedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
@@ -5135,7 +5370,11 @@ namespace EddiJournalMonitor
                             case "ColonisationConstructionDepot":
                                 handled = ColonisationConstructionDepotEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
-                                
+
+                            #endregion
+
+                            #region Ignored Events
+
                             // we silently ignore these, but forward them to the responders
                             case "CodexDiscovery":
                             case "CodexEntry":
@@ -5170,6 +5409,7 @@ namespace EddiJournalMonitor
 
                             // No plans to support
                             case "CollectItems": // The `BackpackChange` event keeps us up to date.
+                            case "Continued": // This indicates that the journal continues in a new file. We should pick this up automatically.
                             case "CrimeVictim": // No need to track crimes committed by other cmdrs. If added, filter out events where the current player is listed as the offender.
                             case "DiscoveryScan": // Probably deprecated / replaced by `FSSDiscoveryScan`
                             case "DropItems": // The `BackpackChange` event keeps us up to date.
@@ -5185,6 +5425,9 @@ namespace EddiJournalMonitor
                             case "USSDrop": // Superseded by / redundant with the `SupercruiseDestinationDrop` event.
                             case "WonATrophyForSquadron": // No interesting data here so no reason to add this.
                                 break;
+
+                            #endregion
+
                             default:
                                 throw new NotImplementedException($"EDDI has no handler for event type '{edType}'.");
                         }
@@ -5847,50 +6090,5 @@ namespace EddiJournalMonitor
             }
             return compartment;
         }
-
-        private static readonly string[] ignoredLogLoadEvents =
-        {
-            // We ignore these events when parsing / loading a log for a game session already in process.
-            "AfmuRepairs",
-            "ChangeCrewRole",
-            "ClearSavedGame",
-            "CockpitBreached",
-            "Continued",
-            "CrewFire",
-            "CrewLaunchFighter",
-            "CrewMemberJoins",
-            "CrewMemberQuits",
-            "CrewMemberRoleChange",
-            "DataScanned",
-            "DatalinkScan",
-            "DockingCancelled",
-            "DockingDenied",
-            "DockingGranted",
-            "DockingRequested",
-            "DockingTimeout",
-            "EndCrewSession",
-            "EscapeInterdiction",
-            "FSDTarget",
-            "FuelScoop",
-            "HeatDamage",
-            "HeatWarning",
-            "JetConeBoost",
-            "JetConeDamage",
-            "KickCrewMember",
-            "MaterialDiscovered",
-            "Music",
-            "NpcCrewRank",
-            "ReceiveText",
-            "Scanned",
-            "SendText",
-            "ShieldState",
-            "Shutdown",
-            "SystemsShutdown",
-            "UnderAttack",
-            "WingAdd",
-            "WingInvite",
-            "WingJoin",
-            "WingLeave"
-        };
     }
 }

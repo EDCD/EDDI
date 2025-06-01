@@ -19,7 +19,9 @@ namespace EddiEvents
 
         public static bool Handle ( DateTime timestamp, string line, ref List<Event> events, bool fromLogLoad )
         {
-            events.Add( new ColonisationBeaconDeployedEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            events.Add( new ColonisationBeaconDeployedEvent( timestamp ) { raw = line, fromLoad = false } );
             return true;
         }
     }

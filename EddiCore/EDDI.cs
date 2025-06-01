@@ -894,13 +894,13 @@ namespace EddiCore
             }
         }
 
-        private async Task dequeueEvents()
+        private void dequeueEvents()
         {
             try
             {
                 foreach (var @event in eventQueue.GetConsumingEnumerable(eventHandlerTS.Token))
                 {
-                    await eventHandler( @event );
+                    eventHandler( @event );
                 }
             }
             catch (OperationCanceledException)
@@ -910,7 +910,7 @@ namespace EddiCore
             }
         }
 
-        internal async Task eventHandler( Event @event )
+        internal void eventHandler( Event @event )
         {
             if (@event != null)
             if ( @event != null )
@@ -1023,10 +1023,6 @@ namespace EddiCore
                     else if (@event is NearSurfaceEvent nearSurfaceEvent)
                     {
                         passEvent = eventNearSurface(nearSurfaceEvent);
-                    }
-                    else if (@event is FriendsEvent friendsEvent)
-                    {
-                        passEvent = eventFriends(friendsEvent);
                     }
                     else if (@event is MarketEvent marketEvent)
                     {
@@ -1456,38 +1452,6 @@ namespace EddiCore
                 DataProvider.SaveStarSystem(CurrentStarSystem);
             }
             return true;
-        }
-
-        internal bool eventFriends(FriendsEvent @event)
-        {
-            var passEvent = false;
-            var friend = new Friend
-            {
-                name = @event.name,
-                status = @event.status
-            };
-
-            // Does this friend exist in our friends list?
-            if ( Cmdr != null )
-            {
-                int index = Cmdr.friends.FindIndex( f => f.name == @event.name );
-                if ( index >= 0 )
-                {
-                    if ( Cmdr.friends[ index ].status != @event.status )
-                    {
-                        // This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
-                        Cmdr.friends[ index ] = friend;
-                        passEvent = true;
-                    }
-                }
-                else
-                {
-                    // This is a new friend, add them to the list
-                    Cmdr.friends.Add( friend );
-                }
-            }
-
-            return passEvent;
         }
 
         private async Task OnEvent ( Event @event )

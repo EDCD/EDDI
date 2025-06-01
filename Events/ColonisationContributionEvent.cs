@@ -31,6 +31,8 @@ namespace EddiEvents
 
         public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
             var marketID = JsonParsing.getLong( data, "MarketID" );
             var commodityAmounts = new List<CommodityAmount>();
             if ( data.TryGetValue( "Contributions", out var val ) )
@@ -51,7 +53,7 @@ namespace EddiEvents
                             }
                         }
                     }
-                    events.Add( new ColonisationContributionEvent( timestamp, marketID, commodityAmounts ) { raw = line, fromLoad = fromLogLoad } );
+                    events.Add( new ColonisationContributionEvent( timestamp, marketID, commodityAmounts ) { raw = line, fromLoad = false } );
                 }
             }
             return true;
