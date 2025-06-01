@@ -5,7 +5,6 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -46,16 +45,15 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var routeTask = GetRouteResponseTask(initialResponse.Content);
-            Task.WaitAll(routeTask);
+            var result = GetRouteResponseAsync(initialResponse.Content).GetAwaiter().GetResult();
 
-            if (routeTask.Result is null)
+            if (result is null)
             {
                 Logging.Warn($"Spansh API returned no route to system {targetSystem}.");
                 return null;
             }
 
-            return ParseGalaxyRoute(routeTask.Result);
+            return ParseGalaxyRoute(result);
         }
 
         private void GetShipJumpDetails(Ship ship, out double fuel_power, out double fuel_multiplier, out double optimal_mass, out decimal base_mass, out decimal tank_size, out decimal internal_tank_size, out decimal max_fuel_per_jump, out double range_boost)

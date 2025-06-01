@@ -3,17 +3,17 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
 {
     public partial class SpanshService
     {
-        public Faction GetFactionByName (string factionName, string presenceSystemName = null)
+        public async Task<Faction> GetFactionByNameAsync (string factionName, string presenceSystemName = null)
         {
             if ( string.IsNullOrEmpty( factionName ) ) { return null; }
 
-            Faction faction = null;
             var searchFilters = new Dictionary<string, object> { { "minor_faction_presences", new { value = new[] { factionName } } } };
 
             // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
@@ -30,7 +30,7 @@ namespace EddiSpanshService
                 int page = 0;
                 do
                 {
-                    var systemQueryResult = Query(QueryGroup.systems, searchFilters, maxResultsPerPage, page);
+                    var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, maxResultsPerPage, page);
                     if ( systemQueryResult != null )
                     {
                         count = count ?? systemQueryResult[ "count" ]?.ToObject<int?>();
@@ -45,9 +45,10 @@ namespace EddiSpanshService
                 Logging.Error( "Error retrieving faction data from Spansh", e );
             }
 
+            Faction faction = null;
             if ( systemsQueryResults.Any() )
             {
-                faction = GetFactionBaseData( ref faction, factionName, presenceSystemName, systemsQueryResults );
+                faction = await GetFactionBaseDataAsync( factionName, presenceSystemName, systemsQueryResults );
 
                 // Set our faction presence data
                 if ( faction != null )
@@ -59,7 +60,7 @@ namespace EddiSpanshService
             return faction;
         }
 
-        private Faction GetFactionBaseData(ref Faction faction, string factionName, string presenceSystemName, List<JToken> systemsQueryResults )
+        private async Task<Faction> GetFactionBaseDataAsync( string factionName, string presenceSystemName, List<JToken> systemsQueryResults )
         {
             var controllingMinorFactionData =  systemsQueryResults.FirstOrDefault( s => s?[ "controlling_minor_faction" ]?.ToString()
                 .Equals( factionName, StringComparison.InvariantCultureIgnoreCase ) ?? false );
@@ -75,22 +76,23 @@ namespace EddiSpanshService
                     searchFilters.Add( "system_name", new { value = new[] { presenceSystemName } } );
                 }
 
-                var stationsQueryResult = Query( QueryGroup.stations, searchFilters, 1 )?[ "results" ]?.FirstOrDefault();
+                var stationsQueryResult = (await QueryAsync( QueryGroup.stations, searchFilters, 1 ))?[ "results" ]?.FirstOrDefault();
                 controllingMinorFactionData = stationsQueryResult;
             }
 
             if ( controllingMinorFactionData is JToken data )
             {
-                faction = new Faction
+                var faction = new Faction
                 {
                     name = data[ "controlling_minor_faction" ]?.ToString(),
                     Allegiance = Superpower.FromName( data[ "allegiance" ]?.ToString() ) ?? Superpower.None,
                     Government = Government.FromName( data[ "government" ]?.ToString() ) ?? Government.None,
                     updatedAt = JsonParsing.getDateTime( "updated_at", data )
                 };
+                return faction;
             }
 
-            return faction;
+            return null;
         }
 
         private static List<FactionPresence> GetFactionPresenceData ( string factionName, List<JToken> systemsQueryResults )

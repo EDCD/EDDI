@@ -4,7 +4,6 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -40,16 +39,15 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var routeTask = GetRouteResponseTask(initialResponse.Content);
-            Task.WhenAll(routeTask);
+            var result = GetRouteResponseAsync(initialResponse.Content).GetAwaiter().GetResult();
 
-            if (routeTask.Result is null)
+            if (result is null)
             {
                 Logging.Warn($"Spansh API returned no route to system {targetSystems.LastOrDefault()}.");
                 return null;
             }
 
-            return ParseCarrierRoute(routeTask.Result);
+            return ParseCarrierRoute(result);
         }
 
         private IRestRequest CarrierRouteRequest(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired, string[] refuel_destinations)

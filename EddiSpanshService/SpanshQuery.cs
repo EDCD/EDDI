@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EddiSpanshService
 {
@@ -15,11 +16,10 @@ namespace EddiSpanshService
             systems
         }
 
-        [CanBeNull]
-        public JToken Query ( QueryGroup queryGroup, [NotNull] Dictionary<string, object> searchFilters, int? maxResults = 500, int? pageId = 0 )
+        public async Task<JToken> QueryAsync ( QueryGroup queryGroup, [NotNull] Dictionary<string, object> searchFilters, int? maxResults = 500, int? pageId = 0 )
         {
             var request = GetRestRequest( queryGroup, searchFilters, maxResults, pageId );
-            var response = spanshRestClient.Post( request );
+            var response = await spanshRestClient.PostAsync( request );
             return response is null ? null : JToken.Parse( response.Content );
         }
 

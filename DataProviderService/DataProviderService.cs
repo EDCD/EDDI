@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 [assembly: InternalsVisibleTo( "Tests" )]
@@ -559,8 +560,7 @@ namespace EddiDataProviderService
             }
         }
 
-        [CanBeNull]
-        public Faction FetchFactionByName ( string factionName, string presenceSystemName = null )
+        public async Task<Faction> FetchFactionByNameAsync ( string factionName, string presenceSystemName = null )
         {
             if ( string.IsNullOrEmpty( factionName ) ) { return null; }
 
@@ -571,7 +571,7 @@ namespace EddiDataProviderService
             }
 
             // Next, try to fetch the faction from Spansh
-            faction = spanshService.GetFactionByName( factionName, presenceSystemName );
+            faction = await spanshService.GetFactionByNameAsync( factionName, presenceSystemName );
 
             // If we've successfully retrieved the faction then update our cache
             if ( faction != null )

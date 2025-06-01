@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Tests
@@ -29,6 +30,11 @@ namespace Tests
                 StatusCode = HttpStatusCode.OK,
             };
             return restResponse;
+        }
+
+        public Task<IRestResponse<T>> ExecuteAsync<T>(IRestRequest request)
+        {
+            return Task.FromResult( ( (ISpanshRestClient)this ).Execute<T>( request));
         }
 
         IRestResponse ISpanshRestClient.Get(IRestRequest request)
@@ -60,6 +66,11 @@ namespace Tests
                 Logging.Error( knfe.Message, knfe );
                 throw;
             }
+        }
+
+        Task<IRestResponse> ISpanshRestClient.GetAsync(IRestRequest request)
+        {
+            return Task.FromResult( ( (ISpanshRestClient)this ).Get(request));
         }
 
         public IRestResponse Post ( IRestRequest request )
@@ -96,6 +107,11 @@ namespace Tests
                 Logging.Error( knfe.Message, knfe );
                 throw;
             }
+        }
+
+        Task<IRestResponse> ISpanshRestClient.PostAsync(IRestRequest request)
+        {
+            return Task.FromResult( ( (ISpanshRestClient)this ).Post(request));
         }
 
         public void Expect(string resource, string content)

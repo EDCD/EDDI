@@ -25,11 +25,11 @@ namespace EddiSpeechResponder.CustomFunctions
             }
             else if (values.Count == 1)
             {
-                result = EDDI.Instance.DataProvider.FetchFactionByName( values[ 0 ].AsString );
+                result = EDDI.Instance.DataProvider.FetchFactionByNameAsync( values[ 0 ].AsString )?.GetAwaiter().GetResult();
             }
             else
             {
-                result = EDDI.Instance.DataProvider.FetchFactionByName( values[0].AsString, values[1].AsString );
+                result = EDDI.Instance.DataProvider.FetchFactionByNameAsync( values[0].AsString, values[1].AsString )?.GetAwaiter().GetResult();
             }
             return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
         }, 1, 2);

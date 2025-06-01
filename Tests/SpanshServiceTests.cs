@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Tests.Properties;
 
 namespace Tests
@@ -597,7 +598,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestFactionFromName ()
+        public async Task TestFactionFromName ()
         {
             // Arrange
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
@@ -605,9 +606,9 @@ namespace Tests
             fakeSpanshRestClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"No such faction\"]}},\"size\":500,\"page\":0}", null );
 
             // Act
-            var faction1 = fakeSpanshService.GetFactionByName( "Radio Sidewinder Crew" );
-            var faction2 = EDDI.Instance.DataProvider.spanshService.GetFactionByName( "No such faction" );
-            var faction3 = EDDI.Instance.DataProvider.spanshService.GetFactionByName( null );
+            var faction1 = await fakeSpanshService.GetFactionByNameAsync( "Radio Sidewinder Crew" );
+            var faction2 = await EDDI.Instance.DataProvider.spanshService.GetFactionByNameAsync( "No such faction" );
+            var faction3 = await EDDI.Instance.DataProvider.spanshService.GetFactionByNameAsync( null );
 
             // Assert
             Assert.IsNotNull( faction1 );

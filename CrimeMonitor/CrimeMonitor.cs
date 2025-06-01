@@ -126,7 +126,7 @@ namespace EddiCrimeMonitor
             }
             else if ( @event is ShipTargetedEvent targetedEvent )
             {
-                postHandleShipTargetedEvent( targetedEvent );
+                Task.Run( async () => await postHandleShipTargetedEvent( targetedEvent ) );
             }
         }
 
@@ -149,7 +149,7 @@ namespace EddiCrimeMonitor
             } );
         }
 
-        internal void postHandleShipTargetedEvent ( ShipTargetedEvent @event )
+        internal async Task postHandleShipTargetedEvent ( ShipTargetedEvent @event )
         {
             // System targets list may be 're-built' for the current system from Log Load
             if ( @event.targetlocked )
@@ -169,12 +169,11 @@ namespace EddiCrimeMonitor
                 }
                 if ( @event.scanstage >= 3 && target.LegalStatus == null )
                 {
-                    var faction = EDDI.Instance.DataProvider.FetchFactionByName( @event.faction );
                     target.faction = @event.faction;
                     target.Power = @event.Power;
                     target.LegalStatus = @event.LegalStatus;
                     target.bounty = @event.bounty;
-                    target.Allegiance = faction?.Allegiance;
+                    target.Allegiance = (await EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.faction ))?.Allegiance;
                 }
             }
         }
@@ -278,7 +277,7 @@ namespace EddiCrimeMonitor
             var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
 
             // Get the victim faction data
-            var faction = EDDI.Instance.DataProvider.FetchFactionByName( @event.victimfaction );
+            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.victimfaction )?.GetAwaiter().GetResult();
 
             var report = new FactionReport(@event.timestamp, false, Crime.None, currentSystem, @event.reward)
             {
@@ -386,7 +385,7 @@ namespace EddiCrimeMonitor
             var bonus = (!test && currentSystem?.Power == Power.ALavignyDuval) ? 1.2 : 1.0;
 
             // Get the victim faction data
-            var faction = EDDI.Instance.DataProvider.FetchFactionByName( @event.faction );
+            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.faction )?.GetAwaiter().GetResult();
 
             foreach (var reward in @event.rewards.ToList())
             {
@@ -1020,7 +1019,7 @@ namespace EddiCrimeMonitor
             if (record == null || string.IsNullOrEmpty(record.faction) || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
 
             // Get the faction and set faction record values
-            var faction = EDDI.Instance.DataProvider.FetchFactionByName( record.faction );
+            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( record.faction )?.GetAwaiter().GetResult();
             record.Allegiance = faction?.Allegiance ?? Superpower.None;
 
             // Check faction with archived home systems

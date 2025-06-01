@@ -13,6 +13,9 @@ namespace EddiSpanshService
         IRestResponse<T> Execute<T> ( IRestRequest request );
         IRestResponse Get ( IRestRequest request );
         IRestResponse Post ( IRestRequest request );
+        Task<IRestResponse<T>> ExecuteAsync<T> ( IRestRequest request );
+        Task<IRestResponse> GetAsync ( IRestRequest request );
+        Task<IRestResponse> PostAsync ( IRestRequest request );
     }
 
     public partial class SpanshService
@@ -46,7 +49,24 @@ namespace EddiSpanshService
                 var retryCount = 0;
                 while ( retryCount < maxRetries )
                 {
-                    response = restClient.Execute<T>( request );
+                    response = restClient.ExecuteAsync<T>( request ).GetAwaiter().GetResult();
+                    if ( response.IsSuccessful )
+                    {
+                        return response;
+                    }
+                    retryCount++;
+                    Thread.Sleep( 20 ^ retryCount ); // Wait for 500 milliseconds before retrying
+                }
+                return response;
+            }
+
+            public async Task<IRestResponse<T>> ExecuteAsync<T> ( IRestRequest request )
+            {
+                IRestResponse<T> response = null;
+                var retryCount = 0;
+                while ( retryCount < maxRetries )
+                {
+                    response = await restClient.ExecuteAsync<T>( request );
                     if ( response.IsSuccessful )
                     {
                         return response;
@@ -59,7 +79,13 @@ namespace EddiSpanshService
 
             public IRestResponse Get ( IRestRequest request )
             {
-                var response = Execute<object>( request );
+                var response = ExecuteAsync<object>( request ).GetAwaiter().GetResult();
+                return response;
+            }
+
+            public async Task<IRestResponse> GetAsync ( IRestRequest request )
+            {
+                var response = await ExecuteAsync<object>( request );
                 return response;
             }
 
@@ -70,8 +96,21 @@ namespace EddiSpanshService
             /// <returns></returns>
             public IRestResponse Post ( IRestRequest request )
             {
-                var response = Execute<object>( request );
+                var response = ExecuteAsync<object>( request ).GetAwaiter().GetResult();
                 if ( !IsResponseOk( response ) ) { return null; }
+                return response;
+            }
+
+            /// <summary>
+            /// Post a search request with a json payload
+            /// </summary>
+            /// <param name="request"></param>
+            /// <returns></returns>
+            public async Task<IRestResponse> PostAsync ( IRestRequest request )
+            {
+                var response = await ExecuteAsync<object>( request );
+                if ( !IsResponseOk( response ) )
+                { return null; }
                 return response;
             }
 
@@ -109,9 +148,9 @@ namespace EddiSpanshService
             spanshRestClient = restClient ?? new SpanshRestClient(baseUrl);
         }
 
-        private async Task<JToken> GetRouteResponseTask(string data)
+        private async Task<JToken> GetRouteResponseAsync(string data)
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 var jobID = GetJobID(data);
                 if (string.IsNullOrEmpty(jobID)) return null;
@@ -121,7 +160,7 @@ namespace EddiSpanshService
                 while (routeResult is null || (routeResult["status"]?.ToString() == "queued"))
                 {
                     Thread.Sleep(500);
-                    var response = spanshRestClient.Get(jobRequest);
+                    var response = await spanshRestClient.GetAsync(jobRequest);
 
                     if (response.ResponseStatus == ResponseStatus.TimedOut)
                     {
