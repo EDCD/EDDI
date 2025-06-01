@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -24,7 +25,7 @@ namespace Utilities
         public List<MetaVariable> Results { get; private set; }
 
         // Some types don't need to be decomposed further - we'll stop reflecting when we hit these types
-        private static readonly Type[] undecomposedTypes =
+        private static readonly HashSet<Type> undecomposedTypes = new HashSet<Type>
         {
             typeof(string), 
             typeof(bool), 
@@ -41,6 +42,18 @@ namespace Utilities
         // Apply a placeholder symbol for collection indices - to be formatted
         // differently according to the end variable type (Cottle or VoiceAttack) 
         public const string indexMarker = @"<index\>";
+
+        /// <summary> Cache for type members to avoid reflection overhead </summary>
+        private static readonly ConcurrentDictionary<Type, (PropertyInfo[], FieldInfo[])> typeCache = new ConcurrentDictionary<Type, (PropertyInfo[], FieldInfo[])>();
+
+        /// <summary> Get the properties and fields of a type, caching the results </summary>
+        private (PropertyInfo[], FieldInfo[]) GetTypeMembers(Type type)
+        {
+            return typeCache.GetOrAdd(type, t => (
+                t.GetProperties(BindingFlags.Public | BindingFlags.Instance),
+                t.GetFields(BindingFlags.Public | BindingFlags.Instance)
+            ));
+        }
 
         /// <summary> Walk an object and write out all of the possible fields </summary>
         /// <param name="reflectionObjectType">The Type property of the object that we're walking, specified independent from the actual object in case the actual object value is null</param>
@@ -59,8 +72,7 @@ namespace Utilities
                 return Results;
             }
 
-            var objectProperties = reflectionObjectType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var objectFields = reflectionObjectType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+            var (objectProperties, objectFields) = GetTypeMembers(reflectionObjectType);
 
             foreach (var eventProperty in objectProperties)
             {
@@ -111,10 +123,12 @@ namespace Utilities
                 keysPath.Add(key);
 
                 // We ignore any key paths that we have already set elsewhere
-                if ( Results.FirstOrDefault( v => keysPath.SequenceEqual( v.keysPath) ) != null )
+                foreach (var v in Results)
                 {
-                    // Skipping already-set key
-                    return;
+                    if (v.keysPath.SequenceEqual(keysPath))
+                    {
+                        return;
+                    }
                 }
 
                 if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -169,11 +183,63 @@ namespace Utilities
                     var enumName = value != null ? fieldsArray[(int)value].Name : null;
                     Results.Add(new MetaVariable(keysPath, typeof(string), description, enumName));
                 }
+                else if (typeof(IEnumerable).IsAssignableFrom(type) && type != typeof(string))
+                {
+                    // The object is an enumerable collection. A list, array, or similar.
+                    // Determine the element type
+                    Type elementType = null;
+                    if (type.IsArray)
+                    {
+                        elementType = type.GetElementType();
+                    }
+                    else if (type.IsGenericType && type.GetGenericArguments().Length > 0)
+                    {
+                        elementType = type.GetGenericArguments().Last();
+                    }
+                    else
+                    {
+                        elementType = typeof(object);
+                    }
+
+                    int? i = 0;
+                    if (value != null)
+                    {
+                        // Handle filled collections
+                        foreach ( var item in (IEnumerable)value)
+                        {
+                            i++;
+                            var elementKeysPath = keysPath.ToList();
+                            elementKeysPath.Add(i.ToString());
+                            if (maxRecursionLevel is null || keysPath.Count < maxRecursionLevel)
+                            {
+                                GetVariables(elementType, maxRecursionLevel, item, elementKeysPath);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Handle empty collections (for example when we're generating wiki documentation)
+                        // Get the current list element's underlying variable data
+                        var elementKeysPath = keysPath.ToList();
+                        elementKeysPath.Add(indexMarker);
+                        if (maxRecursionLevel is null || keysPath.Count < maxRecursionLevel)
+                        {
+                            GetVariables(elementType, maxRecursionLevel, null, elementKeysPath);
+                        }
+                        // Set i to null so that no value is written to the wiki documentation
+                        i = null;
+                    }
+
+                    // Write the root element name with (if available) the number of associated entries from the collection
+                    var entriesPath = keysPath.ToList();
+                    Results.Add(new MetaVariable(entriesPath, typeof(IEnumerable<>), description, i));
+                }
                 else
                 {
                     if (undecomposedTypes.Contains(type)) { return; }
-                    else if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) || 
-                             type.GetInterfaces().Contains(typeof(IDictionary)))
+
+                    if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) || 
+                        type.GetInterfaces().Contains(typeof(IDictionary)))
                     {
                         if (value != null)
                         {
@@ -185,47 +251,6 @@ namespace Utilities
                                 }
                             }
                         }
-                    }
-                    else if (type == typeof(IEnumerable) || type.GetInterfaces().Contains(typeof(IEnumerable)))
-                    {
-                        // The object is an enumerable collection. A list, array, or similar.
-
-                        // Get the underlying type. If there is more than one, the last will correspond to the value type.
-                        var underlyingType = type.GetGenericArguments().Last();
-
-                        int? i = 0;
-                        if (value != null)
-                        {
-                            foreach (object item in (IEnumerable)value)
-                            {
-                                // Handle filled collections
-                                var elementKeysPath = keysPath.ToList();
-                                elementKeysPath.Add(i.ToString());
-                                if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
-                                {
-                                    GetVariables( underlyingType, maxRecursionLevel, item, elementKeysPath );
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Handle empty collections (for example when we're generating wiki documentation)
-
-                            // Get the current list element's underlying variable data
-                            var elementKeysPath = keysPath.ToList();
-                            elementKeysPath.Add(indexMarker);
-                            if ( maxRecursionLevel is null || keysPath.Count < maxRecursionLevel )
-                            {
-                                GetVariables( underlyingType, maxRecursionLevel, null, elementKeysPath );
-                            }
-
-                            // Set i to null so that no value is written to the wiki documentation
-                            i = null;
-                        }
-
-                        // Write the root element name with (if available) the number of associated entries from the collection
-                        var entriesPath = keysPath.ToList();
-                        Results.Add(new MetaVariable(entriesPath, typeof( IEnumerable<> ), description, i));
                     }
                     else if ((type.IsClass || type.IsInterface) && !type.IsGenericType)
                     {
@@ -248,7 +273,6 @@ namespace Utilities
             {
                 Logging.Error("Failed to obtain variable metadata by reflection.", ex);
             }
-            return;
         }
     }
 
