@@ -15,6 +15,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Numpad keys with or without modifiers
       * Other keys with at least one modifier from Ctrl and Alt, e.g. Ctrl+A, Ctrl+Shift+A, Ctrl+Shift+Alt+A.
 	  * However certain combos such as Ctrl+C and Ctrl+Alt+Del are reserved by the operating system.
+    * Fixed a bug causing new scripts to not be editable until EDDI is restarted.
 
 ## 4.1.4
   * Core

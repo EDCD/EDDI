@@ -66,7 +66,7 @@ namespace EddiSpeechResponder
             if ( originalScript == null )
             {
                 // This is a new script
-                revisedScript = new Script( "New script", null, false, null );
+                revisedScript = new Script( "New script", null, false, null ) { PersonalityIsCustom = true };
             }
             else
             {

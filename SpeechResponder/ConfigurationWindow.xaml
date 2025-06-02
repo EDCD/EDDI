@@ -253,10 +253,10 @@
                         <DataTemplate DataType="{x:Type local:Script}">
                             <Button Click="resetOrDeleteScript">
                                 <Button.Resources>
-                                    <local:BooleanAndConverter x:Key="booleanAndConverter" />
+                                    <local:BooleanOrConverter x:Key="booleanOrConverter" />
                                 </Button.Resources>
                                 <Button.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource booleanAndConverter }">
+                                    <MultiBinding Converter="{StaticResource booleanOrConverter }">
                                         <Binding Path="PersonalityIsCustom"/>
                                         <Binding Path="IsNotDefault"/>
                                     </MultiBinding>
