@@ -295,7 +295,8 @@ namespace EddiFleetCarrierMonitor
                 EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
             }
 
-            if ( FleetCarrier != null )
+            // If a jump is currently executing, don't update the carrier location until after the jump is actually completed.
+            if ( FleetCarrier?.nextStarSystemAddress != null ) 
             {
                 FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyID );
                 FleetCarrier.SetNextLocation( null, null, null );
