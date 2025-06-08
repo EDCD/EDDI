@@ -93,6 +93,10 @@ namespace EddiFleetCarrierMonitor
             {
                 handleCarrierFuelDepositEvent( carrierFuelDepositEvent );
             }
+            else if ( @event is CarrierJumpCancelledEvent carrierJumpCancelled )
+            {
+                handleCarrierJumpCancelledEvent( carrierJumpCancelled );
+            }
             else if ( @event is CarrierJumpedEvent carrierJumpedEvent )
             {
                 handleCarrierJumpedEvent( carrierJumpedEvent );
@@ -223,6 +227,20 @@ namespace EddiFleetCarrierMonitor
             if ( FleetCarrier != null )
             {
                 FleetCarrier.fuel = @event.total;
+                WriteConfiguration();
+            }
+        }
+
+        private void handleCarrierJumpCancelledEvent ( CarrierJumpCancelledEvent @event )
+        {
+            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierId )
+            {
+                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierId );
+            }
+
+            if ( FleetCarrier != null )
+            {
+                FleetCarrier.SetNextLocation( null, null, null );
                 WriteConfiguration();
             }
         }
