@@ -85,8 +85,7 @@ Type: files; Name: "{app}\*.pdb"
 Type: files; Name: "{userappdata}\EDDI\credentials.json"
 Type: files; Name: "{userappdata}\EDDI\elite.json"
 Type: files; Name: "{userappdata}\EDDI\galnet"
-Type: filesandordirs; Name: "{localappdata}\Eddi"; Check: ShouldDeleteLocalConfig
-
+Type: files; Name: "{localappdata}\Eddi\Eddi.exe_*\*\user.config"
 ; Remove sensitive data on uninstall
 [UninstallDelete]
 Type: files; Name: "{userappdata}\EDDI\CompanionAPI.json"
@@ -117,10 +116,3 @@ Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "UR
 Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
 Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
-
-; This section is used to remove old local config settings in version 4.1.3 only.
-[Code]
-function ShouldDeleteLocalConfig: Boolean;
-begin
-  Result := ExpandConstant('{#MyAppVersion}') = '4.1.3';
-end;

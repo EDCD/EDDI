@@ -186,8 +186,15 @@ namespace EddiSpeechService
                     {
                         if ( resourceStream != null )
                         {
-                            var schema = XmlSchema.Read( resourceStream, null );
-                            lexiconSchemas.Add( schema );
+                            try
+                            {
+                                var schema = XmlSchema.Read( resourceStream, null );
+                                lexiconSchemas.Add( schema );
+                            }
+                            catch ( Exception e )
+                            {
+                                Logging.Warn( "Failed to initialize lexicon schema validation", e );
+                            }
                         }
                     }
                 }
