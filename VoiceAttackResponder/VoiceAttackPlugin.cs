@@ -62,7 +62,7 @@ namespace EddiVoiceAttackResponder
                 lock ( vaProxyLock )
                 {
                     VaProxy = vaProxy;
-                    App.FromVA = true;
+                    App.VoiceAttackVersion = VaProxy.VAVersion as System.Version;
                 }
             }
 
@@ -120,7 +120,7 @@ namespace EddiVoiceAttackResponder
 
                     lock ( vaProxyLock )
                     {
-                        Logging.Info( $"VoiceAttack version: {VaProxy.VAVersion as System.Version}" );
+                        Logging.Info( $"VoiceAttack version: {App.VoiceAttackVersion}" );
                     }
                     Logging.Info("EDDI VoiceAttack plugin initialization complete");
                 }

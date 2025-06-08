@@ -41,7 +41,7 @@ namespace Utilities.TelemetryService
 
         protected static string anonymousTelemetryID => RollbarLocator.RollbarInstance.Config.RollbarPayloadAdditionOptions.Person?.Id;
 
-        public static void Start ( string uniqueId, bool fromVA = false )
+        public static void Start ( string uniqueId, System.Version VoiceAttackVersion )
         {
             try
             {
@@ -71,7 +71,7 @@ namespace Utilities.TelemetryService
                 var assyMetadataAttributes = Assembly.GetExecutingAssembly()?.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
                 var loggerPayloadOptions = new RollbarPayloadAdditionOptions()
                 {
-                    Person = new Person( uniqueId + ( fromVA ? " VA" : "" ) ),
+                    Person = new Person( uniqueId + ( VoiceAttackVersion != null ? $" VA V{VoiceAttackVersion}" : "" ) ),
                     Server = new Server
                     {
                         Root = "https://github.com/EDCD/EDDI",

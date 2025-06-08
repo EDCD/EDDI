@@ -22,7 +22,8 @@ namespace Eddi
         public static Mutex eddiMutex { get; private set; }
 
         // True if we have been started by VoiceAttack and the VaProxy object has been set
-        public static bool FromVA { get; set; }
+        public static System.Version VoiceAttackVersion { get; set; }
+        public static bool FromVA => VoiceAttackVersion != null;
         public static Action vaStartup;
 
         [ STAThread ]
@@ -113,8 +114,8 @@ namespace Eddi
         {
             // Generate an id unique to this app run for bug tracking
             // and start the telemetry service
-            var telemetryID = Guid.NewGuid().ToString();
-            Utilities.TelemetryService.Telemetry.Start(telemetryID, FromVA);
+            var telemetryID = Convert.ToBase64String( Guid.NewGuid().ToByteArray() ).Replace("=", "");
+            Utilities.TelemetryService.Telemetry.Start( telemetryID, VoiceAttackVersion );
 
             // Catch and send unhandled exceptions
             System.Windows.Forms.Application.ThreadException += (sender, args) =>
