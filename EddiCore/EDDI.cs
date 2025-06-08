@@ -77,6 +77,8 @@ namespace EddiCore
         }
         private string _gameVersion;
 
+        private StarSystemSignalSourceManager signalSourceManager = new StarSystemSignalSourceManager();
+
         public System.Version GameVersion { get; private set; }
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
@@ -662,6 +664,7 @@ namespace EddiCore
             if ( running )
             {
                 running = false; // Otherwise keepalive restarts them
+                signalSourceManager.Dispose();
                 Utilities.TelemetryService.Telemetry.Stop();
                 eventHandlerTS.Cancel();
                 foreach ( IEddiResponder responder in responders )
@@ -1990,6 +1993,9 @@ namespace EddiCore
                 // Discard signal sources from star system we are leaving
                 CurrentStarSystem.signalSources = ImmutableList<SignalSource>.Empty;
 
+                // Unregister the old star system and stop managing its signal source expiries
+                signalSourceManager.Unregister( CurrentStarSystem );
+
                 // We have changed system so update the old one as to when we left
                 DataProvider.LeaveStarSystem( CurrentStarSystem );
             }
@@ -2006,8 +2012,11 @@ namespace EddiCore
                 CurrentStarSystem = DataProvider.GetOrCreateStarSystem( systemAddress, systemName );
             }
 
+            // Register our new star system and manage its signal source expiries
+            signalSourceManager.Register( CurrentStarSystem );
+
             // If we've arrived at our destination system then clear it
-            if (destinationStarSystem?.systemAddress == currentStarSystem.systemAddress)
+            if ( destinationStarSystem?.systemAddress == currentStarSystem.systemAddress)
             {
                 updateDestinationSystem( null);
             }
