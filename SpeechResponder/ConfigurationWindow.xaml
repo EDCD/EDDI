@@ -252,14 +252,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type local:Script}">
                             <Button Click="resetOrDeleteScript">
-                                <Button.Resources>
-                                    <local:BooleanOrConverter x:Key="booleanOrConverter" />
-                                </Button.Resources>
                                 <Button.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource booleanOrConverter }">
-                                        <Binding Path="PersonalityIsCustom"/>
-                                        <Binding Path="IsNotDefault"/>
-                                    </MultiBinding>
+                                    <Binding Path="IsResetOrDeleteEnabled"/>
                                 </Button.IsEnabled>
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">

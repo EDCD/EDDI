@@ -68,7 +68,9 @@ namespace EddiSpeechResponder
 
         [JsonProperty("default")]
         // Determine whether the script matches the default, treating empty strings and null values as equal
-        public bool Default => string.IsNullOrWhiteSpace(Value)
+        // If the Value is empty, returns true if the defaultValue is also empty and false if the defaultValue is not empty
+        // If the Value is not empty, returns true if the Value and DefaultValue are the same and false if they differ
+        public bool Default => !HasValue
             ? string.IsNullOrWhiteSpace(defaultValue)
             : string.Equals(Value, defaultValue);
 
@@ -78,11 +80,10 @@ namespace EddiSpeechResponder
 
         [JsonIgnore]
         public bool IsResettable => Responder || (!Responder && !string.IsNullOrWhiteSpace(defaultValue));
+        [JsonIgnore] 
+        public bool HasValue => !string.IsNullOrWhiteSpace( script );
         [JsonIgnore]
-        public bool IsNotDefault => !Default;
-        [JsonIgnore]
-        public bool HasValue => script != null;
-
+        public bool IsResetOrDeleteEnabled => PersonalityIsCustom && ( ( !HasValue && !IsResettable ) || ( HasValue && !Default ) );
         [JsonIgnore]
         private string name;
         [JsonIgnore]
