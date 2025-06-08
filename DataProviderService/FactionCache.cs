@@ -1,22 +1,12 @@
 ﻿using EddiDataDefinitions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Caching;
 
 namespace EddiDataProviderService
 {
-    public class FactionCache
+    public class FactionCache : SlidingExpirationCache<string, Faction>
     {
-        private readonly CacheItemPolicy cacheItemPolicy = new CacheItemPolicy();
-        private readonly ObjectCache factionCache = new MemoryCache( "FactionCache" );
-
-        // Store deserialized star systems in short term memory for this amount of time.
-        // Storage time is reset whenever the cached value is accessed.
-        public FactionCache ( int expirationSeconds )
-        {
-            cacheItemPolicy.SlidingExpiration = TimeSpan.FromSeconds( expirationSeconds );
-        }
+        public FactionCache ( int expirationSeconds ) : base( expirationSeconds ) { }
 
         /// <summary>
         /// Add or update a faction in the cache. Retain faction presence information
@@ -24,24 +14,29 @@ namespace EddiDataProviderService
         /// <param name="faction"></param>
         public void AddOrUpdate ( Faction faction )
         {
-            if ( faction is null ) { return; }
-
-            Faction oldFaction = null;
-            if ( factionCache.Contains( faction.name ) )
+            if ( faction == null ) { return; }
+            if ( TryGet( faction.name, out var existing ) )
             {
-                oldFaction = factionCache.Get( faction.name ) as Faction;
-                factionCache.Remove( faction.name );
+                faction = PreservePresenceData( faction, existing );
             }
-
-            if(oldFaction != null )
-            {
-                faction = PreservePresenceData(faction, oldFaction);
-            }
-
-            factionCache.Add( faction.name, faction, cacheItemPolicy );
+            base.AddOrUpdate( faction.name, faction );
         }
 
-        private static Faction PreservePresenceData(Faction faction, Faction oldFaction)
+        public void AddOrUpdate ( IEnumerable<Faction> factions )
+        {
+            if ( factions is null ) { return; }
+            foreach ( var faction in factions )
+            {
+                AddOrUpdate(faction);
+            }
+        }
+
+        public new bool TryGet ( string factionName, out Faction result )
+        {
+            return base.TryGet( factionName, out result );
+        }
+
+        private static Faction PreservePresenceData ( Faction faction, Faction oldFaction )
         {
             foreach ( var oldPresence in oldFaction.presences )
             {
@@ -82,27 +77,6 @@ namespace EddiDataProviderService
             }
 
             return faction;
-        }
-
-        public void AddOrUpdate ( IEnumerable<Faction> factions )
-        {
-            if ( factions is null ) { return; }
-            foreach ( var faction in factions )
-            {
-                AddOrUpdate(faction);
-            }
-        }
-
-        public bool TryGet ( string factionName, out Faction result )
-        {
-            if ( factionCache.Contains( factionName ) )
-            {
-                result = factionCache.Get( factionName ) as Faction;
-                return true;
-            }
-
-            result = null;
-            return false;
         }
     }
 }
