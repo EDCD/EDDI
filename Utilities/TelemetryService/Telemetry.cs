@@ -71,7 +71,7 @@ namespace Utilities.TelemetryService
                 var assyMetadataAttributes = Assembly.GetExecutingAssembly()?.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
                 var loggerPayloadOptions = new RollbarPayloadAdditionOptions()
                 {
-                    Person = new Person( uniqueId + ( VoiceAttackVersion != null ? $" VA V{VoiceAttackVersion}" : "" ) ),
+                    Person = new Person( uniqueId + ( VoiceAttackVersion != null ? $" VA{VoiceAttackVersion}" : "" ) ),
                     Server = new Server
                     {
                         Root = "https://github.com/EDCD/EDDI",
