@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Windows;
 
 namespace EddiConfigService.Configurations
 {
@@ -14,5 +15,10 @@ namespace EddiConfigService.Configurations
 
         [JsonProperty("subtitlesonly")]
         public bool SubtitlesOnly { get; set; }
+
+        // Window Properties
+
+        [JsonProperty( "EditScriptWindowPosition" )]
+        public Rect EditScriptWindowPosition { get; set; } = new Rect( 300, 200, 800, 600 );
     }
 }

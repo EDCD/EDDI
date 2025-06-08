@@ -1,5 +1,5 @@
-﻿using EddiSpeechResponder.AvalonEdit;
-using EddiSpeechResponder.Properties;
+﻿using EddiConfigService;
+using EddiSpeechResponder.AvalonEdit;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
 using ICSharpCode.AvalonEdit.Editing;
@@ -50,6 +50,7 @@ namespace EddiSpeechResponder
         private readonly List<ICustomFunction> customFunctions;
         private static readonly object metaVarLock = new object();
         private readonly SpeechResponder speechResponder;
+        private static Rect windowPosition;
 
         public EditScriptWindow ( SpeechResponder speechResponder, Script originalScript, Dictionary<string, Script> scripts, [NotNull][ItemNotNull] IEnumerable<MetaVariable> metaVars, [NotNull] CottleHighlighting cottleHighlighting, bool isNewOrRecoveredScript )
         {
@@ -113,7 +114,6 @@ namespace EddiSpeechResponder
             WindowStartupLocation = WindowStartupLocation.Manual;
             SourceInitialized += EditScriptWindow_SourceInitialized;
             Loaded += OnLoaded;
-            Closed += EditScriptWindow_SaveWindowStatePosition;
             LocationChanged += EditScriptWindow_SaveWindowStatePosition;
             SizeChanged += EditScriptWindow_SaveWindowStatePosition;
             StateChanged += EditScriptWindow_SaveWindowStatePosition;
@@ -133,21 +133,23 @@ namespace EddiSpeechResponder
         {
             if ( IsLoaded )
             {
-                Settings.Default.Save();
+                windowPosition = new Rect( Left, Top, Width, Height );
             }
         }
 
         private void EditScriptWindow_SourceInitialized ( object sender, EventArgs e )
         {
+            var savedWindowPosition = ConfigService.Instance.speechResponderConfiguration.EditScriptWindowPosition;
+            windowPosition = savedWindowPosition;
+
             // Validate window position on opening
             var designedHeight = (int)MinHeight;
             var designedWidth = (int)MinWidth;
 
             // WPF uses DPI scaled units rather than true pixels.
             // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
-            var dpiScale = VisualTreeHelper.GetDpi(this);
-            var windowPosition = new Rect(new Point(Settings.Default.Left, Settings.Default.Top), new Size(Settings.Default.Width, Settings.Default.Height));
-            if ( windowPosition == Rect.Empty || !isWindowValid( windowPosition, dpiScale ) )
+            var dpiScale = VisualTreeHelper.GetDpi( this );
+            if ( savedWindowPosition == Rect.Empty || !isWindowValid( savedWindowPosition, dpiScale ) )
             {
                 // Revert to default values if the prior size and position are no longer valid
                 Left = centerWindow( applyDpiScale( Screen.PrimaryScreen.Bounds.Width, dpiScale.DpiScaleX ),
@@ -157,6 +159,15 @@ namespace EddiSpeechResponder
                 Width = Math.Min( Screen.PrimaryScreen.Bounds.Width / dpiScale.DpiScaleX, designedWidth );
                 Height = Math.Min( Screen.PrimaryScreen.Bounds.Height / dpiScale.DpiScaleY, designedHeight );
             }
+            else
+            {
+                Left = savedWindowPosition.Left;
+                Top = savedWindowPosition.Top;
+                Width = savedWindowPosition.Width;
+                Height = savedWindowPosition.Height;
+            }
+
+            return;
 
             // Check detected monitors to see if the saved window size and location is valid
             bool isWindowValid ( Rect rect, DpiScale dpi )
@@ -172,20 +183,26 @@ namespace EddiSpeechResponder
                 var testLowerRight = false;
                 foreach ( Screen screen in Screen.AllScreens )
                 {
-                    if ( rect.X >= applyDpiScale( screen.Bounds.X, dpi.DpiScaleX ) && rect.Y >= applyDpiScale( screen.Bounds.Y, dpi.DpiScaleY ) ) // The upper and left bounds fall on a valid screen
+                    if ( rect.X >= applyDpiScale( screen.Bounds.X, dpi.DpiScaleX ) &&
+                         rect.Y >= applyDpiScale( screen.Bounds.Y,
+                             dpi.DpiScaleY ) ) // The upper and left bounds fall on a valid screen
                     {
                         testUpperLeft = true;
                     }
-                    if ( applyDpiScale( screen.Bounds.Width, dpi.DpiScaleX ) >= (rect.X + rect.Width) && 
-                         applyDpiScale( screen.Bounds.Height, dpi.DpiScaleY ) >= (rect.Y + rect.Height) ) // The lower and right bounds fall on a valid screen 
+
+                    if ( applyDpiScale( screen.Bounds.Width, dpi.DpiScaleX ) >= ( rect.X + rect.Width ) &&
+                         applyDpiScale( screen.Bounds.Height, dpi.DpiScaleY ) >=
+                         ( rect.Y + rect.Height ) ) // The lower and right bounds fall on a valid screen 
                     {
                         testLowerRight = true;
                     }
                 }
+
                 if ( testUpperLeft && testLowerRight )
                 {
                     return true;
                 }
+
                 return false;
             }
 
@@ -416,6 +433,11 @@ namespace EddiSpeechResponder
 
         protected override void OnClosed ( EventArgs e )
         {
+            // Save our window position
+            var config = ConfigService.Instance.speechResponderConfiguration;
+            config.EditScriptWindowPosition = windowPosition;
+            ConfigService.Instance.speechResponderConfiguration = config;
+
             base.OnClosed( e );
             ScriptRecoveryService.StopScriptRecovery();
         }

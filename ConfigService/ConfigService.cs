@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,181 +21,143 @@ namespace EddiConfigService
         // The configurations managed by the configuration service
         public CargoMonitorConfiguration cargoMonitorConfiguration
         {
-            get => currentConfigs[nameof(cargoMonitorConfiguration)] as CargoMonitorConfiguration;
-            set
-            {
-                currentConfigs[nameof(cargoMonitorConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<CargoMonitorConfiguration>( nameof( CargoMonitorConfiguration ) );
+            set => SetConfig( nameof(CargoMonitorConfiguration), value );
         }
 
         public CommanderConfiguration commanderConfiguration
         {
-            get => currentConfigs[ nameof( commanderConfiguration ) ] as CommanderConfiguration;
-            set
-            {
-                currentConfigs[ nameof( commanderConfiguration ) ] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<CommanderConfiguration>( nameof( CommanderConfiguration ) );
+            set => SetConfig( nameof( CommanderConfiguration ), value );
         }
 
         public CrimeMonitorConfiguration crimeMonitorConfiguration
         {
-            get => currentConfigs[nameof(crimeMonitorConfiguration)] as CrimeMonitorConfiguration;
-            set
-            {
-                currentConfigs[nameof(crimeMonitorConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<CrimeMonitorConfiguration>( nameof( CrimeMonitorConfiguration ) );
+            set => SetConfig( nameof(CrimeMonitorConfiguration), value );
         }
 
         public EDDIConfiguration eddiConfiguration
         {
-            get => currentConfigs[nameof(eddiConfiguration)] as EDDIConfiguration;
-            set
-            {
-                currentConfigs[nameof(eddiConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<EDDIConfiguration>( nameof( EDDIConfiguration ) );
+            set => SetConfig( nameof( EDDIConfiguration ), value );
         }
 
         public EddpConfiguration eddpConfiguration
         {
-            get => currentConfigs[nameof(eddpConfiguration)] as EddpConfiguration;
-            set
-            {
-                currentConfigs[nameof(eddpConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<EddpConfiguration>( nameof( EddpConfiguration ) );
+            set => SetConfig( nameof( EddpConfiguration ), value );
         }
 
         public FleetCarrierConfiguration fleetCarrierConfiguration
         {
-            get => currentConfigs[ nameof( fleetCarrierConfiguration ) ] as FleetCarrierConfiguration;
-            set
-            {
-                currentConfigs[ nameof( fleetCarrierConfiguration ) ] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<FleetCarrierConfiguration>( nameof( FleetCarrierConfiguration ) );
+            set => SetConfig( nameof( FleetCarrierConfiguration ), value );
         }
 
         public GalnetConfiguration galnetConfiguration
         {
-            get => currentConfigs[nameof(galnetConfiguration)] as GalnetConfiguration;
-            set
-            {
-                currentConfigs[nameof(galnetConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<GalnetConfiguration>( nameof( GalnetConfiguration ) );
+            set => SetConfig( nameof( GalnetConfiguration ), value );
         }
 
         public InaraConfiguration inaraConfiguration
         {
-            get => currentConfigs[nameof(inaraConfiguration)] as InaraConfiguration;
-            set
-            {
-                currentConfigs[nameof(inaraConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<InaraConfiguration>( nameof( InaraConfiguration ) );
+            set => SetConfig( nameof( InaraConfiguration ), value );
         }
 
         public MaterialMonitorConfiguration materialMonitorConfiguration
         {
-            get => currentConfigs[nameof(materialMonitorConfiguration)] as MaterialMonitorConfiguration;
-            set
-            {
-                currentConfigs[nameof(materialMonitorConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<MaterialMonitorConfiguration>( nameof( MaterialMonitorConfiguration ) );
+            set => SetConfig( nameof( MaterialMonitorConfiguration ), value );
         }
 
         public MissionMonitorConfiguration missionMonitorConfiguration
         {
-            get => currentConfigs[nameof(missionMonitorConfiguration)] as MissionMonitorConfiguration;
-            set
-            {
-                currentConfigs[nameof(missionMonitorConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<MissionMonitorConfiguration>( nameof( MissionMonitorConfiguration ) );
+            set => SetConfig( nameof( MissionMonitorConfiguration ), value );
         }
 
         public NavigationMonitorConfiguration navigationMonitorConfiguration
         {
-            get => currentConfigs[nameof(navigationMonitorConfiguration)] as NavigationMonitorConfiguration;
-            set
-            {
-                currentConfigs[nameof(navigationMonitorConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<NavigationMonitorConfiguration>( nameof( NavigationMonitorConfiguration ) );
+            set => SetConfig( nameof( NavigationMonitorConfiguration ), value );
         }
 
         public ShipMonitorConfiguration shipMonitorConfiguration
         {
-            get => currentConfigs[nameof(shipMonitorConfiguration)] as ShipMonitorConfiguration;
-            set
-            {
-                currentConfigs[nameof(shipMonitorConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<ShipMonitorConfiguration>( nameof( ShipMonitorConfiguration ) );
+            set => SetConfig( nameof( ShipMonitorConfiguration ), value );
         }
 
         public SpeechResponderConfiguration speechResponderConfiguration
         {
-            get => currentConfigs[nameof(speechResponderConfiguration)] as SpeechResponderConfiguration;
-            set
-            {
-                currentConfigs[nameof(speechResponderConfiguration)] = value;
-                OnPropertyChanged();
-            }
+            get => GetConfig<SpeechResponderConfiguration>( nameof( SpeechResponderConfiguration ) );
+            set => SetConfig( nameof( SpeechResponderConfiguration ), value );
         }
 
         public StarMapConfiguration edsmConfiguration
         {
-            get => currentConfigs[nameof(edsmConfiguration)] as StarMapConfiguration;
-            set
+            get => GetConfig<StarMapConfiguration>( nameof( StarMapConfiguration ) );
+            set => SetConfig( nameof( StarMapConfiguration ), value );
+        }
+
+        private T GetConfig<T> ( string key, bool clone = true ) where T : Config
+        {
+            lock ( configurationsLock )
             {
-                currentConfigs[nameof(edsmConfiguration)] = value;
-                OnPropertyChanged();
+                // Return a clone of the configuration object to keep the original immutable
+                return clone ? currentConfigs[ key ].Clone<T>() : currentConfigs[ key ] as T;
+            }
+        }
+
+        private void SetConfig<T> ( string key, T value ) where T : Config
+        {
+            lock ( configurationsLock )
+            {
+                // Check for equality and only raise a change event if the value has changed
+                if ( !GetConfig<T>( key, false ).DeepEquals( value ) )
+                {
+                    currentConfigs[ key ] = value;
+                    OnPropertyChanged( key );
+                }
             }
         }
 
         /// <summary>Reads configurations from the specified data directory</summary>
-        private ConcurrentDictionary<string, Config> ReadConfigurations(string directory = null)
+        private ConcurrentDictionary<string, Config> ReadConfigurations ( string directory = null )
         {
-            if (string.IsNullOrEmpty(directory))
+            if ( string.IsNullOrEmpty( directory ) )
             {
-                // Use our current commander data directory, unless directed otherwise
-                directory = GetDataDirectory(commanderFID);
+                directory = GetDataDirectory( commanderFID );
             }
-            var configs = new ConcurrentDictionary<string, Config> (new Dictionary<string, Config>
-            {
-                {nameof(cargoMonitorConfiguration), FromFile<CargoMonitorConfiguration>(directory)},
-                {nameof(commanderConfiguration), FromFile<CommanderConfiguration>(directory)},
-                {nameof(crimeMonitorConfiguration), FromFile<CrimeMonitorConfiguration>(directory)},
-                {nameof(eddiConfiguration), FromFile<EDDIConfiguration>(directory)},
-                {nameof(edsmConfiguration), FromFile<StarMapConfiguration>(directory)},
-                {nameof(eddpConfiguration), FromFile<EddpConfiguration>(directory)},
-                {nameof(fleetCarrierConfiguration), FromFile<FleetCarrierConfiguration>(directory)},
-                {nameof(galnetConfiguration), FromFile<GalnetConfiguration>(directory)},
-                {nameof(inaraConfiguration), FromFile<InaraConfiguration>(directory)},
-                {nameof(materialMonitorConfiguration), FromFile<MaterialMonitorConfiguration>(directory)},
-                {nameof(missionMonitorConfiguration), FromFile<MissionMonitorConfiguration>(directory)},
-                {nameof(navigationMonitorConfiguration), FromFile<NavigationMonitorConfiguration>(directory)},
-                {nameof(shipMonitorConfiguration), FromFile<ShipMonitorConfiguration>(directory)},
-                {nameof(speechResponderConfiguration), FromFile<SpeechResponderConfiguration>(directory)}
-            });
-
-            ConvertLegacyConfigData(configs);
-
+            var configs = new ConcurrentDictionary<string, Config>(
+                GetConfigTypes().ToDictionary(
+                    t => t.Name,
+                    t => (Config)typeof(ConfigService)
+                        .GetMethod("FromFile", BindingFlags.NonPublic | BindingFlags.Static)
+                        ?.MakeGenericMethod(t)
+                        .Invoke(null, new object[] { directory })
+                )
+            );
+            ConvertLegacyConfigData( configs );
             return configs;
+
+            IEnumerable<Type> GetConfigTypes ()
+            {
+                return Assembly.GetExecutingAssembly()
+                    .GetTypes()
+                    .Where( t => t.IsSubclassOf( typeof( Config ) ) && t.GetCustomAttribute<RelativePathAttribute>() != null );
+            }
         }
 
         private void ConvertLegacyConfigData(ConcurrentDictionary<string, Config> configs)
         {
             // Convert legacy data saved in the EDDI configuration to the Commander configuration
-            if ( configs[ nameof( commanderConfiguration ) ] is CommanderConfiguration commanderConfig )
+            if ( configs[ nameof( CommanderConfiguration ) ] is CommanderConfiguration commanderConfig )
             {
-                if (configs[ nameof( eddiConfiguration ) ]._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData)
+                if (configs[ nameof( EDDIConfiguration ) ]._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData)
                 {
                     if ( eddiConfigAdditionalData.TryGetValue( "CommanderName", out var commanderName ) )
                     {
@@ -252,9 +215,9 @@ namespace EddiConfigService
             }
 
             // Convert legacy data saved in the EDDI configuration to the Fleet Carrier configuration
-            if ( configs[ nameof(fleetCarrierConfiguration) ] is FleetCarrierConfiguration fleetCarrierConfig )
+            if ( configs[ nameof(FleetCarrierConfiguration) ] is FleetCarrierConfiguration fleetCarrierConfig )
             {
-                if (configs[ nameof(eddiConfiguration) ]._additionalData is IDictionary<string, JToken>
+                if (configs[ nameof(EDDIConfiguration) ]._additionalData is IDictionary<string, JToken>
                     eddiConfigAdditionalData)
                 {
                     if ( eddiConfigAdditionalData.TryGetValue( "fleetCarrier", out var fleetCarrier ) )
@@ -301,28 +264,12 @@ namespace EddiConfigService
             }
         }
 
-        private static ConfigService instance;
-        private static readonly object instanceLock = new object();
-
-        public static ConfigService Instance
+        private static readonly Lazy<ConfigService> instance = new Lazy<ConfigService>( () =>
         {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No configuration service instance: creating one");
-                            instance = new ConfigService();
-                        }
-                    }
-                }
-
-                return instance;
-            }
-        }
+            Logging.Debug( "No configuration service instance: creating one" );
+            return new ConfigService();
+        } );
+        public static ConfigService Instance => instance.Value;
 
         /// <summary>Sets the current commander FID and corresponding data directory (if null, we'll default to the legacy directory location)</summary>
         public void SetCommander(string newCommanderFID = null)
@@ -380,12 +327,21 @@ namespace EddiConfigService
         private void DeleteConfigurations(string fromDirectory, ConcurrentDictionary<string, Config> configurations)
         {
             if (configurations is null || unitTesting) { return; }
-            foreach (var config in configurations.Values)
+
+            foreach ( var config in configurations.Values )
             {
-                var filename = fromDirectory + (config.GetType().GetCustomAttribute(typeof(RelativePathAttribute)) as RelativePathAttribute)?.relativePath;
-                if (File.Exists(filename))
+                var relativePath = ( config.GetType().GetCustomAttribute( typeof(RelativePathAttribute) ) as RelativePathAttribute )?.relativePath;
+                var filename = fromDirectory + relativePath;
+                try
                 {
-                    File.Delete(filename);
+                    if ( File.Exists( filename ) )
+                    {
+                        File.Delete( filename );
+                    }
+                }
+                catch ( IOException ioe )
+                {
+                    Logging.Warn( $"Failed to delete configuration file {filename}", ioe );
                 }
             }
         }

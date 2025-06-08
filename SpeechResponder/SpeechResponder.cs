@@ -62,8 +62,11 @@ namespace EddiSpeechResponder
             get => _configuration;
             private set
             {
+                if ( _configuration != null )
+                {
+                    ConfigService.Instance.speechResponderConfiguration = value;
+                }
                 _configuration = value;
-                ConfigService.Instance.speechResponderConfiguration = value;
             }
         }
 

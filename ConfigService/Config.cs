@@ -13,6 +13,12 @@ namespace EddiConfigService
         internal IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
 
         #endregion
+
+        public T Clone<T> () where T : Config
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<T>( serialized );
+        }
     }
 
     [AttributeUsage( AttributeTargets.Class )]

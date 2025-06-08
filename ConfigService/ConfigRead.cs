@@ -29,18 +29,29 @@ namespace EddiConfigService
         /// <summary> Obtain configuration from a file.  If the file name is not supplied then a default path is used </summary>
         private static T FromFile<T>(string directory = null) where T : Config, new()
         {
-            if (directory == null) { directory = Constants.DATA_DIR; }
-            string filename = directory + (typeof(T).GetCustomAttribute(typeof(RelativePathAttribute)) as RelativePathAttribute)?.relativePath;
             T configuration = null;
-            if (File.Exists(filename) && !unitTesting)
+            try
             {
-                string json = Files.Read(filename);
-                if (json != null)
+                if ( directory == null ) { directory = Constants.DATA_DIR; }
+
+                var relativePath = ( typeof(T).GetCustomAttribute( typeof(RelativePathAttribute) ) as RelativePathAttribute )?.relativePath;
+                var filename = directory + relativePath;
+                if ( File.Exists( filename ) && !unitTesting )
                 {
-                    configuration = FromJson<T>(json);
+                    string json = Files.Read( filename );
+                    if ( json != null )
+                    {
+                        configuration = FromJson<T>( json );
+                    }
                 }
+
+                return configuration ?? new T();
             }
-            return configuration ?? new T();
+            catch ( IOException ioe )
+            {
+                Logging.Warn($"Failed to read {typeof(T).Name} from file", ioe);
+            }
+            return new T();
         }
     }
 }
