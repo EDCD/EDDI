@@ -1129,17 +1129,13 @@ namespace EddiShipMonitor
             {
                 updatedAt = @event.timestamp;
                 // Committing a crime while in multicrew will apply a fine or bounty to your most valuable ship.
-                lock ( shipyardLock )
+                var ship = EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW
+                    ? shipyard.ToList().OrderByDescending(s => s.value).FirstOrDefault()
+                    : GetCurrentShip();
+                if ( ship != null )
                 {
-                    var ship = EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW
-                        ? shipyard.ToList().OrderByDescending(s => s.value).FirstOrDefault()
-                        : GetCurrentShip();
-                    if ( ship != null )
-                    {
-                        ship.hot = true;
-                        if ( !@event.fromLoad )
-                        { writeShips(); }
-                    }
+                    ship.hot = true;
+                    if ( !@event.fromLoad ) { writeShips(); }
                 }
             }
         }
