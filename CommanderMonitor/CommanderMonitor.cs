@@ -104,10 +104,6 @@ namespace EddiCommanderMonitor
             {
                 handleCommanderRatingsEvent( commanderRatingsEvent );
             }
-            else if ( @event is FriendsEvent friendsEvent )
-            {
-                handleFriendsEvent( friendsEvent );
-            }
             else if ( @event is JumpedEvent jumpedEvent )
             {
                 handleJumpedEvent( jumpedEvent );
@@ -277,34 +273,6 @@ namespace EddiCommanderMonitor
                 Cmdr.federationrating = @event.federation;
 
                 WriteCommander();
-            }
-        }
-
-        private void handleFriendsEvent ( FriendsEvent @event )
-        {
-            // Does this friend exist in our friends list?
-            if ( Cmdr != null )
-            {
-                var friend = new Friend
-                {
-                    name = @event.name,
-                    status = @event.status
-                };
-
-                var index = Cmdr.friends.FindIndex( f => f.name == @event.name );
-                if ( index >= 0 )
-                {
-                    if ( Cmdr.friends[ index ].status != @event.status )
-                    {
-                        // This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
-                        Cmdr.friends[ index ] = friend;
-                    }
-                }
-                else
-                {
-                    // This is a new friend, add them to the list
-                    Cmdr.friends.Add( friend );
-                }
             }
         }
 
