@@ -569,13 +569,17 @@ namespace Tests
                 name = "Cooper Research Associates",
                 Allegiance = Superpower.Alliance,
                 Government = Government.Democracy,
+                myreputation = 100,
                 presences = new List<FactionPresence> 
                 { 
                     new FactionPresence 
                     { 
                         systemName = "HIP 19072", 
                         systemAddress = 525873416523U,
-                        FactionState = FactionState.Boom
+                        FactionState = FactionState.Boom, 
+                        ActiveStates = new List<FactionState>( new [] { FactionState.Boom } ),
+                        Happiness = Happiness.HappinessBand2,
+                        influence = 70.600M
                     } 
                 },
             };

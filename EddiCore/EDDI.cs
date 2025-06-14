@@ -1109,16 +1109,25 @@ namespace EddiCore
                 @event.unique = !Instance.CurrentStarSystem.signalsources.Contains( @event.signalSource.localizedName );
 
                 // If more signal detected events are have been received and are waiting to be processed, simply enqueue the current signal source. Otherwise, batch add the signals to the star system.
-                if ( eventQueue.Any( e => e is SignalDetectedEvent ) )
+                if ( StarSystemSignalSourceManager.newSignalSources.TryGetValue( @event.systemAddress,
+                        out var queuedSignalSources ) )
                 {
-                    StarSystemSignalSourceManager.newSignalSources.Add( @event.signalSource );
+                    queuedSignalSources.Add( @event.signalSource );
                         }
                 else
                         {
-                    Instance.CurrentStarSystem.AddOrUpdateSignalSources( StarSystemSignalSourceManager.newSignalSources
-                        .Where( s => s.systemAddress == Instance.CurrentStarSystem.systemAddress ).ToList() );
+                    StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress,
+                        new List<SignalSource> { @event.signalSource } );
                     }
+
+                if ( !eventQueue.Any( e => e is SignalDetectedEvent ) &&
+                     StarSystemSignalSourceManager.newSignalSources.TryGetValue(
+                         Instance.CurrentStarSystem.systemAddress, out var newSignalSources ) )
+                {
+                    Instance.CurrentStarSystem.AddOrUpdateSignalSources( newSignalSources );
+                    newSignalSources.Clear();
                 }
+            }
 
             return true;
         }

@@ -1833,6 +1833,7 @@ namespace EddiJournalMonitor
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
 
                                     var source = EventParsing.SignalSource(data);
+                                    source.systemAddress = systemAddress;
 
                                     source.spawningFaction = EventParsing.FactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     source.SpawningPower = Power.FromEDName( JsonParsing.getString( data, "SpawningPower" ) ); // the Powerplay power, if relevant
