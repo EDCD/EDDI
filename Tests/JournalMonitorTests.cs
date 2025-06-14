@@ -1293,7 +1293,7 @@ namespace Tests
             Assert.AreEqual("XBH-64Y", @event.signalSource.invariantName);
 
             var testSystem = new StarSystem() { systemname = "Test System" };
-            testSystem.AddOrUpdateSignalSource(@event.signalSource);
+            testSystem.AddOrUpdateSignalSources( new [] { @event.signalSource } );
             Assert.AreEqual(1, testSystem.carriersignalsources.Count);
         }
 

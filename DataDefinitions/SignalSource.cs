@@ -142,12 +142,12 @@ namespace EddiDataDefinitions
         public int? threatLevel { get; set; }
 
         [Utilities.PublicAPI]
-        public bool? isStation { get; set; }
+        public bool isStation { get; set; }
 
         [Utilities.PublicAPI]
         public FactionState spawningState { get; set; }
 
-        public long? systemAddress { get; set; }
+        public ulong systemAddress { get; set; }
 
         // Not intended to be user facing
         public string altEdName { get; private set; }

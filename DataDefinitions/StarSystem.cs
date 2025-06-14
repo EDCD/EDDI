@@ -264,7 +264,7 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI( "(For the current star system only) A list of fleet carrier signals detected within the star system" ), JsonIgnore]
         public List<string> carriersignalsources => signalSources
             .Where( s => new Regex( "[[a-zA-Z0-9]{3}-[[a-zA-Z0-9]{3}$" ).IsMatch( s.invariantName )
-                && ( s.isStation ?? false ) )
+                && s.isStation )
             .Select( s => s.localizedName )
             .ToList();
 
@@ -540,13 +540,10 @@ namespace EddiDataDefinitions
 
         public void AddOrUpdateStation ( Station newOrUpdatedStation )
         {
-            lock ( _stationsLock )
-            {
-                var builder = stations.ToBuilder();
-                internalAddOrUpdateStation( newOrUpdatedStation, builder );
-                builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
-                stations = builder.ToImmutable();
-            }
+            var builder = stations.ToBuilder();
+            internalAddOrUpdateStation( newOrUpdatedStation, builder );
+            builder.Sort( ( lhs, rhs ) => Math.Sign( ( lhs.marketId - rhs.marketId ) ?? 0 ) );
+            stations = builder.ToImmutable();
         }
 
         public void AddOrUpdateStations ( IEnumerable<Station> newOrUpdatedStations )
@@ -591,10 +588,78 @@ namespace EddiDataDefinitions
             }
         }
 
-        public void AddOrUpdateSignalSource ( SignalSource signalSource )
+        public void AddOrUpdateSignalSources ( IList<SignalSource> newSignalSources )
         {
+            // Add or update stations present in the signal sources
+            var stationSignals = newSignalSources.Where( s => s.isStation ).ToList();
+            if ( stationSignals.Any() )
+            {
+                var newStations = new List<Station>();
+                foreach ( var signalSource in stationSignals )
+                {
+                    var station = new Station
+                    {
+                        name = signalSource.edname,
+                        systemAddress = systemAddress
+                    };
+                    if ( signalSource.signalType == SignalType.StationAsteroid )
+                    {
+                        station.Model = StationModel.AsteroidBase;
+                    }
+                    else if ( signalSource.signalType == SignalType.StationBernalSphere )
+                    {
+                        station.Model = StationModel.Bernal;
+                    }
+                    else if ( signalSource.signalType == SignalType.StationCoriolis )
+                    {
+                        station.Model = StationModel.Coriolis;
+                    }
+                    else if ( signalSource.signalType == SignalType.StationONeilCylinder )
+                    {
+                        station.Model = StationModel.Orbis;
+                    }
+                    else if ( signalSource.signalType == SignalType.StationONeilOrbis )
+                    {
+                        station.Model = StationModel.Orbis;
+                    }
+                    else if ( signalSource.signalType == SignalType.StationMegaShip )
+                    {
+                        station.Model = StationModel.Megaship;
+                    }
+                    else if ( signalSource.signalType == SignalType.FleetCarrier )
+                    {
+                        station.Model = StationModel.FleetCarrier;
+                    }
+                    else if ( signalSource.signalType == SignalType.Outpost )
+                    {
+                        station.Model = StationModel.Outpost;
+                    }
+                    newStations.Add( station );
+                }
+                AddOrUpdateStations( newStations );
+            }
+
             var builder = signalSources.ToBuilder();
-            builder.Add( signalSource );
+
+            // Add or update signal sources
+            foreach ( var newSignalSource in newSignalSources )
+            {
+                var index = builder.FindIndex( s => s.edname == newSignalSource.edname &&
+                                                    s.localizedName == newSignalSource.localizedName &&
+                                                    s.signalType == newSignalSource.signalType &&
+                                                    s.index == newSignalSource.index );
+                if ( index >= 0 )
+                {
+                    // Update existing signal source
+                    builder[ index ] = newSignalSource;
+                }
+                else
+                {
+                    // Add new signal source
+                    builder.Add( newSignalSource );
+                }
+            }
+
             signalSources = builder.ToImmutable();
         }
 

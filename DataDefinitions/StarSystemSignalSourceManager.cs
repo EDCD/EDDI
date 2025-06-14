@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -6,6 +7,11 @@ namespace EddiDataDefinitions
 {
     public class StarSystemSignalSourceManager : IDisposable
     {
+        /// <summary>
+        /// Holds newly detected signal sources that are not yet associated with a star system.
+        /// </summary>
+        public static readonly ConcurrentBag<SignalSource> newSignalSources = new ConcurrentBag<SignalSource>();
+
         private readonly Timer _cleanupTimer;
         private readonly List<StarSystem> _starSystems = new List<StarSystem>();
         private readonly object _lock = new object();

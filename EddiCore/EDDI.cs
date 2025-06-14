@@ -77,7 +77,7 @@ namespace EddiCore
         }
         private string _gameVersion;
 
-        private StarSystemSignalSourceManager signalSourceManager = new StarSystemSignalSourceManager();
+        private readonly StarSystemSignalSourceManager signalSourceManager = new StarSystemSignalSourceManager();
 
         public System.Version GameVersion { get; private set; }
 
@@ -1103,50 +1103,18 @@ namespace EddiCore
                  Instance.CurrentStarSystem.systemAddress == @event.systemAddress )
             {
                 @event.unique = !Instance.CurrentStarSystem.signalsources.Contains( @event.signalSource.localizedName );
-                Instance.CurrentStarSystem.AddOrUpdateSignalSource( @event.signalSource );
 
-                if ( @event.signalSource.isStation ?? false )
+                // If more signal detected events are have been received and are waiting to be processed, simply enqueue the current signal source. Otherwise, batch add the signals to the star system.
+                if ( eventQueue.Any( e => e is SignalDetectedEvent ) )
                 {
-                    // Add station signals to the current star system if they are not already present.
-                    if ( Instance.CurrentStarSystem.stations.All( s => s.name != @event.signalSource.edname ) )
-                    {
-                        var station = new Station { name = @event.signalSource.edname, systemAddress = @event.systemAddress };
-                        if ( @event.signalSource.signalType == SignalType.StationAsteroid )
-                        {
-                            station.Model = StationModel.AsteroidBase;
+                    StarSystemSignalSourceManager.newSignalSources.Add( @event.signalSource );
                         }
-                        else if ( @event.signalSource.signalType == SignalType.StationBernalSphere )
+                else
                         {
-                            station.Model = StationModel.Bernal;
-                        }
-                        else if ( @event.signalSource.signalType == SignalType.StationCoriolis )
-                        {
-                            station.Model = StationModel.Coriolis;
-                        }
-                        else if ( @event.signalSource.signalType == SignalType.StationONeilCylinder )
-                        {
-                            station.Model = StationModel.Orbis;
-                        }
-                        else if ( @event.signalSource.signalType == SignalType.StationONeilOrbis )
-                        {
-                            station.Model = StationModel.Orbis;
-                        }
-                        else if ( @event.signalSource.signalType == SignalType.StationMegaShip )
-                        {
-                            station.Model = StationModel.Megaship;
-                        }
-                        else if ( @event.signalSource.signalType == SignalType.FleetCarrier )
-                        {
-                            station.Model = StationModel.FleetCarrier;
-                        }
-                        else if ( @event.signalSource.signalType == SignalType.Outpost )
-                        {
-                            station.Model = StationModel.Outpost;
-                        }
-                        Instance.CurrentStarSystem.AddOrUpdateStation( station );
+                    Instance.CurrentStarSystem.AddOrUpdateSignalSources( StarSystemSignalSourceManager.newSignalSources
+                        .Where( s => s.systemAddress == Instance.CurrentStarSystem.systemAddress ).ToList() );
                     }
                 }
-            }
 
             return true;
         }
