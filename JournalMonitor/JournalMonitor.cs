@@ -3758,22 +3758,52 @@ namespace EddiJournalMonitor
                             case "PowerplayCollect":
                                 {
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
-                                    commodity.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
                                     data.TryGetValue( "Count", out var val );
                                     var amount = (int)(long)val;
-                                    events.Add( new PowerCommodityObtainedEvent( timestamp, power, commodity, amount ) { raw = line, fromLoad = fromLogLoad } );
+                                    // May be a commodity or a microresource
+                                    var receivedEdName = JsonParsing.getString( data, "Type" );
+                                    var commodityDef = CommodityDefinition.AllOfThem.FirstOrDefault(c => c.edname.Equals(receivedEdName, StringComparison.InvariantCultureIgnoreCase));
+                                    if ( commodityDef != null )
+                                    {
+                                        commodityDef.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
+                                        events.Add( new PowerCommodityObtainedEvent( timestamp, power, commodityDef, amount ) { raw = line, fromLoad = fromLogLoad } );
+                                    }
+                                    var microResourceDef = MicroResource.AllOfThem.FirstOrDefault(m => m.edname.Equals(receivedEdName, StringComparison.InvariantCultureIgnoreCase));
+                                    if ( microResourceDef != null )
+                                    {
+                                        // Microresources are already handled via the PowerMicroResourcesCollectedEvent
+                                    }
+                                    else
+                                    {
+                                        // We haven't seen this pattern before. Break unhandled.
+                                        break;
+                                    }
                                 }
                                 handled = true;
                                 break;
                             case "PowerplayDeliver":
                                 {
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    var commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
-                                    commodity.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
                                     data.TryGetValue( "Count", out var val );
                                     var amount = (int)(long)val;
-                                    events.Add( new PowerCommodityDeliveredEvent( timestamp, power, commodity, amount ) { raw = line, fromLoad = fromLogLoad } );
+                                    // May be a commodity or a microresource
+                                    var deliveredEdName = JsonParsing.getString( data, "Type" );
+                                    var commodityDef = CommodityDefinition.AllOfThem.FirstOrDefault(c => c.edname.Equals(deliveredEdName, StringComparison.InvariantCultureIgnoreCase));
+                                    if ( commodityDef != null )
+                                    {
+                                        commodityDef.fallbackLocalizedName = JsonParsing.getString( data, "Type_Localised" );
+                                        events.Add( new PowerCommodityDeliveredEvent( timestamp, power, commodityDef, amount ) { raw = line, fromLoad = fromLogLoad } );
+                                    }
+                                    var microResourceDef = MicroResource.AllOfThem.FirstOrDefault(m => m.edname.Equals(deliveredEdName, StringComparison.InvariantCultureIgnoreCase));
+                                    if ( microResourceDef != null )
+                                    {
+                                        // Microresources are already handled via the PowerMicroResourcesDeliveredEvent
+                                    }
+                                    else
+                                    {
+                                        // We haven't seen this pattern before. Break unhandled.
+                                        break;
+                                    }
                                 }
                                 handled = true;
                                 break;
