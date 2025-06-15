@@ -360,9 +360,9 @@ namespace EddiCompanionAppService
             const int maxRetries = 3;
             var delay = 1000; // Initial delay in milliseconds
 
-            for ( var retry = 0; retry < maxRetries; retry++ )
+            try
             {
-                try
+                for ( var retry = 0; retry < maxRetries; retry++ )
                 {
                     var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL )
                     {
@@ -378,6 +378,12 @@ namespace EddiCompanionAppService
                             throw new EliteDangerousCompanionAppException( "Failed to contact API server" );
                         }
 
+                        if ( response.StatusCode == HttpStatusCode.Unauthorized )
+                        {
+                            throw new EliteDangerousCompanionAppAuthenticationException(
+                                "Refresh token is invalid" );
+                        }
+
                         if ( response.StatusCode == HttpStatusCode.OK )
                         {
                             var responseData = await response.Content.ReadAsStringAsync();
@@ -388,29 +394,31 @@ namespace EddiCompanionAppService
                             Credentials.Save();
                             if ( Credentials.accessToken == null )
                             {
-                                CurrentState = State.ConnectionLost;
-                                CurrentState = State.LoggedOut;
-                                throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
+                                throw new EliteDangerousCompanionAppAuthenticationException(
+                                    "Access token not found" );
                             }
 
                             CurrentState = State.Authorized;
                             return;
                         }
                     }
-                }
-                catch ( Exception ex )
-                {
-                    if ( retry == (maxRetries - 1) )
-                    {
-                        CurrentState = State.ConnectionLost;
-                        CurrentState = State.LoggedOut;
-                        throw new EliteDangerousCompanionAppAuthenticationException( "Request failed after multiple attempts", ex );
-                    }
-                    Logging.Warn( $"Attempt {retry + 1} failed: {ex.Message}", ex );
-                }
 
-                await Task.Delay( delay );
-                delay *= 2; // Exponential backoff
+                    await Task.Delay( delay );
+                    delay *= 2; // Exponential backoff
+
+                    if ( retry == ( maxRetries - 1 ) )
+                    {
+                        throw new EliteDangerousCompanionAppAuthenticationException(
+                            "Request failed after multiple attempts" );
+                    }
+                    Logging.Warn( $"Attempt {retry + 1} failed." );
+                }
+            }
+            catch ( EliteDangerousCompanionAppAuthenticationException ex )
+            {
+                CurrentState = State.ConnectionLost;
+                CurrentState = State.LoggedOut;
+                Logging.Warn( ex.Message, ex );
             }
         }
 
