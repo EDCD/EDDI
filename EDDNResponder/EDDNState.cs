@@ -15,16 +15,6 @@ namespace EddiEddnResponder
             Location = new LocationAugmenter();
         }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
-        /// <param name="eddnState"></param>
-        public EDDNState ( EDDNState eddnState )
-        {
-            GameVersion = eddnState.GameVersion;
-            Location = eddnState.Location;
-        }
-
         public void GetStateInfo ( string edType, IDictionary<string, object> data )
         {
             // Attempt to obtain available game version data from the active event 
