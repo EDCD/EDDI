@@ -915,7 +915,6 @@ namespace EddiCore
 
         internal void eventHandler( Event @event )
         {
-            if (@event != null)
             if ( @event != null )
             {
                 // Event handling is disabled when running a legacy game version.
@@ -1083,7 +1082,7 @@ namespace EddiCore
                     // Additional processing is over, send to the event monitors and responders if required
                     if (passEvent)
                     {
-                        await OnEvent( @event );
+                        OnEvent( @event ).GetAwaiter().GetResult();
                     }
 
                     lastEventOfType[ @event.type ] = @event;
@@ -1493,7 +1492,6 @@ namespace EddiCore
 
         private void passToMonitorPreHandlers(Event @event)
         {
-            foreach (IEddiMonitor monitor in activeMonitors)
             foreach ( var monitor in activeMonitors)
             {
                 try
