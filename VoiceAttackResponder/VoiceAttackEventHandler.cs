@@ -84,8 +84,6 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                Logging.Debug( $"Processing EDDI event {@event.type}:", @event );
-                var startTime = DateTime.UtcNow;
                 VoiceAttackPlugin.SetText( "EDDI event", @event.type );
 
                 // Retrieve and clear variables from prior iterations of the same event
@@ -126,7 +124,6 @@ namespace EddiVoiceAttackResponder
                     currentVariables[var.key] = var;
                 }
                 Logging.Debug( $"Set VoiceAttack variables for EDDI event {@event.type}", eventVariables );
-                Logging.Debug( $"Processed EDDI event {@event.type} in {( DateTime.UtcNow - startTime ).Milliseconds} milliseconds:", @event );
             }
             catch ( Exception ex )
             {
