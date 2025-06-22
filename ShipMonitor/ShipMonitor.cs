@@ -1123,15 +1123,32 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleBountyIncurredEvent(BountyIncurredEvent @event)
+        private void handleBountyIncurredEvent ( BountyIncurredEvent @event )
         {
-            if (@event.timestamp > updatedAt)
+            if ( @event.timestamp > updatedAt )
             {
+                // Committing a crime while on foot or in a taxi won't make your ship "hot"
+                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_LEGS ||
+                     EDDI.Instance.Vehicle == Constants.VEHICLE_TAXI )
+                {
+                    return;
+                }
+
                 updatedAt = @event.timestamp;
-                // Committing a crime while in multicrew will apply a fine or bounty to your most valuable ship.
-                var ship = EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW
-                    ? shipyard.ToList().OrderByDescending(s => s.value).FirstOrDefault()
-                    : GetCurrentShip();
+                Ship ship = null;
+
+                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_MULTICREW )
+                {
+                    // Committing a crime while in multicrew will make your most valuable ship "hot"
+                    ship = shipyard.ToList().OrderByDescending( s => s.value ).FirstOrDefault();
+                }
+
+                if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP || EDDI.Instance.Vehicle == Constants.VEHICLE_SRV )
+                {
+                    // Committing a crime while in a ship, ship-launched fighter, or SRV will make your ship "hot"
+                    ship = GetCurrentShip();
+                }
+
                 if ( ship != null )
                 {
                     ship.hot = true;
