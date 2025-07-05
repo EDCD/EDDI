@@ -282,18 +282,18 @@ namespace EddiStarMapService
             request.Timeout = JournalTimeoutMilliseconds;
 
             var maxRetries = 3;
-            var delay = 1000; // Initial delay in milliseconds
+            var delay = syncIntervalMilliSeconds; // Initial delay in milliseconds
             for ( var retry = 0; retry < maxRetries; retry++ )
             {
                 try
                 {
                     Logging.Debug( "Sending message to EDSM: " + restClient.BuildUri( request ).AbsoluteUri );
                     var clientResponse = restClient.Execute<StarMapLogResponse>( request );
-                    StarMapLogResponse response = clientResponse.Data;
+                    var response = clientResponse.Data;
 
                     if ( response is null )
                     {
-                        Logging.Warn( clientResponse.ErrorMessage );
+                        Logging.Warn( $"{clientResponse.ErrorMessage} (Status Code: {clientResponse.StatusCode})" );
                         ReEnqueueEvents( eventData );
                     }
                     else if ( response.msgnum >= 100 && response.msgnum <= 104 )
