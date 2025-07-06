@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,7 +25,7 @@ namespace EddiShipMonitor
         public ConfigurationWindow()
         {
             InitializeComponent();
-            shipData.ItemsSource = shipMonitor().shipyard;
+            DataContext = shipMonitor();
             var config = ConfigService.Instance.shipMonitorConfiguration;
             var exportTarget = config.exporttarget;
 
@@ -158,6 +159,21 @@ namespace EddiShipMonitor
                     textBox.CaretIndex = Math.Max(caretIndex, textBox.Text.Length);
                 }
             }
+        }
+    }
+
+    [ValueConversion( typeof( string ), typeof( bool ) )]
+    public class RawIsNotNullConverter : IValueConverter
+    {
+        public object Convert ( object value, Type targetType, object parameter, CultureInfo culture )
+        {
+            var str = value as string;
+            return !string.IsNullOrWhiteSpace( str );
+        }
+
+        public object ConvertBack ( object value, Type targetType, object parameter, CultureInfo culture )
+        {
+            throw new NotImplementedException();
         }
     }
 }

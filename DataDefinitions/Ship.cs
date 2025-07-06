@@ -270,10 +270,7 @@ namespace EddiDataDefinitions
             }
         }
         private string _raw;
-
-        [JsonIgnore]
-        public bool RawIsNotNull => !string.IsNullOrEmpty(_raw);
-
+        
         /// <summary>
         /// The wanted/hot status of this ship
         /// </summary>

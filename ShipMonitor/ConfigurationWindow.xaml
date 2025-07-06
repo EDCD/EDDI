@@ -9,8 +9,10 @@
              xmlns:resx="clr-namespace:EddiShipMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DataContext="{d:DesignInstance Type=local:ShipMonitor, IsDesignTimeCreatable=True}"
+             d:DesignHeight="600" d:DesignWidth="800" >
     <UserControl.Resources>
+        <local:RawIsNotNullConverter x:Key="RawIsNotNullConverter"/>
         <DataTemplate x:Key="shipDetailsTemplate" DataType="{x:Type defs:Ship}">
             <Grid Background="Azure">
                 <Grid.ColumnDefinitions>
@@ -87,8 +89,8 @@
                 <ComboBoxItem>EDSY</ComboBoxItem>
             </ComboBox>
         </Grid >
-        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated" HeadersVisibility="Column">
-            <DataGrid.Columns>
+        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated" HeadersVisibility="Column" ItemsSource="{Binding shipyard, Mode=OneWay}">
+            <DataGrid.Columns >
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"/>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"/>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_location}" IsReadOnly="True" Binding="{Binding Path=StoredLocation.systemName}"/>
@@ -137,7 +139,7 @@
                 <DataGridTemplateColumn MinWidth="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="defs:Ship">
-                            <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip" Content="{x:Static resx:ShipMonitor.export_it_button}" />
+                            <Button IsEnabled="{Binding raw, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RawIsNotNullConverter}, Mode=OneWay}" Click="exportShip" Content="{x:Static resx:ShipMonitor.export_it_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
