@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -16,7 +16,27 @@ namespace EddiConfigService.Configurations
     {
         public int? currentshipid { get; set; }
 
-        public ObservableCollection<Ship> shipyard { get; set; } = new ObservableCollection<Ship>();
+        /// <summary>
+        /// Returns an immutable list of ships in the shipyard.
+        /// </summary>
+        public ImmutableList<Ship> shipyard
+        {
+            get
+            {
+                lock ( _shipyardLock )
+                {
+                    return _shipyard;
+                }
+            }
+            set
+            {
+                lock ( _shipyardLock )
+                {
+                    _shipyard = value;
+                }
+            }
+        }private ImmutableList<Ship> _shipyard = ImmutableList.Create<Ship>();
+        private readonly object _shipyardLock = new object();
 
         public List<StoredModule> storedmodules { get; set; } = new List<StoredModule>();
 
@@ -33,7 +53,7 @@ namespace EddiConfigService.Configurations
             if (!shipyard.Any())
             {
                 // Used to be in a separate 'ships' file so try that to allow migration
-                string oldFilename = Constants.DATA_DIR + @"\ships.json";
+                var oldFilename = Constants.DATA_DIR + @"\ships.json";
                 if (File.Exists(oldFilename))
                 {
                     try
@@ -41,10 +61,10 @@ namespace EddiConfigService.Configurations
                         string oldData = Files.Read(oldFilename);
                         if (oldData != null)
                         {
-                            var oldShipsConfiguration = JsonConvert.DeserializeObject<Dictionary<string, ObservableCollection<Ship>>>(oldData);
+                            var oldShipsConfiguration = JsonConvert.DeserializeObject<Dictionary<string, List<Ship>>>(oldData);
                             // At this point the old file is confirmed to have been there - migrate it
                             // There was a bug that caused null entries to be written to the ships configuration; remove these if present
-                            var oldShips = new ObservableCollection<Ship>(oldShipsConfiguration?["ships"]?.Where(x => x.Role != null) ?? new List<Ship>());
+                            var oldShips = ImmutableList.Create(oldShipsConfiguration?["ships"]?.Where(x => x.Role != null).ToArray() ?? Array.Empty<Ship>() );
                             shipyard = oldShips;
                             File.Delete(oldFilename);
                         }
@@ -58,7 +78,7 @@ namespace EddiConfigService.Configurations
             }
 
             // Populate static information from definitions
-            foreach (Ship ship in shipyard)
+            foreach (var ship in shipyard)
             {
                 ship.Augment();
             }

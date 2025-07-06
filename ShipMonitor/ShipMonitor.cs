@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -27,10 +28,10 @@ namespace EddiShipMonitor
         private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
         // Observable collection for us to handle changes
-        public ObservableCollection<Ship> shipyard { get; internal set; }
+        public ObservableCollection<Ship> shipyard { get; set; } = new ObservableCollection<Ship>();
 
         // List of stored modules from 'Stored modules' event
-        public List<StoredModule> storedmodules { get; private set; }
+        internal List<StoredModule> storedmodules { get; set; } = new List<StoredModule>();
 
         // The ID of the current ship; can be null
         internal int? currentShipId;
@@ -1382,7 +1383,7 @@ namespace EddiShipMonitor
             {
                 // Write ship configuration with current inventory
                 configuration.currentshipid = currentShipId;
-                configuration.shipyard = shipyard;
+                configuration.shipyard = shipyard.ToImmutableList();
                 configuration.storedmodules = storedmodules;
                 configuration.updatedat = updatedAt;
             }
@@ -1397,6 +1398,9 @@ namespace EddiShipMonitor
         {
             lock (shipyardLock)
             {
+                // Unset collection synchronization (if present)
+                BindingOperations.CollectionRegistering -= Shipyard_CollectionRegistering;
+
                 // Obtain current inventory from configuration
                 var configuration = ConfigService.Instance.shipMonitorConfiguration;
                 updatedAt = configuration.updatedat;
@@ -1408,10 +1412,18 @@ namespace EddiShipMonitor
                 // There was a bug (ref. #1894) that added the SRV as a ship. Clean that up here.
                 newShiplist = newShiplist.Where(s => s.EDName != "SRV").ToList();
 
-                // Update the shipyard
-                shipyard = new ObservableCollection<Ship>(newShiplist);
+                // Set up the shipyard
                 currentShipId = configuration.currentshipid;
-                storedmodules = new List<StoredModule>(newModuleList);
+                shipyard.Clear();
+                foreach ( var newShip in newShiplist )
+                {
+                    shipyard.Add( newShip );
+                }
+                storedmodules.Clear();
+                storedmodules.AddRange( newModuleList );
+
+                // Set collection synchronization
+                BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
             }
         }
 
