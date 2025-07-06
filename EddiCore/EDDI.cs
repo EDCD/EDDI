@@ -1105,30 +1105,31 @@ namespace EddiCore
             if ( Instance.CurrentStarSystem != null &&
                  Instance.CurrentStarSystem.systemAddress == @event.systemAddress )
             {
-                @event.unique = !Instance.CurrentStarSystem.signalsources.Contains( @event.signalSource.localizedName );
-
                 // If more signal detected events are have been received and are waiting to be processed, simply enqueue the current signal source. Otherwise, batch add the signals to the star system.
-                if ( StarSystemSignalSourceManager.newSignalSources.TryGetValue( @event.systemAddress,
-                        out var queuedSignalSources ) )
+                if ( StarSystemSignalSourceManager.newSignalSources.TryGetValue( @event.systemAddress, out var newSignalSources ) )
                 {
-                    queuedSignalSources.Add( @event.signalSource );
+                    @event.unique =
+                        !Instance.CurrentStarSystem.signalsources.Contains( @event.signalSource.localizedName ) &&
+                        !newSignalSources.Select( s => s.localizedName ).Contains( @event.signalSource.localizedName );
+                    newSignalSources.Add( @event.signalSource );
                         }
                 else
                         {
-                    StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress,
-                        new List<SignalSource> { @event.signalSource } );
+                    @event.unique = true;
+                    newSignalSources = new List<SignalSource> { @event.signalSource };
+                    StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress, newSignalSources );
                     }
 
-                if ( !eventQueue.Any( e => e is SignalDetectedEvent ) &&
-                     StarSystemSignalSourceManager.newSignalSources.TryGetValue(
-                         Instance.CurrentStarSystem.systemAddress, out var newSignalSources ) )
+                if ( !eventQueue.Any( e => e is SignalDetectedEvent ) )
                 {
                     Instance.CurrentStarSystem.AddOrUpdateSignalSources( newSignalSources );
                     newSignalSources.Clear();
                 }
-            }
 
             return true;
+        }
+
+            return false;
         }
 
         private bool eventSettlementApproached(SettlementApproachedEvent settlementApproachedEvent)
