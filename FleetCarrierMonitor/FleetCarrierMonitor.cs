@@ -436,11 +436,15 @@ namespace EddiFleetCarrierMonitor
                         {
                             FleetCarrier.UpdateFrom( frontierApiCarrierJson, timestamp );
 
-                            // Get location data
-                            var wp = EDDI.Instance.DataProvider
-                                .GetOrFetchSystemWaypoint( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
-                            FleetCarrier.currentStarSystemAddress = wp?.systemAddress;
-                            FleetCarrier.currentStarSystem = wp?.systemName ?? frontierApiCarrierJson[ "currentStarSystem" ]?.ToString();
+                            // Get location data if it's not already defined
+                            if ( FleetCarrier.currentStarSystemAddress is null )
+                            {
+                                var wp = EDDI.Instance.DataProvider
+                                    .GetOrFetchSystemWaypoint( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
+                                FleetCarrier.currentStarSystemAddress = wp?.systemAddress;
+                                FleetCarrier.currentStarSystem = wp?.systemName ?? frontierApiCarrierJson[ "currentStarSystem" ]?.ToString();
+                                FleetCarrier.currentBodyID = null;
+                            }
                         } );
                         WriteConfiguration();
                     }
