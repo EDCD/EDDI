@@ -64,12 +64,8 @@ namespace EddiShipMonitor
 
         public ShipMonitor()
         {
-            shipyard = new ObservableCollection<Ship>();
-            storedmodules = new List<StoredModule>();
-
-            BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
-
             readShips();
+            BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
             Logging.Info($"Initialized {MonitorName()}");
         }
 
