@@ -66,7 +66,6 @@ namespace EddiShipMonitor
         public ShipMonitor()
         {
             readShips();
-            BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
             Logging.Info($"Initialized {MonitorName()}");
         }
 
