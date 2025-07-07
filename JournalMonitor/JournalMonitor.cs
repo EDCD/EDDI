@@ -4259,7 +4259,7 @@ namespace EddiJournalMonitor
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var systemName = JsonParsing.getString(data, "SystemName");
+                                    var systemName = JsonParsing.getString(data, "StarSystem");
                                     var bodyId = JsonParsing.getLong(data, "BodyID");
                                     events.Add(new CarrierLocationEvent(timestamp, carrierID, systemAddress, systemName, bodyId) { raw = line, fromLoad = fromLogLoad } );
                                 }
