@@ -295,8 +295,6 @@ namespace EddiFleetCarrierMonitor
                 EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
             }
             if ( FleetCarrier is null ) { return; }
-
-
             // If a jump is currently executing, don't update the carrier location until after the jump is actually completed.
             if ( FleetCarrier.nextStarSystemAddress != null ) 
             {
@@ -444,9 +442,10 @@ namespace EddiFleetCarrierMonitor
                             {
                                 var wp = EDDI.Instance.DataProvider
                                     .GetOrFetchSystemWaypoint( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
-                                FleetCarrier.currentStarSystemAddress = wp?.systemAddress;
-                                FleetCarrier.currentStarSystem = wp?.systemName ?? frontierApiCarrierJson[ "currentStarSystem" ]?.ToString();
-                                FleetCarrier.currentBodyID = null;
+                                if ( wp != null )
+                                {
+                                    FleetCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
+                                }
                             }
                         } );
                         WriteConfiguration();

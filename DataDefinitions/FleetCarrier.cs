@@ -77,7 +77,7 @@ namespace EddiDataDefinitions
         public string currentStarSystem
         {
             get => _currentStarSystem;
-            set
+            private set
             {
                 if (value == _currentStarSystem) return;
                 _currentStarSystem = value;
@@ -89,7 +89,7 @@ namespace EddiDataDefinitions
         public ulong? currentStarSystemAddress
         {
             get => _currentStarSystemAddress;
-            set
+            private set
             {
                 if ( value == _currentStarSystemAddress ) return;
                 _currentStarSystemAddress = value;
@@ -101,7 +101,7 @@ namespace EddiDataDefinitions
         public long? currentBodyID
         {
             get => _currentBodyID;
-            set
+            private set
             {
                 if ( value == _currentBodyID ) return;
                 _currentBodyID = value;
@@ -113,7 +113,7 @@ namespace EddiDataDefinitions
         public string nextStarSystem
         {
             get => _nextStarSystem;
-            set
+            private set
             {
                 if (value == _nextStarSystem) return;
                 _nextStarSystem = value;
@@ -125,7 +125,7 @@ namespace EddiDataDefinitions
         public ulong? nextStarSystemAddress
         {
             get => _nextStarSystemAddress;
-            set
+            private set
             {
                 if ( value == _nextStarSystemAddress ) return;
                 _nextStarSystemAddress = value;
@@ -137,7 +137,7 @@ namespace EddiDataDefinitions
         public long? nextBodyID
         {
             get => _nextBodyID;
-            set
+            private set
             {
                 if ( value == _nextBodyID ) return;
                 _nextBodyID = value;
