@@ -138,6 +138,45 @@ namespace Tests
             Assert.AreEqual( 68.291M, Math.Round( ship.JumpDetails( "full", 16, 8 ).distance, 3 ) );
         }
 
+        [TestMethod]
+        public void TestLoadoutParsingPantherClipperMkII ()
+        {
+            var data = DeserializeJsonResource<string>( Resources.loadout_panther_clipper_mk_ii );
+
+            var events = JournalMonitor.ParseJournalEntry( data );
+            Assert.AreEqual( 1, events.Count );
+            var loadoutEvent = events[ 0 ] as ShipLoadoutEvent;
+            Assert.IsNotNull( loadoutEvent );
+            Assert.AreEqual( "", loadoutEvent.shipname );
+            Assert.AreEqual( 22, loadoutEvent.compartments.Count );
+            Assert.AreEqual( 16, loadoutEvent.hardpoints.Count );
+
+            var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
+            var ship = shipMonitor.ParseShipLoadoutEvent( loadoutEvent );
+            Assert.IsNotNull( ship );
+            Assert.IsNull( ship.name );
+            Assert.AreEqual( "BU-16P", ship.ident );
+            Assert.AreEqual( 3, ship.LocalId );
+            Assert.AreEqual( 128, ship.fueltankcapacity );
+            Assert.AreEqual( 128, ship.fueltanktotalcapacity );
+            Assert.AreEqual( 0, ship.hullvalue );
+            Assert.AreEqual( 0, ship.modulesvalue );
+            Assert.AreEqual( 0, ship.rebuy );
+            Assert.AreEqual( 100, ship.health );
+            Assert.IsFalse( ship.hot );
+            Assert.AreEqual( 1773.599976M, ship.unladenmass );
+            Assert.AreEqual( 1040, ship.cargocapacity );
+            Assert.AreEqual( 4, ship.hardpoints.Count( h => h.module.edname.Equals( "Hpt_MultiCannon_Turret_Medium", StringComparison.InvariantCultureIgnoreCase ) ) );
+            Assert.AreEqual( "panthermkii_armour_grade1", ship.bulkheads.edname );
+            Assert.AreEqual( 0, ship.powerplant.price );
+            Assert.AreEqual( 100, ship.powerplant.health );
+            Assert.AreEqual( 0, ship.thrusters.modifiers.Count );
+            Assert.AreEqual( 0, ship.thrusters.engineerlevel );
+            Assert.AreEqual( 0, ship.thrusters.engineerquality );
+            Assert.AreEqual( "int_largecargorack_size8_class1", ship.compartments[ 0 ].module.edname );
+            Assert.AreEqual( "Cargo Rack", ship.compartments[ 0 ].module.invariantName );
+        }
+
         [ TestMethod ]
         public void TestShipScenario1 ()
         {

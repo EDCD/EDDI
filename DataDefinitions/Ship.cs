@@ -47,15 +47,22 @@ namespace EddiDataDefinitions
         public int? militarysize { get; set; }
 
         /// <summary>the total tonnage cargo capacity</summary>
-        [ Utilities.PublicAPI, JsonIgnore] 
+        [ Utilities.PublicAPI, JsonIgnore ]
         public int cargocapacity => compartments
-            .Where( c=> c.module != null  )
-            .Select(c => c.module)
-            .Where( m => m.@class > 0 && m.basename.Contains( "CargoRack", StringComparison.InvariantCultureIgnoreCase ))
-            .Sum( m => 1 << m.@class); // Calculated using a shift operator (`<<`), equiv to 2^(@class), calculated as an integer )
-
+            .Where( c => c.module != null )
+            .Select( c => c.module )
+            .Where( m => m.@class > 0 && m.edname.Contains( "CargoRack", StringComparison.InvariantCultureIgnoreCase ) )
+            .Sum( m =>
+            {
+                // The cargo capacity is calculated using a shift operator (`<<`), equiv to 2^(@class), calculated as an integer.
+                // Special "LargeCargoRack" modules (e.g. available for the Panther Clipper Mk. II) have a 50% bonus to their capacity.
+                var baseCapacity = 1 << m.@class; // 2^(@class)
+                return m.edname.Contains( "LargeCargoRack", StringComparison.InvariantCultureIgnoreCase )
+                    ? (int)Math.Round( baseCapacity * 1.5 )
+                    : baseCapacity;
+            } );
+        
         /// <summary>the value of the ship without cargo, in credits</summary>
-
         [Utilities.PublicAPI]
         public long value
         {
@@ -429,7 +436,7 @@ namespace EddiDataDefinitions
             }
         private Module _fueltank = new Module();
 
-        [Utilities.PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<Hardpoint> hardpoints
         {
             get => _hardpoints;
@@ -437,7 +444,7 @@ namespace EddiDataDefinitions
         }
         private List<Hardpoint> _hardpoints = new List<Hardpoint>();
 
-        [Utilities.PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<Compartment> compartments
         {
             get => _compartments;
@@ -445,7 +452,7 @@ namespace EddiDataDefinitions
         }
         private List<Compartment> _compartments = new List<Compartment>();
 
-        [Utilities.PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
+        [Utilities.PublicAPI, NotNull, ItemNotNull]
         public List<LaunchBay> launchbays
         {
             get => _launchbays;
@@ -836,24 +843,24 @@ namespace EddiDataDefinitions
 
             public Location ( [NotNull] StarSystem starSystem, string stationName, long? marketId )
             {
-                this.systemName = starSystem.systemname;
-                this.systemAddress = starSystem.systemAddress;
-                this.x = starSystem.x;
-                this.y = starSystem.y;
-                this.z = starSystem.z;
+                systemName = starSystem.systemname;
+                systemAddress = starSystem.systemAddress;
+                x = starSystem.x;
+                y = starSystem.y;
+                z = starSystem.z;
                 this.stationName = stationName;
                 this.marketId = marketId;
             }
 
             public Location ( [NotNull] NavWaypoint waypoint )
             {
-                this.systemName = waypoint.systemName;
-                this.systemAddress = waypoint.systemAddress;
-                this.x = waypoint.x;
-                this.y = waypoint.y;
-                this.z = waypoint.z;
-                this.stationName = waypoint.stationName;
-                this.marketId = waypoint.marketID;
+                systemName = waypoint.systemName;
+                systemAddress = waypoint.systemAddress;
+                x = waypoint.x;
+                y = waypoint.y;
+                z = waypoint.z;
+                stationName = waypoint.stationName;
+                marketId = waypoint.marketID;
             }
         }
     }

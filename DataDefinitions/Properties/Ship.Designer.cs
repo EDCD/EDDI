@@ -351,6 +351,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to your.
         /// </summary>
+        public static string yourPantherClipperMkII {
+            get {
+                return ResourceManager.GetString("yourPantherClipperMkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
         public static string yourPhantom {
             get {
                 return ResourceManager.GetString("yourPhantom", resourceCulture);

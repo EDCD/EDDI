@@ -298,4 +298,8 @@ If transporting via taxi or dropship</comment>
     <value>your</value>
     <comment>e.g. *your* Corsair</comment>
   </data>
+  <data name="yourPantherClipperMkII" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Panther Clipper Mk. II</comment>
+  </data>
 </root>

@@ -1146,6 +1146,16 @@ namespace EddiDataDefinitions
         public static readonly Module corsair_armour_mirrored = new Module( "corsair_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 166539967 );
         public static readonly Module corsair_armour_reactive = new Module( "corsair_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 186921288 );
 
+        // Still needs credit values
+        public static readonly Module panthermkii_armour_grade1 = new Module( "panthermkii_armour_grade1", "LightweightAlloy", 1, "I", 0 );
+        public static readonly Module panthermkii_armour_grade2 = new Module( "panthermkii_armour_grade2", "ReinforcedAlloy", 1, "I", 0 );
+        public static readonly Module panthermkii_armour_grade3 = new Module( "panthermkii_armour_grade3", "MilitaryGradeComposite", 1, "I", 0 );
+        public static readonly Module panthermkii_armour_mirrored = new Module( "panthermkii_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 0 );
+        public static readonly Module panthermkii_armour_reactive = new Module( "panthermkii_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 0 );
+
+        public static readonly Module int_largecargorack_size7_class1 = new Module( "int_largecargorack_size7_class1", "CargoRack", 7, "D", 0 );
+        public static readonly Module int_largecargorack_size8_class1 = new Module( "int_largecargorack_size8_class1", "CargoRack", 8, "D", 0 );
+
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
         public static readonly Module Int_PowerPlant_Size2_Class1_free = new Module( "Int_PowerPlant_Size2_Class1_free", "PowerPlant", 2, "E", 0);
@@ -1215,6 +1225,7 @@ namespace EddiDataDefinitions
         public static readonly Module CobraMkv_Cockpit = new Module( "CobraMkv_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module Corsair_Cockpit = new Module( "Corsair_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module Int_Colonisation = new Module( "Int_Colonisation", "ColonisationSuite", 1, "I", 0 );
+        public static readonly Module Panther_Clipper_MkII_Cockpit = new Module( "PantherMkII_Cockpit", "CockpitCanopy", 1, "I", 0);
 
         // Fighter modules
         public static readonly Module Empire_Fighter_Cockpit = new Module( "Empire_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0);

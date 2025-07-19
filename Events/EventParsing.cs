@@ -460,7 +460,17 @@ namespace EddiEvents
         {
             var compartment = new Compartment() { name = slot };
 
-            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+            // The Panther Clipper Mk. II  has special cargo slots which can hold additional cargo
+            if ( slot.Equals( "Cargo01", StringComparison.InvariantCultureIgnoreCase ) )
+            {
+                compartment.size = 8;
+            }
+            if ( slot.Equals( "Cargo02", StringComparison.InvariantCultureIgnoreCase ) )
+            {
+                compartment.size = 7;
+            }
+
+            // Standard compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
             if ( slot.Contains( "Slot" ) )
             {
                 var matches = Regex.Match(compartment.name, @"Size([0-9]+)");

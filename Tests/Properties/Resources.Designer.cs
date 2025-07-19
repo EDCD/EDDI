@@ -173,6 +173,16 @@ namespace Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] loadout_panther_clipper_mk_ii {
+            get {
+                object obj = ResourceManager.GetObject("loadout_panther_clipper_mk_ii", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] loadout_python_nx {
             get {
                 object obj = ResourceManager.GetObject("loadout_python_nx", resourceCulture);

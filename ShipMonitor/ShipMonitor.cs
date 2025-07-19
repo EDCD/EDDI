@@ -587,14 +587,10 @@ namespace EddiShipMonitor
                 }
 
                 // Internal + restricted modules
-                var compartments = new List<Compartment>();
-                foreach (var cpt in @event.compartments
-                             .Where(c => c.name.StartsWith("Slot") || c.name.StartsWith("Military")).ToList())
-                {
-                    compartments.Add(cpt);
-                }
-
-                ship.compartments = compartments;
+                ship.compartments = @event.compartments
+                    .Where( c =>
+                        c.name.StartsWith( "Cargo" ) || c.name.StartsWith( "Military" ) || c.name.StartsWith( "Slot" ) )
+                    .ToList();
 
                 // Hardpoints
                 var hardpoints = new List<Hardpoint>();

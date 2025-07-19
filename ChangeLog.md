@@ -4,7 +4,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.1.5
   * Core
-    * Replaced the legacy `CSCore` voice effect library with the more modern `NAudio` library. You may notice some changes in the sound of your voice effects, particularly if you have enabled the option to add distortion in response to ship damage.
+    * Added support for the Panther Clipper Mk. II.
+    * Replaced the legacy `CSCore` voice effect library with the more modern `NAudio` library. The effects library isn't exactly the same so some audio effects may be slightly different than they were before. The largest difference is the way that distortion in response to ship damage is handled.
   * Speech Responder
     * Added user-configurable hotkey support for the following actions:
       * Enabling speech

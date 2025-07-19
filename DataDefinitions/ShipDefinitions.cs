@@ -51,6 +51,7 @@ namespace EddiDataDefinitions
             new Ship( "mandalay", ShipManufacturer.ZorgonPeterson, "Mandalay", nameof(Properties.Ship.yourMandalay), null, LandingPadSize.Medium, null, 0.50M),
             new Ship( "CobraMkV", ShipManufacturer.FaulconDeLacy, "Cobra Mk. V", nameof(Properties.Ship.yourCobraMkIV), new List<Translation> {new Translation("cobra", "ˈkəʊbrə"), new Translation("Mark", "mɑːk"), new Translation("5", "faɪv" ) }, LandingPadSize.Small, null, 0.49M),
             new Ship( "Corsair", ShipManufacturer.Gutamaya, "Corsair", nameof(Properties.Ship.yourCorsair), new List<Translation> { new Translation("corsair", "kɔːɹsɛəɹ" ) }, LandingPadSize.Medium, null, 0.41M),
+            new Ship( "PantherMkII", ShipManufacturer.ZorgonPeterson, "Panther Clipper Mk. II", nameof(Properties.Ship.yourPantherClipperMkII), new List<Translation> { new Translation("Panther", "ˈpænθɚ" ), new Translation("Clipper", "ˈklɪpər" ), new Translation("Mark", "mɑːk"), new Translation("2", "ˈtuː") }, LandingPadSize.Large, null, 1.11M),
         };
 
         public static readonly SortedSet<string> ShipModels = new SortedSet<string>(AllOfThem.Select(ship => ship.model));

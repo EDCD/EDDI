@@ -1,0 +1,367 @@
+{
+  "Ship": "panthermkii",
+  "ShipID": 3,
+  "ShipName": "",
+  "ShipIdent": "BU-16P",
+  "HullHealth": 1,
+  "UnladenMass": 1773.599976,
+  "CargoCapacity": 1040,
+  "MaxJumpRange": 20.758162,
+  "FuelCapacity": {
+    "Main": 128,
+    "Reserve": 1.11
+  },
+  "Rebuy": 0,
+  "Modules": [
+    {
+      "Slot": "LargeHardpoint1",
+      "Item": "hpt_pulselaser_turret_large",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "LargeHardpoint2",
+      "Item": "hpt_pulselaser_turret_large",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "MediumHardpoint1",
+      "Item": "hpt_multicannon_turret_medium",
+      "On": true,
+      "Priority": 2,
+      "AmmoInClip": 90,
+      "AmmoInHopper": 2100,
+      "Health": 1
+    },
+    {
+      "Slot": "MediumHardpoint2",
+      "Item": "hpt_multicannon_turret_medium",
+      "On": true,
+      "Priority": 2,
+      "AmmoInClip": 90,
+      "AmmoInHopper": 2100,
+      "Health": 1
+    },
+    {
+      "Slot": "MediumHardpoint3",
+      "Item": "hpt_multicannon_turret_medium",
+      "On": true,
+      "Priority": 2,
+      "AmmoInClip": 90,
+      "AmmoInHopper": 2100,
+      "Health": 1
+    },
+    {
+      "Slot": "MediumHardpoint4",
+      "Item": "hpt_multicannon_turret_medium",
+      "On": true,
+      "Priority": 2,
+      "AmmoInClip": 90,
+      "AmmoInHopper": 2100,
+      "Health": 1
+    },
+    {
+      "Slot": "SmallHardpoint1",
+      "Item": "hpt_pulselaser_turret_small",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "SmallHardpoint2",
+      "Item": "hpt_pulselaser_turret_small",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "SmallHardpoint3",
+      "Item": "hpt_pulselaser_turret_small",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "SmallHardpoint4",
+      "Item": "hpt_pulselaser_turret_small",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "TinyHardpoint1",
+      "Item": "hpt_shieldbooster_size0_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "TinyHardpoint2",
+      "Item": "hpt_shieldbooster_size0_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "TinyHardpoint3",
+      "Item": "hpt_shieldbooster_size0_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "TinyHardpoint4",
+      "Item": "hpt_electroniccountermeasure_tiny",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "TinyHardpoint5",
+      "Item": "hpt_plasmapointdefence_turret_tiny",
+      "On": true,
+      "Priority": 2,
+      "AmmoInClip": 12,
+      "AmmoInHopper": 10000,
+      "Health": 1
+    },
+    {
+      "Slot": "TinyHardpoint6",
+      "Item": "hpt_heatsinklauncher_turret_tiny",
+      "On": true,
+      "Priority": 2,
+      "AmmoInClip": 1,
+      "AmmoInHopper": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "Armour",
+      "Item": "panthermkii_armour_grade1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "PaintJob",
+      "Item": "paintjob_panthermkii_01_02",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "PowerPlant",
+      "Item": "int_powerplant_size8_class5",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "MainEngines",
+      "Item": "int_engine_size8_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "FrameShiftDrive",
+      "Item": "int_hyperdrive_overcharge_size7_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "LifeSupport",
+      "Item": "int_lifesupport_size5_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "PowerDistributor",
+      "Item": "int_powerdistributor_size7_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "Radar",
+      "Item": "int_sensors_size5_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "FuelTank",
+      "Item": "int_fueltank_size7_class3",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Decal1",
+      "Item": "decal_pantherownersclub_01",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Decal2",
+      "Item": "decal_pantherownersclub_01",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Decal3",
+      "Item": "decal_pantherownersclub_01",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Cargo01",
+      "Item": "int_largecargorack_size8_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot01_Size8",
+      "Item": "int_cargorack_size8_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Cargo02",
+      "Item": "int_largecargorack_size7_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot02_Size7",
+      "Item": "int_shieldgenerator_size7_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot03_Size6",
+      "Item": "int_cargorack_size6_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot04_Size6",
+      "Item": "int_cargorack_size6_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot05_Size6",
+      "Item": "int_fuelscoop_size6_class5",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot06_Size5",
+      "Item": "int_cargorack_size5_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot07_Size5",
+      "Item": "int_cargorack_size5_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot08_Size4",
+      "Item": "int_cargorack_size4_class1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot09_Size2",
+      "Item": "int_dockingcomputer_advanced",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "Slot10_Size1",
+      "Item": "int_supercruiseassist",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "PlanetaryApproachSuite",
+      "Item": "int_planetapproachsuite_advanced",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "VesselVoice",
+      "Item": "voicepack_verity",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "ShipKitSpoiler",
+      "Item": "panthermkii_shipkita_spoiler2",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "ShipKitWings",
+      "Item": "panthermkii_shipkita_wings2",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "ShipKitBumper",
+      "Item": "panthermkii_shipkita_bumper1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "ShipKitTail",
+      "Item": "panthermkii_shipkita_tail1",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    },
+    {
+      "Slot": "CargoHatch",
+      "Item": "modularcargobaydoor",
+      "On": true,
+      "Priority": 2,
+      "Health": 1
+    },
+    {
+      "Slot": "ShipCockpit",
+      "Item": "panthermkii_cockpit",
+      "On": true,
+      "Priority": 1,
+      "Health": 1
+    }
+  ],
+  "timestamp": "2025-07-16T09:46:45Z",
+  "event": "Loadout"
+}

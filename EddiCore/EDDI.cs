@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiConfigService;
 using EddiCore.Hotkeys;
 using EddiDataDefinitions;
@@ -915,6 +915,9 @@ namespace EddiCore
 
         internal void eventHandler( Event @event )
         {
+            var performanceTelemetry = new List<object>();
+            var startTime = DateTime.UtcNow;
+
             if ( @event != null )
             {
                 // Event handling is disabled when running a legacy game version.
@@ -1079,10 +1082,12 @@ namespace EddiCore
                         passEvent = eventSignalDetected( signalDetectedEvent );
                     }
 
+                    performanceTelemetry.Add(new { Name = "Core", Duration = ( DateTime.UtcNow - startTime ).Milliseconds } );
+
                     // Additional processing is over, send to the event monitors and responders if required
                     if (passEvent)
                     {
-                        OnEvent( @event ).GetAwaiter().GetResult();
+                        performanceTelemetry = OnEvent( @event, performanceTelemetry ).GetAwaiter().GetResult();
                     }
 
                     lastEventOfType[ @event.type ] = @event;
@@ -1098,6 +1103,15 @@ namespace EddiCore
                     Instance.ObtainResponder( "Inara Responder" ).Handle( @event );
                 }
             }
+
+            var TotalDurationMs = ( DateTime.UtcNow - startTime ).Milliseconds;
+            var wrappedTelemetry = new Dictionary<string, object> { { "event", @event }, { "performance", performanceTelemetry } };
+            if ( TotalDurationMs > 200 )
+            {
+                Logging.Warn(
+                    $"Processed EDDI event {@event?.type} in {TotalDurationMs} milliseconds: ",
+                    wrappedTelemetry );
+            }
         }
 
         internal bool eventSignalDetected ( SignalDetectedEvent @event )
@@ -1112,13 +1126,13 @@ namespace EddiCore
                         !Instance.CurrentStarSystem.signalsources.Contains( @event.signalSource.localizedName ) &&
                         !newSignalSources.Select( s => s.localizedName ).Contains( @event.signalSource.localizedName );
                     newSignalSources.Add( @event.signalSource );
-                        }
+                }
                 else
-                        {
+                {
                     @event.unique = true;
                     newSignalSources = new List<SignalSource> { @event.signalSource };
                     StarSystemSignalSourceManager.newSignalSources.Add( @event.systemAddress, newSignalSources );
-                    }
+                }
 
                 if ( !eventQueue.Any( e => e is SignalDetectedEvent ) )
                 {
@@ -1126,8 +1140,8 @@ namespace EddiCore
                     newSignalSources.Clear();
                 }
 
-            return true;
-        }
+                return true;
+            }
 
             return false;
         }
@@ -1470,44 +1484,62 @@ namespace EddiCore
             return passEvent;
         }
 
-        private async Task OnEvent ( Event @event )
+        private async Task<List<object>> OnEvent ( Event @event, List<object> performanceTelemetry )
         {
             try
             {
                 // We send the event to all monitors to ensure that their info is up-to-date
                 // All changes to state must be handled here, so this must be synchronous
-                passToMonitorPreHandlers(@event);
+                var slowestPrehandler = passToMonitorPreHandlers( @event );
+                performanceTelemetry.Add( new { Name = $"Prehandler: {slowestPrehandler.Key}", Duration = slowestPrehandler.Value.Milliseconds } );
 
                 // Now we pass the data to the responders to process asynchronously, waiting for all to complete
                 // Responders must not change global states.
-                await passToRespondersAsync(@event);
+                var slowestResponder = await passToRespondersAsync( @event );
+                performanceTelemetry.Add( new { Name = $"Responder: {slowestResponder.Key}", Duration = slowestResponder.Value.Milliseconds } );
 
                 // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
-                await passToMonitorPostHandlersAsync(@event);
+                var slowestPostHandler = await passToMonitorPostHandlersAsync( @event );
+                performanceTelemetry.Add( new { Name = $"Posthandler: {slowestPostHandler.Key}", Duration = slowestPostHandler.Value.Milliseconds } );
             }
             catch ( Exception ex )
             {
                 Logging.Error( "Failed to pass event to all monitors and responders", ex );
             }
+
+            return performanceTelemetry;
         }
 
-        private void passToMonitorPreHandlers(Event @event)
+        private KeyValuePair<string, TimeSpan> passToMonitorPreHandlers( Event @event )
         {
+            var slowestPreHandler = string.Empty;
+            var slowestPreHandlerDuration = TimeSpan.Zero;
+
             foreach ( var monitor in activeMonitors)
             {
                 try
                 {
+                    var startTime = DateTime.UtcNow;
                     monitor.PreHandle(@event);
+                    var endTime = DateTime.UtcNow;
+                    if ( slowestPreHandler == null || ( endTime - startTime ) > slowestPreHandlerDuration ) 
+                    { 
+                        slowestPreHandler = monitor.MonitorName();
+                        slowestPreHandlerDuration = endTime - startTime;
+                    }
                 }
                 catch (Exception ex)
                 {
                     Logging.Error($"{monitor.MonitorName()} failed to handle {@event.type} event {@event.raw}", ex);
                 }
             }
+
+            return new KeyValuePair<string, TimeSpan>( slowestPreHandler, slowestPreHandlerDuration );
         }
 
-        private async Task passToRespondersAsync(Event @event)
+        private async Task<KeyValuePair<string, TimeSpan>> passToRespondersAsync (Event @event )
         {
+            var ResponderPerformance = new ConcurrentDictionary<string, TimeSpan>();
             var responderTasks = new List<Task>();
             foreach (var responder in activeResponders)
             {
@@ -1515,7 +1547,10 @@ namespace EddiCore
                 {
                     try
                     {
+                        var startTime = DateTime.UtcNow;
                         responder.Handle(@event);
+                        var endTime = DateTime.UtcNow;
+                        ResponderPerformance.TryAdd(responder.ResponderName(), endTime - startTime);
                     }
                     catch (Exception ex)
                     {
@@ -1525,10 +1560,13 @@ namespace EddiCore
                 responderTasks.Add(responderTask);
             }
             await Task.WhenAll(responderTasks.ToArray());
+            return ResponderPerformance.OrderByDescending( p => p.Value ).First();
         }
 
-        private async Task passToMonitorPostHandlersAsync(Event @event)
+        private async Task<KeyValuePair<string, TimeSpan>> passToMonitorPostHandlersAsync (Event @event)
         {
+            var MonitorPostHandlerPerformance = new ConcurrentDictionary<string, TimeSpan>();
+
             var monitorTasks = new List<Task>();
             foreach (var monitor in activeMonitors)
             {
@@ -1536,7 +1574,10 @@ namespace EddiCore
                 {
                     try
                     {
+                        var startTime = DateTime.UtcNow;
                         monitor.PostHandle(@event);
+                        var endTime = DateTime.UtcNow;
+                        MonitorPostHandlerPerformance.TryAdd(monitor.MonitorName(), endTime - startTime);
                     }
                     catch (Exception ex)
                     {
@@ -1546,6 +1587,7 @@ namespace EddiCore
                 monitorTasks.Add(monitorTask);
             }
             await Task.WhenAll(monitorTasks.ToArray());
+            return MonitorPostHandlerPerformance.OrderByDescending( p => p.Value ).First();
         }
 
         internal bool eventLocation(LocationEvent theEvent)
