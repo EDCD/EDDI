@@ -1150,9 +1150,8 @@ namespace EddiDataDefinitions
         public static readonly Module panthermkii_armour_grade3 = new Module( "panthermkii_armour_grade3", "MilitaryGradeComposite", 1, "I", 271213728 );
         public static readonly Module panthermkii_armour_mirrored = new Module( "panthermkii_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 632832030 );
         public static readonly Module panthermkii_armour_reactive = new Module( "panthermkii_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 710278615 );
-
-        public static readonly Module int_largecargorack_size7_class1 = new Module( "int_largecargorack_size7_class1", "CargoRack", 7, "D", 0 );
-        public static readonly Module int_largecargorack_size8_class1 = new Module( "int_largecargorack_size8_class1", "CargoRack", 8, "D", 0 );
+        public static readonly Module int_largecargorack_size7_class1 = new Module( "int_largecargorack_size7_class1", "CargoRack", 7, "D", 1958680 );
+        public static readonly Module int_largecargorack_size8_class1 = new Module( "int_largecargorack_size8_class1", "CargoRack", 8, "D", 4929316 );
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
