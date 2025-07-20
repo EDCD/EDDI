@@ -1145,13 +1145,11 @@ namespace EddiDataDefinitions
         public static readonly Module corsair_armour_grade3 = new Module( "corsair_armour_grade3", "MilitaryGradeComposite", 1, "I", 71374271 );
         public static readonly Module corsair_armour_mirrored = new Module( "corsair_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 166539967 );
         public static readonly Module corsair_armour_reactive = new Module( "corsair_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 186921288 );
-
-        // Still needs credit values
         public static readonly Module panthermkii_armour_grade1 = new Module( "panthermkii_armour_grade1", "LightweightAlloy", 1, "I", 0 );
-        public static readonly Module panthermkii_armour_grade2 = new Module( "panthermkii_armour_grade2", "ReinforcedAlloy", 1, "I", 0 );
-        public static readonly Module panthermkii_armour_grade3 = new Module( "panthermkii_armour_grade3", "MilitaryGradeComposite", 1, "I", 0 );
-        public static readonly Module panthermkii_armour_mirrored = new Module( "panthermkii_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 0 );
-        public static readonly Module panthermkii_armour_reactive = new Module( "panthermkii_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 0 );
+        public static readonly Module panthermkii_armour_grade2 = new Module( "panthermkii_armour_grade2", "ReinforcedAlloy", 1, "I", 120539435 );
+        public static readonly Module panthermkii_armour_grade3 = new Module( "panthermkii_armour_grade3", "MilitaryGradeComposite", 1, "I", 271213728 );
+        public static readonly Module panthermkii_armour_mirrored = new Module( "panthermkii_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 632832030 );
+        public static readonly Module panthermkii_armour_reactive = new Module( "panthermkii_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 710278615 );
 
         public static readonly Module int_largecargorack_size7_class1 = new Module( "int_largecargorack_size7_class1", "CargoRack", 7, "D", 0 );
         public static readonly Module int_largecargorack_size8_class1 = new Module( "int_largecargorack_size8_class1", "CargoRack", 8, "D", 0 );
