@@ -1935,7 +1935,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Collected\r\n{set resources to []}\r\n{for microresource in event.resourceamounts:\r\n    {set resources to cat(resources, [cat(microresource.amount, \" units of \", microresource.name)])}    \r\n}\r\n{List(resources)}.",
+      "script": "Collected\r\n{set resources to []}\r\n{for microresource in event.resourceamounts:\r\n    {set units to: {if microresource.amount > 1: units |else: unit } }\r\n    {set resources to cat(resources, [cat(microresource.amount, units, \" of \", microresource.name)])}     \r\n}\r\n{List(resources)}.",
       "default": true,
       "name": "Power micro resources collected",
       "description": "Triggered when collecting micro resources from a Powerplay contact"
@@ -1944,7 +1944,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Delivered\r\n{set resources to []}\r\n{for microresource in event.resourceamounts:\r\n    {set resources to cat(resources, [cat(microresource.amount, \" units of \", microresource.name)])}    \r\n}\r\n{List(resources)}.",
+      "script": "Delivered\r\n{set resources to []}\r\n{for microresource in event.resourceamounts:\r\n    {set units to: {if microresource.amount > 1: units |else: unit } }\r\n    {set resources to cat(resources, [cat(microresource.amount, units, \" of \", microresource.name)])}    \r\n}\r\n{List(resources)}.",
       "default": true,
       "name": "Power micro resources delivered",
       "description": "Triggered when delivering micro resources to a Powerplay contact"

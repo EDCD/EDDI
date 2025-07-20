@@ -17,6 +17,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Other keys with at least one modifier from Ctrl and Alt, e.g. Ctrl+A, Ctrl+Shift+A, Ctrl+Shift+Alt+A.
 	  * However certain combos such as Ctrl+C and Ctrl+Alt+Del are reserved by the operating system.
     * Fixed a bug causing new scripts to not be editable until EDDI is restarted.
+    * Scripts Updated
+      * `Power commodity delivered`, `Power commodity obtained`, `Power micro resources collected` and `Power micro resources delivered` updated to more gracefully handle collecting or delivering a single unit of a powerplay commodity or micro resource. 
+      * `Signal Detected` updated to fix a bug that could cause non-unique signal sources to be vocalized (when not in fss or saa mode).
 
 ## 4.1.4
   * Core
