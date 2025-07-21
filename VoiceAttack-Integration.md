@@ -8,7 +8,7 @@ For EDDI to work with VoiceAttack it must be installed as a VoiceAttack plugin. 
 - `C:\Program Files (x86)\VoiceAttack` (for standard licenses)
 - `C:\Program Files (x86)\Steam\steamapps\common\VoiceAttack` (for Steam licenses)
 
-VoiceAttack must be configured to use plugins.  To do so you must click on the Settings icon (a spanner) in the top-right corner of the VoiceAttack and check the 'Enable plugin support' option and restart VoiceAttack.
+VoiceAttack must be configured to use plugins.  To do so you must click on the VoiceAttack Options icon (a spanner) in the bottom-right corner of the VoiceAttack main screen, check the 'Enable plugin support' option, and then restart VoiceAttack.
 
 If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 3.7.1 initialized`.
 
