@@ -702,6 +702,10 @@
     <comment>Material unknowncorechip</comment>
   </data>
   <data name="searchrescuevoucher" xml:space="preserve">
-	  <value>Search and Rescue Voucher</value><comment>material searchrescuevoucher</comment>
+    <value>Search and Rescue Voucher</value>
+    <comment>material searchrescuevoucher</comment>
+  </data>
+  <data name="tg_structuraldata02" xml:space="preserve">
+    <value>Thargoid Capitol Ship Data</value>
   </data>
 </root>

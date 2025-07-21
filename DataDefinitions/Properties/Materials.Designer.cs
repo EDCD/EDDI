@@ -1204,6 +1204,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Capitol Ship Data.
+        /// </summary>
+        public static string tg_structuraldata02 {
+            get {
+                return ResourceManager.GetString("tg_structuraldata02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Weapon Parts.
         /// </summary>
         public static string tg_weaponparts {

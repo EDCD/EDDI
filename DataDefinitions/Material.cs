@@ -132,6 +132,7 @@ namespace EddiDataDefinitions
         public static readonly Material PeculiarShieldFrequencyData = new Material("shieldfrequencydata", Data, VeryRare);
         // Grade 5 Xeno
         public static readonly Material Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", Data, VeryRare);
+        public static readonly Material Tg_StructuralData02 = new Material( "tg_structuraldata02", Data, VeryRare );
 
         // Unknown rarity
         public static readonly Material SearchRescueVoucher = new Material( "searchrescuevoucher", Data, Rarity.Unknown );
