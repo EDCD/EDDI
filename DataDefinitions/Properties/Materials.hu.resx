@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -217,6 +217,12 @@
     <value>Polónium</value>
     <comment>Material polonium</comment>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="ancienthistoricaldata" xml:space="preserve">
     <value>Gamma Obeliszk adat Történelmi</value>
     <comment>Material ancienthistoricaldata</comment>
@@ -225,34 +231,79 @@
     <value>Rendhagyó FSD telemetria</value>
     <comment>Material fsdtelemetry</comment>
   </data>
+  
+  
+  
   <data name="encryptioncodes" xml:space="preserve">
     <value>Megjelölt titkosítási kódok</value>
     <comment>Material encryptioncodes</comment>
   </data>
+  
+  
   <data name="tg_structuraldata" xml:space="preserve">
     <value>Thargoid szerkezeti adat</value>
     <comment>Material tg_structuraldata</comment>
   </data>
+  
+  
   <data name="symmetrickeys" xml:space="preserve">
     <value>Nyitott szimmetrikus kulcsok</value>
     <comment>Material symmetrickeys</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="shieldfrequencydata" xml:space="preserve">
     <value>Különleges pajzs frekvencia adat</value>
     <comment>Material shieldfrequencydata</comment>
   </data>
+  
+  
+  
   <data name="crystalshards" xml:space="preserve">
     <value>Kristály szilánkok</value>
     <comment>Material crystalshards</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="heatresistantceramics" xml:space="preserve">
     <value>Hőálló kerámiák</value>
     <comment>Material heatresistantceramics</comment>
   </data>
+  
   <data name="mechanicalequipment" xml:space="preserve">
     <value>Mechanikai berendezés</value>
     <comment>Material mechanicalequipment</comment>
   </data>
+  
   <data name="unknowncarapace" xml:space="preserve">
     <value>Thargoid páncél</value>
     <comment>Material unknowncarapace</comment>
@@ -261,6 +312,8 @@
     <value>Kémiai desztilláló</value>
     <comment>Material chemicaldistillery</comment>
   </data>
+  
+  
   <data name="focuscrystals" xml:space="preserve">
     <value>Fókusz kristályok</value>
     <comment>Material focuscrystals</comment>
@@ -277,14 +330,24 @@
     <value>Mechanikus komponensek</value>
     <comment>Material mechanicalcomponents</comment>
   </data>
+  
+  
+  
   <data name="unknownenergycell" xml:space="preserve">
     <value>Thargoid energia cella</value>
     <comment>Material unknownenergycell</comment>
   </data>
+  
+  
+  
   <data name="configurablecomponents" xml:space="preserve">
     <value>Konfigurálható komponensek</value>
     <comment>Material configurablecomponents</comment>
   </data>
+  
+  
+  
+  
   <data name="refinedfocuscrystals" xml:space="preserve">
     <value>Finomított fókusz kristályok</value>
     <comment>Material refinedfocuscrystals</comment>
@@ -301,6 +364,10 @@
     <value>Biotechnológiai vezetők</value>
     <comment>Material biotechconductors</comment>
   </data>
+  
+  
+  
+  
   <data name="militarygradealloys" xml:space="preserve">
     <value>Katonai osztályú ötvözetek</value>
     <comment>Material militarygradealloys</comment>
@@ -309,6 +376,11 @@
     <value>Katonai szuperkondenzátorok</value>
     <comment>Material militarysupercapacitors</comment>
   </data>
+  
+  
+  
+  
+  
   <data name="boron" xml:space="preserve">
     <value>Bór</value>
     <comment>Material boron</comment>
@@ -325,11 +397,31 @@
     <value>Őrző jármű tervrajz</value>
     <comment>Material guardian_vesselblueprint</comment>
   </data>
+  
   <data name="guardian_powerconduit" xml:space="preserve">
     <value>Őrző energiavezeték</value>
     <comment>Material guardian_powerconduit</comment>
   </data>
-  <data name="tg_structuraldata02" xml:space="preserve">
-    <value />
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
