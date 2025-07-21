@@ -906,6 +906,12 @@ namespace EddiShipMonitor
                     var fromSlot = @event.fromslot;
                     var toSlot = @event.toslot;
 
+                    if ( ship is null )
+                    {
+                        // This ship is unknown to us.
+                        return;
+                    }
+
                     if ( fromSlot.Contains( "Hardpoint" ) ) // Module is a hardpoint
                     {
                         // Find our hardpoints. Add them if them are missing
