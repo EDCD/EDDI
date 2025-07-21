@@ -1645,6 +1645,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contaminated Spire Compound.
+        /// </summary>
+        public static string SabotagedComponent {
+            get {
+                return ResourceManager.GetString("SabotagedComponent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sales Records.
         /// </summary>
         public static string SalesRecords {

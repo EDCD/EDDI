@@ -985,4 +985,8 @@
     <value>Medical Sample</value>
     <comment>Powerplay</comment>
   </data>
+  <data name="SabotagedComponent" xml:space="preserve">
+    <value>Contaminated Spire Compound</value>
+    <comment>Odyssey good found at Thargoid Spire sites</comment>
+  </data>
 </root>

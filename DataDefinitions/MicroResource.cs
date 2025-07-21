@@ -220,6 +220,7 @@ namespace EddiDataDefinitions
         public static readonly MicroResource Push = new MicroResource("Push", MicroResourceCategory.Items, 128962607);
         public static readonly MicroResource PyrolyticCatalyst = new MicroResource("PyrolyticCatalyst", MicroResourceCategory.Items, 128965835);
         public static readonly MicroResource RefinementProcessSample = new MicroResource("RefinementProcessSample", MicroResourceCategory.Items, 128965839);
+        public static readonly MicroResource SabotagedComponent = new MicroResource( "SabotagedComponent", MicroResourceCategory.Items, null );
         public static readonly MicroResource ShipSchematic = new MicroResource("ShipSchematic", MicroResourceCategory.Items, 128962608);
         public static readonly MicroResource SuitSchematic = new MicroResource("SuitSchematic", MicroResourceCategory.Items, 128962609);
         public static readonly MicroResource SurveillanceEquipment = new MicroResource("SurveillanceEquipment", MicroResourceCategory.Items, 128962610);
