@@ -985,5 +985,8 @@
     <value>Amostra Médica</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="SabotagedComponent" xml:space="preserve">
+    <value>Composto de Pináculo Contaminado</value>
+    <comment>Odyssey good found at Thargoid Spire sites</comment>
+  </data>
 </root>
