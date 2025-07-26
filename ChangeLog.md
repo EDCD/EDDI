@@ -6,6 +6,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Added support for the Panther Clipper Mk. II.
     * Replaced the legacy `CSCore` voice effect library with the more modern `NAudio` library. The effects library isn't exactly the same so some audio effects may be slightly different than they were before. The largest difference is the way that distortion in response to ship damage is handled.
+  * Inara Responder
+    * Fixed a bug causing Inara to incorrectly report module values. 
   * Speech Responder
     * Added user-configurable hotkey support for the following actions:
       * Enabling speech

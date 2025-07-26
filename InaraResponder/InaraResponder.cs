@@ -755,7 +755,7 @@ namespace EddiInaraResponder
                 {
                     {"slotName", slotName},
                     {"itemName", module.edname},
-                    {"itemValue", module.value},
+                    {"itemValue", module.price},
                     {"itemHealth", module.health / 100}, // From 0 - 1
                     {"isOn", module.enabled},
                     {"isHot", module.hot},
@@ -920,7 +920,7 @@ namespace EddiInaraResponder
                 Dictionary<string, object> moduleData = new Dictionary<string, object>()
                 {
                     { "itemName", storedModule?.module?.edname },
-                    { "itemValue", storedModule?.module?.value },
+                    { "itemValue", storedModule?.module?.price },
                     { "isHot", storedModule?.module?.hot },
                     { "starsystemName", storedModule?.system },
                     { "stationName", storedModule?.station },
