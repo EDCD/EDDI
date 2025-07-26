@@ -979,11 +979,11 @@ namespace EddiDataDefinitions
         public static readonly Module Int_GuardianShieldReinforcement_Size4_Class2 = new Module( "Int_GuardianShieldReinforcement_Size4_Class2", "GuardianShieldReinforcement", 4, "D", 414720);
         public static readonly Module Int_GuardianShieldReinforcement_Size5_Class1 = new Module( "Int_GuardianShieldReinforcement_Size5_Class1", "GuardianShieldReinforcement", 5, "E", 331776);
         public static readonly Module Int_GuardianShieldReinforcement_Size5_Class2 = new Module( "Int_GuardianShieldReinforcement_Size5_Class2", "GuardianShieldReinforcement", 5, "D", 995328);
-        public static readonly Module Int_GuardianFSDBooster_Size1 = new Module( "Int_GuardianFSDBooster_Size1", "GuardianFsdBooster", 1, "H", 395896);
-        public static readonly Module Int_GuardianFSDBooster_Size2 = new Module( "Int_GuardianFSDBooster_Size2", "GuardianFsdBooster", 2, "H", 790257);
-        public static readonly Module Int_GuardianFSDBooster_Size3 = new Module( "Int_GuardianFSDBooster_Size3", "GuardianFsdBooster", 3, "H", 1579920);
-        public static readonly Module Int_GuardianFSDBooster_Size4 = new Module( "Int_GuardianFSDBooster_Size4", "GuardianFsdBooster", 4, "H", 3163887);
-        public static readonly Module Int_GuardianFSDBooster_Size5 = new Module( "Int_GuardianFSDBooster_Size5", "GuardianFsdBooster", 5, "H", 6321023);
+        public static readonly Module Int_GuardianFSDBooster_Size1 = new Module( "Int_GuardianFSDBooster_Size1", "GuardianFsdBooster", 1, "H", 405020);
+        public static readonly Module Int_GuardianFSDBooster_Size2 = new Module( "Int_GuardianFSDBooster_Size2", "GuardianFsdBooster", 2, "H", 810520);
+        public static readonly Module Int_GuardianFSDBooster_Size3 = new Module( "Int_GuardianFSDBooster_Size3", "GuardianFsdBooster", 3, "H", 1620430);
+        public static readonly Module Int_GuardianFSDBooster_Size4 = new Module( "Int_GuardianFSDBooster_Size4", "GuardianFsdBooster", 4, "H", 3245010);
+        public static readonly Module Int_GuardianFSDBooster_Size5 = new Module( "Int_GuardianFSDBooster_Size5", "GuardianFsdBooster", 5, "H", 6483100);
         public static readonly Module Int_GuardianPowerDistributor_Size1 = new Module( "Int_GuardianPowerDistributor_Size1", "GuardianPowerDistributor", 1, "A", 35940);
         public static readonly Module Int_GuardianPowerDistributor_Size2 = new Module( "Int_GuardianPowerDistributor_Size2", "GuardianPowerDistributor", 2, "A", 97929);
         public static readonly Module Int_GuardianPowerDistributor_Size3 = new Module( "Int_GuardianPowerDistributor_Size3", "GuardianPowerDistributor", 3, "A", 273223);
