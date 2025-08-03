@@ -111,7 +111,7 @@ namespace EddiUI
                 Width = windowPosition.Width;
                 Height = windowPosition.Height;
             }
-            else
+            else if ( Screen.PrimaryScreen != null )
             {
                 // Revert to default values if the prior size and position are no longer valid
                 Left = centerWindow(applyDpiScale(Screen.PrimaryScreen.Bounds.Width, dpiScale.DpiScaleX), designedWidth);

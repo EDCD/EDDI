@@ -1,5 +1,6 @@
 ﻿using EddiSpeechService.Properties;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace EddiSpeechService.SpeechConversions
@@ -363,7 +364,7 @@ namespace EddiSpeechService.SpeechConversions
             {
                 var elements = new List<string>();
                 var matchConditions = new Regex(@"([A-Z])|(\d+)|([a-z])|(\S)");
-                foreach (var m in matchConditions.Matches(starSystem))
+                foreach ( var m in matchConditions.Matches( starSystem ).OfType<Match>() )
                 {
                     var useLongNumbers = !THREE_OR_MORE_DIGITS.IsMatch( m.ToString() );
                     elements.Add( sayAsLettersOrNumbers( m.ToString(), useLongNumbers, useICAO ) );

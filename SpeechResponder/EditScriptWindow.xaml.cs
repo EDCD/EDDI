@@ -149,7 +149,7 @@ namespace EddiSpeechResponder
             // WPF uses DPI scaled units rather than true pixels.
             // Retrieve the DPI scaling for the controlling monitor (where the top left pixel is located).
             var dpiScale = VisualTreeHelper.GetDpi( this );
-            if ( savedWindowPosition == Rect.Empty || !isWindowValid( savedWindowPosition, dpiScale ) )
+            if ( Screen.PrimaryScreen != null && ( savedWindowPosition == Rect.Empty || !isWindowValid( savedWindowPosition, dpiScale ) ) )
             {
                 // Revert to default values if the prior size and position are no longer valid
                 Left = centerWindow( applyDpiScale( Screen.PrimaryScreen.Bounds.Width, dpiScale.DpiScaleX ),
