@@ -250,46 +250,50 @@ namespace EddiSpeechService
             Instance.StartOrContinueSpeaking( invokedFromVA );
         }
 
+        private Task speechTask;
+        private CancellationTokenSource speechCts;
+
         private void StartOrContinueSpeaking ( bool invokedFromVA )
         {
-            if ( !eddiSpeaking )
+            try
             {
-                // Put everything in a thread
-                var speechThread = new Thread(() =>
+                if ( !eddiSpeaking && ( speechTask == null || speechTask.IsCompleted ) )
                 {
-                    while (speechQueue.hasSpeech)
+                    speechCts = new CancellationTokenSource();
+                    var token = speechCts.Token;
+
+                    speechTask = Task.Run( async () =>
                     {
-                        if (speechQueue.TryDequeue(out var speech))
+                        while ( speechQueue.hasSpeech && !token.IsCancellationRequested )
                         {
-                            try
+                            if ( speechQueue.TryDequeue( out var speech ) )
                             {
-                                Speak(speech);
+                                try
+                                {
+                                    Speak( speech );
+                                }
+                                catch ( Exception ex )
+                                {
+                                    Logging.Error( "Failed to handle queued speech", ex );
+                                    Logging.Warn( $"Failed to handle speech {JsonConvert.SerializeObject( speech )}" );
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                Logging.Error("Failed to handle queued speech", ex);
-                                Logging.Warn("Failed to handle speech " + JsonConvert.SerializeObject(speech));
-                            }
+
+                            await Task.Yield(); // Yield to avoid blocking the thread pool
                         }
-                    }
-                })
-                {
-                    Name = "Speech thread",
-                    IsBackground = true
-                };
-                try
-                {
-                    speechThread.Start();
+                    }, token );
+
                     if ( invokedFromVA )
                     {
-                        speechThread.Join();
+                        // When invoked from VoiceAttack, the executing command can block other commands until the executing command completes.
+                        // We'll adopt the same behavior by waiting for the speech task to complete.
+                        speechTask.GetAwaiter().GetResult();
                     }
                 }
-                catch ( ThreadAbortException tax )
-                {
-                    Logging.Debug( "Thread aborted", tax );
-                    Thread.ResetAbort();
-                }
+            }
+            catch ( OperationCanceledException )
+            {
+                Logging.Debug( "Speech task was cancelled." );
             }
         }
 
