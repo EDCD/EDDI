@@ -1,78 +1,69 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-
-        <!-- Targeting and Output -->
-        <TargetFramework>net48</TargetFramework>
-        <Prefer32Bit>True</Prefer32Bit>
-        <OutputType>WinExe</OutputType>
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <StartupObject>Eddi.App</StartupObject>
-        <ApplicationIcon>EDDI.ico</ApplicationIcon>
-        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-
-        <!-- Windows Desktop Settings -->
-        <UseWindowsForms>true</UseWindowsForms>
-        <UseWPF>true</UseWPF>
-        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-        <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
-
-        <!-- Packaging Metadata -->
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/EDCD/EDDI</RepositoryUrl>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageProjectUrl>https://github.com/EDCD/EDDI</PackageProjectUrl>
-        <PackageIcon>logo-with-alpha.png</PackageIcon>
-        <Product>EDDI</Product>
-        <Copyright>Copyright ©  2016</Copyright>
-        <Authors />
-        <Company />
-
-    </PropertyGroup>
-
-    <!-- Configuration-Specific Settings -->
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>..\bin\Debug\</OutputPath>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <OutputPath>..\bin\Release\</OutputPath>
-    </PropertyGroup>
-
-    <!-- Project References -->
-    <ItemGroup>
-        <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
-        <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
-        <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
-        <ProjectReference Include="..\Utilities\Utilities.csproj" />
-    </ItemGroup>
-
-    <!-- Resources and Content -->
-    <ItemGroup>
-        <Resource Include="EDDI.ico" />
-        <SplashScreen Include="..\graphics\logo-with-alpha.png" />
-        <None Update="ChangeLog.md">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Include="..\graphics\logo-with-alpha.png">
-            <Pack>True</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
-        <None Include="..\README.md">
-            <Pack>True</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
-        <None Remove="MainWindow.xaml" />
-        <AppDesigner Include="Properties\" />
-    </ItemGroup>
-
-    <!-- NuGet Packages -->
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="System.Runtime" Version="4.3.1" />
-        <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
-    </ItemGroup>
-
-    <!-- Build Events -->
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="xcopy /y &quot;$(SolutionDir)ChangeLog.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\&quot;" />
-    </Target>
+  <PropertyGroup>
+    <!-- Targeting and Output -->
+    <TargetFramework>net48</TargetFramework>
+    <Prefer32Bit>True</Prefer32Bit>
+    <OutputType>WinExe</OutputType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <StartupObject>Eddi.App</StartupObject>
+    <ApplicationIcon>EDDI.ico</ApplicationIcon>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <!-- Windows Desktop Settings -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <!-- Packaging Metadata -->
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/EDCD/EDDI</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/EDCD/EDDI</PackageProjectUrl>
+    <PackageIcon>logo-with-alpha.png</PackageIcon>
+    <Product>EDDI</Product>
+    <Copyright>Copyright ©  2016</Copyright>
+    <Authors />
+    <Company />
+  </PropertyGroup>
+  <!-- Configuration-Specific Settings -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\bin\Release\</OutputPath>
+  </PropertyGroup>
+  <!-- Project References -->
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
+    <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
+  <!-- Resources and Content -->
+  <ItemGroup>
+    <Resource Include="EDDI.ico" />
+    <SplashScreen Include="..\graphics\logo-with-alpha.png" />
+    <None Update="ChangeLog.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\graphics\logo-with-alpha.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Remove="MainWindow.xaml" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <!-- NuGet Packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="System.Runtime" />
+    <PackageReference Include="System.Runtime.Extensions" />
+  </ItemGroup>
+  <!-- Build Events -->
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy /y &quot;$(SolutionDir)ChangeLog.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\&quot;" />
+  </Target>
 </Project>

@@ -1,49 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net48</TargetFramework>
-        <OutputType>Library</OutputType>
-        <UseWPF>true</UseWPF>
-        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-        <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
-        <EnableDynamicLoading>true</EnableDynamicLoading>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>..\bin\Debug\</OutputPath>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <OutputPath>..\bin\Release\</OutputPath>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
-        <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-        <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
-        <ProjectReference Include="..\Events\EddiEvents.csproj" />
-        <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
-        <ProjectReference Include="..\Utilities\Utilities.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Newtonsoft.Json">
-            <Version>13.0.3</Version>
-        </PackageReference>
-        <PackageReference Include="System.Runtime">
-            <Version>4.3.1</Version>
-        </PackageReference>
-        <PackageReference Include="System.Runtime.Extensions">
-            <Version>4.3.1</Version>
-        </PackageReference>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Update="Properties\ShipMonitor.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>ShipMonitor.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Update="Properties\ShipMonitor.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>ShipMonitor.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>Library</OutputType>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\bin\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
+    <ProjectReference Include="..\Events\EddiEvents.csproj" />
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="System.Runtime" />
+    <PackageReference Include="System.Runtime.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\ShipMonitor.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ShipMonitor.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\ShipMonitor.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ShipMonitor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

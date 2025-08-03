@@ -120,12 +120,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SignalSource.resx</DependentUpon>
     </Compile>
-	<Compile Update="Properties\SignalType.Designer.cs">
-	  <AutoGen>True</AutoGen>
-	  <DesignTime>True</DesignTime>
-	  <DependentUpon>SignalType.resx</DependentUpon>
-	</Compile>
-	<Compile Update="Properties\Powers.Designer.cs">
+    <Compile Update="Properties\SignalType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SignalType.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Powers.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Powers.resx</DependentUpon>
@@ -614,24 +614,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations">
-      <Version>2024.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="MathNet.Numerics">
-      <Version>5.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="System.Collections.Immutable">
-      <Version>9.0.5</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime">
-      <Version>4.3.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.Extensions">
-      <Version>4.3.1</Version>
-    </PackageReference>
+    <PackageReference Include="JetBrains.Annotations" />
+    <PackageReference Include="MathNet.Numerics" />
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="System.Collections.Immutable" />
+    <PackageReference Include="System.Runtime" />
+    <PackageReference Include="System.Runtime.Extensions" />
   </ItemGroup>
 </Project>

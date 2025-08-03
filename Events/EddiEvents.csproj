@@ -27,12 +27,8 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Runtime">
-      <Version>4.3.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.Extensions">
-      <Version>4.3.1</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="System.Runtime" />
+    <PackageReference Include="System.Runtime.Extensions" />
   </ItemGroup>
 </Project>
