@@ -291,10 +291,11 @@ namespace Utilities
             if ( string.IsNullOrEmpty( path ) || string.IsNullOrEmpty( basePath ) ) { return null; }
 
             string finalPath;
-            if ( !Path.IsPathRooted( path ) || "\\".Equals( Path.GetPathRoot( path ) ) )
+            var pathRoot = Path.GetPathRoot( path );
+            if ( !Path.IsPathRooted( path ) || "\\".Equals( pathRoot ) )
             {
-                finalPath = path.StartsWith( Path.DirectorySeparatorChar.ToString() )
-                    ? Path.Combine( Path.GetPathRoot( basePath ), path.TrimStart( Path.DirectorySeparatorChar ) )
+                finalPath = path.StartsWith( Path.DirectorySeparatorChar.ToString() ) && !string.IsNullOrEmpty( pathRoot )
+                    ? Path.Combine( pathRoot, path.TrimStart( Path.DirectorySeparatorChar ) )
                     : Path.Combine( basePath, path );
             }
             else
