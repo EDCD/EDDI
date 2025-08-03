@@ -15,7 +15,8 @@ namespace EddiEdsmResponder
 {
     public class EDSMResponder : IEddiResponder
     {
-        private Thread updateThread;
+        private Task updateTask;
+        private CancellationTokenSource updateThreadCancellationTokenSource;
         private List<string> ignoredEvents = new List<string>();
         private readonly StarMapService edsmService;
 
@@ -64,8 +65,8 @@ namespace EddiEdsmResponder
                 }
             } ) );
             // Stop flight log synchronization
-            updateThread?.Abort();
-            updateThread = null;
+            updateThreadCancellationTokenSource?.Cancel();
+            updateTask = null;
         }
 
         public void Reload()
@@ -82,15 +83,22 @@ namespace EddiEdsmResponder
                 StarMapService.inGameCommanderName = ConfigService.Instance.commanderConfiguration.commanderName;
                 edsmService.SetEdsmCredentials();
 
-                if (updateThread == null && edsmService.EdsmCredentialsSet())
+                if ( updateTask == null && edsmService.EdsmCredentialsSet() )
                 {
-                    // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
-                    updateThread = new Thread(() => EDDI.Instance.DataProvider.syncFromStarMapService(ConfigService.Instance.edsmConfiguration?.lastFlightLogSync))
+                    // Spin off a task to download & sync flight logs & system comments from EDSM in the background 
+                    updateThreadCancellationTokenSource = new CancellationTokenSource();
+                    updateTask = new Task( () =>
                     {
-                        IsBackground = true,
-                        Name = "EDSM updater"
-                    };
-                    updateThread.Start();
+                        try
+                        {
+                            EDDI.Instance.DataProvider.syncFromStarMapService( ConfigService.Instance.edsmConfiguration?.lastFlightLogSync );
+                        }
+                        catch ( TaskCanceledException )
+                        {
+                            // Nothing to do here
+                        }
+                    }, updateThreadCancellationTokenSource.Token );
+                    updateTask.Start();
                 }
             }
         }

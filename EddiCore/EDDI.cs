@@ -847,14 +847,6 @@ namespace EddiCore
                         monitorThread.Start();
                         monitorThread.Join();
                     }
-                    catch (ThreadAbortException tax)
-                    {
-                        Thread.ResetAbort();
-                        if (running)
-                        {
-                            Logging.Error("Restarting " + name + " after thread abort", tax);
-                        }
-                    }
                     catch (Exception ex)
                     {
                         if (running)
