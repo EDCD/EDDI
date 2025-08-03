@@ -2528,11 +2528,12 @@ namespace EddiCore
                         DataProvider.SaveStarSystem(CurrentStarSystem);
                     }
 
+                    var monitorThreads = new List<Task>();
                     foreach (var monitor in activeMonitors)
                     {
                         try
                         {
-                            Thread monitorThread = new Thread(() =>
+                            var monitorThread = Task.Run(() =>
                             {
                                 try
                                 {
@@ -2543,20 +2544,17 @@ namespace EddiCore
                                     Logging.Warn($"Monitor {monitor.MonitorName()} failed to handle Frontier API update", ex);
                                     success = false;
                                 }
-                            })
-                            {
-                                Name = monitor.MonitorName(),
-                                IsBackground = true
-                            };
-                            monitorThread.Start();
+                            });
+                            monitorThreads.Add( monitorThread );
                         }
                         catch (ThreadAbortException tax)
                         {
-                            Thread.ResetAbort();
                             Logging.Debug("Thread aborted", tax);
                             success = false;
                         }
                     }
+
+                    await Task.WhenAll( monitorThreads.ToArray() );
                 }
             }
             catch (Exception ex)
