@@ -1,15 +1,29 @@
 <Project>
 
-	<!-- Normalize embedded stacktrace paths, make them relative rather than absolute -->
-	<PropertyGroup>
-		<PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
-	</PropertyGroup>
+    <PropertyGroup>
 
-	<!-- Don't append the target framework or a runtime identifier to the output path -->
-	<PropertyGroup>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-	</PropertyGroup>
+        <!-- Targeting and Output -->
+        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+
+        <!-- Auto-generate AssemblyInfo.cs -->
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+        <!-- Normalize embedded stacktrace paths, make them relative rather than absolute -->
+        <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+
+        <!-- Don't append the target framework or a runtime identifier to the output path -->
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+
+        <!-- Always include embedded debug symbols in our Release builds -->
+        <DebugType>embedded</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+
+    </PropertyGroup>
 
 	<!-- Set up localization to fallback to the main assembly and en neutral language -->
 	<ItemGroup>

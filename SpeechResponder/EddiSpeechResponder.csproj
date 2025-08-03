@@ -3,7 +3,6 @@
         <TargetFramework>net48</TargetFramework>
         <OutputType>Library</OutputType>
         <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>
         <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -14,9 +13,7 @@
         <OutputPath>..\bin\Debug\</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>embedded</DebugType>
         <OutputPath>..\bin\Release\</OutputPath>
-        <DebugSymbols>true</DebugSymbols>
     </PropertyGroup>
     <ItemGroup>
         <None Remove="2ziiwxwv.wui~" />
@@ -150,9 +147,6 @@
             <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
-    <PropertyGroup>
-        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-    </PropertyGroup>
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="xcopy /y &quot;$(SolutionDir)SpeechResponder\Variables.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
     </Target>

@@ -2,10 +2,8 @@
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <OutputType>Library</OutputType>
-        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
         <UseWPF>true</UseWPF>
         <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
         <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
         <EnableDynamicLoading>true</EnableDynamicLoading>
     </PropertyGroup>
@@ -13,9 +11,7 @@
         <OutputPath>..\bin\Debug\</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>embedded</DebugType>
         <OutputPath>..\bin\Release\</OutputPath>
-        <DebugSymbols>true</DebugSymbols>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="Properties\**" />

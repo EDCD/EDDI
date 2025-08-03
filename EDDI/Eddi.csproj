@@ -1,81 +1,57 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+
+        <!-- Targeting and Output -->
         <TargetFramework>net48</TargetFramework>
+        <Prefer32Bit>True</Prefer32Bit>
         <OutputType>WinExe</OutputType>
-        <IsWebBootstrapper>false</IsWebBootstrapper>
-        <PublishUrl>publish\</PublishUrl>
-        <Install>true</Install>
-        <InstallFrom>Disk</InstallFrom>
-        <UpdateEnabled>false</UpdateEnabled>
-        <UpdateMode>Foreground</UpdateMode>
-        <UpdateInterval>7</UpdateInterval>
-        <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-        <UpdatePeriodically>false</UpdatePeriodically>
-        <UpdateRequired>false</UpdateRequired>
-        <MapFileExtensions>true</MapFileExtensions>
-        <ApplicationRevision>0</ApplicationRevision>
-        <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-        <UseApplicationTrust>false</UseApplicationTrust>
-        <BootstrapperEnabled>true</BootstrapperEnabled>
-        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-        <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <StartupObject>Eddi.App</StartupObject>
+        <ApplicationIcon>EDDI.ico</ApplicationIcon>
+        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+
+        <!-- Windows Desktop Settings -->
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>
         <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+
+        <!-- Packaging Metadata -->
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/EDCD/EDDI</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/EDCD/EDDI</PackageProjectUrl>
+        <PackageIcon>logo-with-alpha.png</PackageIcon>
+        <Product>EDDI</Product>
+        <Copyright>Copyright ©  2016</Copyright>
+        <Authors />
+        <Company />
+
     </PropertyGroup>
+
+    <!-- Configuration-Specific Settings -->
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <OutputPath>..\bin\Debug\</OutputPath>
-        <Prefer32Bit>True</Prefer32Bit>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>embedded</DebugType>
         <OutputPath>..\bin\Release\</OutputPath>
-        <DebugSymbols>true</DebugSymbols>
-        <Prefer32Bit>True</Prefer32Bit>
     </PropertyGroup>
-    <PropertyGroup>
-        <ApplicationIcon>EDDI.ico</ApplicationIcon>
-    </PropertyGroup>
-    <PropertyGroup>
-        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    </PropertyGroup>
-    <PropertyGroup>
-        <StartupObject>Eddi.App</StartupObject>
-    </PropertyGroup>
-    <ItemGroup>
-        <None Remove="MainWindow.xaml" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="System.Speech" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Update="ChangeLog.md">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <AppDesigner Include="Properties\" />
-    </ItemGroup>
+
+    <!-- Project References -->
     <ItemGroup>
         <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
         <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
         <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
+
+    <!-- Resources and Content -->
     <ItemGroup>
         <Resource Include="EDDI.ico" />
-    </ItemGroup>
-    <ItemGroup>
-        <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
-            <Visible>False</Visible>
-            <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
-            <Install>true</Install>
-        </BootstrapperPackage>
-        <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-            <Visible>False</Visible>
-            <ProductName>.NET Framework 3.5 SP1</ProductName>
-            <Install>false</Install>
-        </BootstrapperPackage>
-    </ItemGroup>
-    <ItemGroup>
+        <SplashScreen Include="..\graphics\logo-with-alpha.png" />
+        <None Update="ChangeLog.md">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Include="..\graphics\logo-with-alpha.png">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
@@ -84,32 +60,18 @@
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
         </None>
+        <None Remove="MainWindow.xaml" />
+        <AppDesigner Include="Properties\" />
     </ItemGroup>
-    <ItemGroup>
-        <SplashScreen Include="..\graphics\logo-with-alpha.png" />
-    </ItemGroup>
+
+    <!-- NuGet Packages -->
     <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="System.Runtime">
-            <Version>4.3.1</Version>
-        </PackageReference>
-        <PackageReference Include="System.Runtime.Extensions">
-            <Version>4.3.1</Version>
-        </PackageReference>
+        <PackageReference Include="System.Runtime" Version="4.3.1" />
+        <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
     </ItemGroup>
-    <PropertyGroup>
-        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/EDCD/EDDI</RepositoryUrl>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <Copyright>Copyright ©  2016</Copyright>
-        <PackageProjectUrl>https://github.com/EDCD/EDDI</PackageProjectUrl>
-        <Product>EDDI</Product>
-        <Authors />
-        <Company />
-        <PackageIcon>logo-with-alpha.png</PackageIcon>
-        <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
+
+    <!-- Build Events -->
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="xcopy /y &quot;$(SolutionDir)ChangeLog.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\&quot;" />
     </Target>
