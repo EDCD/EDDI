@@ -567,20 +567,6 @@ namespace EddiSpeechService
             return true;
         }
 
-        private static void FadeOut ( IWavePlayer soundOut )
-        {
-            if ( soundOut?.PlaybackState == PlaybackState.Playing )
-            {
-                float fadePer10Milliseconds = soundOut.Volume / ActiveSpeechFadeOutMilliseconds * 10;
-                while ( soundOut.Volume > 0 )
-                {
-                    soundOut.Volume -= Math.Min( fadePer10Milliseconds, soundOut.Volume );
-                    Thread.Sleep( 10 );
-                }
-            }
-            soundOut?.Stop();
-        }
-
         #region Speech
 
         private async Task PlaySpeechStreamAsync ( IWaveProvider provider, int priority )
@@ -731,7 +717,7 @@ namespace EddiSpeechService
 
                     if ( volumeOverride != null )
                     {
-                        soundOut.Volume = Math.Max( Math.Min( (float)volumeOverride / 100, 1 ), 0 );
+                        audioSource.Volume = Math.Max( Math.Min( (float)volumeOverride / 100, 1 ), 0 );
                     }
 
                     soundOut.Play();
@@ -754,7 +740,6 @@ namespace EddiSpeechService
                     }
 
                     Logging.Debug( $"Ending audio playback for {fileName}." );
-                    FadeOut( soundOut );
                     lock ( activeAudioLock )
                     {
                         if ( activeAudioTS.TryRemove( soundOut, out var ts ) )
