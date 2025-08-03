@@ -1,20 +1,15 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using JetBrains.Annotations;
+using System;
 
 namespace EddiCompanionAppService.Exceptions
 {
     /// <summary>Exceptions thrown due to illegal service state</summary>
-    [Serializable]
-    public class EliteDangerousCompanionAppIllegalStateException : EliteDangerousCompanionAppException
+    internal class EliteDangerousCompanionAppIllegalStateException : EliteDangerousCompanionAppException
     {
-        public EliteDangerousCompanionAppIllegalStateException() { }
+        [UsedImplicitly] internal EliteDangerousCompanionAppIllegalStateException () { }
 
-        public EliteDangerousCompanionAppIllegalStateException(string message) : base(message) { }
+        [UsedImplicitly] internal EliteDangerousCompanionAppIllegalStateException (string message) : base(message) { }
 
-        public EliteDangerousCompanionAppIllegalStateException(string message, Exception innerException) : base(message, innerException)
-        { }
-
-        protected EliteDangerousCompanionAppIllegalStateException(SerializationInfo info, StreamingContext context) : base(info, context)
-        { }
+        [UsedImplicitly] internal EliteDangerousCompanionAppIllegalStateException (string message, Exception innerException) : base(message, innerException) { }
     }
 }

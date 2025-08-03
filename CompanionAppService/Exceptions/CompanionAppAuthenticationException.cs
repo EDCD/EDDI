@@ -1,20 +1,15 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using JetBrains.Annotations;
+using System;
 
 namespace EddiCompanionAppService.Exceptions
 {
     /// <summary>Exceptions thrown due to authentication errors</summary>
-    [Serializable]
-    public class EliteDangerousCompanionAppAuthenticationException : EliteDangerousCompanionAppException
+    internal class EliteDangerousCompanionAppAuthenticationException : EliteDangerousCompanionAppException
     {
-        public EliteDangerousCompanionAppAuthenticationException() { }
+        [UsedImplicitly] internal EliteDangerousCompanionAppAuthenticationException () { }
 
-        public EliteDangerousCompanionAppAuthenticationException(string message) : base(message) { }
+        [UsedImplicitly] internal EliteDangerousCompanionAppAuthenticationException (string message) : base(message) { }
 
-        public EliteDangerousCompanionAppAuthenticationException(string message, Exception innerException) : base(message, innerException)
-        { }
-
-        protected EliteDangerousCompanionAppAuthenticationException(SerializationInfo info, StreamingContext context) : base(info, context)
-        { }
+        [UsedImplicitly] internal EliteDangerousCompanionAppAuthenticationException (string message, Exception innerException) : base(message, innerException) { }
     }
 }

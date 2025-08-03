@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace EddiCompanionAppService.Exceptions
 {
     /// <summary>Base class for exceptions thrown by the Elite:Dangerous companion app API</summary>
-    [Serializable]
-    public class EliteDangerousCompanionAppException : Exception
+    internal class EliteDangerousCompanionAppException : Exception
     {
-        public EliteDangerousCompanionAppException() { }
+        internal EliteDangerousCompanionAppException () { }
 
-        public EliteDangerousCompanionAppException(string message) : base(message) { }
+        internal EliteDangerousCompanionAppException (string message) : base(message) { }
 
-        public EliteDangerousCompanionAppException(string message, Exception innerException) : base(message, innerException)
-        { }
-
-        protected EliteDangerousCompanionAppException(SerializationInfo info, StreamingContext context) : base(info, context)
-        { }
+        internal EliteDangerousCompanionAppException (string message, Exception innerException) : base(message, innerException) { }
     }
 }
