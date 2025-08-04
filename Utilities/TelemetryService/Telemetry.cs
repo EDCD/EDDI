@@ -45,7 +45,11 @@ namespace Utilities.TelemetryService
         {
             try
             {
-                TelemetryEnabled = true;
+                if ( string.IsNullOrEmpty( TelemetryTokens.rollbarToken ) )
+                {
+                    Logging.Warn("Telemetry is not configured for this client.");
+                    return;
+                }
 
                 var config = new RollbarInfrastructureConfig( TelemetryTokens.rollbarToken, Constants.EDDI_VERSION.ToString() );
 
