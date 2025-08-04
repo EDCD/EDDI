@@ -68,19 +68,15 @@ namespace EddiInaraResponder
         {
             Stop();
             inaraService.Start(EDDI.Instance.EddiIsBeta());
-            Task.Run( FetchInaraCommanderID );
+            Task.Run( FetchInaraCommanderID ).ConfigureAwait( false );
         }
 
-        private async void FetchInaraCommanderID ()
+        private async Task FetchInaraCommanderID ()
         {
             var config = ConfigService.Instance.inaraConfiguration;
             if ( config.inaraID is null )
             {
-                InaraCmdr cmdr = null;
-                await Task.Run( () =>
-                {
-                    cmdr = inaraService.GetCommanderProfile();
-                } ).ConfigureAwait( false );
+                var cmdr = await inaraService.GetCommanderProfileAsync().ConfigureAwait(false);
                 if ( cmdr is null ) { return; }
                 config.inaraID = cmdr.id;
                 ConfigService.Instance.inaraConfiguration = config;

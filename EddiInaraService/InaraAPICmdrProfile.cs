@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiInaraService
@@ -15,14 +16,21 @@ namespace EddiInaraService
         // squadron, a link to the commander's Inara profile, etc. 
         // If no cmdrName is given then the profile of the commander current user is returned.
 
-        public InaraCmdr GetCommanderProfile ( string cmdrName = null )
+        public async Task<InaraCmdr> GetCommanderProfileAsync ( string cmdrName = null )
         {
-            return string.IsNullOrEmpty( cmdrName )
-                ? GetCommanderProfiles( null )?.FirstOrDefault()
-                : GetCommanderProfiles( new List<string> { cmdrName } )?.FirstOrDefault();
+            if ( string.IsNullOrEmpty( cmdrName ) )
+            {
+                var result = await GetCommanderProfilesAsync( null ).ConfigureAwait( false );
+                return result?.FirstOrDefault();
+            }
+            else
+            {
+                var result = await GetCommanderProfilesAsync( new List<string> { cmdrName } ).ConfigureAwait( false );
+                return result?.FirstOrDefault();
+            }
         }
 
-        public List<InaraCmdr> GetCommanderProfiles(IList<string> cmdrNames)
+        public async Task<List<InaraCmdr>> GetCommanderProfilesAsync(IList<string> cmdrNames)
         {
             var cmdrs = new List<InaraCmdr>();
             var events = new List<InaraAPIEvent>();
@@ -49,7 +57,7 @@ namespace EddiInaraService
                 }
             }
 
-            var responses = SendEventBatch(events, ConfigService.Instance.inaraConfiguration);
+            var responses = await SendEventBatchAsync( events, ConfigService.Instance.inaraConfiguration ).ConfigureAwait( false );
             foreach (var inaraResponse in responses)
             {
                 var jsonCmdr = JsonConvert.SerializeObject(inaraResponse.eventData);

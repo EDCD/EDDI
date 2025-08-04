@@ -1,6 +1,7 @@
 ﻿using EddiConfigService.Configurations;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiInaraService
@@ -13,11 +14,11 @@ namespace EddiInaraService
 
         // API Event Queue Management
         void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent);
-        List<InaraResponse> SendEventBatch(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration = null);
+        Task<List<InaraResponse>> SendEventBatchAsync(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration = null);
 
         // Commander Profiles
-        InaraCmdr GetCommanderProfile(string cmdrName = null);
-        List<InaraCmdr> GetCommanderProfiles(IList<string> cmdrNames);
+        Task<InaraCmdr> GetCommanderProfileAsync(string cmdrName = null);
+        Task<List<InaraCmdr>> GetCommanderProfilesAsync(IList<string> cmdrNames);
 
         // API Credentials
         bool checkAPIcredentialsOk ( InaraConfiguration inaraConfiguration );

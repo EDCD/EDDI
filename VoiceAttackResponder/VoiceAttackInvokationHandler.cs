@@ -180,7 +180,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
-                var result = inaraService.GetCommanderProfile(commanderName);
+                var result = inaraService.GetCommanderProfileAsync(commanderName).GetAwaiter().GetResult();
                 if ( result != null )
                 {
                     OpenOrStoreURI( result.url );

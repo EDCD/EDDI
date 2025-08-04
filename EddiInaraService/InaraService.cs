@@ -2,13 +2,15 @@
 using EddiConfigService.Configurations;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using RestSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -21,12 +23,14 @@ namespace EddiInaraService
         // API Documentation: https://inara.cz/inara-api-docs/
 
         // Constants
+        private const string InaraApiUrl = "https://inara.cz/inapi/v1/";
         private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
         private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
         private const int syncIntervalMilliSeconds = 1000 * 60 * 5; // 5 minutes
         private const int delayedSyncIntervalMilliSeconds = 1000 * 60 * 60; // 60 minutes
 
         // Variables
+        private readonly HttpClient httpClient;
         private static bool tooManyRequests; // This must be static so that it is visible to child threads and tasks
         private static readonly BlockingCollection<InaraAPIEvent> queuedAPIEvents = new BlockingCollection<InaraAPIEvent>();
         private readonly List<string> invalidAPIEvents = new List<string>();
@@ -34,13 +38,23 @@ namespace EddiInaraService
         private bool eddiIsBeta;
         public static EventHandler invalidAPIkey;
 
+        public InaraService ()
+        {
+            // Initialize HttpClient exactly once
+            httpClient = new HttpClient { BaseAddress = new Uri( InaraApiUrl ) };
+            httpClient.DefaultRequestHeaders.UserAgent
+                .ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
+            httpClient.DefaultRequestHeaders.Accept
+                .Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
+        }
+
         public void Start ( bool _eddiIsBeta = false )
         {
             if ( syncCancellationTS is null || syncCancellationTS.IsCancellationRequested )
             {
                 Logging.Debug( "Starting Inara service background sync." );
                 eddiIsBeta = _eddiIsBeta;
-                Task.Run( BackgroundSync ).ConfigureAwait( false );
+                Task.Run( BackgroundSyncAsync ).ConfigureAwait( false );
             }
         }
 
@@ -51,11 +65,11 @@ namespace EddiInaraService
                 Logging.Debug( "Stopping Inara service background sync." );
                 syncCancellationTS.Cancel();
                 // Clean up by sending anything left in the queue.
-                SendAPIEvents( queuedAPIEvents.ToList() );
+                SendAPIEventsAsync( queuedAPIEvents.ToList() ).GetAwaiter().GetResult();
             }
         }
 
-        private async void BackgroundSync()
+        private async Task BackgroundSyncAsync()
         {
             using (syncCancellationTS = new CancellationTokenSource())
             {
@@ -67,7 +81,7 @@ namespace EddiInaraService
                     {
                         // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
                         // If we haven't extracted events to send to Inara, this will wait / pause background sync until `queuedAPIEvents` is no longer empty.
-                        List<InaraAPIEvent> holdingQueue = new List<InaraAPIEvent>();
+                        var holdingQueue = new List<InaraAPIEvent>();
                         try
                         {
                             foreach (var pendingEvent in queuedAPIEvents.GetConsumingEnumerable(syncCancellationTS.Token))
@@ -84,8 +98,11 @@ namespace EddiInaraService
                                     {
                                         var sendingQueue = holdingQueue.ToList();
                                         holdingQueue = new List<InaraAPIEvent>();
-                                        await Task.Run(() => SendAPIEvents(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
-                                        await Task.Delay(!tooManyRequests ? syncIntervalMilliSeconds : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token).ConfigureAwait(false);
+                                        await Task.Run(() => SendAPIEventsAsync(sendingQueue), syncCancellationTS.Token).ConfigureAwait(false);
+                                        await Task.Delay( !tooManyRequests
+                                                    ? syncIntervalMilliSeconds
+                                                    : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token )
+                                            .ConfigureAwait( false );
                                     }
                                 }
                             }
@@ -108,83 +125,100 @@ namespace EddiInaraService
             tooManyRequests = false;
         }
 
-        // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
-        public List<InaraResponse> SendEventBatch ( List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration )
+        public async Task<List<InaraResponse>> SendEventBatchAsync ( List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration )
         {
             // We always want to return a list from this method (even if it's an empty list) rather than a null value.
             var inaraResponses = new List<InaraResponse>();
             if ( events is null ) { return inaraResponses; }
 
             if ( inaraConfiguration is null ) { inaraConfiguration = ConfigService.Instance.inaraConfiguration; }
-            if ( inaraConfiguration != null && checkAPIcredentialsOk( inaraConfiguration ) )
-            {
-                try
-                {
-                    var indexedEvents = IndexAndFilterAPIEvents( events, inaraConfiguration );
-                    if ( indexedEvents.Count > 0 )
-                    {
-                        var client = new RestClient( "https://inara.cz/inapi/v1/" );
-                        var request = new RestRequest( Method.POST );
-                        var inaraRequest = new InaraSendJson()
-                        {
-                            header = new Dictionary<string, object>()
-                            {
-                                { "appName", "EDDI" },
-                                { "appVersion", Constants.EDDI_VERSION.ToString() },
-                                { "isBeingDeveloped", eddiIsBeta },
-                                { "APIkey", !string.IsNullOrEmpty(inaraConfiguration.apiKey) ? inaraConfiguration.apiKey : readonlyAPIkey }
-                            },
-                            events = indexedEvents
-                        };
-                        if ( !string.IsNullOrEmpty(inaraConfiguration.commanderName) )
-                        {
-                            inaraRequest.header.Add( "commanderName", inaraConfiguration.commanderName );
-                        }
-                        if ( !string.IsNullOrEmpty( inaraConfiguration.commanderFrontierID ) )
-                        {
-                            inaraRequest.header.Add( "commanderFrontierID", inaraConfiguration.commanderFrontierID );
-                        }
-                        request.RequestFormat = DataFormat.Json;
-                        request.AddJsonBody( inaraRequest ); // uses JsonSerializer
 
-                        Logging.Debug( "Sending to Inara: " + client.BuildUri( request ).AbsoluteUri, request );
-                        var clientResponse = client.Execute<InaraResponses>( request );
-                        if ( clientResponse.IsSuccessful )
-                        {
-                            Logging.Debug( "Inara responded with: ", clientResponse.Content );
-
-                            var response = clientResponse.Data;
-                            if ( validateResponse( response.header, indexedEvents, true ) )
-                            {
-                                foreach ( var inaraResponse in response.events )
-                                {
-                                    if ( validateResponse( inaraResponse, indexedEvents ) )
-                                    {
-                                        inaraResponses.Add( inaraResponse );
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Inara may return null as it undergoes a nightly maintenance cycle where the servers go offline temporarily.
-                            Logging.Warn( "Unable to connect to the Inara server.", clientResponse.ErrorMessage );
-                            ReEnqueueAPIEvents( events );
-                        }
-                    }
-                }
-                catch ( Exception ex )
-                {
-                    Logging.Error( "Sending data to the Inara server failed.", ex );
-                    ReEnqueueAPIEvents( events );
-                }
-            }
-            else
+            if ( inaraConfiguration == null || !checkAPIcredentialsOk( inaraConfiguration ) )
             {
                 ReEnqueueAPIEvents( events );
             }
+            else
+            {
+                var indexedEvents = IndexAndFilterAPIEvents( events, inaraConfiguration );
+                if ( indexedEvents.Count > 0 )
+                {
+                    try
+                    {
+                        var json = PrepareInaraRequestBody( indexedEvents, inaraConfiguration );
+                        Logging.Debug( "Sending to " + httpClient.BaseAddress, json );
+                        var response = await SendToInaraAsync( json ).ConfigureAwait(false);
+
+                        if ( response != null && validateResponse( response.header, indexedEvents, true ) )
+                        {
+                            foreach ( var inaraResponse in response.events )
+                            {
+                                if ( validateResponse( inaraResponse, indexedEvents ) )
+                                {
+                                    inaraResponses.Add( inaraResponse );
+                                }
+                            }
+                        }
+                    }
+                    catch ( Exception e )
+                    {
+                        ReEnqueueAPIEvents( indexedEvents );
+                        Logging.Warn( e.Message, e );
+                    }
+                }
+            }
 
             return inaraResponses;
+        }
+
+        // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
+        private string PrepareInaraRequestBody ( List<InaraAPIEvent> indexedEvents, InaraConfiguration inaraConfiguration )
+        {
+            var inaraRequest = new InaraSendJson
+            {
+                header = new Dictionary<string, object>()
+                {
+                    { "appName", "EDDI" },
+                    { "appVersion", Constants.EDDI_VERSION.ToString() },
+                    { "isBeingDeveloped", eddiIsBeta },
+                    {
+                        "APIkey",
+                        !string.IsNullOrEmpty( inaraConfiguration.apiKey )
+                            ? inaraConfiguration.apiKey
+                            : readonlyAPIkey
+                    }
+                },
+                events = indexedEvents
+            };
+            if ( !string.IsNullOrEmpty( inaraConfiguration.commanderName ) )
+            {
+                inaraRequest.header.Add( "commanderName", inaraConfiguration.commanderName );
+            }
+
+            if ( !string.IsNullOrEmpty( inaraConfiguration.commanderFrontierID ) )
+            {
+                inaraRequest.header.Add( "commanderFrontierID", inaraConfiguration.commanderFrontierID );
+            }
+
+            return JsonConvert.SerializeObject( inaraRequest );
+        }
+
+        private async Task<InaraResponses> SendToInaraAsync ( string jsonPayload )
+        {
+            using ( var content = new StringContent( jsonPayload, Encoding.UTF8, "application/json" ) )
+            {
+                var response = await httpClient.PostAsync( string.Empty, content ).ConfigureAwait( false );
+                var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                if ( !response.IsSuccessStatusCode )
+                {
+                    Logging.Warn( $"Inara API error {response.StatusCode}: {responseBody}" );
+                    return null;
+                }
+
+                var responses = JsonConvert.DeserializeObject<InaraResponses>( responseBody );
+                Logging.Debug( "Inara responded with: ", responses );
+                return responses;
+            }
         }
 
         internal List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)
@@ -304,10 +338,10 @@ namespace EddiInaraService
             return true;
         }
 
-        private void SendAPIEvents ( List<InaraAPIEvent> queue )
+        private async Task SendAPIEventsAsync ( List<InaraAPIEvent> queue )
         {
             var inaraConfiguration = ConfigService.Instance.inaraConfiguration;
-            var responses = SendEventBatch( queue, inaraConfiguration );
+            var responses = await SendEventBatchAsync( queue, inaraConfiguration ).ConfigureAwait( false );
             if ( responses != null && responses.Count > 0 )
             {
                 inaraConfiguration.lastSync = queue.Max( e => e.eventTimestamp );

@@ -20,7 +20,7 @@ namespace EddiSpeechResponder.CustomFunctions
             if ( !string.IsNullOrWhiteSpace( commanderName ) )
             {
                 IInaraService inaraService = new InaraService();
-                var result = inaraService.GetCommanderProfile(commanderName);
+                var result = inaraService.GetCommanderProfileAsync(commanderName).GetAwaiter().GetResult();
                 return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
             }
             return "";
