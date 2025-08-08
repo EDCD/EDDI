@@ -18,11 +18,6 @@ namespace EddiFleetCarrierMonitor
     {
         public FleetCarrierMonitor ()
         {
-            Task.Run( async () =>
-            {
-                EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
-                await RefreshFleetCarrierFromFrontierAPIAsync( true );
-            } ).ConfigureAwait( false );
             CompanionAppService.Instance.StateChanged += OnCompanionAppServiceStateChanged;
         }
 
@@ -128,6 +123,10 @@ namespace EddiFleetCarrierMonitor
             else if ( @event is CommoditySoldEvent commoditySoldEvent )
             {
                 handleCommoditySoldEvent( commoditySoldEvent );
+            }
+            else if ( @event is FileHeaderEvent )
+            {
+                handleFileHeaderEvent();
             }
             else if ( @event is LocationEvent locationEvent )
             {
@@ -361,6 +360,15 @@ namespace EddiFleetCarrierMonitor
                     WriteConfiguration();
                 }
             }
+        }
+
+        private void handleFileHeaderEvent ()
+        {
+            Task.Run( async () =>
+            {
+                EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
+                await RefreshFleetCarrierFromFrontierAPIAsync( true );
+            } ).ConfigureAwait( false );
         }
 
         private void handleLocationEvent ( LocationEvent @event )
