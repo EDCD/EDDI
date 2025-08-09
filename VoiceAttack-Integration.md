@@ -399,9 +399,9 @@ Note: Though the examples in this section show variables being passed as paramet
 
 ### say
 
-This function uses EDDI's voice to read a script. It takes one mandatory and two optional variables as parameters.
+This function uses EDDI's voice to render arbitrary speech (outside of the context of a Speech Responder script). It takes one mandatory and two optional variables as parameters.
 
-- 'Script' (text variable) is a mandatory parameter containing the script to be read. 
+- 'Script' (text variable) is a mandatory parameter containing the actual speech to render. 
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
 
@@ -413,7 +413,7 @@ A tip for advanced users: It is possible to invoke the Cottle language used in t
 
 ### speech
 
-This function uses EDDI's voice to read a Speech Responder script. It takes one mandatory and two optional variables as parameters.
+This function uses EDDI's voice to read a pre-configured Speech Responder script. It takes one mandatory and two optional variables as parameters.
 
 - 'Script' (text variable) is a mandatory parameter containing the name of the script to invoke. 
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
@@ -423,9 +423,9 @@ To use this function in your own commands set the 'Script' variable and optional
 
 ### transmit
 
-This function uses EDDI's voice to read a Speech Responder script with a radio effect. It takes one mandatory and two optional variables as parameters.
+This function uses EDDI's voice to render arbitrary speech (outside of the context of a Speech Responder script) with a radio effect. It takes one mandatory and two optional variables as parameters.
 
-- 'Script' (text variable) is a mandatory parameter containing the name of the script to invoke. 
+- 'Script' (text variable) is a mandatory parameter containing the actual speech to render.
 - 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
 - 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
  

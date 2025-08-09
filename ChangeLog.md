@@ -22,7 +22,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts Updated
       * `Power commodity delivered`, `Power commodity obtained`, `Power micro resources collected` and `Power micro resources delivered` updated to more gracefully handle collecting or delivering a single unit of a powerplay commodity or micro resource. 
       * `Signal Detected` updated to fix a bug that could cause non-unique signal sources to be vocalized (when not in fss or saa mode).
-
+    * VoiceAttack
+      * Fixed the documentation for the `transmit` context and improved the clarity of the documentation for all three speech functions (`say`, `speech`, and `transmit`).
+      
 ## 4.1.4
   * Core
     * Made EDDI more aggressive in creating new star system entries for unknown systems (when there is sufficient data to do so). (#2733)
