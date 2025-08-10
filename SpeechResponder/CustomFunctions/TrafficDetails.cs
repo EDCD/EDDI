@@ -26,20 +26,20 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     if (values[1].AsString == "traffic")
                     {
-                        result = EDDI.Instance.DataProvider.GetSystemTraffic(systemName);
+                        result = EDDI.Instance.DataProvider.GetSystemTrafficAsync(systemName)?.GetAwaiter().GetResult();
                     }
                     if (values[1].AsString == "deaths")
                     {
-                        result = EDDI.Instance.DataProvider.GetSystemDeaths(systemName);
+                        result = EDDI.Instance.DataProvider.GetSystemDeathsAsync(systemName)?.GetAwaiter().GetResult();
                     }
                     else if (values[1].AsString == "hostility")
                     {
-                        result = EDDI.Instance.DataProvider.GetSystemHostility(systemName);
+                        result = EDDI.Instance.DataProvider.GetSystemHostilityAsync(systemName)?.GetAwaiter().GetResult();
                     }
                 }
                 if (result == null)
                 {
-                    result = EDDI.Instance.DataProvider.GetSystemTraffic(systemName);
+                    result = EDDI.Instance.DataProvider.GetSystemTrafficAsync(systemName)?.GetAwaiter().GetResult();
                 }
             }
             return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );

@@ -1,25 +1,21 @@
 ﻿using EddiConfigService;
-using EddiConfigService.Configurations;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
-using RestSharp;
-using RestSharp.Serializers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiStarMapService
 {
-    public interface IEdsmRestClient
+    public interface IEdsmHttpClient
     {
-        Uri BuildUri(IRestRequest request);
-        IRestResponse<T> Execute<T>(IRestRequest request) where T : new();
+        Task<string> GetAsync ( string url );
+        Task<string> PostAsync ( string url, HttpContent content );
     }
 
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
@@ -31,26 +27,18 @@ namespace EddiStarMapService
         // The default timeout for requests to EDSM. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
         private const int DefaultTimeoutMilliseconds = 10000;
 
-        // The timeout for journal events is lengthened to 30 seconds (as recommended by Anthor in private message)
-        private const int JournalTimeoutMilliseconds = 30000;
-
-        // Pause a short time to allow any initial events to build in the queue before our first EDSM responder event sync
-        private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
-
-        // The minimum interval between EDSM responder event syncs
-        private const int syncIntervalMilliSeconds = 5000; // 5 seconds
-
         public static string inGameCommanderName { get; set; }
         private string commanderName { get; set; }
         private string apiKey { get; set; }
-        private readonly IEdsmRestClient restClient;
-        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
-        private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
-        private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new ConcurrentDictionary<string, ResourceRateLimit>();
-        
+
+        private IEdsmHttpClient edsmHttpClient { get; set; }
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
+
+        private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
+        private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
+        private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new ConcurrentDictionary<string, ResourceRateLimit>();
 
         // This API only accepts and only returns data for the "live" galaxy, game version 4.0 or later.
         private static readonly System.Version minGameVersion = new System.Version(4, 0);
@@ -58,63 +46,121 @@ namespace EddiStarMapService
         private static string gameVersion;
         private static string gameBuild;
 
-        private class EdsmRestClient : IEdsmRestClient
+        public class EdsmHttpClient : IEdsmHttpClient
         {
-            private readonly RestClient restClient;
+            public HttpClient HttpClient { get; }
 
-            public EdsmRestClient(string baseUrl)
+            public EdsmHttpClient ( HttpClient httpClient = null, TimeSpan? defaultTimeOut = null )
             {
-                restClient = new RestClient(baseUrl)
-                {
-                    Timeout = DefaultTimeoutMilliseconds
-                };
+                HttpClient = httpClient ?? new HttpClient();
+                HttpClient.Timeout = defaultTimeOut ?? HttpClient.Timeout;
+                HttpClient.DefaultRequestHeaders.UserAgent
+                    .ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
+                HttpClient.DefaultRequestHeaders.Accept
+                    .Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
             }
 
-            public Uri BuildUri(IRestRequest request) => restClient.BuildUri(request);
-
-            IRestResponse<T> IEdsmRestClient.Execute<T> ( IRestRequest request )
+            [CanBeNull]
+            public async Task<string> GetAsync ( string url )
             {
-                if ( resourceRateLimits.TryGetValue( request.Resource, out ResourceRateLimit rateLimit ) )
+                try
                 {
-                    if ( rateLimit.remaining < 5 && rateLimit.resetTime > DateTime.UtcNow )
-                    {
-                        // We're close to our rate limit. Allow it to reset before we continue.
-                        var waitSeconds = Math.Ceiling( ( rateLimit.resetTime - DateTime.UtcNow ).TotalSeconds + 1 );
-                        Logging.Warn( $"EDSM rate limit {( rateLimit.remaining > 0 ? "almost " : "" )}exceeded." );
-                        Logging.Warn( $"Waiting {waitSeconds} seconds for EDSM server cool-down." );
-                        Thread.Sleep( TimeSpan.FromSeconds( waitSeconds ) );
-                    }
+                    var response = await HttpClient.GetAsync( url ).ConfigureAwait( false );
+                    await AwaitResourceAsync( url ).ConfigureAwait( false );
+                    response.EnsureSuccessStatusCode();
+                    UpdateRateLimits( url, response );
+                    return await response.Content.ReadAsStringAsync();
                 }
-
-                var response = restClient.Execute<T>( request );
-
-                // Update our rate limit data
-                int.TryParse( response.Headers.FirstOrDefault( h => h.Name == "X-Rate-Limit-Remaining" )?.Value as string,
-                    out int requestsRemaining );
-                int.TryParse( response.Headers.FirstOrDefault( h => h.Name == "X-Rate-Limit-Reset" )?.Value as string,
-                    out var resetSeconds );
-                resourceRateLimits[ request.Resource ] = new ResourceRateLimit
+                catch ( HttpRequestException he )
                 {
-                    remaining = requestsRemaining,
-                    resetTime = DateTime.UtcNow + TimeSpan.FromSeconds( resetSeconds )
-                };
+                    Logging.Warn( he.Message, he );
+                    return null;
+                }
+                catch ( TaskCanceledException )
+                {
+                    // Task cancelled. Nothing to do here.
+                    return null;
+                }
+            }
 
-                return response;
+            [CanBeNull]
+            public async Task<string> PostAsync ( string url, HttpContent content )
+            {
+                try
+                {
+                    var response = await HttpClient.PostAsync( url, content ).ConfigureAwait( false );
+                    await AwaitResourceAsync( url ).ConfigureAwait( false );
+                    response.EnsureSuccessStatusCode();
+                    UpdateRateLimits( url, response );
+                    return await response.Content.ReadAsStringAsync();
+                }
+                catch ( HttpRequestException he )
+                {
+                    Logging.Warn( he.Message, he );
+                    return null;
+                }
+                catch ( TaskCanceledException )
+                {
+                    // Task cancelled. Nothing to do here.
+                    return null;
+                }
             }
         }
 
-        public StarMapService(IEdsmRestClient restClient = null, bool needsCredentials = false)
+        private static async Task AwaitResourceAsync ( string url )
         {
-            this.restClient = restClient ?? new EdsmRestClient(baseUrl);
+            if ( resourceRateLimits.TryGetValue( url, out var rateLimit ) )
+            {
+                if ( rateLimit.remaining < 5 && rateLimit.resetTime > DateTime.UtcNow )
+                {
+                    // We're close to our rate limit. Allow it to reset before we continue.
+                    var waitSeconds = Math.Ceiling( ( rateLimit.resetTime - DateTime.UtcNow ).TotalSeconds + 1 );
+                    Logging.Warn( $"EDSM rate limit {( rateLimit.remaining > 0 ? "almost " : "" )}exceeded." );
+                    Logging.Warn( $"Waiting {waitSeconds} seconds for EDSM server cool-down." );
+                    await Task.Delay( TimeSpan.FromSeconds( waitSeconds ) );
+                }
+            }
+        }
+
+        private static void UpdateRateLimits ( string url, HttpResponseMessage response )
+        {
+            // Update our rate limit data
+            var requestsRemaining = TryParseIntHeader( response.Headers, "X-Rate-Limit-Remaining" );
+            var resetSeconds = TryParseIntHeader( response.Headers, "X-Rate-Limit-Reset" );
+            if ( requestsRemaining != null && resetSeconds != null )
+            {
+                resourceRateLimits[ url ] = new ResourceRateLimit
+                {
+                    remaining = (int)requestsRemaining,
+                    resetTime = DateTime.UtcNow + TimeSpan.FromSeconds( (int)resetSeconds )
+                };
+            }
+        }
+
+        private static int? TryParseIntHeader ( HttpResponseHeaders headers, string key )
+        {
+            if ( headers.TryGetValues( key, out var values ) && int.TryParse( values.FirstOrDefault(), out var result ) )
+            {
+                return result;
+            }
+            return null;
+        }
+
+        public StarMapService (IEdsmHttpClient edsmHttpClient = null, bool needsCredentials = false)
+        {
+            this.edsmHttpClient = edsmHttpClient ??
+                                  new EdsmHttpClient( null, TimeSpan.FromMilliseconds( DefaultTimeoutMilliseconds ) );
+            this.edsmJournalHttpClient = edsmHttpClient ??
+                                  new EdsmHttpClient( null, TimeSpan.FromMilliseconds( JournalTimeoutMilliseconds ) );
 
             if (needsCredentials)
             {
                 // Set up EDSM API credentials
-                SetEdsmCredentials();
+                TrySetEdsmCredentials();
             }
         }
 
-        public void SetEdsmCredentials()
+        public bool TrySetEdsmCredentials()
         {
             var starMapCredentials = ConfigService.Instance.edsmConfiguration;
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
@@ -135,325 +181,8 @@ namespace EddiStarMapService
             {
                 Logging.Warn("EDSM Responder not configured: API key not set.");
             }
-        }
 
-        public bool EdsmCredentialsSet()
-        {
-            return !string.IsNullOrEmpty(commanderName) && !string.IsNullOrEmpty(apiKey);
-        }
-
-        public void StartJournalSync ()
-        {
-            if ( syncCancellationTS is null || syncCancellationTS.IsCancellationRequested )
-            {
-                syncCancellationTS = new CancellationTokenSource();
-                Logging.Debug( "Enabling EDSM Responder event sync." );
-                Task.Run( BackgroundJournalSync ).ConfigureAwait( false );
-            }
-        }
-
-        public async Task StopJournalAsync ()
-        {
-            if ( syncCancellationTS != null && !syncCancellationTS.IsCancellationRequested )
-            {
-                Logging.Debug( "Stopping EDSM Responder event sync." );
-                syncCancellationTS.Cancel();
-                queuedEvents.CompleteAdding();
-                // Clean up by sending anything left in the queue.
-                await SendEventsAsync( queuedEvents.ToList() );
-            }
-        }
-
-        private async Task BackgroundJournalSync ()
-        {
-            try
-            {
-                // Pause a short time to allow any initial events to build in the queue before our first sync
-                await Task.Delay( startupDelayMilliSeconds, syncCancellationTS.Token ).ConfigureAwait( false );
-                await Task.Run( async () =>
-                {
-                    // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-                    // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
-                    var holdingQueue = new List<IDictionary<string, object>>();
-                    try
-                    {
-                        Logging.Debug( "Sending queued events to EDSM: ", queuedEvents );
-                        foreach ( var pendingEvent in queuedEvents.GetConsumingEnumerable(
-                                     syncCancellationTS.Token ) )
-                        {
-                            holdingQueue.Add( pendingEvent );
-
-                            if ( queuedEvents.Count == 0 )
-                            {
-                                // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
-                                await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait( false );
-                                if ( queuedEvents.Count > 0 )
-                                {
-                                    continue;
-                                }
-
-                                // No additional events registered, send any events we have in our holding queue
-                                if ( holdingQueue.Count > 0 )
-                                {
-                                    var sendingQueue = holdingQueue.ToList();
-                                    await Task.Run( async () => await SendEventsAsync( sendingQueue ),
-                                            syncCancellationTS.Token )
-                                        .ConfigureAwait( false );
-                                    await Task.Delay( syncIntervalMilliSeconds, syncCancellationTS.Token )
-                                        .ConfigureAwait( false );
-                                }
-                            }
-                        }
-                    }
-                    catch ( OperationCanceledException )
-                    {
-                        // Operation was cancelled. Return any events we've extracted back to the primary queue.
-                        if ( !queuedEvents.IsAddingCompleted )
-                        {
-                            foreach ( var pendingEvent in holdingQueue )
-                            {
-                                queuedEvents.Add( pendingEvent );
-                            }
-                        }
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Error( ex.Message, ex );
-                    }
-
-                    holdingQueue.Clear();
-                } ).ConfigureAwait( false );
-            }
-            catch ( TaskCanceledException )
-            {
-                // Task cancelled. Nothing to do here.
-            }
-        }
-
-        public void EnqueueEvent(IDictionary<string, object> eventObject)
-        {
-            if (eventObject is null || queuedEvents.IsAddingCompleted) { return; }
-            if (currentGameVersion != null && currentGameVersion < minGameVersion) { return; }
-
-            queuedEvents.Add(eventObject);
-        }
-
-        private void ReEnqueueEvents(IEnumerable<IDictionary<string, object>> eventData)
-        {
-            if (eventData is null || queuedEvents.IsAddingCompleted) { return; }
-            // Re-enqueue the data so we can send it again later (preserving order as best we can).
-            var newQueue = eventData.ToList();
-            while (queuedEvents.TryTake(out var eventObject))
-            {
-                newQueue.Add(eventObject);
-            }
-            foreach (var eventObject in newQueue)
-            {
-                queuedEvents.Add(eventObject);
-            }
-        }
-
-        private async Task SendEventsAsync(List<IDictionary<string, object>> queue)
-        {
-            if (currentGameVersion is null) { return; } // Wait until we have a game version before sending events
-            var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
-            await SendEventBatchAsync(queue, starMapConfiguration);
-        }
-
-        private async Task SendEventBatchAsync ( List<IDictionary<string, object>> eventData, StarMapConfiguration starMapConfiguration )
-        {
-            if ( !EdsmCredentialsSet() ) { return; }
-
-            // Filter any stale data
-            eventData = eventData
-                .Where( e => JsonParsing.getDateTime( "timestamp", e ) > starMapConfiguration.lastJournalSync )
-                .ToList();
-            if ( eventData.Count == 0 ) { return; }
-
-            // The EDSM responder has a `gameIsBeta` flag that it checks prior to sending data via this method.  
-            var request = new RestRequest( "api-journal-v1", Method.POST );
-            request.AddParameter( "commanderName", commanderName );
-            request.AddParameter( "apiKey", apiKey );
-            request.AddParameter( "fromSoftware", Constants.EDDI_NAME );
-            request.AddParameter( "fromSoftwareVersion", Constants.EDDI_VERSION );
-            request.AddParameter( "fromGameVersion", gameVersion );
-            request.AddParameter( "fromGameBuild", gameBuild );
-            request.AddParameter( "message", JsonConvert.SerializeObject( eventData ).Normalize() );
-            request.Timeout = JournalTimeoutMilliseconds;
-
-            var maxRetries = 3;
-            var delay = syncIntervalMilliSeconds; // Initial delay in milliseconds
-            for ( var retry = 0; retry < maxRetries; retry++ )
-            {
-                try
-                {
-                    Logging.Debug( "Sending message to EDSM: " + restClient.BuildUri( request ).AbsoluteUri );
-                    var clientResponse = restClient.Execute<StarMapLogResponse>( request );
-                    var response = clientResponse.Data;
-
-                    if ( response is null )
-                    {
-                        Logging.Warn( $"{clientResponse.ErrorMessage} (Status Code: {clientResponse.StatusCode})" );
-                        ReEnqueueEvents( eventData );
-                    }
-                    else if ( response.msgnum >= 100 && response.msgnum <= 104 )
-                    {
-                        // 100 -  Everything went fine! 
-                        // 101 -  The journal message was already processed in our database. 
-                        // 102 -  The journal message was already in a newer version in our database. 
-                        // 103 -  Duplicate event request (cached data already reported from another software client). 
-                        // 104 -  Commander is in a crew session without being the captain. As such we do not register any logs. 
-                        starMapConfiguration.lastJournalSync = eventData
-                            .Select( e => JsonParsing.getDateTime( "timestamp", e ) )
-                            .Max();
-                        ConfigService.Instance.edsmConfiguration = starMapConfiguration;
-                    }
-
-                    if ( response?.msgnum != 100 )
-                    {
-                        if ( !string.IsNullOrEmpty( response?.msg ) )
-                        {
-                            Logging.Warn( "EDSM responded with: " + response.msg );
-                        }
-                        else
-                        {
-                            Logging.Warn( "EDSM responded with: " + JsonConvert.SerializeObject( response ) );
-                        }
-                    }
-                }
-                catch ( WebException wex )
-                {
-                    Logging.Warn( $"Attempt {retry + 1} failed: {wex.Message}", wex );
-                    if ( retry == maxRetries - 1 )
-                    {
-                        Logging.Warn( "Failed to send events to EDSM", wex );
-                    }
-                }
-
-                await Task.Delay( delay );
-                delay *= 2; // Exponential backoff
-            }
-        }
-
-        public void sendStarMapComment(ulong systemAddress, string comment)
-        {
-            if (!EdsmCredentialsSet()) { return; }
-
-            var request = new RestRequest("api-logs-v1/set-comment", Method.POST);
-            request.AddParameter( "apiKey", apiKey );
-            request.AddParameter( "commanderName", commanderName );
-            request.AddParameter( "systemId64", systemAddress );
-            request.AddParameter( "comment", comment );
-
-            var thread = new Thread(() =>
-            {
-                try
-                {
-                    var clientResponse = restClient.Execute<StarMapLogResponse>(request);
-                    StarMapLogResponse response = clientResponse.Data;
-                    if (response?.msgnum != 100)
-                    {
-                        Logging.Warn("EDSM responded with " + response?.msg);
-                    }
-                }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Failed to send comment to EDSM", ex);
-                }
-            })
-            {
-                IsBackground = true,
-                Name = "StarMapService send starmap comment"
-            };
-            thread.Start();
-        }
-
-        public List<string> getIgnoredEvents()
-        {
-            var request = new RestRequest("api-journal-v1/discard", Method.POST);
-            var clientResponse = restClient.Execute<List<string>>(request);
-            List<string> response = clientResponse.Data;
-            return response;
-        }
-
-        public Dictionary<string, string> getStarMapComments()
-        {
-            if (!EdsmCredentialsSet()) { return new Dictionary<string, string>(); }
-
-            var request = new RestRequest("api-logs-v1/get-comments", Method.POST);
-            request.AddParameter("apiKey", apiKey);
-            request.AddParameter("commanderName", commanderName);
-            var starMapCommentResponse = restClient.Execute<StarMapCommentResponse>(request);
-            StarMapCommentResponse response = starMapCommentResponse.Data;
-
-            Dictionary<string, string> vals = new Dictionary<string, string>();
-            if (response != null && response.comments != null)
-            {
-                foreach (StarMapResponseCommentEntry entry in response.comments)
-                {
-                    if (!string.IsNullOrEmpty(entry.comment))
-                    {
-                        Logging.Debug("Comment found for " + entry.system);
-                        vals[entry.system] = entry.comment;
-                    }
-                }
-            }
-            return vals;
-        }
-
-        public List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, ulong[] systemAddresses = null)
-        {
-            if (!EdsmCredentialsSet()) { return new List<StarMapResponseLogEntry>(); }
-
-            var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
-            request.AddParameter("apiKey", apiKey);
-            request.AddParameter("commanderName", commanderName);
-            request.AddParameter("showId", 1); // Obtain EDSM IDs
-            if ( systemAddresses?.Length == 1)
-            {
-                // When a single system name is provided, the api responds with 
-                // the complete flight logs for that star system
-                request.AddParameter("systemId64", systemAddresses[ 0]);
-            }
-            else
-            {
-                if (since.HasValue)
-                {
-                    request.AddParameter("startdatetime", Dates.FromDateTimeToString(since.Value));
-                }
-                else
-                {
-                    // Though not documented in the api, Anthor from EDSM has confirmed that this 
-                    // unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
-                    request.AddParameter("fullSync", 1);
-                }
-            }
-            var starMapLogResponse = restClient.Execute<StarMapLogResponse>(request);
-            StarMapLogResponse response = starMapLogResponse.Data;
-
-            if (response != null)
-            {
-                Logging.Debug("Response for star map logs is: ", response);
-
-                if (response.msgnum != 100)
-                {
-                    // An error occurred
-                    throw new EDSMException(response.msg);
-                }
-                if (response.logs == null) { return null; }
-
-                if ( systemAddresses?.Length > 0)
-                {
-                    response.logs.RemoveAll(s => !systemAddresses.Contains(s.systemId64));
-                }
-                return response.logs;
-            }
-            Logging.Debug("No response received.");
-            throw new EDSMException("No response received."); // not for localization
+            return !string.IsNullOrEmpty( commanderName ) && !string.IsNullOrEmpty( apiKey );
         }
 
         public static void SetGameVersion(System.Version GameVersion, string gameversion, string gamebuild)
@@ -497,22 +226,6 @@ namespace EddiStarMapService
         public DateTime date { get; set; }
     }
 
-    // response from the Star Map comment API
-    class StarMapCommentResponse
-    {
-        public int msgnum { get; set; }
-        public string msg { get; set; }
-        public string comment { get; set; }
-        public DateTime? lastUpdate { get; set; }
-        public List<StarMapResponseCommentEntry> comments { get; set; }
-    }
-
-    class StarMapResponseCommentEntry
-    {
-        public string system { get; set; }
-        public string comment { get; set; }
-    }
-
     // public consolidated version of star map log information
     public class StarMapInfo
     {
@@ -535,61 +248,5 @@ namespace EddiStarMapService
 
         // The duration in seconds before the rate reset
         public DateTime resetTime { get; set; }
-    }
-
-    // Custom serializer for REST requests
-    [UsedImplicitly]
-    public class NewtonsoftJsonSerializer : ISerializer
-    {
-        private readonly JsonSerializer serializer;
-
-        public NewtonsoftJsonSerializer(JsonSerializer serializer)
-        {
-            this.serializer = serializer;
-        }
-
-        public string ContentType
-        {
-            get => "application/json"; // Probably used for Serialization?
-            set { }
-        }
-
-        public string DateFormat { get; set; }
-
-        public string Namespace { get; set; }
-
-        public string RootElement { get; set; }
-
-        public string Serialize(object obj)
-        {
-            using (var stringWriter = new StringWriter())
-            using (var jsonTextWriter = new JsonTextWriter(stringWriter))
-            {
-                serializer.Serialize(jsonTextWriter, obj);
-                return stringWriter.ToString();
-            }
-        }
-
-        public T Deserialize<T>(IRestResponse response)
-        {
-            var content = response.Content;
-
-            using (var stringReader = new StringReader(content))
-            using (var jsonTextReader = new JsonTextReader(stringReader))
-            {
-                return serializer.Deserialize<T>(jsonTextReader);
-            }
-        }
-
-        public static NewtonsoftJsonSerializer Default
-        {
-            get
-            {
-                return new NewtonsoftJsonSerializer(new JsonSerializer()
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                });
-            }
-        }
     }
 }

@@ -1,22 +1,24 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Collections.Generic;
-using Utilities;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace EddiStarMapService
 {
     public partial class StarMapService
     {
-        public Traffic GetStarMapHostility(string systemName, long? edsmId = null)
+        public async Task<Traffic> GetStarMapHostilityAsync(string systemName, long? edsmId = null)
         {
-            Traffic traffic = GetStarMapTraffic(systemName, edsmId);
-            Traffic deaths = GetStarMapDeaths(systemName, edsmId);
+            if ( !TrySetEdsmCredentials() ) { return null; }
+
+            var traffic = await GetStarMapTrafficAsync(systemName, edsmId).ConfigureAwait(false);
+            var deaths = await GetStarMapDeathsAsync(systemName, edsmId).ConfigureAwait(false);
 
             if (traffic != null && deaths != null)
             {
-                Traffic hostility = new Traffic(
+                var hostility = new Traffic(
                     decimal.Divide((long)deaths.total, (long)traffic.total) * 100,
                     decimal.Divide((long)deaths.week, (long)traffic.week) * 100,
                     decimal.Divide((long)deaths.day, (long)traffic.day) * 100
@@ -26,67 +28,65 @@ namespace EddiStarMapService
             return null;
         }
 
-        public Traffic GetStarMapTraffic(string systemName, long? edsmId = null)
+        public async Task<Traffic> GetStarMapTrafficAsync ( string systemName, long? edsmId = null )
         {
-            if (systemName == null) { return null; }
+            if ( systemName == null ) { return null; }
+            if ( !TrySetEdsmCredentials() ) { return new Traffic(); }
 
-            var request = new RestRequest("api-system-v1/traffic", Method.POST);
-            request.AddParameter("systemName", systemName);
-            if (edsmId != null) { request.AddParameter("systemId", edsmId); }
-            var clientResponse = restClient.Execute<Dictionary<string, object>>(request);
-            if (clientResponse.IsSuccessful)
+            var url = $"{baseUrl}api-system-v1/traffic";
+            var parameters = new Dictionary<string, string> { { "systemName", systemName } };
+            if ( edsmId != null ) { parameters.Add( "systemId", edsmId.ToString() ); }
+
+            var httpContent = new FormUrlEncodedContent( parameters );
+            var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+            var token = responseJson is null ? null : JToken.Parse( responseJson );
+            if ( token is JObject response )
             {
-                Logging.Debug("EDSM responded with " + clientResponse.Content);
-                var token = JToken.Parse(clientResponse.Content);
-                if (token is JObject response)
-                {
-                    return ParseStarMapTraffic(response);
-                }
+                return ParseStarMapTraffic( response );
             }
-            else
-            {
-                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
-            }
+
             return null;
         }
 
         public Traffic ParseStarMapTraffic(JObject response)
         {
-            if (response.IsNullOrEmpty()) { return new Traffic(); }
-            Traffic traffic = ((JObject)response["traffic"]).ToObject<Traffic>() ?? new Traffic();
+            if ( response.IsNullOrEmpty() || !response.TryGetValue( "traffic", out var trafficToken ) )
+            {
+                return new Traffic();
+            }
+
+            var traffic = trafficToken.ToObject<Traffic>() ?? new Traffic();
             return traffic;
         }
 
-        public Traffic GetStarMapDeaths(string systemName, long? edsmId = null)
+        public async Task<Traffic> GetStarMapDeathsAsync ( string systemName, long? edsmId = null )
         {
-            if (systemName == null) { return null; }
+            if ( systemName == null ) { return null; }
+            if ( !TrySetEdsmCredentials() ) { return new Traffic(); }
 
-            var request = new RestRequest("api-system-v1/deaths", Method.POST);
-            request.AddParameter("systemName", systemName);
-            if (edsmId != null)
+            var url = $"{baseUrl}api-system-v1/deaths";
+            var parameters = new Dictionary<string, string> { { "systemName", systemName } };
+            if ( edsmId != null ) { parameters.Add( "systemId", edsmId.ToString() ); }
+
+            var httpContent = new FormUrlEncodedContent( parameters );
+            var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+            var token = responseJson is null ? null : JToken.Parse( responseJson );
+            if ( token is JObject response )
             {
-                request.AddParameter("systemId", edsmId);
+                return ParseStarMapDeaths( response );
             }
-            var clientResponse = restClient.Execute<Dictionary<string, object>>(request);
-            if (clientResponse.IsSuccessful)
-            {
-                var token = JToken.Parse(clientResponse.Content);
-                if (token is JObject response)
-                {
-                    return ParseStarMapDeaths(response);
-                }
-            }
-            else
-            {
-                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
-            }
+
             return null;
         }
 
-        public Traffic ParseStarMapDeaths(JObject response)
+        public Traffic ParseStarMapDeaths ( JObject response )
         {
-            if (response.IsNullOrEmpty()) { return new Traffic(); }
-            Traffic deaths = ((JObject)response["deaths"]).ToObject<Traffic>() ?? new Traffic();
+            if ( response.IsNullOrEmpty() || !response.TryGetValue( "deaths", out var deathsToken ) )
+            {
+                return new Traffic();
+            }
+
+            var deaths = deathsToken.ToObject<Traffic>() ?? new Traffic();
             return deaths;
         }
     }

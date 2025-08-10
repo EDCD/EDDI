@@ -749,7 +749,7 @@ namespace EddiVoiceAttackResponder
 
                     // Store in EDSM
                     var edsmService = new StarMapService(null, true);
-                    edsmService.sendStarMapComment( systemAddress, comment );
+                    edsmService.sendStarMapCommentAsync( systemAddress, comment ).GetAwaiter().GetResult();
                 }
             }
             catch ( Exception e )

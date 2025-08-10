@@ -2,7 +2,6 @@
 using EddiCore;
 using EddiStarMapService;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -61,43 +60,50 @@ namespace EddiEdsmResponder
         /// <summary>
         /// Obtain the EDSM log and sync it with the local datastore
         /// </summary>
-        private async void edsmObtainLogClicked(object sender, RoutedEventArgs e)
+        private void edsmObtainLogClicked(object sender, RoutedEventArgs e)
         {
-            var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
-
-            if (string.IsNullOrEmpty(starMapConfiguration.apiKey))
+            try
             {
+                var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
+
+                if ( string.IsNullOrEmpty( starMapConfiguration.apiKey ) )
+                {
+                    edsmFetchLogsButton.IsEnabled = false;
+                    edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_empty_api_key;
+                    return;
+                }
+
                 edsmFetchLogsButton.IsEnabled = false;
-                edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_empty_api_key;
-                return;
+                edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_fetching;
+
+                var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
+                var edsmService = new StarMapService(null, true);
+                Task.Factory.StartNew( async () => await obtainEdsmLogs( edsmService, progress ), TaskCreationOptions.LongRunning );
+
+                starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
+                ConfigService.Instance.edsmConfiguration = starMapConfiguration;
             }
-            
-            edsmFetchLogsButton.IsEnabled = false;
-            edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_fetching;
-
-            var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
-            var edsmService = new StarMapService(null, true);
-            await Task.Factory.StartNew(() => obtainEdsmLogs(edsmService, progress), TaskCreationOptions.LongRunning);
-
-            starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
-            ConfigService.Instance.edsmConfiguration = starMapConfiguration;
+            catch ( OperationCanceledException )
+            {
+                // Operation was cancelled, nothing to do here
+            }
         }
 
-        public static void obtainEdsmLogs(StarMapService edsmService, IProgress<string> progress)
+        private static async Task obtainEdsmLogs(StarMapService edsmService, IProgress<string> progress)
         {
             if (edsmService != null)
             {
                 try
                 {
-                    List<StarMapResponseLogEntry> flightLogs = edsmService.getStarMapLog();
-                    Dictionary<string, string> comments = edsmService.getStarMapComments();
-                    int total = flightLogs.Count;
-                    int i = 0;
+                    var flightLogs = await edsmService.getStarMapLogAsync().ConfigureAwait(false);
+                    var comments = await edsmService.getStarMapCommentsAsync().ConfigureAwait(false);
+                    var total = flightLogs.Count;
+                    var i = 0;
 
                     while (i < total)
                     {
-                        int batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                        EDDI.Instance.DataProvider.syncEdsmLogBatch(flightLogs.Skip(i).Take(batchSize).ToList(), comments);
+                        var batchSize = Math.Min(total, StarMapService.syncBatchSize);
+                        EDDI.Instance.DataProvider.SyncEdsmLogBatch(flightLogs.Skip(i).Take(batchSize).ToList(), comments);
                         i += batchSize;
                         progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
                     }

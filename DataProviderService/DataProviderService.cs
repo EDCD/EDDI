@@ -51,7 +51,7 @@ namespace EddiDataProviderService
 
         [ItemNotNull]
         public List<StarSystem> GetOrCreateStarSystems ( Dictionary<ulong, string> requestedSystems,
-            bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
+            bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             var results = new List<StarSystem>();
             if ( !requestedSystems.Any() ) { return results; }
@@ -60,7 +60,7 @@ namespace EddiDataProviderService
                 .Where( k => results.All( s => s.systemAddress != k.Key ) )
                 .ToDictionary( k => k.Key, v => v.Value );
 
-            results = GetOrFetchStarSystems( missingSystems().Keys.ToArray(), fetchIfMissing, refreshIfOutdated, showMarketDetails ) ?? new List<StarSystem>();
+            results = GetOrFetchStarSystems( missingSystems().Keys.ToArray(), fetchIfMissing, refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments ) ?? new List<StarSystem>();
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             var createdStarSystems = missingSystems()
@@ -71,11 +71,11 @@ namespace EddiDataProviderService
             return results;
         }
 
-        public StarSystem GetOrFetchStarSystem ( ulong systemAddress, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
+        public StarSystem GetOrFetchStarSystem ( ulong systemAddress, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             if ( systemAddress <= 0 ) { return null; }
 
-            return GetOrFetchStarSystems( new[] { systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails )?.FirstOrDefault();
+            return GetOrFetchStarSystems( new[] { systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments )?.FirstOrDefault();
         }
 
         /// <summary>
@@ -85,8 +85,9 @@ namespace EddiDataProviderService
         /// <param name="fetchIfMissing"></param>
         /// <param name="refreshIfOutdated"></param>
         /// <param name="showMarketDetails"></param>
+        /// <param name="fetchEdsmVisitsAndComments"></param>
         /// <returns></returns>
-        public StarSystem GetOrFetchStarSystem ( string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
+        public StarSystem GetOrFetchStarSystem ( string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             if ( string.IsNullOrEmpty( systemName ) ) { return null; }
 
@@ -106,10 +107,10 @@ namespace EddiDataProviderService
             // Fetch from external data sources (when so instructed)
             var fetchedWaypoint = GetOrFetchSystemWaypoint( systemName );
             if ( fetchedWaypoint is null ) { return null; }
-            return GetOrFetchStarSystems( new[] { fetchedWaypoint.systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails )?.FirstOrDefault();
+            return GetOrFetchStarSystems( new[] { fetchedWaypoint.systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments )?.FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrFetchStarSystems ( ulong[] systemAddresses, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
+        public List<StarSystem> GetOrFetchStarSystems ( ulong[] systemAddresses, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             var results = new List<StarSystem>();
             if ( systemAddresses is null || !systemAddresses.Any() ) { return results; }
@@ -128,8 +129,11 @@ namespace EddiDataProviderService
                 var fetchedSystems = FetchSystemsData( missingSystems(), showMarketDetails ) ?? new List<StarSystem>();
                 if ( fetchedSystems?.Count > 0 )
                 {
-                    // Synchronize EDSM visits and comments
-                    fetchedSystems = syncFromStarMapService( fetchedSystems );
+                    if ( fetchEdsmVisitsAndComments )
+                    {
+                        // Synchronize EDSM visits and comments
+                        fetchedSystems = SyncFromStarMapServiceAsync( fetchedSystems ).GetAwaiter().GetResult();                        
+                    }
 
                     // Update properties that aren't synced from the server and that we want to preserve
                     fetchedSystems = PreserveUnsyncedProperties( fetchedSystems, dbStarSystems );
@@ -586,83 +590,108 @@ namespace EddiDataProviderService
 
         #region EDSM Endpoints
 
-        public Traffic GetSystemTraffic(string systemName, long? edsmId = null)
+        [CanBeNull]
+        public async Task<Traffic> GetSystemTrafficAsync ( string systemName, long? edsmId = null )
         {
             if (string.IsNullOrEmpty(systemName)) { return null; }
-            return edsmService.GetStarMapTraffic(systemName, edsmId) ?? new Traffic();
+            return await edsmService.GetStarMapTrafficAsync(systemName, edsmId).ConfigureAwait(false) ?? new Traffic();
         }
 
-        public Traffic GetSystemDeaths(string systemName, long? edsmId = null)
+        [CanBeNull]
+        public async Task<Traffic> GetSystemDeathsAsync ( string systemName, long? edsmId = null )
         {
             if (string.IsNullOrEmpty(systemName)) { return null; }
-            return edsmService.GetStarMapDeaths(systemName, edsmId) ?? new Traffic();
+            return await edsmService.GetStarMapDeathsAsync(systemName, edsmId).ConfigureAwait( false ) ?? new Traffic();
         }
 
-        public Traffic GetSystemHostility(string systemName, long? edsmId = null)
+        [CanBeNull]
+        public async Task<Traffic> GetSystemHostilityAsync( string systemName, long? edsmId = null )
         {
             if (string.IsNullOrEmpty(systemName)) { return null; }
-            return edsmService.GetStarMapHostility(systemName, edsmId) ?? new Traffic();
+            return await edsmService.GetStarMapHostilityAsync(systemName, edsmId).ConfigureAwait( false ) ?? new Traffic();
         }
 
-        // EDSM flight log synchronization
-        public void syncFromStarMapService(DateTime? lastSync = null)
+        // EDSM Journal Synchronization
+
+        public bool TryStartEdsmJournal ()
         {
-            if (edsmService != null)
+            edsmService?.StartJournalSync();
+            return edsmService != null;
+        }
+
+        public async Task StopEdsmJournalAsync ()
+        {
+            if ( edsmService != null )
             {
-                try
-                {
-                    Logging.Info( "Syncing all flight logs from EDSM" );
-                    var flightLogs = edsmService.getStarMapLog(lastSync);
-                    if (flightLogs?.Count > 0)
-                    {
-                        var comments = edsmService.getStarMapComments();
-                        int total = flightLogs.Count;
-                        int i = 0;
+                await edsmService.StopJournalAsync().ConfigureAwait( false );
+            }
+        }
 
-                        while (i < total)
-                        {
-                            int batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                            List<StarMapResponseLogEntry> flightLogBatch = flightLogs.Skip(i).Take(batchSize).ToList();
-                            syncEdsmLogBatch(flightLogBatch, comments);
-                            i += batchSize;
-                        }
-                        Logging.Info( "EDSM flight logs synchronized" );
-                    }
-                    else
-                    {
-                        Logging.Debug( "EDSM flight logs are already synchronized, no new flight logs since last sync." );
-                    }
-                }
-                catch (EDSMException edsme)
+        public Task<List<string>> GetIgnoredEdsmEventsAsync ()
+        {
+            return edsmService?.getIgnoredEventsAsync();
+        }
+
+        public void EnqueueEdsmEvent ( IDictionary<string, object> eventObject )
+        {
+            edsmService.EnqueueEvent( eventObject );
+        }
+
+        public async Task SyncFromStarMapServiceAsync ( DateTime? lastSync = null )
+        {
+            try
+            {
+                Logging.Info( "Syncing all flight logs from EDSM" );
+
+                var flightLogs = await edsmService.getStarMapLogAsync(lastSync).ConfigureAwait(false);
+                if ( flightLogs == null || flightLogs.Count == 0 )
                 {
-                    Logging.Debug("EDSM error received: " + edsme.Message, edsme);
+                    Logging.Debug( "EDSM flight logs are already synchronized; no new flight logs since last sync." );
+                    return;
                 }
-                catch (ThreadAbortException e)
+
+                var comments = await edsmService.getStarMapCommentsAsync().ConfigureAwait(false);
+
+                // Process in batches
+                var total = flightLogs.Count;
+                for ( var i = 0; i < total; i += StarMapService.syncBatchSize )
                 {
-                    Logging.Debug("EDSM update stopped by user: " + e.Message);
+                    var batchSize = Math.Min(StarMapService.syncBatchSize, total - i);
+                    var batch = flightLogs.GetRange(i, batchSize);
+                    SyncEdsmLogBatch( batch, comments );
                 }
+
+                Logging.Info( "EDSM flight logs synchronized" );
+            }
+            catch ( EDSMException ex )
+            {
+                Logging.Debug( "EDSM error received: " + ex.Message, ex );
+            }
+            catch ( OperationCanceledException ex )
+            {
+                Logging.Debug( "EDSM update canceled by user: " + ex.Message );
             }
         }
 
         // EDSM flight log synchronization (named star systems)
-        public List<StarSystem> syncFromStarMapService(List<StarSystem> starSystems)
+        public async Task<List<StarSystem>> SyncFromStarMapServiceAsync(List<StarSystem> starSystems)
         {
-            if (edsmService != null && edsmService.EdsmCredentialsSet() && starSystems.Count > 0)
+            if (starSystems.Count > 0)
             {
                 try
                 {
                     Logging.Debug( $"Syncing flight logs from EDSM for {starSystems.Count} system(s)." );
-                    List<StarMapResponseLogEntry> flightLogs = edsmService.getStarMapLog(null, starSystems.Select(s => s.systemAddress).ToArray());
-                    Dictionary<string, string> comments = edsmService.getStarMapComments();
+                    var flightLogs = await edsmService.getStarMapLogAsync(null, starSystems.Select(s => s.systemAddress).ToArray()).ConfigureAwait(false);
+                    var comments = await edsmService.getStarMapCommentsAsync().ConfigureAwait(false);
 
                     if (flightLogs?.Count > 0)
                     {
-                        foreach (StarSystem starSystem in starSystems)
+                        foreach (var starSystem in starSystems)
                         {
                             if (starSystem?.systemname != null)
                             {
                                 Logging.Debug("Syncing star system " + starSystem.systemname + " from EDSM.");
-                                foreach (StarMapResponseLogEntry flightLog in flightLogs)
+                                foreach (var flightLog in flightLogs)
                                 {
                                     if (flightLog.systemId64 == starSystem.systemAddress)
                                     {
@@ -694,66 +723,63 @@ namespace EddiDataProviderService
             return starSystems;
         }
 
-        public void syncEdsmLogBatch(List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments)
+        public void SyncEdsmLogBatch ( List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments )
         {
             var syncedSystems = new List<StarSystem>();
-            var uniqueEntries = new HashSet<(ulong systemId64, string system)>();
-            var flightLogSystems = new Dictionary<ulong, string>();
+            var uniqueAddresses = flightLogBatch
+                .Select( f => f.systemId64 )
+                .Distinct()
+                .ToArray();
+            var batchSystems = GetOrFetchStarSystems( uniqueAddresses, refreshIfOutdated: false, fetchEdsmVisitsAndComments: false );
+            var lookup = batchSystems.ToDictionary(s => s.systemAddress);
+            var groupedLogs = flightLogBatch.GroupBy(f => f.systemId64);
 
-            foreach ( var log in flightLogBatch )
+            foreach ( var group in groupedLogs )
             {
-                if ( uniqueEntries.Add( (log.systemId64, log.system) ) )
-                {
-                    flightLogSystems[ log.systemId64 ] = log.system;
-                }
-            }
+                var address = group.Key;
+                var firstLog = group.First();
+                var systemName = firstLog.system;
 
-            var batchSystems = GetOrCreateStarSystems(flightLogSystems, refreshIfOutdated: false );
-            foreach (var starSystem in batchSystems)
-            {
-                if (starSystem != null)
+                // Get or create the StarSystem
+                if ( !lookup.TryGetValue( address, out var starSystem ) )
                 {
-                    foreach (var flightLog in flightLogBatch.Where(log => log.system == starSystem.systemname))
+                    starSystem = new StarSystem
                     {
-                        // Fill missing SystemAddresses
-                        if ( starSystem.systemAddress == 0 )
-                        {
-                            if ( flightLog.systemId64 > 0 )
-                            {
-                                starSystem.systemAddress = flightLog.systemId64;
-                                var bodies = starSystem.bodies.Where(b => b.systemAddress is null).ToList();
-                                bodies.AsParallel().ForAll( b =>
-                                {
-                                    b.systemAddress = flightLog.systemId64;
-                                } );
-                                foreach ( var body in starSystem.bodies )
-                                {
-                                    body.systemAddress = flightLog.systemId64;
-                                }
-                                starSystem.AddOrUpdateBodies( bodies );
-                            }
-                            else
-                            {
-                                // Skip flight log entries that are missing a SystemAddress property
-                                // (and consequently may not be stored as unique items in our database)
-                                continue;
-                            }
-                        }
-
-                        // Update Comments
-                        if ( comments.TryGetValue( flightLog.system, out var comment ) )
-                        {
-                            starSystem.comment = comment;
-                        }
-
-                        // Update Visit Log
-                        starSystem.visitLog.Add(flightLog.date);
-
-                        syncedSystems.Add( starSystem );
-                    }
+                        systemAddress = address,
+                        systemname = systemName,
+                        lastupdated = firstLog.date
+                    };
+                    batchSystems.Add( starSystem );
+                    lookup[ address ] = starSystem;
                 }
+
+                // Backfill missing body system addresses
+                if ( starSystem.systemAddress == 0 && address > 0 )
+                {
+                    starSystem.systemAddress = address;
+                    foreach ( var body in starSystem.bodies )
+                    {
+                        body.systemAddress = address;
+                    }
+                    starSystem.AddOrUpdateBodies( starSystem.bodies );
+                }
+
+                // Merge comments
+                if ( comments.TryGetValue( systemName, out var comment ) )
+                {
+                    starSystem.comment = comment;
+                }
+
+                // Append all visit dates at once
+                foreach ( var d in group.Select( f => f.date ) )
+                {
+                    starSystem.visitLog.Add( d );
+                }
+
+                syncedSystems.Add( starSystem );
             }
-            saveFromStarMapService(syncedSystems);
+
+            saveFromStarMapService( syncedSystems );
         }
 
         private void saveFromStarMapService(List<StarSystem> syncSystems)

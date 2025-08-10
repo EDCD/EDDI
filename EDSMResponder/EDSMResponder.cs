@@ -17,8 +17,7 @@ namespace EddiEdsmResponder
     {
         private Task updateTask;
         private CancellationTokenSource updateThreadCancellationTokenSource;
-        private List<string> ignoredEvents = new List<string>();
-        private readonly StarMapService edsmService;
+        private List<string> ignoredEvents;
 
         // This responder currently requires game version 4.0 or later.
         private static readonly System.Version minGameVersion = new System.Version(4, 0);
@@ -38,108 +37,95 @@ namespace EddiEdsmResponder
             return Properties.EDSMResources.desc;
         }
 
-        public EDSMResponder() : this(new StarMapService(null, true))
-        { }
-
-        public EDSMResponder(StarMapService edsmService)
+        public EDSMResponder ()
         {
-            this.edsmService = edsmService;
-            Logging.Info($"Initialized {ResponderName()}");
+            Logging.Info( $"Initialized {ResponderName()}" );
         }
 
         public bool Start()
         {
             Reload();
-            edsmService?.StartJournalSync();
-            return edsmService != null;
+            return EDDI.Instance.DataProvider.TryStartEdsmJournal();
         }
 
         public void Stop()
         {
             Task.WaitAll( Task.Run( async () =>
             {
-                if ( edsmService != null )
-                {
-                    await edsmService.StopJournalAsync();
-
-                }
+                await EDDI.Instance.DataProvider.StopEdsmJournalAsync().ConfigureAwait( false );
             } ) );
             // Stop flight log synchronization
             updateThreadCancellationTokenSource?.Cancel();
             updateTask = null;
         }
 
-        public void Reload()
+        public void Reload ()
         {
             // Set up the star map service
-            if (ignoredEvents == null)
+            if ( ignoredEvents == null )
             {
-                ignoredEvents = edsmService?.getIgnoredEvents();
+                ignoredEvents = EDDI.Instance.DataProvider.GetIgnoredEdsmEventsAsync().GetAwaiter().GetResult();
             }
 
-            if (edsmService != null)
-            {
-                // Renew our credentials for the EDSM API
-                StarMapService.inGameCommanderName = ConfigService.Instance.commanderConfiguration.commanderName;
-                edsmService.SetEdsmCredentials();
+            // Renew our credentials for the EDSM API
+            StarMapService.inGameCommanderName = ConfigService.Instance.commanderConfiguration.commanderName;
 
-                if ( updateTask == null && edsmService.EdsmCredentialsSet() )
+            if ( updateTask == null )
+            {
+                // Spin off a task to download & sync flight logs & system comments from EDSM in the background 
+                updateThreadCancellationTokenSource = new CancellationTokenSource();
+                updateTask = new Task( () =>
                 {
-                    // Spin off a task to download & sync flight logs & system comments from EDSM in the background 
-                    updateThreadCancellationTokenSource = new CancellationTokenSource();
-                    updateTask = new Task( () =>
+                    try
                     {
-                        try
-                        {
-                            EDDI.Instance.DataProvider.syncFromStarMapService( ConfigService.Instance.edsmConfiguration?.lastFlightLogSync );
-                        }
-                        catch ( TaskCanceledException )
-                        {
-                            // Nothing to do here
-                        }
-                    }, updateThreadCancellationTokenSource.Token );
-                    updateTask.Start();
-                }
+                        EDDI.Instance.DataProvider
+                            .SyncFromStarMapServiceAsync( ConfigService.Instance.edsmConfiguration
+                                ?.lastFlightLogSync ).GetAwaiter().GetResult();
+                    }
+                    catch ( TaskCanceledException )
+                    {
+                        // Nothing to do here
+                    }
+                }, updateThreadCancellationTokenSource.Token );
+                updateTask.Start();
             }
         }
 
-        public void Handle(Event theEvent)
+        public void Handle ( Event theEvent )
         {
-            if (EDDI.Instance.inTelepresence)
+            if ( EDDI.Instance.inTelepresence )
             {
                 // We don't do anything whilst in CQC
                 return;
             }
 
-            if (EDDI.Instance.gameIsBeta)
+            if ( EDDI.Instance.gameIsBeta )
             {
                 // We don't send data whilst in beta
                 return;
             }
 
-            if (EDDI.Instance.GameVersion is null || EDDI.Instance.GameVersion < minGameVersion)
+            if ( EDDI.Instance.GameVersion is null || EDDI.Instance.GameVersion < minGameVersion )
             {
                 // We don't sent data whilst running a lower game version than the minimum required by EDSM
                 return;
             }
 
-            if (edsmService != null)
+            // Retrieve applicable transient game state info (metadata) 
+            // for the event and send the event with transient info to EDSM
+            IDictionary<string, object> eventObject = null;
+            try
             {
-                // Retrieve applicable transient game state info (metadata) 
-                // for the event and send the event with transient info to EDSM
-                IDictionary<string, object> eventObject = null;
-                try
-                {
-                    eventObject = prepareEventData(theEvent);
-                }
-                catch (System.Exception ex)
-                {
-                    Logging.Error("Failed to prepare event meta-data for submittal to EDSM", ex);
-                }
-                if (eventObject != null && !EDDI.Instance.gameIsBeta)
-                {
-                    edsmService.EnqueueEvent(eventObject);
-                }
+                eventObject = prepareEventData( theEvent );
+            }
+            catch ( System.Exception ex )
+            {
+                Logging.Error( "Failed to prepare event meta-data for submittal to EDSM", ex );
+            }
+
+            if ( eventObject != null && !EDDI.Instance.gameIsBeta )
+            {
+                EDDI.Instance.DataProvider.EnqueueEdsmEvent( eventObject );
             }
         }
 

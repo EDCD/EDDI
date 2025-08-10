@@ -25,8 +25,8 @@ namespace Tests
         internal static readonly FakeSpanshRestClient fakeSpanshRestClient = new FakeSpanshRestClient();
         internal static readonly SpanshService fakeSpanshService = new SpanshService( fakeSpanshRestClient );
 
-        internal static readonly FakeEdsmRestClient fakeEdsmRestClient = new FakeEdsmRestClient();
-        internal static readonly StarMapService fakeEdsmService = new StarMapService(fakeEdsmRestClient);
+        internal static readonly FakeEdsmHttpClient FakeEdsmHttpClient = new FakeEdsmHttpClient();
+        internal static readonly StarMapService fakeEdsmService = new StarMapService(FakeEdsmHttpClient);
 
         internal static readonly StarSystemSqLiteRepository fakeStarSystemSqLiteRepository = new StarSystemSqLiteRepository( true );
 
