@@ -1,194 +1,142 @@
 ﻿using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
-using System.Threading;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
 {
-    public interface ISpanshRestClient
+    public interface ISpanshHttpClient
     {
-        Uri BuildUri ( IRestRequest request );
-        IRestResponse<T> Execute<T> ( IRestRequest request );
-        IRestResponse Get ( IRestRequest request );
-        IRestResponse Post ( IRestRequest request );
-        Task<IRestResponse<T>> ExecuteAsync<T> ( IRestRequest request );
-        Task<IRestResponse> GetAsync ( IRestRequest request );
-        Task<IRestResponse> PostAsync ( IRestRequest request );
+        Task<HttpResponseMessage> GetAsync ( string requestUri );
+        Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content );
     }
 
     public partial class SpanshService
     {
         private const string baseUrl = "https://spansh.co.uk/api/";
-        private readonly ISpanshRestClient spanshRestClient;
+        private readonly ISpanshHttpClient spanshHttpClient;
 
-        // The default timeout for requests to Spansh. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
-        private const int DefaultTimeoutMilliseconds = 10000;
-
-        // The number of times to retry a failed request
-        private const int maxRetries = 3;
-
-        private class SpanshRestClient : ISpanshRestClient
+        // Allow injection of a fake client for testing
+        public SpanshService ( ISpanshHttpClient httpClient = null )
         {
-            private readonly RestClient restClient;
+            spanshHttpClient = httpClient ?? new SpanshHttpClient( baseUrl );
+        }
 
-            public SpanshRestClient(string baseUrl)
+        // Default HttpClient‐based implementation
+        private class SpanshHttpClient : ISpanshHttpClient
+        {
+            private readonly HttpClient client;
+
+            // The default timeout for requests to Spansh. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
+            private const int DefaultTimeoutMilliseconds = 10000;
+
+            // The number of times to retry a failed request
+            private const int MaxRetries = 3;
+
+            public SpanshHttpClient (string baseUrl)
             {
-                restClient = new RestClient(baseUrl)
+                client = new HttpClient
                 {
-                    Timeout = DefaultTimeoutMilliseconds
+                    BaseAddress = new Uri( baseUrl ),
+                    Timeout = TimeSpan.FromMilliseconds( DefaultTimeoutMilliseconds )
                 };
             }
 
-            public Uri BuildUri ( IRestRequest request ) => restClient.BuildUri( request );
-
-            public IRestResponse<T> Execute<T> ( IRestRequest request )
+            public async Task<HttpResponseMessage> GetAsync ( string requestUri )
             {
-                IRestResponse<T> response = null;
-                var retryCount = 0;
-                while ( retryCount < maxRetries )
+                HttpResponseMessage response = null;
+
+                for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
-                    response = restClient.ExecuteAsync<T>( request ).GetAwaiter().GetResult();
-                    if ( response.IsSuccessful )
+                    response = await client.GetAsync( requestUri ).ConfigureAwait( false );
+                    if ( response.IsSuccessStatusCode && EnsureSuccess(response) )
                     {
                         return response;
                     }
-                    retryCount++;
-                    Thread.Sleep( 20 ^ retryCount ); // Wait for 500 milliseconds before retrying
+
+                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 ).ConfigureAwait( false );
                 }
+
                 return response;
             }
 
-            public async Task<IRestResponse<T>> ExecuteAsync<T> ( IRestRequest request )
+            public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content )
             {
-                IRestResponse<T> response = null;
-                var retryCount = 0;
-                while ( retryCount < maxRetries )
+                HttpResponseMessage response = null;
+
+                for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
-                    response = await restClient.ExecuteAsync<T>( request );
-                    if ( response.IsSuccessful )
+                    response = await client.PostAsync( requestUri, content ).ConfigureAwait( false );
+                    if ( response.IsSuccessStatusCode && EnsureSuccess( response ) )
                     {
                         return response;
                     }
-                    retryCount++;
-                    Thread.Sleep( 20^retryCount ); // Wait for 500 milliseconds before retrying
+
+                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 ).ConfigureAwait( false );
                 }
-                return response;
-            }
 
-            public IRestResponse Get ( IRestRequest request )
-            {
-                var response = ExecuteAsync<object>( request ).GetAwaiter().GetResult();
                 return response;
-            }
-
-            public async Task<IRestResponse> GetAsync ( IRestRequest request )
-            {
-                var response = await ExecuteAsync<object>( request );
-                return response;
-            }
-
-            /// <summary>
-            /// Post a search request with a json payload
-            /// </summary>
-            /// <param name="request"></param>
-            /// <returns></returns>
-            public IRestResponse Post ( IRestRequest request )
-            {
-                var response = ExecuteAsync<object>( request ).GetAwaiter().GetResult();
-                if ( !IsResponseOk( response ) ) { return null; }
-                return response;
-            }
-
-            /// <summary>
-            /// Post a search request with a json payload
-            /// </summary>
-            /// <param name="request"></param>
-            /// <returns></returns>
-            public async Task<IRestResponse> PostAsync ( IRestRequest request )
-            {
-                var response = await ExecuteAsync<object>( request );
-                if ( !IsResponseOk( response ) )
-                { return null; }
-                return response;
-            }
-
-            private static bool IsResponseOk ( IRestResponse response )
-            {
-                if ( response is null )
-                {
-                    Logging.Warn( "Spansh API is not responding" );
-                    return false;
-                }
-                if ( !response.IsSuccessful )
-                {
-                    if ( response.ErrorException != null )
-                    {
-                        Logging.Warn( $"Spansh API responded with: {response.ResponseStatus} - {response.ErrorException.Message}",
-                            response );
-                    }
-                    else
-                    {
-                        Logging.Warn( $"Spansh API responded with: {response.StatusCode} - {response.StatusDescription}", response );
-                    }
-                    return false;
-                }
-                if ( string.IsNullOrEmpty( response.Content ) )
-                {
-                    Logging.Warn( "Spansh API responded without providing any data", response );
-                    return false;
-                }
-                return true;
             }
         }
 
-        public SpanshService(ISpanshRestClient restClient = null)
+        private async Task<JToken> GetRouteResponseAsync ( string jobId )
         {
-            spanshRestClient = restClient ?? new SpanshRestClient(baseUrl);
-        }
+            if ( string.IsNullOrEmpty( jobId ) ) { return null; }
 
-        private async Task<JToken> GetRouteResponseAsync(string data)
-        {
-            return await Task.Run(async () =>
+            // Poll until the job finishes
+            JObject routeResult = null;
+            while ( routeResult is null || routeResult[ "state" ]?.ToString() == "started" )
             {
-                var jobID = GetJobID(data);
-                if (string.IsNullOrEmpty(jobID)) return null;
-                
-                var jobRequest = new RestRequest("results/" + jobID);
-                JObject routeResult = null;
-                while (routeResult is null || (routeResult["status"]?.ToString() == "queued"))
+                await Task.Delay( 500 ).ConfigureAwait( false );
+                var getResponse = await spanshHttpClient.GetAsync($"results/{jobId}").ConfigureAwait(false);
+                if ( getResponse.StatusCode == HttpStatusCode.RequestTimeout )
                 {
-                    Thread.Sleep(500);
-                    var response = await spanshRestClient.GetAsync(jobRequest);
-
-                    if (response.ResponseStatus == ResponseStatus.TimedOut)
-                    {
-                        Logging.Warn(response.ErrorMessage, jobRequest);
-                        return null;
-                    }
-
-                    routeResult = JObject.Parse(response.Content);
-                    if (routeResult["error"] != null)
-                    {
-                        Logging.Debug(routeResult["error"].ToString());
-                        return null;
-                    }
+                    Logging.Warn( $"Spansh API timeout on GET results/{jobId}" );
+                    return null;
                 }
 
-                return routeResult["result"];
-            }).ConfigureAwait(false);
+                var getJson = await getResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                routeResult = JObject.Parse( getJson );
+
+                if ( routeResult[ "error" ] != null )
+                {
+                    Logging.Debug( routeResult[ "error" ].ToString() );
+                    return null;
+                }
+            }
+
+            return routeResult[ "result" ];
         }
 
-        private string GetJobID(string route)
+        private static bool EnsureSuccess ( HttpResponseMessage response )
         {
-            var routeResponse = JObject.Parse(route);
-            if (routeResponse["error"] != null)
+            if ( response == null )
             {
-                Logging.Debug(routeResponse["error"].ToString());
+                Logging.Warn( "Spansh API did not respond" );
+                return false;
+            }
+
+            if ( !response.IsSuccessStatusCode )
+            {
+                Logging.Warn( $"Spansh API responded with: {(int)response.StatusCode} - {response.ReasonPhrase}" );
+                return false;
+            }
+
+            return true;
+        }
+
+        private string GetJobID ( string json )
+        {
+            var parser = JObject.Parse(json);
+            if ( parser[ "error" ] != null )
+            {
+                Logging.Debug( parser[ "error" ].ToString() );
                 return null;
             }
-            return routeResponse["job"]?.ToString();
+
+            return parser[ "job" ]?.ToString();
         }
     }
 }

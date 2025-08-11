@@ -1,10 +1,10 @@
 ﻿using EddiDataDefinitions;
-using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -12,13 +12,13 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Galaxy Plotter.
-        [CanBeNull]
-        public NavWaypointCollection GetGalaxyRoute(string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false, bool fromUIquery = false)
+        public async Task<NavWaypointCollection> GetGalaxyRouteAsync (string currentSystem, string targetSystem, Ship ship, int? cargoCarriedTons = null, bool is_supercharged = false, bool use_supercharge = true, bool use_injections = false, bool exclude_secondary = false, bool fromUIquery = false)
         {
             if (!fromUIquery)
             {
                 // The Spansh Galaxy Plotter uses case-sensitive system names. Use the TypeAhead API to normalize casing.
-                targetSystem = GetWaypointsBySystemName(targetSystem).FirstOrDefault()?.systemName;
+                var wp = await GetWaypointsBySystemNameAsync( targetSystem ).ConfigureAwait( false );
+                targetSystem = wp.FirstOrDefault()?.systemName;
                 if (string.IsNullOrEmpty(targetSystem))
                 {
                     Logging.Warn("Neutron route plotting is not available, requested star system is unknown.");
@@ -36,24 +36,37 @@ namespace EddiSpanshService
                 out decimal base_mass, out decimal tank_size, out decimal internal_tank_size,
                 out decimal max_fuel_per_jump, out double range_boost );
 
-            var request = GalaxyRouteRequest(currentSystem, targetSystem, cargoCarriedTons, fuel_power, fuel_multiplier, optimal_mass, base_mass, tank_size, internal_tank_size, max_fuel_per_jump, range_boost, is_supercharged, use_supercharge, use_injections, exclude_secondary);
-            var initialResponse = spanshRestClient.Get(request);
-
-            if (string.IsNullOrEmpty(initialResponse.Content))
+            try
             {
-                Logging.Warn("Spansh API is not responding");
-                return null;
+                var requestUri = GalaxyRouteRequest(currentSystem, targetSystem, cargoCarriedTons, fuel_power, fuel_multiplier, optimal_mass, base_mass, tank_size, internal_tank_size, max_fuel_per_jump, range_boost, is_supercharged, use_supercharge, use_injections, exclude_secondary);
+                var initialResponse = await spanshHttpClient.GetAsync(requestUri).ConfigureAwait(false);
+                initialResponse.EnsureSuccessStatusCode();
+                var responseJson = await initialResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                if ( string.IsNullOrEmpty( responseJson ) )
+                {
+                    Logging.Warn( "Spansh API is not responding" );
+                    return null;
+                }
+
+                if ( JObject.Parse( responseJson ).TryGetValue( "job", StringComparison.OrdinalIgnoreCase, out var value ) && value.ToString() is string jobId )
+                {                
+                    var result = await GetRouteResponseAsync( jobId ).ConfigureAwait(false);
+                    if ( result is null )
+                    {
+                        Logging.Warn( $"Spansh API returned no route to system {targetSystem}." );
+                        return null;
+                    }
+
+                    return ParseGalaxyRoute( result );
+                }
+            }
+            catch ( HttpRequestException he )
+            {
+                Logging.Error( he.Message, he );
             }
 
-            var result = GetRouteResponseAsync(initialResponse.Content).GetAwaiter().GetResult();
-
-            if (result is null)
-            {
-                Logging.Warn($"Spansh API returned no route to system {targetSystem}.");
-                return null;
-            }
-
-            return ParseGalaxyRoute(result);
+            return null;
         }
 
         private void GetShipJumpDetails(Ship ship, out double fuel_power, out double fuel_multiplier, out double optimal_mass, out decimal base_mass, out decimal tank_size, out decimal internal_tank_size, out decimal max_fuel_per_jump, out double range_boost)
@@ -84,33 +97,35 @@ namespace EddiSpanshService
             internal_tank_size = ship.activeFuelReservoirCapacity;
         }
 
-        private IRestRequest GalaxyRouteRequest(string currentSystem, string targetSystem, int? cargoCarriedTons, double fuel_power, double fuel_multiplier, double optimal_mass, decimal base_mass, decimal tank_size, decimal internal_tank_size, decimal max_fuel_per_jump, double range_boost, bool is_supercharged, bool use_supercharge, bool use_injections, bool exclude_secondary)
+        private string GalaxyRouteRequest(string currentSystem, string targetSystem, int? cargoCarriedTons, double fuel_power, double fuel_multiplier, double optimal_mass, decimal base_mass, decimal tank_size, decimal internal_tank_size, decimal max_fuel_per_jump, double range_boost, bool is_supercharged, bool use_supercharge, bool use_injections, bool exclude_secondary)
         {
-            var request = new RestRequest("generic/route");
-            request
-                .AddParameter("source", currentSystem)
-                .AddParameter("destination", targetSystem)
-                .AddParameter("is_supercharged", is_supercharged ? 1 : 0)
-                .AddParameter("use_supercharge", use_supercharge ? 1 : 0)
-                .AddParameter("use_injections", use_injections ? 1 : 0)
-                .AddParameter("exclude_secondary", exclude_secondary ? 1 : 0)
-                .AddParameter("fuel_power", fuel_power)
-                .AddParameter("fuel_multiplier", fuel_multiplier)
-                .AddParameter("optimal_mass", optimal_mass)
-                .AddParameter("base_mass", base_mass.ToInvariantString())
-                .AddParameter("tank_size", tank_size.ToInvariantString())
-                .AddParameter("internal_tank_size", internal_tank_size.ToInvariantString())
-                .AddParameter("max_fuel_per_jump", max_fuel_per_jump.ToInvariantString())
-                .AddParameter("range_boost", range_boost)
-                ;
-            if (cargoCarriedTons != null)
+            var relativePath = "generic/route";
+            var queryParams = new List<string>
             {
-                request.AddParameter("cargo", cargoCarriedTons);
+                $"source={Uri.EscapeDataString( currentSystem )}",
+                $"destination={Uri.EscapeDataString(targetSystem)}",
+                $"is_supercharged={(is_supercharged ? 1 : 0)}",
+                $"use_supercharge={(use_supercharge ? 1 : 0)}",
+                $"use_injections={(use_injections ? 1 : 0)}",
+                $"exclude_secondary={(exclude_secondary ? 1 : 0)}",
+                $"fuel_power={fuel_power}",
+                $"fuel_multiplier={fuel_multiplier}",
+                $"optimal_mass={optimal_mass}",
+                $"base_mass={base_mass.ToInvariantString()}",
+                $"tank_size={tank_size.ToInvariantString()}",
+                $"internal_tank_size={internal_tank_size.ToInvariantString()}",
+                $"max_fuel_per_jump={max_fuel_per_jump.ToInvariantString()}",
+                $"range_boost={range_boost}"
+            };
+
+            if ( cargoCarriedTons.HasValue )
+            {
+                queryParams.Add( $"cargo={cargoCarriedTons.Value}" );
             }
 
-            return request;
+            return $"{relativePath}?{string.Join( "&", queryParams )}";
         }
-        
+
         private NavWaypointCollection ParseGalaxyRoute(JToken routeResult)
         {
             if (routeResult is null) { return null; }

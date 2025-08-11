@@ -22,8 +22,8 @@ namespace Tests
 {
     public class TestBase
     {
-        internal static readonly FakeSpanshRestClient fakeSpanshRestClient = new FakeSpanshRestClient();
-        internal static readonly SpanshService fakeSpanshService = new SpanshService( fakeSpanshRestClient );
+        internal static readonly FakeSpanshHttpClient FakeSpanshHttpClient = new FakeSpanshHttpClient();
+        internal static readonly SpanshService fakeSpanshService = new SpanshService( FakeSpanshHttpClient );
 
         internal static readonly FakeEdsmHttpClient FakeEdsmHttpClient = new FakeEdsmHttpClient();
         internal static readonly StarMapService fakeEdsmService = new StarMapService(FakeEdsmHttpClient);

@@ -1,9 +1,10 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -12,52 +13,51 @@ namespace EddiSpanshService
     {
         // Uses the Spansh station quick API (brief station data), e.g. https://spansh.co.uk/api/station/3707582976 
         // Useful for quickly obtaining sparse system stations.
-        public NavWaypoint GetQuickStation (long marketId)
+        public async Task<NavWaypoint> GetQuickStationAsync (long marketId)
         {
             if ( marketId == 0 ) { return null; }
-            var request = new RestRequest($"station/{marketId}");
-            if (TryGetQuickStation(request, out var quickStation))
-            {
-                return quickStation;
-            }
-            return null;
-        }
 
-        public IList<NavWaypoint> GetQuickStations ( long[] marketIds )
-        {
-            return marketIds.AsParallel().Select( GetQuickStation ).RemoveNulls().ToList();
-        }
-
-        private bool TryGetQuickStation ( IRestRequest request, out NavWaypoint quickStation )
-        {
-            var clientResponse = spanshRestClient.Get(request);
-            quickStation = null;
-            if (clientResponse.IsSuccessful)
+            try
             {
-                if ( string.IsNullOrEmpty( clientResponse.Content ) )
+                var requestUri = $"station/{marketId}";
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                clientResponse.EnsureSuccessStatusCode();
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                if ( string.IsNullOrEmpty( responseJson ) )
                 {
-                    Logging.Warn( "Unable to handle server response." );
+                    Logging.Warn( "Spansh API returned no result" );
+                    return null;
                 }
+
                 try
                 {
-                    var jResponse = JToken.Parse( clientResponse.Content );
+                    var jResponse = JToken.Parse( responseJson );
                     if ( jResponse.Contains( "error" ) )
                     {
-                        Logging.Debug( "Spansh responded with: " + jResponse["error"] );
+                        Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
                     }
-                    quickStation = ParseQuickStationWaypoint( jResponse[ "record" ] );
+                    else
+                    {
+                        return ParseQuickStationWaypoint( jResponse[ "record" ] );
+                    }
                 }
                 catch ( Exception e )
                 {
                     Logging.Error( "Failed to parse Spansh response", e );
                 }
             }
-            else
+            catch ( HttpRequestException he )
             {
-                Logging.Warn( "Spansh responded with: " + clientResponse.ErrorMessage, clientResponse.ErrorException );
+                Logging.Error( he.Message, he );
             }
 
-            return quickStation != null;
+            return null;
+        }
+
+        public async Task<IList<NavWaypoint>> GetQuickStationsAsync ( long[] marketIds )
+        {
+            return await Task.WhenAll( marketIds.AsParallel().Select( async s => await GetQuickStationAsync(s) ).RemoveNulls() ).ConfigureAwait(false);
         }
 
         public NavWaypoint ParseQuickStationWaypoint ( JToken stationData )

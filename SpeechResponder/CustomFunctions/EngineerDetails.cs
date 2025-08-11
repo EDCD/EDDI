@@ -21,8 +21,8 @@ namespace EddiSpeechResponder.CustomFunctions
             if ( result is null )
             {
                 var starSystem = ulong.TryParse( input.AsString, out var systemAddress ) 
-                    ? EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress, true, true ) 
-                    : EDDI.Instance.DataProvider.GetOrFetchStarSystem( input.AsString, true, true );
+                    ? EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress, true, true ).GetAwaiter().GetResult()
+                    : EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( input.AsString, true, true ).GetAwaiter().GetResult();
 
                 if ( starSystem != null )
                 {

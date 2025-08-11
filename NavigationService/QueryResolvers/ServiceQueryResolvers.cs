@@ -5,6 +5,7 @@ using EddiEvents;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiNavigationService.QueryResolvers
@@ -99,15 +100,14 @@ namespace EddiNavigationService.QueryResolvers
     {
         public RouteDetailsEvent Resolve ( QueryType queryType, Dictionary<string, object> spanshQueryFilter,
             [ NotNull ] Query query,
-            [ NotNull ] StarSystem startSystem ) => GetServiceSystem( queryType,
-            startSystem, spanshQueryFilter, 
-            query.NumericArg is null ? (int?)null : Convert.ToInt32( Math.Round( (decimal)query.NumericArg ) ),
-            query.BooleanArg
-        );
+            [ NotNull ] StarSystem startSystem ) => GetServiceSystemAsync( queryType, startSystem, spanshQueryFilter, query.NumericArg is null 
+                ? (int?)null 
+                : Convert.ToInt32( Math.Round( (decimal)query.NumericArg ) ), 
+            query.BooleanArg ).GetAwaiter().GetResult();
 
         /// <summary> Route to the nearest star system that offers a specific service </summary>
         /// <returns> The query result </returns>
-        private static RouteDetailsEvent GetServiceSystem ( QueryType serviceQuery, [ NotNull ] StarSystem startSystem,
+        private static async Task<RouteDetailsEvent> GetServiceSystemAsync ( QueryType serviceQuery, [ NotNull ] StarSystem startSystem,
             Dictionary<string, object> spanshQueryFilter = null, int? maxDistanceOverride = null,
             bool? prioritizeOrbitalStationsOverride = null )
         {
@@ -143,7 +143,7 @@ namespace EddiNavigationService.QueryResolvers
             }
             spanshQueryFilter.Add( "distance_to_arrival", new { comparison = "<=>", value = new[] { 0, maxStationDistance } } );
             
-            var searchResult = EDDI.Instance.DataProvider.FetchStationWaypoint( fromX, fromY, fromZ, spanshQueryFilter );
+            var searchResult = await EDDI.Instance.DataProvider.FetchStationWaypointAsync( fromX, fromY, fromZ, spanshQueryFilter ).ConfigureAwait(false);
             if ( searchResult != null )
             {
                 searchResult.visited = searchResult.systemAddress == startSystem.systemAddress;

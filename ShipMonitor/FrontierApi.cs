@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiShipMonitor
@@ -15,7 +16,7 @@ namespace EddiShipMonitor
     {
         private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
-        public static List<Ship> ShipyardFromJson(Ship activeShip, dynamic json)
+        public static async Task<List<Ship>> ShipyardFromJsonAsync(Ship activeShip, dynamic json)
         {
             var shipyard = new List<Ship>();
 
@@ -40,7 +41,7 @@ namespace EddiShipMonitor
                             var shipMarketId = shipObj["station"]?["id"]?.ToObject<long?>();
                             var stationWaypoint = shipSystemAddress is null || shipMarketId is null
                                 ? null 
-                                : EDDI.Instance.DataProvider.GetOrFetchStationWaypoint( (ulong)shipSystemAddress, (long)shipMarketId );
+                                : await EDDI.Instance.DataProvider.GetOrFetchStationWaypointAsync( (ulong)shipSystemAddress, (long)shipMarketId ).ConfigureAwait(false);
                             ship.StoredLocation =
                                 stationWaypoint is null ? null : new Ship.Location( stationWaypoint );
                             ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
@@ -81,7 +82,7 @@ namespace EddiShipMonitor
 
                 Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
 
-                decimal? healthOutOf1e6 = (decimal?)(json["health"]?["hull"]);
+                decimal? healthOutOf1e6 = (decimal?)json["health"]?["hull"];
                 if (healthOutOf1e6 != null)
                 {
                     decimal healthPercent = (decimal)healthOutOf1e6 / 10_000M;
@@ -99,7 +100,7 @@ namespace EddiShipMonitor
                     Ship.powerdistributor = ModuleFromJson( (JObject)json["modules"]["PowerDistributor"]);
                     Ship.sensors = ModuleFromJson( (JObject)json["modules"]["Radar"]);
                     Ship.fueltank = ModuleFromJson( (JObject)json["modules"]["FuelTank"]);
-                    Ship.paintjob = (string)(json["modules"]?["PaintJob"]?["name"]);
+                    Ship.paintjob = (string)json["modules"]?["PaintJob"]?["name"];
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
                     Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
@@ -214,7 +215,6 @@ namespace EddiShipMonitor
 
         public static Module ModuleFromJson(JObject json)
         {
-            long id = (long)json["module"]["id"];
             string edName = (string)json["module"]["name"];
 
             Module module = new Module(Module.FromEDName(edName, json["module"]) ?? new Module());

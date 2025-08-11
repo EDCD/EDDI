@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Utilities;
@@ -188,11 +189,11 @@ namespace EddiCommanderMonitor
                 // Legacy configurations may not have system address values stored. Fix that here.
                 if ( configuration.homeSystemAddress is null && !string.IsNullOrEmpty( configuration.homeSystemName ) )
                 {
-                    var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.homeSystemName );
+                    var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( configuration.homeSystemName ).GetAwaiter().GetResult();
                     configuration.homeSystemAddress = wp.systemAddress;
                 }
 
-                setHomeSystem( configuration.homeSystemAddress );
+                setHomeSystemAsync( configuration.homeSystemAddress ).GetAwaiter().GetResult();
                 setHomeStation( configuration.homeStationMarketID );
             }
             else
@@ -403,12 +404,12 @@ namespace EddiCommanderMonitor
             // Legacy configurations may not have system address values stored. Fix that here.
             if ( configuration.squadronSystemAddress is null && !string.IsNullOrEmpty( configuration.squadronSystemName ) )
             {
-                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( configuration.squadronSystemName );
+                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( configuration.squadronSystemName ).GetAwaiter().GetResult();
                 configuration.squadronSystemAddress = wp.systemAddress;
             }
 
             // Set our squadron home star system
-            setSquadronSystem( configuration.squadronSystemAddress, configuration.squadronFaction );
+            setSquadronSystemAsync( configuration.squadronSystemAddress, configuration.squadronFaction ).GetAwaiter().GetResult();
 
             if ( @event.timestamp >= updatedAt )
             {
@@ -518,12 +519,12 @@ namespace EddiCommanderMonitor
             ConfigService.Instance.commanderConfiguration = configuration;
         }
 
-        public void setHomeSystem ( ulong? newSystemAddress )
+        public async Task setHomeSystemAsync ( ulong? newSystemAddress )
         {
             StarSystem newSystem = null;
             if ( newSystemAddress != null )
             {
-                newSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem( (ulong)newSystemAddress );
+                newSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)newSystemAddress ).ConfigureAwait(false);
             }
 
             //Ignore null & empty systems
@@ -612,7 +613,7 @@ namespace EddiCommanderMonitor
                 if ( EDDI.Instance.CurrentStarSystem?.systemAddress == currentSystemAddress )
                 {
                     // Update the squadron system data, if changed
-                    setSquadronSystem( EDDI.Instance.CurrentStarSystem?.systemAddress, squadronFaction.name );
+                    setSquadronSystemAsync( EDDI.Instance.CurrentStarSystem?.systemAddress, squadronFaction.name ).GetAwaiter().GetResult();
 
                     // Update the squadron allegiance according to the faction info from the journal
                     setSquadronAllegiance( EDDI.Instance.CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None );
@@ -643,12 +644,12 @@ namespace EddiCommanderMonitor
             }
         }
 
-        public void setSquadronSystem ( ulong? newSystemAddress, string squadronFactionName = null )
+        public async Task setSquadronSystemAsync ( ulong? newSystemAddress, string squadronFactionName = null )
         {
             StarSystem newSystem = null;
             if ( newSystemAddress != null )
             {
-                newSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem( (ulong)newSystemAddress );
+                newSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)newSystemAddress ).ConfigureAwait(false);
             }
 
             //Ignore null & empty systems
@@ -739,7 +740,7 @@ namespace EddiCommanderMonitor
         private void postHandleSquadronStartupEvent ()
         {
             var configuration = ConfigService.Instance.commanderConfiguration;
-            setSquadronSystem( configuration.squadronSystemAddress, configuration.squadronFaction );
+            setSquadronSystemAsync( configuration.squadronSystemAddress, configuration.squadronFaction ).GetAwaiter().GetResult();
         }
 
         public void HandleStatus ( Status status )

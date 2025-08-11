@@ -1173,9 +1173,10 @@ namespace EddiJournalMonitor
                                     var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
                                     if ( bodyType == BodyType.Planet )
                                     {
-                                        bodyType = EDDI.Instance.DataProvider.GetOrCreateStarSystem( systemAddress, systemName )?
-                                                       .bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
-                                                   bodyType;
+                                        var starSystem = EDDI.Instance.DataProvider
+                                            .GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter()
+                                            .GetResult();
+                                        bodyType = starSystem?.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ?? bodyType;
                                     }
 
                                     var docked = JsonParsing.getBool(data, "Docked");
@@ -2866,7 +2867,7 @@ namespace EddiJournalMonitor
                                                 .Replace("$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#")
                                                 .Split('#');
 
-                                            var starSystems = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoints(destinationSystems);
+                                            var starSystems = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointsAsync(destinationSystems).GetAwaiter().GetResult();
                                             foreach ( var dest in starSystems )
                                             {
                                                 if ( !string.IsNullOrEmpty( dest.systemName ) &&
@@ -3637,8 +3638,8 @@ namespace EddiJournalMonitor
 
                                                     var shipSystemName = JsonParsing.getString(shipData, "StarSystem");
                                                     var shipMarketID = JsonParsing.getOptionalLong( shipData, "ShipMarketID" );
-                                                    var stationWaypoint = EDDI.Instance.DataProvider.GetOrFetchStationWaypoint(
-                                                            shipSystemName ?? system, shipMarketID ?? marketId );
+                                                    var stationWaypoint = EDDI.Instance.DataProvider.GetOrFetchStationWaypointAsync(
+                                                            shipSystemName ?? system, shipMarketID ?? marketId ).GetAwaiter().GetResult();
                                                     ship.StoredLocation = stationWaypoint is null 
                                                         ? null 
                                                         : new Ship.Location( stationWaypoint );
@@ -4038,11 +4039,10 @@ namespace EddiJournalMonitor
                                                    BodyType.None;
                                     if ( bodyType == BodyType.Planet )
                                     {
-                                        bodyType = EDDI.Instance.DataProvider
-                                                       .GetOrCreateStarSystem( systemAddress, systemName )?
-                                                       .bodies.FirstOrDefault( b =>
-                                                           b.bodyId != null && b.bodyId == bodyId )?.bodyType ??
-                                                   bodyType;
+                                        var starSystem = EDDI.Instance.DataProvider
+                                            .GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter()
+                                            .GetResult();
+                                        bodyType = starSystem?.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == bodyId )?.bodyType ?? bodyType;
                                     }
 
                                     // Get carrier data (may not be present when on-foot at a fleet carrier but not docked)
@@ -4163,7 +4163,7 @@ namespace EddiJournalMonitor
                                     // There is a bug in the journal output where "Body" can be missing but "BodyID" can be present. Try to Work around that here.
                                     if (string.IsNullOrEmpty(bodyName) && systemAddress > 0)
                                     {
-                                        var starSystem = EDDI.Instance.DataProvider.GetOrCreateStarSystem( systemAddress, systemName );
+                                        var starSystem = EDDI.Instance.DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter().GetResult();
                                         bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
                                     }
 

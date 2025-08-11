@@ -67,7 +67,7 @@ namespace EddiVoiceAttackResponder
                         InvokeSpeech();
                         break;
                     case "system comment":
-                        InvokeStarMapSystemComment();
+                        InvokeStarMapSystemComment().GetAwaiter().GetResult();
                         break;
                     case "initialize eddi":
                         if (App.FromVA && Application.Current != null)
@@ -118,7 +118,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "missionsroute":
                     case "route":
-                        InvokeRouteDetails();
+                        InvokeRouteDetailsAsync().GetAwaiter().GetResult();
                         break;
                     case "inara":
                         InvokeInaraProfileDetails();
@@ -729,7 +729,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Send a comment to the starmap service and store locally
         /// </summary>
-        public static void InvokeStarMapSystemComment ()
+        public static async Task InvokeStarMapSystemComment ()
         {
             try
             {
@@ -743,7 +743,7 @@ namespace EddiVoiceAttackResponder
                 {
                     // Store locally
                     var systemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
-                    var currentSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem(systemAddress);
+                    var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync(systemAddress).ConfigureAwait(false);
                     currentSystem.comment = comment == "" ? null : comment;
                     EDDI.Instance.DataProvider.SaveStarSystem( currentSystem );
 
@@ -777,7 +777,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeRouteDetails ()
+        public static async Task InvokeRouteDetailsAsync ()
         {
             try
             {
@@ -796,7 +796,7 @@ namespace EddiVoiceAttackResponder
 
                 if ( Enum.TryParse( type, true, out QueryType result ) )
                 {
-                    var @event = NavigationService.Instance.NavQuery(result, string0, string1, numeric, boolean);
+                    var @event = await NavigationService.Instance.NavQueryAsync(result, string0, string1, numeric, boolean).ConfigureAwait(false);
                     if ( @event != null )
                     {
                         EDDI.Instance?.enqueueEvent( @event );

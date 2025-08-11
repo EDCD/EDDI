@@ -183,7 +183,7 @@ namespace CommanderMonitor
                     if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
                     {
                         var newHomeSystem = e.AddedItems[0] as NavWaypoint;
-                        commanderMonitor().setHomeSystem( newHomeSystem?.systemAddress );
+                        commanderMonitor().setHomeSystemAsync( newHomeSystem?.systemAddress ).GetAwaiter().GetResult();
                         ConfigureHomeStationOptions();
                     }
                 }
@@ -360,7 +360,7 @@ namespace CommanderMonitor
                     if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
                     {
                         var newSquadronSystem = e.AddedItems[0] as NavWaypoint;
-                        commanderMonitor().setSquadronSystem( newSquadronSystem?.systemAddress, null );
+                        commanderMonitor().setSquadronSystemAsync( newSquadronSystem?.systemAddress, null ).GetAwaiter().GetResult();
                         ConfigureSquadronFactionOptions( commanderMonitor().SquadronStarSystem?.factions,
                             ConfigService.Instance.commanderConfiguration.squadronFaction );
                     }

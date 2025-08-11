@@ -1,9 +1,10 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -15,44 +16,47 @@ namespace EddiSpanshService
         /// </summary>
         /// <param name="partialSystemName">At least a partial system name is required.</param>
         /// <returns>A list of basic system waypoints (with just system name, system address, and coordinates) ordered by match with the provided system name</returns>
-        public List<NavWaypoint> GetWaypointsBySystemName (string partialSystemName)
+        public async Task<List<NavWaypoint>> GetWaypointsBySystemNameAsync (string partialSystemName)
         {
             if (string.IsNullOrEmpty(partialSystemName)) { return new List<NavWaypoint>(); }
 
-            var request = PrepareRequest(partialSystemName);
-            var clientResponse = spanshRestClient.Get(request);
-
-            if (clientResponse.IsSuccessful)
+            try
             {
-                if ( string.IsNullOrEmpty( clientResponse.Content ) )
+                var requestUri = PrepareRequest( partialSystemName );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                clientResponse.EnsureSuccessStatusCode();
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                if ( string.IsNullOrEmpty( responseJson ) )
                 {
                     Logging.Warn( "Unable to handle server response." );
                     return new List<NavWaypoint>();
                 }
 
-                Logging.Debug("Spansh responded with " + clientResponse.Content);
-                var response = JToken.Parse(clientResponse.Content);
-                if (response is JObject responses && 
-                    responses.ContainsKey("values"))
+                Logging.Debug( "Spansh responded with " + responseJson );
+                var response = JToken.Parse( responseJson );
+                if ( response is JObject responses && responses.ContainsKey( "values" ) )
                 {
-                    var starSystems = ParseTypeAheadSystems(responses);
+                    var starSystems = ParseTypeAheadSystems( responses );
                     return starSystems
-                        .OrderByDescending(s => s.systemName.Equals( partialSystemName, StringComparison.InvariantCultureIgnoreCase ) )
+                        .OrderByDescending( s =>
+                            s.systemName.Equals( partialSystemName, StringComparison.InvariantCultureIgnoreCase ) )
                         .ToList();
                 }
             }
-            else
+            catch ( HttpRequestException he )
             {
-                Logging.Warn("Spansh responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+                Logging.Error( he.Message, he );
+                return null;
             }
+
             return new List<NavWaypoint>();
         }
 
-        private IRestRequest PrepareRequest(string partialSystemName)
+        private string PrepareRequest(string partialSystemName)
         {
-            var request = new RestRequest("systems/field_values/system_names");
-            request.AddParameter("q", partialSystemName);
-            return request;
+            var requestUri = $"systems/field_values/system_names?q={partialSystemName}";
+            return requestUri;
         }
 
         private List<NavWaypoint> ParseTypeAheadSystems ( JToken responses )

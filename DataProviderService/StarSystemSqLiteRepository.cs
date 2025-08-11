@@ -224,7 +224,7 @@ namespace EddiDataProviderService
             return results;
         }
 
-        private List<DatabaseStarSystem> ReadStarSystems(List<StarSystem> starSystems)
+        private List<DatabaseStarSystem> ReadStarSystems(IList<StarSystem> starSystems)
         {
             List<DatabaseStarSystem> results = new List<DatabaseStarSystem>();
             if (!starSystems.Any()) { return results; }
@@ -331,7 +331,7 @@ namespace EddiDataProviderService
             SaveStarSystems(new List<StarSystem> { starSystem });
         }
 
-        public void SaveStarSystems(List<StarSystem> starSystems)
+        public void SaveStarSystems(IList<StarSystem> starSystems)
         {
             // Determine whether we need to delete, insert, or update each system
             var delete = new List<StarSystem>();

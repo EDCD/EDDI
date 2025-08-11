@@ -1,117 +1,51 @@
 ﻿using EddiSpanshService;
-using RestSharp;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace Tests
 {
     // A mock rest client for the Spansh Service
-    internal class FakeSpanshRestClient : ISpanshRestClient
+    internal class FakeSpanshHttpClient : ISpanshHttpClient
     {
-        public Dictionary<string, string> CannedContent = new Dictionary<string, string>();
+        #region Implementation of ISpanshHttpClient
 
-        public Uri BuildUri(IRestRequest request)
+        public async Task<HttpResponseMessage> GetAsync ( string requestUri )
         {
-            return new Uri("fakeSpansh://" + request.Resource);
+            var responseContent = FetchContentFromUri(requestUri);
+            return await Task.FromResult( new HttpResponseMessage()
+            {
+                Content = new StringContent( responseContent, System.Text.Encoding.UTF8, "application/json" ),
+                StatusCode = HttpStatusCode.OK
+            } ).ConfigureAwait(false);
         }
 
-        IRestResponse<T> ISpanshRestClient.Execute<T>(IRestRequest request)
+        public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent requestContent )
+        {
+            var json = await requestContent.ReadAsStringAsync().ConfigureAwait( false );
+            requestUri += $"?={json}";
+            var responseContent = FetchContentFromUri(requestUri);
+            return await Task.FromResult( new HttpResponseMessage()
+            {
+                Content = new StringContent( responseContent, System.Text.Encoding.UTF8, "application/json" ),
+                StatusCode = HttpStatusCode.OK
+            } ).ConfigureAwait(false);
+        }
+
+        #endregion
+
+        private readonly Dictionary<string, string> CannedContent = new Dictionary<string, string>();
+
+        private string FetchContentFromUri(string requestUri)
         {
             // this will throw if given a resource not in the canned dictionaries: that's OK
-            var content = CannedContent[request.Resource];
-            IRestResponse<T> restResponse = new RestResponse<T>
+            if ( CannedContent.TryGetValue(requestUri, out var content))
             {
-                Content = content,
-                ResponseStatus = ResponseStatus.Completed,
-                StatusCode = HttpStatusCode.OK,
-            };
-            return restResponse;
-        }
-
-        public Task<IRestResponse<T>> ExecuteAsync<T>(IRestRequest request)
-        {
-            return Task.FromResult( ( (ISpanshRestClient)this ).Execute<T>( request));
-        }
-
-        IRestResponse ISpanshRestClient.Get(IRestRequest request)
-        {
-            var resourceString = $"{request.Resource}";
-
-            // this will throw if given a resource not in the canned dictionaries: that's OK
-            try
-            {
-                resourceString += request.Parameters.Any() ? "?" : string.Empty;
-                for ( var i = 0; i < request.Parameters.Count; i++ )
-                {
-                    var parameter = request.Parameters[ i ];
-                    resourceString += i > 0 ? "&" : "";
-                    resourceString += $"{parameter.Name}={parameter.Value}";
-                }
-
-                var content = CannedContent[resourceString];
-                IRestResponse restResponse = new RestResponse
-                {
-                    Content = content,
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode = HttpStatusCode.OK,
-                };
-                return restResponse;
+                return content;
             }
-            catch ( KeyNotFoundException knfe )
-            {
-                Logging.Error( knfe.Message, knfe );
-                throw;
-            }
-        }
 
-        Task<IRestResponse> ISpanshRestClient.GetAsync(IRestRequest request)
-        {
-            return Task.FromResult( ( (ISpanshRestClient)this ).Get(request));
-        }
-
-        public IRestResponse Post ( IRestRequest request )
-        {
-            var resourceString = $"{request.Resource}";
-
-            // this will throw if given a resource not in the canned dictionaries: that's OK
-            try
-            {
-                resourceString += request.Parameters.Any() ? "?" : string.Empty;
-                foreach ( var parameter in request.Parameters )
-                {
-                    resourceString += $"{parameter.Name}={parameter.Value}";
-                }
-
-                var content = CannedContent[resourceString];
-                IRestResponse restResponse = content is null
-                    ? new RestResponse
-                    {
-                        Content = string.Empty,
-                        ResponseStatus = ResponseStatus.Error,
-                        StatusCode = HttpStatusCode.InternalServerError
-                    }
-                    : new RestResponse
-                    {
-                        Content = content, 
-                        ResponseStatus = ResponseStatus.Completed, 
-                        StatusCode = HttpStatusCode.OK
-                    };
-                return restResponse;
-            }
-            catch ( KeyNotFoundException knfe )
-            {
-                Logging.Error( knfe.Message, knfe );
-                throw;
-            }
-        }
-
-        Task<IRestResponse> ISpanshRestClient.PostAsync(IRestRequest request)
-        {
-            return Task.FromResult( ( (ISpanshRestClient)this ).Post(request));
+            throw new KeyNotFoundException($"No canned content found for URI: {requestUri}");
         }
 
         public void Expect(string resource, string content)

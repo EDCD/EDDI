@@ -38,19 +38,20 @@ namespace EddiDataProviderService
             this.starSystemRepository = starSystemRepository ?? new StarSystemSqLiteRepository(unitTesting);
         }
 
-        public List<NavWaypoint> GetTypeAheadSystems ( string systemName )
+        public async Task<List<NavWaypoint>> GetTypeAheadSystemsAsync ( string systemName )
         {
-            return spanshService.GetWaypointsBySystemName( systemName ).ToList();
+            return await spanshService.GetWaypointsBySystemNameAsync( systemName ).ConfigureAwait(false);
         }
 
         [NotNull]
-        public StarSystem GetOrCreateStarSystem ( ulong systemAddress, string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
+        public async Task<StarSystem> GetOrCreateStarSystemAsync ( ulong systemAddress, string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false )
         {
-            return GetOrCreateStarSystems( new Dictionary<ulong, string> { { systemAddress, systemName } }, fetchIfMissing, refreshIfOutdated, showMarketDetails ).First();
+            var starSystems = await GetOrCreateStarSystemsAsync( new Dictionary<ulong, string> { { systemAddress, systemName } }, fetchIfMissing, refreshIfOutdated, showMarketDetails );
+            return starSystems.First();
         }
 
         [ItemNotNull]
-        public List<StarSystem> GetOrCreateStarSystems ( Dictionary<ulong, string> requestedSystems,
+        public async Task<List<StarSystem>> GetOrCreateStarSystemsAsync ( Dictionary<ulong, string> requestedSystems,
             bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             var results = new List<StarSystem>();
@@ -60,7 +61,7 @@ namespace EddiDataProviderService
                 .Where( k => results.All( s => s.systemAddress != k.Key ) )
                 .ToDictionary( k => k.Key, v => v.Value );
 
-            results = GetOrFetchStarSystems( missingSystems().Keys.ToArray(), fetchIfMissing, refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments ) ?? new List<StarSystem>();
+            results = await GetOrFetchStarSystemsAsync( missingSystems().Keys.ToArray(), fetchIfMissing, refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments ).ConfigureAwait(false) ?? new List<StarSystem>();
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             var createdStarSystems = missingSystems()
@@ -71,11 +72,13 @@ namespace EddiDataProviderService
             return results;
         }
 
-        public StarSystem GetOrFetchStarSystem ( ulong systemAddress, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
+        public async Task<StarSystem> GetOrFetchStarSystemAsync ( ulong systemAddress, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             if ( systemAddress <= 0 ) { return null; }
 
-            return GetOrFetchStarSystems( new[] { systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments )?.FirstOrDefault();
+            var starSystems = await GetOrFetchStarSystemsAsync( new[] { systemAddress }, fetchIfMissing,
+                refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments ).ConfigureAwait( false );
+            return starSystems?.FirstOrDefault();
         }
 
         /// <summary>
@@ -87,7 +90,7 @@ namespace EddiDataProviderService
         /// <param name="showMarketDetails"></param>
         /// <param name="fetchEdsmVisitsAndComments"></param>
         /// <returns></returns>
-        public StarSystem GetOrFetchStarSystem ( string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
+        public async Task<StarSystem> GetOrFetchStarSystemAsync ( string systemName, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             if ( string.IsNullOrEmpty( systemName ) ) { return null; }
 
@@ -105,12 +108,15 @@ namespace EddiDataProviderService
             }
 
             // Fetch from external data sources (when so instructed)
-            var fetchedWaypoint = GetOrFetchSystemWaypoint( systemName );
+            var fetchedWaypoint = await GetOrFetchSystemWaypointAsync( systemName ).ConfigureAwait(false);
             if ( fetchedWaypoint is null ) { return null; }
-            return GetOrFetchStarSystems( new[] { fetchedWaypoint.systemAddress }, fetchIfMissing, refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments )?.FirstOrDefault();
+
+            var starSystems = await GetOrFetchStarSystemsAsync( new[] { fetchedWaypoint.systemAddress }, fetchIfMissing,
+                refreshIfOutdated, showMarketDetails, fetchEdsmVisitsAndComments ).ConfigureAwait(false);
+            return starSystems?.FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrFetchStarSystems ( ulong[] systemAddresses, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
+        public async Task<List<StarSystem>> GetOrFetchStarSystemsAsync ( ulong[] systemAddresses, bool fetchIfMissing = true, bool refreshIfOutdated = true, bool showMarketDetails = false, bool fetchEdsmVisitsAndComments = true )
         {
             var results = new List<StarSystem>();
             if ( systemAddresses is null || !systemAddresses.Any() ) { return results; }
@@ -126,13 +132,13 @@ namespace EddiDataProviderService
             // Fetch from external data providers (when so instructed)
             if ( missingSystems().Any() && fetchIfMissing )
             {
-                var fetchedSystems = FetchSystemsData( missingSystems(), showMarketDetails ) ?? new List<StarSystem>();
-                if ( fetchedSystems?.Count > 0 )
+                var fetchedSystems = await FetchSystemsDataAsync( missingSystems(), showMarketDetails ).ConfigureAwait(false) ?? new List<StarSystem>();
+                if ( fetchedSystems.Count > 0 )
                 {
                     if ( fetchEdsmVisitsAndComments )
                     {
                         // Synchronize EDSM visits and comments
-                        fetchedSystems = SyncFromStarMapServiceAsync( fetchedSystems ).GetAwaiter().GetResult();                        
+                        fetchedSystems = await SyncFromStarMapServiceAsync( fetchedSystems ).ConfigureAwait(false);                        
                     }
 
                     // Update properties that aren't synced from the server and that we want to preserve
@@ -157,14 +163,14 @@ namespace EddiDataProviderService
             return results;
         }
 
-        public StarSystem GetOrFetchQuickStarSystem ( ulong systemAddress, bool fetchIfMissing = true )
+        public async Task<StarSystem> GetOrFetchQuickStarSystemAsync ( ulong systemAddress, bool fetchIfMissing = true )
         {
             if ( systemAddress <= 0 ) { return null; }
 
-            return GetOrFetchQuickStarSystems( new[] { systemAddress }, fetchIfMissing )?.FirstOrDefault();
+            return (await GetOrFetchQuickStarSystemsAsync( new[] { systemAddress }, fetchIfMissing ))?.FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrFetchQuickStarSystems ( ulong[] systemAddresses, bool fetchIfMissing = true )
+        public async Task<List<StarSystem>> GetOrFetchQuickStarSystemsAsync ( ulong[] systemAddresses, bool fetchIfMissing = true )
         {
             var results = new List<StarSystem>();
             if ( systemAddresses is null || !systemAddresses.Any() ) { return results; }
@@ -181,7 +187,7 @@ namespace EddiDataProviderService
             if ( missingSystems().Any() && fetchIfMissing )
             {
                 // Add the external data to our results
-                results.AddRange( spanshService.GetQuickStarSystems( missingSystems() ) );
+                results.AddRange( await spanshService.GetQuickStarSystemsAsync( missingSystems() ).ConfigureAwait(false) );
             }
 
             if ( missingSystems().Any() )
@@ -192,20 +198,22 @@ namespace EddiDataProviderService
             return results;
         }
 
-        public List<StarSystem> GetOrFetchQuickStarSystems ( string[] systemNames, bool fetchIfMissing = true )
+        public async Task<List<StarSystem>> GetOrFetchQuickStarSystemsAsync ( string[] systemNames, bool fetchIfMissing = true )
         {
-            var systemAddresses = systemNames.AsParallel().Select( GetOrFetchSystemWaypoint )
-                .Where( wp => wp != null ).Select( wp => wp.systemAddress ).ToArray();
-            return GetOrFetchQuickStarSystems( systemAddresses.ToArray(), fetchIfMissing );
+            var waypointTasks = systemNames.AsParallel().Select( async s => await GetOrFetchSystemWaypointAsync( s ).ConfigureAwait( false ) );
+            var waypoints = await Task.WhenAll(waypointTasks).ConfigureAwait(false);
+            var systemAddresses = waypoints.Where( wp => wp != null ).Select( wp => wp.systemAddress ).ToArray();
+            return await GetOrFetchQuickStarSystemsAsync( systemAddresses.ToArray(), fetchIfMissing ).ConfigureAwait( false );
         }
 
-        public NavWaypoint GetOrFetchSystemWaypoint ( string systemName )
+        public async Task<NavWaypoint> GetOrFetchSystemWaypointAsync ( string systemName )
         {
             if ( string.IsNullOrEmpty(systemName) ) { return null; }
-            return GetOrFetchSystemWaypoints( new[] { systemName } ).FirstOrDefault();
+            var wp = await GetOrFetchSystemWaypointsAsync( new[] { systemName } ).ConfigureAwait( false );
+            return wp.FirstOrDefault();
         }
 
-        public List<NavWaypoint> GetOrFetchSystemWaypoints ( string[] systemNames )
+        public async Task<List<NavWaypoint>> GetOrFetchSystemWaypointsAsync ( string[] systemNames )
         {
             var results = new List<NavWaypoint>();
             if ( systemNames is null || !systemNames.Any() ) { return results; }
@@ -216,10 +224,12 @@ namespace EddiDataProviderService
             results.AddRange( starSystemCache.GetRange( missingSystems() ).Select( s => new NavWaypoint( s ) ) );
 
             // Fetch from Spansh
-            var waypoints = missingSystems().AsParallel().Select( systemName =>
-                spanshService.GetWaypointsBySystemName( systemName.Trim() ).FirstOrDefault( s =>
-                    s.systemName.Equals( systemName, StringComparison.InvariantCultureIgnoreCase ) ) ).ToList();
-            results.AddRange( waypoints );
+            var waypoints = missingSystems().AsParallel().Select( async systemName =>
+            {
+                var wp = await spanshService.GetWaypointsBySystemNameAsync( systemName.Trim() ).ConfigureAwait( false );
+                return wp.FirstOrDefault( s => s.systemName.Equals( systemName, StringComparison.InvariantCultureIgnoreCase ) );
+            } ).ToList();
+            results.AddRange( await Task.WhenAll(waypoints) );
 
             return results;
         }
@@ -230,7 +240,7 @@ namespace EddiDataProviderService
         /// <param name="fromSystemAddress"></param>
         /// <param name="fromMarketId"></param>
         /// <returns></returns>
-        public NavWaypoint GetOrFetchStationWaypoint ( ulong fromSystemAddress, long fromMarketId )
+        public async Task<NavWaypoint> GetOrFetchStationWaypointAsync ( ulong fromSystemAddress, long fromMarketId )
         {
             // Try to fetch from cached systems
             if ( starSystemCache.TryGet( fromSystemAddress, out var cachedStarSystem ) )
@@ -246,14 +256,14 @@ namespace EddiDataProviderService
                 }
             }
 
-            var system = GetOrFetchQuickStarSystem( fromSystemAddress );
+            var system = await GetOrFetchQuickStarSystemAsync( fromSystemAddress ).ConfigureAwait(false);
             var station = system?.stations.FirstOrDefault( s => s.marketId == fromMarketId );
             if ( station != null )
             {
                 return new NavWaypoint( system )
                 {
-                    stationName = station?.name,
-                    marketID = station?.marketId
+                    stationName = station.name,
+                    marketID = station.marketId
                 };
             }
 
@@ -266,7 +276,7 @@ namespace EddiDataProviderService
         /// <param name="fromSystemName"></param>
         /// <param name="fromMarketId"></param>
         /// <returns></returns>
-        public NavWaypoint GetOrFetchStationWaypoint ( string fromSystemName, long fromMarketId )
+        public async Task<NavWaypoint> GetOrFetchStationWaypointAsync ( string fromSystemName, long fromMarketId )
         {
             // Try to fetch from cached systems
             if ( !string.IsNullOrEmpty( fromSystemName ) && starSystemCache.TryGet( fromSystemName, out var cachedStarSystem ) )
@@ -283,11 +293,11 @@ namespace EddiDataProviderService
             }
 
             // Fetch from Spansh
-            var systemAddress = GetOrFetchSystemWaypoint( fromSystemName )?.systemAddress;
-            if ( systemAddress != null )
+            var wp = await GetOrFetchSystemWaypointAsync( fromSystemName ).ConfigureAwait(false);
+            if ( wp?.systemAddress != null )
             {
 
-                var system = GetOrFetchQuickStarSystem( (ulong)systemAddress );
+                var system = await GetOrFetchQuickStarSystemAsync( wp.systemAddress ).ConfigureAwait(false);
                 var station = system?.stations.FirstOrDefault( s => s.marketId == fromMarketId );
                 return new NavWaypoint( system )
                 {
@@ -337,7 +347,7 @@ namespace EddiDataProviderService
             return results;
         }
 
-        internal static List<StarSystem> PreserveUnsyncedProperties ( List<StarSystem> updatedSystems, List<DatabaseStarSystem> databaseStarSystems )
+        internal static IList<StarSystem> PreserveUnsyncedProperties ( IList<StarSystem> updatedSystems, IList<DatabaseStarSystem> databaseStarSystems )
         {
             foreach ( var updatedSystem in updatedSystems ?? new List<StarSystem>() )
             {
@@ -466,7 +476,7 @@ namespace EddiDataProviderService
             SaveStarSystems( new List<StarSystem> { starSystem } );
         }
 
-        public void SaveStarSystems ( List<StarSystem> starSystems )
+        public void SaveStarSystems ( IList<StarSystem> starSystems )
         {
             if ( !starSystems.Any() ) { return; }
 
@@ -492,25 +502,25 @@ namespace EddiDataProviderService
 
         #region Spansh Endpoints
 
-        public NavWaypointCollection FetchCarrierRoute ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
+        public async Task<NavWaypointCollection> FetchCarrierRouteAsync ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
             bool calculateTotalFuelRequired = true, string[] refuelDestinations = null, bool fromUIquery = false )
         {
-            return spanshService.GetCarrierRoute( currentSystem, targetSystems, usedCarrierCapacity,
-                calculateTotalFuelRequired, refuelDestinations, fromUIquery );
+            return await spanshService.GetCarrierRouteAsync( currentSystem, targetSystems, usedCarrierCapacity,
+                calculateTotalFuelRequired, refuelDestinations, fromUIquery ).ConfigureAwait( false );
         }
 
-        public NavWaypointCollection FetchGalaxyRoute ( string currentSystem, string targetSystem, Ship ship,
+        public async Task<NavWaypointCollection> FetchGalaxyRouteAsync ( string currentSystem, string targetSystem, Ship ship,
             int? cargoCarriedTons = null, bool isSupercharged = false, bool useSupercharge = true,
             bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
         {
-            return spanshService.GetGalaxyRoute( currentSystem, targetSystem, ship, cargoCarriedTons, isSupercharged,
-                useSupercharge, useInjections, excludeSecondary, fromUIquery );
+            return await spanshService.GetGalaxyRouteAsync( currentSystem, targetSystem, ship, cargoCarriedTons, isSupercharged,
+                useSupercharge, useInjections, excludeSecondary, fromUIquery ).ConfigureAwait( false );
         }
 
-        internal List<StarSystem> FetchSystemsData ( ulong[] systemAddresses, bool showMarketDetails = false )
+        internal async Task<IList<StarSystem>> FetchSystemsDataAsync ( ulong[] systemAddresses, bool showMarketDetails = false )
         {
             if ( systemAddresses == null || systemAddresses.Length == 0 ) { return new List<StarSystem>(); }
-            return spanshService.GetStarSystems( systemAddresses, showMarketDetails ).ToList();
+            return await spanshService.GetStarSystemsAsync( systemAddresses, showMarketDetails ).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -521,9 +531,9 @@ namespace EddiDataProviderService
         /// <param name="fromZ"></param>
         /// <param name="filters"></param>
         /// <returns></returns>
-        public NavWaypoint FetchStationWaypoint ( decimal fromX, decimal fromY, decimal fromZ, Dictionary<string, object> filters )
+        public async Task<NavWaypoint> FetchStationWaypointAsync ( decimal fromX, decimal fromY, decimal fromZ, Dictionary<string, object> filters )
         {
-            var data = spanshService.DistanceOrderedQuery( SpanshService.QueryGroup.stations, fromX, fromY, fromZ, filters );
+            var data = await spanshService.DistanceOrderedQueryAsync( SpanshService.QueryGroup.stations, fromX, fromY, fromZ, filters ).ConfigureAwait(false);
             if ( data?[ "error" ] != null )
             {
                 Logging.Warn( "Spansh API responded with: " + data[ "error" ] );
@@ -540,9 +550,9 @@ namespace EddiDataProviderService
         /// <param name="fromZ"></param>
         /// <param name="filters"></param>
         /// <returns></returns>
-        public NavWaypoint FetchBodyWaypoint ( decimal fromX, decimal fromY, decimal fromZ, Dictionary<string, object> filters )
+        public async Task<NavWaypoint> FetchBodyWaypointAsync ( decimal fromX, decimal fromY, decimal fromZ, Dictionary<string, object> filters )
         {
-            var data = spanshService.DistanceOrderedQuery( SpanshService.QueryGroup.bodies, fromX, fromY, fromZ, filters );
+            var data = await spanshService.DistanceOrderedQueryAsync( SpanshService.QueryGroup.bodies, fromX, fromY, fromZ, filters ).ConfigureAwait(false);
             if ( data?[ "error" ] != null )
             {
                 Logging.Warn( "Spansh API responded with: " + data[ "error" ] );
@@ -658,7 +668,7 @@ namespace EddiDataProviderService
                 {
                     var batchSize = Math.Min(StarMapService.syncBatchSize, total - i);
                     var batch = flightLogs.GetRange(i, batchSize);
-                    SyncEdsmLogBatch( batch, comments );
+                    await SyncEdsmLogBatchAsync( batch, comments ).ConfigureAwait(false);
                 }
 
                 Logging.Info( "EDSM flight logs synchronized" );
@@ -674,7 +684,7 @@ namespace EddiDataProviderService
         }
 
         // EDSM flight log synchronization (named star systems)
-        public async Task<List<StarSystem>> SyncFromStarMapServiceAsync(List<StarSystem> starSystems)
+        public async Task<IList<StarSystem>> SyncFromStarMapServiceAsync(IList<StarSystem> starSystems)
         {
             if (starSystems.Count > 0)
             {
@@ -723,14 +733,14 @@ namespace EddiDataProviderService
             return starSystems;
         }
 
-        public void SyncEdsmLogBatch ( List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments )
+        public async Task SyncEdsmLogBatchAsync ( List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments )
         {
             var syncedSystems = new List<StarSystem>();
             var uniqueAddresses = flightLogBatch
                 .Select( f => f.systemId64 )
                 .Distinct()
                 .ToArray();
-            var batchSystems = GetOrFetchStarSystems( uniqueAddresses, refreshIfOutdated: false, fetchEdsmVisitsAndComments: false );
+            var batchSystems = await GetOrFetchStarSystemsAsync( uniqueAddresses, refreshIfOutdated: false, fetchEdsmVisitsAndComments: false ).ConfigureAwait(false);
             var lookup = batchSystems.ToDictionary(s => s.systemAddress);
             var groupedLogs = flightLogBatch.GroupBy(f => f.systemId64);
 

@@ -286,7 +286,7 @@ namespace EddiEddnResponder.Toolkit
                 }
                 else
                 {
-                    system = EDDI.Instance.DataProvider.GetOrFetchQuickStarSystem( systemAddress );
+                    system = EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemAsync( systemAddress ).GetAwaiter().GetResult();
                 }
                 if (system != null)
                 {

@@ -1,9 +1,13 @@
 ﻿using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EddiSpanshService
 {
@@ -18,36 +22,93 @@ namespace EddiSpanshService
 
         public async Task<JToken> QueryAsync ( QueryGroup queryGroup, [NotNull] Dictionary<string, object> searchFilters, int? maxResults = 500, int? pageId = 0 )
         {
-            var request = GetRestRequest( queryGroup, searchFilters, maxResults, pageId );
-            var response = await spanshRestClient.PostAsync( request );
-            return response is null ? null : JToken.Parse( response.Content );
+            try
+            {
+                var requestContent = GetRequestContent( searchFilters, maxResults, pageId );
+                var response = await spanshHttpClient.PostAsync(  $"{queryGroup}/search", requestContent ).ConfigureAwait( false );
+                response.EnsureSuccessStatusCode();
+                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                if ( string.IsNullOrEmpty( responseJson ) )
+                {
+                    Logging.Warn( "Spansh API returned no result" );
+                    return null;
+                }
+
+                try
+                {
+                    var jResponse = JToken.Parse( responseJson );
+                    if ( jResponse.Contains( "error" ) )
+                    {
+                        Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                    }
+                    else
+                    {
+                        return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                    }
+                }
+                catch ( Exception e )
+                {
+                    Logging.Error( "Failed to parse Spansh response", e );
+                }
+            }
+            catch ( HttpRequestException he )
+            {
+                Logging.Error( he.Message, he );
+            }
+            
+            return null;
         }
 
-        [ CanBeNull ]
-        public JToken DistanceOrderedQuery ( QueryGroup queryGroup, decimal fromX, decimal fromY, decimal fromZ, [NotNull] Dictionary<string, object> searchFilters )
+        public async Task<JToken> DistanceOrderedQueryAsync ( QueryGroup queryGroup, decimal fromX, decimal fromY, decimal fromZ, [NotNull] Dictionary<string, object> searchFilters )
         {
-            var request = GetDistanceOrderedRestRequest( queryGroup, fromX, fromY, fromZ, searchFilters );
-            var response = spanshRestClient.Post( request );
-            return response is null ? null : JToken.Parse( response.Content );
+            try
+            {
+                var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters );
+                var response = await spanshHttpClient.PostAsync(  $"{queryGroup}/search", requestContent ).ConfigureAwait( false );
+                response.EnsureSuccessStatusCode();
+                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                try
+                {
+                    var jResponse = JToken.Parse( responseJson );
+                    if ( jResponse.Contains( "error" ) )
+                    {
+                        Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                    }
+                    else
+                    {
+                        return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                    }
+                }
+                catch ( Exception e )
+                {
+                    Logging.Error( "Failed to parse Spansh response", e );
+                }
+            }
+            catch ( HttpRequestException he )
+            {
+                Logging.Error( he.Message, he );
+            }
+
+            return null;
         }
 
-        // TODO: Handle multi-page responses (see BgsService for example)
-        private static IRestRequest GetRestRequest ( QueryGroup queryGroup, [NotNull] Dictionary<string, object> filter, int? maxResults, int? pageId )
+        // TODO: Handle multi-page responses?
+        private static StringContent GetRequestContent ( [NotNull] Dictionary<string, object> filter, int? maxResults, int? pageId )
         {
-            var request = new RestRequest($@"{queryGroup}/search") { Method = Method.POST };
             var jsonObject = new
             {
                 filters = filter,
                 size = maxResults,
                 page = pageId
             };
-            request.AddJsonBody( JsonConvert.SerializeObject( jsonObject ) );
-            return request;
+
+            return new StringContent( JsonConvert.SerializeObject( jsonObject ), Encoding.UTF8, "application/json" );
         }
 
-        private static IRestRequest GetDistanceOrderedRestRequest ( QueryGroup queryGroup, decimal fromX, decimal fromY, decimal fromZ, [NotNull] Dictionary<string, object> filter )
+        private static StringContent GetDistanceOrderedRequestContent ( decimal fromX, decimal fromY, decimal fromZ, [NotNull] Dictionary<string, object> filter )
         {
-            var request = new RestRequest($@"{queryGroup}/search") { Method = Method.POST };
             var jsonObject = new
             {
                 filters = filter,
@@ -63,8 +124,8 @@ namespace EddiSpanshService
                     { "x", fromX }, { "y", fromY }, { "z", fromZ }
                 }
             };
-            request.AddJsonBody( JsonConvert.SerializeObject( jsonObject ) );
-            return request;
+
+            return new StringContent( JsonConvert.SerializeObject( jsonObject ), Encoding.UTF8, "application/json" );
         }
     }
 }

@@ -20,10 +20,10 @@ namespace EddiSpeechResponder.CustomFunctions
             var result = Material.FromName(values[0].AsString);
             if (result?.edname != null && values.Count == 2)
             {
-                var starSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[1].AsString, true, false );
+                var starSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( values[1].AsString, true, false ).GetAwaiter().GetResult();
                 if (starSystem != null)
                 {
-                    var body = Material.highestPercentBody(result.edname, starSystem.bodies);
+                    var body = Material.highestPercentBody( result.edname, starSystem.bodies );
                     result.bodyname = body?.bodyname;
                     result.bodyshortname = body?.shortname;
                 }

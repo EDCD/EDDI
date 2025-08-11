@@ -352,11 +352,10 @@ namespace EddiNavigationMonitor
             { }
             else
             {
-                searchTask = Task.Run( () =>
+                searchTask = Task.Run( async () =>
                 {
-                    var @event = NavigationService.Instance.NavQuery(queryType, systemArg, stationArg, null, null, true);
-                    if ( @event == null )
-                    { return; }
+                    var @event = await NavigationService.Instance.NavQueryAsync(queryType, systemArg, stationArg, null, null, true).ConfigureAwait(false);
+                    if ( @event is null ) { return; }
                     EDDI.Instance.enqueueEvent( @event );
                 } );
             }
@@ -369,8 +368,7 @@ namespace EddiNavigationMonitor
             {
                 if ( sender is StarSystemComboBox starSystemComboBox )
                 {
-                    if ( !starSystemComboBox.IsLoaded )
-                    { return; }
+                    if ( !starSystemComboBox.IsLoaded ) { return; }
 
                     // Update configuration to new home system
                     if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
@@ -381,7 +379,7 @@ namespace EddiNavigationMonitor
                         NavigationService.Instance.LastQuerySystemArg = newValue?.systemName;
 
                         // Update station options for new system
-                        ConfigureSearchStationOptions( NavigationService.Instance.LastQuerySystemArg );
+                        ConfigureSearchStationOptionsAsync( NavigationService.Instance.LastQuerySystemArg ).GetAwaiter().GetResult();
                     }
                 }
             }
@@ -391,16 +389,16 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void ConfigureSearchStationOptions ( string system )
+        private async Task ConfigureSearchStationOptionsAsync ( string system )
         {
-            List<string> searchStationOptions = new List<string>
+            var searchStationOptions = new List<string>
                 {
                     Properties.NavigationMonitor.no_station
                 };
 
             if ( searchStationDropDown.Visibility == Visibility.Visible && !string.IsNullOrEmpty( system ) )
             {
-                var searchSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem(system);
+                var searchSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( system ).ConfigureAwait( false );
                 if ( searchSystem?.stations != null )
                 {
                     foreach ( var station in searchSystem.stations.Where( s => !s.IsCarrier() && !s.IsMegaShip() ) )
@@ -440,11 +438,11 @@ namespace EddiNavigationMonitor
         {
             if ( GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button )
             {
-                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQuery( QueryType.cancel, null, null, null, null, true ) );
+                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQueryAsync( QueryType.cancel, null, null, null, null, true ).GetAwaiter().GetResult() );
             }
             else
             {
-                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQuery( QueryType.set, null, null, null, null, true ) );
+                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQueryAsync( QueryType.set, null, null, null, null, true ).GetAwaiter().GetResult() );
             }
         }
 
@@ -454,7 +452,8 @@ namespace EddiNavigationMonitor
             {
                 if ( navigationMonitor().PlottedRoute.GuidanceEnabled )
                 {
-                    NavigationService.Instance.NavQuery( QueryType.cancel, null, null, null, null, true );
+                    NavigationService.Instance.NavQueryAsync( QueryType.cancel, null, null, null, null, true ).GetAwaiter().GetResult();
+                    ;
                 }
                 navigationMonitor().PlottedRoute.Waypoints.Clear();
                 navigationMonitor().WriteNavConfig();

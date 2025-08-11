@@ -614,8 +614,8 @@ namespace EddiShipMonitor
                 {
                     // Update ship location data in the event
                     var quickSystems =
-                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystems(
-                            @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false ) ??
+                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemsAsync(
+                            @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false ).GetAwaiter().GetResult() ??
                         new List<StarSystem>();
 
                     foreach ( var ship in @event.shipyard )
@@ -700,8 +700,8 @@ namespace EddiShipMonitor
                 if (@event.storedmodules != null)
                 {
                     var quickSystems =
-                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystems(
-                            @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), true ) ?? new List<StarSystem>();
+                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemsAsync(
+                            @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), true ).GetAwaiter().GetResult() ?? new List<StarSystem>();
                     foreach ( var module in @event.storedmodules )
                     {
                         var moduleSystem = quickSystems.FirstOrDefault( system => system.systemname == module.system );
@@ -1225,7 +1225,7 @@ namespace EddiShipMonitor
             var profileCurrentShip = FrontierApi.ShipFromJson((JObject)profile["ship"]);
 
             // Obtain the shipyard from the profile
-            var profileShipyard = FrontierApi.ShipyardFromJson(profileCurrentShip, profile);
+            var profileShipyard = FrontierApi.ShipyardFromJsonAsync(profileCurrentShip, profile).GetAwaiter().GetResult();
 
             if (profileCurrentShip != null)
             {

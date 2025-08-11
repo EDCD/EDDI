@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiNavigationService
@@ -153,8 +154,7 @@ namespace EddiNavigationService
         /// <param name="booleanArg">The query boolean argument, if any</param>
         /// <param name="fromUserInterface">True if the navigation query was generated from the UI thread</param>
         /// <returns>The query result</returns>
-        [CanBeNull]
-        public RouteDetailsEvent NavQuery(QueryType queryType, string stringArg0 = null, string stringArg1 = null, decimal? numericArg = null, bool? booleanArg = null, bool fromUserInterface = false)
+        public async Task<RouteDetailsEvent> NavQueryAsync(QueryType queryType, string stringArg0 = null, string stringArg1 = null, decimal? numericArg = null, bool? booleanArg = null, bool fromUserInterface = false)
         {
             IsWorking = true;
             RouteDetailsEvent result = null;
@@ -186,9 +186,11 @@ namespace EddiNavigationService
                             }
                             else
                             {
-                                var carrierLocation = !string.IsNullOrEmpty( stringArg1 ) ? EDDI.Instance.DataProvider.GetOrFetchStarSystem( stringArg1 )
-                                    : fleetCarrier.currentStarSystemAddress != null ? EDDI.Instance.DataProvider.GetOrFetchStarSystem( (ulong)fleetCarrier.currentStarSystemAddress )
-                                        : EDDI.Instance.DataProvider.GetOrFetchStarSystem( fleetCarrier.currentStarSystem );
+                                var carrierLocation = !string.IsNullOrEmpty( stringArg1 ) ? 
+                                    await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( stringArg1 ) : 
+                                    fleetCarrier.currentStarSystemAddress != null ? 
+                                        await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)fleetCarrier.currentStarSystemAddress ) : 
+                                        await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( fleetCarrier.currentStarSystem );
                                 if ( carrierLocation is null )
                                 {
                                     Logging.Warn("Invalid query: unable to find fleet carrier location.");
@@ -254,7 +256,7 @@ namespace EddiNavigationService
                     ConfigService.Instance.navigationMonitorConfiguration = navConfig;
 
                     // Update the global `SearchSystem` and `SearchStation` variables
-                    UpdateSearchData(result.systemAddress, result.marketId);
+                    await UpdateSearchDataAsync(result.systemAddress, result.marketId).ConfigureAwait(false);
                 }
             }
 
@@ -279,12 +281,12 @@ namespace EddiNavigationService
             return missionids;
         }
 
-        private void UpdateSearchData(ulong? searchSystemAddress, long? marketID)
+        private async Task UpdateSearchDataAsync(ulong? searchSystemAddress, long? marketID)
         {
             // Update search system data
             if ( searchSystemAddress > 0 )
             {
-                var system = EDDI.Instance.DataProvider.GetOrFetchStarSystem( (ulong)searchSystemAddress );
+                var system = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)searchSystemAddress ).ConfigureAwait(false);
 
                 //Ignore null & empty systems
                 if (system != null)

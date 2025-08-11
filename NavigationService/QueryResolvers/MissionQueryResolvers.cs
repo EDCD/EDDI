@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiNavigationService.QueryResolvers
@@ -15,13 +16,13 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.source;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetMissionCargoSourceRoute ( startSystem, query.StringArg0 );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetMissionCargoSourceRouteAsync ( startSystem, query.StringArg0 ).GetAwaiter().GetResult();
 
         /// <summary> Route to the nearest star system that can be used to source active mission cargo </summary>
         /// <param name="currentSystem"> The current star system </param>
         /// <param name="fromSystemName"> (Optional) If set, calculate relative to the named starting system rather than the current system </param>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetMissionCargoSourceRoute ( [NotNull] StarSystem currentSystem, string fromSystemName = null )
+        private async Task<RouteDetailsEvent> GetMissionCargoSourceRouteAsync ( [NotNull] StarSystem currentSystem, string fromSystemName = null )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.All( m => m.sourcesystem == null ) ) { return null; }
@@ -42,7 +43,7 @@ namespace EddiNavigationService.QueryResolvers
                     break;
                 }
 
-                var dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( mission.sourcesystem );
+                var dest = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( mission.sourcesystem ).ConfigureAwait(false);
                 var distance = dest.DistanceFromStarSystem(currentSystemWaypoint) ?? 0;
                 if ( !sortedSourceSystems.TryGetValue( distance, out _ ) )
                 {
@@ -54,11 +55,11 @@ namespace EddiNavigationService.QueryResolvers
             var searchSystem = sortedSourceSystems.Values.FirstOrDefault ();
 
             // Update the navRouteList
-            if ( ( searchSystem != null ) && ( currentSystem.systemAddress != searchSystem.systemAddress ) )
+            if ( searchSystem != null && currentSystem.systemAddress != searchSystem.systemAddress )
             {
                 navRouteList.Waypoints.Add ( searchSystem );
             }
-            return new RouteDetailsEvent( DateTime.UtcNow, QueryType.source.ToString(), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, sortedSourceSystems.Count, haulageMissionIds.ToList() );
+            return new RouteDetailsEvent( DateTime.UtcNow, nameof(QueryType.source), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, sortedSourceSystems.Count, haulageMissionIds.ToList() );
         }
     }
 
@@ -67,11 +68,11 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.expiring;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetExpiringMissionRoute ( startSystem );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetExpiringMissionRouteAsync ( startSystem ).GetAwaiter().GetResult();
 
         /// <summary> Route to the star system where missions shall expire first </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetExpiringMissionRoute ( [NotNull] StarSystem startSystem )
+        private async Task<RouteDetailsEvent> GetExpiringMissionRouteAsync ( [NotNull] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -83,7 +84,7 @@ namespace EddiNavigationService.QueryResolvers
                     && !string.IsNullOrEmpty( m.destinationsystem ) ).OrderBy( m => m.expiryseconds ?? 0 )
                 .FirstOrDefault();
 
-            var dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( expiringMission?.destinationsystem ); // Destination star system
+            var dest = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( expiringMission?.destinationsystem ).ConfigureAwait(false); // Destination star system
             if ( dest != null )
             {
                 navRouteList.Waypoints.Add ( new NavWaypoint ( startSystem ) { visited = true } );
@@ -95,7 +96,7 @@ namespace EddiNavigationService.QueryResolvers
 
             // Get mission IDs for 'expiring' system
             var missionIDs = NavigationService.GetSystemMissionIds ( dest?.systemName ); // List of mission IDs for the next system  
-            return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.expiring.ToString (), dest?.systemName, dest?.systemAddress, null, null, navRouteList, expiringMission?.expiryseconds ?? 0, missionIDs );
+            return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.expiring), dest?.systemName, dest?.systemAddress, null, null, navRouteList, expiringMission?.expiryseconds ?? 0, missionIDs );
         }
     }
 
@@ -104,11 +105,11 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.farthest;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetFarthestMissionRoute ( startSystem );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetFarthestMissionRouteAsync ( startSystem ).GetAwaiter().GetResult();
 
         /// <summary> Route to the star system furthest from the current star system with active missions </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetFarthestMissionRoute ( [ NotNull ] StarSystem startSystem )
+        private async Task<RouteDetailsEvent> GetFarthestMissionRouteAsync ( [ NotNull ] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -128,7 +129,7 @@ namespace EddiNavigationService.QueryResolvers
                 }
                 else if ( !string.IsNullOrEmpty( mission.destinationsystem ) )
                 {
-                    var dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint(mission.destinationsystem); // Destination star system
+                    var dest = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync(mission.destinationsystem).ConfigureAwait(false); // Destination star system
                     if ( dest?.systemAddress != startSystemWaypoint.systemAddress )
                     {
                         AddAndSortByDistance( dest );
@@ -156,7 +157,7 @@ namespace EddiNavigationService.QueryResolvers
 
             // Get mission IDs for 'farthest' system
             var missionIDs = NavigationService.GetSystemMissionIds ( searchSystem?.systemName ); // List of mission IDs for the next system
-            return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.farthest.ToString (), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, missionIDs.Count, missionIDs );
+            return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.farthest), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, missionIDs.Count, missionIDs );
         }
     }
 
@@ -165,11 +166,11 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.most;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetMostMissionRoute( query.StringArg0, startSystem );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetMostMissionRouteAsync( query.StringArg0, startSystem ).GetAwaiter().GetResult();
 
         /// <summary> Route to the star system that provides the most active missions </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetMostMissionRoute ( [ NotNull ] string targetSystemName, [ NotNull ] StarSystem startSystem )
+        private async Task<RouteDetailsEvent> GetMostMissionRouteAsync ( [ NotNull ] string targetSystemName, [ NotNull ] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -196,7 +197,7 @@ namespace EddiNavigationService.QueryResolvers
             // Sort the 'most' systems by distance (in case of a tie in the mission count)
             var mostList = new SortedList<decimal, NavWaypoint>();   // List of 'most' systems, sorted by distance
             var curr = !string.IsNullOrEmpty(targetSystemName)
-                ? EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( targetSystemName )                
+                ? await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( targetSystemName ).ConfigureAwait(false)                
                 : new NavWaypoint( startSystem );
             if ( curr is null ) { return null; }
             curr.visited = true;
@@ -204,7 +205,7 @@ namespace EddiNavigationService.QueryResolvers
 
             foreach ( var kv in systemsByMissionCount.Where(s => s.Value == systemsByMissionCount.Values.Max()) )
             {
-                var dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( kv.Key ); // Destination star system
+                var dest = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( kv.Key ).ConfigureAwait(false); // Destination star system
                 if ( dest?.x != null )
                 {
                     var distance = dest.DistanceFromStarSystem(curr) ?? 0;
@@ -221,7 +222,7 @@ namespace EddiNavigationService.QueryResolvers
 
             // Get mission IDs for 'most' system
             var missionIDs = NavigationService.GetSystemMissionIds ( searchSystem?.systemName ); // List of mission IDs for the next system
-            return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.most.ToString (), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, systemsByMissionCount.Values.Max(), missionIDs );
+            return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.most), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, systemsByMissionCount.Values.Max(), missionIDs );
         }
     }
 
@@ -230,11 +231,11 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.nearest;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNearestMissionRoute ( startSystem );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNearestMissionRouteAsync ( startSystem ).GetAwaiter().GetResult();
 
         /// <summary> Route to the nearest star system with active missions </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetNearestMissionRoute ( [ NotNull ] StarSystem startSystem )
+        private async Task<RouteDetailsEvent> GetNearestMissionRouteAsync ( [ NotNull ] StarSystem startSystem )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -260,7 +261,7 @@ namespace EddiNavigationService.QueryResolvers
                 }
                 else if ( !string.IsNullOrEmpty ( mission.destinationsystem ) )
                 {
-                    var dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( mission.destinationsystem ); // Destination star system
+                    var dest = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( mission.destinationsystem ).ConfigureAwait(false); // Destination star system
                     var distance = dest.DistanceFromStarSystem(startSystemWaypoint) ?? 0;
                     if ( !nearestList.ContainsKey ( distance ) )
                     {
@@ -278,7 +279,7 @@ namespace EddiNavigationService.QueryResolvers
 
             // Get mission IDs for 'farthest' system
             var missionIDs = NavigationService.GetSystemMissionIds ( searchSystem?.systemName ); // List of mission IDs for the next system
-            return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.nearest.ToString (), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, missionIDs.Count, missionIDs );
+            return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.nearest), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, missionIDs.Count, missionIDs );
         }
     }
 
@@ -287,13 +288,13 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.route;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetRepetiveNearestNeighborMissionRoute ( startSystem, query.StringArg0 );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetRepetiveNearestNeighborMissionRoute ( startSystem, query.StringArg0 ).GetAwaiter().GetResult();
 
         /// <summary> Route that provides the shortest total travel path to complete all missions using the 'Repetitive Nearest Neighbor' Algorithm (RNNA) </summary>
         /// <param name="currentSystem"> The current star system </param>
         /// <param name="homeSystem"> (Optional) If set, calculate relative to the named starting system rather than the current system </param>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetRepetiveNearestNeighborMissionRoute ( [ NotNull ] StarSystem currentSystem, string homeSystem = null )
+        private async Task<RouteDetailsEvent> GetRepetiveNearestNeighborMissionRoute ( [ NotNull ] StarSystem currentSystem, string homeSystem = null )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -340,8 +341,8 @@ namespace EddiNavigationService.QueryResolvers
             }
 
             // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithm (RNNA)
-            var navWaypoints = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoints( systems.ToArray() );
-            var homeSystemWaypoint = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( homeSystem );
+            var navWaypoints = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointsAsync( systems.ToArray() ).ConfigureAwait( false );
+            var homeSystemWaypoint = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( homeSystem ).ConfigureAwait( false );
             if ( CalculateRepetiveNearestNeighbor ( navWaypoints, missions, out var sortedRoute, homeSystemWaypoint ) )
             {
                 var searchSystem = sortedRoute.FirstOrDefault ( w => !w.visited );
@@ -360,7 +361,7 @@ namespace EddiNavigationService.QueryResolvers
 
                 // Get mission IDs for 'search' system
                 var missionIds = NavigationService.GetSystemMissionIds ( searchSystem?.systemName );       // List of mission IDs for the next system
-                return new RouteDetailsEvent( DateTime.UtcNow, QueryType.route.ToString(), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, routeCount, missionIds );
+                return new RouteDetailsEvent( DateTime.UtcNow, nameof(QueryType.route), searchSystem?.systemName, searchSystem?.systemAddress, null, null, navRouteList, routeCount, missionIds );
             }
 
             Logging.Debug ( "Unable to meet missions route calculation criteria" );
@@ -422,7 +423,7 @@ namespace EddiNavigationService.QueryResolvers
                         {
                             // Wrap around the list
                             int destIndex = (i + j) < numSystems ? i + j : i + j - numSystems;
-                            if ( ( homeSystem != null ) && ( destIndex == 0 ) )
+                            if ( homeSystem != null && destIndex == 0 )
                             { destIndex = numSystems; }
 
                             // Check if destination system previously added to the route
@@ -444,15 +445,14 @@ namespace EddiNavigationService.QueryResolvers
                     }
 
                     // Add 'starting system' to complete the route & add its distance to total distance traveled
-                    int startIndex = (homeSystem != null) && (i == 0) ? numSystems : i;
+                    int startIndex = homeSystem != null && i == 0 ? numSystems : i;
                     route.Add ( inputSystems[ startIndex ] );
-                    if ( currIndex == numSystems )
-                    { currIndex = 0; }
+                    if ( currIndex == numSystems ) { currIndex = 0; }
                     totalDistance += distMatrix[ currIndex ][ startIndex ];
                     Logging.Debug ( "Build Route Iteration #" + i + " - Route = " + string.Join ( "_", route ) + ", Total Distance = " + totalDistance );
 
                     // Use this route if total distance traveled is less than previous iterations
-                    if ( ( bestDistance == 0 ) || ( totalDistance < bestDistance ) )
+                    if ( bestDistance == 0 || totalDistance < bestDistance )
                     {
                         bestRoute.Clear ();
                         int homeIndex = route.IndexOf(inputSystems[homeSystem != null ? numSystems : 0]);

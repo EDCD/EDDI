@@ -42,7 +42,7 @@ namespace EddiSpeechResponder.CustomFunctions
             else if (values.Count == 3)
             {
                 // Named commodity, named station, named system 
-                var system = EDDI.Instance.DataProvider.GetOrFetchStarSystem(values[2].AsString, true, true, true );
+                var system = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync(values[2].AsString, true, true, true ).GetAwaiter().GetResult();
                 var stationName = values[1].AsString;
                 var station = system?.stations?.FirstOrDefault(v => v.name == stationName);
                 result = CommodityDetails(values[0].AsString, station);

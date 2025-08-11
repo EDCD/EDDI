@@ -31,8 +31,8 @@ namespace EddiSpeechResponder.CustomFunctions
                 {
                     // Named system
                     system = ulong.TryParse( values[ 1 ].AsString, out var systemAddress )
-                        ? EDDI.Instance.DataProvider.GetOrFetchStarSystem( systemAddress, true, false )
-                        : EDDI.Instance.DataProvider.GetOrFetchStarSystem( values[ 1 ].AsString, true, false );
+                        ? EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress, true, false ).GetAwaiter().GetResult()
+                        : EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( values[ 1 ].AsString, true, false ).GetAwaiter().GetResult();
                 }
 
                 station = long.TryParse( values[ 0 ].AsString, out var marketID )

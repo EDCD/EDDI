@@ -428,11 +428,14 @@ namespace EddiFleetCarrierMonitor
             {
                 if ( CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
                 {
-                    var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh);
+                    var frontierApiCarrierJson = await CompanionAppService.Instance.FleetCarrierEndpoint.GetFleetCarrierAsync(forceRefresh).ConfigureAwait(false);
                     if ( frontierApiCarrierJson != null )
                     {
                         var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
                         var carrierID = frontierApiCarrierJson[ "market" ]?[ "id" ]?.ToObject<long?>();
+                        var wp = await EDDI.Instance.DataProvider
+                            .GetOrFetchSystemWaypointAsync( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() )
+                            .ConfigureAwait( false );
                         if ( FleetCarrier is null ) { FleetCarrier = new FleetCarrier( carrierID ); }
 
                         // Update our Fleet Carrier object
@@ -443,8 +446,6 @@ namespace EddiFleetCarrierMonitor
                             // Get location data if it's not already defined
                             if ( FleetCarrier.currentStarSystemAddress is null )
                             {
-                                var wp = EDDI.Instance.DataProvider
-                                    .GetOrFetchSystemWaypoint( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
                                 if ( wp != null )
                                 {
                                     FleetCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );

@@ -26,12 +26,12 @@ namespace EddiSpeechResponder.CustomFunctions
             if (values.Count == 1 && stringVal)
             {
                 curr = new NavWaypoint( EDDI.Instance.CurrentStarSystem );
-                dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint(values[0].AsString);
+                dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync(values[0].AsString).GetAwaiter().GetResult();
             }
             else if (values.Count == 2 && stringVal)
             {
-                curr = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( values[0].AsString);
-                dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( values[1].AsString);
+                curr = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( values[ 0 ].AsString ).GetAwaiter().GetResult();
+                dest = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( values[ 1 ].AsString ).GetAwaiter().GetResult();
             }
             if (curr != null && dest != null)
             {

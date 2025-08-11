@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiNavigationService.QueryResolvers
@@ -35,11 +36,11 @@ namespace EddiNavigationService.QueryResolvers
                     "O (Blue-White) Star"
                 } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNearestScoopSystem(startSystem, SpanshQueryFilter);
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNearestScoopSystemAsync(startSystem, SpanshQueryFilter).GetAwaiter().GetResult();
 
         /// <summary> Route to the nearest star system that is eligible for fuel scoop refueling </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetNearestScoopSystem ( [ NotNull ] StarSystem startSystem, [ NotNull ] Dictionary<string, object> searchFilter )
+        private async Task<RouteDetailsEvent> GetNearestScoopSystemAsync ( [ NotNull ] StarSystem startSystem, [ NotNull ] Dictionary<string, object> searchFilter )
         {
             if ( startSystem.x is null || startSystem.y is null || startSystem.z is null )
             {
@@ -55,7 +56,7 @@ namespace EddiNavigationService.QueryResolvers
             navRouteList.Waypoints.Add( new NavWaypoint( startSystem ) { visited = true } );
             if ( !startSystem.scoopable )
             {
-                var searchSystem = EDDI.Instance.DataProvider.FetchBodyWaypoint( fromX, fromY, fromZ, searchFilter );
+                var searchSystem = await EDDI.Instance.DataProvider.FetchBodyWaypointAsync( fromX, fromY, fromZ, searchFilter ).ConfigureAwait(false);
                 navRouteList.Waypoints.Add( searchSystem );
             }
             return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.scoop.ToString (), navRouteList.Waypoints.LastOrDefault()?.systemName, navRouteList.Waypoints.LastOrDefault()?.systemAddress, null, null, navRouteList, navRouteList.Waypoints.Count, null );
@@ -67,11 +68,11 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.neutron;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNeutronRoute( query.StringArg0, startSystem );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNeutronRouteAsync( query.StringArg0, startSystem ).GetAwaiter().GetResult();
 
         /// <summary> Obtains a neutron star route between the current star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetNeutronRoute ( string targetSystemName, StarSystem startSystem, bool isSupercharged = false, bool useSupercharge = true, bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
+        private async Task<RouteDetailsEvent> GetNeutronRouteAsync ( string targetSystemName, StarSystem startSystem, bool isSupercharged = false, bool useSupercharge = true, bool useInjections = false, bool excludeSecondary = false, bool fromUIquery = false )
         {
             if ( string.IsNullOrEmpty( targetSystemName ) )
             {
@@ -87,8 +88,8 @@ namespace EddiNavigationService.QueryResolvers
             var cargoCarriedTons = ConfigService.Instance.cargoMonitorConfiguration.cargocarried;
             var shipId = ConfigService.Instance.shipMonitorConfiguration.currentshipid;
             var ship = ConfigService.Instance.shipMonitorConfiguration.shipyard.FirstOrDefault(s => s.LocalId == shipId);
-            var plottedRouteList = EDDI.Instance.DataProvider.FetchGalaxyRoute ( startSystem.systemname, targetSystemName, ship, cargoCarriedTons,
-                isSupercharged, useSupercharge, useInjections, excludeSecondary, fromUIquery );
+            var plottedRouteList = await EDDI.Instance.DataProvider.FetchGalaxyRouteAsync( startSystem.systemname, targetSystemName, ship, cargoCarriedTons,
+                isSupercharged, useSupercharge, useInjections, excludeSecondary, fromUIquery ).ConfigureAwait( false );
             if ( plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1 ) { return null; }
             plottedRouteList.UpdateLocationData( startSystem.systemAddress, startSystem.x, startSystem.y, startSystem.z );
 
@@ -103,7 +104,7 @@ namespace EddiNavigationService.QueryResolvers
             }
 
             plottedRouteList.Waypoints.First ().visited = true;
-            return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.neutron.ToString (), plottedRouteList.Waypoints[ 1 ]?.systemName, plottedRouteList.Waypoints[ 1 ]?.systemAddress, null, null, plottedRouteList, plottedRouteList.Waypoints.Count, null );
+            return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.neutron), plottedRouteList.Waypoints[ 1 ]?.systemName, plottedRouteList.Waypoints[ 1 ]?.systemAddress, null, null, plottedRouteList, plottedRouteList.Waypoints.Count, null );
         }
 
     }
@@ -113,16 +114,16 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.carrier;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetCarrierRoute( query.StringArg0, startSystem, (long)Math.Round ( query.NumericArg ?? 0, 0 ) );
+        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetCarrierRouteAsync( query.StringArg0, startSystem, (long)Math.Round ( query.NumericArg ?? 0, 0 ) ).GetAwaiter().GetResult();
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>
-        private RouteDetailsEvent GetCarrierRoute ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
+        private async Task<RouteDetailsEvent> GetCarrierRouteAsync ( [NotNull] string targetSystemName, [NotNull] StarSystem startSystem, long? usedCarrierCapacity = 0, string[] refuelDestinations = null, bool fromUIquery = false )
         {
             usedCarrierCapacity = usedCarrierCapacity ?? EDDI.Instance.FleetCarrier?.usedCapacity;
             if ( usedCarrierCapacity is null ) { return null; }
 
-            var plottedRouteList = EDDI.Instance.DataProvider.FetchCarrierRoute(startSystem.systemname, new[] { targetSystemName }, Convert.ToInt64(usedCarrierCapacity), false, refuelDestinations, fromUIquery);
+            var plottedRouteList = await EDDI.Instance.DataProvider.FetchCarrierRouteAsync( startSystem.systemname, new[] { targetSystemName }, Convert.ToInt64( usedCarrierCapacity ), false, refuelDestinations, fromUIquery ).ConfigureAwait(false);
             if ( plottedRouteList == null || plottedRouteList.Waypoints.Count <= 1 ) { return null; }
             plottedRouteList.UpdateLocationData( startSystem.systemAddress, startSystem.x, startSystem.y, startSystem.z );
 
@@ -138,7 +139,7 @@ namespace EddiNavigationService.QueryResolvers
 
             plottedRouteList.Waypoints.First ().visited = true;
             
-            return new RouteDetailsEvent ( DateTime.UtcNow, QueryType.carrier.ToString (), plottedRouteList.Waypoints[ 1 ]?.systemName, plottedRouteList.Waypoints[ 1 ]?.systemAddress, null, null, plottedRouteList, plottedRouteList.Waypoints.Count, null );
+            return new RouteDetailsEvent ( DateTime.UtcNow, nameof(QueryType.carrier), plottedRouteList.Waypoints[ 1 ]?.systemName, plottedRouteList.Waypoints[ 1 ]?.systemAddress, null, null, plottedRouteList, plottedRouteList.Waypoints.Count, null );
         }
     }
 }

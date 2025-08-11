@@ -278,8 +278,8 @@ namespace Tests
         public async Task TestCrimeShipTargeted()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            fakeSpanshRestClient.Expect( "dump/5581611930322", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpCalenerro ) );
-            EDDI.Instance.CurrentStarSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem( 5581611930322 );
+            FakeSpanshHttpClient.Expect( "dump/5581611930322", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpCalenerro ) );
+            EDDI.Instance.CurrentStarSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( 5581611930322 ).ConfigureAwait(false);
 
             line = "{ \"timestamp\":\"2019-04-24T00:13:35Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"federation_corvette\", \"Ship_Localised\":\"Federal Corvette\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Kurt Pettersen;\", \"PilotName_Localised\":\"Kurt Pettersen\", \"PilotRank\":\"Deadly\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Calennero Crew\", \"LegalStatus\":\"Wanted\", \"Bounty\":295785 }";
             events = JournalMonitor.ParseJournalEntry(line);
@@ -316,9 +316,9 @@ namespace Tests
             crimeMonitor.readRecord(config);
 
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            fakeSpanshRestClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"Radio Sidewinder Crew\"]}},\"size\":500,\"page\":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
-            fakeSpanshRestClient.Expect( "systems/field_values/system_names?q=Tachmetae", @"{""min_max"":[{""id64"":2869977949641,""name"":""Tachmetae"",""x"":-0.59375,""y"":60.6875,""z"":84.71875}],""values"":[""Tachmetae""]}" );
-            fakeSpanshRestClient.Expect( "dump/2869977949641", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpTachmetae ) );
+            FakeSpanshHttpClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"Radio Sidewinder Crew\"]}},\"size\":500,\"page\":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
+            FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Tachmetae", @"{""min_max"":[{""id64"":2869977949641,""name"":""Tachmetae"",""x"":-0.59375,""y"":60.6875,""z"":84.71875}],""values"":[""Tachmetae""]}" );
+            FakeSpanshHttpClient.Expect( "dump/2869977949641", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpTachmetae ) );
 
             // Set a bounty with `Radio Sidewinder Crew`
             events = JournalMonitor.ParseJournalEntry(line1);

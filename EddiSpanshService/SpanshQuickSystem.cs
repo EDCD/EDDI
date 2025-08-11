@@ -1,9 +1,10 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -12,52 +13,52 @@ namespace EddiSpanshService
     {
         // Uses the Spansh star system quick API (brief star system data), e.g. https://spansh.co.uk/api/system/3932277478106
         // Useful for quickly obtaining sparse system stations.
-        public StarSystem GetQuickStarSystem(ulong systemAddress)
+        public async Task<StarSystem> GetQuickStarSystemAsync(ulong systemAddress)
         {
             if ( systemAddress == 0 ) { return null; }
-            var request = new RestRequest($"system/{systemAddress}");
-            if (TryGetQuickSystem(request, out var quickStarSystem))
-            {
-                return quickStarSystem;
-            }
-            return null;
-        }
 
-        public IList<StarSystem> GetQuickStarSystems ( ulong[] systemAddresses )
-        {
-            return systemAddresses.AsParallel().Select( GetQuickStarSystem ).RemoveNulls().ToList();
-        }
-
-        private bool TryGetQuickSystem ( IRestRequest request, out StarSystem quickStarSystem )
-        {
-            var clientResponse = spanshRestClient.Get(request);
-            quickStarSystem = null;
-            if (clientResponse.IsSuccessful)
+            try
             {
-                if ( string.IsNullOrEmpty( clientResponse.Content ) )
+                var requestUri = $"system/{systemAddress}";
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                clientResponse.EnsureSuccessStatusCode();
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                if ( string.IsNullOrEmpty( responseJson ) )
                 {
-                    Logging.Warn( "Unable to handle server response." );
+                    Logging.Warn( "Spansh API returned no result" );
+                    return null;
                 }
+
                 try
                 {
-                    var jResponse = JToken.Parse( clientResponse.Content );
+                    var jResponse = JToken.Parse( responseJson );
                     if ( jResponse.Contains( "error" ) )
                     {
-                        Logging.Debug( "Spansh responded with: " + jResponse["error"] );
+                        Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
                     }
-                    quickStarSystem = ParseQuickSystem( jResponse[ "record" ] );
+                    else
+                    {
+                        return ParseQuickSystem( jResponse[ "record" ] );
+                    }
                 }
                 catch ( Exception e )
                 {
                     Logging.Error( "Failed to parse Spansh response", e );
                 }
             }
-            else
+            catch ( HttpRequestException he )
             {
-                Logging.Warn( "Spansh responded with: " + clientResponse.ErrorMessage, clientResponse.ErrorException );
+                Logging.Error( he.Message, he );
+                return null;
             }
 
-            return quickStarSystem != null;
+            return null;
+        }
+
+        public async Task<IList<StarSystem>> GetQuickStarSystemsAsync ( ulong[] systemAddresses )
+        {
+            return await Task.WhenAll( systemAddresses.AsParallel().Select( async s => await GetQuickStarSystemAsync(s) ).RemoveNulls() ).ConfigureAwait(false);
         }
 
         private static StarSystem ParseQuickSystem ( JToken data )

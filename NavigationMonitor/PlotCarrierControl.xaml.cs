@@ -130,11 +130,10 @@ namespace EddiNavigationMonitor
             { }
             else
             {
-                searchTask = Task.Run( () =>
+                searchTask = Task.Run( async () =>
                 {
-                    var @event = NavigationService.Instance.NavQuery(QueryType.carrier, destinationSystemArg, originSystemArg, usedCapacity, null, true);
-                    if ( @event == null )
-                    { return; }
+                    var @event = await NavigationService.Instance.NavQueryAsync(QueryType.carrier, destinationSystemArg, originSystemArg, usedCapacity, null, true).ConfigureAwait(false);
+                    if ( @event is null ) { return; }
                     EDDI.Instance.enqueueEvent( @event );
                 } );
             }

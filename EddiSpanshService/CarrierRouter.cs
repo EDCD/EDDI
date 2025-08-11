@@ -1,9 +1,10 @@
 ﻿using EddiDataDefinitions;
-using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -11,16 +12,18 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Request a route from the Spansh Carrier Plotter.
-        [CanBeNull]
-        public NavWaypointCollection GetCarrierRoute(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null, bool fromUIquery = false)
+        public async Task<NavWaypointCollection> GetCarrierRouteAsync(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired = true, string[] refuel_destinations = null, bool fromUIquery = false)
         {
             if (!fromUIquery)
             {
                 // The Spansh Carrier Plotter uses case sensitive system names. Use the TypeAhead API to normalize casing.
-                currentSystem = GetWaypointsBySystemName(currentSystem).FirstOrDefault()?.systemName;
-                for (int i = 0; i < targetSystems.Length; i++)
+                var wp = await GetWaypointsBySystemNameAsync(currentSystem).ConfigureAwait(false);
+                currentSystem = wp.FirstOrDefault()?.systemName;
+
+                for (var i = 0; i < targetSystems.Length; i++)
                 {
-                    targetSystems[i] = GetWaypointsBySystemName(targetSystems[i]).FirstOrDefault()?.systemName;
+                    wp = await GetWaypointsBySystemNameAsync( targetSystems[ i ] ).ConfigureAwait( false );
+                    targetSystems[i] = wp.FirstOrDefault()?.systemName;
                 }                
             }
 
@@ -30,49 +33,66 @@ namespace EddiSpanshService
                 return null;
             }
 
-            var request = CarrierRouteRequest(currentSystem, targetSystems, usedCarrierCapacity, calculateTotalFuelRequired, refuel_destinations);
-            var initialResponse = spanshRestClient.Get(request);
-
-            if (string.IsNullOrEmpty(initialResponse.Content))
+            try
             {
-                Logging.Warn("Spansh API is not responding");
-                return null;
+                var requestUri = CarrierRouteRequest(currentSystem, targetSystems, usedCarrierCapacity, calculateTotalFuelRequired, refuel_destinations);
+                var initialResponse = await spanshHttpClient.GetAsync(requestUri).ConfigureAwait(false);
+                initialResponse.EnsureSuccessStatusCode();
+                var responseJson = await initialResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+
+                if ( string.IsNullOrEmpty( responseJson ) )
+                {
+                    Logging.Warn( "Spansh API is not responding" );
+                    return null;
+                }
+
+                if ( JObject.Parse( responseJson ).TryGetValue( "job", StringComparison.OrdinalIgnoreCase, out var value ) && value.ToString() is string jobId )
+                {
+                    var result = await GetRouteResponseAsync( jobId ).ConfigureAwait( false );
+                    if ( result is null )
+                    {
+                        Logging.Warn( $"Spansh API returned no route to system {targetSystems.LastOrDefault()}." );
+                        return null;
+                    }
+
+                    return ParseCarrierRoute( result );
+                }
+            }
+            catch ( HttpRequestException he )
+            {
+                Logging.Error( he.Message, he );
             }
 
-            var result = GetRouteResponseAsync(initialResponse.Content).GetAwaiter().GetResult();
-
-            if (result is null)
-            {
-                Logging.Warn($"Spansh API returned no route to system {targetSystems.LastOrDefault()}.");
-                return null;
-            }
-
-            return ParseCarrierRoute(result);
+            return null;
         }
 
-        private IRestRequest CarrierRouteRequest(string currentSystem, string[] targetSystems, long usedCarrierCapacity, bool calculateTotalFuelRequired, string[] refuel_destinations)
+        private string CarrierRouteRequest ( string currentSystem, string[] targetSystems, long usedCarrierCapacity,
+            bool calculateTotalFuelRequired, string[] refuel_destinations )
         {
-            var request = new RestRequest("fleetcarrier/route");
-            request
-                .AddParameter("source", currentSystem)
-                .AddParameter("capacity_used", usedCarrierCapacity)
-                .AddParameter("calculate_starting_fuel", calculateTotalFuelRequired ? 1 : 0)
-                ;
-            foreach (var destination in targetSystems)
+            var relativePath = "fleetcarrier/route";
+            var queryParams = new List<string>
             {
-                request.AddParameter("destinations", destination);
+                $"source={Uri.EscapeDataString( currentSystem )}",
+                $"capacity_used={usedCarrierCapacity}",
+                $"calculate_starting_fuel={( calculateTotalFuelRequired ? 1 : 0 )}"
+            };
+
+            foreach ( var destination in targetSystems )
+            {
+                queryParams.Add( $"destinations={Uri.EscapeDataString( destination )}" );
             }
-            if (refuel_destinations != null)
+
+            if ( refuel_destinations != null )
             {
-                foreach (var destination in refuel_destinations)
+                foreach ( var destination in refuel_destinations )
                 {
-                    request.AddParameter("refuel_destinations", destination);
+                    queryParams.Add( $"refuel_destinations={Uri.EscapeDataString( destination )}" );
                 }
             }
 
-            return request;
+            return $"{relativePath}?{string.Join( "&", queryParams )}";
         }
-        
+
         private NavWaypointCollection ParseCarrierRoute(JToken routeResult)
         {
             if (routeResult is null) { return null; }

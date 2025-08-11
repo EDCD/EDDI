@@ -1,10 +1,10 @@
 ﻿using EddiDataDefinitions;
-using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpanshService
@@ -12,69 +12,53 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Uses the Spansh star system dump API (full star system data), e.g. https://www.spansh.co.uk/api/dump/10477373803
-        [CanBeNull]
-        public StarSystem GetStarSystem ( ulong systemAddress, bool showMarketDetails = false )
+        public async Task<StarSystem> GetStarSystemAsync ( ulong systemAddress, bool showMarketDetails = false )
         {
             if ( systemAddress == 0 ) { return null; }
 
-            var request = new RestRequest( $"dump/{systemAddress}" );
-            if ( TryGetStarSystemDump( request, out var fullStarSystem, showMarketDetails ) )
+            try
             {
-                return fullStarSystem;
-            }
+                var requestUri = $"dump/{systemAddress}";
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                clientResponse.EnsureSuccessStatusCode();
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
-            return null;
-        }
-
-        [CanBeNull]
-        public StarSystem GetStarSystem ( string systemName, bool showMarketDetails = false )
-        {
-            if ( systemName == null || string.IsNullOrEmpty( systemName ) ) { return null; }
-            var systemAddress = GetWaypointsBySystemName( systemName ).FirstOrDefault()?.systemAddress;
-            if ( systemAddress == null ) { return null; }
-            return GetStarSystem( (ulong)systemAddress, showMarketDetails );
-        }
-
-        public IList<StarSystem> GetStarSystems ( ulong[] systemAddresses, bool showMarketDetails = false )
-        {
-            return systemAddresses.AsParallel()
-                .Select( systemAddress => GetStarSystem( systemAddress, showMarketDetails ) )
-                .RemoveNulls()
-                .ToList();
-        }
-
-        private bool TryGetStarSystemDump ( IRestRequest request, out StarSystem fullStarSystem, bool showMarketDetails = false )
-        {
-            var clientResponse = spanshRestClient.Get( request );
-            fullStarSystem = null;
-            if ( clientResponse.IsSuccessful )
-            {
-                if ( string.IsNullOrEmpty( clientResponse.Content ) )
+                if ( string.IsNullOrEmpty( responseJson ) )
                 {
-                    Logging.Warn( "Unable to handle server response." );
+                    Logging.Warn( "Spansh API returned no result" );
+                    return null;
                 }
 
                 try
                 {
-                    var jResponse = JToken.Parse( clientResponse.Content );
+                    var jResponse = JToken.Parse( responseJson );
                     if ( jResponse.Contains( "error" ) )
                     {
                         Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
                     }
-
-                    fullStarSystem = ParseStarSystemDump( jResponse[ "system" ], showMarketDetails );
+                    else
+                    {
+                        return ParseStarSystemDump( jResponse[ "system" ], showMarketDetails );
+                    }
                 }
                 catch ( Exception e )
                 {
                     Logging.Error( "Failed to parse Spansh response", e );
                 }
             }
-            else
+            catch ( HttpRequestException he )
             {
-                Logging.Warn( "Spansh responded with: " + clientResponse.ErrorMessage, clientResponse.ErrorException );
+                Logging.Error( he.Message, he );
             }
 
-            return fullStarSystem != null;
+            return null;
+        }
+
+        public async Task<IList<StarSystem>> GetStarSystemsAsync ( ulong[] systemAddresses, bool showMarketDetails = false )
+        {
+            return await Task.WhenAll( systemAddresses.AsParallel()
+                .Select( async systemAddress => await GetStarSystemAsync( systemAddress, showMarketDetails ).ConfigureAwait(false) )
+                .RemoveNulls() );
         }
 
         private static StarSystem ParseStarSystemDump ( JToken data, bool showMarketDetails = false )

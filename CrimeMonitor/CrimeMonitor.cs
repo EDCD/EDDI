@@ -1086,7 +1086,7 @@ namespace EddiCrimeMonitor
         public string GetFactionStation(string factionSystem)
         {
             if (factionSystem == null) { return null; }
-            var factionStarSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystem(factionSystem, true, false);
+            var factionStarSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync(factionSystem, true, false).GetAwaiter().GetResult();
 
             if (factionStarSystem != null)
             {

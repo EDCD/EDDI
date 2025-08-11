@@ -120,7 +120,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 }
 
                 // Execute 
-                var @event = NavigationService.Instance?.NavQuery(queryType, stringArg0, stringArg1, numericArg);
+                var @event = NavigationService.Instance?.NavQueryAsync(queryType, stringArg0, stringArg1, numericArg).GetAwaiter().GetResult();
                 string result = null;
                 if ( @event != null)
                 {

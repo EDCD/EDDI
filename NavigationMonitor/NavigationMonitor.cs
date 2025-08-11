@@ -79,17 +79,18 @@ namespace EddiNavigationMonitor
         private void LoadMonitor()
         {
             ReadNavConfig();
-            Task.Run( GetGalacticPOIsAsync );
+            Task.Run( () => GetBookmarkExtrasAsync( Bookmarks ) ).ConfigureAwait(false);
+            Task.Run( GetGalacticPOIsAsync ).ConfigureAwait(false);
         }
 
         private async Task GetGalacticPOIsAsync()
         {
             // Build a Galactic POI list
-            foreach (var navBookmark in await EDAstro.GetPOIsAsync() )
+            foreach (var navBookmark in await EDAstro.GetPOIsAsync().ConfigureAwait(false) )
             {
                 GalacticPOIs.Add( navBookmark );
             }
-            GetBookmarkExtras(GalacticPOIs);
+            await GetBookmarkExtrasAsync( GalacticPOIs ).ConfigureAwait(false);
         }
 
         private void NavigationMonitor_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
@@ -206,12 +207,12 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpEngagedEvent(CarrierJumpEngagedEvent @event)
         {
-            UpdateCarrierRouteLocationData(@event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad);
+            UpdateCarrierRouteLocationDataAsync(@event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad).GetAwaiter().GetResult();
         }
 
-        private void UpdateCarrierRouteLocationData(DateTime timestamp, string systemName, ulong systemAddress, bool fromLoad)
+        private async Task UpdateCarrierRouteLocationDataAsync(DateTime timestamp, string systemName, ulong systemAddress, bool fromLoad)
         {
-            var system = EDDI.Instance.DataProvider.GetOrFetchSystemWaypoint( systemName );
+            var system = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( systemName ).ConfigureAwait( false );
             if (systemAddress == system?.systemAddress)
             {
                 CarrierPlottedRoute.UpdateLocationData(system.systemAddress, system.x, system.y, system.z);
@@ -244,7 +245,7 @@ namespace EddiNavigationMonitor
                     // If we are at our fleet carrier, make sure that the carrier location is up to date.
                     if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
                     {
-                        UpdateCarrierRouteLocationData( @event.timestamp, @event.system, @event.systemAddress, @event.fromLoad );
+                        UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.system, @event.systemAddress, @event.fromLoad ).GetAwaiter().GetResult();
                     }
                 }
             }
@@ -259,7 +260,7 @@ namespace EddiNavigationMonitor
                 // If we are at our fleet carrier, make sure that the carrier location is up to date.
                 if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
                 {
-                    UpdateCarrierRouteLocationData( @event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad );
+                    UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad ).GetAwaiter().GetResult();
                 }
             }
         }
@@ -287,7 +288,7 @@ namespace EddiNavigationMonitor
                         // Update destination data
                         var start = routeList.FirstOrDefault();
                         var end = routeList.LastOrDefault();
-                        UpdateDestinationData( start, end );
+                        UpdateDestinationDataAsync( start, end ).GetAwaiter().GetResult();
                     }
 
                     // Update the navigation configuration 
@@ -306,7 +307,7 @@ namespace EddiNavigationMonitor
                 {
                     if (routeList.Count == 0)
                     {
-                        UpdateDestinationData(null, null);
+                        UpdateDestinationDataAsync(null, null).GetAwaiter().GetResult();
                         NavRoute.Waypoints.Clear();
                     }
                     
@@ -367,7 +368,7 @@ namespace EddiNavigationMonitor
 
         private void handleRouteDetailsEvent(RouteDetailsEvent routeDetailsEvent)
         {
-            if (routeDetailsEvent.routetype == QueryType.carrier.ToString())
+            if (routeDetailsEvent.routetype == nameof(QueryType.carrier))
             {
                 if (routeDetailsEvent.Route?.Waypoints.GetHashCode() == CarrierPlottedRoute.Waypoints.GetHashCode())
                 {
@@ -405,11 +406,11 @@ namespace EddiNavigationMonitor
                     PlottedRoute.Waypoints.Clear();
                 }
 
-                if (routeDetailsEvent.routetype == QueryType.set.ToString())
+                if (routeDetailsEvent.routetype == nameof(QueryType.set))
                 {
                     PlottedRoute.GuidanceEnabled = true;
                 }
-                else if (routeDetailsEvent.routetype == QueryType.cancel.ToString())
+                else if (routeDetailsEvent.routetype == nameof(QueryType.cancel))
                 {
                     PlottedRoute.GuidanceEnabled = false;
                 }
@@ -496,7 +497,6 @@ namespace EddiNavigationMonitor
 
                 // Restore our bookmarks
                 Bookmarks = navConfig.bookmarks ?? new ObservableCollection<NavBookmark>();
-                GetBookmarkExtras(Bookmarks);
 
                 // Restore our in-game routing
                 NavRoute = navConfig.navRouteList ?? new NavWaypointCollection(null, true);
@@ -529,7 +529,7 @@ namespace EddiNavigationMonitor
             if ( PlottedRoute.GuidanceEnabled && PlottedRoute.Waypoints.All( w => w.visited ) )
             {
                 // Deactivate guidance once we've reached our destination.
-                NavigationService.Instance.NavQuery( QueryType.cancel, null, null, null, null, true );
+                NavigationService.Instance.NavQueryAsync( QueryType.cancel, null, null, null, null, true ).GetAwaiter().GetResult();
             }
 
             // Bookmarks data
@@ -573,16 +573,16 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void UpdateDestinationData(NavWaypoint routeStart, NavWaypoint routeDestination)
+        private async Task UpdateDestinationDataAsync(NavWaypoint routeStart, NavWaypoint routeDestination)
         {
             if ( routeDestination is null )
             {
-                EDDI.Instance.updateDestinationSystem( null );
+                await EDDI.Instance.updateDestinationSystemAsync( null ).ConfigureAwait(false);
                 EDDI.Instance.DestinationDistanceLy = 0;
                 return;
             }
 
-            EDDI.Instance.updateDestinationSystem( routeDestination.systemAddress, routeDestination.systemName );
+            await EDDI.Instance.updateDestinationSystemAsync( routeDestination.systemAddress, routeDestination.systemName ).ConfigureAwait(false);
             var distance = Functions.StellarDistanceLy(
                 routeStart?.x, routeStart?.y, routeStart?.z, 
                 routeDestination.x, routeDestination.y, routeDestination.z) ?? 0;
@@ -678,7 +678,7 @@ namespace EddiNavigationMonitor
             return Functions.SurfaceDistanceKm(radiusMeters, curr.latitude, curr.longitude, bookmarkLatitude, bookmarkLongitude) ?? 0;
         }
 
-        private async void GetBookmarkExtras<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
+        private async Task GetBookmarkExtrasAsync<T>(ObservableCollection<T> bookmarks) where T : NavBookmark
         {
             // Retrieve extra details to supplement our bookmarks
 

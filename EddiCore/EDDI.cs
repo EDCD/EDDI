@@ -481,9 +481,9 @@ namespace EddiCore
                 Task.WaitAll(essentialAsyncTasks.ToArray(), eventHandlerTS.Token );
 
                 // Tasks we can start asynchronously and don't need to wait for
-                Task.Run( () => updateDestinationSystem( configuration.DestinationSystemAddress,
+                Task.Run( async () => await updateDestinationSystemAsync( configuration.DestinationSystemAddress,
                         configuration.DestinationSystem ), eventHandlerTS.Token ).ConfigureAwait( false );
-                Task.Run(async () =>
+                Task.Run( async () =>
                 {
                     // Set up the Frontier API service
                     // Try to carry out initial population of the Frontier API profile
@@ -1215,7 +1215,7 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
 
                 // Make sure we have at least basic information about the destination star system
-                NextStarSystem = DataProvider.GetOrCreateStarSystem( @event.systemAddress, @event.systemname );
+                NextStarSystem = DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname ).GetAwaiter().GetResult();
 
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 CurrentStarSystem?.RemoveStation( @event.carrierID ?? 0 );
@@ -1235,7 +1235,7 @@ namespace EddiCore
             else if (!string.IsNullOrEmpty(@event.originSystemName))
             {
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
-                var originStarSystem = DataProvider.GetOrFetchStarSystem(@event.originSystemAddress);
+                var originStarSystem = DataProvider.GetOrFetchStarSystemAsync(@event.originSystemAddress).GetAwaiter().GetResult();
                 var carrier = originStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID);
                 originStarSystem?.RemoveStation( @event.carrierID ?? 0 );
                 // Save the carrier to the updated star system
@@ -1250,7 +1250,7 @@ namespace EddiCore
                     }
                     else
                     {
-                        var updatedStarSystem = DataProvider.GetOrCreateStarSystem( @event.systemAddress, @event.systemname );
+                        var updatedStarSystem = DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname ).GetAwaiter().GetResult();
                         updatedStarSystem.AddOrUpdateStation( carrier);
                         DataProvider.SaveStarSystem(updatedStarSystem);
                     }
@@ -2055,7 +2055,7 @@ namespace EddiCore
             }
             else
             {
-                CurrentStarSystem = DataProvider.GetOrCreateStarSystem( systemAddress, systemName );
+                CurrentStarSystem = DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter().GetResult();
             }
 
             // Register our new star system and manage its signal source expiries
@@ -2064,7 +2064,7 @@ namespace EddiCore
             // If we've arrived at our destination system then clear it
             if ( destinationStarSystem?.systemAddress == currentStarSystem.systemAddress)
             {
-                updateDestinationSystem( null);
+                updateDestinationSystemAsync( null ).GetAwaiter().GetResult();
             }
         }
 
@@ -2116,7 +2116,7 @@ namespace EddiCore
         private bool eventFSDTarget(FSDTargetEvent @event)
         {
             // Set and prepare data about the next star system
-            NextStarSystem = DataProvider.GetOrCreateStarSystem( @event.systemAddress, @event.system );
+            NextStarSystem = DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.system ).GetAwaiter().GetResult();
             if (NextStarSystem != null && !NextStarSystem.bodies.Any(b => b.mainstar ?? false))
             {
                 // This system is unknown to us, might not be recorded, or we might not have connectivity.  Use a placeholder main star
@@ -2794,12 +2794,12 @@ namespace EddiCore
             RESTART_NO_REBOOT = 64
         }
 
-        public void updateDestinationSystem ( ulong? destinationSystemAddress, string destinationSystem = null )
+        public async Task updateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null )
         {
             var configuration = ConfigService.Instance.eddiConfiguration;
             if ( destinationSystemAddress > 0 )
             {
-                var system = DataProvider.GetOrFetchStarSystem((ulong)destinationSystemAddress );
+                var system = await DataProvider.GetOrFetchStarSystemAsync((ulong)destinationSystemAddress ).ConfigureAwait(false);
 
                 //Ignore null & empty systems
                 if (system != null)

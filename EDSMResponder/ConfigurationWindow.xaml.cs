@@ -103,7 +103,7 @@ namespace EddiEdsmResponder
                     while (i < total)
                     {
                         var batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                        EDDI.Instance.DataProvider.SyncEdsmLogBatch(flightLogs.Skip(i).Take(batchSize).ToList(), comments);
+                        await EDDI.Instance.DataProvider.SyncEdsmLogBatchAsync(flightLogs.Skip(i).Take(batchSize).ToList(), comments).ConfigureAwait(false);
                         i += batchSize;
                         progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
                     }

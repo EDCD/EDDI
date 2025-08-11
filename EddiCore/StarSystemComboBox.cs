@@ -50,10 +50,11 @@ namespace EddiCore
                 var partialSystemName = CurrentFilter;
                 if ( partialSystemName.Length > 1 )
                 {
-                    Task.Run( () => {
+                    Task.Run( async () => {
                         try
                         {
-                            var newSystems = GetTypeAheadSystemNames( partialSystemName )
+                            var fetchedSystems = await GetTypeAheadSystemNamesAsync( partialSystemName ).ConfigureAwait( false );
+                            var newSystems = fetchedSystems
                                 .OrderBy( wp => wp.systemName.Contains( partialSystemName, StringComparison.InvariantCultureIgnoreCase ) )
                                 .ThenByDescending( wp => wp.systemName.LevenshteinDistance( partialSystemName ) )
                                 .ToHashSet();
@@ -73,19 +74,23 @@ namespace EddiCore
                     } );
                 }
             }
+            catch ( TaskCanceledException )
+            {
+                // Ignore task cancellation exceptions
+            }
             catch ( Exception ex )
             {
                 Logging.Error( ex.Message, ex );
             }
         }
 
-        private HashSet<NavWaypoint> GetTypeAheadSystemNames ( string partialSystemName )
+        private async Task<HashSet<NavWaypoint>> GetTypeAheadSystemNamesAsync ( string partialSystemName )
         {
             // We'll need to request a new list if our cache does not already contain the key value
             if ( !systemListCache.ContainsKey( partialSystemName ) )
             {
                 // Request a new list
-                systemListCache[ partialSystemName ] = EDDI.Instance.DataProvider.GetTypeAheadSystems( partialSystemName );
+                systemListCache[ partialSystemName ] = await EDDI.Instance.DataProvider.GetTypeAheadSystemsAsync( partialSystemName ).ConfigureAwait(false);
             }
 
             return systemListCache
