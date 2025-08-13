@@ -75,19 +75,6 @@ namespace Eddi
             {
                 // Catch exceptions from the main UI thread
                 CrashLogger( e );
-
-                // Attempt to restart the UI
-                if ( FromVA )
-                {
-                    // Start with the MainWindow hidden
-                    app.MainWindow = new MainWindow();
-                    app.Run();
-                }
-                else
-                {
-                    // Start by displaying the MainWindow
-                    app.Run( new MainWindow() );
-                }
             }
         }
 
