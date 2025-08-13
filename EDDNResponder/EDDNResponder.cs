@@ -137,7 +137,7 @@ namespace EddiEddnResponder
                     if (type.GetInterfaces().Contains(typeof(ISchema)))
                     {
                         // Ensure that the static constructor of the class has been run
-                        System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+                        RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
                         var schema = type.InvokeMember(type.Name,
                             BindingFlags.CreateInstance,
@@ -147,7 +147,7 @@ namespace EddiEddnResponder
                     if (type.GetInterfaces().Contains(typeof(ICapiSchema)))
                     {
                         // Ensure that the static constructor of the class has been run
-                        System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+                        RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
                         var capiSchema = type.InvokeMember(type.Name,
                             BindingFlags.CreateInstance,
