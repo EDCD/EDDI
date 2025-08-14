@@ -2,6 +2,7 @@
 using EddiEvents;
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EddiNavigationService
 {
@@ -9,6 +10,6 @@ namespace EddiNavigationService
     {
         QueryType Type { get; }
         Dictionary<string, object> SpanshQueryFilter { get; }
-        RouteDetailsEvent Resolve ( [NotNull] Query query, [NotNull] StarSystem startSystem );
+        Task<RouteDetailsEvent> ResolveAsync ( [NotNull] Query query, [NotNull] StarSystem startSystem );
     }
 }

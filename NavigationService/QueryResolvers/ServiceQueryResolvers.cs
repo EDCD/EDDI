@@ -11,7 +11,7 @@ using Utilities;
 namespace EddiNavigationService.QueryResolvers
 {
     [UsedImplicitly]
-    public class EncodedMaterialsTrader : IQueryResolver
+    public class EncodedMaterialsTrader : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.encoded;
         public Dictionary<string, object> SpanshQueryFilter => 
@@ -19,11 +19,13 @@ namespace EddiNavigationService.QueryResolvers
             {
                 { "material_trader", new { value = new[] { "Encoded" } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => new ServiceQueryResolver ().Resolve( Type, SpanshQueryFilter, query, startSystem );
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await ResolveAsync( Type, SpanshQueryFilter, query, startSystem ).ConfigureAwait( false );
     }
 
     [UsedImplicitly]
-    public class GuardianTechBroker : IQueryResolver
+    public class GuardianTechBroker : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.guardian;
         public Dictionary<string, object> SpanshQueryFilter => 
@@ -31,11 +33,13 @@ namespace EddiNavigationService.QueryResolvers
             {
                 { "technology_broker", new { value = new[] { "Guardian" } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => new ServiceQueryResolver ().Resolve ( Type, SpanshQueryFilter, query, startSystem );
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await ResolveAsync( Type, SpanshQueryFilter, query, startSystem ).ConfigureAwait( false );
     }
 
     [UsedImplicitly]
-    public class HumanTechBroker : IQueryResolver
+    public class HumanTechBroker : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.human;
         public Dictionary<string, object> SpanshQueryFilter =>
@@ -43,11 +47,13 @@ namespace EddiNavigationService.QueryResolvers
             {
                 { "technology_broker", new { value = new[] { "Human" } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => new ServiceQueryResolver ().Resolve ( Type, SpanshQueryFilter, query, startSystem );
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await ResolveAsync( Type, SpanshQueryFilter, query, startSystem ).ConfigureAwait( false );
     }
 
     [UsedImplicitly]
-    public class InterstellarFactors : IQueryResolver
+    public class InterstellarFactors : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.facilitator;
         public Dictionary<string, object> SpanshQueryFilter =>
@@ -55,11 +61,13 @@ namespace EddiNavigationService.QueryResolvers
             {
                 { "services", new { value = new[] { "Interstellar Factors Contact" } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => new ServiceQueryResolver ().Resolve ( Type, SpanshQueryFilter, query, startSystem );
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await ResolveAsync( Type, SpanshQueryFilter, query, startSystem ).ConfigureAwait( false );
     }
 
     [UsedImplicitly]
-    public class ManufacturedMaterialsTrader : IQueryResolver
+    public class ManufacturedMaterialsTrader : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.manufactured;
         public Dictionary<string, object> SpanshQueryFilter =>
@@ -67,11 +75,13 @@ namespace EddiNavigationService.QueryResolvers
             {
                 { "material_trader", new { value = new[] { "Manufactured" } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => new ServiceQueryResolver ().Resolve ( Type, SpanshQueryFilter, query, startSystem );
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await ResolveAsync( Type, SpanshQueryFilter, query, startSystem ).ConfigureAwait( false );
     }
 
     [UsedImplicitly]
-    public class RawMaterialsTrader : IQueryResolver
+    public class RawMaterialsTrader : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.raw;
 
@@ -79,11 +89,13 @@ namespace EddiNavigationService.QueryResolvers
         {
             { "material_trader", new { value = new[] { "Raw" } } }
         };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => new ServiceQueryResolver ().Resolve ( Type, SpanshQueryFilter, query, startSystem );
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await ResolveAsync( Type, SpanshQueryFilter, query, startSystem ).ConfigureAwait( false );
     }
 
     [UsedImplicitly]
-    public class ScorpionSrvVendor : IQueryResolver
+    public class ScorpionSrvVendor : ServiceQueryResolver, IQueryResolver
     {
         public QueryType Type => QueryType.scorpion;
         public Dictionary<string, object> SpanshQueryFilter => new Dictionary<string, object>
@@ -92,18 +104,22 @@ namespace EddiNavigationService.QueryResolvers
                 { "type", new { value = new[] { "Planetary Port" } } },
                 { "services", new { value = new[] { "Outfitting" } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => new ServiceQueryResolver ().Resolve ( Type, SpanshQueryFilter, query, startSystem );
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await ResolveAsync( Type, SpanshQueryFilter, query, startSystem ).ConfigureAwait( false );
     }
 
     #region ServiceQueryResolver
-    internal class ServiceQueryResolver
+    public abstract class ServiceQueryResolver
     {
-        public RouteDetailsEvent Resolve ( QueryType queryType, Dictionary<string, object> spanshQueryFilter,
+        protected async Task<RouteDetailsEvent> ResolveAsync ( QueryType queryType,
+            Dictionary<string, object> spanshQueryFilter,
             [ NotNull ] Query query,
-            [ NotNull ] StarSystem startSystem ) => GetServiceSystemAsync( queryType, startSystem, spanshQueryFilter, query.NumericArg is null 
-                ? (int?)null 
-                : Convert.ToInt32( Math.Round( (decimal)query.NumericArg ) ), 
-            query.BooleanArg ).GetAwaiter().GetResult();
+            [ NotNull ] StarSystem startSystem ) => await GetServiceSystemAsync( queryType, startSystem,
+            spanshQueryFilter, query.NumericArg is null
+                ? (int?)null
+                : Convert.ToInt32( Math.Round( (decimal)query.NumericArg ) ),
+            query.BooleanArg ).ConfigureAwait( false );
 
         /// <summary> Route to the nearest star system that offers a specific service </summary>
         /// <returns> The query result </returns>

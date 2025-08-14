@@ -36,7 +36,9 @@ namespace EddiNavigationService.QueryResolvers
                     "O (Blue-White) Star"
                 } } }
             };
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNearestScoopSystemAsync(startSystem, SpanshQueryFilter).GetAwaiter().GetResult();
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await GetNearestScoopSystemAsync( startSystem, SpanshQueryFilter ).ConfigureAwait( false );
 
         /// <summary> Route to the nearest star system that is eligible for fuel scoop refueling </summary>
         /// <returns> The query result </returns>
@@ -68,7 +70,9 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.neutron;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetNeutronRouteAsync( query.StringArg0, startSystem ).GetAwaiter().GetResult();
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await GetNeutronRouteAsync( query.StringArg0, startSystem ).ConfigureAwait( false );
 
         /// <summary> Obtains a neutron star route between the current star system and a named star system </summary>
         /// <returns> The query result </returns>
@@ -114,7 +118,10 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.carrier;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => GetCarrierRouteAsync( query.StringArg0, startSystem, (long)Math.Round ( query.NumericArg ?? 0, 0 ) ).GetAwaiter().GetResult();
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await GetCarrierRouteAsync( query.StringArg0, startSystem, (long)Math.Round( query.NumericArg ?? 0, 0 ) )
+                .ConfigureAwait( false );
 
         /// <summary> Obtains a carrier route between the current carrier star system and a named star system </summary>
         /// <returns> The query result </returns>

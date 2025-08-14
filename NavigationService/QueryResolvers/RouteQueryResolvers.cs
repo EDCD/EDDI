@@ -15,7 +15,9 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.set;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => SetRouteAsync ( startSystem, query.StringArg0, query.StringArg1 ).GetAwaiter().GetResult();
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await SetRouteAsync( startSystem, query.StringArg0, query.StringArg1 ).ConfigureAwait( false );
 
         private static async Task<RouteDetailsEvent> SetRouteAsync ( StarSystem startSystem, string systemName, string stationName )
         {
@@ -67,7 +69,9 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.cancel;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem startSystem ) => CancelRouteAsync ().GetAwaiter().GetResult();
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            await CancelRouteAsync().ConfigureAwait( false );
 
         private static async Task<RouteDetailsEvent> CancelRouteAsync ()
         {
@@ -91,7 +95,9 @@ namespace EddiNavigationService.QueryResolvers
     {
         public QueryType Type => QueryType.update;
         public Dictionary<string, object> SpanshQueryFilter => null;
-        public RouteDetailsEvent Resolve ( Query query, StarSystem currentSystem ) => RefreshLastNavigationQueryAsync ( currentSystem ).GetAwaiter().GetResult();
+
+        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem currentSystem ) =>
+            await RefreshLastNavigationQueryAsync( currentSystem ).ConfigureAwait( false );
 
         /// <summary> Repeat the last mission query and return an updated result if different from the prior result, either relative to your current location or to a named system </summary>
         /// <returns> The star system result from the repeated query </returns>

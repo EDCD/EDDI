@@ -196,12 +196,12 @@ namespace EddiNavigationService
                                     Logging.Warn("Invalid query: unable to find fleet carrier location.");
                                     return null;
                                 }
-                                result = resolver.Value.Resolve( query, carrierLocation );
+                                result = await resolver.Value.ResolveAsync( query, carrierLocation ).ConfigureAwait(false);
                             }
                         }
                         else
                         {
-                            result = resolver.Value.Resolve( query, EDDI.Instance.CurrentStarSystem );
+                            result = await resolver.Value.ResolveAsync( query, EDDI.Instance.CurrentStarSystem ).ConfigureAwait(false);
                         }
                         break;
                     }
