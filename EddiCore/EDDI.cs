@@ -907,9 +907,6 @@ namespace EddiCore
 
         internal void eventHandler( Event @event )
         {
-            var performanceTelemetry = new List<object>();
-            var startTime = DateTime.UtcNow;
-
             if ( @event != null )
             {
                 // Event handling is disabled when running a legacy game version.
@@ -1074,12 +1071,10 @@ namespace EddiCore
                         passEvent = eventSignalDetected( signalDetectedEvent );
                     }
 
-                    performanceTelemetry.Add(new { Name = "Core", Duration = ( DateTime.UtcNow - startTime ).Milliseconds } );
-
                     // Additional processing is over, send to the event monitors and responders if required
                     if (passEvent)
                     {
-                        performanceTelemetry = OnEvent( @event, performanceTelemetry ).GetAwaiter().GetResult();
+                        OnEventAsync( @event ).GetAwaiter().GetResult();
                     }
 
                     lastEventOfType[ @event.type ] = @event;
@@ -1094,15 +1089,6 @@ namespace EddiCore
                     Instance.ObtainResponder( "EDSM Responder" ).Handle( @event );
                     Instance.ObtainResponder( "Inara Responder" ).Handle( @event );
                 }
-            }
-
-            var TotalDurationMs = ( DateTime.UtcNow - startTime ).Milliseconds;
-            var wrappedTelemetry = new Dictionary<string, object> { { "event", @event }, { "performance", performanceTelemetry } };
-            if ( TotalDurationMs > 200 )
-            {
-                Logging.Warn(
-                    $"Processed EDDI event {@event?.type} in {TotalDurationMs} milliseconds: ",
-                    wrappedTelemetry );
             }
         }
 
@@ -1476,30 +1462,25 @@ namespace EddiCore
             return passEvent;
         }
 
-        private async Task<List<object>> OnEvent ( Event @event, List<object> performanceTelemetry )
+        private async Task OnEventAsync ( Event @event )
         {
             try
             {
                 // We send the event to all monitors to ensure that their info is up-to-date
                 // All changes to state must be handled here, so this must be synchronous
-                var slowestPrehandler = passToMonitorPreHandlers( @event );
-                performanceTelemetry.Add( new { Name = $"Prehandler: {slowestPrehandler.Key}", Duration = slowestPrehandler.Value.Milliseconds } );
+                passToMonitorPreHandlers( @event );
 
                 // Now we pass the data to the responders to process asynchronously, waiting for all to complete
                 // Responders must not change global states.
-                var slowestResponder = await passToRespondersAsync( @event );
-                performanceTelemetry.Add( new { Name = $"Responder: {slowestResponder.Key}", Duration = slowestResponder.Value.Milliseconds } );
+                await passToRespondersAsync( @event );
 
                 // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
-                var slowestPostHandler = await passToMonitorPostHandlersAsync( @event );
-                performanceTelemetry.Add( new { Name = $"Posthandler: {slowestPostHandler.Key}", Duration = slowestPostHandler.Value.Milliseconds } );
+                await passToMonitorPostHandlersAsync( @event );
             }
             catch ( Exception ex )
             {
                 Logging.Error( "Failed to pass event to all monitors and responders", ex );
             }
-
-            return performanceTelemetry;
         }
 
         private KeyValuePair<string, TimeSpan> passToMonitorPreHandlers( Event @event )
