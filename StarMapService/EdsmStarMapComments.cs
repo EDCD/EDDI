@@ -21,12 +21,16 @@ namespace EddiStarMapService
                 { "systemId64", systemAddress.ToString() },
                 { "comment", comment }
             };
-            var httpContent = new FormUrlEncodedContent( parameters );
-            var responseJson = await edsmHttpClient.PostAsync(url, httpContent).ConfigureAwait(false);
-            var response = responseJson is null ? null : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
-            if ( response?.msgnum != 100 )
+            using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                Logging.Warn( "EDSM responded with " + response?.msg );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var response = responseJson is null
+                    ? null
+                    : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
+                if ( response?.msgnum != 100 )
+                {
+                    Logging.Warn( "EDSM responded with " + response?.msg );
+                }
             }
         }
 
@@ -40,27 +44,31 @@ namespace EddiStarMapService
                 { "apiKey", apiKey },
                 { "commanderName", commanderName }
             };
-            var httpContent = new FormUrlEncodedContent( parameters );
-            var responseJson = await edsmHttpClient.PostAsync(url, httpContent).ConfigureAwait(false);
-            var response = responseJson is null ? null : JsonConvert.DeserializeObject<StarMapCommentResponse>( responseJson );
-            if ( response?.msgnum != 100 )
+            using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                Logging.Warn( "EDSM responded with " + response?.msg );
-            }
-
-            var vals = new Dictionary<string, string>();
-            if ( response?.comments != null )
-            {
-                foreach ( var entry in response.comments )
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var response = responseJson is null
+                    ? null
+                    : JsonConvert.DeserializeObject<StarMapCommentResponse>( responseJson );
+                if ( response?.msgnum != 100 )
                 {
-                    if ( !string.IsNullOrEmpty( entry.comment ) )
+                    Logging.Warn( "EDSM responded with " + response?.msg );
+                }
+
+                var vals = new Dictionary<string, string>();
+                if ( response?.comments != null )
+                {
+                    foreach ( var entry in response.comments )
                     {
-                        Logging.Debug( "Comment found for " + entry.system );
-                        vals[ entry.system ] = entry.comment;
+                        if ( !string.IsNullOrEmpty( entry.comment ) )
+                        {
+                            Logging.Debug( "Comment found for " + entry.system );
+                            vals[ entry.system ] = entry.comment;
+                        }
                     }
                 }
+                return vals;
             }
-            return vals;
         }
 
         // response from the Star Map comment API

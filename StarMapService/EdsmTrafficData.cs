@@ -37,12 +37,14 @@ namespace EddiStarMapService
             var parameters = new Dictionary<string, string> { { "systemName", systemName } };
             if ( edsmId != null ) { parameters.Add( "systemId", edsmId.ToString() ); }
 
-            var httpContent = new FormUrlEncodedContent( parameters );
-            var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
-            var token = responseJson is null ? null : JToken.Parse( responseJson );
-            if ( token is JObject response )
+            using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                return ParseStarMapTraffic( response );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var token = responseJson is null ? null : JToken.Parse( responseJson );
+                if ( token is JObject response )
+                {
+                    return ParseStarMapTraffic( response );
+                }
             }
 
             return null;
@@ -68,12 +70,14 @@ namespace EddiStarMapService
             var parameters = new Dictionary<string, string> { { "systemName", systemName } };
             if ( edsmId != null ) { parameters.Add( "systemId", edsmId.ToString() ); }
 
-            var httpContent = new FormUrlEncodedContent( parameters );
-            var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
-            var token = responseJson is null ? null : JToken.Parse( responseJson );
-            if ( token is JObject response )
+            using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                return ParseStarMapDeaths( response );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var token = responseJson is null ? null : JToken.Parse( responseJson );
+                if ( token is JObject response )
+                {
+                    return ParseStarMapDeaths( response );
+                }
             }
 
             return null;

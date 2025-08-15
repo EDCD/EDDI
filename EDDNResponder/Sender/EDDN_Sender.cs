@@ -173,9 +173,11 @@ namespace EddiEddnResponder.Sender
 
         private static async Task<HttpResponseMessage> SendRequestAsync ( string jsonPayload )
         {
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            content.Headers.ContentType = new MediaTypeHeaderValue( "application/json" );
-            return await httpClient.PostAsync( "upload/", content ).ConfigureAwait( false );
+            using ( var content = new StringContent( jsonPayload, Encoding.UTF8, "application/json" ) )
+            {
+                content.Headers.ContentType = new MediaTypeHeaderValue( "application/json" );
+                return await httpClient.PostAsync( "upload/", content ).ConfigureAwait( false );
+            }
         }
 
         private static async Task HandleResponseAsync ( EDDNBody body, HttpResponseMessage response )

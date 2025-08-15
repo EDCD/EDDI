@@ -40,29 +40,39 @@ namespace EddiStarMapService
                     parameters.Add( "fullSync", 1.ToString() );
                 }
             }
-            var httpContent = new FormUrlEncodedContent( parameters );
-            var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
-            var response = responseJson is null ? null : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
-            if ( response != null )
+
+            using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                Logging.Debug( "Response for star map logs is: ", response );
-
-                if ( response.msgnum != 100 )
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var response = responseJson is null
+                    ? null
+                    : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
+                if ( response != null )
                 {
-                    // An error occurred
-                    throw new EDSMException( response.msg );
-                }
-                if ( response.logs == null )
-                { return null; }
+                    Logging.Debug( "Response for star map logs is: ", response );
 
-                if ( systemAddresses?.Length > 0 )
-                {
-                    response.logs.RemoveAll( s => !systemAddresses.Contains( s.systemId64 ) );
+                    if ( response.msgnum != 100 )
+                    {
+                        // An error occurred
+                        throw new EDSMException( response.msg );
+                    }
+
+                    if ( response.logs == null )
+                    {
+                        return null;
+                    }
+
+                    if ( systemAddresses?.Length > 0 )
+                    {
+                        response.logs.RemoveAll( s => !systemAddresses.Contains( s.systemId64 ) );
+                    }
+
+                    return response.logs;
                 }
-                return response.logs;
+
+                Logging.Debug( "No response received." );
+                throw new EDSMException( "No response received." ); // not for localization
             }
-            Logging.Debug( "No response received." );
-            throw new EDSMException( "No response received." ); // not for localization
         }
     }
 }

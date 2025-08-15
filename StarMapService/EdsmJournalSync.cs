@@ -170,58 +170,63 @@ namespace EddiStarMapService
                 { "fromGameBuild", gameBuild },
                 { "message", JsonConvert.SerializeObject( eventData ).Normalize() }
             };
-            var httpContent = new FormUrlEncodedContent( parameters );
 
             var maxRetries = 3;
             var delay = syncIntervalMilliSeconds; // Initial delay in milliseconds
             for ( var retry = 0; retry < maxRetries; retry++ )
             {
-                try
+                using ( var httpContent = new FormUrlEncodedContent( parameters ) )
                 {
-                    Logging.Debug( "Sending message to EDSM: " + url, httpContent );
-                    var responseJson = await edsmJournalHttpClient.PostAsync(url, httpContent).ConfigureAwait(false);
-                    var response = responseJson is null ? null : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
-                    
-                    if ( response is null )
+                    try
                     {
-                        ReEnqueueEvents( eventData );
+                        Logging.Debug( "Sending message to EDSM: " + url, httpContent );
+                        var responseJson =
+                            await edsmJournalHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                        var response = responseJson is null
+                            ? null
+                            : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
+
+                        if ( response is null )
+                        {
+                            ReEnqueueEvents( eventData );
+                        }
+                        else if ( response.msgnum >= 100 && response.msgnum <= 104 )
+                        {
+                            // 100 -  Everything went fine! 
+                            // 101 -  The journal message was already processed in our database. 
+                            // 102 -  The journal message was already in a newer version in our database. 
+                            // 103 -  Duplicate event request (cached data already reported from another software client). 
+                            // 104 -  Commander is in a crew session without being the captain. As such we do not register any logs. 
+                            starMapConfiguration.lastJournalSync = eventData
+                                .Select( e => JsonParsing.getDateTime( "timestamp", e ) )
+                                .Max();
+                            ConfigService.Instance.edsmConfiguration = starMapConfiguration;
+                        }
+
+                        if ( response?.msgnum != 100 )
+                        {
+                            if ( !string.IsNullOrEmpty( response?.msg ) )
+                            {
+                                Logging.Warn( "EDSM responded with: " + response.msg );
+                            }
+                            else
+                            {
+                                Logging.Warn( "EDSM responded with: " + JsonConvert.SerializeObject( response ) );
+                            }
+                        }
                     }
-                    else if ( response.msgnum >= 100 && response.msgnum <= 104 )
+                    catch ( WebException wex )
                     {
-                        // 100 -  Everything went fine! 
-                        // 101 -  The journal message was already processed in our database. 
-                        // 102 -  The journal message was already in a newer version in our database. 
-                        // 103 -  Duplicate event request (cached data already reported from another software client). 
-                        // 104 -  Commander is in a crew session without being the captain. As such we do not register any logs. 
-                        starMapConfiguration.lastJournalSync = eventData
-                            .Select( e => JsonParsing.getDateTime( "timestamp", e ) )
-                            .Max();
-                        ConfigService.Instance.edsmConfiguration = starMapConfiguration;
+                        Logging.Warn( $"Attempt {retry + 1} failed: {wex.Message}", wex );
+                        if ( retry == ( maxRetries - 1 ) )
+                        {
+                            Logging.Warn( "Failed to send events to EDSM", wex );
+                        }
                     }
 
-                    if ( response?.msgnum != 100 )
-                    {
-                        if ( !string.IsNullOrEmpty( response?.msg ) )
-                        {
-                            Logging.Warn( "EDSM responded with: " + response.msg );
-                        }
-                        else
-                        {
-                            Logging.Warn( "EDSM responded with: " + JsonConvert.SerializeObject( response ) );
-                        }
-                    }
+                    await Task.Delay( delay );
+                    delay *= 2; // Exponential backoff
                 }
-                catch ( WebException wex )
-                {
-                    Logging.Warn( $"Attempt {retry + 1} failed: {wex.Message}", wex );
-                    if ( retry == ( maxRetries - 1 ) )
-                    {
-                        Logging.Warn( "Failed to send events to EDSM", wex );
-                    }
-                }
-
-                await Task.Delay( delay );
-                delay *= 2; // Exponential backoff
             }
         }
 

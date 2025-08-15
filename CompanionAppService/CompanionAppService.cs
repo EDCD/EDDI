@@ -223,36 +223,41 @@ namespace EddiCompanionAppService
         private void handleCallbackUrl ( string url )
         {
             Logging.Debug( "Received callback" );
+            var code = codeFromCallback( url );
+
             // NB any user can send an arbitrary URL from the Windows Run dialog, so it must be treated as untrusted
             try
             {
-                string code = codeFromCallback(url);
-
-                var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL )
-                {
-                    Content = new StringContent(
-                        $"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString( CALLBACK_URL )}",
-                        Encoding.UTF8, "application/x-www-form-urlencoded" )
-                };
-
                 Task.Run( async () =>
                 {
-                    using ( var response = await httpClient.SendAsync( request ) )
+                    using ( var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL ) )
                     {
-                        if ( response?.StatusCode == null )
-                        {
-                            throw new EliteDangerousCompanionAppAuthenticationException(
-                                "Failed to contact authorization server" );
-                        }
+                        request.Content = new StringContent(
+                            $"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString( CALLBACK_URL )}",
+                            Encoding.UTF8, "application/x-www-form-urlencoded" );
 
-                        if ( response.StatusCode == HttpStatusCode.OK )
+                        using ( var response = await httpClient.SendAsync( request ).ConfigureAwait( false ) )
                         {
-                            var responseData = await response.Content.ReadAsStringAsync();
+                            response.EnsureSuccessStatusCode();
+
+                            var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
                             var json = JObject.Parse( responseData );
-                            Credentials.refreshToken = (string)json[ "refresh_token" ];
-                            Credentials.accessToken = (string)json[ "access_token" ];
-                            Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds( (double)json[ "expires_in" ] );
+
+                            var accessToken = json[ "access_token" ]?.ToString();
+                            var refreshToken = json[ "refresh_token" ]?.ToString();
+                            var expiresInSec = json[ "expires_in" ]?.Value<long?>();
+
+                            if ( string.IsNullOrEmpty( accessToken ) || expiresInSec is null )
+                            {
+                                throw new EliteDangerousCompanionAppAuthenticationException(
+                                    "Response is missing expected fields" );
+                            }
+
+                            Credentials.accessToken = accessToken;
+                            Credentials.refreshToken = refreshToken;
+                            Credentials.tokenExpiry = DateTime.UtcNow + TimeSpan.FromSeconds( expiresInSec.Value );
                             Credentials.Save();
+
                             if ( Credentials.accessToken == null )
                             {
                                 throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
@@ -260,17 +265,13 @@ namespace EddiCompanionAppService
 
                             CurrentState = State.Authorized;
                         }
-                        else
-                        {
-                            throw new EliteDangerousCompanionAppAuthenticationException(
-                                "Invalid refresh token from authorization server" );
-                        }
                     }
-                } ).ConfigureAwait( true );
+                } ).GetAwaiter().GetResult();
             }
-            catch ( Exception )
+            catch ( Exception ex )
             {
                 CurrentState = State.LoggedOut;
+                throw new EliteDangerousCompanionAppAuthenticationException( "Authorization callback failed", ex );
             }
         }
 

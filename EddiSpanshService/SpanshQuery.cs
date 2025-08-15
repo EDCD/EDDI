@@ -24,32 +24,35 @@ namespace EddiSpanshService
         {
             try
             {
-                var requestContent = GetRequestContent( searchFilters, maxResults, pageId );
-                var response = await spanshHttpClient.PostAsync(  $"{queryGroup}/search", requestContent ).ConfigureAwait( false );
-                response.EnsureSuccessStatusCode();
-                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+                using ( var requestContent = GetRequestContent( searchFilters, maxResults, pageId ) )
+                {
+                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent )
+                        .ConfigureAwait( false );
+                    response.EnsureSuccessStatusCode();
+                    var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 
-                if ( string.IsNullOrEmpty( responseJson ) )
-                {
-                    Logging.Warn( "Spansh API returned no result" );
-                    return null;
-                }
+                    if ( string.IsNullOrEmpty( responseJson ) )
+                    {
+                        Logging.Warn( "Spansh API returned no result" );
+                        return null;
+                    }
 
-                try
-                {
-                    var jResponse = JToken.Parse( responseJson );
-                    if ( jResponse.Contains( "error" ) )
+                    try
                     {
-                        Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                        var jResponse = JToken.Parse( responseJson );
+                        if ( jResponse.Contains( "error" ) )
+                        {
+                            Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                        }
+                        else
+                        {
+                            return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                        }
                     }
-                    else
+                    catch ( Exception e )
                     {
-                        return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                        Logging.Error( "Failed to parse Spansh response", e );
                     }
-                }
-                catch ( Exception e )
-                {
-                    Logging.Error( "Failed to parse Spansh response", e );
                 }
             }
             catch ( HttpRequestException he )
@@ -64,26 +67,29 @@ namespace EddiSpanshService
         {
             try
             {
-                var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters );
-                var response = await spanshHttpClient.PostAsync(  $"{queryGroup}/search", requestContent ).ConfigureAwait( false );
-                response.EnsureSuccessStatusCode();
-                var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+                using ( var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters ) )
+                {
+                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent )
+                        .ConfigureAwait( false );
+                    response.EnsureSuccessStatusCode();
+                    var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 
-                try
-                {
-                    var jResponse = JToken.Parse( responseJson );
-                    if ( jResponse.Contains( "error" ) )
+                    try
                     {
-                        Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                        var jResponse = JToken.Parse( responseJson );
+                        if ( jResponse.Contains( "error" ) )
+                        {
+                            Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                        }
+                        else
+                        {
+                            return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                        }
                     }
-                    else
+                    catch ( Exception e )
                     {
-                        return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                        Logging.Error( "Failed to parse Spansh response", e );
                     }
-                }
-                catch ( Exception e )
-                {
-                    Logging.Error( "Failed to parse Spansh response", e );
                 }
             }
             catch ( HttpRequestException he )
