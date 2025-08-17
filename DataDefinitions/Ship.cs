@@ -727,7 +727,7 @@ namespace EddiDataDefinitions
             var fuel = Convert.ToDouble( Math.Min(currentFuel, maxfuelperjump ) );
             var linearConstant = frameshiftdrive.GetFsdRatingConstant();
             var powerConstant = frameshiftdrive.GetFsdPowerConstant();
-            var guardianFsdBoosterRange = compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"))?.module?.GetGuardianFSDBoost() ?? 0;
+            var guardianFsdBoosterRange = compartments.FirstOrDefault( c => c.module?.edname.Contains( "Int_GuardianFSDBooster" ) ?? false )?.module?.GetGuardianFSDBoost() ?? 0;
 
             return JumpRange( optimalMass, mass, fuel, linearConstant, powerConstant, guardianFsdBoosterRange, boostModifier );
         }
