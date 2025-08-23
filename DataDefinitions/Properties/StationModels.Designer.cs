@@ -205,6 +205,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron Carrier.
+        /// </summary>
+        public static string SquadronCarrier {
+            get {
+                return ResourceManager.GetString("SquadronCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Surface Station.
         /// </summary>
         public static string SurfaceStation {

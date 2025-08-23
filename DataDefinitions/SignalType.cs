@@ -19,6 +19,7 @@
         public static readonly SignalType NavBeacon = new SignalType( "NavBeacon" );
         public static readonly SignalType Outpost = new SignalType( "Outpost" );
         public static readonly SignalType ResourceExtraction = new SignalType( "ResourceExtraction" );
+        public static readonly SignalType SquadronCarrier = new SignalType( "SquadronCarrier" );
         public static readonly SignalType StationAsteroid = new SignalType( "StationAsteroid" );
         public static readonly SignalType StationBernalSphere = new SignalType( "StationBernalSphere" );
         public static readonly SignalType StationCoriolis = new SignalType( "StationCoriolis" );
