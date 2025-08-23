@@ -5485,11 +5485,18 @@ namespace EddiJournalMonitor
                 Logging.Debug(jre.Message, jre);
                 try
                 {
-                    if (line.Contains("\"event\":\"BackpackChange\"") && line.Contains("] \"Removed\""))
+                    if ( line.Contains( @"""event"":""BackpackChange""" ) && line.Contains( @"] ""Removed""" ) )
                     {
                         // We've observed a missing comma in the `BackpackChange` event, fix that here.
-                        line = line.Replace("] \"Removed\"", "], \"Removed\"");
-                        return ParseJournalEntry(line, fromLogLoad);
+                        line = line.Replace( @"] ""Removed""", @"], ""Removed""" );
+                        return ParseJournalEntry( line, fromLogLoad );
+                    }
+
+                    if ( line.Contains( @"""event"":""CarrierNameChange""" ) && line.Contains(@""""": ""SquadronCarrier"",") )
+                    {
+                        // We've observed a missing CarrierType field name in the `CarrierNameChange` event, fix that here.
+                        line = line.Replace( @""""": ""SquadronCarrier"",", @"""CarrierType"": ""SquadronCarrier""," );
+                        return ParseJournalEntry( line, fromLogLoad );
                     }
                 }
                 catch
