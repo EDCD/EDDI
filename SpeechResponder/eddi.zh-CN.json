@@ -279,7 +279,7 @@
       "script": null,
       "default": true,
       "name": "Carrier bank transfer",
-      "description": "Triggered when you transfer money to or from your fleet carrier"
+      "description": "Triggered when you transfer money to or from a monitored fleet carrier"
     },
     "Carrier cooldown": {
       "enabled": true,
@@ -297,7 +297,7 @@
       "script": "{if carrier.name:\r\n    {carrier.name} \r\n|else:\r\n    您的舰队航母\r\n}\r\n的退役流程已被取消.",
       "default": true,
       "name": "Carrier decommission cancelled",
-      "description": "Triggered when you cancel the decommissioning of your fleet carrier"
+      "description": "Triggered when you cancel the decommissioning of a monitored fleet carrier"
     },
     "Carrier decommission scheduled": {
       "enabled": true,
@@ -306,7 +306,7 @@
       "script": "{if carrier.name:\r\n    {carrier.name} \r\n|else:\r\n    您的舰队航母\r\n}\r\n已被计划于 \r\n{if event.days:\r\n   {event.days} 天\r\n}\r\n{if event.hours:\r\n   {event.hours}小时后\r\n}退役.\r\n\r\n您将会获得 {Humanise(event.refund)} 信用点的退款.",
       "default": true,
       "name": "Carrier decommission scheduled",
-      "description": "Triggered when you request the decommissioning of your fleet carrier"
+      "description": "Triggered when you request the decommissioning of a monitored fleet carrier"
     },
     "Carrier docking permission": {
       "enabled": true,
@@ -315,7 +315,7 @@
       "script": "{Occasionally(2, \"命令已送达.\")}\r\n{if carrier && len(carrier.name) > 0: \r\n    {carrier.name} \r\n|else: \r\n    您的舰队航母\r\n}的停靠权限已被更改为：\r\n{set open to \"开放\"}\r\n\r\n{if event.dockingAccess = \"none\":\r\n    禁止. \r\n    {Occasionally(2, \"没有其他指挥官可以申请对接\")}\r\n|elif event.dockingAccess = \"squadronfriends\":\r\n    {if !event.allowNotorious: law abiding }\r\n    {Occasionally(3, \" 只\")}对中队成员和友方指挥官{open}。\r\n    \r\n|elif event.dockingAccess = \"friends\":\r\n    {if !event.allowNotorious: law abiding }\r\n    {Occasionally(3, \" 只\")}对友方指挥官{open}。\r\n|elif event.dockingAccess = \"all\":\r\n    {if !event.allowNotorious: law abiding }\r\n\t对所有指挥官{open}。\r\n\r\n}",
       "default": true,
       "name": "Carrier docking permission",
-      "description": "Triggered when changing the docking permission criteria at your fleet carrier"
+      "description": "Triggered when changing the docking permission criteria at a monitored fleet carrier"
     },
     "Carrier finance": {
       "enabled": true,
@@ -324,7 +324,7 @@
       "script": null,
       "default": true,
       "name": "Carrier finance",
-      "description": "Triggered when changing tax rates or reserve funds at your fleet carrier"
+      "description": "Triggered when changing tax rates or reserve funds at a monitored fleet carrier"
     },
     "Carrier fuel deposit": {
       "enabled": true,
@@ -333,7 +333,7 @@
       "script": "{Humanise(event.amount)} 吨氚被加注至\r\n{if carrier && len(carrier.name) > 0:\r\n    {carrier.name}.\r\n|else:\r\n    您的舰队航母.\r\n}",
       "default": true,
       "name": "Carrier fuel deposit",
-      "description": "Triggered when depositing fuel at your fleet carrier"
+      "description": "Triggered when depositing fuel at a monitored fleet carrier"
     },
     "Carrier jump cancelled": {
       "enabled": true,
@@ -351,7 +351,7 @@
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'carrier jump')}\r\n{SetState('eddi_context_last_action', 'start')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n{SetState('eddi_context_system_lastvisit', system.lastVisitSeconds)}\r\n\r\n{if event.docked || (status.vehicle = \"On Foot\" && station.marketId = carrier.Market.marketId):\r\n\r\n    {_ Zero the 'remaining jump' context to only use values following this event _}\r\n    {SetState('eddi_context_remaining_jumps', 0)}\r\n\r\n    {set reportsystem to SystemDetails(event.systemname)}\r\n\r\n    正在{OneOf(\"跃迁\",\"转移\")} 至 {P(reportsystem.systemname, \"starsystem\")} 星系\r\n    {if len(event.shortname) > 0:\r\n        {set reportBody to BodyDetails(event.bodyname, event.systemname)} \r\n        在\r\n        {if len(reportBody.bodytype) > 0: {reportBody.bodytype} |else: body}\r\n        {P(event.shortname, \"body\")} 附近\r\n    }.\r\n\r\n    {if reportsystem.systemname = homesystem.systemname:\r\n        欢迎回家, {F(\"Honorific\")}\r\n    |else:       \r\n        {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!reportsystem.allegiance || reportsystem.allegiance = \"None\" || reportsystem.allegiance = \"Independent\"):\r\n            您 {OneOf(\"正在离开\", \"已离开\", \"不再处于\")} {lastsystem.allegiance} 领空.\r\n        |elif lastsystem.allegiance && lastsystem.allegiance != reportsystem.allegiance && reportsystem.allegiance && reportsystem.allegiance != \"None\":\r\n            您 {OneOf(\"现在在\", \"已进入\", \"正在进入\")} {reportsystem.allegiance} 领空.\r\n            {if cmdr.title != \"Commander\":\r\n                欢迎回到 {F(\"Honorific\")}.\r\n            }\r\n        }\r\n\r\n        {if reportsystem.visits < 2:\r\n            这是您第{reportsystem.visits}次来到这个星系.\r\n        |elif reportsystem.visits < 4:\r\n            {Occasionally(2, \"这是您第{reportsystem.visits}次来到这个星系.\")}\r\n        |else:\r\n            {Occasionally(3, \"您已经来过本星系 {reportsystem.visits} 次.\")}\r\n        }\r\n\r\n        {if reportsystem.population && reportsystem.population > 0:\r\n            {if SecondsSince(reportsystem.lastVisitSeconds) > 3600:\r\n                {F(\"System report\")}\r\n            }\r\n        |else:\r\n            {OneOf(\"这个星系无人居住\",\"这里没有人类定居点\", \"人类未殖民本星系\")}.\r\n        }\r\n\r\n        {if reportsystem.distancefromhome:\r\n            {set ReportDistanceFromHome() to:\r\n                {return cat(\r\n                \tOneOf(\"您现在在\", \"目前位置是\", \"您目前处于\"), \" \",\r\n\t                Humanise(reportsystem.distancefromhome), \" lightyears from \",\r\n\t                OneOf(\"母星系\", \"{P(homesystem.name, \"starsystem\")}\"), \".\"\r\n\t            )}\r\n            }\r\n            {Occasionally(7, ReportDistanceFromHome())}\r\n        }\r\n\r\n        {if reportsystem.comment:\r\n            您有一条关于本星系的 {OneOf(\"笔记\", \"标记\", \"书签\")}, {OneOf(\"如下:\", \"上面说:\", \"它是:\", \"是,\")} {reportsystem.comment}.\r\n        }\r\n    }\r\n|else:\r\n    舰队航母已到达 {P(event.systemname, \"starsystem\")} 星系,\r\n    {if len(event.shortname) > 0:\r\n        {set reportBody to BodyDetails(event.bodyname, event.systemname)} \r\n        在\r\n        {if len(reportBody.bodytype) > 0: {reportBody.bodytype} |else: body}\r\n        {P(event.shortname, \"body\")} 附近.\r\n    }.\r\n}",
       "default": true,
       "name": "Carrier jump engaged",
-      "description": "Triggered when your fleet carrier performs a jump"
+      "description": "Triggered when a monitored fleet carrier performs a jump"
     },
     "Carrier jump request": {
       "enabled": true,
@@ -360,7 +360,7 @@
       "script": "已规划舰队航母跃迁行程. 目的地为 {P(event.systemname, \"starsystem\")} 星系\r\n{if len(event.shortname) > 0:\r\n    {set reportBody to BodyDetails(event.bodyname, event.systemname)} \r\n    , 靠近\r\n    {if len(reportBody.bodytype) > 0: {reportBody.bodytype}: |else: body: }\r\n    {P(event.shortname, \"body\")}\r\n}.",
       "default": true,
       "name": "Carrier jump request",
-      "description": "Triggered when you request that your fleet carrier performs a jump"
+      "description": "Triggered when you request that a monitored fleet carrier performs a jump"
     },
     "Carrier jumped": {
       "enabled": true,
@@ -378,7 +378,7 @@
       "script": null,
       "default": true,
       "name": "Carrier location",
-      "description": "Triggered at startup and shortly before your fleet carrier arrives at a new destination"
+      "description": "Triggered at startup and shortly before a monitored fleet carrier arrives at a new destination"
     },
     "Carrier name changed": {
       "enabled": true,
@@ -387,7 +387,7 @@
       "script": "新船名已被接受。\r\n{OneOf(\"舰队航母 {Pause(100)} {event.name} {Pause(100)}\", \"{event.name}\")}\r\n{OneOf(\"正在待命\", \"准备接受您的指挥\", \"正在等待您的命令\")}.",
       "default": true,
       "name": "Carrier name changed",
-      "description": "Triggered when your fleet carrier’s name is changed"
+      "description": "Triggered when a monitored fleet carrier’s name is changed"
     },
     "Carrier pads locked": {
       "enabled": true,
@@ -396,7 +396,7 @@
       "script": "航母起落甲板已锁定。正在进行跃迁的最后准备工作。",
       "default": true,
       "name": "Carrier pads locked",
-      "description": "Triggered when your fleet carrier locks landing pads prior to a jump"
+      "description": "Triggered when a monitored fleet carrier locks landing pads prior to a jump"
     },
     "Carrier purchased": {
       "enabled": true,
@@ -414,7 +414,7 @@
       "script": "{set GetService() to:\r\n    {if event.invariantService = \"Bartender\":\r\n        {set bar to OneOf(\"航母酒吧\", \"酒吧\")}\r\n        {return OneOf(\"{bar}\", \"{bar}服务\")}\r\n    |elif event.invariantService = \"Black Market\":\r\n        {return OneOf(\"安全仓库\", \"黑市贸易服务\")}\r\n    |elif event.invariantService = \"Commodities\":\r\n        {return OneOf(\"商品市场\", \"商品交易服务\")}\r\n    |elif event.invariantService = \"Exploration\":\r\n        {return OneOf(\"宇宙制图服务\", \"星际制图服务\")}\r\n    |elif event.invariantService = \"Outfitting\":\r\n        {return \"舾装服务\"}\r\n    |elif event.invariantService = \"Pioneer Supplies\":\r\n        {return OneOf(\"先锋武装补给\", \"个人装备服务\")}\r\n    |elif event.invariantService = \"Rearm\":\r\n        {return OneOf(\"弹药库\", \"弹药服务\")}\r\n    |elif event.invariantService = \"Redemption Office\":\r\n        {return \"兑换券办公室\"}\r\n    |elif event.invariantService = \"Repair\":\r\n        {return \"修理服务\"}\r\n    |elif event.invariantService = \"Shipyard\":\r\n        {return OneOf(\"船坞\", \"来客停船库服务\")}\r\n    |elif event.invariantService = \"Tritium Depot\":\r\n        {return OneOf(\"氚库\", \"航母补氚服务\")}\r\n    |elif event.invariantService = \"Vista Genomics\":\r\n        {return OneOf(\"Vista基因组学\", \"地外生物学服务\")}\r\n    |else:\r\n        {return event.service}\r\n    }\r\n}\r\n\r\n\r\n{if event.operation = \"Replace\":\r\n    {_ This is a carrier crew reassignment }\r\n    {if event.invariantService = \"Captain\":\r\n        {event.crew} \r\n        {OneOf(\"已经被提为\", \"已被委任为\")}\r\n        {if carrier && len(carrier.name) > 0:\r\n            {carrier.name}的大副\r\n        |else:\r\n            您航母的大副.\r\n        }\r\n    |else:\r\n        {event.crew} 已被分配为 {GetService()}\r\n    }     \r\n|elif len(event.operation) > 0:\r\n    {set service to GetService()}\r\n    {service}\r\n    {if find(service, \"services\") > -1:\r\n        {OneOf(\"已经\", \"现在\")}\r\n    |else:\r\n        {OneOf(\"已经\", \"现在\")}\r\n    }\r\n    {if event.operation = \"Activate\":\r\n        被启用了.    \r\n    |elif event.operation = \"Deactivate\":\r\n        被关闭了.    \r\n    |elif event.operation = \"Pause\":\r\n        {OneOf(\"被暂停了.\", \"被停用了.\")}\r\n    |elif event.operation = \"Resume\":\r\n        被恢复了.\r\n    |else:\r\n        {event.operation}\r\n    }\r\n}",
       "default": true,
       "name": "Carrier service changed",
-      "description": "Triggered when you change the services available at your fleet carrier"
+      "description": "Triggered when you change the services available at a monitored fleet carrier"
     },
     "Carrier stats": {
       "enabled": true,

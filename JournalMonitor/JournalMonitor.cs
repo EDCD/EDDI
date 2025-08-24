@@ -4077,10 +4077,11 @@ namespace EddiJournalMonitor
                             case "CarrierLocation":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var systemName = JsonParsing.getString(data, "StarSystem");
                                     var bodyId = JsonParsing.getLong(data, "BodyID");
-                                    events.Add(new CarrierLocationEvent(timestamp, carrierID, systemAddress, systemName, bodyId) { raw = line, fromLoad = fromLogLoad } );
+                                    events.Add(new CarrierLocationEvent(timestamp, carrierID, carrierType, systemAddress, systemName, bodyId ) { raw = line, fromLoad = fromLogLoad } );
                                 }
                                 handled = true;
                                 break;

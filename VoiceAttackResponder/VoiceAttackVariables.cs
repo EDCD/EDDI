@@ -47,8 +47,6 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body") },
             { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station") },
             { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station") },
-            { nameof(EDDI.Instance.Cmdr), () => setCommanderValues(EDDI.Instance.Cmdr) },
-            { nameof(EDDI.Instance.FleetCarrier), () => setFleetCarrierValues(EDDI.Instance.FleetCarrier, "Carrier") },
             { nameof(EDDI.Instance.CurrentShip), () => setShipValues(EDDI.Instance.CurrentShip, "Ship") },
             { nameof(EDDI.Instance.Environment), () => VoiceAttackPlugin.SetText("Environment", EDDI.Instance.Environment) },
             { nameof(EDDI.Instance.Vehicle), () => VoiceAttackPlugin.SetText("Vehicle", EDDI.Instance.Vehicle) },
@@ -107,6 +105,19 @@ namespace EddiVoiceAttackResponder
                 {
                     var cargoConfig = configService.cargoMonitorConfiguration;
                     setCargo( cargoConfig );
+                    return;
+                }
+
+                if ( e.PropertyName.Equals( nameof( CommanderConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
+                {
+                    setCommanderValues( EDDI.Instance.Cmdr );
+                    return;
+                }
+
+                if ( e.PropertyName.Equals( nameof( FleetCarrierConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
+                {
+                    setFleetCarrierValues( ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier, "Carrier" );
+                    setFleetCarrierValues( ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier, "Squadron carrier" );
                     return;
                 }
 

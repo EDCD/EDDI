@@ -286,6 +286,13 @@ Details of the commander's fleet carrier (if purchased) are available within the
   - *bankReservedBalance* - The last reported reserved bank balance of the carrier
   - *bankAvailableBalance* - The last reported available bank balance of the carrier
 
+## Squadron Fleet Carrier
+
+Information about your squadron carrier (if purchased) is available under the *squadronCarrier* object.
+
+Any values might be missing, depending on EDDI's configuration and the information avaialable about the squadron carrier.
+
+Values are the same as for the fleet carrier.
 ___
 
 ## Inara

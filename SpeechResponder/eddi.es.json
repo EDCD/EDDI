@@ -334,7 +334,7 @@
     },
     "Carrier bank transfer": {
       "name": "Carrier bank transfer",
-      "description": "Triggered when you transfer money to or from your fleet carrier",
+      "description": "Triggered when you transfer money to or from a monitored fleet carrier",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -354,7 +354,7 @@
     },
     "Carrier decommission cancelled": {
       "name": "Carrier decommission cancelled",
-      "description": "Triggered when you cancel the decommissioning of your fleet carrier",
+      "description": "Triggered when you cancel the decommissioning of a monitored fleet carrier",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -364,7 +364,7 @@
     },
     "Carrier decommission scheduled": {
       "name": "Carrier decommission scheduled",
-      "description": "Triggered when you request the decommissioning of your fleet carrier",
+      "description": "Triggered when you request the decommissioning of a monitored fleet carrier",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -374,7 +374,7 @@
     },
     "Carrier docking permission": {
       "name": "Carrier docking permission",
-      "description": "Triggered when changing the docking permission criteria at your fleet carrier",
+      "description": "Triggered when changing the docking permission criteria at a monitored fleet carrier",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -384,7 +384,7 @@
     },
     "Carrier finance": {
       "name": "Carrier finance",
-      "description": "Triggered when changing tax rates or reserve funds at your fleet carrier",
+      "description": "Triggered when changing tax rates or reserve funds at a monitored fleet carrier",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -394,7 +394,7 @@
     },
     "Carrier fuel deposit": {
       "name": "Carrier fuel deposit",
-      "description": "Triggered when depositing fuel at your fleet carrier",
+      "description": "Triggered when depositing fuel at a monitored fleet carrier",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -414,7 +414,7 @@
     },
     "Carrier jump engaged": {
       "name": "Carrier jump engaged",
-      "description": "Triggered when your fleet carrier performs a jump",
+      "description": "Triggered when a monitored fleet carrier performs a jump",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -424,7 +424,7 @@
     },
     "Carrier jump request": {
       "name": "Carrier jump request",
-      "description": "Triggered when you request that your fleet carrier performs a jump",
+      "description": "Triggered when you request that a monitored fleet carrier performs a jump",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -449,11 +449,11 @@
       "script": null,
       "default": true,
       "name": "Carrier location",
-      "description": "Triggered at startup and shortly before your fleet carrier arrives at a new destination"
+      "description": "Triggered at startup and shortly before a monitored fleet carrier arrives at a new destination"
     },
     "Carrier name changed": {
       "name": "Carrier name changed",
-      "description": "Triggered when your fleet carrier’s name is changed",
+      "description": "Triggered when a monitored fleet carrier’s name is changed",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -463,7 +463,7 @@
     },
     "Carrier pads locked": {
       "name": "Carrier pads locked",
-      "description": "Triggered when your fleet carrier locks landing pads prior to a jump",
+      "description": "Triggered when a monitored fleet carrier locks landing pads prior to a jump",
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -483,7 +483,7 @@
     },
     "Carrier service changed": {
       "name": "Carrier service changed",
-      "description": "Triggered when you change the services available at your fleet carrier",
+      "description": "Triggered when you change the services available at a monitored fleet carrier",
       "enabled": true,
       "priority": 3,
       "responder": true,

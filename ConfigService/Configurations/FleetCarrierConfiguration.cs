@@ -8,5 +8,6 @@ namespace EddiConfigService.Configurations
     public class FleetCarrierConfiguration : Config
     {
         public FleetCarrier fleetCarrier { get; set; }
+        public FleetCarrier squadronCarrier { get; set; }
     }
 }

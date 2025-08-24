@@ -6,11 +6,15 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Added support for the Panther Clipper Mk. II.
     * Replaced the legacy `CSCore` voice effect library with the more modern `NAudio` library. The effects library isn't exactly the same so some audio effects may be slightly different than they were before. The largest difference is the way that distortion in response to ship damage is handled.
+    * Many carrier events now trigger for both your personal fleet carrier and for your squadron carrier - a `carrierType` field has been added to applicable events to identify the event source.
   * Events
+    * `Carrier Location` updated to include the new `carrierType` field.
+    * `Squadron startup` updated to include the new `rankName` string.
     * `Statistics` updated with various new fields.
   * Inara Responder
     * Fixed a bug causing Inara to incorrectly report module values. 
   * Speech Responder
+    * Added a `squadronCarrier` object similar to the current `carrier` object.
     * Added user-configurable hotkey support for the following actions:
       * Enabling speech
       * Disabling speech
@@ -25,6 +29,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Power commodity delivered`, `Power commodity obtained`, `Power micro resources collected` and `Power micro resources delivered` updated to more gracefully handle collecting or delivering a single unit of a powerplay commodity or micro resource. 
       * `Signal Detected` updated to fix a bug that could cause non-unique signal sources to be vocalized (when not in fss or saa mode).
     * VoiceAttack
+      * Added `Squadron carrier` values, similar to existing `Carrier` values.
       * Fixed the documentation for the `transmit` context and improved the clarity of the documentation for all three speech functions (`say`, `speech`, and `transmit`).
       
 ## 4.1.4

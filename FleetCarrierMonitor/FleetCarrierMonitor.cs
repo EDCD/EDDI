@@ -7,6 +7,8 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
@@ -14,7 +16,7 @@ using Utilities;
 namespace EddiFleetCarrierMonitor
 {
     [ UsedImplicitly ]
-    public class FleetCarrierMonitor : IEddiMonitor
+    public class FleetCarrierMonitor : IEddiMonitor, INotifyPropertyChanged
     {
         public FleetCarrierMonitor ()
         {
@@ -26,6 +28,20 @@ namespace EddiFleetCarrierMonitor
             get => EDDI.Instance.FleetCarrier;
             set => EDDI.Instance.FleetCarrier = value;
         }
+
+        private FleetCarrier SquadronCarrier
+        {
+            get => _squadronCarrier;
+            set
+            {
+                _squadronCarrier = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private FleetCarrier _squadronCarrier;
+
+        private readonly object carrierLock = new object();
 
         public string MonitorName () => "Fleet Carrier Monitor";
 
@@ -289,13 +305,26 @@ namespace EddiFleetCarrierMonitor
 
         private void handleCarrierLocationEvent ( CarrierLocationEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            FleetCarrier carrier = null;
+            if ( @event.carrierType == StationModel.SquadronCarrier )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                carrier = SquadronCarrier;
             }
-            if ( FleetCarrier is null ) { return; }
+            else if ( @event.carrierType == StationModel.FleetCarrier )
+            {
+                carrier = FleetCarrier;
+            }
+            else
+            {
+                Logging.Warn( $"Unknown 'carrierType' {@event.carrierType.edname}", @event );
+            }
 
-            FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyID );
+            if ( carrier is null || carrier.carrierID != @event.carrierID )
+            {
+                carrier = new FleetCarrier( @event.carrierID );
+            }
+
+            carrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyID );
             WriteConfiguration();
         }
 
@@ -408,7 +437,14 @@ namespace EddiFleetCarrierMonitor
 
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {
-            return null;
+            lock ( carrierLock )
+            {
+                return new Dictionary<string, Tuple<Type, object>>
+                {
+                    [ "carrier" ] = new Tuple<Type, object>( typeof( FleetCarrier ), FleetCarrier ),
+                    [ "squadronCarrier" ] = new Tuple<Type, object>( typeof( FleetCarrier ), SquadronCarrier ),
+                };
+            }
         }
 
         private void OnCompanionAppServiceStateChanged ( CompanionAppService.State oldstate, CompanionAppService.State newstate )
@@ -439,7 +475,7 @@ namespace EddiFleetCarrierMonitor
                         if ( FleetCarrier is null ) { FleetCarrier = new FleetCarrier( carrierID ); }
 
                         // Update our Fleet Carrier object
-                        LockManager.GetLock( nameof( FleetCarrier ), () =>
+                        lock ( carrierLock )
                         {
                             FleetCarrier.UpdateFrom( frontierApiCarrierJson, timestamp );
 
@@ -451,7 +487,7 @@ namespace EddiFleetCarrierMonitor
                                     FleetCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
                                 }
                             }
-                        } );
+                        }
                         WriteConfiguration();
                     }
                 }
@@ -464,7 +500,7 @@ namespace EddiFleetCarrierMonitor
 
         private void WriteConfiguration ()
         {
-            LockManager.GetLock( nameof( FleetCarrier ), () =>
+            lock ( carrierLock )
             {
                 var configuration = ConfigService.Instance.fleetCarrierConfiguration;
                 if ( configuration.fleetCarrier?.timestamp < FleetCarrier?.timestamp )
@@ -474,7 +510,22 @@ namespace EddiFleetCarrierMonitor
                 }
 
                 EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.FleetCarrier ) );
-            } );
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged ( [ CallerMemberName ] string propertyName = null )
+        {
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+        }
+
+        protected bool SetField<T> ( ref T field, T value, [ CallerMemberName ] string propertyName = null )
+        {
+            if ( EqualityComparer<T>.Default.Equals( field, value ) ) return false;
+            field = value;
+            OnPropertyChanged( propertyName );
+            return true;
         }
     }
 }

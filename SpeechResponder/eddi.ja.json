@@ -279,7 +279,7 @@
       "script": null,
       "default": true,
       "name": "Carrier bank transfer",
-      "description": "Triggered when you transfer money to or from your fleet carrier"
+      "description": "Triggered when you transfer money to or from a monitored fleet carrier"
     },
     "Carrier cooldown": {
       "enabled": true,
@@ -297,7 +297,7 @@
       "script": "The decommissioning of\r\n{if carrier.name:\r\n    {carrier.name} \r\n|else:\r\n    your fleet carrier\r\n}\r\nhas been cancelled.",
       "default": true,
       "name": "Carrier decommission cancelled",
-      "description": "Triggered when you cancel the decommissioning of your fleet carrier"
+      "description": "Triggered when you cancel the decommissioning of a monitored fleet carrier"
     },
     "Carrier decommission scheduled": {
       "enabled": true,
@@ -306,7 +306,7 @@
       "script": "{if carrier.name:\r\n    {carrier.name} \r\n|else:\r\n    your fleet carrier\r\n}\r\nhas been scheduled for decommissioning in \r\n{if event.days:\r\n   {event.days} days\r\n}\r\n{if event.hours:\r\n   and {event.hours} hours\r\n}.\r\n\r\nYou shall be refunded {Humanise(event.refund)} credits.",
       "default": true,
       "name": "Carrier decommission scheduled",
-      "description": "Triggered when you request the decommissioning of your fleet carrier"
+      "description": "Triggered when you request the decommissioning of a monitored fleet carrier"
     },
     "Carrier docking permission": {
       "enabled": true,
@@ -315,7 +315,7 @@
       "script": "{Occasionally(2, \"Orders transmitted.\")}\r\nAccess to \r\n{if carrier && len(carrier.name) > 0: \r\n    {carrier.name} \r\n|else: \r\n    your fleet carrier\r\n}\r\n{set open to OneOf(\"is now open\", \"has been opened\")}\r\n\r\n{if event.dockingAccess = \"none\":\r\n    restricted. \r\n    {Occasionally(2, \"No other commanders are permitted to dock.\")}\r\n|elif event.dockingAccess = \"squadronfriends\":\r\n    {open} to \r\n    {if !event.allowNotorious: law abiding }\r\n    squadron members and friendly commanders{Occasionally(3, \" only\")}.\r\n|elif event.dockingAccess = \"friends\":\r\n    {open} to \r\n    {if !event.allowNotorious: law abiding }\r\n    friendly commanders{Occasionally(3, \" only\")}.\r\n|elif event.dockingAccess = \"all\":\r\n    {open} to all \r\n    {if !event.allowNotorious: law abiding }    \r\n    commanders.\r\n}",
       "default": true,
       "name": "Carrier docking permission",
-      "description": "Triggered when changing the docking permission criteria at your fleet carrier"
+      "description": "Triggered when changing the docking permission criteria at a monitored fleet carrier"
     },
     "Carrier finance": {
       "enabled": true,
@@ -324,7 +324,7 @@
       "script": null,
       "default": true,
       "name": "Carrier finance",
-      "description": "Triggered when changing tax rates or reserve funds at your fleet carrier"
+      "description": "Triggered when changing tax rates or reserve funds at a monitored fleet carrier"
     },
     "Carrier fuel deposit": {
       "enabled": true,
@@ -333,7 +333,7 @@
       "script": "{Humanise(event.amount)} tonnes of tritium deposited with\r\n{if carrier && len(carrier.name) > 0:\r\n    {carrier.name}.\r\n|else:\r\n    your fleet carrier.\r\n}",
       "default": true,
       "name": "Carrier fuel deposit",
-      "description": "Triggered when depositing fuel at your fleet carrier"
+      "description": "Triggered when depositing fuel at a monitored fleet carrier"
     },
     "Carrier jump cancelled": {
       "enabled": true,
@@ -351,7 +351,7 @@
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'carrier jump')}\r\n{SetState('eddi_context_last_action', 'start')}\r\n{SetState('eddi_context_carrier_system_name', event.systemname)}\r\n{SetState('eddi_context_carrier_system_address', event.systemAddress)}\r\n\r\n{if event.docked || (status.vehicle = \"On Foot\" && station.marketId = carrier.Market.marketId):\r\n\r\n    {OneOf(\"Jump in progress\",\"Entering portal\", \"Entering rift\")} to the {P(event.systemname, \"starsystem\")} system\r\n    {if len(event.shortname) > 0:\r\n        {set reportBody to BodyDetails(event.bodyId, event.systemAddress)} \r\n        near\r\n        {if len(reportBody.bodytype) > 0: {reportBody.bodytype} |else: body}\r\n        {P(event.shortname, \"body\")}\r\n    }.\r\n\r\n    {set reportsystem to SystemDetails(event.systemAddress)}\r\n    \r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!reportsystem.allegiance || reportsystem.allegiance = \"None\" || reportsystem.allegiance = \"Independent\"):\r\n        You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    }\r\n    \r\n    {if lastsystem.allegiance && lastsystem.allegiance != reportsystem.allegiance && reportsystem.allegiance && reportsystem.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {reportsystem.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}.\r\n        }\r\n    }\r\n\r\n    {if reportsystem.population && reportsystem.population > 0:\r\n        {if SecondsSince(reportsystem.lastVisitSeconds) > 3600:\r\n            {F(\"System report\")}\r\n        }\r\n    |else:\r\n        {OneOf(\"This system is not populated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    }\r\n       \r\n    {if reportsystem.visits = 0:\r\n        This is your first visit to this system.\r\n    |elif reportsystem.visits = 1:\r\n        This is your second visit to this system.\r\n    |elif reportsystem.visits = 2:\r\n        {Occasionally(2, \"This is your third visit to this system.\")}\r\n    |elif reportsystem.visits = 3:\r\n        {Occasionally(2, \"This is your fourth visit to this system.\")}\r\n    |else:\r\n        {Occasionally(3, \"You have visited this system {reportsystem.visits} times.\")}\r\n    }\r\n    \r\n    {if reportsystem.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {reportsystem.comment}.\r\n    }\r\n    \r\n|else:\r\n\r\n    {OneOf('Your fleet carrier', carrier.name)}\r\n    is arriving at the {P(event.systemname, \"starsystem\")} system\r\n    {if event.bodyname != event.systemname && len(event.shortname) > 0:\r\n        {set reportBody to BodyDetails(event.bodyId, event.systemAddress)} \r\n        near\r\n        {if len(reportBody.bodytype) > 0: {reportBody.bodytype} |else: body}\r\n        {P(event.shortname, \"body\")}\r\n    }.\r\n    \r\n}",
       "default": true,
       "name": "Carrier jump engaged",
-      "description": "Triggered when your fleet carrier performs a jump"
+      "description": "Triggered when a monitored fleet carrier performs a jump"
     },
     "Carrier jump request": {
       "enabled": true,
@@ -360,7 +360,7 @@
       "script": "Fleet carrier jump scheduled. Course laid in for the {P(event.systemname, \"starsystem\")} star system\r\n{if len(event.shortname) > 0:\r\n    {set reportBody to BodyDetails(event.bodyname, event.systemname)} \r\n    , arriving near\r\n    {if len(reportBody.bodytype) > 0: {reportBody.bodytype}: |else: body: }\r\n    {P(event.shortname, \"body\")}\r\n}.",
       "default": true,
       "name": "Carrier jump request",
-      "description": "Triggered when you request that your fleet carrier performs a jump"
+      "description": "Triggered when you request that a monitored fleet carrier performs a jump"
     },
     "Carrier jumped": {
       "enabled": true,
@@ -378,7 +378,7 @@
       "script": null,
       "default": true,
       "name": "Carrier location",
-      "description": "Triggered at startup and shortly before your fleet carrier arrives at a new destination"
+      "description": "Triggered at startup and shortly before a monitored fleet carrier arrives at a new destination"
     },
     "Carrier name changed": {
       "enabled": true,
@@ -387,7 +387,7 @@
       "script": "New designation accepted.\r\n{OneOf(\"Fleet carrier {Pause(100)} {event.name} {Pause(100)}\", \"{event.name}\")}\r\n{OneOf(\"stands ready for\", \"is ready for\", \"awaits\")}\r\n{OneOf(\"your order\", \"your command\")}.",
       "default": true,
       "name": "Carrier name changed",
-      "description": "Triggered when your fleet carrier’s name is changed"
+      "description": "Triggered when a monitored fleet carrier’s name is changed"
     },
     "Carrier pads locked": {
       "enabled": true,
@@ -396,7 +396,7 @@
       "script": "{if environment = \"Docked\" && station.name = carrier.callsign:\r\n    Landing pads {OneOf(\"locked\", \"secured\")}. \r\n    Final jump preparations initiated.\r\n}",
       "default": true,
       "name": "Carrier pads locked",
-      "description": "Triggered when your fleet carrier locks landing pads prior to a jump"
+      "description": "Triggered when a monitored fleet carrier locks landing pads prior to a jump"
     },
     "Carrier purchased": {
       "enabled": true,
@@ -414,7 +414,7 @@
       "script": "{set GetService() to:\r\n    {if event.invariantService = \"Bartender\":\r\n        {set bar to OneOf(\"Concourse bar\", \"bar\")}\r\n        {return OneOf(\"The {bar}\", \"{bar} service\")}\r\n    |elif event.invariantService = \"Black Market\":\r\n        {return OneOf(\"The Secure Warehouse\", \"Black market trading services\")}\r\n    |elif event.invariantService = \"Commodities\":\r\n        {return OneOf(\"The Commodities Market\", \"Commodity trading services\")}\r\n    |elif event.invariantService = \"Exploration\":\r\n        {return OneOf(\"The Universal Cartographics service\", \"Stellar Cartography Services\")}\r\n    |elif event.invariantService = \"Outfitting\":\r\n        {return \"Outfitting services\"}\r\n    |elif event.invariantService = \"Pioneer Supplies\":\r\n        {return OneOf(\"Pioneer Supplies\", \"Personal equipment services\")}\r\n    |elif event.invariantService = \"Rearm\":\r\n        {return OneOf(\"The Armoury\", \"Armoury services\")}\r\n    |elif event.invariantService = \"Redemption Office\":\r\n        {return \"The Voucher Redemption Office\"}\r\n    |elif event.invariantService = \"Repair\":\r\n        {return \"Repair services\"}\r\n    |elif event.invariantService = \"Shipyard\":\r\n        {return OneOf(\"The Shipyard\", \"Guest shipyard services\")}\r\n    |elif event.invariantService = \"Tritium Depot\":\r\n        {return OneOf(\"The Tritium Depot\", \"Carrier refueling services\")}\r\n    |elif event.invariantService = \"Vista Genomics\":\r\n        {return OneOf(\"Vista Genomics\", \"Exobiology services\")}\r\n    |else:\r\n        {return event.service}\r\n    }\r\n}\r\n\r\n\r\n{if event.operation = \"Replace\":\r\n    {_ This is a carrier crew reassignment }\r\n    {if event.invariantService = \"Captain\":\r\n        {event.crew} \r\n        {OneOf(\"has taken command of\", \"has been commisioned as the new deck officer for\")}\r\n        {if carrier && len(carrier.name) > 0:\r\n            {carrier.name}\r\n        |else:\r\n            your fleet carrier.\r\n        }\r\n    |else:\r\n        {event.crew} has been assigned to {GetService()}\r\n    }     \r\n|elif len(event.operation) > 0:\r\n    {set service to GetService()}\r\n    {service}\r\n    {if find(service, \"services\") > -1:\r\n        {OneOf(\"have been\", \"are now\")}\r\n    |else:\r\n        {OneOf(\"has been\", \"is now\")}\r\n    }\r\n    {if event.operation = \"Activate\":\r\n        activated.    \r\n    |elif event.operation = \"Deactivate\":\r\n        deactivated.    \r\n    |elif event.operation = \"Pause\":\r\n        {OneOf(\"paused.\", \"suspended.\")}\r\n    |elif event.operation = \"Resume\":\r\n        restored.\r\n    |else:\r\n        {event.operation}\r\n    }\r\n}",
       "default": true,
       "name": "Carrier service changed",
-      "description": "Triggered when you change the services available at your fleet carrier"
+      "description": "Triggered when you change the services available at a monitored fleet carrier"
     },
     "Carrier stats": {
       "enabled": true,

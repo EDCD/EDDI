@@ -303,11 +303,6 @@ namespace EddiSpeechResponder.ScriptResolverService
                 dict[ "body" ] = new Tuple<Type, Value>( typeof( Body ), Value.FromReflection(EDDI.Instance.CurrentStellarBody, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
             }
 
-            if ( EDDI.Instance.FleetCarrier != null )
-            {
-                dict[ "carrier" ] = new Tuple<Type, Value>( typeof( FleetCarrier ), Value.FromReflection(EDDI.Instance.FleetCarrier, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
             if ( theEvent != null ) // A dynamic type is used so that Value.FromReflection 
             {
                 dict[ "event" ] = new Tuple<Type, Value>( theEvent.GetType(), Value.FromReflection( theEvent, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
