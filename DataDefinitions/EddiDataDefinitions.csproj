@@ -130,11 +130,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Powers.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\SquadronRanks.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SquadronRanks.resx</DependentUpon>
-    </Compile>
     <Compile Update="Properties\Body.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -528,10 +523,6 @@
     <EmbeddedResource Update="Properties\Rarities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\SquadronRanks.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SquadronRanks.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\StationLargestPad.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

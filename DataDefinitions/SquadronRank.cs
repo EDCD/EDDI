@@ -1,53 +1,87 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace EddiDataDefinitions
 {
     /// <summary>
-    /// Squadron Ranks
+    /// Squadron Rank. Each squadron can define its own ranks so these are specific to a given squadron.Standardized localizations are not possible.
     /// </summary>
-    public class SquadronRank : ResourceBasedLocalizedEDName<SquadronRank>
+    public class SquadronRank : INotifyPropertyChanged
     {
-        static SquadronRank()
+        private string _localizedName;
+        private string _invariantName;
+        private int? _rankId;
+
+        [ PublicAPI ]
+        public int? rankID
         {
-            resourceManager = Properties.SquadronRanks.ResourceManager;
-            resourceManager.IgnoreCase = false;
-
-            None = new SquadronRank("None", 0);
-            Leader = new SquadronRank("Leader", 1);
-            SeniorOfficer = new SquadronRank("SeniorOfficer", 2);
-            Officer = new SquadronRank("Officer", 3);
-            Agent = new SquadronRank("Agent", 4);
-            Rookie = new SquadronRank("Rookie", 5);
-        }
-
-        public static readonly SquadronRank None;
-        public static readonly SquadronRank Leader;
-        public static readonly SquadronRank SeniorOfficer;
-        public static readonly SquadronRank Officer;
-        public static readonly SquadronRank Agent;
-        public static readonly SquadronRank Rookie;
-
-        [PublicAPI]
-        public int rank { get; private set; }
-
-        // dummy used to ensure that the static constructor has run
-        public SquadronRank() : this("", 0)
-        { }
-
-        private SquadronRank(string edname, int rank) : base(edname, edname)
-        {
-            this.rank = rank;
-        }
-
-        public static SquadronRank FromRank(int from)
-        {
-            SquadronRank result = AllOfThem.FirstOrDefault(v => v.rank == from);
-            if (result == null)
+            get => _rankId;
+            private set
             {
-                Logging.Info("Unknown Squadron rank " + from);
+                if ( value == _rankId )
+                {
+                    return;
+                }
+
+                _rankId = value;
+                OnPropertyChanged();
             }
-            return result;
+        }
+
+        [ PublicAPI ]
+        public string invariantName
+        {
+            get => _invariantName;
+            private set
+            {
+                if ( value == _invariantName )
+                {
+                    return;
+                }
+
+                _invariantName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ PublicAPI ]
+        public string localizedName
+        {
+            get =>  _localizedName ?? _invariantName;
+            set
+            {
+                if ( value == _localizedName )
+                {
+                    return;
+                }
+
+                _localizedName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public SquadronRank(int? rankId, string invariantName, string localizedName)
+        {
+            this.rankID = rankId;
+            this.invariantName = invariantName;
+            this.localizedName = localizedName;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged ( [ CallerMemberName ] string propertyName = null )
+        {
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+        }
+
+        protected bool SetField<T> ( ref T field, T value, [ CallerMemberName ] string propertyName = null )
+        {
+            if ( EqualityComparer<T>.Default.Equals( field, value ) ) return false;
+            field = value;
+            OnPropertyChanged( propertyName );
+            return true;
         }
     }
 }

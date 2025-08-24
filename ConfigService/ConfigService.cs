@@ -189,11 +189,7 @@ namespace EddiConfigService
                     }
                     if ( eddiConfigAdditionalData.TryGetValue( "squadronID", out var squadronID ) )
                     {
-                        commanderConfig.squadronID = squadronID.ToString();
-                    }
-                    if ( eddiConfigAdditionalData.TryGetValue( "squadronRank", out var squadronRank ) )
-                    {
-                        commanderConfig.squadronRank = squadronRank.ToString();
+                        commanderConfig.squadronTag = squadronID.ToString();
                     }
                     if ( eddiConfigAdditionalData.TryGetValue( "squadronAllegiance", out var squadronAllegiance ) )
                     {

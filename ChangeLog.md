@@ -9,8 +9,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Many carrier events now trigger for both your personal fleet carrier and for your squadron carrier - a `carrierType` field has been added to applicable events to identify the event source.
   * Events
     * `Carrier Location` updated to include the new `carrierType` field.
-    * `Squadron startup` updated to include the new `rankName` string.
+    * `Squadron rank` updated to include new Squadron rank objects and the new `squadronID` integer.
+    * `Squadron startup` updated to include a new Squadron rank object and the new `squadronID` integer.
+    * `Squadron status` updated to include the new `squadronID` integer.
     * `Statistics` updated with various new fields.
+  * Commander Monitor
+    * Squadron name and rank are now read-only values kept up to date via squadron journal events.
   * Inara Responder
     * Fixed a bug causing Inara to incorrectly report module values. 
   * Speech Responder

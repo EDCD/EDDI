@@ -252,8 +252,8 @@ namespace EddiVoiceAttackResponder
                 VoiceAttackPlugin.SetText("Title", cmdr?.title ?? EddiCore.Properties.Resources.Commander);
                 VoiceAttackPlugin.SetText("Gender", cmdr?.gender ?? EddiCore.Properties.Resources.commander_gender_n);
                 VoiceAttackPlugin.SetText("Squadron name", cmdr?.squadronname);
-                VoiceAttackPlugin.SetText("Squadron id", cmdr?.squadronid);
-                VoiceAttackPlugin.SetInt("Squadron rating", cmdr?.squadronrank?.rank);
+                VoiceAttackPlugin.SetText("Squadron id", cmdr?.squadrontag);
+                VoiceAttackPlugin.SetInt("Squadron rating", cmdr?.squadronrank?.rankID);
                 VoiceAttackPlugin.SetText("Squadron rank", cmdr?.squadronrank?.localizedName);
                 VoiceAttackPlugin.SetText("Squadron allegiance", cmdr?.squadronallegiance?.localizedName);
                 VoiceAttackPlugin.SetText("Squadron power", cmdr?.squadronpower?.localizedName);

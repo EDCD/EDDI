@@ -146,21 +146,31 @@ namespace EddiDataDefinitions
         }
         private string _squadronname;
 
-        /// <summary>The commander's squadron ID</summary>
+        /// <summary>The commander's squadron tag</summary>
         [PublicAPI]
-        public string squadronid
+        public string squadrontag
         {
-            get => _squadronid;
-            set { _squadronid = value; OnPropertyChanged();}
+            get => _squadrontag;
+            set { _squadrontag = value; OnPropertyChanged();}
         }
-        private string _squadronid;
+        private string _squadrontag;
 
         /// <summary>The commander's squadron rank</summary>
         [PublicAPI]
         public SquadronRank squadronrank
         {
             get => _squadronrank;
-            set { _squadronrank = value; OnPropertyChanged();}
+            set 
+            {
+                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
+                {
+                    OnPropertyChanged();
+                }
+                if ( _squadronrank != null ) { _squadronrank.PropertyChanged -= childPropertyChangedHandler; }
+                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
+                _squadronrank = value ?? new SquadronRank(null, string.Empty, string.Empty); 
+                OnPropertyChanged();
+            }
         }
         private SquadronRank _squadronrank;
 

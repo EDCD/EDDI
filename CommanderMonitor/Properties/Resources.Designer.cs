@@ -241,6 +241,15 @@ namespace EddiCommanderMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron tag:.
+        /// </summary>
+        public static string tab_commander_squadron_tag {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hear it.
         /// </summary>
         public static string tab_commander_test_phonetic_name {

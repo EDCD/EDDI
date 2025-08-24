@@ -1,5 +1,4 @@
 ﻿using EddiConfigService;
-using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechService;
@@ -62,8 +61,6 @@ namespace CommanderMonitor
             ConfigureSquadronFactionOptions( commanderMonitor().SquadronStarSystem?.factions, configuration.squadronFaction );
 
             // Setup other squadron options
-            ConfigureSquadronNameAndId( configuration.squadronName, configuration.squadronID );
-            ConfigureSquadronRankOptions( configuration.SquadronRank );
             ConfigureSquadronPowerOptions( configuration.SquadronAllegiance, configuration.SquadronPower );
         }
 
@@ -100,10 +97,7 @@ namespace CommanderMonitor
 
         private void phoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
         {
-            Application.Current.Dispatcher.Invoke( () =>
-            {
-                SpeechService.Instance.Say( null, commanderMonitor().Cmdr?.SpokenName(), 0 );
-            } );
+            SpeechService.Instance.Say( null, commanderMonitor().Cmdr?.SpokenName(), 0 );
         }
 
         private void ipaClicked ( object sender, RoutedEventArgs e )
@@ -223,119 +217,6 @@ namespace CommanderMonitor
                     }
                 }
             }
-        }
-
-        #endregion
-
-        #region Squadron Name and ID
-
-        private void ConfigureSquadronNameAndId ( string squadronName, string squadronID )
-        {
-            // Setup squadron home system from config file
-            eddiSquadronNameText.Text = squadronName ?? string.Empty;
-            eddiSquadronIDText.Text = squadronID ?? string.Empty;
-        }
-
-        private void squadronNameChanged ( object sender, TextChangedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            if ( configuration.squadronName != eddiSquadronNameText.Text )
-            {
-                configuration.squadronName = string.IsNullOrWhiteSpace( eddiSquadronNameText.Text ) ? null : eddiSquadronNameText.Text.Trim();
-                if ( configuration.squadronName == null )
-                {
-                    configuration.squadronID = null;
-                    eddiSquadronIDText.Text = string.Empty;
-                }
-                configuration = resetSquadronRank( configuration );
-                ConfigService.Instance.commanderConfiguration = configuration;
-
-                if ( commanderMonitor().Cmdr != null )
-                {
-                    commanderMonitor().Cmdr.squadronname = configuration.squadronName;
-                }
-            }
-        }
-
-        private void eddiSquadronNameText_LostFocus ( object sender, RoutedEventArgs e )
-        {
-            // Discard invalid results
-            if ( eddiSquadronNameText.Text == string.Empty )
-            {
-                var configuration = ConfigService.Instance.commanderConfiguration;
-                configuration.squadronName = null;
-                ConfigService.Instance.commanderConfiguration = configuration;
-                if ( commanderMonitor().Cmdr != null )
-                {
-                    commanderMonitor().Cmdr.squadronname = string.Empty;
-                }
-            }
-        }
-
-        private void squadronIDChanged ( object sender, TextChangedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            if ( configuration.squadronID != eddiSquadronIDText.Text )
-            {
-                configuration.squadronID = string.IsNullOrWhiteSpace( eddiSquadronIDText.Text ) ? null : eddiSquadronIDText.Text.Trim();
-                ConfigService.Instance.commanderConfiguration = configuration;
-
-                if ( commanderMonitor().Cmdr != null )
-                {
-                    commanderMonitor().Cmdr.squadronid = configuration.squadronID;
-                }
-            }
-        }
-
-        private void eddiSquadronIDText_LostFocus ( object sender, RoutedEventArgs e )
-        {
-            // Discard invalid results
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            if ( configuration.squadronID != null )
-            {
-                if ( configuration.squadronID.Contains( " " ) || configuration.squadronID.Length > 4 )
-                {
-                    configuration.squadronID = null;
-                    ConfigService.Instance.commanderConfiguration = configuration;
-                }
-            }
-        }
-
-        #endregion
-
-        #region Squadron Rank
-
-        private void ConfigureSquadronRankOptions ( SquadronRank SquadronRank = null )
-        {
-            squadronRankDropDown.DisplayMemberPath = nameof( SquadronRank.localizedName );
-            var SquadronRankOptions = SquadronRank.AllOfThem
-                .OrderBy( r => r.rank ).ToList();
-            squadronRankDropDown.ItemsSource = SquadronRankOptions;
-            squadronRankDropDown.SelectedItem = SquadronRank ?? SquadronRank.None;
-        }
-
-        private void squadronRankDropDownUpdated ( object sender, SelectionChangedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            var squadronRank = squadronRankDropDown.SelectedItem.ToString();
-
-            if ( configuration.SquadronRank.edname != squadronRank )
-            {
-                configuration.SquadronRank = SquadronRank.FromName( squadronRank );
-                ConfigService.Instance.commanderConfiguration = configuration;
-
-                if ( commanderMonitor().Cmdr != null )
-                {
-                    commanderMonitor().Cmdr.squadronrank = configuration.SquadronRank;
-                }
-            }
-        }
-
-        public CommanderConfiguration resetSquadronRank ( CommanderConfiguration configuration )
-        {
-            configuration.SquadronRank = SquadronRank.None;
-            ConfigureSquadronRankOptions( SquadronRank.None );
-            return configuration;
         }
 
         #endregion

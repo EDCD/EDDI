@@ -1163,8 +1163,8 @@ namespace Tests
 
             var event1 = (SquadronRankEvent)events[0];
             Assert.AreEqual("TestSquadron", event1.name);
-            Assert.AreEqual(3, event1.oldrank);
-            Assert.AreEqual(2, event1.newrank);
+            Assert.AreEqual(3, event1.oldrank.rankID);
+            Assert.AreEqual(2, event1.newrank.rankID );
         }
 
         [TestMethod]

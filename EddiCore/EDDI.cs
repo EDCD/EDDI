@@ -452,7 +452,7 @@ namespace EddiCore
                         phoneticName = cmdrConfiguration.phoneticName, 
                         gender = cmdrConfiguration.gender,
                         squadronname = cmdrConfiguration.squadronName,
-                        squadronid = cmdrConfiguration.squadronID,
+                        squadrontag = cmdrConfiguration.squadronTag,
                         squadronrank = cmdrConfiguration.SquadronRank,
                         squadronallegiance = cmdrConfiguration.SquadronAllegiance,
                         squadronpower = cmdrConfiguration.SquadronPower,

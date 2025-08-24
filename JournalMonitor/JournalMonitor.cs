@@ -707,9 +707,13 @@ namespace EddiJournalMonitor
                             case "SquadronStartup":
                                 {
                                     var name = JsonParsing.getString(data, "SquadronName");
-                                    var rank = JsonParsing.getInt(data, "CurrentRank");
+                                    var squadronID = JsonParsing.getOptionalInt( data, "SquadronID" );
+                                    var rankID = JsonParsing.getInt(data, "CurrentRank");
+                                    var rankName = JsonParsing.getString(data, "CurrentRankName");
+                                    var rankNameLocalized = JsonParsing.getString(data, "CurrentRankName_Localised");
+                                    var rank = new SquadronRank(rankID, rankName, rankNameLocalized);
 
-                                    events.Add(new SquadronStartupEvent(timestamp, name, rank) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SquadronStartupEvent(timestamp, name, squadronID, rank ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3720,12 +3724,13 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var name = JsonParsing.getString(data, "SquadronName");
+                                    var squadronID = JsonParsing.getOptionalInt( data, "SquadronID" );
                                     var status = edType.Replace("Squadron", "")
                                         .Replace("To", "")
                                         .Replace("From", "")
                                         .ToLowerInvariant();
 
-                                    events.Add(new SquadronStatusEvent(timestamp, name, status) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SquadronStatusEvent(timestamp, name, squadronID, status) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3735,10 +3740,19 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var name = JsonParsing.getString(data, "SquadronName");
-                                    var oldrank = JsonParsing.getInt(data, "OldRank");
-                                    var newrank = JsonParsing.getInt(data, "NewRank");
+                                    var squadronID = JsonParsing.getOptionalInt( data, "SquadronID" );
 
-                                    events.Add(new SquadronRankEvent(timestamp, name, oldrank, newrank) { raw = line, fromLoad = fromLogLoad });
+                                    var oldRankID = JsonParsing.getOptionalInt(data, "OldRank");
+                                    var oldRankName = JsonParsing.getString(data, "OldRankName");
+                                    var oldRankNameLocalized = JsonParsing.getString(data, "OldRankName_Localised");
+                                    var oldRank = new SquadronRank(oldRankID, oldRankName, oldRankNameLocalized);
+
+                                    var newRankID = JsonParsing.getOptionalInt(data, "NewRank");
+                                    var newRankName = JsonParsing.getString(data, "NewRankName");
+                                    var newRankNameLocalized = JsonParsing.getString(data, "NewRankName_Localised");
+                                    var newRank = new SquadronRank(oldRankID, oldRankName, newRankNameLocalized);
+
+                                    events.Add(new SquadronRankEvent(timestamp, name, squadronID, oldRank, newRank) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

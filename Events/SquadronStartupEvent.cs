@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -13,12 +14,16 @@ namespace EddiEvents
         [PublicAPI("The squadron name")]
         public string name { get; private set; }
 
-        [PublicAPI("The current rank")]
-        public int rank { get; private set; }
+        [PublicAPI( "The squadron's numeric ID" )]
+        public int? squadronID { get; private set; }
 
-        public SquadronStartupEvent(DateTime timestamp, string name, int rank) : base(timestamp, NAME)
+        [PublicAPI("Your current squadron rank, as an object with properties 'rankID', 'invariantName', and 'localizedName'")]
+        public SquadronRank rank { get; private set; }
+        
+        public SquadronStartupEvent ( DateTime timestamp, string name, int? squadronID, SquadronRank rank ) : base(timestamp, NAME)
         {
             this.name = name;
+            this.squadronID = squadronID;
             this.rank = rank;
         }
     }

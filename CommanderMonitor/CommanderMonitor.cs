@@ -22,7 +22,7 @@ namespace EddiCommanderMonitor
     [UsedImplicitly]
     public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
-        internal Commander Cmdr => EDDI.Instance.Cmdr;
+        public Commander Cmdr => EDDI.Instance.Cmdr;
         private static readonly object commanderLock = new object();
 
         [CanBeNull]
@@ -375,25 +375,13 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                var rank = SquadronRank.FromRank( @event.newrank + 1 );
-
                 // Update the commander object, if it exists
                 if ( Cmdr != null )
                 {
                     Cmdr.squadronname = @event.name;
-                    Cmdr.squadronrank = rank;
+                    Cmdr.squadronrank = @event.newrank;
                     WriteCommander();
                 }
-
-                // Update the squadron UI data
-                Application.Current?.Dispatcher?.InvokeAsync( () =>
-                {
-                    if ( Application.Current?.MainWindow != null )
-                    {
-                        ConfigurationWindow.Instance.eddiSquadronNameText.Text = @event.name;
-                        ConfigurationWindow.Instance.squadronRankDropDown.SelectedItem = rank;
-                    }
-                } );
             }
         }
 
@@ -413,25 +401,13 @@ namespace EddiCommanderMonitor
 
             if ( @event.timestamp >= updatedAt )
             {
-                var rank = SquadronRank.FromRank( @event.rank + 1 );
-
                 // Update the commander object, if it exists
                 if ( Cmdr != null )
                 {
                     Cmdr.squadronname = @event.name;
-                    Cmdr.squadronrank = rank;
+                    Cmdr.squadronrank = @event.rank;
                     WriteCommander();
                 }
-
-                // Update the squadron UI data
-                Application.Current?.Dispatcher?.InvokeAsync( () =>
-                {
-                    if ( Application.Current?.MainWindow != null )
-                    {
-                        ConfigurationWindow.Instance.eddiSquadronNameText.Text = @event.name;
-                        ConfigurationWindow.Instance.squadronRankDropDown.SelectedItem = rank;
-                    }
-                } );
             }
         }
 
@@ -443,28 +419,13 @@ namespace EddiCommanderMonitor
             {
                 case "created":
                     {
-                        var rank = SquadronRank.FromRank(1);
-
                         // Update the configuration file
                         configuration.squadronName = @event.name;
-                        configuration.SquadronRank = rank;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.InvokeAsync( () =>
-                        {
-                            if ( Application.Current?.MainWindow != null )
-                            {
-                                ConfigurationWindow.Instance.eddiSquadronNameText.Text = @event.name;
-                                ConfigurationWindow.Instance.squadronRankDropDown.SelectedItem = rank;
-                                configuration = ConfigurationWindow.Instance.resetSquadronRank( configuration );
-                            }
-                        } );
 
                         // Update the commander object, if it exists
                         if ( Cmdr != null )
                         {
                             Cmdr.squadronname = @event.name;
-                            Cmdr.squadronrank = rank;
                         }
                         break;
                     }
@@ -472,15 +433,6 @@ namespace EddiCommanderMonitor
                     {
                         // Update the configuration file
                         configuration.squadronName = @event.name;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.InvokeAsync( () =>
-                        {
-                            if ( Application.Current?.MainWindow != null )
-                            {
-                                ConfigurationWindow.Instance.eddiSquadronNameText.Text = @event.name;
-                            }
-                        } );
 
                         // Update the commander object, if it exists
                         if ( Cmdr != null )
@@ -495,23 +447,13 @@ namespace EddiCommanderMonitor
                     {
                         // Update the configuration file
                         configuration.squadronName = null;
-                        configuration.squadronID = null;
-
-                        // Update the squadron UI data
-                        Application.Current?.Dispatcher?.InvokeAsync( () =>
-                        {
-                            if ( Application.Current?.MainWindow != null )
-                            {
-                                ConfigurationWindow.Instance.eddiSquadronNameText.Text = string.Empty;
-                                ConfigurationWindow.Instance.eddiSquadronIDText.Text = string.Empty;
-                                configuration = ConfigurationWindow.Instance.resetSquadronRank( configuration );
-                            }
-                        } );
+                        configuration.squadronTag = null;
 
                         // Update the commander object, if it exists
                         if ( Cmdr != null )
                         {
                             Cmdr.squadronname = null;
+                            Cmdr.squadronrank = null;
                         }
                         break;
                     }
@@ -812,7 +754,7 @@ namespace EddiCommanderMonitor
 
                 // Squadron information
                 squadronname = configuration.squadronName,
-                squadronid = configuration.squadronID,
+                squadrontag = configuration.squadronTag,
                 squadronrank = configuration.SquadronRank,
                 squadronfaction = configuration.squadronFaction,
                 squadronpower = configuration.SquadronPower,
@@ -846,7 +788,7 @@ namespace EddiCommanderMonitor
 
                     // Write squadron information
                     configuration.squadronName = Cmdr.squadronname;
-                    configuration.squadronID = Cmdr.squadronid;
+                    configuration.squadronTag = Cmdr.squadrontag;
                     configuration.SquadronRank = Cmdr.squadronrank;
                     configuration.squadronFaction = Cmdr.squadronfaction;
                     configuration.SquadronPower = Cmdr.squadronpower;

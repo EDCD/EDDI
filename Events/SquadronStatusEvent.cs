@@ -13,12 +13,16 @@ namespace EddiEvents
         [PublicAPI("The squadron name")]
         public string name { get; private set; }
 
+        [PublicAPI( "The squadron's numeric ID" )]
+        public int? squadronID { get; private set; }
+
         [PublicAPI("The squadron status (`applied`, `created`, `disbanded`, `invited`, `joined`, `kicked`, `left`)")]
         public string status { get; private set; }
 
-        public SquadronStatusEvent(DateTime timestamp, string name, string status) : base(timestamp, NAME)
+        public SquadronStatusEvent ( DateTime timestamp, string name, int? squadronID, string status ) : base(timestamp, NAME)
         {
             this.name = name;
+            this.squadronID = squadronID;
             this.status = status;
         }
     }

@@ -75,21 +75,10 @@ namespace EddiConfigService.Configurations
         public string squadronName { get; set; }
 
         [JsonProperty( "squadronID" )]
-        public string squadronID { get; set; }
+        public string squadronTag { get; set; }
 
-        [JsonProperty( "squadronRank" )]
-        public string squadronRank
-        {
-            get => SquadronRank?.edname ?? "None";
-            set
-            {
-                var srDef = SquadronRank.FromEDName(value);
-                this.SquadronRank = srDef;
-            }
-        }
-
-        [JsonIgnore]
-        public SquadronRank SquadronRank { get; set; } = SquadronRank.None;
+        [JsonProperty( "SquadronRank" )]
+        public SquadronRank SquadronRank { get; set; }
 
         [JsonProperty( "squadronAllegiance" )]
         public string squadronAllegiance
