@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStarMapService;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace EddiEdsmResponder
     {
         private Task updateTask;
         private CancellationTokenSource updateThreadCancellationTokenSource;
-        private List<string> ignoredEvents;
+        private List<string> ignoredEvents = new List<string>();
 
         // This responder currently requires game version 4.0 or later.
         private static readonly System.Version minGameVersion = new System.Version(4, 0);
@@ -61,33 +62,25 @@ namespace EddiEdsmResponder
 
         public void Reload ()
         {
-            // Set up the star map service
-            if ( ignoredEvents == null )
-            {
-                ignoredEvents = EDDI.Instance.DataProvider.GetIgnoredEdsmEventsAsync().GetAwaiter().GetResult();
-            }
-
             // Renew our credentials for the EDSM API
             StarMapService.inGameCommanderName = ConfigService.Instance.commanderConfiguration.commanderName;
 
+            // Set up the star map service
             if ( updateTask == null )
             {
                 // Spin off a task to download & sync flight logs & system comments from EDSM in the background 
                 updateThreadCancellationTokenSource = new CancellationTokenSource();
-                updateTask = new Task( () =>
+                updateTask = Task.Run( async () =>
                 {
                     try
                     {
-                        EDDI.Instance.DataProvider
-                            .SyncFromStarMapServiceAsync( ConfigService.Instance.edsmConfiguration
-                                ?.lastFlightLogSync ).GetAwaiter().GetResult();
+                        await EDDI.Instance.DataProvider.SyncFromStarMapServiceAsync( ConfigService.Instance.edsmConfiguration?.lastFlightLogSync ).ConfigureAwait(false);
                     }
                     catch ( TaskCanceledException )
                     {
                         // Nothing to do here
                     }
                 }, updateThreadCancellationTokenSource.Token );
-                updateTask.Start();
             }
         }
 
@@ -116,7 +109,7 @@ namespace EddiEdsmResponder
             IDictionary<string, object> eventObject = null;
             try
             {
-                eventObject = prepareEventData( theEvent );
+                eventObject = prepareEventDataAsync( theEvent ).GetAwaiter().GetResult();
             }
             catch ( System.Exception ex )
             {
@@ -129,12 +122,26 @@ namespace EddiEdsmResponder
             }
         }
 
-        private IDictionary<string, object> prepareEventData(Event theEvent)
+        private async Task<IDictionary<string, object>> prepareEventDataAsync(Event theEvent)
         {
             // Prep transient game state info (metadata) per https://www.edsm.net/en/api-journal-v1.
             // Unpackage the event, add transient game state info as applicable, then repackage and send the event
             var eventObject = Deserializtion.DeserializeData(theEvent.raw);
             var eventType = JsonParsing.getString(eventObject, "event");
+
+            // Fetch ignored events if they are not already recorded
+            if ( ignoredEvents.Count == 0 )
+            {
+                try
+                {
+                    ignoredEvents = await EDDI.Instance.DataProvider.GetIgnoredEdsmEventsAsync().ConfigureAwait( false ) ?? new List<string>();
+                }
+                catch ( TaskCanceledException )
+                {
+                    // Nothing to do except wait and try again
+                    await Task.Delay( TimeSpan.FromSeconds( 30 ) ).ConfigureAwait( false );
+                }
+            }
 
             if (ignoredEvents.Contains(eventType) || theEvent.raw == null)
             {
