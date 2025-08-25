@@ -262,4 +262,118 @@ Prosím ukončete ostatní instance a opakujte akci.</value>
     <value>Nezdařilo se nahrání monitoru. Ujistěte se, že {0} není na sdíleném sítovém připojení, nebo není samo sdíleno.</value>
     <comment>Weapon mount type problem_load_monitor_file</comment>
   </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Náhlasit chybu</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>Bezpečný režim - vyžadována aktualizace.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Spouštím aktualizaci.</value>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>Automaticky</value>
+    <comment>The user's system language</comment>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Neuvedeno</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier poskytuje API které dovoluje EDDI získat informace o vašich lodích, informace o trhu na aktuální stanici a o dalších položkách. Tyto data nelze jinde získat. Pokud chcete aby EDDI mohlo tyto informace využívat, klikněte na tlačítko Přihlásit se a proveďte autorizaci pro EDDI na serverech firmy Frontier.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>Není povoleno Frontier API v tomto sestavení EDDI.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Pokud narazíte na problémy s vašeho spojením, mužete jej resetovat a znovu se přihlásit. Tento postup může problém vyřešit.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI používá vlastní převod textu na řeč který upravuje hlas v závislosti na vlastnostech jako úrovně poškození lodi a velikosti vašecho kokpitu. Zde můžete nastavit parametry hlasu.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Vypnout fonetickou řeč:</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Zkreslit hlas při poškození lodi:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Převod textu na řeč</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI může používat ICAO, např. použitím 'alfa místo 'A', při vyslovování jméno hvězd a těles. To usnadní porozumění názvů systémů, ale trvá delší dobu je vyslovit. Chcete-li používat ICAO zaškrtněte volbu uvedenou níže. Poznámka: toto nebude fungovat, pokud jste deaktivovali fonetickou reč výše.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Povolit ICAO:</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Uroveň zpracování hlasu:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI používá fonetickou řeč pro vyslovování různých těžko vyslovitelných slov a vkládá mezery v projevu. Některé hlasy, zejména od Microsoftu, mají problém s fonetickou řečí a způsobují. že EDDI přestane reagovat nebo se samovolně ukončí. Pokud se u vás toto projeví, zkuste zkontrolovat možnosti níže</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Rychlost mluvení:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Otestovat řeč</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Otestovat reč (vážné poškození)</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Níže můžete otestovat jak bude hlas znít. Je-li tento hlas nekompatibilní, použije se výchozí hlas.</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Loď pro test hlasu:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Hlas:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Hlasitost řeči:</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Řešení nejčastějších problémů</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Nyní je dostupná EDDI verze {0}.</value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Je dostupná verze {0}</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>EDDI se nemůže spojit se aktualizačním serverem. Pokud problém přetrváva, podívejte se na fórum, zda-li se jedná o nahlášený problém.</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>Aktualizovat EDDI</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Aktualizace se nezdařila. Opakujte akci později.</value>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Povolit detailní logování (pouze pokud vás o to požádají vývojáři EDDI)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Je-li povoleno podrobné logování, vytvoří se archív zip s vaším logem na ploše, který můžete vloži do hlášení chyb na GitHubu. Do logu nejsou přidávány žádne informace umožňující osobní identifikaci.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Verze:</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Vážné poškození {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>Takhle budu znít v {0}.</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>wiki projektu</value>
+  </data>
 </root>
