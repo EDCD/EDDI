@@ -797,8 +797,9 @@ namespace EddiCommanderMonitor
                 // Write home system information
                 configuration.homeSystemName = EDDI.Instance.HomeStarSystem?.systemname;
                 configuration.homeSystemAddress = EDDI.Instance.HomeStarSystem?.systemAddress;
-                configuration.homeStationName = EDDI.Instance.HomeStation?.name;
-                configuration.homeStationMarketID = EDDI.Instance.HomeStation?.marketId;
+                configuration.homeSystemX = EDDI.Instance.HomeStarSystem?.x;
+                configuration.homeSystemY = EDDI.Instance.HomeStarSystem?.y;
+                configuration.homeSystemZ = EDDI.Instance.HomeStarSystem?.z;
 
                 // Write squadron star system information
                 configuration.squadronSystemName = SquadronStarSystem?.systemname;

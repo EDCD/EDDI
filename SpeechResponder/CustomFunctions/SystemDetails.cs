@@ -1,4 +1,5 @@
 ﻿using Cottle;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.ScriptResolverService;
@@ -34,7 +35,12 @@ namespace EddiSpeechResponder.CustomFunctions
                     result = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( values[ 0 ].AsString, true, true ).GetAwaiter().GetResult();
                 }
 
-                var distanceFromHome = result?.DistanceFromStarSystem(EDDI.Instance.HomeStarSystem);
+                var commanderConfig = ConfigService.Instance.commanderConfiguration;
+                var homeX = commanderConfig.homeSystemX;
+                var homeY = commanderConfig.homeSystemY;
+                var homeZ = commanderConfig.homeSystemZ;
+                var distanceFromHome = result?.DistanceFromStarSystem(homeX, homeY, homeZ );
+
                 if (distanceFromHome != null)
                 {
                     Logging.Debug("Distance from home is " + distanceFromHome);

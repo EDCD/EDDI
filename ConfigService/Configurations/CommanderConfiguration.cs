@@ -36,6 +36,15 @@ namespace EddiConfigService.Configurations
         [JsonProperty( "homeSystemAddress" )]
         public ulong? homeSystemAddress { get; set; }
 
+        [JsonProperty( "homeSystemX" )]
+        public decimal? homeSystemX { get; set; }
+
+        [JsonProperty( "homeSystemY" )]
+        public decimal? homeSystemY { get; set; }
+
+        [JsonProperty( "homeSystemZ" )]
+        public decimal? homeSystemZ { get; set; }
+
         [JsonProperty( "homeStationName" )]
         public string homeStationName { get; set; }
 

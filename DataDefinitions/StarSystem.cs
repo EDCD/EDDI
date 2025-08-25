@@ -696,6 +696,12 @@ namespace EddiDataDefinitions
             return value;
         }
 
+        public decimal? DistanceFromStarSystem ( decimal? otherX, decimal? otherY, decimal? otherZ )
+        {
+            if ( otherX is null || otherY is null || otherZ is null ) { return null; }
+            return Functions.StellarDistanceLy( x, y, z, otherX, otherY, otherZ );
+        }
+
         public decimal? DistanceFromStarSystem ( StarSystem other )
         {
             if ( other is null )

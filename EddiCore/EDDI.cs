@@ -2548,21 +2548,22 @@ namespace EddiCore
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
-            if (system is null || HomeStarSystem is null) { return; }
-            system.distancefromhome = getSystemDistance(system, HomeStarSystem);
+            var commanderConfig = ConfigService.Instance.commanderConfiguration;
+            var homeX = commanderConfig.homeSystemX;
+            var homeY = commanderConfig.homeSystemY;
+            var homeZ = commanderConfig.homeSystemZ;
+
+            if ( system is null || homeX is null || homeY is null || homeZ is null ) { return; }
+
+            system.distancefromhome = system.DistanceFromStarSystem(homeX, homeY, homeZ) ?? 0;
             Logging.Debug("Distance from home is " + system.distancefromhome);
         }
 
         private void setSystemDistanceFromDestination(StarSystem system)
         {
             if (DestinationStarSystem is null) { return; }
-            DestinationDistanceLy = getSystemDistance(system, DestinationStarSystem);
+            DestinationDistanceLy = system.DistanceFromStarSystem(destinationStarSystem) ?? 0;
             Logging.Debug("Distance from destination system is " + DestinationDistanceLy);
-        }
-
-        private decimal getSystemDistance(StarSystem curr, StarSystem dest)
-        {
-            return curr?.DistanceFromStarSystem(dest) ?? 0;
         }
 
         /// <summary>
