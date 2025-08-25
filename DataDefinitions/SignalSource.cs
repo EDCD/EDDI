@@ -306,6 +306,7 @@ namespace EddiDataDefinitions
             if ( signalTypeEdName == SignalType.FleetCarrier.edname )
             {
                 // Signal might be a fleet carrier with name and carrier id in a single string. If so, we break them apart
+                // This regex matches strings like `PBSF SPACE ODDITY XBH-64Y` and breaks them up into `PBSF SPACE ODDITY` and `XBH-64Y`
                 var fleetCarrierRegex = new Regex("^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$");
                 if ( fleetCarrierRegex.IsMatch( from ) )
                 {
@@ -319,6 +320,25 @@ namespace EddiDataDefinitions
                     }
                 }
             }
+            
+            else if ( signalTypeEdName == SignalType.SquadronCarrier.edname )
+            {
+                // Signal might be a squadron carrier with name and carrier id in a single string. If so, we break them apart
+                // This regex matches strings like `EL BURDEL 2.0 | JK40` and breaks them up into `EL BURDEL 2.0` and `JK40`
+                var sqadronCarrierRegex = new Regex("^(.+)(?> \\| )([A-Za-z0-9]{0,4})$");
+                if ( sqadronCarrierRegex.IsMatch( from ) )
+                {
+                    // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
+                    var squadronCarrierParts = sqadronCarrierRegex.Matches(from)[0].Groups;
+                    if ( squadronCarrierParts.Count == 3 )
+                    {
+                        var squadronCarrierName = squadronCarrierParts[2].Value;
+                        var squadronCarrierLocalizedName = squadronCarrierParts[1].Value;
+                        return new SignalSource( squadronCarrierName ) { fallbackLocalizedName = squadronCarrierLocalizedName, isStation = true };
+                    }
+                }
+            }
+
             else if ( signalTypeEdName == SignalType.StationMegaShip.edname )
             {
                 // Normalize Powerplay Stronghold Carrier names
