@@ -212,6 +212,8 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public List<Engineer> engineers => Engineer.ENGINEERS;
 
+        #region INotifyPopertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
@@ -219,27 +221,14 @@ namespace EddiDataDefinitions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public Commander()
-        { }
-
-        // Copy constructor
-        public Commander(Commander commander)
-        {
-            name = commander.name;
-            combatrating = commander.combatrating;
-            traderating = commander.traderating;
-            explorationrating = commander.explorationrating;
-            cqcrating = commander.cqcrating;
-            mercenaryrating = commander.mercenaryrating;
-            exobiologistrating = commander.exobiologistrating;
-        }
+        #endregion
 
         public static Commander FromFrontierApiCmdr(Commander currentCmdr, FrontierApiCommander frontierApiCommander, DateTime apiTimeStamp, DateTime journalTimeStamp, out bool cmdrMatches)
         {
             if (frontierApiCommander is null) { cmdrMatches = true; return currentCmdr; }
 
             // Copy our current commander to a new commander object
-            Commander Cmdr = currentCmdr.Copy();
+            var Cmdr = currentCmdr.Copy();
 
             // Set our commander name if it hadn't already been set
             Cmdr.name = string.IsNullOrEmpty(Cmdr.name) ? frontierApiCommander.name : Cmdr.name;
