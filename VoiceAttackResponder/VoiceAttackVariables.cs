@@ -28,21 +28,6 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.HomeStarSystem), () =>
                 {
                     setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system");
-
-                    // Backwards-compatibility with 1.x documented variables
-                    try
-                    {
-                        VoiceAttackPlugin.SetText("Home system", EDDI.Instance.HomeStarSystem?.systemname);
-                        VoiceAttackPlugin.SetText("Home system (spoken)", SpeechConversions.getPhoneticStarSystem(EDDI.Instance.HomeStarSystem?.systemname));
-                        if (EDDI.Instance.HomeStation != null)
-                        {
-                                VoiceAttackPlugin.SetText("Home station", EDDI.Instance.HomeStation?.name);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Error("Failed to set 1.x home system values", ex);
-                    }
                 } },
             { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body") },
             { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station") },
@@ -222,6 +207,9 @@ namespace EddiVoiceAttackResponder
             VoiceAttackPlugin.SetBoolean(prefix + " has black market", station?.hasblackmarket);
             VoiceAttackPlugin.SetBoolean(prefix + " has outfitting", station?.hasoutfitting);
             VoiceAttackPlugin.SetBoolean(prefix + " has shipyard", station?.hasshipyard);
+
+            // Backwards-compatibility with 1.x documented variables
+            VoiceAttackPlugin.SetText( prefix, station?.name );
 
             Logging.Debug("Set station information");
         }
@@ -471,10 +459,14 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Setting system information (" + prefix + ")");
             try
             {
+                var phoneticStarSystem = SpeechConversions.getPhoneticStarSystem( system?.systemname );
+                var phoneticPopulation = SpeechConversions.Humanize( system?.population );
+                var phoneticPower = SpeechConversions.getPhoneticPower( system?.power );
+
                 VoiceAttackPlugin.SetText(prefix + " name", system?.systemname);
-                VoiceAttackPlugin.SetText(prefix + " name (spoken)", SpeechConversions.getPhoneticStarSystem(system?.systemname));
+                VoiceAttackPlugin.SetText(prefix + " name (spoken)", phoneticStarSystem );
                 VoiceAttackPlugin.SetDecimal(prefix + " population", system?.population);
-                VoiceAttackPlugin.SetText(prefix + " population (spoken)", SpeechConversions.Humanize(system?.population));
+                VoiceAttackPlugin.SetText(prefix + " population (spoken)", phoneticPopulation );
                 VoiceAttackPlugin.SetText(prefix + " allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
                 VoiceAttackPlugin.SetText(prefix + " government", (system?.Faction?.Government ?? Government.None).localizedName);
                 VoiceAttackPlugin.SetText(prefix + " faction", system?.Faction?.name);
@@ -483,7 +475,7 @@ namespace EddiVoiceAttackResponder
                     .FirstOrDefault(p => p.systemAddress == system.systemAddress)?.FactionState ?? FactionState.None).localizedName);
                 VoiceAttackPlugin.SetText(prefix + " security", system?.security);
                 VoiceAttackPlugin.SetText(prefix + " power", system?.power);
-                VoiceAttackPlugin.SetText(prefix + " power (spoken)", SpeechConversions.getPhoneticPower(EDDI.Instance.CurrentStarSystem?.power));
+                VoiceAttackPlugin.SetText(prefix + " power (spoken)", phoneticPower );
                 VoiceAttackPlugin.SetText(prefix + " power state", system?.powerstate);
                 VoiceAttackPlugin.SetBoolean(prefix + " requires permit", system?.requirespermit);
                 VoiceAttackPlugin.SetDecimal(prefix + " X", system?.x);
@@ -519,7 +511,10 @@ namespace EddiVoiceAttackResponder
                     }
                     setBodyValues(primaryBody, prefix + " main star");
                 }
-                setStatus( "Operational");
+                
+                // Backwards-compatibility with 1.x documented variables
+                VoiceAttackPlugin.SetText( prefix, system?.systemname );
+                VoiceAttackPlugin.SetText( $"{prefix} (spoken)", phoneticStarSystem );
             }
             catch (Exception e)
             {

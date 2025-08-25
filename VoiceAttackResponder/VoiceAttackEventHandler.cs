@@ -98,9 +98,9 @@ namespace EddiVoiceAttackResponder
                         var variableType = kv.Value.Item1;
                         var variableValue = kv.Value.Item2;
 
-                        if ( variableValue is StarSystem starSystem )
+                        if ( variableName.Equals("squadronsystem", StringComparison.OrdinalIgnoreCase) && variableValue is StarSystem squadronSystem )
                         {
-                            VoiceAttackVariables.setStarSystemValues( starSystem, variableName );
+                            VoiceAttackVariables.setStarSystemValues( squadronSystem, "Squadron system" );
                         }
                         else
                         {
