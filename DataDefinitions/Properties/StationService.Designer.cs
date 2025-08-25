@@ -421,6 +421,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron Bank.
+        /// </summary>
+        public static string SquadronBank {
+            get {
+                return ResourceManager.GetString("SquadronBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Station Menu.
         /// </summary>
         public static string StationMenu {

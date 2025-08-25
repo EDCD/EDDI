@@ -3750,7 +3750,7 @@ namespace EddiJournalMonitor
                                     var newRankID = JsonParsing.getOptionalInt(data, "NewRank");
                                     var newRankName = JsonParsing.getString(data, "NewRankName");
                                     var newRankNameLocalized = JsonParsing.getString(data, "NewRankName_Localised");
-                                    var newRank = new SquadronRank(oldRankID, oldRankName, newRankNameLocalized);
+                                    var newRank = new SquadronRank(newRankID, newRankName, newRankNameLocalized);
 
                                     events.Add(new SquadronRankEvent(timestamp, name, squadronID, oldRank, newRank) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -3879,9 +3879,7 @@ namespace EddiJournalMonitor
 
                                     // Get carrier data (may not be present when on-foot at a fleet carrier but not docked)
                                     var carrierId = JsonParsing.getOptionalLong( data, "MarketID" );
-                                    var carrierName = JsonParsing.getString( data, "StationName" );
-                                    var carrierType =
-                                        StationModel.FromEDName( JsonParsing.getString( data, "StationType" ) );
+                                    EventParsing.StationNameAndType( data, out var carrierName, out _, out var carrierType );
 
                                     // Get carrier services data (may not be present when on-foot at a fleet carrier but not docked)
                                     var stationServices = new List<StationService>();
@@ -4286,11 +4284,10 @@ namespace EddiJournalMonitor
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
 
-                                    var station = JsonParsing.getString(data, "StationName"); // if at a station
                                     var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    var stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
+                                    EventParsing.StationNameAndType( data, out var stationName, out _, out var stationModel );  // if at a station
 
-                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new DisembarkEvent(timestamp, fromSRV, fromTaxi, fromMultiCrew, fromLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, stationName, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4321,11 +4318,10 @@ namespace EddiJournalMonitor
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
 
-                                    var station = JsonParsing.getString(data, "StationName"); // if at a station
                                     var marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                                    var stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
+                                    EventParsing.StationNameAndType( data, out var stationName, out _, out var stationModel );  // if at a station
 
-                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, station, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new EmbarkEvent(timestamp, toSRV, toTaxi, toMultiCrew, toLocalId, system, systemAddress, body, bodyId, onStation, onPlanet, stationName, marketId, stationModel) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

@@ -462,6 +462,22 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestJournalDockedSquadronCarrier ()
+        {
+            var line = @"{ ""timestamp"":""2025-08-19T15:04:13Z"", ""event"":""Docked"", ""StationName"":""JK40"", ""StationType"":""FleetCarrier"", ""Taxi"":false, ""Multicrew"":false, ""StarSystem"":""Mizar"", ""SystemAddress"":259008758964, ""MarketID"":3713100288, ""StationFaction"":{ ""Name"":""FleetCarrier"" }, ""StationGovernment"":""$government_Carrier;"", ""StationGovernment_Localised"":""Propiedad privada"", ""StationServices"":[ ""dock"", ""autodock"", ""contacts"", ""crewlounge"", ""shipyard"", ""engineer"", ""flightcontroller"", ""stationoperations"", ""stationMenu"", ""carriermanagement"", ""carrierfuel"", ""socialspace"", ""squadronBank"" ], ""StationEconomy"":""$economy_Carrier;"", ""StationEconomy_Localised"":""Empresa privada"", ""StationEconomies"":[ { ""Name"":""$economy_Carrier;"", ""Name_Localised"":""Empresa privada"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":0.000000, ""LandingPads"":{ ""Small"":8, ""Medium"":8, ""Large"":16 } }";
+            var events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual( 1, events.Count );
+
+            var theEvent = (DockedEvent)events[0];
+
+            // The journal says this is a FleetCarrier but we should detect it as a Squadron Carrier due to the presence of a squadron bank service.
+            Assert.AreEqual( "SquadronCarrier", theEvent.stationModel.edname );
+            Assert.AreEqual( "JK40", theEvent.station );
+            Assert.AreEqual( "Mizar", theEvent.system );
+            Assert.IsTrue( theEvent.Station.stationServices.Contains(StationService.SquadronBank) );
+        }
+
+        [TestMethod]
         public void TestJournalDockingCancelled()
         {
             var line = @"{ ""timestamp"":""2018-06-04T07:43:11Z"", ""event"":""DockingCancelled"", ""MarketID"":3227840768, ""StationName"":""Laval Terminal"", ""StationType"":""Orbis"" }";

@@ -489,8 +489,8 @@ namespace EddiCore
                     // Try to carry out initial population of the Frontier API profile
                     try
                     {
-                        await Task.Delay( 500 );
-                        await refreshProfileAsync();
+                        await Task.Delay( 500 ).ConfigureAwait(false);
+                        await refreshProfileAsync().ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {

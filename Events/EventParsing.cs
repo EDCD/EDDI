@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -498,15 +499,26 @@ namespace EddiEvents
         {
             stationName = JsonParsing.getString( data, "StationName" );
             stationLocalizedName = JsonParsing.getString( data, "StationName_Localised" );
+            var stationTypeEdName = JsonParsing.getString( data, "StationType" );
+            stationModel = null;
 
+            if ( string.IsNullOrEmpty( stationName ) || string.IsNullOrEmpty( stationTypeEdName ) ) { return; }
+            
             // Normalize Powerplay Stronghold Carrier names
             stationName = Regex.Replace( stationName, @"/^(Stronghold Carrier|Porte-vaisseaux de forteresse|Transportadora da potência|Носитель-база|Hochburg-Carrier|Portanaves bastión|\$ShipName_StrongholdCarrier(.*?))$/i", "Stronghold Carrier" );
 
             // Fix known incorrectly reported StationType values.
-            string stationTypeEdName;
             if ( stationName == "Stronghold Carrier" || stationName.StartsWith( "$EXT_PANEL_ColonisationShip" ) )
             {
                 stationTypeEdName = StationModel.Megaship.edname;
+            }
+            else if ( !string.IsNullOrEmpty(stationTypeEdName) && 
+                      StationModel.FleetCarrier.edname.Equals( stationTypeEdName, StringComparison.OrdinalIgnoreCase) &&
+                      data.TryGetValue( "StationServices", out var services) && 
+                      JArray.FromObject( services ).ToString().Contains("squadronBank", StringComparison.OrdinalIgnoreCase) )
+            {
+                // Fix instances of Squadron Carriers being reported as Fleet Carriers.
+                stationTypeEdName = StationModel.SquadronCarrier.edname;
             }
             else
             {
