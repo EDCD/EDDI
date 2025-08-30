@@ -51,10 +51,12 @@ namespace EddiDataDefinitions
             }
             if (json?["commander"] != null)
             {
-                FrontierApiCommander Commander = new FrontierApiCommander
+                var Commander = new FrontierApiCommander
                 {
                     // Caution: The "id" property here may not match the FID returned from the player journal
                     name = (string)json["commander"]["name"],
+                    credits = (ulong?)json["commander"]["credits"],
+                    debt = (ulong?)json["commander"]["debt"],
                     combatrating = CombatRating.FromRank((int?)json["commander"]["rank"]?["combat"] ?? 0),
                     traderating = TradeRating.FromRank((int?)json["commander"]["rank"]?["trade"] ?? 0),
                     explorationrating = ExplorationRating.FromRank((int?)json["commander"]["rank"]?["explore"] ?? 0),
@@ -66,9 +68,8 @@ namespace EddiDataDefinitions
                     crimerating = (int?)json["commander"]["rank"]?["crime"] ?? 0,
                     servicerating = (int?)json["commander"]["rank"]?["service"] ?? 0,
                     powerrating = (int?)json["commander"]["rank"]?["power"] ?? 0,
-
-                    credits = (ulong?)json["commander"]["credits"],
-                    debt = (ulong?)json["commander"]["debt"]
+                    squadronname = (string)json["squadron"]?["name"],
+                    squadrontag = (string)json["squadron"]?["tag"]
                 };
                 Profile.Cmdr = Commander;
                 Profile.docked = (bool)json["commander"]["docked"];
@@ -87,7 +88,7 @@ namespace EddiDataDefinitions
                 }
 
                 Profile.currentStarSystem = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
-
+                
                 if (json["lastStarport"] != null)
                 {
                     Profile.LastStationName = ((string)json["lastStarport"]?["name"])?.ReplaceEnd('+');

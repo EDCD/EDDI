@@ -10,65 +10,291 @@ namespace EddiDataDefinitions
     /// Details about a commander
     /// </summary>
 
-    public class FrontierApiCommander
+    public class FrontierApiCommander : INotifyPropertyChanged
     {
         // Parameters obtained from the Frontier API
 
         /// <summary>The commander's name</summary>
-        [PublicAPI]
-        public string name { get; set; }
+        [ PublicAPI ]
+        public string name
+        {
+            get => _name;
+            set
+            {
+                if ( value == _name )
+                {
+                    return;
+                }
 
-        /// <summary>The commander's combat rating</summary>
-        [PublicAPI]
-        public CombatRating combatrating { get; set; }
-
-        /// <summary>The commander's trade rating</summary>
-        [PublicAPI]
-        public TradeRating traderating { get; set; }
-
-        /// <summary>The commander's exploration rating</summary>
-        [PublicAPI]
-        public ExplorationRating explorationrating { get; set; }
-
-        /// <summary>The commander's CQC rating</summary>
-        [PublicAPI]
-        public CQCRating cqcrating { get; set; }
-
-        /// <summary>The commander's empire rating</summary>
-        [PublicAPI]
-        public EmpireRating empirerating { get; set; }
-
-        /// <summary>The commander's federation rating</summary>
-        [PublicAPI]
-        public FederationRating federationrating { get; set; }
-
-        /// <summary>The commander's mercenary rating</summary>
-        [PublicAPI]
-        public MercenaryRating mercenaryrating { get; set; }
-
-        /// <summary>The commander's exobiologist rating</summary>
-        [PublicAPI]
-        public ExobiologistRating exobiologistrating { get; set; }
-
-        /// <summary>The commander's crime rating</summary>
-        public int crimerating { get; set; }
-
-        /// <summary>The commander's service rating</summary>
-        public int servicerating { get; set; }
-
-        /// <summary>The commander's powerplay rating (if pledged)</summary>
-        public int powerrating { get; set; }
-
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+        
         /// <summary>The number of credits the commander holds</summary>
         [PublicAPI]
-        public ulong? credits { get; set; }
+        public ulong? credits
+        {
+            get => _credits;
+            set
+            {
+                if ( value == _credits )
+                {
+                    return;
+                }
+
+                _credits = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>The amount of debt the commander owes</summary>
         [PublicAPI]
-        public ulong? debt { get; set; }
+        public ulong? debt
+        {
+            get => _debt;
+            set
+            {
+                if ( value == _debt )
+                {
+                    return;
+                }
+
+                _debt = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's combat rating</summary>
+        [ PublicAPI ]
+        public CombatRating combatrating
+        {
+            get => _combatrating;
+            set
+            {
+                if ( value == _combatrating )
+                {
+                    return;
+                }
+
+                _combatrating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's trade rating</summary>
+        [ PublicAPI ]
+        public TradeRating traderating
+        {
+            get => _traderating;
+            set
+            {
+                if ( value == _traderating )
+                {
+                    return;
+                }
+
+                _traderating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's exploration rating</summary>
+        [ PublicAPI ]
+        public ExplorationRating explorationrating
+        {
+            get => _explorationrating;
+            set
+            {
+                if ( value == _explorationrating )
+                {
+                    return;
+                }
+
+                _explorationrating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's CQC rating</summary>
+        [ PublicAPI ]
+        public CQCRating cqcrating
+        {
+            get => _cqcrating;
+            set
+            {
+                if ( value == _cqcrating )
+                {
+                    return;
+                }
+
+                _cqcrating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's empire rating</summary>
+        [ PublicAPI ]
+        public EmpireRating empirerating
+        {
+            get => _empirerating;
+            set
+            {
+                if ( value == _empirerating )
+                {
+                    return;
+                }
+
+                _empirerating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's federation rating</summary>
+        [ PublicAPI ]
+        public FederationRating federationrating
+        {
+            get => _federationrating;
+            set
+            {
+                if ( value == _federationrating )
+                {
+                    return;
+                }
+
+                _federationrating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's mercenary rating</summary>
+        [ PublicAPI ]
+        public MercenaryRating mercenaryrating
+        {
+            get => _mercenaryrating;
+            set
+            {
+                if ( value == _mercenaryrating )
+                {
+                    return;
+                }
+
+                _mercenaryrating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's exobiologist rating</summary>
+        [ PublicAPI ]
+        public ExobiologistRating exobiologistrating
+        {
+            get => _exobiologistrating;
+            set
+            {
+                if ( value == _exobiologistrating )
+                {
+                    return;
+                }
+
+                _exobiologistrating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's crime rating</summary>
+        public int crimerating
+        {
+            get => _crimerating;
+            set
+            {
+                if ( value == _crimerating )
+                {
+                    return;
+                }
+
+                _crimerating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's service rating</summary>
+        public int servicerating
+        {
+            get => _servicerating;
+            set
+            {
+                if ( value == _servicerating )
+                {
+                    return;
+                }
+
+                _servicerating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's powerplay rating (if pledged)</summary>
+        public int powerrating
+        {
+            get => _powerrating;
+            set
+            {
+                if ( value == _powerrating )
+                {
+                    return;
+                }
+
+                _powerrating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>The commander's squadron name</summary>
+        [PublicAPI]
+        public string squadronname
+        {
+            get => _squadronname;
+            set { _squadronname = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>The commander's squadron tag</summary>
+        [PublicAPI]
+        public string squadrontag
+        {
+            get => _squadrontag;
+            set { _squadrontag = value; OnPropertyChanged(); }
+        }
+
+        private string _name;
+        private string _squadronname;
+        private string _squadrontag;
+        private int _powerrating;
+        private int _servicerating;
+        private int _crimerating;
+        private ExobiologistRating _exobiologistrating;
+        private MercenaryRating _mercenaryrating;
+        private FederationRating _federationrating;
+        private EmpireRating _empirerating;
+        private CQCRating _cqcrating;
+        private ExplorationRating _explorationrating;
+        private TradeRating _traderating;
+        private CombatRating _combatrating;
+        private ulong? _credits;
+        private ulong? _debt;
+
+        #region INotifyPopertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private protected void OnPropertyChanged ( [System.Runtime.CompilerServices.CallerMemberName] string propName = null )
+        {
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propName ) );
+        }
+
+        #endregion
     }
 
-    public class Commander : FrontierApiCommander, INotifyPropertyChanged
+    public class Commander : FrontierApiCommander
     {
         // Parameters not obtained from the Frontier API
         // Note: Any information not updated from the Frontier API will need to be reset when the Frontier API refreshes the commander definition.
@@ -137,24 +363,6 @@ namespace EddiDataDefinitions
         }
         private int? _powermerits;
 
-        /// <summary>The commander's squadron name</summary>
-        [PublicAPI]
-        public string squadronname
-        {
-            get => _squadronname;
-            set { _squadronname = value; OnPropertyChanged();}
-        }
-        private string _squadronname;
-
-        /// <summary>The commander's squadron tag</summary>
-        [PublicAPI]
-        public string squadrontag
-        {
-            get => _squadrontag;
-            set { _squadrontag = value; OnPropertyChanged();}
-        }
-        private string _squadrontag;
-
         /// <summary>The commander's squadron rank</summary>
         [PublicAPI]
         public SquadronRank squadronrank
@@ -212,17 +420,6 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public List<Engineer> engineers => Engineer.ENGINEERS;
 
-        #region INotifyPopertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
-
-        #endregion
-
         public static Commander FromFrontierApiCmdr(Commander currentCmdr, FrontierApiCommander frontierApiCommander, DateTime apiTimeStamp, DateTime journalTimeStamp, out bool cmdrMatches)
         {
             if (frontierApiCommander is null) { cmdrMatches = true; return currentCmdr; }
@@ -266,10 +463,12 @@ namespace EddiDataDefinitions
                 ? frontierApiCommander.mercenaryrating : Cmdr.mercenaryrating;
             Cmdr.exobiologistrating = (frontierApiCommander.exobiologistrating?.rank ?? 0) >= (Cmdr.exobiologistrating?.rank ?? 0)
                 ? frontierApiCommander.exobiologistrating : Cmdr.exobiologistrating;
-            // A few items are also updated from the journal but may decrease so we check the timestamp
+            // A few items are also updated from the journal but may change so we check the timestamp
             if (apiTimeStamp > journalTimeStamp)
             {
                 Cmdr.credits = frontierApiCommander.credits ?? Cmdr.credits ?? 0;
+                Cmdr.squadronname = frontierApiCommander.squadronname;
+                Cmdr.squadrontag = frontierApiCommander.squadrontag;
                 Cmdr.powerrating = frontierApiCommander.powerrating;
             }
 
