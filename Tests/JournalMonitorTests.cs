@@ -1615,7 +1615,7 @@ namespace Tests
             FakeSpanshHttpClient.Expect( "dump/3932277478106", Encoding.UTF8.GetString( Tests.Properties.Resources.SpanshStarSystemDumpShinrartaDezhra ) );
 
             // Parse the event
-            var line = "{ \"timestamp\":\"2020-06-12T11:01:40Z\", \"event\":\"CarrierJumpRequest\", \"CarrierID\":3701442048, \"SystemName\":\"Shinrarta Dezhra\", \"SystemAddress\":3932277478106, \"BodyID\":16, \"DepartureTime\":\"2023-05-22T09:09:57Z\" }";
+            var line = "{ \"timestamp\":\"2020-06-12T11:01:40Z\", \"event\":\"CarrierJumpRequest\", \"CarrierID\":3701442048, \"CarrierType\":\"FleetCarrier\", \"SystemName\":\"Shinrarta Dezhra\", \"SystemAddress\":3932277478106, \"BodyID\":16, \"DepartureTime\":\"2023-05-22T09:09:57Z\" }";
             var events = JournalMonitor.ParseJournalEntry(line);
             var @event = (CarrierJumpRequestEvent)events[0];
 

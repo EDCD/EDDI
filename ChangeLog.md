@@ -18,6 +18,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Carrier jump cancelled` updated to include `carrierID` and `carrierType` fields.
     * `Carrier jump engaged` updated to include `carrierID` and `carrierType` fields.
     * `Carrier jump request` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier jumped` updated to include `carrierID` and `carrierType` fields.
     * `Carrier Location` updated to include a `carrierType` field.
     * `Carrier name changed` updated to include `carrierID` and `carrierType` fields.
     * `Carrier pads locked` updated to include `carrierID` and `carrierType` fields.

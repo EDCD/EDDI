@@ -67,19 +67,6 @@ namespace EddiFleetCarrierMonitor
 
         public void PreHandle ( Event @event )
         {
-            if ( @event.timestamp < FleetCarrier?.timestamp )
-            {
-                // We only want to update the FleetCarrier object with new events
-                return;
-            }
-
-            if ( @event.timestamp > FleetCarrier?.DecomissionDateTime )
-            {
-                // The FleetCarrier has been decommisioned. We need to remove its configuration.
-                ConfigService.Instance.fleetCarrierConfiguration = null;
-                return;
-            }
-
             if ( @event is CarrierBankTransferEvent carrierBankTransferEvent )
             {
                 handleCarrierBankTransferEvent( carrierBankTransferEvent );
@@ -148,288 +135,449 @@ namespace EddiFleetCarrierMonitor
             {
                 handleLocationEvent( locationEvent );
             }
+        }
 
-            if ( FleetCarrier != null )
+        private bool CarrierIsDecommissioned ( DateTime timestamp, FleetCarrier carrier )
+        {
+            if ( timestamp > carrier?.DecomissionDateTime )
             {
-                FleetCarrier.timestamp = @event.timestamp;
+                // The carrier has been decommisioned. We need to remove its configuration.
+                if ( carrier.carrierType == StationModel.SquadronCarrier )
+                {
+                    ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier = null;
+                }
+                else
+                {
+                    ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier = null;
+                }
+                return true;
             }
+
+            return false;
+        }
+
+        private bool CarrierTimestampIsValid( DateTime timestamp, FleetCarrier carrier )
+        {
+            // We only want to update the carrier objects with new events
+            return timestamp < carrier?.timestamp;
+        }
+
+        private FleetCarrier GetOrCreateCarrier ( long carrierId, StationModel carrierType )
+        {
+            var carrier = carrierType == StationModel.SquadronCarrier 
+                ? SquadronCarrier 
+                : carrierType == StationModel.FleetCarrier 
+                    ? FleetCarrier 
+                    : null;
+            if ( carrier is null || carrier.carrierID != carrierId )
+            {
+                carrier = new FleetCarrier( carrierId, carrierType );
+                if ( carrierType == StationModel.SquadronCarrier )
+                {
+                    SquadronCarrier = carrier;
+                }
+                else if ( carrierType == StationModel.FleetCarrier )
+                {
+                    FleetCarrier = carrier;
+                }
+
+                throw new ArgumentException( $"Unknown 'carrierType' {carrierType.edname}" );
+            }
+
+            return carrier;
+        }
+        
+        private FleetCarrier GetCarrier ( long carrierId )
+        {
+            if ( FleetCarrier.carrierID == carrierId )
+            {
+                return FleetCarrier;
+            }
+
+            if ( SquadronCarrier.carrierID == carrierId )
+            {
+                return SquadronCarrier;
+            }
+            
+            return null;
         }
 
         private void handleCarrierBankTransferEvent ( CarrierBankTransferEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.bankBalance = @event.bankBalance;
+                carrier.bankBalance = @event.bankBalance;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierDecomissionCancelledEvent ( CarrierDecommissionCancelledEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.state = "normalOperation";
-                FleetCarrier.DecomissionDateTime = null;
+                carrier.state = "normalOperation";
+                carrier.DecomissionDateTime = null;
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierDecomissionScheduledEvent ( CarrierDecommissionScheduledEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.state = "pendingDecommission";
-                FleetCarrier.DecomissionDateTime = @event.timestamp + @event.decommissionTimespan;
+                carrier.state = "pendingDecommission";
+                carrier.DecomissionDateTime = @event.timestamp + @event.decommissionTimespan;
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierDockingPermissionEvent ( CarrierDockingPermissionEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.dockingAccess = @event.dockingAccess;
-                FleetCarrier.notoriousAccess = @event.allowNotorious;
+                carrier.dockingAccess = @event.dockingAccess;
+                carrier.notoriousAccess = @event.allowNotorious;
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierFinanceEvent ( CarrierFinanceEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.bankBalance = @event.bankBalance;
-                FleetCarrier.bankReservedBalance = @event.bankReservedBalance;
-                FleetCarrier.bankPurchaseAllocationsBalance = @event.bankBalance
-                                                              - @event.bankReservedBalance
-                                                              - @event.bankAvailableBalance;
+                carrier.bankBalance = @event.bankBalance;
+                carrier.bankReservedBalance = @event.bankReservedBalance;
+                carrier.bankPurchaseAllocationsBalance = @event.bankBalance
+                                                         - @event.bankReservedBalance
+                                                         - @event.bankAvailableBalance;
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierFuelDepositEvent ( CarrierFuelDepositEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.fuel = @event.total;
+                carrier.fuel = @event.total;
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierJumpCancelledEvent ( CarrierJumpCancelledEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.SetNextLocation( null, null, null );
+                carrier.SetNextLocation( null, null, null );
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierJumpedEvent ( CarrierJumpedEvent @event )
         {
-            // This can trigger for a carrier where we're a passenger and not the owner
-            if ( FleetCarrier != null && FleetCarrier.carrierID == @event.carrierID )
+            if ( @event.carrierID is null ) { return; }
+            var carrier = GetOrCreateCarrier( (long)@event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                FleetCarrier.name = @event.carriername;
-                FleetCarrier.Market.name = @event.carriername;
-                FleetCarrier.Market.marketId = @event.carrierID;
-                FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
-                FleetCarrier.SetNextLocation( null, null, null );
+                return;
+            }
+            
+            // This can trigger for a carrier where we're a passenger and not the owner
+            if ( carrier != null && carrier.carrierID == @event.carrierID )
+            {
+                carrier.name = @event.carriername;
+                carrier.Market.name = @event.carriername;
+                carrier.Market.marketId = @event.carrierID;
+                carrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
+                carrier.SetNextLocation( null, null, null );
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierJumpEngagedEvent ( CarrierJumpEngagedEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
-                FleetCarrier.SetNextLocation( null, null, null );
+                carrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyId );
+                carrier.SetNextLocation( null, null, null );
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierJumpRequestEvent ( CarrierJumpRequestEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.SetNextLocation( @event.systemAddress, @event.systemname, @event.bodyId );
+                carrier.SetNextLocation( @event.systemAddress, @event.systemname, @event.bodyId );
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierLocationEvent ( CarrierLocationEvent @event )
         {
-            FleetCarrier carrier = null;
-            if ( @event.carrierType == StationModel.SquadronCarrier )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                carrier = SquadronCarrier;
-            }
-            else if ( @event.carrierType == StationModel.FleetCarrier )
-            {
-                carrier = FleetCarrier;
-            }
-            else
-            {
-                Logging.Warn( $"Unknown 'carrierType' {@event.carrierType.edname}", @event );
-            }
-
-            if ( carrier is null || carrier.carrierID != @event.carrierID )
-            {
-                carrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
             carrier.SetCurrentLocation( @event.systemAddress, @event.systemname, @event.bodyID );
+            carrier.timestamp = @event.timestamp;
             WriteConfiguration();
         }
 
         private void handleCarrierNameChangeEvent ( CarrierNameChangeEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.name = @event.name;
+                carrier.name = @event.name;
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCarrierStatsEvent ( CarrierStatsEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
+            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
+                return;
             }
 
-            if ( FleetCarrier != null )
+            if ( carrier != null )
             {
-                FleetCarrier.name = @event.name;
-                FleetCarrier.callsign = @event.callsign;
-                FleetCarrier.dockingAccess = @event.dockingAccess;
-                FleetCarrier.notoriousAccess = @event.notoriousAccess;
-                FleetCarrier.fuel = @event.fuel;
-                FleetCarrier.usedCapacity = @event.usedCapacity;
-                FleetCarrier.freeCapacity = @event.freeCapacity;
-                FleetCarrier.bankBalance = @event.bankBalance;
-                FleetCarrier.bankReservedBalance = @event.bankReservedBalance;
-                FleetCarrier.bankPurchaseAllocationsBalance = @event.bankBalance -
-                                                              @event.bankReservedBalance -
-                                                              @event.bankAvailableBalance;
+                carrier.name = @event.name;
+                carrier.callsign = @event.callsign;
+                carrier.dockingAccess = @event.dockingAccess;
+                carrier.notoriousAccess = @event.notoriousAccess;
+                carrier.fuel = @event.fuel;
+                carrier.usedCapacity = @event.usedCapacity;
+                carrier.freeCapacity = @event.freeCapacity;
+                carrier.bankBalance = @event.bankBalance;
+                carrier.bankReservedBalance = @event.bankReservedBalance;
+                carrier.bankPurchaseAllocationsBalance = @event.bankBalance -
+                                                         @event.bankReservedBalance -
+                                                         @event.bankAvailableBalance;
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         private void handleCommodityPurchasedEvent ( CommodityPurchasedEvent @event )
         {
-            if ( FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID )
+            var carrier = GetCarrier( @event.marketid );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
-                {
-                    FleetCarrier.fuelInCargo -= @event.amount;
-                    WriteConfiguration();
-                }
+                return;
+            }
+
+            if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
+            {
+                carrier.fuelInCargo -= @event.amount;
+                carrier.timestamp = @event.timestamp;
+                WriteConfiguration();
             }
         }
 
         private void handleCommoditySoldEvent ( CommoditySoldEvent @event )
         {
-            if ( FleetCarrier != null && @event.marketid == FleetCarrier?.carrierID )
+            var carrier = GetCarrier( @event.marketid );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
-                if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
-                {
-                    FleetCarrier.fuelInCargo += @event.amount;
-                    WriteConfiguration();
-                }
+                return;
+            }
+
+            if ( @event.commodityDefinition?.edname?.ToLowerInvariant() == "tritium" )
+            {
+                carrier.fuelInCargo += @event.amount;
+                carrier.timestamp = @event.timestamp;
+                WriteConfiguration();
             }
         }
 
         private void handleFileHeaderEvent ()
         {
-            Task.Run( async () =>
-            {
-                EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
-                await RefreshFleetCarrierFromFrontierAPIAsync( true );
-            } ).ConfigureAwait( false );
+            EDDI.Instance.FleetCarrier = ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier;
+            EDDI.Instance.SquadronCarrier = ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier;
         }
 
         private void handleLocationEvent ( LocationEvent @event )
         {
-            // If we are at our fleet carrier, make sure that the carrier location is up to date.
-            if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
+            if ( @event.marketId is null ||
+                 ( @event.stationModel != StationModel.FleetCarrier &&
+                   @event.stationModel != StationModel.SquadronCarrier ) )
+            {
+                return;
+            }
+            
+            var carrier = GetCarrier( (long)@event.marketId );
+            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
+            {
+                return;
+            }
+
+            // If we are at a carrier we own, make sure that it is up to date.
+            if ( carrier != null )
             {
                 FleetCarrier.SetCurrentLocation(@event.systemAddress, @event.systemname, @event.bodyId);
+                carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
             }
         }
 
         public void PostHandle ( Event @event )
         {
-            if ( @event is CarrierJumpRequestEvent
-                 || @event is CarrierJumpEngagedEvent
-                 || @event is CarrierJumpedEvent
-                 || @event is CarrierPurchasedEvent
-                 || @event is CarrierStatsEvent
-                 || @event is CommanderContinuedEvent )
+            if ( @event.fromLoad ) { return; }
+            
+            if ( @event is CarrierJumpRequestEvent cjr )
             {
-                if ( !@event.fromLoad )
+                if ( cjr.carrierType == StationModel.FleetCarrier )
                 {
                     Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
                 }
+                else if ( cjr.carrierType == StationModel.SquadronCarrier )
+                {
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+            }
+            else if ( @event is CarrierJumpEngagedEvent cje )
+            {
+                if ( cje.carrierType == StationModel.FleetCarrier )
+                {
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+                else if ( cje.carrierType == StationModel.SquadronCarrier )
+                {
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+            }
+            else if ( @event is CarrierJumpedEvent cj )
+            {
+                if ( cj.carrierType == StationModel.FleetCarrier )
+                {
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+                else if ( cj.carrierType == StationModel.SquadronCarrier )
+                {
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+            }
+            else if ( @event is CarrierPurchasedEvent cp )
+            {
+                if ( cp.carrierType == StationModel.FleetCarrier )
+                {
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+                else if ( cp.carrierType == StationModel.SquadronCarrier )
+                {
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+            }
+            else if ( @event is CarrierStatsEvent cs )
+            {
+                if ( cs.carrierType == StationModel.FleetCarrier )
+                {
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+                else if ( cs.carrierType == StationModel.SquadronCarrier )
+                {
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                }
+            }
+            else if ( @event is CommanderContinuedEvent )
+            {
+                Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
             }
         }
 
         public void HandleProfile ( JObject profile )
         {
-            // By the time the profile gets here the FleetCarrier onject is already updated and we just need to save it.
-            WriteConfiguration();
+            // This currently contains data from the Frontier API 'profile' and (optionally) 'market' and 'shipyard' endpoints.
         }
 
         public void HandleStatus ( Status status )
@@ -468,13 +616,13 @@ namespace EddiFleetCarrierMonitor
                     if ( frontierApiCarrierJson != null )
                     {
                         var timestamp = frontierApiCarrierJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
-                        var carrierID = frontierApiCarrierJson[ "market" ]?[ "id" ]?.ToObject<long?>();
+                        var carrierID = frontierApiCarrierJson[ "market" ]?[ "id" ]?.ToObject<long>() ?? throw new ArgumentException("Invalid 'carrierID'");
+                        FleetCarrier = GetOrCreateCarrier( carrierID, StationModel.FleetCarrier );
+
+                        // Update our Fleet Carrier object
                         var wp = await EDDI.Instance.DataProvider
                             .GetOrFetchSystemWaypointAsync( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() )
                             .ConfigureAwait( false );
-                        if ( FleetCarrier is null ) { FleetCarrier = new FleetCarrier( carrierID ); }
-
-                        // Update our Fleet Carrier object
                         lock ( carrierLock )
                         {
                             FleetCarrier.UpdateFrom( frontierApiCarrierJson, timestamp );
@@ -498,6 +646,47 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
+        /// <summary>Obtain squadron carrier information from the companion API and use it to refresh our own data</summary>
+        private async Task RefreshSquadronCarrierFromFrontierAPIAsync ( bool forceRefresh = false )
+        {
+            try
+            {
+                if ( CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
+                {
+                    var frontierApiSquadronJson = await CompanionAppService.Instance.SquadronEndpoint.GetSquadronAsync(forceRefresh).ConfigureAwait(false);
+                    if ( frontierApiSquadronJson != null )
+                    {
+                        var timestamp = frontierApiSquadronJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
+                        var carrierID = frontierApiSquadronJson[ "market" ]?[ "id" ]?.ToObject<long>() ?? throw new ArgumentException("Invalid 'carrierID'");
+                        SquadronCarrier = GetOrCreateCarrier( carrierID, StationModel.SquadronCarrier );
+
+                        // Update our Squadron Carrier object's location
+                        var wp = await EDDI.Instance.DataProvider
+                            .GetOrFetchSystemWaypointAsync( frontierApiSquadronJson[ "currentStarSystem" ]?.ToString() )
+                            .ConfigureAwait( false );
+                        lock ( carrierLock )
+                        {
+                            SquadronCarrier.UpdateFrom( frontierApiSquadronJson, timestamp );
+
+                            // Get location data if it's not already defined
+                            if ( SquadronCarrier.currentStarSystemAddress is null )
+                            {
+                                if ( wp != null )
+                                {
+                                    SquadronCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
+                                }
+                            }
+                        }
+                        WriteConfiguration();
+                    }
+                }
+            }
+            catch ( OperationCanceledException )
+            {
+                // Nothing to do here, the task was cancelled.
+            }
+        }
+
         private void WriteConfiguration ()
         {
             lock ( carrierLock )
@@ -505,27 +694,35 @@ namespace EddiFleetCarrierMonitor
                 var configuration = ConfigService.Instance.fleetCarrierConfiguration;
                 if ( configuration.fleetCarrier?.timestamp < FleetCarrier?.timestamp )
                 {
-                    configuration.fleetCarrier = FleetCarrier;
-                    ConfigService.Instance.fleetCarrierConfiguration = configuration;
+                    ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier = FleetCarrier;
+                    EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.FleetCarrier ) );
                 }
-
-                EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.FleetCarrier ) );
+                if ( configuration.squadronCarrier?.timestamp < SquadronCarrier?.timestamp )
+                {
+                    ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier = SquadronCarrier;
+                    EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.SquadronCarrier ) );
+                }
             }
         }
 
+        #region Implement INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged ( [ CallerMemberName ] string propertyName = null )
+        protected virtual void OnPropertyChanged ( [CallerMemberName] string propertyName = null )
         {
             PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
 
-        protected bool SetField<T> ( ref T field, T value, [ CallerMemberName ] string propertyName = null )
+        protected bool SetField<T> ( ref T field, T value, [CallerMemberName] string propertyName = null )
         {
-            if ( EqualityComparer<T>.Default.Equals( field, value ) ) return false;
+            if ( EqualityComparer<T>.Default.Equals( field, value ) )
+                return false;
             field = value;
             OnPropertyChanged( propertyName );
             return true;
         }
+
+        #endregion
     }
 }

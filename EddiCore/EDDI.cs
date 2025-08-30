@@ -1282,7 +1282,16 @@ namespace EddiCore
 
                 // There's a journal bug here where carrier market information is missing if we are on foot but present if we are docked
                 // so we fall back to our saved FleetCarrier object information if event information is missing.
-                var carrierID = @event.carrierID ?? FleetCarrier?.carrierID;
+                var carrierID = @event.carrierID ?? ( @event.carrierType == StationModel.FleetCarrier
+                    ? FleetCarrier?.carrierID
+                    : @event.carrierType == StationModel.SquadronCarrier
+                        ? SquadronCarrier?.carrierID
+                        : null );
+                if ( carrierID != @event.carrierID )
+                {
+                    @event.carrierID = carrierID;
+                }
+                
                 var carrierCallsign = @event.carriername ?? FleetCarrier?.callsign;
 
                 // Remove the carrier from the current star system or last star system

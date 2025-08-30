@@ -9,7 +9,8 @@ namespace EddiDataDefinitions
 {
     public class FleetCarrier : INotifyPropertyChanged
     {
-        private long? _carrierId;
+        private long _carrierId;
+        private StationModel _carrierType;
         private FrontierApiStation _market = new FrontierApiStation();
         private string _name;
         private string _callsign;
@@ -38,13 +39,24 @@ namespace EddiDataDefinitions
         private JArray _microresourceSalesOrders = new JArray();
         private JArray _microresourcePurchaseOrders = new JArray();
 
-        public long? carrierID
+        public long carrierID
         {
             get => _carrierId;
-            set
+            private set
             {
                 if (value == _carrierId) return;
                 _carrierId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public StationModel carrierType
+        {
+            get => _carrierType;
+            private set
+            {
+                if ( value == _carrierType ) return;
+                _carrierType = value;
                 OnPropertyChanged();
             }
         }
@@ -342,9 +354,10 @@ namespace EddiDataDefinitions
         // Constructors
 
         [JsonConstructor]
-        public FleetCarrier(long? carrierID)
+        public FleetCarrier( long carrierID, StationModel carrierType )
         {
             this.carrierID = carrierID;
+            this.carrierType = carrierType;
         }
 
         // Methods
@@ -401,7 +414,7 @@ namespace EddiDataDefinitions
 
                 callsign = newCallsign;
                 json = newJson;
-                carrierID = newJson["market"]?["id"]?.ToObject<long?>();
+                carrierID = newJson["market"]?["id"]?.ToObject<long>() ?? throw new ArgumentException("Invalid 'carrierID'");
 
                 // Information which might be newer, check timestamp prior to updating
                 if (newTimeStamp <= timestamp)

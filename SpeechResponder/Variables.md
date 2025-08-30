@@ -290,7 +290,7 @@ Details of the commander's fleet carrier (if purchased) are available within the
 
 Information about your squadron carrier (if purchased) is available under the *squadronCarrier* object.
 
-Any values might be missing, depending on EDDI's configuration and the information avaialable about the squadron carrier.
+Any values might be missing, depending on EDDI's configuration and the information available about the squadron carrier. Information is likely to be sparse if you are not the squadron carrier owner. 
 
 Values are the same as for the fleet carrier.
 ___
@@ -511,7 +511,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 Information about your last starsystem is available under the *lastsystem* object.
 
-Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
+Any values might be missing, depending on EDDI's configuration and the information available about the system.
 
 Values are the same as for the current starsystem.
 

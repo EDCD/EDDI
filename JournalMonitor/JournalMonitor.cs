@@ -1078,33 +1078,18 @@ namespace EddiJournalMonitor
                                     // Thargoid war data (if any)
                                     EventParsing.ThargoidWarData( data, out var thargoidWar );
 
-                                    // There is a bug in Odyssey where a `Location` event may be written instead of a `CarrierJump` event.
-                                    // Per Journal Manual v37, this should be fixed in Odyssey Update 15.
-                                    if (docked && carrierJumpCancellationTokenSources.ContainsKey(marketId ?? 0))
+                                    events.Add( new LocationEvent( timestamp, systemName, systemAddress, x, y, z,
+                                        distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked,
+                                        stationLocalizedName ?? stationName, stationtype, marketId, stationServices, systemfaction,
+                                        stationfaction, factions, conflicts, Economies, economy, economy2, security,
+                                        population, controllingPower, powersInAcquisitionRange, powerplayState,
+                                        powerAcquisitionProgress, powerplayControlProgress,
+                                        powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                                        taxi, multicrew, inSRV, onFoot, thargoidWar )
                                     {
-                                        events.Add( new CarrierJumpedEvent( timestamp, systemName, systemAddress, x, y,
-                                            z, body, bodyId, bodyType, docked, onFoot, stationLocalizedName ?? stationName, stationtype, marketId,
-                                            stationServices, systemfaction, stationfaction, factions, conflicts,
-                                            Economies, economy, economy2, security, population, controllingPower,
-                                            powersInAcquisitionRange, powerplayState,
-                                            powerAcquisitionProgress, powerplayControlProgress,
-                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
-                                            thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
-                                    }
-                                    else
-                                    {
-                                        events.Add( new LocationEvent( timestamp, systemName, systemAddress, x, y, z,
-                                            distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked,
-                                            stationLocalizedName ?? stationName, stationtype, marketId, stationServices, systemfaction,
-                                            stationfaction, factions, conflicts, Economies, economy, economy2, security,
-                                            population, controllingPower, powersInAcquisitionRange, powerplayState,
-                                            powerAcquisitionProgress, powerplayControlProgress,
-                                            powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
-                                            taxi, multicrew, inSRV, onFoot, thargoidWar )
-                                        {
-                                            raw = line, fromLoad = fromLogLoad
-                                        } );
-                                    }
+                                        raw = line,
+                                        fromLoad = fromLogLoad
+                                    } );
                                 }
                                 handled = true;
                                 break;
@@ -3886,7 +3871,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Get carrier data (may not be present when on-foot at a fleet carrier but not docked)
-                                    var carrierId = JsonParsing.getLong( data, "MarketID" );
+                                    var carrierId = JsonParsing.getOptionalLong( data, "MarketID" );
                                     EventParsing.StationNameAndType( data, out var carrierName, out _, out var carrierType );
 
                                     // Get carrier services data (may not be present when on-foot at a fleet carrier but not docked)
@@ -3960,27 +3945,31 @@ namespace EddiJournalMonitor
                                         powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
                                         thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
 
-                                    // Generate secondary event when the carrier jump cooldown completes
-                                    if ( carrierJumpCancellationTokenSources.TryGetValue( carrierId, out var carrierJumpCancellationTS ) )
+                                    // Generate secondary events when the carrier jump cooldown completes
+                                    if ( carrierId != null )
                                     {
-                                        // Cancel any pending cooldown event (to prevent doubling events if the commander is the fleet carrier owner)
-                                        carrierJumpCancellationTS.Cancel();
-                                    }
-
-                                    if ( !fromLogLoad )
-                                    {
-                                        Task.Run( async () =>
+                                        if ( carrierJumpCancellationTokenSources.TryGetValue( (long)carrierId, out var carrierJumpCancellationTS ) )
                                         {
-                                            // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
-                                            var timeMs = ( Constants.carrierPostJumpSeconds -
-                                                           Constants.carrierJumpSeconds ) *
-                                                         1000; 
-                                            await Task.Delay( timeMs );
-                                            EDDI.Instance.enqueueEvent(
-                                                new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ),
-                                                    carrierId,
-                                                    carrierName, carrierType, systemName, systemAddress, bodyName, bodyId, bodyType ) { fromLoad = fromLogLoad } );
-                                        } ).ConfigureAwait( false );
+                                            // Cancel any pending cooldown event (to prevent doubling events if the commander is the fleet carrier owner)
+                                            carrierJumpCancellationTS.Cancel();
+                                        }
+
+                                        if ( !fromLogLoad )
+                                        {
+                                            Task.Run( async () =>
+                                            {
+                                                // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
+                                                var timeMs = ( Constants.carrierPostJumpSeconds -
+                                                               Constants.carrierJumpSeconds ) *
+                                                             1000;
+                                                await Task.Delay( timeMs );
+                                                EDDI.Instance.enqueueEvent(
+                                                    new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ),
+                                                            (long)carrierId,
+                                                            carrierName, carrierType, systemName, systemAddress, bodyName, bodyId, bodyType )
+                                                        { fromLoad = fromLogLoad } );
+                                            } ).ConfigureAwait( false );
+                                        }
                                     }
                                 }
                                 handled = true;

@@ -363,7 +363,7 @@ Data is primarily updated from the `Carrier stats` event and Frontier API data i
   * {DEC:Carrier bank available balance}: The last reported available bank balance of the carrier
 
 ### Squadron Carrier Variables
-  * Like "Fleet Carrier Variables", except prefixed with `Squadron `, e.g. {TXT: Squadron carrier name}.
+  * Like "Fleet Carrier Variables", except prefixed with `Squadron `, e.g. {TXT: Squadron carrier name}. Any values might be missing, depending on EDDI's configuration and the information available about the squadron carrier. Information is likely to be sparse if you are not the squadron carrier owner. 
 
 ## Miscellaneous Variables
 

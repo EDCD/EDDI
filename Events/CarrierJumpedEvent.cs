@@ -128,6 +128,12 @@ namespace EddiEvents
         [PublicAPI("The name of the carrier")]
         public string carriername { get; private set; }
 
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long? carrierID { get; set; }
+
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
         // Thargoid War
         [PublicAPI( "Thargoid war data, when applicable" )]
         public ThargoidWar ThargoidWar { get; private set; }
@@ -136,8 +142,6 @@ namespace EddiEvents
         public bool docked { get; private set; }
 
         public bool onFoot { get; private set; }
-
-        public long? carrierID { get; private set; }
 
         public Economy systemEconomy { get; private set; }
 
@@ -150,8 +154,6 @@ namespace EddiEvents
         public BodyType bodyType { get; private set; }
         
         public Faction carrierFaction { get; private set; }
-
-        public StationModel carrierType { get; private set; }
 
         public List<StationService> carrierServices { get; private set; }
 
@@ -192,7 +194,7 @@ namespace EddiEvents
             this.onFoot = onFoot;
             this.carrierID = carrierId;
             this.carriername = carrierName;
-            this.carrierType = carrierId is null ? null : carrierType ?? StationModel.FleetCarrier;
+            this.carrierType = carrierType;
             this.carrierFaction = stationFaction;
             this.carrierServices = stationServices ?? new List<StationService>();
             this.carrierEconomies = stationEconomies ?? new List<EconomyShare>();

@@ -101,10 +101,11 @@ namespace EddiCompanionAppService
         public readonly Endpoints.FleetCarrierEndpoint FleetCarrierEndpoint = new Endpoints.FleetCarrierEndpoint();
         public readonly Endpoints.ProfileEndpoint ProfileEndpoint = new Endpoints.ProfileEndpoint();
         public readonly Endpoints.CombinedStationEndpoints CombinedStationEndpoints = new Endpoints.CombinedStationEndpoints();
+        public readonly Endpoints.SquadronEndpoint SquadronEndpoint = new Endpoints.SquadronEndpoint();
 
         #endregion
 
-        private CompanionAppService()
+        private CompanionAppService ()
         {
             Credentials = CompanionAppCredentials.Load();
             var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
