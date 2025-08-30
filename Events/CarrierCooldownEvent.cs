@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Carrier cooldown";
         public const string DESCRIPTION = "Triggered when you either were docked at a fleet carrier during a jump or are the fleet carrier owner and it completes its cooldown";
-        public static CarrierCooldownEvent SAMPLE = new CarrierCooldownEvent(DateTime.UtcNow, 3700571136, "Aparctias", 358797513434, "Aparctias", 0, BodyType.Star, "G53-K3Q", StationModel.FleetCarrier);
+        public static CarrierCooldownEvent SAMPLE = new CarrierCooldownEvent(DateTime.UtcNow, 3700571136, "G53-K3Q", StationModel.FleetCarrier, "Aparctias", 358797513434, "Aparctias", 0, BodyType.Star );
 
         // System variables
 
@@ -37,16 +37,19 @@ namespace EddiEvents
 
         [PublicAPI("The name of the carrier (only available if docked during a successful jump)")]
         public string carriername { get; private set; }
+        
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
+
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
 
         // These properties are not intended to be user facing
 
         public BodyType bodyType { get; private set; }
-        
-        public long? carrierId { get; private set; }
 
-        public StationModel carrierType { get; private set; }
-
-        public CarrierCooldownEvent(DateTime timestamp, long? carrierId, string systemName, ulong? systemAddress, string bodyName, long? bodyId, BodyType bodyType, string carrierName, StationModel carrierType) : base(timestamp, NAME)
+        public CarrierCooldownEvent ( DateTime timestamp, long carrierId, string carrierName, StationModel carrierType,
+            string systemName, ulong? systemAddress, string bodyName, long? bodyId, BodyType bodyType ) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
@@ -58,7 +61,7 @@ namespace EddiEvents
             this.bodyType = bodyType ?? BodyType.None;
 
             // Carrier
-            this.carrierId = carrierId;
+            this.carrierID = carrierId;
             this.carriername = carrierName;
             this.carrierType = carrierType;
         }

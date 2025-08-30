@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -16,12 +17,17 @@ namespace EddiEvents
         [PublicAPI("True if docking access may be granted to notorious commanders")]
         public bool allowNotorious { get; private set; }
 
-        // Not intended to be user facing
-        public long? carrierID { get; private set; }
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
 
-        public CarrierDockingPermissionEvent(DateTime timestamp, long? carrierId, string dockingAccess, bool allowNotorious) : base(timestamp, NAME)
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
+        public CarrierDockingPermissionEvent ( DateTime timestamp, long carrierId, StationModel carrierType,
+            string dockingAccess, bool allowNotorious ) : base(timestamp, NAME)
         {
-            carrierID = carrierId;
+            this.carrierID = carrierId;
+            this.carrierType = carrierType;
             this.dockingAccess = dockingAccess;
             this.allowNotorious = allowNotorious;
         }

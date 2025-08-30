@@ -11,8 +11,8 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when your fleet carrier performs a jump";
         public static readonly CarrierJumpEngagedEvent[] SAMPLES = 
         {
-            new CarrierJumpEngagedEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Ageno", 18262335038849, "Aparctias", 0, 3700571136),
-            new CarrierJumpEngagedEvent(DateTime.UtcNow, "Senones", 2724896688499, "Aparctias", 358797513434, "Senones 2", 3, 3707594240)
+            new CarrierJumpEngagedEvent(DateTime.UtcNow, "Aparctias", 358797513434, "Ageno", 18262335038849, "Aparctias", 0, 3700571136, StationModel.FleetCarrier ),
+            new CarrierJumpEngagedEvent(DateTime.UtcNow, "Senones", 2724896688499, "Aparctias", 358797513434, "Senones 2", 3, 3707594240, StationModel.FleetCarrier )
         };
 
         // Destination System variables
@@ -47,11 +47,17 @@ namespace EddiEvents
         [PublicAPI("True if docked with the carrier as it jumps")]
         public bool docked { get; set; }
 
-        // These properties are not intended to be user facing
+        // Carrier variables
 
-        public long? carrierID { get; private set; }
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
 
-        public CarrierJumpEngagedEvent(DateTime timestamp, string systemName, ulong systemAddress, string originSystemName, ulong originSystemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
+        public CarrierJumpEngagedEvent ( DateTime timestamp, string systemName, ulong systemAddress,
+            string originSystemName, ulong originSystemAddress, string bodyName, long? bodyId, long carrierId,
+            StationModel carrierType ) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
@@ -65,6 +71,7 @@ namespace EddiEvents
 
             // Carrier
             this.carrierID = carrierId;
+            this.carrierType = carrierType;
         }
     }
 }

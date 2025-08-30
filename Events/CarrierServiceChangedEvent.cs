@@ -23,14 +23,23 @@ namespace EddiEvents
         [PublicAPI("The crew member responsible for the service")]
         public string crew { get; private set; }
 
+        // Carrier variables
+
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
+
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
         // Not intended to be user facing
-        public long? carrierID { get; private set; }
 
         public StationService Service { get; private set; }
 
-        public CarrierServiceChangedEvent(DateTime timestamp, long? carrierId, string operation, StationService crewRole, string crewName) : base(timestamp, NAME)
+        public CarrierServiceChangedEvent ( DateTime timestamp, long carrierId, StationModel carrierType,
+            string operation, StationService crewRole, string crewName ) : base(timestamp, NAME)
         {
             carrierID = carrierId;
+            this.carrierType = carrierType;
             this.operation = operation;
             Service = crewRole;
             crew = crewName;

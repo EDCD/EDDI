@@ -30,11 +30,16 @@ namespace EddiEvents
         [PublicAPI("The short name of the destination body, if any")]
         public string shortname => Body.GetShortName(bodyname, systemname);
 
-        // These properties are not intended to be user facing
+        // Carrier variables
 
-        public long? carrierID { get; private set; }
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
 
-        public CarrierJumpRequestEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, long? bodyId, long? carrierId) : base(timestamp, NAME)
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
+        public CarrierJumpRequestEvent ( DateTime timestamp, string systemName, ulong systemAddress, string bodyName,
+            long? bodyId, long carrierId, StationModel carrierType ) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
@@ -46,6 +51,7 @@ namespace EddiEvents
 
             // Carrier
             this.carrierID = carrierId;
+            this.carrierType = carrierType;
         }
     }
 }

@@ -8,7 +8,22 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Replaced the legacy `CSCore` voice effect library with the more modern `NAudio` library. The effects library isn't exactly the same so some audio effects may be slightly different than they were before. The largest difference is the way that distortion in response to ship damage is handled.
     * Many carrier events now trigger for both your personal fleet carrier and for your squadron carrier - a `carrierType` field has been added to applicable events to identify the event source.
   * Events
-    * `Carrier Location` updated to include the new `carrierType` field.
+    * `Carrier bank transfer` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier cooldown` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier decommission cancelled` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier decommission scheduled` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier docking permission` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier finance` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier fuel deposit` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier jump cancelled` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier jump engaged` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier jump request` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier Location` updated to include a `carrierType` field.
+    * `Carrier name changed` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier pads locked` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier purchased` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier service changed` updated to include `carrierID` and `carrierType` fields.
+    * `Carrier stats` updated to include `carrierID` and `carrierType` fields.`
     * `Squadron rank` updated to include new Squadron rank objects and the new `squadronID` integer.
     * `Squadron startup` updated to include a new Squadron rank object and the new `squadronID` integer.
     * `Squadron status` updated to include the new `squadronID` integer.

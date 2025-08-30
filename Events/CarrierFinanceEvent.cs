@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -25,12 +26,17 @@ namespace EddiEvents
         [PublicAPI("Your fleet carrier's current available credits")]
         public long bankAvailableBalance { get; private set; }
 
-        // Not intended to be user facing
-        public long? carrierID { get; private set; }
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
 
-        public CarrierFinanceEvent(DateTime timestamp, long? carrierId, int taxRate, int reservePercent, long carrierBalance, long reserveBalance, long availableBalance) : base(timestamp, NAME)
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
+        public CarrierFinanceEvent ( DateTime timestamp, long carrierId, StationModel carrierType, int taxRate,
+            int reservePercent, long carrierBalance, long reserveBalance, long availableBalance ) : base(timestamp, NAME)
         {
-            carrierID = carrierId;
+            this.carrierID = carrierId;
+            this.carrierType = carrierType;
             this.taxRate = taxRate;
             this.reservePercent = reservePercent;
             this.bankBalance = carrierBalance;

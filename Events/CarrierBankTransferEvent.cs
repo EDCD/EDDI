@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -21,13 +22,18 @@ namespace EddiEvents
 
         [PublicAPI("The fleet carrier's updated credit balance")]
         public long bankBalance { get; private set; }
-        
-        // Not intended to be user facing
+
+        [PublicAPI( "The carrier's numeric ID" )]
         public long carrierID { get; private set; }
 
-        public CarrierBankTransferEvent(DateTime timestamp, long carrierId, ulong? deposit, ulong? withdrawal, ulong cmdrBalance, long carrierBalance) : base(timestamp, NAME)
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
+        public CarrierBankTransferEvent ( DateTime timestamp, long carrierId, StationModel carrierType, ulong? deposit,
+            ulong? withdrawal, ulong cmdrBalance, long carrierBalance ) : base(timestamp, NAME)
         {
-            carrierID = carrierId;
+            this.carrierID = carrierId;
+            this.carrierType = carrierType;
             this.deposit = deposit;
             this.withdrawal = withdrawal;
             this.cmdrBalance = cmdrBalance;

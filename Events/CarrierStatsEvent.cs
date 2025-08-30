@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -17,6 +18,12 @@ namespace EddiEvents
 
         [PublicAPI("The name of the carrier")]
         public string name { get; private set; }
+
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
+
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
 
         [PublicAPI("The carrier's current docking access (one of one of 'all', 'squadronfriends', 'friends', or 'none')")]
         public string dockingAccess { get; private set; }
@@ -42,14 +49,13 @@ namespace EddiEvents
         [PublicAPI("The current available bank balance of the carrier")]
         public long bankAvailableBalance { get; private set; }
 
-        // These properties are not intended to be user facing
-
-        public long? carrierID { get; private set; }
-
-        public CarrierStatsEvent(DateTime timestamp, long? carrierId, string carrierCallsign, string carrierName, string dockingAccess, bool notoriousAccess, int fuelLevel, int usedSpace, int freeSpace, long bankBalance, long bankBalanceReserved, long bankAvailableBalance) : base(timestamp, NAME)
+        public CarrierStatsEvent ( DateTime timestamp, long carrierId, StationModel carrierType,
+            string carrierCallsign, string carrierName, string dockingAccess, bool notoriousAccess, int fuelLevel,
+            int usedSpace, int freeSpace, long bankBalance, long bankBalanceReserved, long bankAvailableBalance ) : base(timestamp, NAME)
         {
             // Carrier
             this.carrierID = carrierId;
+            this.carrierType = carrierType;
             this.callsign = carrierCallsign;
             this.name = carrierName;
             this.dockingAccess = dockingAccess;

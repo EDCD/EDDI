@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -25,14 +26,22 @@ namespace EddiEvents
         [PublicAPI("The minutes component of the time remaining before the fleet carrier is decommissioned")]
         public int? minutes => decommissionTimespan?.Minutes ?? 0;
 
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
+
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
         // Not intended to be user facing
-        public long? carrierID { get; private set; }
 
         public TimeSpan? decommissionTimespan { get; private set; }
 
-        public CarrierDecommissionScheduledEvent(DateTime timestamp, long? carrierId, ulong refund, TimeSpan? decommissionTimespan) : base(timestamp, NAME)
+        public CarrierDecommissionScheduledEvent ( DateTime timestamp, long carrierId, StationModel carrierType,
+            ulong refund,
+            TimeSpan? decommissionTimespan ) : base(timestamp, NAME)
         {
-            carrierID = carrierId;
+            this.carrierID = carrierId;
+            this.carrierType = carrierType;
             this.refund = refund;
             this.decommissionTimespan = decommissionTimespan;
         }

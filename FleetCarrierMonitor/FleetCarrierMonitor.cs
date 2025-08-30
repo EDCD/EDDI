@@ -248,9 +248,9 @@ namespace EddiFleetCarrierMonitor
 
         private void handleCarrierJumpCancelledEvent ( CarrierJumpCancelledEvent @event )
         {
-            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierId )
+            if ( FleetCarrier is null || FleetCarrier.carrierID != @event.carrierID )
             {
-                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierId );
+                EDDI.Instance.FleetCarrier = new FleetCarrier( @event.carrierID );
             }
 
             if ( FleetCarrier != null )

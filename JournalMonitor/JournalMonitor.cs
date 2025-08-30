@@ -3764,29 +3764,32 @@ namespace EddiJournalMonitor
                             case "CarrierBankTransfer":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var deposit = JsonParsing.getOptionalULong(data, "Deposit");
                                     var withdrawal = JsonParsing.getOptionalULong(data, "Withdraw");
                                     var cmdrBalance = JsonParsing.getULong(data, "PlayerBalance");
                                     var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
-                                    events.Add(new CarrierBankTransferEvent(timestamp, carrierID, deposit, withdrawal, cmdrBalance, carrierBalance) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierBankTransferEvent(timestamp, carrierID, carrierType, deposit, withdrawal, cmdrBalance, carrierBalance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "CarrierBuy":
                                 {
-                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var carrierCallsign = JsonParsing.getString(data, "Callsign");
                                     var carrierStarSystem = JsonParsing.getString(data, "Location");
                                     var carrierSystemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var price = JsonParsing.getOptionalLong(data, "Price");
-                                    events.Add(new CarrierPurchasedEvent(timestamp, carrierID, carrierCallsign, carrierStarSystem, carrierSystemAddress, price) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierPurchasedEvent(timestamp, carrierID, carrierCallsign, carrierType, carrierStarSystem, carrierSystemAddress, price) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "CarrierCancelDecommission":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
-                                    events.Add(new CarrierDecommissionCancelledEvent(timestamp, carrierID) { raw = line, fromLoad = fromLogLoad });
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
+                                    events.Add(new CarrierDecommissionCancelledEvent(timestamp, carrierID, carrierType ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3795,49 +3798,54 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var operation = JsonParsing.getString(data, "Operation");
                                     var crewRole = StationService.FromEDName(JsonParsing.getString(data, "CrewRole"));
                                     var crewName = JsonParsing.getString(data, "CrewName");
-                                    events.Add(new CarrierServiceChangedEvent(timestamp, carrierID, operation, crewRole, crewName) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierServiceChangedEvent(timestamp, carrierID, carrierType, operation, crewRole, crewName) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "CarrierDecommission":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var refund = JsonParsing.getULong(data, "ScrapRefund");
                                     var decommissionTimespan = Dates.fromTimestamp(JsonParsing.getOptionalLong(data, "ScrapTime")) - timestamp;
-                                    events.Add(new CarrierDecommissionScheduledEvent(timestamp, carrierID, refund, decommissionTimespan) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierDecommissionScheduledEvent(timestamp, carrierID, carrierType, refund, decommissionTimespan ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "CarrierDepositFuel":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var amount = JsonParsing.getInt(data, "Amount");
                                     var total = JsonParsing.getInt(data, "Total");
-                                    events.Add(new CarrierFuelDepositEvent(timestamp, carrierID, amount, total) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierFuelDepositEvent(timestamp, carrierID, carrierType, amount, total) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "CarrierDockingPermission":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var dockingAccess = JsonParsing.getString(data, "DockingAccess");
                                     var allowNotorious = JsonParsing.getBool(data, "AllowNotorious");
-                                    events.Add(new CarrierDockingPermissionEvent(timestamp, carrierID, dockingAccess, allowNotorious) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierDockingPermissionEvent(timestamp, carrierID, carrierType, dockingAccess, allowNotorious) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "CarrierFinance":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var taxRate = JsonParsing.getOptionalInt(data, "TaxRate") ?? 0;
                                     var reservePercent = JsonParsing.getOptionalInt(data, "ReservePercent") ?? 0;
                                     var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
                                     var carrierReserveBalance = JsonParsing.getLong(data, "ReserveBalance");
                                     var carrierAvailableBalance = JsonParsing.getLong(data, "CarrierAvailableBalance");
-                                    events.Add(new CarrierFinanceEvent(timestamp, carrierID, taxRate, reservePercent, carrierBalance, carrierReserveBalance, carrierAvailableBalance) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierFinanceEvent(timestamp, carrierID, carrierType, taxRate, reservePercent, carrierBalance, carrierReserveBalance, carrierAvailableBalance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3878,7 +3886,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Get carrier data (may not be present when on-foot at a fleet carrier but not docked)
-                                    var carrierId = JsonParsing.getOptionalLong( data, "MarketID" );
+                                    var carrierId = JsonParsing.getLong( data, "MarketID" );
                                     EventParsing.StationNameAndType( data, out var carrierName, out _, out var carrierType );
 
                                     // Get carrier services data (may not be present when on-foot at a fleet carrier but not docked)
@@ -3953,9 +3961,7 @@ namespace EddiJournalMonitor
                                         thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
 
                                     // Generate secondary event when the carrier jump cooldown completes
-                                    if ( carrierId != null &&
-                                         carrierJumpCancellationTokenSources.TryGetValue( (long)carrierId,
-                                             out var carrierJumpCancellationTS ) )
+                                    if ( carrierJumpCancellationTokenSources.TryGetValue( carrierId, out var carrierJumpCancellationTS ) )
                                     {
                                         // Cancel any pending cooldown event (to prevent doubling events if the commander is the fleet carrier owner)
                                         carrierJumpCancellationTS.Cancel();
@@ -3972,8 +3978,8 @@ namespace EddiJournalMonitor
                                             await Task.Delay( timeMs );
                                             EDDI.Instance.enqueueEvent(
                                                 new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ),
-                                                    carrierId, systemName, systemAddress, bodyName, bodyId, bodyType,
-                                                    carrierName, carrierType ) { fromLoad = fromLogLoad } );
+                                                    carrierId,
+                                                    carrierName, carrierType, systemName, systemAddress, bodyName, bodyId, bodyType ) { fromLoad = fromLogLoad } );
                                         } ).ConfigureAwait( false );
                                     }
                                 }
@@ -3984,6 +3990,7 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var carrierId = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var systemName = JsonParsing.getString(data, "SystemName");
                                     var bodyName = JsonParsing.getString(data, "Body");
@@ -3997,7 +4004,7 @@ namespace EddiJournalMonitor
                                         bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
                                     }
 
-                                    events.Add(new CarrierJumpRequestEvent(timestamp, systemName, systemAddress, bodyName, bodyId, carrierId) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierJumpRequestEvent(timestamp, systemName, systemAddress, bodyName, bodyId, carrierId, carrierType ) { raw = line, fromLoad = fromLogLoad });
 
                                     // Cancel any pending carrier jump related events
                                     if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
@@ -4021,7 +4028,7 @@ namespace EddiJournalMonitor
                                             {
                                                 var timespan = TimeSpan.FromSeconds(departureSeconds - Constants.carrierLandingPadLockdownSeconds);
                                                 await Task.Delay(timespan, carrierJumpCancellationTS.Token);
-                                                EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.Add(timespan), carrierId) { fromLoad = fromLogLoad });
+                                                EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.Add(timespan), carrierId, carrierType ) { fromLoad = fromLogLoad });
                                             }, carrierJumpCancellationTS.Token),
                                             Task.Run(async () =>
                                             {
@@ -4031,7 +4038,7 @@ namespace EddiJournalMonitor
                                                 {
                                                     var originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
                                                     var originSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
-                                                EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.Add(timespan), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId) { fromLoad = fromLogLoad });
+                                                EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.Add(timespan), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId, carrierType ) { fromLoad = fromLogLoad });
                                                 }
                                             }, carrierJumpCancellationTS.Token),
                                             Task.Run(async () =>
@@ -4039,7 +4046,7 @@ namespace EddiJournalMonitor
                                                 // This event will be canceled and replaced by an updated `CarrierCooldownEvent` if the owner is aboard the fleet carrier and sees the `CarrierJumpedEvent`.
                                                 var timespan = TimeSpan.FromSeconds(departureSeconds + Constants.carrierPostJumpSeconds); // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
                                                 await Task.Delay(timespan, carrierJumpCancellationTS.Token);
-                                                EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.Add(timespan), carrierId, systemName, systemAddress, bodyName, bodyId, null, null, null) { fromLoad = fromLogLoad });
+                                                EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.Add(timespan), carrierId, null, carrierType, systemName, systemAddress, bodyName, bodyId, null ) { fromLoad = fromLogLoad });
                                             }, carrierJumpCancellationTS.Token)
                                         };
 
@@ -4068,20 +4075,23 @@ namespace EddiJournalMonitor
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
 
                                     var carrierId = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
+
                                     // Cancel any pending carrier jump related events
-                                    if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
+                                    if ( carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
                                     {
                                         carrierJumpCancellationTS.Cancel();
                                     }
-                                    events.Add(new CarrierJumpCancelledEvent(timestamp, carrierId) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierJumpCancelledEvent(timestamp, carrierId, carrierType ) { raw = line, fromLoad = fromLogLoad });
                                     if (!fromLogLoad)
                                     {
                                         Task.Run(async () =>
                                         {
                                             var timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
                                             await Task.Delay(timeMs);
-                                            EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.AddMilliseconds(timeMs), carrierId, EDDI.Instance.FleetCarrier?.currentStarSystem, EDDI.Instance.FleetCarrier?.currentStarSystemAddress, null, EDDI.Instance.FleetCarrier?.currentBodyID, null, EDDI.Instance.FleetCarrier?.callsign, StationModel.FleetCarrier ) { fromLoad = fromLogLoad });
-                                        }).ConfigureAwait(false);
+                                            var carrier = StationModel.SquadronCarrier.edname.Equals( carrierType.edname ) ? EDDI.Instance.SquadronCarrier : EDDI.Instance.FleetCarrier;
+                                            EDDI.Instance.enqueueEvent( new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ), carrierId, carrier?.callsign, carrierType, carrier?.currentStarSystem, carrier?.currentStarSystemAddress, null, carrier?.currentBodyID, null ) { fromLoad = fromLogLoad } );
+                                        } ).ConfigureAwait(false);
                                     }
                                 }
                                 handled = true;
@@ -4100,17 +4110,19 @@ namespace EddiJournalMonitor
                             case "CarrierNameChange":
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
                                     var callsign = JsonParsing.getString(data, "Callsign");
                                     var name = JsonParsing.getString(data, "Name");
-                                    events.Add(new CarrierNameChangeEvent(timestamp, carrierID, callsign, name) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierNameChangeEvent(timestamp, carrierID, carrierType, callsign, name ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "CarrierStats":
                                 {
-                                    var carrierID = JsonParsing.getOptionalLong(data, "CarrierID");
+                                    var carrierID = JsonParsing.getLong(data, "CarrierID");
                                     var carrierCallsign = JsonParsing.getString(data, "Callsign");
                                     var carrierName = JsonParsing.getString(data, "Name");
+                                    var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
 
                                     var dockingAccess = JsonParsing.getString(data, "DockingAccess");
                                     var notoriousAccess = JsonParsing.getBool(data, "AllowNotorious");
@@ -4147,7 +4159,7 @@ namespace EddiJournalMonitor
                                         bankAvailableBalance = JsonParsing.getLong(finance, "AvailableBalance");
                                     }
 
-                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance ) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierType, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

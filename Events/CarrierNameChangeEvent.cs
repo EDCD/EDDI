@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -16,12 +17,17 @@ namespace EddiEvents
         [PublicAPI("The new name of your fleet carrier")]
         public string name { get; private set; }
 
-        // Not intended to be user facing
-        public long? carrierID { get; private set; }
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
 
-        public CarrierNameChangeEvent(DateTime timestamp, long? carrierId, string callsign, string name) : base(timestamp, NAME)
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
+
+        public CarrierNameChangeEvent ( DateTime timestamp, long carrierId,
+            StationModel carrierType, string callsign, string name ) : base(timestamp, NAME)
         {
-            carrierID = carrierId;
+            this.carrierID = carrierId;
+            this.carrierType = carrierType;
             this.callsign = callsign;
             this.name = name;
         }

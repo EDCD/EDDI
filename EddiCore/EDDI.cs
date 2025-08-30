@@ -388,6 +388,27 @@ namespace EddiCore
         private FleetCarrier _fleetCarrier;
 
         [CanBeNull]
+        public FleetCarrier SquadronCarrier
+        {
+            get => _squadronCarrier;
+            set
+            {
+                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
+                {
+                    OnPropertyChanged();
+                }
+                if ( _squadronCarrier != null )
+                { _squadronCarrier.PropertyChanged -= childPropertyChangedHandler; }
+                if ( value != null )
+                { value.PropertyChanged += childPropertyChangedHandler; }
+
+                _squadronCarrier = value;
+                OnPropertyChanged();
+            }
+        }
+        private FleetCarrier _squadronCarrier;
+
+        [CanBeNull]
         public Ship CurrentShip
         {
             get => _currentShip;
@@ -1204,7 +1225,7 @@ namespace EddiCore
                 NextStarSystem = DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname ).GetAwaiter().GetResult();
 
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
-                CurrentStarSystem?.RemoveStation( @event.carrierID ?? 0 );
+                CurrentStarSystem?.RemoveStation( @event.carrierID );
 
                 // Set the destination system as the current star system
                 updateCurrentSystem(@event.systemname, @event.systemAddress);
@@ -1223,7 +1244,7 @@ namespace EddiCore
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 var originStarSystem = DataProvider.GetOrFetchStarSystemAsync(@event.originSystemAddress).GetAwaiter().GetResult();
                 var carrier = originStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID);
-                originStarSystem?.RemoveStation( @event.carrierID ?? 0 );
+                originStarSystem?.RemoveStation( @event.carrierID );
                 // Save the carrier to the updated star system
                 if ( carrier != null)
                 {

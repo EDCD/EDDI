@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -26,18 +27,22 @@ namespace EddiEvents
         [PublicAPI("The purchase price of the carrier")]
         public long? price { get; private set; }
 
-        // These properties are not intended to be user facing
+        [PublicAPI( "The carrier's numeric ID" )]
+        public long carrierID { get; private set; }
 
-        public long? carrierId { get; private set; }
+        [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
+        public StationModel carrierType { get; private set; }
 
-        public CarrierPurchasedEvent(DateTime timestamp, long? carrierId, string carrierCallsign, string systemName, ulong systemAddress, long? price) : base(timestamp, NAME)
+        public CarrierPurchasedEvent ( DateTime timestamp, long carrierId, string carrierCallsign,
+            StationModel carrierType, string systemName, ulong systemAddress, long? price ) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
             this.systemAddress = systemAddress;
 
             // Carrier
-            this.carrierId = carrierId;
+            this.carrierID = carrierId;
+            this.carrierType = carrierType;
             this.callsign = carrierCallsign;
             this.price = price;
         }
