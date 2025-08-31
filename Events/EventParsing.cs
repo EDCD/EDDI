@@ -34,14 +34,22 @@ namespace EddiEvents
 
         public static Engineer Engineer ( IDictionary<string, object> data )
         {
-            var engineer = JsonParsing.getString(data, "Engineer");
-            var engineerId = JsonParsing.getLong(data, "EngineerID");
-            data.TryGetValue( "Rank", out var rankVal );
-            var rank = (int?)(long?)rankVal;
-            data.TryGetValue( "RankProgress", out var rankProgressVal );
-            var rankProgress = (int?)(long?)rankProgressVal;
-            var stage = JsonParsing.getString(data, "Progress");
-            return new Engineer( engineer, engineerId, stage, rankProgress, rank );
+            try
+            { 
+                var engineer = JsonParsing.getString(data, "Engineer");
+                var engineerId = JsonParsing.getLong(data, "EngineerID");
+                var rank = JsonParsing.getOptionalInt(data, "Rank");
+                var rankProgress = JsonParsing.getOptionalInt( data, "RankProgress" );
+                var stage = JsonParsing.getString(data, "Progress");
+                return new Engineer( engineer, engineerId, stage, rankProgress, rank );
+            }
+            catch ( Exception e )
+            {
+                var dict = new Dictionary<string, object> { { "data", data }, { "exception", e } };
+                Logging.Warn("Failed to parse malformed journal Engineer data", dict);
+            }
+
+            return null;
         }
 
         public static Faction Faction ( IDictionary<string, object> data, string type, string systemName,

@@ -2397,7 +2397,7 @@ namespace EddiJournalMonitor
                                         foreach (var engineerData in engineers.Cast<IDictionary<string, object>>())
                                         {
                                             var engineer = EventParsing.Engineer(engineerData);
-                                            if (!string.IsNullOrEmpty(engineer.name))
+                                            if (!string.IsNullOrEmpty(engineer?.name))
                                             {
                                                 Engineer.AddOrUpdate(engineer);
                                             }
