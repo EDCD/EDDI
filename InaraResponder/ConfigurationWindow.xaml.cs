@@ -5,9 +5,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace EddiInaraResponder
 {
@@ -126,6 +128,11 @@ namespace EddiInaraResponder
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void CmdrSettings_RequestNavigate ( object sender, RequestNavigateEventArgs e )
+        {
+            Process.Start( e.Uri.ToString() );
         }
     }
 }

@@ -70,6 +70,24 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;API SETTINGS&apos;..
+        /// </summary>
+        public static string apiSettings {
+            get {
+                return ResourceManager.GetString("apiSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;Commander settings&apos;.
+        /// </summary>
+        public static string cmdrSettings {
+            get {
+                return ResourceManager.GetString("cmdrSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. .
         /// </summary>
         public static string desc {
@@ -97,11 +115,20 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To connect to Inara you need to have registered an account with them. Once you have done this you can obtain your API key by clicking on the &apos;SETTINGS&apos; shortcut in the website header and then clicking on &apos;INARA API&apos; in the left panel..
+        ///   Looks up a localized string similar to To connect to Inara you need to have registered an account with them. Once you have done this you can obtain your API key by navigating to.
         /// </summary>
         public static string p1 {
             get {
                 return ResourceManager.GetString("p1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to and then clicking on.
+        /// </summary>
+        public static string p1_2 {
+            get {
+                return ResourceManager.GetString("p1_2", resourceCulture);
             }
         }
         
