@@ -1438,7 +1438,13 @@ namespace EddiInaraResponder
                     if ( eng is IDictionary<string, object> engineerData )
                     {
                         var engineer = parseEngineerInara(engineerData);
-                        eventData.Add ( engineer );
+
+                        // Sanity check - if the journal is missing information then omit that engineer
+                        if ( !string.IsNullOrEmpty( engineer?[ "engineerName" ]?.ToString() ) && 
+                             !string.IsNullOrEmpty( engineer[ "rankStage" ]?.ToString() ) )
+                        {
+                            eventData.Add( engineer );
+                        }
                     }
                 }
                 if (eventData.Count > 0)
