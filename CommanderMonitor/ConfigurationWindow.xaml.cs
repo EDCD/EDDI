@@ -16,41 +16,15 @@ namespace CommanderMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private EddiCommanderMonitor.CommanderMonitor commanderMonitor ()
-        {
-            return (EddiCommanderMonitor.CommanderMonitor)EDDI.Instance.ObtainMonitor( "Commander monitor" );
-        }
-
-        private static ConfigurationWindow instance;
-        private static readonly object instanceLock = new object();
-
-        public static ConfigurationWindow Instance
-        {
-            get
-            {
-                if ( instance == null )
-                {
-                    lock ( instanceLock )
-                    {
-                        if ( instance == null )
-                        {
-                            instance = new ConfigurationWindow();
-                        }
-                    }
-                }
-
-                return instance;
-            }
-        }
+        public EddiCommanderMonitor.CommanderMonitor commanderMonitor = (EddiCommanderMonitor.CommanderMonitor)EDDI.Instance.ObtainMonitor( "Commander Monitor" );
 
         public ConfigurationWindow ()
         {
             InitializeComponent();
+            DataContext = commanderMonitor;
 
             var configuration = ConfigService.Instance.commanderConfiguration;
-
-            ConfigureCommanderNameOptions( configuration.phoneticName );
-
+            
             // Setup home system & station from config file
             ConfigureHomeSystemOptions( configuration.homeSystemName );
             ConfigureHomeStationOptions();
@@ -58,35 +32,17 @@ namespace CommanderMonitor
 
         #region Commander Name
 
-        private void ConfigureCommanderNameOptions ( string phoneticName )
-        {
-            phoneticNameTextBox.Text = phoneticName ?? string.Empty;
-        }
-
-        private void phoneticNameChanged ( object sender, TextChangedEventArgs e )
+        private void PhoneticName_TextChanged ( object sender, TextChangedEventArgs e )
         {
             // Replace any spaces, maintaining the original caret position
             var caretIndex = phoneticNameTextBox.CaretIndex;
             phoneticNameTextBox.Text = phoneticNameTextBox.Text.Replace( " ", "ˈ" );
             phoneticNameTextBox.CaretIndex = Math.Max( caretIndex, phoneticNameTextBox.Text.Length );
-
-            // Update our config file
-            if ( phoneticNameTextBox.IsLoaded )
-            {
-                var configuration = ConfigService.Instance.commanderConfiguration;
-                if ( configuration.phoneticName != phoneticNameTextBox.Text )
-                {
-                    configuration.phoneticName = string.IsNullOrWhiteSpace( phoneticNameTextBox.Text ) ? string.Empty : phoneticNameTextBox.Text.Trim();
-                    ConfigService.Instance.commanderConfiguration = configuration;
-
-                    commanderMonitor().Cmdr.phoneticName = configuration.phoneticName;
-                }
-            }
         }
 
         private void phoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
         {
-            SpeechService.Instance.Say( null, commanderMonitor().Cmdr?.SpokenName(), 0 );
+            SpeechService.Instance.Say( null, commanderMonitor.Cmdr.SpokenName(), 0 );
         }
 
         private void ipaClicked ( object sender, RoutedEventArgs e )
@@ -117,7 +73,7 @@ namespace CommanderMonitor
                     if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
                     {
                         var newHomeSystem = e.AddedItems[0] as NavWaypoint;
-                        commanderMonitor().setHomeSystemAsync( newHomeSystem?.systemAddress ).GetAwaiter().GetResult();
+                        //commanderMonitor().setHomeSystemAsync( newHomeSystem?.systemAddress ).GetAwaiter().GetResult();
                         ConfigureHomeStationOptions();
                     }
                 }
@@ -152,7 +108,7 @@ namespace CommanderMonitor
                     var configuration = ConfigService.Instance.commanderConfiguration;
                     if ( configuration.homeStationMarketID != selectedStation.marketId )
                     {
-                        commanderMonitor().setHomeStation( selectedStation.marketId );
+                        //commanderMonitor().setHomeStation( selectedStation.marketId );
                         ConfigService.Instance.commanderConfiguration = configuration;
                     }
                 }

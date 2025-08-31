@@ -3,14 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:EddiCommanderMonitor"
              xmlns:resx="clr-namespace:EddiCommanderMonitor.Properties"
              xmlns:eddiCore="clr-namespace:EddiCore;assembly=EddiCore"
+             xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <local:CommanderMonitor/>
-    </UserControl.DataContext>
     <DockPanel LastChildFill="True"  Background="#FFE5E5E5" Margin="0,0">
         <Grid Margin="0, 10">
             <Grid.ColumnDefinitions>
@@ -51,13 +48,29 @@
                 </FlowDocument>
             </RichTextBox>
             <Label Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:Resources.tab_commander_phonetic_name}" VerticalAlignment="Center" />
-            <TextBox x:Name ="phoneticNameTextBox" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" TextChanged="phoneticNameChanged" Margin="0, 5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="3" Height="20" >
+            <TextBox 
+                x:Name ="phoneticNameTextBox" 
+                VerticalAlignment="Bottom" 
+                VerticalContentAlignment="Bottom" 
+                TextChanged="PhoneticName_TextChanged"
+                Margin="0, 5" 
+                Grid.Row="1" 
+                Grid.Column="1" 
+                Grid.ColumnSpan ="3" 
+                Height="20" >
+                <TextBox.Text>
+                    <Binding Path="PhoneticName" Mode="TwoWay" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" TargetNullValue="">
+                        <Binding.ValidationRules>
+                            <utility:ValidIPARule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
                 <TextBox.Style>
                     <Style TargetType="{x:Type TextBox}">
                         <Style.Triggers>
                             <Trigger Property="Validation.HasError" Value="true">
                                 <Setter Property="ToolTipService.ToolTip"
-                                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                        Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>

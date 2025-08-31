@@ -13,7 +13,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using Utilities;
 
@@ -65,15 +64,33 @@ namespace EddiCommanderMonitor
         }
         private StarSystem _squadronStarSystem;
 
-        #region Cmdr Gender View Model
+        #region Cmdr View Model
 
+        [UsedImplicitly]
+        public string PhoneticName
+        {
+            get => Cmdr.phoneticName;
+            set
+            {
+                if ( Cmdr.phoneticName != value )
+                {
+                    Cmdr.phoneticName = value;
+                    WriteCommander();
+                }
+            }
+        }
+
+        [UsedImplicitly]
         public Gender SelectedGender
         {
             get => Cmdr.Gender;
             set
             {
-                Cmdr.Gender = value;
-                WriteCommander();
+                if ( Cmdr.Gender != value )
+                {
+                    Cmdr.Gender = value;
+                    WriteCommander();
+                }
             }
         }
 
@@ -83,6 +100,7 @@ namespace EddiCommanderMonitor
             public string DisplayName { get; set; }
         }
 
+        [UsedImplicitly]
         public static ObservableCollection<GenderOption> GenderOptions { get; set; } = new ObservableCollection<GenderOption>
         {
             new GenderOption { Gender = Gender.Male, DisplayName = EddiCommanderMonitor.Properties.Resources.tab_commander_gender_m },
@@ -99,30 +117,36 @@ namespace EddiCommanderMonitor
             get => SquadronStarSystem == null ? null : new NavWaypoint(SquadronStarSystem);
             set
             {
-                if ( value != null )
+                if ( value?.systemAddress != SquadronStarSystem?.systemAddress )
                 {
-                    Task.Run( async () =>
+                    if ( value != null )
                     {
-                        SquadronStarSystem = await EDDI.Instance.DataProvider
-                            .GetOrFetchStarSystemAsync( value.systemAddress ).ConfigureAwait( false );
+                        Task.Run( async () =>
+                        {
+                            SquadronStarSystem = await EDDI.Instance.DataProvider
+                                .GetOrFetchStarSystemAsync( value.systemAddress ).ConfigureAwait( false );
+                            lock ( commanderLock )
+                            {
+                                Cmdr.squadronSystemName = SquadronSystemWaypoint?.systemName;
+                                Cmdr.squadronSystemAddress = SquadronSystemWaypoint?.systemAddress;
+                            }
+
+                            WriteCommander();
+                        } ).ConfigureAwait( false );
+                    }
+                    else
+                    {
                         lock ( commanderLock )
                         {
                             Cmdr.squadronSystemName = SquadronSystemWaypoint?.systemName;
                             Cmdr.squadronSystemAddress = SquadronSystemWaypoint?.systemAddress;
                         }
+
                         WriteCommander();
-                    } ).ConfigureAwait( false );
-                }
-                else
-                {
-                    lock ( commanderLock )
-                    {
-                        Cmdr.squadronSystemName = SquadronSystemWaypoint?.systemName;
-                        Cmdr.squadronSystemAddress = SquadronSystemWaypoint?.systemAddress;
                     }
-                    WriteCommander();
+
+                    OnPropertyChanged();
                 }
-                OnPropertyChanged();
             }
         }
 
@@ -136,13 +160,16 @@ namespace EddiCommanderMonitor
             get => SquadronFactions.FirstOrDefault(f => f.name.Equals( Cmdr.squadronfaction, StringComparison.OrdinalIgnoreCase ) );
             set
             {
-                lock ( commanderLock )
+                if ( value?.name != Cmdr.squadronfaction )
                 {
-                    Cmdr.squadronfaction = value?.name == Power.None.localizedName ? null : value?.name;
-                    Cmdr.squadronallegiance = value?.name == Power.None.localizedName ? null : value?.Allegiance;
-                }
+                    lock ( commanderLock )
+                    {
+                        Cmdr.squadronfaction = value?.name == Power.None.localizedName ? null : value?.name;
+                        Cmdr.squadronallegiance = value?.name == Power.None.localizedName ? null : value?.Allegiance;
+                    }
 
-                WriteCommander();
+                    WriteCommander();
+                }
             }
         }
 
@@ -152,16 +179,20 @@ namespace EddiCommanderMonitor
             .Prepend( Power.None )
             .ToHashSet() );
 
+        [UsedImplicitly]
         public Power SelectedSquadronPower
         {
             get => SquadronPowers.FirstOrDefault( p => p == Cmdr.squadronpower );
             set
             {
-                lock ( commanderLock )
+                if ( value?.edname != Cmdr.squadronpower?.edname )
                 {
-                    Cmdr.squadronpower = value == Power.None ? null : value;
+                    lock ( commanderLock )
+                    {
+                        Cmdr.squadronpower = value == Power.None ? null : value;
+                    }
+                    WriteCommander();
                 }
-                WriteCommander();
             }
         }
 
@@ -216,8 +247,11 @@ namespace EddiCommanderMonitor
             };
         }
 
-        public UserControl ConfigurationTabItem () => new ConfigurationWindow();
-
+        public UserControl ConfigurationTabItem ()
+        {
+            return new ConfigurationWindow();
+        }
+        
         public void PreHandle ( Event @event )
         {
             if ( @event is CarrierBankTransferEvent carrierBankTransferEvent )
@@ -615,13 +649,13 @@ namespace EddiCommanderMonitor
                 EDDI.Instance.HomeStarSystem = null;
             }
 
-            Application.Current?.Dispatcher?.Invoke( () =>
-            {
-                if ( Application.Current?.MainWindow != null )
-                {
-                    ConfigurationWindow.Instance.ConfigureHomeSystemOptions( newSystem?.systemname );
-                }
-            } );
+            //Application.Current?.Dispatcher?.Invoke( () =>
+            //{
+            //    if ( Application.Current?.MainWindow != null )
+            //    {
+            //        ConfigurationWindow.Instance.ConfigureHomeSystemOptions( newSystem?.systemname );
+            //    }
+            //} );
         }
 
         public void setHomeStation ( long? newMarketId )
@@ -644,13 +678,13 @@ namespace EddiCommanderMonitor
 
                         Logging.Debug( "Home station is " + EDDI.Instance.HomeStation.name );
 
-                        Application.Current?.Dispatcher?.Invoke( () =>
-                        {
-                            if ( Application.Current?.MainWindow != null )
-                            {
-                                ConfigurationWindow.Instance.ConfigureHomeStationOptions();
-                            }
-                        } );
+                        //Application.Current?.Dispatcher?.Invoke( () =>
+                        //{
+                        //    if ( Application.Current?.MainWindow != null )
+                        //    {
+                        //        ConfigurationWindow.Instance.ConfigureHomeStationOptions();
+                        //    }
+                        //} );
                     }
                 }
             }
