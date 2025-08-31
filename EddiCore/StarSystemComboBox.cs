@@ -55,8 +55,8 @@ namespace EddiCore
                         {
                             var fetchedSystems = await GetTypeAheadSystemNamesAsync( partialSystemName ).ConfigureAwait( false );
                             var newSystems = fetchedSystems
-                                .OrderBy( wp => wp.systemName.Contains( partialSystemName, StringComparison.InvariantCultureIgnoreCase ) )
-                                .ThenByDescending( wp => wp.systemName.LevenshteinDistance( partialSystemName ) )
+                                .OrderByDescending( wp => wp.systemName.Contains( partialSystemName, StringComparison.InvariantCultureIgnoreCase ) )
+                                .ThenBy( wp => wp.systemName.LevenshteinDistance( partialSystemName ) )
                                 .ToHashSet();
                             if ( newSystems.Any() )
                             {
