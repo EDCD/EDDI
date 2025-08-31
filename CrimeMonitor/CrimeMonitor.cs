@@ -1019,7 +1019,7 @@ namespace EddiCrimeMonitor
             if (record == null || string.IsNullOrEmpty(record.faction) || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
 
             // Get the faction and set faction record values
-            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( record.faction )?.GetAwaiter().GetResult();
+            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( record.faction ).GetAwaiter().GetResult();
             record.Allegiance = faction?.Allegiance ?? Superpower.None;
 
             // Check faction with archived home systems

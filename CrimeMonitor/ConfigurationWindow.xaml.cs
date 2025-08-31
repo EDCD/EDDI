@@ -3,7 +3,7 @@ using EddiDataDefinitions;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -48,36 +48,39 @@ namespace EddiCrimeMonitor
 
         private void updateRecord(object sender, RoutedEventArgs e)
         {
-            FactionRecord record = (FactionRecord)((Button)e.Source).DataContext;
-            if (record.faction != Properties.CrimeMonitor.blank_faction)
+            if ( sender is Button updateButton && updateButton.DataContext is FactionRecord record )
             {
-                Button updateButton = (Button)sender;
-                updateButton.Foreground = Brushes.Red;
-                updateButton.FontWeight = FontWeights.Bold;
-
-                Thread factionStationThread = new Thread(() =>
+                //var record = (FactionRecord)((Button)e.Source).DataContext;
+                if ( record.faction != Properties.CrimeMonitor.blank_faction )
                 {
-                    var Allegiance = Superpower.FromNameOrEdName(record.faction);
-                    if (Allegiance == null)
+                    updateButton.Foreground = Brushes.Red;
+                    updateButton.FontWeight = FontWeights.Bold;
+
+                    try
                     {
-                        crimeMonitor()?.GetFactionData(record, record.system);
+                        var UpdateRecordTask = Task.Run( () =>
+                        {
+                            var Allegiance = Superpower.FromNameOrEdName(record.faction);
+                            if (Allegiance == null)
+                            {
+                                crimeMonitor().GetFactionData(record, record.system);
+                            }
+                            else
+                            {
+                                record.Allegiance = Allegiance;
+                            }
+                            crimeMonitor()?.writeRecord();
+                        } );
+                        Task.WaitAll( UpdateRecordTask );
                     }
-                    else
+                    catch ( OperationCanceledException )
                     {
-                        record.Allegiance = Allegiance;
+                        // Task cancelled
                     }
 
-                    Dispatcher?.InvokeAsync(() =>
-                    {
-                        updateButton.Foreground = Brushes.Black;
-                        updateButton.FontWeight = FontWeights.Regular;
-                    });
-                    crimeMonitor()?.writeRecord();
-                })
-                {
-                    IsBackground = true
-                };
-                factionStationThread.Start();
+                    updateButton.Foreground = Brushes.Black;
+                    updateButton.FontWeight = FontWeights.Regular;
+                }
             }
         }
 
