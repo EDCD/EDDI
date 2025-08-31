@@ -741,8 +741,8 @@ namespace EddiCore
             {
                 if (!activeResponders.Contains(responder))
                 {
+                    activeResponders.Add( responder );
                     responder.Start();
-                    activeResponders.Add(responder);
                 }
             }
         }
@@ -787,9 +787,9 @@ namespace EddiCore
             {
                 if ( !activeMonitors.Contains( monitor ) )
                 {
+                    activeMonitors.Add( monitor );
                     if ( monitor.NeedsStart() )
                     {
-                        activeMonitors.Add( monitor );
                         var monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
                         {
                             IsBackground = true
