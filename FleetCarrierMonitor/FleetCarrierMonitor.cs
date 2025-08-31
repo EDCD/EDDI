@@ -180,8 +180,10 @@ namespace EddiFleetCarrierMonitor
                 {
                     FleetCarrier = carrier;
                 }
-
-                throw new ArgumentException( $"Unknown 'carrierType' {carrierType.edname}" );
+                else
+                {
+                    throw new ArgumentException( $"Unknown 'carrierType' {carrierType.edname}" );
+                }
             }
 
             return carrier;
