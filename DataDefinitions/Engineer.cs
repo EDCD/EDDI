@@ -178,5 +178,11 @@ namespace EddiDataDefinitions
                 ENGINEERS.Add(engineer);
             }
         }
+
+        #region Overrides of Object
+
+        public override string ToString () => name;
+
+        #endregion
     }
 }
