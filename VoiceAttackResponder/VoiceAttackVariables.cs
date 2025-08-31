@@ -95,7 +95,19 @@ namespace EddiVoiceAttackResponder
 
                 if ( e.PropertyName.Equals( nameof( CommanderConfiguration ), StringComparison.InvariantCultureIgnoreCase ) )
                 {
-                    setCommanderValues( EDDI.Instance.Cmdr );
+                    var commanderMonitorVariables = EDDI.Instance.ObtainMonitor( "Commander Monitor" ).GetVariables();
+                    if ( commanderMonitorVariables.TryGetValue( "cmdr", out var cmdrTuple ) &&
+                         cmdrTuple.Item2 is Commander Cmdr )
+                    {
+                        setCommanderValues( Cmdr );
+                    }
+
+                    if ( commanderMonitorVariables.TryGetValue( "squadronsystem", out var squadronSystemTuple ) &&
+                         squadronSystemTuple.Item2 is StarSystem squadronSystem )
+                    {
+                        setStarSystemValues( squadronSystem, "Squadron system" );
+                    }
+
                     return;
                 }
 

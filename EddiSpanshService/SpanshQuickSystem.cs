@@ -85,7 +85,6 @@ namespace EddiSpanshService
                     return null;
                 }
 
-                // Spansh does not assign on-foot surface settlements a station type so we have to assign these ourselves.
                 starSystem.AddOrUpdateStations( data[ "stations" ]?.AsParallel().Select( s =>
                 {
                     var station = ParseQuickStation( s );
@@ -93,6 +92,10 @@ namespace EddiSpanshService
                     station.systemAddress = starSystem.systemAddress;
                     return station;
                 } ).RemoveNulls().ToList() ?? new List<Station>() );
+
+                starSystem.factions.AddRange(
+                    data[ "minor_faction_presences" ]?.AsParallel().Select( ParseQuickFaction ).RemoveNulls()
+                        .ToList() ?? new List<Faction>() );
 
                 starSystem.lastupdated = DateTime.UtcNow;
                 return starSystem;
@@ -106,6 +109,7 @@ namespace EddiSpanshService
 
         private static Station ParseQuickStation ( JToken stationData )
         {
+            // Spansh does not assign on-foot surface settlements a station type so we have to assign these ourselves.
             try
             {
                 var station = new Station
@@ -128,6 +132,24 @@ namespace EddiSpanshService
             catch ( Exception e )
             {
                 Logging.Error( $"Failed to parse quick station: {e.Message}", e );
+                return null;
+            }
+        }
+        
+        private static Faction ParseQuickFaction ( JToken factionData )
+        {
+            // Spansh provides the faction name, influence, and state but all we'll gather are the names
+            try
+            {
+                var faction = new Faction
+                {
+                    name = factionData[ "name" ]?.ToString()
+                };
+                return faction;
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( $"Failed to parse quick faction: {e.Message}", e );
                 return null;
             }
         }

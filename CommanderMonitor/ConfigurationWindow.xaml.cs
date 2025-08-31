@@ -20,7 +20,7 @@ namespace CommanderMonitor
         {
             return (EddiCommanderMonitor.CommanderMonitor)EDDI.Instance.ObtainMonitor( "Commander monitor" );
         }
-
+        
         private static ConfigurationWindow instance;
         private static readonly object instanceLock = new object();
 
@@ -55,13 +55,6 @@ namespace CommanderMonitor
             // Setup home system & station from config file
             ConfigureHomeSystemOptions( configuration.homeSystemName );
             ConfigureHomeStationOptions();
-
-            // Setup squadron system and faction options
-            ConfigureSquadronSystemOptions( configuration.squadronSystemName );
-            ConfigureSquadronFactionOptions( commanderMonitor().SquadronStarSystem?.factions, configuration.squadronFaction );
-
-            // Setup other squadron options
-            ConfigureSquadronPowerOptions( configuration.SquadronAllegiance, configuration.SquadronPower );
         }
 
         #region Commander Name
@@ -214,159 +207,6 @@ namespace CommanderMonitor
                     {
                         commanderMonitor().setHomeStation( selectedStation.marketId );
                         ConfigService.Instance.commanderConfiguration = configuration;
-                    }
-                }
-            }
-        }
-
-        #endregion
-
-        #region Squadron System
-
-        internal void ConfigureSquadronSystemOptions ( string newSquadronSystemName )
-        {
-            squadronSystemDropDown.Text = newSquadronSystemName ?? string.Empty;
-        }
-
-        // Handle changes to the editable squadron system combo box
-        private void SquadronSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
-        {
-            try
-            {
-                if ( sender is StarSystemComboBox starSystemComboBox )
-                {
-                    if ( !starSystemComboBox.IsLoaded ) { return; }
-
-                    // Update configuration to new home system
-                    if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
-                    {
-                        var newSquadronSystem = e.AddedItems[0] as NavWaypoint;
-                        commanderMonitor().setSquadronSystemAsync( newSquadronSystem?.systemAddress, null ).GetAwaiter().GetResult();
-                        ConfigureSquadronFactionOptions( commanderMonitor().SquadronStarSystem?.factions,
-                            ConfigService.Instance.commanderConfiguration.squadronFaction );
-                    }
-                }
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( ex.Message, ex );
-            }
-        }
-
-        #endregion
-
-        #region Squadron Faction
-
-        public void ConfigureSquadronFactionOptions ( List<Faction> factions, string squadronFaction )
-        {
-            squadronFactionDropDown.DisplayMemberPath = nameof(Faction.name);
-            var noneFaction = new Faction { name = Power.None.localizedName };
-            var squadronFactionOptions = ( factions ?? new List<Faction>() )
-                .OrderBy( s => s.name )
-                .Prepend( noneFaction )
-                .ToHashSet();
-            squadronFactionDropDown.ItemsSource = squadronFactionOptions;
-
-            var selectedFaction = squadronFactionOptions.FirstOrDefault( f => 
-                f.name.Equals( squadronFaction, StringComparison.InvariantCultureIgnoreCase ) );
-            squadronFactionDropDown.SelectedItem = selectedFaction ?? noneFaction;
-        }
-
-        private void squadronFactionDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
-        {
-            if ( !squadronSystemDropDown.IsLoaded ) {return;}
-
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            var noneValue = Power.None.localizedName;
-
-            foreach ( var obj in e.AddedItems )
-            {
-                if ( obj is Faction selectedFaction )
-                {
-                    if ( configuration.squadronFaction == selectedFaction.name )
-                    {
-                        // Squadron faction is unchanged
-                        continue;
-                    }
-
-                    if ( selectedFaction.name != noneValue )
-                    {
-                        // A faction is selected
-                        configuration.squadronFaction = selectedFaction.name;
-                        if ( commanderMonitor().Cmdr != null )
-                        {
-                            commanderMonitor().Cmdr.squadronfaction = selectedFaction.name;
-                        }
-
-                        if ( configuration.SquadronAllegiance != selectedFaction.Allegiance )
-                        {
-                            configuration.SquadronAllegiance = selectedFaction.Allegiance;
-                            if ( commanderMonitor().Cmdr != null )
-                            {
-                                commanderMonitor().Cmdr.squadronallegiance = selectedFaction.Allegiance;
-                            }
-                            ConfigureSquadronPowerOptions( configuration.SquadronAllegiance, Power.None );
-                        }
-                    }
-                    else
-                    {
-                        // The 'None' faction is selected
-                        configuration.SquadronAllegiance = Superpower.None;
-                        configuration.squadronFaction = null;
-                        ConfigService.Instance.commanderConfiguration = configuration;
-
-                        if ( commanderMonitor().Cmdr != null )
-                        {
-                            commanderMonitor().Cmdr.squadronallegiance = Superpower.None;
-                            commanderMonitor().Cmdr.squadronfaction = null;
-                        }
-
-                        ConfigureSquadronPowerOptions( configuration.SquadronAllegiance, Power.None );
-                    }
-                    ConfigService.Instance.commanderConfiguration = configuration;
-                }
-            }
-        }
-
-        #endregion
-
-        #region Squadron Power
-
-        public void ConfigureSquadronPowerOptions ( Superpower SquadronAllegiance, Power SquadronPower )
-        {
-            squadronPowerDropDown.DisplayMemberPath = nameof(Superpower.localizedName);
-
-            var squadronPowerOptions = SquadronAllegiance is null
-                ? Power.AllOfThem
-                    .Except( new[] { Power.None } )
-                    .OrderBy( p => p.localizedName )
-                    .Prepend( Power.None )
-                : Power.AllOfThem
-                    .Except( new[] { Power.None } )
-                    .Where( p => p.Allegiance == SquadronAllegiance )
-                    .OrderBy( p => p.localizedName )
-                    .Prepend( Power.None );
-            squadronPowerDropDown.ItemsSource = squadronPowerOptions;
-
-            squadronPowerDropDown.SelectedItem = SquadronPower ?? Power.None;
-        }
-
-        private void squadronPowerDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
-        {
-            foreach ( var obj in e.AddedItems )
-            {
-                if ( obj is Power selectedPower )
-                {
-                    var configuration = ConfigService.Instance.commanderConfiguration;
-                    if ( configuration.SquadronPower != selectedPower )
-                    {
-                        configuration.SquadronPower = selectedPower;
-                        ConfigService.Instance.commanderConfiguration = configuration;
-
-                        if ( commanderMonitor().Cmdr != null )
-                        {
-                            commanderMonitor().Cmdr.squadronpower = configuration.SquadronPower;
-                        }
                     }
                 }
             }

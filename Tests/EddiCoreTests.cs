@@ -26,17 +26,17 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestKeepAlive()
         {
-            var monitor = EDDI.Instance.monitors.FirstOrDefault(m => m.MonitorName() == "Journal monitor");
+            var monitor = EDDI.Instance.ObtainMonitor( "Journal Monitor" );
 
             Assert.IsNotNull(monitor);
-            EDDI.Instance.EnableMonitor( monitor.MonitorName() );
+            EDDI.Instance.EnableMonitor( monitor );
             monitor.Stop();
             Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
 
-            EDDI.Instance.DisableMonitor( monitor.MonitorName() );
+            EDDI.Instance.DisableMonitor( monitor );
             Assert.AreEqual( 0, EDDI.Instance.activeMonitors.Count );
 
-            EDDI.Instance.EnableMonitor( monitor.MonitorName() );
+            EDDI.Instance.EnableMonitor( monitor );
             monitor.Stop();
 
             Thread.Sleep(3000);

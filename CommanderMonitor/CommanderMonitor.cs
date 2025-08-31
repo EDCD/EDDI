@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -22,26 +23,122 @@ namespace EddiCommanderMonitor
     [UsedImplicitly]
     public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
-        public Commander Cmdr => EDDI.Instance.Cmdr;
         private static readonly object commanderLock = new object();
 
-        [CanBeNull]
-        public StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
+        [NotNull]
+        public Commander Cmdr // Also includes information from the configuration and companion app service
         {
-            get => squadronStarSystem;
+            get => _cmdr ?? ReadCommander();
             private set
             {
                 void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
                 {
                     OnPropertyChanged();
                 }
-                if ( squadronStarSystem != null ) { squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
-                squadronStarSystem = value;
+                if ( _cmdr != null )
+                { _cmdr.PropertyChanged -= childPropertyChangedHandler; }
+                value.PropertyChanged += childPropertyChangedHandler;
+                _cmdr = value;
                 OnPropertyChanged();
             }
         }
-        private StarSystem squadronStarSystem;
+        [CanBeNull]
+        private Commander _cmdr;
+
+        [CanBeNull]
+        private StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
+        {
+            get => _squadronStarSystem;
+            set
+            {
+                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
+                {
+                    OnPropertyChanged();
+                }
+                if ( _squadronStarSystem != null ) { _squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
+                _squadronStarSystem = value;
+                OnPropertyChanged();
+                OnPropertyChanged( nameof( SquadronFactions) );
+                OnPropertyChanged( nameof( SelectedSquadronFaction ) );
+            }
+        }
+        private StarSystem _squadronStarSystem;
+
+        #region Squadron View Model
+
+        public NavWaypoint SquadronSystemWaypoint
+        {
+            get => SquadronStarSystem == null ? null : new NavWaypoint(SquadronStarSystem);
+            set
+            {
+                if ( value != null )
+                {
+                    Task.Run( async () =>
+                    {
+                        SquadronStarSystem = await EDDI.Instance.DataProvider
+                            .GetOrFetchStarSystemAsync( value.systemAddress ).ConfigureAwait( false );
+                        lock ( commanderLock )
+                        {
+                            Cmdr.squadronSystemName = SquadronSystemWaypoint?.systemName;
+                            Cmdr.squadronSystemAddress = SquadronSystemWaypoint?.systemAddress;
+                        }
+                        WriteCommander();
+                    } ).ConfigureAwait( false );
+                }
+                else
+                {
+                    lock ( commanderLock )
+                    {
+                        Cmdr.squadronSystemName = SquadronSystemWaypoint?.systemName;
+                        Cmdr.squadronSystemAddress = SquadronSystemWaypoint?.systemAddress;
+                    }
+                    WriteCommander();
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Faction> SquadronFactions => new ObservableCollection<Faction>( ( SquadronStarSystem?.factions ?? new List<Faction>() )
+            .OrderBy( f => f.name )
+            .Prepend( new Faction { name = Power.None.localizedName })
+            .ToHashSet() );
+
+        public Faction SelectedSquadronFaction
+        {
+            get => SquadronFactions.FirstOrDefault(f => f.name.Equals( Cmdr.squadronfaction, StringComparison.OrdinalIgnoreCase ) );
+            set
+            {
+                lock ( commanderLock )
+                {
+                    Cmdr.squadronfaction = value?.name == Power.None.localizedName ? null : value?.name;
+                    Cmdr.squadronallegiance = value?.name == Power.None.localizedName ? null : value?.Allegiance;
+                }
+
+                WriteCommander();
+            }
+        }
+
+        public ObservableCollection<Power> SquadronPowers => new ObservableCollection<Power>( Power.AllOfThem
+            .Except( new [] { Power.None } )
+            .OrderBy( p => p.localizedName )
+            .Prepend( Power.None )
+            .ToHashSet() );
+
+        public Power SelectedSquadronPower
+        {
+            get => SquadronPowers.FirstOrDefault( p => p == Cmdr.squadronpower );
+            set
+            {
+                lock ( commanderLock )
+                {
+                    Cmdr.squadronpower = value == Power.None ? null : value;
+                }
+                WriteCommander();
+            }
+        }
+
+        #endregion
 
         private DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
@@ -57,31 +154,42 @@ namespace EddiCommanderMonitor
 
         public bool NeedsStart () => false;
 
-        public void Start () => Reload();
+        public CommanderMonitor ()
+        {
+            Cmdr = ReadCommander();
+            Logging.Info( $"Initialized {MonitorName()}" );
+        }
+
+        public void Start ()
+        { }
 
         public void Stop ()
-        {
-            WriteCommander();
-        }
+        { }
 
         public void Reload ()
         {
+            ReloadCommanderMonitor();
+        }
+
+        private void ReloadCommanderMonitor ()
+        {
             lock ( commanderLock )
             {
-                EDDI.Instance.Cmdr = ReadCommander();
+                Cmdr = ReadCommander();
             }
             Logging.Info( $"Reloaded {MonitorName()}" );
         }
 
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {
-            return new Dictionary<string, Tuple<Type, object>>()
+            return new Dictionary<string, Tuple<Type, object>>
             {
+                { "cmdr", new Tuple<Type, object>( typeof(Commander), Cmdr ) },
                 { "squadronsystem", new Tuple<Type, object>( typeof(StarSystem), SquadronStarSystem ) }
             };
         }
 
-        public UserControl ConfigurationTabItem () => ConfigurationWindow.Instance;
+        public UserControl ConfigurationTabItem () => new ConfigurationWindow();
 
         public void PreHandle ( Event @event )
         {
@@ -157,7 +265,10 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt  )
             {
-                Cmdr.credits = @event.cmdrBalance;
+                lock ( commanderLock )
+                {
+                    Cmdr.credits = @event.cmdrBalance;
+                }
                 WriteCommander();
             }
         }
@@ -171,7 +282,7 @@ namespace EddiCommanderMonitor
             if ( ( @event.docked || @event.onFoot ) && @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt && 
-                     TryUpdateSquadronHomeSystem( @event.factions, @event.systemAddress ) )
+                     TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
                 {
                     WriteCommander();
                 }
@@ -180,31 +291,6 @@ namespace EddiCommanderMonitor
 
         private void handleCommanderLoadingEvent ( CommanderLoadingEvent @event )
         {
-            var lastCommander = ReadCommander();
-            if ( lastCommander.EDID == @event.frontierID )
-            {
-                // This is the same commander ID as before. We can load data using the existing configuration
-                var configuration = ConfigService.Instance.commanderConfiguration;
-
-                // Legacy configurations may not have system address values stored. Fix that here.
-                if ( configuration.homeSystemAddress is null && !string.IsNullOrEmpty( configuration.homeSystemName ) )
-                {
-                    var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( configuration.homeSystemName ).GetAwaiter().GetResult();
-                    configuration.homeSystemAddress = wp.systemAddress;
-                }
-
-                setHomeSystemAsync( configuration.homeSystemAddress ).GetAwaiter().GetResult();
-                setHomeStation( configuration.homeStationMarketID );
-            }
-            else
-            {
-                // This is a new commander ID - update the configuration
-                Cmdr.name = @event.name;
-                Cmdr.EDID = @event.frontierID;
-
-                WriteCommander();
-            }
-
             // We need to reload the EDSM responder if the commander name has changed
             if ( ConfigService.Instance.commanderConfiguration.commanderName != @event.name )
             {
@@ -217,45 +303,48 @@ namespace EddiCommanderMonitor
             if ( @event.timestamp >= updatedAt )
             {
                 // Capture commander ratings and add them to the commander object
-                if ( @event.ratingObject is CombatRating combatRating )
+                lock ( commanderLock )
                 {
-                    // There is a bug with the journal where it reports superpower increases in rank as combat increases
-                    // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
-                    if ( Cmdr.combatrating == null || @event.rank != Cmdr.combatrating.localizedName )
+                    if ( @event.ratingObject is CombatRating combatRating )
                     {
-                        // Real event. 
-                        Cmdr.combatrating = combatRating;
+                        // There is a bug with the journal where it reports superpower increases in rank as combat increases
+                        // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
+                        if ( Cmdr.combatrating == null || @event.rank != Cmdr.combatrating.localizedName )
+                        {
+                            // Real event. 
+                            Cmdr.combatrating = combatRating;
+                        }
+                        // False event
                     }
-                    // False event
-                }
-                else if ( @event.ratingObject is CQCRating cqcRating )
-                {
-                    Cmdr.cqcrating = cqcRating;
-                }
-                else if ( @event.ratingObject is EmpireRating empireRating )
-                {
-                    Cmdr.empirerating = empireRating;
-                }
-                else if ( @event.ratingObject is ExplorationRating explorationRating )
-                {
-                    Cmdr.explorationrating = explorationRating;
-                }
-                else if ( @event.ratingObject is ExobiologistRating exobiologistRating )
-                {
-                    Cmdr.exobiologistrating = exobiologistRating;
-                }
-                else if ( @event.ratingObject is FederationRating federationRating )
-                {
-                    Cmdr.federationrating = federationRating;
-                }
-                else if ( @event.ratingObject is MercenaryRating mercenaryRating )
-                {
-                    Cmdr.mercenaryrating = mercenaryRating;
-                }
-                else if ( @event.ratingObject is TradeRating tradeRating )
-                {
-                    // Capture commander ratings and add them to the commander object
-                    Cmdr.traderating = tradeRating;
+                    else if ( @event.ratingObject is CQCRating cqcRating )
+                    {
+                        Cmdr.cqcrating = cqcRating;
+                    }
+                    else if ( @event.ratingObject is EmpireRating empireRating )
+                    {
+                        Cmdr.empirerating = empireRating;
+                    }
+                    else if ( @event.ratingObject is ExplorationRating explorationRating )
+                    {
+                        Cmdr.explorationrating = explorationRating;
+                    }
+                    else if ( @event.ratingObject is ExobiologistRating exobiologistRating )
+                    {
+                        Cmdr.exobiologistrating = exobiologistRating;
+                    }
+                    else if ( @event.ratingObject is FederationRating federationRating )
+                    {
+                        Cmdr.federationrating = federationRating;
+                    }
+                    else if ( @event.ratingObject is MercenaryRating mercenaryRating )
+                    {
+                        Cmdr.mercenaryrating = mercenaryRating;
+                    }
+                    else if ( @event.ratingObject is TradeRating tradeRating )
+                    {
+                        // Capture commander ratings and add them to the commander object
+                        Cmdr.traderating = tradeRating;
+                    }
                 }
 
                 WriteCommander();
@@ -266,12 +355,15 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                Cmdr.combatrating = @event.combat;
-                Cmdr.traderating = @event.trade;
-                Cmdr.explorationrating = @event.exploration;
-                Cmdr.cqcrating = @event.cqc;
-                Cmdr.empirerating = @event.empire;
-                Cmdr.federationrating = @event.federation;
+                lock ( commanderLock )
+                {
+                    Cmdr.combatrating = @event.combat;
+                    Cmdr.traderating = @event.trade;
+                    Cmdr.explorationrating = @event.exploration;
+                    Cmdr.cqcrating = @event.cqc;
+                    Cmdr.empirerating = @event.empire;
+                    Cmdr.federationrating = @event.federation;
+                }
 
                 WriteCommander();
             }
@@ -286,7 +378,7 @@ namespace EddiCommanderMonitor
             if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
-                     TryUpdateSquadronHomeSystem( @event.factions, @event.systemAddress ) )
+                     TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
                 {
                     WriteCommander();
                 }
@@ -302,7 +394,7 @@ namespace EddiCommanderMonitor
             if ( @event.factions.Any() && EDDI.Instance.CurrentStarSystem != null )
             {
                 if ( @event.timestamp >= updatedAt &&
-                     TryUpdateSquadronHomeSystem( @event.factions, @event.systemAddress ) )
+                     TryUpdateSquadronHomeSystem( @event.systemAddress, @event.factions ) )
                 {
                     WriteCommander();
                 }
@@ -313,9 +405,13 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                Cmdr.Power = @event.Power;
-                Cmdr.powermerits = 0;
-                Cmdr.powerrating = 0;
+                lock ( commanderLock )
+                {
+                    Cmdr.Power = @event.Power;
+                    Cmdr.powermerits = 0;
+                    Cmdr.powerrating = 0;
+                }
+
                 WriteCommander();
             }
         }
@@ -324,9 +420,13 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                Cmdr.Power = Power.None;
-                Cmdr.powermerits = null;
-                Cmdr.powerrating = 0;
+                lock ( commanderLock )
+                {
+                    Cmdr.Power = Power.None;
+                    Cmdr.powermerits = null;
+                    Cmdr.powerrating = 0;
+                }
+
                 WriteCommander();
             }
         }
@@ -335,8 +435,12 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                Cmdr.Power = @event.Power;
-                Cmdr.powermerits = @event.total;
+                lock ( commanderLock )
+                {
+                    Cmdr.Power = @event.Power;
+                    Cmdr.powermerits = @event.total;
+                }
+
                 WriteCommander();
             }
         }
@@ -345,9 +449,13 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                Cmdr.Power = @event.Power;
-                Cmdr.powerrating = @event.rank;
-                Cmdr.powermerits = @event.merits;
+                lock ( commanderLock )
+                {
+                    Cmdr.Power = @event.Power;
+                    Cmdr.powerrating = @event.rank;
+                    Cmdr.powermerits = @event.merits;
+                }
+
                 WriteCommander();
             }
         }
@@ -356,8 +464,12 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                Cmdr.Power = @event.Power;
-                Cmdr.powerrating = @event.rank;
+                lock ( commanderLock )
+                {
+                    Cmdr.Power = @event.Power;
+                    Cmdr.powerrating = @event.rank;
+                }
+
                 WriteCommander();
             }
         }
@@ -366,7 +478,11 @@ namespace EddiCommanderMonitor
         {
             if ( @event.timestamp >= updatedAt )
             {
-                Cmdr.Power = @event.Power;
+                lock ( commanderLock )
+                {
+                    Cmdr.Power = @event.Power;
+                }
+                
                 WriteCommander();
             }
         }
@@ -376,54 +492,39 @@ namespace EddiCommanderMonitor
             if ( @event.timestamp >= updatedAt )
             {
                 // Update the commander object, if it exists
-                if ( Cmdr != null )
+                lock ( commanderLock )
                 {
                     Cmdr.squadronname = @event.name;
                     Cmdr.squadronrank = @event.newrank;
-                    WriteCommander();
                 }
+
+                WriteCommander();
             }
         }
 
         private void handleSquadronStartupEvent ( SquadronStartupEvent @event )
         {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-
-            // Legacy configurations may not have system address values stored. Fix that here.
-            if ( configuration.squadronSystemAddress is null && !string.IsNullOrEmpty( configuration.squadronSystemName ) )
-            {
-                var wp = EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( configuration.squadronSystemName ).GetAwaiter().GetResult();
-                configuration.squadronSystemAddress = wp.systemAddress;
-            }
-
-            // Set our squadron home star system
-            setSquadronSystemAsync( configuration.squadronSystemAddress, configuration.squadronFaction ).GetAwaiter().GetResult();
-
             if ( @event.timestamp >= updatedAt )
             {
                 // Update the commander object, if it exists
-                if ( Cmdr != null )
+                lock ( commanderLock )
                 {
                     Cmdr.squadronname = @event.name;
                     Cmdr.squadronrank = @event.rank;
-                    WriteCommander();
                 }
+
+                WriteCommander();
             }
         }
 
         private void handleSquadronStatusEvent ( SquadronStatusEvent @event )
         {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-
             switch ( @event.status )
             {
                 case "created":
                     {
-                        // Update the configuration file
-                        configuration.squadronName = @event.name;
-
                         // Update the commander object, if it exists
-                        if ( Cmdr != null )
+                        lock ( commanderLock )
                         {
                             Cmdr.squadronname = @event.name;
                         }
@@ -431,11 +532,8 @@ namespace EddiCommanderMonitor
                     }
                 case "joined":
                     {
-                        // Update the configuration file
-                        configuration.squadronName = @event.name;
-
                         // Update the commander object, if it exists
-                        if ( Cmdr != null )
+                        lock ( commanderLock )
                         {
                             Cmdr.squadronname = @event.name;
                         }
@@ -445,12 +543,8 @@ namespace EddiCommanderMonitor
                 case "kicked":
                 case "left":
                     {
-                        // Update the configuration file
-                        configuration.squadronName = null;
-                        configuration.squadronTag = null;
-
                         // Update the commander object, if it exists
-                        if ( Cmdr != null )
+                        lock ( commanderLock )
                         {
                             Cmdr.squadronname = null;
                             Cmdr.squadronrank = null;
@@ -458,7 +552,8 @@ namespace EddiCommanderMonitor
                         break;
                     }
             }
-            ConfigService.Instance.commanderConfiguration = configuration;
+            
+            WriteCommander();
         }
 
         public async Task setHomeSystemAsync ( ulong? newSystemAddress )
@@ -534,12 +629,12 @@ namespace EddiCommanderMonitor
             }
         }
 
-        private bool TryUpdateSquadronHomeSystem ( List<Faction> factions, ulong currentSystemAddress )
+        private bool TryUpdateSquadronHomeSystem ( ulong currentSystemAddress, List<Faction> systemFactions )
         {
             bool update = false;
 
             // Check if current system is inhabited by or HQ for squadron faction
-            var squadronFaction = factions.FirstOrDefault( f =>
+            var squadronFaction = systemFactions.FirstOrDefault( f =>
             {
                 return f.squadronfaction ||
                        ( f.presences.FirstOrDefault( p => p.systemAddress == currentSystemAddress )?.squadronhomesystem ??
@@ -548,20 +643,27 @@ namespace EddiCommanderMonitor
 
             if ( squadronFaction != null )
             {
-                //Update the squadron faction, if changed
-                setSquadronFaction( squadronFaction );
-
-                // Update system, allegiance, & power when in squadron home system
-                if ( EDDI.Instance.CurrentStarSystem?.systemAddress == currentSystemAddress )
+                lock ( commanderLock )
                 {
-                    // Update the squadron system data, if changed
-                    setSquadronSystemAsync( EDDI.Instance.CurrentStarSystem?.systemAddress, squadronFaction.name ).GetAwaiter().GetResult();
+                    //Update the squadron faction, if changed
+                    Cmdr.squadronfaction = squadronFaction.name;
 
-                    // Update the squadron allegiance according to the faction info from the journal
-                    setSquadronAllegiance( EDDI.Instance.CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None );
+                    // Update system, allegiance, & power when in squadron home system
+                    if ( EDDI.Instance.CurrentStarSystem?.systemAddress == currentSystemAddress )
+                    {
+                        // Update the squadron system data, if changed
+                        SquadronSystemWaypoint = new NavWaypoint( EDDI.Instance.CurrentStarSystem );
+                        Cmdr.squadronSystemName = EDDI.Instance.CurrentStarSystem.systemname;
+                        Cmdr.squadronSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
+                        Cmdr.squadronfaction = squadronFaction.name;
 
-                    // Update the squadron power to match the HQ system's controlling power if it has not been previously set
-                    setSquadronPower( EDDI.Instance.CurrentStarSystem?.Power ?? Power.None );
+                        // Update the squadron allegiance according to the faction info from the journal
+                        Cmdr.squadronallegiance =
+                            EDDI.Instance.CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None;
+
+                        // Update the squadron power to match the HQ system's controlling power if it has not been previously set
+                        Cmdr.squadronpower = EDDI.Instance.CurrentStarSystem?.Power ?? Power.None;
+                    }
                 }
 
                 update = true;
@@ -570,120 +672,8 @@ namespace EddiCommanderMonitor
             return update;
         }
 
-        private void setSquadronFaction(Faction squadronFaction)
-        {
-            if ( string.IsNullOrEmpty( Cmdr.squadronfaction ) || Cmdr.squadronfaction != squadronFaction.name )
-            {
-                Cmdr.squadronfaction = squadronFaction.name;
-
-                Application.Current?.Dispatcher?.InvokeAsync( () =>
-                {
-                    if ( Application.Current?.MainWindow != null )
-                    {
-                        ConfigurationWindow.Instance.squadronFactionDropDown.SelectedItem = squadronFaction;
-                    }
-                } );
-            }
-        }
-
-        public async Task setSquadronSystemAsync ( ulong? newSystemAddress, string squadronFactionName = null )
-        {
-            StarSystem newSystem = null;
-            if ( newSystemAddress != null )
-            {
-                newSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)newSystemAddress ).ConfigureAwait(false);
-            }
-
-            //Ignore null & empty systems
-            if ( newSystem?.bodies.Count > 0 )
-            {
-                if ( newSystem.systemAddress != SquadronStarSystem?.systemAddress )
-                {
-                    // Update the SquadronStarSystem object
-                    SquadronStarSystem = newSystem;
-
-                    Logging.Debug( $"Squadron star system set to: {newSystem.systemname} ({newSystem.systemAddress})" );
-
-                    var configuration = ConfigService.Instance.commanderConfiguration;
-                    configuration.squadronSystemName = newSystem.systemname;
-                    configuration.squadronSystemAddress = newSystem.systemAddress;
-                    ConfigService.Instance.commanderConfiguration = configuration;
-
-                    // Update the UI
-                    Application.Current.Dispatcher?.InvokeAsync( () =>
-                    {
-                        if ( Application.Current?.MainWindow != null )
-                        {
-                            ConfigurationWindow.Instance.squadronSystemDropDown.Text = newSystem.systemname;
-                        }
-                    } );
-                }
-            }
-            else
-            {
-                SquadronStarSystem = null;
-            }
-
-            // Update the UI
-            Application.Current.Dispatcher?.InvokeAsync( () =>
-            {
-                if ( Application.Current?.MainWindow != null )
-                {
-                    ConfigurationWindow.Instance.ConfigureSquadronSystemOptions( newSystem?.systemname );
-                    ConfigurationWindow.Instance.ConfigureSquadronFactionOptions( newSystem?.factions, squadronFactionName );
-                }
-            } );
-        }
-
-        private void setSquadronAllegiance(Superpower allegiance = null)
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-
-            if ( configuration.SquadronAllegiance != allegiance )
-            {
-                configuration.SquadronAllegiance = allegiance;
-                ConfigService.Instance.commanderConfiguration = configuration;
-
-                if ( Cmdr != null )
-                {
-                    Cmdr.squadronallegiance = allegiance;
-                }
-            }
-        }
-
-        private void setSquadronPower(Power power = null)
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-
-            if ( configuration.SquadronPower != power )
-            {
-                configuration.SquadronPower = power;
-                ConfigService.Instance.commanderConfiguration = configuration;
-
-                Application.Current?.Dispatcher?.InvokeAsync( () =>
-                {
-                    if ( Application.Current?.MainWindow != null )
-                    {
-                        ConfigurationWindow.Instance.ConfigureSquadronPowerOptions(
-                            configuration.SquadronAllegiance, configuration.SquadronPower );
-                    }
-                } );
-            }
-        }
-
         public void PostHandle ( Event @event )
-        {
-            if ( @event is SquadronStartupEvent )
-            {
-                postHandleSquadronStartupEvent();
-            }
-        }
-
-        private void postHandleSquadronStartupEvent ()
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            setSquadronSystemAsync( configuration.squadronSystemAddress, configuration.squadronFaction ).GetAwaiter().GetResult();
-        }
+        { }
 
         public void HandleStatus ( Status status )
         {
@@ -697,7 +687,8 @@ namespace EddiCommanderMonitor
         {
             // Update our commander object
             var frontierApiProfile = FrontierApiProfile.FromJson( profile );
-            var updatedCmdr = Commander.FromFrontierApiCmdr(Cmdr, frontierApiProfile.Cmdr, frontierApiProfile.timestamp, JournalTimeStamp, out bool cmdrMatches);
+            var updatedCmdr = Commander.FromFrontierApiCmdr( Cmdr, frontierApiProfile.Cmdr,
+                frontierApiProfile.timestamp, JournalTimeStamp, out var cmdrMatches );
 
             // Stop if the commander returned from the profile does not match our expected commander name
             if ( !cmdrMatches )
@@ -709,7 +700,7 @@ namespace EddiCommanderMonitor
             Logging.Debug( "Commander information updated from Frontier API; updating local copy" );
             lock ( commanderLock )
             {
-                EDDI.Instance.Cmdr = updatedCmdr;
+                Cmdr = updatedCmdr;
             }
         }
 
@@ -718,18 +709,21 @@ namespace EddiCommanderMonitor
         private const int minFederationRankForTitle = 1;
         private void SetCommanderTitle ( Superpower controllingFactionAllegiance )
         {
-            Cmdr.title = EddiCore.Properties.Resources.Commander;
-            if ( controllingFactionAllegiance != null )
+            lock ( commanderLock )
             {
-                if ( controllingFactionAllegiance.invariantName == Superpower.Federation.invariantName &&
-                     Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle )
+                Cmdr.title = EddiCore.Properties.Resources.Commander;
+                if ( controllingFactionAllegiance != null )
                 {
-                    Cmdr.title = Cmdr.federationrating.localizedName;
-                }
-                else if ( controllingFactionAllegiance.invariantName == Superpower.Empire.invariantName &&
-                          Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle )
-                {
-                    Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
+                    if ( controllingFactionAllegiance.invariantName == Superpower.Federation.invariantName &&
+                         Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle )
+                    {
+                        Cmdr.title = Cmdr.federationrating.localizedName;
+                    }
+                    else if ( controllingFactionAllegiance.invariantName == Superpower.Empire.invariantName &&
+                              Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle )
+                    {
+                        Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
+                    }
                 }
             }
         }
@@ -756,43 +750,78 @@ namespace EddiCommanderMonitor
                 squadronname = configuration.squadronName,
                 squadrontag = configuration.squadronTag,
                 squadronrank = configuration.SquadronRank,
-                squadronfaction = configuration.squadronFaction,
-                squadronpower = configuration.SquadronPower,
-                squadronallegiance = configuration.SquadronAllegiance
+                squadronSystemName = configuration.squadronSystemName,
+                squadronSystemAddress = configuration.squadronSystemAddress
             };
 
+            // Fetch squadron star system objects
+            try
+            {
+                Task.Run( async () =>
+                {
+                    if ( configuration.squadronSystemAddress is null &&
+                         !string.IsNullOrEmpty( configuration.squadronSystemName ) )
+                    {
+                        // Legacy configurations may not have system address values stored. Fix that here.
+                        SquadronSystemWaypoint = await EDDI.Instance.DataProvider
+                            .GetOrFetchSystemWaypointAsync( configuration.squadronSystemName );
+                    }
+                    else if ( configuration.squadronSystemAddress != null )
+                    {
+                        SquadronSystemWaypoint = new NavWaypoint( await EDDI.Instance.DataProvider
+                            .GetOrFetchQuickStarSystemAsync( (ulong)configuration.squadronSystemAddress ) );
+                    }
+                } );
+            }
+            catch ( OperationCanceledException )
+            {
+                // Nothing to do here.
+            }
+
+            commander.squadronfaction = configuration.squadronFaction;
+            commander.squadronallegiance = configuration.SquadronAllegiance ?? Superpower.None;
+            commander.squadronpower = configuration.SquadronPower ?? Power.None;
+
             updatedAt = configuration.updatedat;
+
             return commander;
         }
 
-        public void WriteCommander ()
+        private void WriteCommander ()
         {
             lock ( commanderLock )
             {
                 // Write our current commander configuration
                 var configuration = ConfigService.Instance.commanderConfiguration;
 
-                if ( Cmdr != null )
-                {
-                    configuration.commanderName = Cmdr.name;
-                    configuration.credits = Cmdr.credits;
-                    configuration.friends = Cmdr.friends;
-                    configuration.frontierID = Cmdr.EDID;
-                    configuration.gender = Cmdr.gender;
-                    configuration.phoneticName = Cmdr.phoneticName;
+                configuration.commanderName = Cmdr.name;
+                configuration.credits = Cmdr.credits;
+                configuration.friends = Cmdr.friends;
+                configuration.frontierID = Cmdr.EDID;
+                configuration.gender = Cmdr.gender;
+                configuration.phoneticName = Cmdr.phoneticName;
 
-                    // Write power information
-                    configuration.Power = Cmdr.Power;
-                    configuration.powerMerits = Cmdr.powermerits;
-                    configuration.powerRank = Cmdr.powerrating;
+                // Write power information
+                configuration.Power = Cmdr.Power;
+                configuration.powerMerits = Cmdr.powermerits;
+                configuration.powerRank = Cmdr.powerrating;
 
-                    // Write squadron information
-                    configuration.squadronName = Cmdr.squadronname;
-                    configuration.squadronTag = Cmdr.squadrontag;
-                    configuration.SquadronRank = Cmdr.squadronrank;
-                    configuration.squadronFaction = Cmdr.squadronfaction;
-                    configuration.SquadronPower = Cmdr.squadronpower;
-                }
+                // Write squadron information
+                configuration.squadronName = Cmdr.squadronname;
+                configuration.squadronTag = Cmdr.squadrontag;
+                configuration.SquadronRank = Cmdr.squadronrank;
+                configuration.squadronFaction = Cmdr.squadronfaction;
+                configuration.squadronAllegiance =
+                    Cmdr.squadronallegiance is null || Cmdr.squadronallegiance == Superpower.None
+                        ? null
+                        : Cmdr.squadronallegiance.edname;
+                configuration.SquadronPower = Cmdr.squadronpower is null || Cmdr.squadronpower == Power.None
+                    ? null
+                    : Cmdr.squadronpower;
+
+                // Write squadron star system information
+                configuration.squadronSystemName = Cmdr.squadronSystemName;
+                configuration.squadronSystemAddress = Cmdr.squadronSystemAddress;
 
                 // Write home system information
                 configuration.homeSystemName = EDDI.Instance.HomeStarSystem?.systemname;
@@ -800,10 +829,6 @@ namespace EddiCommanderMonitor
                 configuration.homeSystemX = EDDI.Instance.HomeStarSystem?.x;
                 configuration.homeSystemY = EDDI.Instance.HomeStarSystem?.y;
                 configuration.homeSystemZ = EDDI.Instance.HomeStarSystem?.z;
-
-                // Write squadron star system information
-                configuration.squadronSystemName = SquadronStarSystem?.systemname;
-                configuration.squadronSystemAddress = SquadronStarSystem?.systemAddress;
 
                 configuration.updatedat = updatedAt;
                 ConfigService.Instance.commanderConfiguration = configuration;

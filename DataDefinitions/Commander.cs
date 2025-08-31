@@ -346,7 +346,7 @@ namespace EddiDataDefinitions
         /// <summary>The commander's powerplay power (if pledged)</summary>
         public Power Power
         {
-            get => _power;
+            get => _power ?? Power.None;
             set { _power = value; OnPropertyChanged();}
         }
         private Power _power;
@@ -382,11 +382,29 @@ namespace EddiDataDefinitions
         }
         private SquadronRank _squadronrank;
 
+        /// <summary>The commander's squadron system name</summary>
+        [PublicAPI]
+        public string squadronSystemName
+        {
+            get => _squadronSystemName;
+            set { _squadronSystemName = value; OnPropertyChanged(); }
+        }
+        private string _squadronSystemName;
+
+        /// <summary>The commander's squadron system numeric address</summary>
+        [PublicAPI]
+        public ulong? squadronSystemAddress
+        {
+            get => _squadronSystemAddress;
+            set { _squadronSystemAddress = value; OnPropertyChanged(); }
+        }
+        private ulong? _squadronSystemAddress;
+
         /// <summary>The commander's squadron superpower</summary>
         [PublicAPI]
         public Superpower squadronallegiance
         {
-            get => _squadronallegiance;
+            get => _squadronallegiance ?? Superpower.None;
             set { _squadronallegiance = value; OnPropertyChanged();}
         }
         private Superpower _squadronallegiance;
@@ -395,7 +413,7 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public Power squadronpower
         {
-            get => _squadronpower;
+            get => _squadronpower ?? Power.None;
             set { _squadronpower = value; OnPropertyChanged();}
         }
         private Power _squadronpower;

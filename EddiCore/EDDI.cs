@@ -239,23 +239,7 @@ namespace EddiCore
         private decimal destinationDistanceLy;
 
         // Information obtained from the player journal
-        public Commander Cmdr // Also includes information from the configuration and companion app service
-        {
-            get => cmdr;
-            set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged(nameof(Cmdr));
-                }
-                if (cmdr != null) { cmdr.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                cmdr = value;
-                OnPropertyChanged();
-            }
-        }
-        private Commander cmdr;
-        
+
         public string Environment
         {
             get => environment;
@@ -465,21 +449,6 @@ namespace EddiCore
                 var configuration = ConfigService.Instance.eddiConfiguration;
                 Logging.Verbose = configuration.VerboseLogging;
 
-                // Retrieve commander data
-                var cmdrConfiguration = ConfigService.Instance.commanderConfiguration;
-                Cmdr = new Commander
-                    {
-                        name = cmdrConfiguration.commanderName, 
-                        phoneticName = cmdrConfiguration.phoneticName, 
-                        gender = cmdrConfiguration.gender,
-                        squadronname = cmdrConfiguration.squadronName,
-                        squadrontag = cmdrConfiguration.squadronTag,
-                        squadronrank = cmdrConfiguration.SquadronRank,
-                        squadronallegiance = cmdrConfiguration.SquadronAllegiance,
-                        squadronpower = cmdrConfiguration.SquadronPower,
-                        squadronfaction = cmdrConfiguration.squadronFaction
-                    };
-
                 // We always start in normal space
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
@@ -612,23 +581,9 @@ namespace EddiCore
                     {
                         Logging.Info( $"{monitor.MonitorName()} is disabled; not starting" );
                     }
-                    else if ( activeMonitors.Any( m => m.MonitorName() == monitor.MonitorName() ) )
-                    {
-                        Logging.Warn( $"{monitor.MonitorName()} is already running." );
-                    }
                     else
                     {
-                        activeMonitors.Add( monitor );
-                        if ( monitor.NeedsStart() )
-                        {
-                            var monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
-                            {
-                                IsBackground = true
-                            };
-                            Logging.Info( "Starting keepalive for " + monitor.MonitorName() );
-                            monitorThread.Name = monitor.MonitorName();
-                            monitorThread.Start();
-                        }
+                        EnableMonitor( monitor );
                     }
                 }
 
@@ -688,13 +643,13 @@ namespace EddiCore
                 signalSourceManager.Dispose();
                 Utilities.TelemetryService.Telemetry.Stop();
                 eventHandlerTS.Cancel();
-                foreach ( IEddiResponder responder in responders )
+                foreach ( var responder in responders )
                 {
-                    DisableResponder( responder.ResponderName() );
+                    DisableResponder( responder );
                 }
-                foreach ( IEddiMonitor monitor in monitors )
+                foreach ( var monitor in monitors )
                 {
-                    DisableMonitor( monitor.MonitorName() );
+                    DisableMonitor( monitor );
                 }
 
                 Logging.Info( Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped" );
@@ -749,7 +704,12 @@ namespace EddiCore
         /// <summary> Disable a named responder for this session.  This does not update the on-disk status of the responder </summary>
         public void DisableResponder(string invariantName)
         {
-            IEddiResponder responder = ObtainResponder(invariantName);
+            var responder = ObtainResponder(invariantName);
+            DisableResponder(responder);
+        }
+
+        private void DisableResponder(IEddiResponder responder)
+        {
             if (responder != null)
             {
                 lock (responderLock)
@@ -771,7 +731,12 @@ namespace EddiCore
         /// <summary> Enable a named responder for this session.  This does not update the on-disk status of the responder </summary>
         public void EnableResponder(string invariantName)
         {
-            IEddiResponder responder = ObtainResponder(invariantName);
+            var responder = ObtainResponder(invariantName);
+            EnableResponder(responder);
+        }
+
+        private void EnableResponder(IEddiResponder responder)
+        {
             if (responder != null)
             {
                 if (!activeResponders.Contains(responder))
@@ -785,7 +750,12 @@ namespace EddiCore
         /// <summary> Disable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
         public void DisableMonitor(string invariantName)
         {
-            IEddiMonitor monitor = ObtainMonitor(invariantName);
+            var monitor = ObtainMonitor(invariantName);
+            DisableMonitor(monitor);
+        }
+
+        public void DisableMonitor(IEddiMonitor monitor)
+        {
             if (monitor != null)
             {
                 lock (monitorLock)
@@ -808,21 +778,30 @@ namespace EddiCore
         public void EnableMonitor(string invariantName)
         {
             var monitor = ObtainMonitor(invariantName);
-            if (monitor != null)
+            EnableMonitor(monitor);
+        }
+
+        public void EnableMonitor ( IEddiMonitor monitor )
+        {
+            if ( monitor != null )
             {
-                if (!activeMonitors.Contains(monitor))
+                if ( !activeMonitors.Contains( monitor ) )
                 {
-                    if (monitor.NeedsStart())
+                    if ( monitor.NeedsStart() )
                     {
-                        activeMonitors.Add(monitor);
+                        activeMonitors.Add( monitor );
                         var monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
                         {
                             IsBackground = true
                         };
-                        Logging.Info("Starting keepalive for " + monitor.MonitorName());
+                        Logging.Info( "Starting keepalive for " + monitor.MonitorName() );
                         monitorThread.Name = monitor.MonitorName();
                         monitorThread.Start();
                     }
+                }
+                else
+                {
+                    Logging.Warn( $"{monitor.MonitorName()} is already running." );
                 }
             }
         }
@@ -1470,9 +1449,10 @@ namespace EddiCore
             };
 
             // Does this friend exist in our friends list?
-            if ( Cmdr != null )
+            var commanderMonitorVariables = ObtainMonitor( "Commander Monitor" ).GetVariables();
+            if ( commanderMonitorVariables.TryGetValue( "cmdr", out var tuple ) && tuple.Item2 is Commander Cmdr )
             {
-                int index = Cmdr.friends.FindIndex( f => f.name == @event.name );
+                var index = Cmdr.friends.FindIndex( f => f.name == @event.name );
                 if ( index >= 0 )
                 {
                     if ( Cmdr.friends[ index ].status != @event.status )

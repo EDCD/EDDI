@@ -64,109 +64,111 @@
             </TextBox>
             <Button Margin="10, 5" Grid.Row="1" Grid.Column="4" Content="{x:Static resx:Resources.tab_commander_test_phonetic_name}" Click="phoneticNameTestButtonClicked" />
             <Label Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:Resources.tab_commander_home_system}"  VerticalAlignment="Center" />
-            <eddiCore:StarSystemComboBox x:Name="homeSystemDropDown"
-                                  IsEditable="True"
-                                  IsReadOnly="False"
-                                  IsTextSearchEnabled="False"
-                                  Grid.Row="2"
-                                  Grid.Column="1"
-                                  Grid.ColumnSpan ="3"
-                                  Margin="0, 5"
-                                  VerticalContentAlignment="Center"
-                                  SelectionChanged="HomeSystemDropDown_SelectionChanged"/>
+            <eddiCore:StarSystemComboBox 
+                x:Name="homeSystemDropDown"
+                IsEditable="True"
+                IsReadOnly="False"
+                IsTextSearchEnabled="False"
+                Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan ="3"
+                Margin="0, 5"
+                VerticalContentAlignment="Center"
+                SelectionChanged="HomeSystemDropDown_SelectionChanged"/>
             <Label Grid.Row="3" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_home_station}"/>
-            <ComboBox x:Name="homeStationDropDown" 
-                      Grid.Row="3" 
-                      Grid.Column="1" Grid.ColumnSpan ="2" 
-                      Margin="0, 5" 
-                      VerticalContentAlignment="Center" 
-                      SelectionChanged="homeStationDrop_SelectionChanged"/>
+            <ComboBox 
+                x:Name="homeStationDropDown" 
+                Grid.Row="3" 
+                Grid.Column="1" Grid.ColumnSpan ="2" 
+                Margin="0, 5" 
+                VerticalContentAlignment="Center" 
+                SelectionChanged="homeStationDrop_SelectionChanged"/>
             <Label Grid.Row="6" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:Resources.tab_commander_gender}"/>
-            <RadioButton x:Name ="eddiGenderMale"
-                                     Content="{x:Static resx:Resources.tab_commander_gender_m}"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Center"
-                                     Height="Auto"
-                                     Grid.Row="6"
-                                     Checked="isMale_Checked"
-                                     Margin="0, 12.5, 0, 5"
-                                     Grid.Column="2"/>
-            <RadioButton x:Name ="eddiGenderFemale"
-                                     Content="{x:Static resx:Resources.tab_commander_gender_f}"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Center"
-                                     Height="Auto"
-                                     Grid.Row="7"
-                                     Checked="isFemale_Checked"
-                                     Margin="0, 5"
-                                     Grid.Column="2"/>
-            <RadioButton x:Name ="eddiGenderNeither"
-                                     Content="{x:Static resx:Resources.tab_commander_gender_n}"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Center"
-                                     Height="Auto"
-                                     Grid.Row="8"
-                                     Checked="isNeitherGender_Checked"
-                                     Margin="0, 5"
-                                     Grid.Column="2"/>
+            <RadioButton 
+                x:Name ="eddiGenderMale"
+                Content="{x:Static resx:Resources.tab_commander_gender_m}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Height="Auto"
+                Grid.Row="6"
+                Checked="isMale_Checked"
+                Margin="0, 12.5, 0, 5"
+                Grid.Column="2"/>
+            <RadioButton 
+                x:Name ="eddiGenderFemale"
+                Content="{x:Static resx:Resources.tab_commander_gender_f}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Height="Auto"
+                Grid.Row="7"
+                Checked="isFemale_Checked"
+                Margin="0, 5"
+                Grid.Column="2"/>
+            <RadioButton 
+                x:Name ="eddiGenderNeither"
+                Content="{x:Static resx:Resources.tab_commander_gender_n}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Height="Auto"
+                Grid.Row="8"
+                Checked="isNeitherGender_Checked"
+                Margin="0, 5"
+                Grid.Column="2"/>
             <Label Grid.Row="9" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_name}" VerticalAlignment="Center" />
-            <TextBox x:Name ="eddiSquadronNameText" 
-                     Text="{Binding Path=Cmdr.squadronname, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
-                     IsEnabled="False"
-                     VerticalAlignment="Center" 
-                     VerticalContentAlignment="Center" 
-                     Margin="0,5" 
-                     Grid.Row="9" 
-                     Grid.Column="1" Grid.ColumnSpan ="3" 
-                     />
+            <TextBox 
+                Text="{Binding Path=Cmdr.squadronname, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                IsReadOnly="True"
+                VerticalAlignment="Center" 
+                VerticalContentAlignment="Center" 
+                Margin="0,5" 
+                Grid.Row="9" 
+                Grid.Column="1" Grid.ColumnSpan ="3" />
             <Label Grid.Row="10" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_tag}" VerticalAlignment="Center" />
-            <TextBox x:Name ="eddiSquadronTagText" 
-                     Text="{Binding Path=Cmdr.squadrontag, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
-                     VerticalAlignment="Center" 
-                     VerticalContentAlignment="Center" 
-                     Margin="0,5" 
-                     Grid.Row="10" 
-                     Grid.Column="1" 
-                     />
+            <TextBox 
+                Text="{Binding Path=Cmdr.squadrontag, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                IsReadOnly="True"
+                VerticalAlignment="Center" 
+                VerticalContentAlignment="Center" 
+                Margin="0,5" 
+                Grid.Row="10" 
+                Grid.Column="1" />
             <Label Grid.Row="11" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_rank}" VerticalAlignment="Center" />
-            <TextBox x:Name="squadronRankText" 
-                      Text="{Binding Path=Cmdr.squadronrank.localizedName, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
-                      IsEnabled="False"
-                      Grid.Row="11" 
-                      Grid.Column="1" 
-                      Grid.ColumnSpan="3"
-                      VerticalAlignment="Center" 
-                      VerticalContentAlignment="Center" 
-                      Margin="0,5"
-                      />
+            <TextBox 
+                Text="{Binding Path=Cmdr.squadronrank.localizedName, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                IsReadOnly="True"
+                Grid.Row="11" 
+                Grid.Column="1" 
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center" 
+                VerticalContentAlignment="Center" 
+                Margin="0,5" />
             <Label Grid.Row="12" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_system}" VerticalAlignment="Center" />
-            <eddiCore:StarSystemComboBox x:Name="squadronSystemDropDown"
-                                         DisplayMemberPath="systemName" 
-                                         IsEditable="True"
-                                         IsReadOnly="False"
-                                         IsTextSearchEnabled="False"
-                                         Grid.Row="12"
-                                         Grid.Column="1" Grid.ColumnSpan ="3"
-                                         Margin="0, 5"
-                                         SelectionChanged="SquadronSystemDropDown_SelectionChanged"
-                                         VerticalContentAlignment="Center" />
+            <eddiCore:StarSystemComboBox 
+                Text="{Binding Path=SquadronSystemWaypoint.systemName, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                IsEditable="True"
+                IsTextSearchEnabled="False"
+                Grid.Row="12"
+                Grid.Column="1" Grid.ColumnSpan ="3"
+                Margin="0, 5"
+                VerticalContentAlignment="Center" />
             <Label Grid.Row="13" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_faction}" />
-            <ComboBox x:Name="squadronFactionDropDown" 
-                      DisplayMemberPath="name"
-                      Grid.Row="13" 
-                      Grid.Column="1" Grid.ColumnSpan ="2" 
-                      Margin="0, 5" 
-                      SelectionChanged="squadronFactionDropDown_SelectionChanged"
-                      VerticalContentAlignment="Center" 
-                      x:FieldModifier="public" />
+            <ComboBox 
+                ItemsSource="{Binding Path=SquadronFactions, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding Path=SelectedSquadronFaction, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                DisplayMemberPath="name"
+                Grid.Row="13" 
+                Grid.Column="1" Grid.ColumnSpan ="2" 
+                Margin="0, 5" 
+                VerticalContentAlignment="Center" />
             <Label Grid.Row="14" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_power}" />
-            <ComboBox x:Name="squadronPowerDropDown" 
-                      Grid.Row="14" 
-                      Grid.Column="1" Grid.ColumnSpan ="2" 
-                      Margin="0, 5" 
-                      VerticalContentAlignment="Center" 
-                      SelectionChanged="squadronPowerDropDown_SelectionChanged"
-                      x:FieldModifier="public" />
+            <ComboBox 
+                ItemsSource="{Binding Path=SquadronPowers, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding Path=SelectedSquadronPower, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                DisplayMemberPath="localizedName"
+                Grid.Row="14" 
+                Grid.Column="1" Grid.ColumnSpan ="2" 
+                Margin="0, 5" 
+                VerticalContentAlignment="Center" />
         </Grid>
     </DockPanel>
 </UserControl>

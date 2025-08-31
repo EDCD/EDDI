@@ -1,5 +1,4 @@
 ﻿using EddiCore;
-using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.Collections.Concurrent;
@@ -98,19 +97,12 @@ namespace EddiVoiceAttackResponder
                         var variableType = kv.Value.Item1;
                         var variableValue = kv.Value.Item2;
 
-                        if ( variableName.Equals("squadronsystem", StringComparison.OrdinalIgnoreCase) && variableValue is StarSystem squadronSystem )
+                        var values = VoiceAttackVariables.Convert(
+                            new MetaVariables( variableType, variableValue ).Results, "EDDI", variableName );
+                        foreach ( var var in values )
                         {
-                            VoiceAttackVariables.setStarSystemValues( squadronSystem, "Squadron system" );
-                        }
-                        else
-                        {
-                            var values = VoiceAttackVariables.Convert(
-                                new MetaVariables( variableType, variableValue ).Results, "EDDI", variableName );
-                            foreach ( var var in values )
-                            {
-                                var.Set();
-                                currentVariables[ var.key ] = var;
-                            }
+                            var.Set();
+                            currentVariables[ var.key ] = var;
                         }
                     }
                 }
