@@ -338,10 +338,22 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public string gender
         {
-            get => _gender;
-            set { _gender = value; OnPropertyChanged();}
+            get => _gender.ToString();
+            set
+            {
+                _gender = Enum.TryParse( value, out Gender parsedGender ) 
+                    ? parsedGender 
+                    : Gender.Neither; // Default value
+                OnPropertyChanged();
+            }
         }
-        private string _gender;
+
+        public Gender Gender
+        {
+            get => _gender;
+            set { _gender = value; OnPropertyChanged(); }
+        }
+        private Gender _gender;
 
         /// <summary>The commander's powerplay power (if pledged)</summary>
         public Power Power
@@ -506,5 +518,12 @@ namespace EddiDataDefinitions
             }
             return spokenName;
         }
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female,
+        Neither
     }
 }

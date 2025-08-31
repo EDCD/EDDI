@@ -20,7 +20,7 @@ namespace CommanderMonitor
         {
             return (EddiCommanderMonitor.CommanderMonitor)EDDI.Instance.ObtainMonitor( "Commander monitor" );
         }
-        
+
         private static ConfigurationWindow instance;
         private static readonly object instanceLock = new object();
 
@@ -50,7 +50,6 @@ namespace CommanderMonitor
             var configuration = ConfigService.Instance.commanderConfiguration;
 
             ConfigureCommanderNameOptions( configuration.phoneticName );
-            ConfigureCommanderGenderOptions( configuration.gender );
 
             // Setup home system & station from config file
             ConfigureHomeSystemOptions( configuration.homeSystemName );
@@ -80,10 +79,7 @@ namespace CommanderMonitor
                     configuration.phoneticName = string.IsNullOrWhiteSpace( phoneticNameTextBox.Text ) ? string.Empty : phoneticNameTextBox.Text.Trim();
                     ConfigService.Instance.commanderConfiguration = configuration;
 
-                    if ( commanderMonitor().Cmdr != null )
-                    {
-                        commanderMonitor().Cmdr.phoneticName = configuration.phoneticName;
-                    }
+                    commanderMonitor().Cmdr.phoneticName = configuration.phoneticName;
                 }
             }
         }
@@ -97,55 +93,6 @@ namespace CommanderMonitor
         {
             var IpaResources = new IpaResourcesWindow();
             IpaResources.Show();
-        }
-
-        #endregion
-
-        #region Commander Gender
-
-        private void ConfigureCommanderGenderOptions ( string gender )
-        {
-            if ( gender == "Female" )
-            {
-                eddiGenderFemale.IsChecked = true;
-            }
-            else if ( gender == "Male" )
-            {
-                eddiGenderMale.IsChecked = true;
-            }
-            else
-            {
-                eddiGenderNeither.IsChecked = true;
-            }
-        }
-
-        private void isMale_Checked ( object sender, RoutedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            configuration.gender = "Male";
-            ConfigService.Instance.commanderConfiguration = configuration;
-        }
-
-        private void isFemale_Checked ( object sender, RoutedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            configuration.gender = "Female";
-            ConfigService.Instance.commanderConfiguration = configuration;
-            if ( commanderMonitor().Cmdr != null )
-            {
-                commanderMonitor().Cmdr.gender = "Female";
-            }
-        }
-
-        private void isNeitherGender_Checked ( object sender, RoutedEventArgs e )
-        {
-            var configuration = ConfigService.Instance.commanderConfiguration;
-            configuration.gender = "Neither";
-            ConfigService.Instance.commanderConfiguration = configuration;
-            if ( commanderMonitor().Cmdr != null )
-            {
-                commanderMonitor().Cmdr.gender = "Neither";
-            }
         }
 
         #endregion

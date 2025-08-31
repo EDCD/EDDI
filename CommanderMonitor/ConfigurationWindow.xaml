@@ -29,6 +29,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -36,7 +37,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <RichTextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" DockPanel.Dock="Top" Margin="0, 0, 0, 25"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
                 <FlowDocument Background="#FFE5E5E5">
@@ -83,37 +84,17 @@
                 Margin="0, 5" 
                 VerticalContentAlignment="Center" 
                 SelectionChanged="homeStationDrop_SelectionChanged"/>
-            <Label Grid.Row="6" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:Resources.tab_commander_gender}"/>
-            <RadioButton 
-                x:Name ="eddiGenderMale"
-                Content="{x:Static resx:Resources.tab_commander_gender_m}"
+            <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="{x:Static resx:Resources.tab_commander_gender}"/>
+            <ComboBox 
+                ItemsSource="{Binding GenderOptions, Mode=OneWay}"
+                SelectedValue="{Binding SelectedGender, Mode=TwoWay}"
+                SelectedValuePath="Gender" 
+                DisplayMemberPath="DisplayName" 
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Height="Auto"
                 Grid.Row="6"
-                Checked="isMale_Checked"
-                Margin="0, 12.5, 0, 5"
-                Grid.Column="2"/>
-            <RadioButton 
-                x:Name ="eddiGenderFemale"
-                Content="{x:Static resx:Resources.tab_commander_gender_f}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Height="Auto"
-                Grid.Row="7"
-                Checked="isFemale_Checked"
-                Margin="0, 5"
-                Grid.Column="2"/>
-            <RadioButton 
-                x:Name ="eddiGenderNeither"
-                Content="{x:Static resx:Resources.tab_commander_gender_n}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Height="Auto"
-                Grid.Row="8"
-                Checked="isNeitherGender_Checked"
-                Margin="0, 5"
-                Grid.Column="2"/>
+                Grid.Column="2"
+                Margin="0, 5"/>
             <Label Grid.Row="9" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_name}" VerticalAlignment="Center" />
             <TextBox 
                 Text="{Binding Path=Cmdr.squadronname, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"

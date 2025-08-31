@@ -65,6 +65,33 @@ namespace EddiCommanderMonitor
         }
         private StarSystem _squadronStarSystem;
 
+        #region Cmdr Gender View Model
+
+        public Gender SelectedGender
+        {
+            get => Cmdr.Gender;
+            set
+            {
+                Cmdr.Gender = value;
+                WriteCommander();
+            }
+        }
+
+        public class GenderOption
+        {
+            public Gender Gender { get; set; }
+            public string DisplayName { get; set; }
+        }
+
+        public static ObservableCollection<GenderOption> GenderOptions { get; set; } = new ObservableCollection<GenderOption>
+        {
+            new GenderOption { Gender = Gender.Male, DisplayName = EddiCommanderMonitor.Properties.Resources.tab_commander_gender_m },
+            new GenderOption { Gender = Gender.Female, DisplayName = EddiCommanderMonitor.Properties.Resources.tab_commander_gender_f },
+            new GenderOption { Gender = Gender.Neither, DisplayName = EddiCommanderMonitor.Properties.Resources.tab_commander_gender_n }
+        };
+
+        #endregion region
+
         #region Squadron View Model
 
         public NavWaypoint SquadronSystemWaypoint
@@ -787,7 +814,7 @@ namespace EddiCommanderMonitor
             return commander;
         }
 
-        private void WriteCommander ()
+        internal void WriteCommander ()
         {
             lock ( commanderLock )
             {
