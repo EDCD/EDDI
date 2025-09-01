@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace EddiCommanderMonitor
     public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
         private static readonly object commanderLock = new object();
+
+        #region Monitored Variables
 
         [NotNull]
         public Commander Cmdr // Also includes information from the configuration and companion app service
@@ -42,28 +45,6 @@ namespace EddiCommanderMonitor
             }
         }
         private Commander _cmdr;
-
-        [CanBeNull]
-        private StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
-        {
-            get => _squadronStarSystem;
-            set
-            {
-                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
-                {
-                    OnPropertyChanged();
-                }
-                if ( _squadronStarSystem != null ) { _squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
-                _squadronStarSystem = value;
-                OnPropertyChanged();
-                OnPropertyChanged( nameof( SquadronFactions) );
-                OnPropertyChanged( nameof( SelectedSquadronFaction ) );
-            }
-        }
-        private StarSystem _squadronStarSystem;
-
-        #region Cmdr View Model
 
         [UsedImplicitly]
         public string PhoneticName
@@ -107,44 +88,140 @@ namespace EddiCommanderMonitor
             new GenderOption { Gender = Gender.Neither, DisplayName = Properties.Resources.tab_commander_gender_n }
         };
 
-        #endregion region
-
-        #region Squadron View Model
-
-        public NavWaypoint SquadronSystemWaypoint
+        [CanBeNull]
+        public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
         {
-            get => SquadronStarSystem == null ? null : new NavWaypoint(SquadronStarSystem);
+            get => _homeStarSystem;
             set
             {
-                if ( value?.systemAddress != SquadronStarSystem?.systemAddress )
+                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
+                {
+                    OnPropertyChanged();
+                }
+                if ( _homeStarSystem != null ) { _homeStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
+                _homeStarSystem = value;
+                OnPropertyChanged();
+                OnPropertyChanged( nameof( HomeSystemName) );
+                OnPropertyChanged( nameof( HomeStationOptions) );
+                OnPropertyChanged( nameof( HomeStation ) );
+                WriteCommander();
+            }
+        }
+        private StarSystem _homeStarSystem;
+
+        public string HomeSystemName
+        {
+            get => HomeStarSystem?.systemname;
+            set
+            {
+                if ( value != HomeStarSystem?.systemname )
+                {
+                    if ( value != null )
+                    {
+                        Task.Run( async () =>
+                        {
+                            HomeStarSystem = await EDDI.Instance.DataProvider
+                                .GetOrFetchStarSystemAsync( value );
+                            lock ( commanderLock )
+                            {
+                                Cmdr.homeSystemName = HomeStarSystem?.systemname;
+                                Cmdr.homeSystemAddress = HomeStarSystem?.systemAddress;
+                                Cmdr.homeSystemX = HomeStarSystem?.x;
+                                Cmdr.homeSystemY = HomeStarSystem?.y;
+                                Cmdr.homeSystemZ = HomeStarSystem?.z;
+                            }
+                        } );
+                    }
+                    else
+                    {
+                        HomeStarSystem = null;
+                        lock ( commanderLock )
+                        {
+                            Cmdr.squadronSystemName = null;
+                            Cmdr.squadronSystemAddress = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        public ObservableCollection<Station> HomeStationOptions => new ObservableCollection<Station>( ( HomeStarSystem?.stations ?? ImmutableList.Create<Station>() )
+            .OrderBy( s => s.name )
+            .Prepend( new Station { name = Properties.Resources.no_station } )
+            .ToHashSet() );
+
+        [CanBeNull]
+        public Station HomeStation
+        {
+            get => _homeStation ?? HomeStationOptions.FirstOrDefault(s => s.marketId == Cmdr.homeStationMarketID );
+            set
+            {
+                if ( Cmdr.homeStationMarketID != value?.marketId )
+                {
+                    _homeStation = value;
+                    lock ( commanderLock )
+                    {
+                        Cmdr.homeStationName = value?.name;
+                        Cmdr.homeStationMarketID = value?.marketId;
+                    }
+                        WriteCommander();
+                    }
+            }
+        }
+        private Station _homeStation;
+
+        [CanBeNull]
+        private StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
+        {
+            get => _squadronStarSystem;
+            set
+            {
+                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
+                {
+                    OnPropertyChanged();
+                }
+                if ( _squadronStarSystem != null ) { _squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
+                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
+                _squadronStarSystem = value;
+                OnPropertyChanged();
+                OnPropertyChanged( nameof( SquadronSystemName ) );
+                OnPropertyChanged( nameof( SquadronFactions) );
+                OnPropertyChanged( nameof( SelectedSquadronFaction ) );
+                WriteCommander();
+            }
+        }
+        private StarSystem _squadronStarSystem;
+
+        public string SquadronSystemName
+        {
+            get => SquadronStarSystem?.systemname;
+            set
+            {
+                if ( value != SquadronStarSystem?.systemname )
                 {
                     if ( value != null )
                     {
                         Task.Run( async () =>
                         {
                             SquadronStarSystem = await EDDI.Instance.DataProvider
-                                .GetOrFetchStarSystemAsync( value.systemAddress ).ConfigureAwait( false );
+                                .GetOrFetchStarSystemAsync( value );
                             lock ( commanderLock )
                             {
-                                Cmdr.squadronSystemName = SquadronSystemWaypoint?.systemName;
-                                Cmdr.squadronSystemAddress = SquadronSystemWaypoint?.systemAddress;
+                                Cmdr.squadronSystemName = SquadronStarSystem?.systemname;
+                                Cmdr.squadronSystemAddress = SquadronStarSystem?.systemAddress;
                             }
-
-                            WriteCommander();
-                        } ).ConfigureAwait( false );
+                        } );
                     }
                     else
                     {
+                        SquadronStarSystem = null;
                         lock ( commanderLock )
                         {
-                            Cmdr.squadronSystemName = SquadronSystemWaypoint?.systemName;
-                            Cmdr.squadronSystemAddress = SquadronSystemWaypoint?.systemAddress;
+                            Cmdr.squadronSystemName = null;
+                            Cmdr.squadronSystemAddress = null;
                         }
-
-                        WriteCommander();
                     }
-
-                    OnPropertyChanged();
                 }
             }
         }
@@ -156,11 +233,13 @@ namespace EddiCommanderMonitor
 
         public Faction SelectedSquadronFaction
         {
-            get => SquadronFactions.FirstOrDefault(f => f.name.Equals( Cmdr.squadronfaction, StringComparison.OrdinalIgnoreCase ) );
+            get => _selectedSquadronFaction ?? 
+                   SquadronFactions.FirstOrDefault(f => f.name.Equals( Cmdr.squadronfaction, StringComparison.OrdinalIgnoreCase ) );
             set
             {
                 if ( value?.name != Cmdr.squadronfaction )
                 {
+                    _selectedSquadronFaction = value;
                     lock ( commanderLock )
                     {
                         Cmdr.squadronfaction = value?.name == Power.None.localizedName ? null : value?.name;
@@ -171,6 +250,7 @@ namespace EddiCommanderMonitor
                 }
             }
         }
+        private Faction _selectedSquadronFaction;
 
         public ObservableCollection<Power> SquadronPowers => new ObservableCollection<Power>( Power.AllOfThem
             .Except( new [] { Power.None } )
@@ -240,6 +320,8 @@ namespace EddiCommanderMonitor
             return new Dictionary<string, Tuple<Type, object>>
             {
                 { "cmdr", new Tuple<Type, object>( typeof(Commander), Cmdr ) },
+                { "homesystem", new Tuple<Type, object>( typeof(StarSystem), HomeStarSystem ) },
+                { "homestation", new Tuple<Type, object>( typeof(Station), HomeStation ) },
                 { "squadronsystem", new Tuple<Type, object>( typeof(StarSystem), SquadronStarSystem ) }
             };
         }
@@ -638,79 +720,6 @@ namespace EddiCommanderMonitor
             WriteCommander();
         }
 
-        public async Task setHomeSystemAsync ( ulong? newSystemAddress )
-        {
-            StarSystem newSystem = null;
-            if ( newSystemAddress != null )
-            {
-                newSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)newSystemAddress ).ConfigureAwait(false);
-            }
-
-            //Ignore null & empty systems
-            if ( newSystem?.bodies?.Count > 0 )
-            {
-                if ( newSystem.systemAddress != EDDI.Instance.HomeStarSystem?.systemAddress )
-                {
-                    EDDI.Instance.HomeStarSystem = newSystem;
-                    Logging.Debug( "Home star system is " + EDDI.Instance.HomeStarSystem.systemname );
-
-                    var configuration = ConfigService.Instance.commanderConfiguration;
-                    if ( newSystem.systemAddress != configuration.homeSystemAddress )
-                    {
-                        configuration.homeSystemName = newSystem.systemname;
-                        configuration.homeSystemAddress = newSystem.systemAddress;
-                        configuration.homeStationName = null;
-                        configuration.homeStationMarketID = null;
-                        ConfigService.Instance.commanderConfiguration = configuration;
-                    }
-                }
-            }
-            else
-            {
-                EDDI.Instance.HomeStarSystem = null;
-            }
-
-            //Application.Current?.Dispatcher?.Invoke( () =>
-            //{
-            //    if ( Application.Current?.MainWindow != null )
-            //    {
-            //        ConfigurationWindow.Instance.ConfigureHomeSystemOptions( newSystem?.systemname );
-            //    }
-            //} );
-        }
-
-        public void setHomeStation ( long? newMarketId )
-        {
-            if ( newMarketId != null && EDDI.Instance.HomeStarSystem?.stations != null )
-            {
-                foreach ( var station in EDDI.Instance.HomeStarSystem.stations )
-                {
-                    if ( station.marketId == newMarketId )
-                    {
-                        EDDI.Instance.HomeStation = station;
-                        
-                        var configuration = ConfigService.Instance.commanderConfiguration;
-                        if ( newMarketId != configuration.homeStationMarketID )
-                        {
-                            configuration.homeStationName = station.name;
-                            configuration.homeStationMarketID = station.marketId;
-                            ConfigService.Instance.commanderConfiguration = configuration;
-                        }
-
-                        Logging.Debug( "Home station is " + EDDI.Instance.HomeStation.name );
-
-                        //Application.Current?.Dispatcher?.Invoke( () =>
-                        //{
-                        //    if ( Application.Current?.MainWindow != null )
-                        //    {
-                        //        ConfigurationWindow.Instance.ConfigureHomeStationOptions();
-                        //    }
-                        //} );
-                    }
-                }
-            }
-        }
-
         private bool TryUpdateSquadronHomeSystem ( ulong currentSystemAddress, List<Faction> systemFactions )
         {
             bool update = false;
@@ -734,7 +743,7 @@ namespace EddiCommanderMonitor
                     if ( EDDI.Instance.CurrentStarSystem?.systemAddress == currentSystemAddress )
                     {
                         // Update the squadron system data, if changed
-                        SquadronSystemWaypoint = new NavWaypoint( EDDI.Instance.CurrentStarSystem );
+                        SquadronSystemName = EDDI.Instance.CurrentStarSystem.systemname;
                         Cmdr.squadronSystemName = EDDI.Instance.CurrentStarSystem.systemname;
                         Cmdr.squadronSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
                         Cmdr.squadronfaction = squadronFaction.name;
@@ -814,7 +823,7 @@ namespace EddiCommanderMonitor
         {
             // Obtain current commander from our configuration
             configuration = configuration ?? ConfigService.Instance.commanderConfiguration;
-            var commander = new Commander()
+            var commander = new Commander
             {
                 name = configuration.commanderName,
                 credits = configuration.credits,
@@ -828,41 +837,25 @@ namespace EddiCommanderMonitor
                 powermerits = configuration.powerMerits,
                 powerrating = configuration.powerRank,
 
+                // Home system information
+                homeSystemName = configuration.homeSystemName,
+                homeSystemAddress = configuration.homeSystemAddress,
+                homeStationName = configuration.homeStationName,
+                homeStationMarketID = configuration.homeStationMarketID,
+
                 // Squadron information
                 squadronname = configuration.squadronName,
                 squadrontag = configuration.squadronTag,
                 squadronrank = configuration.SquadronRank,
                 squadronSystemName = configuration.squadronSystemName,
-                squadronSystemAddress = configuration.squadronSystemAddress
+                squadronSystemAddress = configuration.squadronSystemAddress,
+                squadronfaction = configuration.squadronFaction,
+                squadronallegiance = configuration.SquadronAllegiance ?? Superpower.None,
+                squadronpower = configuration.SquadronPower ?? Power.None
             };
 
-            // Fetch squadron star system objects
-            try
-            {
-                Task.Run( async () =>
-                {
-                    if ( configuration.squadronSystemAddress is null &&
-                         !string.IsNullOrEmpty( configuration.squadronSystemName ) )
-                    {
-                        // Legacy configurations may not have system address values stored. Fix that here.
-                        SquadronSystemWaypoint = await EDDI.Instance.DataProvider
-                            .GetOrFetchSystemWaypointAsync( configuration.squadronSystemName );
-                    }
-                    else if ( configuration.squadronSystemAddress != null )
-                    {
-                        SquadronSystemWaypoint = new NavWaypoint( await EDDI.Instance.DataProvider
-                            .GetOrFetchQuickStarSystemAsync( (ulong)configuration.squadronSystemAddress ) );
-                    }
-                } );
-            }
-            catch ( OperationCanceledException )
-            {
-                // Nothing to do here.
-            }
-
-            commander.squadronfaction = configuration.squadronFaction;
-            commander.squadronallegiance = configuration.SquadronAllegiance ?? Superpower.None;
-            commander.squadronpower = configuration.SquadronPower ?? Power.None;
+            HomeSystemName = configuration.homeSystemName;
+            SquadronSystemName = configuration.squadronSystemName;
 
             updatedAt = configuration.updatedat;
 
@@ -906,11 +899,13 @@ namespace EddiCommanderMonitor
                 configuration.squadronSystemAddress = Cmdr.squadronSystemAddress;
 
                 // Write home system information
-                configuration.homeSystemName = EDDI.Instance.HomeStarSystem?.systemname;
-                configuration.homeSystemAddress = EDDI.Instance.HomeStarSystem?.systemAddress;
-                configuration.homeSystemX = EDDI.Instance.HomeStarSystem?.x;
-                configuration.homeSystemY = EDDI.Instance.HomeStarSystem?.y;
-                configuration.homeSystemZ = EDDI.Instance.HomeStarSystem?.z;
+                configuration.homeSystemName = Cmdr.homeSystemName;
+                configuration.homeSystemAddress = Cmdr.homeSystemAddress;
+                configuration.homeSystemX = Cmdr.homeSystemX;
+                configuration.homeSystemY = Cmdr.homeSystemY;
+                configuration.homeSystemZ = Cmdr.homeSystemZ;
+                configuration.homeStationName = Cmdr.homeStationName;
+                configuration.homeStationMarketID = Cmdr.homeStationMarketID;
 
                 configuration.updatedat = updatedAt;
                 ConfigService.Instance.commanderConfiguration = configuration;

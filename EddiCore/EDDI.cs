@@ -171,41 +171,6 @@ namespace EddiCore
         public HotkeyManager HotkeyManager { get; set; } = new HotkeyManager();
 
         // Information obtained from the configuration
-        [CanBeNull]
-        public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
-        {
-            get => homeStarSystem;
-            set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (homeStarSystem != null) { homeStarSystem.PropertyChanged -= childPropertyChangedHandler;}
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler;}
-                homeStarSystem = value;
-                OnPropertyChanged();
-            }
-        }
-        private StarSystem homeStarSystem;
-
-        [CanBeNull]
-        public Station HomeStation
-        {
-            get => homeStation;
-            set
-            {
-                void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
-                {
-                    OnPropertyChanged();
-                }
-                if (homeStation != null) { homeStation.PropertyChanged -= childPropertyChangedHandler; }
-                if (value != null) { value.PropertyChanged += childPropertyChangedHandler; }
-                homeStation = value;
-                OnPropertyChanged();
-            }
-        }
-        private Station homeStation;
 
         // Destination variables
         [CanBeNull]

@@ -152,10 +152,10 @@ namespace EddiNavigationMonitor
                     // Update configuration to new home system
                     if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
                     {
-                        var newValue = e.AddedItems[0] as NavWaypoint;
+                        var newValue = e.AddedItems[0] as string;
 
                         // Update to new destination system
-                        NavigationService.Instance.LastCarrierDestinationArg = newValue?.systemName;
+                        NavigationService.Instance.LastCarrierDestinationArg = newValue;
                         UpdateSearchButtonEnabled();
                     }
                 }
@@ -172,16 +172,15 @@ namespace EddiNavigationMonitor
             {
                 if ( sender is StarSystemComboBox starSystemComboBox )
                 {
-                    if ( !starSystemComboBox.IsLoaded )
-                    { return; }
+                    if ( !starSystemComboBox.IsLoaded ) { return; }
 
                     // Update configuration to new home system
                     if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
                     {
-                        var newValue = e.AddedItems[0] as NavWaypoint;
+                        var newValue = e.AddedItems[0] as string;
 
                         // Update to new origin system
-                        LastCarrierOriginArg = newValue?.systemName;
+                        LastCarrierOriginArg = newValue;
                         UpdateSearchButtonEnabled();
                     }
                 }

@@ -375,6 +375,59 @@ namespace EddiDataDefinitions
         }
         private int? _powermerits;
 
+        /// <summary>The name of the commander's home system (if selected)</summary>
+        public string homeSystemName
+        {
+            get => _homeSystemName;
+            set { _homeSystemName = value; OnPropertyChanged(); }
+        }
+        private string _homeSystemName;
+
+        /// <summary>The system address ID of the commander's home system (if selected)</summary>
+        public ulong? homeSystemAddress
+        {
+            get => _homeSystemAddress;
+            set { _homeSystemAddress = value; OnPropertyChanged(); }
+        }
+        private ulong? _homeSystemAddress;
+
+        /// <summary>The name of the commander's home station (if selected)</summary>
+        public string homeStationName
+        {
+            get => _homeStationName;
+            set { _homeStationName = value; OnPropertyChanged(); }
+        }
+        private string _homeStationName;
+
+        /// <summary>The market ID of the commander's home station (if selected)</summary>
+        public long? homeStationMarketID
+        {
+            get => _homeStationMarketID;
+            set { _homeStationMarketID = value; OnPropertyChanged(); }
+        }
+        private long? _homeStationMarketID;
+
+        public decimal? homeSystemX
+        {
+            get => _homeSystemX;
+            set { _homeSystemX = value; OnPropertyChanged(); }
+        }
+        private decimal? _homeSystemX;
+        
+        public decimal? homeSystemY
+        {
+            get => _homeSystemY;
+            set { _homeSystemY = value; OnPropertyChanged(); }
+        }
+        private decimal? _homeSystemY;
+        
+        public decimal? homeSystemZ
+        {
+            get => _homeSystemZ;
+            set { _homeSystemZ = value; OnPropertyChanged(); }
+        }
+        private decimal? _homeSystemZ;
+
         /// <summary>The commander's squadron rank</summary>
         [PublicAPI]
         public SquadronRank squadronrank

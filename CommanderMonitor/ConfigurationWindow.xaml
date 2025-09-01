@@ -79,7 +79,8 @@
             <Button Margin="10, 5" Grid.Row="1" Grid.Column="4" Content="{x:Static resx:Resources.tab_commander_test_phonetic_name}" Click="phoneticNameTestButtonClicked" />
             <Label Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:Resources.tab_commander_home_system}"  VerticalAlignment="Center" />
             <eddiCore:StarSystemComboBox 
-                x:Name="homeSystemDropDown"
+                x:Name="HomeSystemComboBox"
+                SelectedItem="{Binding Path=HomeSystemName, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                 IsEditable="True"
                 IsReadOnly="False"
                 IsTextSearchEnabled="False"
@@ -87,16 +88,17 @@
                 Grid.Column="1"
                 Grid.ColumnSpan ="3"
                 Margin="0, 5"
-                VerticalContentAlignment="Center"
-                SelectionChanged="HomeSystemDropDown_SelectionChanged"/>
+                VerticalContentAlignment="Center"/>
             <Label Grid.Row="3" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_home_station}"/>
             <ComboBox 
-                x:Name="homeStationDropDown" 
+                x:Name="HomeStationComboBox"
+                ItemsSource="{Binding Path=HomeStationOptions, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding Path=HomeStation, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                DisplayMemberPath="name"
                 Grid.Row="3" 
                 Grid.Column="1" Grid.ColumnSpan ="2" 
                 Margin="0, 5" 
-                VerticalContentAlignment="Center" 
-                SelectionChanged="homeStationDrop_SelectionChanged"/>
+                VerticalContentAlignment="Center" />
             <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" VerticalContentAlignment="Center" VerticalAlignment="Center" Content="{x:Static resx:Resources.tab_commander_gender}"/>
             <ComboBox 
                 ItemsSource="{Binding GenderOptions, Mode=OneWay}"
@@ -138,7 +140,8 @@
                 Margin="0,5" />
             <Label Grid.Row="12" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_system}" VerticalAlignment="Center" />
             <eddiCore:StarSystemComboBox 
-                Text="{Binding Path=SquadronSystemWaypoint.systemName, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"
+                x:Name="SquadronSystemComboBox"
+                SelectedItem="{Binding Path=SquadronSystemName, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                 IsEditable="True"
                 IsTextSearchEnabled="False"
                 Grid.Row="12"
@@ -147,6 +150,7 @@
                 VerticalContentAlignment="Center" />
             <Label Grid.Row="13" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_commander_squadron_faction}" />
             <ComboBox 
+                x:Name="SquadronFactionComboBox"
                 ItemsSource="{Binding Path=SquadronFactions, Mode=OneWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItem="{Binding Path=SelectedSquadronFaction, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                 DisplayMemberPath="name"

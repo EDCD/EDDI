@@ -248,15 +248,6 @@ namespace EddiSpeechResponder.ScriptResolverService
             };
 
             // Standard objects
-            if ( EDDI.Instance.HomeStarSystem != null )
-            {
-                dict[ "homesystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.HomeStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( EDDI.Instance.HomeStation != null )
-            {
-                dict[ "homestation" ] = new Tuple<Type, Value>( typeof( Station ), Value.FromReflection(EDDI.Instance.HomeStation, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
 
             if ( EDDI.Instance.CurrentStarSystem != null )
             {

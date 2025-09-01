@@ -373,10 +373,10 @@ namespace EddiNavigationMonitor
                     // Update configuration to new home system
                     if ( e.AddedItems.Count == 1 && e.RemovedItems.Count == 0 )
                     {
-                        var newValue = e.AddedItems[0] as NavWaypoint;
+                        var newValue = e.AddedItems[0] as string;
 
                         // Update to new search system
-                        NavigationService.Instance.LastQuerySystemArg = newValue?.systemName;
+                        NavigationService.Instance.LastQuerySystemArg = newValue;
 
                         // Update station options for new system
                         ConfigureSearchStationOptionsAsync( NavigationService.Instance.LastQuerySystemArg ).GetAwaiter().GetResult();

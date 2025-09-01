@@ -38,9 +38,9 @@ namespace EddiDataProviderService
             this.starSystemRepository = starSystemRepository ?? new StarSystemSqLiteRepository(unitTesting);
         }
 
-        public async Task<List<NavWaypoint>> GetTypeAheadSystemsAsync ( string systemName )
+        public async Task<List<string>> GetTypeAheadSystemsAsync ( string systemName, CancellationToken cancellationToken )
         {
-            return await spanshService.GetWaypointsBySystemNameAsync( systemName ).ConfigureAwait(false);
+            return await spanshService.GetTypeAheadSystemNamesAsync( systemName, cancellationToken ).ConfigureAwait(false);
         }
 
         [NotNull]
