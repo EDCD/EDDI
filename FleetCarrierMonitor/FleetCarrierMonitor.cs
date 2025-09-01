@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService;
 using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -696,14 +697,17 @@ namespace EddiFleetCarrierMonitor
                 var configuration = ConfigService.Instance.fleetCarrierConfiguration;
                 if ( configuration.fleetCarrier?.timestamp < FleetCarrier?.timestamp )
                 {
-                    ConfigService.Instance.fleetCarrierConfiguration.fleetCarrier = FleetCarrier;
                     EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.FleetCarrier ) );
                 }
                 if ( configuration.squadronCarrier?.timestamp < SquadronCarrier?.timestamp )
                 {
-                    ConfigService.Instance.fleetCarrierConfiguration.squadronCarrier = SquadronCarrier;
                     EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.SquadronCarrier ) );
                 }
+
+                ConfigService.Instance.fleetCarrierConfiguration = new FleetCarrierConfiguration
+                {
+                    fleetCarrier = FleetCarrier, squadronCarrier = SquadronCarrier
+                };
             }
         }
 
