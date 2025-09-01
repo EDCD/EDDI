@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tests
@@ -11,7 +12,7 @@ namespace Tests
     {
         #region Implementation of ISpanshHttpClient
 
-        public async Task<HttpResponseMessage> GetAsync ( string requestUri )
+        public async Task<HttpResponseMessage> GetAsync ( string requestUri, CancellationToken cancellationToken )
         {
             var responseContent = FetchContentFromUri(requestUri);
             return await Task.FromResult( new HttpResponseMessage()
@@ -21,7 +22,7 @@ namespace Tests
             } ).ConfigureAwait(false);
         }
 
-        public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent requestContent )
+        public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent requestContent, CancellationToken cancellationToken )
         {
             var json = await requestContent.ReadAsStringAsync().ConfigureAwait( false );
             requestUri += $"?={json}";

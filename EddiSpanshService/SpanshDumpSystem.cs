@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -12,14 +13,14 @@ namespace EddiSpanshService
     public partial class SpanshService
     {
         // Uses the Spansh star system dump API (full star system data), e.g. https://www.spansh.co.uk/api/dump/10477373803
-        public async Task<StarSystem> GetStarSystemAsync ( ulong systemAddress, bool showMarketDetails = false )
+        public async Task<StarSystem> GetStarSystemAsync ( ulong systemAddress, bool showMarketDetails, CancellationToken cancellationToken )
         {
             if ( systemAddress == 0 ) { return null; }
 
             try
             {
                 var requestUri = $"dump/{systemAddress}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                 clientResponse.EnsureSuccessStatusCode();
                 var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
@@ -54,10 +55,10 @@ namespace EddiSpanshService
             return null;
         }
 
-        public async Task<IList<StarSystem>> GetStarSystemsAsync ( ulong[] systemAddresses, bool showMarketDetails = false )
+        public async Task<IList<StarSystem>> GetStarSystemsAsync ( ulong[] systemAddresses, bool showMarketDetails, CancellationToken cancellationToken )
         {
             return await Task.WhenAll( systemAddresses.AsParallel()
-                .Select( async systemAddress => await GetStarSystemAsync( systemAddress, showMarketDetails ).ConfigureAwait(false) )
+                .Select( async systemAddress => await GetStarSystemAsync( systemAddress, showMarketDetails, cancellationToken ).ConfigureAwait(false) )
                 .RemoveNulls() );
         }
 

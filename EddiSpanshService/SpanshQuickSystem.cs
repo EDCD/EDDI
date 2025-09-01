@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -13,14 +14,14 @@ namespace EddiSpanshService
     {
         // Uses the Spansh star system quick API (brief star system data), e.g. https://spansh.co.uk/api/system/3932277478106
         // Useful for quickly obtaining sparse system stations.
-        public async Task<StarSystem> GetQuickStarSystemAsync(ulong systemAddress)
+        public async Task<StarSystem> GetQuickStarSystemAsync( ulong systemAddress, CancellationToken cancellationToken )
         {
             if ( systemAddress == 0 ) { return null; }
 
             try
             {
                 var requestUri = $"system/{systemAddress}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                 clientResponse.EnsureSuccessStatusCode();
                 var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
@@ -56,9 +57,12 @@ namespace EddiSpanshService
             return null;
         }
 
-        public async Task<IList<StarSystem>> GetQuickStarSystemsAsync ( ulong[] systemAddresses )
+        public async Task<IList<StarSystem>> GetQuickStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
         {
-            return await Task.WhenAll( systemAddresses.AsParallel().Select( async s => await GetQuickStarSystemAsync(s) ).RemoveNulls() ).ConfigureAwait(false);
+            return await Task
+                .WhenAll( systemAddresses.AsParallel()
+                    .Select( async s => await GetQuickStarSystemAsync( s, cancellationToken ) ).RemoveNulls() )
+                .ConfigureAwait( false );
         }
 
         private static StarSystem ParseQuickSystem ( JToken data )

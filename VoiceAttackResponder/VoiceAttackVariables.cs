@@ -25,13 +25,8 @@ namespace EddiVoiceAttackResponder
             { nameof(EDDI.Instance.NextStarSystem), () => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system") },
             { nameof(EDDI.Instance.DestinationStarSystem), () => setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system") },
             { nameof(EDDI.Instance.DestinationDistanceLy), () => VoiceAttackPlugin.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy) },
-            { nameof(EDDI.Instance.HomeStarSystem), () =>
-                {
-                    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system");
-                } },
             { nameof(EDDI.Instance.CurrentStellarBody), () => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body") },
             { nameof(EDDI.Instance.CurrentStation), () => setStationValues(EDDI.Instance.CurrentStation, "Current station") },
-            { nameof(EDDI.Instance.HomeStation), () => setStationValues(EDDI.Instance.HomeStation, "Home station") },
             { nameof(EDDI.Instance.CurrentShip), () => setShipValues(EDDI.Instance.CurrentShip, "Ship") },
             { nameof(EDDI.Instance.Environment), () => VoiceAttackPlugin.SetText("Environment", EDDI.Instance.Environment) },
             { nameof(EDDI.Instance.Vehicle), () => VoiceAttackPlugin.SetText("Vehicle", EDDI.Instance.Vehicle) },
@@ -101,7 +96,19 @@ namespace EddiVoiceAttackResponder
                     {
                         setCommanderValues( Cmdr );
                     }
+                    
+                    if ( commanderMonitorVariables.TryGetValue( "homesystem", out var homeSystemTuple ) &&
+                         homeSystemTuple.Item2 is StarSystem homeSystem )
+                    {
+                        setStarSystemValues( homeSystem, "Home system" );
+                    }
 
+                    if ( commanderMonitorVariables.TryGetValue( "homestation", out var homeStationTuple ) &&
+                         homeStationTuple.Item2 is Station homeStation )
+                    {
+                        setStationValues( homeStation, "Home station" );
+                    }
+                    
                     if ( commanderMonitorVariables.TryGetValue( "squadronsystem", out var squadronSystemTuple ) &&
                          squadronSystemTuple.Item2 is StarSystem squadronSystem )
                     {

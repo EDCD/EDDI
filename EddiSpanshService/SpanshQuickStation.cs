@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -13,14 +14,14 @@ namespace EddiSpanshService
     {
         // Uses the Spansh station quick API (brief station data), e.g. https://spansh.co.uk/api/station/3707582976 
         // Useful for quickly obtaining sparse system stations.
-        public async Task<NavWaypoint> GetQuickStationAsync (long marketId)
+        public async Task<NavWaypoint> GetQuickStationAsync ( long marketId, CancellationToken cancellationToken )
         {
             if ( marketId == 0 ) { return null; }
 
             try
             {
                 var requestUri = $"station/{marketId}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                 clientResponse.EnsureSuccessStatusCode();
                 var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
@@ -55,9 +56,11 @@ namespace EddiSpanshService
             return null;
         }
 
-        public async Task<IList<NavWaypoint>> GetQuickStationsAsync ( long[] marketIds )
+        public async Task<IList<NavWaypoint>> GetQuickStationsAsync ( long[] marketIds, CancellationToken cancellationToken )
         {
-            return await Task.WhenAll( marketIds.AsParallel().Select( async s => await GetQuickStationAsync(s) ).RemoveNulls() ).ConfigureAwait(false);
+            return await Task
+                .WhenAll( marketIds.AsParallel().Select( async s => await GetQuickStationAsync( s, cancellationToken ) )
+                    .RemoveNulls() ).ConfigureAwait( false );
         }
 
         public NavWaypoint ParseQuickStationWaypoint ( JToken stationData )

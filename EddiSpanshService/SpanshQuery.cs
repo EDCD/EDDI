@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -20,13 +21,15 @@ namespace EddiSpanshService
             systems
         }
 
-        public async Task<JToken> QueryAsync ( QueryGroup queryGroup, [NotNull] Dictionary<string, object> searchFilters, int? maxResults = 500, int? pageId = 0 )
+        public async Task<JToken> QueryAsync ( QueryGroup queryGroup,
+            [ NotNull ] Dictionary<string, object> searchFilters, CancellationToken cancellationToken,
+            int? maxResults = 500, int? pageId = 0 )
         {
             try
             {
                 using ( var requestContent = GetRequestContent( searchFilters, maxResults, pageId ) )
                 {
-                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent )
+                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken )
                         .ConfigureAwait( false );
                     response.EnsureSuccessStatusCode();
                     var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
@@ -63,13 +66,14 @@ namespace EddiSpanshService
             return null;
         }
 
-        public async Task<JToken> DistanceOrderedQueryAsync ( QueryGroup queryGroup, decimal fromX, decimal fromY, decimal fromZ, [NotNull] Dictionary<string, object> searchFilters )
+        public async Task<JToken> DistanceOrderedQueryAsync ( QueryGroup queryGroup, decimal fromX, decimal fromY,
+            decimal fromZ, [ NotNull ] Dictionary<string, object> searchFilters, CancellationToken cancellationToken )
         {
             try
             {
                 using ( var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters ) )
                 {
-                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent )
+                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken )
                         .ConfigureAwait( false );
                     response.EnsureSuccessStatusCode();
                     var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );

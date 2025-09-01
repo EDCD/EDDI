@@ -187,7 +187,7 @@ namespace EddiDataProviderService
             if ( missingSystems().Any() && fetchIfMissing )
             {
                 // Add the external data to our results
-                results.AddRange( await spanshService.GetQuickStarSystemsAsync( missingSystems() ).ConfigureAwait(false) );
+                results.AddRange( await spanshService.GetQuickStarSystemsAsync( missingSystems(), CancellationToken.None ).ConfigureAwait(false) );
             }
 
             if ( missingSystems().Any() )
@@ -226,10 +226,10 @@ namespace EddiDataProviderService
             // Fetch from Spansh
             var waypoints = missingSystems().AsParallel().Select( async systemName =>
             {
-                var wp = await spanshService.GetWaypointsBySystemNameAsync( systemName.Trim() ).ConfigureAwait( false );
+                var wp = await spanshService.GetWaypointsBySystemNameAsync( systemName.Trim(), CancellationToken.None ).ConfigureAwait( false );
                 return wp.FirstOrDefault( s => s.systemName.Equals( systemName, StringComparison.InvariantCultureIgnoreCase ) );
             } ).ToList();
-            results.AddRange( await Task.WhenAll(waypoints) );
+            results.AddRange( await Task.WhenAll( waypoints ) );
 
             return results;
         }
@@ -517,10 +517,10 @@ namespace EddiDataProviderService
                 useSupercharge, useInjections, excludeSecondary, fromUIquery ).ConfigureAwait( false );
         }
 
-        internal async Task<IList<StarSystem>> FetchSystemsDataAsync ( ulong[] systemAddresses, bool showMarketDetails = false )
+        internal async Task<IList<StarSystem>> FetchSystemsDataAsync ( ulong[] systemAddresses, bool showMarketDetails )
         {
             if ( systemAddresses == null || systemAddresses.Length == 0 ) { return new List<StarSystem>(); }
-            return await spanshService.GetStarSystemsAsync( systemAddresses, showMarketDetails ).ConfigureAwait(false);
+            return await spanshService.GetStarSystemsAsync( systemAddresses, showMarketDetails, CancellationToken.None ).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -533,7 +533,7 @@ namespace EddiDataProviderService
         /// <returns></returns>
         public async Task<NavWaypoint> FetchStationWaypointAsync ( decimal fromX, decimal fromY, decimal fromZ, Dictionary<string, object> filters )
         {
-            var data = await spanshService.DistanceOrderedQueryAsync( SpanshService.QueryGroup.stations, fromX, fromY, fromZ, filters ).ConfigureAwait(false);
+            var data = await spanshService.DistanceOrderedQueryAsync( SpanshService.QueryGroup.stations, fromX, fromY, fromZ, filters, CancellationToken.None ).ConfigureAwait(false);
             if ( data?[ "error" ] != null )
             {
                 Logging.Warn( "Spansh API responded with: " + data[ "error" ] );
@@ -552,7 +552,7 @@ namespace EddiDataProviderService
         /// <returns></returns>
         public async Task<NavWaypoint> FetchBodyWaypointAsync ( decimal fromX, decimal fromY, decimal fromZ, Dictionary<string, object> filters )
         {
-            var data = await spanshService.DistanceOrderedQueryAsync( SpanshService.QueryGroup.bodies, fromX, fromY, fromZ, filters ).ConfigureAwait(false);
+            var data = await spanshService.DistanceOrderedQueryAsync( SpanshService.QueryGroup.bodies, fromX, fromY, fromZ, filters, CancellationToken.None ).ConfigureAwait(false);
             if ( data?[ "error" ] != null )
             {
                 Logging.Warn( "Spansh API responded with: " + data[ "error" ] );
@@ -585,7 +585,7 @@ namespace EddiDataProviderService
             }
 
             // Next, try to fetch the faction from Spansh
-            faction = await spanshService.GetFactionByNameAsync( factionName, presenceSystemName );
+            faction = await spanshService.GetFactionByNameAsync( factionName, CancellationToken.None, presenceSystemName );
 
             // If we've successfully retrieved the faction then update our cache
             if ( faction != null )

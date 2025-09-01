@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -10,7 +11,8 @@ namespace EddiSpanshService
 {
     public partial class SpanshService
     {
-        public async Task<Faction> GetFactionByNameAsync (string factionName, string presenceSystemName = null)
+        public async Task<Faction> GetFactionByNameAsync ( string factionName, CancellationToken cancellationToken,
+            string presenceSystemName = null )
         {
             if ( string.IsNullOrEmpty( factionName ) ) { return null; }
 
@@ -30,7 +32,7 @@ namespace EddiSpanshService
                 int page = 0;
                 do
                 {
-                    var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, maxResultsPerPage, page);
+                    var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, cancellationToken, maxResultsPerPage, page);
                     if ( systemQueryResult != null )
                     {
                         count = count ?? systemQueryResult[ "count" ]?.ToObject<int?>();
@@ -48,7 +50,7 @@ namespace EddiSpanshService
             Faction faction = null;
             if ( systemsQueryResults.Any() )
             {
-                faction = await GetFactionBaseDataAsync( factionName, presenceSystemName, systemsQueryResults );
+                faction = await GetFactionBaseDataAsync( factionName, presenceSystemName, systemsQueryResults, cancellationToken );
 
                 // Set our faction presence data
                 if ( faction != null )
@@ -60,7 +62,7 @@ namespace EddiSpanshService
             return faction;
         }
 
-        private async Task<Faction> GetFactionBaseDataAsync( string factionName, string presenceSystemName, List<JToken> systemsQueryResults )
+        private async Task<Faction> GetFactionBaseDataAsync( string factionName, string presenceSystemName, List<JToken> systemsQueryResults, CancellationToken cancellationToken )
         {
             var controllingMinorFactionData =  systemsQueryResults.FirstOrDefault( s => s?[ "controlling_minor_faction" ]?.ToString()
                 .Equals( factionName, StringComparison.InvariantCultureIgnoreCase ) ?? false );
@@ -76,7 +78,7 @@ namespace EddiSpanshService
                     searchFilters.Add( "system_name", new { value = new[] { presenceSystemName } } );
                 }
 
-                var stationsQueryResult = (await QueryAsync( QueryGroup.stations, searchFilters, 1 ))?[ "results" ]?.FirstOrDefault();
+                var stationsQueryResult = (await QueryAsync( QueryGroup.stations, searchFilters, cancellationToken, 1 ))?[ "results" ]?.FirstOrDefault();
                 controllingMinorFactionData = stationsQueryResult;
             }
 

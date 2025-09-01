@@ -2,6 +2,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -9,8 +10,8 @@ namespace EddiSpanshService
 {
     public interface ISpanshHttpClient
     {
-        Task<HttpResponseMessage> GetAsync ( string requestUri );
-        Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content );
+        Task<HttpResponseMessage> GetAsync ( string requestUri, CancellationToken cancellationToken );
+        Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content, CancellationToken cancellationToken );
     }
 
     public partial class SpanshService
@@ -44,13 +45,13 @@ namespace EddiSpanshService
                 };
             }
 
-            public async Task<HttpResponseMessage> GetAsync ( string requestUri )
+            public async Task<HttpResponseMessage> GetAsync ( string requestUri, CancellationToken cancellationToken )
             {
                 HttpResponseMessage response = null;
 
                 for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
-                    response = await client.GetAsync( requestUri ).ConfigureAwait( false );
+                    response = await client.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                     if ( response.IsSuccessStatusCode && EnsureSuccess(response) )
                     {
                         return response;
@@ -62,13 +63,13 @@ namespace EddiSpanshService
                 return response;
             }
 
-            public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content )
+            public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content, CancellationToken cancellationToken )
             {
                 HttpResponseMessage response = null;
 
                 for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
-                    response = await client.PostAsync( requestUri, content ).ConfigureAwait( false );
+                    response = await client.PostAsync( requestUri, content, cancellationToken ).ConfigureAwait( false );
                     if ( response.IsSuccessStatusCode && EnsureSuccess( response ) )
                     {
                         return response;
@@ -81,7 +82,7 @@ namespace EddiSpanshService
             }
         }
 
-        private async Task<JToken> GetRouteResponseAsync ( string jobId )
+        private async Task<JToken> GetRouteResponseAsync ( string jobId, CancellationToken cancellationToken )
         {
             if ( string.IsNullOrEmpty( jobId ) ) { return null; }
 
@@ -90,7 +91,7 @@ namespace EddiSpanshService
             while ( routeResult is null || routeResult[ "state" ]?.ToString() == "started" )
             {
                 await Task.Delay( 500 ).ConfigureAwait( false );
-                var getResponse = await spanshHttpClient.GetAsync($"results/{jobId}").ConfigureAwait(false);
+                var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken ).ConfigureAwait( false );
                 if ( getResponse.StatusCode == HttpStatusCode.RequestTimeout )
                 {
                     Logging.Warn( $"Spansh API timeout on GET results/{jobId}" );

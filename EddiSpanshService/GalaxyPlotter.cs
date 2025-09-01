@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -17,7 +18,7 @@ namespace EddiSpanshService
             if (!fromUIquery)
             {
                 // The Spansh Galaxy Plotter uses case-sensitive system names. Use the TypeAhead API to normalize casing.
-                var wp = await GetWaypointsBySystemNameAsync( targetSystem ).ConfigureAwait( false );
+                var wp = await GetWaypointsBySystemNameAsync( targetSystem, CancellationToken.None ).ConfigureAwait( false );
                 targetSystem = wp.FirstOrDefault()?.systemName;
                 if (string.IsNullOrEmpty(targetSystem))
                 {
@@ -39,7 +40,7 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = GalaxyRouteRequest(currentSystem, targetSystem, cargoCarriedTons, fuel_power, fuel_multiplier, optimal_mass, base_mass, tank_size, internal_tank_size, max_fuel_per_jump, range_boost, is_supercharged, use_supercharge, use_injections, exclude_secondary);
-                var initialResponse = await spanshHttpClient.GetAsync(requestUri).ConfigureAwait(false);
+                var initialResponse = await spanshHttpClient.GetAsync( requestUri, CancellationToken.None ).ConfigureAwait( false );
                 initialResponse.EnsureSuccessStatusCode();
                 var responseJson = await initialResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
@@ -51,7 +52,7 @@ namespace EddiSpanshService
 
                 if ( JObject.Parse( responseJson ).TryGetValue( "job", StringComparison.OrdinalIgnoreCase, out var value ) && value.ToString() is string jobId )
                 {                
-                    var result = await GetRouteResponseAsync( jobId ).ConfigureAwait(false);
+                    var result = await GetRouteResponseAsync( jobId, CancellationToken.None ).ConfigureAwait(false);
                     if ( result is null )
                     {
                         Logging.Warn( $"Spansh API returned no route to system {targetSystem}." );

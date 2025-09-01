@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Tests.Properties;
 
@@ -198,7 +199,7 @@ namespace Tests
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/10477373803", DeserializeJsonResource<string>( Resources.SpanshStarSystemDumpSol ) );
-            var result = await fakeSpanshService.GetStarSystemAsync( 10477373803U, true ).ConfigureAwait( false );
+            var result = await fakeSpanshService.GetStarSystemAsync( 10477373803U, true, CancellationToken.None ).ConfigureAwait( false );
 
             Assert.IsNotNull( result );
             Assert.AreEqual( 10477373803U, result.systemAddress);
@@ -578,7 +579,7 @@ namespace Tests
             FakeSpanshHttpClient.Expect( @"system/10477373803", Encoding.UTF8.GetString( Resources.SpanshQuickStarSystemSol ) );
 
             // Act
-            var starSystem = await fakeSpanshService.GetQuickStarSystemAsync(10477373803U).ConfigureAwait(false);
+            var starSystem = await fakeSpanshService.GetQuickStarSystemAsync( 10477373803U, CancellationToken.None ).ConfigureAwait( false );
 
             // Assert
             Assert.AreEqual( "Sol", starSystem.systemname );
@@ -605,9 +606,9 @@ namespace Tests
             FakeSpanshHttpClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"No such faction\"]}},\"size\":500,\"page\":0}", null );
 
             // Act
-            var faction1 = await fakeSpanshService.GetFactionByNameAsync( "Radio Sidewinder Crew" );
-            var faction2 = await EDDI.Instance.DataProvider.spanshService.GetFactionByNameAsync( "No such faction" );
-            var faction3 = await EDDI.Instance.DataProvider.spanshService.GetFactionByNameAsync( null );
+            var faction1 = await fakeSpanshService.GetFactionByNameAsync( "Radio Sidewinder Crew", CancellationToken.None );
+            var faction2 = await EDDI.Instance.DataProvider.spanshService.GetFactionByNameAsync( "No such faction", CancellationToken.None );
+            var faction3 = await EDDI.Instance.DataProvider.spanshService.GetFactionByNameAsync( null, CancellationToken.None );
 
             // Assert
             Assert.IsNotNull( faction1 );

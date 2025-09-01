@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -15,15 +16,16 @@ namespace EddiSpanshService
         /// Star system waypoints ordered by system name, for use in type-ahead functions or for obtaining just the system address and coordinates of a named system.
         /// </summary>
         /// <param name="partialSystemName">At least a partial system name is required.</param>
+        /// <param name="cancellationToken">A task cancellation token.</param>
         /// <returns>A list of basic system waypoints (with just system name, system address, and coordinates) ordered by match with the provided system name</returns>
-        public async Task<List<NavWaypoint>> GetWaypointsBySystemNameAsync (string partialSystemName)
+        public async Task<List<NavWaypoint>> GetWaypointsBySystemNameAsync (string partialSystemName, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(partialSystemName)) { return new List<NavWaypoint>(); }
 
             try
             {
                 var requestUri = PrepareRequest( partialSystemName );
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri ).ConfigureAwait( false );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                 clientResponse.EnsureSuccessStatusCode();
                 var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
