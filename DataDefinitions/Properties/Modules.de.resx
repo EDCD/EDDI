@@ -314,7 +314,7 @@
     <comment>Module LightweightAlloy</comment>
   </data>
   <data name="LuxuryClassPassengerCabin" xml:space="preserve">
-    <value>Luxury-Class-Passagierkabine</value>
+    <value>Luxus-Klasse-Passagierkabine</value>
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
   <data name="ManifestScanner" xml:space="preserve">
