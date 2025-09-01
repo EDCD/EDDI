@@ -4116,6 +4116,9 @@ namespace EddiJournalMonitor
                                     var dockingAccess = JsonParsing.getString(data, "DockingAccess");
                                     var notoriousAccess = JsonParsing.getBool(data, "AllowNotorious");
                                     var fuelLevel = JsonParsing.getInt(data, "FuelLevel");
+                                    var jumpRange = JsonParsing.getOptionalDecimal( data, "JumpRangeCurr" ) ?? 500;
+                                    var jumpRangeMax = JsonParsing.getOptionalDecimal( data, "JumpRangeMax" ) ?? 500;
+                                    var pendingDecommission = JsonParsing.getOptionalBool(data, "PendingDecommission") ?? false;
 
                                     var crewSpace = 0;
                                     var cargoSpace = 0;
@@ -4148,7 +4151,7 @@ namespace EddiJournalMonitor
                                         bankAvailableBalance = JsonParsing.getLong(finance, "AvailableBalance");
                                     }
 
-                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierType, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance ) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CarrierStatsEvent(timestamp, carrierID, carrierType, carrierCallsign, carrierName, dockingAccess, notoriousAccess, fuelLevel, usedSpace, freeSpace, bankBalance, bankReservedBalance, bankAvailableBalance, jumpRange, jumpRangeMax, pendingDecommission ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

@@ -22,6 +22,7 @@ namespace EddiDataDefinitions
         private long? _nextBodyID; 
         private int _fuel;
         private int _fuelInCargo;
+        private decimal _jumpRangeMax;
         private string _state;
         private string _dockingAccess;
         private bool _notoriousAccess;
@@ -177,6 +178,19 @@ namespace EddiDataDefinitions
             {
                 if (value == _fuelInCargo) return;
                 _fuelInCargo = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        [PublicAPI( "The maximum single jump range of the carrier in light years" )]
+        public decimal jumpRangeMax
+        {
+            get => _jumpRangeMax;
+            set
+            {
+                if ( value == _jumpRangeMax )
+                    return;
+                _jumpRangeMax = value;
                 OnPropertyChanged();
             }
         }

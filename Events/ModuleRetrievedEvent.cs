@@ -30,7 +30,7 @@ namespace EddiEvents
         public string engineermodifications { get; private set; }
 
         [PublicAPI("The module (object) swapped out (if the slot was not empty)")]
-        public Module swapoutmodule { get; private set; }
+        public Module swapoutmodule { get; set; }
 
         // Not intended to be user facing
 

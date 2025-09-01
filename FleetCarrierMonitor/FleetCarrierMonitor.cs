@@ -434,7 +434,9 @@ namespace EddiFleetCarrierMonitor
                 carrier.callsign = @event.callsign;
                 carrier.dockingAccess = @event.dockingAccess;
                 carrier.notoriousAccess = @event.notoriousAccess;
+                carrier.state = @event.pendingDecommission ? "pendingDecommission" : carrier.state;
                 carrier.fuel = @event.fuel;
+                carrier.jumpRangeMax = @event.jumpRangeMax;
                 carrier.usedCapacity = @event.usedCapacity;
                 carrier.freeCapacity = @event.freeCapacity;
                 carrier.bankBalance = @event.bankBalance;

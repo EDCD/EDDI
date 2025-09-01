@@ -31,8 +31,17 @@ namespace EddiEvents
         [PublicAPI("True if the carrier currently provides docking access to notorious commanders")]
         public bool notoriousAccess { get; private set; }
 
+        [PublicAPI( "True if the carrier is currently scheduled to be decommissioned" )]
+        public bool pendingDecommission { get; set; }
+
         [PublicAPI("The current tritium fuel level of the carrier")]
         public int fuel { get; private set; }
+
+        [PublicAPI("The current single jump range of the carrier in light years")]
+        public decimal jumpRange { get; set; }
+
+        [PublicAPI( "The maximum single jump range of the carrier in light years" )]
+        public decimal jumpRangeMax { get; set; }
 
         [PublicAPI("The current total used capacity of the carrier")]
         public int usedCapacity { get; private set; }
@@ -51,7 +60,8 @@ namespace EddiEvents
 
         public CarrierStatsEvent ( DateTime timestamp, long carrierId, StationModel carrierType,
             string carrierCallsign, string carrierName, string dockingAccess, bool notoriousAccess, int fuelLevel,
-            int usedSpace, int freeSpace, long bankBalance, long bankBalanceReserved, long bankAvailableBalance ) : base(timestamp, NAME)
+            int usedSpace, int freeSpace, long bankBalance, long bankBalanceReserved, long bankAvailableBalance,
+            decimal jumpRangeCurr, decimal jumpRangeMax, bool pendingDecommission ) : base(timestamp, NAME)
         {
             // Carrier
             this.carrierID = carrierId;
@@ -60,7 +70,10 @@ namespace EddiEvents
             this.name = carrierName;
             this.dockingAccess = dockingAccess;
             this.notoriousAccess = notoriousAccess;
+            this.pendingDecommission = pendingDecommission;
             this.fuel = fuelLevel;
+            this.jumpRange = jumpRangeCurr;
+            this.jumpRangeMax = jumpRangeMax;
             this.usedCapacity = usedSpace;
             this.freeCapacity = freeSpace;
             this.bankBalance = bankBalance;
