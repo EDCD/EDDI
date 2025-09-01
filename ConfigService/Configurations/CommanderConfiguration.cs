@@ -14,7 +14,7 @@ namespace EddiConfigService.Configurations
         public string commanderName { get; set; }
 
         [JsonProperty( "credits" )]
-        public ulong? credits { get; set; }
+        public long credits { get; set; }
 
         [JsonIgnore] // This is a temporary dictionary to track status of online friends - it should not be saved to disk
         public List<Friend> friends { get; set; } = new List<Friend>();

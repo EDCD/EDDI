@@ -12,13 +12,13 @@ namespace EddiEvents
         public const string SAMPLE = "{ \"timestamp\":\"2020-03-24T15:34:46Z\", \"event\":\"CarrierBankTransfer\", \"CarrierID\":3700005632, \"Deposit\":80000, \"PlayerBalance\":717339604128, \"CarrierBalance\":3020010 }";
 
         [PublicAPI("The amount deposited with the fleet carrier")]
-        public ulong? deposit { get; private set; }
+        public long? deposit { get; private set; }
 
         [PublicAPI("The amount withdrawn from the fleet carrier")]
-        public ulong? withdrawal { get; private set; }
+        public long? withdrawal { get; private set; }
 
         [PublicAPI("Your updated credit balance")]
-        public ulong cmdrBalance { get; private set; }
+        public long cmdrBalance { get; private set; }
 
         [PublicAPI("The fleet carrier's updated credit balance")]
         public long bankBalance { get; private set; }
@@ -29,8 +29,8 @@ namespace EddiEvents
         [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
         public StationModel carrierType { get; private set; }
 
-        public CarrierBankTransferEvent ( DateTime timestamp, long carrierId, StationModel carrierType, ulong? deposit,
-            ulong? withdrawal, ulong cmdrBalance, long carrierBalance ) : base(timestamp, NAME)
+        public CarrierBankTransferEvent ( DateTime timestamp, long carrierId, StationModel carrierType, long? deposit,
+            long? withdrawal, long cmdrBalance, long carrierBalance ) : base(timestamp, NAME)
         {
             this.carrierID = carrierId;
             this.carrierType = carrierType;

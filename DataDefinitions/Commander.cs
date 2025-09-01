@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
         
         /// <summary>The number of credits the commander holds</summary>
         [PublicAPI]
-        public ulong? credits
+        public long credits
         {
             get => _credits;
             set
@@ -50,7 +50,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The amount of debt the commander owes</summary>
         [PublicAPI]
-        public ulong? debt
+        public long debt
         {
             get => _debt;
             set
@@ -279,8 +279,8 @@ namespace EddiDataDefinitions
         private ExplorationRating _explorationrating;
         private TradeRating _traderating;
         private CombatRating _combatrating;
-        private ulong? _credits;
-        private ulong? _debt;
+        private long _credits;
+        private long _debt;
 
         #region INotifyPopertyChanged
 
@@ -473,7 +473,7 @@ namespace EddiDataDefinitions
             // Update our commander object with information exclusively available from the Frontier API
             Cmdr.crimerating = frontierApiCommander.crimerating;
             Cmdr.servicerating = frontierApiCommander.servicerating;
-            Cmdr.debt = frontierApiCommander.debt ?? Cmdr.debt ?? 0;
+            Cmdr.debt = frontierApiCommander.debt;
 
             // Update our commander object with information obtainable from the journal
             // Since the parameters below only increase, we will take any that are higher in rank than we had before
@@ -496,7 +496,7 @@ namespace EddiDataDefinitions
             // A few items are also updated from the journal but may change so we check the timestamp
             if (apiTimeStamp > journalTimeStamp)
             {
-                Cmdr.credits = frontierApiCommander.credits ?? Cmdr.credits ?? 0;
+                Cmdr.credits = frontierApiCommander.credits;
                 Cmdr.squadronname = frontierApiCommander.squadronname;
                 Cmdr.squadrontag = frontierApiCommander.squadrontag;
                 Cmdr.powerrating = frontierApiCommander.powerrating;

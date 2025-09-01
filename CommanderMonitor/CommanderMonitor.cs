@@ -41,7 +41,6 @@ namespace EddiCommanderMonitor
                 OnPropertyChanged();
             }
         }
-        [CanBeNull]
         private Commander _cmdr;
 
         [CanBeNull]
@@ -103,9 +102,9 @@ namespace EddiCommanderMonitor
         [UsedImplicitly]
         public static ObservableCollection<GenderOption> GenderOptions { get; set; } = new ObservableCollection<GenderOption>
         {
-            new GenderOption { Gender = Gender.Male, DisplayName = EddiCommanderMonitor.Properties.Resources.tab_commander_gender_m },
-            new GenderOption { Gender = Gender.Female, DisplayName = EddiCommanderMonitor.Properties.Resources.tab_commander_gender_f },
-            new GenderOption { Gender = Gender.Neither, DisplayName = EddiCommanderMonitor.Properties.Resources.tab_commander_gender_n }
+            new GenderOption { Gender = Gender.Male, DisplayName = Properties.Resources.tab_commander_gender_m },
+            new GenderOption { Gender = Gender.Female, DisplayName = Properties.Resources.tab_commander_gender_f },
+            new GenderOption { Gender = Gender.Neither, DisplayName = Properties.Resources.tab_commander_gender_n }
         };
 
         #endregion region
@@ -198,8 +197,6 @@ namespace EddiCommanderMonitor
 
         #endregion
 
-        private DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
-
         private DateTime updatedAt { get; set; } = DateTime.MinValue;
 
         public string MonitorName () => "Commander monitor";
@@ -262,6 +259,10 @@ namespace EddiCommanderMonitor
             {
                 handleCarrierJumpedEvent( carrierJumpedEvent );
             }
+            else if ( @event is CommanderContinuedEvent commanderContinuedEvent )
+            {
+                handleCommanderContinuedEvent( commanderContinuedEvent );
+            }
             else if ( @event is CommanderLoadingEvent commanderLoadingEvent )
             {
                 handleCommanderLoadingEvent( commanderLoadingEvent );
@@ -319,7 +320,7 @@ namespace EddiCommanderMonitor
                 handleSquadronStatusEvent( squadronStatusEvent );
             }
 
-            JournalTimeStamp = @event.timestamp;
+            updatedAt = @event.timestamp;
         }
 
         private void handleCarrierBankTransferEvent ( CarrierBankTransferEvent @event )
@@ -350,8 +351,28 @@ namespace EddiCommanderMonitor
             }
         }
 
+        private void handleCommanderContinuedEvent ( CommanderContinuedEvent @event )
+        {
+            if ( @event.timestamp >= updatedAt )
+            {
+                lock ( commanderLock )
+                {
+                    Cmdr.name = @event.commander;
+                    Cmdr.EDID = @event.frontierID;
+                    Cmdr.credits = @event.credits;
+                    Cmdr.debt = @event.loan;
+                }
+                WriteCommander();
+            }
+        }
+
         private void handleCommanderLoadingEvent ( CommanderLoadingEvent @event )
         {
+            lock ( commanderLock )
+            {
+                Cmdr.EDID = @event.frontierID;
+            }
+
             // We need to reload the EDSM responder if the commander name has changed
             if ( ConfigService.Instance.commanderConfiguration.commanderName != @event.name )
             {
@@ -749,7 +770,7 @@ namespace EddiCommanderMonitor
             // Update our commander object
             var frontierApiProfile = FrontierApiProfile.FromJson( profile );
             var updatedCmdr = Commander.FromFrontierApiCmdr( Cmdr, frontierApiProfile.Cmdr,
-                frontierApiProfile.timestamp, JournalTimeStamp, out var cmdrMatches );
+                frontierApiProfile.timestamp, updatedAt, out var cmdrMatches );
 
             // Stop if the commander returned from the profile does not match our expected commander name
             if ( !cmdrMatches )

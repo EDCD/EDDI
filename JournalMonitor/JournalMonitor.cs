@@ -592,8 +592,8 @@ namespace EddiJournalMonitor
                                     var startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
                                     var startDead = JsonParsing.getOptionalBool(data, "StartDead");
 
-                                    var credits = (long)JsonParsing.getOptionalLong(data, "Credits");
-                                    var loan = (long)JsonParsing.getOptionalLong(data, "Loan");
+                                    var credits = JsonParsing.getOptionalLong(data, "Credits") ?? 0;
+                                    var loan = JsonParsing.getOptionalLong(data, "Loan") ?? 0;
 
                                     var fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     var fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
@@ -3750,10 +3750,10 @@ namespace EddiJournalMonitor
                                 {
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
                                     var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
-                                    var deposit = JsonParsing.getOptionalULong(data, "Deposit");
-                                    var withdrawal = JsonParsing.getOptionalULong(data, "Withdraw");
-                                    var cmdrBalance = JsonParsing.getULong(data, "PlayerBalance");
-                                    var carrierBalance = JsonParsing.getLong(data, "CarrierBalance");
+                                    var deposit = JsonParsing.getOptionalLong(data, "Deposit") ?? 0;
+                                    var withdrawal = JsonParsing.getOptionalLong(data, "Withdraw") ?? 0;
+                                    var cmdrBalance = JsonParsing.getOptionalLong(data, "PlayerBalance") ?? 0;
+                                    var carrierBalance = JsonParsing.getOptionalLong(data, "CarrierBalance") ?? 0;
                                     events.Add(new CarrierBankTransferEvent(timestamp, carrierID, carrierType, deposit, withdrawal, cmdrBalance, carrierBalance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;

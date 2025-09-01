@@ -322,7 +322,7 @@ namespace EddiDataDefinitions
         public int? fuel_seconds { get; set; }
 
         [PublicAPI( @"the current credit balance of the commander, if available." )]
-        public ulong? credit_balance { get; set; }
+        public long credit_balance { get; set; }
 
         [PublicAPI("the name of the currently selected destination (including in-system destinations)")]
         public string destination_name;

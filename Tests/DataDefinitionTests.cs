@@ -405,7 +405,7 @@ namespace Tests
             Assert.IsTrue(cmdr1Matches);
             Assert.AreEqual("Marty McFly", test1.name);
             Assert.AreEqual("Serf", test1.title);
-            Assert.AreEqual((ulong)24684, test1.debt);
+            Assert.AreEqual(24684, test1.debt);
             Assert.AreEqual(2, test1.crimerating);
             Assert.AreEqual(3, test1.combatrating.rank);
             Assert.AreEqual(3, test1.traderating.rank);
@@ -418,7 +418,7 @@ namespace Tests
             Assert.AreEqual(2, test1.crimerating);
             Assert.AreEqual(2, test1.servicerating);
             // Since the journal timestamp is greater than the api timestamp, credits and power rating are based off of the journal timestamp
-            Assert.AreEqual((ulong?)0, test1.credits);
+            Assert.AreEqual(0, test1.credits);
             Assert.AreEqual(2, test1.powerrating);
 
             // Make the api timestamp fresher than the journal timestamp and re-check the power rating and credits
@@ -426,7 +426,7 @@ namespace Tests
             var test2 = Commander.FromFrontierApiCmdr(commander, frontierApiCommander, apiDateTime, journalDateTime, out var cmdr2Matches);
             Assert.IsTrue(cmdr2Matches);
             Assert.AreEqual(3, test2.powerrating);
-            Assert.AreEqual((ulong?)246486105, test2.credits);
+            Assert.AreEqual(246486105, test2.credits);
 
             // Test Frontier API commander details that do not match our base commander name
             // The base commander properties should remain unchanged
@@ -434,8 +434,8 @@ namespace Tests
             Assert.IsFalse(cmdr3Matches);
             Assert.AreEqual("Marty McFly", test3.name);
             Assert.AreEqual("Serf", test3.title);
-            Assert.AreEqual((ulong?)0, test3.credits);
-            Assert.AreEqual((ulong?)0, test3.debt);
+            Assert.AreEqual(0, test3.credits);
+            Assert.AreEqual(0, test3.debt);
             Assert.AreEqual(0, test3.crimerating);
             Assert.AreEqual(3, test3.combatrating.rank);
             Assert.AreEqual(3, test3.traderating.rank);
