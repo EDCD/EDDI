@@ -15,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -102,22 +101,24 @@ namespace EddiSpeechResponder
 
             SpeechResponder.PersonalityChanged += PersonalityChanged;
             speechResponder.Personalities.CollectionChanged += PersonalitiesCollectionChanged;
+            
+            CheckForScriptRecovery(speechResponder);
+        }
 
-            Dispatcher.BeginInvoke(new Action(() =>
+        private void CheckForScriptRecovery (SpeechResponder speechResponder)
+        {
+            var recoveredScript = ScriptRecoveryService.ScriptRecoveryService.GetRecoveredScript();
+            if ( recoveredScript != null )
             {
-                var recoveredScript = ScriptRecoveryService.ScriptRecoveryService.GetRecoveredScript();
-                if (recoveredScript != null)
+                var messageBoxResult = MessageBox.Show(Properties.SpeechResponder.messagebox_recoveredScript,
+                    Properties.SpeechResponder.messagebox_recoveredScript_title,
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes,
+                    MessageBoxOptions.DefaultDesktopOnly);
+                if ( messageBoxResult == MessageBoxResult.Yes && speechResponder.CurrentPersonality?.Scripts != null )
                 {
-                    var messageBoxResult = MessageBox.Show(Properties.SpeechResponder.messagebox_recoveredScript,
-                        Properties.SpeechResponder.messagebox_recoveredScript_title,
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes,
-                        MessageBoxOptions.DefaultDesktopOnly);
-                    if (messageBoxResult == MessageBoxResult.Yes && speechResponder.CurrentPersonality?.Scripts != null)
-                    {
-                        OpenEditScriptWindow(speechResponder, recoveredScript, true);
-                    }
+                    OpenEditScriptWindow( speechResponder, recoveredScript, true );
                 }
-            }), DispatcherPriority.ApplicationIdle);
+            }
         }
 
         private void GetStandardVariables ()

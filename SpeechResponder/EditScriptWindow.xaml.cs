@@ -35,7 +35,7 @@ namespace EddiSpeechResponder
         private readonly Dictionary<string, Script> _scripts;
         private readonly bool isNewOrRecoveredScript;
 
-        public ScriptRecoveryService.ScriptRecoveryService ScriptRecoveryService { get; set; }
+        private ScriptRecoveryService.ScriptRecoveryService ScriptRecoveryService { get; set; }
 
 #pragma warning disable IDE0052 // Remove unused private members -- this may be used later
         private readonly DocumentHighlighter documentHighlighter;
