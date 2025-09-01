@@ -79,11 +79,7 @@ namespace EddiInaraResponder
 
         private void OnInvalidAPIkey(InaraConfiguration inaraConfiguration)
         {
-            Dispatcher.InvokeAsync( () =>
-            {
-                SetAPIKeyValidity(inaraConfiguration.isAPIkeyValid);
-            });
-
+            SetAPIKeyValidity( inaraConfiguration.isAPIkeyValid );
         }
 
         private void SetAPIKeyValidity(bool isAPIkeyValid)
@@ -96,33 +92,38 @@ namespace EddiInaraResponder
             {
                 ReportError(nameof(apiKey), Properties.InaraResources.invalidKeyErr);
             }
-            inaraApiKeyTextBox.Text = apiKey; // Forces validation to update
         }
 
-        // Implement INotifyDataErrorInfo for validation
-        public void ReportError(string propertyName, string errorMessage)
+        #region Implement INotifyDataErrorInfo for validation
+
+        private readonly Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public bool HasErrors => Errors.Count > 0;
+        
+        private void ReportError(string propertyName, string errorMessage)
         {
             if (string.IsNullOrEmpty(propertyName)) { return; }
             if (!Errors.ContainsKey(propertyName)) { Errors.Add(propertyName, new List<string>()); }
             Errors[propertyName].Add(errorMessage);
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
+        
         public IEnumerable GetErrors ( string propertyName )
         {
-            // Included to complete the implementation but never invoked.
-            throw new NotImplementedException();
+            return Errors.TryGetValue(propertyName, out var propertyErrors) ? propertyErrors : null;
         }
-        public void ClearErrors(string propertyName)
+
+        private void ClearErrors(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName) || (!HasErrors)) { return; }
             Errors.Remove(propertyName);
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
-        private readonly Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
-        public bool HasErrors => Errors.Count > 0;
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
-        // Implement INotifyPropertyChanged
+        #endregion
+
+        #region Implement INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -134,5 +135,7 @@ namespace EddiInaraResponder
         {
             Process.Start( e.Uri.ToString() );
         }
+        
+        #endregion
     }
 }
