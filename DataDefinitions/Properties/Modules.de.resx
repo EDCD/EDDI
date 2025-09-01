@@ -558,7 +558,7 @@
     <comment>Module Pulse Wave Scanner</comment>
   </data>
   <data name="SeismicCharge" xml:space="preserve">
-    <value>Seismischer Ladewerfer</value>
+    <value>Seismischer Ladungswerfer</value>
     <comment>Module Seismic Charge</comment>
   </data>
   <data name="DisplacementMissile" xml:space="preserve">
