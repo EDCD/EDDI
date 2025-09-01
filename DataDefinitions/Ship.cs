@@ -55,11 +55,24 @@ namespace EddiDataDefinitions
             .Sum( m =>
             {
                 // The cargo capacity is calculated using a shift operator (`<<`), equiv to 2^(@class), calculated as an integer.
+                var capacity = 1 << m.@class; // 2^(@class)
+
+                // Some modules include an engineering modification which further increases their capacity. 
+                foreach ( var modifier in m.modifiers )
+                {
+                    if ( modifier.EDName.Equals( "CargoCapacity", StringComparison.OrdinalIgnoreCase ) )
+                    {
+                        capacity = Convert.ToInt32( modifier.currentValue );
+                        break;
+                    }
+                }
+
                 // Special "LargeCargoRack" modules (e.g. available for the Panther Clipper Mk. II) have a 50% bonus to their capacity.
-                var baseCapacity = 1 << m.@class; // 2^(@class)
-                return m.edname.Contains( "LargeCargoRack", StringComparison.InvariantCultureIgnoreCase )
-                    ? (int)Math.Round( baseCapacity * 1.5 )
-                    : baseCapacity;
+                capacity = m.edname.Contains( "LargeCargoRack", StringComparison.InvariantCultureIgnoreCase )
+                    ? (int)Math.Round( capacity * 1.5 )
+                    : capacity;
+                
+                return capacity;
             } );
         
         /// <summary>the value of the ship without cargo, in credits</summary>

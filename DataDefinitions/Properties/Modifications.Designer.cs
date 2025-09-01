@@ -313,6 +313,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expanded Cargo Rack.
+        /// </summary>
+        public static string CargoRackIncreasedCapacity {
+            get {
+                return ResourceManager.GetString("CargoRackIncreasedCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fast Cargo Scanner.
         /// </summary>
         public static string CargoScannerFastScan {

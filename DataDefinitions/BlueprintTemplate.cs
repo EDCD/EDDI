@@ -487,6 +487,10 @@ namespace EddiDataDefinitions
             {
                 { 1, new List<MaterialAmount>() { new MaterialAmount( Material.HardenedSurfaceFragments, 2), new MaterialAmount( Material.CausticCrystal, 1 ), new MaterialAmount( Material.TacticalCoreChip, 1 ) } }
             } );
+            _ = new BlueprintTemplate( "CargoRackIncreasedCapacity", new Dictionary<int, List<MaterialAmount>>()
+            {
+                { 5, new List<MaterialAmount>() }
+            } );
         }
         public static readonly BlueprintTemplate None;
 
