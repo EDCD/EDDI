@@ -394,7 +394,7 @@
     <comment>Module PrismaticShieldGenerator</comment>
   </data>
   <data name="ProspectorLimpetController" xml:space="preserve">
-    <value>Steuerung Erzsucherdrohnen</value>
+    <value>Steuerung Erzsuche-Drohne</value>
     <comment>Module ProspectorLimpetController</comment>
   </data>
   <data name="PulseLaser" xml:space="preserve">
