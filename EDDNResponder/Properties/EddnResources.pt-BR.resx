@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Envia informações de estações, saltos e scans para o EDDN. EDDN é uma ferramenta de terceiros que reúne informações sobre sistemas e mercados, e fornece dados para a maioria das ferramentas de negociação, bem como para ferramentas de informações de sistemas estelares, como o EDDB.</value>
+    <value>Envie informações de estação, salto e varredura para a EDDN. A EDDN é uma ferramenta de terceiros que reúne informações sobre sistemas e mercados e fornece dados para a maioria das ferramentas de negociação, bem como para ferramentas de informações do sistema star, como inara.cz e spansh.co.uk.</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Relator do EDDN</value>
