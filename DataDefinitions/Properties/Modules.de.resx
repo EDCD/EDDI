@@ -214,7 +214,7 @@
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
   <data name="Disruptor" xml:space="preserve">
-    <value>Disruptor</value>
+    <value>Impulsunterbrecherlaser</value>
     <comment>Module Disruptor</comment>
   </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
@@ -294,7 +294,7 @@
     <comment>Module HullReinforcementPackage</comment>
   </data>
   <data name="ImperialHammer" xml:space="preserve">
-    <value>Imperialer Hammer</value>
+    <value>Der Imperiale Hammer</value>
     <comment>Module ImperialHammer</comment>
   </data>
   <data name="IntermediateDiscoveryScanner" xml:space="preserve">
@@ -334,7 +334,7 @@
     <comment>Module MineLauncher</comment>
   </data>
   <data name="MiningLance" xml:space="preserve">
-    <value>Lanzenabbaulaser</value>
+    <value>Lanzenstrahlabbaulaser</value>
     <comment>Module MiningLance</comment>
   </data>
   <data name="MiningLaser" xml:space="preserve">
@@ -362,7 +362,7 @@
     <comment>Module Pacifier</comment>
   </data>
   <data name="Pack_Hound" xml:space="preserve">
-    <value>Schwarmwerfer</value>
+    <value>Schwarmraketenwerfer</value>
     <comment>Module Pack_Hound</comment>
   </data>
   <data name="PlanetaryApproachSuite" xml:space="preserve">
