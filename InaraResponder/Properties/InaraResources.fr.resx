@@ -126,13 +126,14 @@
   <data name="name" xml:space="preserve">
     <value>Répondeur Inara</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>Pour vous connecter à Inara, vous devez avoir un compte sur le site. Ceci fait, vous pouvez obtenir votre clé API en cliquant sur l'onglet "PARAMÈTRES" dans l'en-tête du site Web, puis en cliquant sur "API INARA" dans le panneau de gauche.</value>
-  </data>
+  
   <data name="p2" xml:space="preserve">
     <value>Une fois que vous avez entré votre clé API, EDDI commencera à transmettre les données de la session de jeu à Inara.</value>
   </data>
   <data name="invalidKeyErr" xml:space="preserve">
     <value>Veuillez saisir une clé d'API Inara valide.</value>
   </data>
+  
+  
+  
 </root>
