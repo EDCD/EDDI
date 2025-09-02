@@ -126,25 +126,14 @@
   <data name="name" xml:space="preserve">
     <value>Relator do Inara</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>Para se conectar ao Inara você precisa ter registrado uma conta com ele. Depois de ter feito isso, você pode obter sua chave de API navegando até</value>
-  </data>
+  
   <data name="p2" xml:space="preserve">
     <value>Uma vez que você inseriu sua chave de API, o EDDI começará a transmitir as sessões de jogo para o Inara.</value>
   </data>
   <data name="invalidKeyErr" xml:space="preserve">
     <value>Por favor, insira uma chave de API válida do Inara.</value>
   </data>
-  <data name="p1_2" xml:space="preserve">
-    <value>e depois clicando em</value>
-    <comment>Continuation of p1 (after linking to Inara commander settings)</comment>
-  </data>
-  <data name="cmdrSettings" xml:space="preserve">
-    <value>'Configurações de Comandante'</value>
-    <comment>The name of the localized `Commander settings` menu option on Inara.cz</comment>
-  </data>
-  <data name="apiSettings" xml:space="preserve">
-    <value>'CONFIGURAÇÕES DE API'.</value>
-    <comment>The name of the API SETTINGS menu item in the localized Inara.cz Commander settings</comment>
-  </data>
+  
+  
+  
 </root>
