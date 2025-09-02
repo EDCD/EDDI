@@ -145,7 +145,6 @@
   </data>
   <data name="done" xml:space="preserve">
     <value>好了</value>
-    <comment>Logs have been compressed and prepared for export (after clicking the button on EDDI's main tab to report an issue)</comment>
   </data>
   <data name="downloading_upgrade" xml:space="preserve">
     <value>正在下载更新包。</value>
@@ -193,13 +192,13 @@
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>指挥官 {0}，您已关联到Frontier API</value>
+    <comment>`{0}` in this string is replaced by the commander's name.</comment>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>请验证 EDDI 与 Frontier API 的关联状态</value>
   </data>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>关联已重置</value>
-    <comment>The Frontier API connection has been reset</comment>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>如果您要使用VoiceAttack，为了使改动生效，在启动VoiceAttack前请先关闭本窗口。您可以在 VoiceAttack中通过命令 'Configure EDDI'来访问本窗口。</value>
