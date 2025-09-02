@@ -126,13 +126,14 @@
   <data name="name" xml:space="preserve">
     <value>Inara Responder</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>Inaraに接続するには、アカウントを登録する必要があります。 これが完了したら、ウェブサイトヘッダーの'SETTINGS'ショートカットをクリックし、左パネルの’INARA API'をクリックして、APIキーを取得できます。</value>
-  </data>
+  
   <data name="p2" xml:space="preserve">
     <value>APIキーを入力すると、EDDIはゲームセッションデータのInaraへの送信を開始します。</value>
   </data>
   <data name="invalidKeyErr" xml:space="preserve">
     <value>有効なInara APIキーを入力してください。</value>
   </data>
+  
+  
+  
 </root>
