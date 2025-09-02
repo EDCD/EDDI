@@ -185,5 +185,8 @@
     <value>Planetare Baustelle</value>
     <comment>Planetary Construction Site station model</comment>
   </data>
-  
+  <data name="SquadronCarrier" xml:space="preserve">
+    <value>Squadron Carrier</value>
+    <comment>A Squadron Carrier</comment>
+  </data>
 </root>
