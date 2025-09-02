@@ -149,6 +149,10 @@
     <value>Rohstoffabbau</value>
     <comment>SignalType "ResourceExtraction"</comment>
   </data>
+  <data name="SquadronCarrier" xml:space="preserve">
+    <value>Squadron Carrier</value>
+    <comment>SignalType "SquadronCarrier"</comment>
+  </data>
   <data name="StationAsteroid" xml:space="preserve">
     <value>Asteroidenstation</value>
     <comment>SignalType "StationAsteroid"</comment>
