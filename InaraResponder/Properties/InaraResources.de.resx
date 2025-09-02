@@ -126,13 +126,14 @@
   <data name="name" xml:space="preserve">
     <value>_Info an INARA</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>Um sich mit Inara verbinden zu können, brauchen Sie ein Konto bei Inara. Nachdem Sie dieses Konto erstellt und sich eingeloggt haben, finden sie Ihren API-Schlüssel, indem Sie im Menü "COMMANDER" auf "Commander settings" gehen/klicken und dann auf der rechten Seite "API SETTINGS" auswählen.</value>
-  </data>
+  
   <data name="p2" xml:space="preserve">
     <value>Sobald Sie Ihren API-Schlüssel eingegeben haben, beginnt EDDI die Daten der Spielsitzung an Inara zu übertragen.</value>
   </data>
   <data name="invalidKeyErr" xml:space="preserve">
     <value>Bitte geben Sie einen gültigen API-Schlüssel von Inara ein.</value>
   </data>
+  
+  
+  
 </root>
