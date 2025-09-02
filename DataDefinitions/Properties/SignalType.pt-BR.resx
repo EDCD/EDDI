@@ -149,6 +149,10 @@
     <value>Ponto de Extração de Recursos</value>
     <comment>SignalType "ResourceExtraction"</comment>
   </data>
+  <data name="SquadronCarrier" xml:space="preserve">
+    <value>Porta-Frota da Esquadra</value>
+    <comment>SignalType "SquadronCarrier"</comment>
+  </data>
   <data name="StationAsteroid" xml:space="preserve">
     <value>Estação</value>
     <comment>SignalType "StationAsteroid"</comment>
