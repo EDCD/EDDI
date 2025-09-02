@@ -160,7 +160,7 @@ namespace EddiFleetCarrierMonitor
         private bool CarrierTimestampIsValid( DateTime timestamp, FleetCarrier carrier )
         {
             // We only want to update the carrier objects with new events
-            return timestamp < carrier?.timestamp;
+            return timestamp >= carrier?.timestamp;
         }
 
         private FleetCarrier GetOrCreateCarrier ( long carrierId, StationModel carrierType )
@@ -522,61 +522,64 @@ namespace EddiFleetCarrierMonitor
             {
                 if ( cjr.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
                 }
                 else if ( cjr.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
                 }
             }
             else if ( @event is CarrierJumpEngagedEvent cje )
             {
                 if ( cje.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
                 }
                 else if ( cje.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
                 }
             }
             else if ( @event is CarrierJumpedEvent cj )
             {
                 if ( cj.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
                 }
                 else if ( cj.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
                 }
             }
             else if ( @event is CarrierPurchasedEvent cp )
             {
                 if ( cp.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
                 }
                 else if ( cp.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
                 }
             }
             else if ( @event is CarrierStatsEvent cs )
             {
                 if ( cs.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
                 }
                 else if ( cs.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
                 }
             }
             else if ( @event is CommanderContinuedEvent )
             {
-                Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
-                Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() ).ConfigureAwait( false );
+                Task.Run( async () =>
+                {
+                    await RefreshFleetCarrierFromFrontierAPIAsync();
+                    await RefreshSquadronCarrierFromFrontierAPIAsync();
+                } );
             }
         }
 
@@ -606,7 +609,11 @@ namespace EddiFleetCarrierMonitor
             if ( oldstate != CompanionAppService.State.Authorized &&
                  newstate is CompanionAppService.State.Authorized )
             {
-                Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync( true ) ).ConfigureAwait( false );
+                Task.Run( async () =>
+                {
+                    await RefreshFleetCarrierFromFrontierAPIAsync( true );
+                    await RefreshSquadronCarrierFromFrontierAPIAsync( true );
+                } ).ConfigureAwait( false );
             }
         }
 
@@ -708,7 +715,7 @@ namespace EddiFleetCarrierMonitor
 
                 ConfigService.Instance.fleetCarrierConfiguration = new FleetCarrierConfiguration
                 {
-                    fleetCarrier = FleetCarrier, squadronCarrier = SquadronCarrier
+                    fleetCarrier = FleetCarrier.Copy(), squadronCarrier = SquadronCarrier.Copy()
                 };
             }
         }
