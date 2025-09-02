@@ -126,13 +126,14 @@
   <data name="name" xml:space="preserve">
     <value>Relator do Inara</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>Para conectar ao Inara você precisa ter se registrado com eles. Uma vez que tenha feito isso, você pode obter sua chave de API clicando em 'SETTINGS' no menu superior do site, depois clicando em 'INARA API' no menu da esquerda.</value>
-  </data>
+  
   <data name="p2" xml:space="preserve">
     <value>Uma vez que você inseriu sua chave de API, o EDDI começará a transmitir as sessões de jogo para o Inara.</value>
   </data>
   <data name="invalidKeyErr" xml:space="preserve">
     <value>Por favor, insira uma chave de API válida do Inara.</value>
   </data>
+  
+  
+  
 </root>
