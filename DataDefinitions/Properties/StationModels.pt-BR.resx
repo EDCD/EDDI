@@ -185,5 +185,8 @@
     <value>Local de Construção Planetária</value>
     <comment>Planetary Construction Site station model</comment>
   </data>
-  
+  <data name="SquadronCarrier" xml:space="preserve">
+    <value>Porta-Frota da Esquadra</value>
+    <comment>A Squadron Carrier</comment>
+  </data>
 </root>
