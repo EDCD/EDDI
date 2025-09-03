@@ -305,5 +305,8 @@
     <value>Servizi di costruzione</value>
     <comment>Station Service: ColonisationContribution</comment>
   </data>
-  
+  <data name="SquadronBank" xml:space="preserve">
+    <value>Banca di Squadrone</value>
+    <comment>Station Service: squadronBank</comment>
+  </data>
 </root>
