@@ -177,6 +177,9 @@
   <data name="tab_commander_squadron_system" xml:space="preserve">
     <value>Sistema Squadrone:</value>
   </data>
+  <data name="tab_commander_squadron_tag" xml:space="preserve">
+    <value>Tag di Squadrone:</value>
+  </data>
   <data name="tab_commander_test_phonetic_name" xml:space="preserve">
     <value>Ascoltalo</value>
   </data>
