@@ -2866,7 +2866,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "ModuleBuy":
-                                {
+                                handled = ModulePurchasedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                     var marketId = JsonParsing.getLong(data, "MarketID");
                                     data.TryGetValue("ShipID", out var val);
                                     var shipId = (int)(long)val;

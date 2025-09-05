@@ -1903,7 +1903,7 @@
 			"responder": true,
 			"script": "Você comprou um {event.buymodule.class}-{event.buymodule.grade}\r\n\r\n{event.buymodule.name} \r\n{if type(event.buymodule.mount) != \"void\":\r\n    {for index, value in event.buymodule.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixo\r\n    |elif mount = 1:\r\n        guiado\r\n    |elif mount = 2:\r\n        torreta\r\n    }\r\n}\r\npor {event.buyprice} créditos\r\n\r\n{if type(event.sellmodule) != \"void\":\r\n    , e vendeu um {event.sellmodule.class}-{event.sellmodule.grade}\r\n\r\n    {event.sellmodule.name}\r\n    {if type(event.sellmodule.mount) != \"void\":\r\n        {for index, value in event.sellmodule.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixo\r\n        |elif mount = 1:\r\n            guiado\r\n       |elif mount = 2:\r\n            torreta\r\n        }\r\n    }   \r\n    por {event.sellprice} créditos\r\n\r\n|elif type(event.storedmodule) != \"void\":\r\n    , e armazenou um {event.storedmodule.class}-{event.storedmodule.grade}\r\n\r\n    {event.storedmodule.name}\r\n    {if type(event.storedmodule.mount) != \"void\":\r\n        {for index, value in event.storedmodule.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixo\r\n        |elif mount = 1:\r\n            guiado\r\n       |elif mount = 2:\r\n            torreta\r\n        }\r\n    }    \r\n}\r\n\r\n",
 			"name": "Module purchased",
-			"description": "Triggered when you purchase a module in outfitting",
+			"description": "Triggered when you purchase a module in outfitting to install on your ship",
 			"default": true
 		},
 		"Module retrieved": {
