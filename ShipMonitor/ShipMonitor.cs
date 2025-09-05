@@ -847,7 +847,12 @@ namespace EddiShipMonitor
                 updatedAt = @event.timestamp;
                 var ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? @event.shipid : ship.LocalId;
-                AddModule(ship, @event.slot, @event.module);
+                var swappedModule = GetModule( ship, @event.slot );
+                if ( swappedModule != null && swappedModule.edname == @event.swapoutmodule?.edname )
+                {
+                    @event.swapoutmodule = swappedModule;
+                }
+                AddModule( ship, @event.slot, @event.module );
                 if (!@event.fromLoad) { writeShips(); }
             }
         }
@@ -936,6 +941,10 @@ namespace EddiShipMonitor
                         var toModule = toHardpoint.module;
                         fromHardpoint.module = toModule;
                         toHardpoint.module = fromModule;
+
+                        // Enrich the event module data
+                        @event.frommodule = fromHardpoint.module;
+                        @event.tomodule = toHardpoint.module;
                     }
                     else //Module is a compartment
                     {
@@ -967,6 +976,10 @@ namespace EddiShipMonitor
                         var toModule = toCompartment?.module;
                         fromCompartment.module = toModule;
                         toCompartment.module = fromModule;
+
+                        // Enrich the event module data
+                        @event.frommodule = fromCompartment.module;
+                        @event.tomodule = toCompartment.module;
                     }
 
                     updatedAt = @event.timestamp;
@@ -1695,6 +1708,61 @@ namespace EddiShipMonitor
             }
         }
 
+        private static Module GetModule ( Ship ship, string slot )
+        {
+            if ( ship != null && slot != null )
+            {
+                try
+                {
+                    lock ( shipyardLock )
+                    {
+                        switch ( slot )
+                        {
+                            case "Armour":
+                                return ship.bulkheads;
+                            case "PowerPlant":
+                                return ship.powerplant;
+                            case "MainEngines":
+                                return ship.thrusters;
+                            case "PowerDistributor":
+                                return ship.powerdistributor;
+                            case "FrameShiftDrive":
+                                return ship.frameshiftdrive;
+                            case "LifeSupport":
+                                return ship.lifesupport;
+                            case "Radar":
+                                return ship.sensors;
+                            case "FuelTank":
+                                return ship.fueltank;
+                            case "CargoHatch":
+                                return ship.cargohatch;
+                        }
+
+                        if ( slot.Contains( "Hardpoint" ) )
+                        {
+                            return ship.hardpoints.FirstOrDefault( h => h.name.Equals( slot, StringComparison.OrdinalIgnoreCase ) )?.module;
+                        }
+                        if ( slot.Contains( "Slot" ) || slot.Contains( "Military" ) )
+                        {
+                            // This is a compartment
+                            return ship.compartments.FirstOrDefault( c => c.name == slot )?.module;
+                        }
+                    }
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( $"Failed to retrive module from ship {ship.LocalId} in slot {slot}.", ex );
+                    throw;
+                }
+            }
+            else
+            {
+                throw new ArgumentException( $"Cannot add the module. Ship ID {ship?.LocalId} or ship slot {slot} was not found." );
+            }
+
+            return null;
+        }
+        
         private static void sortCompartments(Ship ship)
         {
             try

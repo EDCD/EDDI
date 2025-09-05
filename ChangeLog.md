@@ -25,6 +25,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Carrier purchased` updated to include `carrierID` and `carrierType` fields.
     * `Carrier service changed` updated to include `carrierID` and `carrierType` fields.
     * `Carrier stats` updated to include `carrierID`, `carrierType`, `jumpRange`, `jumpRangeMax`, and `pendingDecommission` fields.
+    * `Module retrieved` updated to include engineering data in module value. 
+    * `Module swapped` updated to include engineering data in module values. 
     * `Squadron rank` updated to include new Squadron rank objects and the new `squadronID` integer.
     * `Squadron startup` updated to include a new Squadron rank object and the new `squadronID` integer.
     * `Squadron status` updated to include the new `squadronID` integer.

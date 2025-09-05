@@ -21,13 +21,13 @@ namespace EddiEvents
         public string fromslot { get; private set; }
 
         [PublicAPI("The module (object) from which the swap was initiated")]
-        public Module frommodule { get; private set; }
+        public Module frommodule { get; set; }
 
         [PublicAPI("The slot to which the swap was finalised")]
         public string toslot { get; private set; }
 
         [PublicAPI("The module (object) to which the swap was finalised")]
-        public Module tomodule { get; private set; }
+        public Module tomodule { get; set; }
 
         // Not intended to be user facing
 
