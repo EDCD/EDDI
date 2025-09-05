@@ -2867,30 +2867,9 @@ namespace EddiJournalMonitor
                                 break;
                             case "ModuleBuy":
                                 handled = ModulePurchasedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
-                                    var marketId = JsonParsing.getLong(data, "MarketID");
-                                    data.TryGetValue("ShipID", out var val);
-                                    var shipId = (int)(long)val;
-                                    var ship = JsonParsing.getString(data, "Ship");
-
-                                    var slot = JsonParsing.getString(data, "Slot");
-                                    var buyModule = Module.FromEDName(JsonParsing.getString(data, "BuyItem"));
-                                    data.TryGetValue("BuyPrice", out val);
-                                    var buyPrice = (long)val;
-                                    buyModule.price = buyPrice;
-
-                                    // Set retrieved module defaults
-                                    buyModule.enabled = true;
-                                    buyModule.priority = 1;
-                                    buyModule.health = 100;
-                                    buyModule.modified = false;
-
-                                    var sellModule = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
-                                    var sellPrice = JsonParsing.getOptionalLong(data, "SellPrice");
-                                    var storedModule = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
-
-                                    events.Add(new ModulePurchasedEvent(timestamp, ship, shipId, slot, buyModule, buyPrice, sellModule, sellPrice, storedModule, marketId) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                break;
+                            case "ModuleBuyAndStore":
+                                handled = ModulePurchasedToStorageEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "ModuleRetrieve":
                                 {
@@ -5243,7 +5222,6 @@ namespace EddiJournalMonitor
                             // we silently ignore these, but forward them to the responders
                             case "CodexDiscovery":
                             case "CodexEntry":
-                            case "ModuleBuyAndStore":
                             case "RestockVehicle":
                             case "ScanOrganic":
                             case "SellMicroResources":

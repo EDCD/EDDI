@@ -25,6 +25,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Carrier purchased` updated to include `carrierID` and `carrierType` fields.
     * `Carrier service changed` updated to include `carrierID` and `carrierType` fields.
     * `Carrier stats` updated to include `carrierID`, `carrierType`, `jumpRange`, `jumpRangeMax`, and `pendingDecommission` fields.
+    * `Module purchased to storage` added.
     * `Module retrieved` updated to include engineering data in module value. 
     * `Module swapped` updated to include engineering data in module values. 
     * `Squadron rank` updated to include new Squadron rank objects and the new `squadronID` integer.
@@ -48,6 +49,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 	  * However certain combos such as Ctrl+C and Ctrl+Alt+Del are reserved by the operating system.
     * Fixed a bug causing new scripts to not be editable until EDDI is restarted.
     * Scripts Updated
+      * `Module purchased to storage` added.
       * `Power commodity delivered`, `Power commodity obtained`, `Power micro resources collected` and `Power micro resources delivered` updated to more gracefully handle collecting or delivering a single unit of a powerplay commodity or micro resource. 
       * `Signal Detected` updated to fix a bug that could cause non-unique signal sources to be vocalized (when not in fss or saa mode).
     * VoiceAttack
