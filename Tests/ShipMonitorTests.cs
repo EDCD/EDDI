@@ -309,7 +309,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestModuleSwappedEvent()
         {
-            var line = @"{ ""timestamp"":""2018 - 06 - 29T02: 38:30Z"", ""event"":""ModuleSwap"", ""MarketID"":128132856, ""FromSlot"":""Slot06_Size3"", ""ToSlot"":""Slot07_Size3"", ""FromItem"":""$int_stellarbodydiscoveryscanner_advanced_name;"", ""FromItem_Localised"":""D - Scanner"", ""ToItem"":""Null"", ""Ship"":""krait_mkii"", ""ShipID"":81 }";
+            var line = @"{ ""timestamp"":""2018 - 06 - 29T02: 38:30Z"", ""event"":""ModuleSwap"", ""MarketID"":128132856, ""FromSlot"":""Slot06_Size3"", ""ToSlot"":""Slot07_Size3"", ""FromItem"":""$int_stellarbodydiscoveryscanner_advanced_name;"", ""FromItem_Localised"":""D - Scanner"", ""ToItem"":""Null"", ""Ship"":""krait_mkii"", ""ShipID"":819 }";
             var events = JournalMonitor.ParseJournalEntry(line);
             var @event = (ModuleSwappedEvent)events[0];
 
@@ -320,7 +320,7 @@ namespace Tests
             Assert.AreEqual("advanced discovery scanner", @event.frommodule.invariantName.ToLowerInvariant());
             Assert.IsNull(@event.tomodule);
             Assert.AreEqual("Krait Mk. II", @event.ship);
-            Assert.AreEqual(81, @event.shipid);
+            Assert.AreEqual(819, @event.shipid);
 
             var shipMonitor = new ShipMonitor { updatedAt = DateTime.MinValue };
             shipMonitor.shipyard.Clear();

@@ -943,8 +943,8 @@ namespace EddiShipMonitor
                         toHardpoint.module = fromModule;
 
                         // Enrich the event module data
-                        @event.frommodule = fromHardpoint.module;
-                        @event.tomodule = toHardpoint.module;
+                        @event.frommodule = fromModule ?? @event.frommodule;
+                        @event.tomodule = toModule ?? @event.tomodule;
                     }
                     else //Module is a compartment
                     {
@@ -978,8 +978,8 @@ namespace EddiShipMonitor
                         toCompartment.module = fromModule;
 
                         // Enrich the event module data
-                        @event.frommodule = fromCompartment.module;
-                        @event.tomodule = toCompartment.module;
+                        @event.frommodule = fromModule ?? @event.frommodule;
+                        @event.tomodule = toModule ?? @event.tomodule;
                     }
 
                     updatedAt = @event.timestamp;
