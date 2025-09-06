@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Odesílat informace o stanicích, skocích a skenech do EDDN. EDDN je aplikace třetí-strany která shromažďuje informace o systémech a trzích a tyto data zpřístupňuje většině obchodních nástrojů, stejně tak poskytuje data o hvězdných systémech nástrojům jako je EDDB.</value>
+    <value>Odesílat informace o stanicích, skocích a skenech do EDDN. EDDN je aplikace třetí-strany která shromažďuje informace o systémech a trzích a tyto data zpřístupňuje většině obchodních nástrojů, stejně tak poskytuje data o hvězdných systémech nástrojům jako je inara.cz a spansh.co.uk.</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>EDDN odpovídač</value>
