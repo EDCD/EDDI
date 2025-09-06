@@ -117,23 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="api_key_label" xml:space="preserve">
-    <value>API-Schlüssel:</value>
+  <data name="monitorDescription" xml:space="preserve">
+    <value>Dieser Monitor verfolgt Änderungen zu Ihrem Flottenträger, falls zutreffend.</value>
   </data>
-  <data name="desc" xml:space="preserve">
-    <value>Sendet Ihre Reiseinformationen an Inara (https://inara.cz). Inara ist ein Drittanbieter-Tool, das Informationen über die Mitglieder der Pilots Federation bereitstellt und ein teilbares Profil erstellt, das Ihren eigenen Status und Ihre eigenen Leistungen beschreibt. </value>
+  <data name="monitorName" xml:space="preserve">
+    <value>'Überwachung des FC'</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>_Info an INARA</value>
-  </data>
-  
-  <data name="p2" xml:space="preserve">
-    <value>Sobald Sie Ihren API-Schlüssel eingegeben haben, beginnt EDDI die Daten der Spielsitzung an Inara zu übertragen.</value>
-  </data>
-  <data name="invalidKeyErr" xml:space="preserve">
-    <value>Bitte geben Sie einen gültigen API-Schlüssel von Inara ein.</value>
-  </data>
-  
-  
-  
 </root>

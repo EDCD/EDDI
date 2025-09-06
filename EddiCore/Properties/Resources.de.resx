@@ -145,6 +145,10 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="download_failed" xml:space="preserve">
     <value>Download fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
   </data>
+  <data name="hotkey_action_label" xml:space="preserve">
+    <value>Aktion:</value>
+    <comment>Label for the dropdown menu of actions</comment>
+  </data>
   <data name="hotkey_cancel_button" xml:space="preserve">
     <value>Abbrechen</value>
   </data>

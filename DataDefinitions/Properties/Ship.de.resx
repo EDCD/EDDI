@@ -295,5 +295,8 @@ If transporting via taxi or dropship</comment>
     <comment>e.g. *your* Mandalay</comment>
   </data>
   
-  
+  <data name="yourPantherClipperMkII" xml:space="preserve">
+    <value>dein</value>
+    <comment>e.g. *your* Panther Clipper Mk. II</comment>
+  </data>
 </root>
