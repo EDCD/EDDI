@@ -117,9 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="desc" xml:space="preserve">
-    <value>向 EDDN 发送站点、跃迁和扫描信息。 EDDN是收集星系和市场信息的第三方工具，为大多数提供交易和星系信息的工具（如EDDB等）提供数据。</value>
-  </data>
+  
   <data name="name" xml:space="preserve">
     <value>EDDN 响应器</value>
   </data>
