@@ -1,7 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace EddiConfigService.Configurations
 {
@@ -9,7 +9,7 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\missionmonitor.json")]
     public class MissionMonitorConfiguration : Config
     {
-        public ObservableCollection<Mission> missions { get; set; } = new ObservableCollection<Mission>();
+        public List<Mission> missions { get; set; } = new List<Mission>();
 
         public DateTime updatedat { get; set; }
 

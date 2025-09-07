@@ -960,7 +960,7 @@ namespace EddiMissionMonitor
             {
                 // Write bookmarks configuration with current list
                 var missionsConfig = ConfigService.Instance.missionMonitorConfiguration;
-                missionsConfig.missions = missions;
+                missionsConfig.missions = missions.ToList();
                 missionsConfig.goalsCount = missions.Count(m => m.communal);
                 missionsConfig.missionsCount = missions.Count(m => !m.shared && !m.communal);
                 missionsConfig.missionWarning = missionWarning;

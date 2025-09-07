@@ -3,13 +3,14 @@ using EddiDataDefinitions;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Utilities;
 
 namespace EddiConfigService
@@ -105,59 +106,71 @@ namespace EddiConfigService
 
         private T GetConfig<T> ( string key, bool clone = true ) where T : Config
         {
-            lock ( configurationsLock )
+            configurationsLock.EnterReadLock();
+            try
             {
-                // Return a clone of the configuration object to keep the original immutable
-                return clone ? currentConfigs[ key ].Clone<T>() : currentConfigs[ key ] as T;
+                if ( currentConfigs.TryGetValue( key, out var configVal ) )
+                {
+                    return clone ? configVal.Clone<T>() : configVal as T;
+                }
             }
+            finally
+            {
+                configurationsLock.ExitReadLock();
+            }
+
+            return null;
         }
 
         private void SetConfig<T> ( string key, T value ) where T : Config
         {
-            lock ( configurationsLock )
+            configurationsLock.EnterWriteLock();
+            try
             {
+                var current = currentConfigs.TryGetValue(key, out var configVal) ? configVal as T : null;
                 // Check for equality and only raise a change event if the value has changed
-                if ( !GetConfig<T>( key, false ).DeepEquals( value ) )
+                if ( current == null || !current.DeepEquals( value ) )
                 {
-                    currentConfigs[ key ] = value;
+                    currentConfigs = currentConfigs.SetItem( key, value );
                     OnPropertyChanged( key );
                 }
+            }
+            finally
+            {
+                configurationsLock.ExitWriteLock();
             }
         }
 
         /// <summary>Reads configurations from the specified data directory</summary>
-        private ConcurrentDictionary<string, Config> ReadConfigurations ( string directory = null )
+        private ImmutableDictionary<string, Config> ReadConfigurations ( string directory = null )
         {
             if ( string.IsNullOrEmpty( directory ) )
             {
                 directory = GetDataDirectory( commanderFID );
             }
-            var configs = new ConcurrentDictionary<string, Config>(
-                GetConfigTypes().ToDictionary(
+
+            var configs = GetConfigTypes()
+                .ToImmutableDictionary(
                     t => t.Name,
                     t => (Config)typeof(ConfigService)
                         .GetMethod("FromFile", BindingFlags.NonPublic | BindingFlags.Static)
                         ?.MakeGenericMethod(t)
                         .Invoke(null, new object[] { directory })
-                )
-            );
+                );
+
             ConvertLegacyConfigData( configs );
             return configs;
-
-            IEnumerable<Type> GetConfigTypes ()
-            {
-                return Assembly.GetExecutingAssembly()
-                    .GetTypes()
-                    .Where( t => t.IsSubclassOf( typeof( Config ) ) && t.GetCustomAttribute<RelativePathAttribute>() != null );
-            }
         }
 
-        private void ConvertLegacyConfigData(ConcurrentDictionary<string, Config> configs)
+        private void ConvertLegacyConfigData(ImmutableDictionary<string, Config> configs)
         {
             // Convert legacy data saved in the EDDI configuration to the Commander configuration
-            if ( configs[ nameof( CommanderConfiguration ) ] is CommanderConfiguration commanderConfig )
+            if ( configs.TryGetValue( nameof( CommanderConfiguration ), out var commanderConfigVal ) &&
+                 commanderConfigVal is CommanderConfiguration commanderConfig )
             {
-                if (configs[ nameof( EDDIConfiguration ) ]._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData)
+                if (configs.TryGetValue( nameof( EDDIConfiguration ), out var eddiConfigVal ) && 
+                    eddiConfigVal is EDDIConfiguration eddiConfig && 
+                    eddiConfig._additionalData is IDictionary<string, JToken> eddiConfigAdditionalData)
                 {
                     if ( eddiConfigAdditionalData.TryGetValue( "CommanderName", out var commanderName ) )
                     {
@@ -237,9 +250,9 @@ namespace EddiConfigService
         // The directory to use for reading and saving configuration files
         private string dataDirectory { get; set; }
 
-        private ConcurrentDictionary<string, Config> currentConfigs = new ConcurrentDictionary<string, Config>();
+        private ImmutableDictionary<string, Config> currentConfigs = ImmutableDictionary<string, Config>.Empty;
 
-        private static readonly object configurationsLock = new object();
+        private static readonly ReaderWriterLockSlim configurationsLock = new ReaderWriterLockSlim();
 
         public static bool unitTesting { get; set; }
 
@@ -249,14 +262,11 @@ namespace EddiConfigService
             PropertyChanged += ConfigChanged;
         }
 
-        private void ConfigChanged(object sender, PropertyChangedEventArgs e)
+        private void ConfigChanged ( object sender, PropertyChangedEventArgs e )
         {
-            foreach (var config in currentConfigs)
+            if ( !unitTesting && currentConfigs.TryGetValue( e.PropertyName, out var config ) )
             {
-                if (config.Key == e.PropertyName && !unitTesting)
-                {
-                    ToFile(config.Value, dataDirectory);
-                }
+                ToFile( config, dataDirectory );
             }
         }
 
@@ -265,29 +275,33 @@ namespace EddiConfigService
             Logging.Debug( "No configuration service instance: creating one" );
             return new ConfigService();
         } );
+        
         public static ConfigService Instance => instance.Value;
 
         /// <summary>Sets the current commander FID and corresponding data directory (if null, we'll default to the legacy directory location)</summary>
         public void SetCommander(string newCommanderFID = null)
         {
-            lock (configurationsLock)
+            configurationsLock.EnterWriteLock();
+            try
             {
-                if (currentConfigs.Any())
-                {
-                    SaveConfigurations(dataDirectory, currentConfigs);
-                }
+                SaveConfigurations( dataDirectory, currentConfigs );
 
                 var newDataDirectory = GetDataDirectory(newCommanderFID);
-                if (string.IsNullOrEmpty(commanderFID) && !string.IsNullOrEmpty(newCommanderFID))
+                if ( string.IsNullOrEmpty( commanderFID ) && !string.IsNullOrEmpty( newCommanderFID ) )
                 {
                     // When we first transition from the legacy file structure (i.e. all configurations in the root data directory)
                     // to the new file structure, move a copy of our current configuration with us.
-                    CopyConfigurations(dataDirectory, newDataDirectory);
-                    DeleteConfigurations(dataDirectory, currentConfigs);
+                    CopyConfigurations( dataDirectory, newDataDirectory );
+                    DeleteConfigurations( dataDirectory, currentConfigs );
                 }
+
                 commanderFID = newCommanderFID;
-                currentConfigs = ReadConfigurations(newDataDirectory);
+                currentConfigs = ReadConfigurations( newDataDirectory );
                 dataDirectory = newDataDirectory;
+            }
+            finally
+            {
+                configurationsLock.ExitWriteLock();
             }
         }
 
@@ -298,7 +312,7 @@ namespace EddiConfigService
         }
 
         /// <summary>Saves configurations to the specified data directory</summary>
-        private void SaveConfigurations(string directory, ConcurrentDictionary<string, Config> configurations)
+        private void SaveConfigurations(string directory, ImmutableDictionary<string, Config> configurations)
         {
             if (configurations is null || unitTesting) { return; }
 
@@ -320,7 +334,7 @@ namespace EddiConfigService
             SaveConfigurations(toDirectory, ReadConfigurations(fromDirectory));
         }
 
-        private void DeleteConfigurations(string fromDirectory, ConcurrentDictionary<string, Config> configurations)
+        private void DeleteConfigurations(string fromDirectory, ImmutableDictionary<string, Config> configurations)
         {
             if (configurations is null || unitTesting) { return; }
 
@@ -342,12 +356,28 @@ namespace EddiConfigService
             }
         }
 
+        #region Helper Methods
+
+        private IEnumerable<Type> GetConfigTypes ()
+        {
+            return Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where( t => t.IsSubclassOf( typeof( Config ) ) && t.GetCustomAttribute<RelativePathAttribute>() != null );
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged implementation
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            handler?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
+
+        #endregion
     }
 }
