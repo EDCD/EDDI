@@ -359,7 +359,7 @@ namespace EddiDataDefinitions
 
         // Administrative Metadata
 
-        public JObject json { get; set; } // The raw data from the endpoint as a JObject
+        public JToken json { get; set; } // The raw data from the endpoint as a JToken
 
         public DateTime timestamp { get; set; } // When the raw data was obtained
 
@@ -390,7 +390,7 @@ namespace EddiDataDefinitions
             nextBodyID = bodyID;
         }
 
-        public void UpdateFrom(JObject newJson, DateTime newTimeStamp)
+        public void UpdateFrom(JToken newJson, DateTime newTimeStamp)
         {
             try
             {
@@ -428,7 +428,9 @@ namespace EddiDataDefinitions
 
                 callsign = newCallsign;
                 json = newJson;
-                carrierID = newJson["market"]?["id"]?.ToObject<long>() ?? throw new ArgumentException("Invalid 'carrierID'");
+                
+                // Squadron carriers may not have this value.
+                carrierID = newJson["market"]?["id"]?.ToObject<long?>() ?? carrierID;
 
                 // Information which might be newer, check timestamp prior to updating
                 if (newTimeStamp <= timestamp)
@@ -477,10 +479,13 @@ namespace EddiDataDefinitions
                     JArray.FromObject(newJson["carrierLocker"]?["data"] ?? new JArray());
 
                 // Station properties
-                Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null);
-                Market.commoditiesupdatedat = newTimeStamp;
-                Market.outfittingupdatedat = newTimeStamp;
-                Market.shipyardupdatedat = newTimeStamp;
+                Market = FrontierApiStation.FromJson(newJson["market"]?.ToObject<JObject>(), null) ?? Market;
+                if ( Market != null )
+                {
+                    Market.commoditiesupdatedat = newTimeStamp;
+                    Market.outfittingupdatedat = newTimeStamp;
+                    Market.shipyardupdatedat = newTimeStamp;
+                }
 
                 // Misc - Tritium stored in cargo
                 foreach (var cargo in Cargo)

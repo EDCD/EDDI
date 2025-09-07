@@ -632,21 +632,27 @@ namespace EddiFleetCarrierMonitor
                         FleetCarrier = GetOrCreateCarrier( carrierID, StationModel.FleetCarrier );
 
                         // Update our Fleet Carrier object
-                        var wp = await EDDI.Instance.DataProvider
-                            .GetOrFetchSystemWaypointAsync( frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() )
-                            .ConfigureAwait( false );
                         lock ( carrierLock )
                         {
                             FleetCarrier.UpdateFrom( frontierApiCarrierJson, timestamp );
+                        }
 
-                            // Get location data if it's not already defined
-                            if ( FleetCarrier.currentStarSystemAddress is null )
+                        // Get location data if it's not already defined
+                        if ( FleetCarrier.currentStarSystemAddress is null )
+                        {
+                            await Task.Run( async () =>
                             {
+                                var wp = await EDDI.Instance.DataProvider
+                                    .GetOrFetchSystemWaypointAsync(
+                                        frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
                                 if ( wp != null )
                                 {
-                                    FleetCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
+                                    lock ( carrierLock )
+                                    {
+                                        FleetCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
+                                    }
                                 }
-                            }
+                            } );
                         }
                         WriteConfiguration();
                     }
@@ -655,6 +661,10 @@ namespace EddiFleetCarrierMonitor
             catch ( OperationCanceledException )
             {
                 // Nothing to do here, the task was cancelled.
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( "Failed to handle Frontier API Fleet Carrier Data", ex );
             }
         }
 
@@ -665,37 +675,51 @@ namespace EddiFleetCarrierMonitor
             {
                 if ( CompanionAppService.Instance?.CurrentState == CompanionAppService.State.Authorized )
                 {
-                    var frontierApiSquadronJson = await CompanionAppService.Instance.SquadronEndpoint.GetSquadronAsync(forceRefresh).ConfigureAwait(false);
+                    var frontierApiSquadronJson = await CompanionAppService.Instance.SquadronEndpoint
+                        .GetSquadronAsync( forceRefresh ).ConfigureAwait( false );
                     if ( frontierApiSquadronJson != null )
                     {
-                        var timestamp = frontierApiSquadronJson["timestamp"]?.ToObject<DateTime>() ?? DateTime.MinValue;
-                        var carrierID = frontierApiSquadronJson[ "market" ]?[ "id" ]?.ToObject<long>() ?? throw new ArgumentException("Invalid 'carrierID'");
-                        SquadronCarrier = GetOrCreateCarrier( carrierID, StationModel.SquadronCarrier );
+                        var timestamp = frontierApiSquadronJson[ "timestamp" ]?.ToObject<DateTime>() ??
+                                        DateTime.MinValue;
 
-                        // Update our Squadron Carrier object's location
-                        var wp = await EDDI.Instance.DataProvider
-                            .GetOrFetchSystemWaypointAsync( frontierApiSquadronJson[ "currentStarSystem" ]?.ToString() )
-                            .ConfigureAwait( false );
-                        lock ( carrierLock )
+                        // Update our Squadron Carrier object
+                        if ( SquadronCarrier != null && frontierApiSquadronJson[ "squadronCarrier" ] is JToken squadronCarrier )
                         {
-                            SquadronCarrier.UpdateFrom( frontierApiSquadronJson, timestamp );
-
+                            lock ( carrierLock )
+                            {
+                                SquadronCarrier.UpdateFrom( squadronCarrier, timestamp );
+                            }
+                            
                             // Get location data if it's not already defined
                             if ( SquadronCarrier.currentStarSystemAddress is null )
                             {
-                                if ( wp != null )
+                                await Task.Run( async () =>
                                 {
-                                    SquadronCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
-                                }
+                                    var wp = await EDDI.Instance.DataProvider
+                                        .GetOrFetchSystemWaypointAsync(
+                                            squadronCarrier[ "currentStarSystem" ]?.ToString() );
+                                    if ( wp != null )
+                                    {
+                                        lock ( carrierLock )
+                                        {
+                                            SquadronCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
+                                        }
+                                    }
+                                } );
                             }
+
+                            WriteConfiguration();
                         }
-                        WriteConfiguration();
                     }
                 }
             }
             catch ( OperationCanceledException )
             {
                 // Nothing to do here, the task was cancelled.
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error("Failed to handle Frontier API Squadron Data", ex);
             }
         }
 
