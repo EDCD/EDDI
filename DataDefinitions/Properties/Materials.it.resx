@@ -705,5 +705,7 @@
     <value>Voucher per Ricerca e Soccorso</value>
     <comment>material searchrescuevoucher</comment>
   </data>
-  
+  <data name="tg_structuraldata02" xml:space="preserve">
+    <value>Dati da Nave Madre Thargoid</value>
+  </data>
 </root>
