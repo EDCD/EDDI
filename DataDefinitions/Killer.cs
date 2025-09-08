@@ -43,15 +43,19 @@ namespace EddiDataDefinitions
 
             // Might be a ship
             killerShip = ShipDefinitions.FromEDModel(edModel, false);
+            if ( killerShip != null ) { return; }
 
             // Might be a SRV or Fighter
             killerVehicle = VehicleDefinition.EDNameExists(edModel) ? VehicleDefinition.FromEDName(edModel) : null;
+            if ( killerVehicle != null ) { return; }
 
             // Might be an on foot commander
             killerCmdrSuit = Suit.EDNameExists(edModel) ? Suit.FromEDName(edModel) : null;
+            if ( killerCmdrSuit != null ) { return; }
 
             // Might be an on foot NPC
             killerNpcSuitLoadout = NpcSuitLoadout.EDNameExists(edModel) ? NpcSuitLoadout.FromEDName(edModel) : null;
+            if ( killerNpcSuitLoadout != null ) { return; }
         }
     }
 }

@@ -12,13 +12,15 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
         }
 
-        public static readonly NpcSuitLoadout CivilianAdmin = new NpcSuitLoadout("citizensuitai_admin");
-        public static readonly NpcSuitLoadout CivilianScientist = new NpcSuitLoadout("citizensuitai_scientific");
-        public static readonly NpcSuitLoadout CivilianWorker = new NpcSuitLoadout("citizensuitai_industrial");
-        public static readonly NpcSuitLoadout Commando = new NpcSuitLoadout("assaultsuitai");
-        public static readonly NpcSuitLoadout Scout = new NpcSuitLoadout("lightassaultsuitai");
-        public static readonly NpcSuitLoadout Sharpshooter = new NpcSuitLoadout("rangedsuitai");
-        public static readonly NpcSuitLoadout Striker = new NpcSuitLoadout("closesuitai");
+        public static readonly NpcSuitLoadout CivilianAdmin = new NpcSuitLoadout("citizensuitai_admin"); // Administrator
+        public static readonly NpcSuitLoadout CivilianScientist = new NpcSuitLoadout("citizensuitai_scientific"); // Researcher
+        public static readonly NpcSuitLoadout CivilianWorker = new NpcSuitLoadout("citizensuitai_industrial"); // Technician
+        public static readonly NpcSuitLoadout Commando = new NpcSuitLoadout("assaultsuitai"); // Commando
+        public static readonly NpcSuitLoadout Scout = new NpcSuitLoadout("lightassaultsuitai"); // Scout
+        public static readonly NpcSuitLoadout Sharpshooter = new NpcSuitLoadout("rangedsuitai"); // Sharpshooter
+        public static readonly NpcSuitLoadout Striker = new NpcSuitLoadout("closesuitai"); // Striker
+        public static readonly NpcSuitLoadout Pilot = new NpcSuitLoadout( "flightsuitai" ); // Pilot
+        public static readonly NpcSuitLoadout TBD = new NpcSuitLoadout("heavysuitai"); // Commando
 
         [PublicAPI]
         public int grade { get; private set; }

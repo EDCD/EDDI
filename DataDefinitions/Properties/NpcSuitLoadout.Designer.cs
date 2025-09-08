@@ -106,6 +106,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pilot.
+        /// </summary>
+        public static string flightsuitai {
+            get {
+                return ResourceManager.GetString("flightsuitai", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elite Commando.
+        /// </summary>
+        public static string heavysuitai {
+            get {
+                return ResourceManager.GetString("heavysuitai", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scout.
         /// </summary>
         public static string lightassaultsuitai {
