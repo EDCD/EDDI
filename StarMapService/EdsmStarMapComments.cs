@@ -23,7 +23,7 @@ namespace EddiStarMapService
             };
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent );
                 var response = responseJson is null
                     ? null
                     : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
@@ -46,7 +46,7 @@ namespace EddiStarMapService
             };
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent );
                 var response = responseJson is null
                     ? null
                     : JsonConvert.DeserializeObject<StarMapCommentResponse>( responseJson );

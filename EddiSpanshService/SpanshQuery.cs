@@ -30,9 +30,9 @@ namespace EddiSpanshService
                 using ( var requestContent = GetRequestContent( searchFilters, maxResults, pageId ) )
                 {
                     var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken )
-                        .ConfigureAwait( false );
+                        ;
                     response.EnsureSuccessStatusCode();
-                    var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+                    var responseJson = await response.Content.ReadAsStringAsync();
 
                     if ( string.IsNullOrEmpty( responseJson ) )
                     {
@@ -49,7 +49,7 @@ namespace EddiSpanshService
                         }
                         else
                         {
-                            return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                            return JToken.Parse( await response.Content.ReadAsStringAsync() );
                         }
                     }
                     catch ( Exception e )
@@ -74,9 +74,9 @@ namespace EddiSpanshService
                 using ( var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters ) )
                 {
                     var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken )
-                        .ConfigureAwait( false );
+                        ;
                     response.EnsureSuccessStatusCode();
-                    var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+                    var responseJson = await response.Content.ReadAsStringAsync();
 
                     try
                     {
@@ -87,7 +87,7 @@ namespace EddiSpanshService
                         }
                         else
                         {
-                            return JToken.Parse( await response.Content.ReadAsStringAsync().ConfigureAwait( false ) );
+                            return JToken.Parse( await response.Content.ReadAsStringAsync() );
                         }
                     }
                     catch ( Exception e )

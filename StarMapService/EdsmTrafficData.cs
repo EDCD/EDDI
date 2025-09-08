@@ -13,8 +13,8 @@ namespace EddiStarMapService
         {
             if ( !TrySetEdsmCredentials() ) { return null; }
 
-            var traffic = await GetStarMapTrafficAsync(systemName, edsmId).ConfigureAwait(false);
-            var deaths = await GetStarMapDeathsAsync(systemName, edsmId).ConfigureAwait(false);
+            var traffic = await GetStarMapTrafficAsync(systemName, edsmId);
+            var deaths = await GetStarMapDeathsAsync(systemName, edsmId);
 
             if (traffic != null && deaths != null)
             {
@@ -39,7 +39,7 @@ namespace EddiStarMapService
 
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent );
                 var token = responseJson is null ? null : JToken.Parse( responseJson );
                 if ( token is JObject response )
                 {
@@ -72,7 +72,7 @@ namespace EddiStarMapService
 
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent );
                 var token = responseJson is null ? null : JToken.Parse( responseJson );
                 if ( token is JObject response )
                 {

@@ -51,13 +51,13 @@ namespace EddiSpanshService
 
                 for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
-                    response = await client.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
+                    response = await client.GetAsync( requestUri, cancellationToken );
                     if ( response.IsSuccessStatusCode && EnsureSuccess(response) )
                     {
                         return response;
                     }
 
-                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 ).ConfigureAwait( false );
+                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 );
                 }
 
                 return response;
@@ -69,13 +69,13 @@ namespace EddiSpanshService
 
                 for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
-                    response = await client.PostAsync( requestUri, content, cancellationToken ).ConfigureAwait( false );
+                    response = await client.PostAsync( requestUri, content, cancellationToken );
                     if ( response.IsSuccessStatusCode && EnsureSuccess( response ) )
                     {
                         return response;
                     }
 
-                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 ).ConfigureAwait( false );
+                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 );
                 }
 
                 return response;
@@ -90,15 +90,15 @@ namespace EddiSpanshService
             JObject routeResult = null;
             while ( routeResult is null || routeResult[ "state" ]?.ToString() == "started" )
             {
-                await Task.Delay( 500 ).ConfigureAwait( false );
-                var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken ).ConfigureAwait( false );
+                await Task.Delay( 500 );
+                var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken );
                 if ( getResponse.StatusCode == HttpStatusCode.RequestTimeout )
                 {
                     Logging.Warn( $"Spansh API timeout on GET results/{jobId}" );
                     return null;
                 }
 
-                var getJson = await getResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var getJson = await getResponse.Content.ReadAsStringAsync();
                 routeResult = JObject.Parse( getJson );
 
                 if ( routeResult[ "error" ] != null )

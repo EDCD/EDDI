@@ -24,6 +24,9 @@ namespace EddiStarMapService
         // The minimum interval between EDSM responder event syncs
         private const int syncIntervalMilliSeconds = 5000; // 5 seconds
 
+        // The maximum number of events sent in each batch to EDSM
+        private const int MaxEventsPerBatch = 25; // Adjust as needed
+
         private IEdsmHttpClient edsmJournalHttpClient { get; set; }
 
         public void StartJournalSync ()
@@ -67,11 +70,12 @@ namespace EddiStarMapService
                         {
                             holdingQueue.Add( pendingEvent );
 
-                            if ( queuedEvents.Count == 0 )
+                            // If we've reached the batch size or the queue is empty, send the batch
+                            if ( holdingQueue.Count >= MaxEventsPerBatch || queuedEvents.Count == 0 )
                             {
                                 // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
                                 await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait( false );
-                                if ( queuedEvents.Count > 0 )
+                                if ( queuedEvents.Count > 0 && holdingQueue.Count < MaxEventsPerBatch )
                                 {
                                     continue;
                                 }
@@ -80,11 +84,8 @@ namespace EddiStarMapService
                                 if ( holdingQueue.Count > 0 )
                                 {
                                     var sendingQueue = holdingQueue.ToList();
-                                    await Task.Run( async () => await SendEventsAsync( sendingQueue ),
-                                            syncCancellationTS.Token )
-                                        .ConfigureAwait( false );
-                                    await Task.Delay( syncIntervalMilliSeconds, syncCancellationTS.Token )
-                                        .ConfigureAwait( false );
+                                    await Task.Run( async () => await SendEventsAsync( sendingQueue ), syncCancellationTS.Token ).ConfigureAwait( false );
+                                    await Task.Delay( syncIntervalMilliSeconds, syncCancellationTS.Token ).ConfigureAwait( false );
                                 }
                             }
                         }
@@ -142,14 +143,14 @@ namespace EddiStarMapService
 
         private async Task SendEventsAsync ( List<IDictionary<string, object>> queue )
         {
-            if ( currentGameVersion is null )
-            { return; } // Wait until we have a game version before sending events
+            if ( currentGameVersion is null ) { return; } // Wait until we have a game version before sending events
             var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
             await SendEventBatchAsync( queue, starMapConfiguration );
         }
 
         private async Task SendEventBatchAsync ( List<IDictionary<string, object>> eventData, StarMapConfiguration starMapConfiguration )
         {
+            // The EDSM responder has a `gameIsBeta` flag that it checks prior to sending data via this method.  
             if ( !TrySetEdsmCredentials() ) { return; }
 
             // Filter any stale data
@@ -158,7 +159,6 @@ namespace EddiStarMapService
                 .ToList();
             if ( eventData.Count == 0 ) { return; }
 
-            // The EDSM responder has a `gameIsBeta` flag that it checks prior to sending data via this method.  
             var url = $"{baseUrl}api-journal-v1";
             var parameters = new Dictionary<string, string>
             {
@@ -180,8 +180,7 @@ namespace EddiStarMapService
                     try
                     {
                         Logging.Debug( "Sending message to EDSM: " + url, httpContent );
-                        var responseJson =
-                            await edsmJournalHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                        var responseJson = await edsmJournalHttpClient.PostAsync( url, httpContent );
                         var response = responseJson is null
                             ? null
                             : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );

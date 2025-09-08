@@ -29,7 +29,7 @@ namespace EddiStarMapService
             }
             else
             {
-                if ( since.HasValue )
+                if ( since.HasValue && since != DateTime.MinValue )
                 {
                     parameters.Add( "startdatetime", Dates.FromDateTimeToString( since.Value ) );
                 }
@@ -43,7 +43,7 @@ namespace EddiStarMapService
 
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait( false );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent );
                 var response = responseJson is null
                     ? null
                     : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );

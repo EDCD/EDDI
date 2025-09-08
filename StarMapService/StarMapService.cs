@@ -65,7 +65,7 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    var response = await HttpClient.GetAsync( url ).ConfigureAwait( false );
+                    var response = await HttpClient.GetAsync( url );
                     await AwaitResourceAsync( url ).ConfigureAwait( false );
                     response.EnsureSuccessStatusCode();
                     UpdateRateLimits( url, response );
@@ -88,7 +88,7 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    var response = await HttpClient.PostAsync( url, content ).ConfigureAwait( false );
+                    var response = await HttpClient.PostAsync( url, content );
                     await AwaitResourceAsync( url ).ConfigureAwait( false );
                     response.EnsureSuccessStatusCode();
                     UpdateRateLimits( url, response );
@@ -199,6 +199,7 @@ namespace EddiStarMapService
     }
 
     // response from the Star Map log API
+    [UsedImplicitly]
     class StarMapResponse
     {
         public string content { get; set; }
@@ -208,6 +209,7 @@ namespace EddiStarMapService
         public Exception errorException { get; set; }
     }
 
+    [UsedImplicitly]
     class StarMapLogResponse
     {
         public int msgnum { get; set; }
@@ -217,6 +219,7 @@ namespace EddiStarMapService
         public List<StarMapResponseLogEntry> logs { get; set; }
     }
 
+    [UsedImplicitly]
     public class StarMapResponseLogEntry
     {
         public string system { get; set; } // System name
@@ -227,6 +230,7 @@ namespace EddiStarMapService
     }
 
     // public consolidated version of star map log information
+    [UsedImplicitly]
     public class StarMapInfo
     {
         public int Visits { get; set; }
@@ -241,6 +245,7 @@ namespace EddiStarMapService
         }
     }
 
+    [UsedImplicitly]
     public class ResourceRateLimit
     {
         // The number of requests remaining in the period prior to the rate reset

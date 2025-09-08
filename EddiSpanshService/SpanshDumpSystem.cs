@@ -20,9 +20,9 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = $"dump/{systemAddress}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken );
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+                var responseJson = await clientResponse.Content.ReadAsStringAsync();
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
@@ -58,7 +58,7 @@ namespace EddiSpanshService
         public async Task<IList<StarSystem>> GetStarSystemsAsync ( ulong[] systemAddresses, bool showMarketDetails, CancellationToken cancellationToken )
         {
             return await Task.WhenAll( systemAddresses.AsParallel()
-                .Select( async systemAddress => await GetStarSystemAsync( systemAddress, showMarketDetails, cancellationToken ).ConfigureAwait(false) )
+                .Select( async systemAddress => await GetStarSystemAsync( systemAddress, showMarketDetails, cancellationToken ) )
                 .RemoveNulls() );
         }
 
