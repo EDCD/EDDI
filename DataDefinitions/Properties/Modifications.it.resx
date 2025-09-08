@@ -658,5 +658,8 @@
   <data name="GuardianWeaponSturdy" xml:space="preserve">
     <value>Resistenza alla Zona Anti-Guardiano</value>
   </data>
-  
+  <data name="CargoRackIncreasedCapacity" xml:space="preserve">
+    <value>Modulo Cargo espanso</value>
+    <comment>Special CG reward expanded cargo rack blueprint</comment>
+  </data>
 </root>
