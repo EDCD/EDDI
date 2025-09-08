@@ -985,5 +985,8 @@
     <value>Campione Medico</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="SabotagedComponent" xml:space="preserve">
+    <value>Composto contaminato della Guglia</value>
+    <comment>Odyssey good found at Thargoid Spire sites</comment>
+  </data>
 </root>
