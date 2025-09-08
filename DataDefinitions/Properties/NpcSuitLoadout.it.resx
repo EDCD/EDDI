@@ -145,6 +145,12 @@
     <value>Tecnico</value>
     <comment>An on foot NPC loadout</comment>
   </data>
-  
-  
+  <data name="flightsuitai" xml:space="preserve">
+    <value>Pilota</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
+  <data name="heavysuitai" xml:space="preserve">
+    <value>Commando Elite</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
 </root>
