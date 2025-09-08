@@ -145,6 +145,12 @@
     <value>Techniker</value>
     <comment>An on foot NPC loadout</comment>
   </data>
-  
-  
+  <data name="flightsuitai" xml:space="preserve">
+    <value>Pilot</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
+  <data name="heavysuitai" xml:space="preserve">
+    <value>Elite Commando</value>
+    <comment>An on foot NPC loadout</comment>
+  </data>
 </root>
