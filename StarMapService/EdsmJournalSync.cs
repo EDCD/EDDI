@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -23,9 +24,6 @@ namespace EddiStarMapService
 
         // The minimum interval between EDSM responder event syncs
         private const int syncIntervalMilliSeconds = 5000; // 5 seconds
-
-        // The maximum number of events sent in each batch to EDSM
-        private const int MaxEventsPerBatch = 25; // Adjust as needed
 
         private IEdsmHttpClient edsmJournalHttpClient { get; set; }
 
@@ -71,11 +69,11 @@ namespace EddiStarMapService
                             holdingQueue.Add( pendingEvent );
 
                             // If we've reached the batch size or the queue is empty, send the batch
-                            if ( holdingQueue.Count >= MaxEventsPerBatch || queuedEvents.Count == 0 )
+                            if ( queuedEvents.Count == 0 )
                             {
                                 // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
                                 await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait( false );
-                                if ( queuedEvents.Count > 0 && holdingQueue.Count < MaxEventsPerBatch )
+                                if ( queuedEvents.Count > 0 )
                                 {
                                     continue;
                                 }
@@ -160,23 +158,20 @@ namespace EddiStarMapService
             if ( eventData.Count == 0 ) { return; }
 
             var url = $"{baseUrl}api-journal-v1";
-            var parameters = new Dictionary<string, string>
-            {
-                { "commanderName", commanderName },
-                { "apiKey", apiKey },
-                { "fromSoftware", Constants.EDDI_NAME },
-                { "fromSoftwareVersion", Constants.EDDI_VERSION.ToString() },
-                { "fromGameVersion", gameVersion },
-                { "fromGameBuild", gameBuild },
-                { "message", JsonConvert.SerializeObject( eventData ).Normalize() }
-            };
-
             var maxRetries = 3;
             var delay = syncIntervalMilliSeconds; // Initial delay in milliseconds
             for ( var retry = 0; retry < maxRetries; retry++ )
             {
-                using ( var httpContent = new FormUrlEncodedContent( parameters ) )
+                using ( var httpContent = new MultipartFormDataContent() )
                 {
+                    httpContent.Add( new StringContent( commanderName ), "commanderName" );
+                    httpContent.Add( new StringContent( apiKey ), "apiKey" );
+                    httpContent.Add( new StringContent( Constants.EDDI_NAME ), "fromSoftware" );
+                    httpContent.Add( new StringContent( Constants.EDDI_VERSION.ToString() ), "fromSoftwareVersion" );
+                    httpContent.Add( new StringContent( gameVersion ), "fromGameVersion" );
+                    httpContent.Add( new StringContent( gameBuild ), "fromGameBuild" );
+                    httpContent.Add( new StringContent( JsonConvert.SerializeObject( eventData ), Encoding.UTF8, "application/json" ), "message" );
+
                     try
                     {
                         Logging.Debug( "Sending message to EDSM: " + url, httpContent );
