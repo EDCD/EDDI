@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ## 4.1.5
   * Core
     * Added support for the Panther Clipper Mk. II.
+    * Revised body exploration values to be more conservative for systems within the pre-Odyssey bubble.
     * Replaced the legacy `CSCore` voice effect library with the more modern `NAudio` library. The effects library isn't exactly the same so some audio effects may be slightly different than they were before. The largest difference is the way that distortion in response to ship damage is handled.
     * Many carrier events now trigger for both your personal fleet carrier and for your squadron carrier - a `carrierType` field has been added to applicable events to identify the event source.
   * Events

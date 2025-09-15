@@ -3,10 +3,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiDataDefinitions
 {
     /// <summary>
@@ -328,11 +330,11 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public decimal? absolutemagnitudeprobability => starClass == null ? null : Probability.CumulativeP(starClass.absolutemagnitudedistribution, absolutemagnitude);
 
-        private long estimateStarValue()
+        private long estimateStarValue ()
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/ for scan value formulas
 
-            if (stellarclass is null || solarmass is null)
+            if ( stellarclass is null || solarmass is null )
             {
                 return 0;
             }
@@ -340,30 +342,29 @@ namespace EddiDataDefinitions
             // Scan value calculation constants
             const double scanDivider = 66.25;
 
-            double k = 1200; // base value
-            double result;
+            var k = 1200d; // base value
 
             // Override constants for specific types of bodies
-            if ((stellarclass == "H") || (stellarclass == "N"))
+            if ( stellarclass == "H" || stellarclass == "N" )
             {
                 // Black holes and Neutron stars
                 k = 22628;
             }
-            else if (stellarclass == "SuperMassiveBlackHole")
+            else if ( stellarclass == "SuperMassiveBlackHole" )
             {
                 // Supermassive black hole
                 // this is applying the same scaling to the 3.2 value as a normal black hole, not confirmed in game
                 k = 33.5678;
             }
-            else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
+            else if ( stellarclass.StartsWith( "D" ) && ( stellarclass.Length <= 3 ) )
             {
                 // White dwarves
                 k = 14057;
             }
 
             // Calculate exploration scan values - (k + (m * k / 66.25))
-            result = k + ((double)solarmass * k / scanDivider);
-            return (long)Math.Round(result);
+            var result = k + ( (double)solarmass * k / scanDivider );
+            return (long)Math.Round( result );
         }
 
         // Body-specific items
@@ -492,11 +493,11 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore] // The ground speed of the parent body's shadow on the surface of the body in meters per second
         public decimal? solarsurfacevelocity => 2 * (decimal)Math.PI * radius * 1000 / (solarday * 86400);
 
-        private long estimateBodyValue(bool isMapped, bool isMappedEfficiently)
+        private long estimateBodyValue ( bool isMapped, bool isMappedEfficiently )
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/ for scan value formulas
-            
-            if (earthmass is null || terraformState is null || planetClass is null)
+
+            if ( earthmass is null || terraformState is null || planetClass is null )
             {
                 return 0;
             }
@@ -508,59 +509,60 @@ namespace EddiDataDefinitions
             const double firstDiscoveryMultiplier = 2.6;
             const double efficientMappingMultiplier = 1.25;
 
-            int k = 300; // base value
-            int k_terraformable = 93328;
+            // Base values
+            var k = 300; // base value
+            var k_terraformable = 93328;
+            var mappingMultiplier = 1d;
 
-            var alreadyDiscovered = (alreadydiscovered ?? true);
-            var alreadyMapped = (alreadymapped ?? true); // If we don't know then we'll assume true to underestimate rather than overestimate the value
+            var isFirstDiscoverer = !alreadydiscovered ?? false;
+
+            // If we don't know then we'll assume we are not the first to map the body and underestimate rather than overestimate the value
+            var isFirstMapper = !alreadymapped ?? false;
+
+            // There is a special case where bodies within the pre-Odyssey colonized bubble of star systems use different rules for calculating values. 
+            // They do get First Discoverer bonus - which kinda makes sense, given journals report them not discovered, but they do not get the Odyssey 30% when mapped. 
+            var isPreOdysseyBubble = isFirstDiscoverer && !isFirstMapper;
 
             // Override constants for specific types of bodies
-            if (planetClass.edname == "AmmoniaWorld")
+            if ( planetClass.edname == "AmmoniaWorld" )
             {
-                // Ammonia worlds
-                k = 96932;
+                k = 96932; // Ammonia worlds
             }
-            else if (planetClass.edname == "EarthLikeBody" || planetClass.edname == "WaterWorld")
+            else if ( planetClass.edname == "EarthLikeBody" || planetClass.edname == "WaterWorld" )
             {
-                // Earth-like & water worlds
-                k = 64831;
+                k = 64831; // Earth-like & water worlds
                 k_terraformable = 116295;
             }
-            else if (planetClass.edname == "MetalRichBody")
+            else if ( planetClass.edname == "MetalRichBody" )
             {
-                // Metal rich worlds
-                k = 21790;
+                k = 21790; // Metal rich worlds
             }
-            else if (planetClass.edname == "HighMetalContentBody")
+            else if ( planetClass.edname == "HighMetalContentBody" )
             {
-                // High metal content worlds
-                k = 9654;
+                k = 9654; // High metal content worlds
                 k_terraformable = 100677;
             }
-            else if (planetClass.edname == "SudarskyClassIGasGiant")
+            else if ( planetClass.edname == "SudarskyClassIGasGiant" )
             {
-                // Class I gas giants
-                k = 1656;
+                k = 1656; // Class I gas giants
             }
-            else if (planetClass.edname == "SudarskyClassIIGasGiant")
+            else if ( planetClass.edname == "SudarskyClassIIGasGiant" )
             {
-                // Class II gas giants
-                k = 9654;
+                k = 9654; // Class II gas giants
             }
 
             // Terraformability is a scale from 0-100%, but since we don't know the % we'll assume 100% for the time being.
-            k = terraformState.edname == "Terraformable" || terraformState.edname == "Terraformed" 
-                ? (k + k_terraformable) 
+            k = terraformState.edname == "Terraformable" || terraformState.edname == "Terraformed"
+                ? k + k_terraformable
                 : k;
 
-            double mappingMultiplier = 1;
-            if (isMapped)
+            if ( isMapped )
             {
-                if (!alreadyDiscovered && !alreadyMapped) // First to discover and first to map
+                if ( isFirstDiscoverer && isFirstMapper ) // First to discover and first to map
                 {
                     mappingMultiplier = 3.699622554;
                 }
-                else if (!alreadyMapped) // Not first to discover but first to map
+                else if ( isFirstMapper ) // Not first to discover but first to map
                 {
                     mappingMultiplier = 8.0956;
                 }
@@ -571,17 +573,24 @@ namespace EddiDataDefinitions
             }
 
             // Calculate exploration scan values
-            double value = Math.Max(scanMinValue, (k + (k * q * Math.Pow((double)earthmass, scanPower))) * mappingMultiplier);
-            if (isMapped)
+            var value = Math.Max( scanMinValue,
+                ( k + ( k * q * Math.Pow( (double)earthmass, scanPower ) ) ) * mappingMultiplier );
+            if ( isMapped )
             {
-                value += ((value * 0.3) > 555) ? value * 0.3 : 555;
-                if (isMappedEfficiently)
+                if ( !isPreOdysseyBubble )
+                {
+                    value += ( value * 0.3 ) > 555 ? value * 0.3 : 555;
+                }
+
+                if ( isMappedEfficiently )
                 {
                     value *= efficientMappingMultiplier;
                 }
             }
-            value *= !alreadyDiscovered ? firstDiscoveryMultiplier : 1;
-            return (long)Math.Round(value);
+
+            // The "First Discovery" bonus is applied haphazardly within the pre-odyssey bubble. Assume it won't be awarded to bodies in that region.
+            value *= isFirstDiscoverer && !isPreOdysseyBubble ? firstDiscoveryMultiplier : 1;
+            return (long)Math.Round( value );
         }
 
         // Miscellaneous and legacy properties and methods
@@ -691,7 +700,7 @@ namespace EddiDataDefinitions
         #region Implement INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberNameAttribute] string propName = null)
+        public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
