@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using Utilities;
 
 namespace EddiConfigService
@@ -106,17 +105,12 @@ namespace EddiConfigService
 
         private T GetConfig<T> ( string key, bool clone = true ) where T : Config
         {
-            configurationsLock.EnterReadLock();
-            try
+            lock ( configurationsLock )
             {
                 if ( currentConfigs.TryGetValue( key, out var configVal ) )
                 {
                     return clone ? configVal.Clone<T>() : configVal as T;
                 }
-            }
-            finally
-            {
-                configurationsLock.ExitReadLock();
             }
 
             return null;
@@ -124,20 +118,21 @@ namespace EddiConfigService
 
         private void SetConfig<T> ( string key, T value ) where T : Config
         {
-            configurationsLock.EnterWriteLock();
-            try
+            var changed = false;
+            lock ( configurationsLock )
             {
-                var current = currentConfigs.TryGetValue(key, out var configVal) ? configVal as T : null;
+                var current = currentConfigs.TryGetValue( key, out var configVal ) ? configVal as T : null;
                 // Check for equality and only raise a change event if the value has changed
                 if ( current == null || !current.DeepEquals( value ) )
                 {
                     currentConfigs = currentConfigs.SetItem( key, value );
-                    OnPropertyChanged( key );
+                    changed = true;
                 }
             }
-            finally
+
+            if ( changed )
             {
-                configurationsLock.ExitWriteLock();
+                OnPropertyChanged( key );
             }
         }
 
@@ -252,7 +247,7 @@ namespace EddiConfigService
 
         private ImmutableDictionary<string, Config> currentConfigs = ImmutableDictionary<string, Config>.Empty;
 
-        private static readonly ReaderWriterLockSlim configurationsLock = new ReaderWriterLockSlim();
+        private static readonly object configurationsLock = new object();
 
         public static bool unitTesting { get; set; }
 
@@ -281,8 +276,7 @@ namespace EddiConfigService
         /// <summary>Sets the current commander FID and corresponding data directory (if null, we'll default to the legacy directory location)</summary>
         public void SetCommander(string newCommanderFID = null)
         {
-            configurationsLock.EnterWriteLock();
-            try
+            lock ( configurationsLock )
             {
                 SaveConfigurations( dataDirectory, currentConfigs );
 
@@ -298,10 +292,6 @@ namespace EddiConfigService
                 commanderFID = newCommanderFID;
                 currentConfigs = ReadConfigurations( newDataDirectory );
                 dataDirectory = newDataDirectory;
-            }
-            finally
-            {
-                configurationsLock.ExitWriteLock();
             }
         }
 
