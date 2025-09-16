@@ -26,56 +26,53 @@ namespace EddiVoiceAttackResponder
         public void Handle ( Event theEvent )
         {
             if ( theEvent is null || consumerCancellationTS.IsCancellationRequested ) { return; }
-
-            if ( taskQueues.TryGetValue( theEvent.type, out var taskQueue ) && !taskQueue.IsAddingCompleted )
-            {
-                // Add our event to an existing blocking collection for that event type.
-                taskQueue.Add( theEvent );
-            }
-            else
-            {
-                taskQueue = new TaskQueue<Event> { theEvent };
-                taskQueues.TryAdd( theEvent.type, taskQueue );
-            }
-            taskQueue.StartOrRestart( () => dequeueEvents( taskQueue ), consumerCancellationTS.Token );
+            var taskQueue = taskQueues.GetOrAdd(theEvent.type, _ => new TaskQueue<Event>());
+            taskQueue.StartOrRestart( async () => await dequeueEvents( taskQueue ), consumerCancellationTS.Token );
         }
 
-        private async void dequeueEvents ( BlockingCollection<Event> eventQueue )
+        private async Task dequeueEvents ( TaskQueue<Event> eventQueue )
         {
             try
             {
                 foreach ( var @event in eventQueue.GetConsumingEnumerable( consumerCancellationTS.Token ) )
                 {
-                    try
-                    {
-                        if ( @event.type != null )
-                        {
-                            Logging.Debug( $"Passing event {@event.type} to VoiceAttack", @event );
-                            await Task.Run( () => updateValuesOnEvent( @event ) );
-                            if ( TryTriggerVACommands( @event ) )
-                            {
-                                // We need to wait until each event is no longer active before moving to the next from the same
-                                // queue / event type so that variables aren't overwritten before VoiceAttack can respond.
-                                // Other queues / event types will be able to continue processing events while we wait.
-                                await VoiceAttackPlugin.WaitForCommandExecutionAsync( $"((EDDI {@event.type.ToLowerInvariant()}))" );                                
-                            }
-                        }
-                    }
-                    catch ( Exception ex )
-                    {
-                        Logging.Error( $"VoiceAttack failed to handle {@event.type} event.", ex );
-                    }
-
-                    if ( eventQueue.Count == 0 )
-                    {
-                        // If the event queue is empty then we can complete and clean up the associated consumer task.
-                        break;
-                    }
+                    await ExecuteEventAsync(@event);
                 }
             }
             catch ( OperationCanceledException )
             {
                 // Task canceled. Nothing to do here.
+            }
+            finally
+            {
+                // If there are still events, start a new consumer
+                if ( !eventQueue.IsCompleted && eventQueue.Count > 0 && !eventQueue.isRunning )
+                {
+                    eventQueue.StartOrRestart( async () => await dequeueEvents( eventQueue ), consumerCancellationTS.Token );
+                }
+            }
+        }
+
+        private async Task ExecuteEventAsync(Event @event)
+        {
+            try
+            {
+                if ( @event.type != null )
+                {
+                    Logging.Debug( $"Passing event {@event.type} to VoiceAttack", @event );
+                    updateValuesOnEvent( @event );
+                    if ( TryTriggerVACommands( @event ) )
+                    {
+                        // We need to wait until each event is no longer active before moving to the next from the same
+                        // queue / event type so that variables aren't overwritten before VoiceAttack can respond.
+                        // Other queues / event types will be able to continue processing events while we wait.
+                        await VoiceAttackPlugin.WaitForCommandExecutionAsync( $"((EDDI {@event.type.ToLowerInvariant()}))" );                                
+                    }
+                }
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( $"VoiceAttack failed to handle {@event.type} event.", ex );
             }
         }
 
@@ -203,16 +200,16 @@ namespace EddiVoiceAttackResponder
 
         private Task consumerTask { get; set; }
 
-        public void StartOrRestart ( Action action, CancellationToken cancellationToken )
+        public void StartOrRestart ( Func<Task> action, CancellationToken cancellationToken )
         {
             if ( !isRunning )
             {
                 consumerTask = Task.Factory.StartNew(
-                    action,
+                    async () => await action(),
                     cancellationToken,
-                    TaskCreationOptions.PreferFairness,
+                    TaskCreationOptions.LongRunning,
                     TaskScheduler.Default
-                );
+                ).Unwrap(); // Unwrap the task to handle exceptions properly
             }
         }
     }
