@@ -174,15 +174,6 @@ namespace EddiVoiceAttackResponder
             CompanionAppService.Instance.StateChanged -= OnCapiStateChanged;
             EddiConfigService.ConfigService.Instance.PropertyChanged -= VoiceAttackVariables.updateConfigurationValues;
             
-            // Stop all monitors and responders
-            EDDI.Instance.Stop();
-
-            // Release the mutex
-            if ( !App.eddiMutex.SafeWaitHandle.IsClosed )
-            {
-                App.eddiMutex.ReleaseMutex();
-            }
-
             // Finish the shutdown
             Application.Current.Dispatcher.Invoke( () =>
             {
