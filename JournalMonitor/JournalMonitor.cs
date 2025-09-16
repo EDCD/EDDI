@@ -2335,6 +2335,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "EngineerCraft":
                                 {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
                                     var engineer = JsonParsing.getString(data, "Engineer");
                                     var engineerId = JsonParsing.getLong(data, "EngineerID");
                                     var blueprintpEdName = JsonParsing.getString(data, "BlueprintName");
@@ -3397,6 +3399,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "StoredShips":
                                 {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
                                     var marketId = JsonParsing.getLong(data, "MarketID");
                                     var system = JsonParsing.getString(data, "StarSystem");
                                     var station = JsonParsing.getString(data, "StationName");
@@ -4087,6 +4091,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "CarrierStats":
                                 {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
                                     var carrierID = JsonParsing.getLong(data, "CarrierID");
                                     var carrierCallsign = JsonParsing.getString(data, "Callsign");
                                     var carrierName = JsonParsing.getString(data, "Name");

@@ -157,7 +157,7 @@ namespace EddiFleetCarrierMonitor
             return false;
         }
 
-        private bool CarrierTimestampIsValid( DateTime timestamp, FleetCarrier carrier )
+        private bool CarrierTimestampIsCurrent( DateTime timestamp, FleetCarrier carrier )
         {
             // We only want to update the carrier objects with new events
             return timestamp >= carrier?.timestamp;
@@ -208,7 +208,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierBankTransferEvent ( CarrierBankTransferEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -224,7 +224,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierDecomissionCancelledEvent ( CarrierDecommissionCancelledEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -242,7 +242,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierDecomissionScheduledEvent ( CarrierDecommissionScheduledEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -260,7 +260,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierDockingPermissionEvent ( CarrierDockingPermissionEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -278,7 +278,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierFinanceEvent ( CarrierFinanceEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -299,7 +299,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierFuelDepositEvent ( CarrierFuelDepositEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -316,7 +316,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierJumpCancelledEvent ( CarrierJumpCancelledEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -334,7 +334,7 @@ namespace EddiFleetCarrierMonitor
         {
             if ( @event.carrierID is null ) { return; }
             var carrier = GetOrCreateCarrier( (long)@event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -356,7 +356,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierJumpEngagedEvent ( CarrierJumpEngagedEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -374,7 +374,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierJumpRequestEvent ( CarrierJumpRequestEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -391,7 +391,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierLocationEvent ( CarrierLocationEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -405,7 +405,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierNameChangeEvent ( CarrierNameChangeEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -422,7 +422,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierStatsEvent ( CarrierStatsEvent @event )
         {
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -452,7 +452,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCommodityPurchasedEvent ( CommodityPurchasedEvent @event )
         {
             var carrier = GetCarrier( @event.marketid );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -469,7 +469,7 @@ namespace EddiFleetCarrierMonitor
         private void handleCommoditySoldEvent ( CommoditySoldEvent @event )
         {
             var carrier = GetCarrier( @event.marketid );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
@@ -499,7 +499,7 @@ namespace EddiFleetCarrierMonitor
             }
             
             var carrier = GetCarrier( (long)@event.marketId );
-            if ( !CarrierTimestampIsValid( @event.timestamp, carrier ) || 
+            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
             {
                 return;
