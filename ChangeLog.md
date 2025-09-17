@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.6
+  * VoiceAttack
+    * Fixed a bug prevent execution of events in VoiceAttack.
+
 ## 4.1.5
   * Core
     * Added support for the Panther Clipper Mk. II.

@@ -26,8 +26,11 @@ namespace EddiVoiceAttackResponder
         public void Handle ( Event theEvent )
         {
             if ( theEvent is null || consumerCancellationTS.IsCancellationRequested ) { return; }
-            var taskQueue = taskQueues.GetOrAdd(theEvent.type, _ => new TaskQueue<Event>());
-            taskQueue.StartOrRestart( async () => await dequeueEvents( taskQueue ), consumerCancellationTS.Token );
+            var taskQueue = taskQueues.GetOrAdd(theEvent.type, key => new TaskQueue<Event>());
+            if ( taskQueue.TryAdd( theEvent ) )
+            {
+                taskQueue.StartOrRestart( async () => await dequeueEvents( taskQueue ), consumerCancellationTS.Token );
+            }
         }
 
         private async Task dequeueEvents ( TaskQueue<Event> eventQueue )
