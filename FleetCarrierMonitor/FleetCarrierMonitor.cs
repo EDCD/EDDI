@@ -192,12 +192,12 @@ namespace EddiFleetCarrierMonitor
         
         private FleetCarrier GetCarrier ( long carrierId )
         {
-            if ( FleetCarrier.carrierID == carrierId )
+            if ( FleetCarrier?.carrierID == carrierId )
             {
                 return FleetCarrier;
             }
 
-            if ( SquadronCarrier.carrierID == carrierId )
+            if ( SquadronCarrier?.carrierID == carrierId )
             {
                 return SquadronCarrier;
             }
