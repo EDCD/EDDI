@@ -244,8 +244,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public void TestSignalDetectedDeDuplication()
         {
-            EDDI.Instance.CurrentStarSystem = new StarSystem { systemname = "TestSystem", systemAddress = 6606892846275 };
-            var currentStarSystem = EDDI.Instance.CurrentStarSystem;
+            EDDI.Instance.updateCurrentSystem( "TestSystem", 6606892846275 );
 
             var line0 = @"{ ""timestamp"":""2019-02-04T02:20:28Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
             var line1 = @"{ ""timestamp"":""2019-02-04T02:25:03Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
@@ -253,27 +252,20 @@ namespace Tests
             var line3 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$Fixed_Event_Life_Ring;"", ""SignalName_Localised"":""Notable stellar phenomena"" }";
             var line4 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
 
-            var event0 = (SignalDetectedEvent)JournalMonitor.ParseJournalEntry(line0).FirstOrDefault();
-            EDDI.Instance.eventSignalDetected( event0 );
-            Assert.AreEqual(1, currentStarSystem.signalsources.Count);
-            Assert.AreEqual("Unregistered Comms Beacon", currentStarSystem.signalsources[0]);
+            var events = JournalMonitor.ParseJournalEntries( new[] { line0, line1, line2, line3, line4 } );
+            foreach ( var @event in events.OfType<SignalDetectedEvent>() )
+            {
+                EDDI.Instance.eventSignalDetected( @event );
+            }
 
-            var event1 = (SignalDetectedEvent)JournalMonitor.ParseJournalEntry(line1).FirstOrDefault();
-            EDDI.Instance.eventSignalDetected( event1 );
-            Assert.AreEqual(1, currentStarSystem.signalsources.Count );
-
-            var event2 = (SignalDetectedEvent)JournalMonitor.ParseJournalEntry(line2).FirstOrDefault();
-            EDDI.Instance.eventSignalDetected( event2 );
-            Assert.AreEqual(2, currentStarSystem.signalsources.Count );
-            Assert.AreEqual("Notable Stellar Phenomena", currentStarSystem.signalsources[1]);
-
-            var event3 = (SignalDetectedEvent)JournalMonitor.ParseJournalEntry(line3).FirstOrDefault();
-            EDDI.Instance.eventSignalDetected( event3 );
-            Assert.AreEqual(2, currentStarSystem.signalsources.Count );
-
-            var event4 = (SignalDetectedEvent)JournalMonitor.ParseJournalEntry(line4).FirstOrDefault();
-            EDDI.Instance.eventSignalDetected( event4 );
-            Assert.AreEqual(2, currentStarSystem.signalsources.Count );
+            Assert.AreEqual( "Unregistered Comms Beacon", EDDI.Instance.CurrentStarSystem?.signalsources.FirstOrDefault() );
+            Assert.AreEqual( "Notable Stellar Phenomena", EDDI.Instance.CurrentStarSystem?.signalsources.LastOrDefault() );
+            
+            Assert.IsTrue( events[ 0 ] is SignalDetectedEvent event0 && event0.signalSource.localizedName.Equals( "Unregistered Comms Beacon", StringComparison.OrdinalIgnoreCase ) && event0.unique );
+            Assert.IsTrue( events[ 1 ] is SignalDetectedEvent event1 && event1.signalSource.localizedName.Equals( "Unregistered Comms Beacon", StringComparison.OrdinalIgnoreCase ) && !event1.unique );
+            Assert.IsTrue( events[ 2 ] is SignalDetectedEvent event2 && event2.signalSource.localizedName.Equals( "Notable Stellar Phenomena", StringComparison.OrdinalIgnoreCase ) && event2.unique );
+            Assert.IsTrue( events[ 3 ] is SignalDetectedEvent event3 && event3.signalSource.localizedName.Equals( "Notable Stellar Phenomena", StringComparison.OrdinalIgnoreCase ) && !event3.unique );
+            Assert.IsTrue( events[ 4 ] is SignalDetectedEvent event4 && event4.signalSource.localizedName.Equals( "Unregistered Comms Beacon", StringComparison.OrdinalIgnoreCase ) && !event4.unique );
         }
 
         [TestMethod, DoNotParallelize]
