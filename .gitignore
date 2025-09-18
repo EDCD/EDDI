@@ -220,3 +220,6 @@ Documentation.chw
 # AxoCover
 .axoCover/runs
 /.cr/personal
+
+# Resharper AI Assistant Generated Files
+/enc_temp_folder
