@@ -215,8 +215,7 @@ namespace EddiEddnResponder.Sender
             content.Headers.ContentEncoding.Add( "gzip" );
 
             var response = await httpClient.PostAsync("upload", content).ConfigureAwait(false);
-            if ( response.StatusCode == HttpStatusCode.Accepted )
-                return true;
+            if ( response.StatusCode == HttpStatusCode.Accepted ) { return true; }
 
             throw new HttpListenerException( 413, "Compressed retry failed." );
         }

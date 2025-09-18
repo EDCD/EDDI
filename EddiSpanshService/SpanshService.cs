@@ -19,6 +19,9 @@ namespace EddiSpanshService
         private const string baseUrl = "https://spansh.co.uk/api/";
         private readonly ISpanshHttpClient spanshHttpClient;
 
+        const int MaxRetries = 3; // Maximum number of retries
+        const int InitialBackoffMilliseconds = 100; // Initial back-off time in milliseconds
+
         // Allow injection of a fake client for testing
         public SpanshService ( ISpanshHttpClient httpClient = null )
         {
@@ -32,9 +35,6 @@ namespace EddiSpanshService
 
             // The default timeout for requests to Spansh. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
             private const int DefaultTimeoutMilliseconds = 10000;
-
-            // The number of times to retry a failed request
-            private const int MaxRetries = 3;
 
             public SpanshHttpClient (string baseUrl)
             {
@@ -57,7 +57,7 @@ namespace EddiSpanshService
                         return response;
                     }
 
-                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 );
+                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100, cancellationToken );
                 }
 
                 return response;
@@ -65,20 +65,7 @@ namespace EddiSpanshService
 
             public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content, CancellationToken cancellationToken )
             {
-                HttpResponseMessage response = null;
-
-                for ( var retry = 0; retry < MaxRetries; retry++ )
-                {
-                    response = await client.PostAsync( requestUri, content, cancellationToken );
-                    if ( response.IsSuccessStatusCode && EnsureSuccess( response ) )
-                    {
-                        return response;
-                    }
-
-                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100 );
-                }
-
-                return response;
+                return await client.PostAsync( requestUri, content, cancellationToken );
             }
         }
 
@@ -90,7 +77,7 @@ namespace EddiSpanshService
             JObject routeResult = null;
             while ( routeResult is null || routeResult[ "state" ]?.ToString() == "started" )
             {
-                await Task.Delay( 500 );
+                await Task.Delay( 500, cancellationToken );
                 var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken );
                 if ( getResponse.StatusCode == HttpStatusCode.RequestTimeout )
                 {
@@ -126,18 +113,6 @@ namespace EddiSpanshService
             }
 
             return true;
-        }
-
-        private string GetJobID ( string json )
-        {
-            var parser = JObject.Parse(json);
-            if ( parser[ "error" ] != null )
-            {
-                Logging.Debug( parser[ "error" ].ToString() );
-                return null;
-            }
-
-            return parser[ "job" ]?.ToString();
         }
     }
 }

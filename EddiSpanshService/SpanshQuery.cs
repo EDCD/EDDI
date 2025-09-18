@@ -21,23 +21,25 @@ namespace EddiSpanshService
             systems
         }
 
-        public async Task<JToken> QueryAsync ( QueryGroup queryGroup,
-            [ NotNull ] Dictionary<string, object> searchFilters, CancellationToken cancellationToken,
-            int? maxResults = 500, int? pageId = 0 )
+        public async Task<JToken> QueryAsync ( QueryGroup queryGroup, [ NotNull ] Dictionary<string, object> searchFilters, CancellationToken cancellationToken, int? maxResults = 500, int? pageId = 0 )
         {
-            try
+            var retryCount = 0;
+            while ( retryCount < MaxRetries )
             {
-                using ( var requestContent = GetRequestContent( searchFilters, maxResults, pageId ) )
+                try
                 {
-                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken )
-                        ;
-                    response.EnsureSuccessStatusCode();
-                    var responseJson = await response.Content.ReadAsStringAsync();
-
-                    if ( string.IsNullOrEmpty( responseJson ) )
+                    string responseJson;
+                    using ( var requestContent = GetRequestContent( searchFilters, maxResults, pageId ) )
                     {
-                        Logging.Warn( "Spansh API returned no result" );
-                        return null;
+                        var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken );
+                        response.EnsureSuccessStatusCode();
+                        responseJson = await response.Content.ReadAsStringAsync();
+
+                        if ( string.IsNullOrEmpty( responseJson ) )
+                        {
+                            Logging.Warn( "Spansh API returned no result" );
+                            return null;
+                        }
                     }
 
                     try
@@ -45,11 +47,11 @@ namespace EddiSpanshService
                         var jResponse = JToken.Parse( responseJson );
                         if ( jResponse.Contains( "error" ) )
                         {
-                            Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                            Logging.Debug( $"Spansh responded with: {jResponse[ "error" ]}" );
                         }
                         else
                         {
-                            return JToken.Parse( await response.Content.ReadAsStringAsync() );
+                            return jResponse;
                         }
                     }
                     catch ( Exception e )
@@ -57,37 +59,50 @@ namespace EddiSpanshService
                         Logging.Error( "Failed to parse Spansh response", e );
                     }
                 }
+                catch ( HttpRequestException he )
+                {
+                    // Increment retry count and apply back-off
+                    retryCount++;
+                    if ( retryCount < MaxRetries )
+                    {
+                        var backoff = InitialBackoffMilliseconds * (int)Math.Pow(2, retryCount - 1); // Exponential back-off
+                        await Task.Delay( backoff, cancellationToken );
+                    }
+                    else
+                    {
+                        Logging.Error( he.Message, he );
+                    }
+                }
             }
-            catch ( HttpRequestException he )
-            {
-                Logging.Error( he.Message, he );
-            }
-            
+
             return null;
         }
 
-        public async Task<JToken> DistanceOrderedQueryAsync ( QueryGroup queryGroup, decimal fromX, decimal fromY,
-            decimal fromZ, [ NotNull ] Dictionary<string, object> searchFilters, CancellationToken cancellationToken )
+        public async Task<JToken> DistanceOrderedQueryAsync ( QueryGroup queryGroup, decimal fromX, decimal fromY, decimal fromZ, [ NotNull ] Dictionary<string, object> searchFilters, CancellationToken cancellationToken )
         {
-            try
+            var retryCount = 0;
+            while ( retryCount < MaxRetries )
             {
-                using ( var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters ) )
+                try
                 {
-                    var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken )
-                        ;
-                    response.EnsureSuccessStatusCode();
-                    var responseJson = await response.Content.ReadAsStringAsync();
+                    string responseJson;
+                    using ( var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters ) )
+                    {
+                        var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken );
+                        response.EnsureSuccessStatusCode();
+                        responseJson = await response.Content.ReadAsStringAsync();
+                    }
 
                     try
                     {
                         var jResponse = JToken.Parse( responseJson );
                         if ( jResponse.Contains( "error" ) )
                         {
-                            Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                            Logging.Debug( $"Spansh responded with: {jResponse[ "error" ]}" );
                         }
                         else
                         {
-                            return JToken.Parse( await response.Content.ReadAsStringAsync() );
+                            return jResponse;
                         }
                     }
                     catch ( Exception e )
@@ -95,10 +110,20 @@ namespace EddiSpanshService
                         Logging.Error( "Failed to parse Spansh response", e );
                     }
                 }
-            }
-            catch ( HttpRequestException he )
-            {
-                Logging.Error( he.Message, he );
+                catch ( HttpRequestException he )
+                {
+                    // Increment retry count and apply back-off
+                    retryCount++;
+                    if ( retryCount < MaxRetries )
+                    {
+                        var backoff = InitialBackoffMilliseconds * (int)Math.Pow(2, retryCount - 1); // Exponential back-off
+                        await Task.Delay( backoff, cancellationToken );
+                    }
+                    else
+                    {
+                        Logging.Error( he.Message, he );
+                    }
+                }
             }
 
             return null;
