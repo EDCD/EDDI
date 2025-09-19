@@ -67,7 +67,7 @@ namespace EddiVoiceAttackResponder
                         InvokeSpeech();
                         break;
                     case "system comment":
-                        InvokeStarMapSystemComment().GetAwaiter().GetResult();
+                        InvokeStarMapSystemCommentAsync().GetAwaiter().GetResult();
                         break;
                     case "initialize eddi":
                         if (App.FromVA && Application.Current != null)
@@ -729,11 +729,11 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Send a comment to the starmap service and store locally
         /// </summary>
-        public static async Task InvokeStarMapSystemComment ()
+        public static async Task InvokeStarMapSystemCommentAsync ()
         {
             try
             {
-                string comment = VoiceAttackPlugin.GetText("EDDI system comment");
+                string comment = VoiceAttackPlugin.GetText( "EDDI system comment" );
                 if ( comment == null )
                 {
                     return;
@@ -743,13 +743,13 @@ namespace EddiVoiceAttackResponder
                 {
                     // Store locally
                     var systemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
-                    var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync(systemAddress).ConfigureAwait(false);
+                    var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress );
                     currentSystem.comment = comment == "" ? null : comment;
                     EDDI.Instance.DataProvider.SaveStarSystem( currentSystem );
 
                     // Store in EDSM
-                    var edsmService = new StarMapService(null, true);
-                    edsmService.sendStarMapCommentAsync( systemAddress, comment ).GetAwaiter().GetResult();
+                    var edsmService = new StarMapService( null, true );
+                    await edsmService.sendStarMapCommentAsync( systemAddress, comment );
                 }
             }
             catch ( Exception e )

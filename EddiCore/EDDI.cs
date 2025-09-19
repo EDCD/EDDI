@@ -436,8 +436,8 @@ namespace EddiCore
                 Task.WaitAll(essentialAsyncTasks.ToArray(), eventHandlerTS.Token );
 
                 // Tasks we can start asynchronously and don't need to wait for
-                Task.Run( async () => await updateDestinationSystemAsync( configuration.DestinationSystemAddress,
-                        configuration.DestinationSystem ), eventHandlerTS.Token ).ConfigureAwait( false );
+                Task.Run( async () => await updateDestinationSystemAsync( configuration.DestinationSystemAddress, 
+                    configuration.DestinationSystem ), eventHandlerTS.Token ).ConfigureAwait( false );
                 Task.Run( async () =>
                 {
                     // Set up the Frontier API service
@@ -606,6 +606,7 @@ namespace EddiCore
             {
                 running = false; // Otherwise keepalive restarts them
                 signalSourceManager.Dispose();
+                DataProvider.cts.Cancel();
                 Utilities.TelemetryService.Telemetry.Stop();
                 eventHandlerTS.Cancel();
                 foreach ( var responder in responders )
@@ -850,27 +851,27 @@ namespace EddiCore
             if ( !eventHandlerTS.Token.IsCancellationRequested && 
                  eventConsumerThread?.Status != TaskStatus.Running && !DataProviderService.unitTesting )
             {
-                eventConsumerThread = Task.Run(dequeueEvents, eventHandlerTS.Token);
+                eventConsumerThread = Task.Run(dequeueEventsAsync, eventHandlerTS.Token);
             }
         }
 
-        private void dequeueEvents()
+        private async Task dequeueEventsAsync()
         {
             try
             {
                 foreach (var @event in eventQueue.GetConsumingEnumerable(eventHandlerTS.Token))
                 {
-                    eventHandler( @event );
+                    await HandleEventAsync( @event );
                 }
             }
-            catch (OperationCanceledException)
+            catch ( TaskCanceledException )
             {
                 // Task canceled. Mark this collection as not accepting any new items.
                 eventQueue.CompleteAdding();
             }
         }
 
-        internal void eventHandler( Event @event )
+        internal async Task HandleEventAsync( Event @event )
         {
             if ( @event != null )
             {
@@ -889,11 +890,11 @@ namespace EddiCore
                     }
                     else if (@event is LocationEvent locationEvent)
                     {
-                        passEvent = eventLocation(locationEvent);
+                        passEvent = await eventLocationAsync( locationEvent );
                     }
                     else if (@event is DockedEvent dockedEvent)
                     {
-                        passEvent = eventDocked(dockedEvent);
+                        passEvent = await eventDocked( dockedEvent );
                     }
                     else if (@event is UndockedEvent undockedEvent)
                     {
@@ -905,31 +906,31 @@ namespace EddiCore
                     }
                     else if (@event is TouchdownEvent touchdownEvent)
                     {
-                        passEvent = eventTouchdown(touchdownEvent);
+                        passEvent = await eventTouchdown( touchdownEvent );
                     }
                     else if (@event is LiftoffEvent liftoffEvent)
                     {
-                        passEvent = eventLiftoff(liftoffEvent);
+                        passEvent = await eventLiftoff( liftoffEvent );
                     }
                     else if (@event is FSDEngagedEvent fsdEngagedEvent)
                     {
-                        passEvent = eventFSDEngaged(fsdEngagedEvent);
+                        passEvent = await eventFSDEngagedAsync( fsdEngagedEvent );
                     }
                     else if (@event is FSDTargetEvent fsdTargetEvent)
                     {
-                        passEvent = eventFSDTarget(fsdTargetEvent);
+                        passEvent = await eventFSDTarget( fsdTargetEvent );
                     }
                     else if (@event is JumpedEvent jumpedEvent)
                     {
-                        passEvent = eventJumped(jumpedEvent);
+                        passEvent = await eventJumpedAsync( jumpedEvent );
                     }
                     else if (@event is EnteredSupercruiseEvent enteredSupercruiseEvent)
                     {
-                        passEvent = eventEnteredSupercruise(enteredSupercruiseEvent);
+                        passEvent = await eventEnteredSupercruiseAsync( enteredSupercruiseEvent );
                     }
                     else if (@event is EnteredNormalSpaceEvent enteredNormalSpaceEvent)
                     {
-                        passEvent = eventEnteredNormalSpace(enteredNormalSpaceEvent);
+                        passEvent = await eventEnteredNormalSpace( enteredNormalSpaceEvent );
                     }
                     else if (@event is CommanderContinuedEvent commanderContinuedEvent)
                     {
@@ -981,7 +982,7 @@ namespace EddiCore
                     }
                     else if (@event is NearSurfaceEvent nearSurfaceEvent)
                     {
-                        passEvent = eventNearSurface(nearSurfaceEvent);
+                        passEvent = await eventNearSurface( nearSurfaceEvent );
                     }
                     else if ( @event is FriendsEvent friendsEvent )
                     {
@@ -1009,11 +1010,11 @@ namespace EddiCore
                     }
                     else if (@event is CarrierJumpEngagedEvent carrierJumpEngagedEvent)
                     {
-                        passEvent = eventCarrierJumpEngaged(carrierJumpEngagedEvent);
+                        passEvent = await eventCarrierJumpEngagedAsync( carrierJumpEngagedEvent );
                     }
                     else if (@event is CarrierJumpedEvent carrierJumpedEvent)
                     {
-                        passEvent = eventCarrierJumped(carrierJumpedEvent);
+                        passEvent = await eventCarrierJumpedAsync( carrierJumpedEvent );
                     }
                     else if (@event is DisembarkEvent )
                     {
@@ -1039,7 +1040,7 @@ namespace EddiCore
                     // Additional processing is over, send to the event monitors and responders if required
                     if (passEvent)
                     {
-                        OnEventAsync( @event ).GetAwaiter().GetResult();
+                        await OnEventAsync( @event );
                     }
 
                     lastEventOfType[ @event.type ] = @event;
@@ -1155,7 +1156,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCarrierJumpEngaged(CarrierJumpEngagedEvent @event)
+        private async Task<bool> eventCarrierJumpEngagedAsync( CarrierJumpEngagedEvent @event )
         {
             // Update our current environment, vehicle, and station information if we are still docked at the carrier
             if (Environment == Constants.ENVIRONMENT_DOCKED && @event.carrierID == CurrentStation?.marketId)
@@ -1166,13 +1167,13 @@ namespace EddiCore
                 Vehicle = Constants.VEHICLE_SHIP;
 
                 // Make sure we have at least basic information about the destination star system
-                NextStarSystem = DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname ).GetAwaiter().GetResult();
+                NextStarSystem = await DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname );
 
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
                 CurrentStarSystem?.RemoveStation( @event.carrierID );
 
                 // Set the destination system as the current star system
-                updateCurrentSystem(@event.systemname, @event.systemAddress);
+                await updateCurrentSystemAsync( @event.systemname, @event.systemAddress );
 
                 // Update our station information
                 CurrentStation = CurrentStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID) ?? new Station();
@@ -1186,7 +1187,7 @@ namespace EddiCore
             else if (!string.IsNullOrEmpty(@event.originSystemName))
             {
                 // Remove the carrier from its prior location in the origin system so that we can re-save it with a new location
-                var originStarSystem = DataProvider.GetOrFetchStarSystemAsync(@event.originSystemAddress).GetAwaiter().GetResult();
+                var originStarSystem = await DataProvider.GetOrFetchStarSystemAsync(@event.originSystemAddress );
                 var carrier = originStarSystem?.stations.FirstOrDefault(s => s.marketId == @event.carrierID);
                 originStarSystem?.RemoveStation( @event.carrierID );
                 // Save the carrier to the updated star system
@@ -1201,7 +1202,7 @@ namespace EddiCore
                     }
                     else
                     {
-                        var updatedStarSystem = DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname ).GetAwaiter().GetResult();
+                        var updatedStarSystem = await DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.systemname );
                         updatedStarSystem.AddOrUpdateStation( carrier);
                         DataProvider.SaveStarSystem(updatedStarSystem);
                     }
@@ -1211,7 +1212,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventCarrierJumped(CarrierJumpedEvent @event)
+        private async Task<bool> eventCarrierJumpedAsync( CarrierJumpedEvent @event )
         {
             Logging.Info( "Carrier jumped to: " + @event.systemname );
             
@@ -1277,7 +1278,7 @@ namespace EddiCore
                 } 
 
                 // Update our current star system and carrier location
-                updateCurrentSystem(@event.systemname, @event.systemAddress );
+                await updateCurrentSystemAsync( @event.systemname, @event.systemAddress );
 
                 // Update our system properties
                 if ( CurrentStarSystem is null ) { return false; }
@@ -1341,7 +1342,8 @@ namespace EddiCore
                 {
                     // Refresh station data
                     if (@event.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                    Task.Run( async () => await conditionallyRefreshStationProfileAsync( @event.systemname, @event.carrierID ?? 0 ) ).ConfigureAwait( false );
+
+                    await conditionallyRefreshStationProfileAsync( @event.systemname, @event.carrierID ?? 0 ).ConfigureAwait( false );
                 }
             }
             else
@@ -1538,7 +1540,7 @@ namespace EddiCore
             return MonitorPostHandlerPerformance.OrderByDescending( p => p.Value ).First();
         }
 
-        internal bool eventLocation(LocationEvent theEvent)
+        internal async Task<bool> eventLocationAsync( LocationEvent theEvent )
         {
             Logging.Info("Location StarSystem: " + theEvent.systemname);
 
@@ -1562,7 +1564,7 @@ namespace EddiCore
             // If none of these are true we may either be in our ship or in a fighter.
             Logging.Info($"Vehicle mode is {Vehicle}");
 
-            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
+            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress );
             if ( CurrentStarSystem is null ) { return false; }
 
             // Always update the current system with the current co-ordinates, just in case things have changed or coordinates are not yet known
@@ -1640,7 +1642,7 @@ namespace EddiCore
                     // Refresh station data
                     if ( theEvent.fromLoad ) { return true; } // Don't fire this event when loading pre-existing logs
 
-                    Task.Run( async () => { await conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 ); } ).ConfigureAwait(false);
+                    await conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 ).ConfigureAwait(false);
                 }
             }
             else if ( theEvent.latitude != null && theEvent.longitude != null )
@@ -1657,7 +1659,7 @@ namespace EddiCore
             {
                 // Update the body 
                 Logging.Debug( "Now at body " + theEvent.bodyname );
-                updateCurrentStellarBody( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
+                await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
             }
 
             // Update to most recent information
@@ -1693,9 +1695,9 @@ namespace EddiCore
             return passEvent;
         }
 
-        private bool eventDocked ( DockedEvent @event )
+        private async Task<bool> eventDocked ( DockedEvent @event )
         {
-            updateCurrentSystem( @event.system, @event.systemAddress );
+            await updateCurrentSystemAsync( @event.system, @event.systemAddress );
 
             if ( CurrentStarSystem == null ) { return false; }
 
@@ -1728,7 +1730,7 @@ namespace EddiCore
                     return false;
                 } // Don't fire this event when loading pre-existing logs or if we were already at this station
 
-                Task.Run( async () => { await conditionallyRefreshStationProfileAsync( @event.system, @event.marketId ?? 0 ); } ).ConfigureAwait( false );
+                await conditionallyRefreshStationProfileAsync( @event.system, @event.marketId ?? 0 ).ConfigureAwait( false );
             }
 
             return true;
@@ -1754,16 +1756,16 @@ namespace EddiCore
                     return false;
                 } // Don't fire this event when loading pre-existing logs or if we were already at this station
 
-                Task.Run( async () => { await conditionallyRefreshStationProfileAsync( CurrentStarSystem.systemname, @event.marketId ?? 0 ); } ).ConfigureAwait( false );
+                Task.Run( async () => { await conditionallyRefreshStationProfileAsync( CurrentStarSystem.systemname, @event.marketId ?? 0 ); } );
             }
 
             return true;
         }
 
-        private bool eventTouchdown(TouchdownEvent theEvent)
+        private async Task<bool> eventTouchdown( TouchdownEvent theEvent )
         {
-            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
-            updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
+            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress );
+            await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
 
             if (theEvent.taxi != null && theEvent.taxi == true)
             {
@@ -1802,10 +1804,10 @@ namespace EddiCore
             return false;
         }
 
-        private bool eventLiftoff(LiftoffEvent theEvent)
+        private async Task<bool> eventLiftoff( LiftoffEvent theEvent )
         {
-            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
-            updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
+            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress );
+            await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress );
 
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
@@ -1983,13 +1985,13 @@ namespace EddiCore
             return false;
         }
 
-        internal void updateCurrentSystem([NotNull] string systemName, ulong systemAddress)
+        internal async Task updateCurrentSystemAsync([NotNull] string systemName, ulong systemAddress )
         {
             if ( string.IsNullOrEmpty(systemName) || CurrentStarSystem?.systemAddress == systemAddress )
             {
                 return;
             }
-
+            
             if ( CurrentStarSystem != null )
             {
                 // Discard signal sources from star system we are leaving
@@ -2004,30 +2006,30 @@ namespace EddiCore
 
             // Update the CurrentStarSystem to the one we are entering
             LastStarSystem = CurrentStarSystem;
-            if (NextStarSystem != null && NextStarSystem.systemAddress == systemAddress )
+            if ( NextStarSystem != null && NextStarSystem.systemAddress == systemAddress )
             {
                 CurrentStarSystem = NextStarSystem;
                 NextStarSystem = null;
             }
             else
             {
-                CurrentStarSystem = DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName ).GetAwaiter().GetResult();
+                CurrentStarSystem = await DataProvider.GetOrCreateStarSystemAsync( systemAddress, systemName );
             }
 
             // Register our new star system and manage its signal source expiries
             signalSourceManager.Register( CurrentStarSystem );
 
             // If we've arrived at our destination system then clear it
-            if ( destinationStarSystem?.systemAddress == currentStarSystem.systemAddress)
+            if ( destinationStarSystem?.systemAddress == currentStarSystem.systemAddress )
             {
-                updateDestinationSystemAsync( null ).GetAwaiter().GetResult();
+                await updateDestinationSystemAsync( null );
             }
         }
 
-        private void updateCurrentStellarBody(string bodyName, string systemName, ulong systemAddress)
+        private async Task updateCurrentStellarBodyAsync(string bodyName, string systemName, ulong systemAddress )
         {
             // Make sure our system information is up to date
-            updateCurrentSystem( systemName, systemAddress );
+            await updateCurrentSystemAsync( systemName, systemAddress );
 
             // Update the body 
             if ( CurrentStarSystem != null)
@@ -2049,7 +2051,7 @@ namespace EddiCore
             }
         }
 
-        internal bool eventFSDEngaged(FSDEngagedEvent @event)
+        internal async Task<bool> eventFSDEngagedAsync( FSDEngagedEvent @event )
         {
             // Keep track of our environment
             Environment = @event.target == "Supercruise" 
@@ -2059,7 +2061,7 @@ namespace EddiCore
             // Set the destination system as the current star system
             if ( @event.systemAddress != null )
             {
-                updateCurrentSystem( @event.systemname, (ulong)@event.systemAddress );
+                await updateCurrentSystemAsync( @event.systemname, (ulong)@event.systemAddress );
             }
 
             // Remove information about the current station and stellar body 
@@ -2069,10 +2071,10 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventFSDTarget(FSDTargetEvent @event)
+        private async Task<bool> eventFSDTarget( FSDTargetEvent @event )
         {
             // Set and prepare data about the next star system
-            NextStarSystem = DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.system ).GetAwaiter().GetResult();
+            NextStarSystem = await DataProvider.GetOrCreateStarSystemAsync( @event.systemAddress, @event.system );
             if (NextStarSystem != null && !NextStarSystem.bodies.Any(b => b.mainstar ?? false))
             {
                 // This system is unknown to us, might not be recorded, or we might not have connectivity.  Use a placeholder main star
@@ -2117,7 +2119,7 @@ namespace EddiCore
             return true;
         }
 
-        internal bool eventJumped(JumpedEvent theEvent)
+        internal async Task<bool> eventJumpedAsync( JumpedEvent theEvent )
         {
             bool passEvent;
 
@@ -2158,7 +2160,7 @@ namespace EddiCore
                 passEvent = true;
             }
 
-            updateCurrentSystem( theEvent.system, theEvent.systemAddress );
+            await updateCurrentSystemAsync( theEvent.system, theEvent.systemAddress );
             if ( CurrentStarSystem is null ) { return false; }
             CurrentStarSystem.systemAddress = theEvent.systemAddress;
             CurrentStarSystem.x = theEvent.x;
@@ -2208,10 +2210,10 @@ namespace EddiCore
             return passEvent;
         }
 
-        private bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
+        private async Task<bool> eventEnteredSupercruiseAsync( EnteredSupercruiseEvent theEvent )
         {
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-            updateCurrentSystem(theEvent.system, theEvent.systemAddress );
+            await updateCurrentSystemAsync( theEvent.system, theEvent.systemAddress );
 
             if (theEvent.taxi is true)
             {
@@ -2229,15 +2231,15 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
+        private async Task<bool> eventEnteredNormalSpace( EnteredNormalSpaceEvent theEvent )
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
             if (theEvent.bodyname != null && (theEvent.bodyType == BodyType.Moon || theEvent.bodyType == BodyType.Planet) )
             {
-                updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
+                await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
             }
-            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
+            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress );
 
             if (theEvent.taxi is true)
             {
@@ -2354,7 +2356,7 @@ namespace EddiCore
             return true;
         }
 
-        private bool eventNearSurface(NearSurfaceEvent theEvent)
+        private async Task<bool> eventNearSurface( NearSurfaceEvent theEvent )
         {
             if ( theEvent.approaching_surface )
             {
@@ -2376,7 +2378,7 @@ namespace EddiCore
                 // Clear the body we are leaving 
                 CurrentStellarBody = null;
             }
-            updateCurrentSystem(theEvent.systemname, theEvent.systemAddress );
+            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress );
             return true;
         }
 
@@ -2751,12 +2753,13 @@ namespace EddiCore
             RESTART_NO_REBOOT = 64
         }
 
-        public async Task updateDestinationSystemAsync ( ulong? destinationSystemAddress, string destinationSystem = null )
+        public async Task updateDestinationSystemAsync ( ulong? destinationSystemAddress,
+            string destinationSystem = null )
         {
             var configuration = ConfigService.Instance.eddiConfiguration;
             if ( destinationSystemAddress > 0 )
             {
-                var system = await DataProvider.GetOrFetchStarSystemAsync((ulong)destinationSystemAddress ).ConfigureAwait(false);
+                var system = await DataProvider.GetOrFetchStarSystemAsync((ulong)destinationSystemAddress );
 
                 //Ignore null & empty systems
                 if (system != null)

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Tests
@@ -307,7 +308,7 @@ namespace Tests
             Assert.IsFalse(theEvent.alreadymapped ?? false);
             Assert.AreEqual(2, theEvent.bodyId);
             Assert.IsNull(theEvent.mapped);
-            Assert.IsInstanceOfType(theEvent.scanned, typeof(System.DateTime));
+            Assert.IsInstanceOfType(theEvent.scanned, typeof(DateTime));
             Assert.AreEqual(1, theEvent.parents.Count);
             // Stellar extras
             Assert.AreEqual(85, theEvent.absolutemagnitudeprobability);
@@ -1036,11 +1037,11 @@ namespace Tests
 
             var line2 = @"{ ""timestamp"":""2018 - 07 - 24T07: 08:58Z"", ""event"":""LeaveBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
             events = JournalMonitor.ParseJournalEntry(line2);
-            var @event2 = (NearSurfaceEvent)events[0];
+            var event2 = (NearSurfaceEvent)events[0];
 
-            Assert.AreEqual("Ageno", @event2.systemname);
-            Assert.AreEqual((ulong)18262335038849, @event2.systemAddress);
-            Assert.AreEqual("Ageno B 2 a", @event2.bodyname);
+            Assert.AreEqual("Ageno", event2.systemname);
+            Assert.AreEqual((ulong)18262335038849, event2.systemAddress);
+            Assert.AreEqual("Ageno B 2 a", event2.bodyname);
         }
 
         [TestMethod]
@@ -1199,7 +1200,7 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestJumpEvent3()
+        public async Task TestJumpEvent3Async()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=LHS 20", @"{""min_max"":[{""id64"":33656303199641,""name"":""LHS 20"",""x"":11.1875,""y"":-37.375,""z"":-31.84375},{""id64"":2870246319505,""name"":""LHS 2011"",""x"":25.875,""y"":36.34375,""z"":-57.53125},{""id64"":5370319752024,""name"":""LHS 205"",""x"":34.03125,""y"":-22.0625,""z"":12.625},{""id64"":13864825660825,""name"":""LHS 2088"",""x"":-23.3125,""y"":25.71875,""z"":-28.34375},{""id64"":358730437330,""name"":""LHS 200"",""x"":10.84375,""y"":-12.71875,""z"":-22.96875},{""id64"":358663393986,""name"":""LHS 2001"",""x"":-54.0625,""y"":55.21875,""z"":-67.25},{""id64"":670417757585,""name"":""LHS 2038"",""x"":-34.625,""y"":45.375,""z"":-54.03125},{""id64"":670149256593,""name"":""LHS 207"",""x"":-47.84375,""y"":28.65625,""z"":-45.8125},{""id64"":671222867361,""name"":""LHS 203"",""x"":16.46875,""y"":-15.1875,""z"":-20.34375},{""id64"":671491499417,""name"":""LHS 2094"",""x"":35.0,""y"":35.0,""z"":-40.0},{""id64"":27059501999521,""name"":""LHS 2037"",""x"":33.78125,""y"":7.25,""z"":-14.5},{""id64"":671491433881,""name"":""LHS 2026"",""x"":43.34375,""y"":23.5625,""z"":-41.09375},{""id64"":11666339276177,""name"":""LHS 2027"",""x"":26.0625,""y"":34.53125,""z"":-52.40625},{""id64"":7268561135017,""name"":""LHS 2010"",""x"":37.0625,""y"":-2.5,""z"":-4.84375},{""id64"":7267487524241,""name"":""LHS 2018"",""x"":-25.28125,""y"":41.8125,""z"":-53.5625},{""id64"":5369246010144,""name"":""LHS 206"",""x"":20.75,""y"":-18.21875,""z"":-55.9375},{""id64"":2931055135075,""name"":""LHS 2022"",""x"":10.53125,""y"":40.25,""z"":-58.5625},{""id64"":5069269509521,""name"":""LHS 2029"",""x"":27.40625,""y"":31.5,""z"":-45.625},{""id64"":13865362466209,""name"":""LHS 2065"",""x"":19.71875,""y"":11.8125,""z"":-15.84375},{""id64"":13865630967201,""name"":""LHS 2069"",""x"":38.6875,""y"":16.0625,""z"":-22.34375}],""values"":[""LHS 20"",""LHS 2011"",""LHS 205"",""LHS 2088"",""LHS 200"",""LHS 2001"",""LHS 2038"",""LHS 207"",""LHS 203"",""LHS 2094"",""LHS 2037"",""LHS 2026"",""LHS 2027"",""LHS 2010"",""LHS 2018"",""LHS 206"",""LHS 2022"",""LHS 2029"",""LHS 2065"",""LHS 2069""]}" );
@@ -1211,7 +1212,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
-            var result = EDDI.Instance.eventJumped( @event );
+            var result = await EDDI.Instance.eventJumpedAsync( @event );
             Assert.IsTrue(result);
         }
 
@@ -1357,13 +1358,13 @@ namespace Tests
             var event2 = (SignalDetectedEvent)events2[0];
             Assert.AreEqual("Notable Stellar Phenomena", event2.signalSource.invariantName);
             EDDI.Instance.eventSignalDetected( event2 );
-            Assert.IsTrue(@event2.unique);
+            Assert.IsTrue(event2.unique);
 
             var events3 = JournalMonitor.ParseJournalEntry(line3);
             var event3 = (SignalDetectedEvent)events3[0];
             Assert.AreEqual("Notable Stellar Phenomena", event3.signalSource.invariantName);
             EDDI.Instance.eventSignalDetected( event3 );
-            Assert.IsFalse(@event3.unique);
+            Assert.IsFalse(event3.unique);
 
             var events4 = JournalMonitor.ParseJournalEntry(line4);
             var event4 = (SignalDetectedEvent)events4[0];
@@ -1612,7 +1613,7 @@ namespace Tests
 
             // Set up our data resources with canned data
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            FakeSpanshHttpClient.Expect( "dump/3932277478106", Encoding.UTF8.GetString( Tests.Properties.Resources.SpanshStarSystemDumpShinrartaDezhra ) );
+            FakeSpanshHttpClient.Expect( "dump/3932277478106", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpShinrartaDezhra ) );
 
             // Parse the event
             var line = "{ \"timestamp\":\"2020-06-12T11:01:40Z\", \"event\":\"CarrierJumpRequest\", \"CarrierID\":3701442048, \"CarrierType\":\"FleetCarrier\", \"SystemName\":\"Shinrarta Dezhra\", \"SystemAddress\":3932277478106, \"BodyID\":16, \"DepartureTime\":\"2023-05-22T09:09:57Z\" }";
@@ -2132,7 +2133,7 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestExplorationSequence()
+        public async Task TestExplorationSequenceAsync()
         {
             EDDI.Instance.CurrentStarSystem = new StarSystem { systemname = "Flyae Drye HT-X b48-1", systemAddress = 2830785848739 };
 
@@ -2205,11 +2206,11 @@ namespace Tests
 
             var events = JournalMonitor.ParseJournalEntry(startJump);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (FSDEngagedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (FSDEngagedEvent)events[ 0 ] );
 
             events = JournalMonitor.ParseJournalEntry(fsdJump);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (JumpedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (JumpedEvent)events[ 0 ] );
 
             // Test that the current star system has been updated
             var currentStarSystem = EDDI.Instance.CurrentStarSystem;
@@ -2219,7 +2220,7 @@ namespace Tests
             // Scan 1
             events = JournalMonitor.ParseJournalEntry(scan1);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (StarScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] );
 
             // Test that the temporary star has been replaced by the main star
             Assert.AreEqual(1, currentStarSystem.bodies.Count);
@@ -2236,236 +2237,236 @@ namespace Tests
             // Verify duplicate scans are not double counted
             events = JournalMonitor.ParseJournalEntry( scan1 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (StarScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] );
             Assert.AreEqual( 1, currentStarSystem.bodies.Count );
 
             // Scan 2
             events = JournalMonitor.ParseJournalEntry(scan2);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
             Assert.AreEqual( 2, currentStarSystem.bodies.Count );
 
             // Scan 3
             events = JournalMonitor.ParseJournalEntry(scan3);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 4
             events = JournalMonitor.ParseJournalEntry(scan4);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 5
             events = JournalMonitor.ParseJournalEntry(scan5);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 6
             events = JournalMonitor.ParseJournalEntry(scan6);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 7
             events = JournalMonitor.ParseJournalEntry(scan7);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Discovery Scan
             Assert.AreEqual( 7, currentStarSystem.bodies.Count );
             events = JournalMonitor.ParseJournalEntry(discoveryScan);
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (DiscoveryScanEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (DiscoveryScanEvent)events[ 0 ] );
             Assert.AreEqual( 45, currentStarSystem.totalbodies );
 
             // Scan 8
             events = JournalMonitor.ParseJournalEntry( scan8 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (StarScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] );
 
             // Scan 9
             events = JournalMonitor.ParseJournalEntry( scan9 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (StarScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (StarScannedEvent)events[ 0 ] );
 
             // Scan 10
             events = JournalMonitor.ParseJournalEntry( scan10 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 11
             events = JournalMonitor.ParseJournalEntry( scan11 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 12
             events = JournalMonitor.ParseJournalEntry( scan12 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 13
             events = JournalMonitor.ParseJournalEntry( scan13 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 14
             events = JournalMonitor.ParseJournalEntry( scan14 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 15
             events = JournalMonitor.ParseJournalEntry( scan15 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 16
             events = JournalMonitor.ParseJournalEntry( scan16 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 17
             events = JournalMonitor.ParseJournalEntry( scan17 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 18
             events = JournalMonitor.ParseJournalEntry( scan18 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 19
             events = JournalMonitor.ParseJournalEntry( scan19 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 20
             events = JournalMonitor.ParseJournalEntry( scan20 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 21
             events = JournalMonitor.ParseJournalEntry( scan21 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 22
             events = JournalMonitor.ParseJournalEntry( scan22 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 23
             events = JournalMonitor.ParseJournalEntry( scan23 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 24
             events = JournalMonitor.ParseJournalEntry( scan24 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 25
             events = JournalMonitor.ParseJournalEntry( scan25 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 26
             events = JournalMonitor.ParseJournalEntry( scan26 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 27
             events = JournalMonitor.ParseJournalEntry( scan27 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 28
             events = JournalMonitor.ParseJournalEntry( scan28 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 29
             events = JournalMonitor.ParseJournalEntry( scan29 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 30
             events = JournalMonitor.ParseJournalEntry( scan30 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 31
             events = JournalMonitor.ParseJournalEntry( scan31 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 32
             events = JournalMonitor.ParseJournalEntry( scan32 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 33
             events = JournalMonitor.ParseJournalEntry( scan33 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 34
             events = JournalMonitor.ParseJournalEntry( scan34 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 35
             events = JournalMonitor.ParseJournalEntry( scan35 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 36
             events = JournalMonitor.ParseJournalEntry( scan36 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 37
             events = JournalMonitor.ParseJournalEntry( scan37 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 38
             events = JournalMonitor.ParseJournalEntry( scan38 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 39
             events = JournalMonitor.ParseJournalEntry( scan39 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 40
             events = JournalMonitor.ParseJournalEntry( scan40 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 41
             events = JournalMonitor.ParseJournalEntry( scan41 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 42
             events = JournalMonitor.ParseJournalEntry( scan42 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 43
             events = JournalMonitor.ParseJournalEntry( scan43 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 44
             events = JournalMonitor.ParseJournalEntry( scan44 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             // Scan 45
             events = JournalMonitor.ParseJournalEntry( scan45 );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (BodyScannedEvent)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (BodyScannedEvent)events[ 0 ] );
 
             Assert.AreEqual( 45, currentStarSystem.totalbodies );
             Assert.AreEqual( 3, currentStarSystem.bodies.Count( b => b.bodyType == BodyType.Star ));
@@ -2474,7 +2475,7 @@ namespace Tests
 
             events = JournalMonitor.ParseJournalEntry( allBodiesFound );
             Assert.AreEqual( 1, events.Count );
-            EDDI.Instance.eventHandler( (SystemScanComplete)events[ 0 ] );
+            await EDDI.Instance.HandleEventAsync( (SystemScanComplete)events[ 0 ] );
             Assert.AreEqual(45, ( (SystemScanComplete)events[ 0 ] ).count );
         }
 

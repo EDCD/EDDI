@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Tests.Properties;
 using Utilities;
 
@@ -90,7 +91,7 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestJumpedEventHandler()
+        public async Task TestJumpedEventHandlerAsync()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/33656303199641", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpLHS_20 ) );
@@ -103,13 +104,13 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
-            var result = EDDI.Instance.eventJumped( @event );
+            var result = await EDDI.Instance.eventJumpedAsync( @event );
 
             Assert.IsTrue(result);
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestJumpedHandler_Hyperdiction()
+        public async Task TestJumpedHandler_HyperdictionAsync()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/2868635641225", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpCephei_Sector_DQ_Y ) );
@@ -137,27 +138,27 @@ namespace Tests
             Assert.IsInstanceOfType( event3a, typeof( FSDEngagedEvent ) );
 
             // Standard jump to Cephei Sector DQ-Y b1. Environment is supercruise.
-            EDDI.Instance.eventJumped( @event1 );
+            await EDDI.Instance.eventJumpedAsync( @event1 );
             Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, EDDI.Instance.Environment );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual( 2868635641225UL, EDDI.Instance.CurrentStarSystem.systemAddress );
 
             // Standard jump to HIP 8525. Environment is supercruise.
-            EDDI.Instance.eventJumped( @event2 );
+            await EDDI.Instance.eventJumpedAsync( @event2 );
             Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, EDDI.Instance.Environment );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual( 560216410467UL, EDDI.Instance.CurrentStarSystem.systemAddress );
 
             // Hyperdiction in HIP 8525. Environment is normal space rather than supercruise.
-            EDDI.Instance.eventFSDEngaged( @event3a );
-            EDDI.Instance.eventJumped( @event3 );
+            await EDDI.Instance.eventFSDEngagedAsync( @event3a );
+            await EDDI.Instance.eventJumpedAsync( @event3 );
             Assert.AreEqual( Constants.ENVIRONMENT_NORMAL_SPACE, EDDI.Instance.Environment );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual( 560216410467UL, EDDI.Instance.CurrentStarSystem.systemAddress );
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestLocationEventHandler()
+        public async Task TestLocationEventHandlerAsync()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/5856221467362", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpEravate ) );
@@ -170,12 +171,12 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(LocationEvent));
 
-            var result = EDDI.Instance.eventLocation( @event );
+            var result = await EDDI.Instance.eventLocationAsync( @event );
             Assert.IsTrue(result);
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestBodyScannedEventHandler()
+        public async Task TestBodyScannedEventHandlerAsync()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/1520309296811", @"{""system"":{""bodies"":[],""coords"":{""x"":-9581.71875,""y"":-382.28125,""z"":54409.71875},""date"":""2019-07-12 08:01:39+00"",""id64"":1520309296811,""name"":""Grea Bloae HH-T d4-44"",""stations"":[]}}" );
@@ -187,7 +188,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(BodyScannedEvent));
 
-            EDDI.Instance.updateCurrentSystem( "Grea Bloae HH-T d4-44", 1520309296811UL );
+            await EDDI.Instance.updateCurrentSystemAsync( "Grea Bloae HH-T d4-44", 1520309296811UL );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem.systemname);
 
@@ -204,7 +205,7 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestBodyMappedEventHandler()
+        public async Task TestBodyMappedEventHandlerAsync()
         {
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/1520309296811", @"{""system"":{""bodies"":[],""coords"":{""x"":-9581.71875,""y"":-382.28125,""z"":54409.71875},""date"":""2019-07-12 08:01:39+00"",""id64"":1520309296811,""name"":""Grea Bloae HH-T d4-44"",""stations"":[]}}" );
@@ -216,7 +217,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(BodyScannedEvent));
 
-            EDDI.Instance.updateCurrentSystem( "Grea Bloae HH-T d4-44", 1520309296811UL );
+            await EDDI.Instance.updateCurrentSystemAsync( "Grea Bloae HH-T d4-44", 1520309296811UL );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem.systemname);
 
@@ -242,9 +243,9 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestSignalDetectedDeDuplication()
+        public async Task TestSignalDetectedDeDuplicationAsync()
         {
-            EDDI.Instance.updateCurrentSystem( "TestSystem", 6606892846275 );
+            await EDDI.Instance.updateCurrentSystemAsync( "TestSystem", 6606892846275 );
 
             var line0 = @"{ ""timestamp"":""2019-02-04T02:20:28Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
             var line1 = @"{ ""timestamp"":""2019-02-04T02:25:03Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";

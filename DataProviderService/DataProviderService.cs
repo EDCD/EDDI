@@ -23,8 +23,10 @@ namespace EddiDataProviderService
         internal readonly SpanshService spanshService;
         internal readonly StarSystemSqLiteRepository starSystemRepository;
 
-        internal readonly FactionCache factionCache;
-        internal readonly StarSystemCache starSystemCache;
+        private readonly FactionCache factionCache;
+        private readonly StarSystemCache starSystemCache;
+
+        public readonly CancellationTokenSource cts = new CancellationTokenSource();
 
         public static bool unitTesting;
 
@@ -520,7 +522,7 @@ namespace EddiDataProviderService
         internal async Task<IList<StarSystem>> FetchSystemsDataAsync ( ulong[] systemAddresses, bool showMarketDetails )
         {
             if ( systemAddresses == null || systemAddresses.Length == 0 ) { return new List<StarSystem>(); }
-            return await spanshService.GetStarSystemsAsync( systemAddresses, showMarketDetails, CancellationToken.None );
+            return await spanshService.GetStarSystemsAsync( systemAddresses, showMarketDetails, cts.Token );
         }
 
         /// <summary>
