@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -29,7 +30,7 @@ namespace EddiCompanionAppService
         private static readonly string AUDIENCE = "audience=all";
         private static readonly string SCOPE = "scope=capi auth";
 
-        private static readonly HttpClient httpClient = new HttpClient();
+        private readonly HttpClient httpClient;
         private readonly CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
@@ -110,6 +111,11 @@ namespace EddiCompanionAppService
             Credentials = CompanionAppCredentials.Load();
             var appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
             void logger(string message) => Logging.Error(message);
+            
+            httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
+            httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
+
             URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrl, logger, appPath);
             clientID = ClientId.ID;
             if (clientID == null)

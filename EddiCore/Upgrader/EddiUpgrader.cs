@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -38,7 +39,8 @@ namespace EddiCore.Upgrader
                 using ( var client = new HttpClient() )
                 {
                     // Set the User-Agent header as required by GitHub API
-                    client.DefaultRequestHeaders.Add( "User-Agent", "EDDI-Upgrader" );
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION} - Upgrader" );
+                    client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
                     string response = null;
 

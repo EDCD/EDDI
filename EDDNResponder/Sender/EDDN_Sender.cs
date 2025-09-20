@@ -35,6 +35,8 @@ namespace EddiEddnResponder.Sender
             {
                 BaseAddress = new Uri(baseUrl)
             };
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
+            httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
         }
 
         // Schemas identified as invalid by the server

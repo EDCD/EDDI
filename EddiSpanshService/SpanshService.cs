@@ -2,6 +2,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -43,6 +44,10 @@ namespace EddiSpanshService
                     BaseAddress = new Uri( baseUrl ),
                     Timeout = TimeSpan.FromMilliseconds( DefaultTimeoutMilliseconds )
                 };
+                client.DefaultRequestHeaders.UserAgent
+                    .ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
+                client.DefaultRequestHeaders.Accept
+                    .Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
             }
 
             public async Task<HttpResponseMessage> GetAsync ( string requestUri, CancellationToken cancellationToken )
