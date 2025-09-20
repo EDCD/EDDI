@@ -1,55 +1,54 @@
 <Project>
-  <PropertyGroup>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <NoWarn>$(NoWarn);NU1507</NoWarn>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageVersion Include="AvalonEdit" Version="6.3.1.120" />
-    <PackageVersion Include="CommonMark.NET" Version="0.15.1" />
-    <PackageVersion Include="Cottle" Version="2.1.0" />
-    <PackageVersion Include="JetBrains.Annotations" Version="2025.2.0" />
-    <PackageVersion Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
-    <PackageVersion Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.4188" />
-    <PackageVersion Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageVersion Include="MSTest.TestFramework" Version="3.8.3" />
-    <PackageVersion Include="NAudio" Version="2.2.1" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="NWaves" Version="0.9.6" />
-    <PackageVersion Include="RestSharp" Version="106.13.0" />
-    <PackageVersion Include="Rollbar" Version="5.2.2" />
-    <PackageVersion Include="System.Collections" Version="4.3.0" />
-    <PackageVersion Include="System.Collections.Concurrent" Version="4.3.0" />
-    <PackageVersion Include="System.Collections.Immutable" Version="9.0.5" />
-    <PackageVersion Include="System.Data.SQLite" Version="1.0.119" />
-    <PackageVersion Include="System.Diagnostics.Debug" Version="4.3.0" />
-    <PackageVersion Include="System.Diagnostics.Tools" Version="4.3.0" />
-    <PackageVersion Include="System.Diagnostics.Tracing" Version="4.3.0" />
-    <PackageVersion Include="System.Globalization" Version="4.3.0" />
-    <PackageVersion Include="System.IO.Compression" Version="4.3.0" />
-    <PackageVersion Include="System.Linq" Version="4.3.0" />
-    <PackageVersion Include="System.Linq.Expressions" Version="4.3.0" />
-    <PackageVersion Include="System.ObjectModel" Version="4.3.0" />
-    <PackageVersion Include="System.Reflection" Version="4.3.0" />
-    <PackageVersion Include="System.Reflection.Extensions" Version="4.3.0" />
-    <PackageVersion Include="System.Reflection.Primitives" Version="4.3.0" />
-    <PackageVersion Include="System.Resources.ResourceManager" Version="4.3.0" />
-    <PackageVersion Include="System.Runtime" Version="4.3.1" />
-    <PackageVersion Include="System.Runtime.Caching" Version="9.0.5" />
-    <PackageVersion Include="System.Runtime.Extensions" Version="4.3.1" />
-    <PackageVersion Include="System.Runtime.InteropServices" Version="4.3.0" />
-    <PackageVersion Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-    <PackageVersion Include="System.Runtime.Numerics" Version="4.3.0" />
-    <PackageVersion Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
-    <PackageVersion Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
-    <PackageVersion Include="System.Text.Encoding" Version="4.3.0" />
-    <PackageVersion Include="System.Text.Encoding.Extensions" Version="4.3.0" />
-    <PackageVersion Include="System.Threading" Version="4.3.0" />
-    <PackageVersion Include="System.Threading.Tasks" Version="4.3.0" />
-    <PackageVersion Include="System.Threading.Timer" Version="4.3.0" />
-    <PackageVersion Include="System.Xml.ReaderWriter" Version="4.3.1" />
-    <PackageVersion Include="System.Xml.XDocument" Version="4.3.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+        <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+        <NoWarn>$(NoWarn);NU1507</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageVersion Include="AvalonEdit" Version="6.3.1.120" />
+        <PackageVersion Include="CommonMark.NET" Version="0.15.1" />
+        <PackageVersion Include="Cottle" Version="2.1.0" />
+        <PackageVersion Include="JetBrains.Annotations" Version="2025.2.0" />
+        <PackageVersion Include="MathNet.Numerics" Version="5.0.0" />
+        <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
+        <PackageVersion Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.4188" />
+        <PackageVersion Include="MSTest.TestAdapter" Version="3.8.3" />
+        <PackageVersion Include="MSTest.TestFramework" Version="3.8.3" />
+        <PackageVersion Include="NAudio" Version="2.2.1" />
+        <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageVersion Include="NWaves" Version="0.9.6" />
+        <PackageVersion Include="Rollbar" Version="5.2.2" />
+        <PackageVersion Include="System.Collections" Version="4.3.0" />
+        <PackageVersion Include="System.Collections.Concurrent" Version="4.3.0" />
+        <PackageVersion Include="System.Collections.Immutable" Version="9.0.5" />
+        <PackageVersion Include="System.Data.SQLite" Version="1.0.119" />
+        <PackageVersion Include="System.Diagnostics.Debug" Version="4.3.0" />
+        <PackageVersion Include="System.Diagnostics.Tools" Version="4.3.0" />
+        <PackageVersion Include="System.Diagnostics.Tracing" Version="4.3.0" />
+        <PackageVersion Include="System.Globalization" Version="4.3.0" />
+        <PackageVersion Include="System.IO.Compression" Version="4.3.0" />
+        <PackageVersion Include="System.Linq" Version="4.3.0" />
+        <PackageVersion Include="System.Linq.Expressions" Version="4.3.0" />
+        <PackageVersion Include="System.ObjectModel" Version="4.3.0" />
+        <PackageVersion Include="System.Reflection" Version="4.3.0" />
+        <PackageVersion Include="System.Reflection.Extensions" Version="4.3.0" />
+        <PackageVersion Include="System.Reflection.Primitives" Version="4.3.0" />
+        <PackageVersion Include="System.Resources.ResourceManager" Version="4.3.0" />
+        <PackageVersion Include="System.Runtime" Version="4.3.1" />
+        <PackageVersion Include="System.Runtime.Caching" Version="9.0.5" />
+        <PackageVersion Include="System.Runtime.Extensions" Version="4.3.1" />
+        <PackageVersion Include="System.Runtime.InteropServices" Version="4.3.0" />
+        <PackageVersion Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+        <PackageVersion Include="System.Runtime.Numerics" Version="4.3.0" />
+        <PackageVersion Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+        <PackageVersion Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+        <PackageVersion Include="System.Text.Encoding" Version="4.3.0" />
+        <PackageVersion Include="System.Text.Encoding.Extensions" Version="4.3.0" />
+        <PackageVersion Include="System.Threading" Version="4.3.0" />
+        <PackageVersion Include="System.Threading.Tasks" Version="4.3.0" />
+        <PackageVersion Include="System.Threading.Timer" Version="4.3.0" />
+        <PackageVersion Include="System.Xml.ReaderWriter" Version="4.3.1" />
+        <PackageVersion Include="System.Xml.XDocument" Version="4.3.0" />
+    </ItemGroup>
 </Project>

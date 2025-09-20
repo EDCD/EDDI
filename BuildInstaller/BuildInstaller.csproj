@@ -1,41 +1,100 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>:: Skip our post-build events when running continuous integration
-IF DEFINED CI (
-  GOTO :EOF :: Set to TRUE in Github Actions
-)
-IF DEFINED APPVEYOR (
-  GOTO :EOF :: Set to TRUE in Appveyor
-)
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+    <PropertyGroup>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PostBuildEvent>
+            :: Skip our post-build events when running continuous integration
+            IF DEFINED CI (
+            GOTO :EOF :: Set to TRUE in Github Actions
+            )
+            IF DEFINED APPVEYOR (
+            GOTO :EOF :: Set to TRUE in Appveyor
+            )
 
-:: This is a local build rather than a continuous integration... we will proceed.
+            :: This is a local build rather than a continuous integration... we will proceed.
 
-cd "$(SolutionDir)"
-if exist $(SolutionDir)postBuildTests.bat (
-  @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
-  call $(SolutionDir)postBuildTests.bat "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\"
-)
+            cd "$(SolutionDir)"
+            if exist $(SolutionDir)postBuildTests.bat (
+            @echo Post-build script exists at: $(SolutionDir)postBuildTests.bat - executing...
+            call $(SolutionDir)postBuildTests.bat "$(Configuration)" "$(SolutionDir)" "bin\$(Configuration)\"
+            )
 
-if "$(Configuration)" == "Release" (
-  build-installer
-)
-</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
-xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\Wiki\images\"</PreBuildEvent>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" />
-    <PackageReference Include="System.Runtime" />
-    <PackageReference Include="System.Runtime.Extensions" />
-  </ItemGroup>
+            if "$(Configuration)" == "Release" (
+            build-installer
+            )
+        </PostBuildEvent>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PreBuildEvent>
+            xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
+            xcopy /y "$(SolutionDir)Lexicons.md" "$(SolutionDir)bin\$(Configuration)\Wiki\"
+            xcopy /y "$(SolutionDir)images\*.*" "$(SolutionDir)bin\$(Configuration)\Wiki\images\"
+        </PreBuildEvent>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Runtime" />
+        <PackageReference Include="System.Runtime.Extensions" />
+    </ItemGroup>
+
+    <!--Check for unused dependencies in Directory.Packages.props-->
+    <Target Name="CheckUnusedPackages" AfterTargets="Build">
+        <Message Importance="High" Text=">>> Running solution-wide unused package check" />
+
+        <PropertyGroup>
+            <PackagesProps>$(MSBuildThisFileDirectory)..\Directory.Packages.props</PackagesProps>
+        </PropertyGroup>
+
+        <!-- Load declared packages -->
+        <XmlPeek XmlInputPath="$(PackagesProps)"
+                 Query="//PackageVersion/@Include">
+            <Output TaskParameter="Result" ItemName="DeclaredPackagesRaw"/>
+        </XmlPeek>
+
+        <ItemGroup>
+            <DeclaredPackages Include="@(DeclaredPackagesRaw->'%(Identity)')" />
+        </ItemGroup>
+
+        <!-- Gather all project files in the solution -->
+        <ItemGroup>
+            <ProjectFiles Include="..\**\*.csproj" Exclude="$(MSBuildProjectFullPath)" />
+        </ItemGroup>
+
+        <!-- Ask each project to report its PackageReferences -->
+        <MSBuild Projects="@(ProjectFiles)"
+                 Targets="CollectPackageReferences"
+                 BuildInParallel="true"
+                 Properties="DesignTimeBuild=true">
+            <Output TaskParameter="TargetOutputs" ItemName="UsedPackagesRaw"/>
+        </MSBuild>
+
+        <ItemGroup>
+            <UsedPackages Include="@(UsedPackagesRaw->'%(Identity)')" />
+        </ItemGroup>
+
+        <!-- Compare sets -->
+        <ItemGroup>
+            <UnusedPackages Include="@(DeclaredPackages)"
+                            Exclude="@(UsedPackages)" />
+        </ItemGroup>
+
+        <!-- Emit a single consolidated warning -->
+        <Warning Text="Unused packages in Directory.Packages.props: @(UnusedPackages, ', ')"
+                 Condition=" '@(UnusedPackages)' != '' " />
+    </Target>
+
+    <!-- Helper target: runs inside each project -->
+    <Target Name="CollectPackageReferences" Returns="@(FilteredPackageRefs)">
+        <ItemGroup>
+            <FilteredPackageRefs Include="@(PackageReference->'%(Identity)')"
+                                 Condition=" '%(PackageReference.PrivateAssets)' != 'all'
+                                    and '%(PackageReference.IncludeAssets)' != 'analyzers' " />
+        </ItemGroup>
+    </Target>
+
 </Project>
