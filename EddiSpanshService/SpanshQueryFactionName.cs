@@ -16,14 +16,17 @@ namespace EddiSpanshService
         {
             if ( string.IsNullOrEmpty( factionName ) ) { return null; }
 
-            var searchFilters = new Dictionary<string, object> { { "minor_faction_presences", new { value = new[] { factionName } } } };
+            var searchFilters = new Dictionary<string, object>
+            {
+                { "minor_faction_presences", new[] { new { name = new { value = new[] { factionName } } } } }
+            };
 
             // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
             if ( !string.IsNullOrEmpty( presenceSystemName ) )
             {
-                searchFilters.Add( "name", new { value = new[] { presenceSystemName } } );
+                searchFilters.Add( "name", new { value = presenceSystemName } );
             }
-
+            
             var systemsQueryResults = new List<JToken>();
             try
             {
