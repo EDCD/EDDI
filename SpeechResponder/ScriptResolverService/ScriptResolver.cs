@@ -1,10 +1,10 @@
 ﻿using Cottle;
 using Cottle.Exceptions;
 using EddiCompanionAppService;
+using EddiConfigService;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
-using EddiSpeechService;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -242,8 +242,8 @@ namespace EddiSpeechResponder.ScriptResolverService
                 ["odyssey"] = new Tuple<Type, Value>(typeof(bool), EDDI.Instance.inOdyssey),
                 ["va_active"] = new Tuple<Type, Value>(typeof(bool), EDDI.FromVA),
                 ["vehicle"] = new Tuple<Type, Value>(typeof(string), EDDI.Instance.Vehicle),
-                ["icao_active"] = new Tuple<Type, Value>(typeof(bool), SpeechService.Instance.Configuration.EnableIcao),
-                ["ipa_active"] = new Tuple<Type, Value>(typeof(bool), !SpeechService.Instance.Configuration.DisableIpa),
+                ["icao_active"] = new Tuple<Type, Value>(typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao),
+                ["ipa_active"] = new Tuple<Type, Value>(typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa),
                 ["version"] = new Tuple<Type, Value>(typeof(string), Constants.EDDI_VERSION.ShortString)
             };
 

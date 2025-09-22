@@ -15,7 +15,7 @@ namespace EddiSpeechService.SpeechConversions
         public static string Humanize(decimal? rawValue, bool? forceIntegerMantissa = null)
         {
             if (rawValue == null) {return null;}
-            decimal value = (decimal)rawValue;
+            var value = (decimal)rawValue;
             if ( value == 0 )
             {
                 var result = Properties.Phrases.zero;
@@ -23,9 +23,9 @@ namespace EddiSpeechService.SpeechConversions
                 return result;
             }
 
-            bool wantIntegerMantissa = forceIntegerMantissa ?? Properties.FormatOverrides.forceIntegerMantissa.Equals("true");
+            var wantIntegerMantissa = forceIntegerMantissa ?? Properties.FormatOverrides.forceIntegerMantissa.Equals("true");
 
-            bool isNegative = value < 0;
+            var isNegative = value < 0;
             if (isNegative)
             {
                 value = -value;
@@ -34,7 +34,7 @@ namespace EddiSpeechService.SpeechConversions
             if (value < 10)
             {
                 // Work out how many 0s to begin with
-                int numzeros = -1;
+                var numzeros = -1;
                 while (value < 1)
                 {
                     value *= 10;
@@ -48,8 +48,8 @@ namespace EddiSpeechService.SpeechConversions
                 return result;
             }
 
-            double magnitude = Math.Log10((double) value);
-            long orderMultiplier = (long) Math.Pow(10, Math.Floor(magnitude / 3) * 3);
+            var magnitude = Math.Log10((double) value);
+            var orderMultiplier = (long) Math.Pow(10, Math.Floor(magnitude / 3) * 3);
             var (number, nextDigit) = Normalize(value, orderMultiplier);
 
             // See if we have a whole number that is fully described within the largest order
@@ -179,7 +179,7 @@ namespace EddiSpeechService.SpeechConversions
 
         private static string FormatVerbatim(int number, bool isNegative, long orderMultiplier)
         {
-            long value = number * orderMultiplier;
+            var value = number * orderMultiplier;
             // some TTS voices need the thousands separators, so use format string "N0" (numeric, zero decimal places)
             return (isNegative ? Properties.Phrases.minus + " " : "") + value.ToString("N0", formattingCultureInfo);
         }

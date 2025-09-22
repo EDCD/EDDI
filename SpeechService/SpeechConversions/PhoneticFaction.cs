@@ -46,8 +46,8 @@ namespace EddiSpeechService.SpeechConversions
             }
 
             // It's possible that the name contains a constellation or catalog abbreviation, in which case translate it
-            string[] pieces = faction.Split(' ');
-            for (int i = 0; i < pieces.Length; i++)
+            var pieces = faction.Split(' ');
+            for (var i = 0; i < pieces.Length; i++)
             {
                 if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(pieces[i]))
                 {

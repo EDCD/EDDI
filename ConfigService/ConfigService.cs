@@ -91,6 +91,12 @@ namespace EddiConfigService
             set => SetConfig( nameof( ShipMonitorConfiguration ), value );
         }
 
+        public SpeechServiceConfiguration speechServiceConfiguration
+        {
+            get => GetConfig<SpeechServiceConfiguration>( nameof( SpeechServiceConfiguration ) );
+            set => SetConfig( nameof( SpeechServiceConfiguration ), value );
+        }
+
         public SpeechResponderConfiguration speechResponderConfiguration
         {
             get => GetConfig<SpeechResponderConfiguration>( nameof( SpeechResponderConfiguration ) );

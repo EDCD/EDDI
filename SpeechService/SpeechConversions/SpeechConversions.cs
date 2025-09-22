@@ -11,7 +11,7 @@ namespace EddiSpeechService.SpeechConversions
         public static string GetTranslation(string val, bool useICAO = false, string type = null)
         {
             // Translations from fixed dictionaries
-            string translation = val;
+            var translation = val;
             type = !string.IsNullOrEmpty(type) ? type.ToLowerInvariant() : null;
 
             switch (type)
@@ -101,9 +101,9 @@ namespace EddiSpeechService.SpeechConversions
 
         private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
         {
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
-            foreach (string source in sourcePhrase.Split(' '))
+            var sb = new StringBuilder();
+            var i = 0;
+            foreach (var source in sourcePhrase.Split(' '))
             {
                 if (i > 0)
                 {
@@ -126,7 +126,7 @@ namespace EddiSpeechService.SpeechConversions
             }
 
             var elements = new List<string>();
-            foreach (char c in callsign.ToUpperInvariant())
+            foreach (var c in callsign.ToUpperInvariant())
             {
                 switch (c)
                 {
@@ -264,7 +264,7 @@ namespace EddiSpeechService.SpeechConversions
                     // Handle null / empty strings
                     return "";
                 }
-                if (long.TryParse(matchAsString, out long number))
+                if (long.TryParse(matchAsString, out var number))
                 {
                     // Handle numbers
                     if (useICAO)

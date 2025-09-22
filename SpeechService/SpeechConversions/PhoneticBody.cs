@@ -29,9 +29,9 @@ namespace EddiSpeechService.SpeechConversions
             }
 
             // Parse the short body name
-            for (int i = 1; i < shortBody.Groups.Count; i++)
+            for (var i = 1; i < shortBody.Groups.Count; i++)
             {
-                for (int j = 0; j < shortBody.Groups[i].Captures.Count; j++)
+                for (var j = 0; j < shortBody.Groups[i].Captures.Count; j++)
                 {
                     var part = shortBody.Groups[i].Captures[j].Value.Trim();
                     var lastPart = GetLastPart(shortBody, i, j);

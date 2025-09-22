@@ -19,8 +19,8 @@ namespace EddiSpeechService
 
         private List<int?> PreparePrioritiesList()
         {
-            List<int?> result = new List<int?>();
-            for (int i = 1; i <= (priorityQueues.Count - 1); i++)
+            var result = new List<int?>();
+            for (var i = 1; i <= (priorityQueues.Count - 1); i++)
             {
                 if (i > 0)
                 {
@@ -41,7 +41,7 @@ namespace EddiSpeechService
             // Priority 4: Low priority
             // Priority 5: Lowest priority, interrupted by any higher priority
 
-            for (int i = 0; i <= 5; i++)
+            for (var i = 0; i <= 5; i++)
             {
                 priorityQueues.Add(new ConcurrentQueue<EddiSpeech>());
             }
@@ -92,7 +92,7 @@ namespace EddiSpeechService
         public void DequeueAllSpeech()
         {
             // Don't clear system messages (priority 0)
-            for (int i = 1; i < priorityQueues.Count; i++)
+            for (var i = 1; i < priorityQueues.Count; i++)
             {
                 while (priorityQueues[i].TryDequeue(out _)) { }
             }
@@ -101,11 +101,11 @@ namespace EddiSpeechService
         public void DequeueSpeechOfType(string type)
         {
             // Don't clear system messages (priority 0)
-            for (int i = 1; i < priorityQueues.Count; i++)
+            for (var i = 1; i < priorityQueues.Count; i++)
             {
                 var priorityHolder = new ConcurrentQueue<EddiSpeech>();
-                while (priorityQueues[i].TryDequeue(out var eddiSpeech)) { filterSpeechQueue(type, ref priorityHolder, eddiSpeech); };
-                while (priorityHolder.TryDequeue(out var eddiSpeech)) { priorityQueues[i].Enqueue(eddiSpeech); };
+                while (priorityQueues[i].TryDequeue(out var eddiSpeech)) { filterSpeechQueue(type, ref priorityHolder, eddiSpeech); }
+                while (priorityHolder.TryDequeue(out var eddiSpeech)) { priorityQueues[i].Enqueue(eddiSpeech); }
             }
         }
 
@@ -130,7 +130,7 @@ namespace EddiSpeechService
         private void dequeueStaleSpeech(EddiSpeech eddiSpeech)
         {
             // List EDDI event types of where stale event data should be removed in favor of more recent data
-            string[] eventTypes = new string[]
+            var eventTypes = new[]
                 {
                     "Cargo scoop",
                     "Colonisation construction depot",
@@ -151,7 +151,7 @@ namespace EddiSpeechService
                     "Under attack"
                 };
 
-            foreach (string eventType in eventTypes)
+            foreach (var eventType in eventTypes)
             {
                 if (eddiSpeech.eventType == eventType)
                 {

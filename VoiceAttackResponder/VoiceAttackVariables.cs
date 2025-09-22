@@ -54,8 +54,8 @@ namespace EddiVoiceAttackResponder
 
             // Update values not notified by `PropertyChanged` events
             VoiceAttackPlugin.SetBoolean("cAPI active", CompanionAppService.Instance.active);
-            VoiceAttackPlugin.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
-            VoiceAttackPlugin.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
+            VoiceAttackPlugin.SetBoolean("ipa active", !ConfigService.Instance.speechServiceConfiguration.DisableIpa);
+            VoiceAttackPlugin.SetBoolean("icao active", ConfigService.Instance.speechServiceConfiguration.EnableIcao);
             VoiceAttackPlugin.SetDecimal("Search system distance", NavigationService.Instance.SearchDistanceLy);
             setStarSystemValues(NavigationService.Instance.SearchStarSystem, "Search system" );
             setStationValues(NavigationService.Instance.SearchStation, "Search station" );
@@ -134,6 +134,13 @@ namespace EddiVoiceAttackResponder
                     {
                         setShipyardValues( shipConfig.shipyard?.ToList() );
                     } );
+                    return;
+                }
+
+                if ( e.PropertyName.Equals(nameof(SpeechServiceConfiguration), StringComparison.InvariantCultureIgnoreCase) )
+                {
+                    VoiceAttackPlugin.SetBoolean( "ipa active", !ConfigService.Instance.speechServiceConfiguration.DisableIpa );
+                    VoiceAttackPlugin.SetBoolean( "icao active", ConfigService.Instance.speechServiceConfiguration.EnableIcao );
                     return;
                 }
             }
@@ -711,14 +718,6 @@ namespace EddiVoiceAttackResponder
                 LockManager.GetLock(nameof(SpeechService.Instance.eddiSpeaking), () => 
                 {
                     VoiceAttackPlugin.SetBoolean("EDDI speaking", SpeechService.Instance.eddiSpeaking);
-                });
-            }
-            if (eventArgs.PropertyName == nameof(SpeechService.Instance.Configuration).Split('.').Last())
-            {
-                LockManager.GetLock(nameof(SpeechService.Instance.Configuration), () => 
-                {
-                    VoiceAttackPlugin.SetBoolean("ipa active", !(SpeechService.Instance.Configuration.DisableIpa));
-                    VoiceAttackPlugin.SetBoolean("icao active", SpeechService.Instance.Configuration.EnableIcao);
                 });
             }
         }

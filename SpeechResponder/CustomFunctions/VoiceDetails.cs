@@ -1,4 +1,5 @@
 ﻿using Cottle;
+using EddiConfigService;
 using EddiSpeechResponder.ScriptResolverService;
 using EddiSpeechService;
 using System;
@@ -20,8 +21,9 @@ namespace EddiSpeechResponder.CustomFunctions
             {
                 if (SpeechService.Instance?.allVoices != null)
                 {
+                    var configuration = ConfigService.Instance.speechServiceConfiguration;
                     var result = SpeechService.Instance.allVoices.FirstOrDefault( v =>
-                        v.name == SpeechService.Instance.Configuration.StandardVoice );
+                        v.name == configuration.StandardVoice );
                     return result is null
                         ? Value.EmptyMap
                         : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );

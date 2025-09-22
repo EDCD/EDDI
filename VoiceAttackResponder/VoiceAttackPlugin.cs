@@ -99,7 +99,7 @@ namespace EddiVoiceAttackResponder
                     EDDI.Instance.PropertyChanged += OnEddiPropertyChanged;
                     EDDI.Instance.State.CollectionChanged += OnEddiStateCollectionChanged;
                     EDDI.Instance.State.PropertyChanged += OnEddiStatePropertyChanged;
-                    SpeechService.Instance.PropertyChanged += OnSpeechPropertyChanged;
+                    SpeechService.Instance.SpeechManager.PropertyChanged += OnSpeechPropertyChanged;
                     CompanionAppService.Instance.StateChanged += OnCapiStateChanged;
 
                     EddiConfigService.ConfigService.Instance.PropertyChanged += VoiceAttackVariables.updateConfigurationValues;
@@ -141,11 +141,6 @@ namespace EddiVoiceAttackResponder
             VoiceAttackVariables.setCAPIState( newState == CompanionAppService.State.Authorized );
         }
 
-        private static void OnSpeechPropertyChanged ( object s, PropertyChangedEventArgs e )
-        {
-            VoiceAttackVariables.setSpeechState( e );
-        }
-
         private static void OnEddiStatePropertyChanged ( object s, PropertyChangedEventArgs e )
         {
             VoiceAttackVariables.setDictionaryValues( EDDI.Instance.State, "state" );
@@ -160,6 +155,11 @@ namespace EddiVoiceAttackResponder
         {
             VoiceAttackVariables.updateStandardValues( e );
         }
+        
+        private static void OnSpeechPropertyChanged ( object s, PropertyChangedEventArgs e )
+        {
+            VoiceAttackVariables.setSpeechState( e );
+        }
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Exit1( dynamic _ )
@@ -170,7 +170,7 @@ namespace EddiVoiceAttackResponder
             EDDI.Instance.PropertyChanged -= OnEddiPropertyChanged;
             EDDI.Instance.State.CollectionChanged -=OnEddiStateCollectionChanged;
             EDDI.Instance.State.PropertyChanged -= OnEddiStatePropertyChanged;
-            SpeechService.Instance.PropertyChanged -= OnSpeechPropertyChanged;
+            SpeechService.Instance.SpeechManager.PropertyChanged -= OnSpeechPropertyChanged;
             CompanionAppService.Instance.StateChanged -= OnCapiStateChanged;
             EddiConfigService.ConfigService.Instance.PropertyChanged -= VoiceAttackVariables.updateConfigurationValues;
             

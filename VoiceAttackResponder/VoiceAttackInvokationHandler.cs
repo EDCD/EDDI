@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiConfigService;
+using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiNavigationService;
@@ -138,9 +139,9 @@ namespace EddiVoiceAttackResponder
         private static void InvokeVolume ()
         {
             int? volumeInt = VoiceAttackPlugin.GetInt("Volume");
-
-            if ( SpeechService.Instance.Configuration == null )
-            { return; }
+            var config = ConfigService.Instance.speechServiceConfiguration;
+            
+            if ( config is null ) { return; }
 
             // Fix any inputs outside of the expected range
             if ( volumeInt == null )
@@ -151,8 +152,8 @@ namespace EddiVoiceAttackResponder
             { volumeInt = 100; } // Must be 100 or less
 
             // Update our speech configuration settings
-            SpeechService.Instance.Configuration.Volume = (int)volumeInt;
-            SpeechService.Instance.Configuration.ToFile();
+            config.Volume = (int)volumeInt;
+            ConfigService.Instance.speechServiceConfiguration = config;
 
             // Refresh the UI with the new volume
             Application.Current.Dispatcher.InvokeAsync( () =>

@@ -167,7 +167,7 @@ namespace EddiSpeechService.SpeechConversions
 
                 // We need to handle the pieces before and after the sector marker separately.
                 // Fix common names
-                string sectorNamePart1 = match.Groups["SECTOR"].Value
+                var sectorNamePart1 = match.Groups["SECTOR"].Value
                     .Replace("Col ", "Coll ")
                     .Replace("R CrA ", @"<say-as interpret-as=""characters"">R</say-as> Corona Australis ")
                     .Replace("Tr ", @"<say-as interpret-as=""characters"">T</say-as> <say-as interpret-as=""characters"">R</say-as> ")
@@ -175,7 +175,7 @@ namespace EddiSpeechService.SpeechConversions
                     .Replace("(", "").Replace(")", "");
 
                 // Various items between the sector name and 'Sector' need to be removed to allow us to find the base pronunciation
-                string sectorNamePart2 = "";
+                var sectorNamePart2 = "";
                 if (sectorNamePart1.EndsWith(" Dark Region B Sector"))
                 {
                     sectorNamePart1 = sectorNamePart1.Replace(" Dark Region B Sector", "");
@@ -228,8 +228,8 @@ namespace EddiSpeechService.SpeechConversions
             else
             {
                 // It's possible that the name contains a constellation or catalog abbreviation, in which case translate it
-                string[] pieces = starSystem.Split(' ');
-                for (int i = 0; i < pieces.Length; i++)
+                var pieces = starSystem.Split(' ');
+                for (var i = 0; i < pieces.Length; i++)
                 {
                     if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(pieces[i]))
                     {

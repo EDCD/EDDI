@@ -1,4 +1,6 @@
-﻿using EddiDataDefinitions;
+﻿using EddiConfigService;
+using EddiConfigService.Configurations;
+using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace EddiUI
 
         public void ConfigureTTS()
         {
-            var speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
+            var speechServiceConfiguration = ConfigService.Instance.speechServiceConfiguration;
             var speechOptions = new List<string>
             {
                 "Windows TTS default"
@@ -39,7 +41,7 @@ namespace EddiUI
                 // If the prior selected voice is no longer a valid option, we revert to the system default.
                 if (speechServiceConfiguration.StandardVoice != ttsVoiceDropDown.Text)
                 {
-                    speechServiceConfiguration.ToFile();
+                    ConfigService.Instance.speechServiceConfiguration = speechServiceConfiguration;
                 }
             }
             catch (Exception e)
@@ -128,7 +130,7 @@ namespace EddiUI
         /// </summary>
         private void ttsUpdated()
         {
-            SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration
+            var speechConfiguration = new SpeechServiceConfiguration
             {
                 StandardVoice = ttsVoiceDropDown.SelectedItem == null || 
                                 ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" 
@@ -141,8 +143,7 @@ namespace EddiUI
                 DisableIpa = DisableIpaCheckbox.IsChecked ?? false,
                 EnableIcao = enableIcaoCheckbox.IsChecked ?? false
             };
-            SpeechService.Instance.Configuration = speechConfiguration;
-            speechConfiguration.ToFile();
+            ConfigService.Instance.speechServiceConfiguration = speechConfiguration;
         }
     }
 }

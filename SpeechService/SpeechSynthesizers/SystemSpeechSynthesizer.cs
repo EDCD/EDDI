@@ -1,4 +1,5 @@
-﻿using EddiSpeechService.SpeechPreparation;
+﻿using EddiConfigService.Configurations;
+using EddiSpeechService.SpeechPreparation;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -134,8 +135,7 @@ namespace EddiSpeechService.SpeechSynthesizers
             return SystemSpeechSynthesis(voiceDetails, speech, Configuration);
         }
 
-        private MemoryStream SystemSpeechSynthesis(VoiceDetails voice, string speech,
-            SpeechServiceConfiguration Configuration)
+        private MemoryStream SystemSpeechSynthesis(VoiceDetails voice, string speech, SpeechServiceConfiguration Configuration)
         {
             if (voice is null || speech is null)
             {

@@ -16,7 +16,7 @@ namespace EddiSpeechService.SpeechConversions
             {
                 if (val.Contains(planetClass.localizedName))
                 {
-                    string numeralToNumber = planetClass.localizedName
+                    var numeralToNumber = planetClass.localizedName
                         .Replace(" I ", " 1 ")
                         .Replace(" II ", " 2 ")
                         .Replace(" III ", " 3 ")

@@ -1,4 +1,5 @@
-﻿using EddiSpeechService.SpeechPreparation;
+﻿using EddiConfigService.Configurations;
+using EddiSpeechService.SpeechPreparation;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

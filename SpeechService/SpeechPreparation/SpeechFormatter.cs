@@ -13,6 +13,7 @@ namespace EddiSpeechService.SpeechPreparation
 {
     public static class SpeechFormatter
     {
+        internal static readonly XmlSchemaSet lexiconSchemas = new XmlSchemaSet();
 
         // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
         private static readonly string[] separatorsList =
@@ -88,7 +89,7 @@ namespace EddiSpeechService.SpeechPreparation
         public static string EscapeSSML(string text)
         {
             // Our input text might have SSML elements in it but the rest needs escaping
-            string result = text;
+            var result = text;
 
             // We need to make sure file names for the play function include a "/" (e.g. C:/)
             result = Regex.Replace(result, "(<.+?src=\")(.:)(.*?" + @"\/>)", "$1" + "$2%SSS%" + "$3");
@@ -144,11 +145,11 @@ namespace EddiSpeechService.SpeechPreparation
             var statements = new List<string>();
             var separators = string.Join("|", separatorsList);
 
-            Match match = Regex.Match(speech, separators);
+            var match = Regex.Match(speech, separators);
             if (match.Success)
             {
-                string[] splitSpeech = new Regex(separators).Split(speech);
-                foreach (string split in splitSpeech)
+                var splitSpeech = new Regex(separators).Split(speech);
+                foreach (var split in splitSpeech)
                 {
                     if (Regex.Match(split, @"\S").Success) // Trim out non-word statements; match only words
                     {
@@ -237,7 +238,7 @@ namespace EddiSpeechService.SpeechPreparation
 
                 if ( string.IsNullOrEmpty( directory ) || string.IsNullOrEmpty( voice.culturecode ) )
                 { return null; }
-                DirectoryInfo dir = new DirectoryInfo(directory);
+                var dir = new DirectoryInfo(directory);
                 if ( dir.Exists )
                 {
                     // Find two letter language code lexicons (these will have lower precedence than any full language code lexicons)
@@ -262,7 +263,7 @@ namespace EddiSpeechService.SpeechPreparation
 
             void CheckAndAdd ( FileInfo file )
             {
-                if ( IsValidXML( file.FullName, out _ ) )
+                if ( IsValidXML( file.FullName ) )
                 {
                     result.Add( file.FullName );
                 }
@@ -282,18 +283,21 @@ namespace EddiSpeechService.SpeechPreparation
 
             return result;
         }
-
-        private static bool IsValidXML ( string filename, out XDocument xml )
+        
+        /// <summary>
+        /// Check whether the file is valid .xml (.pls is an xml-based format)
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private static bool IsValidXML ( string filename )
         {
-            // Check whether the file is valid .xml (.pls is an xml-based format)
-            xml = null;
             try
             {
                 // Try to load the file as xml
-                xml = XDocument.Load( filename );
+                var xml = XDocument.Load( filename );
 
                 // Validate the lexicon xml against the schema
-                xml.Validate( SpeechService.Instance.lexiconSchemas, ( o, e ) =>
+                xml.Validate( lexiconSchemas, ( o, e ) =>
                 {
                     if ( e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error )
                     {
