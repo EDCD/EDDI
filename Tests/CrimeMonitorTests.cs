@@ -316,7 +316,7 @@ namespace Tests
             crimeMonitor.readRecord(config);
 
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            FakeSpanshHttpClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"Radio Sidewinder Crew\"]}},\"size\":500,\"page\":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
+            FakeSpanshHttpClient.Expect( @"systems/search?={\""filters\"":{\""minor_faction_presences\"":[{\""name\"":{\""value\"":[\""Radio Sidewinder Crew\""]}}]},\""size\"":500,\""page\"":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Tachmetae", @"{""min_max"":[{""id64"":2869977949641,""name"":""Tachmetae"",""x"":-0.59375,""y"":60.6875,""z"":84.71875}],""values"":[""Tachmetae""]}" );
             FakeSpanshHttpClient.Expect( "dump/2869977949641", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpTachmetae ) );
 

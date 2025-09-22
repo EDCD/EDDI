@@ -602,7 +602,7 @@ namespace Tests
         {
             // Arrange
             EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            FakeSpanshHttpClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"Radio Sidewinder Crew\"]}},\"size\":500,\"page\":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
+            FakeSpanshHttpClient.Expect( @"systems/search?={\""filters\"":{\""minor_faction_presences\"":[{\""name\"":{\""value\"":[\""Radio Sidewinder Crew\""]}}]},\""size\"":500,\""page\"":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
             FakeSpanshHttpClient.Expect( "systems/search?={\"filters\":{\"minor_faction_presences\":{\"value\":[\"No such faction\"]}},\"size\":500,\"page\":0}", null );
 
             // Act
