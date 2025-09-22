@@ -99,25 +99,6 @@ namespace EddiVoiceAttackResponder
                 // Retrieve and clear variables from prior iterations of the same event
                 clearPriorEventValues( @event.type );
 
-                // Update monitor variables
-                foreach ( var monitor in EDDI.Instance.monitors )
-                {
-                    foreach ( var kv in monitor.GetVariables() ?? new Dictionary<string, Tuple<Type, object>>() )
-                    {
-                        var variableName = kv.Key;
-                        var variableType = kv.Value.Item1;
-                        var variableValue = kv.Value.Item2;
-
-                        var values = VoiceAttackVariables.Convert(
-                            new MetaVariables( variableType, variableValue ).Results, "EDDI", variableName );
-                        foreach ( var var in values )
-                        {
-                            var.Set();
-                            currentVariables[ var.key ] = var;
-                        }
-                    }
-                }
-
                 // Prepare and update this event's variable values
                 // Save the updated state of our event variables
                 var eventVariables = VoiceAttackVariables.Convert( new MetaVariables(@event.GetType(), @event).Results, "EDDI", @event.type);
