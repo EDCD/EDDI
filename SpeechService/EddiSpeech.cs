@@ -35,7 +35,7 @@ namespace EddiSpeechService
             var distortionLevel = 0;
             if ( shipHealth != null && distortOnDamage )
             {
-                distortionLevel = ( 100 - (int)shipHealth );
+                distortionLevel = 100 - (int)shipHealth;
             }
 
             return distortionLevel;
@@ -49,15 +49,15 @@ namespace EddiSpeechService
             {
                 if ( size == LandingPadSize.Small )
                 {
-                    echoDelayMs = 100;
+                    echoDelayMs = 30;
                 }
                 else if ( size == LandingPadSize.Medium )
                 {
-                    echoDelayMs = 200;
+                    echoDelayMs = 60;
                 }
                 else if ( size == LandingPadSize.Large )
                 {
-                    echoDelayMs = 300;
+                    echoDelayMs = 120;
                 }
             }
 

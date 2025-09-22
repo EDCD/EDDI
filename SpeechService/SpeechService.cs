@@ -270,7 +270,7 @@ namespace EddiSpeechService
                             {
                                 try
                                 {
-                                    Speak( speech );
+                                    await SpeakAsync( speech );
                                 }
                                 catch ( Exception ex )
                                 {
@@ -278,17 +278,17 @@ namespace EddiSpeechService
                                     Logging.Warn( $"Failed to handle speech {JsonConvert.SerializeObject( speech )}" );
                                 }
                             }
-
+                            else
+                            {
+                                break; // Exit the loop if the queue is empty
+                            }
                             await Task.Yield(); // Yield to avoid blocking the thread pool
                         }
                     }, token );
 
-                    if ( invokedFromVA )
-                    {
-                        // When invoked from VoiceAttack, the executing command can block other commands until the executing command completes.
-                        // We'll adopt the same behavior by waiting for the speech task to complete.
-                        speechTask.GetAwaiter().GetResult();
-                    }
+                    // When invoked from VoiceAttack, the executing command can block other commands until the executing command completes.
+                    // We'll adopt the same behavior by waiting for the speech task to complete.
+                    speechTask.ConfigureAwait( invokedFromVA );
                 }
             }
             catch ( OperationCanceledException )
@@ -301,19 +301,16 @@ namespace EddiSpeechService
         {
             // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
             // Priority 5 speech in interruptable by any higher priority speech. 
-            if ( ( activeSpeechPriority > peekedSpeechPriority && peekedSpeechPriority <= 1 ) || ( activeSpeechPriority >= 5 && peekedSpeechPriority < 5 ) )
-            {
-                return true;
-            }
-            return false;
+            return ( activeSpeechPriority > peekedSpeechPriority && peekedSpeechPriority <= 1 ) ||
+                   ( activeSpeechPriority >= 5 && peekedSpeechPriority < 5 );
         }
 
-        public void Speak(EddiSpeech speech)
+        public async Task SpeakAsync(EddiSpeech speech)
         {
-            Instance.Speak(speech.message, speech.voice, Configuration.EffectsLevel, Configuration.Volume, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
+            await Instance.SpeakAsync(speech.message, speech.voice, Configuration.EffectsLevel, Configuration.Volume, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
         }
 
-        public void Speak ( string speech, string defaultVoice, int fxLevel, int volume = 95, 
+        public async Task SpeakAsync ( string speech, string defaultVoice, int fxLevel, int volume = 95, 
             int distortionLevel = 0, int echoDelay = 0, int priority = 3, bool radio = false )
         {
             if (speech == null || speech.Trim() == "") { return; }
@@ -329,7 +326,7 @@ namespace EddiSpeechService
 
             foreach (var segment in segments)
             {
-                if ( discardPendingSegments )  { continue; }
+                if ( discardPendingSegments ) { break; }
 
                 string voice = null;
                 var statement = segment;
@@ -341,22 +338,12 @@ namespace EddiSpeechService
                     try
                     {
                         // Play the audio, waiting for the audio to complete unless we're in async mode
-                        if ( async )
-                        {
-                            Task.Run( () => PlayAudio( fileName, volumeOverride ) );
-                        }
-                        else
-                        {
-                            try
-                            {
-                                Task.Run( () => PlayAudio( fileName, volumeOverride ) ).GetAwaiter().GetResult();
-                            }
-                            catch ( OperationCanceledException )
-                            {
-                                // If cancelled, discard any pending speech segments.
-                                discardPendingSegments = true;
-                            }
-                        }
+                        await PlayAudioAsync( fileName, volumeOverride ).ConfigureAwait( !async );
+                    }
+                    catch ( OperationCanceledException )
+                    {
+                        // If cancelled, discard any pending speech segments.
+                        discardPendingSegments = true;
                     }
                     catch ( Exception e )
                     {
@@ -400,7 +387,7 @@ namespace EddiSpeechService
                     stream.Seek(0, SeekOrigin.Begin);
 
                     var provider = SpeechFx.addEffectsToSource(stream, volume, fxLevel, distortionLevel, echoDelay, isRadio );
-                    PlaySpeechStreamAsync( provider, priority ).GetAwaiter().GetResult();
+                    await PlaySpeechStreamAsync( provider, priority );
                 }
             }
         }
@@ -668,33 +655,41 @@ namespace EddiSpeechService
             }
         }
 
-        public void StopCurrentSpeech()
+        public void StopCurrentSpeech ()
         {
-            lock ( activeSpeechLock )
+            Logging.Debug( "Ending active speech." );
+            try
             {
-                Logging.Debug( "Ending active speech." );
-                try
+                discardPendingSegments = true;
+                ICollection<IWavePlayer> keysToRemove;
+                lock ( activeSpeechLock )
                 {
-                    discardPendingSegments = true;
-                    if ( activeSpeechTS.Keys is ICollection<IWavePlayer> keysToRemove  && keysToRemove.Any() )
+                    keysToRemove = activeSpeechTS.Keys;
+                }
+
+                if ( keysToRemove.Any() )
+                {
+                    keysToRemove.AsParallel().ForAll( key =>
                     {
-                        keysToRemove.AsParallel().ForAll( key =>
+                        if ( activeSpeechTS.TryRemove( key, out var tokenSource ) )
                         {
-                            if ( activeSpeechTS.TryRemove( key, out var tokenSource ) )
+                            tokenSource.Cancel();
+                            if ( !tokenSource.Token.WaitHandle.WaitOne( 500 ) ) // Poll at 500ms
                             {
-                                tokenSource.Cancel();
-                                tokenSource.Token.WaitHandle.WaitOne( TimeSpan.FromSeconds( 5 ) );
-                                tokenSource.Dispose();
+                                Logging.Warn( "Task cancellation timed out." );
                             }
-                        } );
-                    }
+
+                            tokenSource.Dispose();
+                        }
+                    } );
                 }
-                catch ( Exception e )
-                {
-                    Logging.Warn( e.Message, e );
-                }
-                OnPropertyChanged( nameof( eddiSpeaking ) );
             }
+            catch ( Exception e )
+            {
+                Logging.Warn( e.Message, e );
+            }
+
+            OnPropertyChanged( nameof(eddiSpeaking) );
         }
 
         public void ShutUp ()
@@ -707,7 +702,7 @@ namespace EddiSpeechService
 
         #region Audio
 
-        public void PlayAudio ( string fileName, decimal? volumeOverride )
+        public async Task PlayAudioAsync ( string fileName, decimal? volumeOverride )
         {
             try
             {
@@ -736,7 +731,7 @@ namespace EddiSpeechService
                     {
                         var waitTime = audioSource.TotalTime;
                         Logging.Debug( $"Waiting for audio - {waitTime.TotalMilliseconds} ms (unless ended early)." );
-                        Task.Delay( waitTime, cancellationTokenSource.Token ).GetAwaiter().GetResult();
+                        await Task.Delay( waitTime, cancellationTokenSource.Token );
                     }
                     catch ( OperationCanceledException )
                     {

@@ -6,6 +6,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Revised Spansh faction queries to match the latest Spansh API revision.
     * Various minor bug fixes.
+  * Speech Responder
+    * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
 
 ## 4.1.6
   * VoiceAttack
