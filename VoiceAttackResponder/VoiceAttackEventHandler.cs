@@ -23,13 +23,24 @@ namespace EddiVoiceAttackResponder
         // We'll maintain a referenceable list of variables that we've set from events
         private readonly ConcurrentDictionary<string, VoiceAttackVariable> currentVariables = new ConcurrentDictionary<string, VoiceAttackVariable>();
 
-        public void Handle ( Event theEvent )
+        public void Handle ( Event @event )
         {
-            if ( theEvent is null || consumerCancellationTS.IsCancellationRequested ) { return; }
-            var taskQueue = taskQueues.GetOrAdd(theEvent.type, key => new TaskQueue<Event>());
-            if ( taskQueue.TryAdd( theEvent ) )
+            if ( @event is null || consumerCancellationTS.IsCancellationRequested ) { return; }
+
+            // Enqueue a task to fire a VoiceAttack event (only if an appropriate VoiceAttack command exists)
+            var commandName = $"((EDDI {@event.type.ToLowerInvariant()}))";
+            if ( VoiceAttackPlugin.CommandExists( commandName ) )
             {
-                taskQueue.StartOrRestart( async () => await dequeueEvents( taskQueue ), consumerCancellationTS.Token );
+                var taskQueue = taskQueues.GetOrAdd( @event.type, new TaskQueue<Event>( commandName ) );
+                if ( taskQueue.TryAdd( @event ) )
+                {
+                    taskQueue.StartOrRestart( async () => await dequeueEvents( taskQueue ), consumerCancellationTS.Token );
+                }
+                Logging.Debug( $"Command '{commandName}' enqueued for execution.", @event );
+            }
+            else
+            {
+                Logging.Debug( $"Command '{commandName}' not found." );
             }
         }
 
@@ -39,7 +50,7 @@ namespace EddiVoiceAttackResponder
             {
                 foreach ( var @event in eventQueue.GetConsumingEnumerable( consumerCancellationTS.Token ) )
                 {
-                    await ExecuteEventAsync(@event);
+                    await ExecuteEventAsync( eventQueue.commandName, @event);
                 }
             }
             catch ( OperationCanceledException )
@@ -56,7 +67,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private async Task ExecuteEventAsync(Event @event)
+        private async Task ExecuteEventAsync ( string commandName, Event @event )
         {
             try
             {
@@ -64,12 +75,12 @@ namespace EddiVoiceAttackResponder
                 {
                     Logging.Debug( $"Passing event {@event.type} to VoiceAttack", @event );
                     updateValuesOnEvent( @event );
-                    if ( TryTriggerVACommands( @event ) )
+                    if ( TryTriggerVACommands( commandName ) )
                     {
                         // We need to wait until each event is no longer active before moving to the next from the same
                         // queue / event type so that variables aren't overwritten before VoiceAttack can respond.
                         // Other queues / event types will be able to continue processing events while we wait.
-                        await VoiceAttackPlugin.WaitForCommandExecutionAsync( $"((EDDI {@event.type.ToLowerInvariant()}))" );                                
+                        await VoiceAttackPlugin.WaitForCommandExecutionAsync( commandName );                                
                     }
                 }
             }
@@ -141,22 +152,13 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private bool TryTriggerVACommands ( Event @event )
+        private bool TryTriggerVACommands ( string commandName )
         {
-            var commandName = $"((EDDI {@event.type.ToLowerInvariant()}))";
             try
             {
-                // Fire local command if present  
-                if ( VoiceAttackPlugin.CommandExists( commandName ) ) 
-                {
-                    VoiceAttackPlugin.ExecuteCommand( commandName );
-                    Logging.Info( $"Executed command '{commandName}'" );
-                    return true;
-                }
-                else
-                {
-                    Logging.Debug( $"Command '{commandName}' not found." );
-                }
+                VoiceAttackPlugin.ExecuteCommand( commandName );
+                Logging.Info( $"Executed command '{commandName}'" );
+                return true;
             }
             catch ( Exception ex )
             {
@@ -196,12 +198,19 @@ namespace EddiVoiceAttackResponder
 
     internal class TaskQueue<T> : BlockingCollection<T>
     {
+        public string commandName { get; }
+        
         public bool isRunning => consumerTask != null &&
                                  consumerTask.Status != TaskStatus.Canceled &&
                                  consumerTask.Status != TaskStatus.Faulted &&
                                  consumerTask.Status != TaskStatus.RanToCompletion;
 
         private Task consumerTask { get; set; }
+
+        public TaskQueue ( string commandName )
+        {
+            this.commandName = commandName;
+        }
 
         public void StartOrRestart ( Func<Task> action, CancellationToken cancellationToken )
         {
