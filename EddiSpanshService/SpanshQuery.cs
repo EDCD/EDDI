@@ -31,9 +31,9 @@ namespace EddiSpanshService
                     string responseJson;
                     using ( var requestContent = GetRequestContent( searchFilters, maxResults, pageId ) )
                     {
-                        var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken );
+                        var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken ).ConfigureAwait(false);
                         response.EnsureSuccessStatusCode();
-                        responseJson = await response.Content.ReadAsStringAsync();
+                        responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                         if ( string.IsNullOrEmpty( responseJson ) )
                         {
@@ -66,7 +66,7 @@ namespace EddiSpanshService
                     if ( retryCount < MaxRetries )
                     {
                         var backoff = InitialBackoffMilliseconds * (int)Math.Pow(2, retryCount - 1); // Exponential back-off
-                        await Task.Delay( backoff, cancellationToken );
+                        await Task.Delay( backoff, cancellationToken ).ConfigureAwait(false);
                     }
                     else
                     {
@@ -88,9 +88,9 @@ namespace EddiSpanshService
                     string responseJson;
                     using ( var requestContent = GetDistanceOrderedRequestContent( fromX, fromY, fromZ, searchFilters ) )
                     {
-                        var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken );
+                        var response = await spanshHttpClient.PostAsync( $"{queryGroup}/search", requestContent, cancellationToken ).ConfigureAwait(false);
                         response.EnsureSuccessStatusCode();
-                        responseJson = await response.Content.ReadAsStringAsync();
+                        responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     }
 
                     try
@@ -117,7 +117,7 @@ namespace EddiSpanshService
                     if ( retryCount < MaxRetries )
                     {
                         var backoff = InitialBackoffMilliseconds * (int)Math.Pow(2, retryCount - 1); // Exponential back-off
-                        await Task.Delay( backoff, cancellationToken );
+                        await Task.Delay( backoff, cancellationToken ).ConfigureAwait(false);
                     }
                     else
                     {

@@ -20,9 +20,9 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = $"dump/{systemAddress}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync();
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
@@ -57,9 +57,9 @@ namespace EddiSpanshService
 
         public async Task<IList<StarSystem>> GetStarSystemsAsync ( ulong[] systemAddresses, bool showMarketDetails, CancellationToken cancellationToken )
         {
-            return await Task.WhenAll( systemAddresses.AsParallel()
-                .Select( async systemAddress => await GetStarSystemAsync( systemAddress, showMarketDetails, cancellationToken ) )
-                .RemoveNulls() );
+            var starSystems = await Task.WhenAll( systemAddresses.AsParallel().Select( systemAddress =>
+                GetStarSystemAsync( systemAddress, showMarketDetails, cancellationToken ) ) ).ConfigureAwait( false );
+            return starSystems.RemoveNulls();
         }
 
         private static StarSystem ParseStarSystemDump ( JToken data, bool showMarketDetails = false )
@@ -238,8 +238,8 @@ namespace EddiSpanshService
                 //var mainStar = starData[ "mainStar" ]?.ToObject<bool?>();
                 var solarMasses = starData[ "solarMasses" ]?.ToObject<decimal?>();
                 var solarRadius = starData[ "solarRadius" ]?.ToObject<decimal?>();
-                var radiusKm = solarRadius * Constants.solarRadiusMeters / 1000 ?? 0;
-                var stellarclass = StarClass.FromName((starData["subType"]?.ToString()))?.edname; // Map back from the name to the edname 
+                var radiusKm = ( solarRadius * Constants.solarRadiusMeters / 1000 ) ?? 0;
+                var stellarclass = StarClass.FromName(starData["subType"]?.ToString())?.edname; // Map back from the name to the edname 
                 int? stellarsubclass = null;
                 var endOfSpectralClass = ((string)starData["spectralClass"])?.LastOrDefault().ToString();
                 if ( int.TryParse( endOfSpectralClass, out var subclass ) )

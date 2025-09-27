@@ -35,7 +35,7 @@ namespace EddiSpanshService
                 int page = 0;
                 do
                 {
-                    var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, cancellationToken, maxResultsPerPage, page);
+                    var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, cancellationToken, maxResultsPerPage, page).ConfigureAwait(false);
                     if ( systemQueryResult != null )
                     {
                         count = count ?? systemQueryResult[ "count" ]?.ToObject<int?>();
@@ -53,7 +53,7 @@ namespace EddiSpanshService
             Faction faction = null;
             if ( systemsQueryResults.Any() )
             {
-                faction = await GetFactionBaseDataAsync( factionName, presenceSystemName, systemsQueryResults, cancellationToken );
+                faction = await GetFactionBaseDataAsync( factionName, presenceSystemName, systemsQueryResults, cancellationToken ).ConfigureAwait(false);
 
                 // Set our faction presence data
                 if ( faction != null )
@@ -81,7 +81,7 @@ namespace EddiSpanshService
                     searchFilters.Add( "system_name", new { value = new[] { presenceSystemName } } );
                 }
 
-                var stationsQueryResult = (await QueryAsync( QueryGroup.stations, searchFilters, cancellationToken, 1 ))?[ "results" ]?.FirstOrDefault();
+                var stationsQueryResult = (await QueryAsync( QueryGroup.stations, searchFilters, cancellationToken, 1 ).ConfigureAwait(false))?[ "results" ]?.FirstOrDefault();
                 controllingMinorFactionData = stationsQueryResult;
             }
 

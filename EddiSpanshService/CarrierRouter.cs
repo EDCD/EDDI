@@ -18,17 +18,17 @@ namespace EddiSpanshService
             if (!fromUIquery)
             {
                 // The Spansh Carrier Plotter uses case sensitive system names. Use the TypeAhead API to normalize casing.
-                var wp = await GetWaypointsBySystemNameAsync(currentSystem, CancellationToken.None);
+                var wp = await GetWaypointsBySystemNameAsync( currentSystem, CancellationToken.None ).ConfigureAwait( true );
                 currentSystem = wp.FirstOrDefault()?.systemName;
 
                 for (var i = 0; i < targetSystems.Length; i++)
                 {
-                    wp = await GetWaypointsBySystemNameAsync( targetSystems[ i ], CancellationToken.None );
+                    wp = await GetWaypointsBySystemNameAsync( targetSystems[ i ], CancellationToken.None ).ConfigureAwait( true );
                     targetSystems[i] = wp.FirstOrDefault()?.systemName;
                 }                
             }
 
-            if (string.IsNullOrEmpty(currentSystem) || targetSystems.Any(s => string.IsNullOrEmpty(s)))
+            if (string.IsNullOrEmpty(currentSystem) || targetSystems.Any(string.IsNullOrEmpty))
             {
                 Logging.Warn("Carrier route plotting is not available, origin or target is not defined.");
                 return null;
@@ -37,9 +37,9 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = CarrierRouteRequest(currentSystem, targetSystems, usedCarrierCapacity, calculateTotalFuelRequired, refuel_destinations);
-                var initialResponse = await spanshHttpClient.GetAsync( requestUri, CancellationToken.None );
+                var initialResponse = await spanshHttpClient.GetAsync( requestUri, CancellationToken.None ).ConfigureAwait(false);
                 initialResponse.EnsureSuccessStatusCode();
-                var responseJson = await initialResponse.Content.ReadAsStringAsync();
+                var responseJson = await initialResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
@@ -49,7 +49,7 @@ namespace EddiSpanshService
 
                 if ( JObject.Parse( responseJson ).TryGetValue( "job", StringComparison.OrdinalIgnoreCase, out var value ) && value.ToString() is string jobId )
                 {
-                    var result = await GetRouteResponseAsync( jobId, CancellationToken.None );
+                    var result = await GetRouteResponseAsync( jobId, CancellationToken.None ).ConfigureAwait(false);
                     if ( result is null )
                     {
                         Logging.Warn( $"Spansh API returned no route to system {targetSystems.LastOrDefault()}." );

@@ -25,9 +25,9 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = PrepareRequest( partialSystemName );
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync();
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {

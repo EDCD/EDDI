@@ -21,9 +21,9 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = $"system/{systemAddress}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync();
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
@@ -59,10 +59,10 @@ namespace EddiSpanshService
 
         public async Task<IList<StarSystem>> GetQuickStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
         {
-            return await Task
-                .WhenAll( systemAddresses.AsParallel()
-                    .Select( async s => await GetQuickStarSystemAsync( s, cancellationToken ) ).RemoveNulls() )
-                ;
+            var quickSystems = await Task
+                .WhenAll( systemAddresses.AsParallel().Select( s => GetQuickStarSystemAsync( s, cancellationToken ) ) )
+                .ConfigureAwait( false );
+            return quickSystems.RemoveNulls();
         }
 
         private static StarSystem ParseQuickSystem ( JToken data )

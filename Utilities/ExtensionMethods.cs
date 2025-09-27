@@ -14,6 +14,14 @@ namespace System
         }
     }
 
+    public static class IListExtensions
+    {
+        public static IList<T> RemoveNulls<T> ( this IList<T> items )
+        {
+            return items.Where( i => i != null ).ToList();
+        }
+    }
+
     public static class JTokenExtensions
     {
         public static bool IsNullOrEmpty(this JToken token)
