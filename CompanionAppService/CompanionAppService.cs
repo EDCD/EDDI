@@ -34,9 +34,9 @@ namespace EddiCompanionAppService
         private readonly CustomURLResponder URLResponder;
         private string verifier;
         private string authSessionID;
-        public CompanionAppCredentials Credentials;
+        private CompanionAppCredentials Credentials;
 
-        public bool gameIsBeta { get; set; } = false;
+        public bool gameIsBeta { get; set; }
         public static bool unitTesting;
 
         #region State Variables
@@ -54,7 +54,7 @@ namespace EddiCompanionAppService
         public State CurrentState
         {
             get => _currentState;
-            protected internal set
+            private set
             {
                 if (_currentState == value) { return; }
                 var oldState = _currentState;
@@ -134,7 +134,7 @@ namespace EddiCompanionAppService
                 try
                 {
                     // Our access token may have expired. Use our refresh token to obtain a new access token.
-                    await RefreshTokenAsync();
+                    await RefreshTokenAsync().ConfigureAwait(false);
                 }
                 catch ( Exception )
                 {
@@ -145,7 +145,7 @@ namespace EddiCompanionAppService
 
                     CurrentState = State.LoggedOut;
                 }
-            } ).ConfigureAwait( false );
+            } );
         }
 
         public void Dispose()
@@ -154,7 +154,7 @@ namespace EddiCompanionAppService
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (disposing)
             {
@@ -227,53 +227,50 @@ namespace EddiCompanionAppService
             return base64.Replace('+', '-').Replace('/', '_').Replace("=", "");
         }
 
-        private void handleCallbackUrl ( string url )
+        private async void handleCallbackUrl ( string url )
         {
-            Logging.Debug( "Received callback" );
-            var code = codeFromCallback( url );
-
             // NB any user can send an arbitrary URL from the Windows Run dialog, so it must be treated as untrusted
             try
             {
-                Task.Run( async () =>
+                Logging.Debug( "Received callback" );
+                var code = codeFromCallback( url );
+
+                using ( var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL ) )
                 {
-                    using ( var request = new HttpRequestMessage( HttpMethod.Post, AUTH_SERVER + TOKEN_URL ) )
+                    request.Content = new StringContent(
+                        $"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString( CALLBACK_URL )}",
+                        Encoding.UTF8, "application/x-www-form-urlencoded" );
+
+                    using ( var response = await httpClient.SendAsync( request ).ConfigureAwait( false ) )
                     {
-                        request.Content = new StringContent(
-                            $"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString( CALLBACK_URL )}",
-                            Encoding.UTF8, "application/x-www-form-urlencoded" );
+                        response.EnsureSuccessStatusCode();
 
-                        using ( var response = await httpClient.SendAsync( request ).ConfigureAwait( false ) )
+                        var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+                        var json = JObject.Parse( responseData );
+
+                        var accessToken = json[ "access_token" ]?.ToString();
+                        var refreshToken = json[ "refresh_token" ]?.ToString();
+                        var expiresInSec = json[ "expires_in" ]?.Value<long?>();
+
+                        if ( string.IsNullOrEmpty( accessToken ) || expiresInSec is null )
                         {
-                            response.EnsureSuccessStatusCode();
-
-                            var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
-                            var json = JObject.Parse( responseData );
-
-                            var accessToken = json[ "access_token" ]?.ToString();
-                            var refreshToken = json[ "refresh_token" ]?.ToString();
-                            var expiresInSec = json[ "expires_in" ]?.Value<long?>();
-
-                            if ( string.IsNullOrEmpty( accessToken ) || expiresInSec is null )
-                            {
-                                throw new EliteDangerousCompanionAppAuthenticationException(
-                                    "Response is missing expected fields" );
-                            }
-
-                            Credentials.accessToken = accessToken;
-                            Credentials.refreshToken = refreshToken;
-                            Credentials.tokenExpiry = DateTime.UtcNow + TimeSpan.FromSeconds( expiresInSec.Value );
-                            Credentials.Save();
-
-                            if ( Credentials.accessToken == null )
-                            {
-                                throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
-                            }
-
-                            CurrentState = State.Authorized;
+                            throw new EliteDangerousCompanionAppAuthenticationException(
+                                "Response is missing expected fields" );
                         }
+
+                        Credentials.accessToken = accessToken;
+                        Credentials.refreshToken = refreshToken;
+                        Credentials.tokenExpiry = DateTime.UtcNow + TimeSpan.FromSeconds( expiresInSec.Value );
+                        Credentials.Save();
+
+                        if ( Credentials.accessToken == null )
+                        {
+                            throw new EliteDangerousCompanionAppAuthenticationException( "Access token not found" );
+                        }
+
+                        CurrentState = State.Authorized;
                     }
-                } ).GetAwaiter().GetResult();
+                }
             }
             catch ( Exception ex )
             {
@@ -334,7 +331,7 @@ namespace EddiCompanionAppService
             var request = new HttpRequestMessage(HttpMethod.Get, AUTH_SERVER + DECODE_URL);
             request.Headers.Add( "Authorization", $"Bearer {Credentials.accessToken}" );
 
-            using (var response = await httpClient.SendAsync( request ) )
+            using (var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
             {
                 if (response == null)
                 {
@@ -346,7 +343,7 @@ namespace EddiCompanionAppService
                 {
                     return null;
                 }
-                return JObject.Parse(await response.Content.ReadAsStringAsync());
+                return JObject.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
         }
 
@@ -379,7 +376,7 @@ namespace EddiCompanionAppService
                             Encoding.UTF8, "application/x-www-form-urlencoded" )
                     };
 
-                    using ( var response = await httpClient.SendAsync( request ) )
+                    using ( var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
                     {
                         if ( response == null )
                         {
@@ -394,7 +391,7 @@ namespace EddiCompanionAppService
 
                         if ( response.StatusCode == HttpStatusCode.OK )
                         {
-                            var responseData = await response.Content.ReadAsStringAsync();
+                            var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                             var json = JObject.Parse( responseData );
                             Credentials.refreshToken = (string)json[ "refresh_token" ];
                             Credentials.accessToken = (string)json[ "access_token" ];
@@ -411,7 +408,7 @@ namespace EddiCompanionAppService
                         }
                     }
 
-                    await Task.Delay( delay );
+                    await Task.Delay( delay ).ConfigureAwait(false);
                     delay *= 2; // Exponential backoff
 
                     if ( retry == ( maxRetries - 1 ) )
@@ -449,7 +446,7 @@ namespace EddiCompanionAppService
             {
                 // Our access token either has expired or shall expire within the next minute.
                 // Use our refresh token to obtain a new access token.
-                await RefreshTokenAsync();
+                await RefreshTokenAsync().ConfigureAwait(false);
             }
 
             if ( CurrentState != State.Authorized )
@@ -474,7 +471,7 @@ namespace EddiCompanionAppService
                     var request = new HttpRequestMessage( HttpMethod.Get, url );
                     request.Headers.Add( "Authorization", $"Bearer {Credentials.accessToken}" );
 
-                    using ( var response = await httpClient.SendAsync( request ) )
+                    using ( var response = await httpClient.SendAsync( request ).ConfigureAwait(false) )
                     {
                         if ( response == null )
                         {
@@ -487,7 +484,7 @@ namespace EddiCompanionAppService
                             var timestamp = DateTime
                                 .Parse( response.Headers.GetValues( "date" ).FirstOrDefault() ?? string.Empty )
                                 .ToUniversalTime();
-                            var responseData = await response.Content.ReadAsStringAsync();
+                            var responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                             return new Tuple<string, DateTime>( responseData, timestamp );
                         }
                     }
@@ -495,13 +492,13 @@ namespace EddiCompanionAppService
                 catch ( HttpRequestException ex )
                 {
                     Logging.Warn( $"Attempt {retry + 1} failed: {ex.Message}", ex );
-                    if ( retry == maxRetries - 1 )
+                    if ( retry == (maxRetries - 1) )
                     {
                         throw new EliteDangerousCompanionAppErrorException( ex.Message, ex );
                     }
                 }
 
-                await Task.Delay( delay );
+                await Task.Delay( delay ).ConfigureAwait(false);
                 delay *= 2; // Exponential backoff
             }
 
@@ -529,7 +526,7 @@ namespace EddiCompanionAppService
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) 
         { 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
         }

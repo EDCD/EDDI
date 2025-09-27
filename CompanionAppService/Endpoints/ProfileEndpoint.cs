@@ -25,7 +25,7 @@ namespace EddiCompanionAppService.Endpoints
         /// <returns></returns>
         public async Task<JObject> GetProfileAsync(bool forceRefresh = false)
         {
-            if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
+            if (!forceRefresh && cachedProfileExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug($"{PROFILE_URL} endpoint queried too often. Returning cached data: ", cachedProfileJson);
@@ -35,7 +35,7 @@ namespace EddiCompanionAppService.Endpoints
             try
             {
                 Logging.Debug($"Getting {PROFILE_URL} data");
-                var result = await GetEndpointAsync(PROFILE_URL);
+                var result = await GetEndpointAsync(PROFILE_URL).ConfigureAwait(false);
 
                 if ( result is null )
                 {

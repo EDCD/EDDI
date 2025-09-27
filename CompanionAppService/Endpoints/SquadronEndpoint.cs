@@ -25,7 +25,7 @@ namespace EddiCompanionAppService.Endpoints
         /// <returns></returns>
         public async Task<JObject> GetSquadronAsync(bool forceRefresh = false)
         {
-            if ((!forceRefresh) && cachedSquadronExpires > DateTime.UtcNow)
+            if (!forceRefresh && cachedSquadronExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug($"{SQUADRON_URL} endpoint queried too often. Returning cached data: ", cachedSquadronJson);
@@ -35,7 +35,7 @@ namespace EddiCompanionAppService.Endpoints
             try
             {
                 Logging.Debug($"Getting {SQUADRON_URL} data");
-                var result = await GetEndpointAsync(SQUADRON_URL);
+                var result = await GetEndpointAsync(SQUADRON_URL).ConfigureAwait(false);
 
                 if ( result is null )
                 {

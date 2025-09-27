@@ -16,7 +16,7 @@ namespace EddiCompanionAppService
 
             JObject newJson;
 
-            var result = await CompanionAppService.Instance.obtainDataAsync( CompanionAppService.Instance.ServerURL() + endpointURL );
+            var result = await CompanionAppService.Instance.obtainDataAsync( CompanionAppService.Instance.ServerURL() + endpointURL ).ConfigureAwait(false);
             if ( result is null ) { return null; }
 
             var data = result.Item1;

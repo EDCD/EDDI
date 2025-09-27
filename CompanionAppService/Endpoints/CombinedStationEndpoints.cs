@@ -29,7 +29,7 @@ namespace EddiCompanionAppService.Endpoints
         /// </summary>
         public async Task<JObject> GetCombinedStationAsync(string expectedCommanderName, string expectedStarSystemName, long expectedMarketID, bool forceRefresh = false, JObject profileJson = null)
         {
-            if ((!forceRefresh) && cachedStationExpires > DateTime.UtcNow)
+            if (!forceRefresh && cachedStationExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 return cachedStationJson;
@@ -37,14 +37,14 @@ namespace EddiCompanionAppService.Endpoints
 
             if ( profileJson is null )
             {
-                profileJson = await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync();
+                profileJson = await CompanionAppService.Instance.ProfileEndpoint.GetProfileAsync().ConfigureAwait(false);
             }
 
             if (profileJson != null)
             {
                 var profileCmdrName = profileJson["commander"]?["name"]?.ToString();
                 var profileSystemName = profileJson["lastSystem"]?["name"]?.ToString();
-                var profileLastMarketID = (profileJson["lastStarport"]?["id"])?.ToObject<long>();
+                var profileLastMarketID = profileJson["lastStarport"]?["id"]?.ToObject<long>();
 
                 // Make sure that the Frontier API is configured to return data for the correct commander
                 if (string.IsNullOrEmpty(profileCmdrName) || profileCmdrName == expectedCommanderName)
@@ -53,8 +53,8 @@ namespace EddiCompanionAppService.Endpoints
                     {
                         // If we're docked, the lastStation information should be located within the lastSystem identified by the profile
                         // Make sure the profile is caught up to the game state
-                        var marketJson = await GetMarketAsync();
-                        var shipyardJson = await GetShipyardAsync();
+                        var marketJson = await GetMarketAsync().ConfigureAwait(false);
+                        var shipyardJson = await GetShipyardAsync().ConfigureAwait(false);
                         if ( !string.IsNullOrEmpty( profileSystemName ) &&
                              expectedStarSystemName == profileSystemName &&
                              profileLastMarketID == expectedMarketID &&
@@ -100,13 +100,13 @@ namespace EddiCompanionAppService.Endpoints
             if (retries >= 5) { return null; }
             retries += 1;
             Thread.Sleep(TimeSpan.FromSeconds(10));
-            return await GetCombinedStationAsync(expectedCommanderName, expectedStarSystemName, expectedMarketID, forceRefresh, profileJson);
+            return await GetCombinedStationAsync(expectedCommanderName, expectedStarSystemName, expectedMarketID, forceRefresh, profileJson).ConfigureAwait(false);
         }
 
         private async Task<JObject> GetMarketAsync ()
         {
             Logging.Debug( $"Getting {MARKET_URL} data" );
-            var result = await GetEndpointAsync( MARKET_URL );
+            var result = await GetEndpointAsync( MARKET_URL ).ConfigureAwait(false);
             Logging.Debug( $"{MARKET_URL} returned: ", result );
 
             return result;
@@ -115,7 +115,7 @@ namespace EddiCompanionAppService.Endpoints
         private async Task<JObject> GetShipyardAsync ()
         {
             Logging.Debug( $"Getting {SHIPYARD_URL} data" );
-            var result = await GetEndpointAsync( SHIPYARD_URL );
+            var result = await GetEndpointAsync( SHIPYARD_URL ).ConfigureAwait(false);
             Logging.Debug( $"{SHIPYARD_URL} returned: ", result );
 
             return result;

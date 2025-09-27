@@ -25,7 +25,7 @@ namespace EddiCompanionAppService.Endpoints
         /// <returns></returns>
         public async Task<JObject> GetFleetCarrierAsync(bool forceRefresh = false)
         {
-            if ((!forceRefresh) && cachedFleetCarrierExpires > DateTime.UtcNow)
+            if (!forceRefresh && cachedFleetCarrierExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug($"{FLEETCARRIER_URL} endpoint queried too often. Returning cached data: ", cachedFleetCarrierJson);
@@ -35,7 +35,7 @@ namespace EddiCompanionAppService.Endpoints
             try
             {
                 Logging.Debug($"Getting {FLEETCARRIER_URL} data");
-                var result = await GetEndpointAsync(FLEETCARRIER_URL);
+                var result = await GetEndpointAsync(FLEETCARRIER_URL).ConfigureAwait(false);
 
                 if ( result is null )
                 {
