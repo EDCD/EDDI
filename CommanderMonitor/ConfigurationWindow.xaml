@@ -53,13 +53,18 @@
                 VerticalAlignment="Bottom" 
                 VerticalContentAlignment="Bottom" 
                 TextChanged="PhoneticName_TextChanged"
+                Loaded="PhoneticNameTextBox_Loaded"
                 Margin="0, 5" 
                 Grid.Row="1" 
                 Grid.Column="1" 
                 Grid.ColumnSpan ="3" 
                 Height="20" >
                 <TextBox.Text>
-                    <Binding Path="PhoneticName" Mode="TwoWay" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" TargetNullValue="">
+                    <Binding Path="PhoneticName" 
+                             Mode="TwoWay" 
+                             NotifyOnTargetUpdated="True" 
+                             UpdateSourceTrigger="PropertyChanged" 
+                             TargetNullValue="" >
                         <Binding.ValidationRules>
                             <utility:ValidIPARule />
                         </Binding.ValidationRules>

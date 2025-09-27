@@ -24,12 +24,42 @@ namespace CommanderMonitor
             SquadronSystemComboBox.Text = config.squadronSystemName;
         }
 
+        private void PhoneticNameTextBox_Loaded ( object sender, RoutedEventArgs e )
+        {
+            if ( sender is TextBox textBox )
+            {
+                // Force validation to reapply when the control is loaded
+                var bindingExpression = textBox.GetBindingExpression(TextBox.TextProperty);
+                if ( bindingExpression != null )
+                {
+                    bindingExpression.UpdateSource();
+                    // Explicitly refresh the validation state
+                    var errors = Validation.GetErrors(textBox);
+                    if ( errors.Count > 0 )
+                    {
+                        Validation.ClearInvalid( bindingExpression );
+                        Validation.MarkInvalid( bindingExpression, errors[ 0 ] );
+                    }
+                    else
+                    {
+                        Validation.ClearInvalid( bindingExpression );
+                    }
+                    // Force WPF to refresh the visual state
+                    textBox.InvalidateVisual();
+                    textBox.UpdateLayout();
+                }
+            }
+        }
+
         private void PhoneticName_TextChanged ( object sender, TextChangedEventArgs e )
         {
-            // Replace any spaces, maintaining the original caret position
-            var caretIndex = phoneticNameTextBox.CaretIndex;
-            phoneticNameTextBox.Text = phoneticNameTextBox.Text.Replace( " ", "ˈ" );
-            phoneticNameTextBox.CaretIndex = Math.Max( caretIndex, phoneticNameTextBox.Text.Length );
+            if ( sender is TextBox textBox )
+            {
+                // Replace any spaces, maintaining the original caret position
+                var caretIndex = textBox.CaretIndex;
+                textBox.Text = textBox.Text.Replace( " ", "ˈ" );
+                textBox.CaretIndex = Math.Max( caretIndex, textBox.Text.Length );
+            }
         }
 
         private void phoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
