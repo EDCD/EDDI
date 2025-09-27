@@ -13,7 +13,7 @@ using Utilities;
 
 namespace EddiCore.Upgrader
 {
-    public class EddiUpgrader
+    public abstract class EddiUpgrader
     {
 
         // Upgrade information
@@ -25,7 +25,7 @@ namespace EddiCore.Upgrader
         /// Check to see if an upgrade is available and populate relevant variables
         /// </summary>
 
-        public static async Task CheckUpgrade ()
+        public static async Task CheckUpgradeAsync ()
         {
             // Clear the old values
             UpgradeLocation = null;
@@ -49,7 +49,7 @@ namespace EddiCore.Upgrader
                     {
                         try
                         {
-                            response = await client.GetStringAsync( apiUrl );
+                            response = await client.GetStringAsync( apiUrl ).ConfigureAwait(false);
                             break; // Exit loop if successful
                         }
                         catch ( HttpRequestException )
@@ -59,7 +59,7 @@ namespace EddiCore.Upgrader
                                 throw; // Rethrow if max retries reached
                             }
 
-                            await Task.Delay( TimeSpan.FromSeconds( Math.Pow( 2, i ) ) ); // Exponential backoff
+                            await Task.Delay( TimeSpan.FromSeconds( Math.Pow( 2, i ) ) ).ConfigureAwait(false); // Exponential backoff
                         }
                     }
 
@@ -132,7 +132,7 @@ namespace EddiCore.Upgrader
                 {
                     Logging.Info( $"Downloading upgrade from {UpgradeLocation}" );
                     SpeechService.Instance.Say(null, Properties.Resources.downloading_upgrade, 0);
-                    var updateFile = await Net.DownloadFileAsync(UpgradeLocation, @"EDDI-update.exe");
+                    var updateFile = await Net.DownloadFileAsync(UpgradeLocation, @"EDDI-update.exe").ConfigureAwait(false);
                     if (updateFile == null)
                     {
                         SpeechService.Instance.Say(null, Properties.Resources.download_failed, 0);

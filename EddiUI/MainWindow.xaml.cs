@@ -436,7 +436,7 @@ namespace EddiUI
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
                 // Because we have changed to wanting beta upgrades we need to re-check upgrade information
-                await EddiUpgrader.CheckUpgrade();
+                await EddiUpgrader.CheckUpgradeAsync().ConfigureAwait(true);
                 setStatusInfo();
             }
             catch (Exception ex)
@@ -454,7 +454,7 @@ namespace EddiUI
                 ConfigService.Instance.eddiConfiguration = eddiConfiguration;
 
                 // Because we have changed to not wanting beta upgrades we need to re-check upgrade information
-                await EddiUpgrader.CheckUpgrade();
+                await EddiUpgrader.CheckUpgradeAsync().ConfigureAwait(true);
                 setStatusInfo();
             }
             catch (Exception ex)
@@ -552,7 +552,7 @@ namespace EddiUI
             {
                 Logging.Debug("Preparing log for export.");
                 var progress = new Progress<string>(s => githubIssueButton.Content = Properties.Resources.preparing_log + s);
-                await Task.Factory.StartNew(() => prepareLogs(progress), TaskCreationOptions.LongRunning);
+                await Task.Factory.StartNew(() => prepareLogs(progress), TaskCreationOptions.LongRunning).ConfigureAwait(false);
             }
 
             createGithubIssue();
@@ -635,9 +635,9 @@ namespace EddiUI
             }
         }
 
-        private void createGithubIssue()
+        private void createGithubIssue ()
         {
-            Process.Start( "https://github.com/EDCD/EDDI/issues/new?template=bug_report.md" );
+            OpenInBrowser( "https://github.com/EDCD/EDDI/issues/new?template=bug_report.md" );
         }
 
         private void upgradeClicked(object sender, RoutedEventArgs e)
@@ -647,30 +647,38 @@ namespace EddiUI
 
         private void EDDIClicked(object sender, RoutedEventArgs e)
         {
-            if (EDDI.Instance.EddiIsBeta())
-            {
-                Process.Start("https://github.com/EDCD/EDDI/blob/develop/README.md");
-            }
-            else
-            {
-                Process.Start("https://github.com/EDCD/EDDI/blob/stable/README.md");
-            }
+            OpenInBrowser( EDDI.Instance.EddiIsBeta()
+                ? "https://github.com/EDCD/EDDI/blob/develop/README.md"
+                : "https://github.com/EDCD/EDDI/blob/stable/README.md" );
         }
 
         private void WikiClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/EDCD/EDDI/wiki");
+            OpenInBrowser( "https://github.com/EDCD/EDDI/wiki" );
         }
 
         private void TroubleshootClicked(object sender, RoutedEventArgs e)
         {
-            if (EDDI.Instance.EddiIsBeta())
+            OpenInBrowser( EDDI.Instance.EddiIsBeta()
+                ? "https://github.com/EDCD/EDDI/blob/develop/TROUBLESHOOTING.md"
+                : "https://github.com/EDCD/EDDI/blob/stable/TROUBLESHOOTING.md" );
+        }
+
+        private void OpenInBrowser ( string url )
+        {
+            try
             {
-                Process.Start("https://github.com/EDCD/EDDI/blob/develop/TROUBLESHOOTING.md");
+                var psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                Process.Start( psi );
             }
-            else
+            catch ( Exception ex )
             {
-                Process.Start("https://github.com/EDCD/EDDI/blob/stable/TROUBLESHOOTING.md");
+                Logging.Error( $"Failed to open {url}", ex );
+                System.Windows.MessageBox.Show( $"Unable to open linked url. Please visit manually at {url}." );
             }
         }
     }

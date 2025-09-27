@@ -52,8 +52,9 @@ namespace Eddi
 
             ApplyAnyOverrideCulture( configuration ); // this must be done before any UI is generated
 
-            // Start by fetching information from the update server, and handling appropriately
-            EddiUpgrader.CheckUpgrade().GetAwaiter().GetResult();
+            // Start by fetching information from the update server, and handling appropriately.
+            // This completes before showing any UI so that VoiceAttack can report the availability of the upgrade during its startup.
+            EddiUpgrader.CheckUpgradeAsync().GetAwaiter().GetResult();
 
             try
             {
