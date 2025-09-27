@@ -13,7 +13,7 @@ namespace EddiEdsmResponder
     /// <summary>
     /// Interaction logic for ConfigurationWindow.xaml
     /// </summary>
-    public partial class ConfigurationWindow : UserControl
+    public partial class ConfigurationWindow
     {
         private readonly EDSMResponder edsmResponder;
 
@@ -78,7 +78,7 @@ namespace EddiEdsmResponder
 
                 var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
                 var edsmService = new StarMapService(null, true);
-                Task.Factory.StartNew( async () => await obtainEdsmLogs( edsmService, progress ), TaskCreationOptions.LongRunning );
+                Task.Factory.StartNew( () => obtainEdsmLogsAsync( edsmService, progress ), TaskCreationOptions.LongRunning );
 
                 starMapConfiguration.lastFlightLogSync = DateTime.UtcNow;
                 ConfigService.Instance.edsmConfiguration = starMapConfiguration;
@@ -89,7 +89,7 @@ namespace EddiEdsmResponder
             }
         }
 
-        private static async Task obtainEdsmLogs(StarMapService edsmService, IProgress<string> progress)
+        private static async Task obtainEdsmLogsAsync(StarMapService edsmService, IProgress<string> progress)
         {
             if (edsmService != null)
             {

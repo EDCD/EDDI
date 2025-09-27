@@ -33,7 +33,7 @@ namespace EddiSpanshService
         private class SpanshHttpClient : ISpanshHttpClient
         {
             private readonly HttpClient client;
-
+            
             // The default timeout for requests to Spansh. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
             private const int DefaultTimeoutMilliseconds = 10000;
 
@@ -56,21 +56,21 @@ namespace EddiSpanshService
 
                 for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
-                    response = await client.GetAsync( requestUri, cancellationToken );
+                    response = await client.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                     if ( response.IsSuccessStatusCode && EnsureSuccess(response) )
                     {
                         return response;
                     }
 
-                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100, cancellationToken );
+                    await Task.Delay( (int)Math.Pow( 2, retry ) * 100, cancellationToken ).ConfigureAwait(false);
                 }
 
                 return response;
             }
 
-            public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content, CancellationToken cancellationToken )
+            public Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent content, CancellationToken cancellationToken )
             {
-                return await client.PostAsync( requestUri, content, cancellationToken );
+                return client.PostAsync( requestUri, content, cancellationToken );
             }
         }
 
@@ -82,15 +82,15 @@ namespace EddiSpanshService
             JObject routeResult = null;
             while ( routeResult is null || routeResult[ "state" ]?.ToString() == "started" )
             {
-                await Task.Delay( 500, cancellationToken );
-                var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken );
+                await Task.Delay( 500, cancellationToken ).ConfigureAwait(false);
+                var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken ).ConfigureAwait(false);
                 if ( getResponse.StatusCode == HttpStatusCode.RequestTimeout )
                 {
                     Logging.Warn( $"Spansh API timeout on GET results/{jobId}" );
                     return null;
                 }
 
-                var getJson = await getResponse.Content.ReadAsStringAsync();
+                var getJson = await getResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 routeResult = JObject.Parse( getJson );
 
                 if ( routeResult[ "error" ] != null )

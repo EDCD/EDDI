@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
@@ -22,19 +22,15 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = $"systems?q={partialSystemName}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken );
+                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync();
-
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
                     Logging.Warn( "Unable to handle server response." );
                     return new List<string>();
                 }
-
-                Logging.Debug( "Spansh responded with " + responseJson );
-                var response = JToken.Parse( responseJson );
-                return response.ToObject<List<string>>();
+                return JsonConvert.DeserializeObject<List<string>>(responseJson);
             }
             catch ( HttpRequestException he )
             {

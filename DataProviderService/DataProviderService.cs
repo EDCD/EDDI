@@ -40,9 +40,21 @@ namespace EddiDataProviderService
             this.starSystemRepository = starSystemRepository ?? new StarSystemSqLiteRepository(unitTesting);
         }
 
-        public async Task<List<string>> GetTypeAheadSystemsAsync ( string systemName, CancellationToken cancellationToken )
+        public async Task<List<string>> GetTypeAheadSystemsAsync ( string input, CancellationToken cancellationToken )
         {
-            return await spanshService.GetTypeAheadSystemNamesAsync( systemName, cancellationToken );
+            // Prefer type ahead system names for star systems we've visited
+            var localSystemNames = await starSystemRepository.GetStarSystemNamesAsync( input, cancellationToken ).ConfigureAwait( false );
+            localSystemNames = localSystemNames
+                .OrderBy( k => k.LevenshteinDistance( input, StringComparison.CurrentCultureIgnoreCase ) )
+                .ToList();
+            if ( localSystemNames.Count >= 10 )
+            {
+                // Return no more than 10 local results
+                return localSystemNames.Take(10).ToList();
+            }
+            
+            // Insufficient local results, use Spansh for a more comprehensive search (this also returns no more than 10 results)
+            return await spanshService.GetTypeAheadSystemNamesAsync( input, cancellationToken ).ConfigureAwait( false );
         }
 
         [NotNull]

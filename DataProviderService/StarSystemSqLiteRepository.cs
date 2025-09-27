@@ -7,6 +7,8 @@ using System.Collections.Immutable;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataProviderService
@@ -84,6 +86,7 @@ namespace EddiDataProviderService
                     ";
         private const string DELETE_SQL = @"DELETE FROM starsystems ";
         private const string SELECT_SQL = @"SELECT * FROM starsystems ";
+        private const string SELECT_NAME_SQL = @"SELECT name FROM starsystems ";
         private const string VALUES_SQL = @" 
                     VALUES
                     (
@@ -95,8 +98,9 @@ namespace EddiDataProviderService
                         @comment,
                         @systemaddress
                     )";
-        private const string WHERE_SYSTEMADDRESS = @"WHERE systemaddress = @systemaddress; PRAGMA optimize;";
-        private const string WHERE_NAME = @"WHERE name = @name; PRAGMA optimize;";
+        private const string WHERE_SYSTEMADDRESS = @"WHERE systemaddress = @systemaddress;";
+        private const string WHERE_NAME = @"WHERE name = @name;";
+        private const string WHERE_NAME_STARTSWITH = @"WHERE name LIKE @name;";
 
         public StarSystemSqLiteRepository ( bool unitTesting = false )
         {
@@ -145,6 +149,51 @@ namespace EddiDataProviderService
                         dbStarSystem.systemJson?.Replace( @"""InterstellarFactorsContact""", @"""Facilitator""" );
                 }
             }
+        }
+
+        [ NotNull, ItemNotNull ]
+        public async Task<List<string>> GetStarSystemNamesAsync ( string startingWith, CancellationToken cte )
+        {
+            if ( string.IsNullOrWhiteSpace( startingWith ) )
+            {
+                throw new ArgumentException( @"Input string cannot be null or empty.", nameof(startingWith) );
+            }
+
+            var results = new HashSet<string>();
+            try
+            {
+                using ( var con = SimpleDbConnection() )
+                {
+                    await con.OpenAsync( cte ).ConfigureAwait( false );
+                    using ( var transaction = con.BeginTransaction() )
+                    {
+                        using ( var cmd = con.CreateCommand() )
+                        {
+                            cmd.Transaction = transaction;
+                            cmd.CommandText = SELECT_NAME_SQL + WHERE_NAME_STARTSWITH;
+                            cmd.Parameters.AddWithValue( "@name", $"{startingWith}%" );
+                            using ( var rdr = await cmd.ExecuteReaderAsync( cte ).ConfigureAwait( false ) )
+                            {
+                                while ( await rdr.ReadAsync( cte ).ConfigureAwait(false) )
+                                {
+                                    var name = rdr["name"] as string;
+                                    if ( !string.IsNullOrEmpty( name ) )
+                                    {
+                                        results.Add( name );
+                                    }
+                                }
+                            }
+                        }
+                        transaction.Commit();
+                    }
+                }
+            }
+            catch ( SQLiteException sqle )
+            {
+                Logging.Warn( $"An error occurred while fetching star system names starting with '{startingWith}': {sqle.Message}" );
+            }
+
+            return results.ToList();
         }
 
         [NotNull, ItemNotNull]
@@ -590,16 +639,22 @@ namespace EddiDataProviderService
                             SCHEMA_VERSION = 3;
                         }
 
-                        // Add our indices
+                        // Add our indices (if they don't already exist)
                         using ( var cmd = new SQLiteCommand( CREATE_INDEX_SQL, con ) )
                         {
                             Logging.Debug( "Creating starsystem index" );
                             cmd.ExecuteNonQuery();
                         }
 
+                        // Optimize the database
+                        using ( var cmd = new SQLiteCommand( "PRAGMA optimize;", con ) )
+                        {
+                            Logging.Debug( "Creating starsystem index" );
+                            cmd.ExecuteNonQuery();
+                        }
+
                         // Set schema version 
-                        using ( var cmd = new SQLiteCommand(
-                                   TABLE_SET_SCHEMA_VERSION_SQL + SCHEMA_VERSION + ";", con ) )
+                        using ( var cmd = new SQLiteCommand( TABLE_SET_SCHEMA_VERSION_SQL + SCHEMA_VERSION + ";", con ) )
                         {
                             Logging.Info( "Starsystem repository schema is version " + SCHEMA_VERSION );
                             cmd.ExecuteNonQuery();
@@ -611,6 +666,7 @@ namespace EddiDataProviderService
                     }
                 }
             }
+
             Logging.Debug("Starsystem repository ready.");
         }
 

@@ -14,7 +14,7 @@ namespace EddiCore
     /// <summary>A subclass of ComboBox for selecting star systems</summary>
     public class StarSystemComboBox : ComboBox
     {
-        private ObservableCollection<string> SourceItems { get; set; } = new ObservableCollection<string>();
+        private ObservableCollection<string> SourceItems { get; } = new ObservableCollection<string>();
         private readonly ConcurrentDictionary<string, List<string>> ItemCache = new ConcurrentDictionary<string, List<string>>();
         private CancellationTokenSource cancellationTokenSource;
         private readonly object ItemLock = new object();
@@ -68,8 +68,8 @@ namespace EddiCore
 
                 try
                 {
-                    await Task.Delay( 300, cancellationTokenSource.Token ); // Debounce user input
-                    await UpdateItemsSourceAsync( input, cancellationTokenSource.Token );
+                    await Task.Delay( 200, cancellationTokenSource.Token ).ConfigureAwait( true ); // Debounce user input
+                    await UpdateItemsSourceAsync( input, cancellationTokenSource.Token ).ConfigureAwait( true );
                 }
                 catch ( TaskCanceledException )
                 {
@@ -86,7 +86,14 @@ namespace EddiCore
         {
             try
             {
-                var fetchedSystems = await GetTypeAheadSystemNamesAsync( input, cancellationToken );
+                // We'll need to request a new list if our cache does not already contain the input value
+                if ( !ItemCache.ContainsKey( input ) )
+                {
+                    // Request a new list
+                    ItemCache[ input ] = await EDDI.Instance.DataProvider.GetTypeAheadSystemsAsync( input, cancellationToken ).ConfigureAwait( true );
+                }
+                
+                var fetchedSystems = ItemCache[ input ].ToHashSet();
 
                 if ( GetTemplateChild( "PART_EditableTextBox" ) is TextBox textBox )
                 {
@@ -124,17 +131,6 @@ namespace EddiCore
             {
                 Logging.Warn( ex.Message, ex );
             }
-        }
-
-        private async Task<HashSet<string>> GetTypeAheadSystemNamesAsync ( string input, CancellationToken cancellationToken )
-        {
-            // We'll need to request a new list if our cache does not already contain the input value
-            if ( !ItemCache.ContainsKey( input ) )
-            {
-                // Request a new list
-                ItemCache[ input ] = await EDDI.Instance.DataProvider.GetTypeAheadSystemsAsync( input, cancellationToken );
-            }
-            return ItemCache[ input ].ToHashSet();
         }
     }
 }
