@@ -45,7 +45,7 @@ namespace EddiEddnResponder.Sender
         public static void SendToEDDN ( string schema, IDictionary<string, object> data, EDDNState eddnState,
             string gameVersionOverride = null )
         {
-            SendAsync(schema, data, eddnState, gameVersionOverride).GetAwaiter().GetResult();
+            Task.Run( () => SendAsync( schema, data, eddnState, gameVersionOverride ) );
         }
 
         private static async Task SendAsync(string schema, IDictionary<string, object> data, EDDNState eddnState,
@@ -115,19 +115,19 @@ namespace EddiEddnResponder.Sender
 
             try
             {
-                var response = await SendRequestAsync(json);
+                var response = await SendRequestAsync(json).ConfigureAwait(false);
                 if ( response.StatusCode == HttpStatusCode.RequestTimeout ||
                      response.StatusCode == HttpStatusCode.GatewayTimeout ) // Code 408 or 504
                 {
                     Logging.Debug( $"Request timed out, retrying in {shortRetryDelaySeconds}s" );
-                    await Task.Delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait( false );
-                    response = await SendRequestAsync( json ).ConfigureAwait( false );
+                    await Task.Delay( TimeSpan.FromSeconds( shortRetryDelaySeconds ) ).ConfigureAwait(false);
+                    response = await SendRequestAsync( json ).ConfigureAwait(false);
                 }
                 else if ( response.StatusCode == HttpStatusCode.ServiceUnavailable ) // Code 503
                 {
                     Logging.Debug( $"Service unavailable, retrying in {longRetryDelaySeconds}s" );
-                    await Task.Delay( TimeSpan.FromSeconds( longRetryDelaySeconds ) ).ConfigureAwait( false );
-                    response = await SendRequestAsync( json ).ConfigureAwait( false );
+                    await Task.Delay( TimeSpan.FromSeconds( longRetryDelaySeconds ) ).ConfigureAwait(false);
+                    response = await SendRequestAsync( json ).ConfigureAwait(false);
                 }
                 else if ( response.StatusCode == HttpStatusCode.RequestEntityTooLarge ) // Code 413
                 {
@@ -136,7 +136,7 @@ namespace EddiEddnResponder.Sender
                     if ( compressedOk ) { return; }
                 }
 
-                await HandleResponseAsync( body, response ).ConfigureAwait( false );
+                await HandleResponseAsync( body, response ).ConfigureAwait(false);
             }
             catch ( HttpRequestException hre )
             {
@@ -178,7 +178,7 @@ namespace EddiEddnResponder.Sender
             using ( var content = new StringContent( jsonPayload, Encoding.UTF8, "application/json" ) )
             {
                 content.Headers.ContentType = new MediaTypeHeaderValue( "application/json" );
-                return await httpClient.PostAsync( "upload/", content ).ConfigureAwait( false );
+                return await httpClient.PostAsync( "upload/", content ).ConfigureAwait(false);
             }
         }
 
