@@ -12,8 +12,7 @@ namespace Tests
     {
         private Dictionary<string, object> PrepTelemetryData(object data)
         {
-            var result = Logging.PrepareData( JToken.FromObject( data ) );
-            return result.Result;
+            return Logging.PrepareData( JToken.FromObject( data ) );
         }
 
         [TestMethod]
