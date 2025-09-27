@@ -68,10 +68,10 @@ namespace EddiInaraResponder
         {
             Stop();
             inaraService.Start(EDDI.Instance.EddiIsBeta());
-            Task.Run( FetchInaraCommanderID ).ConfigureAwait( false );
+            Task.Run( FetchInaraCommanderIdAsync );
         }
 
-        private async Task FetchInaraCommanderID ()
+        private async Task FetchInaraCommanderIdAsync ()
         {
             var config = ConfigService.Instance.inaraConfiguration;
             if ( config.inaraID is null )
@@ -125,7 +125,7 @@ namespace EddiInaraResponder
             // Handle sending events to Inara asynchronously
             try
             {
-                Task.Run( () => HandleAsync( theEvent ) ).ConfigureAwait( false );
+                Task.Run( () => _Handle( theEvent ) ).ConfigureAwait( false );
             }
             catch ( OperationCanceledException )
             {
@@ -133,7 +133,7 @@ namespace EddiInaraResponder
             }
         }
 
-        private void HandleAsync ( Event theEvent )
+        private void _Handle ( Event theEvent )
         {
             try
             {
