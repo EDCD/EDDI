@@ -21,7 +21,7 @@ namespace Utilities
             try
             {
                 Logging.Debug( "Requesting " + uri );
-                using ( var response = await httpClient.GetAsync( uri, HttpCompletionOption.ResponseHeadersRead ) )
+                using ( var response = await httpClient.GetAsync( uri, HttpCompletionOption.ResponseHeadersRead ).ConfigureAwait(false) )
                 {
                     if ( !response.IsSuccessStatusCode )
                     {
@@ -31,7 +31,7 @@ namespace Utilities
 
                     var encoding = GetEncodingFromResponse( response );
                     Logging.Debug( "Reading response from " + uri );
-                    return await ReadResponseStringAsync( response, encoding );
+                    return await ReadResponseStringAsync( response, encoding ).ConfigureAwait(false);
                 }
             }
             catch ( Exception e )
@@ -68,13 +68,13 @@ namespace Utilities
             {
                 try
                 {
-                    using ( var stream = await response.Content.ReadAsStreamAsync() )
+                    using ( var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false) )
                     {
                         if ( stream != null )
                         {
                             using ( var reader = new StreamReader( stream, encoding ) )
                             {
-                                data = await reader.ReadToEndAsync();
+                                data = await reader.ReadToEndAsync().ConfigureAwait(false);
                                 return data;
                             }
                         }
@@ -85,7 +85,7 @@ namespace Utilities
                 catch ( Exception e )
                 {
                     attempts++;
-                    await Task.Delay( 50 );
+                    await Task.Delay( 50 ).ConfigureAwait(false);
                     ex = e;
                 }
             }
@@ -103,7 +103,7 @@ namespace Utilities
             try
             {
                 var fileName = Path.Combine( Path.GetTempPath(), name );
-                using ( var response = await httpClient.GetAsync( uri, HttpCompletionOption.ResponseHeadersRead ) )
+                using ( var response = await httpClient.GetAsync( uri, HttpCompletionOption.ResponseHeadersRead ).ConfigureAwait(false) )
                 {
                     if ( !response.IsSuccessStatusCode )
                     {
@@ -113,7 +113,7 @@ namespace Utilities
 
                     using ( var fs = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.Write ) )
                     {
-                        await response.Content.CopyToAsync( fs );
+                        await response.Content.CopyToAsync( fs ).ConfigureAwait( true );
                     }
                 }
 
