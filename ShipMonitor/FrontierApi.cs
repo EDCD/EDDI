@@ -155,7 +155,7 @@ namespace EddiShipMonitor
             return Ship;
         }
 
-        public static Hardpoint HardpointFromJson(dynamic json)
+        private static Hardpoint HardpointFromJson(dynamic json)
         {
             Hardpoint Hardpoint = new Hardpoint() { name = json.Name };
 
@@ -192,7 +192,7 @@ namespace EddiShipMonitor
             return Hardpoint;
         }
 
-        public static Compartment CompartmentFromJson(dynamic json)
+        private static Compartment CompartmentFromJson(dynamic json)
         {
             Compartment Compartment = new Compartment() { name = json.Name };
 
@@ -213,7 +213,7 @@ namespace EddiShipMonitor
             return Compartment;
         }
 
-        public static Module ModuleFromJson(JObject json)
+        private static Module ModuleFromJson(JObject json)
         {
             string edName = (string)json["module"]["name"];
 
@@ -289,7 +289,7 @@ namespace EddiShipMonitor
             return module;
         }
 
-        public static LaunchBay LaunchBayFromJson(dynamic json, Ship ship)
+        private static LaunchBay LaunchBayFromJson(dynamic json, Ship ship)
         {
             LaunchBay launchbay = new LaunchBay() { name = json.Name };
 

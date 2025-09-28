@@ -17,8 +17,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.source;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await GetMissionCargoSourceRouteAsync( startSystem, query.StringArg0 ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            GetMissionCargoSourceRouteAsync( startSystem, query.StringArg0 );
 
         /// <summary> Route to the nearest star system that can be used to source active mission cargo </summary>
         /// <param name="currentSystem"> The current star system </param>
@@ -71,8 +71,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.expiring;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await GetExpiringMissionRouteAsync( startSystem ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            GetExpiringMissionRouteAsync( startSystem );
 
         /// <summary> Route to the star system where missions shall expire first </summary>
         /// <returns> The query result </returns>
@@ -110,8 +110,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.farthest;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await GetFarthestMissionRouteAsync( startSystem ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            GetFarthestMissionRouteAsync( startSystem );
 
         /// <summary> Route to the star system furthest from the current star system with active missions </summary>
         /// <returns> The query result </returns>
@@ -173,8 +173,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.most;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await GetMostMissionRouteAsync( query.StringArg0, startSystem ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            GetMostMissionRouteAsync( query.StringArg0, startSystem );
 
         /// <summary> Route to the star system that provides the most active missions </summary>
         /// <returns> The query result </returns>
@@ -240,8 +240,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.nearest;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await GetNearestMissionRouteAsync( startSystem ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            GetNearestMissionRouteAsync( startSystem );
 
         /// <summary> Route to the nearest star system with active missions </summary>
         /// <returns> The query result </returns>
@@ -299,14 +299,14 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.route;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await GetRepetiveNearestNeighborMissionRoute( startSystem, query.StringArg0 ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            GetRepetiveNearestNeighborMissionRouteAsync( startSystem, query.StringArg0 );
 
         /// <summary> Route that provides the shortest total travel path to complete all missions using the 'Repetitive Nearest Neighbor' Algorithm (RNNA) </summary>
         /// <param name="currentSystem"> The current star system </param>
         /// <param name="homeSystem"> (Optional) If set, calculate relative to the named starting system rather than the current system </param>
         /// <returns> The query result </returns>
-        private async Task<RouteDetailsEvent> GetRepetiveNearestNeighborMissionRoute ( [ NotNull ] StarSystem currentSystem, string homeSystem = null )
+        private async Task<RouteDetailsEvent> GetRepetiveNearestNeighborMissionRouteAsync ( [ NotNull ] StarSystem currentSystem, string homeSystem = null )
         {
             var missions = ConfigService.Instance.missionMonitorConfiguration.missions.ToList();
             if ( missions.Count == 0 ) { return null; }
@@ -353,8 +353,8 @@ namespace EddiNavigationService.QueryResolvers
             }
 
             // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithm (RNNA)
-            var navWaypoints = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointsAsync( systems.ToArray() ).ConfigureAwait( false );
-            var homeSystemWaypoint = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( homeSystem ).ConfigureAwait( false );
+            var navWaypoints = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointsAsync( systems.ToArray() ).ConfigureAwait(false);
+            var homeSystemWaypoint = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( homeSystem ).ConfigureAwait(false);
             if ( CalculateRepetiveNearestNeighbor ( navWaypoints, missions, out var sortedRoute, homeSystemWaypoint ) )
             {
                 var searchSystem = sortedRoute.FirstOrDefault ( w => !w.visited );

@@ -19,10 +19,8 @@ namespace EddiNavigationMonitor
     /// <summary>
     /// Interaction logic for RoutePlotterControl.xaml
     /// </summary>
-    public partial class PlotShipControl : UserControl
+    public partial class PlotShipControl
     {
-        private Task searchTask;
-
         private NavigationMonitor navigationMonitor ()
         {
             return (NavigationMonitor)EDDI.Instance.ObtainMonitor( "Navigation monitor" );
@@ -343,26 +341,27 @@ namespace EddiNavigationMonitor
 
         private async void executeSearch ( object sender, RoutedEventArgs e )
         {
-            var systemArg = searchSystemDropDown.Text;
-            var stationArg = searchStationDropDown.Text == Properties.NavigationMonitor.no_station
-                ? null
-                : searchStationDropDown.Text;
-            QueryType queryType = (QueryType)searchQueryDropDown.SelectedItem;
-            if ( searchTask?.Status == TaskStatus.Running )
-            { }
-            else
+            try
             {
-                searchTask = Task.Run( async () =>
+                if ( !NavigationService.Instance.IsWorking )
                 {
-                    var @event = await NavigationService.Instance.NavQueryAsync(queryType, systemArg, stationArg, null, null, true).ConfigureAwait(false);
+                    var systemArg = searchSystemDropDown.Text;
+                    var stationArg = searchStationDropDown.Text == Properties.NavigationMonitor.no_station
+                        ? null
+                        : searchStationDropDown.Text;
+                    var queryType = (QueryType)searchQueryDropDown.SelectedItem;
+                    var @event = await NavigationService.Instance.NavQueryAsync(queryType, systemArg, stationArg, null, null, true).ConfigureAwait(true);
                     if ( @event is null ) { return; }
                     EDDI.Instance.enqueueEvent( @event );
-                } );
+                }
             }
-            await Task.WhenAll( searchTask );
+            catch ( Exception exception )
+            {
+                Logging.Error( "Search task failed", exception );
+            }
         }
 
-        private void SearchSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
+        private async void SearchSystemDropDown_SelectionChanged ( object sender, SelectionChangedEventArgs e )
         {
             try
             {
@@ -379,7 +378,7 @@ namespace EddiNavigationMonitor
                         NavigationService.Instance.LastQuerySystemArg = newValue;
 
                         // Update station options for new system
-                        ConfigureSearchStationOptionsAsync( NavigationService.Instance.LastQuerySystemArg ).GetAwaiter().GetResult();
+                        await ConfigureSearchStationOptionsAsync( NavigationService.Instance.LastQuerySystemArg ).ConfigureAwait(true);
                     }
                 }
             }
@@ -398,13 +397,14 @@ namespace EddiNavigationMonitor
 
             if ( searchStationDropDown.Visibility == Visibility.Visible && !string.IsNullOrEmpty( system ) )
             {
-                var searchSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( system ).ConfigureAwait( false );
+                var searchSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( system ).ConfigureAwait(false);
                 if ( searchSystem?.stations != null )
                 {
-                    foreach ( var station in searchSystem.stations.Where( s => !s.IsCarrier() && !s.IsMegaShip() ) )
-                    {
-                        searchStationOptions.Add( station.name );
-                    }
+                    searchStationOptions.AddRange(
+                        searchSystem.stations
+                            .Where( s => !s.IsCarrier() && !s.IsMegaShip() )
+                            .Select( s => s.name )
+                    );
                 }
             }
             // sort but leave "No Station" at the top
@@ -431,32 +431,51 @@ namespace EddiNavigationMonitor
 
         private void DataGrid_LoadingRow ( object sender, DataGridRowEventArgs e )
         {
-            e.Row.Header = ( e.Row.GetIndex() ).ToString();
+            e.Row.Header = e.Row.GetIndex().ToString();
         }
 
-        private void GuidanceButton_Click ( object sender, RoutedEventArgs e )
+        private async void GuidanceButton_Click ( object sender, RoutedEventArgs e )
         {
-            if ( GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button )
+            try
             {
-                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQueryAsync( QueryType.cancel, null, null, null, null, true ).GetAwaiter().GetResult() );
-            }
-            else
-            {
-                EDDI.Instance.enqueueEvent( NavigationService.Instance.NavQueryAsync( QueryType.set, null, null, null, null, true ).GetAwaiter().GetResult() );
-            }
-        }
+                var queryType = GuidanceButton.Content.ToString() == Properties.NavigationMonitor.disable_guidance_button
+                    ? QueryType.cancel
+                    : QueryType.set;
 
-        private void ClearRouteButton_Click ( object sender, RoutedEventArgs e )
-        {
-            if ( plottedRouteData.Items.Count > 0 )
-            {
-                if ( navigationMonitor().PlottedRoute.GuidanceEnabled )
+                var @event = await NavigationService.Instance
+                    .NavQueryAsync(queryType, null, null, null, null, true)
+                    .ConfigureAwait(true); // resume on UI thread if needed
+
+                if ( @event != null )
                 {
-                    NavigationService.Instance.NavQueryAsync( QueryType.cancel, null, null, null, null, true ).GetAwaiter().GetResult();
-                    ;
+                    EDDI.Instance.enqueueEvent( @event );
                 }
-                navigationMonitor().PlottedRoute.Waypoints.Clear();
-                navigationMonitor().WriteNavConfig();
+            }
+            catch (Exception ex)
+            {
+                Logging.Error(ex.Message, ex);
+            }
+        }
+
+        private async void ClearRouteButton_Click ( object sender, RoutedEventArgs e )
+        {
+            try
+            {
+                if ( plottedRouteData.Items.Count > 0 )
+                {
+                    if ( navigationMonitor().PlottedRoute.GuidanceEnabled )
+                    {
+                        await NavigationService.Instance
+                            .NavQueryAsync( QueryType.cancel, null, null, null, null, true )
+                            .ConfigureAwait( true );
+                    }
+                    navigationMonitor().PlottedRoute.Waypoints.Clear();
+                    navigationMonitor().WriteNavConfig();
+                }
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( ex.Message, ex );
             }
         }
 

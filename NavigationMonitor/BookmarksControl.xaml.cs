@@ -86,73 +86,80 @@ namespace EddiNavigationMonitor
 
         private async void importBookmarks(object sender, RoutedEventArgs e)
         {
-            // Read bookmarks from selected files (.jsonl format)
-            var fileDialog = new OpenFileDialog
-            {
-                InitialDirectory = Constants.DATA_DIR,
-                Multiselect = true,
-                DefaultExt = ".bkmks",
-                Filter = "Bookmark files|*.bkmks",
-                FilterIndex = 0
-            };
             try
             {
-                if ( !( fileDialog.ShowDialog() ?? false ) ) { return; }
-            }
-            catch ( Win32Exception ex )
-            {
-                Logging.Warn( ex.Message, ex );
-            }
-            // Import bookmarks
-            var newBookmarks = new List<NavBookmark>();
-            foreach (var fileName in fileDialog.FileNames)
-            {
-                if (!fileName.EndsWith(".bkmks")) { continue; }
-                var fileContents = Files.Read(fileName);
-                using (var sr = new StringReader(fileContents))
+                // Read bookmarks from selected files (.jsonl format)
+                var fileDialog = new OpenFileDialog
                 {
-                    string line;
-                    while ((line = await sr.ReadLineAsync()) != null)
+                    InitialDirectory = Constants.DATA_DIR,
+                    Multiselect = true,
+                    DefaultExt = ".bkmks",
+                    Filter = "Bookmark files|*.bkmks",
+                    FilterIndex = 0
+                };
+                try
+                {
+                    if ( !( fileDialog.ShowDialog() ?? false ) ) { return; }
+                }
+                catch ( Win32Exception ex )
+                {
+                    Logging.Warn( ex.Message, ex );
+                }
+                // Import bookmarks
+                var newBookmarks = new List<NavBookmark>();
+                foreach (var fileName in fileDialog.FileNames)
+                {
+                    if (!fileName.EndsWith(".bkmks")) { continue; }
+                    var fileContents = Files.Read(fileName);
+                    using (var sr = new StringReader(fileContents))
                     {
-                        NavBookmark navBookmark = null;
-                        try
+                        string line;
+                        while ((line = await sr.ReadLineAsync().ConfigureAwait(true)) != null)
                         {
-                            navBookmark = JsonConvert.DeserializeObject<NavBookmark>(line);
-                        }
-                        catch (Exception exception)
-                        {
-                            var data = new Dictionary<string, object>
+                            NavBookmark navBookmark = null;
+                            try
                             {
-                                {"Bookmark", line},
-                                {"Exception", exception}
-                            };
-                            Logging.Warn("Failed to import bookmark", data);
-                        }
-                        if (navBookmark != null)
-                        {
-                            newBookmarks.Add(navBookmark);
+                                navBookmark = JsonConvert.DeserializeObject<NavBookmark>(line);
+                            }
+                            catch (Exception exception)
+                            {
+                                var data = new Dictionary<string, object>
+                                {
+                                    {"Bookmark", line},
+                                    {"Exception", exception}
+                                };
+                                Logging.Warn("Failed to import bookmark", data);
+                            }
+                            if (navBookmark != null)
+                            {
+                                newBookmarks.Add(navBookmark);
+                            }
                         }
                     }
+                }
+
+                // Select bookmarks
+                var bookmarksSelector = new BookmarkSelector(newBookmarks);
+                EDDI.Instance.SpeechResponderModalWait = true;
+                bookmarksSelector.ShowDialog();
+                EDDI.Instance.SpeechResponderModalWait = false;
+
+                // Add bookmarks to Navigation Monitor (filtering out any duplicated bookmarks)
+                lock (NavigationMonitor.navConfigLock)
+                {
+                    foreach (var navBookmark in bookmarksSelector.SelectedBookmarks)
+                    {
+                        if (!navigationMonitor().Bookmarks.ToList().Any(b => b.DeepEquals(navBookmark)))
+                        {
+                            navigationMonitor().Bookmarks.Add(navBookmark);
+                        }
+                    }
+                    navigationMonitor().WriteNavConfig();
                 }
             }
-
-            // Select bookmarks
-            var bookmarksSelector = new BookmarkSelector(newBookmarks);
-            EDDI.Instance.SpeechResponderModalWait = true;
-            bookmarksSelector.ShowDialog();
-            EDDI.Instance.SpeechResponderModalWait = false;
-
-            // Add bookmarks to Navigation Monitor (filtering out any duplicated bookmarks)
-            lock (NavigationMonitor.navConfigLock)
+            catch (Exception ex)
             {
-                foreach (var navBookmark in bookmarksSelector.SelectedBookmarks)
-                {
-                    if (!navigationMonitor().Bookmarks.ToList().Any(b => b.DeepEquals(navBookmark)))
-                    {
-                        navigationMonitor().Bookmarks.Add(navBookmark);
-                    }
-                }
-                navigationMonitor().WriteNavConfig();
+                Logging.Error(ex.Message, ex);
             }
         }
 

@@ -16,8 +16,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.set;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await SetRouteAsync( startSystem, query.StringArg0, query.StringArg1 ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            SetRouteAsync( startSystem, query.StringArg0, query.StringArg1 );
 
         private static async Task<RouteDetailsEvent> SetRouteAsync ( StarSystem startSystem, string systemName, string stationName )
         {
@@ -70,8 +70,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.cancel;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
-            await CancelRouteAsync().ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem startSystem ) =>
+            CancelRouteAsync();
 
         private static async Task<RouteDetailsEvent> CancelRouteAsync ()
         {
@@ -96,8 +96,8 @@ namespace EddiNavigationService.QueryResolvers
         public QueryType Type => QueryType.update;
         public Dictionary<string, object> SpanshQueryFilter => null;
 
-        public async Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem currentSystem ) =>
-            await RefreshLastNavigationQueryAsync( currentSystem ).ConfigureAwait( false );
+        public Task<RouteDetailsEvent> ResolveAsync ( Query query, StarSystem currentSystem ) =>
+            RefreshLastNavigationQueryAsync( currentSystem );
 
         /// <summary> Repeat the last mission query and return an updated result if different from the prior result, either relative to your current location or to a named system </summary>
         /// <returns> The star system result from the repeated query </returns>
@@ -156,7 +156,6 @@ namespace EddiNavigationService.QueryResolvers
             if ( @event is null ) { return null; }
             EDDI.Instance.enqueueEvent( new RouteDetailsEvent( DateTime.UtcNow, nameof(QueryType.recalculating), @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids ) );
             return new RouteDetailsEvent( DateTime.UtcNow, config?.searchQuery, @event.system, @event.systemAddress, @event.station, @event.marketId, @event.Route, @event.count, @event.missionids );
-
         }
     }
 }

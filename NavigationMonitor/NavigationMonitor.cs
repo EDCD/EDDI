@@ -30,7 +30,7 @@ namespace EddiNavigationMonitor
         // Observable collection for us to handle changes to Bookmarks
         public ObservableCollection<NavBookmark> Bookmarks = new ObservableCollection<NavBookmark>();
 
-        public ObservableCollection<NavBookmark> GalacticPOIs = new ObservableCollection<NavBookmark>();
+        public readonly ObservableCollection<NavBookmark> GalacticPOIs = new ObservableCollection<NavBookmark>();
 
         // Navigation route data
         public NavWaypointCollection NavRoute = new NavWaypointCollection() { FillVisitedGaps = true };
@@ -47,7 +47,7 @@ namespace EddiNavigationMonitor
 
         private DateTime updateDat;
 
-        internal Status currentStatus { get; set; }
+        internal Status currentStatus { get; private set; }
 
         public string MonitorName()
         {
@@ -79,8 +79,11 @@ namespace EddiNavigationMonitor
         private void LoadMonitor()
         {
             ReadNavConfig();
-            Task.Run( () => GetBookmarkExtrasAsync( Bookmarks ) ).ConfigureAwait(false);
-            Task.Run( GetGalacticPOIsAsync ).ConfigureAwait(false);
+            Task.Run( async () =>
+            {
+                await GetBookmarkExtrasAsync( Bookmarks ).ConfigureAwait(false);
+                await GetGalacticPOIsAsync().ConfigureAwait(false);
+            } );
         }
 
         private async Task GetGalacticPOIsAsync()
@@ -154,7 +157,7 @@ namespace EddiNavigationMonitor
             }
             else if (@event is DockedEvent dockedEvent)
             {
-                handleDockedEvent(dockedEvent);
+                handleDockedEvent( dockedEvent );
             }
             else if (@event is JumpedEvent jumpedEvent)
             {
@@ -162,11 +165,11 @@ namespace EddiNavigationMonitor
             }
             else if (@event is LocationEvent locationEvent)
             {
-                handleLocationEvent(locationEvent);
+                handleLocationEventAsync( locationEvent ).GetAwaiter().GetResult();
             }
             else if (@event is NavRouteEvent navRouteEvent)
             {
-                handleNavRouteEvent(navRouteEvent);
+                handleNavRouteEventAsync(navRouteEvent).GetAwaiter().GetResult();
             }
             else if (@event is RouteDetailsEvent routeDetailsEvent)
             {
@@ -182,7 +185,7 @@ namespace EddiNavigationMonitor
         {
             if (@event is NavRouteEvent navRouteEvent)
             {
-                posthandleNavRouteEvent(navRouteEvent);
+                _ = posthandleNavRouteEventAsync( navRouteEvent );
             }
             else if (@event is LiftoffEvent liftoffEvent)
             {
@@ -200,28 +203,14 @@ namespace EddiNavigationMonitor
 
         #region handledEvents
 
-        private void handleCarrierJumpedEvent(CarrierJumpedEvent @event)
+        private void handleCarrierJumpedEvent ( CarrierJumpedEvent @event )
         {
-            UpdateStellarLocationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad);
+            _ = UpdateStellarLocationDataAsync(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad);
         }
 
         private void handleCarrierJumpEngagedEvent(CarrierJumpEngagedEvent @event)
         {
-            UpdateCarrierRouteLocationDataAsync(@event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad).GetAwaiter().GetResult();
-        }
-
-        private async Task UpdateCarrierRouteLocationDataAsync(DateTime timestamp, string systemName, ulong systemAddress, bool fromLoad)
-        {
-            var system = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( systemName ).ConfigureAwait( false );
-            if (systemAddress == system?.systemAddress)
-            {
-                CarrierPlottedRoute.UpdateLocationData(system.systemAddress, system.x, system.y, system.z);
-                if (!fromLoad && timestamp >= updateDat)
-                {
-                    updateDat = timestamp;
-                    WriteNavConfig();
-                }
-            }
+            _ = UpdateCarrierRouteLocationDataAsync(@event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad);
         }
 
         private void handleDockedEvent(DockedEvent @event)
@@ -245,32 +234,32 @@ namespace EddiNavigationMonitor
                     // If we are at our fleet carrier, make sure that the carrier location is up to date.
                     if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
                     {
-                        UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.system, @event.systemAddress, @event.fromLoad ).GetAwaiter().GetResult();
+                        _ = UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.system, @event.systemAddress, @event.fromLoad );
                     }
                 }
             }
         }
 
-        private void handleLocationEvent(LocationEvent @event)
+        private async Task handleLocationEventAsync(LocationEvent @event)
         {
-            UpdateStellarLocationData( @event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad );
+            await UpdateStellarLocationDataAsync( @event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad ).ConfigureAwait(false);
 
             if ( !@event.fromLoad && @event.timestamp >= updateDat)
             {
                 // If we are at our fleet carrier, make sure that the carrier location is up to date.
                 if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
                 {
-                    UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad ).GetAwaiter().GetResult();
+                    await UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad ).ConfigureAwait(false);
                 }
             }
         }
 
-        private void handleJumpedEvent(JumpedEvent @event)
+        private void handleJumpedEvent ( JumpedEvent @event )
         {
-            UpdateStellarLocationData(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad );
+            _ = UpdateStellarLocationDataAsync( @event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad );
         }
 
-        private void handleNavRouteEvent(NavRouteEvent @event)
+        private async Task handleNavRouteEventAsync(NavRouteEvent @event)
         {
             if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
@@ -288,7 +277,7 @@ namespace EddiNavigationMonitor
                         // Update destination data
                         var start = routeList.FirstOrDefault();
                         var end = routeList.LastOrDefault();
-                        UpdateDestinationDataAsync( start, end ).GetAwaiter().GetResult();
+                        await UpdateDestinationDataAsync( start, end ).ConfigureAwait(false);
                     }
 
                     // Update the navigation configuration 
@@ -298,7 +287,7 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void posthandleNavRouteEvent(NavRouteEvent @event)
+        private async Task posthandleNavRouteEventAsync(NavRouteEvent @event)
         {
             if (!@event.fromLoad && @event.timestamp >= updateDat)
             {
@@ -307,7 +296,7 @@ namespace EddiNavigationMonitor
                 {
                     if (routeList.Count == 0)
                     {
-                        UpdateDestinationDataAsync(null, null).GetAwaiter().GetResult();
+                        await UpdateDestinationDataAsync(null, null).ConfigureAwait(false);
                         NavRoute.Waypoints.Clear();
                     }
                     
@@ -443,6 +432,20 @@ namespace EddiNavigationMonitor
 
         #endregion
 
+        private async Task UpdateCarrierRouteLocationDataAsync ( DateTime timestamp, string systemName, ulong systemAddress, bool fromLoad )
+        {
+            var system = await EDDI.Instance.DataProvider.GetOrFetchSystemWaypointAsync( systemName ).ConfigureAwait(false);
+            if ( systemAddress == system?.systemAddress )
+            {
+                CarrierPlottedRoute.UpdateLocationData( system.systemAddress, system.x, system.y, system.z );
+                if ( !fromLoad && timestamp >= updateDat )
+                {
+                    updateDat = timestamp;
+                    WriteNavConfig();
+                }
+            }
+        }
+
         public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock ( navConfigLock )
@@ -518,7 +521,7 @@ namespace EddiNavigationMonitor
             }
         }
 
-        private void UpdateStellarLocationData(DateTime timestamp, ulong? systemAddress, decimal? x, decimal? y, decimal? z, bool fromLoad = false)
+        private async Task UpdateStellarLocationDataAsync(DateTime timestamp, ulong? systemAddress, decimal? x, decimal? y, decimal? z, bool fromLoad = false)
         {
             if (systemAddress is null || x == null || y == null || z == null ) { return; }
             
@@ -529,7 +532,7 @@ namespace EddiNavigationMonitor
             if ( PlottedRoute.GuidanceEnabled && PlottedRoute.Waypoints.All( w => w.visited ) )
             {
                 // Deactivate guidance once we've reached our destination.
-                NavigationService.Instance.NavQueryAsync( QueryType.cancel, null, null, null, null, true ).GetAwaiter().GetResult();
+                await NavigationService.Instance.NavQueryAsync( QueryType.cancel, null, null, null, null, true ).ConfigureAwait(false);
             }
 
             // Bookmarks data
@@ -552,7 +555,7 @@ namespace EddiNavigationMonitor
                 }
             }
             // We need to refresh a collection view for galactic POIs
-            Application.Current.Dispatcher.InvokeAsync( () =>
+            await Application.Current.Dispatcher.InvokeAsync( () =>
             {
                 if ( ConfigurationWindow.Instance.TryFindResource( nameof( GalacticPOIControl.POIView ) ) is ICollectionView poiView )
                 {

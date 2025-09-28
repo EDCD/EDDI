@@ -17,7 +17,7 @@ namespace EddiNavigationService
         {
             var galacticPOIs = new ObservableCollection<NavBookmark>();
 
-            var jsonString = await Net.DownloadStringAsync(GalacticPOI_URI);
+            var jsonString = await Net.DownloadStringAsync(GalacticPOI_URI).ConfigureAwait(false);
             if (!string.IsNullOrEmpty(jsonString))
             {
                 var jArray = JArray.Parse(jsonString);

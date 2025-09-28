@@ -6,7 +6,6 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,10 +16,8 @@ namespace EddiNavigationMonitor
     /// <summary>
     /// Interaction logic for RoutePlotterControl.xaml
     /// </summary>
-    public partial class PlotCarrierControl : UserControl
+    public partial class PlotCarrierControl
     {
-        private Task searchTask;
-
         private string LastCarrierOriginArg;
 
         private NavigationMonitor navigationMonitor ()
@@ -123,21 +120,19 @@ namespace EddiNavigationMonitor
 
         private async void executeSearch ( object sender, RoutedEventArgs e )
         {
-            var originSystemArg = carrierOriginSystemDropDown.Text;
-            var destinationSystemArg = destinationSystemDropDown.Text;
-            var usedCapacity = Convert.ToInt32(carrierCurrentLoad.Text, CultureInfo.InvariantCulture);
-            if ( searchTask?.Status == TaskStatus.Running )
-            { }
-            else
+            try
             {
-                searchTask = Task.Run( async () =>
-                {
-                    var @event = await NavigationService.Instance.NavQueryAsync(QueryType.carrier, destinationSystemArg, originSystemArg, usedCapacity, null, true).ConfigureAwait(false);
-                    if ( @event is null ) { return; }
-                    EDDI.Instance.enqueueEvent( @event );
-                } );
+                var originSystemArg = carrierOriginSystemDropDown.Text;
+                var destinationSystemArg = destinationSystemDropDown.Text;
+                var usedCapacity = Convert.ToInt32(carrierCurrentLoad.Text, CultureInfo.InvariantCulture);
+                var @event = await NavigationService.Instance.NavQueryAsync(QueryType.carrier, destinationSystemArg, originSystemArg, usedCapacity, null, true).ConfigureAwait(true);
+                if ( @event is null ) { return; }
+                EDDI.Instance.enqueueEvent( @event );
             }
-            await Task.WhenAll( searchTask );
+            catch ( Exception exception )
+            {
+                Logging.Error( "Search task failed", exception );
+            }
         }
 
         private void DestinationSystemText_SelectionChanged ( object sender, SelectionChangedEventArgs e )
@@ -241,7 +236,7 @@ namespace EddiNavigationMonitor
 
         private void DataGrid_LoadingRow ( object sender, DataGridRowEventArgs e )
         {
-            e.Row.Header = ( e.Row.GetIndex() ).ToString();
+            e.Row.Header = e.Row.GetIndex().ToString();
         }
 
         private void ClearRouteButton_Click ( object sender, RoutedEventArgs e )

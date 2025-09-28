@@ -25,7 +25,7 @@ namespace EddiNavigationMonitor
 
         private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-            e.Row.Header = (e.Row.GetIndex()).ToString();
+            e.Row.Header = e.Row.GetIndex().ToString();
         }
 
         private void addBookmark(object sender, RoutedEventArgs e)
