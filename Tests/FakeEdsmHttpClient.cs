@@ -14,17 +14,17 @@ namespace Tests
     {
         private readonly Dictionary<string, string> CannedContent = new Dictionary<string, string>();
 
-        public async Task<string> GetAsync ( string url )
+        public Task<string> GetAsync ( string url )
         {
-            return await ExecuteAsync( url ).ConfigureAwait( false );
+            return ExecuteAsync( url );
         }
 
-        public async Task<string> PostAsync ( string url, HttpContent sendContent )
+        public Task<string> PostAsync ( string url, HttpContent sendContent )
         {
-            return await ExecuteAsync( url, sendContent ).ConfigureAwait( false );
+            return ExecuteAsync( url, sendContent );
         }
 
-        public async Task<string> ExecuteAsync( string url, HttpContent sendContent = null )
+        private async Task<string> ExecuteAsync( string url, HttpContent sendContent = null )
         {
             var resourceString = $"{url}";
 
@@ -33,7 +33,7 @@ namespace Tests
             {
                 try
                 {
-                    var json = await sendContent.ReadAsStringAsync();
+                    var json = await sendContent.ReadAsStringAsync().ConfigureAwait(false);
                     var parameters = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
                     foreach ( var parameter in parameters )
                     {

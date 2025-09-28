@@ -31,7 +31,7 @@ namespace EddiStarMapService
         private string commanderName { get; set; }
         private string apiKey { get; set; }
 
-        private IEdsmHttpClient edsmHttpClient { get; set; }
+        private IEdsmHttpClient edsmHttpClient { get; }
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private const string baseUrl = "https://www.edsm.net/";
@@ -48,7 +48,7 @@ namespace EddiStarMapService
 
         public class EdsmHttpClient : IEdsmHttpClient
         {
-            public HttpClient HttpClient { get; }
+            private HttpClient HttpClient { get; }
 
             public EdsmHttpClient ( HttpClient httpClient = null, TimeSpan? defaultTimeOut = null )
             {
@@ -65,11 +65,11 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    var response = await HttpClient.GetAsync( url );
-                    await AwaitResourceAsync( url ).ConfigureAwait( false );
+                    var response = await HttpClient.GetAsync( url ).ConfigureAwait(false);
+                    await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
                     UpdateRateLimits( url, response );
-                    return await response.Content.ReadAsStringAsync();
+                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 catch ( HttpRequestException he )
                 {
@@ -88,11 +88,11 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    var response = await HttpClient.PostAsync( url, content );
-                    await AwaitResourceAsync( url ).ConfigureAwait( false );
+                    var response = await HttpClient.PostAsync( url, content ).ConfigureAwait(false);
+                    await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
                     UpdateRateLimits( url, response );
-                    return await response.Content.ReadAsStringAsync();
+                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 catch ( HttpRequestException he )
                 {
@@ -117,7 +117,7 @@ namespace EddiStarMapService
                     var waitSeconds = Math.Ceiling( ( rateLimit.resetTime - DateTime.UtcNow ).TotalSeconds + 1 );
                     Logging.Warn( $"EDSM rate limit {( rateLimit.remaining > 0 ? "almost " : "" )}exceeded." );
                     Logging.Warn( $"Waiting {waitSeconds} seconds for EDSM server cool-down." );
-                    await Task.Delay( TimeSpan.FromSeconds( waitSeconds ) );
+                    await Task.Delay( TimeSpan.FromSeconds( waitSeconds ) ).ConfigureAwait(false);
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace EddiStarMapService
             }
         }
 
-        public bool TrySetEdsmCredentials()
+        private bool TrySetEdsmCredentials()
         {
             var starMapCredentials = ConfigService.Instance.edsmConfiguration;
             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))

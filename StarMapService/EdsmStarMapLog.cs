@@ -43,7 +43,7 @@ namespace EddiStarMapService
 
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait(false);
                 var response = responseJson is null
                     ? null
                     : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );

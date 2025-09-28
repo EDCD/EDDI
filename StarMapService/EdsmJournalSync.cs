@@ -25,7 +25,7 @@ namespace EddiStarMapService
         // The minimum interval between EDSM responder event syncs
         private const int syncIntervalMilliSeconds = 5000; // 5 seconds
 
-        private IEdsmHttpClient edsmJournalHttpClient { get; set; }
+        private IEdsmHttpClient edsmJournalHttpClient { get; }
 
         public void StartJournalSync ()
         {
@@ -33,7 +33,7 @@ namespace EddiStarMapService
             {
                 syncCancellationTS = new CancellationTokenSource();
                 Logging.Debug( "Enabling EDSM Responder event sync." );
-                Task.Run( BackgroundJournalSync ).ConfigureAwait( false );
+                Task.Run( BackgroundJournalSyncAsync );
             }
         }
 
@@ -45,67 +45,65 @@ namespace EddiStarMapService
                 syncCancellationTS.Cancel();
                 queuedEvents.CompleteAdding();
                 // Clean up by sending anything left in the queue.
-                await SendEventsAsync( queuedEvents.ToList() );
+                await SendEventsAsync( queuedEvents.ToList() ).ConfigureAwait(false);
             }
         }
 
-        private async Task BackgroundJournalSync ()
+        private async Task BackgroundJournalSyncAsync ()
         {
             try
             {
                 // Pause a short time to allow any initial events to build in the queue before our first sync
                 await Task.Delay( startupDelayMilliSeconds, syncCancellationTS.Token ).ConfigureAwait( false );
-                await Task.Run( async () =>
+                
+                // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
+                // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
+                var holdingQueue = new List<IDictionary<string, object>>();
+                try
                 {
-                    // The `GetConsumingEnumerable` method blocks the thread while the underlying collection is empty
-                    // If we haven't extracted events to send to EDSM, this will wait / pause background sync until `queuedEvents` is no longer empty.
-                    var holdingQueue = new List<IDictionary<string, object>>();
-                    try
+                    Logging.Debug( "Sending queued events to EDSM: ", queuedEvents );
+                    foreach ( var pendingEvent in queuedEvents.GetConsumingEnumerable(
+                                 syncCancellationTS.Token ) )
                     {
-                        Logging.Debug( "Sending queued events to EDSM: ", queuedEvents );
-                        foreach ( var pendingEvent in queuedEvents.GetConsumingEnumerable(
-                                     syncCancellationTS.Token ) )
+                        holdingQueue.Add( pendingEvent );
+
+                        // If we've reached the batch size or the queue is empty, send the batch
+                        if ( queuedEvents.Count == 0 )
                         {
-                            holdingQueue.Add( pendingEvent );
-
-                            // If we've reached the batch size or the queue is empty, send the batch
-                            if ( queuedEvents.Count == 0 )
+                            // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
+                            await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait(false);
+                            if ( queuedEvents.Count > 0 )
                             {
-                                // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
-                                await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait( false );
-                                if ( queuedEvents.Count > 0 )
-                                {
-                                    continue;
-                                }
+                                continue;
+                            }
 
-                                // No additional events registered, send any events we have in our holding queue
-                                if ( holdingQueue.Count > 0 )
-                                {
-                                    var sendingQueue = holdingQueue.ToList();
-                                    await Task.Run( async () => await SendEventsAsync( sendingQueue ), syncCancellationTS.Token ).ConfigureAwait( false );
-                                    await Task.Delay( syncIntervalMilliSeconds, syncCancellationTS.Token ).ConfigureAwait( false );
-                                }
+                            // No additional events registered, send any events we have in our holding queue
+                            if ( holdingQueue.Count > 0 )
+                            {
+                                var sendingQueue = holdingQueue.ToList();
+                                await SendEventsAsync( sendingQueue ).ConfigureAwait(false);
+                                await Task.Delay( syncIntervalMilliSeconds, syncCancellationTS.Token ).ConfigureAwait(false);
                             }
                         }
                     }
-                    catch ( OperationCanceledException )
+                }
+                catch ( OperationCanceledException )
+                {
+                    // Operation was cancelled. Return any events we've extracted back to the primary queue.
+                    if ( !queuedEvents.IsAddingCompleted )
                     {
-                        // Operation was cancelled. Return any events we've extracted back to the primary queue.
-                        if ( !queuedEvents.IsAddingCompleted )
+                        foreach ( var pendingEvent in holdingQueue )
                         {
-                            foreach ( var pendingEvent in holdingQueue )
-                            {
-                                queuedEvents.Add( pendingEvent );
-                            }
+                            queuedEvents.Add( pendingEvent );
                         }
                     }
-                    catch ( Exception ex )
-                    {
-                        Logging.Error( ex.Message, ex );
-                    }
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( ex.Message, ex );
+                }
 
-                    holdingQueue.Clear();
-                } ).ConfigureAwait( false );
+                holdingQueue.Clear();
             }
             catch ( TaskCanceledException )
             {
@@ -143,7 +141,7 @@ namespace EddiStarMapService
         {
             if ( currentGameVersion is null ) { return; } // Wait until we have a game version before sending events
             var starMapConfiguration = ConfigService.Instance.edsmConfiguration;
-            await SendEventBatchAsync( queue, starMapConfiguration );
+            await SendEventBatchAsync( queue, starMapConfiguration ).ConfigureAwait(false);
         }
 
         private async Task SendEventBatchAsync ( List<IDictionary<string, object>> eventData, StarMapConfiguration starMapConfiguration )
@@ -175,7 +173,7 @@ namespace EddiStarMapService
                     try
                     {
                         Logging.Debug( "Sending message to EDSM: " + url, httpContent );
-                        var responseJson = await edsmJournalHttpClient.PostAsync( url, httpContent );
+                        var responseJson = await edsmJournalHttpClient.PostAsync( url, httpContent ).ConfigureAwait(false);
                         var response = responseJson is null
                             ? null
                             : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
@@ -218,7 +216,7 @@ namespace EddiStarMapService
                         }
                     }
 
-                    await Task.Delay( delay );
+                    await Task.Delay( delay ).ConfigureAwait(false);
                     delay *= 2; // Exponential backoff
                 }
             }

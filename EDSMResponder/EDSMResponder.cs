@@ -3,6 +3,7 @@ using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiStarMapService;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,6 +15,7 @@ using Utilities;
 
 namespace EddiEdsmResponder
 {
+    [UsedImplicitly]
     public class EDSMResponder : IEddiResponder
     {
         private Task updateTask;
@@ -106,20 +108,27 @@ namespace EddiEdsmResponder
 
             // Retrieve applicable transient game state info (metadata) 
             // for the event and send the event with transient info to EDSM
-            IDictionary<string, object> eventObject = null;
-            try
+            Task.Run( async () =>
             {
-                eventObject = prepareEventDataAsync( theEvent ).GetAwaiter().GetResult();
-            }
-            catch ( System.Exception ex )
-            {
-                Logging.Error( "Failed to prepare event meta-data for submittal to EDSM", ex );
-            }
+                IDictionary<string, object> eventObject = null;
+                try
+                {
+                    eventObject = await prepareEventDataAsync( theEvent ).ConfigureAwait( false );
+                }
+                catch ( TaskCanceledException )
+                {
+                    // Nothing to do here
+                }
+                catch ( Exception ex )
+                {
+                    Logging.Error( "Failed to prepare event meta-data for submittal to EDSM", ex );
+                }
 
-            if ( eventObject != null && !EDDI.Instance.gameIsBeta )
-            {
-                EDDI.Instance.DataProvider.EnqueueEdsmEvent( eventObject );
-            }
+                if ( eventObject != null && !EDDI.Instance.gameIsBeta )
+                {
+                    EDDI.Instance.DataProvider.EnqueueEdsmEvent( eventObject );
+                }
+            } );
         }
 
         private async Task<IDictionary<string, object>> prepareEventDataAsync(Event theEvent)
@@ -134,12 +143,12 @@ namespace EddiEdsmResponder
             {
                 try
                 {
-                    ignoredEvents = await EDDI.Instance.DataProvider.GetIgnoredEdsmEventsAsync().ConfigureAwait( false ) ?? new List<string>();
+                    ignoredEvents = await EDDI.Instance.DataProvider.GetIgnoredEdsmEventsAsync().ConfigureAwait(false) ?? new List<string>();
                 }
                 catch ( TaskCanceledException )
                 {
                     // Nothing to do except wait and try again
-                    await Task.Delay( TimeSpan.FromSeconds( 30 ) ).ConfigureAwait( false );
+                    await Task.Delay( TimeSpan.FromSeconds( 30 ), updateThreadCancellationTokenSource.Token ).ConfigureAwait(false);
                 }
             }
 
@@ -195,7 +204,7 @@ namespace EddiEdsmResponder
                             long? systemAddress = JsonParsing.getOptionalLong(eventObject, "SystemAddress");
                             // Some events are bugged and return a SystemAddress of 1, regardles of the system we are in.
                             // We need to ignore data that matches this pattern.
-                            systemAddress = (systemAddress > 1 ? systemAddress : null);
+                            systemAddress = systemAddress > 1 ? systemAddress : null;
                             if (systemAddress != null)
                             {
                                 eventObject.Add("_systemAddress", systemAddress);
