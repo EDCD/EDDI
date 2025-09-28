@@ -670,7 +670,7 @@ namespace EddiDataProviderService
         // EDSM flight log synchronization (named star systems)
         public async Task<IList<StarSystem>> SyncFromStarMapServiceAsync(IList<StarSystem> starSystems)
         {
-            if (starSystems.Count > 0)
+            if ( starSystems.Count > 0 && !unitTesting )
             {
                 try
                 {
