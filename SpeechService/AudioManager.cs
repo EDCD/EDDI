@@ -59,7 +59,7 @@ namespace EddiSpeechService
                 {
                     var waitTime = audioSource.TotalTime;
                     Logging.Debug( $"Waiting for audio - {waitTime.TotalMilliseconds} ms (unless ended early)." );
-                    await Task.Delay( waitTime, cancellationTokenSource.Token );
+                    await Task.Delay( waitTime, cancellationTokenSource.Token ).ConfigureAwait(false);
                 }
                 catch ( OperationCanceledException )
                 {

@@ -81,7 +81,7 @@ namespace EddiSpeechResponder.ScriptRecoveryService
             {
                 try
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(3));
+                    await Task.Delay(TimeSpan.FromSeconds(3)).ConfigureAwait(false);
                     SaveRecoveryScript(window.revisedScript);
                 }
                 finally

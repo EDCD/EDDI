@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,6 +43,7 @@ namespace EddiSpeechResponder
 
         private ICollectionView scriptsView;
         private static string filterTxt;
+        private CancellationTokenSource _filterCts;
 
         private static IEnumerable<string> customFunctionNames { get; set; }
         private static IEnumerable<MetaVariable> standardMetaVariables { get; set; } = new List<MetaVariable>();
@@ -530,21 +532,36 @@ namespace EddiSpeechResponder
             speechResponderHelpWindow.Show();
         }
 
-        private async void SearchFilterText_OnTextChanged(object sender, TextChangedEventArgs e)
+        private void SearchFilterText_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             filterTxt = searchFilterText.Text;
-            await ApplyFilterAsync();
+
+            // Cancel any pending filter task
+            _filterCts?.Cancel();
+            _filterCts = new CancellationTokenSource();
+
+            _ = ApplyFilterAsync( _filterCts.Token );
         }
 
-        private async Task ApplyFilterAsync ()
+        private async Task ApplyFilterAsync ( CancellationToken token )
         {
-            await Task.Delay( 300 ); // Debounce delay
-            if ( filterTxt == searchFilterText.Text ) // Ensure the filter text hasn't changed during the delay
+            try
             {
-                using ( ScriptsView.DeferRefresh() )
+                // Debounce delay
+                await Task.Delay( 300, token ).ConfigureAwait( true );
+
+                // Ensure the filter text hasn't changed during the delay
+                if ( filterTxt == searchFilterText.Text && !token.IsCancellationRequested )
                 {
-                    ScriptsView.Filter = scriptsData_Filter;
+                    using ( ScriptsView.DeferRefresh() )
+                    {
+                        ScriptsView.Filter = scriptsData_Filter;
+                    }
                 }
+            }
+            catch ( TaskCanceledException )
+            {
+                // Ignore canceled debounce
             }
         }
 

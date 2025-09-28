@@ -64,7 +64,7 @@ namespace EddiSpeechService
         {
             if (newState == CompanionAppService.State.ConnectionLost && !CompanionAppService.unitTesting)
             {
-                SpeechManager.Say(null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0);
+                SpeechManager.SayAsync(null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0).GetAwaiter().GetResult();
             }
         }
 
@@ -73,20 +73,20 @@ namespace EddiSpeechService
         public void Say ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false,
             string eventType = null, bool invokedFromVA = false )
         {
-            SpeechManager.Say( ship, message, priority, voice, radio, eventType, invokedFromVA );
+            SpeechManager.SayAsync( ship, message, priority, voice, radio, eventType, invokedFromVA ).GetAwaiter().GetResult();
         }
 
         public void ShutUp () => SpeechManager.ShutUp();
 
-        public async Task SpeakAsync ( EddiSpeech speech )
+        public Task SpeakAsync ( EddiSpeech speech )
         {
-            await SpeechManager.SpeakAsync( speech );
+            return SpeechManager.SpeakAsync( speech );
         }
 
-        public async Task SpeakAsync ( string speech, string defaultVoice, int fxLevel, int volume = 95,
+        public Task SpeakAsync ( string speech, string defaultVoice, int fxLevel, int volume = 95,
             int distortionLevel = 0, int echoDelay = 0, int priority = 3, bool radio = false )
         {
-            await SpeechManager.SpeakAsync( speech, defaultVoice, fxLevel, volume, distortionLevel, echoDelay, priority, radio );
+            return SpeechManager.SpeakAsync( speech, defaultVoice, fxLevel, volume, distortionLevel, echoDelay, priority, radio );
         }
 
         public void StopAudio () => AudioManager.StopAudio();

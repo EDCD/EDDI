@@ -69,7 +69,7 @@ namespace EddiSpeechService
                 if ( IsWindowsMediaSynthesizerSupported() )
                 {
                     // Prep the Windows.Media.SpeechSynthesis synthesizer
-                    windowsMediaSynth = new WindowsMediaSynthesizer( ref voiceStore );
+                    windowsMediaSynth = WindowsMediaSynthesizer.CreateAsync( voiceStore ).GetAwaiter().GetResult();
                 }
             }
             catch ( Exception e )
@@ -164,13 +164,12 @@ namespace EddiSpeechService
             var fadeProvider = new FadeInOutSampleProvider( provider.ToSampleProvider() );
             using ( var soundOut = SoundManager.GetSoundOut( fadeProvider.ToWaveProvider() ) )
             {
-                if ( soundOut is null )
-                { return; }
+                if ( soundOut is null ) { return; }
                 var cancellationTokenSource = new CancellationTokenSource();
 
                 try
                 {
-                    await StartSpeechAsync( soundOut, priority, cancellationTokenSource );
+                    await StartSpeechAsync( soundOut, priority, cancellationTokenSource ).ConfigureAwait(false);
 
                     // Estimate total duration in milliseconds
                     var totalDurationMs = (provider as WaveStream)?.TotalTime.TotalMilliseconds
@@ -183,7 +182,7 @@ namespace EddiSpeechService
                     {
                         if (fadeOutStartMs > 0)
                         {
-                            await Task.Delay((int)fadeOutStartMs, cancellationTokenSource.Token);
+                            await Task.Delay((int)fadeOutStartMs, cancellationTokenSource.Token).ConfigureAwait(false);
                             fadeProvider.BeginFadeOut(fadeOutMs);
                         }
                     }, cancellationTokenSource.Token);
@@ -191,18 +190,18 @@ namespace EddiSpeechService
                     // Wait for playback to finish or cancellation
                     while ( soundOut.PlaybackState == PlaybackState.Playing )
                     {
-                        await Task.Delay( 10, cancellationTokenSource.Token );
+                        await Task.Delay( 10, cancellationTokenSource.Token ).ConfigureAwait(false);
                     }
 
                     // Ensure fade-out is complete
-                    await fadeOutTask.ContinueWith( _ => { }, TaskScheduler.Default );
+                    await fadeOutTask.ContinueWith( _ => { }, TaskScheduler.Default ).ConfigureAwait(false);
                 }
                 catch ( OperationCanceledException )
                 {
                     // Fade out on cancellation
                     fadeProvider.BeginFadeOut( ActiveSpeechFadeOutMilliseconds );
                     // ReSharper disable once MethodSupportsCancellation
-                    await Task.Delay( (int)ActiveSpeechFadeOutMilliseconds );
+                    await Task.Delay( (int)ActiveSpeechFadeOutMilliseconds ).ConfigureAwait(false);
                 }
                 catch ( Exception e )
                 {
@@ -229,7 +228,7 @@ namespace EddiSpeechService
                 // Wait for any currently playing speech to finish
                 while ( eddiSpeaking )
                 {
-                    await Task.Delay( 10, cancellationTokenSource.Token );
+                    await Task.Delay( 10, cancellationTokenSource.Token ).ConfigureAwait(false);
                 }
 
                 lock ( activeSpeechLock )
@@ -298,7 +297,7 @@ namespace EddiSpeechService
             StopCurrentSpeech();
         }
 
-        public void Say ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false )
+        public async Task SayAsync ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false )
         {
             // Skip empty speech and speech containing nothing except one or more pauses / breaks.
             message = SpeechFormatter.TrimSpeech( message );
@@ -321,48 +320,42 @@ namespace EddiSpeechService
             }
 
             // Start or continue speaking from the speech queue
-            StartOrContinueSpeaking( invokedFromVA );
+            await StartOrContinueSpeakingAsync().ConfigureAwait(invokedFromVA);
+            // When invoked from VoiceAttack, the executing command can block other commands until the executing command completes.
+            // We'll adopt the same behavior by waiting for the speech task to complete.
         }
 
-        private Task speechTask;
         private CancellationTokenSource speechCts;
 
-        private void StartOrContinueSpeaking ( bool invokedFromVA )
+        private async Task StartOrContinueSpeakingAsync ()
         {
             try
             {
-                if ( !eddiSpeaking && ( speechTask == null || speechTask.IsCompleted ) )
+                if ( !eddiSpeaking )
                 {
                     speechCts = new CancellationTokenSource();
                     var token = speechCts.Token;
 
-                    speechTask = Task.Run( async () =>
+                    while ( speechQueue.hasSpeech && !token.IsCancellationRequested )
                     {
-                        while ( speechQueue.hasSpeech && !token.IsCancellationRequested )
+                        if ( speechQueue.TryDequeue( out var speech ) )
                         {
-                            if ( speechQueue.TryDequeue( out var speech ) )
+                            try
                             {
-                                try
-                                {
-                                    await SpeakAsync( speech );
-                                }
-                                catch ( Exception ex )
-                                {
-                                    Logging.Error( "Failed to handle queued speech", ex );
-                                    Logging.Warn( $"Failed to handle speech {JsonConvert.SerializeObject( speech )}" );
-                                }
+                                await SpeakAsync( speech ).ConfigureAwait( false );
                             }
-                            else
+                            catch ( Exception ex )
                             {
-                                break; // Exit the loop if the queue is empty
+                                Logging.Error( "Failed to handle queued speech", ex );
+                                Logging.Warn( $"Failed to handle speech {JsonConvert.SerializeObject( speech )}" );
                             }
-                            await Task.Yield(); // Yield to avoid blocking the thread pool
                         }
-                    }, token );
-
-                    // When invoked from VoiceAttack, the executing command can block other commands until the executing command completes.
-                    // We'll adopt the same behavior by waiting for the speech task to complete.
-                    speechTask.ConfigureAwait( invokedFromVA );
+                        else
+                        {
+                            break; // Exit the loop if the queue is empty
+                        }
+                        await Task.Yield(); // Yield to avoid blocking the thread pool
+                    }
                 }
             }
             catch ( OperationCanceledException )
@@ -379,10 +372,10 @@ namespace EddiSpeechService
                    ( activeSpeechPriority >= 5 && peekedSpeechPriority < 5 );
         }
 
-        public async Task SpeakAsync ( EddiSpeech speech )
+        public Task SpeakAsync ( EddiSpeech speech )
         {
             var Configuration = ConfigService.Instance.speechServiceConfiguration;
-            await SpeakAsync( speech.message, speech.voice, Configuration.EffectsLevel, Configuration.Volume, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
+            return SpeakAsync( speech.message, speech.voice, Configuration.EffectsLevel, Configuration.Volume, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
         }
 
         public async Task SpeakAsync ( string speech, string defaultVoice, int fxLevel, int volume = 95,
@@ -423,12 +416,12 @@ namespace EddiSpeechService
                     }
                     catch ( FileNotFoundException fnfe )
                     {
-                        Say( null, $"Audio file not found at {fnfe.FileName}.", 0 );
+                        await SayAsync( null, $"Audio file not found at {fnfe.FileName}.", 0 ).ConfigureAwait(false);
                         Logging.Warn( fnfe.Message, fnfe );
                     }
                     catch ( NotSupportedException e )
                     {
-                        Say( null, "Audio file format not supported.", 0 );
+                        await SayAsync( null, "Audio file format not supported.", 0 ).ConfigureAwait(false);
                         Logging.Warn( $"Skipping unsupported audio file {fileName}.", e );
                     }
                     catch ( Exception e )
@@ -473,7 +466,7 @@ namespace EddiSpeechService
                     stream.Seek( 0, SeekOrigin.Begin );
 
                     var provider = SpeechFx.addEffectsToSource(stream, volume, fxLevel, distortionLevel, echoDelay, isRadio );
-                    await PlaySpeechStreamAsync( provider, priority );
+                    await PlaySpeechStreamAsync( provider, priority ).ConfigureAwait(false);
                 }
             }
         }
