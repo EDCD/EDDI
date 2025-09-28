@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Tests.Properties;
 using Utilities;
 
@@ -20,22 +22,22 @@ namespace Tests
         }
         
         [TestMethod]
-        public void TestSqlRepositoryPresent()
+        public async Task TestSqlRepositoryPresent()
         {
-            EDDI.Instance.DataProvider = new DataProviderService();
+            EDDI.Instance.DataProvider = await DataProviderService.CreateAsync().ConfigureAwait(false);
             var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
-            starSystemRepository.SaveStarSystem( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ) );
-            var dbData = starSystemRepository.GetSqlStarSystem( 10477373803U );
+            await starSystemRepository.SaveStarSystemAsync( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ), CancellationToken.None ).ConfigureAwait(false);
+            var dbData = await starSystemRepository.GetSqlStarSystemAsync( 10477373803U, CancellationToken.None ).ConfigureAwait(false);
             Assert.IsNotNull(dbData);
             Assert.AreEqual("Sol", dbData.systemName);
         }
 
         [TestMethod]
-        public void TestSqlRepositoryMissing()
+        public async Task TestSqlRepositoryMissing()
         {
-            EDDI.Instance.DataProvider = new DataProviderService();
+            EDDI.Instance.DataProvider = await DataProviderService.CreateAsync().ConfigureAwait( false );
             var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
-            var DBData = starSystemRepository.GetSqlStarSystem(0);
+            var DBData = await starSystemRepository.GetSqlStarSystemAsync( 0, CancellationToken.None );
             Assert.IsNull(DBData);
         }
 
@@ -141,15 +143,15 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestPreservedProperties()
+        public async Task TestPreservedProperties()
         {
-            EDDI.Instance.DataProvider = ConfigureTestDataProvider();
+            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
 
             // Set up our original star systems
             var system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem5);
-            var systemsToUpdate = new List<DatabaseStarSystem>
+            var systemsToUpdate = new List<StarSystem>
             {
-                new DatabaseStarSystem(system.systemname, system.systemAddress, JsonConvert.SerializeObject(system))
+                system
             };
 
             // Set up a copy where we mimic missing data not recovered from the server

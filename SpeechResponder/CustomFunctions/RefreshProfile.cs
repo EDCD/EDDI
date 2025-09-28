@@ -3,7 +3,6 @@ using EddiCore;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
 using System;
-using System.Threading.Tasks;
 
 namespace EddiSpeechResponder.CustomFunctions
 {
@@ -17,8 +16,8 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreatePureMinMax( ( runtime, values ) =>
         {
-            var stationRefresh = (values.Count != 0 && values[0].AsBoolean);
-            Task.Run( () => EDDI.Instance.refreshProfileAsync( stationRefresh ) ).ConfigureAwait( false );
+            var stationRefresh = values.Count != 0 && values[0].AsBoolean;
+            _ = EDDI.Instance.refreshProfileAsync( stationRefresh );
             return "";
         }, 0, 1);
     }

@@ -12,19 +12,19 @@ namespace Tests
     {
         #region Implementation of ISpanshHttpClient
 
-        public async Task<HttpResponseMessage> GetAsync ( string requestUri, CancellationToken cancellationToken )
+        public Task<HttpResponseMessage> GetAsync ( string requestUri, CancellationToken cancellationToken )
         {
             var responseContent = FetchContentFromUri(requestUri);
-            return await Task.FromResult( new HttpResponseMessage()
+            return Task.FromResult( new HttpResponseMessage()
             {
                 Content = new StringContent( responseContent, System.Text.Encoding.UTF8, "application/json" ),
                 StatusCode = HttpStatusCode.OK
-            } ).ConfigureAwait(false);
+            } );
         }
 
         public async Task<HttpResponseMessage> PostAsync ( string requestUri, HttpContent requestContent, CancellationToken cancellationToken )
         {
-            var json = await requestContent.ReadAsStringAsync().ConfigureAwait( false );
+            var json = await requestContent.ReadAsStringAsync().ConfigureAwait(false);
             requestUri += $"?={json}";
             var responseContent = FetchContentFromUri(requestUri);
             return await Task.FromResult( new HttpResponseMessage()

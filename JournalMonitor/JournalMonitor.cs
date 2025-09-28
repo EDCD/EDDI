@@ -121,11 +121,13 @@ namespace EddiJournalMonitor
                         Task.Run( async () =>
                         {
                             // The ship reboots about 30 seconds after the shutdown occurs unless canceled early.
-                            await Task.Delay( TimeSpan.FromSeconds( 30 ), ShipShutdownCancellationTokenSource.Token );
-                            EDDI.Instance.enqueueEvent( new ShipShutdownRebootEvent( shipShutdownEvent.timestamp + ( DateTime.UtcNow - startTime ) ) );
+                            await Task.Delay( TimeSpan.FromSeconds( 30 ), ShipShutdownCancellationTokenSource.Token ).ConfigureAwait(false);
+                            EDDI.Instance.enqueueEvent(
+                                new ShipShutdownRebootEvent( shipShutdownEvent.timestamp +
+                                                             ( DateTime.UtcNow - startTime ) ) );
                             ShipShutdownCancellationTokenSource?.Dispose();
                             ShipShutdownCancellationTokenSource = null;
-                        } ).ConfigureAwait( false );
+                        } );
                     }
                 }
             }
@@ -1792,17 +1794,6 @@ namespace EddiJournalMonitor
                                         }
                                         hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
 
-                                        var ring = EDDI.Instance.CurrentStarSystem?.bodies?
-                                            .Where(b => b.rings.Any())
-                                            .SelectMany(b => b?.rings)?
-                                            .FirstOrDefault(r => r.name == bodyName);
-                                        if (ring != null)
-                                        {
-                                            ring.mapped = timestamp;
-                                            ring.hotspots = hotspots;
-                                            EDDI.Instance.DataProvider.SaveStarSystem(EDDI.Instance.CurrentStarSystem);
-                                        }
-
                                         events.Add(new RingHotspotsEvent(timestamp, systemAddress, bodyName, bodyId, hotspots) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
@@ -2450,15 +2441,14 @@ namespace EddiJournalMonitor
 
                                     if (transferTime.HasValue)
                                     {
-                                        ModuleArrived();
-                                        async void ModuleArrived()
+                                        Task.Run( async () =>
                                         {
                                             // Include the station and system at which the transfer will arrive
                                             var arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
                                             var arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
-                                            await Task.Delay((int)transferTime * 1000);
-                                            EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation) { fromLoad = fromLogLoad });
-                                        }
+                                            await Task.Delay( (int)transferTime * 1000 ).ConfigureAwait( true );
+                                            EDDI.Instance.enqueueEvent( new ModuleArrivedEvent( DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation ) { fromLoad = fromLogLoad } );
+                                        } );
                                     }
                                 }
                                 handled = true;
@@ -3318,15 +3308,17 @@ namespace EddiJournalMonitor
                                     // Generate secondary event when the ship is arriving
                                     if (time.HasValue)
                                     {
-                                        ShipArrived();
-                                        async void ShipArrived()
+                                        Task.Run( async () =>
                                         {
                                             // Include the station and system at which the transfer will arrive
                                             var arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
-                                            var arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
-                                            await Task.Delay((int)time * 1000);
-                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId) { fromLoad = fromLogLoad });
-                                        }
+                                            var arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ??
+                                                                string.Empty;
+                                            await Task.Delay( (int)time * 1000 ).ConfigureAwait( true );
+                                            EDDI.Instance.enqueueEvent( new ShipArrivedEvent( DateTime.UtcNow, ship,
+                                                arrivalSystem, distance, price, time, arrivalStation, fromMarketId,
+                                                toMarketId ) { fromLoad = fromLogLoad } );
+                                        } );
                                     }
                                 }
                                 handled = true;
@@ -3945,13 +3937,13 @@ namespace EddiJournalMonitor
                                                 var timeMs = ( Constants.carrierPostJumpSeconds -
                                                                Constants.carrierJumpSeconds ) *
                                                              1000;
-                                                await Task.Delay( timeMs );
+                                                await Task.Delay( timeMs ).ConfigureAwait(false);
                                                 EDDI.Instance.enqueueEvent(
                                                     new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ),
                                                             (long)carrierId,
                                                             carrierName, carrierType, systemName, systemAddress, bodyName, bodyId, bodyType )
                                                         { fromLoad = fromLogLoad } );
-                                            } ).ConfigureAwait( false );
+                                            } );
                                         }
                                     }
                                 }
@@ -3999,13 +3991,13 @@ namespace EddiJournalMonitor
                                             Task.Run(async () =>
                                             {
                                                 var timespan = TimeSpan.FromSeconds(departureSeconds - Constants.carrierLandingPadLockdownSeconds);
-                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token);
+                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token).ConfigureAwait(false);
                                                 EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.Add(timespan), carrierId, carrierType ) { fromLoad = fromLogLoad });
                                             }, carrierJumpCancellationTS.Token),
                                             Task.Run(async () =>
                                             {
                                                 var timespan = TimeSpan.FromSeconds(departureSeconds);
-                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token);
+                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token).ConfigureAwait(false);
                                                 if ( EDDI.Instance.CurrentStarSystem != null )
                                                 {
                                                     var originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
@@ -4017,7 +4009,7 @@ namespace EddiJournalMonitor
                                             {
                                                 // This event will be canceled and replaced by an updated `CarrierCooldownEvent` if the owner is aboard the fleet carrier and sees the `CarrierJumpedEvent`.
                                                 var timespan = TimeSpan.FromSeconds(departureSeconds + Constants.carrierPostJumpSeconds); // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
-                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token);
+                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token).ConfigureAwait(false);
                                                 EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.Add(timespan), carrierId, null, carrierType, systemName, systemAddress, bodyName, bodyId, null ) { fromLoad = fromLogLoad });
                                             }, carrierJumpCancellationTS.Token)
                                         };
@@ -4060,10 +4052,10 @@ namespace EddiJournalMonitor
                                         Task.Run(async () =>
                                         {
                                             var timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
-                                            await Task.Delay(timeMs);
+                                            await Task.Delay(timeMs).ConfigureAwait(false);
                                             var carrier = StationModel.SquadronCarrier.edname.Equals( carrierType.edname ) ? EDDI.Instance.SquadronCarrier : EDDI.Instance.FleetCarrier;
                                             EDDI.Instance.enqueueEvent( new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ), carrierId, carrier?.callsign, carrierType, carrier?.currentStarSystem, carrier?.currentStarSystemAddress, null, carrier?.currentBodyID, null ) { fromLoad = fromLogLoad } );
-                                        } ).ConfigureAwait(false);
+                                        } );
                                     }
                                 }
                                 handled = true;
@@ -4792,6 +4784,7 @@ namespace EddiJournalMonitor
                                     var name = JsonParsing.getString(data, "NpcCrewName");
                                     var crewid = JsonParsing.getLong(data, "NpcCrewId");
                                     var amount = JsonParsing.getLong(data, "Amount");
+                                    
                                     // Delay `Crew paid wage` events to occur after events where the commander receives a payment.
                                     if ( amount > 0 )
                                     {
@@ -4804,7 +4797,7 @@ namespace EddiJournalMonitor
                                         {
                                             Task.Run( async () =>
                                             {
-                                                await Task.Delay( TimeSpan.FromSeconds( 6 ) ).ConfigureAwait( false );
+                                                await Task.Delay( TimeSpan.FromSeconds( 5 ) ).ConfigureAwait( false );
                                                 EDDI.Instance.enqueueEvent( crewPaidWageEvent );
                                             } );
                                         }

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -102,35 +103,41 @@ namespace EddiDataProviderService
         private const string WHERE_NAME = @"WHERE name = @name;";
         private const string WHERE_NAME_STARTSWITH = @"WHERE name LIKE @name;";
 
-        public StarSystemSqLiteRepository ( bool unitTesting = false )
+        private StarSystemSqLiteRepository ( bool unitTesting = false )
         {
             SqLiteBaseRepository.unitTesting = unitTesting;
-            CreateOrUpdateDatabase();
         }
 
-        public DatabaseStarSystem GetSqlStarSystem ( ulong systemAddress )
+        public static async Task<StarSystemSqLiteRepository> CreateAsync ( bool isUnitTesting = false )
+        {
+            var repository = new StarSystemSqLiteRepository(isUnitTesting);
+            await repository.CreateOrUpdateDatabaseAsync().ConfigureAwait(false);
+            return repository;
+        }
+
+        public async Task<DatabaseStarSystem> GetSqlStarSystemAsync ( ulong systemAddress, CancellationToken cancellationToken )
         {
             if ( systemAddress <= 0 ) { return null; }
 
-            return GetSqlStarSystems( new[] { systemAddress } )?.FirstOrDefault();
+            return ( await GetSqlStarSystemsAsync( new[] { systemAddress }, cancellationToken ).ConfigureAwait(false) )?.FirstOrDefault();
         }
 
-        public List<DatabaseStarSystem> GetSqlStarSystems ( ulong[] systemAddresses )
+        public async Task<List<DatabaseStarSystem>> GetSqlStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
             if ( !File.Exists( DbFile ) ) { return results; }
             if ( !systemAddresses.Any() ) { return results; }
-            results = ReadStarSystems( systemAddresses );
+            results = await ReadStarSystemsAsync( systemAddresses, cancellationToken ).ConfigureAwait(false);
             FixLegacyDbStarSystemData(results);
             return results;
         }
 
-        public List<DatabaseStarSystem> GetSqlStarSystems ( string[] systemNames )
+        public async Task<List<DatabaseStarSystem>> GetSqlStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
         {
             var results = new List<DatabaseStarSystem>();
             if ( !File.Exists( DbFile ) ) { return results; }
             if ( !systemNames.Any() ) { return results; }
-            results = ReadStarSystems( systemNames );
+            results = await ReadStarSystemsAsync( systemNames, cancellationToken ).ConfigureAwait(false);
             FixLegacyDbStarSystemData( results );
             return results;
         }
@@ -152,7 +159,7 @@ namespace EddiDataProviderService
         }
 
         [ NotNull, ItemNotNull ]
-        public async Task<List<string>> GetStarSystemNamesAsync ( string startingWith, CancellationToken cte )
+        public async Task<List<string>> GetStarSystemNamesAsync ( string startingWith, CancellationToken cancellationToken )
         {
             if ( string.IsNullOrWhiteSpace( startingWith ) )
             {
@@ -164,7 +171,7 @@ namespace EddiDataProviderService
             {
                 using ( var con = SimpleDbConnection() )
                 {
-                    await con.OpenAsync( cte ).ConfigureAwait( false );
+                    await con.OpenAsync( cancellationToken ).ConfigureAwait( false );
                     using ( var transaction = con.BeginTransaction() )
                     {
                         using ( var cmd = con.CreateCommand() )
@@ -172,9 +179,9 @@ namespace EddiDataProviderService
                             cmd.Transaction = transaction;
                             cmd.CommandText = SELECT_NAME_SQL + WHERE_NAME_STARTSWITH;
                             cmd.Parameters.AddWithValue( "@name", $"{startingWith}%" );
-                            using ( var rdr = await cmd.ExecuteReaderAsync( cte ).ConfigureAwait( false ) )
+                            using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
                             {
-                                while ( await rdr.ReadAsync( cte ).ConfigureAwait(false) )
+                                while ( await rdr.ReadAsync( cancellationToken ).ConfigureAwait(false) )
                                 {
                                     var name = rdr["name"] as string;
                                     if ( !string.IsNullOrEmpty( name ) )
@@ -196,54 +203,59 @@ namespace EddiDataProviderService
             return results.ToList();
         }
 
-        [NotNull, ItemNotNull]
-        private List<DatabaseStarSystem> ReadStarSystems(ulong[] systemAddresses)
+        [ NotNull, ItemNotNull ]
+        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( ulong[] systemAddresses, CancellationToken cancellationToken )
         {
-            if (!systemAddresses.Any()) { return new List<DatabaseStarSystem>(); }
-
             var results = new List<DatabaseStarSystem>();
-            using (var con = SimpleDbConnection())
+            if ( !systemAddresses.Any() ) { return results; }
+
+            using ( var con = SimpleDbConnection() )
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                await con.OpenAsync( cancellationToken ).ConfigureAwait( false );
+                using ( var cmd = new SQLiteCommand( con ) )
                 {
-                    using (var transaction = con.BeginTransaction())
+                    using ( var transaction = con.BeginTransaction() )
                     {
-                        foreach (var systemAddress in systemAddresses.Where( systemAddress => systemAddress > 0 ) )
+                        foreach ( var systemAddress in systemAddresses.Where( systemAddress => systemAddress > 0 ) )
                         {
                             try
                             {
-                                cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@systemaddress", systemAddress );
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue( "@systemaddress", systemAddress );
                                 cmd.CommandText = SELECT_SQL + WHERE_SYSTEMADDRESS;
-                                var result = ReadStarSystemEntry( cmd );
+                                var result = await ReadStarSystemEntryAsync( cmd, cancellationToken ).ConfigureAwait( false );
                                 if ( result != null )
                                 {
-                                    results.Add(result);
+                                    results.Add( result );
                                 }
                             }
-                            catch (SQLiteException sqle )
+                            catch ( InvalidOperationException ioe )
                             {
-                                Logging.Warn($"Problem reading data for star system '{systemAddress}' from database.", sqle );
+                                Logging.Warn( $"Problem reading data for star system '{systemAddress}' from database.", ioe );
+                            }
+                            catch ( SQLiteException sqle )
+                            {
+                                Logging.Warn( $"Problem reading data for star system '{systemAddress}' from database.", sqle );
                             }
                         }
+
                         transaction.Commit();
                     }
                 }
             }
-            return results;
+
+            return results.RemoveNulls().ToList();
         }
 
         [NotNull, ItemNotNull]
-        private List<DatabaseStarSystem> ReadStarSystems ( string[] systemNames )
+        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync ( string[] systemNames, CancellationToken cancellationToken )
         {
-            if ( !systemNames.Any() )
-            { return new List<DatabaseStarSystem>(); }
-
             var results = new List<DatabaseStarSystem>();
+            if ( !systemNames.Any() ) { return results; }
+
             using ( var con = SimpleDbConnection() )
             {
-                con.Open();
+                await con.OpenAsync( cancellationToken ).ConfigureAwait(false);
                 using ( var cmd = new SQLiteCommand( con ) )
                 {
                     using ( var transaction = con.BeginTransaction() )
@@ -252,14 +264,18 @@ namespace EddiDataProviderService
                         {
                             try
                             {
-                                cmd.Prepare();
+                                cmd.Parameters.Clear();
                                 cmd.Parameters.AddWithValue( "@name", systemName );
                                 cmd.CommandText = SELECT_SQL + WHERE_NAME;
-                                var result = ReadStarSystemEntry( cmd );
+                                var result = await ReadStarSystemEntryAsync( cmd, cancellationToken ).ConfigureAwait(false);
                                 if ( result != null )
                                 {
                                     results.Add( result );
                                 }
+                            }
+                            catch (InvalidOperationException ioe )
+                            {
+                                Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", ioe );
                             }
                             catch ( SQLiteException sqle )
                             {
@@ -270,102 +286,73 @@ namespace EddiDataProviderService
                     }
                 }
             }
-            return results;
+            return results.RemoveNulls().ToList();
         }
 
-        private List<DatabaseStarSystem> ReadStarSystems(IList<StarSystem> starSystems)
+        private async Task<List<DatabaseStarSystem>> ReadStarSystemsAsync( IList<StarSystem> starSystems, CancellationToken cancellationToken )
         {
-            List<DatabaseStarSystem> results = new List<DatabaseStarSystem>();
-            if (!starSystems.Any()) { return results; }
-
-            lock ( nameof(SimpleDbConnection) ) // Lock before reading from the database
-            {
-                using ( var con = SimpleDbConnection() )
-                {
-                    con.Open();
-                    using ( var cmd = new SQLiteCommand( con ) )
-                    {
-                        using ( var transaction = con.BeginTransaction() )
-                        {
-                            foreach ( StarSystem starSystem in starSystems )
-                            {
-                                try
-                                {
-                                    cmd.Prepare();
-                                    cmd.Parameters.AddWithValue( "@systemaddress", starSystem.systemAddress );
-                                    cmd.CommandText = SELECT_SQL + WHERE_SYSTEMADDRESS;
-                                    results.Add( ReadStarSystemEntry( cmd ) ??
-                                                 new DatabaseStarSystem( starSystem.systemname,
-                                                     starSystem.systemAddress, string.Empty ) );
-                                }
-                                catch ( SQLiteException sqle )
-                                {
-                                    Logging.Warn(
-                                        "Problem reading data for star system '" + starSystem.systemname +
-                                        "' from database.", sqle );
-                                }
-                            }
-
-                            transaction.Commit();
-                        }
-                    }
-                }
-            }
-            return results;
+            var results = new List<DatabaseStarSystem>();
+            if ( starSystems is null || !starSystems.Any()) { return results; }
+            
+            var systemAddresses = starSystems.Select( s => s.systemAddress ).Distinct().ToArray();
+            return await ReadStarSystemsAsync( systemAddresses, cancellationToken ).ConfigureAwait(false);
         }
 
-        private DatabaseStarSystem ReadStarSystemEntry(SQLiteCommand cmd)
+        private async Task<DatabaseStarSystem> ReadStarSystemEntryAsync ( SQLiteCommand cmd, CancellationToken cancellationToken )
         {
-            string systemName = string.Empty;
             ulong? systemAddress = null;
-            string starSystemJson = string.Empty;
-            string comment = string.Empty;
-            DateTime lastUpdated = DateTime.MinValue;
+            var systemName = string.Empty;
+            var starSystemJson = string.Empty;
+            var comment = string.Empty;
+            var lastUpdated = DateTime.MinValue;
             DateTime? lastVisit = null;
-            int totalVisits = 0;
+            var totalVisits = 0;
 
-            using (SQLiteDataReader rdr = cmd.ExecuteReader())
+            var fieldMappings = new Dictionary<string, Action<DbDataReader, int>>
             {
-                if (rdr.Read())
-                {
-                    for (int i = 0; i < rdr.FieldCount; i++)
-                    {
-                        if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "systemaddress")
-                        {
-                            systemAddress = rdr.IsDBNull( i ) ? null : (ulong?)rdr.GetInt64( i );
+                { "systemaddress", (rdr, i) => systemAddress = rdr.IsDBNull(i) 
+                    ? null 
+                    : (ulong?)rdr.GetInt64(i) },
+                { "name", (rdr, i) => systemName = rdr.IsDBNull(i) 
+                    ? string.Empty 
+                    : rdr.GetString(i) },
+                { "starsystem", (rdr, i) => starSystemJson = rdr.IsDBNull(i) 
+                    ? string.Empty 
+                    : rdr.GetString(i) },
+                { "comment", (rdr, i) => comment = rdr.IsDBNull(i) 
+                    ? string.Empty 
+                    : rdr.GetString(i) },
+                { "starsystemlastupdated", (rdr, i) => lastUpdated = rdr.IsDBNull(i) 
+                    ? DateTime.MinValue 
+                    : rdr.GetDateTime(i).ToUniversalTime() },
+                { "lastvisit", (rdr, i) => lastVisit = rdr.IsDBNull(i) 
+                    ? null 
+                    : (DateTime?)rdr.GetDateTime(i).ToUniversalTime() },
+                { "totalvisits", (rdr, i) => totalVisits = rdr.IsDBNull(i) 
+                    ? 0 
+                    : rdr.GetInt32(i) }
+            };
 
-                            // Skip legacy entries with a null systemAddress for now
-                            // Eventually, we want to make this a non-null key field
-                            if ( systemAddress is null ) { continue; }
-                        }
-                        if (rdr.GetName(i) == "name")
+            using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
+            {
+                if ( await rdr.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
+                {
+                    for ( var i = 0; i < rdr.FieldCount; i++ )
+                    {
+                        if ( fieldMappings.TryGetValue( rdr.GetName( i ), out var mapAction ) )
                         {
-                            systemName = rdr.IsDBNull(i) ? null : rdr.GetString(i);
-                        }
-                        if (rdr.GetName(i) == "starsystem")
-                        {
-                            starSystemJson = rdr.IsDBNull(i) ? null : rdr.GetString(i);
-                        }
-                        if (rdr.GetName(i) == "comment")
-                        {
-                            comment = rdr.IsDBNull(i) ? null : rdr.GetString(i);
-                        }
-                        if (rdr.GetName(i) == "starsystemlastupdated")
-                        {
-                            lastUpdated = rdr.IsDBNull(i) ? DateTime.MinValue : rdr.GetDateTime(i).ToUniversalTime();
-                        }
-                        if (rdr.GetName(i) == "lastvisit")
-                        {
-                            lastVisit = rdr.IsDBNull(i) ? null : (DateTime?)rdr.GetDateTime(i).ToUniversalTime();
-                        }
-                        if (rdr.GetName(i) == "totalvisits")
-                        {
-                            totalVisits = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
+                            mapAction( rdr, i );
                         }
                     }
                 }
             }
-            return new DatabaseStarSystem(systemName, systemAddress ?? 0,  starSystemJson)
+
+            if ( SCHEMA_VERSION >= 2 && systemAddress is null )
+            {
+                throw new InvalidOperationException( "System address cannot be null for schema version 2 or higher." );
+            }
+
+            return new DatabaseStarSystem( systemName, systemAddress ?? 0, starSystemJson )
             {
                 comment = comment,
                 lastUpdated = lastUpdated,
@@ -374,20 +361,20 @@ namespace EddiDataProviderService
             };
         }
 
-        public void SaveStarSystem(StarSystem starSystem)
+        public async Task SaveStarSystemAsync( StarSystem starSystem, CancellationToken cancellationToken )
         {
             if (starSystem == null) { return; }
-            SaveStarSystems(new List<StarSystem> { starSystem });
+            await SaveStarSystemsAsync( new List<StarSystem> { starSystem }, cancellationToken ).ConfigureAwait(false);
         }
 
-        public void SaveStarSystems(IList<StarSystem> starSystems)
+        public async Task SaveStarSystemsAsync( IList<StarSystem> starSystems, CancellationToken cancellationToken )
         {
             // Determine whether we need to delete, insert, or update each system
             var delete = new List<StarSystem>();
             var update = new List<StarSystem>();
             var insert = new List<StarSystem>();
 
-            var dbSystems = ReadStarSystems(starSystems);
+            var dbSystems = await ReadStarSystemsAsync( starSystems, cancellationToken ).ConfigureAwait(false);
 
             // Determine whether to insert + delete or update the SQL record.
             // Skip records with a zero value for the systemAddress
@@ -417,253 +404,240 @@ namespace EddiDataProviderService
             }
 
             // Delete applicable systems
-            deleteStarSystems(delete.ToImmutableList());
+            await deleteStarSystemsAsync(delete.ToImmutableList()).ConfigureAwait(false);
 
             // Insert applicable systems
-            insertStarSystems(insert.ToImmutableList() );
+            await insertStarSystemsAsync(insert.ToImmutableList() ).ConfigureAwait(false);
 
             // Update applicable systems
-            updateStarSystems(update.ToImmutableList() );
+            await updateStarSystemsAsync(update.ToImmutableList() ).ConfigureAwait(false);
         }
 
-        private void insertStarSystems(ImmutableList<StarSystem> systems)
+        private async Task insertStarSystemsAsync(ImmutableList<StarSystem> systems)
         {
             if ( systems.Count == 0)
             {
                 return;
             }
 
-            lock ( nameof(SimpleDbConnection) ) // Lock before writing to the database
+            using ( var con = SimpleDbConnection() )
             {
-                using ( var con = SimpleDbConnection() )
+                await con.OpenAsync().ConfigureAwait( false );
+                using ( var cmd = new SQLiteCommand( con ) )
                 {
-                    try
+                    using ( var transaction = con.BeginTransaction() )
                     {
-                        con.Open();
-                        using ( var cmd = new SQLiteCommand( con ) )
+                        try
                         {
-                            using ( var transaction = con.BeginTransaction() )
+                            foreach ( var system in systems )
                             {
-                                foreach ( StarSystem system in systems )
-                                {
-                                    cmd.Prepare();
-                                    cmd.CommandText = INSERT_SQL + VALUES_SQL;
-                                    cmd.Parameters.AddWithValue( "@name", system.systemname );
-                                    cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
-                                    cmd.Parameters.AddWithValue( "@totalvisits", system.visits );
-                                    cmd.Parameters.AddWithValue( "@lastvisit", system.lastvisit ?? DateTime.UtcNow );
-                                    cmd.Parameters.AddWithValue( "@starsystem", JsonConvert.SerializeObject( system ) );
-                                    cmd.Parameters.AddWithValue( "@starsystemlastupdated", system.lastupdated );
-                                    cmd.Parameters.AddWithValue( "@comment", system.comment );
-                                    Logging.Debug( "Inserting new starsystem " + system.systemAddress, system );
-                                    cmd.ExecuteNonQuery();
-                                }
-
-                                transaction.Commit();
+                                cmd.Parameters.Clear();
+                                cmd.CommandText = INSERT_SQL + VALUES_SQL;
+                                cmd.Parameters.AddWithValue( "@name", system.systemname );
+                                cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
+                                cmd.Parameters.AddWithValue( "@totalvisits", system.visits );
+                                cmd.Parameters.AddWithValue( "@lastvisit", system.lastvisit ?? DateTime.UtcNow );
+                                cmd.Parameters.AddWithValue( "@starsystem", JsonConvert.SerializeObject( system ) );
+                                cmd.Parameters.AddWithValue( "@starsystemlastupdated", system.lastupdated );
+                                cmd.Parameters.AddWithValue( "@comment", system.comment );
+                                Logging.Debug( "Inserting new starsystem " + system.systemAddress, system );
+                                await cmd.ExecuteNonQueryAsync().ConfigureAwait( false );
                             }
+
+                            transaction.Commit();
                         }
-                    }
-                    catch ( SQLiteException ex )
-                    {
-                        handleSqlLiteException( con, ex );
+                        catch ( SQLiteException e )
+                        {
+                            LogAndRollbackSqlLiteException( transaction, e );
+                        }
                     }
                 }
             }
         }
 
-        internal void updateStarSystems(IImmutableList<StarSystem> systems)
+        private async Task updateStarSystemsAsync ( IImmutableList<StarSystem> systems )
         {
-            if (systems.Count == 0)
+            if ( systems.Count == 0 )
             {
                 return;
             }
 
-            lock ( nameof(SimpleDbConnection) ) // Lock before writing to the database
+            using ( var con = SimpleDbConnection() )
             {
-                using ( var con = SimpleDbConnection() )
+                await con.OpenAsync().ConfigureAwait( false );
+                using ( var cmd = new SQLiteCommand( con ) )
                 {
-                    try
+                    using ( var transaction = con.BeginTransaction() )
                     {
-                        con.Open();
-                        using ( var cmd = new SQLiteCommand( con ) )
+                        try
                         {
-                            using ( var transaction = con.BeginTransaction() )
+                            foreach ( var system in systems )
                             {
-                                foreach ( var system in systems.ToList() )
+                                var serializedSystem = JsonConvert.SerializeObject( system );
+
+                                if ( system.systemAddress != 0 )
                                 {
-                                    var serializedSystem = JsonConvert.SerializeObject( system );
-                                    if ( string.IsNullOrEmpty( serializedSystem ) ) { continue; }
-
-                                    if ( system.systemAddress != 0 )
-                                    {
-                                        cmd.CommandText = UPDATE_SQL + WHERE_SYSTEMADDRESS;
-                                    }
-                                    else
-                                    {
-                                        cmd.CommandText = UPDATE_SQL + WHERE_NAME;
-                                    }
-
-                                    cmd.Prepare();
-                                    cmd.Parameters.AddWithValue( "@name", system.systemname );
-                                    cmd.Parameters.AddWithValue( "@totalvisits", system.visits );
-                                    cmd.Parameters.AddWithValue( "@lastvisit", system.lastvisit ?? DateTime.UtcNow );
-                                    cmd.Parameters.AddWithValue( "@starsystem", serializedSystem );
-                                    cmd.Parameters.AddWithValue( "@starsystemlastupdated", system.lastupdated );
-                                    cmd.Parameters.AddWithValue( "@comment", system.comment );
-                                    cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
-                                    Logging.Debug( "Updating starsystem " + system.systemAddress, system );
-                                    cmd.ExecuteNonQuery();
+                                    cmd.CommandText = UPDATE_SQL + WHERE_SYSTEMADDRESS;
+                                }
+                                else
+                                {
+                                    cmd.CommandText = UPDATE_SQL + WHERE_NAME;
                                 }
 
-                                transaction.Commit();
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue( "@name", system.systemname );
+                                cmd.Parameters.AddWithValue( "@totalvisits", system.visits );
+                                cmd.Parameters.AddWithValue( "@lastvisit", system.lastvisit ?? DateTime.UtcNow );
+                                cmd.Parameters.AddWithValue( "@starsystem", serializedSystem );
+                                cmd.Parameters.AddWithValue( "@starsystemlastupdated", system.lastupdated );
+                                cmd.Parameters.AddWithValue( "@comment", system.comment );
+                                cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
+                                Logging.Debug( "Updating starsystem " + system.systemAddress, system );
+                                await cmd.ExecuteNonQueryAsync().ConfigureAwait( false );
                             }
+
+                            transaction.Commit();
                         }
-                    }
-                    catch ( SQLiteException ex )
-                    {
-                        handleSqlLiteException( con, ex );
+                        catch ( SQLiteException ex )
+                        {
+                            LogAndRollbackSqlLiteException( transaction, ex );
+                        }
                     }
                 }
             }
         }
 
-        private void deleteStarSystems(ImmutableList<StarSystem> systems)
+        private async Task deleteStarSystemsAsync ( ImmutableList<StarSystem> systems )
         {
-            if (systems.Count == 0)
+            if ( systems.Count == 0 )
             {
                 return;
             }
 
-            lock ( nameof(SimpleDbConnection) ) // Lock before writing to the database
+            using ( var con = SimpleDbConnection() )
             {
-                using ( var con = SimpleDbConnection() )
+                await con.OpenAsync().ConfigureAwait( false );
+                using ( var cmd = new SQLiteCommand( con ) )
                 {
-                    try
+                    using ( var transaction = con.BeginTransaction() )
                     {
-                        con.Open();
-                        using ( var cmd = new SQLiteCommand( con ) )
+                        try
                         {
-                            using ( var transaction = con.BeginTransaction() )
+                            foreach ( var system in systems )
                             {
-                                foreach ( var system in systems )
+                                // Delete all possible variations of this data from the database.
+                                if ( system.systemAddress != 0 )
                                 {
-                                    // Delete all possible variations of this data from the database.
-                                    if ( system.systemAddress != 0 )
-                                    {
-                                        cmd.CommandText = DELETE_SQL + WHERE_SYSTEMADDRESS;
-                                        cmd.Prepare();
-                                        cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
-                                        Logging.Debug( "Deleting starsystem " + system.systemAddress );
-                                        cmd.ExecuteNonQuery();
-                                    }
-                                    else if ( !string.IsNullOrEmpty( system.systemname ) )
-                                    {
-                                        cmd.CommandText = DELETE_SQL + WHERE_NAME;
-                                        cmd.Prepare();
-                                        cmd.Parameters.AddWithValue( "@name", system.systemname );
-                                        Logging.Debug( "Deleting starsystem " + system.systemname );
-                                        cmd.ExecuteNonQuery();
-                                    }
+                                    cmd.CommandText = DELETE_SQL + WHERE_SYSTEMADDRESS;
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
+                                    Logging.Debug( "Deleting starsystem " + system.systemAddress );
+                                    await cmd.ExecuteNonQueryAsync().ConfigureAwait( false );
                                 }
-
-                                transaction.Commit();
+                                else if ( !string.IsNullOrEmpty( system.systemname ) )
+                                {
+                                    cmd.CommandText = DELETE_SQL + WHERE_NAME;
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue( "@name", system.systemname );
+                                    Logging.Debug( "Deleting starsystem " + system.systemname );
+                                    await cmd.ExecuteNonQueryAsync().ConfigureAwait( false );
+                                }
                             }
+
+                            transaction.Commit();
                         }
-                    }
-                    catch ( SQLiteException ex )
-                    {
-                        handleSqlLiteException( con, ex );
+                        catch ( SQLiteException ex )
+                        {
+                            LogAndRollbackSqlLiteException( transaction, ex );
+                        }
                     }
                 }
             }
         }
 
-        private void CreateOrUpdateDatabase()
+        private async Task CreateOrUpdateDatabaseAsync()
         {
-            lock ( nameof(SimpleDbConnection) ) // Lock before writing to the database
+            using ( var con = SimpleDbConnection() )
             {
-                using ( var con = SimpleDbConnection() )
+                try
                 {
-                    try
+                    con.Open();
+
+                    using ( var cmd = new SQLiteCommand( CREATE_TABLE_SQL, con ) )
                     {
-                        con.Open();
-
-                        using ( var cmd = new SQLiteCommand( CREATE_TABLE_SQL, con ) )
-                        {
-                            Logging.Debug( "Preparing starsystem repository" );
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Get schema version 
-                        using ( var cmd = new SQLiteCommand( TABLE_GET_SCHEMA_VERSION_SQL, con ) )
-                        {
-                            SCHEMA_VERSION = (long)( cmd.ExecuteScalar() ?? 0 );
-                            Logging.Debug( "Starsystem repository is schema version " + SCHEMA_VERSION );
-                        }
-
-                        // Apply any necessary updates
-                        if ( SCHEMA_VERSION < 1 )
-                        {
-                            Logging.Debug( "Updating starsystem repository to schema version 1" );
-                            AddColumnIfMissing( con, "comment" );
-                            SCHEMA_VERSION = 1;
-                        }
-
-                        if ( SCHEMA_VERSION < 2 )
-                        {
-                            Logging.Debug( "Updating starsystem repository to schema version 2" );
-
-                            // Allocate our new columns
-                            AddColumnIfMissing( con, "systemaddress" );
-
-                            // We have to replace our table with a new copy to assign our new columns as unique
-                            using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-
-                            SCHEMA_VERSION = 2;
-                        }
-
-                        if ( SCHEMA_VERSION < 3 )
-                        {
-                            Logging.Debug( "Updating starsystem repository to schema version 3" );
-
-                            // We will recreate our table without the "edsmid" column as we won't be indexing based on this value nor using it to evaluate uniqueness
-                            // We have to replace our table with a new copy to reassign unique columns
-                            using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-
-                            SCHEMA_VERSION = 3;
-                        }
-
-                        // Add our indices (if they don't already exist)
-                        using ( var cmd = new SQLiteCommand( CREATE_INDEX_SQL, con ) )
-                        {
-                            Logging.Debug( "Creating starsystem index" );
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Optimize the database
-                        using ( var cmd = new SQLiteCommand( "PRAGMA optimize;", con ) )
-                        {
-                            Logging.Debug( "Creating starsystem index" );
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Set schema version 
-                        using ( var cmd = new SQLiteCommand( TABLE_SET_SCHEMA_VERSION_SQL + SCHEMA_VERSION + ";", con ) )
-                        {
-                            Logging.Info( "Starsystem repository schema is version " + SCHEMA_VERSION );
-                            cmd.ExecuteNonQuery();
-                        }
+                        Logging.Debug( "Preparing starsystem repository" );
+                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     }
-                    catch ( SQLiteException ex )
+
+                    // Get schema version 
+                    using ( var cmd = new SQLiteCommand( TABLE_GET_SCHEMA_VERSION_SQL, con ) )
                     {
-                        handleSqlLiteException( con, ex );
+                        SCHEMA_VERSION = (long)( cmd.ExecuteScalar() ?? 0 );
+                        Logging.Debug( "Starsystem repository is schema version " + SCHEMA_VERSION );
                     }
+
+                    // Apply any necessary updates
+                    if ( SCHEMA_VERSION < 1 )
+                    {
+                        Logging.Debug( "Updating starsystem repository to schema version 1" );
+                        await AddColumnIfMissingAsync( con, "comment" ).ConfigureAwait(false);
+                        SCHEMA_VERSION = 1;
+                    }
+
+                    if ( SCHEMA_VERSION < 2 )
+                    {
+                        Logging.Debug( "Updating starsystem repository to schema version 2" );
+
+                        // Allocate our new columns
+                        await AddColumnIfMissingAsync( con, "systemaddress" ).ConfigureAwait(false);
+
+                        // We have to replace our table with a new copy to assign our new columns as unique
+                        using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
+                        {
+                            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        }
+
+                        SCHEMA_VERSION = 2;
+                    }
+
+                    if ( SCHEMA_VERSION < 3 )
+                    {
+                        Logging.Debug( "Updating starsystem repository to schema version 3" );
+
+                        // We will recreate our table without the "edsmid" column as we won't be indexing based on this value nor using it to evaluate uniqueness
+                        // We have to replace our table with a new copy to reassign unique columns
+                        using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
+                        {
+                            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        }
+
+                        SCHEMA_VERSION = 3;
+                    }
+
+                    // Add our indices (if they don't already exist)
+                    using ( var cmd = new SQLiteCommand( CREATE_INDEX_SQL, con ) )
+                    {
+                        Logging.Debug( "Creating starsystem index" );
+                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    }
+
+                    // Optimize the database
+                    using ( var cmd = new SQLiteCommand( "PRAGMA optimize;", con ) )
+                    {
+                        Logging.Debug( "Creating starsystem index" );
+                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    }
+
+                    // Set schema version 
+                    using ( var cmd = new SQLiteCommand( TABLE_SET_SCHEMA_VERSION_SQL + SCHEMA_VERSION + ";", con ) )
+                    {
+                        Logging.Info( "Starsystem repository schema is version " + SCHEMA_VERSION );
+                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    }
+                }
+                catch ( SQLiteException ex )
+                {
+                    Logging.Warn( "SQLite error: ", ex.ToString() );
                 }
             }
 
@@ -671,7 +645,7 @@ namespace EddiDataProviderService
         }
 
         /// <summary> Valid columnNames are "systemaddress" and "comment" </summary>
-        private void AddColumnIfMissing(SQLiteConnection con, string columnName )
+        private async Task AddColumnIfMissingAsync(SQLiteConnection con, string columnName )
         {
             // Parameters like `DISTINCT` cannot be set on columns by this method
             string command = string.Empty;
@@ -690,9 +664,9 @@ namespace EddiDataProviderService
                 bool columnExists = false;
                 using ( var cmd = new SQLiteCommand( TABLE_INFO_SQL, con ) )
                 {
-                    using ( SQLiteDataReader rdr = cmd.ExecuteReader() )
+                    using ( var rdr = await cmd.ExecuteReaderAsync().ConfigureAwait(false) )
                     {
-                        while ( rdr.Read() )
+                        while ( await rdr.ReadAsync().ConfigureAwait(false) )
                         {
                             if ( columnName == rdr.GetString( 1 ) )
                             {
@@ -710,33 +684,29 @@ namespace EddiDataProviderService
                     {
                         using ( var cmd = new SQLiteCommand( command, con ) )
                         {
-                            cmd.ExecuteNonQuery();
+                            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                         }
                     }
                     catch ( SQLiteException ex )
                     {
-                        handleSqlLiteException( con, ex );
+                        Logging.Warn( "SQLite error: ", ex.ToString() );
                     }
                 }
             }
         }
 
-        private void handleSqlLiteException( SQLiteConnection con, SQLiteException ex )
+        private void LogAndRollbackSqlLiteException ( SQLiteTransaction transaction, SQLiteException ex )
         {
-            Logging.Warn("SQLite error: ", ex.ToString());
+            Logging.Warn( "SQLite error: ", ex.ToString() );
 
             try
             {
-                con.BeginTransaction()?.Rollback();
+                transaction?.Rollback();
             }
-            catch (SQLiteException ex2)
+            catch ( SQLiteException ex2 )
             {
-                Logging.Warn("SQLite transaction rollback failed.");
-                Logging.Warn("SQLite error: ", ex2.ToString());
-            }
-            finally
-            {
-                con.Dispose();
+                Logging.Warn( "SQLite transaction rollback failed." );
+                Logging.Warn( "SQLite error: ", ex2.ToString() );
             }
         }
     }

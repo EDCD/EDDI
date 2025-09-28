@@ -187,10 +187,10 @@ namespace EddiNavigationService
                             else
                             {
                                 var carrierLocation = !string.IsNullOrEmpty( stringArg1 ) ? 
-                                    await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( stringArg1 ) : 
-                                    fleetCarrier.currentStarSystemAddress != null ? 
-                                        await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)fleetCarrier.currentStarSystemAddress ) : 
-                                        await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( fleetCarrier.currentStarSystem );
+                                    await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( stringArg1 ).ConfigureAwait(false) : 
+                                    fleetCarrier.currentStarSystemAddress != null 
+                                        ? await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( (ulong)fleetCarrier.currentStarSystemAddress ).ConfigureAwait(false) 
+                                        : await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( fleetCarrier.currentStarSystem ).ConfigureAwait(false);
                                 if ( carrierLocation is null )
                                 {
                                     Logging.Warn("Invalid query: unable to find fleet carrier location.");

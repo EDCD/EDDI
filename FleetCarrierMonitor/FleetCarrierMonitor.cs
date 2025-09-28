@@ -522,64 +522,61 @@ namespace EddiFleetCarrierMonitor
             {
                 if ( cjr.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
+                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
                 }
                 else if ( cjr.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
+                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
                 }
             }
             else if ( @event is CarrierJumpEngagedEvent cje )
             {
                 if ( cje.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
+                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
                 }
                 else if ( cje.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
+                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
                 }
             }
             else if ( @event is CarrierJumpedEvent cj )
             {
                 if ( cj.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
+                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
                 }
                 else if ( cj.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
+                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
                 }
             }
             else if ( @event is CarrierPurchasedEvent cp )
             {
                 if ( cp.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
+                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
                 }
                 else if ( cp.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
+                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
                 }
             }
             else if ( @event is CarrierStatsEvent cs )
             {
                 if ( cs.carrierType == StationModel.FleetCarrier )
                 {
-                    Task.Run( async () => await RefreshFleetCarrierFromFrontierAPIAsync() );
+                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
                 }
                 else if ( cs.carrierType == StationModel.SquadronCarrier )
                 {
-                    Task.Run( async () => await RefreshSquadronCarrierFromFrontierAPIAsync() );
+                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
                 }
             }
             else if ( @event is CommanderContinuedEvent )
             {
-                Task.Run( async () =>
-                {
-                    await RefreshFleetCarrierFromFrontierAPIAsync();
-                    await RefreshSquadronCarrierFromFrontierAPIAsync();
-                } );
+                _ = RefreshFleetCarrierFromFrontierAPIAsync();
+                _ = RefreshSquadronCarrierFromFrontierAPIAsync();
             }
         }
 
@@ -609,11 +606,8 @@ namespace EddiFleetCarrierMonitor
             if ( oldstate != CompanionAppService.State.Authorized &&
                  newstate is CompanionAppService.State.Authorized )
             {
-                Task.Run( async () =>
-                {
-                    await RefreshFleetCarrierFromFrontierAPIAsync( true );
-                    await RefreshSquadronCarrierFromFrontierAPIAsync( true );
-                } ).ConfigureAwait( false );
+                _ = RefreshFleetCarrierFromFrontierAPIAsync();
+                _ = RefreshSquadronCarrierFromFrontierAPIAsync();
             }
         }
 
@@ -640,19 +634,16 @@ namespace EddiFleetCarrierMonitor
                         // Get location data if it's not already defined
                         if ( FleetCarrier.currentStarSystemAddress is null )
                         {
-                            await Task.Run( async () =>
+                            var wp = await EDDI.Instance.DataProvider
+                                .GetOrFetchSystemWaypointAsync(
+                                    frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() ).ConfigureAwait(false);
+                            if ( wp != null )
                             {
-                                var wp = await EDDI.Instance.DataProvider
-                                    .GetOrFetchSystemWaypointAsync(
-                                        frontierApiCarrierJson[ "currentStarSystem" ]?.ToString() );
-                                if ( wp != null )
+                                lock ( carrierLock )
                                 {
-                                    lock ( carrierLock )
-                                    {
-                                        FleetCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
-                                    }
+                                    FleetCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
                                 }
-                            } );
+                            }
                         }
                         WriteConfiguration();
                     }
@@ -693,19 +684,16 @@ namespace EddiFleetCarrierMonitor
                             // Get location data if it's not already defined
                             if ( SquadronCarrier.currentStarSystemAddress is null )
                             {
-                                await Task.Run( async () =>
+                                var wp = await EDDI.Instance.DataProvider
+                                    .GetOrFetchSystemWaypointAsync(
+                                        squadronCarrier[ "currentStarSystem" ]?.ToString() ).ConfigureAwait(false);
+                                if ( wp != null )
                                 {
-                                    var wp = await EDDI.Instance.DataProvider
-                                        .GetOrFetchSystemWaypointAsync(
-                                            squadronCarrier[ "currentStarSystem" ]?.ToString() );
-                                    if ( wp != null )
+                                    lock ( carrierLock )
                                     {
-                                        lock ( carrierLock )
-                                        {
-                                            SquadronCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
-                                        }
+                                        SquadronCarrier.SetCurrentLocation( wp.systemAddress, wp.systemName, null );
                                     }
-                                } );
+                                }
                             }
 
                             WriteConfiguration();
@@ -752,16 +740,7 @@ namespace EddiFleetCarrierMonitor
         {
             PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
-
-        protected bool SetField<T> ( ref T field, T value, [CallerMemberName] string propertyName = null )
-        {
-            if ( EqualityComparer<T>.Default.Equals( field, value ) )
-                return false;
-            field = value;
-            OnPropertyChanged( propertyName );
-            return true;
-        }
-
+        
         #endregion
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Threading.Tasks;
 
 // Number of worker threads is automatic because `Workers` is set to 0.
 // There are 3 scopes of parallelization:
@@ -26,9 +27,7 @@ namespace Tests
         internal static readonly SpanshService fakeSpanshService = new SpanshService( FakeSpanshHttpClient );
 
         internal static readonly FakeEdsmHttpClient FakeEdsmHttpClient = new FakeEdsmHttpClient();
-        internal static readonly StarMapService fakeEdsmService = new StarMapService(FakeEdsmHttpClient);
-
-        internal static readonly StarSystemSqLiteRepository fakeStarSystemSqLiteRepository = new StarSystemSqLiteRepository( true );
+        internal static readonly StarMapService fakeEdsmService = new StarMapService( FakeEdsmHttpClient );
 
         internal void MakeSafe()
         {
@@ -45,9 +44,13 @@ namespace Tests
             EDDI.Instance.gameIsBeta = true;
         }
 
-        internal DataProviderService ConfigureTestDataProvider ()
+        internal async Task<DataProviderService> CreateTestDataProviderAsync ()
         {
-            return new DataProviderService( fakeEdsmService, fakeSpanshService, fakeStarSystemSqLiteRepository );
+            return await DataProviderService.CreateAsync( 
+                fakeEdsmService, 
+                fakeSpanshService,
+                await StarSystemSqLiteRepository.CreateAsync( true ).ConfigureAwait( false ) 
+                ).ConfigureAwait( false );
         }
 
         public static T DeserializeJsonResource<T>(byte[] data, JsonSerializerSettings settings = null) where T : class

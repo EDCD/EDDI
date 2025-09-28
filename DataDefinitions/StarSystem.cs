@@ -438,17 +438,14 @@ namespace EddiDataDefinitions
             bodies = builder.ToImmutable();
         }
 
-        public void PreserveBodyData ( List<object> oldBodies, ImmutableList<Body> newBodies )
+        public void PreserveBodyData ( List<Body> oldBodies, ImmutableList<Body> newBodies )
         {
             // Update `bodies` with new data, except preserve properties not available via the server
             var newBodyBuilder = newBodies.ToBuilder();
-            foreach ( var oldBodyVal in oldBodies )
+            foreach ( var oldBody in oldBodies )
             {
                 try
                 {
-                    var oldBodyString = JsonConvert.SerializeObject(oldBodyVal);
-                    var oldBody = JsonConvert.DeserializeObject<Body>(oldBodyString);
-
                     if ( newBodyBuilder.Any( b => b.bodyname == oldBody.bodyname ) )
                     {
                         var index = newBodyBuilder.FindIndex( b => b.bodyname == oldBody.bodyname );
@@ -468,7 +465,7 @@ namespace EddiDataDefinitions
                 {
                     var dict = new Dictionary<string, object>()
                     {
-                        { "oldBody", JsonConvert.SerializeObject( oldBodyVal ) },
+                        { "oldBody", JsonConvert.SerializeObject( oldBody ) },
                         { "exception", e }
 
                     };

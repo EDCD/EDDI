@@ -687,8 +687,8 @@ namespace EddiNavigationMonitor
                 systemname = n.systemname,
                 systemAddress = n.systemAddress
             }).ToList();
-            var retrievedBookmarkSystems = await Task.Run( async () => await EDDI.Instance.DataProvider
-                .SyncFromStarMapServiceAsync( bookmarkSystems ).ConfigureAwait( false ) );
+            var retrievedBookmarkSystems = await EDDI.Instance.DataProvider
+                .SyncFromStarMapServiceAsync( bookmarkSystems ).ConfigureAwait( false );
             foreach (var system in retrievedBookmarkSystems.Where( s => s.visits > 0 ) )
             {
                 var poi = bookmarks.FirstOrDefault(s => s.systemAddress == system.systemAddress) ??

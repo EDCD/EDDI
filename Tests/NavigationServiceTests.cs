@@ -15,12 +15,12 @@ namespace Tests
         private NavigationService navigationService;
 
         [TestInitialize]
-        public void Start()
+        public async Task StartAsync()
         {
             navigationService = new NavigationService();
             MakeSafe();
 
-            EDDI.Instance.DataProvider = ConfigureTestDataProvider();
+            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
 
             FakeSpanshHttpClient.Expect(
                 @"bodies/search?={""filters"":{""type"":{""value"":[""Star""]},""subtype"":{""value"":[""A (Blue-White super giant) Star"",""A (Blue-White) Star"",""B (Blue-White super giant) Star"",""B (Blue-White) Star"",""F (White super giant) Star"",""F (White) Star"",""G (White-Yellow super giant) Star"",""G (White-Yellow) Star"",""K (Yellow-Orange giant) Star"",""K (Yellow-Orange) Star"",""M (Red dwarf) Star"",""M (Red giant) Star"",""M (Red super giant) Star"",""O (Blue-White) Star""]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",
@@ -81,7 +81,7 @@ namespace Tests
             EDDI.Instance.CurrentStarSystem = sol;
             EDDI.Instance.CurrentShip = ShipDefinitions.FromEDModel( "Anaconda" );
 
-            var result = await navigationService.NavQueryAsync(query, stringArg0, stringArg1, Convert.ToDecimal(numericArg), prioritizeOrbitalStations).ConfigureAwait(false);
+            var result = await navigationService.NavQueryAsync( query, stringArg0, stringArg1, Convert.ToDecimal( numericArg ), prioritizeOrbitalStations ).ConfigureAwait(false);
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedStarSystem, result.system);
             Assert.AreEqual(expectedStationName, result.station);

@@ -716,7 +716,7 @@ namespace Tests
         [ TestMethod ]
         public void TestMicroResourceInfo ()
         {
-            var json = TestBase.DeserializeJsonResource<string>( Resources.shipLocker );
+            var json = DeserializeJsonResource<string>( Resources.shipLocker );
             var info = JsonConvert.DeserializeObject<MicroResourceInfo>( json );
 
             Assert.AreEqual( 38, info.Items.Count );

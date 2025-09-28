@@ -275,10 +275,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>Force-update EDDI's information</summary>
         private static void InvokeUpdateProfile ()
         {
-            Task.Run( async () =>
-            {
-                await EDDI.Instance.refreshProfileAsync( true );
-            } );
+            _ = EDDI.Instance.refreshProfileAsync( true );
         }
 
         private static void OpenOrStoreURI ( string systemUri )
@@ -730,7 +727,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Send a comment to the starmap service and store locally
         /// </summary>
-        public static async Task InvokeStarMapSystemCommentAsync ()
+        private static async Task InvokeStarMapSystemCommentAsync ()
         {
             try
             {
@@ -744,13 +741,13 @@ namespace EddiVoiceAttackResponder
                 {
                     // Store locally
                     var systemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
-                    var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress );
+                    var currentSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress ).ConfigureAwait(false);
                     currentSystem.comment = comment == "" ? null : comment;
-                    EDDI.Instance.DataProvider.SaveStarSystem( currentSystem );
+                    await EDDI.Instance.DataProvider.SaveStarSystemAsync( currentSystem ).ConfigureAwait(false);
 
                     // Store in EDSM
                     var edsmService = new StarMapService( null, true );
-                    await edsmService.sendStarMapCommentAsync( systemAddress, comment );
+                    await edsmService.sendStarMapCommentAsync( systemAddress, comment ).ConfigureAwait(false);
                 }
             }
             catch ( Exception e )

@@ -173,7 +173,7 @@ namespace EddiCrimeMonitor
                     target.Power = @event.Power;
                     target.LegalStatus = @event.LegalStatus;
                     target.bounty = @event.bounty;
-                    target.Allegiance = (await EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.faction ))?.Allegiance;
+                    target.Allegiance = (await EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.faction ).ConfigureAwait(false))?.Allegiance;
                 }
             }
         }

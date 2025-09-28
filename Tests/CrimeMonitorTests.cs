@@ -187,11 +187,10 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestCrimeEventsScenario()
+        public async Task TestCrimeEventsScenario()
         {
-            EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            //fakeBgsRestClient.Expect( "v5/factions?name=Ankou Blue Federal Holdings&page=1", @"{""docs"":[{""_id"":""59e7b73bd22c775be0fe66d7"",""__v"":0,""allegiance"":""empire"",""eddb_id"":12284,""faction_presence"":[{""system_name"":""Aerial"",""system_name_lower"":""aerial"",""system_id"":""59e7b78cd22c775be0fe6a3e"",""state"":""election"",""influence"":0.139653,""happiness"":""$faction_happinessband2;"",""active_states"":[{""state"":""election""}],""pending_states"":[],""recovering_states"":[{""state"":""infrastructurefailure"",""trend"":0}],""conflicts"":[{""type"":""election"",""status"":""active"",""opponent_name"":""Murus Major Industry"",""opponent_name_lower"":""murus major industry"",""opponent_faction_id"":""59e7b78cd22c775be0fe6a3a"",""station_id"":null,""stake"":"""",""stake_lower"":"""",""days_won"":0}],""updated_at"":""2024-12-28T10:26:53.000Z""},{""system_name"":""Chamuluma"",""system_name_lower"":""chamuluma"",""system_id"":""59e7e372d22c775be0ffc841"",""state"":""boom"",""influence"":0.732268,""happiness"":""$faction_happinessband2;"",""active_states"":[{""state"":""boom""}],""pending_states"":[{""state"":""outbreak"",""trend"":0}],""recovering_states"":[],""conflicts"":[],""updated_at"":""2024-12-28T16:11:14.000Z""},{""system_name"":""HR 1475"",""system_name_lower"":""hr 1475"",""system_id"":""59e7f2e4d22c775be00013a2"",""state"":""boom"",""influence"":0.055,""happiness"":""$faction_happinessband2;"",""active_states"":[],""pending_states"":[],""recovering_states"":[],""conflicts"":[],""updated_at"":""2024-12-28T22:06:07.000Z""},{""system_name"":""Carthage"",""system_name_lower"":""carthage"",""system_id"":""59e83bf3d22c775be001085f"",""state"":""none"",""influence"":0.106893,""happiness"":""$faction_happinessband2;"",""active_states"":[],""pending_states"":[],""recovering_states"":[],""conflicts"":[],""updated_at"":""2024-12-28T19:30:58.000Z""},{""system_name"":""Ankou"",""system_name_lower"":""ankou"",""system_id"":""59e92c33d22c775be06fa6a6"",""state"":""none"",""influence"":0.193286,""happiness"":""$faction_happinessband2;"",""active_states"":[],""pending_states"":[],""recovering_states"":[],""conflicts"":[],""updated_at"":""2024-12-28T02:50:08.000Z""},{""system_name"":""Narakapani"",""system_name_lower"":""narakapani"",""system_id"":""59e9518ad22c775be0ddecec"",""state"":""boom"",""influence"":0.320641,""happiness"":""$faction_happinessband2;"",""active_states"":[],""pending_states"":[],""recovering_states"":[{""state"":""outbreak"",""trend"":0}],""conflicts"":[],""updated_at"":""2024-12-27T22:01:20.000Z""},{""system_name"":""Murus"",""system_name_lower"":""murus"",""system_id"":""59e9518ed22c775be0ddf6dc"",""state"":""none"",""influence"":0.366,""happiness"":""$faction_happinessband2;"",""active_states"":[],""pending_states"":[],""recovering_states"":[{""state"":""publicholiday"",""trend"":0},{""state"":""war"",""trend"":0}],""conflicts"":[{""type"":""war"",""status"":"""",""opponent_name"":""Lavigny's Legion"",""opponent_name_lower"":""lavigny's legion"",""opponent_faction_id"":""59e7b78cd22c775be0fe6a41"",""station_id"":null,""stake"":"""",""stake_lower"":"""",""days_won"":0}],""updated_at"":""2024-12-28T22:33:15.000Z""},{""system_name"":""Saha"",""system_name_lower"":""saha"",""system_id"":""59ea52f6d22c775be0b5a599"",""state"":""none"",""influence"":0.178287,""happiness"":""$faction_happinessband2;"",""active_states"":[],""pending_states"":[],""recovering_states"":[],""conflicts"":[],""updated_at"":""2024-12-26T18:33:21.000Z""},{""system_name"":""Maris"",""system_name_lower"":""maris"",""system_id"":""59e7e2f7d22c775be0ffc4e9"",""state"":""war"",""influence"":0.103483,""happiness"":""$faction_happinessband2;"",""active_states"":[{""state"":""war""}],""pending_states"":[],""recovering_states"":[],""conflicts"":[{""type"":""war"",""status"":""active"",""opponent_name"":""Maris Labour"",""opponent_name_lower"":""maris labour"",""opponent_faction_id"":""59e7e2f7d22c775be0ffc4fc"",""station_id"":""5a843cc9d1b6a37c3c343cbd"",""stake"":""Reeves Installation"",""stake_lower"":""reeves installation"",""days_won"":1}],""updated_at"":""2024-12-28T12:15:37.000Z""}],""government"":""corporate"",""name"":""Ankou Blue Federal Holdings"",""name_lower"":""ankou blue federal holdings"",""updated_at"":""2024-12-28T22:06:07.000Z""}],""total"":1,""limit"":10,""page"":1,""pages"":1,""pagingCounter"":1,""hasPrevPage"":false,""hasNextPage"":false,""prevPage"":null,""nextPage"":null}" );
-            //fakeBgsRestClient.Expect( "v5/factions?name=Natural Amemakarna Movement&page=1", @"{""docs"":[{""_id"":""59e7e0aad22c775be0ffba06"",""__v"":0,""allegiance"":""independent"",""eddb_id"":59823,""faction_presence"":[{""system_name"":""Amemakarna"",""system_name_lower"":""amemakarna"",""system_id"":""59e7e0aad22c775be0ffb9ed"",""state"":""none"",""influence"":0.169154,""happiness"":""$faction_happinessband2;"",""active_states"":[],""pending_states"":[],""recovering_states"":[],""conflicts"":[],""updated_at"":""2024-11-05T15:27:01.000Z""}],""government"":""dictatorship"",""name"":""Natural Amemakarna Movement"",""name_lower"":""natural amemakarna movement"",""updated_at"":""2024-11-05T15:27:01.000Z""}],""total"":1,""limit"":10,""page"":1,""pages"":1,""pagingCounter"":1,""hasPrevPage"":false,""hasNextPage"":false,""prevPage"":null,""nextPage"":null}" );
+            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            FakeSpanshHttpClient.Expect( @"systems/search?={""filters"":{""minor_faction_presences"":[{""name"":{""value"":[""Radio Sidewinder Crew""]}}]},""size"":500,""page"":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
            
             // Save original data
             var data = ConfigService.Instance.crimeMonitorConfiguration;
@@ -200,7 +199,7 @@ namespace Tests
             crimeMonitor.readRecord(config);
 
             // Bond Awarded Event
-            line = "{ \"timestamp\":\"2019-04-22T11:51:30Z\", \"event\":\"FactionKillBond\", \"Reward\":32473, \"AwardingFaction\":\"Constitution Party of Aerial\", \"VictimFaction\":\"Ankou Blue Federal Holdings\" }";
+            line = "{ \"timestamp\":\"2019-04-22T11:51:30Z\", \"event\":\"FactionKillBond\", \"Reward\":32473, \"AwardingFaction\":\"Constitution Party of Aerial\", \"VictimFaction\":\"Radio Sidewinder Crew\" }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
             crimeMonitor._handleBondAwardedEvent( (BondAwardedEvent)events[ 0 ] );
@@ -277,7 +276,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestCrimeShipTargeted()
         {
-            EDDI.Instance.DataProvider = ConfigureTestDataProvider();
+            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
             FakeSpanshHttpClient.Expect( "dump/5581611930322", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpCalenerro ) );
             EDDI.Instance.CurrentStarSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( 5581611930322 ).ConfigureAwait(false);
 
@@ -303,7 +302,7 @@ namespace Tests
 
         // Test that we're able to detect and correct for simple scenarios where a bounty has been converted to an interstellar bounty
         [TestMethod]
-        public void TestCrimeInterstellarFactorsScenario()
+        public async Task TestCrimeInterstellarFactorsScenario()
         {
             var line1 = @"{ ""timestamp"":""2022-01-15T18:37:38Z"", ""event"":""CommitCrime"", ""CrimeType"":""assault"", ""Faction"":""Radio Sidewinder Crew"", ""Victim"":""Jim Grady"", ""Bounty"":100 }";
             var line2 = @"{ ""timestamp"":""2022-01-15T18:41:31Z"", ""event"":""PayBounties"", ""Amount"":100, ""Faction"":""$faction_Independent;"", ""Faction_Localised"":""Independent"", ""ShipID"":38, ""BrokerPercentage"":25.000000 }";
@@ -315,8 +314,8 @@ namespace Tests
             var config = new CrimeMonitorConfiguration();
             crimeMonitor.readRecord(config);
 
-            EDDI.Instance.DataProvider = ConfigureTestDataProvider();
-            FakeSpanshHttpClient.Expect( @"systems/search?={\""filters\"":{\""minor_faction_presences\"":[{\""name\"":{\""value\"":[\""Radio Sidewinder Crew\""]}}]},\""size\"":500,\""page\"":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
+            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            FakeSpanshHttpClient.Expect( @"systems/search?={""filters"":{""minor_faction_presences"":[{""name"":{""value"":[""Radio Sidewinder Crew""]}}]},""size"":500,""page"":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Tachmetae", @"{""min_max"":[{""id64"":2869977949641,""name"":""Tachmetae"",""x"":-0.59375,""y"":60.6875,""z"":84.71875}],""values"":[""Tachmetae""]}" );
             FakeSpanshHttpClient.Expect( "dump/2869977949641", Encoding.UTF8.GetString( Properties.Resources.SpanshStarSystemDumpTachmetae ) );
 
