@@ -19,7 +19,7 @@ using Utilities;
 
 namespace EddiVoiceAttackResponder
 {
-    internal class VoiceAttackInvokationHandler
+    internal static class VoiceAttackInvokationHandler
     {
         private static readonly Random random = new Random();
 
@@ -68,7 +68,7 @@ namespace EddiVoiceAttackResponder
                         InvokeSpeech();
                         break;
                     case "system comment":
-                        InvokeStarMapSystemCommentAsync().GetAwaiter().GetResult();
+                        Task.Run( InvokeStarMapSystemCommentAsync );
                         break;
                     case "initialize eddi":
                         if (App.FromVA && Application.Current != null)
@@ -119,10 +119,10 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "missionsroute":
                     case "route":
-                        InvokeRouteDetailsAsync().GetAwaiter().GetResult();
+                        Task.Run( InvokeRouteDetailsAsync );
                         break;
                     case "inara":
-                        InvokeInaraProfileDetails();
+                        Task.Run( InvokeInaraProfileDetailsAsync );
                         break;
                     case "volume":
                         InvokeVolume();
@@ -171,7 +171,7 @@ namespace EddiVoiceAttackResponder
             } );
         }
 
-        private static void InvokeInaraProfileDetails ()
+        private static async Task InvokeInaraProfileDetailsAsync ()
         {
             string commanderName = VoiceAttackPlugin.GetText("Name");
             if ( commanderName == null )
@@ -181,7 +181,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 EddiInaraService.IInaraService inaraService = new EddiInaraService.InaraService();
-                var result = inaraService.GetCommanderProfileAsync(commanderName).GetAwaiter().GetResult();
+                var result = await inaraService.GetCommanderProfileAsync(commanderName).ConfigureAwait(false);
                 if ( result != null )
                 {
                     OpenOrStoreURI( result.url );
@@ -289,7 +289,7 @@ namespace EddiVoiceAttackResponder
             VoiceAttackPlugin.SetText( "EDDI uri", systemUri );
         }
 
-        public static void InvokeInaraSystem ()
+        private static void InvokeInaraSystem ()
         {
             Logging.Debug( "Entered" );
             try
@@ -310,7 +310,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeInaraStation ()
+        private static void InvokeInaraStation ()
         {
             Logging.Debug( "Entered" );
             try
@@ -337,7 +337,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeInaraFleetCarrier ()
+        private static void InvokeInaraFleetCarrier ()
         {
             Logging.Debug( "Entered" );
             try
@@ -358,7 +358,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeInaraProfile ()
+        private static void InvokeInaraProfile ()
         {
             Logging.Debug( "Entered" );
             try
@@ -380,7 +380,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeCoriolis ( bool beta = false )
+        private static void InvokeCoriolis ( bool beta = false )
         {
             Logging.Debug( "Entered" );
             try
@@ -402,7 +402,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug( "Leaving" );
         }
 
-        public static void InvokeEDShipyard ()
+        private static void InvokeEDShipyard ()
         {
             Logging.Debug( "Entered" );
             try
@@ -459,7 +459,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary>
-        public static void InvokeSay ()
+        private static void InvokeSay ()
         {
             try
             {
@@ -490,7 +490,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary> 
-        public static void InvokeTransmit ()
+        private static void InvokeTransmit ()
         {
             try
             {
@@ -523,7 +523,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>
         /// Stop talking
         /// </summary>
-        public static void InvokeShutUp ()
+        private static void InvokeShutUp ()
         {
             try
             {
@@ -537,7 +537,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary>
-        public static void InvokeSpeech ()
+        private static void InvokeSpeech ()
         {
             try
             {
@@ -573,7 +573,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeDisableSpeechResponder ()
+        private static void InvokeDisableSpeechResponder ()
         {
             try
             {
@@ -587,7 +587,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeEnableSpeechResponder ()
+        private static void InvokeEnableSpeechResponder ()
         {
             try
             {
@@ -599,7 +599,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeSetSpeechResponderPersonality ()
+        private static void InvokeSetSpeechResponderPersonality ()
         {
             string personality = VoiceAttackPlugin.GetText("Personality");
             try
@@ -613,7 +613,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeSetState ()
+        private static void InvokeSetState ()
         {
             try
             {
@@ -676,15 +676,9 @@ namespace EddiVoiceAttackResponder
                 script = script.Replace( "$=", ship.phoneticname );
             }
 
-            string cmdrScript;
-            if ( string.IsNullOrEmpty( ConfigService.Instance.commanderConfiguration.commanderName ) )
-            {
-                cmdrScript = EddiCore.Properties.Resources.Commander;
-            }
-            else
-            {
-                cmdrScript = ConfigService.Instance.commanderConfiguration.phoneticName;
-            }
+            var cmdrScript = string.IsNullOrEmpty( ConfigService.Instance.commanderConfiguration.commanderName ) 
+                ? EddiCore.Properties.Resources.Commander 
+                : ConfigService.Instance.commanderConfiguration.phoneticName;
             script = script.Replace( "$-", cmdrScript );
 
             // Multiple choice selection
@@ -756,7 +750,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeJumpDetails ()
+        private static void InvokeJumpDetails ()
         {
             try
             {
@@ -775,7 +769,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static async Task InvokeRouteDetailsAsync ()
+        private static async Task InvokeRouteDetailsAsync ()
         {
             try
             {
@@ -810,6 +804,5 @@ namespace EddiVoiceAttackResponder
                 VoiceAttackVariables.setStatus( "Failed to get route", e );
             }
         }
-
     }
 }

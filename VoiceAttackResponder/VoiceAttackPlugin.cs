@@ -213,7 +213,7 @@ namespace EddiVoiceAttackResponder
             var isCommandExecuting = true;
             while ( isCommandExecuting )
             {
-                await Task.Delay( 25 );
+                await Task.Delay( 25 ).ConfigureAwait(false);
                 lock ( vaProxyLock )
                 {
                     isCommandExecuting = IsVaVersionSameOrNewer( commandApiVaVersion )

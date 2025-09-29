@@ -32,7 +32,7 @@ namespace EddiVoiceAttackResponder
                 var taskQueue = taskQueues.GetOrAdd( @event.type, new TaskQueue<Event>( commandName ) );
                 if ( taskQueue.TryAdd( @event ) )
                 {
-                    taskQueue.StartOrRestart( async () => await dequeueEvents( taskQueue ), consumerCancellationTS.Token );
+                    taskQueue.StartOrRestart( () => dequeueEventsAsync( taskQueue ), consumerCancellationTS.Token );
                 }
                 Logging.Debug( $"Command '{commandName}' enqueued for execution.", @event );
             }
@@ -42,13 +42,13 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private async Task dequeueEvents ( TaskQueue<Event> eventQueue )
+        private async Task dequeueEventsAsync ( TaskQueue<Event> eventQueue )
         {
             try
             {
                 foreach ( var @event in eventQueue.GetConsumingEnumerable( consumerCancellationTS.Token ) )
                 {
-                    await ExecuteEventAsync( eventQueue.commandName, @event);
+                    await ExecuteEventAsync( eventQueue.commandName, @event).ConfigureAwait(false);
                 }
             }
             catch ( OperationCanceledException )
@@ -60,7 +60,7 @@ namespace EddiVoiceAttackResponder
                 // If there are still events, start a new consumer
                 if ( !eventQueue.IsCompleted && eventQueue.Count > 0 && !eventQueue.isRunning )
                 {
-                    eventQueue.StartOrRestart( async () => await dequeueEvents( eventQueue ), consumerCancellationTS.Token );
+                    eventQueue.StartOrRestart( () => dequeueEventsAsync( eventQueue ), consumerCancellationTS.Token );
                 }
             }
         }
@@ -78,8 +78,9 @@ namespace EddiVoiceAttackResponder
                         // We need to wait until each event is no longer active before moving to the next from the same
                         // queue / event type so that variables aren't overwritten before VoiceAttack can respond.
                         // Other queues / event types will be able to continue processing events while we wait.
-                        await VoiceAttackPlugin.WaitForCommandExecutionAsync( commandName );                                
+                        await VoiceAttackPlugin.WaitForCommandExecutionAsync( commandName ).ConfigureAwait(false);                                
                     }
+                    await Task.Yield(); // Yield to avoid blocking the thread pool
                 }
             }
             catch ( Exception ex )
@@ -155,7 +156,7 @@ namespace EddiVoiceAttackResponder
                 {
                     while ( taskQueues.Values.Any( q => q.isRunning ) )
                     {
-                        await Task.Delay( TimeSpan.FromMilliseconds( 25 ) );
+                        await Task.Delay( TimeSpan.FromMilliseconds( 25 ) ).ConfigureAwait(false);
                     }
                 } ),
                 Task.Delay( 500 )
@@ -195,8 +196,7 @@ namespace EddiVoiceAttackResponder
         {
             if ( !isRunning )
             {
-                consumerTask = Task.Factory.StartNew(
-                    async () => await action(),
+                consumerTask = Task.Factory.StartNew( action,
                     cancellationToken,
                     TaskCreationOptions.LongRunning,
                     TaskScheduler.Default
