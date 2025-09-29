@@ -25,7 +25,7 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestKeepAlive()
+        public async Task TestKeepAlive()
         {
             var monitor = EDDI.Instance.ObtainMonitor( "Journal Monitor" );
 
@@ -40,16 +40,16 @@ namespace Tests
             EDDI.Instance.EnableMonitor( monitor );
             monitor.Stop();
 
-            Thread.Sleep(3000);
+            await Task.Delay(3000).ConfigureAwait(false);
             Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
 
-            Thread.Sleep(3000);
+            await Task.Delay( 3000 ).ConfigureAwait( false );
             Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
 
-            Thread.Sleep(3000);
+            await Task.Delay( 3000 ).ConfigureAwait( false );
             Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
 
-            Thread.Sleep(3000);
+            await Task.Delay( 3000 ).ConfigureAwait( false );
             Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
 
             if ( EDDI.Instance.activeMonitors == null )

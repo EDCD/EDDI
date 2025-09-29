@@ -264,14 +264,7 @@ namespace EddiJournalMonitor
                                             var priority = JsonParsing.getInt(moduleData, "Priority");
                                             // Health is as 0->1 but we want 0->100, and to a sensible number of decimal places
                                             var health = JsonParsing.getDecimal(moduleData, "Health") * 100;
-                                            if (health < 5)
-                                            {
-                                                health = Math.Round(health, 1);
-                                            }
-                                            else
-                                            {
-                                                health = Math.Round(health);
-                                            }
+                                            health = health < 5 ? Math.Round(health, 1) : Math.Round(health);
 
                                             // Some built-in modules don't give "Value" keys in the Loadout event. We'll set them to zero to match the Frontier API.
                                             var price = JsonParsing.getOptionalLong(moduleData, "Value") ?? 0;
@@ -1406,7 +1399,7 @@ namespace EddiJournalMonitor
                                     var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
                                     var isThargoid = JsonParsing.getOptionalBool(data, "IsThargoid") ?? false;
                                     data.TryGetValue("CombatRank", out var val);
-                                    var rating = (val == null ? null : CombatRating.FromRank(Convert.ToInt32(val)));
+                                    var rating = val == null ? null : CombatRating.FromRank(Convert.ToInt32(val));
                                     var faction = EventParsing.FactionName(data, "Faction");
                                     var power = JsonParsing.getString(data, "Power");
 
@@ -1439,7 +1432,7 @@ namespace EddiJournalMonitor
                                     var interdictee = JsonParsing.getString(data, "Interdicted");
                                     var iscommander = JsonParsing.getBool(data, "IsPlayer");
                                     data.TryGetValue("CombatRank", out var val);
-                                    var rating = ( val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) ) );
+                                    var rating = val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) );
                                     var faction = EventParsing.FactionName(data, "Faction");
                                     var power = JsonParsing.getString(data, "Power");
 
@@ -1461,7 +1454,7 @@ namespace EddiJournalMonitor
 
                                     var victim = JsonParsing.getString(data, "Victim");
                                     data.TryGetValue("CombatRank", out var val);
-                                    var rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+                                    var rating = val == null ? null : CombatRating.FromRank((int)(long)val);
 
                                     events.Add(new KilledEvent(timestamp, victim, rating) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
@@ -1650,7 +1643,7 @@ namespace EddiJournalMonitor
                                     source.OpposingPower = Power.FromEDName( JsonParsing.getString( data, "OpposingPower" ) ); // the opposing Powerplay power, if relevant
 
                                     var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
-                                    source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)(secondsRemaining));
+                                    source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)secondsRemaining);
 
                                     var spawningstate = JsonParsing.getString(data, "SpawningState");
                                     var normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
@@ -1746,7 +1739,7 @@ namespace EddiJournalMonitor
                                     {
                                         // We've mapped a ring. 
                                         Ring ring = null;
-                                        var ringedBodies = system.bodies?.Where(b => b?.rings?.Count > 0).ToList();
+                                        var ringedBodies = system.bodies?.Where(b => b.rings?.Count > 0).ToList();
                                         foreach (var ringedBody in ringedBodies)
                                         {
                                             ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
@@ -1904,7 +1897,7 @@ namespace EddiJournalMonitor
 
                                         var star = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped)
                                         {
-                                            scannedDateTime = (DateTime?)timestamp
+                                            scannedDateTime = timestamp
                                         };
 
                                         events.Add(new StarScannedEvent(timestamp, scantype, star) { raw = line, fromLoad = fromLogLoad });
@@ -1963,12 +1956,11 @@ namespace EddiJournalMonitor
                                         {
                                             if (val is Dictionary<string, object> bodyCompsJson)
                                             {
-                                                var compositionData = (IDictionary<string, object>)val;
-                                                foreach (var kv in compositionData)
+                                                foreach (var kv in bodyCompsJson )
                                                 {
                                                     var edComposition = kv.Key;
                                                     // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
-                                                    var percent = ((decimal)(double)kv.Value) * 100;
+                                                    var percent = (decimal)(double)kv.Value * 100;
                                                     if (edComposition != null)
                                                     {
                                                         solidCompositions.Add(new SolidComposition(edComposition, percent));
@@ -2013,7 +2005,7 @@ namespace EddiJournalMonitor
 
                                         var body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped)
                                         {
-                                            scannedDateTime = (DateTime?)timestamp
+                                            scannedDateTime = timestamp
                                         };
 
                                         events.Add(new BodyScannedEvent(timestamp, scantype, body) { raw = line, fromLoad = fromLogLoad });
@@ -2250,7 +2242,7 @@ namespace EddiJournalMonitor
                                     var name = JsonParsing.getString(data, "Name");
                                     var system = JsonParsing.getString(data, "System");
                                     data.TryGetValue("Reward", out var val);
-                                    var reward = (val == null ? 0 : (long)val);
+                                    var reward = val == null ? 0 : (long)val;
 
                                     events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, null, true, reward, null, null, null, null, null, 0) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -3178,7 +3170,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Count", out var val);
                                     var amount = (int?)(long?)val;
                                     data.TryGetValue("Reward", out val);
-                                    var reward = (val == null ? 0 : (long)val);
+                                    var reward = val == null ? 0 : (long)val;
                                     events.Add(new SearchAndRescueEvent(timestamp, commodity, amount, reward, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -3242,11 +3234,11 @@ namespace EddiJournalMonitor
                                     var price = (long)val;
 
                                     data.TryGetValue("StoreShipID", out val);
-                                    var storedShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var storedShipId = val == null ? (int?)null : (int)(long)val;
                                     var storedShip = JsonParsing.getString(data, "StoreOldShip");
 
                                     data.TryGetValue("SellShipID", out val);
-                                    var soldShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var soldShipId = val == null ? (int?)null : (int)(long)val;
                                     var soldShip = JsonParsing.getString(data, "SellOldShip");
 
                                     data.TryGetValue("SellPrice", out val);
@@ -3332,11 +3324,11 @@ namespace EddiJournalMonitor
                                     var ship = JsonParsing.getString(data, "ShipType");
 
                                     data.TryGetValue("StoreShipID", out val);
-                                    var storedShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var storedShipId = val == null ? (int?)null : (int)(long)val;
                                     var storedShip = JsonParsing.getString(data, "StoreOldShip");
 
                                     data.TryGetValue("SellShipID", out val);
-                                    var soldShipId = (val == null ? (int?)null : (int)(long)val);
+                                    var soldShipId = val == null ? (int?)null : (int)(long)val;
                                     var soldShip = JsonParsing.getString(data, "SellOldShip");
 
                                     events.Add(new ShipSwappedEvent(timestamp, ship, shipId, soldShip, soldShipId, storedShip, storedShipId, marketId) { raw = line, fromLoad = fromLogLoad });

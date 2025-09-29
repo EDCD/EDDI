@@ -1372,7 +1372,7 @@ namespace EddiCore
                     // Refresh station data
                     if (@event.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
 
-                    _ = conditionallyRefreshStationProfileAsync( @event.systemname, @event.carrierID ?? 0 );
+                    _ = Task.Run( () => conditionallyRefreshStationProfileAsync( @event.systemname, @event.carrierID ?? 0 ) );
                 }
             }
             else
@@ -1648,7 +1648,7 @@ namespace EddiCore
                     // Refresh station data
                     if ( theEvent.fromLoad ) { return true; } // Don't fire this event when loading pre-existing logs
 
-                    _ = conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 );
+                    _ = Task.Run( () => conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 ) );
                 }
             }
             else if ( theEvent.latitude != null && theEvent.longitude != null )
@@ -1736,7 +1736,7 @@ namespace EddiCore
                     return false;
                 } // Don't fire this event when loading pre-existing logs or if we were already at this station
 
-                _ = conditionallyRefreshStationProfileAsync( @event.system, @event.marketId ?? 0 );
+                _ = Task.Run( () => conditionallyRefreshStationProfileAsync( @event.system, @event.marketId ?? 0 ) );
             }
 
             return true;
@@ -1765,7 +1765,7 @@ namespace EddiCore
                     return false;
                 }
 
-                _ = conditionallyRefreshStationProfileAsync( CurrentStarSystem.systemname, @event.marketId ?? 0 );
+                _ = Task.Run( () => conditionallyRefreshStationProfileAsync( CurrentStarSystem.systemname, @event.marketId ?? 0 ) );
             }
 
             return true;
