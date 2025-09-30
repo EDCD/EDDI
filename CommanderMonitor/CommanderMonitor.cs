@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -25,8 +24,6 @@ namespace EddiCommanderMonitor
     public class CommanderMonitor : IEddiMonitor, INotifyPropertyChanged
     {
         private static readonly object commanderLock = new object();
-        private Task fetchHomeSystem = null;
-        private Task fetchSquadronSystem = null;
         private readonly CancellationTokenSource cts = new CancellationTokenSource();
         
         #region Monitored Variables
@@ -60,6 +57,7 @@ namespace EddiCommanderMonitor
                 {
                     Cmdr.phoneticName = value;
                     WriteCommander();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -74,6 +72,7 @@ namespace EddiCommanderMonitor
                 {
                     Cmdr.Gender = value;
                     WriteCommander();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -95,25 +94,11 @@ namespace EddiCommanderMonitor
         [CanBeNull]
         public StarSystem HomeStarSystem // May be null when the commander hasn't set a home star system
         {
-            get
-            {
-                fetchHomeSystem?.Wait( cts.Token );
-                return _homeStarSystem;
-            }
+            get => _homeStarSystem;
             set
             {
-                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
-                {
-                    OnPropertyChanged();
-                }
-                if ( _homeStarSystem != null ) { _homeStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
                 _homeStarSystem = value;
                 OnPropertyChanged();
-                OnPropertyChanged( nameof( HomeSystemName) );
-                OnPropertyChanged( nameof( HomeStationOptions) );
-                OnPropertyChanged( nameof( HomeStation ) );
-                WriteCommander();
             }
         }
 
@@ -121,45 +106,69 @@ namespace EddiCommanderMonitor
 
         public string HomeSystemName
         {
-            get => HomeStarSystem?.systemname;
+            get => _homeStarSystem?.systemname;
             set
             {
-                if ( value != HomeStarSystem?.systemname )
+                if ( value != _homeStarSystem?.systemname )
                 {
-                    if ( value != null )
-                    {
-                        fetchHomeSystem = Task.Run( async () =>
-                        {
-                            HomeStarSystem = await EDDI.Instance.DataProvider
-                                .GetOrFetchStarSystemAsync( value );
-                            lock ( commanderLock )
-                            {
-                                Cmdr.homeSystemName = HomeStarSystem?.systemname;
-                                Cmdr.homeSystemAddress = HomeStarSystem?.systemAddress;
-                                Cmdr.homeSystemX = HomeStarSystem?.x;
-                                Cmdr.homeSystemY = HomeStarSystem?.y;
-                                Cmdr.homeSystemZ = HomeStarSystem?.z;
-                            }
-                        }, cts.Token );
-                        fetchHomeSystem = null;
-                    }
-                    else
+                    if ( string.IsNullOrEmpty( value ) )
                     {
                         HomeStarSystem = null;
-                        lock ( commanderLock )
-                        {
-                            Cmdr.squadronSystemName = null;
-                            Cmdr.squadronSystemAddress = null;
-                        }
-                    }
+                        return;
+                    }                    
+                    
+                    if ( _isFetchingHomeSystem ) { return; }
+                    FetchHomeSystemAsync( value ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
         }
 
-        public ObservableCollection<Station> HomeStationOptions => new ObservableCollection<Station>( ( HomeStarSystem?.stations ?? ImmutableList.Create<Station>() )
-            .OrderBy( s => s.name )
-            .Prepend( new Station { name = Properties.Resources.no_station } )
-            .ToHashSet() );
+        private async Task FetchHomeSystemAsync ( string systemName )
+        {
+            _isFetchingHomeSystem = true;
+            try
+            {
+                var fetchedSystem = await Task.Run( () => EDDI.Instance.DataProvider
+                    .GetOrFetchStarSystemAsync( systemName ) ).ConfigureAwait( true );
+
+                if ( fetchedSystem != null )
+                {
+                    HomeStarSystem = fetchedSystem;
+                    UpdateHomeStationOptions();
+                    lock ( commanderLock )
+                    {
+                        Cmdr.homeSystemName = HomeStarSystem?.systemname;
+                        Cmdr.homeSystemAddress = HomeStarSystem?.systemAddress;
+                        Cmdr.homeSystemX = HomeStarSystem?.x;
+                        Cmdr.homeSystemY = HomeStarSystem?.y;
+                        Cmdr.homeSystemZ = HomeStarSystem?.z;
+                    }
+                    WriteCommander();
+                    OnPropertyChanged( nameof(HomeSystemName) );
+                }
+            }
+            finally
+            {
+                _isFetchingHomeSystem = false;
+            }
+        }
+
+        private static bool _isFetchingHomeSystem;
+
+        public ObservableCollection<Station> HomeStationOptions { get; } = new ObservableCollection<Station>();
+
+        private void UpdateHomeStationOptions ()
+        {
+            HomeStationOptions.Clear();
+            foreach ( var station in ( HomeStarSystem?.stations ?? Enumerable.Empty<Station>() )
+                     .OrderBy( s => s.name )
+                     .Prepend( new Station { name = Properties.Resources.no_station } )
+                     .ToHashSet() )
+            {
+                HomeStationOptions.Add( station );
+            }
+            OnPropertyChanged( nameof( HomeStationOptions ) );
+        }
 
         [CanBeNull]
         public Station HomeStation
@@ -175,6 +184,7 @@ namespace EddiCommanderMonitor
                         Cmdr.homeStationName = value?.name;
                         Cmdr.homeStationMarketID = value?.marketId;
                     }
+                    OnPropertyChanged();
                     WriteCommander();
                 }
             }
@@ -184,25 +194,11 @@ namespace EddiCommanderMonitor
         [CanBeNull]
         private StarSystem SquadronStarSystem // May be null when the commander hasn't set a squadron star system
         {
-            get
-            {
-                fetchSquadronSystem?.Wait( cts.Token );
-                return _squadronStarSystem;
-            }
+            get => _squadronStarSystem;
             set
             {
-                void childPropertyChangedHandler ( object sender, PropertyChangedEventArgs e )
-                {
-                    OnPropertyChanged();
-                }
-                if ( _squadronStarSystem != null ) { _squadronStarSystem.PropertyChanged -= childPropertyChangedHandler; }
-                if ( value != null ) { value.PropertyChanged += childPropertyChangedHandler; }
                 _squadronStarSystem = value;
                 OnPropertyChanged();
-                OnPropertyChanged( nameof( SquadronSystemName ) );
-                OnPropertyChanged( nameof( SquadronFactions) );
-                OnPropertyChanged( nameof( SelectedSquadronFaction ) );
-                WriteCommander();
             }
         }
 
@@ -210,43 +206,68 @@ namespace EddiCommanderMonitor
 
         public string SquadronSystemName
         {
-            get => SquadronStarSystem?.systemname;
+            get => _squadronStarSystem?.systemname;
             set
             {
-                if ( value != SquadronStarSystem?.systemname )
+                if ( value != _squadronStarSystem?.systemname )
                 {
-                    if ( value != null )
-                    {
-                        fetchSquadronSystem = Task.Run( async () =>
-                        {
-                            SquadronStarSystem = await EDDI.Instance.DataProvider
-                                .GetOrFetchStarSystemAsync( value );
-                            lock ( commanderLock )
-                            {
-                                Cmdr.squadronSystemName = SquadronStarSystem?.systemname;
-                                Cmdr.squadronSystemAddress = SquadronStarSystem?.systemAddress;
-                            }
-                        }, cts.Token );
-                        fetchSquadronSystem = null;
-                    }
-                    else
+                    if ( string.IsNullOrEmpty( value ) )
                     {
                         SquadronStarSystem = null;
-                        lock ( commanderLock )
-                        {
-                            Cmdr.squadronSystemName = null;
-                            Cmdr.squadronSystemAddress = null;
-                        }
-                    }
+                        return;
+                    }                    
+                    
+                    if ( _isFetchingSquadronSystem ) { return; }
+                    FetchSquadronSystemAsync( value ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
         }
 
-        public ObservableCollection<Faction> SquadronFactions => new ObservableCollection<Faction>( ( SquadronStarSystem?.factions ?? new List<Faction>() )
-            .OrderBy( f => f.name )
-            .Prepend( new Faction { name = Power.None.localizedName })
-            .ToHashSet() );
+        private async Task FetchSquadronSystemAsync(string systemName)
+        {
+            _isFetchingSquadronSystem = true;                    
+            try
+            {
+                var fetchedSystem = await Task.Run( () => EDDI.Instance.DataProvider
+                    .GetOrFetchStarSystemAsync( systemName ) ).ConfigureAwait( true );
+                
+                if ( fetchedSystem != null )
+                {
+                    SquadronStarSystem = fetchedSystem;
+                    UpdateSquadronFactions();
+                    lock ( commanderLock )
+                    {
+                        Cmdr.squadronSystemName = SquadronStarSystem?.systemname;
+                        Cmdr.squadronSystemAddress = SquadronStarSystem?.systemAddress;
+                    }
+                    WriteCommander();
+                    OnPropertyChanged( nameof(SquadronSystemName) );
+                }
+            }
+            finally
+            {
+                _isFetchingSquadronSystem = false;
+            }
+        }
 
+        private static bool _isFetchingSquadronSystem;
+
+        public ObservableCollection<Faction> SquadronFactions { get; } = new ObservableCollection<Faction>();
+
+        private void UpdateSquadronFactions ()
+        {
+            SquadronFactions.Clear();
+            foreach ( var faction in ( SquadronStarSystem?.factions ?? Enumerable.Empty<Faction>() )
+                     .OrderBy( f => f.name )
+                     .Prepend( new Faction { name = Power.None.localizedName } )
+                     .ToHashSet() )
+            {
+                SquadronFactions.Add( faction );
+            }
+            OnPropertyChanged( nameof( SquadronFactions ) );
+        }
+
+        [UsedImplicitly]
         public Faction SelectedSquadronFaction
         {
             get => _selectedSquadronFaction ?? 
@@ -263,6 +284,7 @@ namespace EddiCommanderMonitor
                     }
 
                     WriteCommander();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -287,6 +309,7 @@ namespace EddiCommanderMonitor
                         Cmdr.squadronpower = value == Power.None ? null : value;
                     }
                     WriteCommander();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -937,7 +960,7 @@ namespace EddiCommanderMonitor
         protected virtual void OnPropertyChanged ( [CallerMemberName] string propertyName = null )
         {
             PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
-        }        
+        }
 
         #endregion
     }
