@@ -790,6 +790,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mining Volley Repeater.
+        /// </summary>
+        public static string MiningVolleyRepeater {
+            get {
+                return ResourceManager.GetString("MiningVolleyRepeater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mirrored Surface Composite.
         /// </summary>
         public static string MirroredSurfaceComposite {
@@ -831,6 +840,15 @@ namespace EddiDataDefinitions.Properties {
         public static string MultiDroneControl_Mining {
             get {
                 return ResourceManager.GetString("MultiDroneControl_Mining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mining Multi Limpet Controller.
+        /// </summary>
+        public static string MultiDroneControl_Mining_Mk2 {
+            get {
+                return ResourceManager.GetString("MultiDroneControl_Mining_Mk2", resourceCulture);
             }
         }
         

@@ -302,4 +302,8 @@ If transporting via taxi or dropship</comment>
     <value>your</value>
     <comment>e.g. *your* Panther Clipper Mk. II</comment>
   </data>
+  <data name="yourType11" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Type-11 Prospector</comment>
+  </data>
 </root>

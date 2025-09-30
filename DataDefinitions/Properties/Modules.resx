@@ -661,4 +661,12 @@
     <value>Colonization Suite</value>
     <comment>Colonization Suite module</comment>
   </data>
+  <data name="MiningVolleyRepeater" xml:space="preserve">
+    <value>Mining Volley Repeater</value>
+    <comment>Module Hpt_MiningToolV2_Fixed_Large</comment>
+  </data>
+  <data name="MultiDroneControl_Mining_Mk2" xml:space="preserve">
+    <value>Mining Multi Limpet Controller</value>
+    <comment>Module Hpt_MiningToolV2_Fixed_Large</comment>
+  </data>
 </root>
