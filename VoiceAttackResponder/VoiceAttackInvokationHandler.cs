@@ -68,7 +68,7 @@ namespace EddiVoiceAttackResponder
                         InvokeSpeech();
                         break;
                     case "system comment":
-                        Task.Run( InvokeStarMapSystemCommentAsync );
+                        InvokeStarMapSystemCommentAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "initialize eddi":
                         if (App.FromVA && Application.Current != null)
@@ -119,10 +119,10 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "missionsroute":
                     case "route":
-                        Task.Run( InvokeRouteDetailsAsync );
+                        InvokeRouteDetailsAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "inara":
-                        Task.Run( InvokeInaraProfileDetailsAsync );
+                        InvokeInaraProfileDetailsAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) ); 
                         break;
                     case "volume":
                         InvokeVolume();
@@ -275,7 +275,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>Force-update EDDI's information</summary>
         private static void InvokeUpdateProfile ()
         {
-            _ = EDDI.Instance.refreshProfileAsync( true );
+            EDDI.Instance.refreshProfileAsync( true ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
         private static void OpenOrStoreURI ( string systemUri )

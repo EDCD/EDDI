@@ -217,7 +217,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(BodyScannedEvent));
 
-            await EDDI.Instance.updateCurrentSystemAsync( "Grea Bloae HH-T d4-44", 1520309296811UL );
+            await EDDI.Instance.updateCurrentSystemAsync( "Grea Bloae HH-T d4-44", 1520309296811UL ).ConfigureAwait( false );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem.systemname);
 

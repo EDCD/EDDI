@@ -60,7 +60,7 @@ namespace EddiEddnResponder
             eddnState.Location.GetLocationInfo( status );
         }
 
-        public void Handle(Event theEvent)
+        public void Handle(Event @event)
         {
             if (EDDI.Instance.inTelepresence)
             {
@@ -68,16 +68,16 @@ namespace EddiEddnResponder
                 return;
             }
 
-            if (string.IsNullOrEmpty(theEvent.raw))
+            if (string.IsNullOrEmpty(@event.raw))
             {
                 // A null value may indicate a synthetic event used to pass data within EDDI
                 // (which should always be ignored)
                 return;
             }
 
-            Logging.Debug("Received event " + theEvent.raw);
+            Logging.Debug("Received event " + @event.raw);
 
-            var data = Deserializtion.DeserializeData(theEvent.raw);
+            var data = Deserializtion.DeserializeData(@event.raw);
             var edType = JsonParsing.getString(data, "event");
 
             if (string.IsNullOrEmpty(edType) || data == null) { return; }
@@ -85,7 +85,7 @@ namespace EddiEddnResponder
             // Collect and hold necessary state data
             eddnState.GetStateInfo( edType, data );
 
-            if (theEvent.fromLoad)
+            if (@event.fromLoad)
             {
                 // Don't do anything further with data acquired during log loading,
                 // just update our internal state and move on

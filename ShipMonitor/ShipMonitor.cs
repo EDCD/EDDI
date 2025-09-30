@@ -146,7 +146,7 @@ namespace EddiShipMonitor
             }
             else if (@event is ShipSwappedEvent shipSwappedEvent)
             {
-                handleShipSwappedEvent(shipSwappedEvent);
+                handleShipSwappedEventAsync(shipSwappedEvent).GetAwaiter().GetResult();
             }
             else if (@event is ShipRenamedEvent shipRenamedEvent)
             {
@@ -222,11 +222,11 @@ namespace EddiShipMonitor
             }
             else if (@event is StoredModulesEvent storedModulesEvent)
             {
-                handleStoredModulesEvent(storedModulesEvent);
+                handleStoredModulesEventAsync( storedModulesEvent ).GetAwaiter().GetResult();
             }
             else if ( @event is StoredShipsEvent storedShipsEvent )
             {
-                handleStoredShipsEvent( storedShipsEvent );
+                handleStoredShipsEventAsync( storedShipsEvent ).GetAwaiter().GetResult();
             }
             else if (@event is BountyIncurredEvent bountyIncurredEvent)
             {
@@ -386,15 +386,14 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleShipSwappedEvent(ShipSwappedEvent @event)
+        private async Task handleShipSwappedEventAsync(ShipSwappedEvent @event)
         {
             if (@event.timestamp > updatedAt)
             {
                 updatedAt = @event.timestamp;
 
                 // Set ship hull and module health with a profile refresh before we write the stored ship.
-                var refreshFromProfileTask = Task.Run( async () => await EDDI.Instance.refreshProfileAsync() );
-                Task.WaitAll( refreshFromProfileTask );
+                await EDDI.Instance.refreshProfileAsync().ConfigureAwait(false);
 
                 // Update our current ship
                 SetCurrentShip(@event.shipid, @event.edModel);
@@ -605,7 +604,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleStoredShipsEvent ( StoredShipsEvent @event )
+        private async Task handleStoredShipsEventAsync ( StoredShipsEvent @event )
         {
             if ( @event.timestamp > updatedAt )
             {
@@ -614,9 +613,10 @@ namespace EddiShipMonitor
                 {
                     // Update ship location data in the event
                     var quickSystems =
-                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemsAsync(
-                            @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false ).GetAwaiter().GetResult() ??
-                        new List<StarSystem>();
+                        await EDDI.Instance.DataProvider
+                            .GetOrFetchQuickStarSystemsAsync(
+                                @event.shipyard.Select( sh => sh.starsystem ).Distinct().ToArray(), false )
+                            .ConfigureAwait( false ) ?? new List<StarSystem>();
 
                     foreach ( var ship in @event.shipyard )
                     {
@@ -692,7 +692,7 @@ namespace EddiShipMonitor
             }
         }
 
-        internal void handleStoredModulesEvent(StoredModulesEvent @event)
+        internal async Task handleStoredModulesEventAsync(StoredModulesEvent @event)
         {
             if (@event.timestamp > updatedAt)
             {
@@ -700,8 +700,10 @@ namespace EddiShipMonitor
                 if (@event.storedmodules != null)
                 {
                     var quickSystems =
-                        EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemsAsync(
-                            @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), true ).GetAwaiter().GetResult() ?? new List<StarSystem>();
+                        await EDDI.Instance.DataProvider
+                            .GetOrFetchQuickStarSystemsAsync(
+                                @event.storedmodules.Select( m => m.system ).Distinct().ToArray(), true )
+                            .ConfigureAwait( false ) ?? new List<StarSystem>();
                     foreach ( var module in @event.storedmodules )
                     {
                         var moduleSystem = quickSystems.FirstOrDefault( system => system.systemname == module.system );
@@ -1190,44 +1192,47 @@ namespace EddiShipMonitor
         {
             if (@event is ShipLoadoutEvent shipLoadoutEvent)
             {
-                posthandleShipLoadoutEvent(shipLoadoutEvent);
+                posthandleShipLoadoutEventAsync( shipLoadoutEvent )
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
             else if ( @event is ShipRepairDroneEvent shipRepairDroneEvent )
             {
-                posthandleShipRepairDroneEvent( shipRepairDroneEvent );
+                posthandleShipRepairDroneEventAsync( shipRepairDroneEvent )
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
             else if ( @event is UndockedEvent undockedEvent )
             {
-                posthandleUndockedEvent( undockedEvent );
+                posthandleUndockedEventAsync( undockedEvent )
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
         }
 
-        private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
+        private async Task posthandleShipLoadoutEventAsync(ShipLoadoutEvent @event)
         {
             if (!@event.fromLoad)
             {
                 // The ship may have Frontier API specific data, request a profile refresh from the Frontier API shortly after switching
-                refreshProfileDelayed();
+                await refreshProfileDelayedAsync().ConfigureAwait(false);
             }
         }
         
-        private void posthandleShipRepairDroneEvent ( ShipRepairDroneEvent @event )
+        private async Task posthandleShipRepairDroneEventAsync ( ShipRepairDroneEvent @event )
         {
             // This event does not report the percentage of hull repaired.
             // It reports the integrity repaired (which we can't use since we do not calculate integrity).
             // Set ship hull and module health with a profile refresh.
             if ( !@event.fromLoad )
             {
-                refreshProfileDelayed();
+                await refreshProfileDelayedAsync().ConfigureAwait(false);
             }
         }
 
-        private void posthandleUndockedEvent ( UndockedEvent @event )
+        private async Task posthandleUndockedEventAsync ( UndockedEvent @event )
         {
             // Call refreshProfile() to ensure that our ship is up-to-date
             if ( !@event.fromLoad )
             {
-                refreshProfileDelayed();
+                await refreshProfileDelayedAsync().ConfigureAwait(false);
             }
         }
 
@@ -1335,7 +1340,7 @@ namespace EddiShipMonitor
                 }
                 else
                 {
-                    refreshProfileDelayed();
+                    refreshProfileDelayedAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
 
@@ -2004,22 +2009,12 @@ namespace EddiShipMonitor
             return edModel.Contains("_taxi");
         }
 
-        private void refreshProfileDelayed()
+        private async Task refreshProfileDelayedAsync()
         {
             if ( !profileRefreshCancellationTokenSource.IsCancellationRequested )
             {
-                try
-                {
-                    Task.Run( async () =>
-                    {
-                        await Task.Delay( TimeSpan.FromSeconds( profileRefreshDelaySeconds ) );
-                        await EDDI.Instance.refreshProfileAsync();
-                    }, profileRefreshCancellationTokenSource.Token );
-                }
-                catch ( OperationCanceledException )
-                {
-                    // Nothing to do here, the task was cancelled.
-                }
+                await Task.Delay( TimeSpan.FromSeconds( profileRefreshDelaySeconds ), profileRefreshCancellationTokenSource.Token ).ConfigureAwait( false );
+                await EDDI.Instance.refreshProfileAsync().ConfigureAwait( false );
             }
         }
 

@@ -11,7 +11,7 @@ internal class ChorusSampleProvider : EffectSampleProvider
     // Mix
     private const double DryAnchorMin           = 0.05;  // prevent dry loss from falling below this value
     private const double WetCurveAlpha          = 0.50;  // concave wet curve (quickly grows to near full power at low fx); 
-    private const double MaxMakeupGainDb        = 15.0;  // up to +15 dB to compensate for chorus energy loss
+    private const double MaxMakeupGainDb        = 8.00;  // up to +8.0 dB to compensate for chorus energy loss
 
     // Delay spread
     private const float  CenterDelayMs          = 16f;   // perceptual “body” region

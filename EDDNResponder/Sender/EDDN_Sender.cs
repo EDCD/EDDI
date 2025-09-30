@@ -45,7 +45,8 @@ namespace EddiEddnResponder.Sender
         public static void SendToEDDN ( string schema, IDictionary<string, object> data, EDDNState eddnState,
             string gameVersionOverride = null )
         {
-            Task.Run( () => SendAsync( schema, data, eddnState, gameVersionOverride ) );
+            SendAsync( schema, data, eddnState, gameVersionOverride )
+                .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
         private static async Task SendAsync(string schema, IDictionary<string, object> data, EDDNState eddnState,

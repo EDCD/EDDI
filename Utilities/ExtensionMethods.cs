@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace System
@@ -127,6 +128,54 @@ namespace System
             }
 
             return arrayDistance[ sourceStringLength, targetStringLength ];
+        }
+    }
+    
+    public static class TaskExtensions
+    {
+        /// <summary>
+        /// Safely fire-and-forget a Task.
+        /// Exceptions are observed and logged via the optional handler.
+        /// </summary>
+        /// <param name="task">The task to run in the background.</param>
+        /// <param name="onError">Optional exception handler (e.g., logging).</param>
+        public static void SafeFireAndForget ( this Task task, Action<Exception> onError = null )
+        {
+            if ( task == null )
+            {
+                throw new ArgumentNullException( nameof(task) );
+            }
+
+            // If already completed successfully, nothing to do
+            if ( task.Status == TaskStatus.RanToCompletion )
+            {
+                return;
+            }
+
+            // Otherwise, observe it asynchronously
+            _ = HandleAsync( task, onError );
+        }
+
+        private static async Task HandleAsync ( Task task, Action<Exception> onError )
+        {
+            try
+            {
+                await task.ConfigureAwait( false );
+            }
+            catch ( Exception ex )
+            {
+                try
+                {
+                    onError?.Invoke(ex);
+                }
+                catch
+                {
+                    // Swallow secondary exceptions from the handler
+                }
+
+                // At minimum, trace it so it’s not lost
+                Diagnostics.Trace.TraceError( "Background task failed: " + ex );
+            }
         }
     }
 }

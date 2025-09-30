@@ -117,17 +117,16 @@ namespace EddiJournalMonitor
                         // Simulate a full ship system shutdown and reboot.
                         // Suppress additional shutdown events during this time.
                         ShipShutdownCancellationTokenSource = new CancellationTokenSource();
-                        var startTime = DateTime.UtcNow;
-                        Task.Run( async () =>
-                        {
-                            // The ship reboots about 30 seconds after the shutdown occurs unless canceled early.
-                            await Task.Delay( TimeSpan.FromSeconds( 30 ), ShipShutdownCancellationTokenSource.Token ).ConfigureAwait(false);
-                            EDDI.Instance.enqueueEvent(
-                                new ShipShutdownRebootEvent( shipShutdownEvent.timestamp +
-                                                             ( DateTime.UtcNow - startTime ) ) );
-                            ShipShutdownCancellationTokenSource?.Dispose();
-                            ShipShutdownCancellationTokenSource = null;
-                        } );
+                        shipShutdownEvent
+                            .ScheduleRebootAsync( e => Task.Run( () =>
+                                {
+                                    EDDI.Instance.enqueueEvent( e );
+                                    ShipShutdownCancellationTokenSource?.Dispose();
+                                    ShipShutdownCancellationTokenSource = null;
+                                } ),
+                                ShipShutdownCancellationTokenSource.Token )
+                            .SafeFireAndForget( ex => Logging.Error( "Ship reboot scheduling failed", ex ) );
+                        
                     }
                 }
             }

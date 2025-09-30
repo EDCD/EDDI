@@ -101,7 +101,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                 try
                 {
                     synth.Voice = SpeechSynthesizer.AllVoices.FirstOrDefault( v => v.DisplayName == voiceDetails.name );
-                    _ = await synth.SynthesizeTextToStreamAsync( "" ).AsTask().ConfigureAwait( false );
+                    await synth.SynthesizeTextToStreamAsync( "" ).AsTask().ConfigureAwait( false );
                     return true;
                 }
                 catch ( Exception e )

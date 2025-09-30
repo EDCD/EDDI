@@ -337,28 +337,27 @@ namespace EddiDataProviderService
             {
                 if ( await rdr.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
                 {
-                    for ( var i = 0; i < rdr.FieldCount; i++ )
+                    if ( rdr.HasRows )
                     {
-                        if ( fieldMappings.TryGetValue( rdr.GetName( i ), out var mapAction ) )
+                        for ( var i = 0; i < rdr.FieldCount; i++ )
                         {
-                            mapAction( rdr, i );
+                            if ( fieldMappings.TryGetValue( rdr.GetName( i ), out var mapAction ) )
+                            {
+                                mapAction( rdr, i );
+                            }
                         }
+                        return new DatabaseStarSystem( systemName, systemAddress ?? 0, starSystemJson )
+                        {
+                            comment = comment,
+                            lastUpdated = lastUpdated,
+                            lastVisit = lastVisit,
+                            totalVisits = totalVisits
+                        };
                     }
                 }
             }
 
-            if ( SCHEMA_VERSION >= 2 && systemAddress is null )
-            {
-                throw new InvalidOperationException( "System address cannot be null for schema version 2 or higher." );
-            }
-
-            return new DatabaseStarSystem( systemName, systemAddress ?? 0, starSystemJson )
-            {
-                comment = comment,
-                lastUpdated = lastUpdated,
-                lastVisit = lastVisit,
-                totalVisits = totalVisits
-            };
+            return null;
         }
 
         public async Task SaveStarSystemAsync( StarSystem starSystem, CancellationToken cancellationToken )

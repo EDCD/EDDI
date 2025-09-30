@@ -437,8 +437,10 @@ namespace EddiCore
                 Task.WaitAll(essentialAsyncTasks.ToArray(), eventHandlerTS.Token );
 
                 // Tasks we can start asynchronously and don't need to wait for
-                _ = updateDestinationSystemAsync( configuration.DestinationSystemAddress, configuration.DestinationSystem );
-                _ = InitializeFrontierApiServiceAsync();
+                updateDestinationSystemAsync( configuration.DestinationSystemAddress, configuration.DestinationSystem )
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                InitializeFrontierApiServiceAsync()
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
                 StatusService.Instance.StatusChanged += OnStatusChangedAsync;
 
@@ -1372,7 +1374,8 @@ namespace EddiCore
                     // Refresh station data
                     if (@event.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
 
-                    _ = Task.Run( () => conditionallyRefreshStationProfileAsync( @event.systemname, @event.carrierID ?? 0 ) );
+                    conditionallyRefreshStationProfileAsync( @event.systemname, @event.carrierID ?? 0 )
+                        .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
             else
@@ -1648,7 +1651,8 @@ namespace EddiCore
                     // Refresh station data
                     if ( theEvent.fromLoad ) { return true; } // Don't fire this event when loading pre-existing logs
 
-                    _ = Task.Run( () => conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 ) );
+                    conditionallyRefreshStationProfileAsync( theEvent.systemname, theEvent.marketId ?? 0 )
+                        .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
             else if ( theEvent.latitude != null && theEvent.longitude != null )
@@ -1736,7 +1740,8 @@ namespace EddiCore
                     return false;
                 } // Don't fire this event when loading pre-existing logs or if we were already at this station
 
-                _ = Task.Run( () => conditionallyRefreshStationProfileAsync( @event.system, @event.marketId ?? 0 ) );
+                conditionallyRefreshStationProfileAsync( @event.system, @event.marketId ?? 0 )
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
 
             return true;
@@ -1765,7 +1770,8 @@ namespace EddiCore
                     return false;
                 }
 
-                _ = Task.Run( () => conditionallyRefreshStationProfileAsync( CurrentStarSystem.systemname, @event.marketId ?? 0 ) );
+                conditionallyRefreshStationProfileAsync( CurrentStarSystem.systemname, @event.marketId ?? 0 )
+                    .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
 
             return true;

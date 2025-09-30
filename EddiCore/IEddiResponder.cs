@@ -43,7 +43,7 @@ namespace EddiCore
         /// <summary>
         /// Called when an event is found. Must not change global states.
         /// </summary>
-        void Handle(Event theEvent);
+        void Handle(Event @event);
 
         /// <summary>
         /// Called to receive updates from the StatusService

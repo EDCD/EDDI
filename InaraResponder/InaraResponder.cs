@@ -68,7 +68,7 @@ namespace EddiInaraResponder
         {
             Stop();
             inaraService.Start(EDDI.Instance.EddiIsBeta());
-            Task.Run( FetchInaraCommanderIdAsync );
+            FetchInaraCommanderIdAsync().GetAwaiter().GetResult();
         }
 
         private async Task FetchInaraCommanderIdAsync ()
@@ -91,9 +91,9 @@ namespace EddiInaraResponder
         public void HandleStatus ( Status status )
         { }
 
-        public void Handle(Event theEvent)
+        public void Handle(Event @event)
         {
-            if ( theEvent is null )
+            if ( @event is null )
             {
                 return;
             }
@@ -116,7 +116,7 @@ namespace EddiInaraResponder
                 return;
             }
 
-            if ( ( DateTime.UtcNow - theEvent.timestamp ).TotalDays > 30 )
+            if ( ( DateTime.UtcNow - @event.timestamp ).TotalDays > 30 )
             {
                 // We don't try to send any data with a timestamp that is more than a month old
                 return;
@@ -125,7 +125,7 @@ namespace EddiInaraResponder
             // Handle sending events to Inara asynchronously
             try
             {
-                Task.Run( () => _Handle( theEvent ) ).ConfigureAwait( false );
+                Task.Run( () => _Handle( @event ) ).ConfigureAwait( false );
             }
             catch ( OperationCanceledException )
             {

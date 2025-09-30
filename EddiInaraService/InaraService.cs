@@ -54,7 +54,7 @@ namespace EddiInaraService
             {
                 Logging.Debug( "Starting Inara service background sync." );
                 eddiIsBeta = _eddiIsBeta;
-                Task.Run( BackgroundSyncAsync );
+                BackgroundSyncAsync().SafeFireAndForget(ex => Logging.Error( ex.Message, ex ) );
             }
         }
 
@@ -65,7 +65,7 @@ namespace EddiInaraService
                 Logging.Debug( "Stopping Inara service background sync." );
                 syncCancellationTS.Cancel();
                 // Clean up by sending anything left in the queue.
-                Task.Run( () => SendAPIEventsAsync( queuedAPIEvents.ToList() ) );
+                SendAPIEventsAsync( queuedAPIEvents.ToList() ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
         }
 
@@ -90,14 +90,14 @@ namespace EddiInaraService
                             {
                                 // Once we hit zero queued events, wait a couple more seconds for any concurrent events to register
                                 await Task.Delay( 2000, syncCancellationTS.Token ).ConfigureAwait(false);
-                                if ( queuedAPIEvents.Count > 0 )
-                                { continue; }
+                                if ( queuedAPIEvents.Count > 0 ) { continue; }
+                                
                                 // No additional events registered, send any events we have in our holding queue
                                 if ( holdingQueue.Count > 0 )
                                 {
                                     var sendingQueue = holdingQueue.ToList();
                                     holdingQueue = new List<InaraAPIEvent>();
-                                    await Task.Run( () => SendAPIEventsAsync( sendingQueue ), syncCancellationTS.Token ).ConfigureAwait(false);
+                                    await SendAPIEventsAsync( sendingQueue ).ConfigureAwait(false);
                                     await Task.Delay( !tooManyRequests
                                         ? syncIntervalMilliSeconds
                                         : delayedSyncIntervalMilliSeconds, syncCancellationTS.Token ).ConfigureAwait(false);

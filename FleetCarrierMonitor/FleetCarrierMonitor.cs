@@ -522,61 +522,61 @@ namespace EddiFleetCarrierMonitor
             {
                 if ( cjr.carrierType == StationModel.FleetCarrier )
                 {
-                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
+                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
                 else if ( cjr.carrierType == StationModel.SquadronCarrier )
                 {
-                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
+                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
             else if ( @event is CarrierJumpEngagedEvent cje )
             {
                 if ( cje.carrierType == StationModel.FleetCarrier )
                 {
-                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
+                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
                 else if ( cje.carrierType == StationModel.SquadronCarrier )
                 {
-                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
+                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
             else if ( @event is CarrierJumpedEvent cj )
             {
                 if ( cj.carrierType == StationModel.FleetCarrier )
                 {
-                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
+                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
                 else if ( cj.carrierType == StationModel.SquadronCarrier )
                 {
-                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
+                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
             else if ( @event is CarrierPurchasedEvent cp )
             {
                 if ( cp.carrierType == StationModel.FleetCarrier )
                 {
-                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
+                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
                 else if ( cp.carrierType == StationModel.SquadronCarrier )
                 {
-                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
+                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
             else if ( @event is CarrierStatsEvent cs )
             {
                 if ( cs.carrierType == StationModel.FleetCarrier )
                 {
-                    _ = RefreshFleetCarrierFromFrontierAPIAsync();
+                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
                 else if ( cs.carrierType == StationModel.SquadronCarrier )
                 {
-                    _ = RefreshSquadronCarrierFromFrontierAPIAsync();
+                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 }
             }
             else if ( @event is CommanderContinuedEvent )
             {
-                _ = RefreshFleetCarrierFromFrontierAPIAsync();
-                _ = RefreshSquadronCarrierFromFrontierAPIAsync();
+                RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
         }
 
@@ -606,8 +606,8 @@ namespace EddiFleetCarrierMonitor
             if ( oldstate != CompanionAppService.State.Authorized &&
                  newstate is CompanionAppService.State.Authorized )
             {
-                _ = RefreshFleetCarrierFromFrontierAPIAsync();
-                _ = RefreshSquadronCarrierFromFrontierAPIAsync();
+                RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
         }
 

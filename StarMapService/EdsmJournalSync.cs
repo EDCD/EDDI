@@ -1,6 +1,7 @@
 ﻿using EddiConfigService;
 using EddiConfigService.Configurations;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -33,7 +34,7 @@ namespace EddiStarMapService
             {
                 syncCancellationTS = new CancellationTokenSource();
                 Logging.Debug( "Enabling EDSM Responder event sync." );
-                Task.Run( BackgroundJournalSyncAsync );
+                BackgroundJournalSyncAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
         }
 

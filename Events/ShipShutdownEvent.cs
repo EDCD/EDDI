@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiEvents
@@ -15,5 +17,24 @@ namespace EddiEvents
 
         public ShipShutdownEvent(DateTime timestamp) : base(timestamp, NAME)
         { }
+
+        public async Task ScheduleRebootAsync (
+            Func<Event, Task> enqueueEvent,
+            CancellationToken token )
+        {
+            // The ship reboots about 30 seconds after the shutdown occurs unless canceled early.
+            var startTime = DateTime.UtcNow;
+
+            try
+            {
+                await Task.Delay( TimeSpan.FromSeconds( 30 ), token ).ConfigureAwait( false );
+                var rebootEvent = new ShipShutdownRebootEvent( this.timestamp + (DateTime.UtcNow - startTime));
+                await enqueueEvent( rebootEvent ).ConfigureAwait(false);
+            }
+            catch ( OperationCanceledException )
+            {
+                // expected, ignore
+            }
+        }
     }
 }

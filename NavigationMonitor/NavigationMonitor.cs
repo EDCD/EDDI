@@ -185,7 +185,7 @@ namespace EddiNavigationMonitor
         {
             if (@event is NavRouteEvent navRouteEvent)
             {
-                _ = posthandleNavRouteEventAsync( navRouteEvent );
+                posthandleNavRouteEventAsync( navRouteEvent ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
             else if (@event is LiftoffEvent liftoffEvent)
             {
@@ -205,12 +205,14 @@ namespace EddiNavigationMonitor
 
         private void handleCarrierJumpedEvent ( CarrierJumpedEvent @event )
         {
-            _ = UpdateStellarLocationDataAsync(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad);
+            UpdateStellarLocationDataAsync(@event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad)
+                .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
         private void handleCarrierJumpEngagedEvent(CarrierJumpEngagedEvent @event)
         {
-            _ = UpdateCarrierRouteLocationDataAsync(@event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad);
+            UpdateCarrierRouteLocationDataAsync(@event.timestamp, @event.systemname, @event.systemAddress, @event.fromLoad)
+                .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
         private void handleDockedEvent(DockedEvent @event)
@@ -234,7 +236,8 @@ namespace EddiNavigationMonitor
                     // If we are at our fleet carrier, make sure that the carrier location is up to date.
                     if ( @event.marketId != null && FleetCarrier != null && @event.marketId == FleetCarrier.carrierID )
                     {
-                        _ = UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.system, @event.systemAddress, @event.fromLoad );
+                        UpdateCarrierRouteLocationDataAsync( @event.timestamp, @event.system, @event.systemAddress, @event.fromLoad )
+                            .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                     }
                 }
             }
@@ -256,7 +259,8 @@ namespace EddiNavigationMonitor
 
         private void handleJumpedEvent ( JumpedEvent @event )
         {
-            _ = UpdateStellarLocationDataAsync( @event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad );
+            UpdateStellarLocationDataAsync( @event.timestamp, @event.systemAddress, @event.x, @event.y, @event.z, @event.fromLoad )
+                .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
         private async Task handleNavRouteEventAsync(NavRouteEvent @event)

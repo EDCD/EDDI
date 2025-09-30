@@ -53,13 +53,27 @@ namespace EddiEdsmResponder
 
         public void Stop()
         {
-            Task.WaitAll( Task.Run( async () =>
-            {
-                await EDDI.Instance.DataProvider.StopEdsmJournalAsync().ConfigureAwait( false );
-            } ) );
+            EDDI.Instance.DataProvider.StopEdsmJournalAsync().GetAwaiter().GetResult();
             // Stop flight log synchronization
             updateThreadCancellationTokenSource?.Cancel();
-            updateTask = null;
+            if ( updateTask == null ) { return; }
+
+            try
+            {
+                updateTask.GetAwaiter().GetResult(); // wait for completion
+            }
+            catch ( OperationCanceledException )
+            {
+                // expected, ignore
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( "Background sync failed to shutdown gracefully.", ex );
+            }
+            finally
+            {
+                updateTask = null;
+            }
         }
 
         public void Reload ()
@@ -72,21 +86,11 @@ namespace EddiEdsmResponder
             {
                 // Spin off a task to download & sync flight logs & system comments from EDSM in the background 
                 updateThreadCancellationTokenSource = new CancellationTokenSource();
-                updateTask = Task.Run( async () =>
-                {
-                    try
-                    {
-                        await EDDI.Instance.DataProvider.SyncFromStarMapServiceAsync( ConfigService.Instance.edsmConfiguration?.lastFlightLogSync ).ConfigureAwait(false);
-                    }
-                    catch ( TaskCanceledException )
-                    {
-                        // Nothing to do here
-                    }
-                }, updateThreadCancellationTokenSource.Token );
+                updateTask = EDDI.Instance.DataProvider.SyncFromStarMapServiceAsync( ConfigService.Instance.edsmConfiguration?.lastFlightLogSync );
             }
         }
 
-        public void Handle ( Event theEvent )
+        public void Handle ( Event @event )
         {
             if ( EDDI.Instance.inTelepresence )
             {
@@ -108,27 +112,29 @@ namespace EddiEdsmResponder
 
             // Retrieve applicable transient game state info (metadata) 
             // for the event and send the event with transient info to EDSM
-            Task.Run( async () =>
+            ProcessEventAsync( @event )
+                .SafeFireAndForget( ex => Logging.Error( "Failed to handle event for EDSM", ex ) );
+        }
+
+        private async Task ProcessEventAsync ( Event @event )
+        {
+            try
             {
-                IDictionary<string, object> eventObject = null;
-                try
-                {
-                    eventObject = await prepareEventDataAsync( theEvent ).ConfigureAwait( false );
-                }
-                catch ( TaskCanceledException )
-                {
-                    // Nothing to do here
-                }
-                catch ( Exception ex )
-                {
-                    Logging.Error( "Failed to prepare event meta-data for submittal to EDSM", ex );
-                }
+                var eventObject = await prepareEventDataAsync(@event).ConfigureAwait(false);
 
                 if ( eventObject != null && !EDDI.Instance.gameIsBeta )
                 {
                     EDDI.Instance.DataProvider.EnqueueEdsmEvent( eventObject );
                 }
-            } );
+            }
+            catch ( TaskCanceledException )
+            {
+                // Expected, ignore
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( "Failed to prepare event meta-data for submittal to EDSM", ex );
+            }
         }
 
         private async Task<IDictionary<string, object>> prepareEventDataAsync(Event theEvent)
