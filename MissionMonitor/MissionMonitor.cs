@@ -355,7 +355,7 @@ namespace EddiMissionMonitor
                         {
                             system.visited = true;
                             var waypointSystemName = mission.destinationsystems?
-                                .FirstOrDefault(s => s.visited == false)?.systemName;
+                                .FirstOrDefault(s => !s.visited)?.systemName;
                             if ( !string.IsNullOrEmpty( waypointSystemName ) )
                             {
                                 // Set destination system to next in chain & trigger a 'Mission redirected' event

@@ -55,7 +55,7 @@ namespace EddiSpeechResponder.ScriptResolverService
                 Logging.Debug($"No {name} script found");
                 return null;
             }
-            if (script.Enabled == false)
+            if (!script.Enabled)
             {
                 Logging.Debug($"{name} script disabled");
                 return null;

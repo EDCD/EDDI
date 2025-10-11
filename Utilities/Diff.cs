@@ -297,7 +297,7 @@ namespace Utilities
             StartPos = 0;
             while (StartPos < Data.Length)
             {
-                while ((StartPos < Data.Length) && (Data.modified[StartPos] == false))
+                while ((StartPos < Data.Length) && !Data.modified[StartPos])
                 {
                     StartPos++;
                 }
