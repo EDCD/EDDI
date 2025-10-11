@@ -12,6 +12,7 @@ namespace EddiSpeechService.SpeechEffects
             int distortionLevel, int echoDelay, bool radio )
         {
             float[] allSamples;
+            int channels;
             int sampleRate;
 
             // Step 1: Read all samples into memory
@@ -32,10 +33,11 @@ namespace EddiSpeechService.SpeechEffects
                 }
 
                 allSamples = samples.ToArray();
+                channels = reader.WaveFormat.Channels;
             }
 
             // Wrap in a memory‑backed provider
-            ISampleProvider sampleProvider = new BufferedSampleProvider(allSamples, sampleRate);
+            ISampleProvider sampleProvider = new BufferedSampleProvider(allSamples, sampleRate, channels);
 
             // Stage 1: Resample if needed
             var targetSampleRate = 44100;
@@ -46,21 +48,26 @@ namespace EddiSpeechService.SpeechEffects
             }
 
             // Stage 2: Set our base volume
-            sampleProvider = new VolumeSampleProvider( sampleProvider ) { Volume = 2.0f * targetSampleRate / sampleRate };
+            sampleProvider = new VolumeSampleProvider( sampleProvider ) { Volume = 1.0f };
 
             // Stage 3: Effects
             var damageAdjustedFxLevel = DamageAdjustedFxLevel(distortionLevel, fxLevel);
             Logging.Debug( $"Effects level is {damageAdjustedFxLevel}, echo delay is {echoDelay}" );
-            sampleProvider = new ChorusSampleProvider( sampleProvider, sampleRate, fxLevel, damageAdjustedFxLevel );
-            sampleProvider = new ReverbSampleProvider( sampleProvider, sampleRate, fxLevel, damageAdjustedFxLevel );
-            sampleProvider = new DistortionSampleProvider( sampleProvider, distortionLevel );
-            sampleProvider = radio
-                ? new RadioSampleProvider( sampleProvider, sampleRate )
-                : new EchoSampleProvider( sampleProvider, sampleRate, fxLevel, echoDelay ) as ISampleProvider;
+            if ( radio )
+            {
+                sampleProvider = new RadioSampleProvider( sampleProvider, sampleRate );
+            }
+            else
+            {
+                sampleProvider = new DistortionSampleProvider( sampleProvider, distortionLevel );
+                sampleProvider = new ChorusSampleProvider( sampleProvider, sampleRate, fxLevel, damageAdjustedFxLevel );
+                sampleProvider = new EchoSampleProvider( sampleProvider, sampleRate, fxLevel, echoDelay );
+            }
 
             // Stage 4: Normalize and Limit
             sampleProvider = new NormalizeSampleProvider( sampleProvider, targetVolume );
             sampleProvider = new LimiterSampleProvider( sampleProvider, thresholdDb: -0.5f );
+            sampleProvider = new VolumeSampleProvider( sampleProvider ) { Volume = 3.0f };
 
             // Stage 5: Convert to 16‑bit PCM and mono
             var waveProvider = sampleProvider.ToWaveProvider16();

@@ -9,7 +9,7 @@
         private readonly float _release; // release factor for smoothing
         private float _gain;
 
-        public LimiterSampleProvider ( ISampleProvider source, float thresholdDb = -0.5f, float releaseMs = 50f )
+        public LimiterSampleProvider ( ISampleProvider source, float thresholdDb = -0.5f, float releaseMs = 10f )
             : base( source )
         {
             // Convert dB threshold to linear
