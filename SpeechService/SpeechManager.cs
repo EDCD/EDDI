@@ -201,7 +201,7 @@ namespace EddiSpeechService
                     // Fade out on cancellation
                     fadeProvider.BeginFadeOut( ActiveSpeechFadeOutMilliseconds );
                     // ReSharper disable once MethodSupportsCancellation
-                    await Task.Delay( (int)ActiveSpeechFadeOutMilliseconds ).ConfigureAwait(false);
+                    await Task.Delay( (int)ActiveSpeechFadeOutMilliseconds + 50 ).ConfigureAwait(false);
                 }
                 catch ( Exception e )
                 {

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Utilities;
@@ -101,18 +102,46 @@ namespace EddiUI
 
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
-            testShip.health = 100;
-            string message = String.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-            SpeechService.Instance.Say(testShip, message, 0);
+            if ( SpeechService.Instance.eddiAudioPlaying || SpeechService.Instance.eddiSpeaking )
+            {
+                SpeechService.Instance.StopAudio();
+                SpeechService.Instance.ShutUp();
+                return;
+            }
+
+            try
+            {
+                var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
+                testShip.health = 100;
+                var message = string.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
+                Task.Run( () => SpeechService.Instance.Say( testShip, message, 0 ) );
+            }
+            catch ( TaskCanceledException )
+            {
+                // Nothing to do here
+            }
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
-            testShip.health = 20;
-            string message = String.Format(Properties.Resources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-            SpeechService.Instance.Say(testShip, message, 0);
+            if ( SpeechService.Instance.eddiAudioPlaying || SpeechService.Instance.eddiSpeaking )
+            {
+                SpeechService.Instance.StopAudio();
+                SpeechService.Instance.ShutUp();
+                return;
+            }
+
+            try
+            {
+                var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
+                testShip.health = 20;
+                var message = string.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
+                Task.Run( () => SpeechService.Instance.Say( testShip, message, 0 ) );
+            }
+            catch ( TaskCanceledException )
+            {
+                // Nothing to do here
+            }
         }
 
         private void disableIpaUpdated(object sender, RoutedEventArgs e)
