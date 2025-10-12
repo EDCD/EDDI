@@ -202,7 +202,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2019-04-22T11:51:30Z\", \"event\":\"FactionKillBond\", \"Reward\":32473, \"AwardingFaction\":\"Constitution Party of Aerial\", \"VictimFaction\":\"Radio Sidewinder Crew\" }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
-            crimeMonitor._handleBondAwardedEvent( (BondAwardedEvent)events[ 0 ] );
+            await crimeMonitor._handleBondAwardedEventAsync( (BondAwardedEvent)events[ 0 ] ).ConfigureAwait(false);
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.IsNotNull(record);
             Assert.AreEqual(3, record.factionReports.Count);
@@ -212,7 +212,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2019-04-22T03:13:36Z\", \"event\":\"Bounty\", \"Rewards\":[ { \"Faction\":\"Calennero State Industries\", \"Reward\":22265 } ], \"Target\":\"adder\", \"TotalReward\":22265, \"VictimFaction\":\"Natural Amemakarna Movement\" }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
-            crimeMonitor._handleBountyAwardedEvent( (BountyAwardedEvent)events[ 0 ], true );
+            await crimeMonitor._handleBountyAwardedEventAsync( (BountyAwardedEvent)events[ 0 ], true ).ConfigureAwait(false);
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             Assert.IsNotNull(record);
             Assert.AreEqual(2, record.factionReports.Count(r => r.bounty && r.crimeDef == Crime.None));
@@ -222,7 +222,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2019-04-22T03:21:46Z\", \"event\":\"CommitCrime\", \"CrimeType\":\"dockingMinorTresspass\", \"Faction\":\"Constitution Party of Aerial\", \"Fine\":400 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
-            crimeMonitor._handleFineIncurredEvent( (FineIncurredEvent)events[ 0 ] );
+            await crimeMonitor._handleFineIncurredEventAsync( (FineIncurredEvent)events[ 0 ] ).ConfigureAwait(false);
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.IsNotNull(record);
             Assert.AreEqual(1, record.factionReports.Count(r => !r.bounty && r.crimeDef != Crime.None));
@@ -232,7 +232,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2019-04-13T03:58:29Z\", \"event\":\"CommitCrime\", \"CrimeType\":\"assault\", \"Faction\":\"Calennero State Industries\", \"Victim\":\"Christofer\", \"Bounty\":400 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
-            crimeMonitor._handleBountyIncurredEvent( (BountyIncurredEvent)events[ 0 ] );
+            await crimeMonitor._handleBountyIncurredEventAsync( (BountyIncurredEvent)events[ 0 ] ).ConfigureAwait(false);
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             // The fine should be converted to a bounty, resulting in two bounty records.
             Assert.IsNotNull(record);
@@ -322,7 +322,7 @@ namespace Tests
             // Set a bounty with `Radio Sidewinder Crew`
             events = JournalMonitor.ParseJournalEntry(line1);
             Assert.AreEqual(1, events.Count);
-            crimeMonitor._handleBountyIncurredEvent( (BountyIncurredEvent)events[ 0 ] );
+            await crimeMonitor._handleBountyIncurredEventAsync( (BountyIncurredEvent)events[ 0 ] ).ConfigureAwait( false );
             Assert.AreEqual(1, crimeMonitor.criminalrecord.Count);
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Radio Sidewinder Crew");
             Assert.IsNotNull(record);

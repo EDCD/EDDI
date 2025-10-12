@@ -305,7 +305,7 @@ namespace Tests
             var crimeMonitor = new CrimeMonitor();
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
             var fine = ((MissionFailedEvent)events[0]).fine;
-            crimeMonitor._handleMissionFine(events[0].timestamp, mission, fine);
+            await crimeMonitor._handleMissionFineAsync(events[0].timestamp, mission, fine).ConfigureAwait(false);
             var record = crimeMonitor.criminalrecord.ToList().FirstOrDefault(r => r.faction == mission?.faction);
             Assert.IsNotNull(record);
             Assert.AreEqual(5000, record.fines);

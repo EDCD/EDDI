@@ -27,11 +27,11 @@ namespace EddiCrimeMonitor
     public class CrimeMonitor : IEddiMonitor
     {
         // Observable collection for us to handle changes
-        public ObservableCollection<FactionRecord> criminalrecord { get; private set; }
-        public long claims => criminalrecord.Sum(r => r.claims);
-        public long fines => criminalrecord.Sum(r => r.fines);
-        public long bounties => criminalrecord.Sum(r => r.bounties);
-        public Dictionary<string, string> homeSystems;
+        public ObservableCollection<FactionRecord> criminalrecord { get; }
+        private long claims => criminalrecord.Sum(r => r.claims);
+        private long fines => criminalrecord.Sum(r => r.fines);
+        private long bounties => criminalrecord.Sum(r => r.bounties);
+        private Dictionary<string, string> homeSystems;
         private DateTime updateDat;
         private string crimeAuthorityFaction;
         public readonly List<Target> shipTargets = new List<Target>();
@@ -67,7 +67,7 @@ namespace EddiCrimeMonitor
             initializeCrimeMonitor();
         }
 
-        public void initializeCrimeMonitor(CrimeMonitorConfiguration configuration = null)
+        private void initializeCrimeMonitor(CrimeMonitorConfiguration configuration = null)
         {
             readRecord(configuration);
             Logging.Info($"Initialized {MonitorName()}");
@@ -122,34 +122,38 @@ namespace EddiCrimeMonitor
         {
             if ( @event is ShipSwappedEvent )
             {
-                postHandleShipSwappedEvent();
+                postHandleShipSwappedEventAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
             else if ( @event is ShipTargetedEvent targetedEvent )
             {
-                Task.Run( async () => await postHandleShipTargetedEvent( targetedEvent ) );
+                postHandleShipTargetedEventAsync( targetedEvent ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
         }
 
-        private void postHandleShipSwappedEvent()
+        private async Task postHandleShipSwappedEventAsync()
         {
-            // Update stations in minor faction records asynchronounsly
-            Task.Run( () =>
+            // Update stations in minor faction records asynchronously
+            List<FactionRecord> records;
+            lock ( recordLock )
             {
-                lock ( recordLock )
+                records = criminalrecord.ToList();
+            }
+
+            foreach ( var record in records )
+            {
+                var Allegiance = Superpower.FromNameOrEdName(record.faction);
+                if ( Allegiance is null )
                 {
-                    foreach ( var record in criminalrecord.ToList() )
+                    var factionStation = await GetFactionStationAsync( record.system ).ConfigureAwait(false);
+                    lock ( recordLock )
                     {
-                        var Allegiance = Superpower.FromNameOrEdName(record.faction);
-                        if ( Allegiance == null )
-                        {
-                            record.station = GetFactionStation( record.system );
-                        }
+                        record.station = factionStation;
                     }
                 }
-            } );
+            }
         }
 
-        internal async Task postHandleShipTargetedEvent ( ShipTargetedEvent @event )
+        internal async Task postHandleShipTargetedEventAsync ( ShipTargetedEvent @event )
         {
             // System targets list may be 're-built' for the current system from Log Load
             if ( @event.targetlocked )
@@ -191,7 +195,7 @@ namespace EddiCrimeMonitor
             }
             else if (@event is BondAwardedEvent awardedEvent)
             {
-                handleBondAwardedEvent(awardedEvent);
+                handleBondAwardedEventAsync(awardedEvent).GetAwaiter().GetResult();
             }
             else if (@event is BondRedeemedEvent redeemedEvent)
             {
@@ -199,11 +203,11 @@ namespace EddiCrimeMonitor
             }
             else if (@event is BountyAwardedEvent bountyAwardedEvent)
             {
-                handleBountyAwardedEvent(bountyAwardedEvent);
+                handleBountyAwardedEventAsync(bountyAwardedEvent).GetAwaiter().GetResult();
             }
             else if (@event is BountyIncurredEvent incurredEvent)
             {
-                handleBountyIncurredEvent(incurredEvent);
+                handleBountyIncurredEventAsync(incurredEvent).GetAwaiter().GetResult();
             }
             else if (@event is BountyPaidEvent paidEvent)
             {
@@ -215,7 +219,7 @@ namespace EddiCrimeMonitor
             }
             else if (@event is FineIncurredEvent fineIncurredEvent)
             {
-                handleFineIncurredEvent(fineIncurredEvent);
+                handleFineIncurredEventAsync(fineIncurredEvent).GetAwaiter().GetResult();
             }
             else if (@event is FinePaidEvent finePaidEvent)
             {
@@ -223,11 +227,11 @@ namespace EddiCrimeMonitor
             }
             else if (@event is MissionAbandonedEvent abandonedEvent)
             {
-                handleMissionAbandonedEvent(abandonedEvent);
+                handleMissionAbandonedEventAsync(abandonedEvent).GetAwaiter().GetResult();
             }
             else if (@event is MissionFailedEvent failedEvent)
             {
-                handleMissionFailedEvent(failedEvent);
+                handleMissionFailedEventAsync(failedEvent).GetAwaiter().GetResult();
             }
             else if (@event is RespawnedEvent respawnEvent)
             {
@@ -262,22 +266,22 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private void handleBondAwardedEvent(BondAwardedEvent @event)
+        private async Task handleBondAwardedEventAsync(BondAwardedEvent @event)
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
-                _handleBondAwardedEvent(@event);
+                await _handleBondAwardedEventAsync(@event).ConfigureAwait(false);
                 writeRecord();
             }
         }
 
-        internal void _handleBondAwardedEvent(BondAwardedEvent @event)
+        internal async Task _handleBondAwardedEventAsync(BondAwardedEvent @event)
         {
             var currentSystem = EDDI.Instance.CurrentStarSystem?.systemname;
 
             // Get the victim faction data
-            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.victimfaction )?.GetAwaiter().GetResult();
+            var faction = await EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.victimfaction ).ConfigureAwait(false);
 
             var report = new FactionReport(@event.timestamp, false, Crime.None, currentSystem, @event.reward)
             {
@@ -288,7 +292,7 @@ namespace EddiCrimeMonitor
             };
 
             var record = GetRecordWithFaction(@event.awardingfaction) 
-                ?? AddRecord(@event.awardingfaction);
+                ?? await AddRecordAsync(@event.awardingfaction).ConfigureAwait(false);
             record.factionReports.Add(report);
             record.claims += @event.reward;
         }
@@ -366,26 +370,26 @@ namespace EddiCrimeMonitor
             return update;
         }
 
-        private void handleBountyAwardedEvent(BountyAwardedEvent @event)
+        private async Task handleBountyAwardedEventAsync(BountyAwardedEvent @event)
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
-                _handleBountyAwardedEvent(@event);
+                await _handleBountyAwardedEventAsync(@event).ConfigureAwait(false);
                 writeRecord();
             }
         }
 
-        internal void _handleBountyAwardedEvent(BountyAwardedEvent @event, bool test = false)
+        internal async Task _handleBountyAwardedEventAsync(BountyAwardedEvent @event, bool test = false)
         {
             // 20% bonus for Arissa Lavigny-Duval 'controlled' and 'exploited' systems
             var currentSystem = EDDI.Instance.CurrentStarSystem;
 
             // Default to 1.0 for unit testing
-            var bonus = (!test && currentSystem?.Power == Power.ALavignyDuval) ? 1.2 : 1.0;
+            var bonus = !test && currentSystem?.Power == Power.ALavignyDuval ? 1.2 : 1.0;
 
             // Get the victim faction data
-            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.faction )?.GetAwaiter().GetResult();
+            var faction = await EDDI.Instance.DataProvider.FetchFactionByNameAsync( @event.faction ).ConfigureAwait(false);
 
             foreach (var reward in @event.rewards.ToList())
             {
@@ -399,7 +403,7 @@ namespace EddiCrimeMonitor
                 };
 
                 var record = GetRecordWithFaction(reward.faction) 
-                    ?? AddRecord(reward.faction);
+                    ?? await AddRecordAsync(reward.faction).ConfigureAwait(false);
                 record.factionReports.Add(report);
                 record.claims += amount;
             }
@@ -476,17 +480,17 @@ namespace EddiCrimeMonitor
             return update;
         }
 
-        private void handleBountyIncurredEvent(BountyIncurredEvent @event)
+        private async Task handleBountyIncurredEventAsync(BountyIncurredEvent @event)
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
-                _handleBountyIncurredEvent(@event);
+                await _handleBountyIncurredEventAsync(@event).ConfigureAwait(false);
                 writeRecord();
             }
         }
 
-        internal void _handleBountyIncurredEvent(BountyIncurredEvent @event)
+        internal async Task _handleBountyIncurredEventAsync(BountyIncurredEvent @event)
         {
             crimeAuthorityFaction = @event.faction;
             var crime = Crime.FromEDName(@event.crimetype);
@@ -508,8 +512,8 @@ namespace EddiCrimeMonitor
                 victimAllegiance = (target?.Allegiance ?? Superpower.None).invariantName
             };
             var record = GetRecordWithFaction(@event.faction)
-                                   ?? AddRecord(@event.faction);
-            AddReportToRecord(record, report);
+                                   ?? await AddRecordAsync(@event.faction).ConfigureAwait(false);
+            await AddReportToRecordAsync(record, report).ConfigureAwait(false);
         }
 
         private void handleBountyPaidEvent(BountyPaidEvent @event)
@@ -591,17 +595,17 @@ namespace EddiCrimeMonitor
             return update;
         }
 
-        private void handleFineIncurredEvent(FineIncurredEvent @event)
+        private async Task handleFineIncurredEventAsync(FineIncurredEvent @event)
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
-                _handleFineIncurredEvent(@event);
+                await _handleFineIncurredEventAsync(@event).ConfigureAwait(false);
                 writeRecord();
             }
         }
 
-        internal void _handleFineIncurredEvent(FineIncurredEvent @event)
+        internal async Task _handleFineIncurredEventAsync(FineIncurredEvent @event)
         {
             crimeAuthorityFaction = @event.faction;
             Crime crime = Crime.FromEDName(@event.crimetype);
@@ -613,8 +617,8 @@ namespace EddiCrimeMonitor
                 victim = @event.victim
             };
 
-            FactionRecord record = GetRecordWithFaction(@event.faction) ?? AddRecord(@event.faction);
-            AddReportToRecord(record, report);
+            FactionRecord record = GetRecordWithFaction(@event.faction) ?? await AddRecordAsync(@event.faction).ConfigureAwait(false);
+            await AddReportToRecordAsync(record, report).ConfigureAwait(false);
         }
 
         private void handleFinePaidEvent(FinePaidEvent @event)
@@ -672,45 +676,45 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        private async Task handleMissionAbandonedEventAsync(MissionAbandonedEvent @event)
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
-                if (_handleMissionAbandonedEvent(@event))
+                if (await _handleMissionAbandonedEventAsync(@event).ConfigureAwait(false))
                 {
                     writeRecord();
                 }
             }
         }
 
-        internal bool _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        private async Task<bool> _handleMissionAbandonedEventAsync(MissionAbandonedEvent @event)
         {
             if (@event.fine > 0)
             {
-                return handleMissionFine(@event.timestamp, @event.missionid, @event.fine);
+                return await handleMissionFineAsync(@event.timestamp, @event.missionid, @event.fine).ConfigureAwait(false);
             }
             return false;
         }
 
-        private void handleMissionFailedEvent(MissionFailedEvent @event)
+        private async Task handleMissionFailedEventAsync(MissionFailedEvent @event)
         {
             if (@event.timestamp > updateDat || (@event.timestamp == updateDat && !@event.fromLoad))
             {
                 updateDat = @event.timestamp;
-                if (_handleMissionFailedEvent(@event))
+                if (await _handleMissionFailedEventAsync(@event).ConfigureAwait(false))
                 {
                     writeRecord();
                 }
             }
         }
 
-        internal bool _handleMissionFailedEvent(MissionFailedEvent @event)
+        private async Task<bool> _handleMissionFailedEventAsync(MissionFailedEvent @event)
         {
             var update = false;
             if (@event.fine > 0)
             {
-                update = handleMissionFine(@event.timestamp, @event.missionid, @event.fine);
+                update = await handleMissionFineAsync(@event.timestamp, @event.missionid, @event.fine).ConfigureAwait(false);
             }
             return update;
         }
@@ -725,7 +729,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        internal void _handleRespawnedEvent(RespawnedEvent @event)
+        private void _handleRespawnedEvent(RespawnedEvent @event)
         {
             void RemoveCriminalRecords(string faction = null)
             {
@@ -846,7 +850,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private FactionRecord AddRecord(string faction)
+        private async Task<FactionRecord> AddRecordAsync(string faction)
         {
             if (faction == null) { return null; }
 
@@ -854,7 +858,7 @@ namespace EddiCrimeMonitor
             var Allegiance = Superpower.FromNameOrEdName(faction);
             if (Allegiance == null)
             {
-                GetFactionData(record);
+                await GetFactionDataAsync(record).ConfigureAwait(false);
             }
             else
             {
@@ -891,7 +895,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private void AddReportToRecord(FactionRecord record, FactionReport report)
+        private async Task AddReportToRecordAsync(FactionRecord record, FactionReport report)
         {
             if (record is null || report is null) { return; }
 
@@ -913,7 +917,7 @@ namespace EddiCrimeMonitor
                     // Add a new interstellar bounty. 
                     // Transfer existing fines and bounties incurred to the interstellar power record
                     // Collect all minor faction fines and bounties incurred
-                    powerRecord = AddRecord(record.allegiance);
+                    powerRecord = await AddRecordAsync(record.allegiance).ConfigureAwait(false);
                     var reports = record.factionReports
                         .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim).ToList();
                     powerRecord.factionReports.AddRange(reports);
@@ -969,7 +973,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private bool handleMissionFine(DateTime timestamp, ulong missionid, long fine)
+        private async Task<bool> handleMissionFineAsync(DateTime timestamp, ulong missionid, long fine)
         {
             bool update = false;
             var mission = ConfigService.Instance.missionMonitorConfiguration
@@ -977,12 +981,12 @@ namespace EddiCrimeMonitor
                 ?.FirstOrDefault(m => m.missionid == missionid);
             if (mission != null)
             {
-                update = _handleMissionFine(timestamp, mission, fine);
+                update = await _handleMissionFineAsync(timestamp, mission, fine).ConfigureAwait(false);
             }
             return update;
         }
 
-        internal bool _handleMissionFine(DateTime timestamp, Mission mission, long fine)
+        internal async Task<bool> _handleMissionFineAsync(DateTime timestamp, Mission mission, long fine)
         {
             bool update = false;
 
@@ -997,14 +1001,14 @@ namespace EddiCrimeMonitor
                 };
 
                 var record = GetRecordWithFaction(mission.faction) ?? 
-                             AddRecord(mission.faction);
-                AddReportToRecord(record, report);
+                             await AddRecordAsync(mission.faction).ConfigureAwait(false);
+                await AddReportToRecordAsync(record, report).ConfigureAwait(false);
                 update = true;
             }
             return update;
         }
 
-        public FactionRecord GetRecordWithFaction(string faction)
+        private FactionRecord GetRecordWithFaction(string faction)
         {
             if (faction == null) { return null; }
             lock (recordLock)
@@ -1014,19 +1018,19 @@ namespace EddiCrimeMonitor
             }
         }
 
-        public void GetFactionData(FactionRecord record, string homeSystem = null)
+        public async Task GetFactionDataAsync(FactionRecord record, string homeSystem = null)
         {
             if (record == null || string.IsNullOrEmpty(record.faction) || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
 
             // Get the faction and set faction record values
-            var faction = EDDI.Instance.DataProvider.FetchFactionByNameAsync( record.faction ).GetAwaiter().GetResult();
+            var faction = await EDDI.Instance.DataProvider.FetchFactionByNameAsync( record.faction ).ConfigureAwait(false);
             record.Allegiance = faction?.Allegiance ?? Superpower.None;
 
             // Check faction with archived home systems
             if (homeSystems.TryGetValue(record.faction, out var factionHomeSystem))
             {
                 record.system = factionHomeSystem;
-                record.station = GetFactionStation(factionHomeSystem);
+                record.station = await GetFactionStationAsync(factionHomeSystem).ConfigureAwait(false);
                 return;
             }
 
@@ -1041,7 +1045,7 @@ namespace EddiCrimeMonitor
                 if (homeSystem != null && factionSystems.Contains(homeSystem))
                 {
                     record.system = homeSystem;
-                    record.station = GetFactionStation(homeSystem);
+                    record.station = await GetFactionStationAsync(homeSystem).ConfigureAwait(false);
                     if (FindHomeSystem(record.faction, factionSystems) == null && !homeSystems.ContainsKey(record.faction))
                     {
                         // Save home system if not part of faction name and not previously saved
@@ -1054,7 +1058,7 @@ namespace EddiCrimeMonitor
                 homeSystem = FindHomeSystem(record.faction, factionSystems);
                 if (homeSystem != null)
                 {
-                    var factionStation = GetFactionStation(homeSystem);
+                    var factionStation = await GetFactionStationAsync(homeSystem).ConfigureAwait(false);
 
                     // Station found meeting game/user requirements
                     if (factionStation != null)
@@ -1068,7 +1072,7 @@ namespace EddiCrimeMonitor
                 // Check faction presences, by order of influence, for qualifying station
                 foreach (var system in factionSystems)
                 {
-                    var factionStation = GetFactionStation(system);
+                    var factionStation = await GetFactionStationAsync(system).ConfigureAwait(false);
                     if (factionStation != null)
                     {
                         record.system = system;
@@ -1083,10 +1087,10 @@ namespace EddiCrimeMonitor
             }
         }
 
-        public string GetFactionStation(string factionSystem)
+        private async Task<string> GetFactionStationAsync(string factionSystem)
         {
             if (factionSystem == null) { return null; }
-            var factionStarSystem = EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync(factionSystem, true, false).GetAwaiter().GetResult();
+            var factionStarSystem = await EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync(factionSystem, true, false).ConfigureAwait(false);
 
             if (factionStarSystem != null)
             {

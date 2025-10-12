@@ -15,7 +15,7 @@ namespace EddiCrimeMonitor
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class ConfigurationWindow : UserControl
+    public partial class ConfigurationWindow
     {
         private CrimeMonitor crimeMonitor()
         {
@@ -58,12 +58,12 @@ namespace EddiCrimeMonitor
 
                     try
                     {
-                        var UpdateRecordTask = Task.Run( () =>
+                        var UpdateRecordTask = Task.Run( async () =>
                         {
                             var Allegiance = Superpower.FromNameOrEdName(record.faction);
                             if (Allegiance == null)
                             {
-                                crimeMonitor().GetFactionData(record, record.system);
+                                await crimeMonitor().GetFactionDataAsync(record, record.system).ConfigureAwait(false);
                             }
                             else
                             {
@@ -88,10 +88,10 @@ namespace EddiCrimeMonitor
         {
             if (e.Source is DataGrid dataGrid && dataGrid.IsLoaded)
             {
-                FactionRecord record = (FactionRecord)((DataGrid)e.Source).CurrentItem;
+                FactionRecord record = (FactionRecord)dataGrid.CurrentItem;
                 if (record != null)
                 {
-                    int column = ((DataGrid)e.Source).CurrentColumn.DisplayIndex;
+                    int column = dataGrid.CurrentColumn.DisplayIndex;
                     switch (column)
                     {
                         case 3: // Claims column
