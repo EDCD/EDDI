@@ -172,7 +172,8 @@ namespace EddiEvents
                     var faction1Detail = (Dictionary<string, object>)faction1Val;
                     var faction1Name = JsonParsing.getString( faction1Detail, "Name" );
                     var faction1 = factions.Find( f => f.name == faction1Name );
-                    var faction1Stake = JsonParsing.getString( faction1Detail, "Stake" );
+                    var faction1Stake = JsonParsing.getString( faction1Detail, "Stake_Localised" ) 
+                                        ?? JsonParsing.getString( faction1Detail, "Stake" );
                     var faction1DaysWon = JsonParsing.getInt( faction1Detail, "WonDays" );
 
                     // Faction 2
@@ -180,7 +181,8 @@ namespace EddiEvents
                     var faction2Detail = (Dictionary<string, object>)faction2Val;
                     var faction2Name = JsonParsing.getString( faction2Detail, "Name" );
                     var faction2 = factions.Find( f => f.name == faction2Name );
-                    var faction2Stake = JsonParsing.getString( faction2Detail, "Stake" );
+                    var faction2Stake = JsonParsing.getString( faction2Detail, "Stake_Localised" ) 
+                                        ?? JsonParsing.getString( faction2Detail, "Stake" );
                     var faction2DaysWon = JsonParsing.getInt( faction2Detail, "WonDays" );
 
                     conflicts.Add( new Conflict( conflictType, status, faction1, faction1Stake, faction1DaysWon,
