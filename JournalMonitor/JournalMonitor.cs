@@ -411,6 +411,10 @@ namespace EddiJournalMonitor
                                             {
                                                 // Ignore the codex scanner
                                             }
+                                            else if(slot.Equals("Hologram", StringComparison.InvariantCultureIgnoreCase))
+                                            {
+                                                // Ignore hologram cosmetics
+                                            }
                                             else
                                             {
                                                 // This is a compartment

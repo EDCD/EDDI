@@ -9,6 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Various minor bug fixes.
   * Speech Responder
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
+  * VoiceAttack Responder
+    * Re-tuned event handling for better responsiveness.
 
 ## 4.1.6
   * VoiceAttack
