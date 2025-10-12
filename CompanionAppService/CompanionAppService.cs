@@ -116,7 +116,7 @@ namespace EddiCompanionAppService
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{Constants.EDDI_NAME}/{Constants.EDDI_VERSION}" );
             httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
-            URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrl, logger, appPath);
+            URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrlAsync, logger, appPath);
             clientID = ClientId.ID;
             if (clientID == null)
             {
@@ -227,7 +227,7 @@ namespace EddiCompanionAppService
             return base64.Replace('+', '-').Replace('/', '_').Replace("=", "");
         }
 
-        private async void handleCallbackUrl ( string url )
+        private async Task handleCallbackUrlAsync ( string url )
         {
             // NB any user can send an arbitrary URL from the Windows Run dialog, so it must be treated as untrusted
             try
@@ -272,10 +272,9 @@ namespace EddiCompanionAppService
                     }
                 }
             }
-            catch ( Exception ex )
+            catch ( Exception )
             {
                 CurrentState = State.LoggedOut;
-                throw new EliteDangerousCompanionAppAuthenticationException( "Authorization callback failed", ex );
             }
         }
 

@@ -104,7 +104,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
-            var result = await EDDI.Instance.eventJumpedAsync( @event );
+            var result = await EDDI.Instance.eventJumpedAsync( @event ).ConfigureAwait(false);
 
             Assert.IsTrue(result);
         }
@@ -138,20 +138,20 @@ namespace Tests
             Assert.IsInstanceOfType( event3a, typeof( FSDEngagedEvent ) );
 
             // Standard jump to Cephei Sector DQ-Y b1. Environment is supercruise.
-            await EDDI.Instance.eventJumpedAsync( @event1 );
+            await EDDI.Instance.eventJumpedAsync( @event1 ).ConfigureAwait(false);
             Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, EDDI.Instance.Environment );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual( 2868635641225UL, EDDI.Instance.CurrentStarSystem.systemAddress );
 
             // Standard jump to HIP 8525. Environment is supercruise.
-            await EDDI.Instance.eventJumpedAsync( @event2 );
+            await EDDI.Instance.eventJumpedAsync( @event2 ).ConfigureAwait(false);
             Assert.AreEqual( Constants.ENVIRONMENT_SUPERCRUISE, EDDI.Instance.Environment );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual( 560216410467UL, EDDI.Instance.CurrentStarSystem.systemAddress );
 
             // Hyperdiction in HIP 8525. Environment is normal space rather than supercruise.
-            await EDDI.Instance.eventFSDEngagedAsync( @event3a );
-            await EDDI.Instance.eventJumpedAsync( @event3 );
+            await EDDI.Instance.eventFSDEngagedAsync( @event3a ).ConfigureAwait(false);
+            await EDDI.Instance.eventJumpedAsync( @event3 ).ConfigureAwait(false);
             Assert.AreEqual( Constants.ENVIRONMENT_NORMAL_SPACE, EDDI.Instance.Environment );
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual( 560216410467UL, EDDI.Instance.CurrentStarSystem.systemAddress );
@@ -171,7 +171,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(LocationEvent));
 
-            var result = await EDDI.Instance.eventLocationAsync( @event );
+            var result = await EDDI.Instance.eventLocationAsync( @event ).ConfigureAwait(false);
             Assert.IsTrue(result);
         }
 
@@ -188,7 +188,7 @@ namespace Tests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(BodyScannedEvent));
 
-            await EDDI.Instance.updateCurrentSystemAsync( "Grea Bloae HH-T d4-44", 1520309296811UL );
+            await EDDI.Instance.updateCurrentSystemAsync( "Grea Bloae HH-T d4-44", 1520309296811UL ).ConfigureAwait(false);
             Assert.IsNotNull( EDDI.Instance.CurrentStarSystem );
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem.systemname);
 
@@ -260,7 +260,7 @@ namespace Tests
             foreach ( var @event in events.OfType<SignalDetectedEvent>() )
             {
                 EDDI.Instance.eventSignalDetected( @event );
-                await Task.Delay( TimeSpan.FromMilliseconds( 50 ) );
+                await Task.Delay( TimeSpan.FromMilliseconds( 50 ) ).ConfigureAwait(false);
             }
 
             Assert.AreEqual( "Unregistered Comms Beacon", EDDI.Instance.CurrentStarSystem?.signalsources.FirstOrDefault() );

@@ -37,7 +37,7 @@ namespace Tests
         {
             EDDI.Instance.DataProvider = await DataProviderService.CreateAsync().ConfigureAwait( false );
             var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
-            var DBData = await starSystemRepository.GetSqlStarSystemAsync( 0, CancellationToken.None );
+            var DBData = await starSystemRepository.GetSqlStarSystemAsync( 0, CancellationToken.None ).ConfigureAwait(false);
             Assert.IsNull(DBData);
         }
 

@@ -191,7 +191,7 @@ namespace Tests
         {
             EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
             FakeSpanshHttpClient.Expect( @"systems/search?={""filters"":{""minor_faction_presences"":[{""name"":{""value"":[""Radio Sidewinder Crew""]}}]},""size"":500,""page"":0}", Encoding.UTF8.GetString( Properties.Resources.SpanshQueryFactionRadioSidewinderCrew ) );
-           
+
             // Save original data
             var data = ConfigService.Instance.crimeMonitorConfiguration;
 
@@ -283,7 +283,7 @@ namespace Tests
             line = "{ \"timestamp\":\"2019-04-24T00:13:35Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"federation_corvette\", \"Ship_Localised\":\"Federal Corvette\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Kurt Pettersen;\", \"PilotName_Localised\":\"Kurt Pettersen\", \"PilotRank\":\"Deadly\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Calennero Crew\", \"LegalStatus\":\"Wanted\", \"Bounty\":295785 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
-            await crimeMonitor.postHandleShipTargetedEvent( (ShipTargetedEvent)events[ 0 ] );
+            await crimeMonitor.postHandleShipTargetedEventAsync( (ShipTargetedEvent)events[ 0 ] ).ConfigureAwait(false);
             Assert.IsNotNull(crimeMonitor.shipTargets);
             Assert.AreEqual(1, crimeMonitor.shipTargets.Count);
             var target = crimeMonitor.shipTargets.FirstOrDefault(t => t.name == "Kurt Pettersen");

@@ -31,7 +31,7 @@ namespace Tests
         [DataRow( @"<phoneme alphabet=""ipa"" ph=""iˈlɛktrə"">Electra</phoneme>" )]
         public async Task TestPhoneticsAsync (string inputSpeech)
         {
-            await SpeechService.Instance.SpeakAsync(new EddiSpeech(inputSpeech));
+            await SpeechService.Instance.SpeakAsync(new EddiSpeech(inputSpeech)).ConfigureAwait(false);
         }
 
         [TestMethod, DoNotParallelize]
@@ -129,7 +129,7 @@ namespace Tests
         public async Task TestDamageDistortionAsync (int shipHealth)
         {
             var speech = new EddiSpeech( $"Systems at {shipHealth}%.", null, 0, null, LandingPadSize.Large, shipHealth, false, true );
-            await SpeechService.Instance.SpeakAsync( speech );
+            await SpeechService.Instance.SpeakAsync( speech ).ConfigureAwait(false);
         }
 
         [DataTestMethod, DoNotParallelize]
@@ -141,7 +141,7 @@ namespace Tests
         [DataRow( 100 )]
         public async Task TestFxLevelAsync ( int fxLevel )
         {
-            await SpeechService.Instance.SpeakAsync( $"Effects level {fxLevel}", null, fxLevel );
+            await SpeechService.Instance.SpeakAsync( $"Effects level {fxLevel}", null, fxLevel ).ConfigureAwait(false);
         }
 
         [DataTestMethod, DoNotParallelize]
@@ -149,7 +149,7 @@ namespace Tests
         [DataRow( "Anaconda golf foxtrot lima one niner six eight returning from orbit." )]
         public async Task TestRadioAsync (string msg)
         {
-            await SpeechService.Instance.SpeakAsync(new EddiSpeech(msg, radio: true));
+            await SpeechService.Instance.SpeakAsync(new EddiSpeech(msg, radio: true)).ConfigureAwait(false);
         }
 
         [DataTestMethod, DoNotParallelize]
@@ -159,14 +159,14 @@ namespace Tests
         public async Task TestEchoDelayAsync (int landingPadSize)
         {
             var shipSize = LandingPadSize.AllOfThem.First( s => s.sizeIndex == landingPadSize );
-            await SpeechService.Instance.SpeakAsync( new EddiSpeech( $"Echo delay for a {shipSize} ship.", shipSize: shipSize ) );
+            await SpeechService.Instance.SpeakAsync( new EddiSpeech( $"Echo delay for a {shipSize} ship.", shipSize: shipSize ) ).ConfigureAwait(false);
         }
 
         [TestMethod, DoNotParallelize]
         public async Task TestSpeechNullInvalidVoiceAsync ()
         {
-            await SpeechService.Instance.SpeakAsync( new EddiSpeech( "Testing null voice", null ) );
-            await SpeechService.Instance.SpeakAsync( new EddiSpeech( "Testing non-valid voice", "No such voice" ) );
+            await SpeechService.Instance.SpeakAsync( new EddiSpeech( "Testing null voice", null ) ).ConfigureAwait(false);
+            await SpeechService.Instance.SpeakAsync( new EddiSpeech( "Testing non-valid voice", "No such voice" ) ).ConfigureAwait(false);
         }
     }
 }

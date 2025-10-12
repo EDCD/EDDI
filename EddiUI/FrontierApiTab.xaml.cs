@@ -3,6 +3,7 @@ using EddiConfigService;
 using EddiCore;
 using EddiSpeechService;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -76,23 +77,34 @@ namespace EddiUI
         // Handle changes to the Frontier API tab
         private void companionAppClicked ( object sender, RoutedEventArgs e )
         {
-            if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.LoggedOut )
+            try
             {
-                if ( IsAdministrator() )
+                Task.Run( () =>
                 {
-                    SpeechService.Instance.Say( null, Properties.Resources.frontier_api_admin_mode, 0 );
-                }
-                CompanionAppService.Instance.Login();
+                    if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.LoggedOut )
+                    {
+                        if ( IsAdministrator() )
+                        {
+                            SpeechService.Instance.Say( null, Properties.Resources.frontier_api_admin_mode, 0 );
+                        }
+
+                        CompanionAppService.Instance.Login();
+                    }
+                    else
+                    {
+                        // Logout from the companion EddiApplication and start again
+                        CompanionAppService.Instance.Logout();
+                        SpeechService.Instance.Say( null, Properties.Resources.frontier_api_reset, 0 );
+                        if ( EDDI.FromVA )
+                        {
+                            SpeechService.Instance.Say( null, Properties.Resources.frontier_api_cant_login_from_va, 0 );
+                        }
+                    }
+                } );
             }
-            else
+            catch ( TaskCanceledException )
             {
-                // Logout from the companion EddiApplication and start again
-                CompanionAppService.Instance.Logout();
-                SpeechService.Instance.Say( null, Properties.Resources.frontier_api_reset, 0 );
-                if ( EDDI.FromVA )
-                {
-                    SpeechService.Instance.Say( null, Properties.Resources.frontier_api_cant_login_from_va, 0 );
-                }
+                // Nothing to do here.
             }
         }
 

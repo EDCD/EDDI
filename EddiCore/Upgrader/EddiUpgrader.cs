@@ -124,7 +124,7 @@ namespace EddiCore.Upgrader
             }
         }
 
-        public static async void Upgrade()
+        public static async Task UpgradeAsync()
         {
             try
             {

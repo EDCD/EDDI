@@ -1,12 +1,13 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace EddiCompanionAppService
 {
     public class CustomURLResponder : IDisposable
     {
-        public delegate void UrlHandler(string url);
+        public delegate Task UrlHandler(string url);
         public delegate void Logger(string message);
 
         private delegate IntPtr DdeDelegate(

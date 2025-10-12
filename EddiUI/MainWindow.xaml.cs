@@ -541,21 +541,28 @@ namespace EddiUI
 
         private async void createGithubIssueClicked(object sender, RoutedEventArgs e)
         {
-            // Write out useful information to the log before proceeding
-            Logging.Info( $"EDDI version: {Constants.EDDI_VERSION}" );
-            Logging.Info( $"Commander name: {ConfigService.Instance.commanderConfiguration.commanderName ?? "null"}" );
-            Logging.Info( $"Default UI culture: {CultureInfo.DefaultThreadCurrentUICulture?.IetfLanguageTag ?? "automatic"}" );
-            Logging.Info( $"Current UI culture: {CultureInfo.CurrentUICulture.IetfLanguageTag}" );
-
-            // Prepare a truncated log file for export if verbose logging is enabled
-            if (eddiVerboseLogging.IsChecked ?? false)
+            try
             {
-                Logging.Debug("Preparing log for export.");
-                var progress = new Progress<string>(s => githubIssueButton.Content = Properties.Resources.preparing_log + s);
-                await Task.Factory.StartNew(() => prepareLogs(progress), TaskCreationOptions.LongRunning).ConfigureAwait(false);
-            }
+                // Write out useful information to the log before proceeding
+                Logging.Info( $"EDDI version: {Constants.EDDI_VERSION}" );
+                Logging.Info( $"Commander name: {ConfigService.Instance.commanderConfiguration.commanderName ?? "null"}" );
+                Logging.Info( $"Default UI culture: {CultureInfo.DefaultThreadCurrentUICulture?.IetfLanguageTag ?? "automatic"}" );
+                Logging.Info( $"Current UI culture: {CultureInfo.CurrentUICulture.IetfLanguageTag}" );
 
-            createGithubIssue();
+                // Prepare a truncated log file for export if verbose logging is enabled
+                if (eddiVerboseLogging.IsChecked ?? false)
+                {
+                    Logging.Debug("Preparing log for export.");
+                    var progress = new Progress<string>(s => githubIssueButton.Content = Properties.Resources.preparing_log + s);
+                    await Task.Factory.StartNew(() => prepareLogs(progress), TaskCreationOptions.LongRunning).ConfigureAwait(false);
+                }
+
+                createGithubIssue();
+            }
+            catch (Exception ex)
+            {
+                Logging.Error(ex.Message, ex);
+            }
         }
 
         private void ChangeLog_Click(object sender, RoutedEventArgs e)
@@ -642,7 +649,7 @@ namespace EddiUI
 
         private void upgradeClicked(object sender, RoutedEventArgs e)
         {
-            EddiUpgrader.Upgrade();
+            EddiUpgrader.UpgradeAsync().ConfigureAwait(true);
         }
 
         private void EDDIClicked(object sender, RoutedEventArgs e)
