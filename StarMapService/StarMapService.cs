@@ -25,7 +25,7 @@ namespace EddiStarMapService
         public const int syncBatchSize = 50;
 
         // The default timeout for requests to EDSM. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
-        private const int DefaultTimeoutMilliseconds = 10000;
+        private const int DefaultTimeoutMilliseconds = 30000;
 
         public static string inGameCommanderName { get; set; }
         private string commanderName { get; set; }

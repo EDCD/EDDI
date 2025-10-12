@@ -24,7 +24,7 @@ namespace EddiStarMapService
         private const int startupDelayMilliSeconds = 1000 * 10; // 10 seconds
 
         // The minimum interval between EDSM responder event syncs
-        private const int syncIntervalMilliSeconds = 5000; // 5 seconds
+        private const int syncIntervalMilliSeconds = 10000; // 10 seconds
 
         private IEdsmHttpClient edsmJournalHttpClient { get; }
 

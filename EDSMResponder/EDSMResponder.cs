@@ -154,7 +154,7 @@ namespace EddiEdsmResponder
                 catch ( TaskCanceledException )
                 {
                     // Nothing to do except wait and try again
-                    await Task.Delay( TimeSpan.FromSeconds( 30 ), updateThreadCancellationTokenSource.Token ).ConfigureAwait(false);
+                    await Task.Delay( TimeSpan.FromSeconds( 15 ), updateThreadCancellationTokenSource.Token ).ConfigureAwait(false);
                 }
             }
 
