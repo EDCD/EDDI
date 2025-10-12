@@ -159,15 +159,29 @@ namespace EddiCommanderMonitor
 
         private void UpdateHomeStationOptions ()
         {
-            HomeStationOptions.Clear();
-            foreach ( var station in ( HomeStarSystem?.stations ?? Enumerable.Empty<Station>() )
-                     .OrderBy( s => s.name )
-                     .Prepend( new Station { name = Properties.Resources.no_station } )
-                     .ToHashSet() )
+            try
             {
-                HomeStationOptions.Add( station );
+                // Ensure collection modifications happen on the UI thread
+                if ( System.Windows.Application.Current?.Dispatcher?.CheckAccess() == false )
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke( UpdateHomeStationOptions );
+                    return;
+                }
+                
+                HomeStationOptions.Clear();
+                foreach ( var station in ( HomeStarSystem?.stations ?? Enumerable.Empty<Station>() )
+                         .OrderBy( s => s.name )
+                         .Prepend( new Station { name = Properties.Resources.no_station } )
+                         .ToHashSet() )
+                {
+                    HomeStationOptions.Add( station );
+                }
+                OnPropertyChanged( nameof( HomeStationOptions ) );
             }
-            OnPropertyChanged( nameof( HomeStationOptions ) );
+            catch ( Exception e )
+            {
+                Logging.Error(e.Message, e);
+            }
         }
 
         [CanBeNull]
@@ -228,6 +242,13 @@ namespace EddiCommanderMonitor
             _isFetchingSquadronSystem = true;                    
             try
             {
+                // Ensure collection modifications happen on the UI thread
+                if ( System.Windows.Application.Current?.Dispatcher?.CheckAccess() == false )
+                {
+                    await System.Windows.Application.Current.Dispatcher.InvokeAsync( () => FetchSquadronSystemAsync(systemName) );
+                    return;
+                }
+                
                 var fetchedSystem = await Task.Run( () => EDDI.Instance.DataProvider
                     .GetOrFetchStarSystemAsync( systemName ) ).ConfigureAwait( true );
                 
