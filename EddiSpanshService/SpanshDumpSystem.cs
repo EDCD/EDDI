@@ -320,8 +320,8 @@ namespace EddiSpanshService
                 terraformState, planetClass, atmosphereClass, atmosphereCompositions,
                 volcanism, earthmass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials,
                 solidCompositions, semiMajorAxisLs, eccentricity, orbitalInclinationDegrees,
-                periapsisDegrees, orbitalPeriodDays, rotationalPeriodDays, axialTiltDegrees, rings, reserveLevel, true,
-                false );
+                periapsisDegrees, orbitalPeriodDays, rotationalPeriodDays, axialTiltDegrees, rings, reserveLevel, 
+                true, null, null );
                 var updatedAt = JsonParsing.getDateTime("updateTime", planetData );
                 planet.updatedat = updatedAt == DateTime.MinValue ? null : (long?)Dates.fromDateTimeToSeconds( updatedAt );
                 return planet;

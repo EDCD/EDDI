@@ -506,6 +506,17 @@ namespace EddiDataDefinitions
                 updatedBody.mappedEfficiently = oldBody.mappedEfficiently;
             }
 
+            if ( ( oldBody.footfalledDateTime ?? DateTime.MinValue ) > ( updatedBody.footfalledDateTime ?? DateTime.MinValue ) )
+            {
+                updatedBody.footfalledDateTime = oldBody.footfalledDateTime;
+            }
+
+            if ( oldBody.alreadyfootfalled is true &&
+                 oldBody.alreadyfootfalled != updatedBody.alreadyfootfalled )
+            {
+                updatedBody.alreadyfootfalled = oldBody.alreadyfootfalled;
+            }
+
             if ( oldBody.rings?.Any() ?? false )
             {
                 if ( updatedBody.rings is null )

@@ -1470,6 +1470,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "ShipTargeted":
                                 {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
                                     var targetlocked = JsonParsing.getBool(data, "TargetLocked");
 
                                     // Target locked
@@ -1868,6 +1870,7 @@ namespace EddiJournalMonitor
                                     // Scan status
                                     var alreadydiscovered = scantype == "NavBeaconDetail" ? true : JsonParsing.getOptionalBool(data, "WasDiscovered");
                                     var alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped");
+                                    var alreadyfootfalled = JsonParsing.getOptionalBool(data, "WasFootfalled");
 
                                     // Rings
                                     data.TryGetValue("Rings", out var val);
@@ -2006,7 +2009,7 @@ namespace EddiJournalMonitor
                                         var terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         var volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        var body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped)
+                                        var body = new Body(name, bodyId, systemName, systemAddress, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, alreadyfootfalled)
                                         {
                                             scannedDateTime = timestamp
                                         };
@@ -3602,6 +3605,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayMerits":
                                 {
+                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
+
                                     var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     var meritsGained = JsonParsing.getInt( data, "MeritsGained" );
                                     var meritsTotal = JsonParsing.getInt( data, "TotalMerits" );
@@ -5245,6 +5250,7 @@ namespace EddiJournalMonitor
                             case "WingLeave":
 
                             // No plans to support
+                            case "CancelledSquadronApplication": // Unnecessary.
                             case "CollectItems": // The `BackpackChange` event keeps us up to date.
                             case "Continued": // This indicates that the journal continues in a new file. We should pick this up automatically.
                             case "CrimeVictim": // No need to track crimes committed by other cmdrs. If added, filter out events where the current player is listed as the offender.
@@ -5256,6 +5262,8 @@ namespace EddiJournalMonitor
                             case "Scanned": // Written at the end of a successful scan, too late to react to this.
                             case "SharedBookmarkToSquadron": // Unnecessary.
                             case "ShipyardRedeem": // Unnecessary, all of the necessary information is already given in the `ShipRedeem` event.
+                            case "SquadronApplicationApproved": // Unnecessary.
+                            case "SquadronApplicationRejected": // Unnecessary.
                             case "TradeMicroResources": // This is always followed by `ShipLocker`, which we can use to keep our inventory up to date
                             case "TransferMicroResources": // Removed, no longer written
                             case "UseConsumable": // Seems to include only medkits and energy cells (grenades not included) and it's not needed. The `BackpackChange` event keeps us up to date.

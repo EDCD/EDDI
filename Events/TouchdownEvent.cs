@@ -41,6 +41,9 @@ namespace EddiEvents
         [PublicAPI("The nearest location from where the ship has touched down")]
         public string nearestdestination => nearestDestination.localizedName;
 
+        [ PublicAPI( "True if the body is eligible for a first footfall" ) ]
+        public bool canfirstfootfall { get; set; }
+
         // Not intended to be user facing
 
         public SignalSource nearestDestination { get; private set; }

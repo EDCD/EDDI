@@ -1031,9 +1031,9 @@ namespace EddiCore
                     {
                         passEvent = await eventCarrierJumpedAsync( carrierJumpedEvent ).ConfigureAwait( false );
                     }
-                    else if ( @event is DisembarkEvent )
+                    else if ( @event is DisembarkEvent disembarkEvent )
                     {
-                        passEvent = eventDisembark();
+                        passEvent = await eventDisembarkAsync( disembarkEvent ).ConfigureAwait(false);
                     }
                     else if ( @event is EmbarkEvent embarkEvent )
                     {
@@ -1158,10 +1158,24 @@ namespace EddiCore
             return passEvent;
         }
 
-        private bool eventDisembark() 
+        private async Task<bool> eventDisembarkAsync(DisembarkEvent @event) 
         {
             Vehicle = Constants.VEHICLE_LEGS;
             Logging.Info($"Disembarked to {Vehicle}");
+
+            if ( @event.onplanet != true ) { return true; }
+            await updateCurrentStellarBodyAsync( @event.bodyname, @event.systemname, @event.systemAddress )
+                .ConfigureAwait( false );
+            var body = CurrentStarSystem?.BodyWithID( @event.bodyId );
+            if ( body != null && body.alreadyfootfalled == false )
+            {
+                // This is a first footfall event
+                @event.firstfootfall = true;
+                body.alreadyfootfalled = true;
+                body.footfalledDateTime = @event.timestamp;
+                await DataProvider.SaveStarSystemAsync( CurrentStarSystem ).ConfigureAwait( false );
+            }
+
             return true;
         }
 
@@ -1777,34 +1791,33 @@ namespace EddiCore
             return true;
         }
 
-        private async Task<bool> eventTouchdownAsync( TouchdownEvent theEvent )
+        private async Task<bool> eventTouchdownAsync( TouchdownEvent @event )
         {
-            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
-            await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
+            await updateCurrentStellarBodyAsync( @event.bodyname, @event.systemname, @event.systemAddress ).ConfigureAwait(false);
 
-            if (theEvent.taxi != null && theEvent.taxi == true)
+            if (@event.taxi != null && @event.taxi == true)
             {
                 Vehicle = Constants.VEHICLE_TAXI;
             }
-            else if (theEvent.multicrew != null && theEvent.multicrew == true)
+            else if (@event.multicrew != null && @event.multicrew == true)
             {
                 Vehicle = Constants.VEHICLE_MULTICREW;
             }
 
             // Only pass on this event if our longitude and lattitude are set
             // (if not then this is probably being written prior to a `Location` event))
-            if (theEvent.latitude != null && theEvent.longitude != null)
+            if (@event.latitude != null && @event.longitude != null)
             {
                 Environment = Constants.ENVIRONMENT_LANDED;
-                if (theEvent.taxi != null && theEvent.taxi == true)
+                if (@event.taxi != null && @event.taxi == true)
                 {
                     Vehicle = Constants.VEHICLE_TAXI;
                 }
-                else if (theEvent.multicrew != null && theEvent.multicrew == true)
+                else if (@event.multicrew != null && @event.multicrew == true)
                 {
                     Vehicle = Constants.VEHICLE_MULTICREW;
                 }
-                else if (theEvent.playercontrolled)
+                else if (@event.playercontrolled)
                 {
                     Vehicle = Constants.VEHICLE_SHIP;
                 }
@@ -1812,9 +1825,17 @@ namespace EddiCore
                 {
                     Vehicle = Constants.VEHICLE_SRV;
                 }
-                Logging.Info($"Touchdown in {Vehicle}");
+
+                var body = CurrentStarSystem?.BodyWithID( @event.bodyId );
+                if ( body != null && body.alreadyfootfalled == false )
+                {
+                    // We can be the first to set foot on this world
+                    @event.canfirstfootfall = true;
+                }
+
                 return true;
             }
+            
             Logging.Info($"Touchdown in {Vehicle}");
             return false;
         }

@@ -7,8 +7,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added support for the Type-11 Prospector.
     * Revised Spansh faction queries to match the latest Spansh API revision.
     * Various minor bug fixes.
+    * `Body` object updated to include `alreadyfootfalled` boolean and `footfalled` timestamp fields.
+  * Events
+    * `Body scanned` updated to include an `alreadyfootfalled` field.
+    * `Disembarked` updated to include a `firstfootfall` field.
+    * `Touchdown` updated to include a `canfirstfootfall` field.
   * Speech Responder
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
+    * Scripts
+      * `Disembark` updated to announce first footfalls.
+      * `Touchdown` updated to announce first footfall opportunities.
   * VoiceAttack Responder
     * Re-tuned event handling for better responsiveness.
 
