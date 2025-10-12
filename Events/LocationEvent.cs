@@ -35,7 +35,7 @@ namespace EddiEvents
         public string bodyname { get; private set; }
 
         [PublicAPI( "The numeric ID of the body nearest to the commander (if any)" )]
-        public long? bodyId { get; private set; }
+        public int? bodyId { get; private set; }
 
         [PublicAPI("The type of the nearest body to the commander")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
@@ -199,7 +199,7 @@ namespace EddiEvents
         public bool onFoot { get; private set; }
 
         public LocationEvent ( DateTime timestamp, string systemName, ulong systemAddress, decimal x, decimal y, decimal z,
-            decimal? distancefromstar, string bodyName, long? bodyId, BodyType bodytype, decimal? longitude, decimal? latitude,
+            decimal? distancefromstar, string bodyName, int? bodyId, BodyType bodytype, decimal? longitude, decimal? latitude,
             bool docked, string station, StationModel stationtype, long? marketId, List<StationService> stationServices,
             Faction systemFaction, Faction stationFaction, List<Faction> factions, List<Conflict> conflicts,
             List<EconomyShare> stationEconomies, Economy economy, Economy economy2, SecurityLevel security, long? population,

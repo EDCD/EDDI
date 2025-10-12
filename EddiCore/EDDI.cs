@@ -1164,7 +1164,7 @@ namespace EddiCore
             Logging.Info($"Disembarked to {Vehicle}");
 
             if ( @event.onplanet != true ) { return true; }
-            await updateCurrentStellarBodyAsync( @event.bodyname, @event.systemname, @event.systemAddress )
+            await updateCurrentStellarBodyAsync( @event.bodyname, @event.bodyId, @event.systemname, @event.systemAddress )
                 .ConfigureAwait( false );
             var body = CurrentStarSystem?.BodyWithID( @event.bodyId );
             if ( body != null && body.alreadyfootfalled == false )
@@ -1683,7 +1683,7 @@ namespace EddiCore
             {
                 // Update the body 
                 Logging.Debug( "Now at body " + theEvent.bodyname );
-                await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
+                await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.bodyId, theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
             }
 
             // Update to most recent information
@@ -1764,11 +1764,12 @@ namespace EddiCore
         private bool eventUndocked ( UndockedEvent @event )
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-            if ( CurrentStation != null )
+            var station = CurrentStarSystem?.stations.Find( s => s.marketId == @event.marketId );
+            if ( station != null )
             {
-                CurrentStation.marketUpdatedThisVisit = false;
-                CurrentStation.outfittingUpdatedThisVisit = false;
-                CurrentStation.shipyardUpdatedThisVisit = false;
+                station.marketUpdatedThisVisit = false;
+                station.outfittingUpdatedThisVisit = false;
+                station.shipyardUpdatedThisVisit = false;
             }
 
             CurrentStation = null;
@@ -1793,7 +1794,7 @@ namespace EddiCore
 
         private async Task<bool> eventTouchdownAsync( TouchdownEvent @event )
         {
-            await updateCurrentStellarBodyAsync( @event.bodyname, @event.systemname, @event.systemAddress ).ConfigureAwait(false);
+            await updateCurrentStellarBodyAsync( @event.bodyname, @event.bodyId, @event.systemname, @event.systemAddress ).ConfigureAwait(false);
 
             if (@event.taxi != null && @event.taxi == true)
             {
@@ -1842,8 +1843,7 @@ namespace EddiCore
 
         private async Task<bool> eventLiftoffAsync( LiftoffEvent theEvent )
         {
-            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
-            await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
+            await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.bodyId, theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
 
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
@@ -2069,7 +2069,7 @@ namespace EddiCore
             }
         }
 
-        private async Task updateCurrentStellarBodyAsync(string bodyName, string systemName, ulong systemAddress )
+        private async Task updateCurrentStellarBodyAsync(string bodyName, int? bodyId, string systemName, ulong systemAddress )
         {
             // Make sure our system information is up to date
             await updateCurrentSystemAsync( systemName, systemAddress ).ConfigureAwait(false);
@@ -2085,6 +2085,7 @@ namespace EddiCore
                     body = new Body
                     {
                         bodyname = bodyName,
+                        bodyId = bodyId,
                         systemname = systemName,
                         systemAddress = systemAddress,
                     };
@@ -2280,9 +2281,12 @@ namespace EddiCore
 
             if (theEvent.bodyname != null && (theEvent.bodyType == BodyType.Moon || theEvent.bodyType == BodyType.Planet) )
             {
-                await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.systemname, theEvent.systemAddress).ConfigureAwait(false);
+                await updateCurrentStellarBodyAsync( theEvent.bodyname, theEvent.bodyId, theEvent.systemname, theEvent.systemAddress).ConfigureAwait(false);
             }
-            await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress ).ConfigureAwait(false);
+            else
+            {
+                await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress ).ConfigureAwait( false );
+            }
 
             if (theEvent.taxi is true)
             {

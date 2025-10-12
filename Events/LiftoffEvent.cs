@@ -21,7 +21,7 @@ namespace EddiEvents
         public string bodyname { get; private set; }
 
         [PublicAPI( "The numeric ID of the body from where the ship has lifted off" )]
-        public long? bodyId { get; private set; }
+        public int? bodyId { get; private set; }
 
         [PublicAPI("The longitude from where the ship has lifted off")]
         public decimal? longitude { get; private set; }
@@ -49,7 +49,7 @@ namespace EddiEvents
 
         public bool? onplanet { get; private set; } // Always true, since `Liftoff` is currently only ever triggered when lifting off from a body
 
-        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, ulong systemAddress, string body, long? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
+        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, string system, ulong systemAddress, string body, int? bodyId, bool? onStation, bool? onPlanet, bool? taxi, bool? multicrew, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;

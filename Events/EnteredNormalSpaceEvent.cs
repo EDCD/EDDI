@@ -27,7 +27,7 @@ namespace EddiEvents
         public string bodyname { get; private set; }
 
         [PublicAPI( "The numeric ID of the nearest body to the commander when entering normal space (if any)" )]
-        public long? bodyId { get; private set; }
+        public int? bodyId { get; private set; }
 
         [PublicAPI("True if the ship is an transport (e.g. taxi or dropship)")]
         public bool? taxi { get; private set; }
@@ -47,7 +47,7 @@ namespace EddiEvents
 
         public BodyType bodyType { get; private set; }
 
-        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, long? bodyId, BodyType bodyType, bool? taxi, bool? multicrew) : base(timestamp, NAME)
+        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, int? bodyId, BodyType bodyType, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.systemAddress = systemAddress;

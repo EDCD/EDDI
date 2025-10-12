@@ -949,7 +949,7 @@ namespace EddiJournalMonitor
                                     var system = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
                                     var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
@@ -989,7 +989,7 @@ namespace EddiJournalMonitor
                                     var distFromStarLs = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                     var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
                                     if ( bodyType == BodyType.Planet )
                                     {
@@ -1143,7 +1143,7 @@ namespace EddiJournalMonitor
                                     var system = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
                                     if ( bodyType == BodyType.Planet )
                                     {
@@ -1163,7 +1163,7 @@ namespace EddiJournalMonitor
                                     var system = JsonParsing.getString(data, "StarSystem");
                                     var systemAddress = JsonParsing.getULong(data, "SystemAddress");
                                     var body = JsonParsing.getString(data, "Body");
-                                    var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
                                     var onStation = JsonParsing.getOptionalBool(data, "OnStation");
                                     var onPlanet = JsonParsing.getOptionalBool(data, "OnPlanet");
                                     var playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
