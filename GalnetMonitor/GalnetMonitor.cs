@@ -3,6 +3,7 @@ using EddiConfigService.Configurations;
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -26,21 +27,17 @@ namespace EddiGalnetMonitor
     /// <summary>
     /// A sample EDDI monitor to watch The Elite: Dangerous RSS feed and generate an event for new items
     /// </summary>
+    [UsedImplicitly]
     public class GalnetMonitor : IEddiMonitor
     {
         private static Dictionary<string, string> locales = new Dictionary<string, string>();
-        protected static string locale;
-        private GalnetConfiguration configuration;
-        protected static ResourceManager resourceManager = Properties.GalnetMonitor.ResourceManager;
+        private static string locale;
+        private GalnetConfiguration configuration = ConfigService.Instance.galnetConfiguration;
+        private static readonly ResourceManager resourceManager = Properties.GalnetMonitor.ResourceManager;
 
         private CancellationTokenSource cancellationTokenSource;
         private bool running;
         private DateTime journalTimeStamp;
-
-        public GalnetMonitor ()
-        {
-            configuration = ConfigService.Instance.galnetConfiguration;
-        }
 
         /// <summary>
         /// The name of the monitor; shows up in EDDI's configuration window
@@ -81,7 +78,7 @@ namespace EddiGalnetMonitor
             cancellationTokenSource = new CancellationTokenSource();
             running = true;
             locales = GetGalnetLocales();
-            Monitor();
+            MonitorAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -107,7 +104,7 @@ namespace EddiGalnetMonitor
             return new ConfigurationWindow();
         }
 
-        private void Monitor ()
+        private async Task MonitorAsync ()
         {
             var inGameOnlyStartDelayMilliSecs = new TimeSpan( 0, 5, 0 ); // 5 mins
             var passiveIntervalMilliSecs = new TimeSpan( 0, 15, 0 ); // 15 mins
@@ -122,7 +119,7 @@ namespace EddiGalnetMonitor
                     if ( configuration.galnetAlwaysOn )
                     {
                         FetchGalnet();
-                        Task.WaitAll( new[] { Task.Delay( passiveIntervalMilliSecs ) }, cancellationTokenSource.Token );
+                        await Task.Delay( passiveIntervalMilliSecs , cancellationTokenSource.Token ).ConfigureAwait(false);
                     }
                     else
                     {
@@ -133,16 +130,16 @@ namespace EddiGalnetMonitor
                             {
                                 // Wait at least 5 minutes after starting before polling for new articles
                                 firstRun = false;
-                                Task.WaitAll( new [] { Task.Delay( inGameOnlyStartDelayMilliSecs ) }, cancellationTokenSource.Token);
+                                await Task.Delay( inGameOnlyStartDelayMilliSecs, cancellationTokenSource.Token ).ConfigureAwait( false );
                             }
 
                             FetchGalnet();
-                            Task.WaitAll( new[] { Task.Delay( activeIntervalMilliSecs ) }, cancellationTokenSource.Token );
+                            await Task.Delay( activeIntervalMilliSecs , cancellationTokenSource.Token ).ConfigureAwait(false);
                         }
                         else
                         {
                             Logging.Debug( "No in-game activity detected, skipping galnet feed update" );
-                            Task.WaitAll( new[] { Task.Delay( passiveIntervalMilliSecs ) }, cancellationTokenSource.Token );
+                            await Task.Delay( passiveIntervalMilliSecs, cancellationTokenSource.Token ).ConfigureAwait(false);
                         }
                     }
                 }
@@ -211,22 +208,7 @@ namespace EddiGalnetMonitor
 
                     if ( newsItems.Count > 0 )
                     {
-                        // Spin out event in to a different thread to stop blocking
-                        Thread thread = new Thread(() =>
-                        {
-                            try
-                            {
-                                EDDI.Instance.enqueueEvent(new GalnetNewsPublishedEvent(DateTime.UtcNow, newsItems));
-                            }
-                            catch (ThreadAbortException)
-                            {
-                                Logging.Debug("Thread aborted");
-                            }
-                        })
-                        {
-                            IsBackground = true
-                        };
-                        thread.Start();
+                        EDDI.Instance.enqueueEvent( new GalnetNewsPublishedEvent( DateTime.UtcNow, newsItems ) );
                     }
 
                 }
