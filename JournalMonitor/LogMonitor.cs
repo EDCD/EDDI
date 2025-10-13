@@ -53,11 +53,8 @@ namespace EddiJournalMonitor
         {
             try
             {
-                while ( !cancellationToken.IsCancellationRequested )
+                foreach ( var chunk in journalQueue.GetConsumingEnumerable( cancellationToken ) )
                 {
-                    // Take a line from the queue (blocks if empty)
-                    var chunk = journalQueue.Take(cancellationToken);
-
                     // Process the line (wrap in a collection to match the callback signature)
                     Callback( chunk.lines, chunk.isLoadEvent );
                 }
