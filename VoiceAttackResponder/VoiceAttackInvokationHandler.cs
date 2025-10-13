@@ -62,7 +62,7 @@ namespace EddiVoiceAttackResponder
                         InvokeUpdateProfile();
                         break;
                     case "say":
-                        InvokeSay();
+                        InvokeSayAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "speech":
                         InvokeSpeech();
@@ -115,7 +115,7 @@ namespace EddiVoiceAttackResponder
                         InvokeJumpDetails();
                         break;
                     case "transmit":
-                        InvokeTransmit();
+                        InvokeTransmitAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         break;
                     case "missionsroute":
                     case "route":
@@ -459,7 +459,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary>
-        private static void InvokeSay ()
+        private static async Task InvokeSayAsync ()
         {
             try
             {
@@ -481,7 +481,7 @@ namespace EddiVoiceAttackResponder
                     ship = EDDI.Instance.CurrentShip;
                 }
 
-                SpeechService.Instance.Say( ship, speech, (int)priority, voice, false, null, true );
+                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, false, null, true ).ConfigureAwait( false );
             }
             catch ( Exception e )
             {
@@ -490,7 +490,7 @@ namespace EddiVoiceAttackResponder
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary> 
-        private static void InvokeTransmit ()
+        private static async Task InvokeTransmitAsync ()
         {
             try
             {
@@ -512,7 +512,7 @@ namespace EddiVoiceAttackResponder
                     ship = EDDI.Instance.CurrentShip;
                 }
 
-                SpeechService.Instance.Say( ship, speech, (int)priority, voice, true, null, true );
+                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, true, null, true ).ConfigureAwait(false);
             }
             catch ( Exception e )
             {

@@ -354,7 +354,7 @@ namespace EddiSpeechService
                         {
                             break; // Exit the loop if the queue is empty
                         }
-                        await Task.Yield(); // Yield to avoid blocking the thread pool
+                        await Task.Yield(); // Yield to avoid blocking the task pool
                     }
                 }
             }

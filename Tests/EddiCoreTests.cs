@@ -304,7 +304,7 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestShipShutdownScenario ()
+        public async Task TestShipShutdownScenario ()
         {
             var speechResponder = new SpeechResponder();
             var speechService = SpeechService.Instance;
@@ -329,7 +329,7 @@ namespace Tests
 
             // While speech is paused, new speech should be added to the queue but not removed from the queue.
             speechService.speechQueue.DequeueAllSpeech();
-            speechService.Say(null, "This speech should not be dequeued until speech is unpaused.");
+            await speechService.SayAsync(null, "This speech should not be dequeued until speech is unpaused.").ConfigureAwait(false);
             Thread.Sleep(TimeSpan.FromSeconds(3));
             Assert.IsTrue( speechService.speechQueue.isQueuePaused );
             Assert.IsTrue( speechService.speechQueue.hasSpeech );

@@ -35,32 +35,32 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestSagAStar ()
+        public async Task TestSagAStar ()
         {
             var SagI = "Sagittarius A*";
             var translated = SpeechConversions.GetTranslation(SagI);
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), translated );
+            await SpeechService.Instance.SayAsync( ShipDefinitions.FromEDModel( "Vulture" ), translated ).ConfigureAwait(false);
         }
 
         [DataTestMethod, DoNotParallelize]
         [DataRow( "Vulture", @"<break time=""100ms""/>Fred's ship." )]
         [DataRow( "Vulture", @"<break time=""100ms""/>7 < 10." )]
         [DataRow( "Vulture", @"<break time=""100ms""/>He said ""Foo""." )]
-        public void TestSsml (string edModel, string ssml)
+        public async Task TestSsml (string edModel, string ssml)
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( edModel ), ssml );
+            await SpeechService.Instance.SayAsync( ShipDefinitions.FromEDModel( edModel ), ssml ).ConfigureAwait( false );
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestSsml2 ()
+        public async Task TestSsml2 ()
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>We're on our way to " + SpeechConversions.GetTranslation( "i Bootis" ) + "." );
+            await SpeechService.Instance.SayAsync( ShipDefinitions.FromEDModel( "Vulture" ), @"<break time=""100ms""/>We're on our way to " + SpeechConversions.GetTranslation( "i Bootis" ) + "." ).ConfigureAwait( false );
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestSsml3 ()
+        public async Task TestSsml3 ()
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Anaconda" ), "You are travelling to the " + SpeechConversions.GetTranslation( "Hotas" ) + " system." );
+            await SpeechService.Instance.SayAsync( ShipDefinitions.FromEDModel( "Anaconda" ), "You are travelling to the " + SpeechConversions.GetTranslation( "Hotas" ) + " system." ).ConfigureAwait( false );
         }
 
         [TestMethod, DoNotParallelize]
@@ -91,13 +91,13 @@ namespace Tests
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestCallsign ()
+        public async Task TestCallsign ()
         {
-            SpeechService.Instance.Say( ShipDefinitions.FromEDModel( "Vulture" ), SpeechConversions.ICAO( "GAB-1655" ) );
+            await SpeechService.Instance.SayAsync( ShipDefinitions.FromEDModel( "Vulture" ), SpeechConversions.ICAO( "GAB-1655" ) ).ConfigureAwait( false );
         }
 
         [TestMethod, DoNotParallelize]
-        public void TestPowerplay ()
+        public async Task TestPowerplay ()
         {
             var ship = ShipDefinitions.FromEDModel( "Anaconda" );
             var speaker = SpeechService.Instance;
@@ -115,7 +115,7 @@ namespace Tests
             };
             foreach ( var powerName in powerNames )
             {
-                speaker.Say( ship, SpeechConversions.getPhoneticPower( powerName ) + "." );
+                await speaker.SayAsync( ship, SpeechConversions.getPhoneticPower( powerName ) + "." ).ConfigureAwait( false );
             }
         }
 

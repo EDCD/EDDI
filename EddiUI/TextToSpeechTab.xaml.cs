@@ -102,45 +102,45 @@ namespace EddiUI
 
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            if ( SpeechService.Instance.eddiAudioPlaying || SpeechService.Instance.eddiSpeaking )
-            {
-                SpeechService.Instance.StopAudio();
-                SpeechService.Instance.ShutUp();
-                return;
-            }
-
             try
             {
+                if ( SpeechService.Instance.eddiAudioPlaying || SpeechService.Instance.eddiSpeaking )
+                {
+                    SpeechService.Instance.StopAudio();
+                    SpeechService.Instance.ShutUp();
+                    return;
+                }
+                
                 var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
                 testShip.health = 100;
                 var message = string.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-                Task.Run( () => SpeechService.Instance.Say( testShip, message, 0 ) );
+                Task.Run( () => SpeechService.Instance.SayAsync( testShip, message, 0 ) );
             }
-            catch ( TaskCanceledException )
+            catch ( Exception ex )
             {
-                // Nothing to do here
+                Logging.Warn( ex.Message, ex );
             }
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            if ( SpeechService.Instance.eddiAudioPlaying || SpeechService.Instance.eddiSpeaking )
-            {
-                SpeechService.Instance.StopAudio();
-                SpeechService.Instance.ShutUp();
-                return;
-            }
-
             try
             {
+                if ( SpeechService.Instance.eddiAudioPlaying || SpeechService.Instance.eddiSpeaking )
+                {
+                    SpeechService.Instance.StopAudio();
+                    SpeechService.Instance.ShutUp();
+                    return;
+                }
+                
                 var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
                 testShip.health = 20;
                 var message = string.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-                Task.Run( () => SpeechService.Instance.Say( testShip, message, 0 ) );
+                Task.Run( () => SpeechService.Instance.SayAsync( testShip, message, 0 ) );
             }
-            catch ( TaskCanceledException )
+            catch ( Exception ex )
             {
-                // Nothing to do here
+                Logging.Warn( ex.Message, ex );
             }
         }
 

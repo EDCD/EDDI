@@ -62,9 +62,16 @@ namespace CommanderMonitor
             }
         }
 
-        private void phoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
+        private async void phoneticNameTestButtonClicked ( object sender, RoutedEventArgs e )
         {
-            SpeechService.Instance.Say( null, commanderMonitor.Cmdr.SpokenName(), 0 );
+            try
+            {
+                await SpeechService.Instance.SayAsync( null, commanderMonitor.Cmdr.SpokenName(), 0 ).ConfigureAwait(true);
+            }
+            catch ( Exception ex )
+            {
+                Logging.Warn( ex.Message, ex );
+            }
         }
 
         private void ipaClicked ( object sender, RoutedEventArgs e )

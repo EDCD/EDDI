@@ -70,10 +70,10 @@ namespace EddiSpeechService
 
         public bool checkSpeechInterrupt ( int peekedSpeechPriority ) => SpeechManager.checkSpeechInterrupt( peekedSpeechPriority );
 
-        public void Say ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false,
+        public Task SayAsync ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false,
             string eventType = null, bool invokedFromVA = false )
         {
-            SpeechManager.SayAsync( ship, message, priority, voice, radio, eventType, invokedFromVA ).GetAwaiter().GetResult();
+            return SpeechManager.SayAsync( ship, message, priority, voice, radio, eventType, invokedFromVA );
         }
 
         public void ShutUp () => SpeechManager.ShutUp();

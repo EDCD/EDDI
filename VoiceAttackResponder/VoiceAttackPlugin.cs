@@ -109,7 +109,7 @@ namespace EddiVoiceAttackResponder
                     {
                         WriteToLog( $"EDDI version {EddiUpgrader.UpgradeVersion} is now available. Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange" );
                         var msg = Properties.VoiceAttack.run_eddi_standalone;
-                        SpeechService.Instance.Say( null, msg, 0 );
+                        SpeechService.Instance.SayAsync( null, msg, 0 );
                     }
 
                     WriteToLog("The EDDI plugin is fully operational.", "green");

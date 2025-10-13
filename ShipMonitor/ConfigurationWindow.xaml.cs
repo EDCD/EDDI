@@ -57,13 +57,20 @@ namespace EddiShipMonitor
             IpaResources.Show();
         }
 
-        private void testShipName(object sender, RoutedEventArgs e)
+        private void testShipName ( object sender, RoutedEventArgs e )
         {
-            Ship ship = (Ship)((Button)e.Source).DataContext;
-            ship.health = 100;
-            string nameToSpeak = ship.phoneticname;
-            string message = string.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
-            SpeechService.Instance.Say(ship, message, 0);
+            try
+            {
+                Ship ship = (Ship)( (Button)e.Source ).DataContext;
+                ship.health = 100;
+                string nameToSpeak = ship.phoneticname;
+                string message = string.Format( Properties.ShipMonitor.ship_ready, nameToSpeak );
+                SpeechService.Instance.SayAsync( ship, message, 0 );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( ex.Message, ex );
+            }
         }
 
         private void exportShip(object sender, RoutedEventArgs e)

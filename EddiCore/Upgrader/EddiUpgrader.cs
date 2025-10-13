@@ -77,7 +77,7 @@ namespace EddiCore.Upgrader
                         if ( ( isPreRelease && configuration.AcceptsBetaReleases ) || !isPreRelease )
                         {
                             var latestRelease = (JObject)release;
-                            ProcessRelease( latestRelease );
+                            await ProcessReleaseAsync( latestRelease ).ConfigureAwait(false);
                             break;
                         }
                     }
@@ -85,12 +85,12 @@ namespace EddiCore.Upgrader
             }
             catch ( Exception ex )
             {
-                SpeechService.Instance.Say( null, Properties.Resources.update_server_unreachable, 0 );
+                await SpeechService.Instance.SayAsync( null, Properties.Resources.update_server_unreachable, 0 ).ConfigureAwait(false);
                 Logging.Warn( "Failed to access GitHub API for releases", ex );
             }
         }
 
-        private static void ProcessRelease ( JObject release )
+        private static async Task ProcessReleaseAsync ( JObject release )
         {
             // Get the version information, removing any prefixing description and separator
             var version = release.Value<string>("tag_name");
@@ -115,7 +115,7 @@ namespace EddiCore.Upgrader
 
                             var spokenVersion = version.Replace(".", $" {Properties.Resources.point} ");
                             var message = String.Format(Properties.Resources.update_available, spokenVersion);
-                            SpeechService.Instance.Say( null, message, 0 );
+                            await SpeechService.Instance.SayAsync( null, message, 0 ).ConfigureAwait(false);
                         }
 
                         break; // Exit loop once the correct asset is found
@@ -131,11 +131,11 @@ namespace EddiCore.Upgrader
                 if (UpgradeLocation != null)
                 {
                     Logging.Info( $"Downloading upgrade from {UpgradeLocation}" );
-                    SpeechService.Instance.Say(null, Properties.Resources.downloading_upgrade, 0);
+                    await SpeechService.Instance.SayAsync(null, Properties.Resources.downloading_upgrade, 0).ConfigureAwait(false);
                     var updateFile = await Net.DownloadFileAsync(UpgradeLocation, @"EDDI-update.exe").ConfigureAwait(false);
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, Properties.Resources.download_failed, 0);
+                        await SpeechService.Instance.SayAsync(null, Properties.Resources.download_failed, 0).ConfigureAwait(false);
                     }
                     else
                     {
@@ -145,7 +145,7 @@ namespace EddiCore.Upgrader
                         Logging.Info( $"Downloaded update to {updateFile}" );
                         Logging.Info( $"Path is {Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )}" );
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Properties.Resources.starting_upgrade, 0);
+                        await SpeechService.Instance.SayAsync(null, Properties.Resources.starting_upgrade, 0).ConfigureAwait(false);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, $@"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""{Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location )}""" );
@@ -154,7 +154,7 @@ namespace EddiCore.Upgrader
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.Resources.upgrade_failed, 0);
+                await SpeechService.Instance.SayAsync(null, Properties.Resources.upgrade_failed, 0).ConfigureAwait(false);
                 Logging.Error("Upgrade failed", ex);
             }
         }

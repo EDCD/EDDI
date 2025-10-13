@@ -52,11 +52,18 @@ namespace EddiInaraResponder
             return true;
         }
 
-        private void OnInvalidAPIkey(object sender, EventArgs e)
+        private void OnInvalidAPIkey ( object sender, EventArgs e )
         {
-            // Alert the user that there is a problem with the Inara API key
-            Logging.Info("API key is invalid: Please open the Inara Responder and update the API key.");
-            SpeechService.Instance.Say(EDDI.Instance.CurrentShip, Properties.InaraResources.invalidKeyErr);
+            try
+            {
+                // Alert the user that there is a problem with the Inara API key
+                Logging.Info( "API key is invalid: Please open the Inara Responder and update the API key." );
+                SpeechService.Instance.SayAsync( EDDI.Instance.CurrentShip, Properties.InaraResources.invalidKeyErr );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( ex.Message, ex );
+            }
         }
 
         public void Stop()

@@ -104,7 +104,7 @@ namespace EddiCore
                     {
                         // Alert the user that we are operating in legacy mode
                         var msg = "Legacy game version detected. EDDI shall resume processing events after you return to the live galaxy.";
-                        SpeechService.Instance.Say( null, msg, 0 );
+                        SpeechService.Instance.SayAsync( null, msg, 0 );
                         Logging.Warn(msg);
                     }
 
@@ -858,8 +858,10 @@ namespace EddiCore
 
             // Start (or restart) our event handler thread (as long as we are not unit testing)
             if ( !eventHandlerTS.Token.IsCancellationRequested && 
-                 eventConsumerThread?.Status != TaskStatus.Running && !DataProviderService.unitTesting )
+                 ( eventConsumerThread is null || eventConsumerThread?.Status >= TaskStatus.RanToCompletion ) && 
+                 !DataProviderService.unitTesting )
             {
+                eventConsumerThread?.Dispose();
                 eventConsumerThread = Task.Run(dequeueEventsAsync, eventHandlerTS.Token);
             }
         }
@@ -871,6 +873,7 @@ namespace EddiCore
                 foreach (var @event in eventQueue.GetConsumingEnumerable(eventHandlerTS.Token))
                 {
                     await HandleEventAsync( @event ).ConfigureAwait(false);
+                    await Task.Yield();
                 }
             }
             catch ( TaskCanceledException )
@@ -2659,13 +2662,13 @@ namespace EddiCore
                 {
                     string msg = string.Format(Properties.Resources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
-                    SpeechService.Instance.Say(null, msg, 0);
+                    SpeechService.Instance.SayAsync(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
                     string msg = string.Format(Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
-                    SpeechService.Instance.Say(null, msg, 0);
+                    SpeechService.Instance.SayAsync(null, msg, 0);
                 }
             }
             return foundMonitors;

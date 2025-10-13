@@ -15,7 +15,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -333,7 +332,7 @@ namespace EddiSpeechResponder
             var dict = resolver.CompileVariables(theEvent);
 
             // Generate and enqueue speech asynchronously
-            Task.Run( () =>
+            try
             {
                 string speech = resolver.resolveFromName(scriptName, dict, true);
                 if ( speech != null && Configuration != null )
@@ -358,10 +357,14 @@ namespace EddiSpeechResponder
                             { "Voice", voice },
                             { "InvokedFromVA", invokedFromVA }
                         } );
-                        SpeechService.Instance.Say( ship, speech, priority ?? resolver.priority( scriptName ), voice, false, theEvent?.type, invokedFromVA );
+                        SpeechService.Instance.SayAsync( ship, speech, priority ?? resolver.priority( scriptName ), voice, false, theEvent?.type, invokedFromVA );
                     }
                 }
-            } );
+            }
+            catch ( Exception e)
+            {
+                Logging.Error( e.Message, e );
+            }
         }
 
         public UserControl ConfigurationTabItem()

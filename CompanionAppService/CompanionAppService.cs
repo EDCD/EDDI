@@ -129,22 +129,15 @@ namespace EddiCompanionAppService
                 return;
             }
 
-            Task.Run( async () =>
+            // Our access token may have expired. Use our refresh token to obtain a new access token.
+            RefreshTokenAsync().SafeFireAndForget( ex =>
             {
-                try
+                if ( Credentials.refreshToken != null )
                 {
-                    // Our access token may have expired. Use our refresh token to obtain a new access token.
-                    await RefreshTokenAsync().ConfigureAwait(false);
+                    CurrentState = State.ConnectionLost;
                 }
-                catch ( Exception )
-                {
-                    if ( Credentials.refreshToken != null )
-                    {
-                        CurrentState = State.ConnectionLost;
-                    }
 
-                    CurrentState = State.LoggedOut;
-                }
+                CurrentState = State.LoggedOut;
             } );
         }
 

@@ -2,10 +2,12 @@
 using EddiConfigService;
 using EddiCore;
 using EddiSpeechService;
+using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Utilities;
 
 namespace EddiUI
 {
@@ -19,19 +21,26 @@ namespace EddiUI
             CompanionAppService.Instance.StateChanged += companionApiStatusChanged;
         }
 
-        private void companionApiStatusChanged ( CompanionAppService.State oldState, CompanionAppService.State newState )
+        private async void companionApiStatusChanged ( CompanionAppService.State oldState, CompanionAppService.State newState )
         {
-            setStatusInfo();
-            if ( oldState == CompanionAppService.State.AwaitingCallback &&
-                newState == CompanionAppService.State.Authorized )
+            try
             {
-                SpeechService.Instance.Say( null, string.Format( Properties.Resources.frontier_api_ok, ConfigService.Instance.commanderConfiguration.phoneticName ), 0 );
-                SpeechService.Instance.Say( null, Properties.Resources.frontier_api_close_browser, 0 );
+                setStatusInfo();
+                if ( oldState == CompanionAppService.State.AwaitingCallback &&
+                     newState == CompanionAppService.State.Authorized )
+                {
+                    await SpeechService.Instance.SayAsync( null, string.Format( Properties.Resources.frontier_api_ok, ConfigService.Instance.commanderConfiguration.phoneticName ), 0 ).ConfigureAwait(false);
+                    await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_close_browser, 0 ).ConfigureAwait(false);
+                }
+                else if ( oldState == CompanionAppService.State.LoggedOut &&
+                          newState == CompanionAppService.State.AwaitingCallback )
+                {
+                    await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_please_authenticate, 0 ).ConfigureAwait(false);
+                }
             }
-            else if ( oldState == CompanionAppService.State.LoggedOut &&
-                newState == CompanionAppService.State.AwaitingCallback )
+            catch (Exception e)
             {
-                SpeechService.Instance.Say( null, Properties.Resources.frontier_api_please_authenticate, 0 );
+                Logging.Error( e.Message, e );
             }
         }
 
@@ -79,13 +88,13 @@ namespace EddiUI
         {
             try
             {
-                Task.Run( () =>
+                Task.Run( async () =>
                 {
                     if ( CompanionAppService.Instance.CurrentState == CompanionAppService.State.LoggedOut )
                     {
                         if ( IsAdministrator() )
                         {
-                            SpeechService.Instance.Say( null, Properties.Resources.frontier_api_admin_mode, 0 );
+                            await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_admin_mode, 0 ).ConfigureAwait(true);
                         }
 
                         CompanionAppService.Instance.Login();
@@ -94,10 +103,10 @@ namespace EddiUI
                     {
                         // Logout from the companion EddiApplication and start again
                         CompanionAppService.Instance.Logout();
-                        SpeechService.Instance.Say( null, Properties.Resources.frontier_api_reset, 0 );
+                        await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_reset, 0 ).ConfigureAwait(true);
                         if ( EDDI.FromVA )
                         {
-                            SpeechService.Instance.Say( null, Properties.Resources.frontier_api_cant_login_from_va, 0 );
+                            await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_cant_login_from_va, 0 ).ConfigureAwait(true);
                         }
                     }
                 } );
