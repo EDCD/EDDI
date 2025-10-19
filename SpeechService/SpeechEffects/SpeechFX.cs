@@ -60,7 +60,7 @@ namespace EddiSpeechService.SpeechEffects
             else
             {
                 sampleProvider = new DistortionSampleProvider( sampleProvider, distortionLevel );
-                sampleProvider = new ChorusSampleProvider( sampleProvider, sampleRate, fxLevel, damageAdjustedFxLevel );
+                sampleProvider = new ChorusSampleProvider( sampleProvider, sampleRate, damageAdjustedFxLevel );
                 sampleProvider = new EchoSampleProvider( sampleProvider, sampleRate, fxLevel, echoDelay );
             }
 

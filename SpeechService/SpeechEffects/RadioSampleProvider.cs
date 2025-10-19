@@ -27,7 +27,7 @@ namespace EddiSpeechService.SpeechEffects
         protected override float ProcessSample ( float input )
         {
             // Step 1: high‑pass filter
-            var hp = _highpass.Transform(input);
+            var hp = _highpass.Transform( input );
 
             // Step 2: distortion
             return _distortion.Process( hp );
