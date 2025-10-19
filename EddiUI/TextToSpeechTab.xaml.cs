@@ -135,7 +135,7 @@ namespace EddiUI
                 
                 var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
                 testShip.health = 20;
-                var message = string.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
+                var message = string.Format(Properties.Resources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
                 Task.Run( () => SpeechService.Instance.SayAsync( testShip, message, 0 ) );
             }
             catch ( Exception ex )
