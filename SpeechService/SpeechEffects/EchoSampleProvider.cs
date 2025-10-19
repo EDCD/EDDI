@@ -6,6 +6,8 @@ namespace EddiSpeechService.SpeechEffects
 {
     public class EchoSampleProvider : EffectSampleProvider
     {
+        private const float EchoWetMax = 0.10f;
+        
         private readonly float _feedback;
         private readonly float[] _delayBuffer;
         private int _pos;
@@ -14,7 +16,7 @@ namespace EddiSpeechService.SpeechEffects
 
         public EchoSampleProvider ( ISampleProvider source, int sampleRate, int fxLevel, int echoDelayMs, float feedback = 0.05f ) : base( source )
         {
-            if ( echoDelayMs <= 0 )
+            if ( fxLevel <= 0 )
             {
                 _delayBuffer = Array.Empty<float>();
                 _wet = 0f;
@@ -27,7 +29,7 @@ namespace EddiSpeechService.SpeechEffects
             var delaySamples = (int)( sampleRate * ( echoDelayMs / 1000.0 ) );
             _delayBuffer = new float[ delaySamples ];
 
-            _wet = Math.Min( norm, 0.1f );
+            _wet = Math.Min( norm, EchoWetMax );
             _dry = 1.0f - _wet;
             _feedback = feedback;
         }

@@ -46,7 +46,7 @@ namespace EddiSpeechService.SpeechEffects
 
         public float Process ( float input )
         {
-            float output = (_a0 * input) + _z1;
+            var output = (_a0 * input) + _z1;
             _z1 = (_a1 * input) + _z2 - (_b1 * output);
             _z2 = (_a2 * input) - (_b2 * output);
             return output;

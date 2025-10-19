@@ -153,7 +153,7 @@ namespace EddiSpeechService.SpeechSynthesizers
                     }
 
                     synth.Options.SpeakingRate = ConvertSpeakingRate(Configuration.Rate);
-                    synth.Options.AudioVolume = (double)Configuration.Volume / 100;         // Colume is on a 0 - 1 scale
+                    synth.Options.AudioVolume = (double)Configuration.Volume / 100;         // Volume is on a 0 - 1 scale
                     Logging.Debug("Configuration is: ", Configuration);
 
                     SpeechFormatter.PrepareSpeech(voice, ref speech, out var useSSML);

@@ -375,10 +375,10 @@ namespace EddiSpeechService
         public Task SpeakAsync ( EddiSpeech speech )
         {
             var Configuration = ConfigService.Instance.speechServiceConfiguration;
-            return SpeakAsync( speech.message, speech.voice, Configuration.EffectsLevel, Configuration.Volume, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
+            return SpeakAsync( speech.message, speech.voice, Configuration.EffectsLevel, speech.distortionLevel, speech.echoDelay, speech.priority, speech.radio );
         }
 
-        public async Task SpeakAsync ( string speech, string defaultVoice, int fxLevel, int volume = 95,
+        public async Task SpeakAsync ( string speech, string defaultVoice, int fxLevel,
             int distortionLevel = 0, int echoDelay = 0, int priority = 3, bool radio = false )
         {
             if ( speech == null || speech.Trim() == "" ) { return; }
@@ -465,7 +465,7 @@ namespace EddiSpeechService
                     Logging.Debug( "Seeking back to the beginning of the stream" );
                     stream.Seek( 0, SeekOrigin.Begin );
 
-                    var provider = SpeechFx.addEffectsToSource(stream, volume, fxLevel, distortionLevel, echoDelay, isRadio );
+                    var provider = SpeechFx.addEffectsToSource(stream, fxLevel, distortionLevel, echoDelay, isRadio );
                     await PlaySpeechStreamAsync( provider, priority ).ConfigureAwait(false);
                 }
             }
