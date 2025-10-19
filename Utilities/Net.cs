@@ -85,7 +85,7 @@ namespace Utilities
                 catch ( Exception e )
                 {
                     attempts++;
-                    await Task.Delay( 50 ).ConfigureAwait(false);
+                    await Task.Delay( 50 * attempts ).ConfigureAwait(false);
                     ex = e;
                 }
             }

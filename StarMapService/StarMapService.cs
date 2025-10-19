@@ -25,7 +25,7 @@ namespace EddiStarMapService
         public const int syncBatchSize = 50;
 
         // The default timeout for requests to EDSM. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
-        private const int DefaultTimeoutMilliseconds = 30000;
+        private const int DefaultTimeoutMilliseconds = 10000;
 
         public static string inGameCommanderName { get; set; }
         private string commanderName { get; set; }
@@ -66,14 +66,19 @@ namespace EddiStarMapService
                 try
                 {
                     var response = await HttpClient.GetAsync( url ).ConfigureAwait(false);
+                    UpdateRateLimits( url, response );
                     await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
-                    UpdateRateLimits( url, response );
                     return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 catch ( HttpRequestException he )
                 {
                     Logging.Warn( he.Message, he );
+                    return null;
+                }
+                catch ( TaskCanceledException ex ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !ex.CancellationToken.IsCancellationRequested )
+                {
+                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", ex );
                     return null;
                 }
                 catch ( TaskCanceledException )
@@ -89,14 +94,19 @@ namespace EddiStarMapService
                 try
                 {
                     var response = await HttpClient.PostAsync( url, content ).ConfigureAwait(false);
+                    UpdateRateLimits( url, response );
                     await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
-                    UpdateRateLimits( url, response );
                     return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 catch ( HttpRequestException he )
                 {
                     Logging.Warn( he.Message, he );
+                    return null;
+                }
+                catch ( TaskCanceledException ex ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !ex.CancellationToken.IsCancellationRequested )
+                {
+                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", ex );
                     return null;
                 }
                 catch ( TaskCanceledException )
