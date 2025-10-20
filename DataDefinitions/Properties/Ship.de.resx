@@ -294,7 +294,10 @@ If transporting via taxi or dropship</comment>
     <value>deine</value>
     <comment>e.g. *your* Mandalay</comment>
   </data>
-  
+  <data name="yourCorsair" xml:space="preserve">
+    <value>deine</value>
+    <comment>e.g. *your* Corsair</comment>
+  </data>
   <data name="yourPantherClipperMkII" xml:space="preserve">
     <value>dein</value>
     <comment>e.g. *your* Panther Clipper Mk. II</comment>
