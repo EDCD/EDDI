@@ -27,7 +27,11 @@ namespace EddiFleetCarrierMonitor
         private FleetCarrier FleetCarrier
         {
             get => EDDI.Instance.FleetCarrier;
-            set => EDDI.Instance.FleetCarrier = value;
+            set
+            {
+                EDDI.Instance.FleetCarrier = value;
+                OnPropertyChanged();
+            }
         }
 
         private FleetCarrier SquadronCarrier
