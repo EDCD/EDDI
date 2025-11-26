@@ -1,5 +1,6 @@
 :: Batch file assumes parameters: postBuild.bat "$(ConfigurationName)" "$(SolutionDir)" "$(OutDir)"
-
+SET CI=TRUE
+GOTO :EOF
 ECHO ****************************
 SET this=Post-build script
 

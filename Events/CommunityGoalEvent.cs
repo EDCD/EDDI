@@ -99,10 +99,31 @@ namespace EddiEvents
         [PublicAPI]
         public string direction { get; private set; }
 
-        public CGUpdate(string updateType, string updateDirection)
+        // NEU: Werte für die Änderungen
+        [PublicAPI]
+        public long? oldvalue { get; private set; }
+
+        [PublicAPI]
+        public long? newvalue { get; private set; }
+
+        [PublicAPI]
+        public long? change { get; private set; }
+
+        // Alter Constructor (für Kompatibilität)
+        public CGUpdate ( string updateType, string updateDirection )
         {
             type = updateType;
             direction = updateDirection;
+        }
+
+        // NEU: Constructor mit Werten
+        public CGUpdate ( string updateType, string updateDirection, long oldVal, long newVal )
+        {
+            type = updateType;
+            direction = updateDirection;
+            oldvalue = oldVal;
+            newvalue = newVal;
+            change = newVal - oldVal;
         }
     }
 }

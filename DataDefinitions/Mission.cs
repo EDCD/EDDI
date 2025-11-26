@@ -344,6 +344,8 @@ namespace EddiDataDefinitions
 
         public int communalTier { get; set; }
 
+        public long communalContribution { get; set; }
+
         #endregion
 
         #region Passenger Data
