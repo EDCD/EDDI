@@ -189,4 +189,8 @@
     <value>Squadron Carrier</value>
     <comment>A Squadron Carrier</comment>
   </data>
+  <data name="Dodec" xml:space="preserve">
+    <value>Dodec Starport</value>
+    <comment>A Dodec Starport</comment>
+  </data>
 </root>
