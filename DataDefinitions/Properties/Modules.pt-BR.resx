@@ -661,7 +661,10 @@
     <value>Conjunto CS</value>
     <comment>Colonization Suite module</comment>
   </data>
-  
+  <data name="MiningVolleyRepeater" xml:space="preserve">
+    <value>Repetidor de Rajadas de Mineração</value>
+    <comment>Module Hpt_MiningToolV2_Fixed_Large</comment>
+  </data>
   <data name="MultiDroneControl_Mining_Mk2" xml:space="preserve">
     <value>Multi Controlador de Drone de Mineração</value>
     <comment>Module Hpt_MiningToolV2_Fixed_Large</comment>
