@@ -130,7 +130,9 @@
     <value>Verstärkt</value>
   </data>
   <data name="Stronghold" xml:space="preserve">
-    <value>Stützpunkt</value>
+    <value>Hochburg</value>
   </data>
-  
+  <data name="Unoccupied" xml:space="preserve">
+    <value>Nicht besetzt</value>
+  </data>
 </root>

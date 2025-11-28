@@ -658,5 +658,8 @@
   <data name="GuardianWeaponSturdy" xml:space="preserve">
     <value>Anti-Guardian-Zonen-Widerstand</value>
   </data>
-  
+  <data name="CargoRackIncreasedCapacity" xml:space="preserve">
+    <value>Frachtgestell für MK II</value>
+    <comment>Special CG reward expanded cargo rack blueprint</comment>
+  </data>
 </root>
