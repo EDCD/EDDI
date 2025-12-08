@@ -21,6 +21,7 @@ namespace EddiDataDefinitions
         public static readonly StationModel MegaShipCivilian = new StationModel("MegaShipCivilian");
         public static readonly StationModel Ocellus = new StationModel("Ocellus");
         public static readonly StationModel Orbis = new StationModel("Orbis");
+        public static readonly StationModel Dodec = new StationModel("Dodec");
         public static readonly StationModel Outpost = new StationModel("Outpost");
         public static readonly StationModel SurfaceStation = new StationModel("SurfaceStation"); // No longer used in the player journal
         public static readonly StationModel CraterOutpost = new StationModel("CraterOutpost");

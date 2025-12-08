@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
         [JsonProperty("CurrentTotal")]
         public long total { get; set; }
 
-        [JsonProperty("PlayerContribution")]
+        [JsonProperty("PlayerContribution")] // Player's total contribution to date
         public long contribution { get; set; }
 
         [JsonProperty("NumContributors")]

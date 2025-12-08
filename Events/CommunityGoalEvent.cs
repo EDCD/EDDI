@@ -10,7 +10,7 @@ namespace EddiEvents
     {
         public const string NAME = "Community goal";
         public const string DESCRIPTION = "Triggered when the status of a community goal changes";
-        public static Event SAMPLE = new CommunityGoalEvent(DateTime.UtcNow, new List<CGUpdate>() { new CGUpdate("Tier", "Increase"), new CGUpdate("Percentile", "Increase") }, new CommunityGoal()
+        public static Event SAMPLE = new CommunityGoalEvent(DateTime.UtcNow, new List<CGUpdate> { new CGUpdate("Tier", "Increase", 4, 5), new CGUpdate("Percentile", "Increase", 25, 10) }, new CommunityGoal()
         {
             cgid = 641,
             name = "Defence of the Galactic Summit",
@@ -93,16 +93,28 @@ namespace EddiEvents
 
     public class CGUpdate
     {
-        [PublicAPI]
+        [PublicAPI("Update Type")]
         public string type { get; private set; }
 
-        [PublicAPI]
+        [PublicAPI( "Update Direction" )]
         public string direction { get; private set; }
 
-        public CGUpdate(string updateType, string updateDirection)
+        [PublicAPI( "The old value" )]
+        public long? oldvalue { get; private set; }
+
+        [PublicAPI( "The new value" )]
+        public long? newvalue { get; private set; }
+
+        [PublicAPI( "The difference between the old and new values" )]
+        public long? change { get; private set; }
+
+        public CGUpdate ( string updateType, string updateDirection, long oldVal, long newVal )
         {
             type = updateType;
             direction = updateDirection;
+            oldvalue = oldVal;
+            newvalue = newVal;
+            change = newVal - oldVal;
         }
     }
 }

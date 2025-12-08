@@ -580,28 +580,39 @@ namespace EddiMissionMonitor
                 {
                     // Raise events for the notable changes in community goal status.
                     var cgUpdates = new List<CGUpdate>();
-                    if (mission.communalTier < goal.tier)
+
+                    // Check for community goal tier changes
+                    if ( mission.communalTier < goal.tier )
                     {
-                        // Did the goal's current tier change?
-                        cgUpdates.Add(new CGUpdate("Tier", "Increase"));
+                        cgUpdates.Add( new CGUpdate( "Tier", "Increase",
+                            mission.communalTier, goal.tier ) );
                     }
-                    if (goal.contribution > 0)
+
+                    // Check for player contribution changes
+                    if ( goal.contribution > mission.communalContribution )
                     {
-                        // Smaller percentile bands are better, larger percentile bands are worse
-                        if (mission.communalPercentileBand > goal.percentileband)
+                        cgUpdates.Add( new CGUpdate( "Contribution", "Increase",
+                            mission.communalContribution, goal.contribution ) );
+                    }
+
+                    // Check for player percentile band changes
+                    if ( goal.contribution > 0 )
+                    {
+                        if ( mission.communalPercentileBand > goal.percentileband )
                         {
-                            // Did the player's percentile band increase (reach a smaller value)?
-                            cgUpdates.Add(new CGUpdate("Percentile", "Increase"));
+                            cgUpdates.Add( new CGUpdate( "Percentile", "Increase",
+                                mission.communalPercentileBand, goal.percentileband ) );
                         }
-                        if (mission.communalPercentileBand < goal.percentileband)
+                        if ( mission.communalPercentileBand < goal.percentileband )
                         {
-                            // Did the player's percentile band decrease (reach a larger value)?
-                            cgUpdates.Add(new CGUpdate("Percentile", "Decrease"));
+                            cgUpdates.Add( new CGUpdate( "Percentile", "Decrease",
+                                mission.communalPercentileBand, goal.percentileband ) );
                         }
                     }
-                    if (cgUpdates.Any())
+
+                    if ( cgUpdates.Any() )
                     {
-                        EDDI.Instance.enqueueEvent(new CommunityGoalEvent(DateTime.UtcNow, cgUpdates, goal));
+                        EDDI.Instance.enqueueEvent( new CommunityGoalEvent( DateTime.UtcNow, cgUpdates, goal ) );
                     }
 
                     // Update our mission records
@@ -614,16 +625,18 @@ namespace EddiMissionMonitor
                     mission.communal = true;
                     mission.communalPercentileBand = goal.percentileband;
                     mission.communalTier = goal.tier;
+                    mission.communalContribution = goal.contribution;
                     mission.expiry = goal.expiryDateTime;
-                    if (goal.iscomplete)
+
+                    if ( goal.iscomplete )
                     {
-                        if (goal.contribution > 0)
+                        if ( goal.contribution > 0 )
                         {
                             mission.statusDef = MissionStatus.Claim;
                         }
                         else
                         {
-                            RemoveMissionWithMissionId(mission.missionid);
+                            RemoveMissionWithMissionId( mission.missionid );
                         }
                     }
                 }
