@@ -185,7 +185,7 @@ namespace EddiDataDefinitions
             {
                 var powerConstantFSD_MkII = new Dictionary<int, double>
                 {
-                    { 8, 2.50 }
+                    { 8, 2.5025 }
                 };
                 return powerConstantFSD_MkII.TryGetValue( @class, out var result )
                     ? result
