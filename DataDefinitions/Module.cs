@@ -177,7 +177,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public double GetFsdPowerConstant ()
+        public double GetFsdPowerConstant () // Power Multiplier
         {
             if ( @class == 0 ) { return 1; }
 
@@ -257,7 +257,7 @@ namespace EddiDataDefinitions
             {
                 var baseMaxFuelsPerJump_SCO_MkII = new Dictionary<string, decimal>
                 {
-                    { "7A", 6.8M }
+                    { "8A", 6.8M }
                 };
                 baseMaxFuelsPerJump_SCO_MkII.TryGetValue( @class + grade, out baseMaxFuelPerJump );
             }
@@ -270,7 +270,9 @@ namespace EddiDataDefinitions
                     { "4E", 2.00M }, { "4D", 3.00M }, { "4C", 3.00M }, { "4B", 3.00M }, { "4A", 3.20M },
                     { "5E", 3.30M }, { "5D", 5.00M }, { "5C", 5.00M }, { "5B", 5.00M }, { "5A", 5.20M },
                     { "6E", 5.30M }, { "6D", 8.00M }, { "6C", 8.00M }, { "6B", 8.00M }, { "6A", 8.30M },
-                    { "7E", 8.50M }, { "7D", 12.8M }, { "7C", 12.8M }, { "7B", 12.8M }, { "7A", 13.1M }
+                    { "7E", 8.50M }, { "7D", 12.8M }, { "7C", 12.8M }, { "7B", 12.8M }, { "7A", 13.1M },
+                    { "8E", 13.8M }, { "8D", 20.4M }, { "8C", 20.4M }, { "8B", 20.4M }, { "8A", 20.7M }
+
                 };
                 baseMaxFuelsPerJump_SCO.TryGetValue( @class + grade, out baseMaxFuelPerJump );
             }
@@ -320,15 +322,7 @@ namespace EddiDataDefinitions
         {
             double baseOptimalMass;
 
-            if ( edname?.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase ) ?? false )
-            {
-                var baseOptimalMasses_SCO_MkII = new Dictionary<string, double>
-                {
-                    { "8A", 4670.0 }
-                };
-                baseOptimalMasses_SCO_MkII.TryGetValue( @class + grade, out baseOptimalMass );
-            }
-            else if ( edname?.Contains( "hyperdrive_overcharge", StringComparison.OrdinalIgnoreCase ) ?? false )
+            if ( edname?.Contains( "hyperdrive_overcharge", StringComparison.OrdinalIgnoreCase ) ?? false )
             {
                 var baseOptimalMasses_SCO = new Dictionary<string, double>
                 {
@@ -337,7 +331,8 @@ namespace EddiDataDefinitions
                     { "4E", 350.00 }, { "4D", 525.00 }, { "4C", 525.00 }, { "4B", 525.00 }, { "4A", 585.00 },
                     { "5E", 700.00 }, { "5D", 1050.0 }, { "5C", 1050.0 }, { "5B", 1050.0 }, { "5A", 1175.0 },
                     { "6E", 1200.0 }, { "6D", 1800.0 }, { "6C", 1800.0 }, { "6B", 1800.0 }, { "6A", 2000.0 },
-                    { "7E", 1800.0 }, { "7D", 2700.0 }, { "7C", 2700.0 }, { "7B", 2700.0 }, { "7A", 3000.0 }
+                    { "7E", 1800.0 }, { "7D", 2700.0 }, { "7C", 2700.0 }, { "7B", 2700.0 }, { "7A", 3000.0 },
+                    { "8E", 1800.0 }, { "8D", 2700.0 }, { "8C", 2700.0 }, { "8B", 2700.0 }, { "8A", 3000.0 }
                 };
                 baseOptimalMasses_SCO.TryGetValue( @class + grade, out baseOptimalMass );
             }
@@ -351,7 +346,7 @@ namespace EddiDataDefinitions
                     { "5E", 560.00 }, { "5D", 630.00 }, { "5C", 700.00 }, { "5B", 875.00 }, { "5A", 1050.0 },
                     { "6E", 960.00 }, { "6D", 1080.0 }, { "6C", 1200.0 }, { "6B", 1500.0 }, { "6A", 1800.0 },
                     { "7E", 1440.0 }, { "7D", 1620.0 }, { "7C", 1800.0 }, { "7B", 2250.0 }, { "7A", 2700.0 },
-                    { "8E", 2240.0 }, { "8D", 2520.0 }, { "8C", 2800.0 }, { "8B", 3500.0 }, { "8A", 4200.0 }
+                    { "8E", 2800.0 }, { "8D", 4200.0 }, { "8C", 4200.0 }, { "8B", 4200.0 }, { "8A", 4670.0 }
                 };
                 baseOptimalMasses.TryGetValue( @class + grade, out baseOptimalMass );
             }
