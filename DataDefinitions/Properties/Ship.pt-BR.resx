@@ -279,12 +279,12 @@
   </data>
   <data name="yourTransport" xml:space="preserve">
     <value>seu transportesua</value>
-    <comment>yourTransport
+    <comment>e.g. *your* Transport
 If transporting via taxi or dropship</comment>
   </data>
   <data name="yourShip" xml:space="preserve">
     <value>sua nave</value>
-    <comment>If transporting via a generic ship (e.g. multicrew)</comment>
+    <comment>e.g. *your* ship (If transporting via a generic ship, e.g. multicrew)</comment>
   </data>
   <data name="yourType8" xml:space="preserve">
     <value>sua</value>
@@ -306,4 +306,5 @@ If transporting via taxi or dropship</comment>
     <value>sua</value>
     <comment>e.g. *your* Type-11 Prospector</comment>
   </data>
+  
 </root>
