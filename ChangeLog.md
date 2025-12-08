@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.1.7
   * Core
+    * Added support for the Caspian Explorer.
     * Added support for the Type-11 Prospector.
     * Revised Spansh faction queries to match the latest Spansh API revision.
     * Various minor bug fixes.

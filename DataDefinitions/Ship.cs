@@ -741,6 +741,11 @@ namespace EddiDataDefinitions
             var linearConstant = frameshiftdrive.GetFsdRatingConstant();
             var powerConstant = frameshiftdrive.GetFsdPowerConstant();
             var guardianFsdBoosterRange = compartments.FirstOrDefault( c => c.module?.edname.Contains( "Int_GuardianFSDBooster" ) ?? false )?.module?.GetGuardianFSDBoost() ?? 0;
+            
+            // If the frame shift drive is a Mark II Overcharge Booster then apply a 1.5X multiplier.
+            boostModifier = frameshiftdrive.edname.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase )
+                    ? boostModifier * 1.5
+                    : boostModifier;
 
             return JumpRange( optimalMass, mass, fuel, linearConstant, powerConstant, guardianFsdBoosterRange, boostModifier );
         }

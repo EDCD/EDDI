@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Modules {
@@ -520,6 +520,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Supercharge Optimized Frame Shift Drive with Supercruise Overcharge.
+        /// </summary>
+        public static string FrameShiftDrive_SCO_MkII {
+            get {
+                return ResourceManager.GetString("FrameShiftDrive_SCO_MkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frame Shift Drive Interdictor.
         /// </summary>
         public static string FrameShiftDriveInterdictor {
@@ -570,6 +579,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Gimballed {
             get {
                 return ResourceManager.GetString("Gimballed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gravity Optimized Thrusters.
+        /// </summary>
+        public static string GravityOptimizedThrusters {
+            get {
+                return ResourceManager.GetString("GravityOptimizedThrusters", resourceCulture);
             }
         }
         
@@ -727,6 +745,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ablative Lightweight Alloy.
+        /// </summary>
+        public static string LightweightAlloy_Ablative_MkII {
+            get {
+                return ResourceManager.GetString("LightweightAlloy_Ablative_MkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Luxury Class Passenger Cabin.
         /// </summary>
         public static string LuxuryClassPassengerCabin {
@@ -759,6 +786,15 @@ namespace EddiDataDefinitions.Properties {
         public static string MilitaryGradeComposite {
             get {
                 return ResourceManager.GetString("MilitaryGradeComposite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ablative Military Grade Alloy.
+        /// </summary>
+        public static string MilitaryGradeComposite_Ablative_MkII {
+            get {
+                return ResourceManager.GetString("MilitaryGradeComposite_Ablative_MkII", resourceCulture);
             }
         }
         
@@ -804,6 +840,15 @@ namespace EddiDataDefinitions.Properties {
         public static string MirroredSurfaceComposite {
             get {
                 return ResourceManager.GetString("MirroredSurfaceComposite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ablative Mirrored Surface Composite.
+        /// </summary>
+        public static string MirroredSurfaceComposite_Ablative_MkII {
+            get {
+                return ResourceManager.GetString("MirroredSurfaceComposite_Ablative_MkII", resourceCulture);
             }
         }
         
@@ -1033,6 +1078,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ablative Reactive Surface Composite.
+        /// </summary>
+        public static string ReactiveSurfaceComposite_Ablative_MkII {
+            get {
+                return ResourceManager.GetString("ReactiveSurfaceComposite_Ablative_MkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recon Limpet Controller.
         /// </summary>
         public static string ReconLimpetController {
@@ -1056,6 +1110,15 @@ namespace EddiDataDefinitions.Properties {
         public static string ReinforcedAlloy {
             get {
                 return ResourceManager.GetString("ReinforcedAlloy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ablative Reinforced Alloy.
+        /// </summary>
+        public static string ReinforcedAlloy_Ablative_MkII {
+            get {
+                return ResourceManager.GetString("ReinforcedAlloy_Ablative_MkII", resourceCulture);
             }
         }
         

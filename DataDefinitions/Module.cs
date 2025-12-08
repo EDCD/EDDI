@@ -181,20 +181,43 @@ namespace EddiDataDefinitions
         {
             if ( @class == 0 ) { return 1; }
 
-            var powerConstantFSD = new Dictionary<int, double>
+            if ( edname?.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase ) ?? false )
             {
-                { 2, 2.00 }, { 3, 2.15 }, { 4, 2.30 }, { 5, 2.45 }, { 6, 2.60 }, { 7, 2.75 }, { 8, 2.90 }
-            };
-            return powerConstantFSD.TryGetValue( @class , out var result )
-                ? result
-                : 1;
+                var powerConstantFSD_MkII = new Dictionary<int, double>
+                {
+                    { 8, 2.50 }
+                };
+                return powerConstantFSD_MkII.TryGetValue( @class, out var result )
+                    ? result
+                    : 1;
+            }
+            else
+            {
+                var powerConstantFSD = new Dictionary<int, double>
+                {
+                    { 2, 2.00 }, { 3, 2.15 }, { 4, 2.30 }, { 5, 2.45 }, { 6, 2.60 }, { 7, 2.75 }, { 8, 2.90 }
+                };
+                return powerConstantFSD.TryGetValue( @class, out var result )
+                    ? result
+                    : 1;
+            }
         }
 
-        public double GetFsdRatingConstant ()
+        public double GetFsdRatingConstant () // Fuel Multiplier
         {
             if ( string.IsNullOrEmpty(grade) ) { return 0; }
 
-            if ( edname?.Contains( "hyperdrive_overcharge" ) ?? false )
+            if ( edname?.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase ) ?? false )
+            {
+                var ratingConstants_SCO_MkII = new Dictionary<string, double>
+                {
+                    { "A", 11.0 }
+                };
+                return ratingConstants_SCO_MkII.TryGetValue( grade, out var rating )
+                    ? rating
+                    : ratingConstants_SCO_MkII.First().Value;
+            }
+            else if ( edname?.Contains( "hyperdrive_overcharge" ) ?? false )
             {
                 var ratingConstants_SCO = new Dictionary<string, double>
                 {
@@ -230,7 +253,15 @@ namespace EddiDataDefinitions
 
             // No modified value exists, use a base value
             decimal baseMaxFuelPerJump;
-            if ( edname?.Contains( "hyperdrive_overcharge" ) ?? false )
+            if ( edname?.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase ) ?? false )
+            {
+                var baseMaxFuelsPerJump_SCO_MkII = new Dictionary<string, decimal>
+                {
+                    { "7A", 6.8M }
+                };
+                baseMaxFuelsPerJump_SCO_MkII.TryGetValue( @class + grade, out baseMaxFuelPerJump );
+            }
+            else if ( edname?.Contains( "hyperdrive_overcharge" ) ?? false )
             {
                 var baseMaxFuelsPerJump_SCO = new Dictionary<string, decimal>
                 {
@@ -288,7 +319,16 @@ namespace EddiDataDefinitions
         public double GetFsdBaseOptimalMass ()
         {
             double baseOptimalMass;
-            if ( edname?.Contains( "hyperdrive_overcharge" ) ?? false )
+
+            if ( edname?.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase ) ?? false )
+            {
+                var baseOptimalMasses_SCO_MkII = new Dictionary<string, double>
+                {
+                    { "8A", 4670.0 }
+                };
+                baseOptimalMasses_SCO_MkII.TryGetValue( @class + grade, out baseOptimalMass );
+            }
+            else if ( edname?.Contains( "hyperdrive_overcharge", StringComparison.OrdinalIgnoreCase ) ?? false )
             {
                 var baseOptimalMasses_SCO = new Dictionary<string, double>
                 {

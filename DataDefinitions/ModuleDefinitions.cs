@@ -1159,6 +1159,20 @@ namespace EddiDataDefinitions
         public static readonly Module lakonminer_armour_reactive = new Module( "lakonminer_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 159950381 );
         public static readonly Module Hpt_MiningToolV2_Fixed_Large = new Module( "Hpt_MiningToolV2_Fixed_Large", "MiningVolleyRepeater", 3, "C", 149905, ModuleMount.Fixed );
         public static readonly Module Int_MultiDroneControl_MiningV2_Size5_Class5 = new Module( "Int_MultiDroneControl_MiningV2_Size5_Class5", "MultiDroneControl_Mining_Mk2", 5, "A", 149905 );
+        public static readonly Module Int_Hyperdrive_Overcharge_Size8_Class5_OverchargeBooster_Mkii = new Module( "Int_Hyperdrive_Overcharge_Size8_Class5_OverchargeBooster_Mkii", "FrameShiftDrive_SCO_MkII", 8, "A", 82042065 );
+        public static readonly Module Int_Hyperdrive_Overcharge_Size8_Class1 = new Module( "Int_Hyperdrive_Overcharge_Size8_Class1", "FrameShiftDrive_SCO", 8, "E", 6838549 );
+        public static readonly Module Int_Hyperdrive_Overcharge_Size8_Class2 = new Module( "Int_Hyperdrive_Overcharge_Size8_Class2", "FrameShiftDrive_SCO", 8, "D", 20515646 );
+        public static readonly Module Int_Hyperdrive_Overcharge_Size8_Class3 = new Module( "Int_Hyperdrive_Overcharge_Size8_Class3", "FrameShiftDrive_SCO", 8, "C", 20515646 );
+        public static readonly Module Int_Hyperdrive_Overcharge_Size8_Class4 = new Module( "Int_Hyperdrive_Overcharge_Size8_Class4", "FrameShiftDrive_SCO", 8, "B", 20515646 );
+        public static readonly Module Int_Hyperdrive_Overcharge_Size8_Class5 = new Module( "Int_Hyperdrive_Overcharge_Size8_Class5", "FrameShiftDrive_SCO", 8, "A", 61546936 );
+        public static readonly Module Int_Engine_Size7_Class5_GravityOptimised_MkII = new Module( "Int_Engine_Size7_Class5_GravityOptimised_MkII", "GravityOptimizedThrusters", 7, "A", 68368389 );
+        public static readonly Module Explorer_NX_Armour_Grade1_Default = new Module( "Explorer_NX_Armour_Grade1_Default", "LightweightAlloy", 1, "C", 0 );
+        public static readonly Module Explorer_NX_Armour_Grade1 = new Module( "Explorer_NX_Armour_Grade1", "LightweightAlloy_Ablative_MkII", 1, "C", 9743066 );
+        public static readonly Module Explorer_NX_Armour_Grade2 = new Module( "Explorer_NX_Armour_Grade2", "ReinforcedAlloy_Ablative_MkII", 1, "B", 77944517 );
+        public static readonly Module Explorer_NX_Armour_Grade3 = new Module( "Explorer_NX_Armour_Grade3", "MilitaryGradeComposite_Ablative_MkII", 1, "A", 175375161 );
+        public static readonly Module Explorer_NX_Armour_Mirrored = new Module( "Explorer_NX_Armour_Mirrored", "MirroredSurfaceComposite_Ablative_MkII", 1, "A", 414469960 );
+        public static readonly Module Explorer_NX_Armour_Reactive = new Module( "Explorer_NX_Armour_Reactive", "ReactiveSurfaceComposite_Ablative_MkII", 1, "A", 459288060 );
+
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
@@ -1231,6 +1245,7 @@ namespace EddiDataDefinitions
         public static readonly Module Int_Colonisation = new Module( "Int_Colonisation", "ColonisationSuite", 1, "I", 0 );
         public static readonly Module Panther_Clipper_MkII_Cockpit = new Module( "PantherMkII_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module LakonMiner_Cockpit = new Module( "LakonMiner_Cockpit", "CockpitCanopy", 1, "I", 0);
+        public static readonly Module Explorer_NX_Cockpit = new Module( "explorer_nx_cockpit", "CockpitCanopy", 1, "I", 0);
 
         // Fighter modules
         public static readonly Module Empire_Fighter_Cockpit = new Module( "Empire_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0);
