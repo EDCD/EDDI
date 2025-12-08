@@ -279,12 +279,12 @@
   </data>
   <data name="yourTransport" xml:space="preserve">
     <value>您的运输载具</value>
-    <comment>yourTransport
+    <comment>e.g. *your* Transport
 If transporting via taxi or dropship</comment>
   </data>
   <data name="yourShip" xml:space="preserve">
     <value>您的飞船</value>
-    <comment>If transporting via a generic ship (e.g. multicrew)</comment>
+    <comment>e.g. *your* ship (If transporting via a generic ship, e.g. multicrew)</comment>
   </data>
   <data name="yourType8" xml:space="preserve">
     <value>您的</value>
@@ -294,6 +294,7 @@ If transporting via taxi or dropship</comment>
     <value>您的</value>
     <comment>e.g. *your* Mandalay</comment>
   </data>
+  
   
   
   
