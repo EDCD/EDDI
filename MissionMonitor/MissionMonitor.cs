@@ -581,21 +581,21 @@ namespace EddiMissionMonitor
                     // Raise events for the notable changes in community goal status.
                     var cgUpdates = new List<CGUpdate>();
 
-                    // NEU: Check for contribution changes
-                    if ( goal.contribution > mission.communalContribution )
-                    {
-                        cgUpdates.Add( new CGUpdate( "Contribution", "Increase",
-                            mission.communalContribution, goal.contribution ) );
-                    }
-
-                    // Tier-Änderung (mit Werten)
+                    // Check for community goal tier changes
                     if ( mission.communalTier < goal.tier )
                     {
                         cgUpdates.Add( new CGUpdate( "Tier", "Increase",
                             mission.communalTier, goal.tier ) );
                     }
 
-                    // Percentile-Änderungen (mit Werten)
+                    // Check for player contribution changes
+                    if ( goal.contribution > mission.communalContribution )
+                    {
+                        cgUpdates.Add( new CGUpdate( "Contribution", "Increase",
+                            mission.communalContribution, goal.contribution ) );
+                    }
+
+                    // Check for player percentile band changes
                     if ( goal.contribution > 0 )
                     {
                         if ( mission.communalPercentileBand > goal.percentileband )
@@ -625,8 +625,20 @@ namespace EddiMissionMonitor
                     mission.communal = true;
                     mission.communalPercentileBand = goal.percentileband;
                     mission.communalTier = goal.tier;
-                    mission.communalContribution = goal.contribution;  // NEU!
+                    mission.communalContribution = goal.contribution;
                     mission.expiry = goal.expiryDateTime;
+
+                    if ( goal.iscomplete )
+                    {
+                        if ( goal.contribution > 0 )
+                        {
+                            mission.statusDef = MissionStatus.Claim;
+                        }
+                        else
+                        {
+                            RemoveMissionWithMissionId( mission.missionid );
+                        }
+                    }
                 }
             }
         }
