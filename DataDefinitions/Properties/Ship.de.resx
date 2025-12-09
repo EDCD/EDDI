@@ -218,7 +218,7 @@
     <comment>e.g. *your* Orca</comment>
   </data>
   <data name="yourPython" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Python</comment>
   </data>
   <data name="yourSidewinder" xml:space="preserve">
