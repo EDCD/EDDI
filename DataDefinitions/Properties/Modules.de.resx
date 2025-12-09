@@ -669,4 +669,32 @@
     <value>Mk2 Abbau-Multi-Drohnensteuerung</value>
     <comment>Module Hpt_MiningToolV2_Fixed_Large</comment>
   </data>
+  <data name="GravityOptimizedThrusters" xml:space="preserve">
+    <value>Schwerkraftoptimierte Schubdüsen</value>
+    <comment>Caspian Explorer Module `Int_Engine_Size7_Class5_GravityOptimised_MkII`</comment>
+  </data>
+  <data name="FrameShiftDrive_SCO_MkII" xml:space="preserve">
+    <value>Ladungsoptimierter FSA mit Supercruise Überladung</value>
+    <comment>Module Int_Hyperdrive_Overcharge_Size8_Class5_OverchargeBooster_MkII</comment>
+  </data>
+  <data name="LightweightAlloy_Ablative_MkII" xml:space="preserve">
+    <value>Leichte ablative Legierung</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Grade1</comment>
+  </data>
+  <data name="ReinforcedAlloy_Ablative_MkII" xml:space="preserve">
+    <value>Verstärkte ablative Legierung</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Grade2 </comment>
+  </data>
+  <data name="MilitaryGradeComposite_Ablative_MkII" xml:space="preserve">
+    <value>Ablative militärische Legierung</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Grade3</comment>
+  </data>
+  <data name="MirroredSurfaceComposite_Ablative_MkII" xml:space="preserve">
+    <value>Verspiegelter ablativer Oberflächenverbundwerkstoff</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Mirrored</comment>
+  </data>
+  <data name="ReactiveSurfaceComposite_Ablative_MkII" xml:space="preserve">
+    <value>Entgegenwirkender ablativer Oberflächenverbundwerkstoff</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Reactive</comment>
+  </data>
 </root>
