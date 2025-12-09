@@ -35,11 +35,11 @@ namespace EddiSpanshService
             
             GetShipJumpDetails(ship, out double fuel_power, out double fuel_multiplier, out double optimal_mass,
                 out decimal base_mass, out decimal tank_size, out decimal internal_tank_size,
-                out decimal max_fuel_per_jump, out double range_boost );
+                out decimal max_fuel_per_jump, out double range_boost, out int supercharge_multiplier );
 
             try
             {
-                var requestUri = GalaxyRouteRequest(currentSystem, targetSystem, cargoCarriedTons, fuel_power, fuel_multiplier, optimal_mass, base_mass, tank_size, internal_tank_size, max_fuel_per_jump, range_boost, is_supercharged, use_supercharge, use_injections, exclude_secondary);
+                var requestUri = GalaxyRouteRequest(currentSystem, targetSystem, cargoCarriedTons, fuel_power, fuel_multiplier, optimal_mass, base_mass, tank_size, internal_tank_size, max_fuel_per_jump, range_boost, supercharge_multiplier, is_supercharged, use_supercharge, use_injections, exclude_secondary);
                 var initialResponse = await spanshHttpClient.GetAsync( requestUri, CancellationToken.None ).ConfigureAwait(false);
                 initialResponse.EnsureSuccessStatusCode();
                 var responseJson = await initialResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -70,7 +70,7 @@ namespace EddiSpanshService
             return null;
         }
 
-        private void GetShipJumpDetails(Ship ship, out double fuel_power, out double fuel_multiplier, out double optimal_mass, out decimal base_mass, out decimal tank_size, out decimal internal_tank_size, out decimal max_fuel_per_jump, out double range_boost)
+        private void GetShipJumpDetails(Ship ship, out double fuel_power, out double fuel_multiplier, out double optimal_mass, out decimal base_mass, out decimal tank_size, out decimal internal_tank_size, out decimal max_fuel_per_jump, out double range_boost, out int supercharge_multiplier)
         {
             // Optimal mass
             optimal_mass = ship.frameshiftdrive.GetFsdOptimalMass();
@@ -96,9 +96,18 @@ namespace EddiSpanshService
 
             // Fuel reservoir capacity
             internal_tank_size = ship.activeFuelReservoirCapacity;
+
+            // Neutron boost multiplier (4x for standard supercharge, 6x for Caspian Explorer Overcharge Booster Frame Shift Drive Mk II
+            supercharge_multiplier =
+                ship.frameshiftdrive.edname.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase )
+                    ? 6
+                    : 4;
         }
 
-        private string GalaxyRouteRequest(string currentSystem, string targetSystem, int? cargoCarriedTons, double fuel_power, double fuel_multiplier, double optimal_mass, decimal base_mass, decimal tank_size, decimal internal_tank_size, decimal max_fuel_per_jump, double range_boost, bool is_supercharged, bool use_supercharge, bool use_injections, bool exclude_secondary)
+        private string GalaxyRouteRequest ( string currentSystem, string targetSystem, int? cargoCarriedTons,
+            double fuel_power, double fuel_multiplier, double optimal_mass, decimal base_mass, decimal tank_size,
+            decimal internal_tank_size, decimal max_fuel_per_jump, double range_boost, int supercharge_multiplier,
+            bool is_supercharged, bool use_supercharge, bool use_injections, bool exclude_secondary )
         {
             var relativePath = "generic/route";
             var queryParams = new List<string>
@@ -116,7 +125,8 @@ namespace EddiSpanshService
                 $"tank_size={tank_size.ToInvariantString()}",
                 $"internal_tank_size={internal_tank_size.ToInvariantString()}",
                 $"max_fuel_per_jump={max_fuel_per_jump.ToInvariantString()}",
-                $"range_boost={range_boost}"
+                $"range_boost={range_boost}",
+                $"supercharge_multiplier={supercharge_multiplier}"
             };
 
             if ( cargoCarriedTons.HasValue )
