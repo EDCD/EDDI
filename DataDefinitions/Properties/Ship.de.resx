@@ -190,19 +190,19 @@
     <comment>e.g. *your* Fer-de-Lance</comment>
   </data>
   <data name="yourImpClipper" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Clipper</comment>
   </data>
   <data name="yourImpCourier" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Courier</comment>
   </data>
   <data name="yourImpCutter" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Cutter</comment>
   </data>
   <data name="yourImpEagle" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Eagle</comment>
   </data>
   <data name="yourHauler" xml:space="preserve">
