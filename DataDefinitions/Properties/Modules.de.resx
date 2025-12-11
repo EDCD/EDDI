@@ -678,7 +678,7 @@
     <comment>Module Int_Hyperdrive_Overcharge_Size8_Class5_OverchargeBooster_MkII</comment>
   </data>
   <data name="LightweightAlloy_Ablative_MkII" xml:space="preserve">
-    <value>Leichte ablative Legierung</value>
+    <value>Ablative Leichtmetalllegierung</value>
     <comment>Caspian Explorer Module Explorer_NX_Armour_Grade1</comment>
   </data>
   <data name="ReinforcedAlloy_Ablative_MkII" xml:space="preserve">
@@ -686,11 +686,11 @@
     <comment>Caspian Explorer Module Explorer_NX_Armour_Grade2 </comment>
   </data>
   <data name="MilitaryGradeComposite_Ablative_MkII" xml:space="preserve">
-    <value>Ablative militärische Legierung</value>
+    <value>Militärischer Ablativ-Verbundwerkstoff</value>
     <comment>Caspian Explorer Module Explorer_NX_Armour_Grade3</comment>
   </data>
   <data name="MirroredSurfaceComposite_Ablative_MkII" xml:space="preserve">
-    <value>Verspiegelter ablativer Oberflächenverbundwerkstoff</value>
+    <value>Verspiegelter Ablativ-Verbundwerkstoff</value>
     <comment>Caspian Explorer Module Explorer_NX_Armour_Mirrored</comment>
   </data>
   <data name="ReactiveSurfaceComposite_Ablative_MkII" xml:space="preserve">
