@@ -682,7 +682,7 @@
     <comment>Caspian Explorer Module Explorer_NX_Armour_Grade1</comment>
   </data>
   <data name="ReinforcedAlloy_Ablative_MkII" xml:space="preserve">
-    <value>Verstärkte ablative Legierung</value>
+    <value>Verstärkte Ablativ-Legierung</value>
     <comment>Caspian Explorer Module Explorer_NX_Armour_Grade2 </comment>
   </data>
   <data name="MilitaryGradeComposite_Ablative_MkII" xml:space="preserve">
@@ -694,7 +694,7 @@
     <comment>Caspian Explorer Module Explorer_NX_Armour_Mirrored</comment>
   </data>
   <data name="ReactiveSurfaceComposite_Ablative_MkII" xml:space="preserve">
-    <value>Entgegenwirkender ablativer Oberflächenverbundwerkstoff</value>
+    <value>Reaktiver Ablativ-Verbundwerkstoff</value>
     <comment>Caspian Explorer Module Explorer_NX_Armour_Reactive</comment>
   </data>
 </root>
