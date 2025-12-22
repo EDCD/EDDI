@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,10 +18,11 @@ namespace EddiSpanshService
         {
             if ( systemAddress == 0 ) { return null; }
 
+            HttpResponseMessage clientResponse = null;
             try
             {
                 var requestUri = $"dump/{systemAddress}";
-                var clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
+                clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
                 clientResponse.EnsureSuccessStatusCode();
                 var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -35,7 +37,7 @@ namespace EddiSpanshService
                     var jResponse = JToken.Parse( responseJson );
                     if ( jResponse.Contains( "error" ) )
                     {
-                        Logging.Debug( "Spansh responded with: " + jResponse[ "error" ] );
+                        Logging.Debug( "Spansh API responded with: " + jResponse[ "error" ] );
                     }
                     else
                     {
@@ -44,12 +46,19 @@ namespace EddiSpanshService
                 }
                 catch ( Exception e )
                 {
-                    Logging.Error( "Failed to parse Spansh response", e );
+                    Logging.Error( "Failed to parse Spansh API response", e );
                 }
             }
             catch ( HttpRequestException he )
             {
-                Logging.Error( he.Message, he );
+                if ( clientResponse?.StatusCode == HttpStatusCode.NotFound )
+                {
+                    Logging.Warn( $"Spansh API has no record corresponding to System Address [ {systemAddress} ]" );
+                }
+                else
+                {
+                    Logging.Warn( he.Message, he );
+                }
             }
 
             return null;

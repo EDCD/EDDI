@@ -34,7 +34,7 @@ namespace EddiSpanshService
             }
             catch ( HttpRequestException he )
             {
-                Logging.Error( he.Message, he );
+                Logging.Warn( he.Message, he );
                 return null;
             }
         }

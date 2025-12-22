@@ -70,7 +70,7 @@ namespace EddiSpanshService
                     }
                     else
                     {
-                        Logging.Error( he.Message, he );
+                        Logging.Warn( he.Message, he );
                     }
                 }
             }
