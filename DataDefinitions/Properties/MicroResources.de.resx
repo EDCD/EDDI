@@ -985,5 +985,8 @@
     <value>Medizinische Probe</value>
     <comment>Powerplay</comment>
   </data>
-  
+  <data name="SabotagedComponent" xml:space="preserve">
+    <value>Kontaminierte Verbindung eines Tharg Spire-Standorts</value>
+    <comment>Odyssey good found at Thargoid Spire sites</comment>
+  </data>
 </root>

@@ -705,5 +705,7 @@
     <value>Such- und Rettungsgutschein</value>
     <comment>material searchrescuevoucher</comment>
   </data>
-  
+  <data name="tg_structuraldata02" xml:space="preserve">
+    <value>Thargoid Capitol-Schiff Daten</value>
+  </data>
 </root>

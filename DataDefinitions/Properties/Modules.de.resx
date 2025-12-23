@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -668,5 +668,33 @@
   <data name="MultiDroneControl_Mining_Mk2" xml:space="preserve">
     <value>Mk2 Abbau-Multi-Drohnensteuerung</value>
     <comment>Module Hpt_MiningToolV2_Fixed_Large</comment>
+  </data>
+  <data name="GravityOptimizedThrusters" xml:space="preserve">
+    <value>Schwerkraftoptimierte Schubdüsen</value>
+    <comment>Caspian Explorer Module `Int_Engine_Size7_Class5_GravityOptimised_MkII`</comment>
+  </data>
+  <data name="FrameShiftDrive_SCO_MkII" xml:space="preserve">
+    <value>Ladungsoptimierter FSA mit Supercruise Überladung</value>
+    <comment>Module Int_Hyperdrive_Overcharge_Size8_Class5_OverchargeBooster_MkII</comment>
+  </data>
+  <data name="LightweightAlloy_Ablative_MkII" xml:space="preserve">
+    <value>Ablative Leichtmetalllegierung</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Grade1</comment>
+  </data>
+  <data name="ReinforcedAlloy_Ablative_MkII" xml:space="preserve">
+    <value>Verstärkte Ablativ-Legierung</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Grade2 </comment>
+  </data>
+  <data name="MilitaryGradeComposite_Ablative_MkII" xml:space="preserve">
+    <value>Militärischer Ablativ-Verbundwerkstoff</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Grade3</comment>
+  </data>
+  <data name="MirroredSurfaceComposite_Ablative_MkII" xml:space="preserve">
+    <value>Verspiegelter Ablativ-Verbundwerkstoff</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Mirrored</comment>
+  </data>
+  <data name="ReactiveSurfaceComposite_Ablative_MkII" xml:space="preserve">
+    <value>Reaktiver Ablativ-Verbundwerkstoff</value>
+    <comment>Caspian Explorer Module Explorer_NX_Armour_Reactive</comment>
   </data>
 </root>

@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -190,19 +190,19 @@
     <comment>e.g. *your* Fer-de-Lance</comment>
   </data>
   <data name="yourImpClipper" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Clipper</comment>
   </data>
   <data name="yourImpCourier" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Courier</comment>
   </data>
   <data name="yourImpCutter" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Cutter</comment>
   </data>
   <data name="yourImpEagle" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Imperial Eagle</comment>
   </data>
   <data name="yourHauler" xml:space="preserve">
@@ -218,7 +218,7 @@
     <comment>e.g. *your* Orca</comment>
   </data>
   <data name="yourPython" xml:space="preserve">
-    <value>deine</value>
+    <value>dein</value>
     <comment>e.g. *your* Python</comment>
   </data>
   <data name="yourSidewinder" xml:space="preserve">
@@ -279,12 +279,12 @@
   </data>
   <data name="yourTransport" xml:space="preserve">
     <value>deine Lieferung</value>
-    <comment>yourTransport
+    <comment>e.g. *your* Transport
 If transporting via taxi or dropship</comment>
   </data>
   <data name="yourShip" xml:space="preserve">
     <value>dein Schiff</value>
-    <comment>If transporting via a generic ship (e.g. multicrew)</comment>
+    <comment>e.g. *your* ship (If transporting via a generic ship, e.g. multicrew)</comment>
   </data>
   <data name="yourType8" xml:space="preserve">
     <value>deine</value>
@@ -305,5 +305,9 @@ If transporting via taxi or dropship</comment>
   <data name="yourType11" xml:space="preserve">
     <value>deine</value>
     <comment>e.g. *your* Type-11 Prospector</comment>
+  </data>
+  <data name="yourCaspianExplorer" xml:space="preserve">
+    <value>deine</value>
+    <comment>e.g. *your* Caspian Explorer</comment>
   </data>
 </root>
