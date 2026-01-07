@@ -57,7 +57,7 @@ namespace EddiSpanshService
                 for ( var retry = 0; retry < MaxRetries; retry++ )
                 {
                     response = await client.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
-                    if ( response.IsSuccessStatusCode && EnsureSuccess(response) )
+                    if ( EnsureSuccess(response) )
                     {
                         return response;
                     }

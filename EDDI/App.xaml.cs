@@ -82,7 +82,10 @@ namespace Eddi
         private static void OnExit(object sender, ExitEventArgs e)
         {
             EDDI.Instance.Stop();
-            eddiMutex.ReleaseMutex();
+            Current.Dispatcher.InvokeAsync( () =>
+            {
+                eddiMutex.ReleaseMutex();
+            } );
         }
 
         // We need to set and release our mutex from the same thread.

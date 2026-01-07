@@ -1173,7 +1173,6 @@ namespace EddiDataDefinitions
         public static readonly Module Explorer_NX_Armour_Mirrored = new Module( "Explorer_NX_Armour_Mirrored", "MirroredSurfaceComposite_Ablative_MkII", 1, "A", 414469960 );
         public static readonly Module Explorer_NX_Armour_Reactive = new Module( "Explorer_NX_Armour_Reactive", "ReactiveSurfaceComposite_Ablative_MkII", 1, "A", 459288060 );
 
-
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
         public static readonly Module Int_PowerPlant_Size2_Class1_free = new Module( "Int_PowerPlant_Size2_Class1_free", "PowerPlant", 2, "E", 0);
