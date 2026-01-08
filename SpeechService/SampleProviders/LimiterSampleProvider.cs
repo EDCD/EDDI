@@ -1,4 +1,4 @@
-﻿namespace EddiSpeechService.SpeechEffects
+﻿namespace EddiSpeechService.SampleProviders
 {
     using NAudio.Wave;
     using System;

@@ -1,6 +1,6 @@
 ﻿using NAudio.Wave;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService.SampleProviders
 {
     public abstract class EffectSampleProvider : ISampleProvider
     {

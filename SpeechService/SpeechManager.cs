@@ -1,6 +1,5 @@
 ﻿using EddiConfigService;
 using EddiDataDefinitions;
-using EddiSpeechService.SpeechEffects;
 using EddiSpeechService.SpeechPreparation;
 using EddiSpeechService.SpeechSynthesizers;
 using JetBrains.Annotations;

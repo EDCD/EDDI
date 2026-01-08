@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService.SampleProviders
 {
     public class EchoSampleProvider : EffectSampleProvider
     {

@@ -1,10 +1,11 @@
-﻿using NAudio.Wave;
+﻿using EddiSpeechService.SampleProviders;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.Collections.Generic;
 using System.IO;
 using Utilities;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService
 {
     public static class SpeechFx
     {

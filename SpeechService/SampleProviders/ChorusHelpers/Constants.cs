@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EddiSpeechService.SpeechEffects.Chorus
+namespace EddiSpeechService.SampleProviders.ChorusHelpers
 {
     // ===== Chorus tuning and safety bounds =====
     internal static class Constants

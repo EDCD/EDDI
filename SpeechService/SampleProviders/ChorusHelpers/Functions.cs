@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace EddiSpeechService.SpeechEffects.Chorus
+namespace EddiSpeechService.SampleProviders.ChorusHelpers
 {
     internal static class Functions
     {
@@ -96,11 +96,6 @@ namespace EddiSpeechService.SpeechEffects.Chorus
             return minVal + ( ( maxVal - minVal ) * t );
         }
 
-        public static float LinearToDecibals ( float linear )
-        {
-            return 20.0f * (float)Math.Log10( linear );
-        }
-
         /// <summary>
         /// Easier to tune than a true sigmoid.
         /// Applies a Windowed cubic Hermite polynomial to create a smooth threshold between points defined using a center and width.
@@ -157,7 +152,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
             }
 
             var i = 0;
-            while ( i < n - 1 && x > xArray[ i + 1 ] )
+            while ( i < (n - 1) && x > xArray[ i + 1 ] )
             {
                 i++;
             }
@@ -175,7 +170,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
             var m0 = i == 0
                 ? (yArray[1] - yArray[0]) / (xArray[1] - xArray[0])
                 : (yArray[i + 1] - yArray[i - 1]) / (xArray[i + 1] - xArray[i - 1]);
-            var m1 = i == n - 2
+            var m1 = i == (n - 2)
                 ? (yArray[n - 1] - yArray[n - 2]) / (xArray[n - 1] - xArray[n - 2])
                 : (yArray[i + 2] - yArray[i]) / (xArray[i + 2] - xArray[i]);
 
@@ -251,7 +246,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
             var n = _x.Length;
             var d = new float[n - 1];
 
-            for ( var i = 0; i < n - 1; i++ )
+            for ( var i = 0; i < (n - 1); i++ )
             {
                 _h[ i ] = _x[ i + 1 ] - _x[ i ];
                 d[ i ] = ( _y[ i + 1 ] - _y[ i ] ) / _h[ i ];
@@ -263,7 +258,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
                 return;
             }
 
-            for ( var i = 1; i < n - 1; i++ )
+            for ( var i = 1; i < (n - 1); i++ )
             {
                 if ( d[ i - 1 ] == 0f || d[ i ] == 0f )
                     _m[ i ] = 0f;
@@ -296,7 +291,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
             {
                 return 0f;
             }
-            if ( m > 3f * d0 )
+            if ( m > (3f * d0) )
             {
                 return 3f * d0;
             }
@@ -318,7 +313,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
             }
 
             var i = 0;
-            while ( i < n - 1 && x > _x[ i + 1 ] )
+            while ( i < (n - 1) && x > _x[ i + 1 ] )
             {
                 i++;
             }

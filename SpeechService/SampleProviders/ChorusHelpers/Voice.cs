@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace EddiSpeechService.SpeechEffects.Chorus
+namespace EddiSpeechService.SampleProviders.ChorusHelpers
 {
     internal class ChorusVoice
     {
@@ -124,7 +124,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
             var x3 = _buffer[ i3 ];
 
             // Detect wrap or aggressive modulation
-            var nearWrap = i1 < 1 || i1 > len - 3;
+            var nearWrap = i1 < 1 || i1 > (len - 3);
 
             var (c0, c1, c2, c3) = Lagrange3( mu );
             var delayedCubic = ( c0 * x0 ) + ( c1 * x1 ) + ( c2 * x2 ) + ( c3 * x3 );

@@ -1,6 +1,6 @@
 ﻿using NAudio.Wave;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService.SampleProviders
 {
     // Adds "fuzz" to the output based on the distortion level
     public class DistortionSampleProvider : EffectSampleProvider

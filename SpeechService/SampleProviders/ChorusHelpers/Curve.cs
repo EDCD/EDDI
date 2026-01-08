@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EddiSpeechService.SpeechEffects.Chorus
+namespace EddiSpeechService.SampleProviders.ChorusHelpers
 {
     internal static class Curve
     {
@@ -183,7 +183,7 @@ namespace EddiSpeechService.SpeechEffects.Chorus
 
             // find segment
             var i = 0;
-            while ( i < x.Length - 1 && fxLevel > x[ i + 1 ] )
+            while ( i < (x.Length - 1) && fxLevel > x[ i + 1 ] )
             { i++; }
 
             var raw = Functions.SmoothSpline( x, y, fxLevel );

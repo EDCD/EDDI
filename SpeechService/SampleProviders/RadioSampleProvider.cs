@@ -1,7 +1,7 @@
 ﻿using NAudio.Dsp;
 using NAudio.Wave;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService.SampleProviders
 {
     public class RadioSampleProvider : EffectSampleProvider
     {

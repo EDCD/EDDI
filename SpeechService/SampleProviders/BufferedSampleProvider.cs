@@ -1,7 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService.SampleProviders
 {
     public class BufferedSampleProvider : ISampleProvider
     {
