@@ -83,10 +83,10 @@ namespace EddiSpeechService
             return SpeechManager.SpeakAsync( speech );
         }
 
-        public Task SpeakAsync ( string speech, string defaultVoice, int fxLevel, int volume = 95,
+        public Task SpeakAsync ( string speech, string defaultVoice, int fxLevel,
             int distortionLevel = 0, int echoDelay = 0, int priority = 3, bool radio = false )
         {
-            return SpeechManager.SpeakAsync( speech, defaultVoice, fxLevel, volume, distortionLevel, echoDelay, priority, radio );
+            return SpeechManager.SpeakAsync( speech, defaultVoice, fxLevel, distortionLevel, echoDelay, priority, radio );
         }
 
         public void StopAudio () => AudioManager.StopAudio();

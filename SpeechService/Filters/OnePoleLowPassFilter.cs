@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService.Filters
 {
     public class OnePoleLowPassFilter
     {

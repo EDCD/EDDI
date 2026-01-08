@@ -1,14 +1,19 @@
-﻿using NAudio.Wave;
+﻿using EddiSpeechService.SampleProviders;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.Collections.Generic;
 using System.IO;
 using Utilities;
 
-namespace EddiSpeechService.SpeechEffects
+namespace EddiSpeechService
 {
     public static class SpeechFx
     {
-        public static IWaveProvider addEffectsToSource ( Stream stream, int targetVolume, int fxLevel,
+        private const float GlobalOutputGainMultiplier = 3.00f;
+        private const float LimiterThreshholdDb = -0.5f;
+        private const float LimiterReleaseMs = 75f;
+
+        public static IWaveProvider addEffectsToSource ( Stream stream, int fxLevel,
             int distortionLevel, int echoDelay, bool radio )
         {
             float[] allSamples;
@@ -64,10 +69,9 @@ namespace EddiSpeechService.SpeechEffects
                 sampleProvider = new EchoSampleProvider( sampleProvider, sampleRate, fxLevel, echoDelay );
             }
 
-            // Stage 4: Normalize and Limit
-            sampleProvider = new NormalizeSampleProvider( sampleProvider, targetVolume );
-            sampleProvider = new LimiterSampleProvider( sampleProvider, thresholdDb: -0.5f );
-            sampleProvider = new VolumeSampleProvider( sampleProvider ) { Volume = 3.0f };
+            // Stage 4: Adjust from our base volume and apply a limiter
+            sampleProvider = new VolumeSampleProvider( sampleProvider ) { Volume = GlobalOutputGainMultiplier };
+            sampleProvider = new LimiterSampleProvider( sampleProvider, LimiterThreshholdDb, LimiterReleaseMs );
 
             // Stage 5: Convert to 16‑bit PCM and mono
             var waveProvider = sampleProvider.ToWaveProvider16();
@@ -78,13 +82,13 @@ namespace EddiSpeechService.SpeechEffects
         private static int DamageAdjustedFxLevel ( decimal distortionLevel, int configFxLevel )
         {
             // Effects level can be increased, e.g. by damage if distortion is enabled
-            var bonusFX = 0;
+            var bonusFx = 0;
             if ( distortionLevel > 0 )
             {
-                bonusFX = (int)decimal.Round( distortionLevel / 100M * ( 100M - configFxLevel ) );
+                bonusFx = (int)decimal.Round( distortionLevel / 100M * ( 100M - configFxLevel ) );
             }
 
-            return configFxLevel + bonusFX;
+            return configFxLevel + bonusFx;
         }
     }
 }
