@@ -35,6 +35,8 @@ namespace EddiEddnResponder.Schemas
                 }
 
                 // Apply data augments
+                data = eddnState.Location.AugmentStarSystemName( data );
+                data = eddnState.Location.AugmentStarPos( data );
                 data = eddnState.Location.AugmentBodyNameID( data );
                 data = eddnState.Location.AugmentBodyLatLong( data, 60, true );
                 data = eddnState.GameVersion.AugmentVersion( data );
