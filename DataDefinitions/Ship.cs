@@ -741,11 +741,14 @@ namespace EddiDataDefinitions
             var linearConstant = frameshiftdrive.GetFsdRatingConstant();
             var powerConstant = frameshiftdrive.GetFsdPowerConstant();
             var guardianFsdBoosterRange = compartments.FirstOrDefault( c => c.module?.edname.Contains( "Int_GuardianFSDBooster" ) ?? false )?.module?.GetGuardianFSDBoost() ?? 0;
-            
-            // If the frame shift drive is a Mark II Overcharge Booster then apply a 1.5X multiplier.
-            boostModifier = frameshiftdrive.edname.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase )
-                    ? boostModifier * 1.5
-                    : boostModifier;
+
+            // If the frame shift drive is a Mark II Overcharge Booster then apply a special adjustment on top of the standard boost modifiers (1.5 for a white dwarf supercharge and 4.0 for a neutron star supercharge)
+            if ( boostModifier > 1 && frameshiftdrive.edname.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase ) )
+            {
+                // 2.0 supercharge boost for White Dwarfs.
+                // 6.0 supercharge boost for Neutron stars.
+                boostModifier = ( 1.6 * boostModifier ) - 0.4;
+            }
 
             return JumpRange( optimalMass, mass, fuel, linearConstant, powerConstant, guardianFsdBoosterRange, boostModifier );
         }

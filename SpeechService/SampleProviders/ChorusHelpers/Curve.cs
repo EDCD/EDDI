@@ -194,7 +194,6 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
             return Math.Max( lo, Math.Min( hi, raw ) );
         }
 
-
         public static float ResonanceAllPassGain ( float fxLevel )
         {
             return ResonanceAllPassGainSpline.Evaluate( fxLevel );

@@ -322,7 +322,15 @@ namespace EddiDataDefinitions
         {
             double baseOptimalMass;
 
-            if ( edname?.Contains( "hyperdrive_overcharge", StringComparison.OrdinalIgnoreCase ) ?? false )
+            if ( edname?.Contains( "OverchargeBooster_Mkii", StringComparison.OrdinalIgnoreCase ) ?? false )
+            {
+                var baseOptimalMasses_SCO_MkII = new Dictionary<string, double>
+                {
+                    { "8A", 4670.0 }
+                };
+                baseOptimalMasses_SCO_MkII.TryGetValue( @class + grade, out baseOptimalMass );
+            }
+            else if ( edname?.Contains( "hyperdrive_overcharge", StringComparison.OrdinalIgnoreCase ) ?? false )
             {
                 var baseOptimalMasses_SCO = new Dictionary<string, double>
                 {

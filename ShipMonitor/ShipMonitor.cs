@@ -120,7 +120,11 @@ namespace EddiShipMonitor
         public void PreHandle(Event @event)
         {
             // Handle the events that we care about
-            if ( @event is CarrierJumpedEvent carrierJumpedEvent )
+            if ( @event is CargoEvent cargoEvent )
+            {
+                handleCargoEvent( cargoEvent );
+            }
+            else if ( @event is CarrierJumpedEvent carrierJumpedEvent )
             {
                 handleCarrierJumpedEvent( carrierJumpedEvent );
             }
@@ -235,6 +239,20 @@ namespace EddiShipMonitor
             else if (@event is BountyPaidEvent bountyPaidEvent)
             {
                 handleBountyPaidEvent(bountyPaidEvent);
+            }
+        }
+
+        private void handleCargoEvent ( CargoEvent @event )
+        {
+            if ( @event.timestamp > updatedAt && @event.vessel.Equals( Constants.VEHICLE_SHIP, StringComparison.OrdinalIgnoreCase ) )
+            {
+                var ship = GetCurrentShip();
+                if ( ship != null )
+                {
+                    updatedAt = @event.timestamp;
+                    ship.cargoCarried = @event.cargocarried;
+                    if ( !@event.fromLoad ) { writeShips(); }
+                }
             }
         }
 
