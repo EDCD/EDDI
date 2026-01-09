@@ -211,36 +211,47 @@ namespace EddiDataProviderService
 
             using ( var con = SimpleDbConnection() )
             {
-                await con.OpenAsync( cancellationToken ).ConfigureAwait( false );
-                using ( var cmd = new SQLiteCommand( con ) )
+                try
                 {
-                    using ( var transaction = con.BeginTransaction() )
+                    await con.OpenAsync( cancellationToken ).ConfigureAwait( false );
+                    using ( var cmd = new SQLiteCommand( con ) )
                     {
-                        foreach ( var systemAddress in systemAddresses.Where( systemAddress => systemAddress > 0 ) )
+                        using ( var transaction = con.BeginTransaction() )
                         {
-                            try
+                            foreach ( var systemAddress in systemAddresses.Where( systemAddress => systemAddress > 0 ) )
                             {
-                                cmd.Parameters.Clear();
-                                cmd.Parameters.AddWithValue( "@systemaddress", systemAddress );
-                                cmd.CommandText = SELECT_SQL + WHERE_SYSTEMADDRESS;
-                                var result = await ReadStarSystemEntryAsync( cmd, cancellationToken ).ConfigureAwait( false );
-                                if ( result != null )
+                                try
                                 {
-                                    results.Add( result );
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue( "@systemaddress", systemAddress );
+                                    cmd.CommandText = SELECT_SQL + WHERE_SYSTEMADDRESS;
+                                    var result = await ReadStarSystemEntryAsync( cmd, cancellationToken )
+                                        .ConfigureAwait( false );
+                                    if ( result != null )
+                                    {
+                                        results.Add( result );
+                                    }
+                                }
+                                catch ( InvalidOperationException ioe )
+                                {
+                                    Logging.Warn(
+                                        $"Problem reading data for star system '{systemAddress}' from database.", ioe );
+                                }
+                                catch ( SQLiteException sqle )
+                                {
+                                    Logging.Warn(
+                                        $"Problem reading data for star system '{systemAddress}' from database.",
+                                        sqle );
                                 }
                             }
-                            catch ( InvalidOperationException ioe )
-                            {
-                                Logging.Warn( $"Problem reading data for star system '{systemAddress}' from database.", ioe );
-                            }
-                            catch ( SQLiteException sqle )
-                            {
-                                Logging.Warn( $"Problem reading data for star system '{systemAddress}' from database.", sqle );
-                            }
-                        }
 
-                        transaction.Commit();
+                            transaction.Commit();
+                        }
                     }
+                }
+                catch ( TaskCanceledException )
+                {
+                    // Task cancelled, nothing to do here.
                 }
             }
 
