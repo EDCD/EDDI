@@ -877,7 +877,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Preferences }\r\n{set reportFirstFootfall = 1} {_ If truthy, report first footfall events }\r\n\r\n{if reportFirstFootfall && event.firstfootfall = true:\r\n    {Pause(7000)}\r\n    {Occasionally(2, \"Congratulations {F('Honorific')}, \")}\r\n    you are the\r\n    first human to set foot\r\n    {OneOf(\r\n        \"on this world.\",\r\n        \"here.\"\r\n    )}\r\n}",
+      "script": "{_ Preferences }\r\n{set reportFirstFootfall to 1} {_ If truthy, report first footfall events }\r\n\r\n{if reportFirstFootfall && event.firstfootfall = true:\r\n    {Pause(7000)}\r\n    {Occasionally(2, \"Congratulations {F('Honorific')}, \")}\r\n    you are the\r\n    first human to set foot\r\n    {OneOf(\r\n        \"on this world.\",\r\n        \"here.\"\r\n    )}\r\n}",
       "name": "Disembark",
       "description": "Triggered when you transition from a ship or SRV to on foot"
     },
