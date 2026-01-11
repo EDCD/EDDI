@@ -194,8 +194,8 @@ namespace EddiSpanshService
                 var meanAnomaly = bodyData[ "meanAnomaly" ]?.ToObject<decimal?>();
                 var orbitalInclinationDegrees = bodyData[ "orbitalInclination" ]?.ToObject<decimal?>();
                 var orbitalPeriodDays = bodyData[ "orbitalPeriod" ]?.ToObject<decimal?>();
-                var parents = bodyData[ "parents" ]?.ToObject<List<IDictionary<string, object>>>() ??
-                          new List<IDictionary<string, object>>();
+                var parents = bodyData[ "parents" ]?.ToObject<List<IDictionary<string, int>>>() ??
+                          new List<IDictionary<string, int>>();
                 var periapsisDegrees = bodyData[ "argOfPeriapsis" ]?.ToObject<decimal?>();
                 var ringsData = bodyData["rings"] ?? bodyData["belts"];
                 var rings = ringsData?.Select( ringToken => new Ring(
@@ -235,7 +235,7 @@ namespace EddiSpanshService
         }
 
         private static Body GetStarData( JToken starData, StarSystem starSystem, string starName, long? bodyId, ulong id64,
-            List<IDictionary<string, object>> parents, decimal? distanceLs, decimal? temperatureKelvin, decimal? semiMajorAxisLs, decimal? eccentricity,
+            List<IDictionary<string, int>> parents, decimal? distanceLs, decimal? temperatureKelvin, decimal? semiMajorAxisLs, decimal? eccentricity,
             decimal? orbitalInclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays,
             decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings)
         {
@@ -273,7 +273,7 @@ namespace EddiSpanshService
         }
 
         private static Body GetPlanetData( JToken planetData, StarSystem starSystem, string planetName, long? bodyId, ulong id64,
-            List<IDictionary<string, object>> parents, decimal? distanceLs, decimal? temperatureKelvin, decimal? semiMajorAxisLs, decimal? eccentricity,
+            List<IDictionary<string, int>> parents, decimal? distanceLs, decimal? temperatureKelvin, decimal? semiMajorAxisLs, decimal? eccentricity,
             decimal? orbitalInclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays,
             decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool showMarketDetails = false )
         {

@@ -168,7 +168,7 @@ namespace EddiDataDefinitions
         public decimal? semimajoraxis { get; set; }
 
         /// <summary>The parent bodies to this body, if any</summary>
-        public List<IDictionary<string, object>> parents
+        public List<IDictionary<string, int>> parents
         {
             get
             {
@@ -198,7 +198,7 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        [JsonIgnore] private List<IDictionary<string, object>> _parents;
+        [JsonIgnore] private List<IDictionary<string, int>> _parents;
 
         /// <summary> Density in Kg per cubic meter </summary>
         [PublicAPI, JsonIgnore]
@@ -301,7 +301,7 @@ namespace EddiDataDefinitions
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
         /// <summary> Star definition </summary>
-        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped)
+        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, int>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool? alreadydiscovered, bool? alreadymapped)
         {
             this.bodyname = bodyName;
             this.radius = radiusKm;
@@ -451,7 +451,7 @@ namespace EddiDataDefinitions
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
         /// <summary> Planet or Moon definition </summary>
-        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped, bool? alreadyfootfalled)
+        public Body(string bodyName, long? bodyId, string systemName, ulong systemAddress, List<IDictionary<string, int>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool? alreadydiscovered, bool? alreadymapped, bool? alreadyfootfalled)
         {
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))

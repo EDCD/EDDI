@@ -171,7 +171,7 @@ namespace EddiEvents
 
         public Body body { get; private set; }
 
-        public List<IDictionary<string, object>> parents => body.parents;
+        public List<IDictionary<string, int>> parents => body.parents;
 
         public AtmosphereClass atmosphereclass => body.atmosphereclass;
         
