@@ -74,18 +74,16 @@ namespace EddiStarMapService
                 catch ( HttpRequestException he )
                 {
                     Logging.Warn( he.Message, he );
-                    return null;
                 }
                 catch ( TaskCanceledException ex ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !ex.CancellationToken.IsCancellationRequested )
                 {
                     Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", ex );
-                    return null;
                 }
                 catch ( TaskCanceledException )
                 {
                     // Task cancelled. Nothing to do here.
-                    return null;
                 }
+                return null;
             }
 
             [CanBeNull]

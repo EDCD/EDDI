@@ -48,6 +48,10 @@ namespace EddiSpanshService
                     Logging.Error( "Failed to parse Spansh response", e );
                 }
             }
+            catch ( TaskCanceledException )
+            {
+                // Task cancelled, nothing to do except return.
+            }
             catch ( HttpRequestException he )
             {
                 Logging.Warn( he.Message, he );

@@ -22,9 +22,10 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = $"dump/{systemAddress}";
-                clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait(false);
+                clientResponse =
+                    await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                 clientResponse.EnsureSuccessStatusCode();
-                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
                 if ( string.IsNullOrEmpty( responseJson ) )
                 {
@@ -48,6 +49,10 @@ namespace EddiSpanshService
                 {
                     Logging.Error( "Failed to parse Spansh API response", e );
                 }
+            }
+            catch ( TaskCanceledException )
+            {
+                // Task cancelled, nothing to do except return.
             }
             catch ( HttpRequestException he )
             {

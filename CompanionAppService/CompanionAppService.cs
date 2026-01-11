@@ -481,6 +481,10 @@ namespace EddiCompanionAppService
                         }
                     }
                 }
+                catch ( TaskCanceledException )
+                {
+                    // Task cancelled, nothing to do except return.
+                }
                 catch ( HttpRequestException ex )
                 {
                     Logging.Warn( $"Attempt {retry + 1} failed: {ex.Message}", ex );

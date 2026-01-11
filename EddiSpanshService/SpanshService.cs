@@ -79,28 +79,38 @@ namespace EddiSpanshService
             if ( string.IsNullOrEmpty( jobId ) ) { return null; }
 
             // Poll until the job finishes
-            JObject routeResult = null;
-            while ( routeResult is null || routeResult[ "state" ]?.ToString() == "started" )
+            try
             {
-                await Task.Delay( 500, cancellationToken ).ConfigureAwait(false);
-                var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken ).ConfigureAwait(false);
-                if ( getResponse.StatusCode == HttpStatusCode.RequestTimeout )
+                JObject routeResult = null;
+                while ( routeResult is null || routeResult[ "state" ]?.ToString() == "started" )
                 {
-                    Logging.Warn( $"Spansh API timeout on GET results/{jobId}" );
-                    return null;
+                    await Task.Delay( 500, cancellationToken ).ConfigureAwait( false );
+                    var getResponse = await spanshHttpClient.GetAsync( $"results/{jobId}", cancellationToken )
+                        .ConfigureAwait( false );
+                    if ( getResponse.StatusCode == HttpStatusCode.RequestTimeout )
+                    {
+                        Logging.Warn( $"Spansh API timeout on GET results/{jobId}" );
+                        return null;
+                    }
+
+                    var getJson = await getResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
+                    routeResult = JObject.Parse( getJson );
+
+                    if ( routeResult[ "error" ] != null )
+                    {
+                        Logging.Debug( routeResult[ "error" ].ToString() );
+                        return null;
+                    }
                 }
 
-                var getJson = await getResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                routeResult = JObject.Parse( getJson );
-
-                if ( routeResult[ "error" ] != null )
-                {
-                    Logging.Debug( routeResult[ "error" ].ToString() );
-                    return null;
-                }
+                return routeResult[ "result" ];
+            }
+            catch ( TaskCanceledException )
+            {
+                // Task cancelled, nothing to do except return.
             }
 
-            return routeResult[ "result" ];
+            return null;
         }
 
         private static bool EnsureSuccess ( HttpResponseMessage response )

@@ -201,21 +201,30 @@ namespace EddiInaraService
 
         private async Task<InaraResponses> SendToInaraAsync ( string jsonPayload )
         {
-            using ( var content = new StringContent( jsonPayload, Encoding.UTF8, "application/json" ) )
+            try
             {
-                var response = await httpClient.PostAsync( string.Empty, content ).ConfigureAwait(false);
-                var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                if ( !response.IsSuccessStatusCode )
+                using ( var content = new StringContent( jsonPayload, Encoding.UTF8, "application/json" ) )
                 {
-                    Logging.Warn( $"Inara API error {response.StatusCode}: {responseBody}" );
-                    return null;
-                }
+                    var response = await httpClient.PostAsync( string.Empty, content ).ConfigureAwait( false );
+                    var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 
-                var responses = JsonConvert.DeserializeObject<InaraResponses>( responseBody );
-                Logging.Debug( "Inara responded with: ", responses );
-                return responses;
+                    if ( !response.IsSuccessStatusCode )
+                    {
+                        Logging.Warn( $"Inara API error {response.StatusCode}: {responseBody}" );
+                        return null;
+                    }
+
+                    var responses = JsonConvert.DeserializeObject<InaraResponses>( responseBody );
+                    Logging.Debug( "Inara responded with: ", responses );
+                    return responses;
+                }
             }
+            catch ( TaskCanceledException )
+            {
+                // Task cancelled, nothing to do except return.
+            }
+
+            return null;
         }
 
         internal List<InaraAPIEvent> IndexAndFilterAPIEvents(List<InaraAPIEvent> events, InaraConfiguration inaraConfiguration)

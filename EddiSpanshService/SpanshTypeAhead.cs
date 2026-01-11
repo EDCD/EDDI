@@ -32,11 +32,16 @@ namespace EddiSpanshService
                 }
                 return JsonConvert.DeserializeObject<List<string>>(responseJson);
             }
+            catch ( TaskCanceledException )
+            {
+                // Task cancelled, nothing to do except return.
+            }
             catch ( HttpRequestException he )
             {
                 Logging.Warn( he.Message, he );
-                return null;
             }
+
+            return null;
         }
     }
 }

@@ -59,6 +59,10 @@ namespace EddiSpanshService
                     return ParseCarrierRoute( result );
                 }
             }
+            catch ( TaskCanceledException )
+            {
+                // Task cancelled, nothing to do except return.
+            }
             catch ( HttpRequestException he )
             {
                 Logging.Warn( he.Message, he );
