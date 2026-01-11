@@ -345,8 +345,11 @@ namespace EddiSpeechService
                             }
                             catch ( Exception ex )
                             {
-                                Logging.Error( "Failed to handle queued speech", ex );
-                                Logging.Warn( $"Failed to handle speech {JsonConvert.SerializeObject( speech )}" );
+                                var dict = new Dictionary<string, object>
+                                {
+                                    { "Speech", JsonConvert.SerializeObject( speech ) }, { "Exception", ex }
+                                };
+                                Logging.Warn( "Failed to handle queued speech", dict );
                             }
                         }
                         else
@@ -360,6 +363,10 @@ namespace EddiSpeechService
             catch ( OperationCanceledException )
             {
                 Logging.Debug( "Speech task was cancelled." );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( "Unexpected error in speech processing", ex );
             }
         }
 

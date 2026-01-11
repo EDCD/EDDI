@@ -117,7 +117,7 @@ namespace EddiShipMonitor
         /// <summary>
         /// We pre-handle the events to ensure that the data is up-to-date when it hits the responders
         /// </summary>
-        public void PreHandle(Event @event)
+        public async Task PreHandleAsync(Event @event)
         {
             // Handle the events that we care about
             if ( @event is CargoEvent cargoEvent )
@@ -150,7 +150,7 @@ namespace EddiShipMonitor
             }
             else if (@event is ShipSwappedEvent shipSwappedEvent)
             {
-                handleShipSwappedEventAsync(shipSwappedEvent).GetAwaiter().GetResult();
+                await handleShipSwappedEventAsync( shipSwappedEvent ).ConfigureAwait( false );
             }
             else if (@event is ShipRenamedEvent shipRenamedEvent)
             {
@@ -226,11 +226,11 @@ namespace EddiShipMonitor
             }
             else if (@event is StoredModulesEvent storedModulesEvent)
             {
-                handleStoredModulesEventAsync( storedModulesEvent ).GetAwaiter().GetResult();
+                await handleStoredModulesEventAsync( storedModulesEvent ).ConfigureAwait( false );
             }
             else if ( @event is StoredShipsEvent storedShipsEvent )
             {
-                handleStoredShipsEventAsync( storedShipsEvent ).GetAwaiter().GetResult();
+                await handleStoredShipsEventAsync( storedShipsEvent ).ConfigureAwait( false );
             }
             else if (@event is BountyIncurredEvent bountyIncurredEvent)
             {
@@ -1200,13 +1200,15 @@ namespace EddiShipMonitor
                     {
                         ship.hot = false;
                         if ( !@event.fromLoad )
-                        { writeShips(); }
+                        {
+                            writeShips();
+                        }
                     }
                 }
             }
         }
 
-        public void PostHandle(Event @event)
+        public Task PostHandleAsync ( Event @event )
         {
             if (@event is ShipLoadoutEvent shipLoadoutEvent)
             {
@@ -1223,6 +1225,8 @@ namespace EddiShipMonitor
                 posthandleUndockedEventAsync( undockedEvent )
                     .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
+            
+            return Task.CompletedTask;
         }
 
         private async Task posthandleShipLoadoutEventAsync(ShipLoadoutEvent @event)
@@ -1255,13 +1259,15 @@ namespace EddiShipMonitor
         }
 
         // Note: At a minimum, the API Profile data is required to update the current ship's launchbay status
-        public void HandleProfile(JObject profile)
+        public async Task HandleProfileAsync(JObject profile)
         {
             // Obtain the current ship from the profile
             var profileCurrentShip = FrontierApi.ShipFromJson((JObject)profile["ship"]);
 
             // Obtain the shipyard from the profile
-            var profileShipyard = FrontierApi.ShipyardFromJsonAsync(profileCurrentShip, profile).GetAwaiter().GetResult();
+            var profileShipyard = await FrontierApi
+                .ShipyardFromJsonAsync( profileCurrentShip, profile )
+                .ConfigureAwait( false );
 
             if (profileCurrentShip != null)
             {
@@ -1397,9 +1403,11 @@ namespace EddiShipMonitor
             writeShips();
         }
 
-        public void HandleStatus ( Status status )
-        { }
-
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
+        
         public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             lock ( shipyardLock )

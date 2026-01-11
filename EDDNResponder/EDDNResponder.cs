@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -43,7 +44,7 @@ namespace EddiEddnResponder
 
         private void FrontierApiOnStationUpdatedEvent(object sender, CompanionApiEndpointEventArgs e)
         {
-            Logging.Debug($"Handling Frontier API data", new Dictionary<string, object>()
+            Logging.Debug("Handling Frontier API data", new Dictionary<string, object>()
                 {
                     { "Frontier API Data", e },
                     { "EDDN State", eddnState }
@@ -55,24 +56,21 @@ namespace EddiEddnResponder
             }
         }
 
-        public void HandleStatus ( Status status )
+        public Task HandleStatusAsync ( Status status )
         {
             eddnState.Location.GetLocationInfo( status );
+            return Task.CompletedTask;
         }
 
-        public void Handle(Event @event)
+        public Task HandleAsync ( Event @event )
         {
-            if (EDDI.Instance.inTelepresence)
+            if (EDDI.Instance.inTelepresence || 
+                string.IsNullOrEmpty(@event.raw))
             {
                 // We don't do anything whilst in Telepresence
-                return;
-            }
-
-            if (string.IsNullOrEmpty(@event.raw))
-            {
                 // A null value may indicate a synthetic event used to pass data within EDDI
                 // (which should always be ignored)
-                return;
+                return Task.CompletedTask;
             }
 
             Logging.Debug("Received event " + @event.raw);
@@ -80,7 +78,7 @@ namespace EddiEddnResponder
             var data = Deserializtion.DeserializeData(@event.raw);
             var edType = JsonParsing.getString(data, "event");
 
-            if (string.IsNullOrEmpty(edType) || data == null) { return; }
+            if (string.IsNullOrEmpty(edType) || data == null) { return Task.CompletedTask; }
 
             // Collect and hold necessary state data
             eddnState.GetStateInfo( edType, data );
@@ -88,8 +86,8 @@ namespace EddiEddnResponder
             if (@event.fromLoad)
             {
                 // Don't do anything further with data acquired during log loading,
-                // just update our internal state and move on
-                return;
+                // just move on now that we've updated our internal state.
+                return Task.CompletedTask;
             }
 
             // Handle events
@@ -105,6 +103,8 @@ namespace EddiEddnResponder
                     break;
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         public bool Start()
@@ -125,7 +125,7 @@ namespace EddiEddnResponder
             CompanionAppService.Instance.CombinedStationEndpoints.StationUpdatedEvent -= FrontierApiOnStationUpdatedEvent;
         }
 
-        public void Reload()
+        public void Reload ()
         { }
 
         void GetSchemas()

@@ -17,30 +17,23 @@ namespace EddiUI
         {
             InitializeComponent();
             setStatusInfo();
-            CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.Load();
-            CompanionAppService.Instance.StateChanged += companionApiStatusChanged;
+            CompanionAppService.Instance.StateChanged += ( s, e ) =>
+                companionApiStatusChangedAsync( s, e ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
-        private async void companionApiStatusChanged ( CompanionAppService.State oldState, CompanionAppService.State newState )
+        private async Task companionApiStatusChangedAsync ( CompanionAppService.State oldState, CompanionAppService.State newState )
         {
-            try
+            setStatusInfo();
+            if ( oldState == CompanionAppService.State.AwaitingCallback &&
+                 newState == CompanionAppService.State.Authorized )
             {
-                setStatusInfo();
-                if ( oldState == CompanionAppService.State.AwaitingCallback &&
-                     newState == CompanionAppService.State.Authorized )
-                {
-                    await SpeechService.Instance.SayAsync( null, string.Format( Properties.Resources.frontier_api_ok, ConfigService.Instance.commanderConfiguration.phoneticName ), 0 ).ConfigureAwait(false);
-                    await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_close_browser, 0 ).ConfigureAwait(false);
-                }
-                else if ( oldState == CompanionAppService.State.LoggedOut &&
-                          newState == CompanionAppService.State.AwaitingCallback )
-                {
-                    await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_please_authenticate, 0 ).ConfigureAwait(false);
-                }
+                await SpeechService.Instance.SayAsync( null, string.Format( Properties.Resources.frontier_api_ok, ConfigService.Instance.commanderConfiguration.phoneticName ), 0 ).ConfigureAwait( false );
+                await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_close_browser, 0 ).ConfigureAwait( false );
             }
-            catch (Exception e)
+            else if ( oldState == CompanionAppService.State.LoggedOut &&
+                      newState == CompanionAppService.State.AwaitingCallback )
             {
-                Logging.Error( e.Message, e );
+                await SpeechService.Instance.SayAsync( null, Properties.Resources.frontier_api_please_authenticate, 0 ).ConfigureAwait( false );
             }
         }
 

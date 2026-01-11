@@ -27,7 +27,7 @@ namespace EddiEddnResponder.Toolkit
         public int? journalBodyId { get; private set; }
         public string statusBodyName { get; private set; }
 
-        public bool invalidState { get; private set; } // Are we in an invalid state?
+        private bool invalidState { get; set; } // Are we in an invalid state?
 
         // These events contain full star system location data. 
         private static readonly List<string> fullStarSystemLocationEvents = new List<string>
@@ -236,48 +236,55 @@ namespace EddiEddnResponder.Toolkit
             return data;
         }
 
-        internal bool CheckLocationData(string edType, IDictionary<string, object> data)
+        internal bool CheckLocationData ( string edType, IDictionary<string, object> data )
         {
             // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
-            if (fullStarSystemLocationEvents.Contains(edType) && StarSystemLocationIsSet()) { return true; }
+            if ( fullStarSystemLocationEvents.Contains( edType ) && StarSystemLocationIsSet() ) { return true; }
 
             // Can only send journal data if we know our current location data is correct
             // If any location data is null, data shall not be sent to EDDN.
-            if (StarSystemLocationIsSet())
+            if ( StarSystemLocationIsSet() )
             {
                 // The `Docked` event doesn't provide system coordinates, and the `Scan`event doesn't provide any system location data.
                 // The EDDN journal schema requires that we enrich the journal event data with coordinates and system name (and system address if possible).
-                if (data.ContainsKey("BodyName") && !data.ContainsKey("SystemName"))
+                if ( data.ContainsKey( "BodyName" ) && !data.ContainsKey( "SystemName" ) )
                 {
                     // Apply heuristics to weed out mismatched systems and bodies
-                    ConfirmScan(JsonParsing.getString(data, "BodyName"));
+                    ConfirmScan( JsonParsing.getString( data, "BodyName" ) );
                 }
-                if (!data.ContainsKey("SystemName") || !data.ContainsKey("StarPos"))
+
+                if ( !data.ContainsKey( "SystemName" ) )
                 {
                     // Out of an overabundance of caution, we do not use data from our saved star systems to enrich the data we send to EDDN, 
                     // but we do use it as an independent check to make sure our system name and coordinates are accurate
-                    ConfirmNameAndCoordinates();
+                    ConfirmName();
                 }
 
-                if (StarSystemLocationIsSet())
+                if ( !data.ContainsKey( "StarPos" ) )
+                {
+                    ConfirmCoordinates();
+                }
+
+                if ( StarSystemLocationIsSet() )
                 {
                     invalidState = false;
                     return true;
                 }
 
-                if (!invalidState)
+                if ( !invalidState )
                 {
                     invalidState = true;
                     Logging.Warn( "The EDDN responder is in an invalid state and is unable to send messages.",
                         new Dictionary<string, object> { { "EDDN State", this }, { "Event", data } } );
                 }
             }
+
             return false;
         }
 
-        internal bool ConfirmNameAndCoordinates()
+        internal bool ConfirmName()
         {
-            if (systemName != null)
+            if ( systemAddress > 0 )
             {
                 StarSystem system;
                 if (systemAddress == EDDI.Instance.CurrentStarSystem?.systemAddress)
@@ -286,27 +293,47 @@ namespace EddiEddnResponder.Toolkit
                 }
                 else
                 {
-                    system = EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemAsync( systemAddress ).GetAwaiter().GetResult();
+                    system = EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemAsync( systemAddress )
+                        .GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
                 }
-                if (system != null)
+
+                if ( systemName == system?.systemname )
                 {
-                    if (systemName != system.systemname)
-                    {
-                        systemName = null;
-                    }
-                    if (systemX != system.x || systemY != system.y || systemZ != system.z)
-                    {
-                        systemX = null;
-                        systemY = null;
-                        systemZ = null;
-                    }
-                }
-                else
-                {
-                    ClearLocation();
+                    return true;
                 }
             }
-            return systemName != null && systemX != null && systemY != null && systemZ != null;
+
+            // If the name and system address are inconsistent then reset our location
+            ClearLocation();
+            return false;
+        }
+
+        internal bool ConfirmCoordinates ()
+        {
+            if ( systemAddress > 0 && systemX != null && systemY != null && systemZ != null )
+            {
+                var massCode = (int)(systemAddress & 7);
+                var boxelSize = 10 * (1 << massCode);
+                var calcX = ((((systemAddress >> (30 - (massCode * 2))) & (ulong)(0x3FFF >> massCode)) << massCode) * 10.0) - 49985;
+                var calcY = ((((systemAddress >> (17 - massCode)) & (ulong)(0x1FFF >> massCode)) << massCode) * 10.0) - 40985;
+                var calcZ = ((((systemAddress >> 3) & (ulong)(0x3FFF >> massCode)) << massCode) * 10.0) - 24105;
+                var xDiff = (double)systemX - calcX;
+                var yDiff = (double)systemY - calcY;
+                var zDiff = (double)systemZ - calcZ;
+                if ( !( xDiff < 0 ) && !( xDiff > boxelSize ) && !( yDiff < 0 ) && !( yDiff > boxelSize ) && !( zDiff < 0 ) && !( zDiff > boxelSize ) )
+                {
+                    return true;
+                }
+
+                Logging.Warn( $"Cached coordinates for system address ({systemAddress}) appear to be incorrect ({systemX},{systemY},{systemZ}) should be within {boxelSize}LY of ({calcX},{calcY},{calcZ}). Actual differences ({xDiff},{yDiff},{zDiff})" );
+
+                // Set values to null if data can't be confirmed. 
+                systemX = null;
+                systemY = null;
+                systemZ = null;
+            }
+
+            return false;
         }
 
         internal bool ConfirmScan(string scannedBodyName)
@@ -323,7 +350,7 @@ namespace EddiEddnResponder.Toolkit
                     // If the body doesn't start with the system name, it should also 
                     // not match a naming pattern for a procedurally generated name.
                     // If it does, it's (probably) in the wrong place.
-                    Regex isProcGenName = new Regex(@"[A-Z][A-Z]-[A-Z] [a-h][0-9]");
+                    var isProcGenName = new Regex(@"[A-Z][A-Z]-[A-Z] [a-h][0-9]");
                     if (!isProcGenName.IsMatch(scannedBodyName))
                     {
                         return true;

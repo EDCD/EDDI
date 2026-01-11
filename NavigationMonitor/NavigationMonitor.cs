@@ -140,11 +140,12 @@ namespace EddiNavigationMonitor
             return ConfigurationWindow.Instance;
         }
 
-        public void HandleProfile(JObject profile)
+        public Task HandleProfileAsync(JObject profile)
         {
+            return Task.CompletedTask;
         }
 
-        public void PreHandle(Event @event)
+        public async Task PreHandleAsync(Event @event)
         {
             // Handle the events that we care about
             if (@event is CarrierJumpedEvent carrierJumpedEvent)
@@ -165,11 +166,11 @@ namespace EddiNavigationMonitor
             }
             else if (@event is LocationEvent locationEvent)
             {
-                handleLocationEventAsync( locationEvent ).GetAwaiter().GetResult();
+                await handleLocationEventAsync( locationEvent ).ConfigureAwait( false );
             }
             else if (@event is NavRouteEvent navRouteEvent)
             {
-                handleNavRouteEventAsync(navRouteEvent).GetAwaiter().GetResult();
+                await handleNavRouteEventAsync(navRouteEvent).ConfigureAwait( false );
             }
             else if (@event is RouteDetailsEvent routeDetailsEvent)
             {
@@ -181,7 +182,7 @@ namespace EddiNavigationMonitor
             }
         }
 
-        public void PostHandle(Event @event)
+        public Task PostHandleAsync ( Event @event )
         {
             if (@event is NavRouteEvent navRouteEvent)
             {
@@ -199,6 +200,8 @@ namespace EddiNavigationMonitor
             {
                 posthandleUndockedEvent(undockedEvent);
             }
+
+            return Task.CompletedTask;
         }
 
         #region handledEvents
@@ -596,13 +599,15 @@ namespace EddiNavigationMonitor
             EDDI.Instance.DestinationDistanceLy = distance;
         }
 
-        public void HandleStatus(Status status)
+        public Task HandleStatusAsync(Status status)
         {
             currentStatus = status;
             foreach ( var bookmark in Bookmarks )
             {
                 CheckBookmarkPosition( bookmark, currentStatus );
             }
+
+            return Task.CompletedTask;
         }
 
         public void CheckBookmarkPosition(NavBookmark bookmark, Status status, bool emitEvent = true)

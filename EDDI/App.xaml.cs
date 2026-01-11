@@ -54,7 +54,7 @@ namespace Eddi
 
             // Start by fetching information from the update server, and handling appropriately.
             // This completes before showing any UI so that VoiceAttack can report the availability of the upgrade during its startup.
-            EddiUpgrader.CheckUpgradeAsync().GetAwaiter().GetResult();
+            EddiUpgrader.CheckUpgradeAsync().GetResultOrTimeout( TimeSpan.FromSeconds( 10 ) );
 
             try
             {

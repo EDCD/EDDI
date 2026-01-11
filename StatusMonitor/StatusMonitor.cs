@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -73,13 +74,15 @@ namespace EddiStatusMonitor
             StatusService.Instance.Start();
         }
 
-        public void HandleStatus ( Status status )
+        public Task HandleStatusAsync ( Status status )
         {
             _handleStatus( status, out var events );
             foreach ( var @event in events )
             {
                 EDDI.Instance.enqueueEvent( @event );
             }
+
+            return Task.CompletedTask;
         }
 
         internal void _handleStatus ( Status status, out List<Event> events )
@@ -348,7 +351,7 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        public void PreHandle(Event @event)
+        public Task PreHandleAsync(Event @event)
         {
             // Some events can be derived from our status during a given event
             if ( @event is EnteredNormalSpaceEvent enteredNormalSpaceEvent )
@@ -363,6 +366,8 @@ namespace EddiStatusMonitor
             {
                 handleSettlementApproachedEvent( settlementApproachedEvent );
             }
+
+            return Task.CompletedTask;
         }
 
         internal void handleSettlementApproachedEvent ( SettlementApproachedEvent @event )
@@ -413,13 +418,17 @@ namespace EddiStatusMonitor
             lastMusicTrack = @event.musictrack;
         }
 
-        [ExcludeFromCodeCoverage]
-        public void PostHandle(Event @event)
-        { }
+        [ ExcludeFromCodeCoverage ]
+        public Task PostHandleAsync ( Event @event )
+        {
+            return Task.CompletedTask;
+        }
 
         [ExcludeFromCodeCoverage]
-        public void HandleProfile(JObject profile)
-        { }
+        public Task HandleProfileAsync(JObject profile)
+        {
+            return Task.CompletedTask;
+        }
 
         public IDictionary<string, Tuple<Type, object>> GetVariables()
         {

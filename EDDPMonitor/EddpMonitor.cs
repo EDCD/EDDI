@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiEddpMonitor
@@ -276,18 +277,26 @@ namespace EddiEddpMonitor
         //    return null;
         //}
 
-        public void PreHandle(Event @event)
-        { }
+        public Task PreHandleAsync ( Event @event )
+        {
+            return Task.CompletedTask;
+        }
 
-        public void PostHandle(Event @event)
-        { }
+        public Task PostHandleAsync ( Event @event )
+        {
+            return Task.CompletedTask;
+        }
 
-        public void HandleProfile(JObject profile)
-        { }
+        public Task HandleProfileAsync(JObject profile)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void HandleStatus ( Status status )
-        { }
-
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
+        
         public IDictionary<string, Tuple<Type, object>> GetVariables()
         {
             return null;

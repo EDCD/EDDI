@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -33,31 +33,45 @@ namespace EddiDataDefinitions
             Items = items ?? new List<MarketInfoItem>();
         }
 
-        [UsedImplicitly]
-        public static bool TryFromFile(DateTime journalTimeStamp, string expectedStarSystem, string expectedStation, long expectedMarketID, [CanBeNull] out MarketInfo info, [CanBeNull] out string rawMarket, string filename = "Market.json")
+        [ UsedImplicitly ]
+        public static bool TryFromFile ( DateTime journalTimeStamp, string expectedStarSystem, string expectedStation,
+            long expectedMarketID, [ CanBeNull ] out MarketInfo info, [ CanBeNull ] out string rawMarket,
+            string filename = "Market.json" )
         {
-            info = null;
-            int attemptsRemaining = 10;
+            var attemptsRemaining = 10;
             TimeSpan? timeDiff = null;
-            do
+            
+            ( info, rawMarket ) = Task.Run( async () =>
             {
-                if (attemptsRemaining < 10) { Thread.Sleep(200); }
-                rawMarket = Files.FromSavedGames(filename);
-                if (!string.IsNullOrEmpty(rawMarket))
+                do
                 {
-                    info = JsonConvert.DeserializeObject<MarketInfo>(rawMarket);
-                }
-                if (info?.Items != null &&
-                    info.StarSystem == expectedStarSystem && 
-                    info.StationName == expectedStation && 
-                    info.MarketID == expectedMarketID)
-                {
-                    timeDiff = info.timestamp - journalTimeStamp;
-                }
-                attemptsRemaining--;
-            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
+                    MarketInfo marketInfo = null;
+                    var raw = Files.FromSavedGames( filename );
+                    if ( !string.IsNullOrEmpty( raw ) )
+                    {
+                        marketInfo = JsonConvert.DeserializeObject<MarketInfo>( raw );
+                    }
 
-            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
+                    if ( marketInfo?.Items != null &&
+                         marketInfo.StarSystem == expectedStarSystem &&
+                         marketInfo.StationName == expectedStation &&
+                         marketInfo.MarketID == expectedMarketID )
+                    {
+                        timeDiff = marketInfo.timestamp - journalTimeStamp;
+                        return ( marketInfo, raw );
+                    }
+
+                    attemptsRemaining--;
+                    await Task.Delay( 200 );
+                } while ( !fileIsRecent( timeDiff ) && attemptsRemaining > 0 );
+
+                return ( null, null );
+            } ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+
+            return fileIsRecent( timeDiff );
+
+            bool fileIsRecent ( TimeSpan? timeDifference ) =>
+                timeDifference == null || timeDifference.Value.Duration().TotalSeconds >= 5;
         }
     }
 }

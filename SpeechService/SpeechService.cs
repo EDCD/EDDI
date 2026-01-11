@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -57,36 +58,40 @@ namespace EddiSpeechService
         public SpeechService()
         {
             // Monitor and respond appropriately to changes in the state of the CompanionAppService
-            CompanionAppService.Instance.StateChanged += CompanionAppService_StateChanged;
+            CompanionAppService.Instance.StateChanged += ( oldState, newState ) =>
+                CompanionAppService_StateChangedAsync( newState ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
         }
 
-        private void CompanionAppService_StateChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
+        private async Task CompanionAppService_StateChangedAsync( CompanionAppService.State newState)
         {
-            if (newState == CompanionAppService.State.ConnectionLost && !CompanionAppService.unitTesting)
+            if ( newState == CompanionAppService.State.ConnectionLost && !CompanionAppService.unitTesting )
             {
-                SpeechManager.SayAsync(null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0).GetAwaiter().GetResult();
+                await SpeechManager
+                    .SayAsync( null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0 )
+                    .ConfigureAwait( false );
             }
         }
 
         public bool checkSpeechInterrupt ( int peekedSpeechPriority ) => SpeechManager.checkSpeechInterrupt( peekedSpeechPriority );
 
-        public Task SayAsync ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false,
+        public async Task SayAsync ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false,
             string eventType = null, bool invokedFromVA = false )
         {
-            return SpeechManager.SayAsync( ship, message, priority, voice, radio, eventType, invokedFromVA );
+            await SpeechManager.SayAsync( ship, message, priority, voice, radio, eventType, invokedFromVA )
+                .ConfigureAwait( false );
         }
 
         public void ShutUp () => SpeechManager.ShutUp();
 
-        public Task SpeakAsync ( EddiSpeech speech )
+        public async Task SpeakAsync ( EddiSpeech speech )
         {
-            return SpeechManager.SpeakAsync( speech );
+            await SpeechManager.SpeakAsync( speech ).ConfigureAwait(false);
         }
 
-        public Task SpeakAsync ( string speech, string defaultVoice, int fxLevel,
+        public async Task SpeakAsync ( string speech, string defaultVoice, int fxLevel,
             int distortionLevel = 0, int echoDelay = 0, int priority = 3, bool radio = false )
         {
-            return SpeechManager.SpeakAsync( speech, defaultVoice, fxLevel, distortionLevel, echoDelay, priority, radio );
+            await SpeechManager.SpeakAsync( speech, defaultVoice, fxLevel, distortionLevel, echoDelay, priority, radio ).ConfigureAwait(false);
         }
 
         public void StopAudio () => AudioManager.StopAudio();

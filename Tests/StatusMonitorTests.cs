@@ -862,7 +862,7 @@ namespace Tests
         public void TestStatusMonitorHandleStatus (string line)
         {
             var currentStatus = statusService.ParseStatusEntry( line );
-            statusMonitor.HandleStatus( currentStatus );
+            statusMonitor.HandleStatusAsync( currentStatus );
             var variables = statusMonitor.GetVariables();
             Assert.IsNotNull( variables[ "status" ] );
             Assert.AreEqual( typeof(Status), variables[ "status" ].Item1 );

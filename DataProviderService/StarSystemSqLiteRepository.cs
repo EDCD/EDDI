@@ -108,10 +108,10 @@ namespace EddiDataProviderService
             SqLiteBaseRepository.unitTesting = unitTesting;
         }
 
-        public static async Task<StarSystemSqLiteRepository> CreateAsync ( bool isUnitTesting = false )
+        public static StarSystemSqLiteRepository Create ( bool isUnitTesting = false )
         {
             var repository = new StarSystemSqLiteRepository(isUnitTesting);
-            await repository.CreateOrUpdateDatabaseAsync().ConfigureAwait(false);
+            repository.CreateOrUpdateDatabase();
             return repository;
         }
 
@@ -565,7 +565,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private async Task CreateOrUpdateDatabaseAsync()
+        private void CreateOrUpdateDatabase()
         {
             using ( var con = SimpleDbConnection() )
             {
@@ -576,7 +576,7 @@ namespace EddiDataProviderService
                     using ( var cmd = new SQLiteCommand( CREATE_TABLE_SQL, con ) )
                     {
                         Logging.Debug( "Preparing starsystem repository" );
-                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        cmd.ExecuteNonQuery();
                     }
 
                     // Get schema version 
@@ -590,7 +590,7 @@ namespace EddiDataProviderService
                     if ( SCHEMA_VERSION < 1 )
                     {
                         Logging.Debug( "Updating starsystem repository to schema version 1" );
-                        await AddColumnIfMissingAsync( con, "comment" ).ConfigureAwait(false);
+                        AddColumnIfMissing( con, "comment" );
                         SCHEMA_VERSION = 1;
                     }
 
@@ -599,12 +599,12 @@ namespace EddiDataProviderService
                         Logging.Debug( "Updating starsystem repository to schema version 2" );
 
                         // Allocate our new columns
-                        await AddColumnIfMissingAsync( con, "systemaddress" ).ConfigureAwait(false);
+                        AddColumnIfMissing( con, "systemaddress" );
 
                         // We have to replace our table with a new copy to assign our new columns as unique
                         using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
                         {
-                            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                            cmd.ExecuteNonQuery();
                         }
 
                         SCHEMA_VERSION = 2;
@@ -618,7 +618,7 @@ namespace EddiDataProviderService
                         // We have to replace our table with a new copy to reassign unique columns
                         using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
                         {
-                            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                            cmd.ExecuteNonQuery();
                         }
 
                         SCHEMA_VERSION = 3;
@@ -628,21 +628,21 @@ namespace EddiDataProviderService
                     using ( var cmd = new SQLiteCommand( CREATE_INDEX_SQL, con ) )
                     {
                         Logging.Debug( "Creating starsystem index" );
-                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        cmd.ExecuteNonQuery();
                     }
 
                     // Optimize the database
                     using ( var cmd = new SQLiteCommand( "PRAGMA optimize;", con ) )
                     {
                         Logging.Debug( "Creating starsystem index" );
-                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        cmd.ExecuteNonQuery();
                     }
 
                     // Set schema version 
                     using ( var cmd = new SQLiteCommand( TABLE_SET_SCHEMA_VERSION_SQL + SCHEMA_VERSION + ";", con ) )
                     {
                         Logging.Info( "Starsystem repository schema is version " + SCHEMA_VERSION );
-                        await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                        cmd.ExecuteNonQuery();
                     }
                 }
                 catch ( SQLiteException ex )
@@ -655,7 +655,7 @@ namespace EddiDataProviderService
         }
 
         /// <summary> Valid columnNames are "systemaddress" and "comment" </summary>
-        private async Task AddColumnIfMissingAsync(SQLiteConnection con, string columnName )
+        private void AddColumnIfMissing(SQLiteConnection con, string columnName )
         {
             // Parameters like `DISTINCT` cannot be set on columns by this method
             string command = string.Empty;
@@ -674,9 +674,9 @@ namespace EddiDataProviderService
                 bool columnExists = false;
                 using ( var cmd = new SQLiteCommand( TABLE_INFO_SQL, con ) )
                 {
-                    using ( var rdr = await cmd.ExecuteReaderAsync().ConfigureAwait(false) )
+                    using ( var rdr = cmd.ExecuteReader() )
                     {
-                        while ( await rdr.ReadAsync().ConfigureAwait(false) )
+                        while ( rdr.Read() )
                         {
                             if ( columnName == rdr.GetString( 1 ) )
                             {
@@ -694,7 +694,7 @@ namespace EddiDataProviderService
                     {
                         using ( var cmd = new SQLiteCommand( command, con ) )
                         {
-                            await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                            cmd.ExecuteNonQuery();
                         }
                     }
                     catch ( SQLiteException ex )

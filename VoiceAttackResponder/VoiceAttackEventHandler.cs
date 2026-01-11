@@ -147,11 +147,11 @@ namespace EddiVoiceAttackResponder
             return false;
         }
 
-        public void StopEventHandling ()
+        public async Task StopEventHandlingAsync ()
         {
             // Cancel event queue threads and wait for them to complete
             consumerCancellationTS?.Cancel();
-            Task.WhenAny(
+            await Task.WhenAny(
                 Task.Run( async () =>
                 {
                     while ( taskQueues.Values.Any( q => q.isRunning ) )

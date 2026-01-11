@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -116,13 +117,17 @@ namespace EddiCargoMonitor
             return new ConfigurationWindow();
         }
 
-        public void HandleProfile(JObject profile)
-        { }
+        public Task HandleProfileAsync ( JObject profile )
+        {
+            return Task.CompletedTask;
+        }
 
-        public void HandleStatus ( Status status )
-        { }
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
 
-        public void PreHandle(Event @event)
+        public Task PreHandleAsync(Event @event)
         {
             // Handle the events that we care about
             if (@event is CargoEvent cargoEvent)
@@ -177,9 +182,11 @@ namespace EddiCargoMonitor
             {
                 handleSynthesisedEvent(synthesisedEvent);
             }
+
+            return Task.CompletedTask;
         }
 
-        public void PostHandle ( Event @event )
+        public Task PostHandleAsync ( Event @event )
         {
             // Calculate cargo needs using the post handler (so that mission configuration information is already updated)
             if ( @event.type.Contains( "Cargo" ) || 
@@ -194,6 +201,8 @@ namespace EddiCargoMonitor
                     CalculateCargoNeeds();
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         // Keeps inventory levels synced to the game

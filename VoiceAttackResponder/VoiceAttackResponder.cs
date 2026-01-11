@@ -2,7 +2,9 @@
 using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
+using System;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -31,13 +33,14 @@ namespace EddiVoiceAttackResponder
             return Properties.VoiceAttack.desc;
         }
 
-        public void Handle(Event @event)
+        public Task HandleAsync ( Event @event )
         {
-            if ( !App.FromVA || @event.fromLoad || @event is UnhandledEvent )
+            if ( App.FromVA && !@event.fromLoad && !( @event is UnhandledEvent ) )
             {
-                return;
+                voiceAttackEventHandler.Handle( @event );
             }
-            voiceAttackEventHandler.Handle( @event );
+
+            return Task.CompletedTask;
         }
 
         public bool Start()
@@ -58,7 +61,7 @@ namespace EddiVoiceAttackResponder
         public void Stop ()
         {
             // Cancel event queue threads and wait for them to complete
-            voiceAttackEventHandler?.StopEventHandling();
+            voiceAttackEventHandler?.StopEventHandlingAsync().SafeFireAndForget( ex => Logging.Warn( ex.Message, ex ) );
         }
 
         public void Reload()
@@ -69,12 +72,13 @@ namespace EddiVoiceAttackResponder
             return new ConfigurationWindow();
         }
 
-        public void HandleStatus ( Status status )
+        public Task HandleStatusAsync ( Status status )
         {
             if ( App.FromVA )
             {
                 VoiceAttackVariables.setStatusValues( status, "Status" );
             }
+            return Task.CompletedTask;
         }
     }
 }

@@ -90,30 +90,25 @@ namespace EddiEdsmResponder
             }
         }
 
-        public void Handle ( Event @event )
+        public Task HandleAsync ( Event @event )
         {
-            if ( EDDI.Instance.inTelepresence )
+            if ( EDDI.Instance.inTelepresence || 
+                 EDDI.Instance.gameIsBeta ||
+                 EDDI.Instance.GameVersion is null || EDDI.Instance.GameVersion < minGameVersion
+                 )
             {
                 // We don't do anything whilst in CQC
-                return;
-            }
-
-            if ( EDDI.Instance.gameIsBeta )
-            {
                 // We don't send data whilst in beta
-                return;
-            }
-
-            if ( EDDI.Instance.GameVersion is null || EDDI.Instance.GameVersion < minGameVersion )
-            {
                 // We don't sent data whilst running a lower game version than the minimum required by EDSM
-                return;
+                return Task.CompletedTask;
             }
 
             // Retrieve applicable transient game state info (metadata) 
             // for the event and send the event with transient info to EDSM
             ProcessEventAsync( @event )
                 .SafeFireAndForget( ex => Logging.Error( "Failed to handle event for EDSM", ex ) );
+
+            return Task.CompletedTask;
         }
 
         private async Task ProcessEventAsync ( Event @event )
@@ -287,7 +282,9 @@ namespace EddiEdsmResponder
             return new ConfigurationWindow(this);
         }
 
-        public void HandleStatus ( Status status )
-        { }
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
     }
 }

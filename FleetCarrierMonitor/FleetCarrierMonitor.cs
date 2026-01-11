@@ -70,7 +70,7 @@ namespace EddiFleetCarrierMonitor
 
         public UserControl ConfigurationTabItem () => null;
 
-        public void PreHandle ( Event @event )
+        public Task PreHandleAsync ( Event @event )
         {
             if ( @event is CarrierBankTransferEvent carrierBankTransferEvent )
             {
@@ -140,6 +140,8 @@ namespace EddiFleetCarrierMonitor
             {
                 handleLocationEvent( locationEvent );
             }
+
+            return Task.CompletedTask;
         }
 
         private bool CarrierIsDecommissioned ( DateTime timestamp, FleetCarrier carrier )
@@ -518,9 +520,9 @@ namespace EddiFleetCarrierMonitor
             }
         }
 
-        public void PostHandle ( Event @event )
+        public Task PostHandleAsync ( Event @event )
         {
-            if ( @event.fromLoad ) { return; }
+            if ( @event.fromLoad ) { return Task.CompletedTask; }
             
             if ( @event is CarrierJumpRequestEvent cjr )
             {
@@ -582,16 +584,21 @@ namespace EddiFleetCarrierMonitor
                 RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                 RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
+
+            return Task.CompletedTask;
         }
 
-        public void HandleProfile ( JObject profile )
+        public Task HandleProfileAsync ( JObject profile )
         {
             // This currently contains data from the Frontier API 'profile' and (optionally) 'market' and 'shipyard' endpoints.
+            return Task.CompletedTask;
         }
 
-        public void HandleStatus ( Status status )
-        { }
-
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
+        
         public IDictionary<string, Tuple<Type, object>> GetVariables ()
         {
             lock ( carrierLock )

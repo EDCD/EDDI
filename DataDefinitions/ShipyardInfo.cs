@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -41,31 +41,45 @@ namespace EddiDataDefinitions
             PriceList = priceList ?? new List<ShipyardInfoItem>();
         }
 
-        [UsedImplicitly]
-        public static bool TryFromFile(DateTime journalTimeStamp, string expectedStarSystem, string expectedStation, long expectedMarketID, [CanBeNull] out ShipyardInfo info, [CanBeNull] out string rawShipyard, string filename = "Shipyard.json")
+        [ UsedImplicitly ]
+        public static bool TryFromFile ( DateTime journalTimeStamp, string expectedStarSystem, string expectedStation,
+            long expectedMarketID, [ CanBeNull ] out ShipyardInfo info, [ CanBeNull ] out string rawShipyard,
+            string filename = "Shipyard.json" )
         {
-            info = null;
-            int attemptsRemaining = 10;
+            var attemptsRemaining = 10;
             TimeSpan? timeDiff = null;
-            do
-            {
-                if (attemptsRemaining < 10) { Thread.Sleep(200); }
-                rawShipyard = Files.FromSavedGames(filename);
-                if (!string.IsNullOrEmpty(rawShipyard))
-                {
-                    info = JsonConvert.DeserializeObject<ShipyardInfo>(rawShipyard);
-                }
-                if (info?.PriceList != null &&
-                    info.StarSystem == expectedStarSystem &&
-                    info.StationName == expectedStation &&
-                    info.MarketID == expectedMarketID)
-                {
-                    timeDiff = info.timestamp - journalTimeStamp;
-                }
-                attemptsRemaining--;
-            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
 
-            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
+            ( info, rawShipyard ) = Task.Run( async () =>
+            {
+                do
+                {
+                    ShipyardInfo shipyardInfo = null;
+                    var raw = Files.FromSavedGames( filename );
+                    if ( !string.IsNullOrEmpty( raw ) )
+                    {
+                        shipyardInfo = JsonConvert.DeserializeObject<ShipyardInfo>( raw );
+                    }
+
+                    if ( shipyardInfo?.PriceList != null &&
+                         shipyardInfo.StarSystem == expectedStarSystem &&
+                         shipyardInfo.StationName == expectedStation &&
+                         shipyardInfo.MarketID == expectedMarketID )
+                    {
+                        timeDiff = shipyardInfo.timestamp - journalTimeStamp;
+                        return ( shipyardInfo, raw );
+                    }
+
+                    attemptsRemaining--;
+                    await Task.Delay( 200 );
+                } while ( !fileIsRecent( timeDiff ) && attemptsRemaining > 0 );
+
+                return ( null, null );
+            } ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+
+            return fileIsRecent( timeDiff );
+
+            bool fileIsRecent ( TimeSpan? timeDifference ) =>
+                timeDifference == null || timeDifference.Value.Duration().TotalSeconds >= 5;
         }
     }
 }

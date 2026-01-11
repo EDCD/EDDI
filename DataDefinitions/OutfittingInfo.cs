@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -36,31 +36,45 @@ namespace EddiDataDefinitions
             Items = items ?? new List<OutfittingInfoItem>();
         }
 
-        [UsedImplicitly]
-        public static bool TryFromFile(DateTime journalTimeStamp, string expectedStarSystem, string expectedStation, long expectedMarketID, [CanBeNull] out OutfittingInfo info, [CanBeNull] out string rawOutfitting, string filename = "Outfitting.json")
+        [ UsedImplicitly ]
+        public static bool TryFromFile ( DateTime journalTimeStamp, string expectedStarSystem, string expectedStation,
+            long expectedMarketID, [ CanBeNull ] out OutfittingInfo info, [ CanBeNull ] out string rawOutfitting,
+            string filename = "Outfitting.json" )
         {
-            info = null;
-            int attemptsRemaining = 10;
+            var attemptsRemaining = 10;
             TimeSpan? timeDiff = null;
-            do
+            
+            ( info, rawOutfitting ) = Task.Run( async () =>
             {
-                if (attemptsRemaining < 10) { Thread.Sleep(200); }
-                rawOutfitting = Files.FromSavedGames(filename);
-                if (!string.IsNullOrEmpty(rawOutfitting))
+                do
                 {
-                    info = JsonConvert.DeserializeObject<OutfittingInfo>(rawOutfitting);
-                }
-                if (info?.Items != null &&
-                    info.StarSystem == expectedStarSystem &&
-                    info.StationName == expectedStation &&
-                    info.MarketID == expectedMarketID)
-                {
-                    timeDiff = info.timestamp - journalTimeStamp;
-                }
-                attemptsRemaining--;
-            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
+                    OutfittingInfo outfittingInfo = null;
+                    var raw = Files.FromSavedGames( filename );
+                    if ( !string.IsNullOrEmpty( raw ) )
+                    {
+                        outfittingInfo = JsonConvert.DeserializeObject<OutfittingInfo>( raw );
+                    }
 
-            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
+                    if ( outfittingInfo?.Items != null &&
+                         outfittingInfo.StarSystem == expectedStarSystem &&
+                         outfittingInfo.StationName == expectedStation &&
+                         outfittingInfo.MarketID == expectedMarketID )
+                    {
+                        timeDiff = outfittingInfo.timestamp - journalTimeStamp;
+                        return ( outfittingInfo, raw );
+                    }
+
+                    attemptsRemaining--;
+                    await Task.Delay( 200 );
+                } while ( !fileIsRecent( timeDiff ) && attemptsRemaining > 0 );
+
+                return ( null, null );
+            } ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+
+            return fileIsRecent( timeDiff );
+
+            bool fileIsRecent ( TimeSpan? timeDifference ) =>
+                timeDifference == null || timeDifference.Value.Duration().TotalSeconds >= 5;
         }
     }
 }

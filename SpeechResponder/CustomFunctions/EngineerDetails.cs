@@ -1,5 +1,4 @@
 ﻿using Cottle;
-using EddiCore;
 using EddiDataDefinitions;
 using EddiSpeechResponder.ScriptResolverService;
 using JetBrains.Annotations;
@@ -17,20 +16,29 @@ namespace EddiSpeechResponder.CustomFunctions
         public Type ReturnType => typeof( Engineer );
         public IFunction function => Function.CreateNative1( ( runtime, input, writer ) =>
         {
-            var result = Engineer.FromName(input.AsString);
-            if ( result is null )
-            {
-                var starSystem = ulong.TryParse( input.AsString, out var systemAddress ) 
-                    ? EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( systemAddress, true, true ).GetAwaiter().GetResult()
-                    : EDDI.Instance.DataProvider.GetOrFetchStarSystemAsync( input.AsString, true, true ).GetAwaiter().GetResult();
+            var result = GetEngineerDetails(input.AsString);
+            return result is null
+                ? Value.EmptyMap
+                : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+        });
 
-                if ( starSystem != null )
-                {
-                    result = Engineer.FromSystemAddress( starSystem.systemAddress );
-                }
+        private Engineer GetEngineerDetails ( string input )
+        {
+            // Attempt to find the engineer by name
+            var engineer = Engineer.FromName(input);
+            if ( engineer != null )
+            {
+                return engineer;
             }
 
-            return result is null ? Value.EmptyMap : Value.FromReflection( result, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
-        });
+            // Attempt to find the engineer by system address
+            if ( ulong.TryParse( input, out var systemAddress ) )
+            {
+                return Engineer.FromSystemAddress( systemAddress );
+            }
+
+            // Attempt to find the engineer by system name
+            return Engineer.FromSystemName( input );
+        }
     }
 }

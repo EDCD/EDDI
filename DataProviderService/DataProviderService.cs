@@ -40,13 +40,13 @@ namespace EddiDataProviderService
             this.starSystemRepository = starSystemRepository;
         }
 
-        public static async Task<DataProviderService> CreateAsync ( StarMapService edsmService = null,
-            SpanshService spanshService = null, StarSystemSqLiteRepository starSystemRepository = null )
+        public static DataProviderService Create ( StarMapService newEdsmService = null,
+            SpanshService newSpanshService = null, StarSystemSqLiteRepository newStarSystemRepository = null )
         {
-            return new DataProviderService( 
-                edsmService ?? new StarMapService(), 
-                spanshService ?? new SpanshService(),
-                starSystemRepository ?? await StarSystemSqLiteRepository.CreateAsync( unitTesting ).ConfigureAwait( false ) 
+            return new DataProviderService(
+                newEdsmService ?? new StarMapService(),
+                newSpanshService ?? new SpanshService(),
+                newStarSystemRepository ?? StarSystemSqLiteRepository.Create( unitTesting ) 
                 );
         }
 

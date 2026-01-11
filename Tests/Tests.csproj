@@ -52,7 +52,6 @@
     <PackageReference Include="System.Collections" />
     <PackageReference Include="System.Collections.Concurrent" />
     <PackageReference Include="System.Collections.Immutable" />
-    <PackageReference Include="System.Data.SQLite" />
     <PackageReference Include="System.Diagnostics.Debug" />
     <PackageReference Include="System.Diagnostics.Tools" />
     <PackageReference Include="System.Diagnostics.Tracing" />

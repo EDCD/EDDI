@@ -93,7 +93,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestJumpedEventHandlerAsync()
         {
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/33656303199641", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpLHS_20 ) );
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=LHS 20", @"{""min_max"":[{""id64"":33656303199641,""name"":""LHS 20"",""x"":11.1875,""y"":-37.375,""z"":-31.84375},{""id64"":671491433881,""name"":""LHS 2026"",""x"":43.34375,""y"":23.5625,""z"":-41.09375},{""id64"":7267487524241,""name"":""LHS 2018"",""x"":-25.28125,""y"":41.8125,""z"":-53.5625},{""id64"":5069269509521,""name"":""LHS 2029"",""x"":27.40625,""y"":31.5,""z"":-45.625},{""id64"":27059501999521,""name"":""LHS 2037"",""x"":33.78125,""y"":7.25,""z"":-14.5},{""id64"":671222867361,""name"":""LHS 203"",""x"":16.46875,""y"":-15.1875,""z"":-20.34375},{""id64"":5369246010144,""name"":""LHS 206"",""x"":20.75,""y"":-18.21875,""z"":-55.9375},{""id64"":13864825660825,""name"":""LHS 2088"",""x"":-23.3125,""y"":25.71875,""z"":-28.34375},{""id64"":13865362466209,""name"":""LHS 2065"",""x"":19.71875,""y"":11.8125,""z"":-15.84375},{""id64"":13865630967201,""name"":""LHS 2069"",""x"":38.6875,""y"":16.0625,""z"":-22.34375},{""id64"":670417757585,""name"":""LHS 2038"",""x"":-34.625,""y"":45.375,""z"":-54.03125},{""id64"":671491499417,""name"":""LHS 2094"",""x"":35.0,""y"":35.0,""z"":-40.0},{""id64"":2870246319505,""name"":""LHS 2011"",""x"":25.875,""y"":36.34375,""z"":-57.53125},{""id64"":11666339276177,""name"":""LHS 2027"",""x"":26.0625,""y"":34.53125,""z"":-52.40625},{""id64"":358663393986,""name"":""LHS 2001"",""x"":-54.0625,""y"":55.21875,""z"":-67.25},{""id64"":5370319752024,""name"":""LHS 205"",""x"":34.03125,""y"":-22.0625,""z"":12.625},{""id64"":358730437330,""name"":""LHS 200"",""x"":10.84375,""y"":-12.71875,""z"":-22.96875},{""id64"":670149256593,""name"":""LHS 207"",""x"":-47.84375,""y"":28.65625,""z"":-45.8125},{""id64"":7268561135017,""name"":""LHS 2010"",""x"":37.0625,""y"":-2.5,""z"":-4.84375},{""id64"":2931055135075,""name"":""LHS 2022"",""x"":10.53125,""y"":40.25,""z"":-58.5625}],""values"":[""LHS 20"",""LHS 2026"",""LHS 2018"",""LHS 2029"",""LHS 2037"",""LHS 203"",""LHS 206"",""LHS 2088"",""LHS 2065"",""LHS 2069"",""LHS 2038"",""LHS 2094"",""LHS 2011"",""LHS 2027"",""LHS 2001"",""LHS 205"",""LHS 200"",""LHS 207"",""LHS 2010"",""LHS 2022""]}" );
 
@@ -112,7 +112,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestJumpedHandler_HyperdictionAsync()
         {
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/2868635641225", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpCephei_Sector_DQ_Y ) );
             FakeSpanshHttpClient.Expect( "dump/560216410467", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpHP_8525 ) );
             FakeSpanshHttpClient.Expect( "dump/33656303199641", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpLHS_20 ) );
@@ -160,7 +160,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestLocationEventHandlerAsync()
         {
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/5856221467362", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpEravate ) );
             FakeSpanshHttpClient.Expect( "systems/field_values/system_names?q=Eravate", @"{""min_max"":[{""id64"":5856221467362,""name"":""Eravate"",""x"":-42.4375,""y"":-3.15625,""z"":59.65625}],""values"":[""Eravate""]}" );
 
@@ -178,7 +178,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestBodyScannedEventHandlerAsync()
         {
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/1520309296811", @"{""system"":{""bodies"":[],""coords"":{""x"":-9581.71875,""y"":-382.28125,""z"":54409.71875},""date"":""2019-07-12 08:01:39+00"",""id64"":1520309296811,""name"":""Grea Bloae HH-T d4-44"",""stations"":[]}}" );
 
             var line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""StarSystem"":""Grea Bloae HH-T d4-44"", ""SystemAddress"":1520309296811, ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
@@ -207,7 +207,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestBodyMappedEventHandlerAsync()
         {
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/1520309296811", @"{""system"":{""bodies"":[],""coords"":{""x"":-9581.71875,""y"":-382.28125,""z"":54409.71875},""date"":""2019-07-12 08:01:39+00"",""id64"":1520309296811,""name"":""Grea Bloae HH-T d4-44"",""stations"":[]}}" );
 
             var line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""StarSystem"":""Grea Bloae HH-T d4-44"", ""SystemAddress"":1520309296811, ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
@@ -245,7 +245,7 @@ namespace Tests
         [TestMethod, DoNotParallelize]
         public async Task TestSignalDetectedDeDuplicationAsync()
         {
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/5856221467362", Encoding.UTF8.GetString( Resources.SpanshStarSystemDumpEravate ) );
 
             await EDDI.Instance.updateCurrentSystemAsync( "TestSystem", 5856221467362 ).ConfigureAwait(false);
@@ -316,7 +316,7 @@ namespace Tests
             var @event = (ShipShutdownEvent)events[0];
             Assert.IsNotNull( @event );
             Assert.IsTrue(@event.partialshutdown);
-            speechResponder.Handle( @event );
+            await speechResponder.HandleAsync( @event ).ConfigureAwait(false);
             Assert.IsFalse( speechService.speechQueue.isQueuePaused );
 
             // The speech responder should pause speech after a full shutdown.
@@ -324,7 +324,7 @@ namespace Tests
             @event = (ShipShutdownEvent)events[ 0 ];
             Assert.IsNotNull( @event );
             Assert.IsFalse( @event.partialshutdown );
-            speechResponder.Handle( @event );
+            await speechResponder.HandleAsync( @event ).ConfigureAwait(false);
             Assert.IsTrue( speechService.speechQueue.isQueuePaused );
 
             // While speech is paused, new speech should be added to the queue but not removed from the queue.
@@ -341,7 +341,7 @@ namespace Tests
 
             // The speech responder should unpause speech after a `Ship shutdown reboot` event.
             var rebootEvent = new ShipShutdownRebootEvent( @event.timestamp + TimeSpan.FromSeconds( 30 ) );
-            speechResponder.Handle( rebootEvent );
+            await speechResponder.HandleAsync( rebootEvent ).ConfigureAwait(false);
             Assert.IsFalse( speechService.speechQueue.isQueuePaused );
         }
     }

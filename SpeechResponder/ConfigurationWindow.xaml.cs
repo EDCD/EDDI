@@ -299,7 +299,7 @@ namespace EddiSpeechResponder
                 {
                     var script = getScriptFromContext(sender);
                     SpeechResponder responder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech Responder");
-                    responder?.TestScript( script.Name, SpeechResponder.CurrentPersonality.Scripts );
+                    responder?.TestScriptAsync( script.Name, SpeechResponder.CurrentPersonality.Scripts );
                 }
                 else
                 {

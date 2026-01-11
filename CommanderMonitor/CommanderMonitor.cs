@@ -393,7 +393,7 @@ namespace EddiCommanderMonitor
             return new ConfigurationWindow();
         }
         
-        public void PreHandle ( Event @event )
+        public Task PreHandleAsync ( Event @event )
         {
             if ( @event is CarrierBankTransferEvent carrierBankTransferEvent )
             {
@@ -465,6 +465,8 @@ namespace EddiCommanderMonitor
             }
 
             updatedAt = @event.timestamp;
+
+            return Task.CompletedTask;
         }
 
         private void handleCarrierBankTransferEvent ( CarrierBankTransferEvent @event )
@@ -825,36 +827,41 @@ namespace EddiCommanderMonitor
             return update;
         }
 
-        public void PostHandle ( Event @event )
-        { }
+        public Task PostHandleAsync ( Event @event )
+        {
+            return Task.CompletedTask;
+        }
 
-        public void HandleStatus ( Status status )
+        public Task HandleStatusAsync ( Status status )
         {
             lock ( commanderLock )
             {
                 Cmdr.credits = status.credit_balance;
             }
+
+            return Task.CompletedTask;
         }
 
-        public void HandleProfile ( JObject profile )
+        public Task HandleProfileAsync ( JObject profile )
         {
             // Update our commander object
             var frontierApiProfile = FrontierApiProfile.FromJson( profile );
             var updatedCmdr = Commander.FromFrontierApiCmdr( Cmdr, frontierApiProfile.Cmdr,
                 frontierApiProfile.timestamp, updatedAt, out var cmdrMatches );
 
-            // Stop if the commander returned from the profile does not match our expected commander name
-            if ( !cmdrMatches )
+            if ( cmdrMatches )
+            {
+                Logging.Debug( "Commander information updated from Frontier API; updating local copy" );
+                lock ( commanderLock )
+                {
+                    Cmdr = updatedCmdr;
+                }
+            }
+            else
             {
                 Logging.Debug( "Skipping profile update - Frontier API commander information doesn't match journal information" );
-                return;
             }
-
-            Logging.Debug( "Commander information updated from Frontier API; updating local copy" );
-            lock ( commanderLock )
-            {
-                Cmdr = updatedCmdr;
-            }
+            return Task.CompletedTask;
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>

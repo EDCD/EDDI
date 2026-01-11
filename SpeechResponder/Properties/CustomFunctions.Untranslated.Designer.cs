@@ -19,7 +19,7 @@ namespace EddiSpeechResponder.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CustomFunctions_Untranslated {
@@ -208,9 +208,9 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This function will provide full information for an Engineer given either the engineer&apos;s name or the star system where the engineer resides (including current progress information if you are in game).
+        ///   Looks up a localized string similar to This function will provide full information for an Engineer (including current progress information if you are in game).
         ///
-        ///EngineerDetails() takes a single argument of either the engineer&apos;s name for which you want more information or the star system where the engineer resides. It returns an Engineer object..
+        ///EngineerDetails() takes a single argument of either the engineer&apos;s name for which you want more information, the star system where that engineer resides, or the system address of that star system. It returns an Engineer object..
         /// </summary>
         public static string EngineerDetails {
             get {
@@ -500,7 +500,7 @@ namespace EddiSpeechResponder.Properties {
         ///
         ///    Iron is a {MaterialDetails(&quot;Iron&quot;).rarity} material.
         ///
-        ///The second argument, the name of a star system, is optional. If provided then the `bodyname` and `bodyshortname` properties in the resulting [rest of string was truncated]&quot;;.
+        ///The second argument, the name or system address of a star system, is optional. If provided then EDDI will try to obtain the `bodyname` and ` [rest of string was truncated]&quot;;.
         /// </summary>
         public static string MaterialDetails {
             get {

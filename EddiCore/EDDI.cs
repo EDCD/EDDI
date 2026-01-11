@@ -103,9 +103,9 @@ namespace EddiCore
                     if ( GameVersion != null && GameVersion < minGameVersion )
                     {
                         // Alert the user that we are operating in legacy mode
-                        var msg = "Legacy game version detected. EDDI shall resume processing events after you return to the live galaxy.";
-                        SpeechService.Instance.SayAsync( null, msg, 0 );
+                        const string msg = "Legacy game version detected. EDDI shall resume processing events after you return to the live galaxy.";
                         Logging.Warn(msg);
+                        SpeechService.Instance.SayAsync( null, msg, 0 ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                     }
 
                     // We need to report our game version when sending journal data to EDSM
@@ -168,7 +168,7 @@ namespace EddiCore
         private static readonly object responderLock = new object();
 
         public DataProviderService DataProvider { get; internal set; }
-        public HotkeyManager HotkeyManager { get; set; } = new HotkeyManager();
+        public HotkeyManager HotkeyManager { get; } = new HotkeyManager();
 
         // Information obtained from the configuration
 
@@ -406,7 +406,7 @@ namespace EddiCore
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
-                DataProvider = DataProviderService.CreateAsync().GetAwaiter().GetResult();
+                DataProvider = DataProviderService.Create();
                 
                 // CAUTION: CompanionAppService.Instance must be invoked by the main application thread, before any other threads are generated, 
                 // to correctly configure the CompanionAppService to receive DDE messages from its custom URL Protocol.
@@ -442,7 +442,8 @@ namespace EddiCore
                 InitializeFrontierApiServiceAsync()
                     .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
-                StatusService.Instance.StatusChanged += OnStatusChangedAsync;
+                StatusService.Instance.StatusChanged += ( s, e ) =>
+                    OnStatusChangedAsync( s ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
@@ -471,58 +472,56 @@ namespace EddiCore
                 : "EDDI access to the Frontier API is not enabled." );
         }
 
-        private async void OnStatusChangedAsync ( object sender, EventArgs e )
+        private async Task OnStatusChangedAsync ( object sender )
         {
-            try
+            if ( sender is Status status )
             {
-                if ( sender is Status status )
+                var monitorTasks = new List<Task>();
+                foreach ( var monitor in activeMonitors )
                 {
-                    var monitorTasks = new List<Task>();
-                    foreach ( var monitor in activeMonitors )
+                    var monitorTask = monitor.HandleStatusAsync( status ).ContinueWith( task =>
                     {
-                        monitorTasks.Add( Task.Run( () =>
+                        if ( task.IsFaulted )
                         {
-                            try
+                            var dict = new Dictionary<string, object>
                             {
-                                monitor.HandleStatus( status );
-                            }
-                            catch ( Exception exception )
-                            {
-                                var dict = new Dictionary<string, object>
-                                {
-                                    [ "status" ] = status, [ "exception" ] = exception
-                                };
-                                Logging.Error( $"{monitor.MonitorName()} failed to handle status", dict );
-                            }
-                        } ) );
-                    }
-
-                    var responderTasks = new List<Task>();
-                    foreach ( var responder in activeResponders )
-                    {
-                        responderTasks.Add( Task.Run( () =>
-                        {
-                            try
-                            {
-                                responder.HandleStatus( status );
-                            }
-                            catch ( Exception exception )
-                            {
-                                var dict = new Dictionary<string, object>
-                                {
-                                    [ "status" ] = status, [ "exception" ] = exception
-                                };
-                                Logging.Error( $"{responder.ResponderName()} failed to handle status", dict );
-                            }
-                        } ) );
-                    }
-                    await Task.WhenAll( monitorTasks ).ConfigureAwait(false);
-                    await Task.WhenAll( responderTasks ).ConfigureAwait(false);
+                                [ "status" ] = status,
+                                [ "exception" ] = task.Exception
+                            };
+                            Logging.Error( $"{monitor.MonitorName()} failed to handle status", dict );
+                        }
+                    }, TaskContinuationOptions.OnlyOnFaulted );
+                    monitorTasks.Add( monitorTask );
                 }
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( "Unhandled exception in OnStatusChangedAsync", ex );
+
+                var responderTasks = new List<Task>();
+                foreach ( var responder in activeResponders )
+                {
+                    var responderTask = responder.HandleStatusAsync( status ).ContinueWith( task =>
+                    {
+                        if ( task.IsFaulted )
+                        {
+                            var dict = new Dictionary<string, object>
+                            {
+                                [ "status" ] = status,
+                                [ "exception" ] = task.Exception
+                            };
+                            Logging.Error( $"{responder.ResponderName()} failed to handle status", dict );
+                        }
+                    }, TaskContinuationOptions.OnlyOnFaulted );
+
+                    responderTasks.Add( responderTask );
+                }
+
+                try
+                {
+                    await Task.WhenAll( monitorTasks ).ConfigureAwait( false );
+                    await Task.WhenAll( responderTasks ).ConfigureAwait( false );
+                }
+                catch ( TaskCanceledException )
+                {
+                    // Task(s) cancelled. Nothing to do here.
+                }
             }
         }
 
@@ -784,17 +783,17 @@ namespace EddiCore
         /// <summary> Reload a specific monitor or responder </summary>
         public void Reload(string name)
         {
-            foreach (IEddiResponder responder in responders)
+            foreach (var responder in responders)
             {
-                if (responder.ResponderName() == name)
+                if (responder.ResponderName().Contains( name, StringComparison.OrdinalIgnoreCase ) )
                 {
                     responder.Reload();
                     return;
                 }
             }
-            foreach (IEddiMonitor monitor in monitors)
+            foreach (var monitor in monitors)
             {
-                if (monitor.MonitorName() == name)
+                if (monitor.MonitorName().Contains( name, StringComparison.OrdinalIgnoreCase ) )
                 {
                     monitor.Reload();
                 }
@@ -1069,9 +1068,9 @@ namespace EddiCore
 
                     // Even if an error occurs, we still need to pass the raw data 
                     // to the EDDN responder to maintain it's integrity and to the Inara / EDSM reponders to keep external services up-to-date.
-                    Instance.ObtainResponder( "EDDN Responder" ).Handle( @event );
-                    Instance.ObtainResponder( "EDSM Responder" ).Handle( @event );
-                    Instance.ObtainResponder( "Inara Responder" ).Handle( @event );
+                    await Instance.ObtainResponder( "EDDN Responder" ).HandleAsync( @event ).ConfigureAwait( false );
+                    await Instance.ObtainResponder( "EDSM Responder" ).HandleAsync( @event ).ConfigureAwait( false );
+                    await Instance.ObtainResponder( "Inara Responder" ).HandleAsync( @event ).ConfigureAwait( false );
                 }
             }
         }
@@ -1080,7 +1079,7 @@ namespace EddiCore
         {
             var ring = CurrentStarSystem?.bodies?
                 .Where(b => b.rings.Any())
-                .SelectMany(b => b.rings)?
+                .SelectMany(b => b.rings)
                 .FirstOrDefault(r => r.name == @event.bodyname);
             if ( ring != null )
             {
@@ -1493,15 +1492,14 @@ namespace EddiCore
             try
             {
                 // We send the event to all monitors to ensure that their info is up-to-date
-                // All changes to state must be handled here, so this must be synchronous
-                passToMonitorPreHandlers( @event );
+                await passToMonitorPreHandlersAsync( @event ).ConfigureAwait( false );
 
-                // Now we pass the data to the responders to process asynchronously, waiting for all to complete
+                // Now we pass the data to the responders.
                 // Responders must not change global states.
-                await passToRespondersAsync( @event ).ConfigureAwait(false);
+                await passToResponders( @event ).ConfigureAwait( false );
 
                 // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
-                await passToMonitorPostHandlersAsync( @event ).ConfigureAwait(false);
+                await passToMonitorPostHandlers( @event ).ConfigureAwait( false );
             }
             catch ( Exception ex )
             {
@@ -1509,61 +1507,88 @@ namespace EddiCore
             }
         }
 
-        private void passToMonitorPreHandlers ( Event @event )
+        private async Task passToMonitorPreHandlersAsync ( Event @event )
         {
+            // All changes to state must be handled here
+            var monitorTasks = new List<Task>();
             foreach ( var monitor in activeMonitors)
             {
-                try
+                var monitorTask = monitor.PreHandleAsync(@event).ContinueWith( task =>
                 {
-                    monitor.PreHandle(@event);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error($"{monitor.MonitorName()} failed to handle {@event.type} event {@event.raw}", ex);
-                }
+                    if ( task.IsFaulted )
+                    {
+                        Logging.Error(
+                            $"{monitor.MonitorName()} failed to handle {@event.type} event {@event.raw}",
+                            task.Exception );
+                    }
+                }, TaskContinuationOptions.OnlyOnFaulted );
+                monitorTasks.Add( monitorTask );
+            }
+
+            try
+            {
+                await Task.WhenAll( monitorTasks.ToArray() );
+            }
+            catch ( TaskCanceledException )
+            {
+                // Task(s) cancelled. Nothing to do here.
             }
         }
 
-        private Task passToRespondersAsync ( Event @event )
+        private async Task passToResponders ( Event @event )
         {
+            // Wait for all to complete
             var responderTasks = new List<Task>();
-            foreach (var responder in activeResponders)
+            foreach ( var responder in activeResponders )
             {
-                var responderTask = Task.Run(() =>
+                var responderTask = responder.HandleAsync( @event ).ContinueWith( task =>
                 {
-                    try
+                    if ( task.IsFaulted )
                     {
-                        responder.Handle(@event);
+                        Logging.Error(
+                            $"{responder.ResponderName()} failed to handle {@event.type} event {@event.raw}",
+                            task.Exception );
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Error($"{responder.ResponderName()} failed to handle {@event.type} event {@event.raw}", ex);
-                    }
-                });
-                responderTasks.Add(responderTask);
+                }, TaskContinuationOptions.OnlyOnFaulted );
+                responderTasks.Add( responderTask );
             }
-            return Task.WhenAll(responderTasks.ToArray());
+
+            try
+            {
+                await Task.WhenAll( responderTasks.ToArray() );
+            }
+            catch ( TaskCanceledException )
+            {
+                // Task(s) cancelled. Nothing to do here.
+            }
         }
 
-        private Task passToMonitorPostHandlersAsync ( Event @event )
+        private async Task passToMonitorPostHandlers ( Event @event )
         {
+            // Pass back to monitors for follow-on work, wait for all to complete
             var monitorTasks = new List<Task>();
-            foreach (var monitor in activeMonitors)
+            foreach ( var monitor in activeMonitors )
             {
-                var monitorTask = Task.Run(() =>
+                var monitorTask = monitor.PostHandleAsync( @event ).ContinueWith( task =>
                 {
-                    try
+                    if ( task.IsFaulted )
                     {
-                        monitor.PostHandle(@event);
+                        Logging.Error(
+                            $"{monitor.MonitorName()} failed to post-handle {@event.type} event {@event.raw}",
+                            task.Exception );
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Error($"{monitor.MonitorName()} failed to post-handle {@event.type} event {@event.raw}", ex);
-                    }
-                });
-                monitorTasks.Add(monitorTask);
+                }, TaskContinuationOptions.OnlyOnFaulted );
+                monitorTasks.Add( monitorTask );
             }
-            return Task.WhenAll(monitorTasks.ToArray());
+
+            try
+            {
+                await Task.WhenAll( monitorTasks.ToArray() );
+            }
+            catch ( TaskCanceledException )
+            {
+                // Task(s) cancelled. Nothing to do here.
+            }
         }
 
         internal async Task<bool> eventLocationAsync( LocationEvent theEvent )
@@ -2536,33 +2561,33 @@ namespace EddiCore
                         await DataProvider.SaveStarSystemAsync(CurrentStarSystem).ConfigureAwait(false);
                     }
 
-                    var monitorThreads = new List<Task>();
-                    foreach (var monitor in activeMonitors)
+                    try
                     {
-                        try
+                        var monitorTasks = new List<Task>();
+                        foreach ( var monitor in activeMonitors )
                         {
-                            var monitorThread = Task.Run(() =>
+
+                            var monitorTask = monitor.HandleProfileAsync( profile.json ).ContinueWith( task =>
                             {
-                                try
+                                if ( task.IsFaulted )
                                 {
-                                    monitor.HandleProfile(profile.json);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logging.Warn($"Monitor {monitor.MonitorName()} failed to handle Frontier API update", ex);
+                                    Logging.Warn(
+                                        $"Monitor {monitor.MonitorName()} failed to handle Frontier API update",
+                                        task.Exception );
                                     success = false;
                                 }
-                            });
-                            monitorThreads.Add( monitorThread );
-                        }
-                        catch (ThreadAbortException tax)
-                        {
-                            Logging.Debug("Thread aborted", tax);
-                            success = false;
-                        }
-                    }
+                            }, TaskContinuationOptions.OnlyOnFaulted );
+                            monitorTasks.Add( monitorTask );
 
-                    await Task.WhenAll( monitorThreads.ToArray() ).ConfigureAwait(false);
+                        }
+
+                        await Task.WhenAll( monitorTasks ).ConfigureAwait( false );
+                    }
+                    catch ( TaskCanceledException tce )
+                    {
+                        Logging.Debug( "Task cancelled", tce );
+                        success = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -2660,15 +2685,15 @@ namespace EddiCore
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(Properties.Resources.problem_load_monitor_file, dir.FullName);
+                    var msg = string.Format(Properties.Resources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
-                    SpeechService.Instance.SayAsync(null, msg, 0);
+                    SpeechService.Instance.SayAsync( null, msg, 0 ).SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    var msg = string.Format(Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
-                    SpeechService.Instance.SayAsync(null, msg, 0);
+                    SpeechService.Instance.SayAsync( null, msg, 0 ).SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                 }
             }
             return foundMonitors;

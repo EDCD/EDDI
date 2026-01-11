@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Utilities;
@@ -100,7 +99,7 @@ namespace EddiUI
             }
         }
 
-        private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
+        private async void ttsTestVoiceButtonClickedAsync ( object sender, RoutedEventArgs e )
         {
             try
             {
@@ -110,11 +109,12 @@ namespace EddiUI
                     SpeechService.Instance.ShutUp();
                     return;
                 }
-                
-                var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
+
+                var testShip = ShipDefinitions.FromModel( (string)ttsTestShipDropDown.SelectedItem );
                 testShip.health = 100;
-                var message = string.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-                Task.Run( () => SpeechService.Instance.SayAsync( testShip, message, 0 ) );
+                var message = string.Format( Properties.Resources.voice_test_ship,
+                    ShipDefinitions.FromModel( (string)ttsTestShipDropDown.SelectedItem ).SpokenModel() );
+                await SpeechService.Instance.SayAsync( testShip, message, 0 ).ConfigureAwait( false );
             }
             catch ( Exception ex )
             {
@@ -122,7 +122,7 @@ namespace EddiUI
             }
         }
 
-        private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
+        private async void ttsTestDamagedVoiceButtonClickedAsync(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace EddiUI
                 var testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
                 testShip.health = 20;
                 var message = string.Format(Properties.Resources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-                Task.Run( () => SpeechService.Instance.SayAsync( testShip, message, 0 ) );
+                await SpeechService.Instance.SayAsync( testShip, message, 0 ).ConfigureAwait( false );
             }
             catch ( Exception ex )
             {

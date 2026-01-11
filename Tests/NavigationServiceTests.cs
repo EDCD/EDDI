@@ -15,12 +15,12 @@ namespace Tests
         private NavigationService navigationService;
 
         [TestInitialize]
-        public async Task StartAsync()
+        public void Start()
         {
             navigationService = new NavigationService();
             MakeSafe();
 
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
 
             FakeSpanshHttpClient.Expect(
                 @"bodies/search?={""filters"":{""type"":{""value"":[""Star""]},""subtype"":{""value"":[""A (Blue-White super giant) Star"",""A (Blue-White) Star"",""B (Blue-White super giant) Star"",""B (Blue-White) Star"",""F (White super giant) Star"",""F (White) Star"",""G (White-Yellow super giant) Star"",""G (White-Yellow) Star"",""K (Yellow-Orange giant) Star"",""K (Yellow-Orange) Star"",""M (Red dwarf) Star"",""M (Red giant) Star"",""M (Red super giant) Star"",""O (Blue-White) Star""]}},""sort"":[{""distance"":{""direction"":""asc""}},{""distance_to_arrival"":{""direction"":""asc""}}],""size"":10,""page"":0,""reference_coords"":{""x"":0.0,""y"":0.0,""z"":0.0}}",

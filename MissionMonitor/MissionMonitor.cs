@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -170,13 +171,17 @@ namespace EddiMissionMonitor
             return new ConfigurationWindow();
         }
 
-        public void HandleProfile(JObject profile)
-        { }
+        public Task HandleProfileAsync(JObject profile)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void HandleStatus ( Status status )
-        { }
-
-        public void PreHandle ( Event @event )
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
+        
+        public Task PreHandleAsync ( Event @event )
         {
             // Handle the events that we care about
             if ( @event is CommodityCollectedEvent commodityCollectedEvent )
@@ -241,9 +246,11 @@ namespace EddiMissionMonitor
             {
                 handleMissionFailedEvent( missionFailedEvent );
             }
+
+            return Task.CompletedTask;
         }
 
-        public void PostHandle ( Event @event )
+        public Task PostHandleAsync ( Event @event )
         {
             // Use the post-handler to remove missions from the missions list only after we have reacted to them.
             if ( @event is MissionAbandonedEvent missionAbandonedEvent )
@@ -258,6 +265,8 @@ namespace EddiMissionMonitor
             {
                 postHandleMissionFailedEvent( missionFailedEvent );
             }
+
+            return Task.CompletedTask;
         }
 
         private void handleCommodityCollectedEvent ( CommodityCollectedEvent @event )

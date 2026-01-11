@@ -77,7 +77,7 @@ namespace EddiCore.Upgrader
                         if ( ( isPreRelease && configuration.AcceptsBetaReleases ) || !isPreRelease )
                         {
                             var latestRelease = (JObject)release;
-                            await ProcessReleaseAsync( latestRelease ).ConfigureAwait(false);
+                            ProcessRelease( latestRelease );
                             break;
                         }
                     }
@@ -85,12 +85,13 @@ namespace EddiCore.Upgrader
             }
             catch ( Exception ex )
             {
-                await SpeechService.Instance.SayAsync( null, Properties.Resources.update_server_unreachable, 0 ).ConfigureAwait(false);
                 Logging.Warn( "Failed to access GitHub API for releases", ex );
+                SpeechService.Instance.SayAsync( null, Properties.Resources.update_server_unreachable, 0 )
+                    .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
             }
         }
 
-        private static async Task ProcessReleaseAsync ( JObject release )
+        private static void ProcessRelease ( JObject release )
         {
             // Get the version information, removing any prefixing description and separator
             var version = release.Value<string>("tag_name");
@@ -114,8 +115,9 @@ namespace EddiCore.Upgrader
                             UpgradeVersion = version;
 
                             var spokenVersion = version.Replace(".", $" {Properties.Resources.point} ");
-                            var message = String.Format(Properties.Resources.update_available, spokenVersion);
-                            await SpeechService.Instance.SayAsync( null, message, 0 ).ConfigureAwait(false);
+                            var message = string.Format(Properties.Resources.update_available, spokenVersion);
+                            SpeechService.Instance.SayAsync( null, message, 0 )
+                                .SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
                         }
 
                         break; // Exit loop once the correct asset is found

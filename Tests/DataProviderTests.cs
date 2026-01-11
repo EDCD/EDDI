@@ -24,7 +24,7 @@ namespace Tests
         [TestMethod]
         public async Task TestSqlRepositoryPresent()
         {
-            EDDI.Instance.DataProvider = await DataProviderService.CreateAsync().ConfigureAwait(false);
+            EDDI.Instance.DataProvider = DataProviderService.Create();
             var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
             await starSystemRepository.SaveStarSystemAsync( DeserializeJsonResource<StarSystem>( Resources.sqlStarSystem6 ), CancellationToken.None ).ConfigureAwait(false);
             var dbData = await starSystemRepository.GetSqlStarSystemAsync( 10477373803U, CancellationToken.None ).ConfigureAwait(false);
@@ -35,7 +35,7 @@ namespace Tests
         [TestMethod]
         public async Task TestSqlRepositoryMissing()
         {
-            EDDI.Instance.DataProvider = await DataProviderService.CreateAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = DataProviderService.Create();
             var starSystemRepository = EDDI.Instance.DataProvider.starSystemRepository;
             var DBData = await starSystemRepository.GetSqlStarSystemAsync( 0, CancellationToken.None ).ConfigureAwait(false);
             Assert.IsNull(DBData);
@@ -143,9 +143,9 @@ namespace Tests
         }
 
         [TestMethod]
-        public async Task TestPreservedProperties()
+        public void TestPreservedProperties()
         {
-            EDDI.Instance.DataProvider = await CreateTestDataProviderAsync().ConfigureAwait( false );
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
 
             // Set up our original star systems
             var system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem5);

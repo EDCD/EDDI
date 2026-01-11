@@ -3,6 +3,7 @@ using EddiEvents;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace EddiCore
@@ -55,22 +56,22 @@ namespace EddiCore
         /// <summary>
         /// Called prior to responders running.  This should be used to update global states.
         /// </summary>
-        void PreHandle(Event @event);
+        Task PreHandleAsync ( Event @event );
 
         /// <summary>
         /// Called after responders running.  This should be used to generate follow-on events which do not change global states.
         /// </summary>
-        void PostHandle(Event @event);
+        Task PostHandleAsync ( Event @event );
 
         /// <summary>
         /// Called to receive information from the Frontier API
         /// </summary>
-        void HandleProfile(JObject profile);
+        Task HandleProfileAsync(JObject profile);
 
         /// <summary>
         /// Called to receive updates from the StatusService
         /// </summary>
-        void HandleStatus ( Status status );
+        Task HandleStatusAsync ( Status status );
 
         /// <summary>
         /// Provide any local variables

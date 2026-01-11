@@ -102,7 +102,7 @@ namespace EddiMaterialMonitor
             return new ConfigurationWindow();
         }
 
-        public void PreHandle(Event @event)
+        public Task PreHandleAsync(Event @event)
         {
             // Handle the events that we care about
             if (@event is MaterialInventoryEvent materialInventoryEvent)
@@ -146,10 +146,11 @@ namespace EddiMaterialMonitor
                 handleEngineerContributedEvent(engineerContributedEvent);
             }
 
+            return Task.CompletedTask;
         }
 
         // Flush any generated events asynchronously
-        public void PostHandle(Event @event)
+        public Task PostHandleAsync ( Event @event )
         {
             try
             {
@@ -165,6 +166,8 @@ namespace EddiMaterialMonitor
             {
                 Logging.Debug( "Task cancelled.", oce );
             }
+
+            return Task.CompletedTask;
         }
 
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
@@ -308,12 +311,16 @@ namespace EddiMaterialMonitor
             writeMaterials();
         }
 
-        public void HandleProfile(JObject profile)
-        { }
+        public Task HandleProfileAsync(JObject profile)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void HandleStatus ( Status status )
-        { }
-
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
+        
         /// <summary>
         /// Increment the current amount of a material, potentially triggering events as a result
         /// </summary>

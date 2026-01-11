@@ -28,8 +28,7 @@ namespace EddiSpeechResponder
     /// </summary>
     public partial class EditScriptWindow : Window
     {
-        [CanBeNull]
-        public Script originalScript { get; private set; }
+        [CanBeNull] private Script originalScript { get; }
         public Script revisedScript { get; private set; }
 
         private readonly Dictionary<string, Script> _scripts;
@@ -511,30 +510,37 @@ namespace EddiSpeechResponder
             scriptView.Text = revisedScript.Value;
         }
 
-        private void testButtonClick ( object sender, RoutedEventArgs e )
+        private async void testButtonClickAsync ( object sender, RoutedEventArgs e )
         {
-            if ( SpeechService.Instance.eddiAudioPlaying & !SpeechService.Instance.eddiSpeaking )
+            try
             {
-                SpeechService.Instance.StopAudio();
-            }
-            else
-            {
-                if ( !SpeechService.Instance.eddiSpeaking )
+                if ( SpeechService.Instance.eddiAudioPlaying & !SpeechService.Instance.eddiSpeaking )
                 {
-                    ScriptRecoveryService.SaveRecoveryScript( revisedScript );
-
-                    // Splice the revised script into the existing scripts
-                    var newScripts = new Dictionary<string, Script>(_scripts);
-                    newScripts.Remove( revisedScript.Name );
-                    newScripts.Add( revisedScript.Name, revisedScript );
-
-                    speechResponder.TestScript( revisedScript.Name, newScripts );
+                    SpeechService.Instance.StopAudio();
                 }
                 else
                 {
-                    SpeechService.Instance.ShutUp();
-                    SpeechService.Instance.StopAudio();
+                    if ( !SpeechService.Instance.eddiSpeaking )
+                    {
+                        ScriptRecoveryService.SaveRecoveryScript( revisedScript );
+
+                        // Splice the revised script into the existing scripts
+                        var newScripts = new Dictionary<string, Script>(_scripts);
+                        newScripts.Remove( revisedScript.Name );
+                        newScripts.Add( revisedScript.Name, revisedScript );
+
+                        await speechResponder.TestScriptAsync( revisedScript.Name, newScripts ).ConfigureAwait( false );
+                    }
+                    else
+                    {
+                        SpeechService.Instance.ShutUp();
+                        SpeechService.Instance.StopAudio();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error( ex.Message, ex );
             }
         }
 

@@ -53,8 +53,8 @@
             <Label x:Name="ttsTestShipLabel" Grid.Column="0" Grid.Row="6" Margin="0, 5" VerticalContentAlignment="Center" Content="{x:Static resx:Resources.tab_tts_test_ship_label}" />
             <ComboBox x:Name="ttsTestShipDropDown" Grid.Column="1" Grid.Row="6" Margin="5" VerticalContentAlignment="Center"/>
             <UniformGrid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5" Columns="2">
-                <Button x:Name="ttsTestButton" Margin="0,0,5,0" Content="{x:Static resx:Resources.tab_tts_test_button}" Click="ttsTestVoiceButtonClicked" />
-                <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="{x:Static resx:Resources.tab_tts_test_damaged_button}" Click="ttsTestDamagedVoiceButtonClicked" />
+                <Button x:Name="ttsTestButton" Margin="0,0,5,0" Content="{x:Static resx:Resources.tab_tts_test_button}" Click="ttsTestVoiceButtonClickedAsync" />
+                <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="{x:Static resx:Resources.tab_tts_test_damaged_button}" Click="ttsTestDamagedVoiceButtonClickedAsync" />
             </UniformGrid>
             <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.tab_tts_phonetic_speech_desc}" />
             <Label x:Name="disableIpaLabel" VerticalAlignment="Top" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:Resources.tab_tts_disable_phonetic_speech_label}" />

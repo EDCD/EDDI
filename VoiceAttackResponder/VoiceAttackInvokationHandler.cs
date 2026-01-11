@@ -565,7 +565,7 @@ namespace EddiVoiceAttackResponder
 
                 // sayOutLoud must be true to match the behavior described by the wiki for the `disablespeechresponder` command
                 // i.e. "not talk unless specifically asked for information"
-                speechResponder?.Say( ship, script, null, priority, voice, true, true );
+                speechResponder?.SayAsync( ship, script, null, priority, voice, true, true );
             }
             catch ( Exception e )
             {

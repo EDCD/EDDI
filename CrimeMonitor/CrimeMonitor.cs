@@ -112,13 +112,17 @@ namespace EddiCrimeMonitor
             return new ConfigurationWindow();
         }
 
-        public void HandleProfile(JObject profile)
-        { }
+        public Task HandleProfileAsync(JObject profile)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void HandleStatus ( Status status )
-        { }
-
-        public void PostHandle(Event @event)
+        public Task HandleStatusAsync ( Status status )
+        {
+            return Task.CompletedTask;
+        }
+        
+        public Task PostHandleAsync ( Event @event )
         {
             if ( @event is ShipSwappedEvent )
             {
@@ -128,6 +132,8 @@ namespace EddiCrimeMonitor
             {
                 postHandleShipTargetedEventAsync( targetedEvent ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
             }
+            
+            return Task.CompletedTask;
         }
 
         private async Task postHandleShipSwappedEventAsync()
@@ -182,7 +188,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        public void PreHandle(Event @event)
+        public async Task PreHandleAsync(Event @event)
         {
             // Handle the events that we care about
             if (@event is LocationEvent locationEvent)
@@ -195,7 +201,7 @@ namespace EddiCrimeMonitor
             }
             else if (@event is BondAwardedEvent awardedEvent)
             {
-                handleBondAwardedEventAsync(awardedEvent).GetAwaiter().GetResult();
+                await handleBondAwardedEventAsync(awardedEvent).ConfigureAwait( false );
             }
             else if (@event is BondRedeemedEvent redeemedEvent)
             {
@@ -203,11 +209,11 @@ namespace EddiCrimeMonitor
             }
             else if (@event is BountyAwardedEvent bountyAwardedEvent)
             {
-                handleBountyAwardedEventAsync(bountyAwardedEvent).GetAwaiter().GetResult();
+                await handleBountyAwardedEventAsync(bountyAwardedEvent).ConfigureAwait( false );
             }
             else if (@event is BountyIncurredEvent incurredEvent)
             {
-                handleBountyIncurredEventAsync(incurredEvent).GetAwaiter().GetResult();
+                await handleBountyIncurredEventAsync(incurredEvent).ConfigureAwait( false );
             }
             else if (@event is BountyPaidEvent paidEvent)
             {
@@ -219,7 +225,7 @@ namespace EddiCrimeMonitor
             }
             else if (@event is FineIncurredEvent fineIncurredEvent)
             {
-                handleFineIncurredEventAsync(fineIncurredEvent).GetAwaiter().GetResult();
+                await handleFineIncurredEventAsync(fineIncurredEvent).ConfigureAwait( false );
             }
             else if (@event is FinePaidEvent finePaidEvent)
             {
@@ -227,11 +233,11 @@ namespace EddiCrimeMonitor
             }
             else if (@event is MissionAbandonedEvent abandonedEvent)
             {
-                handleMissionAbandonedEventAsync(abandonedEvent).GetAwaiter().GetResult();
+                await handleMissionAbandonedEventAsync(abandonedEvent).ConfigureAwait( false );
             }
             else if (@event is MissionFailedEvent failedEvent)
             {
-                handleMissionFailedEventAsync(failedEvent).GetAwaiter().GetResult();
+                await handleMissionFailedEventAsync(failedEvent).ConfigureAwait( false );
             }
             else if (@event is RespawnedEvent respawnEvent)
             {

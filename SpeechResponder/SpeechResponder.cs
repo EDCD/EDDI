@@ -15,6 +15,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -187,11 +188,11 @@ namespace EddiSpeechResponder
             SavePersonality();
         }
 
-        public void TestScript(string scriptName, Dictionary<string, Script> scripts)
+        public async Task TestScriptAsync(string scriptName, Dictionary<string, Script> scripts)
         {
             // See if we have a sample
             List<Event> sampleEvents;
-            object sample = Events.SampleByName(scriptName);
+            var sample = Events.SampleByName(scriptName);
             if (sample == null)
             {
                 sampleEvents = new List<Event>();
@@ -212,14 +213,15 @@ namespace EddiSpeechResponder
                 sampleEvents = new List<Event>();
             }
 
-            ScriptResolver testScriptResolver = new ScriptResolver(scripts);
+            var testScriptResolver = new ScriptResolver(scripts);
             if (sampleEvents.Count == 0)
             {
                 sampleEvents.Add(null);
             }
-            foreach (Event sampleEvent in sampleEvents)
+            foreach (var sampleEvent in sampleEvents)
             {
-                Say(testScriptResolver, null, scriptName, sampleEvent, testScriptResolver.priority(scriptName));
+                await SayAsync( testScriptResolver, null, scriptName, sampleEvent,
+                    testScriptResolver.priority( scriptName ) ).ConfigureAwait( false );
             }
         }
 
@@ -247,7 +249,7 @@ namespace EddiSpeechResponder
             Logging.Debug($"Reloaded {ResponderName()}");
         }
 
-        public void Handle(Event @event)
+        public async Task HandleAsync ( Event @event )
         {
             if (@event.fromLoad)
             {
@@ -269,9 +271,10 @@ namespace EddiSpeechResponder
                     // Suppress scan details from nav beacons
                     return;
                 }
-                else if (EDDI.Instance.CurrentStarSystem?.bodies?
-                    .FirstOrDefault(s => s.bodyname == starScannedEvent.bodyname)?
-                    .scannedDateTime < starScannedEvent.timestamp)
+
+                if (EDDI.Instance.CurrentStarSystem?.bodies?
+                        .FirstOrDefault(s => s.bodyname == starScannedEvent.bodyname)?
+                        .scannedDateTime < starScannedEvent.timestamp)
                 {
                     // Suppress voicing new scans after the first scan occurrence
                     return;
@@ -285,7 +288,7 @@ namespace EddiSpeechResponder
                 SpeechService.Instance.speechQueue.Unpause();
             }
 
-            Say(@event);
+            await SayAsync(@event).ConfigureAwait( false );
 
             // Simulate a forced shutdown effect affecting the speech responder until the ship's system is rebooted
             if ( @event is ShipShutdownEvent shipShutdownEvent && !shipShutdownEvent.partialshutdown  )
@@ -296,51 +299,54 @@ namespace EddiSpeechResponder
             }
         }
 
-        private void Say(Event @event)
+        private async Task SayAsync(Event @event)
         {
             Ship ship = null;
             if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
             {
                 ship = EDDI.Instance.CurrentShip;
             }
-            Say(ScriptResolver, ship, @event.type, @event, null, null, SayOutLoud());
-        }
+            await SayAsync( ScriptResolver, ship, @event.type, @event, null, null, SayOutLoud() )
+                .ConfigureAwait( false );
+            
+            return;
 
-        private static bool SayOutLoud()
-        {
-            // By default we say things unless we've been told not to
-            bool sayOutLoud = true;
-            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
+            bool SayOutLoud ()
             {
-                if (tmp is bool b)
+                // By default we say things unless we've been told not to
+                var sayOutLoud = true;
+                if ( EDDI.Instance.State.TryGetValue( "speechresponder_quiet", out var tmp ) )
                 {
-                    sayOutLoud = !b;
+                    if ( tmp is bool b )
+                    {
+                        sayOutLoud = !b;
+                    }
                 }
+                return sayOutLoud;
             }
-            return sayOutLoud;
         }
 
         // Say something with the default resolver
-        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
+        public async Task SayAsync(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
-            Say(ScriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud, invokedFromVA);
+            await SayAsync( ScriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud, invokedFromVA ).ConfigureAwait( false );
         }
 
         // Say something with a custom resolver
-        private void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
+        private async Task SayAsync(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
             var dict = resolver.CompileVariables(theEvent);
 
-            // Generate and enqueue speech asynchronously
+            // Generate and enqueue speech
             try
             {
-                string speech = resolver.resolveFromName(scriptName, dict, true);
+                var speech = resolver.resolveFromName(scriptName, dict, true);
                 if ( speech != null && Configuration != null )
                 {
                     if ( Configuration.Subtitles )
                     {
                         // Log a tidied version of the speech
-                        string tidiedSpeech = Regex.Replace(speech, "<.*?>", string.Empty).Trim();
+                        var tidiedSpeech = Regex.Replace(speech, "<.*?>", string.Empty).Trim();
                         if ( !string.IsNullOrEmpty( tidiedSpeech ) )
                         {
                             log( tidiedSpeech );
@@ -357,7 +363,10 @@ namespace EddiSpeechResponder
                             { "Voice", voice },
                             { "InvokedFromVA", invokedFromVA }
                         } );
-                        SpeechService.Instance.SayAsync( ship, speech, priority ?? resolver.priority( scriptName ), voice, false, theEvent?.type, invokedFromVA );
+                        await SpeechService.Instance.SayAsync( ship, speech,
+                                priority ?? resolver.priority( scriptName ),
+                                voice, false, theEvent?.type, invokedFromVA )
+                            .ConfigureAwait( false );
                     }
                 }
             }
@@ -372,9 +381,10 @@ namespace EddiSpeechResponder
             return new ConfigurationWindow(this);
         }
 
-        public void HandleStatus ( Status status )
+        public Task HandleStatusAsync ( Status status )
         {
             CustomFunctions.OrbitalVelocity.currentAltitudeMeters = status.altitude;
+            return Task.CompletedTask;
         }
 
         private static readonly object logLock = new object();

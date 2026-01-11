@@ -177,5 +177,23 @@ namespace System
                 Diagnostics.Trace.TraceError( "Background task failed: " + ex );
             }
         }
+
+        public static void GetResultOrTimeout ( this Task task, TimeSpan timeout )
+        {
+            if ( task.Wait( timeout ) )
+            {
+                return;
+            }
+            throw new TimeoutException( "The operation timed out." );
+        }
+
+        public static T GetResultOrTimeout<T> ( this Task<T> task, TimeSpan timeout )
+        {
+            if ( task.Wait( timeout ) )
+            {
+                return task.Result;
+            }
+            throw new TimeoutException( "The operation timed out." );
+        }
     }
 }
