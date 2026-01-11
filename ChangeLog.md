@@ -19,6 +19,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
     * Scripts
       * `Disembark` updated to announce first footfalls.
+      * `Surface signals detected` updated with new optional toggle variables.
       * `Touchdown` updated to announce first footfall opportunities.
   * VoiceAttack Responder
     * Re-tuned event handling for better responsiveness.
