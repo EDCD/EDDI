@@ -5,23 +5,36 @@ namespace Utilities
     // A collection of common functions used in code
     public class Functions
     {
-        /// <summary>The direct distance in light years from one point in space to another.</summary>
-        public static decimal? StellarDistanceLy(decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2)
+        // This is faster and less computationally heavy without the sqrt. Can be used for sorting by distance where the result is not going to be returned.
+        public static decimal? StellarDistanceSquared ( decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2 )
         {
             var diffX = x1 - x2;
             var diffY = y1 - y2;
             var diffZ = z1 - z2;
 
-            if (diffX != null && diffY != null && diffZ != null)
+            if ( diffX != null && diffY != null && diffZ != null )
             {
-                double square(double x) => x * x;
-                var distance = Math.Sqrt(square((double)diffX) + square((double)diffY) + square((double)diffZ));
-                return (decimal)Math.Round(distance, 2);
+                double square ( double x ) => x * x;
+                var distance = square((double)diffX) + square((double)diffY) + square((double)diffZ);
+                return (decimal)distance;
             }
             else
             {
                 return null;
             }
+        }
+        
+        /// <summary>The direct distance in light years from one point in space to another.</summary>
+        public static decimal? StellarDistanceLy(decimal? x1, decimal? y1, decimal? z1, decimal? x2, decimal? y2, decimal? z2)
+        {
+            var squaredDistance = StellarDistanceSquared( x1, y1, z1, x2, y2, z2 );
+            if ( squaredDistance != null )
+            {
+                var distance = Math.Sqrt((double)squaredDistance);
+                return (decimal)Math.Round( distance, 2 );
+            }
+
+            return null;
         }
 
         /// <summary>The constant bearing in degrees required to travel from one point on the surface of a body to another (results in a longer, straight path).

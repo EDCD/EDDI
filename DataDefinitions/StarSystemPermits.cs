@@ -581,7 +581,7 @@ namespace EddiDataDefinitions
         {
             return PERMIT_SYSTEMS.Contains( systemName, StringComparer.InvariantCultureIgnoreCase ) ||
                    ( x != null && y != null && z != null && ( PERMIT_REGIONS
-                       .OrderBy( r => Functions.StellarDistanceLy( r.X, r.Y, r.Z, x, y, z ) )
+                       .OrderBy( r => Functions.StellarDistanceSquared( r.X, r.Y, r.Z, x, y, z ) )
                        .FirstOrDefault( r => Functions.StellarDistanceLy( r.X, r.Y, r.Z, x, y, z ) < r.RadiusLy )
                        ?.NeedsPermit ?? false ) );
         }

@@ -53,7 +53,7 @@ namespace EddiDataDefinitions
                 ? null
                 : FillVisitedGaps
                     ? UnvisitedWaypoints.OrderBy( wp =>
-                        Functions.StellarDistanceLy( currentX, currentY, currentZ, wp.x, wp.y, wp.z ) ).FirstOrDefault()
+                        Functions.StellarDistanceSquared( currentX, currentY, currentZ, wp.x, wp.y, wp.z ) ).FirstOrDefault()
                     : UnvisitedWaypoints.FirstOrDefault() );
             set => nextWaypoint = value;
         }
