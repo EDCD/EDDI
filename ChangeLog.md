@@ -18,6 +18,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Touchdown` updated to include a `canfirstfootfall` field.
   * Speech Responder
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
+    * Custom Functions
+      * `ListOr` custom function added to format lists with an "or" before the last item.
     * Scripts
       * `Disembark` updated to announce first footfalls.
       * `Surface signals detected` updated with new optional toggle variables.

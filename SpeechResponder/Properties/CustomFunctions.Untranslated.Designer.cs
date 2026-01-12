@@ -463,7 +463,7 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This function will return a humanised list of items from an array (e.g. this, that, and the other thing).
+        ///   Looks up a localized string similar to This function will return a humanized list of items from an array (e.g. this, that, and the other thing).
         ///
         ///List() takes a single argument, the array variable with items you want listed.
         ///
@@ -475,6 +475,22 @@ namespace EddiSpeechResponder.Properties {
         public static string List {
             get {
                 return ResourceManager.GetString("List", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This function will return a humanized list of items from an array (e.g. this, that, or the other thing).
+        ///
+        ///ListOr() takes a single argument, the array variable with items you want listed.
+        ///
+        ///Common usage is to convert an array to a list, for example:
+        ///
+        ///    {set systemstorepair to [&apos;the hull&apos;, &apos;the cockpit&apos;, &apos;corroded systems&apos;]}
+        ///    Do you want to repair {ListOr(systemstorepair)}?.
+        /// </summary>
+        public static string ListOr {
+            get {
+                return ResourceManager.GetString("ListOr", resourceCulture);
             }
         }
         

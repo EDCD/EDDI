@@ -352,7 +352,7 @@ Common usage is to provide distance and number of jumps for a specific query:
  }</value>
   </data>
   <data name="List" xml:space="preserve">
-    <value>This function will return a humanised list of items from an array (e.g. this, that, and the other thing).
+    <value>This function will return a humanized list of items from an array (e.g. this, that, and the other thing).
 
 List() takes a single argument, the array variable with items you want listed.
 
@@ -770,5 +770,15 @@ Common usage of this is to retrieve cumulative or persistent information stored 
 
     {SetState("distance_travelled_today", state.distance_travelled_today + event.distance)}
     {set distance to GetState("distance_travelled_today")}</value>
+  </data>
+  <data name="ListOr" xml:space="preserve">
+    <value>This function will return a humanized list of items from an array (e.g. this, that, or the other thing).
+
+ListOr() takes a single argument, the array variable with items you want listed.
+
+Common usage is to convert an array to a list, for example:
+
+    {set systemstorepair to ['the hull', 'the cockpit', 'corroded systems']}
+    Do you want to repair {ListOr(systemstorepair)}?</value>
   </data>
 </root>

@@ -7,11 +7,11 @@ using System.Linq;
 namespace EddiSpeechResponder.CustomFunctions
 {
     [UsedImplicitly]
-    public class List : ICustomFunction
+    public class ListOr : ICustomFunction
     {
-        public string name => "List";
+        public string name => "ListOr";
         public FunctionCategory Category => FunctionCategory.Utility;
-        public string description => Properties.CustomFunctions_Untranslated.List;
+        public string description => Properties.CustomFunctions_Untranslated.ListOr;
         public Type ReturnType => typeof( string );
         public IFunction function => Function.CreateNative1( ( runtime, values, writer ) =>
         {
@@ -29,7 +29,7 @@ namespace EddiSpeechResponder.CustomFunctions
                 }
                 else
                 {
-                    output = $"{output}{( values.Fields.Count() > 2 ? "," : "" )} {Properties.SpeechResponder.localizedAnd} {valueString}";
+                    output = $"{output}{( values.Fields.Count() > 2 ? "," : "" )} {Properties.SpeechResponder.localizedOr} {valueString}";
                 }
             }
             return output;

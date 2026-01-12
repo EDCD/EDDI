@@ -188,7 +188,7 @@
     <value>Enabled</value>
   </data>
   <data name="header_include" xml:space="preserve">
-	  <value>Include</value>
+    <value>Include</value>
   </data>
   <data name="header_name" xml:space="preserve">
     <value>Name</value>
@@ -201,6 +201,11 @@
   </data>
   <data name="localizedAnd" xml:space="preserve">
     <value>and</value>
+    <comment>For use with the `List` Cottle function.</comment>
+  </data>
+  <data name="localizedOr" xml:space="preserve">
+    <value>or</value>
+    <comment>For use with the `ListOr` Cottle function.</comment>
   </data>
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EDDI has recovered a script that was being edited when the program closed unexpectedly. Do you want to re-open it?</value>
@@ -209,16 +214,17 @@
     <value>Recovered Script</value>
   </data>
   <data name="messagebox_script_name_already_in_use" xml:space="preserve">
-	  <value>The script name is already in use.</value>
+    <value>The script name is already in use.</value>
   </data>
   <data name="messagebox_script_name_may_not_contain" xml:space="preserve">
-	  <value>The script name may not contain</value><comment>e.g. The script name may not contain ';'.</comment>
+    <value>The script name may not contain</value>
+    <comment>e.g. The script name may not contain ';'.</comment>
   </data>
   <data name="messagebox_script_name_required" xml:space="preserve">
-	  <value>A script name is required.</value>
+    <value>A script name is required.</value>
   </data>
   <data name="messagebox_unable_to_save_script" xml:space="preserve">
-	  <value>Unable to save script.</value>
+    <value>Unable to save script.</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Speech Responder</value>
@@ -262,7 +268,7 @@
     <value>Test script</value>
   </data>
   <data name="tooltip_include" xml:space="preserve">
-	  <value>Scripts identified here shall be executed prior to the top-level script. This can be used to set preferences or create functions that can be re-used between multiple scripts. Separate multiple script names using ';' as the separator.</value>
+    <value>Scripts identified here shall be executed prior to the top-level script. This can be used to set preferences or create functions that can be re-used between multiple scripts. Separate multiple script names using ';' as the separator.</value>
   </data>
   <data name="validation_tooltip_name_empty" xml:space="preserve">
     <value>Please supply a name</value>
