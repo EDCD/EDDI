@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised Spansh faction queries to match the latest Spansh API revision.
     * Various minor bug fixes.
     * `Body` object updated to include `alreadyfootfalled` boolean and `footfalled` timestamp fields.
+    * `System` object updated to include an `id64` object field containing boxel, mass code, and stellar region information.
   * Events
     * `Body scanned` updated to include an `alreadyfootfalled` field.
     * `Community Goal` updated to add a `Contribution` trigger type. Values in the `updates` list have also been revised to include `oldvalue`, `newvalue` and `change` variables. (thanks Nepomuk)
@@ -23,6 +24,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Touchdown` updated to announce first footfall opportunities.
   * VoiceAttack Responder
     * Re-tuned event handling for better responsiveness.
+    * New variables
+      * {INT:System id64 boxel id}: The numeric boxel ID.
+      * {INT:System id64 boxel width ly}: Boxel width in light years.
+      * {INT:System id64 boxel x}: Boxel X coordinate.
+      * {INT:System id64 boxel y}: Boxel Y coordinate.
+      * {INT:System id64 boxel z}: Boxel Z coordinate.
+      * {TXT:System id64 mass code}: The mass code for the star system (ranging from 'H' to 'A' with 'H' tending to contain high mass star systems and 'A' tending to contain low mass systems).
+      * {INT:System id64 region id}: The stellar numeric region ID.
+      * {TXT:System id64 region name}: The stellar region name."
+      * {INT:System id64 size class}: The integer equivalent of the mass code for the star system (ranging from 0 to 7 with 0 tending to contain high mass star systems and 7 tending to contain low mass systems).  
 
 ## 4.1.6
   * VoiceAttack

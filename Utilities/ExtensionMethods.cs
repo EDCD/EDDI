@@ -162,6 +162,12 @@ namespace System
             {
                 await task.ConfigureAwait( false );
             }
+            catch ( TaskCanceledException tce )
+            {
+                Diagnostics.Trace.TraceError( "Background task failed: " + tce );
+                Logging.Debug( "Background task cancelled: " + tce );
+                // Task cancelled, nothing to do except return.
+            }
             catch ( Exception ex )
             {
                 try
@@ -175,6 +181,7 @@ namespace System
 
                 // At minimum, trace it so it’s not lost
                 Diagnostics.Trace.TraceError( "Background task failed: " + ex );
+                Logging.Warn( "Background task failed: " + ex );
             }
         }
 

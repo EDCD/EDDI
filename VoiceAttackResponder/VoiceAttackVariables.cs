@@ -196,16 +196,16 @@ namespace EddiVoiceAttackResponder
                 if ( value is bool b || bool.TryParse( s, out b ) )
                 {
                     VoiceAttackPlugin.SetBoolean( varname, b );
-                    VoiceAttackPlugin.SetDecimal( varname, (decimal?)( b ? 1 : 0 ) );
-                    VoiceAttackPlugin.SetInt( varname, (int?)( b ? 1 : 0 ) );
+                    VoiceAttackPlugin.SetDecimal( varname, b ? 1 : 0 );
+                    VoiceAttackPlugin.SetInt( varname, b ? 1 : 0 );
                     VoiceAttackPlugin.SetSmallInt( varname, (short?)( b ? 1 : 0 ) );
                 }
                 else if ( !decimal.TryParse( s, out _ ) )
                 {
                     b = !string.IsNullOrEmpty( s );
                     VoiceAttackPlugin.SetBoolean( varname, b );
-                    VoiceAttackPlugin.SetDecimal( varname, (decimal?)(b ? 1 : 0) );
-                    VoiceAttackPlugin.SetInt( varname, (int?)(b ? 1 : 0) );
+                    VoiceAttackPlugin.SetDecimal( varname, b ? 1 : 0 );
+                    VoiceAttackPlugin.SetInt( varname, b ? 1 : 0 );
                     VoiceAttackPlugin.SetSmallInt( varname, (short?)(b ? 1 : 0) );
                 }
             }
@@ -330,7 +330,7 @@ namespace EddiVoiceAttackResponder
                 setShipModuleValues(ship?.sensors, prefix + " sensors" );
                 setShipModuleValues(ship?.fueltank, prefix + " fuel tank" );
 
-                if (EDDI.Instance.CurrentStation?.outfitting?.Any() ?? false)
+                if (EDDI.Instance.CurrentStation?.outfitting.Any() ?? false)
                 {
                     var stationOutfitting = EDDI.Instance.CurrentStation?.outfitting.ToList();
                     setShipModuleOutfittingValues(ship?.lifesupport, stationOutfitting, prefix + " life support" );
@@ -381,10 +381,10 @@ namespace EddiVoiceAttackResponder
             var filledCompartments = ship?.compartments.Count ?? 0;
             // We want to overshoot the maximum number of compartments for any ship in the game
             // and overwrite any previously written values with null values
-            for ( int i = 0; i < 16; i++ ) 
+            for ( var i = 0; i < 16; i++ ) 
             {
                 var Compartment = i <= (filledCompartments - 1) ? ship?.compartments[i] : null;
-                string baseCompartmentName = $"{prefix} compartment {i}";
+                var baseCompartmentName = $"{prefix} compartment {i}";
                 VoiceAttackPlugin.SetInt( baseCompartmentName + " size", Compartment?.size );
                 VoiceAttackPlugin.SetBoolean( baseCompartmentName + " occupied", Compartment?.module != null );
                 setShipModuleValues( Compartment?.module, baseCompartmentName + " module" );
@@ -398,10 +398,10 @@ namespace EddiVoiceAttackResponder
         {
             var invariantSizeNames = new List<string> { "tiny", "small", "medium", "large", "huge" };
             var totalHardpointsCount = 0;
-            for ( int i = 0; i < (invariantSizeNames.Count - 1); i++ ) // Hardpoint Size
+            for ( var i = 0; i < (invariantSizeNames.Count - 1); i++ ) // Hardpoint Size
             {
                 var hardpointsAtSize = ship?.hardpoints.Where( h => h.size == i ).ToList() ?? new List<Hardpoint>();
-                for ( int j = 0; j < 12; j++ ) // Hardpoint Slots at Size
+                for ( var j = 0; j < 12; j++ ) // Hardpoint Slots at Size
                     // We want to overshoot the maximum number of hardpoints for each hardpoint size
                     // and overwrite any previously written values with null values
                 {
@@ -429,7 +429,7 @@ namespace EddiVoiceAttackResponder
             VoiceAttackPlugin.SetDecimal(name + " value", module?.value);
             if (module != null && module.price < module.value)
             {
-                decimal discount = Math.Round((1 - (module.price / ((decimal)module.value))) * 100, 1);
+                var discount = Math.Round((1 - (module.price / (decimal)module.value)) * 100, 1);
                 VoiceAttackPlugin.SetDecimal(name + " discount", discount > 0.01M ? discount : (decimal?)null);
             }
             else
@@ -448,7 +448,7 @@ namespace EddiVoiceAttackResponder
                     if (existing.edname == Module?.edname)
                     {
                         // Found it
-                        VoiceAttackPlugin.SetDecimal(name + " station cost", (decimal?)Module?.price);
+                        VoiceAttackPlugin.SetDecimal(name + " station cost", Module?.price);
                         if (Module?.price < existing.price)
                         {
                             // And it's cheaper
@@ -460,16 +460,16 @@ namespace EddiVoiceAttackResponder
                 }
             }
             // Not found so remove any existing
-            VoiceAttackPlugin.SetDecimal(name + " station cost", (decimal?)null);
-            VoiceAttackPlugin.SetDecimal(name + " station discount", (decimal?)null);
-            VoiceAttackPlugin.SetText(name + " station discount (spoken)", (string)null);
+            VoiceAttackPlugin.SetDecimal(name + " station cost", null);
+            VoiceAttackPlugin.SetDecimal(name + " station discount", null);
+            VoiceAttackPlugin.SetText(name + " station discount (spoken)", null);
         }
 
         protected static void setShipyardValues(List<Ship> shipyard)
         {
             if (shipyard != null)
             {
-                int currentStoredShip = 1;
+                var currentStoredShip = 1;
                 foreach (var StoredShip in shipyard)
                 {
                     setShipValues(StoredShip, "Stored ship " + currentStoredShip);
@@ -491,6 +491,12 @@ namespace EddiVoiceAttackResponder
 
                 VoiceAttackPlugin.SetText(prefix + " name", system?.systemname);
                 VoiceAttackPlugin.SetText(prefix + " name (spoken)", phoneticStarSystem );
+                VoiceAttackPlugin.SetDecimal(prefix + " distance from home", system?.distancefromhome);
+                VoiceAttackPlugin.SetInt(prefix + " visits", system?.visits);
+                VoiceAttackPlugin.SetDate(prefix + " previous visit", system?.visits > 1 ? system.lastvisit : null);
+                VoiceAttackPlugin.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system.lastvisit.HasValue 
+                    ? (long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes 
+                    : (decimal?)null);
                 VoiceAttackPlugin.SetDecimal(prefix + " population", system?.population);
                 VoiceAttackPlugin.SetText(prefix + " population (spoken)", phoneticPopulation );
                 VoiceAttackPlugin.SetText(prefix + " allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
@@ -507,11 +513,8 @@ namespace EddiVoiceAttackResponder
                 VoiceAttackPlugin.SetDecimal(prefix + " X", system?.x);
                 VoiceAttackPlugin.SetDecimal(prefix + " Y", system?.y);
                 VoiceAttackPlugin.SetDecimal(prefix + " Z", system?.z);
-                VoiceAttackPlugin.SetInt(prefix + " visits", system?.visits);
-                VoiceAttackPlugin.SetDate(prefix + " previous visit", system?.visits > 1 ? system.lastvisit : null);
-                VoiceAttackPlugin.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes : (decimal?)null);
+
                 VoiceAttackPlugin.SetText(prefix + " comment", system?.comment);
-                VoiceAttackPlugin.SetDecimal(prefix + " distance from home", system?.distancefromhome);
                 VoiceAttackPlugin.SetBoolean(prefix + " scoopable", system?.scoopable);
                 VoiceAttackPlugin.SetInt(prefix + " total bodies", system?.totalbodies);
                 VoiceAttackPlugin.SetInt(prefix + " scanned bodies", system?.scannedbodies);
@@ -519,7 +522,7 @@ namespace EddiVoiceAttackResponder
 
                 if (system != null)
                 {
-                    foreach (Station Station in system.stations)
+                    foreach (var Station in system.stations)
                     {
                         VoiceAttackPlugin.SetText(prefix + " station name", Station.name);
                     }
@@ -533,14 +536,19 @@ namespace EddiVoiceAttackResponder
                     Body primaryBody = null;
                     if (system.bodies != null && system.bodies.Count > 0)
                     {
-                        primaryBody = (system.bodies[0].distance == 0 ? system.bodies[0] : null);
+                        primaryBody = system.bodies[0].distance == 0 ? system.bodies[0] : null;
                     }
                     setBodyValues(primaryBody, prefix + " main star");
                 }
-                
                 // Backwards-compatibility with 1.x documented variables
                 VoiceAttackPlugin.SetText( prefix, system?.systemname );
                 VoiceAttackPlugin.SetText( $"{prefix} (spoken)", phoneticStarSystem );
+
+                if ( system?.id64 != null )
+                {
+                    TrySetFromMetaVariables( $"{prefix} id64",
+                        new MetaVariables( system.id64.GetType(), system.id64 ) );
+                }
             }
             catch (Exception e)
             {
@@ -562,57 +570,54 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Debug("Setting current stellar body information");
             VoiceAttackPlugin.SetText(prefix + " type", (body?.bodyType ?? BodyType.None).localizedName);
+            VoiceAttackPlugin.SetText( prefix + " system name", body?.systemname );
             VoiceAttackPlugin.SetText(prefix + " name", body?.bodyname);
             VoiceAttackPlugin.SetText(prefix + " short name", body?.shortname);
-            VoiceAttackPlugin.SetText(prefix + " system name", body?.systemname);
-            if (body?.age == null)
-            {
-                VoiceAttackPlugin.SetDecimal(prefix + " age", null);
-            }
-            else
-            {
-                VoiceAttackPlugin.SetDecimal(prefix + " age", (decimal)(long)body.age);
-            }
-            VoiceAttackPlugin.SetDecimal(prefix + " distance", body?.distance);
-            VoiceAttackPlugin.SetDecimal(prefix + " temperature", body?.temperature);
+            VoiceAttackPlugin.SetDecimal( prefix + " distance", body?.distance );
+            VoiceAttackPlugin.SetDecimal( prefix + " temperature", body?.temperature );
+            VoiceAttackPlugin.SetDecimal( prefix + " radius", body?.radius );
+            TrySetFromMetaVariables( $"{prefix} rings", new MetaVariables( body?.rings.GetType(), body?.rings ) );
+                
             // Orbital characteristics
             VoiceAttackPlugin.SetDecimal(prefix + " eccentricity", body?.eccentricity);
             VoiceAttackPlugin.SetDecimal(prefix + " inclination", body?.inclination);
             VoiceAttackPlugin.SetDecimal(prefix + " orbital period", body?.orbitalperiod);
-            VoiceAttackPlugin.SetDecimal(prefix + " radius", body?.radius);
             VoiceAttackPlugin.SetDecimal(prefix + " rotational period", body?.rotationalperiod);
             VoiceAttackPlugin.SetDecimal(prefix + " semi major axis", body?.semimajoraxis);
+            
             // Star specific items 
             if (body?.bodyType?.invariantName == "Star")
             {
-                VoiceAttackPlugin.SetBoolean(prefix + " main star", body?.mainstar);
-                VoiceAttackPlugin.SetText(prefix + " stellar class", body?.stellarclass);
-                VoiceAttackPlugin.SetText(prefix + " luminosity class", body?.luminosityclass);
-                VoiceAttackPlugin.SetDecimal(prefix + " solar mass", body?.solarmass);
-                VoiceAttackPlugin.SetDecimal(prefix + " solar radius", body?.solarradius);
-                VoiceAttackPlugin.SetText(prefix + " chromaticity", body?.chromaticity);
-                VoiceAttackPlugin.SetDecimal(prefix + " radius probability", body?.radiusprobability);
-                VoiceAttackPlugin.SetDecimal(prefix + " mass probability", body?.massprobability);
-                VoiceAttackPlugin.SetDecimal(prefix + " temp probability", body?.tempprobability);
-                VoiceAttackPlugin.SetDecimal(prefix + " age probability", body?.ageprobability);
-                VoiceAttackPlugin.SetDecimal(prefix + " estimated inner hab zone", body?.estimatedhabzoneinner);
-                VoiceAttackPlugin.SetDecimal(prefix + " estimated outer hab zone", body?.estimatedhabzoneouter);
-                VoiceAttackPlugin.SetBoolean(prefix + " scoopable", body?.scoopable);
+                VoiceAttackPlugin.SetBoolean(prefix + " main star", body.mainstar);
+                VoiceAttackPlugin.SetText(prefix + " stellar class", body.stellarclass);
+                VoiceAttackPlugin.SetText(prefix + " luminosity class", body.luminosityclass);
+                VoiceAttackPlugin.SetDecimal(prefix + " solar mass", body.solarmass);
+                VoiceAttackPlugin.SetDecimal(prefix + " solar radius", body.solarradius);
+                VoiceAttackPlugin.SetText(prefix + " chromaticity", body.chromaticity);
+                VoiceAttackPlugin.SetDecimal(prefix + " radius probability", body.radiusprobability);
+                VoiceAttackPlugin.SetDecimal(prefix + " mass probability", body.massprobability);
+                VoiceAttackPlugin.SetDecimal(prefix + " temp probability", body.tempprobability);
+                VoiceAttackPlugin.SetDecimal( prefix + " age", body.age );
+                VoiceAttackPlugin.SetDecimal(prefix + " age probability", body.ageprobability);
+                VoiceAttackPlugin.SetDecimal(prefix + " estimated inner hab zone", body.estimatedhabzoneinner);
+                VoiceAttackPlugin.SetDecimal(prefix + " estimated outer hab zone", body.estimatedhabzoneouter);
+                VoiceAttackPlugin.SetBoolean(prefix + " scoopable", body.scoopable);
             }
+            
             // Body specific items 
             if (body?.bodyType?.invariantName == "Planet")
             {
-                VoiceAttackPlugin.SetDecimal(prefix + " periapsis", body?.periapsis);
-                VoiceAttackPlugin.SetText(prefix + " atmosphere", (body?.atmosphereclass ?? AtmosphereClass.None).localizedName);
-                VoiceAttackPlugin.SetDecimal(prefix + " tilt", body?.tilt);
-                VoiceAttackPlugin.SetDecimal(prefix + " earth mass", body?.earthmass);
-                VoiceAttackPlugin.SetDecimal(prefix + " gravity", body?.gravity);
-                VoiceAttackPlugin.SetDecimal(prefix + " pressure", body?.pressure);
-                VoiceAttackPlugin.SetText(prefix + " terraform state", (body?.terraformState ?? TerraformState.NotTerraformable).localizedName);
-                VoiceAttackPlugin.SetText(prefix + " planet type", (body?.planetClass ?? PlanetClass.None).localizedName);
-                VoiceAttackPlugin.SetText(prefix + " reserves", (body?.reserveLevel ?? ReserveLevel.None).localizedName);
-                VoiceAttackPlugin.SetBoolean(prefix + " landable", body?.landable);
-                VoiceAttackPlugin.SetBoolean(prefix + " tidally locked", body?.tidallylocked);
+                VoiceAttackPlugin.SetDecimal(prefix + " periapsis", body.periapsis);
+                VoiceAttackPlugin.SetText(prefix + " atmosphere", (body.atmosphereclass ?? AtmosphereClass.None).localizedName);
+                VoiceAttackPlugin.SetDecimal(prefix + " tilt", body.tilt);
+                VoiceAttackPlugin.SetDecimal(prefix + " earth mass", body.earthmass);
+                VoiceAttackPlugin.SetDecimal(prefix + " gravity", body.gravity);
+                VoiceAttackPlugin.SetDecimal(prefix + " pressure", body.pressure);
+                VoiceAttackPlugin.SetText(prefix + " terraform state", (body.terraformState ?? TerraformState.NotTerraformable).localizedName);
+                VoiceAttackPlugin.SetText(prefix + " planet type", (body.planetClass ?? PlanetClass.None).localizedName);
+                VoiceAttackPlugin.SetText(prefix + " reserves", (body.reserveLevel ?? ReserveLevel.None).localizedName);
+                VoiceAttackPlugin.SetBoolean(prefix + " landable", body.landable);
+                VoiceAttackPlugin.SetBoolean(prefix + " tidally locked", body.tidallylocked);
             }
 
             Logging.Debug("Set body information (" + prefix + ")");
@@ -753,7 +758,7 @@ namespace EddiVoiceAttackResponder
         public static List<VoiceAttackVariable> Convert ( List<MetaVariable> source, string startingPrefix, string eventType = null )
         {
             return source
-                .Where( v => ( v.type != typeof( object ) ) )
+                .Where( v => v.type != typeof( object ) )
                 .Select( v => new VoiceAttackVariable( startingPrefix, eventType, v.keysPath, v.type, v.description, v.value ) )
                 .ToList();
         }

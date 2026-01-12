@@ -1859,11 +1859,14 @@ namespace EddiJournalMonitor
                                     // Parent body types and IDs
                                     data.TryGetValue("Parents", out var parentsVal);
                                     var parents = new List<IDictionary<string, int>>();
-                                    if (parentsVal != null)
+                                    if ( parentsVal != null )
                                     {
-                                        foreach (var parent in ((List<object>)parentsVal).Cast<IDictionary<string, int>>() )
+                                        foreach ( var p in (List<object>)parentsVal )
                                         {
-                                            parents.Add(parent);
+                                            if ( p is IDictionary<string, int> parent )
+                                            {
+                                                parents.Add( parent );
+                                            }
                                         }
                                     }
 

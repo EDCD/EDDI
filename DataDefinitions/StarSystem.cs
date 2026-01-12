@@ -28,7 +28,10 @@ namespace EddiDataDefinitions
         [Utilities.PublicAPI( "The unique 64 bit ID for the star system" ), JsonProperty, JsonRequired]
         public ulong systemAddress { get; set; }
 
-        [Utilities.PublicAPI( "The 'X' coordinates of the star system" ) ]
+        [ Utilities.PublicAPI( "Metadata encoded into the unique 64 bit ID for the star system." ), JsonIgnore ]
+        public StarSystemId64 id64 => new StarSystemId64( systemAddress );
+
+        [Utilities.PublicAPI( "The 'X' coordinates of the star system" )]
         public decimal? x { get; set; }
 
         [Utilities.PublicAPI( "The 'Y' coordinates of the star system" )]

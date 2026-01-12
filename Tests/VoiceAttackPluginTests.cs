@@ -1,4 +1,5 @@
 ﻿using EddiConfigService.Configurations;
+using EddiCore;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -8,6 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Tests.Properties;
 using Utilities;
 
@@ -376,6 +379,22 @@ namespace Tests
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module health"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module cost"));
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module value"));
+        }
+
+
+        [TestMethod, DoNotParallelize]
+        public async Task TestVAStarSystem ()
+        {
+            // Obtain star system data from Sol.
+            EDDI.Instance.DataProvider = CreateTestDataProvider();
+            FakeSpanshHttpClient.Expect( "dump/10477373803", DeserializeJsonResource<string>( Resources.SpanshStarSystemDumpSol ) );
+            var sol = await fakeSpanshService.GetStarSystemAsync( 10477373803U, true, CancellationToken.None ).ConfigureAwait(false);
+
+
+            Assert.IsNotNull( sol );
+
+            VoiceAttackVariables.setStarSystemValues( sol, "System" );
+            Assert.AreEqual( "Sol", mockVAProxy.GetText("System name"));
         }
     }
 }

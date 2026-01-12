@@ -262,6 +262,15 @@ Note: "Tiny" hardpoints are utility slots.
   * {TXT:System permit name}: The name of the permit required to enter the system, if any, as reported to EDDB.
   * {TXT:System main star stellar class}: the stellar class of the main star of the system (M, G etc)
   * {INT:System main star age}: the age of the main star of the system, in millions of years
+  * {INT:System id64 boxel id}: The numeric boxel ID.
+  * {INT:System id64 boxel width ly}: Boxel width in light years.
+  * {INT:System id64 boxel x}: Boxel X coordinate.
+  * {INT:System id64 boxel y}: Boxel Y coordinate.
+  * {INT:System id64 boxel z}: Boxel Z coordinate.
+  * {TXT:System id64 mass code}: The mass code for the star system (ranging from 'H' to 'A' with 'H' tending to contain high mass star systems and 'A' tending to contain low mass systems).
+  * {INT:System id64 region id}: The stellar numeric region ID.
+  * {TXT:System id64 region name}: The stellar region name."
+  * {INT:System id64 size class}: The integer equivalent of the mass code for the star system (ranging from 0 to 7 with 0 tending to contain high mass star systems and 7 tending to contain low mass systems).
 
 ### Last System Variables
 

@@ -506,6 +506,8 @@ Any values might be missing, depending on EDDI's configuration and the informati
   - *mappedbodies* - the total number of bodies you have mapped within the system
   - *scoopable* - true if a fuel scoop equipped ship can refuel at at least one star in this starsystem
   - *reserves* - the reserve level of the system
+  - *systemAddress* - the unique 64 bit ID for the star system
+  - *id64* - information derived from the system's systemAddress value.
 
 #### Last starsystem
 
@@ -562,14 +564,11 @@ All bodies have the following data:
   - *bodyname* - the name of the body
   - *shortname* - the shortened name of the body
   - *distance* - the distance from the arrival point in the system, in light seconds
-  - *tidallylocked* - true if the body is tidally locked to its parent
   - *temperature* - the surface temperature of the body, in Kelvin
   - *radius* - the radius of the body, in km
   - *rings* - (when applicable) (an array of ring objects)
   - *scanned* - a unix timestamp (seconds since January 01 1970 UTC) value that is set when the body is scanned and unset otherwise.
-  - *mapped* - a unix timestamp (seconds since January 01 1970 UTC) value that is set when the body is mapped and unset otherwise.
   - *alreadydiscovered* - whether another commander has already submitted a scan of the body to Universal Cartographics (scan required to fill this value)
-  - *alreadymapped* - whether another commander has already submitted mapping data for the body to Universal Cartographics (scan required to fill this value)
   - *estimatedvalue* - the current estimated value of the body, taking into account scans and mapping.
   - *maxestimatedvalue* - the estimated maximum obtainable value of the body, assuming efficient mapping.
   - *periapsis* - the argument of periapsis of the body, in degrees (as applicable)
@@ -623,12 +622,17 @@ Planets and moons have the following data:
   - *planettype* - the type of the planet (Metal-rich body, Earth-like world, etc.)
   - *volcanism* - the volcanism of the planet (Volcanism object)
   - *landable* - true if the planet can be landed upon
+  - *tidallylocked* - true if the body is tidally locked to its parent
   - *materials* - list of materials and their percentage availability on the planet (list of Material objects)
   - *gravityprobability* - the cumulative probability describing the body's gravity, relative to other bodies of the same planet type.
   - *pressureprobability* - the cumulative probability describing the body's atmospheric pressure, relative to other bodies of the same planet type.
   - *solarday* - the duration of a solar day on the body, in Earth days
   - *solarsurfacevelocity* - the ground speed of the parent body's shadow on the surface of the body in meters per second
-
+  - *mapped* - a unix timestamp (seconds since January 01 1970 UTC) value that is set when the body is mapped and unset otherwise.
+  - *alreadymapped* - whether another commander has already submitted mapping data for the body to Universal Cartographics (scan required to fill this value)
+  - *footfalled* - a unix timestamp (seconds since January 01 1970 UTC) value that is set when you first set foot on the body and unset otherwise.
+  - *alreadyfootfalled* - whether another commander has already set foot on the body.
+  
 #### Atmosphere composition
 
 Details of a body's atmospheric compositions.
