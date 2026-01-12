@@ -370,28 +370,6 @@ namespace EddiSpeechResponder
             var fixedScripts = new Dictionary<string, Script>();
             var upgradeableScripts = new Dictionary<string, Script>();
 
-            void SortScripts ( IEnumerable<string> keys, bool isResponderScripts )
-            {
-                foreach ( var key in keys )
-                {
-                    // If the script is present in the target personality, upgrade the script from the target personality
-                    if ( personality.Scripts.TryGetValue( key, out var personalityScript ) )
-                    {
-                        personalityScript.Responder = isResponderScripts;
-                        upgradeableScripts.Add( key, personalityScript );
-                    }
-                    else
-                    {
-                        // If the script is not present in the target personality then add the default script to the output
-                        if ( defaultPersonality.Scripts.TryGetValue( key, out var defaultScript ) )
-                        {
-                            defaultScript.Responder = isResponderScripts;
-                            fixedScripts.Add( key, defaultScript );
-                        }
-                    }
-                }
-            }
-
             // First, iterate through our event keys, less any we have chosen to omit.
             // Ensure that every required event script is present.
             // Identify as "responder" scripts.
@@ -424,6 +402,9 @@ namespace EddiSpeechResponder
                      !kv.Value.Default )
                 {
                     var script = kv.Value;
+                    // Make sure that these scripts don't carry metadata that can lead to miscategorization.
+                    script.Responder = false;
+                    script.defaultValue = null;
                     fixedScripts.Add( kv.Key, script );
                 }
             }
@@ -440,6 +421,33 @@ namespace EddiSpeechResponder
                 .ToDictionary(s => s.Key, s => s.Value);
             personality.ToFile();
             upgradedPersonalities.Add(personality.dataPath);
+            return;
+
+            void SortScripts ( IEnumerable<string> keys, bool isResponderScripts )
+            {
+                foreach ( var key in keys )
+                {
+                    // If the script is present in the target personality, upgrade the script from the target personality
+                    if ( personality.Scripts.TryGetValue( key, out var personalityScript ) )
+                    {
+                        personalityScript.Responder = isResponderScripts;
+                        upgradeableScripts.Add( key, personalityScript );
+                    }
+                    else
+                    {
+                        // If the script is not present in the target personality then add the default script to the output
+                        if ( defaultPersonality.Scripts.TryGetValue( key, out var defaultScript ) )
+                        {
+                            defaultScript.Responder = isResponderScripts;
+                            fixedScripts.Add( key, defaultScript );
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                }
+            }
         }
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)

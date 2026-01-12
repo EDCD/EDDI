@@ -381,7 +381,6 @@ namespace Tests
             Assert.IsNull(mockVAProxy.GetDecimal("Ship large hardpoint 0 module value"));
         }
 
-
         [TestMethod, DoNotParallelize]
         public async Task TestVAStarSystem ()
         {
@@ -389,8 +388,6 @@ namespace Tests
             EDDI.Instance.DataProvider = CreateTestDataProvider();
             FakeSpanshHttpClient.Expect( "dump/10477373803", DeserializeJsonResource<string>( Resources.SpanshStarSystemDumpSol ) );
             var sol = await fakeSpanshService.GetStarSystemAsync( 10477373803U, true, CancellationToken.None ).ConfigureAwait(false);
-
-
             Assert.IsNotNull( sol );
 
             VoiceAttackVariables.setStarSystemValues( sol, "System" );

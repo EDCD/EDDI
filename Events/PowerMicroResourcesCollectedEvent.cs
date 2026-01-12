@@ -9,7 +9,7 @@ namespace EddiEvents
     [ PublicAPI ]
     public class PowerMicroResourcesCollectedEvent : Event
     {
-        public const string NAME = "Power micro resources requested";
+        public const string NAME = "Power micro resources collected";
         public const string DESCRIPTION = "Triggered when collecting micro resources from a Powerplay contact";
         public static readonly string[] SAMPLES =
             {
