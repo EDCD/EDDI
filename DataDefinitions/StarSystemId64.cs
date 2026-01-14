@@ -75,7 +75,7 @@ namespace EddiDataDefinitions
                 boxelX = x;
                 boxelY = y;
                 boxelZ = z;
-                boxelWidthLy = 1280 / ( 2 ^ masscode );
+                boxelWidthLy = Convert.ToInt32( 1280 / Math.Pow( 2, masscode ) );
             }
         }
 
