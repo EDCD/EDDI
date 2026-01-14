@@ -203,6 +203,10 @@
     <value>e</value>
     <comment>For use with the `List` Cottle function.</comment>
   </data>
+  <data name="localizedOr" xml:space="preserve">
+    <value>ou</value>
+    <comment>For use with the `ListOr` Cottle function.</comment>
+  </data>
   <data name="messagebox_recoveredScript" xml:space="preserve">
     <value>EDDI recuperou um script que estava sendo editado quando o programa fechou inesperadamente. Você quer reabri-lo?</value>
   </data>
