@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="active_personality" xml:space="preserve">
-    <value>Aktiver Charakter</value>
+    <value>Aktive Persönlichkeit</value>
   </data>
   <data name="button_cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
   <data name="button_copy" xml:space="preserve">
-    <value>Charakter kopieren</value>
+    <value>Persönlichkeit kopieren</value>
   </data>
   <data name="button_delete" xml:space="preserve">
-    <value>Charakter löschen</value>
+    <value>Persönlichkeit löschen</value>
   </data>
   <data name="button_hotkeys" xml:space="preserve">
     <value>Hotkeys konfigurieren</value>
@@ -151,17 +151,17 @@
     <value>Aktiviere alle Event-basierte Skripte</value>
   </data>
   <data name="default_is_read_only" xml:space="preserve">
-    <value>Der Standard-Charakter kann nicht modifiziert werden. Wenn Sie Änderungen durchführen möchten, erstellen Sie bitte eine Kopie.</value>
+    <value>Die Standardpersönlichkeit kann nicht modifiziert werden. Wenn Sie Änderungen durchführen möchten, erstellen Sie bitte eine Kopie.</value>
   </data>
   <data name="default_personality_script_filename" xml:space="preserve">
     <value>eddi.de.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
   <data name="delete_personality_caption" xml:space="preserve">
-    <value>Charakter löschen</value>
+    <value>Persönlichkeit löschen</value>
   </data>
   <data name="delete_personality_message" xml:space="preserve">
-    <value>Möchten Sie Charakter "{0} wirklich löschen?</value>
+    <value>Möchten Sie Persönlichkeit "{0}" wirklich löschen?</value>
   </data>
   <data name="delete_script" xml:space="preserve">
     <value>Löschen</value>
