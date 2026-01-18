@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace EddiEvents
 
         [PublicAPI( "The numeric system address of the star system to which the commander has jumped" )]
         public ulong systemAddress { get; private set; }
+        
+        [PublicAPI( "Metadata encoded into the unique 64 bit ID for the star system." )]
+        public StarSystemId64 id64 => new StarSystemId64( systemAddress );
 
         [PublicAPI("The X co-ordinate of the system to which the commander has jumped")]
         public decimal x { get; private set; }

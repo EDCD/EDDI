@@ -12,10 +12,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Body` object updated to include `alreadyfootfalled` boolean and `footfalled` timestamp fields.
     * `System` object updated to include an `id64` object field containing boxel, mass code, and stellar region information.
   * Events
-    * `Body scanned` updated to include an `alreadyfootfalled` field.
+    * `Body scanned` updated to include an `alreadyfootfalled` boolean field.
+    * `Carrier jumped` updated to include a new `id64` object field.
     * `Community Goal` updated to add a `Contribution` trigger type. Values in the `updates` list have also been revised to include `oldvalue`, `newvalue` and `change` variables. (thanks Nepomuk)
-    * `Disembarked` updated to include a `firstfootfall` field.
-    * `Touchdown` updated to include a `canfirstfootfall` field.
+    * `Disembarked` updated to include a `firstfootfall` boolean field.
+    * `Jumped` updated to include a new `id64` object field.
+    * `Location` updated to include a new `id64` object field.
+    * `Touchdown` updated to include a `canfirstfootfall` boolean field.
   * Speech Responder
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
     * Custom Functions
