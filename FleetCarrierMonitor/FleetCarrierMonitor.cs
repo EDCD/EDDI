@@ -171,10 +171,11 @@ namespace EddiFleetCarrierMonitor
 
         private FleetCarrier GetOrCreateCarrier ( long carrierId, StationModel carrierType )
         {
-            var carrier = carrierType == StationModel.SquadronCarrier 
-                ? SquadronCarrier 
-                : carrierType == StationModel.FleetCarrier 
-                    ? FleetCarrier 
+            var carrier = 
+                carrierId == SquadronCarrier?.carrierID || carrierType == StationModel.SquadronCarrier
+                ? SquadronCarrier
+                :  carrierId == FleetCarrier?.carrierID || carrierType == StationModel.FleetCarrier
+                    ? FleetCarrier
                     : null;
             if ( carrier is null || carrier.carrierID != carrierId )
             {
