@@ -10,6 +10,51 @@
     <OutputPath>..\bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="Properties\CodexStellarBodyType.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexStellarBodyType.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexStellarBodyDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexStellarBodyDesc.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexStellarBody.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexStellarBody.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexGeologyOrAnomolyType.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexGeologyOrAnomolyType.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexGeologyOrAnomoly.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexGeologyOrAnomoly.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexGeologyOrAnomolyTypeDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexGeologyOrAnomolyTypeDesc.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexGeologyOrAnomolyDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexGeologyOrAnomolyDesc.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexCivilizationGuardian.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexCivilizationGuardian.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexCivilizationGuardianDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexCivilizationGuardianDesc.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\MessageChannels.Designer.cs">
       <DependentUpon>MessageChannels.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -49,6 +94,36 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NpcShip.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\OrganicGenus.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrganicGenus.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\OrganicGenusDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrganicGenusDesc.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\OrganicSpecies.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrganicSpecies.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\OrganicSpeciesCond.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrganicSpeciesCond.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\OrganicSpeciesDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrganicSpeciesDesc.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\OrganicVariant.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrganicVariant.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\StationState.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -94,6 +169,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LoadoutDescription.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexCivilizationThargoid.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexCivilizationThargoid.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\CodexCivilizationThargoidDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CodexCivilizationThargoidDesc.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\ThargoidDesc.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ThargoidDesc.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Vehicle.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -335,6 +425,42 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Properties\CodexStellarBodyType.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexStellarBodyType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexStellarBodyDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexStellarBodyDesc.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexStellarBody.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexStellarBody.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyType.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexGeologyOrAnomolyType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexGeologyOrAnomoly.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexGeologyOrAnomoly.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyTypeDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexGeologyOrAnomolyTypeDesc.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexGeologyOrAnomolyDesc.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexCivilizationGuardian.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexCivilizationGuardian.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexCivilizationGuardianDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexCivilizationGuardianDesc.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\LoadoutDescription.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LoadoutDescription.Designer.cs</LastGenOutput>
@@ -391,6 +517,30 @@
     <EmbeddedResource Update="Properties\NpcShip.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>NpcShip.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicGenus.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrganicGenus.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicGenusDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrganicGenusDesc.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicSpecies.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrganicSpecies.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicSpeciesCond.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrganicSpeciesCond.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicSpeciesDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrganicSpeciesDesc.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\OrganicVariant.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrganicVariant.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\SignalType.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -563,6 +713,18 @@
     <EmbeddedResource Update="Properties\TerraformState.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TerraformState.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexCivilizationThargoid.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexCivilizationThargoid.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CodexCivilizationThargoidDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CodexCivilizationThargoidDesc.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\ThargoidDesc.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ThargoidDesc.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\TradeRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

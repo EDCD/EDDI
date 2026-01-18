@@ -134,7 +134,7 @@ namespace EddiDataDefinitions
 
         #region Region Data
 
-        private static readonly string[] RegionNames = {
+        public static readonly string[] RegionNames = {
             null, "Galactic Centre", "Empyrean Straits", "Ryker's Hope", "Odin's Hold", "Norma Arm",
             "Arcadian Stream", "Izanami", "Inner Orion-Perseus Conflux", "Inner Scutum-Centaurus Arm",
             "Norma Expanse", "Trojan Belt", "The Veils", "Newton's Vault", "The Conduit",

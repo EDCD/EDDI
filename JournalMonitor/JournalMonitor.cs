@@ -1585,6 +1585,9 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "CodexEntry":
+                                handled = CodexEntryEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
                             case "FSSAllBodiesFound":
                                 {
                                     var systemName = JsonParsing.getString(data, "SystemName");
@@ -1728,7 +1731,7 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "SAAScanComplete":
+                            case "SAAScanComplete": // Body mapped
                                 {
                                     var bodyName = JsonParsing.getString(data, "BodyName");
                                     var bodyId = JsonParsing.getOptionalLong(data, "BodyID");

@@ -21,6 +21,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Custom Functions
       * `ListOr` custom function added to format lists with an "or" before the last item.
     * Scripts
+      * `Codex entry obtained` added. 
       * `Disembark` updated to announce first footfalls.
       * `Surface signals detected` updated with new optional toggle variables.
       * `Touchdown` updated to announce first footfall opportunities.
