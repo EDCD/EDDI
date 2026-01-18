@@ -234,11 +234,11 @@ namespace EddiShipMonitor
             module.health = (decimal)json["module"]["health"] / 10_000M;
 
             // Engineering modifications
-            module.modified = json["engineer"] != null;
+            module.modified = json[ "WorkInProgress_modifications" ] != null || json[ "specialModifications" ] != null;
             if (module.modified)
             {
-                var blueprintName = (string)json["engineer"]["recipeName"];
-                var blueprintGrade = (int)json["engineer"]["recipeLevel"];
+                var blueprintName = (string)json["engineer"]?["recipeName"];
+                var blueprintGrade = (int)json["engineer"]?["recipeLevel"];
                 module.modificationEDName = blueprintName;
                 module.engineerlevel = blueprintGrade;
                 module.engineermodification = Blueprint.FromEDNameAndGrade(blueprintName, blueprintGrade);
