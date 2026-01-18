@@ -75,7 +75,7 @@ namespace EddiStarMapService
                 {
                     Logging.Warn( he.Message, he );
                 }
-                catch ( TaskCanceledException toe ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !toe.CancellationToken.IsCancellationRequested )
+                catch ( TaskCanceledException toe ) when ( toe.InnerException is TimeoutException )
                 {
                     Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", toe );
                 }
@@ -101,7 +101,7 @@ namespace EddiStarMapService
                 {
                     Logging.Warn( he.Message, he );
                 }
-                catch ( TaskCanceledException toe ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !toe.CancellationToken.IsCancellationRequested )
+                catch ( TaskCanceledException toe ) when ( toe.InnerException is TimeoutException )
                 {
                     Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", toe );
                 }
