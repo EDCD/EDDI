@@ -75,13 +75,13 @@ namespace EddiStarMapService
                 {
                     Logging.Warn( he.Message, he );
                 }
-                catch ( TaskCanceledException ex ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !ex.CancellationToken.IsCancellationRequested )
+                catch ( TaskCanceledException toe ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !toe.CancellationToken.IsCancellationRequested )
                 {
-                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", ex );
+                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", toe );
                 }
-                catch ( TaskCanceledException )
+                catch ( TaskCanceledException tce )
                 {
-                    // Task cancelled. Nothing to do here.
+                    Logging.Warn( "Request cancelled.", tce );
                 }
                 return null;
             }
@@ -100,18 +100,16 @@ namespace EddiStarMapService
                 catch ( HttpRequestException he )
                 {
                     Logging.Warn( he.Message, he );
-                    return null;
                 }
-                catch ( TaskCanceledException ex ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !ex.CancellationToken.IsCancellationRequested )
+                catch ( TaskCanceledException toe ) when ( !HttpClient.Timeout.Equals( TimeSpan.Zero ) && !toe.CancellationToken.IsCancellationRequested )
                 {
-                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", ex );
-                    return null;
+                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", toe );
                 }
-                catch ( TaskCanceledException )
+                catch ( TaskCanceledException tce )
                 {
-                    // Task cancelled. Nothing to do here.
-                    return null;
+                    Logging.Warn( "Request cancelled.", tce );
                 }
+                return null;
             }
         }
 

@@ -479,37 +479,38 @@ namespace EddiCore
                 var monitorTasks = new List<Task>();
                 foreach ( var monitor in activeMonitors )
                 {
-                    var monitorTask = monitor.HandleStatusAsync( status ).ContinueWith( task =>
-                    {
-                        if ( task.IsFaulted )
+                    var monitorTask = monitor.HandleStatusAsync( status );
+                    monitorTask.ContinueWith( task =>
                         {
-                            var dict = new Dictionary<string, object>
+                            if ( task.IsFaulted )
                             {
-                                [ "status" ] = status,
-                                [ "exception" ] = task.Exception
-                            };
-                            Logging.Error( $"{monitor.MonitorName()} failed to handle status", dict );
-                        }
-                    }, TaskContinuationOptions.OnlyOnFaulted );
+                                var dict = new Dictionary<string, object>
+                                {
+                                    [ "status" ] = status, [ "exception" ] = task.Exception
+                                };
+                                Logging.Error( $"{monitor.MonitorName()} failed to handle status", dict );
+                            }
+                        }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
+                        .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                     monitorTasks.Add( monitorTask );
                 }
 
                 var responderTasks = new List<Task>();
                 foreach ( var responder in activeResponders )
                 {
-                    var responderTask = responder.HandleStatusAsync( status ).ContinueWith( task =>
-                    {
-                        if ( task.IsFaulted )
+                    var responderTask = responder.HandleStatusAsync( status );
+                    responderTask.ContinueWith( task =>
                         {
-                            var dict = new Dictionary<string, object>
+                            if ( task.IsFaulted )
                             {
-                                [ "status" ] = status,
-                                [ "exception" ] = task.Exception
-                            };
-                            Logging.Error( $"{responder.ResponderName()} failed to handle status", dict );
-                        }
-                    }, TaskContinuationOptions.OnlyOnFaulted );
-
+                                var dict = new Dictionary<string, object>
+                                {
+                                    [ "status" ] = status, [ "exception" ] = task.Exception
+                                };
+                                Logging.Error( $"{responder.ResponderName()} failed to handle status", dict );
+                            }
+                        }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
+                        .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                     responderTasks.Add( responderTask );
                 }
 
@@ -1513,15 +1514,17 @@ namespace EddiCore
             var monitorTasks = new List<Task>();
             foreach ( var monitor in activeMonitors)
             {
-                var monitorTask = monitor.PreHandleAsync(@event).ContinueWith( task =>
-                {
-                    if ( task.IsFaulted )
+                var monitorTask = monitor.PreHandleAsync(@event);
+                monitorTask.ContinueWith( task =>
                     {
-                        Logging.Error(
-                            $"{monitor.MonitorName()} failed to handle {@event.type} event {@event.raw}",
-                            task.Exception );
-                    }
-                }, TaskContinuationOptions.OnlyOnFaulted );
+                        if ( task.IsFaulted )
+                        {
+                            Logging.Error(
+                                $"{monitor.MonitorName()} failed to handle {@event.type} event {@event.raw}",
+                                task.Exception );
+                        }
+                    }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
+                    .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                 monitorTasks.Add( monitorTask );
             }
 
@@ -1541,15 +1544,17 @@ namespace EddiCore
             var responderTasks = new List<Task>();
             foreach ( var responder in activeResponders )
             {
-                var responderTask = responder.HandleAsync( @event ).ContinueWith( task =>
-                {
-                    if ( task.IsFaulted )
+                var responderTask = responder.HandleAsync( @event );
+                responderTask.ContinueWith( task =>
                     {
-                        Logging.Error(
-                            $"{responder.ResponderName()} failed to handle {@event.type} event {@event.raw}",
-                            task.Exception );
-                    }
-                }, TaskContinuationOptions.OnlyOnFaulted );
+                        if ( task.IsFaulted )
+                        {
+                            Logging.Error(
+                                $"{responder.ResponderName()} failed to handle {@event.type} event {@event.raw}",
+                                task.Exception );
+                        }
+                    }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
+                    .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                 responderTasks.Add( responderTask );
             }
 
@@ -1569,15 +1574,17 @@ namespace EddiCore
             var monitorTasks = new List<Task>();
             foreach ( var monitor in activeMonitors )
             {
-                var monitorTask = monitor.PostHandleAsync( @event ).ContinueWith( task =>
-                {
-                    if ( task.IsFaulted )
+                var monitorTask = monitor.PostHandleAsync( @event );
+                monitorTask.ContinueWith( task =>
                     {
-                        Logging.Error(
-                            $"{monitor.MonitorName()} failed to post-handle {@event.type} event {@event.raw}",
-                            task.Exception );
-                    }
-                }, TaskContinuationOptions.OnlyOnFaulted );
+                        if ( task.IsFaulted )
+                        {
+                            Logging.Error(
+                                $"{monitor.MonitorName()} failed to post-handle {@event.type} event {@event.raw}",
+                                task.Exception );
+                        }
+                    }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously )
+                    .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                 monitorTasks.Add( monitorTask );
             }
 
@@ -2566,19 +2573,21 @@ namespace EddiCore
                         var monitorTasks = new List<Task>();
                         foreach ( var monitor in activeMonitors )
                         {
-
-                            var monitorTask = monitor.HandleProfileAsync( profile.json ).ContinueWith( task =>
-                            {
-                                if ( task.IsFaulted )
-                                {
-                                    Logging.Warn(
-                                        $"Monitor {monitor.MonitorName()} failed to handle Frontier API update",
-                                        task.Exception );
-                                    success = false;
-                                }
-                            }, TaskContinuationOptions.OnlyOnFaulted );
+                            var monitorTask = monitor.HandleProfileAsync( profile.json );
+                            monitorTask.ContinueWith( task =>
+                                    {
+                                        if ( task.IsFaulted )
+                                        {
+                                            Logging.Warn(
+                                                $"Monitor {monitor.MonitorName()} failed to handle Frontier API update",
+                                                task.Exception );
+                                            success = false;
+                                        }
+                                    },
+                                    TaskContinuationOptions.OnlyOnFaulted |
+                                    TaskContinuationOptions.ExecuteSynchronously )
+                                .SafeFireAndForget( e => Logging.Error( e.Message, e ) );
                             monitorTasks.Add( monitorTask );
-
                         }
 
                         await Task.WhenAll( monitorTasks ).ConfigureAwait( false );
