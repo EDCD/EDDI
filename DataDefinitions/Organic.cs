@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -18,7 +19,6 @@ namespace EddiDataDefinitions
                 genus = _species?.genus;
             }
         }
-
         private OrganicSpecies _species;
 
         [ Utilities.PublicAPI ]
@@ -32,8 +32,13 @@ namespace EddiDataDefinitions
                 genus = value?.genus;
             }
         }
-
         private OrganicVariant _variant;
+
+        [ Utilities.PublicAPI] 
+        public string invariantName => ConsolidatedName( _variant?.invariantName, _species?.invariantName, genus?.invariantName );
+
+        [Utilities.PublicAPI]
+        public string localizedName => ConsolidatedName( _variant?.localizedName, _species?.localizedName, genus?.localizedName );
 
         [JsonIgnore, Utilities.PublicAPI( "The minimum value from all predictions of this genus." )]
         public long predictedMinimumValue => valueOverride ?? genusPredictedMinimumValue ?? 0;
@@ -85,6 +90,20 @@ namespace EddiDataDefinitions
         public Organic ( [NotNull] OrganicGenus genus )
         {
             this.genus = genus;
+        }
+
+        /// <summary>
+        /// Creates a joined organism name without redundant elements
+        /// </summary>
+        private string ConsolidatedName ( string variantName, string speciesName, string genusName )
+        {
+            return string.Join( " ", new[]
+                    {
+                        variantName, 
+                        _species != null && variantName.Contains( speciesName ) ? null : speciesName,
+                        genus != null && speciesName.Contains( genusName ) ? null : genusName
+                    }
+                    .Where( n => n != null ) );
         }
 
         public void SetPredictedMinimumValue ( long? minimum )

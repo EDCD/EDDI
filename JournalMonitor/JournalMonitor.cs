@@ -2025,6 +2025,9 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 break;
+                            case "ScanOrganic":
+                                handled = ScanOrganicEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
                             case "SellOrganicData":
                                 handled = OrganicDataSoldEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
@@ -5228,7 +5231,6 @@ namespace EddiJournalMonitor
                             #region Ignored Events
 
                             // we silently ignore these, but forward them to the responders
-                            case "ScanOrganic":
 
                             // Low priority (for now)
                             case "BuyWeapon":
