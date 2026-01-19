@@ -14,10 +14,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Events
     * `Body scanned` updated to include an `alreadyfootfalled` boolean field.
     * `Carrier jumped` updated to include a new `id64` object field.
+    * `Codex entry obtained` added.
     * `Community Goal` updated to add a `Contribution` trigger type. Values in the `updates` list have also been revised to include `oldvalue`, `newvalue` and `change` variables. (thanks Nepomuk)
     * `Disembarked` updated to include a `firstfootfall` boolean field.
     * `Jumped` updated to include a new `id64` object field.
     * `Location` updated to include a new `id64` object field.
+    * `Organic data sold` added.
     * `Touchdown` updated to include a `canfirstfootfall` boolean field.
   * Speech Responder
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
@@ -26,6 +28,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Scripts
       * `Codex entry obtained` added. 
       * `Disembark` updated to announce first footfalls.
+      * `Organic data sold` added.
       * `Surface signals detected` updated with new optional toggle variables.
       * `Touchdown` updated to announce first footfall opportunities.
   * VoiceAttack Responder

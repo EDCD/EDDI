@@ -2025,6 +2025,9 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 break;
+                            case "SellOrganicData":
+                                handled = OrganicDataSoldEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
                             case "Screenshot":
                                 {
                                     if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
@@ -5225,12 +5228,7 @@ namespace EddiJournalMonitor
                             #region Ignored Events
 
                             // we silently ignore these, but forward them to the responders
-                            case "CodexDiscovery":
-                            case "CodexEntry":
-                            case "RestockVehicle":
                             case "ScanOrganic":
-                            case "SellMicroResources":
-                            case "SellOrganicData":
 
                             // Low priority (for now)
                             case "BuyWeapon":
@@ -5244,6 +5242,8 @@ namespace EddiJournalMonitor
                             case "LoadoutRemoveModule":
                             case "RenameSuitLoadout":
                             case "ReservoirReplenished":
+                            case "RestockVehicle":
+                            case "SellMicroResources":
                             case "SellSuit":  
                             case "SellWeapon": 
                             case "SuitLoadout":

@@ -1887,6 +1887,15 @@
       "name": "NPC interdiction commenced",
       "description": "Triggered when an interdiction attempt on your ship by an NPC is detected"
     },
+    "Organic data sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Preferences _}\r\n{set reportTotal to 1}  {_ Set to 0 to omit reporting on total credits earned }\r\n{set breakdown to 1}    {_ Set to 0 to omit breaking down base and first discovery bonus credits }\r\n\r\n{Occasionally(2, \"{F('Honorific')}, \")}\r\nyou have sold exo-biology data collected from {len(event.species)} species\r\n{if reportTotal:\r\n    for {Humanise(event.total)} credits\r\n}.\r\n\r\n{if breakdown:\r\n    {if reportTotal:\r\n        {OneOf(\"There was\", \"You received\")}\r\n    |else:\r\n        You sold the data for\r\n    }    \r\n    {if event.bonus > 0: \r\n        a base value of {Humanise(event.value)} credits\r\n        plus a bonus of {Humanise(event.bonus)} credits for first discoveries\r\n    |else:\r\n        {Humanise(event.value)} credits.\r\n    }\r\n}.",
+      "default": true,
+      "name": "Organic data sold",
+      "description": "Triggered when you sell exobiology data"
+    },
     "Passengers": {
       "enabled": true,
       "priority": 3,

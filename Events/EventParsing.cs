@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -298,6 +299,60 @@ namespace EddiEvents
             }
 
             return factions;
+        }
+
+        [CanBeNull]
+        public static OrganicVariant GetOrganicVariant ( IDictionary<string, object> data )
+        {
+            // i.e. Green
+            var variantEDName = JsonParsing.getString(data, "Variant");
+            var localizedVariant = JsonParsing.getString(data, "Variant_Localised");
+            var variant = OrganicVariant.FromEDName(variantEDName);
+            if ( variant != null && !string.IsNullOrEmpty( localizedVariant ) )
+            {
+                variant.fallbackLocalizedName = localizedVariant;
+            }
+            if ( variant is null && data.ContainsKey( "Variant" ) )
+            {
+                Logging.Error( "Unable to parse organic variant data.", data );
+            }
+            return variant;
+        }
+
+        [CanBeNull]
+        public static OrganicSpecies GetOrganicSpecies ( IDictionary<string, object> data )
+        {
+            // i.e. Flabellum
+            var speciesEDName = JsonParsing.getString(data, "Species");
+            var localizedSpecies = JsonParsing.getString(data, "Species_Localised");
+            var species = OrganicSpecies.FromEDName(speciesEDName);
+            if ( species != null && !string.IsNullOrEmpty( localizedSpecies ) )
+            {
+                species.fallbackLocalizedName = localizedSpecies;
+            }
+            if ( species is null && data.ContainsKey( "Species" ) )
+            {
+                Logging.Warn( "Unable to parse organic species data.", data );
+            }
+            return species;
+        }
+
+        [CanBeNull]
+        public static OrganicGenus GetOrganicGenus ( IDictionary<string, object> data )
+        {
+            // i.e. Frutexa
+            var genusEDName = JsonParsing.getString(data, "Genus");
+            var localizedGenus = JsonParsing.getString(data, "Genus_Localised");
+            var genus = OrganicGenus.FromEDName(genusEDName);
+            if ( genus != null && !string.IsNullOrEmpty( localizedGenus ) )
+            {
+                genus.fallbackLocalizedName = localizedGenus;
+            }
+            if ( genus is null && data.ContainsKey( "Genus" ) )
+            {
+                Logging.Warn( "Unable to parse organic genus data.", data );
+            }
+            return genus;
         }
 
         public static StationLandingPads LandingPadsCollection ( IDictionary<string, object> data )
