@@ -1,5 +1,5 @@
-﻿using Utilities;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
