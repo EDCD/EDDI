@@ -23,6 +23,9 @@ namespace EddiEvents
         [PublicAPI( "The numeric system address of the destination star system" )]
         public ulong systemAddress { get; private set; }
 
+        [PublicAPI( "Metadata encoded into the unique 64 bit ID for the star system." )]
+        public StarSystemId64 id64 => new StarSystemId64( systemAddress );
+
         // Origin System variables
 
         [PublicAPI( "The name of the origin star system" )]
@@ -30,6 +33,9 @@ namespace EddiEvents
 
         [PublicAPI( "The numeric ID of the origin star system" )]
         public ulong originSystemAddress { get; private set; }
+
+        [PublicAPI( "Metadata encoded into the unique 64 bit ID for the origin star system." )]
+        public StarSystemId64 originId64 => new StarSystemId64( systemAddress );
 
         // Body variables
 

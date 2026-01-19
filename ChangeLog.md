@@ -13,10 +13,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `System` object updated to include an `id64` object field containing boxel, mass code, and stellar region information.
   * Events
     * `Body scanned` updated to include an `alreadyfootfalled` boolean field.
+    * `Carrier jump engaged` updated to include new `id64` and `originId64` object fields.
     * `Carrier jumped` updated to include a new `id64` object field.
     * `Codex entry obtained` added.
     * `Community Goal` updated to add a `Contribution` trigger type. Values in the `updates` list have also been revised to include `oldvalue`, `newvalue` and `change` variables. (thanks Nepomuk)
     * `Disembarked` updated to include a `firstfootfall` boolean field.
+    * `FSD engaged` updated to include a new `id64` object field.
     * `Jumped` updated to include a new `id64` object field.
     * `Location` updated to include a new `id64` object field.
     * `Organic data sold` added.
@@ -26,8 +28,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Custom Functions
       * `ListOr` custom function added to format lists with an "or" before the last item.
     * Scripts
+      * `Carrier jump engaged` updated to announce stellar region border crossings.  
       * `Codex entry obtained` added. 
       * `Disembark` updated to announce first footfalls.
+      * `FSD engaged` updated to announce stellar region border crossings.  
       * `Organic data sold` added.
       * `Surface signals detected` updated with new optional toggle variables.
       * `Touchdown` updated to announce first footfall opportunities.

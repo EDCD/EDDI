@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using Utilities;
 
 namespace EddiEvents
@@ -27,6 +28,9 @@ namespace EddiEvents
 
         [PublicAPI( "The numeric system address of the destination star system (only if type is Hyperspace)" )]
         public ulong? systemAddress { get; private set; } // Only set when the fsd target is hyperspace
+
+        [PublicAPI( "Metadata encoded into the unique 64 bit ID for the star system." )]
+        public StarSystemId64 id64 => systemAddress is null ? null : new StarSystemId64( (ulong)systemAddress );
 
         [PublicAPI( "True if traveling via taxi" )]
         public bool taxijump { get; private set; }
