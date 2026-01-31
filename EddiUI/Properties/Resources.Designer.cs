@@ -691,7 +691,34 @@ namespace EddiUI.Properties {
                 return ResourceManager.GetString("tab_tts_volume_label", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pocket TTS is a lightweight text-to-speech engine by Kyutai that runs on CPU....
+        /// </summary>
+        public static string tab_tts_pocket_tts_desc {
+            get {
+                return ResourceManager.GetString("tab_tts_pocket_tts_desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Pocket TTS:.
+        /// </summary>
+        public static string tab_tts_pocket_tts_enabled_label {
+            get {
+                return ResourceManager.GetString("tab_tts_pocket_tts_enabled_label", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pocket TTS server URL:.
+        /// </summary>
+        public static string tab_tts_pocket_tts_url_label {
+            get {
+                return ResourceManager.GetString("tab_tts_pocket_tts_url_label", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Troubleshoot common issues.
         /// </summary>

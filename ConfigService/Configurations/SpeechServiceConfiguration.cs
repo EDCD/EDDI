@@ -28,7 +28,13 @@ namespace EddiConfigService.Configurations
 
         [JsonProperty("enableicao")]
         public bool EnableIcao { get; set; }
-        
+
+        [JsonProperty("pocketTtsEnabled")]
+        public bool PocketTtsEnabled { get; set; }
+
+        [JsonProperty("pocketTtsServerUrl")]
+        public string PocketTtsServerUrl { get; set; } = "http://localhost:8000";
+
         /// <summary>
         /// Clear the information held by speech
         /// </summary>
@@ -40,6 +46,8 @@ namespace EddiConfigService.Configurations
             DistortOnDamage = true;
             DisableIpa = false;
             EnableIcao = false;
+            PocketTtsEnabled = false;
+            PocketTtsServerUrl = "http://localhost:8000";
         }
     }
 }

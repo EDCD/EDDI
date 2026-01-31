@@ -57,6 +57,9 @@ namespace EddiUI
 
             ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels; // already sorted
             ttsTestShipDropDown.Text = "Adder";
+
+            pocketTtsEnabledCheckbox.IsChecked = speechServiceConfiguration.PocketTtsEnabled;
+            pocketTtsServerUrlText.Text = speechServiceConfiguration.PocketTtsServerUrl ?? "http://localhost:8000";
         }
 
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
@@ -154,6 +157,16 @@ namespace EddiUI
             ttsUpdated();
         }
 
+        private void pocketTtsEnabledUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
+        private void pocketTtsServerUrlUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
         /// <summary>
         /// fetch the Text-to-Speech Configuration and write it to File
         /// </summary>
@@ -161,16 +174,18 @@ namespace EddiUI
         {
             var speechConfiguration = new SpeechServiceConfiguration
             {
-                StandardVoice = ttsVoiceDropDown.SelectedItem == null || 
-                                ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" 
-                    ? null 
+                StandardVoice = ttsVoiceDropDown.SelectedItem == null ||
+                                ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default"
+                    ? null
                     : ttsVoiceDropDown.SelectedItem.ToString(),
                 Volume = (int)ttsVolumeSlider.Value,
                 Rate = (int)ttsRateSlider.Value,
                 EffectsLevel = (int)ttsEffectsLevelSlider.Value,
                 DistortOnDamage = ttsDistortCheckbox.IsChecked ?? false,
                 DisableIpa = DisableIpaCheckbox.IsChecked ?? false,
-                EnableIcao = enableIcaoCheckbox.IsChecked ?? false
+                EnableIcao = enableIcaoCheckbox.IsChecked ?? false,
+                PocketTtsEnabled = pocketTtsEnabledCheckbox.IsChecked ?? false,
+                PocketTtsServerUrl = pocketTtsServerUrlText.Text
             };
             ConfigService.Instance.speechServiceConfiguration = speechConfiguration;
         }

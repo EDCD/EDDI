@@ -37,6 +37,7 @@ namespace EddiSpeechService
 
         private readonly SystemSpeechSynthesizer systemSpeechSynth;
         private readonly WindowsMediaSynthesizer windowsMediaSynth;
+        private readonly PocketTTSSynthesizer pocketTtsSynth;
 
         internal int activeSpeechPriority;
 
@@ -92,6 +93,16 @@ namespace EddiSpeechService
                     e );
             }
 
+            // Prep the Pocket TTS synthesizer (requires an external pocket-tts server)
+            try
+            {
+                pocketTtsSynth = new PocketTTSSynthesizer( ref voiceStore );
+            }
+            catch ( Exception e )
+            {
+                Logging.Error( "Unable to initialize Pocket TTS synthesizer.", e );
+            }
+
             // Sort results alphabetically by voice name
             allVoices = voiceStore.OrderBy( v => v.name ).ToList();
         }
@@ -111,6 +122,7 @@ namespace EddiSpeechService
                 {
                     windowsMediaSynth?.Dispose();
                 }
+                pocketTtsSynth?.Dispose();
             }
         }
 
@@ -513,6 +525,10 @@ namespace EddiSpeechService
         private Stream speak ( [NotNull] VoiceDetails voiceDetails, string speech )
         {
             var Configuration = ConfigService.Instance.speechServiceConfiguration;
+            if ( voiceDetails.synthType is PocketTTSSynthesizer.SynthTypeName )
+            {
+                return pocketTtsSynth?.Speak( voiceDetails, speech, Configuration );
+            }
             if ( voiceDetails.synthType is nameof( System ) )
             {
                 return systemSpeechSynth?.Speak( voiceDetails, speech, Configuration );

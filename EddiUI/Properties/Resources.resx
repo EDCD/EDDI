@@ -339,6 +339,15 @@ Please close the other instance and try again.</value>
   <data name="tab_tts_volume_label" xml:space="preserve">
     <value>Volume of speech:</value>
   </data>
+  <data name="tab_tts_pocket_tts_desc" xml:space="preserve">
+    <value>Pocket TTS is a lightweight text-to-speech engine by Kyutai that runs on CPU. To use it, install pocket-tts (pip install pocket-tts) and start the server with 'pocket-tts serve'. Enable the option below and set the server URL. EDDI must be restarted after changing these settings for the Pocket TTS voice to appear.</value>
+  </data>
+  <data name="tab_tts_pocket_tts_enabled_label" xml:space="preserve">
+    <value>Enable Pocket TTS:</value>
+  </data>
+  <data name="tab_tts_pocket_tts_url_label" xml:space="preserve">
+    <value>Pocket TTS server URL:</value>
+  </data>
   <data name="troubleshoot_common_issues" xml:space="preserve">
     <value>Troubleshoot common issues</value>
     <comment>A hyperlink to the troubleshooting URL (in english)</comment>
