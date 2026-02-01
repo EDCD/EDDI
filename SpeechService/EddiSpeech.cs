@@ -49,7 +49,7 @@ namespace EddiSpeechService
             {
                 if ( size == LandingPadSize.Small )
                 {
-                    echoDelayMs = 30;
+                    echoDelayMs = 50;
                 }
                 else if ( size == LandingPadSize.Medium )
                 {

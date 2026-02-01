@@ -5,8 +5,6 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
     internal static class Curve
     {
         // Ensemble effect parameter curves
-        private static readonly SmoothMonotonicSpline BodyGainDbSpline =
-            new SmoothMonotonicSpline( Constants.BodyGainSplineX, Constants.BodyGainSplineY );
         private static readonly SmoothMonotonicSpline CenterDelaySpline =
             new SmoothMonotonicSpline(Constants.CenterDelaySplineX, Constants.CenterDelaySplineY);
         private static readonly SmoothMonotonicSpline ChorusDepthSpline =
@@ -31,10 +29,6 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
             new SmoothMonotonicSpline( Constants.StepX, Constants.StepY );
         private static readonly SmoothMonotonicSpline WetGainSpline =
             new SmoothMonotonicSpline(Constants.WetGainFx, Constants.WetGainY);
-        private static readonly SmoothMonotonicSpline WetHpfHzSpline =
-            new SmoothMonotonicSpline( Constants.WetHpfFx, Constants.WetHpfHz );
-        private static readonly SmoothMonotonicSpline WetLpfHzSpline =
-            new SmoothMonotonicSpline(Constants.WetLpfFx, Constants.WetLpfHz);
         
         // Voice activation curves
         public static readonly SmoothMonotonicSpline Voice0ActSpline = 
@@ -66,14 +60,14 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         {
             return new ModStruct
             {
-                DetuneJitter = Functions.Clamp( ModDetuneJitterSpline.Evaluate( fxLevel ), 0f, Constants.ModDetuneJitterMax ),
-                PhaseJitterRad = Functions.Clamp( ModPhaseJitterSpline.Evaluate( fxLevel ), 0f, Constants.ModPhaseJitterMaxRad ),
+                DetuneJitter = SpeechFxFunctions.Clamp( ModDetuneJitterSpline.Evaluate( fxLevel ), 0f, Constants.ModDetuneJitterMax ),
+                PhaseJitterRad = SpeechFxFunctions.Clamp( ModPhaseJitterSpline.Evaluate( fxLevel ), 0f, Constants.ModPhaseJitterMaxRad ),
             };
         }
 
         public static float BodyGainDb ( float fxLevel )
         {
-            return BodyGainDbSpline.Evaluate( fxLevel );
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.BodyGainSplineX, Constants.BodyGainSplineY, fxLevel );
         }
 
         public static float CenterDelayMs ( float fxLevel )
@@ -88,14 +82,19 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
 
         public static float DetuneSpan ( float fxLevel )
         {
-            var x = Functions.Clamp( fxLevel / 100f, 0f, 1f );
-            return Functions.LinearInterpolate( Constants.DetuneSpanMin, Constants.DetuneSpanMax,
-                Functions.EaseInPow( x, Constants.DetuneEasePower ) );
+            var x = SpeechFxFunctions.Clamp( fxLevel / 100f, 0f, 1f );
+            return SpeechFxFunctions.LinearInterpolate( Constants.DetuneSpanMin, Constants.DetuneSpanMax,
+                SpeechFxFunctions.EaseInPow( x, Constants.DetuneEasePower ) );
         }
 
         public static float DryGain ( float fxLevel )
         {
             return DryGainSpline.Evaluate( fxLevel );
+        }
+
+        public static float DryHpfHz ( float fxLevel )
+        {
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.DryHpfFx, Constants.DryHpfHz, fxLevel );
         }
 
         public static float DynamicDetuneMix ( float fxLevel )
@@ -106,28 +105,35 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         public static float Feedback ( float master, float fxLevel )
         {
             // Early fade gives slight taper below 0.1 master; constant thereafter.
-            var t = Functions.SoftStep( fxLevel, Constants.FeedbackCenter, Constants.FeedbackWidth );
-            var fb = Functions.LinearInterpolate( Constants.FeedbackMin, Constants.FeedbackMax, t );
+            var t = SpeechFxFunctions.SoftStep( fxLevel, Constants.FeedbackCenter, Constants.FeedbackWidth );
+            var fb = SpeechFxFunctions.LinearInterpolate( Constants.FeedbackMin, Constants.FeedbackMax, t );
             
             // Taper to reduce late-range cancellation
-            var late = Functions.LinearRescale( master, Constants.FeedbackLateStart, Constants.FeedbackLateEnd );
-            var lateAtten = Functions.LinearInterpolate( 1.00f, Constants.FeedbackLateMinFactor, late );
+            var late = SpeechFxFunctions.LinearRescale( master, Constants.FeedbackLateStart, Constants.FeedbackLateEnd );
+            var lateAtten = SpeechFxFunctions.LinearInterpolate( 1.00f, Constants.FeedbackLateMinFactor, late );
             var baseVal = Math.Min( fb * lateAtten, Constants.FeedbackAbsoluteMax );
-            
-            return baseVal;
+
+            var bloomT = SpeechFxFunctions.SmoothStep(Constants.FeedbackBloomStartFx, Constants.FeedbackBloomEndFx, fxLevel);
+            var bloomed = SpeechFxFunctions.LinearInterpolate(baseVal, Constants.FeedbackBloomMax, bloomT);
+            return Math.Min( bloomed, Constants.FeedbackAbsoluteMax );
+        }
+
+        public static float FeedbackHpfHz ( float fxLevel )
+        {
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.FeedbackHpfFx, Constants.FeedbackHpfHz, fxLevel );
         }
 
         public static float FeedbackGainDb ( float master )
         {
-            var shelfNorm = Functions.LinearRescale( master, Constants.FeedbackShelfStart, Constants.FeedbackShelfEnd );
-            var baseCut = Functions.LinearInterpolate( Constants.FeedbackShelfGainEarlyDb, Constants.FeedbackShelfGainLateDb, shelfNorm );
+            var shelfNorm = SpeechFxFunctions.LinearRescale( master, Constants.FeedbackShelfStart, Constants.FeedbackShelfEnd );
+            var baseCut = SpeechFxFunctions.LinearInterpolate( Constants.FeedbackShelfGainEarlyDb, Constants.FeedbackShelfGainLateDb, shelfNorm );
             // As feedback rises, open the filter slightly to avoid "buzz" and let resonance bloom
             return baseCut * ( 1f + ( 0.15f * master ) );
         }
 
         public static float FeedbackLpfCutoff ( float master )
         {
-            return Functions.LinearInterpolate( Constants.FeedbackLpfLow, Constants.FeedbackLpfHigh, master );
+            return SpeechFxFunctions.LinearInterpolate( Constants.FeedbackLpfLow, Constants.FeedbackLpfHigh, master );
         }
 
         public static GhostStruct GhostProfile ( float fxLevel )
@@ -144,7 +150,7 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
 
         public static float LfoJitterScale ( float fxLevel )
         {
-            return Functions.SmoothSpline( Constants.LfoJitterScaleX, Constants.LfoJitterScaleY, fxLevel );
+            return SpeechFxFunctions.SmoothSpline( Constants.LfoJitterScaleX, Constants.LfoJitterScaleY, fxLevel );
         }
 
         public static float LfoRateScale ( float fxLevel )
@@ -152,56 +158,29 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
             return LfoRateSpline.Evaluate( fxLevel );
         }
 
-        public static float MetallicGainDb ( float fxLevel )
-        {
-            var baseDb = Functions.SmoothSpline( Constants.MetallicGainSplineX, Constants.MetallicGainSplineY, fxLevel );
-            var t = Functions.SmoothStep(Constants.MetallicGainAttenuationStart, Constants.MetallicGainAttenuationEnd, fxLevel);
-            var atten = t * Constants.MetallicGainAttenuationMax;
-            return baseDb - atten;
-        }
-
         public static float MicroCombScale ( float fxLevel )
         {
-            return Functions.SmoothSpline( Constants.MicroCombScaleX, Constants.MicroCombScaleY, fxLevel );
+            return SpeechFxFunctions.SmoothSpline( Constants.MicroCombScaleX, Constants.MicroCombScaleY, fxLevel );
         }
 
         public static float MixMakeupDb ( float fxLevel )
         {
-            var x = Constants.MakeupDbFx;
-            var y = Constants.MakeupDbY;
-
-            // clamp endpoints
-            if ( fxLevel <= x[ 0 ] )
-            {
-                return y[ 0 ];
-            }
-
-            if ( fxLevel >= x[ x.Length - 1 ] )
-            {
-                return y[ y.Length - 1 ];
-            }
-
-            // find segment
-            var i = 0;
-            while ( i < (x.Length - 1) && fxLevel > x[ i + 1 ] )
-            { i++; }
-
-            var raw = Functions.SmoothSpline( x, y, fxLevel );
-
-            // clamp segment to prevent overshoots
-            var lo = Math.Min( y[i], y[i + 1] );
-            var hi = Math.Max( y[i], y[i + 1] );
-            return Math.Max( lo, Math.Min( hi, raw ) );
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.MakeupDbFx, Constants.MakeupDbY, fxLevel );
+        }
+        
+        public static float MudCutGainDb ( float fxLevel )
+        {
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.MudCutGainSplineX, Constants.MudCutGainSplineY, fxLevel );
         }
 
+        public static float PresenceCutGainDb ( float fxLevel )
+        {
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.PresenceCutGainSplineX, Constants.PresenceCutGainSplineY, fxLevel );
+        }
+        
         public static float ResonanceAllPassGain ( float fxLevel )
         {
             return ResonanceAllPassGainSpline.Evaluate( fxLevel );
-        }
-
-        public static float ShimmerGainDb ( float fxLevel )
-        {
-            return Functions.SmoothSpline( Constants.ShimmerSplineX, Constants.ShimmerSplineY, fxLevel );
         }
 
         public static float WetGain ( float fxLevel )
@@ -211,12 +190,12 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
 
         public static float WetHpfHz ( float fxLevel )
         {
-            return WetHpfHzSpline.Evaluate( fxLevel );
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.WetHpfFx, Constants.WetHpfHz, fxLevel );
         }
 
         public static float WetLpfCutoffHz ( float fxLevel )
         {
-            return WetLpfHzSpline.Evaluate( fxLevel );
+            return SpeechFxFunctions.SmoothSplineClamped( Constants.WetLpfFx, Constants.WetLpfHz, fxLevel );
         }
     }
 }

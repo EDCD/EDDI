@@ -23,23 +23,23 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         };
         public static readonly float[] DryGainY =
         {
-            1.000f, //   0 fx
-            0.980f, //  10 fx
-            0.900f, //  20 fx
-            0.780f, //  25 fx
-            0.700f, //  28 fx
-            0.400f, //  30 fx
-            0.330f, //  32 fx
-            0.220f, //  35 fx
-            0.160f, //  37 fx
-            0.120f, //  40 fx
-            0.100f, //  45 fx
-            0.060f, //  50 fx
-            0.040f, //  60 fx
-            0.020f, //  70 fx
-            0.015f, //  80 fx
-            0.012f, //  90 fx
-            0.010f  // 100 fx
+            1.000f, //   0
+            0.930f, //  10
+            0.800f, //  20
+            0.660f, //  25
+            0.550f, //  28
+            0.400f, //  30
+            0.368f, //  32
+            0.320f, //  35
+            0.260f, //  37
+            0.220f, //  40
+            0.200f, //  45
+            0.150f, //  50
+            0.070f, //  60
+            0.030f, //  70
+            0.015f, //  80
+            0.0125f,//  90
+            0.010f  // 100
         };
         public static readonly float[] WetGainFx =
         {
@@ -47,7 +47,24 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         };
         public static readonly float[] WetGainY =
         {
-            0.00f, 0.05f, 0.15f, 0.28f, 0.38f, 0.50f, 0.58f, 0.68f, 0.74f, 0.80f, 0.84f, 0.88f, 0.92f, 0.96f, 0.98f, 0.990f, 0.994f, 0.996f
+            0.000f,  //   0
+            0.050f,  //  10
+            0.300f,  //  20
+            0.420f,  //  25
+            0.480f,  //  28
+            0.550f,  //  30
+            0.578f,  //  32
+            0.620f,  //  35
+            0.740f,  //  37
+            0.800f,  //  40
+            0.820f,  //  42
+            0.850f,  //  45
+            0.900f,  //  50
+            0.940f,  //  60
+            0.980f,  //  70
+            0.990f,  //  80
+            0.9925f, //  90
+            0.995f   // 100
         };
         public static readonly float[] MakeupDbFx = 
         {
@@ -84,11 +101,11 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         {
             0.0000f, //   0 fx
             0.0140f, //  20 fx
-            0.0150f, //  30 fx
-            0.0151f, //  32 fx
-            0.0210f, //  35 fx
-            0.0240f, //  37 fx
-            0.0250f, //  40 fx
+            0.0200f, //  30 fx
+            0.0220f, //  32 fx
+            0.0360f, //  35 fx
+            0.0380f, //  37 fx
+            0.0340f, //  40 fx
             0.0300f, //  60 fx 
             0.0400f, //  80 fx
             0.0500f  // 100 fx
@@ -105,8 +122,14 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         };
         public static readonly float[] StepY =
         {
-            0.54f, 0.64f, 0.70f, 0.74f, 0.78f, 0.80f, 0.84f
-        }; // relative multiplier to existing linear step
+            0.54f, // 0.00
+            0.64f, // 0.20
+            0.70f, // 0.28
+            0.74f, // 0.34
+            0.78f, // 0.40
+            0.83f, // 0.60
+            0.88f  // 1.00
+        };
         public static readonly float[] CenterDelaySplineX =
         {
             0f, 10f, 20f, 30f, 35f, 40f, 45f, 50f, 70f, 100f
@@ -114,9 +137,9 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
 
         public static readonly float[] CenterDelaySplineY =
         {
-            6.50f, 7.00f, 8.00f, 9.50f, 10.50f, 11.50f, 12.00f, 12.50f, 13.50f, 14.00f
+            6.5f, 7f, 8f, 15.5f, 16f, 16.2f, 16.5f, 17f, 18.5f, 20f
         };
-        public const float DelayJitterPct = 0.015f; // ±1.5%
+        public const float DelayJitterPct = 0.025f;
 
         // Depth shaping
         public const float DepthFloor = 0.00f; // minimum depth
@@ -129,21 +152,8 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         };
         public static readonly float[] ChorusDepthSplineY =
         {
-            0.00f, //   0 fx
-            0.35f, //  10 fx
-            0.90f, //  20 fx
-            1.30f, //  28 fx
-            1.40f, //  30 fx
-            1.40f, //  32 fx
-            1.50f, //  35 fx
-            1.62f, //  37 fx
-            1.78f, //  40 fx
-            1.90f, //  42 fx
-            2.20f, //  45 fx
-            3.00f, //  50 fx
-            3.50f, //  60 fx
-            4.30f, //  80 fx
-            5.00f  // 100 fx
+            0f, 0.55f, 1.35f, 1.6f, 1.7f, 1.8f, 2.2f, 2.4f,
+            2.6f, 2.8f, 3.2f, 4f, 5.8f, 8f, 9.6f
         };
 
         // Detune
@@ -168,15 +178,18 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         };
 
         // Feedback
-        public const float FeedbackMax = 0.28f;
+        public const float FeedbackMax = 0.32f;
         public const float FeedbackMin = 0.03f;
-        public const float FeedbackCenter = 25f;
+        public const float FeedbackCenter = 35f;
         public const float FeedbackWidth = 60f;
         public const float FeedbackLateStart = 0.60f;
         public const float FeedbackLateEnd = 0.92f;
         public const float FeedbackLateMinFactor = 1.00f;
-        public const float FeedbackAbsoluteMax = 0.28f;
-
+        public const float FeedbackAbsoluteMax = 0.38f;
+        public const float FeedbackBloomStartFx = 55f;
+        public const float FeedbackBloomEndFx   = 100f;
+        public const float FeedbackBloomMax     = 0.38f;
+        
         // Modulation Signal Shaping (per voice)
         public const float LfoMinHz = 0.78f; // the minimum amplitude of the Low Frequency Oscillator (LFO) signal controlling delay time.
         public const float LfoMaxHz = 1.55f; // the maximum amplitude of the Low Frequency Oscillator (LFO) signal controlling delay time.
@@ -238,22 +251,22 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         };
         public static readonly float[] MicroCombScaleY =
         {
-            0.140f, //  0 fx
-            0.154f, // 10 fx
-            0.161f, // 20 fx
-            0.168f, // 28 fx
-            0.182f, // 30 fx
-            0.238f, // 32 fx
-            0.266f, // 35 fx
-            0.308f, // 37 fx
-            0.420f, // 40 fx
-            0.563f, // 42 fx
-            1.047f, // 45 fx
-            1.478f, // 50 fx
-            1.937f, // 60 fx
-            2.250f, // 70 fx
-            2.350f, // 80 fx
-            2.550f  // 100 fx
+            0.140f, //   0 fx
+            0.154f, //  10 fx
+            0.160f, //  20 fx
+            0.160f, //  28 fx
+            0.160f, //  30 fx
+            0.185f, //  32 fx
+            0.215f, //  35 fx
+            0.235f, //  37 fx
+            0.290f, //  40 fx
+            0.400f, //  42 fx
+            0.950f, //  45 fx
+            1.478f, //  50 fx
+            1.937f, //  60 fx
+            2.500f, //  70 fx
+            2.700f, //  80 fx
+            2.850f  // 100 fx
         };
 
         // Voice Shaping
@@ -318,67 +331,139 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         public const float FeedbackLpfLow = 11000f;
         public const float FeedbackLpfHigh = 15000f;
         public const float FeedbackBypassFxThresh = 5.00f;// skip feedback LPF below this to save CPU
+        public static readonly float[] DryHpfFx =
+        {
+            0f, 20f, 25f, 28f, 30f, 35f, 40f, 50f, 70f, 100f
+        };
+        public static readonly float[] DryHpfHz =
+        {
+            0f,   //   0 fx (disabled)
+            25f,  //  20 fx
+            22f,  //  25 fx
+            26f,  //  28 fx
+            55f,  //  30 fx
+            80f,  //  35 fx
+            55f,  //  40 fx
+            45f,  //  50 fx
+            22f,  //  70 fx
+            18f   // 100 fx
+        };
         public static readonly float[] WetHpfFx =
         {
-            0f, 20f, 30f, 35f, 40f, 50f, 70f, 100f
+            0f, 20f, 25f, 28f, 30f, 32f, 35f, 37f, 40f, 50f, 70f, 80f, 90f, 100f
         };
         public static readonly float[] WetHpfHz =
         {
-            0f,   // 0 fx  (disabled)
-            60f,  // 20 fx
-            90f,  // 30 fx
-            100f, // 35 fx
-            110f, // 40 fx
-            110f, // 50 fx
-            110f, // 70 fx
-            110f  // 100 fx
+            0f,   //   0 fx  (disabled)
+            40f,  //  20 fx
+            32f,  //  25 fx
+            36f,  //  28 fx
+            55f,  //  30 fx
+            60f,  //  32 fx
+            95f,  //  35 fx
+            88f, //  37 fx
+            85f,  //  40 fx
+            80f,  //  50 fx
+            45f,  //  70 fx
+            30f,  //  80 fx
+            28f,  //  90 fx
+            26f   // 100 fx
         };
         public static readonly float[] WetLpfFx =
         {
-            0f, 20f, 30f, 40f, 50f, 70f, 100f
+            0f, 20f, 30f, 35f, 40f, 45f, 50f, 70f, 100f
         };
         public static readonly float[] WetLpfHz =
         {
             10400f, //   0 fx
-            10600f, //  20 fx
-            10850f, //  30 fx
-            10950f, //  40 fx
-            11000f, //  50 fx
-            11000f, //  70 fx
-            11000f  // 100 fx
+            9800f,  //  20 fx
+            9000f,  //  30 fx
+            8400f,  //  35 fx
+            8200f,  //  40 fx
+            7400f,  //  45 fx
+            7800f,  //  50 fx
+            6400f,  //  70 fx
+            5600f   // 100 fx
+        };
+        // Feedback High Pass Filter (prevents LF runaway in the feedback loop)
+        public static readonly float[] FeedbackHpfFx =
+        {
+            0f, 20f, 25f, 30f, 35f, 40f, 50f, 70f, 100f
+        };
+        public static readonly float[] FeedbackHpfHz =
+        {
+            0f,   // 0 fx  (disabled)
+            70f,  // 20 fx
+            55f,  // 25 fx
+            95f,  // 30 fx
+            130f, // 35 fx
+            110f, // 40 fx
+            100f, // 50 fx
+            50f,  // 70 fx
+            45f   // 100 fx
         };
 
         // Body Shelf
-        public const float BodyShelfHz = 420f;
-        public const float BodyShelfQ  = 0.80f;
-        public static readonly float[] BodyGainSplineX = { 0f, 20f, 30f, 32f, 40f, 70f, 100f };
-        public static readonly float[] BodyGainSplineY = { 0f, -0.4f, -0.8f, -0.9f, -1.0f, -1.0f, -1.0f };
+        public const float BodyShelfQ  = 1.2f;
+        public static readonly float[] BodyGainSplineX =
+        {
+            0f, 20f, 25f, 30f, 40f, 60f, 70f, 80f, 100f
+        };
+        public static readonly float[] BodyGainSplineY =
+        {
+            0.0f,  //   0 fx
+            0.5f,  //  20
+            1.05f, //  25
+            1.2f,  //  30
+            1.3f,  //  40
+            0.9f,  //  60
+            0.8f,  //  70
+            0.95f, //  80
+            0.6f   // 100
+        };
+        public const float BodyShelfHz = 240f;
 
-        // Metallic Shelf
-        public const float MetallicShelfHz = 2700f;
-        public const float MetallicQ = 0.80f;
-        public static readonly float[] MetallicGainSplineX =
+        // Mud cut
+        public static readonly float[] MudCutGainSplineX =
         {
-            0f, 10f, 20f, 30f, 32f, 35f, 37f, 40f, 45f, 60f, 80f, 100f
+            0f, 20f, 25f, 28f, 30f, 32f, 35f, 37f, 40f, 45f, 60f, 70f, 100f
         };
-        public static readonly float[] MetallicGainSplineY =
+        public static readonly float[] MudCutGainSplineY =
         {
-            +0.00f,  //   0 fx
-            -0.20f,  //  10 fx
-            -0.40f,  //  20 fx
-            -1.10f,  //  30 fx
-            -1.00f,  //  32 fx
-            -1.00f,  //  35 fx
-            -1.00f,  //  37 fx
-            -0.70f,  //  40 fx
-            -0.30f,  //  45 fx
-            +0.10f,  //  60 fx
-            +0.80f,  //  80 fx
-            +1.20f   // 100 fx
+            -0.0f,  //   0 fx
+            -1.0f,  //  20
+            -1.85f, //  25
+            -3.3f,  //  28 
+            -2.2f,  //  30
+            -2.0f,  //  32
+            -0.3f,  //  35
+            -0.45f, //  37
+            -0.35f, //  40
+            -0.25f, //  45
+            -0.55f, //  60
+            -0.90f, //  70
+            -1.30f  // 100
         };
-        public const float MetallicGainAttenuationMax = 2.0f;
-        public const float MetallicGainAttenuationStart = 60f;
-        public const float MetallicGainAttenuationEnd = 100f;
+        public const float MudCutHz = 450f;
+        public const float MudCutQ = 1.00f;
+
+        // Presence cut
+        public const float PresenceCutHz = 2000f;
+        public const float PresenceCutQ  = 1.00f;
+        public static readonly float[] PresenceCutGainSplineX = { 0f, 20f, 30f, 32f, 35f, 37f, 40f, 45f, 70f, 100f };
+        public static readonly float[] PresenceCutGainSplineY =
+        {
+            -0.00f, //   0 fx
+            -0.80f, //  20 fx
+            -1.10f, //  30 fx
+            -1.25f, //  32 fx
+            -1.15f, //  35 fx
+            -1.25f, //  37 fx
+            -1.35f, //  40 fx
+            -1.45f, //  45 fx
+            -1.65f, //  70 fx
+            -1.85f  // 100 fx
+        };
 
         // Resonance
         public const float ResonanceAllPassGain = 0.52f;
@@ -393,11 +478,11 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
         };
         public static readonly float[] Voice0ActY =
         {
-            0.00f, 0.18f, 0.30f, 0.46f, 0.62f, 0.82f, 0.92f
+            0.00f, 0.18f, 0.30f, 0.52f, 0.70f, 0.84f, 0.92f
         };
         public static readonly float[] Voice1ActY =
         {
-            0.00f, 0.18f, 0.30f, 0.46f, 0.62f, 0.82f, 0.92f
+            0.00f, 0.18f, 0.30f, 0.52f, 0.70f, 0.84f, 0.92f
         };
         public static readonly float[] Voice2ActY =
         {
@@ -416,36 +501,43 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
             0.00f, 0.17f, 0.40f, 0.70f, 0.80f, 0.88f, 0.94f
         };
 
-        // Shimmer
-        public const float ShimmerShelfHz = 7600f;
-        public const float ShimmerShelfQ = 0.72f;
-        public static readonly float[] ShimmerSplineX =
-        {
-            0f, 10f, 20f, 30f, 32f, 35f, 37f, 40f, 45f, 60f, 80f, 100f
-        };
-        public static readonly float[] ShimmerSplineY =
-        {
-            0.00f, //   0 fx
-            2.20f, //  10 fx
-            2.70f, //  20 fx
-            11.6f, //  30 fx
-            11.6f, //  32 fx
-            11.6f, //  35 fx
-            11.8f, //  37 fx
-            12.0f, //  40 fx
-            10.0f, //  45 fx
-            11.0f, //  60 fx
-            12.0f, //  80 fx
-            13.0f  // 100 fx
-        };
-
         // Safety: absolute delay and buffer sizing
         public const float MinVoiceDelayMs = 0.75f;
         public const float MaxVoiceDelayMs = 90.0f; // hard cap base+depth per voice
         public const float BufferHeadroomMs = 10.0f; // extra beyond (base+depth)
 
+        // Baseline EQ
+        public const float Baseline125BoostHz = 125f;
+        public const float Baseline125BoostQ  = 0.90f;
+        public const float Baseline125BoostDb = -1.30f;
+        public const float Baseline250BoostHz = 250f;
+        public const float Baseline250BoostQ  = 0.90f;
+        public const float Baseline250BoostDb = 0.17f;
+        public const float Baseline500BoostHz = 500f;
+        public const float Baseline500BoostQ  = 0.90f;
+        public const float Baseline500BoostDb = -0.16f;
+        public const float Baseline1kBoostHz = 1000f;
+        public const float Baseline1kBoostQ  = 0.90f;
+        public const float Baseline1kBoostDb = -0.47f;
+        public const float Baseline2kBoostHz = 2000f;
+        public const float Baseline2kBoostQ  = 0.90f;
+        public const float Baseline2kBoostDb = -0.36f;
+        public const float Baseline4kBoostHz = 4200f;
+        public const float Baseline4kBoostQ  = 0.90f;
+        public const float Baseline4kBoostDb = -3.16f;
+        public const float Baseline8kBoostHz = 8000f;
+        public const float Baseline8kBoostQ  = 0.90f;
+        public const float Baseline8kBoostDb = 9.72f;
+        public const float BaselineHiShelfHz = 11000f;
+        public const float BaselineHiShelfQ  = 0.70f;
+        public const float BaselineHiShelfDb = -5.5f;
+        public static readonly float[] Baseline4kTrimDbFx = { 0f, 60f, 70f, 80f, 100f };
+        public static readonly float[] Baseline4kTrimDbY  = { 0.0f, 0.6f, 2.1f, 1.9f, 1.5f };
+        public static readonly float[] Baseline8kTrimDbFx = { 0f, 20f, 30f, 40f, 45f, 60f, 70f, 80f, 90f, 100f };
+        public static readonly float[] Baseline8kTrimDbY  = { 0f, -0.4f, -0.6f, -1.2f, -1.8f, -1.4f, -2.4f, -2.6f, -2.1f, -1.7f };
+
         // Safety clamps
-        public const float FeedbackSoftLimitDriveMax = 1.30f;
+        public const float FeedbackSoftLimitDriveMax = 1.80f;
         public const float FeedbackSoftLimitCeiling  = 0.96f; // absolute clamp for feedback state
         public const float MixSoftClipCeiling = 0.965f;
         public const float ModDetuneJitterMax = 0.010f;

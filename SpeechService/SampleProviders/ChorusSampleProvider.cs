@@ -4,6 +4,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Constants = EddiSpeechService.SampleProviders.ChorusHelpers.Constants;
 
 namespace EddiSpeechService.SampleProviders
 {
@@ -11,11 +12,10 @@ namespace EddiSpeechService.SampleProviders
     {
         private readonly List<(ChorusVoice voice, float weight)> _voices = new List<(ChorusVoice, float)>();
 
-        private readonly int _fxLevel; // [0..100] intensity
+        private readonly int _fxLevel; 
         private readonly float _dryGain;
         private readonly float _wetGain;
         private readonly float _makeupGain;
-
         private float _bodyGainDb;
         private readonly float _depthTargetMs;
         private readonly float _fbDrive;
@@ -23,27 +23,29 @@ namespace EddiSpeechService.SampleProviders
         private readonly float _feedbackAmount;
         private readonly bool _isBypassed;
         private float _lfoRateScale;
-        private float _metallicGainDb;
         private float _microCombScale;
         private readonly Curve.ModStruct _mod;
-        private float _shimmerGainDb;
+        private float _mudCutDb;
+        private float _presenceCutDb;
         private float _wetHpfHz;
         private float _wetLpfHz;
         private float _wetNorm;
 
-        private BiquadLowShelf _bodyShelf;
-        private readonly OnePoleLowPassFilter _feedbackLpf; // low pass feedback filter
-        private OnePoleHighPassFilter _wetHpf;
-        private readonly OnePoleHighShelf _feedbackShelf; // high-shelf filter for feedback coloration
-        private BiquadHighShelf _metallicShelf;
+        private BiquadPeakingEqFilter _bodyEq;
+        private TwoPoleHighPassFilter _dryHpf;
+        private readonly TwoPoleHighPassFilter _feedbackHpf;
+        private readonly OnePoleLowPassFilter _feedbackLpf;
+        private readonly OnePoleHighShelf _feedbackShelf;
+        private BiquadPeakingEqFilter _mudCutEq;
+        private BiquadPeakingEqFilter _presenceCutEq;
         private AllPassFilter _resonanceAllPass;
-        private BiquadHighShelf _shimmerShelf;
+        private TwoPoleHighPassFilter _wetHpf;
         private OnePoleLowPassFilter _wetLpfShelf;
 
         public ChorusSampleProvider ( ISampleProvider source, int sampleRate, int fxLevel ) : base( source )
         {
             // Our input fxLevel should always be an integer value between 0 and 100. 
-            _fxLevel = Functions.Clamp( fxLevel, 0, 100 );
+            _fxLevel = fxLevel;
             _isBypassed = _fxLevel < Constants.TrueDryThreshold;
 
             _dryGain = 0.0f;
@@ -54,13 +56,13 @@ namespace EddiSpeechService.SampleProviders
             if ( !_isBypassed )
             {
                 // Define the master curve we'll fit our effects around
-                var master = Functions.AsymSigmoid( _fxLevel / 100f, Constants.SigmoidCenter, Constants.SigmoidSteepL,
+                var master = SpeechFxFunctions.AsymSigmoid( _fxLevel / 100f, Constants.SigmoidCenter, Constants.SigmoidSteepL,
                     Constants.SigmoidSteepR );
 
                 // Wet/dry gain
                 _dryGain = Curve.DryGain( _fxLevel );
                 _wetGain = Curve.WetGain( _fxLevel );
-                _makeupGain = Functions.DecibalsToLinear( Curve.MixMakeupDb( _fxLevel ) );
+                _makeupGain = SpeechFxFunctions.DecibalsToLinear( Curve.MixMakeupDb( _fxLevel ) );
 
                 // Modulation Profile
                 _mod = Curve.ModulationProfile( _fxLevel );
@@ -71,17 +73,20 @@ namespace EddiSpeechService.SampleProviders
                 _feedbackShelf = new OnePoleHighShelf( Constants.FeedbackShelfCutoffHz, Curve.FeedbackGainDb( master ),
                     sampleRate );
                 _feedbackAmount = Curve.Feedback( master, _fxLevel );
-                _fbDrive = Functions.LinearInterpolate( Constants.FeedbackSoftLimitDriveMax, 1.0f, _fxLevel / 100f );
+                _fbDrive = SpeechFxFunctions.LinearInterpolate( Constants.FeedbackSoftLimitDriveMax, 1.0f, _fxLevel / 100f );
+                var feedbackHpfHz = Curve.FeedbackHpfHz(_fxLevel);
+                _feedbackHpf = new TwoPoleHighPassFilter();
+                _feedbackHpf.Set( feedbackHpfHz, sampleRate );
 
                 // Hybrid delay spread: linear core + nonlinear outer bias
                 var voiceBaseDelaysMs = new float[ Constants.VoiceCount ];
                 var centerIdx = ( Constants.VoiceCount - 1 ) / 2f;
 
                 // Step scales with intensity in [StepMinMs..StepMaxMs]
-                var baseStep = Functions.LinearInterpolate(
+                var baseStep = SpeechFxFunctions.LinearInterpolate(
                     Constants.StepMinMs,
                     Constants.StepMaxMs,
-                    Functions.SmoothStep( Constants.StepEdge0, Constants.StepEdge1, master )
+                    SpeechFxFunctions.SmoothStep( Constants.StepEdge0, Constants.StepEdge1, master )
                 );
 
                 // Curved emphasis
@@ -102,24 +107,8 @@ namespace EddiSpeechService.SampleProviders
                 _depthTargetMs = Curve.ChorusDepth( _fxLevel );
 
                 InitializeChorusFilters( sampleRate );
-                InitializeChorusShelves( sampleRate );
                 InitializeChorusVoices( sampleRate, Constants.VoiceCount, voiceBaseDelaysMs );
                 CalculateVoiceWeightSum();
-
-                //Logging.Debug( "Initialized ChorusSampleProvider with the following parameters", new
-                //{
-                //    FxLevel = _fxLevel, DryGain = _dryGain, WetGain = _wetGain,
-                //    MixMakeupGain = _makeupGain, WetHpfHz = _wetHpfHz, WetLpfHz = _wetLpfHz,
-                //    MicroCombScale = _microCombScale, _mod.PhaseJitterRad,
-                //    FeedbackAmount = _feedbackAmount, FeedbackDrive = _fbDrive,
-                //    BodyGainDb = _bodyGainDb, ShimmerGainDb = _shimmerGainDb,
-                //    MetallicGainDb = _metallicGainDb, Constants.VoiceCount,
-                //    BaseDelayMsStd = _voices.Select( v => v.voice.BaseDelayMs ).PopulationStandardDeviation(),
-                //    LfoHzMean = _voices.Select( v => v.voice.LfoHz ).Average(),
-                //    LfoHzStd = _voices.Select( v => v.voice.LfoHz ).PopulationStandardDeviation(),
-                //    WeightStd = _voices.Select( v => v.weight ).PopulationStandardDeviation(),
-                //    WeightSum = _voices.Select( v => v.weight ).Sum()
-                //} );
             }
         }
 
@@ -149,14 +138,14 @@ namespace EddiSpeechService.SampleProviders
                     detune *= Constants.VoiceOuterDetuneBoost;
                 }
 
-                var detuneJitterRnd = Functions.Hash0To1( new[] { vPair, 1 } );
+                var detuneJitterRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 1 } );
                 detune *= 1.0f + ( ( detuneJitterRnd - 0.5f ) * _mod.DetuneJitter );
 
                 // --- LFO frequency ---
                 var outerBias = v == 0 || v == ( voiceCount - 1 )
                     ? Constants.OuterLfoBias // outer voices
                     : 1.0f; // inner voices
-                var freqBase = Functions.LinearScale( _fxLevel, 0f, 100f, Constants.LfoMinHz, Constants.LfoMaxHz );
+                var freqBase = SpeechFxFunctions.LinearScale( _fxLevel, 0f, 100f, Constants.LfoMinHz, Constants.LfoMaxHz );
                 var freqHz = freqBase * _lfoRateScale * detune * outerBias;
 
                 // --- Depth scaling by position (outer is deeper) ---
@@ -165,7 +154,7 @@ namespace EddiSpeechService.SampleProviders
                 var depthMs = _depthTargetMs * posScale; // base target
 
                 // --- Randomize depth per voice for richer beating ---
-                var depthRnd = Functions.Hash0To1( new[] { vPair, 2 } );
+                var depthRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 2 } );
                 depthMs *= 1.0f + ( ( depthRnd - 0.5f ) * Constants.DepthJitterPct );
                 if ( Math.Abs( pos ) > Constants.VoiceOuterThreshold )
                 {
@@ -178,10 +167,10 @@ namespace EddiSpeechService.SampleProviders
                 var microOffsetMs = Constants.MicroCombOffset * _microCombScale * bias;
 
                 // --- Base delay jitter ---
-                var delayRnd = Functions.Hash0To1( new[] { vPair, 3 } );
+                var delayRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 3 } );
                 var delayJitter = 1.0f + ( ( delayRnd - 0.5f ) * 2.0f * Constants.DelayJitterPct );
 
-                var baseMs = Functions.Clamp(
+                var baseMs = SpeechFxFunctions.Clamp(
                     ( baseDelaysMs[ v ] * delayJitter ) + microOffsetMs,
                     Constants.MinVoiceDelayMs,
                     Constants.MaxVoiceDelayMs
@@ -203,7 +192,7 @@ namespace EddiSpeechService.SampleProviders
 
                 // --- Phase jitter / symmetry ---
                 // Evenly distributed phases + small jitter to decorrelate; force outer voices symmetrical.
-                var phaseJitterRnd = Functions.Hash0To1( new[] { vPair, 4 } );
+                var phaseJitterRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 4 } );
                 var jitter = ( phaseJitterRnd - 0.5f ) * _mod.PhaseJitterRad;
                 if ( v == 0 ) // outer voice
                 {
@@ -221,14 +210,14 @@ namespace EddiSpeechService.SampleProviders
                 // --- Add slight phase drift bias for adjacent voices ---
                 if ( v > 0 )
                 {
-                    var lfoPhaseRnd = Functions.Hash0To1( new[] { vPair, 5 } );
+                    var lfoPhaseRnd = SpeechFxFunctions.Hash0To1( new[] { vPair, 5 } );
                     voice.LfoPhase += ( lfoPhaseRnd - 0.5f ) * Constants.LfoPhaseDrift;
                 }
 
                 var weight = GetVoiceWeight( v, _fxLevel );
 
                 // --- Ghost modulation ---
-                if ( ghostWeightFactor > 0.0001f && v % 2 == 0 && v < ( Constants.VoiceCount - 1 ) )
+                if ( ghostWeightFactor > 0.0001f && ( v % 2 ) == 0 && v < ( Constants.VoiceCount - 1 ) )
                 {
                     // Add subtle random depth variance for richer comb interaction
                     var ghostDepthMs = depthMs * ghostDepthFactor;
@@ -246,6 +235,26 @@ namespace EddiSpeechService.SampleProviders
 
         private void InitializeChorusFilters ( int sampleRate )
         {
+            // Body Peaking EQ Filter
+            _bodyGainDb = Curve.BodyGainDb( _fxLevel );
+            _bodyEq = new BiquadPeakingEqFilter( Constants.BodyShelfHz, _bodyGainDb, Constants.BodyShelfQ, sampleRate );
+
+            // Dry High Pass Filter
+            var dryHpfHz = Curve.DryHpfHz(_fxLevel);
+            _dryHpf = new TwoPoleHighPassFilter();
+            _dryHpf.Set( dryHpfHz, sampleRate );
+
+            // Mud Cut 
+            _mudCutDb = Curve.MudCutGainDb( _fxLevel );
+            _mudCutEq = new BiquadPeakingEqFilter( Constants.MudCutHz, _mudCutDb, Constants.MudCutQ, sampleRate );
+
+            // Presence cut
+            _presenceCutDb = Curve.PresenceCutGainDb( _fxLevel );
+            _presenceCutEq = new BiquadPeakingEqFilter(
+                Constants.PresenceCutHz,
+                _presenceCutDb, 
+                Constants.PresenceCutQ, sampleRate );
+
             // Resonance Filter
             var resLen = Math.Max( 2, (int)( Constants.ResonanceAllPassLenMs * .001f * sampleRate ) );
             var resonanceGain = Curve.ResonanceAllPassGain( _fxLevel );
@@ -261,26 +270,8 @@ namespace EddiSpeechService.SampleProviders
 
             // Wet High Pass Filter
             _wetHpfHz = Curve.WetHpfHz( _fxLevel );
-            _wetHpf = new OnePoleHighPassFilter();
+            _wetHpf = new TwoPoleHighPassFilter();
             _wetHpf.Set( _wetHpfHz, sampleRate );
-        }
-
-        private void InitializeChorusShelves ( int sampleRate )
-        {
-            // Body shelf
-            _bodyGainDb = Curve.BodyGainDb( _fxLevel );
-            _bodyShelf = new BiquadLowShelf( Constants.BodyShelfHz, _bodyGainDb, Constants.BodyShelfQ,
-                sampleRate );
-
-            // Metallic Shelf
-            _metallicGainDb = Curve.MetallicGainDb( _fxLevel );
-            _metallicShelf = new BiquadHighShelf( Constants.MetallicShelfHz, _metallicGainDb,
-                Constants.MetallicQ, sampleRate );
-
-            // Shimmer Shelf
-            _shimmerGainDb = Curve.ShimmerGainDb( _fxLevel );
-            _shimmerShelf = new BiquadHighShelf( Constants.ShimmerShelfHz, _shimmerGainDb,
-                Constants.ShimmerShelfQ, sampleRate );
         }
 
         private void CalculateVoiceWeightSum ()
@@ -307,6 +298,7 @@ namespace EddiSpeechService.SampleProviders
             // Color / diffuse feedback
             var fbColored = _feedbackShelf.Process( _fbState );
             fbColored = _resonanceAllPass.Process( fbColored );
+            fbColored = _feedbackHpf.Process( fbColored );
 
             // Optional LPF on feedback path
             var fbFiltered = _fxLevel > Constants.FeedbackBypassFxThresh
@@ -326,11 +318,11 @@ namespace EddiSpeechService.SampleProviders
                 fbLimited = -Constants.FeedbackSoftLimitCeiling;
             }
 
-            // Maintain feedback continuity with limited state
-            _fbState = fbLimited;
+            // Mildly band-limit the dry/input path so deep bass doesn’t “leak around” the wet HPF.
+            var dryFiltered = _dryHpf.Process(input);
 
             // Inject limited feedback into chorus input
-            var chorusInput = input + ( _feedbackAmount * fbLimited );
+            var chorusInput = dryFiltered + (_feedbackAmount * fbLimited);
 
             // Sum all chorus voices
             var wetSum = 0f;
@@ -339,26 +331,34 @@ namespace EddiSpeechService.SampleProviders
                 var wetSample = voice.Process( chorusInput );
                 wetSum += weight * wetSample;
             }
-
-            // --- Mix with dry ---
             var wetMix = wetSum * _wetNorm;
 
             // Apply wet shelves
             if ( _fxLevel > 0 )
             {
-                wetMix = _bodyShelf.Process( wetMix );
-                wetMix = _wetHpf?.Process( wetMix ) ?? wetMix;
-                wetMix = _metallicShelf?.Process( wetMix ) ?? wetMix;
-                wetMix = _shimmerShelf?.Process( wetMix ) ?? wetMix;
-                wetMix = _wetLpfShelf?.Process( wetMix ) ?? wetMix;
+                // First, enforce the wet low-cut.
+                wetMix = _wetHpf.Process( wetMix );
+
+                // Feed the feedback loop from the *audible* wet band (prevents hidden LF in the loop).
+                _fbState = wetMix;
+
+                // Then restore “body” and do tone shaping.
+                wetMix = _bodyEq.Process( wetMix );
+                wetMix = _mudCutEq.Process( wetMix );
+                wetMix = _presenceCutEq.Process( wetMix );
+                wetMix = _wetLpfShelf.Process( wetMix );
+            }
+            else
+            {
+                _fbState = wetMix;
             }
 
             // Mix dry and wet
-            var mixed = ( _dryGain * input ) + wetMix;
+            var mixed = (_dryGain * dryFiltered) + wetMix;
             mixed *= _makeupGain;
 
             // --- soft clip ---
-            mixed = Functions.SoftClipCeiling( mixed, Constants.MixSoftClipCeiling );
+            mixed = SpeechFxFunctions.SoftClipCeiling( mixed, Constants.MixSoftClipCeiling );
 
             return mixed;
         }

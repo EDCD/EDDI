@@ -2,7 +2,7 @@
 
 namespace EddiSpeechService.Filters
 {
-    public class BiquadHighShelf
+    public class BiquadHighShelfFilter
     {
         private readonly float _cutoffHz;
         private readonly float _q;
@@ -12,7 +12,7 @@ namespace EddiSpeechService.Filters
         private float _a0, _a1, _a2, _b1, _b2;
         private float _z1, _z2;
 
-        public BiquadHighShelf ( float cutoffHz, float gainDb, float q, int sampleRate )
+        public BiquadHighShelfFilter ( float cutoffHz, float gainDb, float q, int sampleRate )
         {
             _cutoffHz = cutoffHz;
             _q = q;

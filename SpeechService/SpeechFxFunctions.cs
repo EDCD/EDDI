@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-namespace EddiSpeechService.SampleProviders.ChorusHelpers
+namespace EddiSpeechService
 {
-    internal static class Functions
+    internal static class SpeechFxFunctions
     {
         /// <summary>
         /// Asymmetric sigmoid function
@@ -56,7 +56,7 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
             unchecked
             {
                 // 32-bit mix (stable across runs)
-                uint x = 2166136261u; // FNV offset basis
+                var x = 2166136261u; // FNV offset basis
                 foreach ( var param in parameters.Append( userSeed ) )
                 {
                     x = ( x ^ (uint)param ) * 16777619u;
@@ -181,7 +181,22 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
 
             return ( h00 * yArray[ i ] ) + ( h * h10 * m0 ) + ( h01 * yArray[ i + 1 ] ) + ( h * h11 * m1 );
         }
-        
+
+        public static float SmoothSplineClamped ( float[] xs, float[] ys, float x )
+        {
+            var y = SmoothSpline(xs, ys, x );
+
+            var i = 0;
+            while ( i < ( xs.Length - 2 ) && x > xs[ i + 1 ] )
+            {
+                i++;
+            }
+
+            var lo = Math.Min(ys[i], ys[i + 1]);
+            var hi = Math.Max(ys[i], ys[i + 1]);
+            return Clamp( y, lo, hi );
+        }
+
         /// <summary>
         /// Applies a Single cubic Hermite polynomial to create an S shaped curve with zero slope at either edge and max slope at the center.
         /// Can be used for "fade in/out" or "ease" transitions.

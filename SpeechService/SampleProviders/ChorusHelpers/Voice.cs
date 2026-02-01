@@ -7,7 +7,7 @@ namespace EddiSpeechService.SampleProviders.ChorusHelpers
     {
         public float BaseDelayMs { get; }
         private float DepthMs { get; }
-        public float LfoHz { get; }
+        private float LfoHz { get; }
         public float LfoPhase { get; set; }
 
         private readonly float[] _buffer;
