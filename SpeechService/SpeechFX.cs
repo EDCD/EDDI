@@ -78,7 +78,8 @@ namespace EddiSpeechService
 
             // Stage 2: Effects
             var damageAdjustedFxLevel = DamageAdjustedFxLevel(distortionLevel, fxLevel);
-            Logging.Debug( $"Effects level is {damageAdjustedFxLevel}, echo delay is {echoDelay}" );
+            var GlobalGainDb = PostFxNormalizeDb(fxLevel);
+            Logging.Debug( $"FxLevel: {fxLevel}, DamageAdjustedFxLevel: {damageAdjustedFxLevel}, EchoDelay: {echoDelay}, GlobalGainDB: {GlobalGainDb}, GlobalOutputGainMultiplier: {GlobalOutputGainMultiplier}" );
 
             if ( radio )
             {
@@ -117,8 +118,6 @@ namespace EddiSpeechService
             }
 
             // Stage 3: Adjust from our base volume and apply a limiter
-            var GlobalGainDb = PostFxNormalizeDb(fxLevel);
-            Logging.Info( $"FxLevel: {fxLevel}, GlobalGainDB: {GlobalGainDb}, GlobalOutputGainMultiplier: {GlobalOutputGainMultiplier}" );
             sampleProvider = new VolumeSampleProvider( sampleProvider ) { Volume = SpeechFxFunctions.DecibalsToLinear( GlobalGainDb ) * GlobalOutputGainMultiplier };
 
             if ( TapsEnabled )
