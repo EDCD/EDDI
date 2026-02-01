@@ -53,7 +53,7 @@ namespace EddiEvents
             var bios = new List<Organic>();
             if ( !data.TryGetValue( "BioData", out var val ) || !( val is List<object> discovered ) ) { return false; }
 
-            foreach ( Dictionary<string, object> discoveredBio in discovered )
+            foreach ( var discoveredBio in discovered.Cast<IDictionary<string, object>>() )
             {
                 var value = JsonParsing.getLong( discoveredBio, "Value" );
                 var bonus = JsonParsing.getLong( discoveredBio, "Bonus" );
