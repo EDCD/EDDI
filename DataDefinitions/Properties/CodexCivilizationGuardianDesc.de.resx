@@ -122,4 +122,16 @@
   <data name="Guardian_Data_Logs" xml:space="preserve">
     <value>Ein Datenspeichergerät, das vor mehreren Millionen Jahren von den Guardians, einer ausgestorbenen nichtmenschlichen Zivilisation, geschaffen wurde.</value>
   </data>
+  <data name="Guardian_Pylon" xml:space="preserve">
+    <value>Eine Struktur, die vor mehreren Millionen Jahren von den Guardians, einer ausgestorbenen nichtmenschlichen Zivilisation, geschaffen wurde.</value>
+  </data>
+  <data name="Guardian_Sentinel" xml:space="preserve">
+    <value>Diese Konstrukte wurden von den Guardians geschaffen, um wichtige Stätten zu verteidigen, die trotz ihres mehrjährigen Bestehens immer noch voll funktionsfähig sind.</value>
+  </data>
+  <data name="Guardian_Terminal" xml:space="preserve">
+    <value>Ein Datenspeichergerät, das vor mehreren Millionen Jahren von den Guardians, einer ausgestorbenen nichtmenschlichen Zivilisation, geschaffen wurde.</value>
+  </data>
+  <data name="Relic_Tower" xml:space="preserve">
+    <value>Eine Struktur, die vor mehreren Millionen Jahren von den Guardians, einer ausgestorbenen nichtmenschlichen Zivilisation, geschaffen wurde.</value>
+  </data>
 </root>
