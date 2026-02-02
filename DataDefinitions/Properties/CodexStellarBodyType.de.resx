@@ -116,4 +116,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Gas_Giants" xml:space="preserve">
+    <value>Gasriesen</value>
+  </data>
+  <data name="Stars" xml:space="preserve">
+    <value>Sterne</value>
+  </data>
 </root>
