@@ -117,4 +117,235 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Aleoids_01" xml:space="preserve">
+    <value>Arcus</value>
+  </data>
+  <data name="Aleoids_02" xml:space="preserve">
+    <value>Coronamus</value>
+  </data>
+  <data name="Aleoids_03" xml:space="preserve">
+    <value>Spica</value>
+  </data>
+  <data name="Aleoids_04" xml:space="preserve">
+    <value>Laminiae</value>
+  </data>
+  <data name="Aleoids_05" xml:space="preserve">
+    <value>Gravis</value>
+  </data>
+  <data name="Bacterial_01" xml:space="preserve">
+    <value>Aurasus</value>
+  </data>
+  <data name="Bacterial_02" xml:space="preserve">
+    <value>Nebulus</value>
+  </data>
+  <data name="Bacterial_03" xml:space="preserve">
+    <value>Scopulum</value>
+  </data>
+  <data name="Bacterial_05" xml:space="preserve">
+    <value>Vesicula</value>
+  </data>
+  <data name="Bacterial_06" xml:space="preserve">
+    <value>Alcyoneum</value>
+  </data>
+  <data name="Bacterial_07" xml:space="preserve">
+    <value>Tela</value>
+  </data>
+  <data name="Bacterial_08" xml:space="preserve">
+    <value>Informem</value>
+  </data>
+  <data name="Bacterial_09" xml:space="preserve">
+    <value>Volu</value>
+  </data>
+  <data name="Bacterial_11" xml:space="preserve">
+    <value>Omentum</value>
+  </data>
+  <data name="Bacterial_12" xml:space="preserve">
+    <value>Cerbrus</value>
+  </data>
+  <data name="Bacterial_13" xml:space="preserve">
+    <value>Verrata</value>
+  </data>
+  <data name="Cactoid_01" xml:space="preserve">
+    <value>Cortexum</value>
+  </data>
+  <data name="Cactoid_02" xml:space="preserve">
+    <value>Lapis</value>
+  </data>
+  <data name="Cactoid_03" xml:space="preserve">
+    <value>Vermis</value>
+  </data>
+  <data name="Cactoid_04" xml:space="preserve">
+    <value>Pullulanta</value>
+  </data>
+  <data name="Cactoid_05" xml:space="preserve">
+    <value>Peperatis</value>
+  </data>
+  <data name="Clypeus_02" xml:space="preserve">
+    <value>Margaritus</value>
+  </data>
+  <data name="Clypeus_03" xml:space="preserve">
+    <value>Speculumi</value>
+  </data>
+  <data name="Conchas_01" xml:space="preserve">
+    <value>Renibus</value>
+  </data>
+  <data name="Conchas_02" xml:space="preserve">
+    <value>Aureolas</value>
+  </data>
+  <data name="Conchas_03" xml:space="preserve">
+    <value>Labiata</value>
+  </data>
+  <data name="Conchas_04" xml:space="preserve">
+    <value>Biconcavis</value>
+  </data>
+  <data name="Electricae_01" xml:space="preserve">
+    <value>Pluma</value>
+  </data>
+  <data name="Electricae_02" xml:space="preserve">
+    <value>Radialem</value>
+  </data>
+  <data name="Fonticulus_02" xml:space="preserve">
+    <value>Campestris</value>
+  </data>
+  <data name="Fonticulus_03" xml:space="preserve">
+    <value>Upupam</value>
+  </data>
+  <data name="Fonticulus_04" xml:space="preserve">
+    <value>Lapida</value>
+  </data>
+  <data name="Fonticulus_05" xml:space="preserve">
+    <value>Fluctus</value>
+  </data>
+  <data name="Fonticulus_06" xml:space="preserve">
+    <value>Digitos</value>
+  </data>
+  <data name="Fumerolas_02" xml:space="preserve">
+    <value>Extremus</value>
+  </data>
+  <data name="Fumerolas_03" xml:space="preserve">
+    <value>Nitris</value>
+  </data>
+  <data name="Fumerolas_04" xml:space="preserve">
+    <value>Aquatis</value>
+  </data>
+  <data name="Fungoids_01" xml:space="preserve">
+    <value>Setisis</value>
+  </data>
+  <data name="Fungoids_02" xml:space="preserve">
+    <value>Stabitis</value>
+  </data>
+  <data name="Fungoids_03" xml:space="preserve">
+    <value>Bullarum</value>
+  </data>
+  <data name="Fungoids_04" xml:space="preserve">
+    <value>Gelata</value>
+  </data>
+  <data name="Ground_Struct_Ice" xml:space="preserve">
+    <value>Kristallscherben</value>
+  </data>
+  <data name="L_Cry_IcCry" xml:space="preserve">
+    <value>Eis</value>
+  </data>
+  <data name="SeedEFGH_01" xml:space="preserve">
+    <value>Aureum</value>
+  </data>
+  <data name="SeedEFGH_02" xml:space="preserve">
+    <value>Puniceum</value>
+  </data>
+  <data name="SeedEFGH_03" xml:space="preserve">
+    <value>Lindigoticum</value>
+  </data>
+  <data name="Shrubs_01" xml:space="preserve">
+    <value>Flabellum</value>
+  </data>
+  <data name="Shrubs_02" xml:space="preserve">
+    <value>Acus</value>
+  </data>
+  <data name="Shrubs_03" xml:space="preserve">
+    <value>Metallicum</value>
+  </data>
+  <data name="Shrubs_06" xml:space="preserve">
+    <value>Sponsae</value>
+  </data>
+  <data name="Sphere" xml:space="preserve">
+    <value>Luteolum</value>
+  </data>
+  <data name="SphereABCD_01" xml:space="preserve">
+    <value>Croceum</value>
+  </data>
+  <data name="SphereABCD_02" xml:space="preserve">
+    <value>Puniceum</value>
+  </data>
+  <data name="SphereABCD_03" xml:space="preserve">
+    <value>Roseum</value>
+  </data>
+  <data name="SphereEFGH" xml:space="preserve">
+    <value>Blatteum Bioluminescent</value>
+  </data>
+  <data name="SphereEFGH_01" xml:space="preserve">
+    <value>Rubeum Bioluminescent</value>
+  </data>
+  <data name="Stratum_06" xml:space="preserve">
+    <value>Cucumisis</value>
+  </data>
+  <data name="Stratum_07" xml:space="preserve">
+    <value>Tectonicas</value>
+  </data>
+  <data name="Stratum_08" xml:space="preserve">
+    <value>Frigus</value>
+  </data>
+  <data name="S_Seed_SdTp02" xml:space="preserve">
+    <value>Aster</value>
+  </data>
+  <data name="S_Seed_SdTp021" xml:space="preserve">
+    <value>Aster</value>
+  </data>
+  <data name="S_Seed_SdTp022" xml:space="preserve">
+    <value>Aster</value>
+  </data>
+  <data name="S_Seed_SdTp023" xml:space="preserve">
+    <value>Aster</value>
+  </data>
+  <data name="S_Seed_SdTp024" xml:space="preserve">
+    <value>Aster</value>
+  </data>
+  <data name="S_Seed_SdTp06" xml:space="preserve">
+    <value>Gyre</value>
+  </data>
+  <data name="S_Seed_SdTp061" xml:space="preserve">
+    <value>Gyre</value>
+  </data>
+  <data name="Tube" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="TubeABCD_01" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="TubeABCD_02" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="TubeABCD_03" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="TubeEFGH" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="TubeEFGH_01" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="TubeEFGH_02" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="TubeEFGH_03" xml:space="preserve">
+    <value>Sinuous</value>
+  </data>
+  <data name="Tussocks_15" xml:space="preserve">
+    <value>Capillum</value>
+  </data>
+  <data name="Vents" xml:space="preserve">
+    <value>Pflanze</value>
+  </data>
+  <data name="Ingensradices_Unicus" xml:space="preserve">
+    <value>Radicoida Unica</value>
+  </data>
 </root>
