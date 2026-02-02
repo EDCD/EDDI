@@ -117,4 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Tussocks_01_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_01_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_01_W" xml:space="preserve">
+    <value>Orange</value>
+  </data>
+  <data name="Tussocks_01_Y" xml:space="preserve">
+    <value>Rot</value>
+  </data>
+  <data name="Tussocks_02_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_02_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_02_W" xml:space="preserve">
+    <value>Orange</value>
+  </data>
+  <data name="Tussocks_02_Y" xml:space="preserve">
+    <value>Rot</value>
+  </data>
+  <data name="Tussocks_03_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_03_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_03_W" xml:space="preserve">
+    <value>Orange</value>
+  </data>
+  <data name="Tussocks_03_Y" xml:space="preserve">
+    <value>Rot</value>
+  </data>
+  <data name="Tussocks_04_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_04_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_04_W" xml:space="preserve">
+    <value>Orange</value>
+  </data>
+  <data name="Tussocks_05_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_11_Y" xml:space="preserve">
+    <value>Rot</value>
+  </data>
+  <data name="Tussocks_12_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_12_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_12_Y" xml:space="preserve">
+    <value>Rot</value>
+  </data>
+  <data name="Tussocks_13_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_13_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_14_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_14_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_15_F" xml:space="preserve">
+    <value>Gelb</value>
+  </data>
+  <data name="Tussocks_15_K" xml:space="preserve">
+    <value>Grün</value>
+  </data>
+  <data name="Tussocks_15_Y" xml:space="preserve">
+    <value>Rot</value>
+  </data>
 </root>
