@@ -22,6 +22,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Jumped` updated to include a new `id64` object field.
     * `Location` updated to include a new `id64` object field.
     * `Organic data sold` added.
+    * `Scan organic` added.
+    * `Scan organic distance` added.
     * `Touchdown` updated to include a `canfirstfootfall` boolean field.
   * Speech Responder
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
@@ -33,6 +35,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Disembark` updated to announce first footfalls.
       * `FSD engaged` updated to announce stellar region border crossings.  
       * `Organic data sold` added.
+      * `Scan organic` added.
+      * `Scan organic distance` added.
       * `Surface signals detected` updated with new optional toggle variables.
       * `Touchdown` updated to announce first footfall opportunities.
   * VoiceAttack Responder

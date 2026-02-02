@@ -20,6 +20,7 @@ using Utilities;
 [assembly: InternalsVisibleTo("Tests")]
 namespace EddiJournalMonitor
 {
+    [UsedImplicitly]
     public class JournalMonitor : LogMonitor, IEddiMonitor
     {
         public JournalMonitor () : base( GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$",
@@ -3168,7 +3169,6 @@ namespace EddiJournalMonitor
                                 break;
                             case "ScientificResearch":
                                 {
-                                    data.TryGetValue("Name", out var val);
                                     var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
                                     var amount = JsonParsing.getInt(data, "Count");
                                     var marketId = JsonParsing.getLong(data, "MarketID");
@@ -5304,8 +5304,6 @@ namespace EddiJournalMonitor
             catch (JsonReaderException jre)
             {
                 Logging.Debug(jre.Message, jre);
-                try
-                {
                     if ( line.Contains( @"""event"":""BackpackChange""" ) && line.Contains( @"] ""Removed""" ) )
                     {
                         // We've observed a missing comma in the `BackpackChange` event, fix that here.
@@ -5320,12 +5318,6 @@ namespace EddiJournalMonitor
                         return ParseJournalEntry( line, fromLogLoad );
                     }
                 }
-                catch
-                {
-                    // Unable to recover so re-throw.
-                    throw;
-                }
-            }
             catch (Exception ex)
             {
                 Logging.Error($"Exception whilst parsing journal line {line}", ex);
@@ -5378,7 +5370,7 @@ namespace EddiJournalMonitor
 
         private static string GetSavedGamesDir()
         {
-            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
+            var result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
             if (result >= 0)
             {
                 return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
@@ -5389,7 +5381,7 @@ namespace EddiJournalMonitor
             }
         }
 
-        internal class NativeMethods
+        private static class NativeMethods
         {
             [DllImport("Shell32.dll")]
             internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
