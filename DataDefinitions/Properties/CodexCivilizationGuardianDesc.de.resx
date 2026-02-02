@@ -116,4 +116,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Guardian_Beacons" xml:space="preserve">
+    <value>Eine riesige, weltraumgestützte Struktur, die vor mehreren Millionen Jahren von den Guardians, einer ausgestorbenen nichtmenschlichen Zivilisation, geschaffen wurde.</value>
+  </data>
+  <data name="Guardian_Data_Logs" xml:space="preserve">
+    <value>Ein Datenspeichergerät, das vor mehreren Millionen Jahren von den Guardians, einer ausgestorbenen nichtmenschlichen Zivilisation, geschaffen wurde.</value>
+  </data>
 </root>
