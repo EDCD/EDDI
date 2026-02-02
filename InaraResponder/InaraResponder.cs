@@ -620,14 +620,11 @@ namespace EddiInaraResponder
                     { "marketID", @event.marketId }
                 };
 
-                if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
+                var currentShip = EDDI.Instance.CurrentShip;
+                if ( !string.IsNullOrEmpty( currentShip?.EDName ) )
                 {
-                    var currentShip = EDDI.Instance.CurrentShip;
-                    if (!string.IsNullOrEmpty(currentShip?.EDName))
-                    {
-                        eventData.Add("shipType", currentShip.EDName);
-                        eventData.Add("shipGameID", currentShip.LocalId);
-                    }
+                    eventData.Add( "shipType", currentShip.EDName );
+                    eventData.Add( "shipGameID", currentShip.LocalId );
                 }
                 inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelDock", eventData));
             }
@@ -1218,15 +1215,13 @@ namespace EddiInaraResponder
                     { "jumpDistance", @event.distance }
                 };
 
-            if (EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP)
+            var currentShip = EDDI.Instance.CurrentShip;
+            if ( !string.IsNullOrEmpty( currentShip?.EDName ) )
             {
-                var currentShip = EDDI.Instance.CurrentShip;
-                if (!string.IsNullOrEmpty(currentShip?.EDName))
-                {
-                    eventData.Add("shipType", currentShip.EDName);
-                    eventData.Add("shipGameID", currentShip.LocalId);
-                }
+                eventData.Add( "shipType", currentShip.EDName );
+                eventData.Add( "shipGameID", currentShip.LocalId );
             }
+
             inaraService.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelFSDJump", eventData));
         }
 
