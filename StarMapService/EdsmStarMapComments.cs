@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -23,7 +24,8 @@ namespace EddiStarMapService
             };
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait(false);
+                var cts = new CancellationTokenSource( TimeSpan.FromSeconds( 10 ) );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent, cts.Token ).ConfigureAwait(false);
                 var response = responseJson is null
                     ? null
                     : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
@@ -46,7 +48,8 @@ namespace EddiStarMapService
             };
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait(false);
+                var cts = new CancellationTokenSource( TimeSpan.FromSeconds( 10 ) );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent, cts.Token ).ConfigureAwait(false);
                 var response = responseJson is null
                     ? null
                     : JsonConvert.DeserializeObject<StarMapCommentResponse>( responseJson );

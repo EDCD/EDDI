@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EddiStarMapService
@@ -39,7 +40,8 @@ namespace EddiStarMapService
 
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait(false);
+                var cts = new CancellationTokenSource( TimeSpan.FromSeconds( 10 ) );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent, cts.Token ).ConfigureAwait(false);
                 var token = responseJson is null ? null : JToken.Parse( responseJson );
                 if ( token is JObject response )
                 {
@@ -72,7 +74,8 @@ namespace EddiStarMapService
 
             using ( var httpContent = new FormUrlEncodedContent( parameters ) )
             {
-                var responseJson = await edsmHttpClient.PostAsync( url, httpContent ).ConfigureAwait(false);
+                var cts = new CancellationTokenSource( TimeSpan.FromSeconds( 10 ) );
+                var responseJson = await edsmHttpClient.PostAsync( url, httpContent, cts.Token ).ConfigureAwait(false);
                 var token = responseJson is null ? null : JToken.Parse( responseJson );
                 if ( token is JObject response )
                 {

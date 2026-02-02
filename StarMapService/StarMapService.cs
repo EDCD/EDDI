@@ -14,8 +14,8 @@ namespace EddiStarMapService
 {
     public interface IEdsmHttpClient
     {
-        Task<string> GetAsync ( string url );
-        Task<string> PostAsync ( string url, HttpContent content );
+        Task<string> GetAsync ( string url, CancellationToken ct );
+        Task<string> PostAsync ( string url, HttpContent content, CancellationToken ct );
     }
 
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
@@ -24,8 +24,8 @@ namespace EddiStarMapService
         // The maximum batch size we will use for syncing flight logs before we write systems to our sql database
         public const int syncBatchSize = 50;
 
-        // The default timeout for requests to EDSM. Requests can override this by setting `RestRequest.Timeout`. Both are in milliseconds.
-        private const int DefaultTimeoutMilliseconds = 10000;
+        // The default timeout for requests to EDSM.
+        private const int DefaultTimeoutMilliseconds = 30000;
 
         public static string inGameCommanderName { get; set; }
         private string commanderName { get; set; }
@@ -37,7 +37,6 @@ namespace EddiStarMapService
         private const string baseUrl = "https://www.edsm.net/";
 
         private static readonly BlockingCollection<IDictionary<string, object>> queuedEvents = new BlockingCollection<IDictionary<string, object>>();
-        private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
         private static readonly ConcurrentDictionary<string, ResourceRateLimit> resourceRateLimits = new ConcurrentDictionary<string, ResourceRateLimit>();
 
         // This API only accepts and only returns data for the "live" galaxy, game version 4.0 or later.
@@ -61,11 +60,11 @@ namespace EddiStarMapService
             }
 
             [CanBeNull]
-            public async Task<string> GetAsync ( string url )
+            public async Task<string> GetAsync ( string url, CancellationToken ct )
             {
                 try
                 {
-                    var response = await HttpClient.GetAsync( url ).ConfigureAwait(false);
+                    var response = await HttpClient.GetAsync( url, ct ).ConfigureAwait(false);
                     UpdateRateLimits( url, response );
                     await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
@@ -75,23 +74,21 @@ namespace EddiStarMapService
                 {
                     Logging.Warn( he.Message, he );
                 }
-                catch ( TaskCanceledException toe ) when ( toe.InnerException is TimeoutException )
-                {
-                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", toe );
-                }
                 catch ( TaskCanceledException tce )
                 {
-                    Logging.Warn( "Request cancelled.", tce );
+                    Logging.Warn( tce.CancellationToken.IsCancellationRequested
+                        ? "Request timed out. EDSM may be under heavier than normal load."
+                        : "Request cancelled.", tce );
                 }
                 return null;
             }
 
             [CanBeNull]
-            public async Task<string> PostAsync ( string url, HttpContent content )
+            public async Task<string> PostAsync ( string url, HttpContent content, CancellationToken ct )
             {
                 try
                 {
-                    var response = await HttpClient.PostAsync( url, content ).ConfigureAwait(false);
+                    var response = await HttpClient.PostAsync( url, content, ct ).ConfigureAwait(false);
                     UpdateRateLimits( url, response );
                     await AwaitResourceAsync( url ).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
@@ -101,13 +98,11 @@ namespace EddiStarMapService
                 {
                     Logging.Warn( he.Message, he );
                 }
-                catch ( TaskCanceledException toe ) when ( toe.InnerException is TimeoutException )
-                {
-                    Logging.Warn( "Request timed out. EDSM may be under heavier than normal load.", toe );
-                }
                 catch ( TaskCanceledException tce )
                 {
-                    Logging.Warn( "Request cancelled.", tce );
+                    Logging.Warn( tce.CancellationToken.IsCancellationRequested
+                            ? "Request timed out. EDSM may be under heavier than normal load."
+                            : "Request cancelled.", tce );
                 }
                 return null;
             }

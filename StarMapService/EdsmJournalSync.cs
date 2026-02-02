@@ -17,7 +17,7 @@ namespace EddiStarMapService
 {
     public partial class StarMapService
     {
-        // The timeout for journal events is lengthened to 30 seconds (as recommended by Anthor in private message)
+        // The timeout for journal events is 30 seconds (as recommended by Anthor in private message)
         private const int JournalTimeoutMilliseconds = 30000;
 
         // Pause a short time to allow any initial events to build in the queue before our first EDSM responder event sync
@@ -27,6 +27,7 @@ namespace EddiStarMapService
         private const int syncIntervalMilliSeconds = 10000; // 10 seconds
 
         private IEdsmHttpClient edsmJournalHttpClient { get; }
+        private static CancellationTokenSource syncCancellationTS; // This must be static so that it is visible to child threads and tasks
 
         public void StartJournalSync ()
         {
@@ -174,7 +175,7 @@ namespace EddiStarMapService
                     try
                     {
                         Logging.Debug( "Sending message to EDSM: " + url, httpContent );
-                        var responseJson = await edsmJournalHttpClient.PostAsync( url, httpContent ).ConfigureAwait(false);
+                        var responseJson = await edsmJournalHttpClient.PostAsync( url, httpContent, syncCancellationTS.Token ).ConfigureAwait(false);
                         var response = responseJson is null
                             ? null
                             : JsonConvert.DeserializeObject<StarMapLogResponse>( responseJson );
@@ -226,7 +227,7 @@ namespace EddiStarMapService
         public async Task<List<string>> getIgnoredEventsAsync ()
         {
             var url = $"{baseUrl}api-journal-v1/discard";
-            var responseJson = await edsmHttpClient.GetAsync(url).ConfigureAwait(false);
+            var responseJson = await edsmHttpClient.GetAsync(url, syncCancellationTS.Token).ConfigureAwait(false);
             var response = responseJson is null ? null : JsonConvert.DeserializeObject<List<string>>( responseJson );
             return response;
         }

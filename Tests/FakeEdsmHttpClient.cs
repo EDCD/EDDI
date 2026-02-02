@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -14,12 +15,12 @@ namespace Tests
     {
         private readonly Dictionary<string, string> CannedContent = new Dictionary<string, string>();
 
-        public Task<string> GetAsync ( string url )
+        public Task<string> GetAsync ( string url, CancellationToken ct )
         {
             return ExecuteAsync( url );
         }
 
-        public Task<string> PostAsync ( string url, HttpContent sendContent )
+        public Task<string> PostAsync ( string url, HttpContent sendContent, CancellationToken ct )
         {
             return ExecuteAsync( url, sendContent );
         }
