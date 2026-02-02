@@ -116,4 +116,163 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="L_Phn_Part_Cld_001" xml:space="preserve">
+    <value>K01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_002" xml:space="preserve">
+    <value>K02-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_003" xml:space="preserve">
+    <value>K03-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_004" xml:space="preserve">
+    <value>K04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_005" xml:space="preserve">
+    <value>K05-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_006" xml:space="preserve">
+    <value>K06-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_007" xml:space="preserve">
+    <value>E04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_008" xml:space="preserve">
+    <value>K07-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_009" xml:space="preserve">
+    <value>K08-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_010" xml:space="preserve">
+    <value>K09-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_011" xml:space="preserve">
+    <value>K10-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_012" xml:space="preserve">
+    <value>K11-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_013" xml:space="preserve">
+    <value>E01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_014" xml:space="preserve">
+    <value>E02-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_015" xml:space="preserve">
+    <value>E03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_016" xml:space="preserve">
+    <value>K12-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_017" xml:space="preserve">
+    <value>K13-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_001" xml:space="preserve">
+    <value>T01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_002" xml:space="preserve">
+    <value>T02-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_003" xml:space="preserve">
+    <value>L01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_004" xml:space="preserve">
+    <value>T03-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_005" xml:space="preserve">
+    <value>T04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_007" xml:space="preserve">
+    <value>L03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_008" xml:space="preserve">
+    <value>L04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_009" xml:space="preserve">
+    <value>L05-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_010" xml:space="preserve">
+    <value>L06-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_011" xml:space="preserve">
+    <value>L07-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_012" xml:space="preserve">
+    <value>L08-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_013" xml:space="preserve">
+    <value>L09-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_002" xml:space="preserve">
+    <value>P01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_003" xml:space="preserve">
+    <value>P02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_004" xml:space="preserve">
+    <value>P03-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_005" xml:space="preserve">
+    <value>P04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_006" xml:space="preserve">
+    <value>P05-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_007" xml:space="preserve">
+    <value>P06-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_008" xml:space="preserve">
+    <value>P07-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_009" xml:space="preserve">
+    <value>P08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_010" xml:space="preserve">
+    <value>P09-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_011" xml:space="preserve">
+    <value>P10-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_012" xml:space="preserve">
+    <value>P11-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_013" xml:space="preserve">
+    <value>P12-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_014" xml:space="preserve">
+    <value>P13-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_015" xml:space="preserve">
+    <value>P14-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_016" xml:space="preserve">
+    <value>P15-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Orb_001" xml:space="preserve">
+    <value>Q01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_002" xml:space="preserve">
+    <value>Q02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_003" xml:space="preserve">
+    <value>Q03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_004" xml:space="preserve">
+    <value>Q04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_005" xml:space="preserve">
+    <value>Q05-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_006" xml:space="preserve">
+    <value>Q06-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_007" xml:space="preserve">
+    <value>Q07-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_008" xml:space="preserve">
+    <value>Q08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_009" xml:space="preserve">
+    <value>Q09-Type Anomaly</value>
+  </data>
 </root>
