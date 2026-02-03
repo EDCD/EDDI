@@ -441,10 +441,6 @@ namespace EddiSpeechResponder
                             defaultScript.Responder = isResponderScripts;
                             fixedScripts.Add( key, defaultScript );
                         }
-                        else
-                        {
-                            
-                        }
                     }
                 }
             }

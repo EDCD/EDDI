@@ -1861,15 +1861,19 @@ namespace EddiJournalMonitor
                                     var temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
                                     // Parent body types and IDs
-                                    data.TryGetValue("Parents", out var parentsVal);
                                     var parents = new List<IDictionary<string, int>>();
-                                    if ( parentsVal != null )
+                                    if ( data.TryGetValue( "Parents", out var parentsVal ) && parentsVal is IEnumerable<object> pVal )
                                     {
-                                        foreach ( var p in (List<object>)parentsVal )
+                                        foreach ( var parentObj in pVal.Cast<IDictionary<string, object>>() )
+                                    {
+                                            try
                                         {
-                                            if ( p is IDictionary<string, int> parent )
+                                                var intDict = parentObj.ToDictionary(kv => kv.Key, kv => Convert.ToInt32(kv.Value));
+                                                parents.Add( intDict );
+                                            }
+                                            catch
                                             {
-                                                parents.Add( parent );
+                                                // handle non-numeric values or ignore
                                             }
                                         }
                                     }

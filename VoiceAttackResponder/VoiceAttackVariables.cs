@@ -576,7 +576,7 @@ namespace EddiVoiceAttackResponder
             VoiceAttackPlugin.SetDecimal( prefix + " distance", body?.distance );
             VoiceAttackPlugin.SetDecimal( prefix + " temperature", body?.temperature );
             VoiceAttackPlugin.SetDecimal( prefix + " radius", body?.radius );
-            TrySetFromMetaVariables( $"{prefix} rings", new MetaVariables( body?.rings.GetType(), body?.rings ) );
+            TrySetFromMetaVariables( $"{prefix} rings", new MetaVariables( body?.rings?.GetType(), body?.rings ) );
                 
             // Orbital characteristics
             VoiceAttackPlugin.SetDecimal(prefix + " eccentricity", body?.eccentricity);
