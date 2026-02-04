@@ -809,10 +809,18 @@ namespace EddiCore
             try
             {
                 var failureCount = 0;
-                while (running && failureCount < 5 && activeMonitors.FirstOrDefault(m => m.MonitorName() == name) != null)
+                while (running && failureCount < 5 && 
+                       !eventHandlerTS.Token.IsCancellationRequested && 
+                       activeMonitors.FirstOrDefault(m => m.MonitorName() == name) != null)
                 {
                     try
                     {
+                        // Check if we're shutting down before starting
+                        if ( eventHandlerTS.Token.IsCancellationRequested )
+                        {
+                            break;
+                        }
+
                         var monitorThread = new Thread(() => start())
                         {
                             Name = name,
@@ -824,18 +832,40 @@ namespace EddiCore
                     }
                     catch (Exception ex)
                     {
-                        if (running)
+                        // Only log and retry if we're not shutting down
+                        if ( !eventHandlerTS.Token.IsCancellationRequested )
                         {
-                            Logging.Error("Restarting " + name + " after exception", ex);
+                            Logging.Error( "Restarting " + name + " after exception", ex );
+
+                            // Add delay before retry to allow graceful shutdown signals to propagate
+                            try
+                            {
+                                Task.Delay( 1000, eventHandlerTS.Token ).Wait( eventHandlerTS.Token );
+                            }
+                            catch ( OperationCanceledException )
+                            {
+                                // Shutdown in progress, exit gracefully
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
                     failureCount++;
                 }
-                if (running)
+
+                // Only disable if we didn't already stop
+                if ( !eventHandlerTS.Token.IsCancellationRequested )
                 {
                     DisableMonitor(name);
                     Logging.Warn(name + " stopping after too many failures");
                 }
+            }
+            catch ( OperationCanceledException )
+            {
+                Logging.Debug( "Monitor keepAlive cancelled" );
             }
             catch (ThreadAbortException)
             {

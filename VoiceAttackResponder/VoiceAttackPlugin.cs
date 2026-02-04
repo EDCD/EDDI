@@ -165,8 +165,6 @@ namespace EddiVoiceAttackResponder
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]
         public static void VA_Exit1( dynamic _ )
         {
-            // Any actions not to do with VoiceAttack are already handled through App.xaml.cs.
-
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
             // Unsubscribe from events
@@ -176,6 +174,21 @@ namespace EddiVoiceAttackResponder
             SpeechService.Instance.SpeechManager.PropertyChanged -= OnSpeechPropertyChanged;
             CompanionAppService.Instance.StateChanged -= OnCapiStateChanged;
             EddiConfigService.ConfigService.Instance.PropertyChanged -= VoiceAttackVariables.updateConfigurationValues;
+
+            // Stop monitors and responders
+            EDDI.Instance.Stop();
+
+            // Give background tasks a moment to gracefully shut down
+            Thread.Sleep( 500 );
+
+            // Force application shutdown to ensure all threads terminate
+            if ( Application.Current != null )
+            {
+                Application.Current.Dispatcher.InvokeAsync( () =>
+                {
+                    Application.Current.Shutdown();
+                } );
+            }
         }
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]

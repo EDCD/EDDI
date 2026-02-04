@@ -81,7 +81,11 @@ namespace Eddi
 
         private static void OnExit(object sender, ExitEventArgs e)
         {
-            EDDI.Instance.Stop();
+            if ( !FromVA )
+            {
+                EDDI.Instance.Stop();
+            }
+
             Current.Dispatcher.InvokeAsync( () =>
             {
                 eddiMutex.ReleaseMutex();
