@@ -8,27 +8,126 @@ namespace EddiConfigService.Configurations
     [JsonObject( MemberSerialization.OptOut ), RelativePath( @"\speech.json" )]
     public class SpeechServiceConfiguration : Config
     {
-        [JsonProperty("standardVoice")]
-        public string StandardVoice { get; set; }
+        private bool _enableIcao;
+        private bool _disableIpa;
+        private int _rate;
+        private bool _distortOnDamage = true;
+        private int _effectsLevel = 50;
+        private int _volume = 80;
+        private string _standardVoice;
 
-        [JsonProperty("volume")]
-        public int Volume { get; set; } = 80;
+        [ JsonProperty( "standardVoice" ) ]
+        public string StandardVoice
+        {
+            get => _standardVoice;
+            set
+            {
+                if ( value == _standardVoice )
+                {
+                    return;
+                }
 
-        [JsonProperty("effectsLevel")]
-        public int EffectsLevel { get; set; } = 50;
+                _standardVoice = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonProperty("distortOnDamage")]
-        public bool DistortOnDamage { get; set; } = true;
+        [ JsonProperty( "volume" ) ]
+        public int Volume
+        {
+            get => _volume;
+            set
+            {
+                if ( value == _volume )
+                {
+                    return;
+                }
 
-        [JsonProperty("rate")]
-        public int Rate { get; set; }
+                _volume = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonProperty("disableipa")]
-        public bool DisableIpa { get; set; }
+        [ JsonProperty( "effectsLevel" ) ]
+        public int EffectsLevel
+        {
+            get => _effectsLevel;
+            set
+            {
+                if ( value == _effectsLevel )
+                {
+                    return;
+                }
 
-        [JsonProperty("enableicao")]
-        public bool EnableIcao { get; set; }
-        
+                _effectsLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "distortOnDamage" ) ]
+        public bool DistortOnDamage
+        {
+            get => _distortOnDamage;
+            set
+            {
+                if ( value == _distortOnDamage )
+                {
+                    return;
+                }
+
+                _distortOnDamage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "rate" ) ]
+        public int Rate
+        {
+            get => _rate;
+            set
+            {
+                if ( value == _rate )
+                {
+                    return;
+                }
+
+                _rate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "disableipa" ) ]
+        public bool DisableIpa
+        {
+            get => _disableIpa;
+            set
+            {
+                if ( value == _disableIpa )
+                {
+                    return;
+                }
+
+                _disableIpa = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "enableicao" ) ]
+        public bool EnableIcao
+        {
+            get => _enableIcao;
+            set
+            {
+                if ( value == _enableIcao )
+                {
+                    return;
+                }
+
+                _enableIcao = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Clear the information held by speech
         /// </summary>

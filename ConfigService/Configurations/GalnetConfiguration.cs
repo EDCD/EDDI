@@ -6,10 +6,53 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\galnetmonitor.json")]
     public class GalnetConfiguration : Config
     {
-        public string lastuuid { get; set; }
+        private string _lastuuid;
+        private string _language = "English";
+        private bool _galnetAlwaysOn = false;
 
-        public string language { get; set; } = "English";
+        public string lastuuid
+        {
+            get => _lastuuid;
+            set
+            {
+                if ( value == _lastuuid )
+                {
+                    return;
+                }
 
-        public bool galnetAlwaysOn { get; set; } = false;
+                _lastuuid = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string language
+        {
+            get => _language;
+            set
+            {
+                if ( value == _language )
+                {
+                    return;
+                }
+
+                _language = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool galnetAlwaysOn
+        {
+            get => _galnetAlwaysOn;
+            set
+            {
+                if ( value == _galnetAlwaysOn )
+                {
+                    return;
+                }
+
+                _galnetAlwaysOn = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

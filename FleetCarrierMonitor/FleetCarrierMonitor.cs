@@ -727,6 +727,11 @@ namespace EddiFleetCarrierMonitor
         {
             lock ( carrierLock )
             {
+                ConfigService.Instance.fleetCarrierConfiguration = new FleetCarrierConfiguration
+                {
+                    fleetCarrier = FleetCarrier.Copy(), squadronCarrier = SquadronCarrier.Copy()
+                };
+
                 var configuration = ConfigService.Instance.fleetCarrierConfiguration;
                 if ( configuration.fleetCarrier?.timestamp < FleetCarrier?.timestamp )
                 {
@@ -736,11 +741,6 @@ namespace EddiFleetCarrierMonitor
                 {
                     EDDI.Instance.OnPropertyChanged( nameof( EDDI.Instance.SquadronCarrier ) );
                 }
-
-                ConfigService.Instance.fleetCarrierConfiguration = new FleetCarrierConfiguration
-                {
-                    fleetCarrier = FleetCarrier.Copy(), squadronCarrier = SquadronCarrier.Copy()
-                };
             }
         }
 

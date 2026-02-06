@@ -14,7 +14,28 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\shipmonitor.json")]
     public class ShipMonitorConfiguration : Config
     {
-        public int? currentshipid { get; set; }
+        private ImmutableList<Ship> _shipyard = ImmutableList.Create<Ship>();
+        private readonly object _shipyardLock = new object();
+        private DateTime _updatedat = DateTime.MinValue;
+        private decimal _insurance = 0.05M;
+        private string _exporttarget = "Coriolis";
+        private List<StoredModule> _storedmodules = new List<StoredModule>();
+        private int? _currentshipid;
+        
+        public int? currentshipid
+        {
+            get => _currentshipid;
+            set
+            {
+                if ( value == _currentshipid )
+                {
+                    return;
+                }
+
+                _currentshipid = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Returns an immutable list of ships in the shipyard.
@@ -35,17 +56,68 @@ namespace EddiConfigService.Configurations
                     _shipyard = value;
                 }
             }
-        }private ImmutableList<Ship> _shipyard = ImmutableList.Create<Ship>();
-        private readonly object _shipyardLock = new object();
+        }
 
-        public List<StoredModule> storedmodules { get; set; } = new List<StoredModule>();
+        public List<StoredModule> storedmodules
+        {
+            get => _storedmodules;
+            set
+            {
+                if ( Equals( value, _storedmodules ) )
+                {
+                    return;
+                }
+
+                _storedmodules = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>the current export target for the shipyard</summary>
-        public string exporttarget { get; set; } = "Coriolis";
+        public string exporttarget
+        {
+            get => _exporttarget;
+            set
+            {
+                if ( value == _exporttarget )
+                {
+                    return;
+                }
 
-        public decimal insurance { get; set; } = 0.05M;
+                _exporttarget = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public DateTime updatedat { get; set; } = DateTime.MinValue;
+        public decimal insurance
+        {
+            get => _insurance;
+            set
+            {
+                if ( value == _insurance )
+                {
+                    return;
+                }
+
+                _insurance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime updatedat
+        {
+            get => _updatedat;
+            set
+            {
+                if ( value.Equals( _updatedat ) )
+                {
+                    return;
+                }
+
+                _updatedat = value;
+                OnPropertyChanged();
+            }
+        }
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)

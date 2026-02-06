@@ -7,22 +7,107 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\inara.json")]
     public class InaraConfiguration : Config
     {
-        [JsonProperty("apiKey")]
-        public string apiKey { get; set; }
+        private string _apiKey;
+        private string _commanderName;
+        private string _commanderFrontierId;
+        private int? _inaraId;
+        private DateTime _lastSync;
+        private bool _isApIkeyValid = true;
 
-        [JsonProperty("commanderName")]
-        public string commanderName { get; set; }
+        [ JsonProperty( "apiKey" ) ]
+        public string apiKey
+        {
+            get => _apiKey;
+            set
+            {
+                if ( value == _apiKey )
+                {
+                    return;
+                }
 
-        [JsonProperty("commanderFrontierID")]
-        public string commanderFrontierID { get; set; }
+                _apiKey = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonProperty( "inaraID" )]
-        public int? inaraID { get; set; }
+        [ JsonProperty( "commanderName" ) ]
+        public string commanderName
+        {
+            get => _commanderName;
+            set
+            {
+                if ( value == _commanderName )
+                {
+                    return;
+                }
 
-        [JsonProperty("lastSync")]
-        public DateTime lastSync { get; set; }
+                _commanderName = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonProperty("isAPIkeyValid")]
-        public bool isAPIkeyValid { get; set; } = true;
+        [ JsonProperty( "commanderFrontierID" ) ]
+        public string commanderFrontierID
+        {
+            get => _commanderFrontierId;
+            set
+            {
+                if ( value == _commanderFrontierId )
+                {
+                    return;
+                }
+
+                _commanderFrontierId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "inaraID" ) ]
+        public int? inaraID
+        {
+            get => _inaraId;
+            set
+            {
+                if ( value == _inaraId )
+                {
+                    return;
+                }
+
+                _inaraId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "lastSync" ) ]
+        public DateTime lastSync
+        {
+            get => _lastSync;
+            set
+            {
+                if ( value.Equals( _lastSync ) )
+                {
+                    return;
+                }
+
+                _lastSync = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ JsonProperty( "isAPIkeyValid" ) ]
+        public bool isAPIkeyValid
+        {
+            get => _isApIkeyValid;
+            set
+            {
+                if ( value == _isApIkeyValid )
+                {
+                    return;
+                }
+
+                _isApIkeyValid = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

@@ -9,10 +9,53 @@ namespace EddiConfigService.Configurations
     [JsonObject(MemberSerialization.OptOut), RelativePath(@"\cargomonitor.json")]
     public class CargoMonitorConfiguration : Config
     {
-        public ObservableCollection<Cargo> cargo { get; set; } = new ObservableCollection<Cargo>();
+        private ObservableCollection<Cargo> _cargo = new ObservableCollection<Cargo>();
+        private int _cargocarried;
+        private DateTime _updatedat;
 
-        public int cargocarried { get; set; }
+        public ObservableCollection<Cargo> cargo
+        {
+            get => _cargo;
+            set
+            {
+                if ( Equals( value, _cargo ) )
+                {
+                    return;
+                }
 
-        public DateTime updatedat { get; set; }
+                _cargo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int cargocarried
+        {
+            get => _cargocarried;
+            set
+            {
+                if ( value == _cargocarried )
+                {
+                    return;
+                }
+
+                _cargocarried = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime updatedat
+        {
+            get => _updatedat;
+            set
+            {
+                if ( value.Equals( _updatedat ) )
+                {
+                    return;
+                }
+
+                _updatedat = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

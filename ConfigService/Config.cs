@@ -2,10 +2,12 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace EddiConfigService
 {
-    public abstract class Config
+    public abstract class Config : INotifyPropertyChanged
     {
         #region Gather data needed for legacy data conversions
 
@@ -14,11 +16,16 @@ namespace EddiConfigService
 
         #endregion
 
-        public T Clone<T> () where T : Config
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged ( [CallerMemberName] string propertyName = null )
         {
-            var serialized = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject<T>( serialized );
+            PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
+
+        #endregion
     }
 
     [AttributeUsage( AttributeTargets.Class )]
