@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="L_Phn_Part_Cld_001" xml:space="preserve">
+    <value>K01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_002" xml:space="preserve">
+    <value>K02-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_003" xml:space="preserve">
+    <value>K03-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_004" xml:space="preserve">
+    <value>K04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_005" xml:space="preserve">
+    <value>K05-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_006" xml:space="preserve">
+    <value>K06-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_007" xml:space="preserve">
+    <value>E04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_008" xml:space="preserve">
+    <value>K07-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_009" xml:space="preserve">
+    <value>K08-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_010" xml:space="preserve">
+    <value>K09-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_011" xml:space="preserve">
+    <value>K10-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_012" xml:space="preserve">
+    <value>K11-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_013" xml:space="preserve">
+    <value>E01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_014" xml:space="preserve">
+    <value>E02-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_015" xml:space="preserve">
+    <value>E03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Cld_016" xml:space="preserve">
+    <value>K12-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Cld_017" xml:space="preserve">
+    <value>K13-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_001" xml:space="preserve">
+    <value>T01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_002" xml:space="preserve">
+    <value>T02-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_003" xml:space="preserve">
+    <value>L01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_004" xml:space="preserve">
+    <value>T03-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_005" xml:space="preserve">
+    <value>T04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_007" xml:space="preserve">
+    <value>L03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Clus_008" xml:space="preserve">
+    <value>L04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_009" xml:space="preserve">
+    <value>L05-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_010" xml:space="preserve">
+    <value>L06-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_011" xml:space="preserve">
+    <value>L07-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_012" xml:space="preserve">
+    <value>L08-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Clus_013" xml:space="preserve">
+    <value>L09-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_002" xml:space="preserve">
+    <value>P01-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_003" xml:space="preserve">
+    <value>P02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_004" xml:space="preserve">
+    <value>P03-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_005" xml:space="preserve">
+    <value>P04-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_006" xml:space="preserve">
+    <value>P05-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_007" xml:space="preserve">
+    <value>P06-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_008" xml:space="preserve">
+    <value>P07-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_009" xml:space="preserve">
+    <value>P08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_010" xml:space="preserve">
+    <value>P09-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_011" xml:space="preserve">
+    <value>P10-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_012" xml:space="preserve">
+    <value>P11-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_013" xml:space="preserve">
+    <value>P12-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_014" xml:space="preserve">
+    <value>P13-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Eng_015" xml:space="preserve">
+    <value>P14-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Eng_016" xml:space="preserve">
+    <value>P15-Type Anomalie</value>
+  </data>
+  <data name="L_Phn_Part_Orb_001" xml:space="preserve">
+    <value>Q01-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_002" xml:space="preserve">
+    <value>Q02-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_003" xml:space="preserve">
+    <value>Q03-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_004" xml:space="preserve">
+    <value>Q04-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_005" xml:space="preserve">
+    <value>Q05-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_006" xml:space="preserve">
+    <value>Q06-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_007" xml:space="preserve">
+    <value>Q07-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_008" xml:space="preserve">
+    <value>Q08-Type Anomaly</value>
+  </data>
+  <data name="L_Phn_Part_Orb_009" xml:space="preserve">
+    <value>Q09-Type Anomaly</value>
+  </data>
+</root>
