@@ -11,13 +11,14 @@
         <!-- Normalize embedded stacktrace paths, make them relative rather than absolute -->
         <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
 
-        <!-- Don't append the target framework or a runtime identifier to the output path -->
+        <!-- Don't append the target framework, runtime identifier, or platform to the output path -->
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <AppendPlatformToOutputPath>false</AppendPlatformToOutputPath>
 
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
 
         <!-- Always include embedded debug symbols in our Release builds -->
         <DebugType>embedded</DebugType>

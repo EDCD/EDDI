@@ -411,7 +411,7 @@ namespace Tests
 
         #region Configuration Tests
 
-        [TestMethod]
+        [STATestMethod]
         public void ConfigurationTabItem_ReturnsNonNull()
         {
             // Act

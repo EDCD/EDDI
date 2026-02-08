@@ -1,67 +1,68 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Library</OutputType>
-    <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-    <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
-    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
-    <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
-    <ProjectReference Include="..\EDDI\Eddi.csproj" />
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
-    <ProjectReference Include="..\Events\EddiEvents.csproj" />
-    <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
-    <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj" />
-    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
-    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\VoiceAttack-Integration.md">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" />
-    <PackageReference Include="Microsoft.CSharp" />
-    <PackageReference Include="System.Collections.Immutable" />
-    <PackageReference Include="System.Runtime" />
-    <PackageReference Include="System.Runtime.Extensions" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\VoiceAttack.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>VoiceAttack.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\VoiceAttack.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>VoiceAttack.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="EDDI.vap">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy /y &quot;$(SolutionDir)VoiceAttack-Integration.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
-  </Target>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <UseWPF>true</UseWPF>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <OutputPath>..\bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <OutputPath>..\bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
+        <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+        <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
+        <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
+        <ProjectReference Include="..\EddiUI\EddiUI.csproj" />
+        <ProjectReference Include="..\EDDI\Eddi.csproj" />
+        <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+        <ProjectReference Include="..\Events\EddiEvents.csproj" />
+        <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
+        <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj" />
+        <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
+        <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\VoiceAttack-Integration.md">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <WCFMetadata Include="Service References\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Collections.Immutable" />
+        <PackageReference Include="System.Runtime" />
+        <PackageReference Include="System.Runtime.Extensions" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\VoiceAttack.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>VoiceAttack.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\VoiceAttack.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>VoiceAttack.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="EDDI.vap">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="xcopy /y &quot;$(SolutionDir)VoiceAttack-Integration.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
+    </Target>
 </Project>

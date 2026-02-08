@@ -1,71 +1,72 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\pls.xsd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Speech" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\FormatOverrides.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FormatOverrides.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Phonetics.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Phonetics.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Phrases.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Phrases.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Lexicons.md">
-      <Link>Lexicons.md</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\FormatOverrides.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FormatOverrides.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Phonetics.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Phonetics.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Phrases.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Phrases.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" />
-    <PackageReference Include="Microsoft.CSharp" />
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts" />
-    <PackageReference Include="NAudio" />
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="NWaves" />
-    <PackageReference Include="System.Runtime" />
-    <PackageReference Include="System.Runtime.Extensions" />
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <OutputType>Library</OutputType>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <OutputPath>..\bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <OutputPath>..\bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Properties\pls.xsd" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System.Speech" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\FormatOverrides.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>FormatOverrides.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Phonetics.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Phonetics.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Phrases.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Phrases.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
+        <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+        <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Lexicons.md">
+            <Link>Lexicons.md</Link>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\FormatOverrides.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>FormatOverrides.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Phonetics.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Phonetics.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Phrases.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Phrases.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Microsoft.Windows.SDK.Contracts" />
+        <PackageReference Include="NAudio" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="NWaves" />
+        <PackageReference Include="System.Runtime" />
+        <PackageReference Include="System.Runtime.Extensions" />
+    </ItemGroup>
 </Project>

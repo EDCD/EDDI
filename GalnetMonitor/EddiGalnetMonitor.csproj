@@ -1,44 +1,45 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Library</OutputType>
-    <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
-    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
-    <ProjectReference Include="..\Events\EddiEvents.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" />
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="System.Data.SQLite" />
-    <PackageReference Include="System.Runtime" />
-    <PackageReference Include="System.Runtime.Extensions" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\GalnetMonitor.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>GalnetMonitor.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\GalnetMonitor.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>GalnetMonitor.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <UseWPF>true</UseWPF>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <OutputPath>..\bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <OutputPath>..\bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+        <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+        <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+        <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
+        <ProjectReference Include="..\Events\EddiEvents.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="System.Data.SQLite" />
+        <PackageReference Include="System.Runtime" />
+        <PackageReference Include="System.Runtime.Extensions" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\GalnetMonitor.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>GalnetMonitor.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\GalnetMonitor.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>GalnetMonitor.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 </Project>

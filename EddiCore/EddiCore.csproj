@@ -1,58 +1,59 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Library</OutputType>
-    <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="JetBrains.Annotations">
-      <HintPath>..\..\..\..\.nuget\packages\jetbrains.annotations\2024.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
-    <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
-    <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
-    <ProjectReference Include="..\Events\EddiEvents.csproj" />
-    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
-    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <UseWPF>true</UseWPF>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <OutputPath>..\bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <OutputPath>..\bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="JetBrains.Annotations">
+            <HintPath>..\..\..\..\.nuget\packages\jetbrains.annotations\2024.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+        </Reference>
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Xml" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
+        <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+        <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+        <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj" />
+        <ProjectReference Include="..\EddiSpanshService\EddiSpanshService.csproj" />
+        <ProjectReference Include="..\EddiStatusService\EddiStatusService.csproj" />
+        <ProjectReference Include="..\Events\EddiEvents.csproj" />
+        <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
+        <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 </Project>

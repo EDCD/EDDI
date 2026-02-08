@@ -8,6 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added support for Dodec stations (thanks Nepomuk).
     * Added support for the Type-11 Prospector.
     * Revised Spansh faction queries to match the latest Spansh API revision.
+    * Retargeted EDDI to target the x64 platform (rather than AnyCPU) to improve performance and reliability. This should not affect most users but may affect some users with private builds.
     * Various minor bug fixes.
     * `Body` object updated to include `alreadyfootfalled` boolean and `footfalled` timestamp fields.
     * `System` object updated to include an `id64` object field containing boxel, mass code, and stellar region information.

@@ -1,40 +1,42 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-      <TargetFramework>net48</TargetFramework>
-      <OutputType>Library</OutputType>
-      <UseWPF>true</UseWPF>
-      <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-      <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
-      <EnableDynamicLoading>true</EnableDynamicLoading>
-  </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <UseWPF>true</UseWPF>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
         <OutputPath>..\bin\Debug\</OutputPath>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
         <OutputPath>..\bin\Release\</OutputPath>
     </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\EddiCore\EddiCore.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="PresentationFramework" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 
 </Project>
+

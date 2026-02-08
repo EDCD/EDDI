@@ -1,142 +1,143 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Library</OutputType>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="2ziiwxwv.wui~" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Speech" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
-    <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
-    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
-    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
-    <ProjectReference Include="..\Events\EddiEvents.csproj" />
-    <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj" />
-    <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
-    <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
-    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="AvalonEdit\Cottle.xshd" />
-    <None Update="eddi.cs.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.de.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.es.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.fr.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.hu.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.it.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.ja.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.ru.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="eddi.zh-CN.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SpeechResponderHelp.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Variables.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AvalonEdit" />
-    <PackageReference Include="CommonMark.NET" />
-    <PackageReference Include="Cottle" />
-    <PackageReference Include="JetBrains.Annotations" />
-    <PackageReference Include="Microsoft.CSharp" />
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="System.Collections.Immutable" />
-    <PackageReference Include="System.Runtime" />
-    <PackageReference Include="System.Runtime.Extensions" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Copy.png" />
-    <Resource Include="Images\Cut.png" />
-    <Resource Include="Images\Delete line.png" />
-    <Resource Include="Images\Delete.png" />
-    <Resource Include="Images\Find.png" />
-    <Resource Include="Images\Paste.png" />
-    <Resource Include="Images\Redo.png" />
-    <Resource Include="Images\Undo.png" />
-    <Resource Include="Images\WordWrap.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Folding.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\CustomFunctions.Untranslated.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CustomFunctions.Untranslated.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\SpeechResponder.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SpeechResponder.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Tooltips.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Tooltips.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\CustomFunctions.Untranslated.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\SpeechResponder.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SpeechResponder.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Tooltips.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy /y &quot;$(SolutionDir)SpeechResponder\Variables.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
-  </Target>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties />
-    </VisualStudio>
-  </ProjectExtensions>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <UseWindowsForms>true</UseWindowsForms>
+        <UseWPF>true</UseWPF>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <OutputPath>..\bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <OutputPath>..\bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="2ziiwxwv.wui~" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System.Speech" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj" />
+        <ProjectReference Include="..\ConfigService\EddiConfigService.csproj" />
+        <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj" />
+        <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj" />
+        <ProjectReference Include="..\Events\EddiEvents.csproj" />
+        <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj" />
+        <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj" />
+        <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj" />
+        <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj" />
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="AvalonEdit\Cottle.xshd" />
+        <None Update="eddi.cs.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.de.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.es.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.fr.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.hu.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.it.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.ja.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.pt-BR.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.ru.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="eddi.zh-CN.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="SpeechResponderHelp.md">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Variables.md">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AvalonEdit" />
+        <PackageReference Include="CommonMark.NET" />
+        <PackageReference Include="Cottle" />
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="System.Collections.Immutable" />
+        <PackageReference Include="System.Runtime" />
+        <PackageReference Include="System.Runtime.Extensions" />
+    </ItemGroup>
+    <ItemGroup>
+        <Resource Include="Images\Copy.png" />
+        <Resource Include="Images\Cut.png" />
+        <Resource Include="Images\Delete line.png" />
+        <Resource Include="Images\Delete.png" />
+        <Resource Include="Images\Find.png" />
+        <Resource Include="Images\Paste.png" />
+        <Resource Include="Images\Redo.png" />
+        <Resource Include="Images\Undo.png" />
+        <Resource Include="Images\WordWrap.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Resource Include="Images\Folding.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\CustomFunctions.Untranslated.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CustomFunctions.Untranslated.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\SpeechResponder.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>SpeechResponder.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Tooltips.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Tooltips.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\CustomFunctions.Untranslated.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CustomFunctions.Untranslated.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\SpeechResponder.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>SpeechResponder.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Tooltips.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Tooltips.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="xcopy /y &quot;$(SolutionDir)SpeechResponder\Variables.md&quot; &quot;$(SolutionDir)bin\$(Configuration)\Wiki\&quot;" />
+    </Target>
+    <ProjectExtensions>
+        <VisualStudio>
+            <UserProperties />
+        </VisualStudio>
+    </ProjectExtensions>
 </Project>

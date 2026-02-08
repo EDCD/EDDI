@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <OutputType>Library</OutputType>
+        <Platforms>x64</Platforms>
     </PropertyGroup>
     <PropertyGroup>
         <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -44,16 +45,15 @@
 
     <!--Check for unused dependencies in Directory.Packages.props-->
     <Target Name="CheckUnusedPackages" AfterTargets="Build">
-        <Message Importance="High" Text=">>> Running solution-wide unused package check" />
+        <Message Importance="High" Text="&gt;&gt;&gt; Running solution-wide unused package check" />
 
         <PropertyGroup>
             <PackagesProps>$(MSBuildThisFileDirectory)..\Directory.Packages.props</PackagesProps>
         </PropertyGroup>
 
         <!-- Load declared packages -->
-        <XmlPeek XmlInputPath="$(PackagesProps)"
-                 Query="//PackageVersion/@Include">
-            <Output TaskParameter="Result" ItemName="DeclaredPackagesRaw"/>
+        <XmlPeek XmlInputPath="$(PackagesProps)" Query="//PackageVersion/@Include">
+            <Output TaskParameter="Result" ItemName="DeclaredPackagesRaw" />
         </XmlPeek>
 
         <ItemGroup>
@@ -66,11 +66,8 @@
         </ItemGroup>
 
         <!-- Ask each project to report its PackageReferences -->
-        <MSBuild Projects="@(ProjectFiles)"
-                 Targets="CollectPackageReferences"
-                 BuildInParallel="true"
-                 Properties="DesignTimeBuild=true">
-            <Output TaskParameter="TargetOutputs" ItemName="UsedPackagesRaw"/>
+        <MSBuild Projects="@(ProjectFiles)" Targets="CollectPackageReferences" BuildInParallel="true" Properties="DesignTimeBuild=true">
+            <Output TaskParameter="TargetOutputs" ItemName="UsedPackagesRaw" />
         </MSBuild>
 
         <ItemGroup>
@@ -79,21 +76,17 @@
 
         <!-- Compare sets -->
         <ItemGroup>
-            <UnusedPackages Include="@(DeclaredPackages)"
-                            Exclude="@(UsedPackages)" />
+            <UnusedPackages Include="@(DeclaredPackages)" Exclude="@(UsedPackages)" />
         </ItemGroup>
 
         <!-- Emit a single consolidated warning -->
-        <Warning Text="Unused packages in Directory.Packages.props: @(UnusedPackages, ', ')"
-                 Condition=" '@(UnusedPackages)' != '' " />
+        <Warning Text="Unused packages in Directory.Packages.props: @(UnusedPackages, ', ')" Condition=" '@(UnusedPackages)' != '' " />
     </Target>
 
     <!-- Helper target: runs inside each project -->
     <Target Name="CollectPackageReferences" Returns="@(FilteredPackageRefs)">
         <ItemGroup>
-            <FilteredPackageRefs Include="@(PackageReference->'%(Identity)')"
-                                 Condition=" '%(PackageReference.PrivateAssets)' != 'all'
-                                    and '%(PackageReference.IncludeAssets)' != 'analyzers' " />
+            <FilteredPackageRefs Include="@(PackageReference->'%(Identity)')" Condition=" '%(PackageReference.PrivateAssets)' != 'all'&#xD;&#xA;                                    and '%(PackageReference.IncludeAssets)' != 'analyzers' " />
         </ItemGroup>
     </Target>
 

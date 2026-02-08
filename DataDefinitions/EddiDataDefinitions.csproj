@@ -1,778 +1,779 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Update="Properties\CodexStellarBodyType.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexStellarBodyType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexStellarBodyDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexStellarBodyDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexStellarBody.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexStellarBody.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexGeologyOrAnomolyType.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexGeologyOrAnomolyType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexGeologyOrAnomoly.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexGeologyOrAnomoly.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexGeologyOrAnomolyTypeDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexGeologyOrAnomolyTypeDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexGeologyOrAnomolyDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexGeologyOrAnomolyDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexCivilizationGuardian.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexCivilizationGuardian.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexCivilizationGuardianDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexCivilizationGuardianDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MessageChannels.Designer.cs">
-      <DependentUpon>MessageChannels.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Properties\MicroResourceCategories.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MicroResourceCategories.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MicroResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MicroResources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MercenaryRatings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MercenaryRatings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\ExobiologistRatings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExobiologistRatings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\ModuleMount.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModuleMount.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\NpcAuthorityShip.Designer.cs">
-      <DependentUpon>NpcAuthorityShip.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Properties\NpcShip.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NpcShip.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\OrganicGenus.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OrganicGenus.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\OrganicGenusDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OrganicGenusDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\OrganicSpecies.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OrganicSpecies.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\OrganicSpeciesCond.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OrganicSpeciesCond.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\OrganicSpeciesDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OrganicSpeciesDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\OrganicVariant.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OrganicVariant.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\StationState.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StationState.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Suit.Designer.cs">
-      <DependentUpon>Suit.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Properties\NpcSuitLoadout.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NpcSuitLoadout.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\PowerplayState.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PowerplayState.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\AsteroidMaterialContent.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AsteroidMaterialContent.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\EngineerSpecialty.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EngineerSpecialty.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MessageSources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MessageSources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Ship.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Ship.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\LoadoutDescription.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoadoutDescription.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexCivilizationThargoid.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexCivilizationThargoid.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CodexCivilizationThargoidDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CodexCivilizationThargoidDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\ThargoidDesc.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ThargoidDesc.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Vehicle.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Vehicle.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Happiness.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Happiness.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MaterialLocations.Designer.cs">
-      <DependentUpon>MaterialLocations.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Properties\Modifications.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Modifications.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\SignalSource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SignalSource.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\SignalType.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SignalType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Powers.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Powers.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Body.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Body.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\PlanetClass.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PlanetClass.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\StationLargestPad.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StationLargestPad.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\ReserveLevel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ReserveLevel.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\TerraformState.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TerraformState.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\StationService.Designer.cs">
-      <DependentUpon>StationService.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Properties\AtmosphereClass.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AtmosphereClass.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Commodities.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Commodities.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\StationModels.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StationModels.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CombatRatings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CombatRatings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\RingCompositions.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RingCompositions.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CQCRatings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CQCRatings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Crimes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Crimes.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\DataScans.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataScans.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Economies.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Economies.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\EmpireRatingsFemale.Designer.cs">
-      <DependentUpon>EmpireRatingsFemale.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Properties\EmpireRatingsMale.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmpireRatingsMale.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\ExplorationRatings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExplorationRatings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\FederationRatings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FederationRatings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\GameModes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GameModes.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MaterialCategories.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MaterialCategories.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Materials.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Materials.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\CommodityCategories.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommodityCategories.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MissionStatus.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MissionStatus.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\MissionType.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MissionType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Modules.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Modules.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Rarities.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Rarities.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\LegalStatus.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LegalStatus.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\PassengerType.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PassengerType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\ShipRoles.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ShipRoles.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\StarColors.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StarColors.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\FactionStates.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FactionStates.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\TargetType.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TargetType.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\TradeRatings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TradeRatings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Volcanism.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Volcanism.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Vouchers.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Vouchers.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\SecurityLevels.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SecurityLevels.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Governments.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Governments.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Superpowers.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Superpowers.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\AtmosphereComposition.Designer.cs">
-      <DependentUpon>AtmosphereComposition.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\CodexStellarBodyType.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexStellarBodyType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexStellarBodyDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexStellarBodyDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexStellarBody.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexStellarBody.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyType.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexGeologyOrAnomolyType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexGeologyOrAnomoly.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexGeologyOrAnomoly.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyTypeDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexGeologyOrAnomolyTypeDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexGeologyOrAnomolyDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexCivilizationGuardian.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexCivilizationGuardian.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexCivilizationGuardianDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexCivilizationGuardianDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\LoadoutDescription.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LoadoutDescription.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MaterialLocations.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MaterialLocations.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\AtmosphereClass.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AtmosphereClass.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Body.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Body.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CombatRatings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CombatRatings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MessageChannels.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MessageChannels.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Modifications.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Modifications.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\ModuleMount.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ModuleMount.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MicroResourceCategories.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MicroResourceCategories.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MicroResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MicroResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MercenaryRatings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MercenaryRatings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\ExobiologistRatings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExobiologistRatings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\NpcAuthorityShip.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NpcAuthorityShip.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\NpcShip.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NpcShip.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicGenus.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>OrganicGenus.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicGenusDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>OrganicGenusDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicSpecies.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>OrganicSpecies.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicSpeciesCond.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>OrganicSpeciesCond.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicSpeciesDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>OrganicSpeciesDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\OrganicVariant.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>OrganicVariant.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\SignalType.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SignalType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\StationState.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StationState.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Suit.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Suit.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\NpcSuitLoadout.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NpcSuitLoadout.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\PowerplayState.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>PowerplayState.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\AsteroidMaterialContent.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AsteroidMaterialContent.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\EngineerSpecialty.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EngineerSpecialty.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MessageSources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MessageSources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Ship.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Ship.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\SignalSource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SignalSource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Powers.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Powers.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\RingCompositions.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>RingCompositions.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CQCRatings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CQCRatings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Crimes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Crimes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\DataScans.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DataScans.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\EmpireRatingsFemale.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmpireRatingsFemale.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\EmpireRatingsMale.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmpireRatingsMale.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\ExplorationRatings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExplorationRatings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\FederationRatings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FederationRatings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\GameModes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>GameModes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Governments.es.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Governments.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Governments.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Governments.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Economies.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Economies.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MaterialCategories.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MaterialCategories.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Materials.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Materials.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Commodities.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Commodities.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CommodityCategories.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommodityCategories.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MissionStatus.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MissionStatus.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\MissionType.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MissionType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Modules.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Modules.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\PlanetClass.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>PlanetClass.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Rarities.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\StationLargestPad.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StationLargestPad.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\StationModels.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StationModels.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\PassengerType.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PassengerType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\LegalStatus.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LegalStatus.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\ShipRoles.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ShipRoles.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\StarColors.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StarColors.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\FactionStates.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FactionStates.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\ReserveLevel.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ReserveLevel.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\TargetType.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\TerraformState.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TerraformState.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexCivilizationThargoid.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexCivilizationThargoid.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\CodexCivilizationThargoidDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CodexCivilizationThargoidDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\ThargoidDesc.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ThargoidDesc.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\TradeRatings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TradeRatings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Vehicle.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Volcanism.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Volcanism.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Vouchers.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Vouchers.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\SecurityLevels.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SecurityLevels.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Superpowers.es.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Superpowers.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Superpowers.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Superpowers.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\AtmosphereComposition.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AtmosphereComposition.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\StationService.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StationService.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" />
-    <PackageReference Include="MathNet.Numerics" />
-    <PackageReference Include="Microsoft.CSharp" />
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="System.Collections.Immutable" />
-    <PackageReference Include="System.Runtime" />
-    <PackageReference Include="System.Runtime.Extensions" />
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <OutputType>Library</OutputType>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <OutputPath>..\bin\Debug\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+        <OutputPath>..\bin\Release\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Update="Properties\CodexStellarBodyType.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexStellarBodyType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexStellarBodyDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexStellarBodyDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexStellarBody.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexStellarBody.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexGeologyOrAnomolyType.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexGeologyOrAnomolyType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexGeologyOrAnomoly.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexGeologyOrAnomoly.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexGeologyOrAnomolyTypeDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexGeologyOrAnomolyTypeDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexGeologyOrAnomolyDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexGeologyOrAnomolyDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexCivilizationGuardian.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexCivilizationGuardian.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexCivilizationGuardianDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexCivilizationGuardianDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MessageChannels.Designer.cs">
+            <DependentUpon>MessageChannels.resx</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Properties\MicroResourceCategories.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>MicroResourceCategories.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MicroResources.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>MicroResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MercenaryRatings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>MercenaryRatings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ExobiologistRatings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>ExobiologistRatings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ModuleMount.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>ModuleMount.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\NpcAuthorityShip.Designer.cs">
+            <DependentUpon>NpcAuthorityShip.resx</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Properties\NpcShip.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>NpcShip.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\OrganicGenus.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrganicGenus.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\OrganicGenusDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrganicGenusDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\OrganicSpecies.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrganicSpecies.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\OrganicSpeciesCond.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrganicSpeciesCond.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\OrganicSpeciesDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrganicSpeciesDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\OrganicVariant.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>OrganicVariant.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\StationState.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>StationState.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Suit.Designer.cs">
+            <DependentUpon>Suit.resx</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Properties\NpcSuitLoadout.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>NpcSuitLoadout.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\PowerplayState.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>PowerplayState.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\AsteroidMaterialContent.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>AsteroidMaterialContent.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\EngineerSpecialty.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>EngineerSpecialty.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MessageSources.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>MessageSources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Ship.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Ship.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\LoadoutDescription.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>LoadoutDescription.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexCivilizationThargoid.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexCivilizationThargoid.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CodexCivilizationThargoidDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>CodexCivilizationThargoidDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ThargoidDesc.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ThargoidDesc.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Vehicle.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Vehicle.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Happiness.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Happiness.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MaterialLocations.Designer.cs">
+            <DependentUpon>MaterialLocations.resx</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Properties\Modifications.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Modifications.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\SignalSource.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>SignalSource.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\SignalType.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>SignalType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Powers.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Powers.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Body.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Body.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\PlanetClass.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>PlanetClass.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\StationLargestPad.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>StationLargestPad.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ReserveLevel.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>ReserveLevel.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\TerraformState.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>TerraformState.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\StationService.Designer.cs">
+            <DependentUpon>StationService.resx</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Properties\AtmosphereClass.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>AtmosphereClass.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Commodities.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Commodities.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\StationModels.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>StationModels.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CombatRatings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>CombatRatings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\RingCompositions.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>RingCompositions.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CQCRatings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>CQCRatings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Crimes.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Crimes.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\DataScans.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>DataScans.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Economies.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Economies.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\EmpireRatingsFemale.Designer.cs">
+            <DependentUpon>EmpireRatingsFemale.resx</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <Compile Update="Properties\EmpireRatingsMale.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>EmpireRatingsMale.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ExplorationRatings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>ExplorationRatings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\FederationRatings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>FederationRatings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\GameModes.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>GameModes.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MaterialCategories.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>MaterialCategories.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Materials.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Materials.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\CommodityCategories.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>CommodityCategories.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MissionStatus.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>MissionStatus.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\MissionType.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>MissionType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Modules.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Modules.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Rarities.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Rarities.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\LegalStatus.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>LegalStatus.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\PassengerType.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>PassengerType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ShipRoles.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>ShipRoles.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\StarColors.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>StarColors.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\FactionStates.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>FactionStates.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\TargetType.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>TargetType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\TradeRatings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>TradeRatings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Volcanism.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Volcanism.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Vouchers.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Vouchers.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\SecurityLevels.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>SecurityLevels.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Governments.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Governments.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Superpowers.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Superpowers.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\AtmosphereComposition.Designer.cs">
+            <DependentUpon>AtmosphereComposition.resx</DependentUpon>
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Properties\CodexStellarBodyType.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexStellarBodyType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexStellarBodyDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexStellarBodyDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexStellarBody.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexStellarBody.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyType.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexGeologyOrAnomolyType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexGeologyOrAnomoly.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexGeologyOrAnomoly.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyTypeDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexGeologyOrAnomolyTypeDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexGeologyOrAnomolyDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexGeologyOrAnomolyDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexCivilizationGuardian.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexCivilizationGuardian.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexCivilizationGuardianDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexCivilizationGuardianDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\LoadoutDescription.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>LoadoutDescription.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MaterialLocations.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>MaterialLocations.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\AtmosphereClass.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AtmosphereClass.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Body.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Body.Designer.cs</LastGenOutput>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CombatRatings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CombatRatings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MessageChannels.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>MessageChannels.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Modifications.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Modifications.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\ModuleMount.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ModuleMount.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MicroResourceCategories.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>MicroResourceCategories.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MicroResources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>MicroResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MercenaryRatings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>MercenaryRatings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\ExobiologistRatings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ExobiologistRatings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\NpcAuthorityShip.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>NpcAuthorityShip.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\NpcShip.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>NpcShip.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\OrganicGenus.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrganicGenus.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\OrganicGenusDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrganicGenusDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\OrganicSpecies.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrganicSpecies.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\OrganicSpeciesCond.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrganicSpeciesCond.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\OrganicSpeciesDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrganicSpeciesDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\OrganicVariant.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>OrganicVariant.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\SignalType.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>SignalType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\StationState.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>StationState.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Suit.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Suit.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\NpcSuitLoadout.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>NpcSuitLoadout.Designer.cs</LastGenOutput>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\PowerplayState.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>PowerplayState.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\AsteroidMaterialContent.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AsteroidMaterialContent.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\EngineerSpecialty.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>EngineerSpecialty.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MessageSources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>MessageSources.Designer.cs</LastGenOutput>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Ship.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Ship.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\SignalSource.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>SignalSource.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Powers.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Powers.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\RingCompositions.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>RingCompositions.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CQCRatings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CQCRatings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Crimes.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Crimes.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\DataScans.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>DataScans.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\EmpireRatingsFemale.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>EmpireRatingsFemale.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\EmpireRatingsMale.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>EmpireRatingsMale.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\ExplorationRatings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ExplorationRatings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\FederationRatings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>FederationRatings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\GameModes.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>GameModes.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Governments.es.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Governments.fr.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Governments.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Governments.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Economies.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Economies.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MaterialCategories.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>MaterialCategories.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Materials.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Materials.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Commodities.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Commodities.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CommodityCategories.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CommodityCategories.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MissionStatus.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>MissionStatus.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\MissionType.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>MissionType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Modules.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Modules.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\PlanetClass.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>PlanetClass.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Rarities.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\StationLargestPad.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>StationLargestPad.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\StationModels.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>StationModels.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\PassengerType.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>PassengerType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\LegalStatus.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>LegalStatus.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\ShipRoles.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ShipRoles.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\StarColors.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>StarColors.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\FactionStates.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>FactionStates.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\ReserveLevel.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ReserveLevel.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\TargetType.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\TerraformState.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>TerraformState.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexCivilizationThargoid.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexCivilizationThargoid.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\CodexCivilizationThargoidDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>CodexCivilizationThargoidDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\ThargoidDesc.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ThargoidDesc.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\TradeRatings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>TradeRatings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Vehicle.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Volcanism.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Volcanism.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Vouchers.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Vouchers.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\SecurityLevels.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>SecurityLevels.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Superpowers.es.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Superpowers.fr.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Superpowers.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Superpowers.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\AtmosphereComposition.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AtmosphereComposition.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\StationService.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>StationService.Designer.cs</LastGenOutput>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="MathNet.Numerics" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="System.Collections.Immutable" />
+        <PackageReference Include="System.Runtime" />
+        <PackageReference Include="System.Runtime.Extensions" />
+    </ItemGroup>
 </Project>

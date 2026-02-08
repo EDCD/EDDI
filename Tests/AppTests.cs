@@ -11,7 +11,7 @@ using Utilities;
 
 namespace Tests
 {
-    [TestClass, TestCategory( "UnitTests" )]
+    [TestClass, TestCategory( "UnitTests" ), DoNotParallelize]
     public class AppTests : TestBase
     {
         [TestInitialize]
@@ -79,36 +79,33 @@ namespace Tests
             }
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void ApplyAnyOverrideCulture_AppliesValidCulture ()
         {
-            var config = new EDDIConfiguration
-            {
-                OverrideCulture = "fr-FR"
-            };
+            // Start with a known default so we can observe the fallback behavior
+            CultureInfo backupDefault = CultureInfo.DefaultThreadCurrentCulture;
 
             // Apply override
-            App.ApplyAnyOverrideCulture( config );
+            App.ApplyAnyOverrideCulture( new EDDIConfiguration { OverrideCulture = "fr-FR" } );
 
             // Default thread cultures and current thread culture should reflect override
             Assert.IsNotNull( CultureInfo.DefaultThreadCurrentCulture );
             Assert.AreEqual( "fr-FR", CultureInfo.DefaultThreadCurrentCulture.Name, "DefaultThreadCurrentCulture should be set to 'fr-FR'" );
             Assert.AreEqual( "fr-FR", Thread.CurrentThread.CurrentCulture.Name, "Current thread culture should be set to 'fr-FR'" );
+
+            // Restore original default to avoid affecting other tests
+            CultureInfo.DefaultThreadCurrentCulture = backupDefault;
+            CultureInfo.DefaultThreadCurrentUICulture = backupDefault;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void ApplyAnyOverrideCulture_InvalidCultureDoesNotThrow_AndSetsDefaultToNull ()
         {
             // Start with a known default so we can observe the fallback behavior
             CultureInfo backupDefault = CultureInfo.DefaultThreadCurrentCulture;
 
-            var config = new EDDIConfiguration
-            {
-                OverrideCulture = "this-is-not-a-culture"
-            };
-
             // Should not throw
-            App.ApplyAnyOverrideCulture( config );
+            App.ApplyAnyOverrideCulture( new EDDIConfiguration { OverrideCulture = "this-is-not-a-culture" } );
 
             // Per implementation, invalid culture triggers ApplyCulture(null) -> DefaultThreadCurrentCulture becomes null
             Assert.IsNull( CultureInfo.DefaultThreadCurrentCulture, "DefaultThreadCurrentCulture should have been set to null when invalid override culture is provided" );
