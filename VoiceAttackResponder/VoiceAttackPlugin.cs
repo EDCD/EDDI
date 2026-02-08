@@ -182,13 +182,10 @@ namespace EddiVoiceAttackResponder
             Thread.Sleep( 500 );
 
             // Force application shutdown to ensure all threads terminate
-            if ( Application.Current != null )
+            Application.Current?.Dispatcher.InvokeAsync( () =>
             {
-                Application.Current.Dispatcher.InvokeAsync( () =>
-                {
-                    Application.Current.Shutdown();
-                } );
-            }
+                Application.Current.Shutdown();
+            } );
         }
 
         [UsedImplicitly( Reason = "VoiceAttack Interface Member" )]

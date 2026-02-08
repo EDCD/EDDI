@@ -5209,7 +5209,8 @@ namespace EddiJournalMonitor
                             case "RestockVehicle":
                             case "SellMicroResources":
                             case "SellSuit":  
-                            case "SellWeapon": 
+                            case "SellWeapon":
+                            case "ShipyardBankDeposit": // Written when depositing a ship into a squadron carrier. Sample: { "timestamp": "2025-08-20T02:09:05Z", "event": "ShipyardBankDeposit", "ShipType": "Type9", "ShipType_Localised": "Type-9 Heavy", "MarketID": 3713125120 }
                             case "SuitLoadout":
                             case "SwitchSuitLoadout":
                             case "UpgradeSuit":
