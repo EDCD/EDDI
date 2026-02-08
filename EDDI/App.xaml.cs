@@ -7,11 +7,13 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace Eddi
 {
     /// <summary>
@@ -19,7 +21,7 @@ namespace Eddi
     /// </summary>
     public partial class App : Application
     {
-        public static Mutex eddiMutex { get; private set; }
+        public static Mutex eddiMutex { get; internal set; }
 
         // True if we have been started by VoiceAttack and the VaProxy object has been set
         public static System.Version VoiceAttackVersion { get; set; }

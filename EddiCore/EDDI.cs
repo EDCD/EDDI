@@ -40,7 +40,7 @@ namespace EddiCore
         private static bool started;
         public static bool running = true;
 
-        public bool inTelepresence { get; private set; }
+        public bool inTelepresence { get; internal set; }
 
         public bool inHorizons 
         {
@@ -79,7 +79,7 @@ namespace EddiCore
 
         private readonly StarSystemSignalSourceManager signalSourceManager = new StarSystemSignalSourceManager();
 
-        public System.Version GameVersion { get; private set; }
+        public System.Version GameVersion { get; internal set; }
 
         // EDDI uses APIs which only return data for the "live" galaxy, game version 4.0 or later.
         private readonly System.Version minGameVersion = new System.Version(4, 0);

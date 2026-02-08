@@ -10,10 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiInaraResponder
 {
     // Documentation: https://inara.cz/inara-api-docs/
@@ -21,7 +23,7 @@ namespace EddiInaraResponder
     [UsedImplicitly]
     public class InaraResponder : IEddiResponder
     {
-        private readonly IInaraService inaraService = new InaraService();
+        public IInaraService inaraService { get; internal set; } = new InaraService();
 
         // This responder currently requires game version 4.0 or later.
         private static readonly System.Version minGameVersion = new System.Version(4, 0);
@@ -716,7 +718,7 @@ namespace EddiInaraResponder
             }));
         }
 
-        private static Dictionary<string, object> GetModuleData(string slotName, Module module)
+        internal static Dictionary<string, object> GetModuleData(string slotName, Module module)
         {
             Dictionary<string, object> moduleData;
             if (module is null)

@@ -11,6 +11,8 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +23,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using Utilities;
 
+[assembly: InternalsVisibleTo( "Tests" )]
 namespace EddiUI
 {
     /// <summary>
@@ -30,7 +33,7 @@ namespace EddiUI
     {
         public System.Windows.Controls.TabControl MainTabControl => tabControl;
 
-        struct LanguageDef : IComparable<LanguageDef>
+        internal struct LanguageDef : IComparable<LanguageDef>
         {
             public CultureInfo ci;
             public string displayName { get; set; }
@@ -167,7 +170,7 @@ namespace EddiUI
         {
             if (!EDDI.FromVA)
             {
-                var splashScreen = new SplashScreen("logo-with-alpha.png");
+                var splashScreen = new SplashScreen( Assembly.GetExecutingAssembly(), "logo-with-alpha.png");
                 splashScreen.Show(true);
             }
 
@@ -234,7 +237,7 @@ namespace EddiUI
             EDDI.Instance.HotkeyManager.UnregisterAllHotkeys();
         }
 
-        class TabItemComparer : Comparer<TabItem>
+        internal class TabItemComparer : Comparer<TabItem>
         {
             public StringComparer stringComparer { get; }
 
@@ -274,7 +277,7 @@ namespace EddiUI
             }
         }
 
-        private List<LanguageDef> GetAvailableLangs()
+        internal List<LanguageDef> GetAvailableLangs()
         {
             var cultures = new List<LanguageDef>
             {
@@ -531,7 +534,7 @@ namespace EddiUI
             }
         }
 
-        private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
+        internal void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
         {
             // Match valid characters
             Regex regex = new Regex(@"[0-9\.]");

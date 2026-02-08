@@ -10,6 +10,12 @@
     <OutputPath>..\bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="logo-with-alpha.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="logo-with-alpha.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="CommonMark.NET" />
     <PackageReference Include="Microsoft.CSharp" />
     <PackageReference Include="System.Runtime" />
@@ -61,6 +67,9 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+  <!--<ItemGroup>
+    <Resource Include="logo-with-alpha.png" />
+  </ItemGroup>-->
   <ItemGroup>
     <SplashScreen Include="..\graphics\logo-with-alpha.png" />
   </ItemGroup>
