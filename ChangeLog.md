@@ -24,6 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Organic data sold` added.
     * `Scan organic` added.
     * `Scan organic distance` added.
+    * `Surface signals detected` updated to add a `genera` object with information about the organic genus of each detected biological.
     * `Touchdown` updated to include a `canfirstfootfall` boolean field.
   * Speech Responder
     * Re-tuned speech effects to better match pre-4.1.6 behavior (but with more clarity at the top of the range). 
@@ -37,7 +38,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Organic data sold` added.
       * `Scan organic` added.
       * `Scan organic distance` added.
-      * `Surface signals detected` updated with new optional toggle variables.
+      * `Surface signals detected` updated with new optional toggle variables and new `genera` information.
       * `Touchdown` updated to announce first footfall opportunities.
   * VoiceAttack Responder
     * Re-tuned event handling for better responsiveness.

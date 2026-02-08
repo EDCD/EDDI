@@ -1621,7 +1621,7 @@ namespace EddiJournalMonitor
                                         surfaceSignals.Add(new SignalAmount(source, amount));
                                     }
                                     surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                    events.Add(new SurfaceSignalsEvent(timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SurfaceSignalsEvent(timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals, null) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -1776,49 +1776,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "SAASignalsFound":
-                                {
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var bodyName = JsonParsing.getString(data, "BodyName");
-                                    var bodyId = JsonParsing.getLong(data, "BodyID");
-                                    data.TryGetValue("Signals", out var signalsVal);
-
-                                    if (bodyName.EndsWith(" Ring"))
-                                    {
-                                        // This is the mining hotspots from a ring that we've mapped
-                                        var hotspots = new List<CommodityAmount>();
-                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>() )
-                                        {
-                                            var commodityEdName = JsonParsing.getString(signal, "Type");
-                                            var type = CommodityDefinition.FromEDName(commodityEdName);
-                                            type.fallbackLocalizedName = JsonParsing.getString(signal, "Type_Localised");
-                                            var amount = JsonParsing.getInt(signal, "Count");
-                                            hotspots.Add(new CommodityAmount(type, amount));
-                                        }
-                                        hotspots = hotspots.OrderByDescending(h => h.amount).ToList();
-
-                                        events.Add(new RingHotspotsEvent(timestamp, systemAddress, bodyName, bodyId, hotspots) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                    else
-                                    {
-                                        // This is surface signal sources from a body that we've mapped
-                                        var surfaceSignals = new List<SignalAmount>();
-                                        foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
-                                        {
-                                            var signalSource = JsonParsing.getString(signal, "Type");
-                                            var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                                            var localizedName = JsonParsing.getString(data, "Type_Localised");
-                                            if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                                            {
-                                                source.fallbackLocalizedName = localizedName;
-                                            }
-                                            var amount = JsonParsing.getInt(signal, "Count");
-                                            surfaceSignals.Add(new SignalAmount(source, amount));
-                                        }
-                                        surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                        events.Add(new SurfaceSignalsEvent(timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
-                                    }
-                                }
-                                handled = true;
+                                handled = SurfaceSignalsEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "Scan":
                                 {
@@ -1865,9 +1823,9 @@ namespace EddiJournalMonitor
                                     if ( data.TryGetValue( "Parents", out var parentsVal ) && parentsVal is IEnumerable<object> pVal )
                                     {
                                         foreach ( var parentObj in pVal.Cast<IDictionary<string, object>>() )
-                                    {
-                                            try
                                         {
+                                            try
+                                            {
                                                 var intDict = parentObj.ToDictionary(kv => kv.Key, kv => Convert.ToInt32(kv.Value));
                                                 parents.Add( intDict );
                                             }
@@ -5308,20 +5266,20 @@ namespace EddiJournalMonitor
             catch (JsonReaderException jre)
             {
                 Logging.Debug(jre.Message, jre);
-                    if ( line.Contains( @"""event"":""BackpackChange""" ) && line.Contains( @"] ""Removed""" ) )
-                    {
-                        // We've observed a missing comma in the `BackpackChange` event, fix that here.
-                        line = line.Replace( @"] ""Removed""", @"], ""Removed""" );
-                        return ParseJournalEntry( line, fromLogLoad );
-                    }
-
-                    if ( line.Contains( @"""event"":""CarrierNameChange""" ) && line.Contains(@""""": ""SquadronCarrier"",") )
-                    {
-                        // We've observed a missing CarrierType field name in the `CarrierNameChange` event, fix that here.
-                        line = line.Replace( @""""": ""SquadronCarrier"",", @"""CarrierType"": ""SquadronCarrier""," );
-                        return ParseJournalEntry( line, fromLogLoad );
-                    }
+                if ( line.Contains( @"""event"":""BackpackChange""" ) && line.Contains( @"] ""Removed""" ) )
+                {
+                    // We've observed a missing comma in the `BackpackChange` event, fix that here.
+                    line = line.Replace( @"] ""Removed""", @"], ""Removed""" );
+                    return ParseJournalEntry( line, fromLogLoad );
                 }
+
+                if ( line.Contains( @"""event"":""CarrierNameChange""" ) && line.Contains(@""""": ""SquadronCarrier"",") )
+                {
+                    // We've observed a missing CarrierType field name in the `CarrierNameChange` event, fix that here.
+                    line = line.Replace( @""""": ""SquadronCarrier"",", @"""CarrierType"": ""SquadronCarrier""," );
+                    return ParseJournalEntry( line, fromLogLoad );
+                }
+            }
             catch (Exception ex)
             {
                 Logging.Error($"Exception whilst parsing journal line {line}", ex);
