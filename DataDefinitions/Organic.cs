@@ -99,9 +99,9 @@ namespace EddiDataDefinitions
         {
             return string.Join( " ", new[]
                     {
-                        variantName, 
-                        _species != null && variantName.Contains( speciesName ) ? null : speciesName,
-                        genus != null && speciesName.Contains( genusName ) ? null : genusName
+                        variantName,
+                        genus != null && speciesName.Contains( genusName ) ? null : genusName,
+                        _species != null && variantName.Contains( speciesName ) ? null : speciesName
                     }
                     .Where( n => n != null ) );
         }
