@@ -186,7 +186,7 @@ namespace Tests
             ConfigService.Instance.crimeMonitorConfiguration = data;
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public async Task TestCrimeEventsScenario()
         {
             EDDI.Instance.DataProvider = CreateTestDataProvider();
@@ -301,7 +301,7 @@ namespace Tests
         }
 
         // Test that we're able to detect and correct for simple scenarios where a bounty has been converted to an interstellar bounty
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public async Task TestCrimeInterstellarFactorsScenario()
         {
             var line1 = @"{ ""timestamp"":""2022-01-15T18:37:38Z"", ""event"":""CommitCrime"", ""CrimeType"":""assault"", ""Faction"":""Radio Sidewinder Crew"", ""Victim"":""Jim Grady"", ""Bounty"":100 }";

@@ -19,7 +19,7 @@ namespace Tests
             MakeSafe();
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public async Task TestSpanshCarrierRouteAsync()
         {
             // Arrange
@@ -103,7 +103,7 @@ namespace Tests
             Assert.AreEqual(25899.96875M, result.Waypoints[53].z);
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public async Task TestSpanshGalaxyRouteAsync()
         {
             // Arrange
