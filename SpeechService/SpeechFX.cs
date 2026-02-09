@@ -10,7 +10,7 @@ namespace EddiSpeechService
 {
     public static class SpeechFx
     {
-        private const float GlobalOutputGainMultiplier = 1.463f;
+        private const float GlobalOutputGainMultiplier = 2.0f; //1.463f;
         private const float LimiterThreshholdDb = -0.5f;
         private const float LimiterReleaseMs = 75f;
         private static readonly float[] NormalizedDbSplineX =
