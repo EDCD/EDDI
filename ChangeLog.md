@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.8
+  * Core
+    * Fixed a bad installer configuration which preventedthe 4.1.7 release from running for some users. (#2776) 
+
 ## 4.1.7
   * Core
     * Added support for the Caspian Explorer.
