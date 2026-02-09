@@ -319,9 +319,7 @@ namespace EddiSpeechService
             }
 
             // Start or continue speaking from the speech queue
-            await StartOrContinueSpeakingAsync().ConfigureAwait(invokedFromVA);
-            // When invoked from VoiceAttack, the executing command can block other commands until the executing command completes.
-            // We'll adopt the same behavior by waiting for the speech task to complete.
+            await StartOrContinueSpeakingAsync().ConfigureAwait(false);
         }
 
         private CancellationTokenSource speechCts;
