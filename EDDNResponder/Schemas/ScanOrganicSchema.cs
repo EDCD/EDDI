@@ -19,7 +19,8 @@ namespace EddiEddnResponder.Schemas
                 if ( eddnState?.Location is null || eddnState.GameVersion is null ) { return false; }
                 if ( !eddnState.Location.CheckLocationData( edType, data ) ) { return false; }
 
-                // No personal data to remove
+                // Remove personal data
+                data.Remove( "WasLogged" );
 
                 // Omit the `Analyse` scan type
                 if ( data.TryGetValue( "ScanType", out var scanType ) && scanType.ToString() == "Analyse" )
@@ -28,10 +29,10 @@ namespace EddiEddnResponder.Schemas
                 }
 
                 // Rename `Body` to `BodyID` to match EDDN and most event conventions
-                if ( data.TryGetValue( "Body", out var body ) && body is int bodyID )
+                if ( data.TryGetValue( "Body", out var bodyId ) )
                 {
                     data.Remove( "Body" );
-                    data.Add( "BodyID", bodyID );
+                    data.Add( "BodyID", Convert.ToInt32( bodyId ) );
                 }
 
                 // Apply data augments
