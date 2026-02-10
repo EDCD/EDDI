@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.1.8
   * Core
-    * Fixed a bad installer configuration which preventedthe 4.1.7 release from running for some users. (#2776) 
+    * Fixed a bad installer configuration which prevented the 4.1.7 release from running for some users. (#2776) 
 
 ## 4.1.7
   * Core
