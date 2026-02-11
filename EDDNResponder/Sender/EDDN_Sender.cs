@@ -139,6 +139,10 @@ namespace EddiEddnResponder.Sender
 
                 await HandleResponseAsync( body, response ).ConfigureAwait(false);
             }
+            catch ( HttpRequestException hre ) when (hre.InnerException is WebException we)
+            {
+                Logging.Warn( $"EDDN {body.schemaRef} Error: {we.Message}", we);
+            }
             catch ( HttpRequestException hre )
             {
                 Logging.Error( $"EDDN {body.schemaRef} Error: {hre.Message}", hre );
