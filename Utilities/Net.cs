@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,11 @@ namespace Utilities
                     Logging.Debug( "Reading response from " + uri );
                     return await ReadResponseStringAsync( response, encoding ).ConfigureAwait(false);
                 }
+            }
+            catch ( HttpRequestException hre ) when (hre.InnerException is WebException we)
+            {
+                Logging.Warn( $"Error obtaining string response from {uri}: {we.Message}", we );
+                return null;
             }
             catch ( Exception e )
             {
