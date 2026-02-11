@@ -29,10 +29,10 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public Faction Faction
         {
-            get => _faction;
+            get => _faction ?? new Faction();
             set { _faction = value; OnPropertyChanged();}
         }
-        private Faction _faction = new Faction();
+        private Faction _faction;
 
         /// <summary>The controlling faction's name</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
@@ -52,11 +52,11 @@ namespace EddiDataDefinitions
 
         /// <summary>The primary economy of the station</summary>
         [PublicAPI, JsonIgnore]
-        public string primaryeconomy => (economyShares?.Count > 0 && economyShares[0] != null ? economyShares[0].economy : Economy.None).localizedName;
+        public string primaryeconomy => (economyShares.Count > 0 ? economyShares[0].economy : Economy.None).localizedName;
 
         /// <summary>The secondary economy of the station</summary>
         [PublicAPI, JsonIgnore]
-        public string secondaryeconomy => (economyShares?.Count > 1 && economyShares[1] != null ? economyShares[1].economy : Economy.None).localizedName;
+        public string secondaryeconomy => (economyShares.Count > 1 ? economyShares[1].economy : Economy.None).localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
         [PublicAPI]
@@ -108,7 +108,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public bool? hasrefuel
         {
-            get { return stationServices.Exists(s => s?.edname == "Refuel"); }
+            get => stationServices.Exists(s => s?.edname == "Refuel");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); OnPropertyChanged();} }
         }
 
@@ -116,7 +116,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public bool? hasrearm
         {
-            get { return stationServices.Exists(s => s?.edname == "Rearm"); }
+            get => stationServices.Exists(s => s?.edname == "Rearm");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); OnPropertyChanged();} }
         }
 
@@ -124,7 +124,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public bool? hasrepair
         {
-            get { return stationServices.Exists(s => s?.edname == "Repair"); }
+            get => stationServices.Exists(s => s?.edname == "Repair");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); OnPropertyChanged();} }
         }
 
@@ -132,7 +132,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public bool? hasoutfitting
         {
-            get { return stationServices.Exists(s => s?.edname == "Outfitting"); }
+            get => stationServices.Exists(s => s?.edname == "Outfitting");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); OnPropertyChanged();} }
         }
 
@@ -140,7 +140,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public bool? hasshipyard
         {
-            get { return stationServices.Exists(s => s?.edname == "Shipyard"); }
+            get => stationServices.Exists(s => s?.edname == "Shipyard");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); OnPropertyChanged();} }
         }
 
@@ -148,7 +148,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public bool? hasmarket
         {
-            get { return stationServices.Exists(s => s?.edname == "Commodities"); }
+            get => stationServices.Exists(s => s?.edname == "Commodities");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); OnPropertyChanged();} }
         }
 
@@ -156,7 +156,7 @@ namespace EddiDataDefinitions
         [PublicAPI, JsonIgnore]
         public bool? hasblackmarket
         {
-            get { return stationServices.Exists(s => s?.edname == "BlackMarket"); }
+            get => stationServices.Exists(s => s?.edname == "BlackMarket");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); OnPropertyChanged();} }
         }
 
@@ -164,7 +164,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool? hasdocking
         {
-            get { return stationServices.Exists(s => s?.edname == "Dock"); }
+            get => stationServices.Exists(s => s?.edname == "Dock");
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Dock")); OnPropertyChanged();} }
         }
 
@@ -198,10 +198,10 @@ namespace EddiDataDefinitions
         [JsonIgnore, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<EconomyShare> economyShares
         {
-            get => _economyShares;
+            get => _economyShares ?? ( _economyShares = new List<EconomyShare>( 2 ) );
             set
             {
-                if (value != null && (value.Count != value.Select(v => v.economy).Distinct().Count()))
+                if (value.Count != value.Select(v => v.economy).Distinct().Count())
                 {
                     // Per FDev comments, the BGS does have multiple minor variations of each economy type,
                     // e.g. a system can have two distinct economies rendered as follows "StationEconomies":  
@@ -219,8 +219,8 @@ namespace EddiDataDefinitions
                 OnPropertyChanged();
             }
         }
-        [JsonProperty(nameof(economyShares)), JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
-        private List<EconomyShare> _economyShares = new List<EconomyShare>(2);
+        [JsonProperty(nameof(economyShares))]
+        private List<EconomyShare> _economyShares;
 
         /// <summary>What are the localized economies at the stations</summary>
         [JsonIgnore]
@@ -241,22 +241,22 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityMarketQuote> commodities
         {
-            get => _commodities;
+            get => _commodities ?? ( _commodities = new List<CommodityMarketQuote>() );
             set { _commodities = value; OnPropertyChanged();}
         }
-        private List<CommodityMarketQuote> _commodities = new List<CommodityMarketQuote>();
+        private List<CommodityMarketQuote> _commodities;
 
         /// <summary>Which commodities are imported by the station</summary>
         [PublicAPI, JsonIgnore]
         public List<CommodityMarketQuote> imports => commodities
-            ?.Where(c => c.demandbracket > 0)
+            .Where(c => c.demandbracket > 0)
             .OrderByDescending(c => c.demand)
             .ToList();
 
         /// <summary>Which commodities are exported by the station</summary>
         [PublicAPI, JsonIgnore]
         public List<CommodityMarketQuote> exports => commodities
-            ?.Where(c => c.stockbracket > 0)
+            .Where(c => c.stockbracket > 0)
             .OrderByDescending(c => c.stock)
             .ToList();
 
@@ -264,28 +264,29 @@ namespace EddiDataDefinitions
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<CommodityDefinition> prohibited
         {
-            get => _prohibited;
+            get => _prohibited ?? ( _prohibited = new List<CommodityDefinition>() );
             set { _prohibited = value; OnPropertyChanged();}
         }
-        private List<CommodityDefinition> _prohibited = new List<CommodityDefinition>();
+        private List<CommodityDefinition> _prohibited;
 
         /// <summary>Which modules are available for outfitting at the station</summary>
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Module> outfitting
         {
-            get => _outfitting;
+            get => _outfitting ?? ( _outfitting = new List<Module>() );
             set { _outfitting = value; OnPropertyChanged();}
         }
-        private List<Module> _outfitting = new List<Module>();
+
+        private List<Module> _outfitting;
 
         /// <summary>Which ships are available for purchase at the station</summary>
         [PublicAPI, JetBrains.Annotations.NotNull, JetBrains.Annotations.ItemNotNull]
         public List<Ship> shipyard
         {
-            get => _shipyard;
+            get => _shipyard ?? ( _shipyard = new List<Ship>() );
             set { _shipyard = value; OnPropertyChanged();}
         }
-        private List<Ship> _shipyard = new List<Ship>();
+        private List<Ship> _shipyard;
 
         // Admin - the last time the information present changed
         [PublicAPI]
