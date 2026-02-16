@@ -32,7 +32,7 @@ namespace EddiDataDefinitions
             get => _faction;
             set { _faction = value; OnPropertyChanged();}
         }
-        private Faction _faction;
+        private Faction _faction = new Faction();
 
         /// <summary>The controlling faction's name</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
