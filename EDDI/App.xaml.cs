@@ -6,6 +6,7 @@ using EddiUI;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -134,10 +135,9 @@ namespace Eddi
 
         private static void CrashLogger(Exception ex)
         {
-            // Suppress uncaught Rollbar internal HTTP exceptions
-            if ( ex is AggregateException aex && 
-                 aex.InnerException is HttpRequestException hre && 
-                 ( hre.StackTrace?.Contains("Rollbar") ?? false ) )
+            // Suppress uncaught Rollbar internal exceptions
+            if ( ex.InnerException?.Source == "Rollbar" || 
+                 ( ex is AggregateException aex && aex.InnerExceptions.Any(ie => ie.StackTrace.Contains("Rollbar")) ) )
             {
                 return;
             }

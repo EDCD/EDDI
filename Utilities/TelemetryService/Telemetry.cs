@@ -39,6 +39,11 @@ namespace Utilities.TelemetryService
             Critical,
         }
 
+        private static readonly string[] scrubFields = new string[]
+        {
+            "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID"
+        };
+
         protected static string anonymousTelemetryID => RollbarLocator.RollbarInstance.Config.RollbarPayloadAdditionOptions.Person?.Id;
 
         public static void Start ( string uniqueId, System.Version VoiceAttackVersion )
@@ -54,37 +59,37 @@ namespace Utilities.TelemetryService
                 var config = new RollbarInfrastructureConfig( TelemetryTokens.rollbarToken, Constants.EDDI_VERSION.ToString() );
 
                 // Configure telemetry
-                var telemetryOptions = new RollbarTelemetryOptions( true, 250 );
-                config.RollbarTelemetryOptions.Reconfigure( telemetryOptions );
+                config.RollbarTelemetryOptions.Reconfigure( new RollbarTelemetryOptions( true, 250 ) );
 
                 // Configure Infrastructure Options
-                var infrastructureOptions = new RollbarInfrastructureOptions
+                config.RollbarInfrastructureOptions.Reconfigure( new RollbarInfrastructureOptions
                 {
                     MaxReportsPerMinute = 1,
                     PayloadPostTimeout = TimeSpan.FromSeconds( 10 ),
                     CaptureUncaughtExceptions = false
-                };
-                config.RollbarInfrastructureOptions.Reconfigure( infrastructureOptions );
+                } );
 
                 // Configure Logger Options
                 var loggerOptions = new RollbarLoggerConfig( TelemetryTokens.rollbarToken, Constants.EDDI_VERSION.ToString() );
-                var loggerDataSecurityOptions = new RollbarDataSecurityOptions(
+                loggerOptions.RollbarDataSecurityOptions.Reconfigure( new RollbarDataSecurityOptions(
                     PersonDataCollectionPolicies.None,
                     IpAddressCollectionPolicy.CollectAnonymized,
-                    new[] { "Commander", "apiKey", "commanderName", "access_token", "refresh_token", "uploaderID" } );
-                var assyMetadataAttributes = Assembly.GetExecutingAssembly()?.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
-                var loggerPayloadOptions = new RollbarPayloadAdditionOptions()
+                    scrubFields ) );
+                loggerOptions.RollbarDeveloperOptions.Reconfigure( new RollbarDeveloperOptions
+                {
+                    WrapReportedExceptionWithRollbarException = false
+                });
+                var assyMetadataAttributes = Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
+                loggerOptions.RollbarPayloadAdditionOptions.Reconfigure( new RollbarPayloadAdditionOptions()
                 {
                     Person = new Person( uniqueId + ( VoiceAttackVersion != null ? $" VA{VoiceAttackVersion}" : "" ) ),
                     Server = new Server
                     {
                         Root = "https://github.com/EDCD/EDDI",
-                        Branch = assyMetadataAttributes.SingleOrDefault( a => a.Key == "SourceBranch")?.Value
+                        Branch = assyMetadataAttributes.SingleOrDefault( a => a.Key == "SourceBranch" )?.Value
                     },
                     CodeVersion = assyMetadataAttributes.SingleOrDefault( a => a.Key == "SourceRevisionId" )?.Value
-                };
-                loggerOptions.RollbarDataSecurityOptions.Reconfigure( loggerDataSecurityOptions );
-                loggerOptions.RollbarPayloadAdditionOptions.Reconfigure( loggerPayloadOptions );
+                } );
                 config.RollbarLoggerConfig.Reconfigure( loggerOptions );
 
                 // Initialize our configured client
@@ -171,7 +176,8 @@ namespace Utilities.TelemetryService
 
             if ( e is CommunicationEventArgs )
             {
-                //TODO: handle/report Rollbar API communication event as needed...
+                // We don't anticipate any communication events being worth capturing here
+                // but do want to document this possibility in case we do find a use for it in the future.
                 return;
             }
 
