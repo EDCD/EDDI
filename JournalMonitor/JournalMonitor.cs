@@ -5266,7 +5266,6 @@ namespace EddiJournalMonitor
             }
             catch (JsonReaderException jre)
             {
-                Logging.Debug(jre.Message, jre);
                 if ( line.Contains( @"""event"":""BackpackChange""" ) && line.Contains( @"] ""Removed""" ) )
                 {
                     // We've observed a missing comma in the `BackpackChange` event, fix that here.
@@ -5280,6 +5279,9 @@ namespace EddiJournalMonitor
                     line = line.Replace( @""""": ""SquadronCarrier"",", @"""CarrierType"": ""SquadronCarrier""," );
                     return ParseJournalEntry( line, fromLogLoad );
                 }
+
+                // Only log json reader exceptions that we haven't handled above.
+                Logging.Error( jre.Message, jre );
             }
             catch (Exception ex)
             {
