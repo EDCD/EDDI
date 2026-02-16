@@ -171,12 +171,7 @@ namespace EddiFleetCarrierMonitor
 
         private FleetCarrier GetOrCreateCarrier ( long carrierId, StationModel carrierType )
         {
-            var carrier = 
-                carrierId == SquadronCarrier?.carrierID || carrierType == StationModel.SquadronCarrier
-                ? SquadronCarrier
-                :  carrierId == FleetCarrier?.carrierID || carrierType == StationModel.FleetCarrier
-                    ? FleetCarrier
-                    : null;
+            var carrier = GetCarrier( carrierId );
             if ( carrier is null || carrier.carrierID != carrierId )
             {
                 carrier = new FleetCarrier( carrierId, carrierType );
@@ -188,7 +183,7 @@ namespace EddiFleetCarrierMonitor
                 {
                     FleetCarrier = carrier;
                 }
-                else
+                else if ( carrierType != null )
                 {
                     throw new ArgumentException( $"Unknown 'carrierType' {carrierType.edname}" );
                 }
@@ -196,7 +191,7 @@ namespace EddiFleetCarrierMonitor
 
             return carrier;
         }
-        
+
         private FleetCarrier GetCarrier ( long carrierId )
         {
             if ( FleetCarrier?.carrierID == carrierId )
@@ -305,15 +300,16 @@ namespace EddiFleetCarrierMonitor
 
         private void handleCarrierFuelDepositEvent ( CarrierFuelDepositEvent @event )
         {
-            var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
-                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
-            {
-                return;
-            }
-
+            // May be written when interacting with other commander's carriers (in which case the event should be ignored)
+            var carrier = GetCarrier( @event.carrierID );
             if ( carrier != null )
             {
+                if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) ||
+                     CarrierIsDecommissioned( @event.timestamp, carrier ) )
+                {
+                    return;
+                }
+
                 carrier.fuel = @event.total;
                 carrier.timestamp = @event.timestamp;
                 WriteConfiguration();
@@ -340,16 +336,17 @@ namespace EddiFleetCarrierMonitor
         private void handleCarrierJumpedEvent ( CarrierJumpedEvent @event )
         {
             if ( @event.carrierID is null ) { return; }
-            var carrier = GetOrCreateCarrier( (long)@event.carrierID, @event.carrierType );
-            if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
-                 CarrierIsDecommissioned( @event.timestamp, carrier ) )
-            {
-                return;
-            }
+            var carrier = GetCarrier( (long)@event.carrierID );
             
             // This can trigger for a carrier where we're a passenger and not the owner
             if ( carrier != null && carrier.carrierID == @event.carrierID )
             {
+                if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) ||
+                     CarrierIsDecommissioned( @event.timestamp, carrier ) )
+                {
+                    return;
+                }
+
                 carrier.name = @event.carriername;
                 carrier.Market.name = @event.carriername;
                 carrier.Market.marketId = @event.carrierID;
