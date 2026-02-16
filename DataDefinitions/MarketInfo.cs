@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -33,45 +32,37 @@ namespace EddiDataDefinitions
             Items = items ?? new List<MarketInfoItem>();
         }
 
-        [ UsedImplicitly ]
-        public static bool TryFromFile ( DateTime journalTimeStamp, string expectedStarSystem, string expectedStation,
-            long expectedMarketID, [ CanBeNull ] out MarketInfo info, [ CanBeNull ] out string rawMarket,
+        [UsedImplicitly]
+        public static bool TryFromFile (
+            DateTime journalTimeStamp,
+            string expectedStarSystem, string expectedStation, long expectedMarketID,
+            [CanBeNull] out MarketInfo info, [CanBeNull] out string rawMarket,
             string filename = "Market.json" )
         {
-            var attemptsRemaining = 10;
-            TimeSpan? timeDiff = null;
-            
-            ( info, rawMarket ) = Task.Run( async () =>
-            {
-                do
+            info = null;
+            rawMarket = null;
+
+            var (raw, parsed) = Files.FromSavedGamesAsync(
+                filename,
+                extract: json =>
                 {
-                    MarketInfo marketInfo = null;
-                    var raw = Files.FromSavedGames( filename );
-                    if ( !string.IsNullOrEmpty( raw ) )
-                    {
-                        marketInfo = JsonConvert.DeserializeObject<MarketInfo>( raw );
-                    }
+                    var o = JsonConvert.DeserializeObject<MarketInfo>( json );
+                    return ( o?.timestamp, o );
+                },
+                compareTo: journalTimeStamp
+            ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
-                    if ( marketInfo?.Items != null &&
-                         marketInfo.StarSystem == expectedStarSystem &&
-                         marketInfo.StationName == expectedStation &&
-                         marketInfo.MarketID == expectedMarketID )
-                    {
-                        timeDiff = marketInfo.timestamp - journalTimeStamp;
-                        return ( marketInfo, raw );
-                    }
+            if ( parsed?.Items == null ||
+                 parsed.StarSystem != expectedStarSystem ||
+                 parsed.StationName != expectedStation ||
+                 parsed.MarketID != expectedMarketID )
+            {
+                return false;
+            }
 
-                    attemptsRemaining--;
-                    await Task.Delay( 200 );
-                } while ( !fileIsRecent( timeDiff ) && attemptsRemaining > 0 );
-
-                return ( null, null );
-            } ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
-
-            return fileIsRecent( timeDiff );
-
-            bool fileIsRecent ( TimeSpan? timeDifference ) =>
-                timeDifference == null || timeDifference.Value.Duration().TotalSeconds >= 5;
+            info = parsed;
+            rawMarket = raw;
+            return true;
         }
     }
 }

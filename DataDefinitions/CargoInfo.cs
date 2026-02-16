@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -30,29 +29,35 @@ namespace EddiDataDefinitions
         }
 
         [UsedImplicitly]
-        public static bool TryFromFile(DateTime journalTimeStamp, string expectedVessel, int expectedCount, [CanBeNull] out CargoInfo info, [CanBeNull] out string rawCargo, string filename = "Cargo.json")
+        public static bool TryFromFile (
+            DateTime journalTimeStamp,
+            string expectedVessel, int expectedCount,
+            [CanBeNull] out CargoInfo info, [CanBeNull] out string rawCargo,
+            string filename = "Cargo.json" )
         {
             info = null;
-            int attemptsRemaining = 10;
-            TimeSpan? timeDiff = null;
-            do
-            {
-                if (attemptsRemaining < 10) { Thread.Sleep(200); }
-                rawCargo = Files.FromSavedGames(filename);
-                if (!string.IsNullOrEmpty(rawCargo))
-                {
-                    info = JsonConvert.DeserializeObject<CargoInfo>(rawCargo);
-                }
-                if (info?.Inventory != null &&
-                    info.Vessel == expectedVessel &&
-                    info.Count == expectedCount)
-                {
-                    timeDiff = info.timestamp - journalTimeStamp;
-                }
-                attemptsRemaining--;
-            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
+            rawCargo = null;
 
-            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
+            var (raw, parsed) = Files.FromSavedGamesAsync(
+                filename,
+                extract: json =>
+                {
+                    var o = JsonConvert.DeserializeObject<CargoInfo>( json );
+                    return (o?.timestamp, o);
+                },
+                compareTo: journalTimeStamp
+            ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+
+            if ( parsed?.Inventory != null &&
+                 parsed.Vessel == expectedVessel &&
+                 parsed.Count == expectedCount )
+            {
+                return false;
+            }
+
+            info = parsed;
+            rawCargo = raw;
+            return true;
         }
     }
 }

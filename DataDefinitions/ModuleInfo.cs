@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -22,27 +21,32 @@ namespace EddiDataDefinitions
         }
 
         [UsedImplicitly]
-        public static bool TryFromFile(DateTime journalTimeStamp, [CanBeNull] out ModuleInfo info, [CanBeNull] out string rawModules, string filename = "ModulesInfo.json")
+        public static bool TryFromFile (
+            DateTime journalTimeStamp,
+            [CanBeNull] out ModuleInfo info, [CanBeNull] out string rawModules, 
+            string filename = "ModulesInfo.json" )
         {
             info = null;
-            int attemptsRemaining = 10;
-            TimeSpan? timeDiff = null;
-            do
-            {
-                if (attemptsRemaining < 10) { Thread.Sleep(200); }
-                rawModules = Files.FromSavedGames(filename);
-                if (!string.IsNullOrEmpty(rawModules))
-                {
-                    info = JsonConvert.DeserializeObject<ModuleInfo>(rawModules);
-                }
-                if (info?.Modules != null)
-                {
-                    timeDiff = info.timestamp - journalTimeStamp;
-                }
-                attemptsRemaining--;
-            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
+            rawModules = null;
 
-            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
+            var (raw, parsed) = Files.FromSavedGamesAsync(
+                filename,
+                extract: json =>
+                {
+                    var o = JsonConvert.DeserializeObject<ModuleInfo>( json );
+                    return (o?.timestamp, o);
+                },
+                compareTo: journalTimeStamp
+            ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+
+            if ( parsed?.Modules != null )
+            {
+                return false;
+            }
+
+            info = parsed;
+            rawModules = raw;
+            return true;
         }
     }
 }

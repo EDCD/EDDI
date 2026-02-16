@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -43,30 +42,34 @@ namespace EddiDataDefinitions
         }
 
         [UsedImplicitly]
-        public static bool TryFromFile(DateTime journalTimeStamp, [CanBeNull] out MicroResourceInfo info, [CanBeNull] out string rawMicroResources, string filename)
+        public static bool TryFromFile(DateTime journalTimeStamp, 
+            [CanBeNull] out MicroResourceInfo info, [CanBeNull] out string rawMicroResources, 
+            string filename)
         {
             info = null;
-            int attemptsRemaining = 10;
-            TimeSpan? timeDiff = null;
-            do
-            {
-                if (attemptsRemaining < 10) { Thread.Sleep(200); }
-                rawMicroResources = Files.FromSavedGames(filename);
-                if (!string.IsNullOrEmpty(rawMicroResources))
-                {
-                    info = JsonConvert.DeserializeObject<MicroResourceInfo>(rawMicroResources);
-                }
-                if (info?.Items != null &&
-                    info.Components != null &&
-                    info.Consumables != null &&
-                    info.Data != null)
-                {
-                    timeDiff = info.timestamp - journalTimeStamp;
-                }
-                attemptsRemaining--;
-            } while ((timeDiff == null || timeDiff.Value.Duration().TotalSeconds >= 5) && attemptsRemaining > 0);
+            rawMicroResources = null;
 
-            return timeDiff != null && timeDiff.Value.Duration().TotalSeconds < 5;
+            var (raw, parsed) = Files.FromSavedGamesAsync(
+                filename,
+                extract: json =>
+                {
+                    var o = JsonConvert.DeserializeObject<MicroResourceInfo>( json );
+                    return (o?.timestamp, o);
+                },
+                compareTo: journalTimeStamp
+            ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+
+            if ( parsed?.Items != null &&
+                 parsed.Components != null &&
+                 parsed.Consumables != null &&
+                 parsed.Data != null )
+            {
+                return false;
+            }
+
+            info = parsed;
+            rawMicroResources = raw;
+            return true;
         }
 
         [UsedImplicitly]

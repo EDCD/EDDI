@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -42,44 +41,35 @@ namespace EddiDataDefinitions
         }
 
         [ UsedImplicitly ]
-        public static bool TryFromFile ( DateTime journalTimeStamp, string expectedStarSystem, string expectedStation,
-            long expectedMarketID, [ CanBeNull ] out ShipyardInfo info, [ CanBeNull ] out string rawShipyard,
+        public static bool TryFromFile ( DateTime journalTimeStamp, 
+            string expectedStarSystem, string expectedStation, long expectedMarketID, 
+            [ CanBeNull ] out ShipyardInfo info, [ CanBeNull ] out string rawShipyard,
             string filename = "Shipyard.json" )
         {
-            var attemptsRemaining = 10;
-            TimeSpan? timeDiff = null;
+            info = null;
+            rawShipyard = null;
 
-            ( info, rawShipyard ) = Task.Run( async () =>
-            {
-                do
+            var ( raw, parsed) = Files.FromSavedGamesAsync(
+                filename,
+                extract: json =>
                 {
-                    ShipyardInfo shipyardInfo = null;
-                    var raw = Files.FromSavedGames( filename );
-                    if ( !string.IsNullOrEmpty( raw ) )
-                    {
-                        shipyardInfo = JsonConvert.DeserializeObject<ShipyardInfo>( raw );
-                    }
+                    var o = JsonConvert.DeserializeObject<ShipyardInfo>( json );
+                    return (o?.timestamp, o);
+                },
+                compareTo: journalTimeStamp
+            ).GetResultOrTimeout ( TimeSpan.FromSeconds( 5 ) );
 
-                    if ( shipyardInfo?.PriceList != null &&
-                         shipyardInfo.StarSystem == expectedStarSystem &&
-                         shipyardInfo.StationName == expectedStation &&
-                         shipyardInfo.MarketID == expectedMarketID )
-                    {
-                        timeDiff = shipyardInfo.timestamp - journalTimeStamp;
-                        return ( shipyardInfo, raw );
-                    }
+            if (parsed?.PriceList != null &&
+                parsed.StarSystem == expectedStarSystem &&
+                parsed.StationName == expectedStation &&
+                parsed.MarketID == expectedMarketID )
+            {
+                return false;
+            }
 
-                    attemptsRemaining--;
-                    await Task.Delay( 200 );
-                } while ( !fileIsRecent( timeDiff ) && attemptsRemaining > 0 );
-
-                return ( null, null );
-            } ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
-
-            return fileIsRecent( timeDiff );
-
-            bool fileIsRecent ( TimeSpan? timeDifference ) =>
-                timeDifference == null || timeDifference.Value.Duration().TotalSeconds >= 5;
+            info = parsed;
+            rawShipyard = raw;
+            return true;
         }
     }
 }

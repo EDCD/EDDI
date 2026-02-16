@@ -322,47 +322,121 @@ namespace Utilities
             return data;
         }
 
-        public static async Task<string> FromSavedGamesAsync ( string filename )
+        public static async Task<string> FromSavedGamesAsync (
+            string filename,
+            int maxAttempts = 10,
+            int delayMs = 200 )
         {
-            string data = null;
             var directory = GetSavedGamesDir();
-            if ( directory == null || directory.Trim() == "" )
+            if ( string.IsNullOrWhiteSpace( directory ) )
             {
                 return null;
             }
 
-            FileInfo fileInfo = null;
+            FileInfo fileInfo;
             try
             {
                 fileInfo = FileInfo( directory, filename );
             }
-            catch ( NotSupportedException nsex )
+            catch ( NotSupportedException ex )
             {
-                Logging.Error( $"Directory '{directory}' not supported: ", nsex );
+                Logging.Error( $"Directory '{directory}' not supported: ", ex );
+                return null;
             }
 
-            if ( fileInfo != null )
+            if ( fileInfo is null )
             {
-                var maxTries = 6;
-                while ( IsFileLocked( fileInfo ) )
+                return null;
+            }
+
+            while ( maxAttempts-- > 0 )
+            {
+                // Wait for file to unlock
+                if ( !IsFileLocked( fileInfo ) )
                 {
-                    Thread.Sleep( 100 );
-                    maxTries--;
-                    if ( maxTries == 0 )
+                    try
                     {
-                        Logging.Info( $"Unable to open Elite Dangerous '{filename}' file" );
-                        return null;
+                        using ( var fs = new FileStream(
+                                   fileInfo.FullName,
+                                   FileMode.Open,
+                                   FileAccess.Read,
+                                   FileShare.ReadWrite ) )
+                        using ( var reader = new StreamReader( fs, Encoding.UTF8 ) )
+                        {
+                            fs.Seek( 0, SeekOrigin.Begin );
+                            return await reader.ReadToEndAsync().ConfigureAwait( false );
+                        }
+                    }
+                    catch ( IOException )
+                    {
+                        // File became locked again — retry
                     }
                 }
 
-                using ( var fs = new FileStream( fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
-                using ( var reader = new StreamReader( fs, Encoding.UTF8 ) )
-                {
-                    fs.Seek( 0, SeekOrigin.Begin );
-                    data = await reader.ReadToEndAsync();
-                }
+                await Task.Delay( delayMs ).ConfigureAwait( false );
             }
-            return data;
+
+            Logging.Info( $"Unable to open Elite Dangerous '{filename}' file after {maxAttempts} retries" );
+            return null;
+        }
+
+        public static async Task<(string raw, T parsed)> FromSavedGamesAsync<T> (
+                string filename, Func<string, (DateTime? ts, T parsed)> extract, DateTime compareTo, 
+                double maxAgeSeconds = 5, int maxAttempts = 10, int delayMs = 200 )
+        {
+            var directory = GetSavedGamesDir();
+            if ( string.IsNullOrWhiteSpace( directory ) )
+                return (null, default);
+
+            FileInfo fileInfo;
+            try
+            {
+                fileInfo = FileInfo( directory, filename );
+            }
+            catch ( NotSupportedException ex )
+            {
+                Logging.Error( $"Directory '{directory}' not supported: ", ex );
+                return (null, default);
+            }
+
+            if ( fileInfo is null )
+                return (null, default);
+
+            while ( maxAttempts-- > 0 )
+            {
+                if ( !IsFileLocked( fileInfo ) )
+                {
+                    try
+                    {
+                        using ( var fs = new FileStream( fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
+                        {
+                            using ( var reader = new StreamReader( fs, Encoding.UTF8 ) )
+                            {
+                                fs.Seek( 0, SeekOrigin.Begin );
+                                var raw = await reader.ReadToEndAsync().ConfigureAwait( false );
+                                var (ts, parsed) = extract( raw );
+                                if ( ts != null )
+                                {
+                                    var diff = ( ts.Value - compareTo ).Duration();
+                                    if ( diff.TotalSeconds <= maxAgeSeconds )
+                                    {
+                                        return ( raw, parsed );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch ( IOException )
+                    {
+                        // retry
+                    }
+                }
+
+                await Task.Delay( delayMs ).ConfigureAwait( false );
+            }
+
+            Logging.Info( $"Unable to open Elite Dangerous '{filename}' file after retries" );
+            return (null, default);
         }
 
         // Obtain file info for a file name and path, or null if the file is not available

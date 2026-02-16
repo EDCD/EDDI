@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -41,40 +40,30 @@ namespace EddiDataDefinitions
             long expectedMarketID, [ CanBeNull ] out OutfittingInfo info, [ CanBeNull ] out string rawOutfitting,
             string filename = "Outfitting.json" )
         {
-            var attemptsRemaining = 10;
-            TimeSpan? timeDiff = null;
-            
-            ( info, rawOutfitting ) = Task.Run( async () =>
-            {
-                do
+            info = null;
+            rawOutfitting = null;
+
+            var ( raw, parsed) = Files.FromSavedGamesAsync(
+                filename,
+                extract: json =>
                 {
-                    OutfittingInfo outfittingInfo = null;
-                    var raw = Files.FromSavedGames( filename );
-                    if ( !string.IsNullOrEmpty( raw ) )
-                    {
-                        outfittingInfo = JsonConvert.DeserializeObject<OutfittingInfo>( raw );
-                    }
+                    var o = JsonConvert.DeserializeObject<OutfittingInfo>( json );
+                    return (o?.timestamp, o);
+                },
+                compareTo: journalTimeStamp
+            ).GetResultOrTimeout ( TimeSpan.FromSeconds( 5 ) );
 
-                    if ( outfittingInfo?.Items != null &&
-                         outfittingInfo.StarSystem == expectedStarSystem &&
-                         outfittingInfo.StationName == expectedStation &&
-                         outfittingInfo.MarketID == expectedMarketID )
-                    {
-                        timeDiff = outfittingInfo.timestamp - journalTimeStamp;
-                        return ( outfittingInfo, raw );
-                    }
+            if ( parsed?.Items != null &&
+                 parsed.StarSystem == expectedStarSystem &&
+                 parsed.StationName == expectedStation &&
+                 parsed.MarketID == expectedMarketID )
+            {
+                return false;
+            }
 
-                    attemptsRemaining--;
-                    await Task.Delay( 200 );
-                } while ( !fileIsRecent( timeDiff ) && attemptsRemaining > 0 );
-
-                return ( null, null );
-            } ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
-
-            return fileIsRecent( timeDiff );
-
-            bool fileIsRecent ( TimeSpan? timeDifference ) =>
-                timeDifference == null || timeDifference.Value.Duration().TotalSeconds >= 5;
+            info = parsed;
+            rawOutfitting = raw;
+            return true;
         }
     }
 }
