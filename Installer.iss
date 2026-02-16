@@ -42,50 +42,62 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "EDDI.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "*.exe"; DestDir: "{app}"
+Source: "*.exe.config"; DestDir: "{app}"
 
-Source: "x86\*.*"; DestDir: "{app}\x86"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "x64\*.*"; DestDir: "{app}\x64"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "*.dll"; DestDir: "{app}"; Flags: ignoreversion; Excludes: "Tests.dll"
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "x86\*.*"; DestDir: "{app}\x86"; Flags: recursesubdirs createallsubdirs
+Source: "x64\*.*"; DestDir: "{app}\x64"; Flags: recursesubdirs createallsubdirs
 
-Source: "*.resources.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "*.dll"; DestDir: "{app}"; Excludes: "Tests.dll"
+Source: "*.dll.config"; DestDir: "{app}"
 
-Source: "eddi.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "eddi.*.json"; DestDir: "{app}"; Flags: ignoreversion
-
-Source: "*.md"; DestDir: "{app}"; Flags: ignoreversion
-
-Source: "EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
-
-Source: "EddiDataProviderService.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "EDDI.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "EddiVoiceAttackResponder.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "EddiGalnetMonitor.dll.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "*.resources.dll"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+Source: "eddi.json"; DestDir: "{app}"
+Source: "eddi.*.json"; DestDir: "{app}"
+Source: "*.md"; DestDir: "{app}"
+Source: "*.vap"; DestDir: "{app}"
 
 ; Remove outdated files
 [InstallDelete]
-Type: files; Name: "{app}\Eddi.exe"
-Type: files; Name: "{app}\EDDI.ico"
-Type: files; Name: "{app}\Eddi*.dll"
-Type: files; Name: "{app}\SQLite.Interop.dll"
-Type: files; Name: "{app}\Newtonsoft.Json.xml"
-Type: files; Name: "{app}\CommonMark.xml"
-Type: files; Name: "{app}\Exceptionless.Wpf.xml"
-Type: files; Name: "{app}\Exceptionless.xml"
-Type: files; Name: "{app}\MathNet.Numerics.xml"
-Type: files; Name: "{app}\System.Data.SQLite.xml"
-Type: files; Name: "{app}\SimpleFeedReader.xml"
-Type: files; Name: "{app}\CSCore.xml"
-Type: files; Name: "{app}\RestSharp.xml"
-Type: files; Name: "{app}\EntityFramework.SqlServer.xml"
-Type: files; Name: "{app}\EntityFramework.xml"
-Type: files; Name: "{app}\System.Data.SQLite.dll.config"
+; --- Remove old architecture folders entirely ---
+Type: filesandordirs; Name: "{app}\x86"
+Type: filesandordirs; Name: "{app}\x64"
+
+; --- Remove all old DLLs in the root folder ---
+Type: files; Name: "{app}\*.dll"
+
+; --- Remove old PDBs ---
 Type: files; Name: "{app}\*.pdb"
+
+; --- Remove old doc files ---
+Type: files; Name: "{app}\*.md"
+Type: files; Name: "{app}\*.xml"
+
+; --- Remove old default personality files ---
+Type: files; Name: "{app}\eddi.json"
+Type: files; Name: "{app}\eddi.*.json"
+
+; --- Remove old VoiceAttack profiles ---
+Type: files; Name: "{app}\*.vap"
+
+; --- Remove old resource files that may no longer be valid ---
+Type: filesandordirs; Name: "{app}\*\*.resources.dll"
+
+; --- Remove old config files that may no longer be valid ---
+Type: files; Name: "{app}\*.dll.config"
+
+; --- Remove old user-specific cached configs that cause runtime mismatches ---
+Type: filesandordirs; Name: "{localappdata}\Eddi\Eddi.exe_*"
+Type: files; Name: "{localappdata}\Eddi\Eddi.exe_*\*\user.config"
+
+; --- Remove obsolete legacy files from older EDDI versions ---
+Type: files; Name: "{app}\*.exe"
+Type: files; Name: "{app}\*.exe.config"
+Type: files; Name: "{app}\EDDI.ico"
 Type: files; Name: "{userappdata}\EDDI\credentials.json"
 Type: files; Name: "{userappdata}\EDDI\elite.json"
-Type: files; Name: "{userappdata}\EDDI\galnet"
-Type: files; Name: "{localappdata}\Eddi\Eddi.exe_*\*\user.config"
+Type: filesandordirs; Name: "{userappdata}\EDDI\galnet"
+
 ; Remove sensitive data on uninstall
 [UninstallDelete]
 Type: files; Name: "{userappdata}\EDDI\CompanionAPI.json"
