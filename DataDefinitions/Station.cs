@@ -29,14 +29,14 @@ namespace EddiDataDefinitions
         [PublicAPI]
         public Faction Faction
         {
-            get => _faction ?? new Faction();
+            get => _faction;
             set { _faction = value; OnPropertyChanged();}
         }
         private Faction _faction;
 
         /// <summary>The controlling faction's name</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction instead")]
-        public string faction => (Faction ?? new Faction()).name;
+        public string faction => Faction?.name;
 
         /// <summary>The controlling faction's government</summary>
         [PublicAPI, JsonIgnore, Obsolete("Please use Faction.Government instead")]
