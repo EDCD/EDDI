@@ -64,12 +64,12 @@ namespace EddiDataDefinitions
                  parsed.Consumables != null &&
                  parsed.Data != null )
             {
-                return false;
+                info = parsed;
+                rawMicroResources = raw;
+                return true;
             }
 
-            info = parsed;
-            rawMicroResources = raw;
-            return true;
+            return false;
         }
 
         [UsedImplicitly]

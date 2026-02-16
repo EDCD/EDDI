@@ -52,17 +52,17 @@ namespace EddiDataDefinitions
                 compareTo: journalTimeStamp
             ).GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
 
-            if ( parsed?.Items == null ||
-                 parsed.StarSystem != expectedStarSystem ||
-                 parsed.StationName != expectedStation ||
-                 parsed.MarketID != expectedMarketID )
+            if ( parsed?.Items != null &&
+                 parsed.StarSystem == expectedStarSystem &&
+                 parsed.StationName == expectedStation &&
+                 parsed.MarketID == expectedMarketID )
             {
-                return false;
+                info = parsed;
+                rawMarket = raw;
+                return true;
             }
 
-            info = parsed;
-            rawMarket = raw;
-            return true;
+            return false;
         }
     }
 }

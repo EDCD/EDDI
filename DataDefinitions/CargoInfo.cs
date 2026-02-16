@@ -52,12 +52,12 @@ namespace EddiDataDefinitions
                  parsed.Vessel == expectedVessel &&
                  parsed.Count == expectedCount )
             {
-                return false;
+                info = parsed;
+                rawCargo = raw;
+                return true;
             }
 
-            info = parsed;
-            rawCargo = raw;
-            return true;
+            return false;
         }
     }
 }

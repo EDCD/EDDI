@@ -64,12 +64,12 @@ namespace EddiDataDefinitions
                 parsed.StationName == expectedStation &&
                 parsed.MarketID == expectedMarketID )
             {
-                return false;
+                info = parsed;
+                rawShipyard = raw;
+                return true;
             }
 
-            info = parsed;
-            rawShipyard = raw;
-            return true;
+            return false;
         }
     }
 }

@@ -41,12 +41,12 @@ namespace EddiDataDefinitions
 
             if ( parsed?.Modules != null )
             {
-                return false;
+                info = parsed;
+                rawModules = raw;
+                return true;
             }
 
-            info = parsed;
-            rawModules = raw;
-            return true;
+            return false;
         }
     }
 }

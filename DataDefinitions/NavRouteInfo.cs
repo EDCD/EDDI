@@ -43,12 +43,12 @@ namespace EddiDataDefinitions
             if ( parsed?.Route != null &&
                  ( ( isRouteExpected && parsed.Route.Any() ) || ( !isRouteExpected && !parsed.Route.Any() ) ) )
             {
-                return false;
+                info = parsed;
+                rawRoute = raw;
+                return true;
             }
 
-            info = parsed;
-            rawRoute = raw;
-            return true;
+            return false;
         }
     }
 }
