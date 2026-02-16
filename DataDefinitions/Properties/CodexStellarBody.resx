@@ -147,6 +147,9 @@
   <data name="CN_Type" xml:space="preserve">
     <value>C-N-Type Star</value>
   </data>
+  <data name="CN_TypeGiant" xml:space="preserve">
+    <value>C-N-Type Giant</value>
+  </data>
   <data name="C_Type" xml:space="preserve">
     <value>C-Type Star</value>
   </data>
@@ -251,6 +254,9 @@
   </data>
   <data name="MS_Type" xml:space="preserve">
     <value>M-S-Type Star</value>
+  </data>
+  <data name="MS_TypeGiant" xml:space="preserve">
+    <value>M-S-Type Giant</value>
   </data>
   <data name="M_Type" xml:space="preserve">
     <value>M-Type Star</value>

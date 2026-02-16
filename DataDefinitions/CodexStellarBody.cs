@@ -109,6 +109,9 @@ namespace EddiDataDefinitions
         public static readonly CodexStellarBody CN_Type =
             new CodexStellarBody( "CN_Type", null, CodexStellarBodyType.Stars );
 
+        public static readonly CodexStellarBody CN_TypeGiant =
+            new CodexStellarBody( "CN_TypeGiant", 1101502, CodexStellarBodyType.Stars );
+        
         public static readonly CodexStellarBody D_Type =
             new CodexStellarBody( "D_Type", 1102201, CodexStellarBodyType.Stars );
 
@@ -183,6 +186,9 @@ namespace EddiDataDefinitions
 
         public static readonly CodexStellarBody MS_Type =
             new CodexStellarBody( "MS_Type", null, CodexStellarBodyType.Stars );
+
+        public static readonly CodexStellarBody MS_TypeGiant =
+            new CodexStellarBody( "MS_TypeGiant", 1101902, CodexStellarBodyType.Stars );
 
         public static readonly CodexStellarBody Neutron_Stars =
             new CodexStellarBody( "Neutron_Stars", 1102300, CodexStellarBodyType.Stars );

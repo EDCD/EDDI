@@ -187,6 +187,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to C-N-Type Giant.
+        /// </summary>
+        public static string CN_TypeGiant {
+            get {
+                return ResourceManager.GetString("CN_TypeGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to D-Type Star.
         /// </summary>
         public static string D_Type {
@@ -489,6 +498,15 @@ namespace EddiDataDefinitions.Properties {
         public static string MS_Type {
             get {
                 return ResourceManager.GetString("MS_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M-S-Type Giant.
+        /// </summary>
+        public static string MS_TypeGiant {
+            get {
+                return ResourceManager.GetString("MS_TypeGiant", resourceCulture);
             }
         }
         
