@@ -8,6 +8,7 @@ using EddiNavigationService;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -225,102 +226,136 @@ namespace EddiSpeechResponder.ScriptResolverService
         }
 
         // Compile variables from the EDDI information
-        protected internal Dictionary<string, Tuple<Type, Value>> CompileVariables(dynamic theEvent = null)
+        protected internal Dictionary<string, Tuple<Type, Value>> CompileVariables ( dynamic theEvent = null )
         {
-            var dict = new Dictionary<string, Tuple<Type, Value>>
+            try
             {
-                // Boolean constants
-                ["true"] = new Tuple<Type, Value>(typeof(bool), true),
-                ["false"] = new Tuple<Type, Value>(typeof(bool), false),
-
-                // Standard simple variables
-                ["capi_active"] = new Tuple<Type, Value>(typeof(bool), CompanionAppService.Instance?.active ?? false),
-                ["destinationdistance"] = new Tuple<Type, Value>(typeof(decimal), EDDI.Instance.DestinationDistanceLy),
-                ["searchdistance"] = new Tuple<Type, Value>(typeof(decimal), NavigationService.Instance.SearchDistanceLy),
-                ["environment"] = new Tuple<Type, Value>(typeof(string), EDDI.Instance.Environment),
-                ["horizons"] = new Tuple<Type, Value>(typeof(bool), EDDI.Instance.inHorizons),
-                ["odyssey"] = new Tuple<Type, Value>(typeof(bool), EDDI.Instance.inOdyssey),
-                ["va_active"] = new Tuple<Type, Value>(typeof(bool), EDDI.FromVA),
-                ["vehicle"] = new Tuple<Type, Value>(typeof(string), EDDI.Instance.Vehicle),
-                ["icao_active"] = new Tuple<Type, Value>(typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao),
-                ["ipa_active"] = new Tuple<Type, Value>(typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa),
-                ["version"] = new Tuple<Type, Value>(typeof(string), Constants.EDDI_VERSION.ShortString)
-            };
-
-            // Standard objects
-
-            if ( EDDI.Instance.CurrentStarSystem != null )
-            {
-                dict[ "system" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.CurrentStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( EDDI.Instance.LastStarSystem != null )
-            {
-                dict[ "lastsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.LastStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( EDDI.Instance.NextStarSystem != null )
-            {
-                dict[ "nextsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.NextStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( EDDI.Instance.DestinationStarSystem != null )
-            {
-                dict[ "destinationsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(EDDI.Instance.DestinationStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( NavigationService.Instance.SearchStarSystem != null )
-            {
-                dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof( StarSystem ), Value.FromReflection(NavigationService.Instance.SearchStarSystem, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( NavigationService.Instance.SearchStation != null )
-            {
-                dict[ "searchstation" ] = new Tuple<Type, Value>( typeof( Station ), Value.FromReflection(NavigationService.Instance.SearchStation, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( EDDI.Instance.CurrentStation != null )
-            {
-                dict[ "station" ] = new Tuple<Type, Value>( typeof( Station ), Value.FromReflection(EDDI.Instance.CurrentStation, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( EDDI.Instance.CurrentStellarBody != null )
-            {
-                dict[ "body" ] = new Tuple<Type, Value>( typeof( Body ), Value.FromReflection(EDDI.Instance.CurrentStellarBody, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( theEvent != null ) // A dynamic type is used so that Value.FromReflection 
-            {
-                dict[ "event" ] = new Tuple<Type, Value>( theEvent.GetType(), Value.FromReflection( theEvent, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-            }
-
-            if ( EDDI.Instance.State != null )
-            {
-                dict[ "state" ] = new Tuple<Type, Value>( typeof( IDictionary<string, object>), buildState() );
-                Logging.Debug( "State is: ", EDDI.Instance.State );
-            }
-            
-            // Obtain additional variables from each monitor
-            foreach ( var monitor in EDDI.Instance.monitors )
-            {
-                var monitorVariables = monitor.GetVariables();
-                if ( monitorVariables != null )
+                var dict = new Dictionary<string, Tuple<Type, Value>>
                 {
-                    foreach ( var key in monitorVariables.Keys )
+                    // Boolean constants
+                    [ "true" ] = new Tuple<Type, Value>( typeof(bool), true ),
+                    [ "false" ] = new Tuple<Type, Value>( typeof(bool), false ),
+
+                    // Standard simple variables
+                    [ "capi_active" ] = new Tuple<Type, Value>( typeof(bool), CompanionAppService.Instance?.active ?? false ),
+                    [ "destinationdistance" ] = new Tuple<Type, Value>( typeof(decimal), EDDI.Instance.DestinationDistanceLy ),
+                    [ "searchdistance" ] = new Tuple<Type, Value>( typeof(decimal), NavigationService.Instance.SearchDistanceLy ),
+                    [ "environment" ] = new Tuple<Type, Value>( typeof(string), EDDI.Instance.Environment ),
+                    [ "horizons" ] = new Tuple<Type, Value>( typeof(bool), EDDI.Instance.inHorizons ),
+                    [ "odyssey" ] = new Tuple<Type, Value>( typeof(bool), EDDI.Instance.inOdyssey ),
+                    [ "va_active" ] = new Tuple<Type, Value>( typeof(bool), EDDI.FromVA ),
+                    [ "vehicle" ] = new Tuple<Type, Value>( typeof(string), EDDI.Instance.Vehicle ),
+                    [ "icao_active" ] = new Tuple<Type, Value>( typeof(bool), ConfigService.Instance.speechServiceConfiguration.EnableIcao ),
+                    [ "ipa_active" ] = new Tuple<Type, Value>( typeof(bool), !ConfigService.Instance.speechServiceConfiguration.DisableIpa ),
+                    [ "version" ] = new Tuple<Type, Value>( typeof(string), Constants.EDDI_VERSION.ShortString )
+                };
+
+                // Standard objects
+
+                if ( EDDI.Instance.CurrentStarSystem != null )
+                {
+                    dict[ "system" ] = new Tuple<Type, Value>( typeof(StarSystem),
+                        Value.FromReflection( EDDI.Instance.CurrentStarSystem,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( EDDI.Instance.LastStarSystem != null )
+                {
+                    dict[ "lastsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
+                        Value.FromReflection( EDDI.Instance.LastStarSystem,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( EDDI.Instance.NextStarSystem != null )
+                {
+                    dict[ "nextsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
+                        Value.FromReflection( EDDI.Instance.NextStarSystem,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( EDDI.Instance.DestinationStarSystem != null )
+                {
+                    dict[ "destinationsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
+                        Value.FromReflection( EDDI.Instance.DestinationStarSystem,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( NavigationService.Instance.SearchStarSystem != null )
+                {
+                    dict[ "searchsystem" ] = new Tuple<Type, Value>( typeof(StarSystem),
+                        Value.FromReflection( NavigationService.Instance.SearchStarSystem,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( NavigationService.Instance.SearchStation != null )
+                {
+                    dict[ "searchstation" ] = new Tuple<Type, Value>( typeof(Station),
+                        Value.FromReflection( NavigationService.Instance.SearchStation,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( EDDI.Instance.CurrentStation != null )
+                {
+                    dict[ "station" ] = new Tuple<Type, Value>( typeof(Station),
+                        Value.FromReflection( EDDI.Instance.CurrentStation,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( EDDI.Instance.CurrentStellarBody != null )
+                {
+                    dict[ "body" ] = new Tuple<Type, Value>( typeof(Body),
+                        Value.FromReflection( EDDI.Instance.CurrentStellarBody,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( theEvent != null ) // A dynamic type is used so that Value.FromReflection 
+                {
+                    dict[ "event" ] = new Tuple<Type, Value>( theEvent.GetType(),
+                        Value.FromReflection( theEvent,
+                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                }
+
+                if ( EDDI.Instance.State != null )
+                {
+                    dict[ "state" ] = new Tuple<Type, Value>( typeof(IDictionary<string, object>), buildState() );
+                    Logging.Debug( "State is: ", EDDI.Instance.State );
+                }
+
+                // Obtain additional variables from each monitor
+                foreach ( var monitor in EDDI.Instance.monitors )
+                {
+                    var monitorVariables = monitor.GetVariables();
+                    if ( monitorVariables != null )
                     {
-                        if ( monitorVariables[ key ].Item2 == null )
+                        foreach ( var key in monitorVariables.Keys )
                         {
-                            dict.Remove( key );
-                        }
-                        else
-                        {
-                            dict[ key ] = new Tuple<Type, Value>( monitorVariables[ key ].Item1, Value.FromReflection((dynamic)monitorVariables[key]?.Item2, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                            if ( monitorVariables[ key ].Item2 == null )
+                            {
+                                dict.Remove( key );
+                            }
+                            else
+                            {
+                                dict[ key ] = new Tuple<Type, Value>( monitorVariables[ key ].Item1,
+                                    Value.FromReflection( (dynamic)monitorVariables[ key ]?.Item2,
+                                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+                            }
                         }
                     }
                 }
-            }
 
-            return dict;
+                return dict;
+
+            }
+            catch ( FileLoadException ex ) when ( (uint)ex.HResult == 0x800711C7 ) // Application Control (Smart App Control / WDAC / AppLocker) blocked a DLL
+            {
+                var blockedAssembly = ex.FileName ?? "an assembly required for script variables";
+
+                // Telemetry: keep the original exception intact
+                Logging.Warn( $"Failed to compile Speech Responder variables. Windows Application Control blocked access to {blockedAssembly}. This usually happens on systems with Smart App Control or corporate security policies.", ex );
+
+                // Fail as gracefully as possible: return an empty variable set.
+                return new Dictionary<string, Tuple<Type, Value>>();
+            }
         }
 
         /// <summary>
