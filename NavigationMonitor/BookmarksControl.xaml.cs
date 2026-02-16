@@ -110,7 +110,8 @@ namespace EddiNavigationMonitor
                 foreach (var fileName in fileDialog.FileNames)
                 {
                     if (!fileName.EndsWith(".bkmks")) { continue; }
-                    var fileContents = Files.Read(fileName);
+
+                    var fileContents = await Files.ReadAsync( fileName ).ConfigureAwait( false );
                     using (var sr = new StringReader(fileContents))
                     {
                         string line;
