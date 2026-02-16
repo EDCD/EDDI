@@ -922,7 +922,7 @@ namespace EddiCore
 
                 try
                 {
-                    Logging.Debug( "Handling event: ", @event );
+                    Logging.Debug( $"Handling event: {@event.type}", @event );
 
                     // We have some additional processing to do for a number of events
                     var passEvent = true;

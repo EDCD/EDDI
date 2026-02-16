@@ -63,7 +63,7 @@ namespace Utilities
                     message = PrepareMessage( message, memberName, filePath );
                     var preppedData = PrepareData( data );
 
-                    switch (errorlevel)
+                    switch ( errorlevel)
                     {
                         case ErrorLevel.Debug:
                         {
@@ -71,24 +71,22 @@ namespace Utilities
                             {
                                 WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
                             }
-                            HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, false, preppedData );
                             break;
                         }
                         case ErrorLevel.Info:
                         case ErrorLevel.Warning:
                         {
                             WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
-                            HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, false, preppedData );
                             break;
                         }
                         case ErrorLevel.Error:
                         case ErrorLevel.Critical:
                         {
                             WriteToLog(timestamp, sourceThreadID, errorlevel, message, preppedData);
-                            HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, true, preppedData );
                             break;
                         }
                     }
+                    HandleTelemetry( errorlevel, sourceThreadID, message, timestamp, false, preppedData );
                 } );
             }
             catch
