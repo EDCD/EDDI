@@ -1940,11 +1940,11 @@ namespace EddiCore
             // Don't proceed if the event data isn't what we expect
             if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
-            var items = theEvent.info.Items?
+            var items = theEvent.info?.Items?
                 .Select(q => q.ToCommodityMarketQuote())
                 .ToList();
 
-            if (theEvent.info.Items?.Count == items?.Count && items != null) // We've successfully parsed all commodity items
+            if (theEvent.info?.Items?.Count == items?.Count && items != null) // We've successfully parsed all commodity items
             {
                 // Update the current station commodities
                 if (CurrentStation != null && CurrentStation?.marketId == theEvent.marketId)
@@ -1989,12 +1989,12 @@ namespace EddiCore
             // Don't proceed if the event data isn't what we expect
             if ( theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
-            var modules = theEvent.info.Items?
+            var modules = theEvent.info?.Items?
                 .Select(EddiDataDefinitions.Module.FromOutfittingInfo)
                 .Where(i => i != null)
                 .ToList();
 
-            if (theEvent.info.Items?.Count == modules?.Count && modules != null) // We've successfully parsed all module items
+            if (theEvent.info?.Items?.Count == modules?.Count && modules != null) // We've successfully parsed all module items
             {
                 // Update the current station outfitting
                 if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
@@ -2042,12 +2042,12 @@ namespace EddiCore
             // Don't proceed if the event data isn't what we expect
             if (theEvent.system != CurrentStarSystem?.systemname) { return false; }
 
-            var ships = theEvent.info.PriceList?
+            var ships = theEvent.info?.PriceList?
                 .Select(Ship.FromShipyardInfo)
                 .Where(s => s != null)
                 .ToList();
 
-            if (theEvent.info.PriceList?.Count == ships?.Count && ships != null) // We've successfully parsed all ship items
+            if (theEvent.info?.PriceList?.Count == ships?.Count && ships != null) // We've successfully parsed all ship items
             {
                 if (CurrentStation?.marketId != null && CurrentStation?.marketId == theEvent.marketId)
                 {
