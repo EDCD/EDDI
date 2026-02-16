@@ -22,58 +22,69 @@ namespace EddiDataDefinitions
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            try
+            // bail early on known null cases
+            switch (reader.TokenType)
             {
-                // bail early on known null cases
-                switch (reader.TokenType)
-                {
-                    case JsonToken.None:
-                    case JsonToken.Null:
-                    case JsonToken.Undefined:
-                    case JsonToken.EndObject:
-                    case JsonToken.EndArray:
-                        return null;
-                    default:
-                        break;
-                }
-
-                // get the edname
-                JObject jsonObject = JObject.Load(reader);
-                bool success = jsonObject.TryGetValue("edname", out JToken token);
-                if (!success)
-                {
+                case JsonToken.None:
+                case JsonToken.Null:
+                case JsonToken.Undefined:
+                case JsonToken.EndObject:
+                case JsonToken.EndArray:
                     return null;
-                }
-                string edname = token.Value<string>();
-
-                // get the FromEDName() method
-                const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
-                Type[] argumentTypes = new Type[] { typeof(string) };
-                MethodInfo method = objectType.GetMethod("FromEDName", bindingFlags, binder: null, types: argumentTypes, modifiers: null);
-
-                // invoke the method
-                object[] parameters = new object[] { edname };
-                object result = method?.Invoke(null, parameters);
-
-                // add back in any secondary properties and fields in our derived classes (other than those associated with the `FromEDName` method)
-                var otherProperties = jsonObject.Values().Where(t => t.Path != "edname");
-                foreach (var prop in otherProperties)
-                {
-                    var propInfo = result?.GetType().GetProperty(prop.Path);
-                    if (propInfo != null && propInfo.CanWrite)
-                    {
-                        propInfo.SetValue(result, prop.ToObject(propInfo.PropertyType));
-                    }
-                    var fieldInfo = result?.GetType().GetField(prop.Path);
-                    fieldInfo?.SetValue(result, prop.ToObject(fieldInfo.FieldType));
-                }
-                return result;
             }
-            catch (Exception)
+
+            // get the edname
+            var jsonObject = JObject.Load(reader);
+            var success = jsonObject.TryGetValue("edname", out var token);
+            if (!success)
             {
-                // let the Json.Net machinery handle the exception
-                throw;
+                return null;
             }
+            var edname = token.Value<string>();
+
+            // get the FromEDName() method
+            const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+            var argumentTypes = new[] { typeof(string) };
+            var method = objectType.GetMethod("FromEDName", bindingFlags, binder: null, types: argumentTypes, modifiers: null);
+
+            // Invoke the FromEDName() method to get the base instance
+            var parameters = new object[] { edname };
+            var baseInstance = method?.Invoke(null, parameters);
+            if ( baseInstance == null )
+            {
+                return null; // If no instance is found, return null
+            }
+
+            // Clone the base instance into a new instance
+            var result = Activator.CreateInstance(objectType, nonPublic: true);
+            foreach ( var prop in objectType.GetProperties( BindingFlags.Public | BindingFlags.Instance ) )
+            {
+                if ( prop.CanWrite )
+                {
+                    prop.SetValue( result, prop.GetValue( baseInstance ) );
+                }
+            }
+            foreach ( var field in objectType.GetFields( BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic ) )
+            {
+                field.SetValue( result, field.GetValue( baseInstance ) );
+            }
+
+            // Populate additional properties and fields from the JSON object
+            var otherProperties = jsonObject.Properties().Where(p => p.Name != "edname");
+            foreach ( var prop in otherProperties )
+            {
+                var propInfo = result.GetType().GetProperty(prop.Name);
+                if ( propInfo != null && propInfo.CanWrite )
+                {
+                    propInfo.SetValue( result, prop.Value.ToObject( propInfo.PropertyType ) );
+                }
+                var fieldInfo = result.GetType().GetField(prop.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+                if ( fieldInfo != null )
+                {
+                    fieldInfo.SetValue( result, prop.Value.ToObject( fieldInfo.FieldType ) );
+                }
+            }
+            return result;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -122,13 +133,13 @@ namespace EddiDataDefinitions
         /// Used only for synthetic definitions derived from other object types
         /// </summary>
         [JsonIgnore]
-        public string fallbackInvariantName { get; set; } = null;
+        public string fallbackInvariantName { get; set; }
 
         [JsonIgnore]
         public string localizedName => resourceManager.GetString(basename) ?? fallbackLocalizedName ?? basename;
         
         [JsonIgnore]
-        public string fallbackLocalizedName { get; set; } = null;
+        public string fallbackLocalizedName { get; set; }
 
         [Utilities.PublicAPI, JsonIgnore, Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;
@@ -156,7 +167,7 @@ namespace EddiDataDefinitions
         {
             if (allOfThem.Count == 0)
             {
-                T _ = new T();
+                _ = new T();
             }
         }
 
@@ -189,7 +200,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedFrom = from?.Replace(";", "").Replace(" ", "").ToLowerInvariant().Trim();
+            var tidiedFrom = from.Replace(";", "").Replace(" ", "").ToLowerInvariant().Trim();
             T result;
             lock (resourceLock)
             {
