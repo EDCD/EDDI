@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This variation is found on terrestrial planets with silicate vapour geysers..
+        ///   Looks up a localized string similar to This variation is found on terrestrial planets with silicate vapor geysers..
         /// </summary>
         public static string Fumarole_SilicateVapourGeysers {
             get {
@@ -214,7 +214,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This variation is found on terrestrial planets with silicate vapour geysers..
+        ///   Looks up a localized string similar to This variation is found on terrestrial planets with silicate vapor geysers..
         /// </summary>
         public static string Gas_Vents_SilicateVapourGeysers {
             get {
@@ -286,7 +286,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This variation is found on terrestrial planets with silicate vapour geysers..
+        ///   Looks up a localized string similar to This variation is found on terrestrial planets with silicate vapor geysers..
         /// </summary>
         public static string IceFumarole_SilicateVapourGeysers {
             get {
@@ -637,7 +637,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This variation is comprised of a rotating bright core surrounded by a spiralling ring of clouds..
+        ///   Looks up a localized string similar to This variation is comprised of a rotating bright core surrounded by a spiraling ring of clouds..
         /// </summary>
         public static string L_Phn_Part_Eng_004 {
             get {

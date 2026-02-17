@@ -187,7 +187,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to thrives on atmospheric methane, appearing as a network of linked bubble paiterns..
+        ///   Looks up a localized string similar to thrives on atmospheric methane, appearing as a network of linked bubble patterns..
         /// </summary>
         public static string Bacterial_10 {
             get {
@@ -205,7 +205,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and sulphur dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells..
+        ///   Looks up a localized string similar to is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and Sulphur Dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells..
         /// </summary>
         public static string Bacterial_12 {
             get {
@@ -223,7 +223,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to can reach over three metres in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds..
+        ///   Looks up a localized string similar to can reach over three meters in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds..
         /// </summary>
         public static string Cactoid_01 {
             get {
@@ -232,7 +232,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to appears as a squat growth with a latficecl upper surface, which eventually produces a cluster of seed pods..
+        ///   Looks up a localized string similar to appears as a squat growth with a latticed upper surface, which eventually produces a cluster of seed pods..
         /// </summary>
         public static string Cactoid_02 {
             get {
@@ -250,7 +250,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to has a globular base, from which extend vertical cylinders that can reach over four metres. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds..
+        ///   Looks up a localized string similar to has a globular base, from which extend vertical cylinders that can reach over four meters. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds..
         /// </summary>
         public static string Cactoid_04 {
             get {
@@ -259,7 +259,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to appears as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown..
+        ///   Looks up a localized string similar to appears as a swollen five-sided growth, reaching over two meters high and topped with an intersected crown..
         /// </summary>
         public static string Cactoid_05 {
             get {
@@ -322,7 +322,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with cloughnut—shaped pods that create locations for chemical exchange..
+        ///   Looks up a localized string similar to resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with doughnut—shaped pods that create locations for chemical exchange..
         /// </summary>
         public static string Conchas_04 {
             get {
@@ -358,7 +358,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to thrive in argon atmospheres, and can reach four metres in height. They feature huge leaf-like structures to capture sunlight for conversion to energy..
+        ///   Looks up a localized string similar to thrive in argon atmospheres, and can reach four meters in height. They feature huge leaf-like structures to capture sunlight for conversion to energy..
         /// </summary>
         public static string Fonticulus_02 {
             get {
@@ -367,7 +367,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to can he found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis..
+        ///   Looks up a localized string similar to can be found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis..
         /// </summary>
         public static string Fonticulus_03 {
             get {
@@ -448,7 +448,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to thrives on geothermal energy. and can produce two-metre high tower structures composed of tightly clustered cylinders..
+        ///   Looks up a localized string similar to thrives on geothermal energy. and can produce two-meter high tower structures composed of tightly clustered cylinders..
         /// </summary>
         public static string Fungoids_02 {
             get {
@@ -529,7 +529,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to can grow to over six metres across. They produce wide ridged frills for metabolic interactions including aosorbing sunlight for energy production..
+        ///   Looks up a localized string similar to can grow to over six meters across. They produce wide ridged frills for metabolic interactions including absorbing sunlight for energy production..
         /// </summary>
         public static string Osseus_01 {
             get {
@@ -547,7 +547,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to produces coiling spiral structures up to six metres wide. There are ridged folds on their upturned surfaces designed to capture sunlight..
+        ///   Looks up a localized string similar to produces coiling spiral structures up to six meters wide. There are ridged folds on their upturned surfaces designed to capture sunlight..
         /// </summary>
         public static string Osseus_03 {
             get {
@@ -556,7 +556,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume ofthe organism, facilitating chemical capture and chemosynthesis on its catalytically active surface..
+        ///   Looks up a localized string similar to grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume of the organism, facilitating chemical capture and chemosynthesis on its catalytically active surface..
         /// </summary>
         public static string Osseus_04 {
             get {
@@ -565,7 +565,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to produces a stacked series of spiral structures up to about three metres. These ridged features are upturned to better absorb sunlight for photosynthesis..
+        ///   Looks up a localized string similar to produces a stacked series of spiral structures up to about three meters. These ridged features are upturned to better absorb sunlight for photosynthesis..
         /// </summary>
         public static string Osseus_05 {
             get {
@@ -574,7 +574,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to has a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption..
+        ///   Looks up a localized string similar to has a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximize sunlight absorption..
         /// </summary>
         public static string Osseus_06 {
             get {
@@ -763,7 +763,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to has vivid colouration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods..
+        ///   Looks up a localized string similar to has vivid coloration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods..
         /// </summary>
         public static string Shrubs_02 {
             get {
@@ -790,7 +790,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scaitered by light winds..
+        ///   Looks up a localized string similar to combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scattered by light winds..
         /// </summary>
         public static string Shrubs_05 {
             get {
@@ -808,7 +808,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown..
+        ///   Looks up a localized string similar to Is characterized by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown..
         /// </summary>
         public static string Shrubs_07 {
             get {
@@ -1042,7 +1042,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is formed from hollow vertical cylinders that can reach heights of six metres. Mature specimens are capped with a downtu rned crown that can distribute seeds on the wind across a wide area..
+        ///   Looks up a localized string similar to Is formed from hollow vertical cylinders that can reach heights of six meters. Mature specimens are capped with a downturned crown that can distribute seeds on the wind across a wide area..
         /// </summary>
         public static string Tubus_01 {
             get {
@@ -1114,7 +1114,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to has tall sharp reeds reaching about two metres, characterised by narrow markings along their length..
+        ///   Looks up a localized string similar to has tall sharp reeds reaching about two meters, characterized by narrow markings along their length..
         /// </summary>
         public static string Tussocks_04 {
             get {
@@ -1150,7 +1150,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is characterised by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores..
+        ///   Looks up a localized string similar to Is characterized by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores..
         /// </summary>
         public static string Tussocks_08 {
             get {
@@ -1213,7 +1213,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carw a number of round beans..
+        ///   Looks up a localized string similar to is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carry a number of round beans..
         /// </summary>
         public static string Tussocks_15 {
             get {

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoids" xml:space="preserve">
-    <value>These are extremely hardy photosynthetic organisms that thrive in arid environments. Thick, waxy leaf structures protect them from extreme surroundings. When gaseous exchange becomes unfavourable. the leaves can completely shut off the organism from the atmosphere causing a state of hibernation. The pointed leaves create precipitation slopes, which draw liquids to the heart of the organism. Here they are absorbed through a series of specialised cells, and stored in the root structure until needed.</value>
+    <value>These are extremely hardy photosynthetic organisms that thrive in arid environments. Thick, waxy leaf structures protect them from extreme surroundings. When gaseous exchange becomes unfavorable. the leaves can completely shut off the organism from the atmosphere causing a state of hibernation. The pointed leaves create precipitation slopes, which draw liquids to the heart of the organism. Here they are absorbed through a series of specialized cells, and stored in the root structure until needed.</value>
   </data>
   <data name="AsterPod" xml:space="preserve">
     <value>These pods contain the seeds of the aster tree, a space-based organism with some of the qualities of a terrestrial plant.</value>
@@ -133,7 +133,7 @@
     <value>These organic structures are so called because of the vaguely brain-like growths on the ends of their branches. These resilient organic structures absorb minerals via their subsurface roots and energy via their outer skin.</value>
   </data>
   <data name="Cactoid" xml:space="preserve">
-    <value>These are photosynthetic organisms that have adapted to extreme conditions by reducing their surface area to volume ratio, thereby protecting more sensitive tissues from exposure.The outer layer is formed from specialised light-transmitting cells. These are filled with an insulating hydrophobic layer, which helps to maintain core temperature and liquid retention. Deep, extensive root structures hold the organisms in place, and facilitate the extraction of trace minerals. Some cactoida species feature explosive seed distribution as a method of reproduction.</value>
+    <value>These are photosynthetic organisms that have adapted to extreme conditions by reducing their surface area to volume ratio, thereby protecting more sensitive tissues from exposure. The outer layer is formed from specialized light-transmitting cells. These are filled with an insulating hydrophobic layer, which helps to maintain core temperature and liquid retention. Deep, extensive root structures hold the organisms in place, and facilitate the extraction of trace minerals. Some cactoida species feature explosive seed distribution as a method of reproduction.</value>
   </data>
   <data name="CalcitePlates" xml:space="preserve">
     <value>These calcium-carbonate structures are created by vast numbers of tiny polyp-like creatures.</value>
@@ -154,7 +154,7 @@
     <value>These organic structures survive by absorbing elements from nova and supernova, with the dense outer layer protecting them from the severest radiation.</value>
   </data>
   <data name="Electricae" xml:space="preserve">
-    <value>These are organisms found exclusively on extremely cold ice worlds in the vicinity of frozen lakes. The visible tips can be observed protruding from the ice, often near fissures where it is thinnest. The bulk of the organisms extend down through the ice into subsurface melt potentially for several kilometres. Electricae are superconductive in nature. utilising the thermal circulation of the surrounding fluid to drive an electrochemical process. This is probably why they are limited to planets with atmospheres dominated by noble gases. The surface structure exists to provide a connection to the atmosphere, which in turn creates a point of electrical potential difference. A by-product of this is the bioluminescent display that runs through the organism. Although never witnessed, reproduction presumably occurs below the surface by some unidentified process.</value>
+    <value>These are organisms found exclusively on extremely cold ice worlds in the vicinity of frozen lakes. The visible tips can be observed protruding from the ice, often near fissures where it is thinnest. The bulk of the organisms extend down through the ice into subsurface melt potentially for several kilometers. Electricae are superconductive in nature. utilizing the thermal circulation of the surrounding fluid to drive an electrochemical process. This is probably why they are limited to planets with atmospheres dominated by noble gases. The surface structure exists to provide a connection to the atmosphere, which in turn creates a point of electrical potential difference. A by-product of this is the bioluminescent display that runs through the organism. Although never witnessed, reproduction presumably occurs below the surface by some unidentified process.</value>
   </data>
   <data name="Fonticulus" xml:space="preserve">
     <value>These are photosynthetic colony organisms found exclusively on ice worlds, where they have embraced the surrounding frozen material as a form of protection. As the fonticulus develop they melt ice from around them, absorbing the liquid through tiny cellular pores and passing it to the colony’s reproductive edge. Here the liquid is excreted and immediately refreezes, creating hard translucent exoskeletons that provide protection for the organisms. Frond structures create a wide flat space that expose internal photosynthetic cells to as much light as possible. Reproduction appears to occur by colony division, most likely when a shard of the structure collapses under its own weight and the smaller shard creates a new colony.</value>
@@ -163,7 +163,7 @@
     <value>These are extremophile organisms located in regions with active fumaroles. Their metabolism is driven exclusively through chemosynthetic and thermosynthetic mechanisms based on nearby volcanic activity. Proximity to volcanic heat allows them to survive in environments where the ambient temperature is naturally too cold for them. They frequently incorporate minerals from the fumaroles’ ejecta, meaning they can appear inorganic at first glance and may sport exotic colors.</value>
   </data>
   <data name="Fungoids" xml:space="preserve">
-    <value>These are organisms that live deep inside a planetary substrate. They share similar morphology to fungi but are not saprophytic, instead their mycelial body drives its metabolism through chemosynthetic and thermosynthetic processes. These are facilitated by the substrate which also protects the organism from environmental extremes. The exposed aspects of the organisms are primarily involved in reproduction. This is frequently through spore ejection, but certain species also support gaseous exchange with the atmosphere. Some fungoicla exhibit bioluminescent behaviours as part of a metabolic process involved in the breakdown of accumulated toxins.</value>
+    <value>These are organisms that live deep inside a planetary substrate. They share similar morphology to fungi but are not saprophytic, instead their mycelial body drives its metabolism through chemosynthetic and thermosynthetic processes. These are facilitated by the substrate which also protects the organism from environmental extremes. The exposed aspects of the organisms are primarily involved in reproduction. This is frequently through spore ejection, but certain species also support gaseous exchange with the atmosphere. Some fungoida exhibit bioluminescent behaviors as part of a metabolic process involved in the breakdown of accumulated toxins.</value>
   </data>
   <data name="GroundStructIce" xml:space="preserve">
     <value>These crystalline structures are created by large colonies of microorganisms.</value>
@@ -240,7 +240,7 @@
     <value>These seed pods are so called because of their resemblance to the roots of certain terrestrial plants.</value>
   </data>
   <data name="Shrubs" xml:space="preserve">
-    <value>These are robust woody plants with deep rooting structures to gather liquids and hold themselves in place where the ground may be unstable. They are photosynthetic organisms with specialised photoreceptors that work even in low light conditions. As such they are highly successful, and are widespread and diverse in nature. Their small leaf structures protect them against extremely low temperatures and liquid loss in higher temperatures.</value>
+    <value>These are robust woody plants with deep rooting structures to gather liquids and hold themselves in place where the ground may be unstable. They are photosynthetic organisms with specialized photoreceptors that work even in low light conditions. As such they are highly successful, and are widespread and diverse in nature. Their small leaf structures protect them against extremely low temperatures and liquid loss in higher temperatures.</value>
   </data>
   <data name="SilicateCrystals" xml:space="preserve">
     <value>These crystalline structures consist mainly of silicate minerals.</value>
@@ -249,7 +249,7 @@
     <value>Despite their name, these organic structures more closely resemble the shells of sea urchins. These organic structures can tolerate a wide range of temperatures and are able to absorb energy from nearby stars.</value>
   </data>
   <data name="StolonPod" xml:space="preserve">
-    <value>These seed pods are colloquially known as space oysters due to the pearlescent object sometimes found at the centre of the pod.</value>
+    <value>These seed pods are colloquially known as space oysters due to the pearlescent object sometimes found at the center of the pod.</value>
   </data>
   <data name="StolonTree" xml:space="preserve">
     <value>These organic structures are incredibly long lived, enduring for millennia in the vacuum of space.</value>

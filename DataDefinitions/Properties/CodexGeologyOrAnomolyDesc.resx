@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -120,7 +121,7 @@
     <value>This variation is found on terrestrial planets with carbon dioxide geysers.</value>
   </data>
   <data name="Fumarole_SilicateVapourGeysers" xml:space="preserve">
-    <value>This variation is found on terrestrial planets with silicate vapour geysers.</value>
+    <value>This variation is found on terrestrial planets with silicate vapor geysers.</value>
   </data>
   <data name="Fumarole_SulphurDioxideMagma" xml:space="preserve">
     <value>This variation is found on terrestrial planets with sulphur dioxide magma.</value>
@@ -168,7 +169,7 @@
     <value>This variation is found on terrestrial planets with carbon dioxide geysers.</value>
   </data>
   <data name="Gas_Vents_SilicateVapourGeysers" xml:space="preserve">
-    <value>This variation is found on terrestrial planets with silicate vapour geysers.</value>
+    <value>This variation is found on terrestrial planets with silicate vapor geysers.</value>
   </data>
   <data name="Gas_Vents_SulphurDioxideMagma" xml:space="preserve">
     <value>This variation is found on terrestrial planets with sulphur dioxide magma.</value>
@@ -192,7 +193,7 @@
     <value>This variation is found on terrestrial planets with nitrogen geysers.</value>
   </data>
   <data name="IceFumarole_SilicateVapourGeysers" xml:space="preserve">
-    <value>This variation is found on terrestrial planets with silicate vapour geysers.</value>
+    <value>This variation is found on terrestrial planets with silicate vapor geysers.</value>
   </data>
   <data name="IceFumarole_SulphurDioxideMagma" xml:space="preserve">
     <value>This variation is found on terrestrial planets with sulphur dioxide magma.</value>
@@ -315,7 +316,7 @@
     <value>This variation is comprised of a rotating bright core emitting spiraling cloud trails.</value>
   </data>
   <data name="L_Phn_Part_Eng_004" xml:space="preserve">
-    <value>This variation is comprised of a rotating bright core surrounded by a spiralling ring of clouds.</value>
+    <value>This variation is comprised of a rotating bright core surrounded by a spiraling ring of clouds.</value>
   </data>
   <data name="L_Phn_Part_Eng_005" xml:space="preserve">
     <value>This variation is comprised of a bright hazy core with a ring of thick glowing bands.</value>

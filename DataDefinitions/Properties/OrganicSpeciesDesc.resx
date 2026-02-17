@@ -160,31 +160,31 @@
     <value>are dependent upon oxygen atmospheres, which creates random swirling patterns across the ground.</value>
   </data>
   <data name="Bacterial_10" xml:space="preserve">
-    <value>thrives on atmospheric methane, appearing as a network of linked bubble paiterns.</value>
+    <value>thrives on atmospheric methane, appearing as a network of linked bubble patterns.</value>
   </data>
   <data name="Bacterial_11" xml:space="preserve">
     <value>convert geothermal heat from nitrogen-based volcanic sites into energy. They appear as long interlinked strands across the surface.</value>
   </data>
   <data name="Bacterial_12" xml:space="preserve">
-    <value>is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and sulphur dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells.</value>
+    <value>is a sunlight-converting bacterial species on worlds with atmospheres dominated by water and Sulphur Dioxide. Their colonies resemble a brain-shaped mass of smaller connected cells.</value>
   </data>
   <data name="Bacterial_13" xml:space="preserve">
     <value>appear as an intricate web pattern. They thrive in proximity to helium-based, iron-based and silicate-based volcanic sites.</value>
   </data>
   <data name="Cactoid_01" xml:space="preserve">
-    <value>can reach over three metres in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds.</value>
+    <value>can reach over three meters in height. They are composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds.</value>
   </data>
   <data name="Cactoid_02" xml:space="preserve">
-    <value>appears as a squat growth with a latficecl upper surface, which eventually produces a cluster of seed pods.</value>
+    <value>appears as a squat growth with a latticed upper surface, which eventually produces a cluster of seed pods.</value>
   </data>
   <data name="Cactoid_03" xml:space="preserve">
     <value>appear as a tall collection of cylinders linked by an undulating membrane and topped with a spiky crown. They often have a spiny life-form attached that is thought to form a symbiotic relationship with the larger organism, although the nature of this is not understood.</value>
   </data>
   <data name="Cactoid_04" xml:space="preserve">
-    <value>has a globular base, from which extend vertical cylinders that can reach over four metres. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds.</value>
+    <value>has a globular base, from which extend vertical cylinders that can reach over four meters. Rounded pods grow in clusters along the cylinders, which break open to scatter seeds.</value>
   </data>
   <data name="Cactoid_05" xml:space="preserve">
-    <value>appears as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown.</value>
+    <value>appears as a swollen five-sided growth, reaching over two meters high and topped with an intersected crown.</value>
   </data>
   <data name="Clypeus_01" xml:space="preserve">
     <value>grows a broad, tear-shaped shield to protect the sensitive organism from extreme sunlight. The shield’s ridges help to direct Water droplets down into the soil.</value>
@@ -205,7 +205,7 @@
     <value>thrives in atmospheres rich with carbon dioxide. The lip-like upper opening cracks apart to allow a vertical growth of spiky leaves and bright seeds to stretch upward.</value>
   </data>
   <data name="Conchas_04" xml:space="preserve">
-    <value>resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with cloughnut—shaped pods that create locations for chemical exchange.</value>
+    <value>resembles a ridged, bisected egg until they crack in half, allowing a thin stalk to sprout from its fleshy insides. This is covered with doughnut—shaped pods that create locations for chemical exchange.</value>
   </data>
   <data name="Electricae_01" xml:space="preserve">
     <value>extends a tip of four connected loops above the ice, each covered with brightly luminous fronds. This species is typically found on planets orbiting bright white stars.</value>
@@ -217,10 +217,10 @@
     <value>Is found in atmospheres dominated by neon, appearing as a pyramid—shaped cluster of frilled sections.</value>
   </data>
   <data name="Fonticulus_02" xml:space="preserve">
-    <value>thrive in argon atmospheres, and can reach four metres in height. They feature huge leaf-like structures to capture sunlight for conversion to energy.</value>
+    <value>thrive in argon atmospheres, and can reach four meters in height. They feature huge leaf-like structures to capture sunlight for conversion to energy.</value>
   </data>
   <data name="Fonticulus_03" xml:space="preserve">
-    <value>can he found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis.</value>
+    <value>can be found on ice worlds with argon-rich atmospheres. They produce broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis.</value>
   </data>
   <data name="Fonticulus_04" xml:space="preserve">
     <value>exists in atmospheres with a heavy concentration of nitrogen. Growing up along the main stalk are bright gem-like pods. which can break off and create new colonies.</value>
@@ -247,7 +247,7 @@
     <value>produces vertical clusters interspersed with spore pods atop thin stalks. allowing them to break off and scatter to reproduce elsewhere.</value>
   </data>
   <data name="Fungoids_02" xml:space="preserve">
-    <value>thrives on geothermal energy. and can produce two-metre high tower structures composed of tightly clustered cylinders.</value>
+    <value>thrives on geothermal energy. and can produce two-meter high tower structures composed of tightly clustered cylinders.</value>
   </data>
   <data name="Fungoids_03" xml:space="preserve">
     <value>features clusters of mottled bubble-shaped growths atop a central stalk. These contain spores that can be exposed to the winds to facilitate distribution.</value>
@@ -271,22 +271,22 @@
     <value>are not trees in the traditional sense, but long-lived and extremely hardy space-based organisms.</value>
   </data>
   <data name="Osseus_01" xml:space="preserve">
-    <value>can grow to over six metres across. They produce wide ridged frills for metabolic interactions including aosorbing sunlight for energy production.</value>
+    <value>can grow to over six meters across. They produce wide ridged frills for metabolic interactions including absorbing sunlight for energy production.</value>
   </data>
   <data name="Osseus_02" xml:space="preserve">
     <value>appears as half-buried discs with radial patterns, which may resemble natural rook formations from a distance. They absorb geothermal energy from below the surface as well as available heat sources above ground.</value>
   </data>
   <data name="Osseus_03" xml:space="preserve">
-    <value>produces coiling spiral structures up to six metres wide. There are ridged folds on their upturned surfaces designed to capture sunlight.</value>
+    <value>produces coiling spiral structures up to six meters wide. There are ridged folds on their upturned surfaces designed to capture sunlight.</value>
   </data>
   <data name="Osseus_04" xml:space="preserve">
-    <value>grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume ofthe organism, facilitating chemical capture and chemosynthesis on its catalytically active surface.</value>
+    <value>grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton. This structure is designed to dramatically increase the surface area to volume of the organism, facilitating chemical capture and chemosynthesis on its catalytically active surface.</value>
   </data>
   <data name="Osseus_05" xml:space="preserve">
-    <value>produces a stacked series of spiral structures up to about three metres. These ridged features are upturned to better absorb sunlight for photosynthesis.</value>
+    <value>produces a stacked series of spiral structures up to about three meters. These ridged features are upturned to better absorb sunlight for photosynthesis.</value>
   </data>
   <data name="Osseus_06" xml:space="preserve">
-    <value>has a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption.</value>
+    <value>has a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximize sunlight absorption.</value>
   </data>
   <data name="Recepta_01" xml:space="preserve">
     <value>grows a thick latticed structure for protection. A fine translucent membrane stretches between its gaps, allowing sunlight to penetrate and reach the inner organism for photosynthesis.</value>
@@ -325,7 +325,7 @@
     <value>appears as a bush of leaves with a similar texture to seaweed. Seeds are extended on long stalks and protected by a cage formation until ready to germinate.</value>
   </data>
   <data name="Shrubs_02" xml:space="preserve">
-    <value>has vivid colouration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods.</value>
+    <value>has vivid coloration when young that alters as it matures, its upper branches produce lines of small pea-like seed pods.</value>
   </data>
   <data name="Shrubs_03" xml:space="preserve">
     <value>has an almost metallic shine to its small leaves. Along its upper branches grow spherical spores, which each have a star-shaped opening to increase germination.</value>
@@ -334,13 +334,13 @@
     <value>gives the appearance of flames, with vivid upright fronds extended from multiple stalks. The fronds are dotted with disc-sha ped spores that are distributed by the wind.</value>
   </data>
   <data name="Shrubs_05" xml:space="preserve">
-    <value>combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scaitered by light winds.</value>
+    <value>combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scattered by light winds.</value>
   </data>
   <data name="Shrubs_06" xml:space="preserve">
     <value>produces clusters of upright intertwining branches, which are crowned with bright seed sacks.</value>
   </data>
   <data name="Shrubs_07" xml:space="preserve">
-    <value>Is characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown.</value>
+    <value>Is characterized by its spiky lower branches surrounding a thick central column, which is clotted with spores and with a dark crown.</value>
   </data>
   <data name="Small_Org_Moll01_V1" xml:space="preserve">
     <value>consists of gourd-shaped organisms that feeds off starlight converted into chemical energy.</value>
@@ -442,7 +442,7 @@
     <value>extracts resources from a planet and convert them into meta-alloys, a key component in the creation of Thargoid ships and technologies.</value>
   </data>
   <data name="Tubus_01" xml:space="preserve">
-    <value>Is formed from hollow vertical cylinders that can reach heights of six metres. Mature specimens are capped with a downtu rned crown that can distribute seeds on the wind across a wide area.</value>
+    <value>Is formed from hollow vertical cylinders that can reach heights of six meters. Mature specimens are capped with a downturned crown that can distribute seeds on the wind across a wide area.</value>
   </data>
   <data name="Tubus_02" xml:space="preserve">
     <value>grows a cluster of hollow stalks composed of rigid segments. Over time these become capped with a growth that flowers and produces seeds.</value>
@@ -466,7 +466,7 @@
     <value>produces thick intertwined leaves, above which sprout narrow stems crowned with seed pods.</value>
   </data>
   <data name="Tussocks_04" xml:space="preserve">
-    <value>has tall sharp reeds reaching about two metres, characterised by narrow markings along their length.</value>
+    <value>has tall sharp reeds reaching about two meters, characterized by narrow markings along their length.</value>
   </data>
   <data name="Tussocks_05" xml:space="preserve">
     <value>has very thin stalks carrying twin sets of seed sacks along their entire length, resembling links on a chain.</value>
@@ -478,7 +478,7 @@
     <value>sprouts serrated leaves around thick stalks that produce dark seed pods.</value>
   </data>
   <data name="Tussocks_08" xml:space="preserve">
-    <value>Is characterised by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores.</value>
+    <value>Is characterized by leaves with a distinctive striped pattern that are bisected like a snake’s tongue. Mature versions also sprout smaller leaves which produce spores.</value>
   </data>
   <data name="Tussocks_09" xml:space="preserve">
     <value>sprouts tapering leaves, with tips covered with colourful seed pods.</value>
@@ -499,7 +499,7 @@
     <value>has thin reeds clustered around a central stalk. which is eventually crowned with spores.</value>
   </data>
   <data name="Tussocks_15" xml:space="preserve">
-    <value>is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carw a number of round beans.</value>
+    <value>is a squat cluster of leaves resembling thick matted hair. From the top of these sprout thick pods that carry a number of round beans.</value>
   </data>
   <data name="Ingensradices_Unicus" xml:space="preserve">
     <value>builds upon its enormous root structure to lift itself several meters into the air, secured on aerial roots. It is highly insulated against extreme temperatures and resilient in many climates. Large, broad structures in the higher reaches of this organism provide platforms for seed pods, which are capable of firing seeds incredible distances.</value>

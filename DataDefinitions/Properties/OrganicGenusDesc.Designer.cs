@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These are extremely hardy photosynthetic organisms that thrive in arid environments. Thick, waxy leaf structures protect them from extreme surroundings. When gaseous exchange becomes unfavourable. the leaves can completely shut off the organism from the atmosphere causing a state of hibernation. The pointed leaves create precipitation slopes, which draw liquids to the heart of the organism. Here they are absorbed through a series of specialised cells, and stored in the root structure until needed..
+        ///   Looks up a localized string similar to These are extremely hardy photosynthetic organisms that thrive in arid environments. Thick, waxy leaf structures protect them from extreme surroundings. When gaseous exchange becomes unfavorable. the leaves can completely shut off the organism from the atmosphere causing a state of hibernation. The pointed leaves create precipitation slopes, which draw liquids to the heart of the organism. Here they are absorbed through a series of specialized cells, and stored in the root structure until needed..
         /// </summary>
         public static string Aleoids {
             get {
@@ -106,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These are photosynthetic organisms that have adapted to extreme conditions by reducing their surface area to volume ratio, thereby protecting more sensitive tissues from exposure.The outer layer is formed from specialised light-transmitting cells. These are filled with an insulating hydrophobic layer, which helps to maintain core temperature and liquid retention. Deep, extensive root structures hold the organisms in place, and facilitate the extraction of trace minerals. Some cactoida species feature explos [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to These are photosynthetic organisms that have adapted to extreme conditions by reducing their surface area to volume ratio, thereby protecting more sensitive tissues from exposure. The outer layer is formed from specialized light-transmitting cells. These are filled with an insulating hydrophobic layer, which helps to maintain core temperature and liquid retention. Deep, extensive root structures hold the organisms in place, and facilitate the extraction of trace minerals. Some cactoida species feature explo [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Cactoid {
             get {
@@ -169,7 +169,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These are organisms found exclusively on extremely cold ice worlds in the vicinity of frozen lakes. The visible tips can be observed protruding from the ice, often near fissures where it is thinnest. The bulk of the organisms extend down through the ice into subsurface melt potentially for several kilometres. Electricae are superconductive in nature. utilising the thermal circulation of the surrounding fluid to drive an electrochemical process. This is probably why they are limited to planets with atmospher [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to These are organisms found exclusively on extremely cold ice worlds in the vicinity of frozen lakes. The visible tips can be observed protruding from the ice, often near fissures where it is thinnest. The bulk of the organisms extend down through the ice into subsurface melt potentially for several kilometers. Electricae are superconductive in nature. utilizing the thermal circulation of the surrounding fluid to drive an electrochemical process. This is probably why they are limited to planets with atmospher [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Electricae {
             get {
@@ -422,7 +422,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These are robust woody plants with deep rooting structures to gather liquids and hold themselves in place where the ground may be unstable. They are photosynthetic organisms with specialised photoreceptors that work even in low light conditions. As such they are highly successful, and are widespread and diverse in nature. Their small leaf structures protect them against extremely low temperatures and liquid loss in higher temperatures..
+        ///   Looks up a localized string similar to These are robust woody plants with deep rooting structures to gather liquids and hold themselves in place where the ground may be unstable. They are photosynthetic organisms with specialized photoreceptors that work even in low light conditions. As such they are highly successful, and are widespread and diverse in nature. Their small leaf structures protect them against extremely low temperatures and liquid loss in higher temperatures..
         /// </summary>
         public static string Shrubs {
             get {
@@ -449,7 +449,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These seed pods are colloquially known as space oysters due to the pearlescent object sometimes found at the centre of the pod..
+        ///   Looks up a localized string similar to These seed pods are colloquially known as space oysters due to the pearlescent object sometimes found at the center of the pod..
         /// </summary>
         public static string StolonPod {
             get {
