@@ -53,7 +53,6 @@ namespace EddiSpanshService
             catch ( HttpRequestException he )
             {
                 Logging.Warn( he.Message, he );
-                return null;
             }
 
             return new List<NavWaypoint>();
