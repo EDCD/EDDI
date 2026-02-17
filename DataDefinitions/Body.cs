@@ -56,8 +56,13 @@ namespace EddiDataDefinitions
 
         /// <summary>The body's rings</summary>
         [PublicAPI]
-        public List<Ring> rings { get; set; }
-
+        public List<Ring> rings
+        {
+            get => _rings ?? new List<Ring>();
+            set => _rings = value;
+        }
+        private List<Ring> _rings;
+        
         // Scan data
 
         /// <summary>Whether we're the first commander to discover this body</summary>
@@ -170,10 +175,7 @@ namespace EddiDataDefinitions
         /// <summary>The parent bodies to this body, if any</summary>
         public List<IDictionary<string, int>> parents
         {
-            get
-            {
-                return _parents;
-            }
+            get => _parents ?? new List<IDictionary<string, int>>();
             set
             {
                 if (bodyType == null)

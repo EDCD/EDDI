@@ -1109,7 +1109,7 @@ namespace EddiCore
         private async Task<bool> eventRingHotspotsAsync ( RingHotspotsEvent @event )
         {
             var ring = CurrentStarSystem?.bodies?
-                .Where(b => b.rings.Any())
+                .Where(b => b.rings?.Any() ?? false)
                 .SelectMany(b => b.rings)
                 .FirstOrDefault(r => r.name == @event.bodyname);
             if ( ring != null )
