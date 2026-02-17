@@ -79,10 +79,7 @@ namespace EddiDataDefinitions
                     propInfo.SetValue( result, prop.Value.ToObject( propInfo.PropertyType ) );
                 }
                 var fieldInfo = result.GetType().GetField(prop.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
-                if ( fieldInfo != null )
-                {
-                    fieldInfo.SetValue( result, prop.Value.ToObject( fieldInfo.FieldType ) );
-                }
+                fieldInfo?.SetValue( result, prop.Value.ToObject( fieldInfo.FieldType ) );
             }
             return result;
         }
