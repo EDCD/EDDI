@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 
@@ -8,82 +9,72 @@ namespace EddiCore.Hotkeys
     {
         public HotkeyActionCollection ( List<HotkeyAction> hotkeyActions )
         {
-            HotkeyActions = hotkeyActions;
+            HotkeyActions = hotkeyActions ?? throw new ArgumentNullException( nameof( hotkeyActions ) );
+            byName = HotkeyActions.ToDictionary( a => a.Name, a => a );
+            RebuildGestureIndex();
         }
 
         public readonly List<HotkeyAction> HotkeyActions;
 
-        public void AddGesture ( string name, KeyGesture gesture, int? id = null )
-        {
-            var action = HotkeyActions.FirstOrDefault( a => a.Name == name );
-            if ( action != null )
-            {
-                action.KeyGesture = gesture;
-                action.id = id;
-                return;
-            }
+        private readonly Dictionary<string, HotkeyAction> byName;
+        private readonly Dictionary<(Key key, ModifierKeys mods), HotkeyAction> byGesture = new Dictionary<(Key, ModifierKeys), HotkeyAction>();
 
-            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
+        private void RebuildGestureIndex ()
+        {
+            byGesture.Clear();
+            foreach ( var a in HotkeyActions )
+            {
+                if ( a.KeyGesture != null )
+                {
+                    byGesture[ (a.KeyGesture.Key, a.KeyGesture.Modifiers) ] = a;
+                }
+            }
         }
 
-        public void AddId ( string name, int id )
+        public void AddGesture ( string name, KeyGesture gesture )
         {
-            var action = HotkeyActions.FirstOrDefault( a => a.Name == name );
-            if ( action != null )
+            if ( !byName.TryGetValue( name, out var action ) )
             {
-                action.id = id;
-                return;
+                throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
             }
 
-            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
+            action.KeyGesture = gesture;
+            RebuildGestureIndex();
         }
 
         public void ClearAllKeyGestures ()
         {
             foreach ( var action in HotkeyActions )
             {
-                RemoveKeyGestures( action.Name );
+                action.KeyGesture = null;
             }
+            RebuildGestureIndex();
         }
 
         public bool IsKeyGestureAssigned ( string name, Key key, ModifierKeys modifiers )
         {
-            var action = HotkeyActions.FirstOrDefault( a => a.Name == name );
-            if ( action != null )
+            if ( !byName.ContainsKey( name ) )
             {
-                return HotkeyActions.Any( a =>
-                    a.Name != name &&
-                    a.KeyGesture != null &&
-                    a.KeyGesture.Key == key &&
-                    a.KeyGesture.Modifiers == modifiers );
+                throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
             }
 
-            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
+            return byGesture.TryGetValue( (key, modifiers), out var existing ) && existing.Name != name;
         }
 
         public void RemoveKeyGestures ( string name )
         {
-            var action = HotkeyActions.FirstOrDefault( a => a.Name == name );
-            if ( action != null )
+            if ( !byName.TryGetValue( name, out var action ) )
             {
-                action.id = null;
-                action.KeyGesture = null;     
-                return;
+                throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
             }
 
-            throw new KeyNotFoundException( $"The key name '{name}' was not found in the action list." );
+            action.KeyGesture = null;
+            RebuildGestureIndex();
         }
 
-        public bool TryGetValue ( string name, out HotkeyAction action )
-        {
-            action = HotkeyActions.FirstOrDefault( a => a.Name == name );
-            return action != null;
-        }
+        public bool TryGetValue ( string name, out HotkeyAction action ) => byName.TryGetValue( name, out action );
 
-        public bool TryGetValue ( int id, out HotkeyAction action )
-        {
-            action = HotkeyActions.FirstOrDefault( a => a.id != null && a.id == id );
-            return action != null;
-        }
+        public bool TryGetValue ( Key key, ModifierKeys modifiers, out HotkeyAction action ) =>
+            byGesture.TryGetValue( ( key, modifiers ), out action );
     }
 }

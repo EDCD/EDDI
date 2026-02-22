@@ -5,7 +5,6 @@ namespace EddiCore.Hotkeys
 {
     public class HotkeyAction
     {
-        public int? id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public Action Action { get; set; }

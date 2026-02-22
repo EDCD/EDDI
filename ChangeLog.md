@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 4.1.9
+  * Core
+    * Various bug fixes
+    * Revised the Hotkey Manager to send key presses to other applications rather than blocking those key presses from being sent to other applications. This should improve compatibility other applications using the same keys. (#2779)
+
 ## 4.1.8
   * Core
     * Fixed a bad installer configuration which prevented the 4.1.7 release from running for some users. (#2776) 
