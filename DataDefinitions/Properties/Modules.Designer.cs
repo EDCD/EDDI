@@ -862,6 +862,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agile Boost Thrusters.
+        /// </summary>
+        public static string MkIIAgileBoostThrusters {
+            get {
+                return ResourceManager.GetString("MkIIAgileBoostThrusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plasma Shock Accelerator.
+        /// </summary>
+        public static string MkIIPlasmaShockAccelerator {
+            get {
+                return ResourceManager.GetString("MkIIPlasmaShockAccelerator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Module Reinforcement Package.
         /// </summary>
         public static string ModuleReinforcementPackage {

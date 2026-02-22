@@ -310,4 +310,8 @@ If transporting via taxi or dropship</comment>
     <value>your</value>
     <comment>e.g. *your* Caspian Explorer</comment>
   </data>
+  <data name="yourKestrelMkII" xml:space="preserve">
+    <value>your</value>
+    <comment>e.g. *your* Kestrel Mk. II</comment>
+  </data>
 </root>

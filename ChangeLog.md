@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 4.1.9
   * Core
+    * Add support for the Kestrel Mk. II.
     * Various bug fixes
     * Revised the Hotkey Manager to send key presses to other applications rather than blocking those key presses from being sent to other applications. This should improve compatibility other applications using the same keys. (#2779)
 

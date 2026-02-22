@@ -697,4 +697,12 @@
     <value>Ablative Reactive Surface Composite</value>
     <comment>Caspian Explorer Module Explorer_NX_Armour_Reactive</comment>
   </data>
+  <data name="MkIIPlasmaShockAccelerator" xml:space="preserve">
+    <value>Plasma Shock Accelerator</value>
+    <comment>Module mkiiplasmashockautocannon</comment>
+  </data>
+  <data name="MkIIAgileBoostThrusters" xml:space="preserve">
+    <value>Agile Boost Thrusters</value>
+    <comment>Module mkiiagileboost_engine</comment>
+  </data>
 </root>

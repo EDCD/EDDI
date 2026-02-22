@@ -324,6 +324,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to your.
         /// </summary>
+        public static string yourKestrelMkII {
+            get {
+                return ResourceManager.GetString("yourKestrelMkII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to your.
+        /// </summary>
         public static string yourKraitMkII {
             get {
                 return ResourceManager.GetString("yourKraitMkII", resourceCulture);

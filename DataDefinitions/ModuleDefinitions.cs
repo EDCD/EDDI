@@ -1172,6 +1172,13 @@ namespace EddiDataDefinitions
         public static readonly Module Explorer_NX_Armour_Grade3 = new Module( "Explorer_NX_Armour_Grade3", "MilitaryGradeComposite_Ablative_MkII", 1, "A", 175375161 );
         public static readonly Module Explorer_NX_Armour_Mirrored = new Module( "Explorer_NX_Armour_Mirrored", "MirroredSurfaceComposite_Ablative_MkII", 1, "A", 414469960 );
         public static readonly Module Explorer_NX_Armour_Reactive = new Module( "Explorer_NX_Armour_Reactive", "ReactiveSurfaceComposite_Ablative_MkII", 1, "A", 459288060 );
+        public static readonly Module hpt_mkiiplasmashockautocannon_fixed_large = new Module( "hpt_mkiiplasmashockautocannon_fixed_large", "MkIIPlasmaShockAccelerator", 3, "B", 4612670, ModuleMount.Fixed );
+        public static readonly Module int_mkiiagileboost_engine_size5_class5 = new Module( "int_mkiiagileboost_engine_size5_class5", "MkIIAgileBoostThrusters", 5, "A", 6803570 );
+        public static readonly Module smallcombat01_nx_armour_grade1 = new Module( "smallcombat01_nx_armour_grade1", "LightweightAlloy", 1, "I", 0 );
+        public static readonly Module smallcombat01_nx_armour_grade2 = new Module( "smallcombat01_nx_armour_grade2", "ReinforcedAlloy", 1, "I", 5709527 );
+        public static readonly Module smallcombat01_nx_armour_grade3 = new Module( "smallcombat01_nx_armour_grade3", "MilitaryGradeComposite", 1, "I", 12846437 );
+        public static readonly Module smallcombat01_nx_armour_mirrored = new Module( "smallcombat01_nx_armour_mirrored", "MirroredSurfaceComposite", 1, "I", 30360409 );
+        public static readonly Module smallcombat01_nx_armour_reactive = new Module( "smallcombat01_nx_armour_reactive", "ReactiveSurfaceComposite", 1, "I", 33643387 );
 
         // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
         public static readonly Module Hpt_PulseLaser_Fixed_SmallFree = new Module( "Hpt_PulseLaser_Fixed_SmallFree", "PulseLaser", 1, "F", 0, ModuleMount.Fixed);
