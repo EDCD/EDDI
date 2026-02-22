@@ -5,11 +5,14 @@ using EddiJournalMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Tests.Properties;
 using Utilities;
 
@@ -24,42 +27,84 @@ namespace Tests
             MakeSafe();
         }
 
-        [TestMethod, DoNotParallelize]
-        public async Task TestKeepAlive()
+        private static bool IsActive ( IEddiMonitor monitor ) =>
+            EDDI.Instance.activeMonitors.Any( m => ReferenceEquals( m, monitor ) );
+
+        private sealed class TestMonitor : IEddiMonitor
         {
-            var monitor = EDDI.Instance.ObtainMonitor( "Journal Monitor" );
+            private readonly string name;
+            private readonly AutoResetEvent stopSignal = new AutoResetEvent(false);
+            private readonly AutoResetEvent startedSignal = new AutoResetEvent(false);
+            private int startCount;
 
-            Assert.IsNotNull(monitor);
-            EDDI.Instance.EnableMonitor( monitor );
-            monitor.Stop();
-            Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
+            public TestMonitor ( string name ) { this.name = name; }
 
-            EDDI.Instance.DisableMonitor( monitor );
-            Assert.AreEqual( 0, EDDI.Instance.activeMonitors.Count );
-
-            EDDI.Instance.EnableMonitor( monitor );
-            monitor.Stop();
-
-            await Task.Delay(3000).ConfigureAwait(false);
-            Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
-
-            await Task.Delay( 3000 ).ConfigureAwait( false );
-            Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
-
-            await Task.Delay( 3000 ).ConfigureAwait( false );
-            Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
-
-            await Task.Delay( 3000 ).ConfigureAwait( false );
-            Assert.AreEqual( 1, EDDI.Instance.activeMonitors.Count );
-
-            if ( EDDI.Instance.activeMonitors == null )
+            public string MonitorName () => name;
+            public string LocalizedMonitorName () => name;
+            public string MonitorDescription () => "Test monitor for keepAlive";
+            public bool IsRequired () => false;
+            public bool NeedsStart () => true;
+            public void Start ()
             {
-                Assert.Fail();
+                Interlocked.Increment( ref startCount );
+                startedSignal.Set();
+
+                // Block until stopped (simulates a long-running monitor)
+                stopSignal.WaitOne();
             }
-            else
+            public void Stop () => stopSignal.Set();
+            public void Reload () { }
+            public Task PreHandleAsync ( Event @event ) => Task.CompletedTask;
+            public Task PostHandleAsync ( Event @event ) => Task.CompletedTask;
+            public Task HandleProfileAsync ( JObject profile ) => Task.CompletedTask;
+            public Task HandleStatusAsync ( Status status ) => Task.CompletedTask;
+            IDictionary<string, Tuple<Type, object>> IEddiMonitor.GetVariables () => new Dictionary<string, Tuple<Type, object>>();
+            public UserControl ConfigurationTabItem () => null;
+            
+            public bool WaitForStart ( TimeSpan timeout ) => startedSignal.WaitOne( timeout );
+        }
+
+        [TestMethod, DoNotParallelize]
+        public void TestKeepAlive ()
+        {
+            MakeSafe();
+
+            var name = "Test monitor " + Guid.NewGuid().ToString("N");
+            var monitor = new TestMonitor(name);
+
+            try
             {
-                EDDI.Instance.activeMonitors.TryTake( out var activeMonitor );
-                Assert.AreEqual( monitor, activeMonitor );
+                EDDI.Instance.monitors.Add( monitor );
+                EDDI.Instance.EnableMonitor( monitor );
+
+                // First start should happen
+                Assert.IsTrue( monitor.WaitForStart( TimeSpan.FromSeconds( 2 ) ), "Monitor did not start" );
+                Assert.IsTrue( IsActive( monitor ), "Monitor should be present in activeMonitors after enabling" );
+
+                // First 4 failures: expect restart
+                for ( var i = 1; i <= 4; i++ )
+                {
+                    monitor.Stop(); // cause Start() to return
+                    Assert.IsTrue( monitor.WaitForStart( TimeSpan.FromSeconds( 2 ) ), $"Monitor did not restart after failure {i}" );
+                    Assert.IsTrue( IsActive( monitor ), $"Monitor removed too early after failure {i}" );
+                }
+
+                // 5th failure: expect disable (no restart)
+                monitor.Stop();
+
+                // Wait until removed from activeMonitors
+                Assert.IsTrue( SpinWait.SpinUntil( () => !IsActive( monitor ), TimeSpan.FromSeconds( 2 ) ),
+                    "Monitor was not disabled/removed after max consecutive failures"
+                );
+
+                // Also assert no further restart occurred
+                Assert.IsFalse( monitor.WaitForStart( TimeSpan.FromMilliseconds( 300 ) ), "Monitor restarted after it should have been disabled" );
+            }
+            finally
+            {
+                // Ensure cleanup if something failed mid-test
+                EDDI.Instance.DisableMonitor( monitor );
+                EDDI.Instance.monitors.Remove( monitor );
             }
         }
     }

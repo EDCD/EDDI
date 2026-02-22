@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -162,6 +163,7 @@ namespace EddiCore
         public List<IEddiMonitor> monitors = new List<IEddiMonitor>();
         internal ConcurrentBag<IEddiMonitor> activeMonitors = new ConcurrentBag<IEddiMonitor>();
         private static readonly object monitorLock = new object();
+        private bool IsMonitorActive ( string name ) => activeMonitors.Any( m => m.MonitorName().Equals(name, StringComparison.OrdinalIgnoreCase) );
 
         public List<IEddiResponder> responders = new List<IEddiResponder>();
         private ConcurrentBag<IEddiResponder> activeResponders = new ConcurrentBag<IEddiResponder>();
@@ -806,61 +808,71 @@ namespace EddiCore
         /// <summary> Keep a monitor thread alive, restarting it as required </summary>
         private void keepAlive(string name, Action start)
         {
+            var token = eventHandlerTS.Token;
+            const int maxConsecutiveFailures = 5;
+            var stableRunResetsFailures = TimeSpan.FromMinutes(5);
+            var consecutiveFailures = 0;
+            var rng = new Random( unchecked(( System.Environment.TickCount * 31 ) + Thread.CurrentThread.ManagedThreadId) );
+
             try
             {
-                var failureCount = 0;
-                while (running && failureCount < 5 && 
-                       !eventHandlerTS.Token.IsCancellationRequested && 
-                       activeMonitors.FirstOrDefault(m => m.MonitorName() == name) != null)
+                while (running && !token.IsCancellationRequested && IsMonitorActive(name) )
                 {
+                    var runStartTs = Stopwatch.GetTimestamp();
+                    Exception failure = null;
+
                     try
                     {
-                        // Check if we're shutting down before starting
-                        if ( eventHandlerTS.Token.IsCancellationRequested )
-                        {
-                            break;
-                        }
-
-                        var monitorThread = new Thread(() => start())
-                        {
-                            Name = name,
-                            IsBackground = true
-                        };
-                        Logging.Info("Starting " + name + " (" + failureCount + ")");
-                        monitorThread.Start();
-                        monitorThread.Join();
+                        Logging.Info( $"Starting {name} (consecutiveFailures={consecutiveFailures})" );
+                        start(); // expected to block until monitor stops
                     }
-                    catch (Exception ex)
+                    catch ( Exception ex ) when ( !token.IsCancellationRequested )
                     {
-                        // Only log and retry if we're not shutting down
-                        if ( !eventHandlerTS.Token.IsCancellationRequested )
-                        {
-                            Logging.Error( "Restarting " + name + " after exception", ex );
-
-                            // Add delay before retry to allow graceful shutdown signals to propagate
-                            try
-                            {
-                                Task.Delay( 1000, eventHandlerTS.Token ).Wait( eventHandlerTS.Token );
-                            }
-                            catch ( OperationCanceledException )
-                            {
-                                // Shutdown in progress, exit gracefully
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        failure = ex; // capture so we can apply consistent failure logic below
                     }
-                    failureCount++;
-                }
 
-                // Only disable if we didn't already stop
-                if ( !eventHandlerTS.Token.IsCancellationRequested )
-                {
-                    DisableMonitor(name);
-                    Logging.Warn(name + " stopping after too many failures");
+                    // If we are stopping or the monitor was disabled, exit cleanly.
+                    if ( !running || token.IsCancellationRequested || !IsMonitorActive( name ) )
+                    {
+                        break;
+                    }
+
+                    // Unexpected exit/crash while still enabled.
+                    // Count as failure but reset the streak if it had been stable for longer than the `stableRunResetsFailures` timespan.
+                    var ranFor = ElapsedSince(runStartTs);
+                    if ( ranFor >= stableRunResetsFailures )
+                    {
+                        consecutiveFailures = 0;
+                    }
+                    consecutiveFailures++;
+                    Logging.Warn( $"{name} exited unexpectedly after {ranFor.TotalMilliseconds} ms. Restarting." );
+
+                    if ( failure != null )
+                    {
+                        Logging.Error( $"{name} crashed. Restarting. Consecutive failures: {consecutiveFailures}", failure );
+                    }
+                    else
+                    {
+                        Logging.Warn( $"{name} exited unexpectedly. Restarting. Consecutive failures: {consecutiveFailures}" );
+                    }
+
+                    if ( consecutiveFailures >= maxConsecutiveFailures )
+                    {
+                        DisableMonitor( name );
+                        Logging.Warn( $"{name} disabled after {consecutiveFailures} consecutive failures" );
+                        break;
+                    }
+
+                    // Exponential backoff (max 30s) + small jitter (0–500ms), except when unit testing
+                    var exponent = Math.Min(Math.Max(0, consecutiveFailures - 1), 5);
+                    var backoffSeconds = Math.Min(30, 1 << exponent);
+                    var jitterMs = rng.Next(0, 500);
+                    var delay = DataProviderService.unitTesting 
+                        ? TimeSpan.Zero 
+                        : TimeSpan.FromSeconds(backoffSeconds) + TimeSpan.FromMilliseconds(jitterMs);
+
+                    // Cancellation-friendly wait
+                    token.WaitHandle.WaitOne( delay );
                 }
             }
             catch ( OperationCanceledException )
@@ -873,7 +885,16 @@ namespace EddiCore
             }
             catch (Exception ex)
             {
-                Logging.Warn("keepAlive for " + name + " failed", ex);
+                Logging.Warn( $"keepAlive for {name} failed", ex );
+            }
+
+            return;
+
+            TimeSpan ElapsedSince ( long startTimestamp )
+            {
+                var delta = Stopwatch.GetTimestamp() - startTimestamp;
+                var seconds = (double)delta / Stopwatch.Frequency;
+                return TimeSpan.FromSeconds( seconds );
             }
         }
 
