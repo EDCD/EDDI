@@ -181,10 +181,6 @@
     <value>座舱玻璃</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>驾驶舱</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>收集无人机控制器</value>
     <comment>Module CollectorLimpetController</comment>
