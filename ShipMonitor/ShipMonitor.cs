@@ -326,7 +326,7 @@ namespace EddiShipMonitor
                         ship = ShipDefinitions.FromEDModel(@event.shipEDModel);
                         ship.LocalId = (int)@event.shipid;
                         ship.Role = Role.MultiPurpose;
-                        AddShip(ship);
+                        ReplaceOrAddShip(ship);
                     }
 
                     if (ship is null) { return; }
@@ -401,7 +401,8 @@ namespace EddiShipMonitor
                 updatedAt = @event.timestamp;
                 var ship = ShipDefinitions.FromEDModel( @event.edModel );
                 ship.LocalId = (int)@event.shipid;
-                AddShip( ship );
+                ship.Role = Role.MultiPurpose;
+                ReplaceOrAddShip( ship );
                 if ( !@event.fromLoad ) { writeShips(); }
             }
         }
@@ -488,10 +489,9 @@ namespace EddiShipMonitor
                     var ship = ParseShipLoadoutEvent(@event);
 
                     // Update the local and global variables
+                    ReplaceOrAddShip( ship );
                     EDDI.Instance.CurrentShip = ship;
                     SetCurrentShip( ship.LocalId, ship.EDName );
-
-                    AddShip( ship);
                     if (!@event.fromLoad) { writeShips(); }
                 }
             }
@@ -671,7 +671,7 @@ namespace EddiShipMonitor
                         if ( shipInYard == null )
                         {
                             shipInEvent.Role = Role.MultiPurpose;
-                            AddShip( shipInEvent );
+                            ReplaceOrAddShip( shipInEvent );
                         }
 
                         // Update ship in the shipyard to latest data
@@ -1287,7 +1287,7 @@ namespace EddiShipMonitor
                     {
                         // Information from the Frontier API can be out-of-date, use it to set our ship if we don't know what it already is
                         ship = profileCurrentShip;
-                        AddShip(ship);
+                        ReplaceOrAddShip(ship);
                     }
                     else
                     {
@@ -1393,7 +1393,7 @@ namespace EddiShipMonitor
                 if (ship == null)
                 {
                     // This is a new ship, add it to the shipyard
-                    AddShip(profileShip);
+                    ReplaceOrAddShip(profileShip);
                 }
                 else
                 {
@@ -1474,7 +1474,7 @@ namespace EddiShipMonitor
             }
         }
 
-        internal void AddShip(Ship ship)
+        internal void ReplaceOrAddShip(Ship ship)
         {
             if (ship == null)
             {
@@ -1630,7 +1630,7 @@ namespace EddiShipMonitor
                         ship = ShipDefinitions.FromEDModel(EDName);
                         ship.LocalId = (int)localId;
                         ship.Role = Role.MultiPurpose;
-                        AddShip(ship);
+                        ReplaceOrAddShip(ship);
                         currentShipId = ship.LocalId;
                         Logging.Debug("Created ship ID " + localId + ";  ", ship);
                     }
