@@ -1252,6 +1252,7 @@ namespace EddiDataDefinitions
         public static readonly Module Panther_Clipper_MkII_Cockpit = new Module( "PantherMkII_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module LakonMiner_Cockpit = new Module( "LakonMiner_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module Explorer_NX_Cockpit = new Module( "explorer_nx_cockpit", "CockpitCanopy", 1, "I", 0);
+        public static readonly Module SmallCombat01_NX_Cockpit = new Module( "smallcombat01_nx_cockpit", "CockpitCanopy", 1, "I", 0 );
 
         // Fighter modules
         public static readonly Module Empire_Fighter_Cockpit = new Module( "Empire_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0);
