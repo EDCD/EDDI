@@ -173,10 +173,6 @@
     <value>Cabina</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Cabina</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Lanzador drón colector</value>
     <comment>Module CollectorLimpetController</comment>
