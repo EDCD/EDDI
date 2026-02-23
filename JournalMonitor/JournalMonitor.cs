@@ -411,11 +411,37 @@ namespace EddiJournalMonitor
                                             {
                                                 // Ignore hologram cosmetics
                                             }
+                                            else if (slot.Equals( "CargoHatch", StringComparison.InvariantCultureIgnoreCase ) )
+                                            {
+                                                // The cargo hatch is a special slot. Every ship has a cargo hatch. Some have unique names but there's no functional difference between them.
+                                                var compartment = EventParsing.ShipCompartment(ship, slot);
+                                                var module = new Module(Module.FromEDName("ModularCargoBayDoor", moduleData) ?? new Module())
+                                                {
+                                                    enabled = enabled,
+                                                    priority = priority,
+                                                    health = health
+                                                };
+                                                compartment.module = module;
+                                                compartments.Add( compartment );
+                                            }
+                                            else if (slot.Equals( "ShipCockpit", StringComparison.InvariantCultureIgnoreCase ) )
+                                            {
+                                                // The cockpit is a special slot. Every ship has a cockpit module with a unique name but there's no functional difference between them.
+                                                var compartment = EventParsing.ShipCompartment(ship, slot);
+                                                var module = new Module(Module.FromEDName("Cockpit", moduleData) ?? new Module())
+                                                {
+                                                    enabled = enabled, 
+                                                    priority = priority, 
+                                                    health = health
+                                                };
+                                                compartment.module = module;
+                                                compartments.Add( compartment );
+                                            }
                                             else
                                             {
                                                 // This is a compartment
                                                 var compartment = EventParsing.ShipCompartment(ship, slot);
-                                                // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+                                                // Compartment slots may be in the form of "Slotnn_Sizen" or "Militarynn"
 
                                                 var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
                                                 if (module.edname == null)

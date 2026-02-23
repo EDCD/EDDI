@@ -181,10 +181,6 @@
     <value>Cupolino della Cabina di Pilotaggio</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Cabina di Pilotaggio</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Controllore Droni di Raccolta</value>
     <comment>Module CollectorLimpetController</comment>

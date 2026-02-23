@@ -1193,71 +1193,16 @@ namespace EddiDataDefinitions
         public static readonly Module Int_CargoRack_Size2_Class1_free = new Module( "Int_CargoRack_Size2_Class1_free", "CargoRack", 2, "E", 0);
         public static readonly Module Int_FuelTank_Size1_Class3_free = new Module( "Int_FuelTank_Size1_Class3_free", "FuelTank", 1, "C", 0);
 
-        // COVAS voices
-        public static readonly Module VoicePack_Verity = new Module( "VoicePack_Verity", "Verity", 1, "I", 0);
-        public static readonly Module VoicePack_Victor = new Module( "VoicePack_Victor", "Victor", 1, "I", 0);
-        public static readonly Module VoicePack_Celeste = new Module( "VoicePack_Celeste", "Celeste", 1, "I", 0);
-
-        // The FDL has its own cargo bay door.  The FDL is like that (now the Mamba uses it too!)
-        public static readonly Module ModularCargoBayDoorFDL = new Module( "ModularCargoBayDoorFDL", "CargoHatch", 1, "H", 0);
+        // Generic modules
         public static readonly Module ModularCargoBayDoor = new Module( "ModularCargoBayDoor", "CargoHatch", 1, "H", 0);
-        public static readonly Module Empire_Courier_Cockpit = new Module( "Empire_Courier_Cockpit", "Cockpit", 1, "I", 0);
-        public static readonly Module SideWinder_Cockpit = new Module( "SideWinder_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Eagle_Cockpit = new Module( "Eagle_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Hauler_Cockpit = new Module( "Hauler_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Adder_Cockpit = new Module( "Adder_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Viper_Cockpit = new Module( "Viper_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module CobraMkIII_Cockpit = new Module( "CobraMkIII_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Type6_Cockpit = new Module( "Type6_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Type7_Cockpit = new Module( "Type7_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Asp_Cockpit = new Module( "Asp_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Vulture_Cockpit = new Module( "Vulture_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Empire_Trader_Cockpit = new Module( "Empire_Trader_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Federation_Dropship_Cockpit = new Module( "Federation_Dropship_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Orca_Cockpit = new Module( "Orca_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Type9_Cockpit = new Module( "Type9_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Python_Cockpit = new Module( "Python_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module FerDeLance_Cockpit = new Module( "FerDeLance_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Anaconda_Cockpit = new Module( "Anaconda_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module DiamondBack_Cockpit = new Module( "DiamondBack_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module DiamondBackXL_Cockpit = new Module( "DiamondBackXL_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Empire_Eagle_Cockpit = new Module( "Empire_Eagle_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Federation_Dropship_MkII_Cockpit = new Module( "Federation_Dropship_MkII_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Federation_Gunship_Cockpit = new Module( "Federation_Gunship_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Cutter_Cockpit = new Module( "Cutter_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Federation_Corvette_Cockpit = new Module( "Federation_Corvette_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Asp_Scout_Cockpit = new Module( "Asp_Scout_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Viper_MkIV_Cockpit = new Module( "Viper_MkIV_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Independant_Trader_Cockpit = new Module( "Independant_Trader_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module CobraMkIV_Cockpit = new Module( "CobraMkIV_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module BelugaLiner_Cockpit = new Module( "BelugaLiner_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Dolphin_Cockpit = new Module( "Dolphin_Cockpit", "CockpitCanopy", 1, "I", 0);
+        public static readonly Module CockpitCanopy = new Module( "Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module hpt_shipdatalinkscanner = new Module( "hpt_shipdatalinkscanner", "DataLinkScanner", 1, "I", 0);
         public static readonly Module string_lights_coloured = new Module( "string_lights_coloured", "Colouredstringlights", 1, "I", 0);
-        public static readonly Module Type9_Military_Cockpit = new Module( "Type9_Military_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module TypeX_Cockpit = new Module( "TypeX_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module string_lights_warm_white = new Module( "string_lights_warm_white", "Whitestringlights", 1, "I", 0);
-        public static readonly Module TypeX_3_Cockpit = new Module( "TypeX_3_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Krait_MkII_Cockpit = new Module( "Krait_MkII_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module Int_CodexScanner = new Module( "Int_CodexScanner", "CompositionScanner", 0, "I", -1);
-        public static readonly Module Krait_Light_Cockpit = new Module( "Krait_Light_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Mamba_Cockpit = new Module( "Mamba_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module TypeX_2_Cockpit = new Module( "TypeX_2_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Python_NX_Cockpit = new Module( "Python_NX_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Type8_Cockpit = new Module( "Type8_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Mandalay_Cockpit = new Module( "Mandalay_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module CobraMkv_Cockpit = new Module( "CobraMkv_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Corsair_Cockpit = new Module( "Corsair_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module Int_Colonisation = new Module( "Int_Colonisation", "ColonisationSuite", 1, "I", 0 );
-        public static readonly Module Panther_Clipper_MkII_Cockpit = new Module( "PantherMkII_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module LakonMiner_Cockpit = new Module( "LakonMiner_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Explorer_NX_Cockpit = new Module( "explorer_nx_cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module SmallCombat01_NX_Cockpit = new Module( "smallcombat01_nx_cockpit", "CockpitCanopy", 1, "I", 0 );
 
         // Fighter modules
-        public static readonly Module Empire_Fighter_Cockpit = new Module( "Empire_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Federation_Fighter_Cockpit = new Module( "Federation_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0);
-        public static readonly Module Independent_Fighter_Cockpit = new Module( "Independent_Fighter_Cockpit", "CockpitCanopy", 1, "I", 0);
         public static readonly Module Hpt_BeamLaser_Fixed_Empire_Fighter = new Module( "Hpt_BeamLaser_Fixed_Empire_Fighter", "BeamLaser", 1, "I", 0);
         public static readonly Module Hpt_BeamLaser_Fixed_Fed_Fighter = new Module( "Hpt_BeamLaser_Fixed_Fed_Fighter", "BeamLaser", 1, "I", 0);
         public static readonly Module Hpt_BeamLaser_Fixed_Indie_Fighter = new Module( "Hpt_BeamLaser_Fixed_Indie_Fighter", "BeamLaser", 1, "I", 0);

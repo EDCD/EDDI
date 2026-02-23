@@ -241,15 +241,6 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cockpit.
-        /// </summary>
-        public static string Cockpit {
-            get {
-                return ResourceManager.GetString("Cockpit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cockpit Canopy.
         /// </summary>
         public static string CockpitCanopy {
