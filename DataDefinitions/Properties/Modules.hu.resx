@@ -165,10 +165,6 @@
     <value>Infracsapda</value>
     <comment>Module ChaffLauncher</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Pilótafülke</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Begyűjtő szonda vezérlő egység</value>
     <comment>Module CollectorLimpetController</comment>
