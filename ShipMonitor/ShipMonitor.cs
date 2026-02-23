@@ -395,12 +395,14 @@ namespace EddiShipMonitor
 
         private void handleShipDeliveredEvent(ShipDeliveredEvent @event)
         {
-            if (@event.timestamp > updatedAt)
+            // A new ship has been delivered to the shipyard but we haven't switched to it yet.
+            if ( @event.timestamp > updatedAt && @event.shipid != null && !string.IsNullOrEmpty( @event.edModel ) )
             {
                 updatedAt = @event.timestamp;
-                // Set this as our current ship
-                SetCurrentShip(@event.shipid, @event.edModel);
-                if (!@event.fromLoad) { writeShips(); }
+                var ship = ShipDefinitions.FromEDModel( @event.edModel );
+                ship.LocalId = (int)@event.shipid;
+                AddShip( ship );
+                if ( !@event.fromLoad ) { writeShips(); }
             }
         }
 
