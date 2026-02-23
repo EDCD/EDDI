@@ -173,10 +173,6 @@
     <value>Verrière</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Cockpit</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Contrôleur de drone collecteur</value>
     <comment>Module CollectorLimpetController</comment>
