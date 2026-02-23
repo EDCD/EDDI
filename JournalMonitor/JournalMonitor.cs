@@ -35,8 +35,6 @@ namespace EddiJournalMonitor
         /// </summary>
         private static readonly ConcurrentDictionary<string, ConcurrentBag<Event>> DelayedEventHolder = new ConcurrentDictionary<string, ConcurrentBag<Event>>();
 
-        private enum ShipyardType { [UsedImplicitly] ShipsHere, [UsedImplicitly] ShipsRemote }
-
         internal static CancellationTokenSource ShipShutdownCancellationTokenSource;
 
         private static void ForwardJournalEntries ( IList<string> lines, Action<Event> callback, bool isLogLoadEventBatch )
@@ -3367,7 +3365,7 @@ namespace EddiJournalMonitor
                                     var station = JsonParsing.getString(data, "StationName");
 
                                     var shipyard = new List<Ship>();
-                                    foreach (var type in Enum.GetNames(typeof(ShipyardType)))
+                                    foreach (var type in new string[] { "ShipsHere", "ShipsRemote" } )
                                     {
                                         data.TryGetValue(type, out var val);
                                         var shipsData = (List<object>)val;
