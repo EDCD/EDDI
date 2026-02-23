@@ -5,7 +5,6 @@ using EddiSpeechService.SpeechSynthesizers;
 using JetBrains.Annotations;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -292,79 +291,108 @@ namespace EddiSpeechService
 
         public void ShutUp ()
         {
+            speechQueueCts.Cancel();
             speechQueue.DequeueAllSpeech();
             StopCurrentSpeech();
         }
 
-        public async Task SayAsync ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false )
+        public Task EnqueueAsync ( Ship ship, string message, int priority = 3, string voice = null,
+            bool radio = false, string eventType = null )
         {
             // Skip empty speech and speech containing nothing except one or more pauses / breaks.
             message = SpeechFormatter.TrimSpeech( message );
-            if ( string.IsNullOrEmpty( message ) ) { return; }
+            if ( string.IsNullOrEmpty( message ) )
+            {
+                return Task.CompletedTask;
+            }
 
             // Queue the current speech
-            var Configuration = ConfigService.Instance.speechServiceConfiguration;
-            var queuingSpeech = new EddiSpeech( message, voice, priority, eventType, ship?.Size, ship?.health, radio, Configuration.DistortOnDamage );
+            var config = ConfigService.Instance.speechServiceConfiguration;
+            var queuingSpeech = new EddiSpeech( message, voice, priority, eventType, ship?.Size, ship?.health, radio,
+                config.DistortOnDamage );
             speechQueue.Enqueue( queuingSpeech );
 
             // Check the first item in the speech queue
-            if ( speechQueue.TryPeek( out var peekedSpeech ) )
+            // Interrupt current speech when appropriate
+            if ( speechQueue.TryPeek( out var peekedSpeech ) && checkSpeechInterrupt( peekedSpeech.priority ) )
             {
-                // Interrupt current speech when appropriate
-                if ( checkSpeechInterrupt( peekedSpeech.priority ) )
-                {
-                    Logging.Debug( "Interrupting current speech" );
-                    StopCurrentSpeech();
-                }
+                Logging.Debug( "Interrupting current speech" );
+                StopCurrentSpeech();
             }
 
-            // Start or continue speaking from the speech queue
-            await StartOrContinueSpeakingAsync().ConfigureAwait(false);
+            // Ensure the speech queue is running
+            EnsureSpeechQueueRunning();
+
+            return Task.CompletedTask;
         }
 
-        private CancellationTokenSource speechCts;
+        private int speechQueueRunning;
+        private CancellationTokenSource speechQueueCts = new CancellationTokenSource();
+        private void EnsureSpeechQueueRunning ()
+        {
+            if ( speechQueueCts.IsCancellationRequested )
+            {
+                speechQueueCts = new CancellationTokenSource();
+            }
 
-        private async Task StartOrContinueSpeakingAsync ()
+            if ( Interlocked.CompareExchange( ref speechQueueRunning, 1, 0 ) != 0 )
+            {
+                return;
+            }
+
+            Task.Run( () => SpeakFromQueueAsync( speechQueueCts.Token ) ).SafeFireAndForget(ex => {
+            {
+                if ( ex is OperationCanceledException )
+                {
+                    Logging.Debug( "Speech queue task was cancelled", ex );
+                }
+                else
+                {
+                    Logging.Error( "Unexpected error in speech processing", ex );
+                }
+            } });
+        }
+
+        private async Task SpeakFromQueueAsync ( CancellationToken token )
         {
             try
             {
-                if ( !eddiSpeaking )
+                while ( !token.IsCancellationRequested )
                 {
-                    speechCts = new CancellationTokenSource();
-                    var token = speechCts.Token;
-
-                    while ( speechQueue.hasSpeech && !token.IsCancellationRequested )
+                    // If paused, TryDequeue will return false; wait and retry.
+                    // SpeechQueue.TryDequeue returns false when paused. :contentReference[oaicite:4]{index=4}
+                    if ( !speechQueue.TryDequeue( out var nextSpeech ) )
                     {
-                        if ( speechQueue.TryDequeue( out var speech ) )
+                        if ( !speechQueue.hasSpeech )
                         {
-                            try
-                            {
-                                await SpeakAsync( speech ).ConfigureAwait( false );
-                            }
-                            catch ( Exception ex )
-                            {
-                                var dict = new Dictionary<string, object>
-                                {
-                                    { "Speech", JsonConvert.SerializeObject( speech ) }, { "Exception", ex }
-                                };
-                                Logging.Warn( "Failed to handle queued speech", dict );
-                            }
+                            break; // queue empty
                         }
-                        else
-                        {
-                            break; // Exit the loop if the queue is empty
-                        }
-                        await Task.Yield(); // Yield to avoid blocking the task pool
+                        await Task.Delay( 50, token ).ConfigureAwait( false );
+                        continue;
                     }
+
+                    try
+                    {
+                        await SpeakAsync( nextSpeech ).ConfigureAwait( false );
+                    }
+                    catch ( Exception ex )
+                    {
+                        Logging.Warn( "Failed to handle queued speech", new Dictionary<string, Exception> { { "Exception", ex } } );
+                    }
+
+                    await Task.Yield();
                 }
             }
-            catch ( OperationCanceledException )
+            catch ( OperationCanceledException ) { }
+            finally
             {
-                Logging.Debug( "Speech task was cancelled." );
-            }
-            catch ( Exception ex )
-            {
-                Logging.Error( "Unexpected error in speech processing", ex );
+                Interlocked.Exchange( ref speechQueueRunning, 0 );
+
+                // Handle race: new speech arrived after we decided to exit.
+                if ( speechQueue.hasSpeech && !speechQueue.isQueuePaused && !token.IsCancellationRequested )
+                {
+                    EnsureSpeechQueueRunning();
+                }
             }
         }
 
@@ -420,12 +448,12 @@ namespace EddiSpeechService
                     }
                     catch ( FileNotFoundException fnfe )
                     {
-                        await SayAsync( null, $"Audio file not found at {fnfe.FileName}.", 0 ).ConfigureAwait(false);
+                        await EnqueueAsync( null, $"Audio file not found at {fnfe.FileName}.", 0 ).ConfigureAwait(false);
                         Logging.Warn( fnfe.Message, fnfe );
                     }
                     catch ( NotSupportedException e )
                     {
-                        await SayAsync( null, "Audio file format not supported.", 0 ).ConfigureAwait(false);
+                        await EnqueueAsync( null, "Audio file format not supported.", 0 ).ConfigureAwait(false);
                         Logging.Warn( $"Skipping unsupported audio file {fileName}.", e );
                     }
                     catch ( Exception e )

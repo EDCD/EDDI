@@ -67,7 +67,7 @@ namespace EddiSpeechService
             if ( newState == CompanionAppService.State.ConnectionLost && !CompanionAppService.unitTesting )
             {
                 await SpeechManager
-                    .SayAsync( null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0 )
+                    .EnqueueAsync( null, EddiCompanionAppService.Properties.CapiResources.frontier_api_lost, 0 )
                     .ConfigureAwait( false );
             }
         }
@@ -75,9 +75,9 @@ namespace EddiSpeechService
         public bool checkSpeechInterrupt ( int peekedSpeechPriority ) => SpeechManager.checkSpeechInterrupt( peekedSpeechPriority );
 
         public async Task SayAsync ( Ship ship, string message, int priority = 3, string voice = null, bool radio = false,
-            string eventType = null, bool invokedFromVA = false )
+            string eventType = null )
         {
-            await SpeechManager.SayAsync( ship, message, priority, voice, radio, eventType, invokedFromVA )
+            await SpeechManager.EnqueueAsync( ship, message, priority, voice, radio, eventType )
                 .ConfigureAwait( false );
         }
 

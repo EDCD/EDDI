@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Add support for the Kestrel Mk. II.
     * Various bug fixes
     * Revised the Hotkey Manager to send key presses to other applications rather than blocking those key presses from being sent to other applications. This should improve compatibility other applications using the same keys. (#2779)
+  * Speech Responder
+    * Fixed a bug that could cause the event handler to wait for queued speech to complete. (#2781)
 
 ## 4.1.8
   * Core

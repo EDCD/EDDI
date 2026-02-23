@@ -481,7 +481,7 @@ namespace EddiVoiceAttackResponder
                     ship = EDDI.Instance.CurrentShip;
                 }
 
-                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, false, null, true ).ConfigureAwait( false );
+                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, false, null ).ConfigureAwait( false );
             }
             catch ( Exception e )
             {
@@ -512,7 +512,7 @@ namespace EddiVoiceAttackResponder
                     ship = EDDI.Instance.CurrentShip;
                 }
 
-                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, true, null, true ).ConfigureAwait(false);
+                await SpeechService.Instance.SayAsync( ship, speech, (int)priority, voice, true, null ).ConfigureAwait(false);
             }
             catch ( Exception e )
             {
@@ -605,7 +605,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 var speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
-                speechResponder?.SetPersonality( personality );
+                speechResponder?.TrySetPersonality( personality );
             }
             catch ( Exception e )
             {

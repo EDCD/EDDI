@@ -99,7 +99,7 @@ namespace EddiSpeechResponder
         {
             Configuration = ConfigService.Instance.speechResponderConfiguration;
             Personalities = GetPersonalities();
-            SetPersonality(Configuration.Personality);
+            TrySetPersonality(Configuration.Personality);
         }
 
         #region Personalities
@@ -126,7 +126,7 @@ namespace EddiSpeechResponder
         /// Change the personality for the speech responder
         /// </summary>
         /// <returns>true if the speech responder is now using the new personality, otherwise false</returns>
-        public bool SetPersonality(string newPersonalityName)
+        public bool TrySetPersonality(string newPersonalityName)
         {
             if (newPersonalityName == Configuration?.Personality)
             {
@@ -245,7 +245,7 @@ namespace EddiSpeechResponder
         {
             Configuration = ConfigService.Instance.speechResponderConfiguration;
             Personalities = GetPersonalities();
-            SetPersonality(Configuration.Personality);
+            TrySetPersonality(Configuration.Personality);
             Logging.Debug($"Reloaded {ResponderName()}");
         }
 
@@ -365,7 +365,7 @@ namespace EddiSpeechResponder
                         } );
                         await SpeechService.Instance.SayAsync( ship, speech,
                                 priority ?? resolver.priority( scriptName ),
-                                voice, false, theEvent?.type, invokedFromVA )
+                                voice, false, theEvent?.type )
                             .ConfigureAwait( false );
                     }
                 }
