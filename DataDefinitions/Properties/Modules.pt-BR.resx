@@ -181,10 +181,6 @@
     <value>Canopla da Cabine</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Cabine</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Controlador de Drone Coletor</value>
     <comment>Module CollectorLimpetController</comment>
