@@ -173,10 +173,6 @@
     <value>Фонарь кабины</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Кокпит</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Контроллер дрона сборщика</value>
     <comment>Module CollectorLimpetController</comment>
