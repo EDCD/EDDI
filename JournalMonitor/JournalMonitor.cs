@@ -37,9 +37,6 @@ namespace EddiJournalMonitor
 
         private enum ShipyardType { [UsedImplicitly] ShipsHere, [UsedImplicitly] ShipsRemote }
 
-        private static readonly Dictionary<long, CancellationTokenSource> carrierJumpCancellationTokenSources =
-            new Dictionary<long, CancellationTokenSource>();
-
         internal static CancellationTokenSource ShipShutdownCancellationTokenSource;
 
         private static void ForwardJournalEntries ( IList<string> lines, Action<Event> callback, bool isLogLoadEventBatch )
@@ -3893,33 +3890,6 @@ namespace EddiJournalMonitor
                                         powerAcquisitionProgress, powerplayControlProgress,
                                         powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
                                         thargoidWar ) { raw = line, fromLoad = fromLogLoad } );
-
-                                    // Generate secondary events when the carrier jump cooldown completes
-                                    if ( carrierId != null )
-                                    {
-                                        if ( carrierJumpCancellationTokenSources.TryGetValue( (long)carrierId, out var carrierJumpCancellationTS ) )
-                                        {
-                                            // Cancel any pending cooldown event (to prevent doubling events if the commander is the fleet carrier owner)
-                                            carrierJumpCancellationTS.Cancel();
-                                        }
-
-                                        if ( !fromLogLoad )
-                                        {
-                                            Task.Run( async () =>
-                                            {
-                                                // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
-                                                var timeMs = ( Constants.carrierPostJumpSeconds -
-                                                               Constants.carrierJumpSeconds ) *
-                                                             1000;
-                                                await Task.Delay( timeMs ).ConfigureAwait(false);
-                                                EDDI.Instance.enqueueEvent(
-                                                    new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ),
-                                                            (long)carrierId,
-                                                            carrierName, carrierType, systemName, systemAddress, bodyName, bodyId, bodyType )
-                                                        { fromLoad = fromLogLoad } );
-                                            } );
-                                        }
-                                    }
                                 }
                                 handled = true;
                                 break;
@@ -3942,69 +3912,7 @@ namespace EddiJournalMonitor
                                         bodyName = starSystem?.bodies?.FirstOrDefault(b => b?.bodyId == bodyId)?.bodyname;
                                     }
 
-                                    events.Add(new CarrierJumpRequestEvent(timestamp, systemName, systemAddress, bodyName, bodyId, carrierId, carrierType ) { raw = line, fromLoad = fromLogLoad });
-
-                                    // Cancel any pending carrier jump related events
-                                    if (carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
-                                    {
-                                        carrierJumpCancellationTS.Cancel();
-                                    }
-
-                                    if (!fromLogLoad)
-                                    {
-                                        // Generate a new cancellation token source
-                                        carrierJumpCancellationTS = new CancellationTokenSource();
-                                        carrierJumpCancellationTokenSources[carrierId] = carrierJumpCancellationTS;
-
-                                        // Generate secondary tasks to spawn events when the carrier locks down landing pads and when it begins jumping.
-                                        // These may be cancelled via the cancellation token source above.
-
-                                        var departureSeconds = ( departureTime - timestamp ).TotalSeconds;
-                                        var tasks = new List<Task>
-                                        {
-                                            Task.Run(async () =>
-                                            {
-                                                var timespan = TimeSpan.FromSeconds(departureSeconds - Constants.carrierLandingPadLockdownSeconds);
-                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token).ConfigureAwait(false);
-                                                EDDI.Instance.enqueueEvent(new CarrierPadsLockedEvent(timestamp.Add(timespan), carrierId, carrierType ) { fromLoad = fromLogLoad });
-                                            }, carrierJumpCancellationTS.Token),
-                                            Task.Run(async () =>
-                                            {
-                                                var timespan = TimeSpan.FromSeconds(departureSeconds);
-                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token).ConfigureAwait(false);
-                                                if ( EDDI.Instance.CurrentStarSystem != null )
-                                                {
-                                                    var originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
-                                                    var originSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
-                                                EDDI.Instance.enqueueEvent(new CarrierJumpEngagedEvent(timestamp.Add(timespan), systemName, systemAddress, originStarSystem, originSystemAddress, bodyName, bodyId, carrierId, carrierType ) { fromLoad = fromLogLoad });
-                                                }
-                                            }, carrierJumpCancellationTS.Token),
-                                            Task.Run(async () =>
-                                            {
-                                                // This event will be canceled and replaced by an updated `CarrierCooldownEvent` if the owner is aboard the fleet carrier and sees the `CarrierJumpedEvent`.
-                                                var timespan = TimeSpan.FromSeconds(departureSeconds + Constants.carrierPostJumpSeconds); // Cooldown timer starts when the carrier jump is engaged, not when the jump ends
-                                                await Task.Delay(timespan, carrierJumpCancellationTS.Token).ConfigureAwait(false);
-                                                EDDI.Instance.enqueueEvent(new CarrierCooldownEvent(timestamp.Add(timespan), carrierId, null, carrierType, systemName, systemAddress, bodyName, bodyId, null ) { fromLoad = fromLogLoad });
-                                            }, carrierJumpCancellationTS.Token)
-                                        };
-
-                                        Task.Run(async () =>
-                                        {
-                                            try
-                                            {
-                                                await Task.WhenAll(tasks.ToArray()).ConfigureAwait(false);
-                                            }
-                                            catch (OperationCanceledException)
-                                            {
-                                                // Tasks were cancelled. Nothing to do here.
-                                            }
-                                            finally
-                                            {
-                                                carrierJumpCancellationTokenSources.Remove(carrierId);
-                                                carrierJumpCancellationTS.Dispose();
-                                            }
-                                        });
-                                    }
+                                    events.Add(new CarrierJumpRequestEvent(timestamp, systemName, systemAddress, bodyName, bodyId, carrierId, carrierType, departureTime ) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4015,22 +3923,7 @@ namespace EddiJournalMonitor
                                     var carrierId = JsonParsing.getLong(data, "CarrierID");
                                     var carrierType = StationModel.FromEDName( JsonParsing.getString( data, "CarrierType" ) );
 
-                                    // Cancel any pending carrier jump related events
-                                    if ( carrierJumpCancellationTokenSources.TryGetValue(carrierId, out var carrierJumpCancellationTS))
-                                    {
-                                        carrierJumpCancellationTS.Cancel();
-                                    }
                                     events.Add(new CarrierJumpCancelledEvent(timestamp, carrierId, carrierType ) { raw = line, fromLoad = fromLogLoad });
-                                    if (!fromLogLoad)
-                                    {
-                                        Task.Run(async () =>
-                                        {
-                                            var timeMs = 60000; // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
-                                            await Task.Delay(timeMs).ConfigureAwait(false);
-                                            var carrier = StationModel.SquadronCarrier.edname.Equals( carrierType.edname ) ? EDDI.Instance.SquadronCarrier : EDDI.Instance.FleetCarrier;
-                                            EDDI.Instance.enqueueEvent( new CarrierCooldownEvent( timestamp.AddMilliseconds( timeMs ), carrierId, carrier?.callsign, carrierType, carrier?.currentStarSystem, carrier?.currentStarSystemAddress, null, carrier?.currentBodyID, null ) { fromLoad = fromLogLoad } );
-                                        } );
-                                    }
                                 }
                                 handled = true;
                                 break;
@@ -5322,7 +5215,6 @@ namespace EddiJournalMonitor
 
         public void Stop()
         {
-            foreach (var carrierJumpCancellationTS in carrierJumpCancellationTokenSources.Values) { carrierJumpCancellationTS.Cancel(); }
             stop();
         }
 

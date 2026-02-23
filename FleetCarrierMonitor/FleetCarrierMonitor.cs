@@ -7,9 +7,11 @@ using EddiEvents;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
@@ -43,10 +45,11 @@ namespace EddiFleetCarrierMonitor
                 OnPropertyChanged();
             }
         }
-
         private FleetCarrier _squadronCarrier;
 
         private readonly object carrierLock = new object();
+
+        private static readonly ConcurrentDictionary<long, CancellationTokenSource> _carrierJumpCts  = new ConcurrentDictionary<long, CancellationTokenSource>();
 
         public string MonitorName () => "Fleet Carrier Monitor";
 
@@ -61,7 +64,14 @@ namespace EddiFleetCarrierMonitor
         public void Start ()
         { }
 
-        public void Stop () => WriteConfiguration();
+        public void Stop ()
+        {
+            foreach ( var carrierJumpCancellationTS in _carrierJumpCts.Values )
+            {
+                carrierJumpCancellationTS.Cancel();
+            }
+            WriteConfiguration();
+        }
 
         public void Reload ()
         {
@@ -318,6 +328,12 @@ namespace EddiFleetCarrierMonitor
 
         private void handleCarrierJumpCancelledEvent ( CarrierJumpCancelledEvent @event )
         {
+            // Cancel any pending carrier jump related events
+            if ( _carrierJumpCts.TryGetValue( @event.carrierID, out var carrierJumpCancellationTS ) )
+            {
+                carrierJumpCancellationTS.Cancel();
+            }
+            
             var carrier = GetOrCreateCarrier( @event.carrierID, @event.carrierType );
             if ( !CarrierTimestampIsCurrent( @event.timestamp, carrier ) || 
                  CarrierIsDecommissioned( @event.timestamp, carrier ) )
@@ -521,69 +537,190 @@ namespace EddiFleetCarrierMonitor
         public Task PostHandleAsync ( Event @event )
         {
             if ( @event.fromLoad ) { return Task.CompletedTask; }
-            
-            if ( @event is CarrierJumpRequestEvent cjr )
+
+            switch ( @event )
             {
-                if ( cjr.carrierType == StationModel.FleetCarrier )
-                {
-                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-                else if ( cjr.carrierType == StationModel.SquadronCarrier )
-                {
-                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-            }
-            else if ( @event is CarrierJumpEngagedEvent cje )
-            {
-                if ( cje.carrierType == StationModel.FleetCarrier )
-                {
-                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-                else if ( cje.carrierType == StationModel.SquadronCarrier )
-                {
-                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-            }
-            else if ( @event is CarrierJumpedEvent cj )
-            {
-                if ( cj.carrierType == StationModel.FleetCarrier )
-                {
-                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-                else if ( cj.carrierType == StationModel.SquadronCarrier )
-                {
-                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-            }
-            else if ( @event is CarrierPurchasedEvent cp )
-            {
-                if ( cp.carrierType == StationModel.FleetCarrier )
-                {
-                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-                else if ( cp.carrierType == StationModel.SquadronCarrier )
-                {
-                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-            }
-            else if ( @event is CarrierStatsEvent cs )
-            {
-                if ( cs.carrierType == StationModel.FleetCarrier )
-                {
-                    RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-                else if ( cs.carrierType == StationModel.SquadronCarrier )
-                {
-                    RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                }
-            }
-            else if ( @event is CommanderContinuedEvent )
-            {
-                RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                case CarrierJumpCancelledEvent cjc:
+                    HandleCarrierJumpCancelledAsync( cjc ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                    break;
+
+                case CarrierJumpRequestEvent cjr:
+                    HandleCarrierJumpRequestAsync( cjr ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                    RefreshCarrierFromFrontierAPI( cjr.carrierType );
+                    break;
+
+                case CarrierJumpEngagedEvent cje:
+                    RefreshCarrierFromFrontierAPI( cje.carrierType );
+                    break;
+
+                case CarrierJumpedEvent cj:
+                    HandleCarrierJumpedAsync( cj ).SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                    RefreshCarrierFromFrontierAPI( cj.carrierType );
+                    break;
+
+                case CarrierPurchasedEvent cp:
+                    RefreshCarrierFromFrontierAPI( cp.carrierType );
+                    break;
+
+                case CarrierStatsEvent cs:
+                    RefreshCarrierFromFrontierAPI( cs.carrierType );
+                    break;
+
+                case CommanderContinuedEvent _:
+                    RefreshCarrierFromFrontierAPI( StationModel.FleetCarrier );
+                    RefreshCarrierFromFrontierAPI( StationModel.SquadronCarrier );
+                    break;
             }
 
             return Task.CompletedTask;
+        }
+
+        private async Task HandleCarrierJumpCancelledAsync ( CarrierJumpCancelledEvent cjc )
+        {
+            var cts = ResetCarrierSchedule(cjc.carrierID);
+            var token = cts.Token;
+
+            // Cooldown timer starts when the carrier jump is cancelled and lasts for one minute
+            var cooldownDelay = TimeSpan.FromMinutes(1);
+
+            try
+            {
+                await DelayThenAsync( cooldownDelay, token, () =>
+                {
+                    var carrier = StationModel.SquadronCarrier.edname.Equals( cjc.carrierType.edname )
+                        ? EDDI.Instance.SquadronCarrier
+                        : EDDI.Instance.FleetCarrier;
+
+                    EDDI.Instance.enqueueEvent(
+                        new CarrierCooldownEvent(
+                            cjc.timestamp.Add( cooldownDelay ),
+                            cjc.carrierID,
+                            carrier?.callsign,
+                            cjc.carrierType,
+                            carrier?.currentStarSystem,
+                            carrier?.currentStarSystemAddress,
+                            null,
+                            carrier?.currentBodyID,
+                            null ) );
+                } ).ConfigureAwait( false );
+            }
+            catch ( OperationCanceledException )
+            {
+                // Expected
+            }
+            finally
+            {
+                CleanupCarrierSchedule( cjc.carrierID, cts );
+            }
+        }
+
+        private async Task HandleCarrierJumpRequestAsync ( CarrierJumpRequestEvent cjr )
+        {
+            var cts = ResetCarrierSchedule(cjr.carrierID);
+            var token = cts.Token;
+
+            var departureDelay = cjr.departureTime - cjr.timestamp;
+            if ( departureDelay < TimeSpan.Zero ) { departureDelay = TimeSpan.Zero; }
+
+            var padLockDelay = departureDelay - TimeSpan.FromSeconds(Constants.carrierLandingPadLockdownSeconds);
+            if ( padLockDelay < TimeSpan.Zero ) { padLockDelay = TimeSpan.Zero; }
+
+            // Cooldown timer starts when engaged
+            var cooldownDelay = departureDelay + TimeSpan.FromSeconds(Constants.carrierPostJumpSeconds);
+
+            try
+            {
+                var carrierPadsLockedEvent = DelayThenAsync(padLockDelay, token, () =>
+                {
+                    EDDI.Instance.enqueueEvent( new CarrierPadsLockedEvent(cjr.timestamp.Add(padLockDelay), cjr.carrierID, cjr.carrierType));
+                });
+
+                var carrierJumpEngagedEvent = DelayThenAsync( departureDelay, token, () =>
+                {
+                    if ( EDDI.Instance.CurrentStarSystem != null )
+                    {
+                        var originStarSystem = EDDI.Instance.CurrentStarSystem.systemname;
+                        var originSystemAddress = EDDI.Instance.CurrentStarSystem.systemAddress;
+
+                        EDDI.Instance.enqueueEvent(
+                            new CarrierJumpEngagedEvent(
+                                cjr.timestamp.Add( departureDelay ),
+                                cjr.systemname, cjr.systemAddress,
+                                originStarSystem, originSystemAddress,
+                                cjr.bodyname, cjr.bodyId,
+                                cjr.carrierID, cjr.carrierType ) );
+                    }
+                } );
+
+                var carrierCooldownEvent = DelayThenAsync( cooldownDelay, token, () =>
+                {
+                    EDDI.Instance.enqueueEvent(
+                        new CarrierCooldownEvent(
+                            cjr.timestamp.Add( cooldownDelay ),
+                            cjr.carrierID,
+                            null,
+                            cjr.carrierType,
+                            cjr.systemname,
+                            cjr.systemAddress,
+                            cjr.bodyname,
+                            cjr.bodyId,
+                            null ) );
+                } );
+
+                await Task.WhenAll( carrierPadsLockedEvent, carrierJumpEngagedEvent, carrierCooldownEvent ).ConfigureAwait( false );
+            }
+            catch ( OperationCanceledException )
+            {
+                // Expected: replaced/canceled by a newer schedule
+            }
+            finally
+            {
+                CleanupCarrierSchedule( cjr.carrierID, cts );
+            }
+        }
+
+        private async Task HandleCarrierJumpedAsync ( CarrierJumpedEvent cj )
+        {
+            if ( cj.carrierID == null ) { return; }
+
+            var carrierId = (long)cj.carrierID;
+
+            // Replace any existing schedule
+            var cts = ResetCarrierSchedule(carrierId);
+            var token = cts.Token;
+
+            // The cooldown timer starts when the jump is engaged, not when it ends
+            var cooldownDelay = TimeSpan.FromSeconds(Constants.carrierPostJumpSeconds - Constants.carrierJumpSeconds);
+            if ( cooldownDelay < TimeSpan.Zero )
+            {
+                cooldownDelay = TimeSpan.Zero;
+            }
+
+            try
+            {
+                await DelayThenAsync( cooldownDelay, token, () =>
+                {
+                    EDDI.Instance.enqueueEvent(
+                        new CarrierCooldownEvent(
+                            cj.timestamp.Add( cooldownDelay ),
+                            carrierId,
+                            cj.carriername,
+                            cj.carrierType,
+                            cj.systemname,
+                            cj.systemAddress,
+                            cj.bodyname,
+                            cj.bodyId,
+                            cj.bodyType ) );
+                } ).ConfigureAwait( false );
+            }
+            catch ( OperationCanceledException )
+            {
+                // Expected
+            }
+            finally
+            {
+                CleanupCarrierSchedule( carrierId, cts );
+            }
         }
 
         public Task HandleProfileAsync ( JObject profile )
@@ -615,8 +752,8 @@ namespace EddiFleetCarrierMonitor
             if ( oldstate != CompanionAppService.State.Authorized &&
                  newstate is CompanionAppService.State.Authorized )
             {
-                RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
-                RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+                RefreshCarrierFromFrontierAPI( StationModel.FleetCarrier );
+                RefreshCarrierFromFrontierAPI( StationModel.SquadronCarrier );
             }
         }
 
@@ -740,6 +877,59 @@ namespace EddiFleetCarrierMonitor
                 }
             }
         }
+        
+        private void CleanupCarrierSchedule ( long carrierId, CancellationTokenSource cts )
+        {
+            // Remove only if the dictionary still points to THIS cts (prevents removing a newer one).
+            if ( _carrierJumpCts.TryGetValue( carrierId, out var current ) && ReferenceEquals( current, cts ) )
+            {
+                _carrierJumpCts.TryRemove( carrierId, out _ );
+            }
+
+            cts.Dispose();
+        }
+
+        private static async Task DelayThenAsync ( TimeSpan delay, CancellationToken token, Action action )
+        {
+            if ( delay <= TimeSpan.Zero )
+            {
+                action();
+                return;
+            }
+
+            await Task.Delay( delay, token ).ConfigureAwait( false );
+            action();
+        }
+
+        private void RefreshCarrierFromFrontierAPI ( StationModel carrierType )
+        {
+            if ( carrierType == StationModel.FleetCarrier )
+            {
+                RefreshFleetCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+            }
+            else if ( carrierType == StationModel.SquadronCarrier )
+            {
+                RefreshSquadronCarrierFromFrontierAPIAsync().SafeFireAndForget( ex => Logging.Error( ex.Message, ex ) );
+            }
+        }
+
+        private CancellationTokenSource ResetCarrierSchedule ( long carrierId )
+        {
+            var newCts = new CancellationTokenSource();
+
+            _carrierJumpCts.AddOrUpdate( carrierId, newCts, ( _, existing ) =>
+            {
+                try
+                {
+                    existing.Cancel();
+                }
+                catch ( ObjectDisposedException ) { }
+                return newCts; // replace with the new CTS
+            } );
+
+            return newCts;
+        }
+
 
         #region Implement INotifyPropertyChanged
 

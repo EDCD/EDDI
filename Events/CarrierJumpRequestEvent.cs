@@ -17,7 +17,7 @@ namespace EddiEvents
         public string systemname { get; private set; }
 
         [PublicAPI( "The numeric system address of the destination star system" )]
-        public ulong? systemAddress { get; private set; }
+        public ulong systemAddress { get; private set; }
 
         // Body variables
 
@@ -37,9 +37,13 @@ namespace EddiEvents
 
         [PublicAPI( "The carrier type (e.g. Fleet Carrier or Squadron Carrier), as an object with 'localizedName' and 'invariantName' properties" )]
         public StationModel carrierType { get; private set; }
+        
+        // Not intended to be user facing
+        
+        public DateTime departureTime { get; private set; }
 
         public CarrierJumpRequestEvent ( DateTime timestamp, string systemName, ulong systemAddress, string bodyName,
-            long? bodyId, long carrierId, StationModel carrierType ) : base(timestamp, NAME)
+            long? bodyId, long carrierId, StationModel carrierType, DateTime departureTime ) : base(timestamp, NAME)
         {
             // System
             this.systemname = systemName;
@@ -52,6 +56,7 @@ namespace EddiEvents
             // Carrier
             this.carrierID = carrierId;
             this.carrierType = carrierType;
+            this.departureTime = departureTime;
         }
     }
 }

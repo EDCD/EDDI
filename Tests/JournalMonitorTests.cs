@@ -1621,7 +1621,7 @@ namespace Tests
             var @event = (CarrierJumpRequestEvent)events[0];
 
             // Declare our expected value
-            var expectedEvent = new CarrierJumpRequestEvent(new DateTime(2020, 6, 12, 11, 1, 40, DateTimeKind.Utc), "Shinrarta Dezhra", 3932277478106, "Shinrarta Dezhra B 2", 16, 3701442048, StationModel.FleetCarrier ) { raw = line, fromLoad = false };
+            var expectedEvent = new CarrierJumpRequestEvent(new DateTime(2020, 6, 12, 11, 1, 40, DateTimeKind.Utc), "Shinrarta Dezhra", 3932277478106, "Shinrarta Dezhra B 2", 16, 3701442048, StationModel.FleetCarrier, new DateTime(2023, 5, 22, 9, 9, 57, DateTimeKind.Utc) ) { raw = line, fromLoad = false };
 
             // Assert the results
             Assert.IsTrue(expectedEvent.DeepEquals(@event));
