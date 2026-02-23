@@ -930,7 +930,6 @@ namespace EddiFleetCarrierMonitor
             return newCts;
         }
 
-
         #region Implement INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

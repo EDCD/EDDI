@@ -305,7 +305,7 @@ namespace EddiShipMonitor
             {
                 ship.ident = null;
             }
-            else if (ident != null && !ident.Contains("***"))
+            else if (!ident.Contains("***"))
             {
                 ship.ident = ident;
             }
@@ -646,7 +646,7 @@ namespace EddiShipMonitor
                             var stationData = systemData?.stations?.FirstOrDefault( s => s.marketId == ship.marketid );
                             ship.StoredLocation = systemData is null || stationData is null
                                 ? null
-                                : new Ship.Location( systemData, stationData?.name, stationData?.marketId );
+                                : new Ship.Location( systemData, stationData.name, stationData.marketId );
                             ship.distance = ship.DistanceLY( EDDI.Instance.CurrentStarSystem );
                         }
                         else
@@ -994,8 +994,8 @@ namespace EddiShipMonitor
                         sortCompartments( ship );
 
                         // Swap the modules
-                        var fromModule = fromCompartment?.module;
-                        var toModule = toCompartment?.module;
+                        var fromModule = fromCompartment.module;
+                        var toModule = toCompartment.module;
                         fromCompartment.module = toModule;
                         toCompartment.module = fromModule;
 
@@ -1026,7 +1026,7 @@ namespace EddiShipMonitor
                     var ship = GetCurrentShip();
                     if ( ship != null && @event.Modules != null )
                     {
-                        for ( var i = 0; i < @event.Modules.Count(); i++ )
+                        for ( var i = 0; i < @event.Modules.Count; i++ )
                         {
                             var position = i + 1;
                             var priority = @event.Modules[ i ].priority + 1;
@@ -1588,32 +1588,6 @@ namespace EddiShipMonitor
             }
             return ship;
         }
-
-        public Ship GetShip(int? localId, string model)
-        {
-            Ship ship;
-            if (localId == null)
-            {
-                // No local ID so take the current ship
-                ship = GetCurrentShip();
-            }
-            else
-            {
-                // Find the ship with the given local ID
-                ship = GetShip(localId);
-            }
-            if (ship == null)
-            {
-                // Provide a basic ship based on the model template if no ship is found using the local ID
-                ship = ShipDefinitions.FromModel(model);
-                if (ship == null)
-                {
-                    ship = ShipDefinitions.FromEDModel(model);
-                }
-            }
-            return ship;
-        }
-
         public void SetCurrentShip(int? localId, string EDName = null)
         {
             lock (shipyardLock)
@@ -1658,7 +1632,7 @@ namespace EddiShipMonitor
             {
                 try
                 {
-                    Logging.Debug($"Adding module {module?.edname} to ship {ship?.LocalId} in slot {slot}", module);
+                    Logging.Debug($"Adding module {module.edname} to ship {ship.LocalId} in slot {slot}", module);
                     lock ( shipyardLock )
                     {
                         switch ( slot )
@@ -1731,7 +1705,7 @@ namespace EddiShipMonitor
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error($"Failed to add module {module?.edname} to ship {ship?.LocalId} in slot {slot}.", ex);
+                    Logging.Error($"Failed to add module {module.edname} to ship {ship.LocalId} in slot {slot}.", ex);
                     throw;
                 }
             }
@@ -1928,7 +1902,9 @@ namespace EddiShipMonitor
             {
                 try
                 {
-                    Logging.Debug( $"Removing module from slot {slot} in ship {ship.LocalId} in slot {slot}. Replacement module is: " + replacement is null ? "<None>" : JsonConvert.SerializeObject( replacement ) );
+                    Logging.Debug(
+                        $"Removing module from slot {slot} in ship {ship.LocalId} in slot {slot}. Replacement module is: " +
+                        ( replacement is null ? "<None>" : JsonConvert.SerializeObject( replacement ) ) );
                     lock ( shipyardLock )
                     {
                         if ( replacement != null )
@@ -2004,7 +1980,7 @@ namespace EddiShipMonitor
                 }
                 catch ( Exception ex )
                 {
-                    Logging.Error( $"Failed to remove module from slot {slot} on ship {ship?.LocalId}.", ex );
+                    Logging.Error( $"Failed to remove module from slot {slot} on ship {ship.LocalId}.", ex );
                     throw;
                 }
             }
