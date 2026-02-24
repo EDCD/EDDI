@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -25,6 +26,15 @@ namespace EddiEvents
             this.filename = filename;
             this.version = version;
             this.build = build;
+        }
+
+        public static bool Handle ( DateTime timestamp, string journalFileName, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var version = JsonParsing.getString(data, "gameversion")?.Trim();
+            var build = JsonParsing.getString(data, "build")?.Trim();
+            Logging.Info( $"GameVersion: {version}, Build {build}." );
+            events.Add( new FileHeaderEvent( timestamp, journalFileName, version, build ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

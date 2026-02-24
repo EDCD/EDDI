@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -20,6 +21,14 @@ namespace EddiEvents
         {
             this.trigger = option;
             this.price = price;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var option = JsonParsing.getString(data, "Option");
+            var price = JsonParsing.getLong(data, "Cost");
+            events.Add( new RespawnedEvent( timestamp, option, price ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

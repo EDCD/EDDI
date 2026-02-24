@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -44,6 +45,29 @@ namespace EddiEvents
             this.federation = federation;
             this.mercenary = mercenary;
             this.exobiologist = exobiologist;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            data.TryGetValue( "Combat", out var val );
+            decimal combat = (long?)val ?? 0;
+            data.TryGetValue( "Trade", out val );
+            decimal trade = (long?)val ?? 0;
+            data.TryGetValue( "Explore", out val );
+            decimal exploration = (long?)val ?? 0;
+            data.TryGetValue( "CQC", out val );
+            decimal cqc = (long?)val ?? 0;
+            data.TryGetValue( "Empire", out val );
+            decimal empire = (long?)val ?? 0;
+            data.TryGetValue( "Federation", out val );
+            decimal federation = (long?)val ?? 0;
+            data.TryGetValue( "Soldier", out val );
+            decimal soldier = (long?)val ?? 0;
+            data.TryGetValue( "Exobiologist", out val );
+            decimal exobiologist = (long?)val ?? 0;
+
+            events.Add( new CommanderProgressEvent( timestamp, combat, trade, exploration, cqc, empire, federation, soldier, exobiologist ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

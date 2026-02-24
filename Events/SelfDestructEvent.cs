@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -12,5 +13,11 @@ namespace EddiEvents
 
         public SelfDestructEvent(DateTime timestamp) : base(timestamp, NAME)
         { }
+
+        public static bool Handle ( DateTime timestamp, string line, ref List<Event> events, bool fromLogLoad )
+        {
+            events.Add( new SelfDestructEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

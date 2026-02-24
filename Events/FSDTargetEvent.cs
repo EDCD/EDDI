@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -30,6 +31,17 @@ namespace EddiEvents
             this.systemAddress = systemAddress;
             this.remainingjumpsinroute = remainingjumpsinroute;
             this.starclass = starclass;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+            var systemName = JsonParsing.getString(data, "Name");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var remainingJumpsInRoute = JsonParsing.getOptionalInt(data, "RemainingJumpsInRoute") ?? 0;
+            var starclass = JsonParsing.getString(data, "StarClass");
+            events.Add( new FSDTargetEvent( timestamp, systemName, systemAddress, remainingJumpsInRoute, starclass ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

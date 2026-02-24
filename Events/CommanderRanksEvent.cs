@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -45,6 +46,29 @@ namespace EddiEvents
             this.federation = federation;
             this.mercenary = mercenary;
             this.exobiologist = exobiologist;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            data.TryGetValue( "Combat", out var val );
+            var combat = CombatRating.FromRank((int)((long?)val ?? 0));
+            data.TryGetValue( "Trade", out val );
+            var trade = TradeRating.FromRank((int)((long?)val ?? 0));
+            data.TryGetValue( "Explore", out val );
+            var exploration = ExplorationRating.FromRank((int)((long?)val ?? 0));
+            data.TryGetValue( "CQC", out val );
+            var cqc = CQCRating.FromRank((int)((long?)val ?? 0));
+            data.TryGetValue( "Empire", out val );
+            var empire = EmpireRating.FromRank((int)((long?)val ?? 0));
+            data.TryGetValue( "Federation", out val );
+            var federation = FederationRating.FromRank((int)((long?)val ?? 0));
+            data.TryGetValue( "Soldier", out val );
+            var mercenary = MercenaryRating.FromRank((int)((long?)val ?? 0));
+            data.TryGetValue( "Exobiologist", out val );
+            var exobiologist = ExobiologistRating.FromRank((int)((long?)val ?? 0));
+
+            events.Add( new CommanderRatingsEvent( timestamp, combat, trade, exploration, cqc, empire, federation, mercenary, exobiologist ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

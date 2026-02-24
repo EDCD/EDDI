@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -32,6 +33,17 @@ namespace EddiEvents
             this.stationDefinition = stationType;
             this.marketId = marketId;
             this.reason = reason;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var marketId = JsonParsing.getLong(data, "MarketID");
+            EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+            var reason = JsonParsing.getString(data, "Reason");
+            events.Add( new DockingDeniedEvent( timestamp, stationLocalizedName ?? stationName, stationType, marketId, reason ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

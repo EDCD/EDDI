@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -28,6 +29,16 @@ namespace EddiEvents
             this.federation = federation;
             this.independent = independent;
             this.alliance = alliance;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var empire = JsonParsing.getOptionalDecimal(data, "Empire") ?? 0;
+            var federation = JsonParsing.getOptionalDecimal(data, "Federation") ?? 0;
+            var independent = JsonParsing.getOptionalDecimal(data, "Independent") ?? 0;
+            var alliance = JsonParsing.getOptionalDecimal(data, "Alliance") ?? 0;
+            events.Add( new CommanderReputationEvent( timestamp, empire, federation, independent, alliance ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -18,6 +19,27 @@ namespace EddiEvents
         public MaterialInventoryEvent(DateTime timestamp, List<MaterialAmount> inventory) : base(timestamp, NAME)
         {
             this.inventory = inventory;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var materials = new List<MaterialAmount>();
+            foreach ( var key in new[] { "Raw", "Manufactured", "Encoded" } )
+            {
+                data.TryGetValue( key, out var val );
+                if ( val != null )
+                {
+                    var materialsJson = (List<object>)val;
+                    foreach ( var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                    {
+                        var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                        materials.Add( new MaterialAmount( material, (int)(long)materialJson[ "Count" ] ) );
+                    }
+                }
+            }
+
+            events.Add( new MaterialInventoryEvent( timestamp, materials ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

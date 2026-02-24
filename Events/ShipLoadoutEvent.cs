@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,6 +89,256 @@ namespace EddiEvents
 
             frameShiftDrive = this.compartments.FirstOrDefault( c =>
                 c.name?.Equals( "FrameShiftDrive", StringComparison.InvariantCultureIgnoreCase ) ?? false )?.module;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var shipId = JsonParsing.getInt(data, "ShipID");
+            var ship = JsonParsing.getString(data, "Ship");
+            var shipName = JsonParsing.getString(data, "ShipName");
+            var shipIdent = JsonParsing.getString(data, "ShipIdent");
+
+            var hullValue = JsonParsing.getOptionalLong(data, "HullValue");
+            var modulesValue = JsonParsing.getOptionalLong(data, "ModulesValue");
+            var hullHealth = EventParsing.sensibleHealth((JsonParsing.getOptionalDecimal(data, "HullHealth") ?? 1) * 100);
+            var unladenMass = JsonParsing.getOptionalDecimal(data, "UnladenMass") ?? 0;
+            var maxJumpRange = JsonParsing.getOptionalDecimal(data, "MaxJumpRange") ?? 0;
+
+            var rebuy = JsonParsing.getLong(data, "Rebuy");
+
+            // If ship is 'hot', then modules are also 'hot'
+            var hot = JsonParsing.getOptionalBool(data, "Hot") ?? false;
+
+            data.TryGetValue( "Modules", out var val );
+            var modulesData = (List<object>)val;
+
+            string paintjob = null;
+            var hardpoints = new List<Hardpoint>();
+            var compartments = new List<Compartment>();
+            if ( modulesData != null )
+            {
+                foreach ( var moduleData in modulesData.Cast<IDictionary<string, object>>() )
+                {
+                    // Common items
+                    var slot = JsonParsing.getString(moduleData, "Slot");
+                    var item = JsonParsing.getString(moduleData, "Item");
+                    var enabled = JsonParsing.getBool(moduleData, "On");
+                    var priority = JsonParsing.getInt(moduleData, "Priority");
+                    // Health is as 0->1 but we want 0->100, and to a sensible number of decimal places
+                    var health = JsonParsing.getDecimal(moduleData, "Health") * 100;
+                    health = health < 5 ? Math.Round( health, 1 ) : Math.Round( health );
+
+                    // Some built-in modules don't give "Value" keys in the Loadout event. We'll set them to zero to match the Frontier API.
+                    var price = JsonParsing.getOptionalLong(moduleData, "Value") ?? 0;
+
+                    // Ammunition
+                    var clip = JsonParsing.getOptionalInt(moduleData, "AmmoInClip");
+                    var hopper = JsonParsing.getOptionalInt(moduleData, "AmmoInHopper");
+
+                    // Engineering modifications
+                    moduleData.TryGetValue( "Engineering", out var engineeringVal );
+                    var modified = engineeringVal != null;
+                    var engineeringData = (Dictionary<string, object>)engineeringVal;
+                    var blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
+                    var blueprintId = modified ? JsonParsing.getLong(engineeringData, "BlueprintID") : 0;
+                    var level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
+                    var modification = Blueprint.FromEliteID(blueprintId, engineeringData)
+                                                ?? Blueprint.FromEDNameAndGrade(blueprint, level) ?? Blueprint.None;
+                    var quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
+                    var experimentalEffect = modified ? JsonParsing.getString(engineeringData, "ExperimentalEffect") : null;
+                    var modifiers = new List<EngineeringModifier>();
+                    if ( modified )
+                    {
+                        engineeringData.TryGetValue( "Modifiers", out var modifiersVal );
+                        var modifiersData = (List<object>)modifiersVal;
+                        foreach ( var modifier in modifiersData.Cast<IDictionary<string, object>>() )
+                        {
+                            try
+                            {
+                                var edname = JsonParsing.getString(modifier, "Label");
+                                var currentValue = JsonParsing.getOptionalDecimal(modifier, "Value");
+                                var originalValue = JsonParsing.getOptionalDecimal(modifier, "OriginalValue");
+                                var lessIsGood = JsonParsing.getOptionalInt(modifier, "LessIsGood") == 1;
+                                var valueStr = JsonParsing.getString(modifier, "ValueStr");
+                                modifiers.Add( new EngineeringModifier
+                                {
+                                    EDName = edname,
+                                    currentValue = currentValue,
+                                    originalValue = originalValue,
+                                    lessIsGood = lessIsGood,
+                                    valueStr = valueStr
+                                } );
+                            }
+                            catch ( Exception e )
+                            {
+                                Logging.Error( $"Failed to parse engineering modification for item {JsonConvert.SerializeObject( item )}", e );
+                            }
+                        }
+                    }
+                    if ( slot.Contains( "Hardpoint" ) )
+                    {
+                        // This is a hardpoint
+                        var hardpoint = new Hardpoint() { name = slot };
+                        if ( hardpoint.name.StartsWith( "Tiny" ) )
+                        {
+                            hardpoint.size = 0;
+                        }
+                        else if ( hardpoint.name.StartsWith( "Small", StringComparison.InvariantCultureIgnoreCase ) )
+                        {
+                            hardpoint.size = 1;
+                        }
+                        else if ( hardpoint.name.StartsWith( "Medium", StringComparison.InvariantCultureIgnoreCase ) )
+                        {
+                            hardpoint.size = 2;
+                        }
+                        else if ( hardpoint.name.StartsWith( "Large", StringComparison.InvariantCultureIgnoreCase ) )
+                        {
+                            hardpoint.size = 3;
+                        }
+                        else if ( hardpoint.name.StartsWith( "Huge", StringComparison.InvariantCultureIgnoreCase ) )
+                        {
+                            hardpoint.size = 4;
+                        }
+
+                        var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
+                        if ( module.edname == null )
+                        {
+                            Logging.Info( "Unknown module " + item, JsonConvert.SerializeObject( moduleData ) );
+                        }
+                        else
+                        {
+                            module.hot = hot;
+                            module.enabled = enabled;
+                            module.priority = priority;
+                            module.health = health;
+                            module.price = price;
+                            module.ammoinclip = clip;
+                            module.ammoinhopper = hopper;
+                            module.modified = modified;
+                            module.modificationEDName = blueprint;
+                            module.engineermodification = modification;
+                            module.engineerlevel = level;
+                            module.engineerquality = quality;
+                            module.engineerExperimentalEffectEDName = experimentalEffect;
+                            module.modifiers = modifiers;
+                            hardpoint.module = module;
+                            hardpoints.Add( hardpoint );
+                        }
+                    }
+                    else if ( slot.Equals( "PaintJob", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // This is a paintjob
+                        paintjob = item;
+                    }
+                    else if ( slot.Equals( "PlanetaryApproachSuite", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore planetary approach suite for now
+                    }
+                    else if ( slot.StartsWith( "Bobble", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore bobbles
+                    }
+                    else if ( slot.StartsWith( "Decal", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore decals
+                    }
+                    else if ( slot.StartsWith( "StringLights", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore string lights
+                    }
+                    else if ( slot.Equals( "WeaponColour", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore weapon colour
+                    }
+                    else if ( slot.Equals( "EngineColour", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore engine colour
+                    }
+                    else if ( slot.StartsWith( "ShipKit", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore ship kits
+                    }
+                    else if ( slot.StartsWith( "ShipName", StringComparison.InvariantCultureIgnoreCase ) || slot.StartsWith( "ShipID", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore nameplates
+                    }
+                    else if ( slot.Equals( "VesselVoice", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore the chosen voice
+                    }
+                    else if ( slot.Equals( "DataLinkScanner", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore the data link scanner
+                    }
+                    else if ( slot.Equals( "CodexScanner", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore the codex scanner
+                    }
+                    else if ( slot.Equals( "Hologram", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // Ignore hologram cosmetics
+                    }
+                    else if ( slot.Equals( "CargoHatch", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // The cargo hatch is a special slot. Every ship has a cargo hatch. Some have unique names but there's no functional difference between them.
+                        var compartment = EventParsing.ShipCompartment(ship, slot);
+                        var module = new Module(Module.FromEDName("ModularCargoBayDoor", moduleData) ?? new Module())
+                        {
+                            enabled = enabled,
+                            priority = priority,
+                            health = health
+                        };
+                        compartment.module = module;
+                        compartments.Add( compartment );
+                    }
+                    else if ( slot.Equals( "ShipCockpit", StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        // The cockpit is a special slot. Every ship has a cockpit module with a unique name but there's no functional difference between them.
+                        var compartment = EventParsing.ShipCompartment(ship, slot);
+                        var module = new Module(Module.FromEDName("Cockpit", moduleData) ?? new Module())
+                        {
+                            enabled = enabled,
+                            priority = priority,
+                            health = health
+                        };
+                        compartment.module = module;
+                        compartments.Add( compartment );
+                    }
+                    else
+                    {
+                        // This is a compartment
+                        var compartment = EventParsing.ShipCompartment(ship, slot);
+                        // Compartment slots may be in the form of "Slotnn_Sizen" or "Militarynn"
+
+                        var module = new Module(Module.FromEDName(item, moduleData) ?? new Module());
+                        if ( module.edname == null )
+                        {
+                            Logging.Info( "Unknown module " + item, JsonConvert.SerializeObject( moduleData ) );
+                        }
+                        else
+                        {
+                            module.hot = hot;
+                            module.enabled = enabled;
+                            module.priority = priority;
+                            module.health = health;
+                            module.price = price;
+                            module.ammoinclip = clip;
+                            module.ammoinhopper = hopper;
+                            module.modified = modified;
+                            module.modificationEDName = blueprint;
+                            module.engineermodification = modification;
+                            module.engineerlevel = level;
+                            module.engineerquality = quality;
+                            module.engineerExperimentalEffectEDName = experimentalEffect;
+                            module.modifiers = modifiers;
+                            compartment.module = module;
+                            compartments.Add( compartment );
+                        }
+                    }
+                }
+            }
+            events.Add( new ShipLoadoutEvent( timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, hullHealth, unladenMass, maxJumpRange, rebuy, hot, compartments, hardpoints, paintjob ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

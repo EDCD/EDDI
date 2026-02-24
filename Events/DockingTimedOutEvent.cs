@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -24,6 +25,15 @@ namespace EddiEvents
         {
             this.station = station;
             this.stationDefinition = stationType;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+            events.Add( new DockingTimedOutEvent( timestamp, stationLocalizedName ?? stationName, stationType ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

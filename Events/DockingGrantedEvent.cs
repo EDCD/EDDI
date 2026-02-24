@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -32,6 +33,17 @@ namespace EddiEvents
             this.stationDefinition = stationType;
             this.marketId = marketId;
             this.landingpad = landingpad;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var marketId = JsonParsing.getLong(data, "MarketID");
+            EventParsing.StationNameAndType( data, out var stationName, out var stationLocalizedName, out var stationType );
+            var landingPad = JsonParsing.getInt(data, "LandingPad");
+            events.Add( new DockingGrantedEvent( timestamp, stationLocalizedName ?? stationName, stationType, marketId, landingPad ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

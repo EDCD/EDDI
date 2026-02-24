@@ -1,5 +1,7 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -63,6 +65,13 @@ namespace EddiEvents
         public StatisticsEvent(DateTime timestamp, Statistics statistics) : base(timestamp, NAME)
         {
             this.statistics = statistics;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, ref List<Event> events, bool fromLogLoad )
+        {
+            var statistics = JObject.Parse( line ).ToObject<Statistics>();
+            events.Add( new StatisticsEvent( timestamp, statistics ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

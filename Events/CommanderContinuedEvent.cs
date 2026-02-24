@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -88,6 +89,58 @@ namespace EddiEvents
             this.fuelcapacity = fuelcapacity;
             this.gameversion = version;
             this.gamebuild = build;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var commander = JsonParsing.getString(data, "Commander");
+            var frontierID = JsonParsing.getString(data, "FID");
+
+            // Active expansions
+            var horizons = JsonParsing.getOptionalBool(data, "Horizons") ?? false; // Whether the account has the Horizons DLC
+            var odyssey = JsonParsing.getOptionalBool(data, "Odyssey") ?? false; // Whether the account has the Odyssey DLC
+            Logging.Info( $"Active expansions... Horizons: {horizons}, Odyssey: {odyssey}." );
+
+            var shipEDModel = JsonParsing.getString(data, "Ship"); // This describes a vehicle, whether ship or otherwise.
+                                                                   // If on foot this may be a suit & if in an SRV then this may be an SRV.
+            var shipName = JsonParsing.getString(data, "ShipName");
+            var shipIdent = JsonParsing.getString(data, "ShipIdent");
+            var shipId = JsonParsing.getOptionalLong(data, "ShipID"); // If on foot we'll get a suit ID here, which we need to treat as a long
+
+            // shipId may be null either if we're logging into CQC or if we're logging in while in an Apex taxi service
+            if ( shipId == null )
+            {
+                if ( !string.IsNullOrEmpty( shipEDModel ) && shipEDModel.ToLowerInvariant().Contains( "taxi" ) )
+                {
+                    // This is a taxi
+                }
+                else
+                {
+                    // The LoadGame event for entering CQC contains no ship details.
+                    // We are entering CQC. Flag it back to EDDI so we can ignore everything that happens until
+                    // we're out of CQC again
+                    events.Add( new EnteredCQCEvent( timestamp, commander ) { raw = line, fromLoad = fromLogLoad } );
+                    return true;
+                }
+            }
+
+            var startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
+            var startDead = JsonParsing.getOptionalBool(data, "StartDead");
+
+            var credits = JsonParsing.getOptionalLong(data, "Credits") ?? 0;
+            var loan = JsonParsing.getOptionalLong(data, "Loan") ?? 0;
+
+            var fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
+            var fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
+
+            var version = JsonParsing.getString(data, "gameversion")?.Trim();
+            var build = JsonParsing.getString(data, "build")?.Trim();
+
+            var mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
+            var group = JsonParsing.getString(data, "Group"); // The name of the group, only if the mode is "Group" 
+
+            events.Add( new CommanderContinuedEvent( timestamp, commander, frontierID, horizons, odyssey, shipId, shipEDModel, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity, version, build ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }
