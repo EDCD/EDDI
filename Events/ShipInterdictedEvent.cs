@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -45,6 +46,42 @@ namespace EddiEvents
             this.rating = rating?.localizedName;
             this.faction = faction;
             this.power = power;
+        }
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var succeded = edType == "Interdicted";
+            var submitted = JsonParsing.getOptionalBool( data, "Submitted" ) ?? false;
+            var interdictor = JsonParsing.getString( data, "Interdictor" );
+            var iscommander = JsonParsing.getOptionalBool( data, "IsPlayer" ) ?? false;
+            var isThargoid = JsonParsing.getOptionalBool( data, "isThargoid" ) ?? false;
+
+            if ( !string.IsNullOrEmpty( JsonParsing.getString( data, "Interdictor_Localised" ) ) )
+            {
+                // This is an NPC with a symbolic name
+                interdictor = NpcAuthorityShip.EDNameExists( interdictor )
+                    ? NpcAuthorityShip.FromEDName( interdictor )?.localizedName
+                    : JsonParsing.getString( data, "Interdictor_Localised" );
+            }
+            else if ( isThargoid )
+            {
+                interdictor = NpcAuthorityShip.Thargoid.localizedName;
+            }
+            else if ( string.IsNullOrEmpty( interdictor ) && !data.ContainsKey( "Interdictor" ) )
+            {
+                // This matches the pattern for an unknown ship interdiction attempt
+                interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
+            }
+
+            var rank = JsonParsing.getOptionalInt( data, "CombatRank" );
+            var rating = rank is null ? null : CombatRating.FromRank( (int)rank );
+            var faction = EventParsing.FactionName( data, "Faction" );
+            var power = JsonParsing.getString( data, "Power" );
+
+            events.Add( new ShipInterdictedEvent( timestamp, succeded, submitted, iscommander, isThargoid, interdictor, rating, faction, power ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEvents
@@ -85,6 +87,87 @@ namespace EddiEvents
             this.hullhealth = hullhealth;
             this.subsystem = subsystem;
             this.subsystemhealth = subsystemhealth;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var targetlocked = JsonParsing.getBool(data, "TargetLocked");
+
+            // Target locked
+            var scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
+            VehicleDefinition fighterDef = null;
+            Ship shipDef = null;
+            var vehicleEDName = JsonParsing.getString(data, "Ship");
+            if ( vehicleEDName != null )
+            {
+                if ( vehicleEDName.Contains( "fighter", StringComparison.InvariantCultureIgnoreCase ) )
+                {
+                    fighterDef = VehicleDefinition.FromEDName( vehicleEDName );
+                    fighterDef.fallbackLocalizedName = JsonParsing.getString( data, "Ship_Localised" );
+                }
+                else
+                {
+                    shipDef = ShipDefinitions.FromEDModel( vehicleEDName, false );
+                    if ( shipDef is null )
+                    {
+                        shipDef = ShipDefinitions.FromEDModel( vehicleEDName, true );
+                        shipDef.model = JsonParsing.getString( data, "Ship_Localised" );
+                    }
+                }
+            }
+
+            // Scan stage >= 1
+            var name = JsonParsing.getString(data, "PilotName");
+            if ( !string.IsNullOrEmpty( JsonParsing.getString( data, "PilotName_Localised" ) ) )
+            {
+                // This is an NPC with a symbolic name
+                name = NpcAuthorityShip.EDNameExists( name )
+                    ? NpcAuthorityShip.FromEDName( name )?.localizedName
+                    : JsonParsing.getString( data, "PilotName_Localised" );
+            }
+
+            // Sometimes we don't get a localized name when we ought to.
+            // Strip out any remaining unlocalized content in the name.
+            const string unlocalizedNameRegex = @"\$.+;";
+            if ( !string.IsNullOrEmpty( name ) && Regex.IsMatch( name, unlocalizedNameRegex ) )
+            {
+                var tidiedName = Regex.Replace( name, unlocalizedNameRegex, "" ).Trim();
+                if ( !string.IsNullOrEmpty( tidiedName ) )
+                {
+                    name = tidiedName;
+                }
+            }
+
+            var rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
+
+            // Scan stage >= 2
+            var shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
+            var hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
+
+            // Scan stage >= 3
+            var faction = JsonParsing.getString(data, "Faction");
+            var legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalStatus"));
+            var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+            var bounty = JsonParsing.getOptionalInt(data, "Bounty");
+            string subsystemName = null;
+            decimal? subSystemHealth = null;
+            if ( data.ContainsKey( "Subsystem" ) )
+            {
+                var subsystemEDName = JsonParsing.getString( data, "Subsystem" );
+                subsystemName = subsystemEDName.StartsWith( "$ext_drive" )
+                    ? EddiDataDefinitions.Properties.Modules.Thrusters // The `ShipTargeted` event uses non-standard drive names
+                    : Module.FromEDName( subsystemEDName )?.localizedName;
+                if ( string.IsNullOrEmpty( subsystemName ) )
+                {
+                    subsystemName = JsonParsing.getString( data, "Subsystem_Localised" );
+                }
+                subSystemHealth = JsonParsing.getOptionalDecimal( data, "SubsystemHealth" );
+            }
+
+            events.Add( new ShipTargetedEvent( timestamp, targetlocked, shipDef, fighterDef, scanstage, name, rank, faction, power, legalStatus, bounty, shieldHealth, hullHealth, subsystemName, subSystemHealth ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

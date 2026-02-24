@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -31,6 +32,26 @@ namespace EddiEvents
             this.vehicle = vehicle;
             this.vehicleDefinition = vehicleDefinition;
             this.id = id;
+        }
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+            var vehicle = edType.Replace("Destroyed", "").ToLowerInvariant(); // e.g. FighterDestroyed or SRVDestroyed
+            if ( vehicle == "fighter" )
+            {
+                var fighterId = JsonParsing.getInt(data, "ID");
+                events.Add( new VehicleDestroyedEvent( timestamp, vehicle, null, fighterId ) { raw = line, fromLoad = false } );
+            }
+
+            if ( vehicle == "srv" )
+            {
+                var srvId = JsonParsing.getOptionalInt(data, "ID");
+                var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
+                vehicleDefinition.fallbackLocalizedName = JsonParsing.getString( data, "SRVType_Localised" );
+                events.Add( new VehicleDestroyedEvent( timestamp, vehicle, vehicleDefinition, srvId ) { raw = line, fromLoad = false } );
+            }
+            return true;
         }
     }
 }

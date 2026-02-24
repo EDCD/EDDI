@@ -281,270 +281,36 @@ namespace EddiJournalMonitor
                             #region Combat (and Combat Reward) Events
 
                             case "Bounty":
-                                {
-                                    var target = JsonParsing.getString(data, "Target");
-                                    var target_localised = JsonParsing.getString( data, "Target_Localised" );
-                                    var victimName = JsonParsing.getString(data, "PilotName_Localised");
-                                    var victimFaction = EventParsing.FactionName(data, "VictimFaction");
-
-                                    data.TryGetValue("SharedWithOthers", out var val);
-                                    var shared = val != null && (long)val == 1;
-
-                                    long reward;
-                                    var rewards = new List<Reward>();
-
-                                    if (data.ContainsKey("Reward"))
-                                    {
-                                        // Old-style
-                                        data.TryGetValue("Reward", out val);
-                                        reward = (long)val;
-                                        if (reward == 0)
-                                        {
-                                            // 0-credit reward; ignore
-                                            break;
-                                        }
-                                        var factionName = EventParsing.FactionName(data, "Faction");
-                                        rewards.Add(new Reward(factionName, reward));
-                                    }
-                                    else
-                                    {
-                                        data.TryGetValue("TotalReward", out val);
-                                        reward = (long)val;
-                                        if (reward == 0)
-                                        {
-                                            // 0-credit reward; ignore
-                                            break;
-                                        }
-                                        // Obtain list of rewards
-                                        data.TryGetValue("Rewards", out val);
-                                        var rewardsData = (List<object>)val;
-                                        if (rewardsData != null)
-                                        {
-                                            foreach (var rewardData in rewardsData.Cast<IDictionary<string, object>>() )
-                                            {
-                                                var factionName = EventParsing.FactionName(rewardData, "Faction");
-                                                rewardData.TryGetValue("Reward", out val);
-                                                var factionReward = (long)val;
-
-                                                rewards.Add(new Reward(factionName, factionReward));
-                                            }
-                                        }
-                                    }
-
-                                    events.Add(new BountyAwardedEvent(timestamp, target, target_localised, victimName, victimFaction, reward, rewards, shared) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = BountyAwardedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "CapShipBond":
-                                {
-                                    data.TryGetValue( "Reward", out var val );
-                                    var reward = (long)val;
-                                    var victimFaction = EventParsing.FactionName(data, "VictimFaction");
-                                    var awardingFaction = EventParsing.FactionName(data, "AwardingFaction");
-                                    events.Add( new BondAwardedEvent( timestamp, awardingFaction, victimFaction, reward ) { raw = line, fromLoad = fromLogLoad } );
-                                }
-                                handled = true;
+                            case "FactionKillBond":
+                                handled = BondAwardedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "Died":
-                                {
-                                    Killer parseKiller (IDictionary<string, object> killerData, bool singleKiller)
-                                    {
-                                        // Property names differ if there is a single killer vs. multiple killers
-                                        var name = JsonParsing.getString(killerData, singleKiller ? "KillerName" : "Name");
-                                        if (!string.IsNullOrEmpty(JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised")))
-                                        {
-                                            // This is an NPC with a symbolic name
-                                            name = NpcAuthorityShip.EDNameExists(name)
-                                                ? NpcAuthorityShip.FromEDName(name)?.localizedName
-                                                : JsonParsing.getString(data, singleKiller ? "KillerName_Localised" : "Name_Localised");
-                                        }
-
-                                        var equipment = JsonParsing.getString(killerData, singleKiller ? "KillerShip" : "Ship"); // May be a ship, a suit, etc.
-                                        var rating = CombatRating.FromEDName(JsonParsing.getString(killerData, singleKiller ? "KillerRank" : "Rank"));
-                                        return new Killer(name, equipment, rating);
-                                    }
-
-                                    var killers = new List<Killer>();
-                                    if (data.ContainsKey("KillerName"))
-                                    {
-                                        // Single killer
-                                        killers.Add(parseKiller(data, true));
-                                    }
-                                    if (data.ContainsKey("killers"))
-                                    {
-                                        // Multiple killers
-                                        data.TryGetValue("Killers", out var val);
-                                        var killersData = (List<object>)val;
-                                        foreach (var killerData in killersData.Cast<IDictionary<string, object>>() )
-                                        {
-                                            killers.Add(parseKiller(killerData, false));
-                                        }
-                                    }
-                                    events.Add(new DiedEvent(timestamp, killers) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = DiedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "EscapeInterdiction":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var interdictor = JsonParsing.getString(data, "Interdictor");
-                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
-                                    var isThargoid = JsonParsing.getOptionalBool(data, "isThargoid") ?? false;
-
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
-                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
-                                            : JsonParsing.getString(data, "Interdictor_Localised");
-                                    }
-                                    else if ( isThargoid )
-                                    {
-                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
-                                    }
-                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor"))
-                                    {
-                                        // This matches the pattern for an unknown ship interdiction attempt
-                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
-                                    }
-
-                                    events.Add(new ShipInterdictedEvent(timestamp, false, false, iscommander, isThargoid, interdictor, null, null, null) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
-                                break;
-                            case "FactionKillBond":
-                                {
-                                    data.TryGetValue("Reward", out var val);
-                                    var reward = (long)val;
-                                    var victimFaction = EventParsing.FactionName(data, "VictimFaction");
-                                    var awardingFaction = EventParsing.FactionName(data, "AwardingFaction");
-                                    events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                            case "Interdicted":
+                                handled = ShipInterdictedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "FighterDestroyed":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var vehicle = "fighter";
-                                    var fighterId = JsonParsing.getInt(data, "ID");
-                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, null, fighterId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = VehicleDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "HeatDamage":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    events.Add(new HeatDamageEvent(timestamp) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = HeatDamageEvent.Handle( timestamp, line, ref events, fromLogLoad );
                                 break;
                             case "HeatWarning":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    events.Add( new HeatWarningEvent( timestamp ) { raw = line, fromLoad = fromLogLoad } );
-                                }
-                                handled = true;
+                                handled = HeatWarningEvent.Handle( timestamp, line, ref events, fromLogLoad );
                                 break;
                             case "HullDamage":
-                                {
-                                    var health = EventParsing.sensibleHealth(JsonParsing.getDecimal(data, "Health") * 100);
-                                    var piloted = JsonParsing.getOptionalBool(data, "PlayerPilot");
-                                    var fighter = JsonParsing.getOptionalBool(data, "Fighter");
-
-                                    var vehicle = EDDI.Instance.Vehicle;
-                                    if ( piloted == false )
-                                    {
-                                        if ( fighter == true )
-                                        {
-                                            vehicle = Constants.VEHICLE_FIGHTER;
-                                        }
-                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SRV )
-                                        {
-                                            vehicle = Constants.VEHICLE_SHIP;
-                                        }
-                                        else if ( EDDI.Instance.Vehicle == Constants.VEHICLE_SHIP )
-                                        {
-                                            vehicle = Constants.VEHICLE_SRV;
-                                        }
-                                    }
-
-                                    events.Add(new HullDamagedEvent(timestamp, vehicle, piloted, health) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
-                                break;
-                            case "Interdicted":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var submitted = JsonParsing.getBool(data, "Submitted");
-                                    var interdictor = JsonParsing.getString(data, "Interdictor");
-                                    var iscommander = JsonParsing.getOptionalBool(data, "IsPlayer") ?? false;
-                                    var isThargoid = JsonParsing.getOptionalBool(data, "IsThargoid") ?? false;
-                                    data.TryGetValue("CombatRank", out var val);
-                                    var rating = val == null ? null : CombatRating.FromRank(Convert.ToInt32(val));
-                                    var faction = EventParsing.FactionName(data, "Faction");
-                                    var power = JsonParsing.getString(data, "Power");
-
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdictor_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        interdictor = NpcAuthorityShip.EDNameExists(interdictor)
-                                            ? NpcAuthorityShip.FromEDName(interdictor)?.localizedName
-                                            : JsonParsing.getString(data, "Interdictor_Localised");
-                                    }
-                                    else if ( isThargoid )
-                                    {
-                                        interdictor = NpcAuthorityShip.Thargoid.localizedName;
-                                    }
-                                    else if (string.IsNullOrEmpty(interdictor) && !data.ContainsKey("Interdictor") && string.IsNullOrEmpty(faction))
-                                    {
-                                        // This matches the pattern for an unknown ship interdiction attempt
-                                        interdictor = NpcAuthorityShip.UNKNOWN.localizedName;
-                                    }
-
-                                    events.Add(new ShipInterdictedEvent(timestamp, true, submitted, iscommander, isThargoid, interdictor, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = HullDamagedEvent.Handle( timestamp, EDDI.Instance.Vehicle, line, data, ref events, fromLogLoad );
                                 break;
                             case "Interdiction":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var success = JsonParsing.getBool(data, "Success");
-                                    var interdictee = JsonParsing.getString(data, "Interdicted");
-                                    var iscommander = JsonParsing.getBool(data, "IsPlayer");
-                                    data.TryGetValue("CombatRank", out var val);
-                                    var rating = val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) );
-                                    var faction = EventParsing.FactionName(data, "Faction");
-                                    var power = JsonParsing.getString(data, "Power");
-
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "Interdicted_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        interdictee = NpcAuthorityShip.EDNameExists(interdictee) 
-                                            ? NpcAuthorityShip.FromEDName(interdictee)?.localizedName 
-                                            : JsonParsing.getString(data, "Interdicted_Localised");
-                                    }
-
-                                    events.Add(new ShipInterdictionEvent(timestamp, success, iscommander, interdictee, rating, faction, power) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = ShipInterdictionEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "PVPKill":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var victim = JsonParsing.getString(data, "Victim");
-                                    data.TryGetValue("CombatRank", out var val);
-                                    var rating = val == null ? null : CombatRating.FromRank((int)(long)val);
-
-                                    events.Add(new KilledEvent(timestamp, victim, rating) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = KilledEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "ShieldState":
                                 // As of September 2019, this event no longer appears to be written to the Player Journal.
@@ -552,108 +318,15 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "ShipTargeted":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var targetlocked = JsonParsing.getBool(data, "TargetLocked");
-
-                                    // Target locked
-                                    var scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
-                                    VehicleDefinition fighterDef = null;
-                                    Ship shipDef = null;
-                                    var vehicleEDName = JsonParsing.getString(data, "Ship");
-                                    if ( vehicleEDName != null)
-                                    {
-                                        if (vehicleEDName.Contains("fighter", StringComparison.InvariantCultureIgnoreCase))
-                                        {
-                                            fighterDef = VehicleDefinition.FromEDName( vehicleEDName );
-                                            fighterDef.fallbackLocalizedName = JsonParsing.getString( data, "Ship_Localised" );
-                                        }
-                                        else
-                                        {
-                                            shipDef = ShipDefinitions.FromEDModel(vehicleEDName, false);
-                                            if ( shipDef is null )
-                                            {
-                                                shipDef = ShipDefinitions.FromEDModel( vehicleEDName, true );
-                                                shipDef.model = JsonParsing.getString( data, "Ship_Localised" );
-                                            }
-                                        }
-                                    }
-
-                                    // Scan stage >= 1
-                                    var name = JsonParsing.getString(data, "PilotName");
-                                    if (!string.IsNullOrEmpty(JsonParsing.getString(data, "PilotName_Localised")))
-                                    {
-                                        // This is an NPC with a symbolic name
-                                        name = NpcAuthorityShip.EDNameExists(name) 
-                                            ? NpcAuthorityShip.FromEDName(name)?.localizedName 
-                                            : JsonParsing.getString(data, "PilotName_Localised");
-                                    }
-
-                                    // Sometimes we don't get a localized name when we ought to.
-                                    // Strip out any remaining unlocalized content in the name.
-                                    const string unlocalizedNameRegex = @"\$.+;";
-                                    if ( !string.IsNullOrEmpty(name) && Regex.IsMatch( name, unlocalizedNameRegex ) )
-                                    {
-                                        var tidiedName = Regex.Replace( name, unlocalizedNameRegex, "" ).Trim();
-                                        if ( !string.IsNullOrEmpty(tidiedName) )
-                                        {
-                                            name = tidiedName;
-                                        }
-                                    }
-
-                                    var rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
-
-                                    // Scan stage >= 2
-                                    var shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
-                                    var hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
-
-                                    // Scan stage >= 3
-                                    var faction = JsonParsing.getString(data, "Faction");
-                                    var legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalStatus"));
-                                    var power = Power.FromEDName(JsonParsing.getString(data, "Power"));
-                                    var bounty = JsonParsing.getOptionalInt(data, "Bounty");
-                                    string subsystemName = null;
-                                    decimal? subSystemHealth = null;
-                                    if ( data.ContainsKey( "Subsystem" ) )
-                                    {
-                                        var subsystemEDName = JsonParsing.getString( data, "Subsystem" );
-                                        subsystemName = subsystemEDName.StartsWith( "$ext_drive" ) 
-                                            ? EddiDataDefinitions.Properties.Modules.Thrusters // The `ShipTargeted` event uses non-standard drive names
-                                            : Module.FromEDName( subsystemEDName )?.localizedName;
-                                        if ( string.IsNullOrEmpty(subsystemName) )
-                                        {
-                                            subsystemName = JsonParsing.getString( data, "Subsystem_Localised" );
-                                        }
-                                        subSystemHealth = JsonParsing.getOptionalDecimal( data, "SubsystemHealth" );
-                                    }
-
-                                    events.Add(new ShipTargetedEvent(timestamp, targetlocked, shipDef, fighterDef, scanstage, name, rank, faction, power, legalStatus, bounty, shieldHealth, hullHealth, subsystemName, subSystemHealth) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = ShipTargetedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "SRVDestroyed":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var vehicle = "srv";
-                                    var srvId = JsonParsing.getOptionalInt(data, "ID");
-                                    var vehicleDefinition = VehicleDefinition.FromEDName(JsonParsing.getString(data, "SRVType"));
-                                    vehicleDefinition.fallbackLocalizedName = JsonParsing.getString(data, "SRVType_Localised");
-                                    events.Add(new VehicleDestroyedEvent(timestamp, vehicle, vehicleDefinition, srvId) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = VehicleDestroyedEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "UnderAttack":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var target = JsonParsing.getString(data, "Target");
-                                    events.Add(new UnderAttackEvent(timestamp, target) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                    break;
-                                }
-
+                                handled = UnderAttackEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                break;
+                            
                             #endregion
 
                             #region Exploration

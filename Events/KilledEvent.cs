@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -21,6 +22,18 @@ namespace EddiEvents
         {
             this.victim = victim;
             this.rating = rating?.localizedName;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var victim = JsonParsing.getString(data, "Victim");
+            data.TryGetValue( "CombatRank", out var val );
+            var rating = val == null ? null : CombatRating.FromRank((int)(long)val);
+
+            events.Add( new KilledEvent( timestamp, victim, rating ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

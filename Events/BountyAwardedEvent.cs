@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -59,6 +60,57 @@ namespace EddiEvents
             this.reward = reward;
             this.rewards = rewards;
             this.shared = shared;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var target = JsonParsing.getString(data, "Target");
+            var target_localised = JsonParsing.getString( data, "Target_Localised" );
+            var victimName = JsonParsing.getString(data, "PilotName_Localised");
+            var victimFaction = EventParsing.FactionName(data, "VictimFaction");
+
+            data.TryGetValue( "SharedWithOthers", out var val );
+            var shared = val != null && (long)val == 1;
+
+            long reward;
+            var rewards = new List<Reward>();
+
+            if ( data.ContainsKey( "Reward" ) )
+            {
+                // Old-style
+                reward = JsonParsing.getLong( data, "Reward" );
+                if ( reward == 0 )
+                {
+                    // 0-credit reward; ignore
+                    return true;
+                }
+                var factionName = EventParsing.FactionName(data, "Faction");
+                rewards.Add( new Reward( factionName, reward ) );
+            }
+            else
+            {
+                reward = JsonParsing.getLong( data, "TotalReward" );
+                if ( reward == 0 )
+                {
+                    // 0-credit reward; ignore
+                    return true;
+                }
+                // Obtain list of rewards
+                data.TryGetValue( "Rewards", out val );
+                var rewardsData = (List<object>)val;
+                if ( rewardsData != null )
+                {
+                    foreach ( var rewardData in rewardsData.Cast<IDictionary<string, object>>() )
+                    {
+                        var factionName = EventParsing.FactionName(rewardData, "Faction");
+                        var factionReward = JsonParsing.getLong( rewardData, "Reward" );
+                        rewards.Add( new Reward( factionName, factionReward ) );
+                    }
+                }
+            }
+
+            events.Add( new BountyAwardedEvent( timestamp, target, target_localised, victimName, victimFaction, reward, rewards, shared ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }
