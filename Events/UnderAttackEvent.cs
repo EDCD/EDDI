@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -16,6 +17,15 @@ namespace EddiEvents
         public UnderAttackEvent(DateTime timestamp, string target) : base(timestamp, NAME)
         {
             this.target = target;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var target = JsonParsing.getString(data, "Target");
+            events.Add( new UnderAttackEvent( timestamp, target ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

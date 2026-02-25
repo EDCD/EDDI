@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -25,6 +26,15 @@ namespace EddiEvents
             this.systemAddress = systemAddress;
             this.count = count;
 
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var systemName = JsonParsing.getString(data, "SystemName");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var count = JsonParsing.getInt(data, "Count");
+            events.Add( new SystemScanComplete( timestamp, systemName, systemAddress, count ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

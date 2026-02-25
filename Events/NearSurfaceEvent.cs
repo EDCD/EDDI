@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -44,6 +45,17 @@ namespace EddiEvents
             this.systemAddress = systemAddress;
             this.bodyname = bodyName;
             this.bodyId = bodyId;
+        }
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var approachingSurface = edType == "ApproachBody";
+            var system = JsonParsing.getString(data, "StarSystem");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var body = JsonParsing.getString(data, "Body");
+            var bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+            events.Add( new NearSurfaceEvent( timestamp, approachingSurface, system, systemAddress, body, bodyId ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

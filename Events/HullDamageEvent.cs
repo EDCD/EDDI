@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -24,6 +25,33 @@ namespace EddiEvents
             this.vehicle = vehicle;
             this.piloted = piloted;
             this.health = health;
+        }
+
+        public static bool Handle ( DateTime timestamp, string currentVehicle, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var health = EventParsing.sensibleHealth(JsonParsing.getDecimal(data, "Health") * 100);
+            var piloted = JsonParsing.getOptionalBool(data, "PlayerPilot");
+            var fighter = JsonParsing.getOptionalBool(data, "Fighter");
+
+            var vehicle = currentVehicle;
+            if ( piloted == false )
+            {
+                if ( fighter == true )
+                {
+                    vehicle = Constants.VEHICLE_FIGHTER;
+                }
+                else if ( currentVehicle == Constants.VEHICLE_SRV )
+                {
+                    vehicle = Constants.VEHICLE_SHIP;
+                }
+                else if ( currentVehicle == Constants.VEHICLE_SHIP )
+                {
+                    vehicle = Constants.VEHICLE_SRV;
+                }
+            }
+
+            events.Add( new HullDamagedEvent( timestamp, vehicle, piloted, health ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

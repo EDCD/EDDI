@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -20,6 +21,16 @@ namespace EddiEvents
         {
             this.to = to;
             this.message = message;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var to = JsonParsing.getString(data, "To");
+            var message = JsonParsing.getString(data, "Message");
+            events.Add( new MessageSentEvent( timestamp, to, message ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

@@ -58,5 +58,18 @@ namespace EddiEvents
                 return 0;
             }
         }
+
+        public static bool Handle ( DateTime timestamp, string edType, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            if ( NavRouteInfo.TryFromFile( timestamp, edType == "NavRoute", out var navRoute, out var rawRoute ) && navRoute != null )
+            {
+                events.Add( new NavRouteEvent( timestamp, navRoute.Route ) { raw = rawRoute, fromLoad = false } );
+                return true;
+            }
+
+            return false;
+        }
     }
 }

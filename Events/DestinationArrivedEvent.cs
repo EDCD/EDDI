@@ -1,5 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiEvents
@@ -39,6 +41,49 @@ namespace EddiEvents
             this.name = string.IsNullOrEmpty( localizedName ) ? invariantName : localizedName;
             this.threat = threat ?? 0;
             this.marketID = marketID;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            // "Type" may be either a signal source or proper name.
+            // If proper name, it might be a fleet carrier with both name and ID.
+            var type = JsonParsing.getString( data, "Type" );
+            var typeLocalized = JsonParsing.getString( data, "Type_Localised" );
+            var threat = JsonParsing.getOptionalInt( data, "Threat" ) ?? 0; // Typically 0 except for USS drops.
+            var marketID = JsonParsing.getOptionalLong( data, "MarketID" );
+
+            if ( type.StartsWith( "$" ) )
+            {
+                // Symbolic signal source name. Prefer our own localization and fallback using the provided localization string if needed.
+                var signalSource = SignalSource.FromEDName( type );
+                if ( signalSource != null )
+                {
+                    signalSource.fallbackLocalizedName = typeLocalized;
+                    type = signalSource.invariantName;
+                    typeLocalized = signalSource.localizedName;
+                }
+            }
+            else
+            {
+                // Destination might be a fleet carrier with name and carrier ID in a single string.
+                // Check and break apart if needed.
+                var fleetCarrierRegex = new Regex( "^(.+)(?> )([A-Za-z0-9]{3}-[A-Za-z0-9]{3})$" );
+                if ( string.IsNullOrEmpty( typeLocalized ) && fleetCarrierRegex.IsMatch( type ) )
+                {
+                    // Fleet carrier names include both the carrier name and carrier ID, we need to separate them
+                    var fleetCarrierParts = fleetCarrierRegex.Matches( type )[ 0 ].Groups;
+                    if ( fleetCarrierParts.Count == 3 )
+                    {
+                        type = fleetCarrierParts[ 2 ].Value;
+                        typeLocalized = fleetCarrierParts[ 1 ].Value;
+                    }
+                }
+            }
+
+            events.Add( new DestinationArrivedEvent( timestamp, type, typeLocalized, threat, marketID ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

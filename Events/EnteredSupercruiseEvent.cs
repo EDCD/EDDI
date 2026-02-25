@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -30,6 +31,18 @@ namespace EddiEvents
             this.systemAddress = systemAddress;
             this.taxi = taxi;
             this.multicrew = multicrew;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var system = JsonParsing.getString(data, "StarySystem");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+            var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+            events.Add( new EnteredSupercruiseEvent( timestamp, system, systemAddress, taxi, multicrew ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

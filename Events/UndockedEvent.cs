@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -20,6 +21,14 @@ namespace EddiEvents
         {
             this.station = station;
             this.marketId = marketId;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var stationName = JsonParsing.getString(data, "StationName");
+            long? marketId = JsonParsing.getLong(data, "MarketID");
+            events.Add( new UndockedEvent( timestamp, stationName, marketId ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

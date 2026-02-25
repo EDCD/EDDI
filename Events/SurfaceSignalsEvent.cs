@@ -46,8 +46,7 @@ namespace EddiEvents
             this.genera = genera ?? new List<OrganicGenus>();
         }
 
-        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data,
-            ref List<Event> events, bool fromLogLoad )
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
         {
             var systemAddress = JsonParsing.getULong(data, "SystemAddress");
             var bodyName = JsonParsing.getString(data, "BodyName");
@@ -55,28 +54,74 @@ namespace EddiEvents
 
             data.TryGetValue( "Signals", out var signalsVal );
             if ( signalsVal == null ) { return false; }
-            
-            if ( bodyName.EndsWith( " Ring" ) )
-            {
-                // This is the mining hotspots from a ring that we've mapped
-                var hotspots = new List<CommodityAmount>();
-                foreach ( var signal in ( (List<object>)signalsVal ).Cast<IDictionary<string, object>>() )
-                {
-                    var commodityEdName = JsonParsing.getString(signal, "Type");
-                    var type = CommodityDefinition.FromEDName( commodityEdName ) ??
-                               throw new ArgumentException( $@"Unknown ring signal type: {commodityEdName}",
-                                   nameof(commodityEdName) );
-                    type.fallbackLocalizedName = JsonParsing.getString( signal, "Type_Localised" );
-                    var amount = JsonParsing.getInt(signal, "Count");
-                    hotspots.Add( new CommodityAmount( type, amount ) );
-                }
-                hotspots = hotspots.OrderByDescending( h => h.amount ).ToList();
 
-                events.Add( new RingHotspotsEvent( timestamp, systemAddress, bodyName, bodyId, hotspots ) { raw = line, fromLoad = fromLogLoad } );
-            }
-            else
+            if ( edType.Contains( "SAA", StringComparison.OrdinalIgnoreCase ) )
             {
-                // This is surface signal sources from a body that we've mapped
+                if ( bodyName.EndsWith( " Ring" ) )
+                {
+                    // This is the mining hotspots from a ring that we've mapped
+                    var hotspots = new List<CommodityAmount>();
+                    foreach ( var signal in ( (List<object>)signalsVal ).Cast<IDictionary<string, object>>() )
+                    {
+                        var commodityEdName = JsonParsing.getString( signal, "Type" );
+                        var type = CommodityDefinition.FromEDName( commodityEdName ) ??
+                                   throw new ArgumentException( $@"Unknown ring signal type: {commodityEdName}",
+                                       nameof(commodityEdName) );
+                        type.fallbackLocalizedName = JsonParsing.getString( signal, "Type_Localised" );
+                        var amount = JsonParsing.getInt( signal, "Count" );
+                        hotspots.Add( new CommodityAmount( type, amount ) );
+                    }
+                    hotspots = hotspots.OrderByDescending( h => h.amount ).ToList();
+                    events.Add( new RingHotspotsEvent( timestamp, systemAddress, bodyName, bodyId, hotspots )
+                    {
+                        raw = line, fromLoad = fromLogLoad
+                    } );
+                }
+                else
+                {
+                    // This is surface signal sources from a body that we've mapped
+                    var surfaceSignals = new List<SignalAmount>();
+                    foreach ( var signal in ( (List<object>)signalsVal ).Cast<IDictionary<string, object>>() )
+                    {
+                        var signalSource = JsonParsing.getString( signal, "Type" );
+                        var source = SignalSource.FromEDName( signalSource ) ?? new SignalSource();
+                        var localizedName = JsonParsing.getString( data, "Type_Localised" );
+                        if ( !string.IsNullOrEmpty( localizedName ) && !localizedName.Contains( "$" ) )
+                        {
+                            source.fallbackLocalizedName = localizedName;
+                        }
+
+                        var amount = JsonParsing.getInt( signal, "Count" );
+                        surfaceSignals.Add( new SignalAmount( source, amount ) );
+                    }
+
+                    surfaceSignals = surfaceSignals.OrderByDescending( s => s.amount ).ToList();
+                    
+                    var genera = new List<OrganicGenus>();
+                    data.TryGetValue( "Genuses", out var genusesVal );
+                    if ( genusesVal != null )
+                    {
+                        foreach ( var genusVal in ( (List<object>)genusesVal ).Cast<IDictionary<string, object>>() )
+                        {
+                            var genusEdName = JsonParsing.getString( genusVal, "Genus" );
+                            var genus = OrganicGenus.FromEDName( genusEdName );
+                            if ( genus != null )
+                            {
+                                genus.fallbackLocalizedName = JsonParsing.getString( genusVal, "Genus_Localised" );
+                                genera.Add( genus );
+                            }
+                        }
+                    }
+                    events.Add( new SurfaceSignalsEvent( timestamp, "SAA", systemAddress, bodyName, bodyId,
+                        surfaceSignals, genera ) { raw = line, fromLoad = fromLogLoad } );
+                }
+
+                return true;
+            }
+
+            if ( edType.Contains( "FSS", StringComparison.OrdinalIgnoreCase ) )
+            {
+                // These are surface signal sources from a body that we've scanned
                 var surfaceSignals = new List<SignalAmount>();
                 foreach ( var signal in ( (List<object>)signalsVal ).Cast<IDictionary<string, object>>() )
                 {
@@ -91,27 +136,11 @@ namespace EddiEvents
                     surfaceSignals.Add( new SignalAmount( source, amount ) );
                 }
                 surfaceSignals = surfaceSignals.OrderByDescending( s => s.amount ).ToList();
-
-                var genera = new List<OrganicGenus>();
-                data.TryGetValue( "Genuses", out var genusesVal );
-                if ( genusesVal != null )
-                {
-                    foreach ( var genusVal in ((List<object>)genusesVal).Cast<IDictionary<string, object>>() )
-                    {
-                        var genusEdName = JsonParsing.getString( genusVal , "Genus" );
-                        var genus = OrganicGenus.FromEDName( genusEdName );
-                        if ( genus != null )
-                        {
-                            genus.fallbackLocalizedName = JsonParsing.getString( genusVal, "Genus_Localised" );
-                            genera.Add( genus );
-                        }
-                    }
-                }
-
-                events.Add( new SurfaceSignalsEvent( timestamp, "SAA", systemAddress, bodyName, bodyId, surfaceSignals, genera ) { raw = line, fromLoad = fromLogLoad } );
+                events.Add( new SurfaceSignalsEvent( timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals, null ) { raw = line, fromLoad = fromLogLoad } );
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }

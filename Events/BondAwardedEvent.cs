@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -24,6 +25,15 @@ namespace EddiEvents
             this.awardingfaction = awardingfaction;
             this.victimfaction = victimfaction;
             this.reward = reward;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var reward = JsonParsing.getLong( data, "Reward" );
+            var victimFaction = EventParsing.FactionName(data, "VictimFaction");
+            var awardingFaction = EventParsing.FactionName(data, "AwardingFaction");
+            events.Add( new BondAwardedEvent( timestamp, awardingFaction, victimFaction, reward ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

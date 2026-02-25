@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -58,6 +59,33 @@ namespace EddiEvents
             this.systemAddress = systemAddress;
             this.signalSource = source;
             this.unique = unique;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+
+            var source = EventParsing.SignalSource(data);
+            source.systemAddress = systemAddress;
+
+            source.spawningFaction = EventParsing.FactionName( data, "SpawningFaction" ) ?? Superpower.None.localizedName; // the minor faction, if relevant
+            source.SpawningPower = Power.FromEDName( JsonParsing.getString( data, "SpawningPower" ) ); // the Powerplay power, if relevant
+            source.OpposingPower = Power.FromEDName( JsonParsing.getString( data, "OpposingPower" ) ); // the opposing Powerplay power, if relevant
+
+            var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
+            source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds( (double)secondsRemaining );
+
+            var spawningstate = JsonParsing.getString(data, "SpawningState");
+            var normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
+            source.spawningState = FactionState.FromEDName( normalizedSpawningState ) ?? new FactionState();
+            source.spawningState.fallbackLocalizedName = JsonParsing.getString( data, "SpawningState_Localised" );
+
+            source.threatLevel = JsonParsing.getOptionalInt( data, "ThreatLevel" ) ?? 0;
+
+            events.Add( new SignalDetectedEvent( timestamp, systemAddress, source ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

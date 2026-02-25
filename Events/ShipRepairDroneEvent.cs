@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -24,6 +25,15 @@ namespace EddiEvents
             this.hull = hull;
             this.cockpit = cockpit;
             this.corrosion = corrosion;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var hull = JsonParsing.getOptionalDecimal(data, "HullRepaired");
+            var cockpit = JsonParsing.getOptionalDecimal(data, "CockpitRepaired");
+            var corrosion = JsonParsing.getOptionalDecimal(data, "CorrosionRepaired");
+            events.Add( new ShipRepairDroneEvent( timestamp, hull, cockpit, corrosion ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

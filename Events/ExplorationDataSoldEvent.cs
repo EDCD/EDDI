@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -29,6 +30,51 @@ namespace EddiEvents
             this.reward = reward;
             this.bonus = bonus;
             this.total = total;
+        }
+
+        public static bool Handle ( DateTime timestamp, string edType, string line, IDictionary<string, object> data,
+            ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            if ( edType == "MultiSellExplorationData" )
+            {
+                var systems = new List<string>();
+                data.TryGetValue( "Discovered", out var val );
+                var discovered = (List<object>)val;
+                if ( discovered != null )
+                {
+                    foreach ( var discoveredSystem in discovered.Cast<IDictionary<string, object>>() )
+                    {
+                        var system = JsonParsing.getString( discoveredSystem, "SystemName" );
+                        if ( !string.IsNullOrEmpty( system ) )
+                        {
+                            systems.Add( system );
+                        }
+                    }
+                }
+
+                var reward = JsonParsing.getDecimal( data, "BaseValue" );
+                var bonus = JsonParsing.getDecimal( data, "Bonus" );
+                var total = JsonParsing.getDecimal( data, "TotalEarnings" );
+                events.Add( new ExplorationDataSoldEvent( timestamp, systems, reward, bonus, total ) { raw = line, fromLoad = false } );
+                return true;
+            }
+
+            if ( edType == "SellExplorationData" )
+            {
+                data.TryGetValue( "Systems", out var val );
+                var systems = ((List<object>)val)?.Cast<string>().ToList();
+                //data.TryGetValue( "Discovered", out val );
+                //var firsts = ((List<object>)val)?.Cast<string>().ToList();
+                var reward = JsonParsing.getDecimal( data, "BaseValue" );
+                var bonus = JsonParsing.getDecimal( data, "Bonus" );
+                var total = JsonParsing.getDecimal( data, "TotalEarnings" );
+                events.Add( new ExplorationDataSoldEvent( timestamp, systems, reward, bonus, total ) { raw = line, fromLoad = false } );
+                return true;
+            }
+            
+            return false;
         }
     }
 }

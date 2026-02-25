@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -46,6 +47,17 @@ namespace EddiEvents
             this.systemAddress = systemAddress;
             this.stellarclass = stellarclass;
             this.taxijump = isTaxi;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var target = JsonParsing.getString(data, "JumpType");
+            var stellarclass = JsonParsing.getString(data, "StarClass");
+            var system = JsonParsing.getString(data, "StarSystem");
+            var systemAddress = JsonParsing.getOptionalULong(data, "SystemAddress"); // Present only when the FSD target is hyperspace
+            var isTaxi = JsonParsing.getOptionalBool( data, "Taxi" ) ?? false;
+            events.Add( new FSDEngagedEvent( timestamp, target, system, systemAddress, stellarclass, isTaxi ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

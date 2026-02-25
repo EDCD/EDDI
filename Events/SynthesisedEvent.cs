@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Utilities;
 
 namespace EddiEvents
@@ -22,6 +23,34 @@ namespace EddiEvents
         {
             this.synthesis = synthesis;
             this.materials = materials;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var synthesis = JsonParsing.getString(data, "Name");
+            data.TryGetValue( "Materials", out var val );
+            var materials = new List<MaterialAmount>();
+            
+            // 2.2 style
+            if ( val is Dictionary<string, object> materialsData )
+            {
+                foreach ( var materialData in materialsData )
+                {
+                    var material = Material.FromEDName(materialData.Key);
+                    materials.Add( new MaterialAmount( material, (int)(long)materialData.Value ) );
+                }
+            }
+            else if ( val is List<object> materialsJson ) // 2.3 style
+            {
+                foreach ( var materialJson in materialsJson.Cast<IDictionary<string, object>>() )
+                {
+                    var material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
+                    materials.Add( new MaterialAmount( material, (int)(long)materialJson[ "Count" ] ) );
+                }
+            }
+
+            events.Add( new SynthesisedEvent( timestamp, synthesis, materials ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

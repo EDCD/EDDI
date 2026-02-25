@@ -171,9 +171,9 @@ namespace EddiEvents
             this.controllingfaction = controllingfaction;
             this.factions = factions;
             this.conflicts = conflicts;
-            this.Economy = ( economy ?? Economy.None );
-            this.Economy2 = ( economy2 ?? Economy.None );
-            this.securityLevel = ( security ?? SecurityLevel.None );
+            this.Economy = economy ?? Economy.None;
+            this.Economy2 = economy2 ?? Economy.None;
+            this.securityLevel = security ?? SecurityLevel.None;
             this.population = population;
             this.taxi = taxi;
             this.multicrew = multicrew;
@@ -189,6 +189,68 @@ namespace EddiEvents
             this.powerControlProgress = powerplayControlProgress;
             this.powerReinforcementControlPoints = powerplayReinforcementControlPoints;
             this.powerUnderminingControlPoints = powerplayUnderminingControlPoints;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var systemName = JsonParsing.getString(data, "StarSystem");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            data.TryGetValue( "StarPos", out var val );
+            var starPos = (List<object>)val;
+            var x = Math.Round(JsonParsing.getDecimal("X", starPos?[0]) * 32) / (decimal)32.0;
+            var y = Math.Round(JsonParsing.getDecimal("Y", starPos?[1]) * 32) / (decimal)32.0;
+            var z = Math.Round(JsonParsing.getDecimal("Z", starPos?[2]) * 32) / (decimal)32.0;
+            var starName = JsonParsing.getString(data, "Body"); // Documented by the journal, but apparently never written. We can't rely on this being set.
+            var fuelUsed = JsonParsing.getDecimal(data, "FuelUsed");
+            var fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
+            var boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
+            var distance = JsonParsing.getDecimal(data, "JumpDist");
+            var economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy")) ?? Economy.None;
+            var economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy")) ?? Economy.None;
+            var security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity")) ?? SecurityLevel.None;
+            var population = JsonParsing.getOptionalLong(data, "Population");
+
+            // Parse factions array data
+            var factions = new List<Faction>();
+            data.TryGetValue( "Factions", out var factionsVal );
+            if ( factionsVal != null )
+            {
+                factions = EventParsing.Factions( factionsVal, systemName, systemAddress );
+            }
+            var controllingfaction = EventParsing.Faction(data, "System", systemName, systemAddress, factions);
+
+            // Parse conflicts array data
+            var conflicts = new List<Conflict>();
+            data.TryGetValue( "Conflicts", out var conflictsVal );
+            if ( conflictsVal != null )
+            {
+                conflicts = EventParsing.FactionConflicts( conflictsVal, factions );
+            }
+
+            // Powerplay data (if pledged)
+            EventParsing.PowerplayDetails( data, systemAddress, out var controllingPower,
+                out var powersInAcquisitionRange, out var powerplayState,
+                out var powerAcquisitionProgress,
+                out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
+                out var powerplayUnderminingControlPoints );
+
+            // Thargoid war data (if any)
+            EventParsing.ThargoidWarData( data, out var thargoidWar );
+
+            var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+            var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+
+            events.Add( new JumpedEvent( timestamp, systemName, systemAddress, x, y, z,
+                starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction,
+                factions, conflicts, economy, economy2, security, population, controllingPower,
+                powersInAcquisitionRange, powerplayState, powerAcquisitionProgress,
+                powerplayControlProgress, powerplayReinforcementControlPoints,
+                powerplayUnderminingControlPoints, taxi, multicrew, thargoidWar )
+            {
+                raw = line,
+                fromLoad = fromLogLoad
+            } );
+            return true;
         }
     }
 }

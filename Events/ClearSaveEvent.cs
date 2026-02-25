@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -21,6 +22,14 @@ namespace EddiEvents
         {
             this.name = name;
             this.frontierID = frontierID;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var name = JsonParsing.getString(data, "Name");
+            var frontierID = JsonParsing.getString(data, "FID");
+            events.Add( new ClearedSaveEvent( timestamp, name, frontierID ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

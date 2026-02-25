@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -45,7 +46,7 @@ namespace EddiEvents
 
         // Variables below are not intended to be user facing
 
-        public BodyType bodyType { get; private set; }
+        public BodyType bodyType { get; set; }
 
         public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, ulong systemAddress, string bodyName, int? bodyId, BodyType bodyType, bool? taxi, bool? multicrew) : base(timestamp, NAME)
         {
@@ -56,6 +57,21 @@ namespace EddiEvents
             this.bodyId = bodyId;
             this.taxi = taxi;
             this.multicrew = multicrew;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var system = JsonParsing.getString(data, "StarSystem");
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var body = JsonParsing.getString(data, "Body");
+            var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+            var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
+            var taxi = JsonParsing.getOptionalBool(data, "Taxi");
+            var multicrew = JsonParsing.getOptionalBool(data, "Multicrew");
+            events.Add( new EnteredNormalSpaceEvent( timestamp, system, systemAddress, body, bodyId, bodyType, taxi, multicrew ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

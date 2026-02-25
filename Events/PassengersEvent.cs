@@ -19,5 +19,31 @@ namespace EddiEvents
         {
             this.passengers = passengers;
         }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var passengers = new List<Passenger>();
+            data.TryGetValue( "Manifest", out var val );
+            var passengerManifest = (List<object>)val;
+
+            if ( passengerManifest != null )
+            {
+                foreach ( var passenger in passengerManifest )
+                {
+                    var passengerProperties = (Dictionary<string, object>)passenger;
+                    var missionid = JsonParsing.getULong( passengerProperties, "MissionID" );
+                    var type = JsonParsing.getString( passengerProperties, "Type" );
+                    var vip = JsonParsing.getBool( passengerProperties, "VIP" );
+                    var wanted = JsonParsing.getBool( passengerProperties, "Wanted" );
+                    var amount = JsonParsing.getInt( passengerProperties, "Count" );
+
+                    var newPassenger = new Passenger( missionid, type, vip, wanted, amount );
+                    passengers.Add( newPassenger );
+                }
+            }
+
+            events.Add( new PassengersEvent( timestamp, passengers ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
+        }
     }
 }

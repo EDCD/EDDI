@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -37,6 +38,30 @@ namespace EddiEvents
             this.rating = rating?.localizedName;
             this.faction = faction;
             this.power = power;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var success = JsonParsing.getBool(data, "Success");
+            var interdictee = JsonParsing.getString(data, "Interdicted");
+            var iscommander = JsonParsing.getBool(data, "IsPlayer");
+            data.TryGetValue( "CombatRank", out var val );
+            var rating = val == null ? null : CombatRating.FromRank( Convert.ToInt32( val ) );
+            var faction = EventParsing.FactionName(data, "Faction");
+            var power = JsonParsing.getString(data, "Power");
+
+            if ( !string.IsNullOrEmpty( JsonParsing.getString( data, "Interdicted_Localised" ) ) )
+            {
+                // This is an NPC with a symbolic name
+                interdictee = NpcAuthorityShip.EDNameExists( interdictee )
+                    ? NpcAuthorityShip.FromEDName( interdictee )?.localizedName
+                    : JsonParsing.getString( data, "Interdicted_Localised" );
+            }
+
+            events.Add( new ShipInterdictionEvent( timestamp, success, iscommander, interdictee, rating, faction, power ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }

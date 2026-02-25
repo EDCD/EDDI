@@ -1717,7 +1717,7 @@ namespace EddiCore
             CurrentStarSystem.powerAcquisitionProgress = theEvent.powerAcquisitionProgress;
             CurrentStarSystem.powerControlProgress = theEvent.powerControlProgress;
             CurrentStarSystem.powerReinforcementControlPoints = theEvent.powerReinforcementControlPoints;
-            currentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
+            CurrentStarSystem.powerUnderminingControlPoints = theEvent.powerUnderminingControlPoints;
 
             if ( theEvent.docked )
             {
@@ -1764,6 +1764,10 @@ namespace EddiCore
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             }
 
+            if ( theEvent.bodyType == BodyType.Planet )
+            {
+                theEvent.bodyType = CurrentStarSystem.bodies.FirstOrDefault( b => b.bodyId != null && b.bodyId == theEvent.bodyId )?.bodyType ?? theEvent.bodyType;
+            }
             if ( theEvent.bodyname != null && ( theEvent.bodyType == BodyType.Moon ||
                                                 theEvent.bodyType == BodyType.Planet ) )
             {
@@ -2372,6 +2376,14 @@ namespace EddiCore
             else
             {
                 await updateCurrentSystemAsync( theEvent.systemname, theEvent.systemAddress ).ConfigureAwait( false );
+            }
+
+            if ( theEvent.bodyType == BodyType.Planet )
+            {
+                theEvent.bodyType = CurrentStarSystem?.bodies
+                                        .FirstOrDefault( b => b.bodyId != null && b.bodyId == theEvent.bodyId )
+                                        ?.bodyType ??
+                                    theEvent.bodyType;
             }
 
             if (theEvent.taxi is true)

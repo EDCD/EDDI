@@ -181,10 +181,6 @@
     <value>Cockpit Canopy</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Cockpit</value>
-    <comment>Module Cockpit</comment>
-  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Collector Limpet Controller</value>
     <comment>Module CollectorLimpetController</comment>

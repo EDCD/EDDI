@@ -191,7 +191,7 @@ namespace EddiEvents
 
         public List<StationService> stationServices { get; private set; }
 
-        public BodyType bodyType { get; private set; }
+        public BodyType bodyType { get; set; }
 
         public bool taxi { get; private set; }
         
@@ -253,6 +253,120 @@ namespace EddiEvents
             this.powerControlProgress = powerplayControlProgress;
             this.powerReinforcementControlPoints = powerplayReinforcementControlPoints;
             this.powerUnderminingControlPoints = powerplayUnderminingControlPoints;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            var systemName = JsonParsing.getString(data, "StarSystem");
+
+            if ( systemName == "Training" )
+            {
+                // Training system; ignore
+                return true;
+            }
+
+            data.TryGetValue( "StarPos", out var val );
+            var starPos = (List<object>)val;
+            var x = Math.Round(JsonParsing.getDecimal("X", starPos?[0]) * 32) / (decimal)32.0;
+            var y = Math.Round(JsonParsing.getDecimal("Y", starPos?[1]) * 32) / (decimal)32.0;
+            var z = Math.Round(JsonParsing.getDecimal("Z", starPos?[2]) * 32) / (decimal)32.0;
+            var systemAddress = JsonParsing.getULong(data, "SystemAddress");
+            var distFromStarLs = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
+
+            var body = JsonParsing.getString(data, "Body");
+            var bodyId = JsonParsing.getOptionalInt(data, "BodyID");
+            var bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType")) ?? BodyType.None;
+
+            var docked = JsonParsing.getBool(data, "Docked");
+            var economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
+            var economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
+            var security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
+            var population = JsonParsing.getOptionalLong(data, "Population");
+
+            // If docked
+            var marketId = JsonParsing.getOptionalLong(data, "MarketID");
+            string stationName = null;
+            string stationLocalizedName = null;
+            StationModel stationtype = null;
+            if ( marketId != null )
+            {
+                EventParsing.StationNameAndType( data, out stationName, out stationLocalizedName, out stationtype );
+            }
+
+            // Get station services data
+            data.TryGetValue( "StationServices", out val );
+            var stationservices = (val as List<object>)?.Cast<string>()?.ToList() ?? new List<string>();
+            var stationServices = new List<StationService>();
+            foreach ( var service in stationservices )
+            {
+                stationServices.Add( StationService.FromEDName( service ) );
+            }
+
+            // Get station economies and their shares
+            data.TryGetValue( "StationEconomies", out var val2 );
+            var economies = val2 as List<object> ?? new List<object>();
+            var Economies = new List<EconomyShare>();
+            foreach ( var economyshare in economies.Cast<IDictionary<string, object>>() )
+            {
+                var economyShare = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                economyShare.fallbackLocalizedName = JsonParsing.getString( economyshare, "Name_Localised" );
+                var share = JsonParsing.getDecimal(economyshare, "Proportion");
+                if ( economyShare != Economy.None && share > 0 )
+                {
+                    Economies.Add( new EconomyShare( economyShare, share ) );
+                }
+            }
+
+            // If landed
+            var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+            var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+
+            // Parse factions array data
+            var factions = new List<Faction>();
+            data.TryGetValue( "Factions", out var factionsVal );
+            if ( factionsVal != null )
+            {
+                factions = EventParsing.Factions( factionsVal, systemName, systemAddress );
+            }
+            var systemfaction = EventParsing.Faction(data, "System", systemName, systemAddress, factions);
+            var stationfaction = EventParsing.Faction(data, "Station", systemName, systemAddress, factions);
+
+            // Parse conflicts array data
+            var conflicts = new List<Conflict>();
+            data.TryGetValue( "Conflicts", out var conflictsVal );
+            if ( conflictsVal != null )
+            {
+                conflicts = EventParsing.FactionConflicts( conflictsVal, factions );
+            }
+
+            // Powerplay data (if pledged)
+            EventParsing.PowerplayDetails( data, systemAddress, out var controllingPower,
+                out var powersInAcquisitionRange, out var powerplayState,
+                out var powerAcquisitionProgress,
+                out var powerplayControlProgress, out var powerplayReinforcementControlPoints,
+                out var powerplayUnderminingControlPoints );
+
+            var taxi = JsonParsing.getOptionalBool(data, "Taxi") ?? false;
+            var multicrew = JsonParsing.getOptionalBool(data, "Multicrew") ?? false;
+            var inSRV = JsonParsing.getOptionalBool(data, "InSRV") ?? false;
+            var onFoot = JsonParsing.getOptionalBool(data, "OnFoot") ?? false;
+
+            // Thargoid war data (if any)
+            EventParsing.ThargoidWarData( data, out var thargoidWar );
+
+            events.Add( new LocationEvent( timestamp, systemName, systemAddress, x, y, z,
+                distFromStarLs, body, bodyId, bodyType, longitude, latitude, docked,
+                stationLocalizedName ?? stationName, stationtype, marketId, stationServices, systemfaction,
+                stationfaction, factions, conflicts, Economies, economy, economy2, security,
+                population, controllingPower, powersInAcquisitionRange, powerplayState,
+                powerAcquisitionProgress, powerplayControlProgress,
+                powerplayReinforcementControlPoints, powerplayUnderminingControlPoints,
+                taxi, multicrew, inSRV, onFoot, thargoidWar )
+            {
+                raw = line,
+                fromLoad = fromLogLoad
+            } );
+            return true;
         }
     }
 }
