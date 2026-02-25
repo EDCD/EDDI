@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -31,6 +32,19 @@ namespace EddiEvents
             this.progress = (int)Math.Round(progress * 100); // multiplied by 100 to convert to percentage
             this.totalbodies = totalbodies;
             this.nonbodies = nonbodies;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            // A journal error was introduced in Odyssey 4.0 Update 17
+            // where FSSDiscoveryScan would report zero bodies and infinite progress.
+            // Don't parse `Progress` unless `BodyCount` is greater than zero.
+
+            var bodyCount = JsonParsing.getInt(data, "BodyCount"); // total number of stellar bodies in system
+            var nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // total number of non-body signals found
+            var progress = bodyCount > 0 ? JsonParsing.getDecimal(data, "Progress") : 0; // value from 0-1
+            events.Add( new DiscoveryScanEvent( timestamp, progress, bodyCount, nonBodyCount ) { raw = line, fromLoad = fromLogLoad } );
+            return true;
         }
     }
 }

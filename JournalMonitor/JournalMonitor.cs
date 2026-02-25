@@ -332,160 +332,38 @@ namespace EddiJournalMonitor
                             #region Exploration
 
                             case "BuyExplorationData":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var system = JsonParsing.getString(data, "System");
-                                    var price = JsonParsing.getLong(data, "Cost");
-                                    events.Add(new ExplorationDataPurchasedEvent(timestamp, system, price) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = ExplorationDataPurchasedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "CodexEntry":
                                 handled = CodexEntryEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "FSSAllBodiesFound":
-                                {
-                                    var systemName = JsonParsing.getString(data, "SystemName");
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var count = JsonParsing.getInt(data, "Count");
-                                    events.Add(new SystemScanComplete(timestamp, systemName, systemAddress, count) { raw = line, fromLoad = fromLogLoad });
-
-                                }
-                                handled = true;
+                                handled = SystemScanComplete.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "FSSBodySignals":
-                                {
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    var bodyName = JsonParsing.getString(data, "BodyName");
-                                    var bodyId = JsonParsing.getLong(data, "BodyID");
-                                    data.TryGetValue("Signals", out var signalsVal);
-
-                                    // These are surface signal sources from a body that we've scanned
-                                    var surfaceSignals = new List<SignalAmount>();
-                                    foreach (var signal in ((List<object>)signalsVal).Cast<IDictionary<string, object>>())
-                                    {
-                                        var signalSource = JsonParsing.getString(signal, "Type");
-                                        var source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                                        var localizedName = JsonParsing.getString(data, "Type_Localised");
-                                        if (!string.IsNullOrEmpty(localizedName) && !localizedName.Contains("$"))
-                                        {
-                                            source.fallbackLocalizedName = localizedName;
-                                        }
-                                        var amount = JsonParsing.getInt(signal, "Count");
-                                        surfaceSignals.Add(new SignalAmount(source, amount));
-                                    }
-                                    surfaceSignals = surfaceSignals.OrderByDescending(s => s.amount).ToList();
-                                    events.Add(new SurfaceSignalsEvent(timestamp, "FSS", systemAddress, bodyName, bodyId, surfaceSignals, null) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                            case "SAASignalsFound":
+                                handled = SurfaceSignalsEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "FSSDiscoveryScan":
-                                {
-                                    // A journal error was introduced in Odyssey 4.0 Update 17
-                                    // where FSSDiscoveryScan would report zero bodies and infinite progress.
-                                    // Don't parse `Progress` unless `BodyCount` is greater than zero.
-
-                                    var bodyCount = JsonParsing.getInt(data, "BodyCount"); // total number of stellar bodies in system
-                                    var nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // total number of non-body signals found
-                                    var progress = bodyCount > 0 ? JsonParsing.getDecimal(data, "Progress") : 0; // value from 0-1
-                                    events.Add( new DiscoveryScanEvent( timestamp, progress, bodyCount, nonBodyCount ) { raw = line, fromLoad = fromLogLoad } );
-                                }
-                                handled = true;
+                                handled = DiscoveryScanEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "FSSSignalDiscovered":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-
-                                    var source = EventParsing.SignalSource(data);
-                                    source.systemAddress = systemAddress;
-
-                                    source.spawningFaction = EventParsing.FactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
-                                    source.SpawningPower = Power.FromEDName( JsonParsing.getString( data, "SpawningPower" ) ); // the Powerplay power, if relevant
-                                    source.OpposingPower = Power.FromEDName( JsonParsing.getString( data, "OpposingPower" ) ); // the opposing Powerplay power, if relevant
-
-                                    var secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
-                                    source.expiry = secondsRemaining is null ? (DateTime?)null : timestamp.AddSeconds((double)secondsRemaining);
-
-                                    var spawningstate = JsonParsing.getString(data, "SpawningState");
-                                    var normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
-                                    source.spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
-                                    source.spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
-
-                                    source.threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
-                                    
-                                    events.Add(new SignalDetectedEvent(timestamp, systemAddress, source) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = SignalDetectedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "MaterialCollected":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
-                                    data.TryGetValue("Count", out var val);
-                                    var amount = (int)(long)val;
-                                    events.Add(new MaterialCollectedEvent(timestamp, material, amount) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = MaterialCollectedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "MaterialDiscarded":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
-                                    data.TryGetValue("Count", out var val);
-                                    var amount = (int)(long)val;
-                                    events.Add(new MaterialDiscardedEvent(timestamp, material, amount) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = MaterialDiscardedEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "MaterialDiscovered":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var material = Material.FromEDName(JsonParsing.getString(data, "Name"));
-                                    events.Add(new MaterialDiscoveredEvent(timestamp, material) { raw = line, fromLoad = fromLogLoad });
-                                    handled = true;
-                                }
+                                handled = MaterialDiscoveredEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "MultiSellExplorationData":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var systems = new List<string>();
-                                    data.TryGetValue("Discovered", out var val);
-                                    var discovered = (List<object>)val;
-                                    foreach (var discoveredSystem in discovered.Cast<IDictionary<string, object>>() )
-                                    {
-                                        var system = JsonParsing.getString(discoveredSystem, "SystemName");
-                                        if (!string.IsNullOrEmpty(system))
-                                        {
-                                            systems.Add(system);
-                                        }
-                                    }
-                                    data.TryGetValue("BaseValue", out val);
-                                    decimal reward = (long)val;
-                                    data.TryGetValue("Bonus", out val);
-                                    decimal bonus = (long)val;
-                                    data.TryGetValue("TotalEarnings", out val);
-                                    decimal total = (long)val;
-                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = ExplorationDataSoldEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
                             case "NavBeaconScan":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var systemAddress = JsonParsing.getULong(data, "SystemAddress");
-                                    data.TryGetValue("NumBodies", out var val);
-                                    var numbodies = (int)(long)val;
-                                    events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = NavBeaconScanEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "SAAScanComplete": // Body mapped
                                 {
@@ -529,9 +407,6 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 handled = true;
-                                break;
-                            case "SAASignalsFound":
-                                handled = SurfaceSignalsEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "Scan":
                                 {
@@ -739,9 +614,9 @@ namespace EddiJournalMonitor
                                         };
 
                                         events.Add(new BodyScannedEvent(timestamp, scantype, body) { raw = line, fromLoad = fromLogLoad });
-                                        handled = true;
                                     }
                                 }
+                                handled = true;
                                 break;
                             case "ScanOrganic":
                                 handled = ScanOrganicEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
@@ -750,40 +625,10 @@ namespace EddiJournalMonitor
                                 handled = OrganicDataSoldEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "Screenshot":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    var filename = JsonParsing.getString(data, "Filename");
-                                    data.TryGetValue("Width", out var val);
-                                    var width = (int)(long)val;
-                                    data.TryGetValue("Height", out val);
-                                    var height = (int)(long)val;
-                                    var system = JsonParsing.getString(data, "System");
-                                    var body = JsonParsing.getString(data, "Body");
-                                    var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                    var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-
-                                    events.Add(new ScreenshotEvent(timestamp, filename, width, height, system, body, longitude, latitude) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = ScreenshotEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
                                 break;
                             case "SellExplorationData":
-                                {
-                                    if ( fromLogLoad ) { handled = true; break; } // Skip handling this during log loading
-
-                                    data.TryGetValue("Systems", out var val);
-                                    var systems = ((List<object>)val).Cast<string>().ToList();
-                                    data.TryGetValue("Discovered", out val);
-                                    var firsts = ((List<object>)val).Cast<string>().ToList();
-                                    data.TryGetValue("BaseValue", out val);
-                                    decimal reward = (long)val;
-                                    data.TryGetValue("Bonus", out val);
-                                    decimal bonus = (long)val;
-                                    data.TryGetValue("TotalEarnings", out val);
-                                    decimal total = (long)val;
-                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
-                                }
-                                handled = true;
+                                handled = ExplorationDataSoldEvent.Handle( timestamp, edType, line, data, ref events, fromLogLoad );
                                 break;
 
                             #endregion

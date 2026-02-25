@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace EddiEvents
@@ -40,6 +41,22 @@ namespace EddiEvents
             this.body = body;
             this.longitude = longitude;
             this.latitude = latitude;
+        }
+
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        {
+            if ( fromLogLoad ) { return true; } // Skip handling this during log loading
+
+            var filename = JsonParsing.getString(data, "Filename");
+            var width = JsonParsing.getInt( data, "Width" );
+            var height = JsonParsing.getInt( data, "Height" );
+            var system = JsonParsing.getString(data, "System");
+            var body = JsonParsing.getString(data, "Body");
+            var latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+            var longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+
+            events.Add( new ScreenshotEvent( timestamp, filename, width, height, system, body, longitude, latitude ) { raw = line, fromLoad = false } );
+            return true;
         }
     }
 }
