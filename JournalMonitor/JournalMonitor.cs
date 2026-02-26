@@ -170,7 +170,7 @@ namespace EddiJournalMonitor
                             #region Startup Events
                               
                             case "Cargo":
-                                handled = CargoEvent.Handle( timestamp, line, data, ref events, fromLogLoad );
+                                handled = CargoEvent.Handle( timestamp, line, data, EDDI.Instance.Vehicle, ref events, fromLogLoad );
                                 break;
                             case "ClearSavedGame":
                                 handled = ClearedSaveEvent.Handle( timestamp, line, data, ref events, fromLogLoad );

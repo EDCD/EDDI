@@ -31,7 +31,7 @@ namespace EddiEvents
             this.cargocarried = cargocarried;
         }
 
-        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, ref List<Event> events, bool fromLogLoad )
+        public static bool Handle ( DateTime timestamp, string line, IDictionary<string, object> data, string vehicle, ref List<Event> events, bool fromLogLoad )
         {
             var inventory = new List<CargoInfoItem>();
 
