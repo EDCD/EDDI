@@ -35,7 +35,7 @@ namespace EddiEvents
         {
             var inventory = new List<CargoInfoItem>();
 
-            var vessel = JsonParsing.getString(data, "Vessel");
+            var vessel = JsonParsing.getString(data, "Vessel") ?? vehicle;
             var cargocarried = JsonParsing.getOptionalInt(data, "Count") ?? 0;
             data.TryGetValue( "Inventory", out var val );
             if ( val != null )
