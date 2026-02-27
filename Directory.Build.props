@@ -3,7 +3,8 @@
     <PropertyGroup>
 
         <!-- Targeting and Output -->
-        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+        <TargetFramework>net48</TargetFramework>
+        <Platforms>x64</Platforms>
 
         <!-- Auto-generate AssemblyInfo.cs -->
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -16,6 +17,11 @@
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         <AppendPlatformToOutputPath>false</AppendPlatformToOutputPath>
 
+    </PropertyGroup>
+
+    <!-- Ensure projects which use WPF or Windows Forms import Windows Desktop targets -->
+    <PropertyGroup Condition="'$(UseWPF)' == 'true' or '$(UseWindowsForms)' == 'true'">
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">

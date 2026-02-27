@@ -1,12 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net48</TargetFramework>
         <OutputType>Library</OutputType>
         <UseWPF>true</UseWPF>
-        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
         <!--Dynamic loading copies dependencies of dynamically loaded assemblies to the output directory-->
         <EnableDynamicLoading>true</EnableDynamicLoading>
-        <Platforms>x64</Platforms>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
         <OutputPath>..\bin\Debug\</OutputPath>

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <!-- Targeting and Output -->
-        <TargetFramework>net48</TargetFramework>
         <OutputType>WinExe</OutputType>
         <PlatformTarget>x64</PlatformTarget>
         <StartupObject>Eddi.App</StartupObject>
@@ -10,7 +9,6 @@
         <!-- Windows Desktop Settings -->
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>
-        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
         <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
         <!-- Packaging Metadata -->
         <RepositoryType>git</RepositoryType>
@@ -22,7 +20,6 @@
         <Copyright>Copyright ©  2016</Copyright>
         <Authors />
         <Company />
-        <Platforms>x64</Platforms>
     </PropertyGroup>
     <!-- Configuration-Specific Settings -->
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
