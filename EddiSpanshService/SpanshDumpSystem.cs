@@ -22,8 +22,7 @@ namespace EddiSpanshService
             try
             {
                 var requestUri = $"dump/{systemAddress}";
-                clientResponse =
-                    await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
+                clientResponse = await spanshHttpClient.GetAsync( requestUri, cancellationToken ).ConfigureAwait( false );
                 clientResponse.EnsureSuccessStatusCode();
                 var responseJson = await clientResponse.Content.ReadAsStringAsync().ConfigureAwait( false );
 
@@ -33,37 +32,26 @@ namespace EddiSpanshService
                     return null;
                 }
 
-                try
+                var jResponse = JToken.Parse(responseJson);
+                if ( jResponse.Contains( "error" ) )
                 {
-                    var jResponse = JToken.Parse( responseJson );
-                    if ( jResponse.Contains( "error" ) )
-                    {
-                        Logging.Debug( "Spansh API responded with: " + jResponse[ "error" ] );
-                    }
-                    else
-                    {
-                        return ParseStarSystemDump( jResponse[ "system" ], showMarketDetails );
-                    }
+                    Logging.Debug( $"Spansh API responded with: {jResponse[ "error" ]}" );
+                    return null;
                 }
-                catch ( Exception e )
-                {
-                    Logging.Error( "Failed to parse Spansh API response", e );
-                }
+                
+                return ParseStarSystemDump( jResponse[ "system" ], showMarketDetails, cancellationToken );
             }
             catch ( TaskCanceledException )
             {
                 // Task cancelled, nothing to do except return.
             }
-            catch ( HttpRequestException he )
+            catch ( HttpRequestException ) when ( clientResponse?.StatusCode == HttpStatusCode.NotFound )
             {
-                if ( clientResponse?.StatusCode == HttpStatusCode.NotFound )
-                {
-                    Logging.Warn( $"Spansh API has no record corresponding to System Address [ {systemAddress} ]" );
-                }
-                else
-                {
-                    Logging.Warn( he.Message, he );
-                }
+                Logging.Warn( $"Spansh API has no record corresponding to System Address [ {systemAddress} ]" );
+            }
+            catch ( Exception ex )
+            {
+                Logging.Error( "An error occurred while fetching the star system", ex );
             }
 
             return null;
@@ -74,19 +62,19 @@ namespace EddiSpanshService
             var starSystems = await Task.WhenAll( systemAddresses.AsParallel().Select( systemAddress =>
                 GetStarSystemAsync( systemAddress, showMarketDetails, cancellationToken ) ) ).ConfigureAwait( false );
             return starSystems.RemoveNulls();
-        }
+                }
 
-        private static StarSystem ParseStarSystemDump ( JToken data, bool showMarketDetails = false )
+        private static StarSystem ParseStarSystemDump ( JToken data, bool showMarketDetails = false, CancellationToken cancellationToken = default )
         {
             try
             {
                 var starSystem = new StarSystem
                 {
                     systemname = data[ "name" ].ToString(),
-                    systemAddress = data[ "id64" ].ToObject<ulong>(),
-                    x = data[ "coords" ]?[ "x" ]?.ToObject<decimal>(),
-                    y = data[ "coords" ]?[ "y" ]?.ToObject<decimal>(),
-                    z = data[ "coords" ]?[ "z" ]?.ToObject<decimal>(),
+                    systemAddress = data[ "id64" ].Value<ulong>(),
+                    x = data[ "coords" ]?[ "x" ]?.Value<decimal>(),
+                    y = data[ "coords" ]?[ "y" ]?.Value<decimal>(),
+                    z = data[ "coords" ]?[ "z" ]?.Value<decimal>(),
                     updatedat = Dates.fromDateTimeToSeconds( JsonParsing.getDateTime("date", data) )
                 };
 
@@ -101,16 +89,16 @@ namespace EddiSpanshService
                 }
 
                 // Populated System Data
-                starSystem.population = data[ "population" ]?.ToObject<long?>();
+                starSystem.population = data[ "population" ]?.Value<long?>();
                 if ( starSystem.population > 0 )
                 {
                     GetFactionData( starSystem, data );
 
-                    starSystem.Economies = new List<Economy>()
+                    starSystem.Economies = new[]
                     {
-                        Economy.FromName( data[ "primaryEconomy" ]?.ToString() ) ?? Economy.None,
-                        Economy.FromName( data[ "secondaryEconomy" ]?.ToString() ) ?? Economy.None
-                    };
+                        Economy.FromName(data["primaryEconomy"]?.ToString()) ?? Economy.None,
+                        Economy.FromName(data["secondaryEconomy"]?.ToString()) ?? Economy.None
+                    }.Where( e => e != Economy.None ).ToList();
 
                     starSystem.securityLevel = SecurityLevel.FromName( (string)data[ "security" ] ) ??
                                                SecurityLevel.None;
@@ -125,16 +113,16 @@ namespace EddiSpanshService
                         .Where( p => p != starSystem.Power )
                         .ToHashSet() ?? new HashSet<Power>() ).ToList();
                     starSystem.powerAcquisitionProgress = data[ "powerConflictProgress" ]?
-                        .Select( p => new PowerAcquisitionProgress( p[ "power" ]?.ToString(), p[ "progress" ].ToObject<decimal>() * 100 ) )
+                        .Select( p => new PowerAcquisitionProgress( p[ "power" ]?.ToString(), p[ "progress" ].Value<decimal>() * 100 ) )
                         .OrderByDescending( p => p.progress )
                         .ToList() ?? new List<PowerAcquisitionProgress>();
-                    starSystem.powerControlProgress = data[ "powerStateControlProgress" ]?.ToObject<decimal?>() ?? 0;
-                    starSystem.powerReinforcementControlPoints = data[ "powerStateReinforcement" ]?.ToObject<int?>() ?? 0;
-                    starSystem.powerUnderminingControlPoints = data[ "powerStateUndermining" ]?.ToObject<int?>() ?? 0;
+                    starSystem.powerControlProgress = data[ "powerStateControlProgress" ]?.Value<decimal?>() ?? 0;
+                    starSystem.powerReinforcementControlPoints = data[ "powerStateReinforcement" ]?.Value<int?>() ?? 0;
+                    starSystem.powerUnderminingControlPoints = data[ "powerStateUndermining" ]?.Value<int?>() ?? 0;
                 }
 
                 // Get bodies
-                starSystem.totalbodies = data[ "bodyCount" ]?.ToObject<int>() ?? 0;
+                starSystem.totalbodies = data[ "bodyCount" ]?.Value<int>() ?? 0;
                 starSystem.AddOrUpdateBodies( data[ "bodies" ]?.AsParallel()
                     .Select( b => ParseBody( starSystem, b, showMarketDetails ) ).RemoveNulls().ToList() ?? new List<Body>() );
 
@@ -169,7 +157,7 @@ namespace EddiSpanshService
                             FactionState =
                                 FactionState.FromName( f[ "state" ]?.ToString() ) ??
                                 FactionState.None,
-                            influence = f[ "influence" ]?.ToObject<decimal?>() * 100,
+                            influence = f[ "influence" ]?.Value<decimal?>() * 100,
                             updatedAt = JsonParsing.getDateTime("date", data)
                         }
                     }
@@ -182,36 +170,36 @@ namespace EddiSpanshService
                     StringComparison.InvariantCultureIgnoreCase ) );
         }
 
-        private static Body ParseBody ( StarSystem starSystem, JToken bodyData, bool showMarketDetails = false )
+        private static Body ParseBody ( StarSystem starSystem, JToken bodyData, bool showMarketDetails = false, CancellationToken cancellationToken = default )
         {
             try
             {
                 var name = bodyData[ "name" ]?.ToString();
-                var id64 = bodyData[ "id64" ].ToObject<ulong>();
-                var bodyId = bodyData[ "bodyId" ]?.ToObject<long?>();
-                var temperatureKelvin = bodyData["surfaceTemperature"]?.ToObject<decimal?>();
+                var id64 = bodyData[ "id64" ].Value<ulong>();
+                var bodyId = bodyData[ "bodyId" ]?.Value<long?>();
+                var temperatureKelvin = bodyData["surfaceTemperature"]?.Value<decimal?>();
                 var type =  bodyData[ "type" ]?.ToString();
 
-                var ascendingNode = bodyData[ "ascendingNode" ]?.ToObject<decimal?>();
-                var axialTiltDegrees = bodyData[ "axialTilt" ]?.ToObject<decimal?>();
-                var distanceLs = bodyData[ "distanceToArrival" ]?.ToObject<decimal?>();
-                var eccentricity = bodyData["orbitalEccentricity"]?.ToObject<decimal?>();
-                var meanAnomaly = bodyData[ "meanAnomaly" ]?.ToObject<decimal?>();
-                var orbitalInclinationDegrees = bodyData[ "orbitalInclination" ]?.ToObject<decimal?>();
-                var orbitalPeriodDays = bodyData[ "orbitalPeriod" ]?.ToObject<decimal?>();
+                var ascendingNode = bodyData[ "ascendingNode" ]?.Value<decimal?>();
+                var axialTiltDegrees = bodyData[ "axialTilt" ]?.Value<decimal?>();
+                var distanceLs = bodyData[ "distanceToArrival" ]?.Value<decimal?>();
+                var eccentricity = bodyData["orbitalEccentricity"]?.Value<decimal?>();
+                var meanAnomaly = bodyData[ "meanAnomaly" ]?.Value<decimal?>();
+                var orbitalInclinationDegrees = bodyData[ "orbitalInclination" ]?.Value<decimal?>();
+                var orbitalPeriodDays = bodyData[ "orbitalPeriod" ]?.Value<decimal?>();
                 var parents = bodyData[ "parents" ]?.ToObject<List<IDictionary<string, int>>>() ??
                           new List<IDictionary<string, int>>();
-                var periapsisDegrees = bodyData[ "argOfPeriapsis" ]?.ToObject<decimal?>();
+                var periapsisDegrees = bodyData[ "argOfPeriapsis" ]?.Value<decimal?>();
                 var ringsData = bodyData["rings"] ?? bodyData["belts"];
                 var rings = ringsData?.Select( ringToken => new Ring(
                 ringToken[ "name" ]?.ToString(),
                 RingComposition.FromName( ringToken[ "type" ]?.ToString() ),
-                ringToken[ "mass" ]?.ToObject<decimal?>() ?? 0,
-                ringToken[ "innerRadius" ]?.ToObject<decimal?>() ?? 0,
-                ringToken[ "outerRadius" ]?.ToObject<decimal?>() ?? 0
+                ringToken[ "mass" ]?.Value<decimal?>() ?? 0,
+                ringToken[ "innerRadius" ]?.Value<decimal?>() ?? 0,
+                ringToken[ "outerRadius" ]?.Value<decimal?>() ?? 0
             ) ).ToList() ?? new List<Ring>();
-                var rotationalPeriodDays = bodyData[ "rotationalPeriod" ]?.ToObject<decimal?>();
-                var semiMajorAxisLs = ConstantConverters.au2ls( bodyData[ "semiMajorAxis" ]?.ToObject<decimal?>() );
+                var rotationalPeriodDays = bodyData[ "rotationalPeriod" ]?.Value<decimal?>();
+                var semiMajorAxisLs = ConstantConverters.au2ls( bodyData[ "semiMajorAxis" ]?.Value<decimal?>() );
                 // TODO: Add `timestamps` property (for predicting orbital position)?
 
                 // Star properties
@@ -228,7 +216,7 @@ namespace EddiSpanshService
                 {
                     var planet = GetPlanetData( bodyData, starSystem, name, bodyId, id64, parents, distanceLs,
                     temperatureKelvin, semiMajorAxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees,
-                    orbitalPeriodDays, rotationalPeriodDays, axialTiltDegrees, rings, showMarketDetails );
+                    orbitalPeriodDays, rotationalPeriodDays, axialTiltDegrees, rings, showMarketDetails, cancellationToken );
                     return planet;
                 }
             }
@@ -242,16 +230,16 @@ namespace EddiSpanshService
         private static Body GetStarData( JToken starData, StarSystem starSystem, string starName, long? bodyId, ulong id64,
             List<IDictionary<string, int>> parents, decimal? distanceLs, decimal? temperatureKelvin, decimal? semiMajorAxisLs, decimal? eccentricity,
             decimal? orbitalInclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays,
-            decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings)
+            decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings )
         {
             try
             {
-                var absoluteMagnitude = starData[ "absoluteMagnitude" ]?.ToObject<decimal?>();
-                var ageMegaYears = starData[ "age" ]?.ToObject<long?>();
+                var absoluteMagnitude = starData[ "absoluteMagnitude" ]?.Value<decimal?>();
+                var ageMegaYears = starData[ "age" ]?.Value<long?>();
                 var luminosityClass = starData[ "luminosity" ]?.ToString();
-                //var mainStar = starData[ "mainStar" ]?.ToObject<bool?>();
-                var solarMasses = starData[ "solarMasses" ]?.ToObject<decimal?>();
-                var solarRadius = starData[ "solarRadius" ]?.ToObject<decimal?>();
+                //var mainStar = starData[ "mainStar" ]?.Value<bool?>();
+                var solarMasses = starData[ "solarMasses" ]?.Value<decimal?>();
+                var solarRadius = starData[ "solarRadius" ]?.Value<decimal?>();
                 var radiusKm = ( solarRadius * Constants.solarRadiusMeters / 1000 ) ?? 0;
                 var stellarclass = StarClass.FromName(starData["subType"]?.ToString())?.edname; // Map back from the name to the edname 
                 int? stellarsubclass = null;
@@ -280,7 +268,7 @@ namespace EddiSpanshService
         private static Body GetPlanetData( JToken planetData, StarSystem starSystem, string planetName, long? bodyId, ulong id64,
             List<IDictionary<string, int>> parents, decimal? distanceLs, decimal? temperatureKelvin, decimal? semiMajorAxisLs, decimal? eccentricity,
             decimal? orbitalInclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays,
-            decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool showMarketDetails = false )
+            decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool showMarketDetails = false, CancellationToken cancellationToken = default )
         {
             try
             {
@@ -294,31 +282,31 @@ namespace EddiSpanshService
                 var atmosphereCompositions = planetData[ "atmosphereComposition" ]?.Select( a =>
                 {
                     var atmosComp = a.ToObject<JProperty>();
-                    return new AtmosphereComposition( atmosComp.Name, atmosComp.Value.ToObject<decimal>() );
+                    return new AtmosphereComposition( atmosComp.Name, atmosComp.Value.Value<decimal>() );
                 } ).OrderByDescending( x => x.percent ).ToList() ?? new List<AtmosphereComposition>();
 
-                var earthmass = planetData[ "earthMasses" ]?.ToObject<decimal?>();
-                var gravity = planetData[ "gravity" ]?.ToObject<decimal?>() ?? 0;
-                var landable = planetData["isLandable"]?.ToObject<bool?>();
+                var earthmass = planetData[ "earthMasses" ]?.Value<decimal?>();
+                var gravity = planetData[ "gravity" ]?.Value<decimal?>() ?? 0;
+                var landable = planetData["isLandable"]?.Value<bool?>();
 
                 var materials = planetData[ "materials" ]?.Select( m =>
                 {
                     var mtrl = m.ToObject<JProperty>();
-                    return new MaterialPresence( mtrl.Name, mtrl.Value.ToObject<decimal>() );
+                    return new MaterialPresence( mtrl.Name, mtrl.Value.Value<decimal>() );
                 } ).OrderByDescending( o => o.percentage ).ToList() ?? new List<MaterialPresence>();
 
                 var planetClass = PlanetClass.FromName( planetData[ "subType" ]?.ToString() ) ?? PlanetClass.None;
-                var pressureAtm = planetData["surfacePressure"]?.ToObject<decimal?>();
-                var radiusKm = planetData["radius"]?.ToObject<decimal?>();
+                var pressureAtm = planetData["surfacePressure"]?.Value<decimal?>();
+                var radiusKm = planetData["radius"]?.Value<decimal?>();
                 var reserveLevel = ReserveLevel.FromName( planetData[ "reserveLevel" ]?.ToString() ) ??
                                ReserveLevel.None;
-                var tidallylocked = planetData["rotationalPeriodTidallyLocked"]?.ToObject<bool?>() ?? false;
+                var tidallylocked = planetData["rotationalPeriodTidallyLocked"]?.Value<bool?>() ?? false;
                 // TODO: Add `signals` property (for surface signals)
 
                 var solidCompositions = planetData[ "solidComposition" ]?.Select( c =>
                 {
                     var sldComp = c.ToObject<JProperty>();
-                    return new SolidComposition( sldComp.Name, sldComp.Value.ToObject<decimal>() );
+                    return new SolidComposition( sldComp.Name, sldComp.Value.Value<decimal>() );
                 } ).OrderByDescending( x => x.percent ).ToList() ?? new List<SolidComposition>();
 
                 starSystem.AddOrUpdateStations(
@@ -357,12 +345,12 @@ namespace EddiSpanshService
                     systemname = starSystem.systemname,
                     systemAddress = starSystem.systemAddress,
                     name = stationData[ "name" ]?.ToString(),
-                    marketId = stationData[ "id" ]?.ToObject<long?>(),
+                    marketId = stationData[ "id" ]?.Value<long?>(),
                     Model = bodyData != null && stationData[ "type" ] is null
                         ? StationModel.OnFootSettlement
                         : FromSpanshStationModel( stationData[ "type" ]?.ToString() ),
-                    distancefromstar = stationData[ "distanceToArrival" ]?.ToObject<decimal?>() ??
-                                       bodyData?[ "distanceToArrival" ]?.ToObject<decimal?>() // Light seconds
+                    distancefromstar = stationData[ "distanceToArrival" ]?.Value<decimal?>() ??
+                                       bodyData?[ "distanceToArrival" ]?.Value<decimal?>() // Light seconds
                 };
 
                 // TODO: Add ground settlement body name, body ID, latitude / longitude?
@@ -382,14 +370,14 @@ namespace EddiSpanshService
                         } );
 
                 station.landingPads = new StationLandingPads(
-                    stationData[ "landingPads" ]?[ "small" ]?.ToObject<int>() ?? 0,
-                    stationData[ "landingPads" ]?[ "medium" ]?.ToObject<int>() ?? 0,
-                    stationData[ "landingPads" ]?[ "large" ]?.ToObject<int>() ?? 0 );
+                    stationData[ "landingPads" ]?[ "small" ]?.Value<int>() ?? 0,
+                    stationData[ "landingPads" ]?[ "medium" ]?.Value<int>() ?? 0,
+                    stationData[ "landingPads" ]?[ "large" ]?.Value<int>() ?? 0 );
 
                 var economyShares = stationData[ "economies" ]?.Select( economyToken =>
                 {
                     var econShare = economyToken.ToObject<JProperty>();
-                    return new EconomyShare( econShare.Name, econShare.Value.ToObject<decimal>() );
+                    return new EconomyShare( econShare.Name, econShare.Value.Value<decimal>() );
                 } ).OrderByDescending( e => e.proportion ).ToList() ?? new List<EconomyShare>();
                 var primaryEconomyIndex = economyShares.FindIndex( e =>
                     e.economy.invariantName == stationData[ "primaryEconomy" ]?.ToString() );
@@ -413,10 +401,10 @@ namespace EddiSpanshService
                             ?.Select( c =>
                                 new CommodityMarketQuote( CommodityDefinition.FromEDName( c[ "symbol" ]?.ToString() ) )
                                 {
-                                    buyprice = c[ "buyPrice" ]?.ToObject<decimal?>() ?? 0,
-                                    demand = c[ "demand" ]?.ToObject<int?>() ?? 0,
-                                    sellprice = c[ "sellPrice" ]?.ToObject<decimal?>() ?? 0,
-                                    stock = c[ "supply" ]?.ToObject<int?>() ?? 0
+                                    buyprice = c[ "buyPrice" ]?.Value<decimal?>() ?? 0,
+                                    demand = c[ "demand" ]?.Value<int?>() ?? 0,
+                                    sellprice = c[ "sellPrice" ]?.Value<decimal?>() ?? 0,
+                                    stock = c[ "supply" ]?.Value<int?>() ?? 0
                                 }
                             ).ToList() ?? new List<CommodityMarketQuote>();
                         station.prohibited = stationData[ "market" ]?[ "prohibitedCommodities" ]

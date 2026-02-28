@@ -74,7 +74,7 @@ namespace EddiSpanshService
         {
             try
             {
-                return new NavWaypoint( r[ "name" ].ToString(), r[ "id64" ].ToObject<ulong>(), r[ "x" ].ToObject<decimal>(), r[ "y" ].ToObject<decimal>(), r[ "z" ].ToObject<decimal>() );
+                return new NavWaypoint( r[ "name" ].ToString(), r[ "id64" ].Value<ulong>(), r[ "x" ].Value<decimal>(), r[ "y" ].Value<decimal>(), r[ "z" ].Value<decimal>() );
             }
             catch ( Exception e )
             {

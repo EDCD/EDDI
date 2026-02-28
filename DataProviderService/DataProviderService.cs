@@ -157,7 +157,7 @@ namespace EddiDataProviderService
             // Fetch from external data providers (when so instructed)
             if ( missingSystems().Any() && fetchIfMissing )
             {
-                var fetchedSystems = await FetchSystemsDataAsync( missingSystems(), showMarketDetails ).ConfigureAwait(false) ?? new List<StarSystem>();
+                var fetchedSystems = await FetchSystemsDataAsync( missingSystems(), showMarketDetails ).ConfigureAwait( false ) ?? new List<StarSystem>();
                 if ( fetchedSystems.Count > 0 )
                 {
                     if ( fetchEdsmVisitsAndComments )
@@ -212,7 +212,7 @@ namespace EddiDataProviderService
             if ( missingSystems().Any() && fetchIfMissing )
             {
                 // Add the external data to our results
-                results.AddRange( await spanshService.GetQuickStarSystemsAsync( missingSystems(), cts.Token ).ConfigureAwait(false) );
+                results.AddRange( await spanshService.GetQuickStarSystemsAsync( missingSystems(), cts.Token ).ConfigureAwait( false ) );
             }
 
             if ( missingSystems().Any() )
@@ -504,7 +504,7 @@ namespace EddiDataProviderService
         private async Task<IList<StarSystem>> FetchSystemsDataAsync ( ulong[] systemAddresses, bool showMarketDetails )
         {
             if ( systemAddresses == null || systemAddresses.Length == 0 ) { return new List<StarSystem>(); }
-            return await spanshService.GetStarSystemsAsync( systemAddresses, showMarketDetails, cts.Token ).ConfigureAwait(false);
+            return await spanshService.GetStarSystemsAsync( systemAddresses, showMarketDetails, cts.Token ).ConfigureAwait( false );
         }
 
         /// <summary>

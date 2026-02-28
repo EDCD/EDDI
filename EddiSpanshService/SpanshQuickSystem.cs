@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -40,7 +41,7 @@ namespace EddiSpanshService
                     }
                     else
                     {
-                        return ParseQuickSystem( jResponse[ "record" ] );
+                        return ParseQuickSystem( jResponse[ "record" ], cancellationToken );
                     }
                 }
                 catch ( Exception e )
@@ -69,17 +70,17 @@ namespace EddiSpanshService
             return quickSystems.RemoveNulls();
         }
 
-        private static StarSystem ParseQuickSystem ( JToken data )
+        private static StarSystem ParseQuickSystem ( JToken data, CancellationToken cancellationToken = default )
         {
             try
             {
                 var starSystem = new StarSystem
                 {
                     systemname = data[ "name" ].ToString(),
-                    systemAddress = data[ "id64" ].ToObject<ulong>(),
-                    x = data[ "x" ]?.ToObject<decimal>(),
-                    y = data[ "y" ]?.ToObject<decimal>(),
-                    z = data[ "z" ]?.ToObject<decimal>(),
+                    systemAddress = data[ "id64" ].Value<ulong>(),
+                    x = data[ "x" ]?.Value<decimal>(),
+                    y = data[ "y" ]?.Value<decimal>(),
+                    z = data[ "z" ]?.Value<decimal>(),
                     updatedat = Dates.fromDateTimeToSeconds( JsonParsing.getDateTime("updated_at", data) )
                 };
 
@@ -123,13 +124,13 @@ namespace EddiSpanshService
                 var station = new Station
                 {
                     name = stationData[ "name" ]?.ToString(),
-                    marketId = stationData[ "market_id" ]?.ToObject<long?>(),
+                    marketId = stationData[ "market_id" ]?.Value<long?>(),
                     Model = FromSpanshStationModel( stationData[ "type" ]?.ToString() ) ?? 
                             StationModel.OnFootSettlement,
                     landingPads = new StationLandingPads(
-                        stationData[ "small_pads" ]?.ToObject<int?>() ?? 0,
-                        stationData[ "medium_pads" ]?.ToObject<int?>() ?? 0,
-                        stationData[ "large_pads" ]?.ToObject<int?>() ?? 0 ),
+                        stationData[ "small_pads" ]?.Value<int?>() ?? 0,
+                        stationData[ "medium_pads" ]?.Value<int?>() ?? 0,
+                        stationData[ "large_pads" ]?.Value<int?>() ?? 0 ),
                     stationServices = stationData[ "services" ]?
                         .Select( t => StationService.FromName( t.ToString() ) )
                         .ToList() ?? new List<StationService>()

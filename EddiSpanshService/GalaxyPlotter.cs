@@ -151,12 +151,12 @@ namespace EddiSpanshService
             {
                 if ( jump[ "id64" ] != null && jump["x"] != null && jump["y"] != null && jump["z"] != null)
                 {
-                    var waypoint = new NavWaypoint(jump["name"]?.ToObject<string>(), jump["id64"].ToObject<ulong>(), jump["x"].ToObject<decimal>(),
-                        jump["y"].ToObject<decimal>(), jump["z"].ToObject<decimal>())
+                    var waypoint = new NavWaypoint(jump["name"]?.Value<string>(), jump["id64"].Value<ulong>(), jump["x"].Value<decimal>(),
+                        jump["y"].Value<decimal>(), jump["z"].Value<decimal>())
                     {
-                        hasNeutronStar = jump["has_neutron"]?.ToObject<bool>() ?? false,
-                        isScoopable = jump["is_scoopable"]?.ToObject<bool?>() ?? false,
-                        refuelRecommended = jump["must_refuel"]?.ToObject<bool?>() ?? false
+                        hasNeutronStar = jump["has_neutron"]?.Value<bool>() ?? false,
+                        isScoopable = jump["is_scoopable"]?.Value<bool?>() ?? false,
+                        refuelRecommended = jump["must_refuel"]?.Value<bool?>() ?? false
                     };
                     results.Add(waypoint);
                 }

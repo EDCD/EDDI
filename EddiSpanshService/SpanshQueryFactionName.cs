@@ -38,7 +38,7 @@ namespace EddiSpanshService
                     var systemQueryResult = await QueryAsync(QueryGroup.systems, searchFilters, cancellationToken, maxResultsPerPage, page).ConfigureAwait(false);
                     if ( systemQueryResult != null )
                     {
-                        count = count ?? systemQueryResult[ "count" ]?.ToObject<int?>();
+                        count = count ?? systemQueryResult[ "count" ]?.Value<int?>();
                         systemsQueryResults.AddRange( systemQueryResult[ "results" ]?.ToObject<List<JToken>>() ?? new List<JToken>() );
                         page++;
                     }
@@ -109,8 +109,8 @@ namespace EddiSpanshService
                 var factionPresence = new FactionPresence
                 {
                     systemName = systemData[ "name" ]?.ToString(),
-                    systemAddress = systemData[ "id64" ]?.ToObject<ulong>() ?? 0,
-                    influence = presenceData?[ "influence" ]?.ToObject<decimal?>() * 100,
+                    systemAddress = systemData[ "id64" ]?.Value<ulong>() ?? 0,
+                    influence = presenceData?[ "influence" ]?.Value<decimal?>() * 100,
                     FactionState = FactionState.FromName( presenceData?[ "state" ]?.ToString() ) ?? FactionState.None,
                     updatedAt = JsonParsing.getDateTime( "updated_at", systemData )
                 };

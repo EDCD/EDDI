@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -75,15 +76,15 @@ namespace EddiSpanshService
                 if ( stationData is null ) { return null; }
 
                 var systemName = stationData[ "system_name" ]?.ToString();
-                var systemAddress = stationData[ "system_id64" ]?.ToObject<ulong>() ?? 0;
-                var systemX = stationData[ "system_x" ]?.ToObject<decimal>() ?? 0;
-                var systemY = stationData[ "system_y" ]?.ToObject<decimal>() ?? 0;
-                var systemZ = stationData[ "system_z" ]?.ToObject<decimal>() ?? 0;
+                var systemAddress = stationData[ "system_id64" ]?.Value<ulong>() ?? 0;
+                var systemX = stationData[ "system_x" ]?.Value<decimal>() ?? 0;
+                var systemY = stationData[ "system_y" ]?.Value<decimal>() ?? 0;
+                var systemZ = stationData[ "system_z" ]?.Value<decimal>() ?? 0;
 
                 return new NavWaypoint( systemName, systemAddress, systemX, systemY, systemZ )
                 {
                     stationName = stationData[ "name" ]?.ToString(),
-                    marketID = stationData[ "market_id" ]?.ToObject<long>()
+                    marketID = stationData[ "market_id" ]?.Value<long>()
                 };
             }
             catch ( Exception e )
