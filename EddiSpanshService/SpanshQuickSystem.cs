@@ -1,7 +1,6 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -41,7 +40,7 @@ namespace EddiSpanshService
                     }
                     else
                     {
-                        return ParseQuickSystem( jResponse[ "record" ], cancellationToken );
+                        return ParseQuickSystem( jResponse[ "record" ] );
                     }
                 }
                 catch ( Exception e )
@@ -70,7 +69,7 @@ namespace EddiSpanshService
             return quickSystems.RemoveNulls();
         }
 
-        private static StarSystem ParseQuickSystem ( JToken data, CancellationToken cancellationToken = default )
+        private static StarSystem ParseQuickSystem ( JToken data )
         {
             try
             {

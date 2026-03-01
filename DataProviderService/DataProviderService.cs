@@ -353,23 +353,43 @@ namespace EddiDataProviderService
             var results = new List<StarSystem>();
             foreach ( var dbStarSystem in dbStarSystems )
             {
-                if ( refreshIfOutdated && dbStarSystem.lastUpdated < DateTime.UtcNow.AddHours( -1 ) )
+                if ( HasKeyFields( dbStarSystem ) && IsRecent( refreshIfOutdated, dbStarSystem ) )
                 {
-                    // When specified, exclude stale data to force a refresh from another source
-                    continue;
+                    // Deserialize the result
+                    var result = DeserializeStarSystem( dbStarSystem.systemAddress, dbStarSystem.systemJson );
+
+                    // Exclude null results and results with missing coordinates (forcing a refresh from another source)
+                    if ( result?.x != null && result.y != null && result.z != null )
+                    {
+                        results.Add( result );
+                    }
                 }
 
-                // Deserialize the result
-                var result = DeserializeStarSystem(dbStarSystem.systemAddress, dbStarSystem.systemJson);
-
-                // Exclude null results and results with missing coordinates (forcing a refresh from another source)
-                if ( result?.x != null && result.y != null && result.z != null )
-                {
-                    results.Add( result );
-                }
             }
 
             return results;
+
+            // Consider a star system to be recent if it has been updated within the last hour
+            // (for populated systems) or the last month (for unpopulated systems, which are
+            // less likely to have changed)
+            bool IsRecent ( bool isRecencyImportant, DatabaseStarSystem dbStarSystem )
+            {
+                if ( isRecencyImportant )
+                {
+                    return dbStarSystem.population > 0
+                        ? dbStarSystem.lastUpdated >= DateTime.UtcNow.AddHours( -1 )
+                        : dbStarSystem.lastUpdated >= DateTime.UtcNow.AddMonths( -1 );
+                }
+                return true;
+            }
+            
+            bool HasKeyFields ( DatabaseStarSystem dbStarSystem )
+            {
+                return dbStarSystem.systemAddress > 0 && 
+                       dbStarSystem.x != null && 
+                       dbStarSystem.y != null && 
+                       dbStarSystem.z != null;
+            }
         }
 
         internal static IList<StarSystem> PreserveUnsyncedProperties ( IList<StarSystem> updatedSystems, IList<StarSystem> databaseStarSystems )

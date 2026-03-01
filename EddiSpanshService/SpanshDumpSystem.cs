@@ -39,7 +39,7 @@ namespace EddiSpanshService
                     return null;
                 }
                 
-                return ParseStarSystemDump( jResponse[ "system" ], showMarketDetails, cancellationToken );
+                return ParseStarSystemDump( jResponse[ "system" ], showMarketDetails );
             }
             catch ( TaskCanceledException )
             {
@@ -64,7 +64,7 @@ namespace EddiSpanshService
             return starSystems.RemoveNulls();
                 }
 
-        private static StarSystem ParseStarSystemDump ( JToken data, bool showMarketDetails = false, CancellationToken cancellationToken = default )
+        private static StarSystem ParseStarSystemDump ( JToken data, bool showMarketDetails = false )
         {
             try
             {
@@ -170,7 +170,7 @@ namespace EddiSpanshService
                     StringComparison.InvariantCultureIgnoreCase ) );
         }
 
-        private static Body ParseBody ( StarSystem starSystem, JToken bodyData, bool showMarketDetails = false, CancellationToken cancellationToken = default )
+        private static Body ParseBody ( StarSystem starSystem, JToken bodyData, bool showMarketDetails = false )
         {
             try
             {
@@ -216,7 +216,7 @@ namespace EddiSpanshService
                 {
                     var planet = GetPlanetData( bodyData, starSystem, name, bodyId, id64, parents, distanceLs,
                     temperatureKelvin, semiMajorAxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees,
-                    orbitalPeriodDays, rotationalPeriodDays, axialTiltDegrees, rings, showMarketDetails, cancellationToken );
+                    orbitalPeriodDays, rotationalPeriodDays, axialTiltDegrees, rings, showMarketDetails );
                     return planet;
                 }
             }
@@ -268,7 +268,7 @@ namespace EddiSpanshService
         private static Body GetPlanetData( JToken planetData, StarSystem starSystem, string planetName, long? bodyId, ulong id64,
             List<IDictionary<string, int>> parents, decimal? distanceLs, decimal? temperatureKelvin, decimal? semiMajorAxisLs, decimal? eccentricity,
             decimal? orbitalInclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays,
-            decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool showMarketDetails = false, CancellationToken cancellationToken = default )
+            decimal? rotationalPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool showMarketDetails = false )
         {
             try
             {

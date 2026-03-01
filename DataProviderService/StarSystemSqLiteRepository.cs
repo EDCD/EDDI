@@ -22,18 +22,20 @@ namespace EddiDataProviderService
         private long SCHEMA_VERSION { get; set; }
 
         // Append new table columns to the end of the list to maximize compatibility with schema version 0.
-        // systemaddress. 
-        // Furthermore, any combination of name and systemaddress must also be unique.
         private const string CREATE_TABLE_SQL = @" 
                     CREATE TABLE IF NOT EXISTS starsystems
                     (
+                        systemaddress INT UNIQUE,
                         name TEXT NOT NULL COLLATE NOCASE,
-                        totalvisits INT NOT NULL,
-                        lastvisit DATETIME,
+                        x DECIMAL(12,5),
+                        y DECIMAL(12,5),
+                        z DECIMAL(12,5),
                         starsystem TEXT NOT NULL,
                         starsystemlastupdated DATETIME NOT NULL,
+                        population INT,
+                        totalvisits INT NOT NULL,
+                        lastvisit DATETIME,
                         comment TEXT,
-                        systemaddress INT UNIQUE,
                         CONSTRAINT combined_uniques UNIQUE (name, systemaddress)
                      );";
         private const string CREATE_INDEX_SQL = @" 
@@ -50,13 +52,17 @@ namespace EddiDataProviderService
                     ALTER TABLE starsystems RENAME TO old_starsystems;"
                     + CREATE_TABLE_SQL + INSERT_SQL + @"
                     SELECT DISTINCT
+                        systemaddress,
                         name,
-                        totalvisits,
-                        lastvisit,
+                        x,
+                        y,
+                        z,
                         starsystem,
                         starsystemlastupdated,
-                        comment,
-                        systemaddress
+                        population,
+                        totalvisits,
+                        lastvisit,
+                        comment
                     FROM old_starsystems;
                     DROP TABLE old_starsystems;
                     COMMIT;
@@ -67,23 +73,32 @@ namespace EddiDataProviderService
         private const string INSERT_SQL = @" 
                     INSERT INTO starsystems
                     (
+                        systemaddress,
                         name,
-                        totalvisits,
-                        lastvisit,
+                        x,
+                        y,
+                        z,
                         starsystem,
                         starsystemlastupdated,
-                        comment,
-                        systemaddress
+                        population,
+                        totalvisits,
+                        lastvisit,
+                        comment
                     )";
         private const string UPDATE_SQL = @" 
                     UPDATE starsystems
                         SET 
-                            totalvisits = @totalvisits,
-                            lastvisit = @lastvisit,
+                            systemaddress = @systemaddress,
+                            name = @name,
+                            x = @x,
+                            y = @y,
+                            z = @z,
                             starsystem = @starsystem,
                             starsystemlastupdated = @starsystemlastupdated,
-                            comment = @comment,
-                            systemaddress = @systemaddress
+                            population = @population,
+                            totalvisits = @totalvisits,
+                            lastvisit = @lastvisit,
+                            comment = @comment
                     ";
         private const string DELETE_SQL = @"DELETE FROM starsystems ";
         private const string SELECT_SQL = @"SELECT * FROM starsystems ";
@@ -91,13 +106,17 @@ namespace EddiDataProviderService
         private const string VALUES_SQL = @" 
                     VALUES
                     (
+                        @systemaddress,
                         @name, 
-                        @totalvisits, 
-                        @lastvisit, 
+                        @x,
+                        @y,
+                        @z,
                         @starsystem, 
                         @starsystemlastupdated,
-                        @comment,
-                        @systemaddress
+                        @population,
+                        @totalvisits, 
+                        @lastvisit, 
+                        @comment
                     )";
         private const string WHERE_SYSTEMADDRESS = @"WHERE systemaddress = @systemaddress;";
         private const string WHERE_NAME = @"WHERE name = @name;";
@@ -318,6 +337,10 @@ namespace EddiDataProviderService
             var lastUpdated = DateTime.MinValue;
             DateTime? lastVisit = null;
             var totalVisits = 0;
+            decimal? x = null;
+            decimal? y = null;
+            decimal? z = null;
+            long? population = 0;
 
             var fieldMappings = new Dictionary<string, Action<DbDataReader, int>>
             {
@@ -327,6 +350,15 @@ namespace EddiDataProviderService
                 { "name", (rdr, i) => systemName = rdr.IsDBNull(i) 
                     ? string.Empty 
                     : rdr.GetString(i) },
+                { "x", (rdr, i) => x = rdr.IsDBNull(i)
+                    ? null
+                    : (decimal?)rdr.GetDecimal(i) },
+                { "y", (rdr, i) => y = rdr.IsDBNull(i)
+                    ? null
+                    : (decimal?)rdr.GetDecimal(i) },
+                { "z", (rdr, i) => z = rdr.IsDBNull(i)
+                    ? null
+                    : (decimal?)rdr.GetDecimal(i) },
                 { "starsystem", (rdr, i) => starSystemJson = rdr.IsDBNull(i) 
                     ? string.Empty 
                     : rdr.GetString(i) },
@@ -341,7 +373,10 @@ namespace EddiDataProviderService
                     : (DateTime?)rdr.GetDateTime(i).ToUniversalTime() },
                 { "totalvisits", (rdr, i) => totalVisits = rdr.IsDBNull(i) 
                     ? 0 
-                    : rdr.GetInt32(i) }
+                    : rdr.GetInt32(i) },
+                { "population", (rdr, i) => population = rdr.IsDBNull(i)
+                    ? null
+                    : (long?)rdr.GetInt64(i) }
             };
 
             using ( var rdr = await cmd.ExecuteReaderAsync( cancellationToken ).ConfigureAwait( false ) )
@@ -359,10 +394,14 @@ namespace EddiDataProviderService
                         }
                         return new DatabaseStarSystem( systemName, systemAddress ?? 0, starSystemJson )
                         {
+                            x = x,
+                            y = y,
+                            z = z,
                             comment = comment,
                             lastUpdated = lastUpdated,
                             lastVisit = lastVisit,
-                            totalVisits = totalVisits
+                            totalVisits = totalVisits,
+                            population = population
                         };
                     }
                 }
@@ -445,10 +484,14 @@ namespace EddiDataProviderService
                                 cmd.CommandText = INSERT_SQL + VALUES_SQL;
                                 cmd.Parameters.AddWithValue( "@name", system.systemname );
                                 cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
+                                cmd.Parameters.AddWithValue( "@x", system.x );
+                                cmd.Parameters.AddWithValue( "@y", system.y );
+                                cmd.Parameters.AddWithValue( "@z", system.z );
                                 cmd.Parameters.AddWithValue( "@totalvisits", system.visits );
                                 cmd.Parameters.AddWithValue( "@lastvisit", system.lastvisit ?? DateTime.UtcNow );
                                 cmd.Parameters.AddWithValue( "@starsystem", JsonConvert.SerializeObject( system ) );
                                 cmd.Parameters.AddWithValue( "@starsystemlastupdated", system.lastupdated );
+                                cmd.Parameters.AddWithValue( "@population", system.population );
                                 cmd.Parameters.AddWithValue( "@comment", system.comment );
                                 Logging.Debug( "Inserting new starsystem " + system.systemAddress, system );
                                 await cmd.ExecuteNonQueryAsync().ConfigureAwait( false );
@@ -495,13 +538,17 @@ namespace EddiDataProviderService
                                 }
 
                                 cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
                                 cmd.Parameters.AddWithValue( "@name", system.systemname );
-                                cmd.Parameters.AddWithValue( "@totalvisits", system.visits );
-                                cmd.Parameters.AddWithValue( "@lastvisit", system.lastvisit ?? DateTime.UtcNow );
+                                cmd.Parameters.AddWithValue( "@x", system.x );
+                                cmd.Parameters.AddWithValue( "@y", system.y );
+                                cmd.Parameters.AddWithValue( "@z", system.z );
                                 cmd.Parameters.AddWithValue( "@starsystem", serializedSystem );
                                 cmd.Parameters.AddWithValue( "@starsystemlastupdated", system.lastupdated );
+                                cmd.Parameters.AddWithValue( "@population", system.population );
+                                cmd.Parameters.AddWithValue( "@totalvisits", system.visits );
+                                cmd.Parameters.AddWithValue( "@lastvisit", system.lastvisit ?? DateTime.UtcNow );
                                 cmd.Parameters.AddWithValue( "@comment", system.comment );
-                                cmd.Parameters.AddWithValue( "@systemaddress", system.systemAddress );
                                 Logging.Debug( "Updating starsystem " + system.systemAddress, system );
                                 await cmd.ExecuteNonQueryAsync().ConfigureAwait( false );
                             }
@@ -590,7 +637,7 @@ namespace EddiDataProviderService
                     if ( SCHEMA_VERSION < 1 )
                     {
                         Logging.Debug( "Updating starsystem repository to schema version 1" );
-                        AddColumnIfMissing( con, "comment" );
+                        AddColumnIfMissing( con, "comment", @"ALTER TABLE starsystems ADD COLUMN comment TEXT;" );
                         SCHEMA_VERSION = 1;
                     }
 
@@ -599,7 +646,7 @@ namespace EddiDataProviderService
                         Logging.Debug( "Updating starsystem repository to schema version 2" );
 
                         // Allocate our new columns
-                        AddColumnIfMissing( con, "systemaddress" );
+                        AddColumnIfMissing( con, "systemaddress", @"ALTER TABLE starsystems ADD COLUMN systemaddress INT" );
 
                         // We have to replace our table with a new copy to assign our new columns as unique
                         using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
@@ -622,6 +669,23 @@ namespace EddiDataProviderService
                         }
 
                         SCHEMA_VERSION = 3;
+                    }
+
+                    if ( SCHEMA_VERSION < 4 )
+                    {
+                        Logging.Debug( "Updating starsystem repository to schema version 4" );
+                        AddColumnIfMissing( con, "x", @"ALTER TABLE starsystems ADD COLUMN x DECIMAL(12,5)" );
+                        AddColumnIfMissing( con, "y", @"ALTER TABLE starsystems ADD COLUMN y DECIMAL(12,5)" );
+                        AddColumnIfMissing( con, "z", @"ALTER TABLE starsystems ADD COLUMN z DECIMAL(12,5)" );
+                        AddColumnIfMissing( con, "population", @"ALTER TABLE starsystems ADD COLUMN population INT" );
+
+                        // We have to replace our table with a new copy to reorder columns
+                        using ( var cmd = new SQLiteCommand( REPLACE_TABLE_SQL, con ) )
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        SCHEMA_VERSION = 4;
                     }
 
                     // Add our indices (if they don't already exist)
@@ -654,24 +718,13 @@ namespace EddiDataProviderService
             Logging.Debug("Starsystem repository ready.");
         }
 
-        /// <summary> Valid columnNames are "systemaddress" and "comment" </summary>
-        private void AddColumnIfMissing(SQLiteConnection con, string columnName )
+        /// <summary> Parameters like `DISTINCT` cannot be set on columns by this method, the table would need to be recreated instead. </summary>
+        private void AddColumnIfMissing(SQLiteConnection con, string columnName, string alterTableCmd )
         {
-            // Parameters like `DISTINCT` cannot be set on columns by this method
-            string command = string.Empty;
-            switch (columnName)
+            // 
+            if ( !string.IsNullOrEmpty( alterTableCmd ) )
             {
-                case "systemaddress":
-                    command = @"ALTER TABLE starsystems ADD COLUMN systemaddress INT";
-                    break;
-                case "comment":
-                    command = @"ALTER TABLE starsystems ADD COLUMN comment TEXT;";
-                    break;
-            }
-
-            if ( !string.IsNullOrEmpty( command ) )
-            {
-                bool columnExists = false;
+                var columnExists = false;
                 using ( var cmd = new SQLiteCommand( TABLE_INFO_SQL, con ) )
                 {
                     using ( var rdr = cmd.ExecuteReader() )
@@ -692,7 +745,7 @@ namespace EddiDataProviderService
                     Logging.Debug( "Updating starsystem repository with new column " + columnName );
                     try
                     {
-                        using ( var cmd = new SQLiteCommand( command, con ) )
+                        using ( var cmd = new SQLiteCommand( alterTableCmd, con ) )
                         {
                             cmd.ExecuteNonQuery();
                         }
