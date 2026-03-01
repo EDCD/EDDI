@@ -2,11 +2,11 @@ EDDI integrates with VoiceAttack in two ways.  Firstly, it generates a large num
 
 # Using EDDI with VoiceAttack
 
-N.B. EDDI requires at least version 1.8.10 of VoiceAttack v1 to function correctly.VoiceAttack v2 is not yet supported.
+N.B. EDDI requires at least version 2.0.0 of VoiceAttack 2 to function correctly.VoiceAttack version 1.X is no longer supported.
 
 For EDDI to work with VoiceAttack it must be installed as a VoiceAttack plugin.  To do this EDDI should be installed within the `Apps` directory of your VoiceAttack installation; by default VoiceAttack installs in one of two locations: 
-- `C:\Program Files (x86)\VoiceAttack` (for standard licenses)
-- `C:\Program Files (x86)\Steam\steamapps\common\VoiceAttack` (for Steam licenses)
+- `C:\Program Files\VoiceAttack2\Apps` (for standard licenses)
+- `C:\Program Files (x86)\Steam\steamapps\common\VoiceAttack2\Apps` (for Steam licenses)
 
 VoiceAttack must be configured to use plugins.  To do so you must click on the VoiceAttack Options icon (a spanner) in the bottom-right corner of the VoiceAttack main screen, check the 'Enable plugin support' option, and then restart VoiceAttack.
 
@@ -16,7 +16,7 @@ If EDDI is installed in the correct location and plugin support is enabled you s
 
 EDDI provides a VoiceAttack profile with some basic commands to get you started.  This is not a control profile in that it does not provide you with the ability to control the ship.  It allows you to display and manipulate EDDI's User Interface with commands like "Configure EDDI" and demonstrates how you can interact with EDDI via the plugin using command phrases such as "please could you repeat that" and questions such as "what use is decoded emission data?"
 
-The profile is available in the EDDI installation directory (normally "C:\Program Files (x86)\Steam\steamapps\common\VoiceAttack\Apps\EDDI" or "C:\Program Files (x86)\VoiceAttack\Apps\EDDI") as EDDI.vap. To make the commands in this profile both available and easily updateable, we recommend [importing the profile into VoiceAttack](https://voiceattack.com/VoiceAttackHelp.pdf#page=134) and supplementing your base profile with EDDI profile commands via the ['Include commands from other profiles'](https://voiceattack.com/VoiceAttackHelp.pdf#page=8) profile option.
+The profile is available in the EDDI installation directory (normally "C:\Program Files (x86)\Steam\steamapps\common\VoiceAttack2\Apps\EDDI" or "C:\Program Files (x86)\VoiceAttack2\Apps\EDDI") as EDDI.vap. To make the commands in this profile both available and easily updateable, we recommend [importing the profile into VoiceAttack](https://voiceattack.com/VoiceAttackHelp.pdf#page=134) and supplementing your base profile with EDDI profile commands via the ['Include commands from other profiles'](https://voiceattack.com/VoiceAttackHelp.pdf#page=8) profile option.
 
 **_Disclaimer: We recommend that users check the terms and conditions of third party licensing agreements prior to linking or using EDDI's VoiceAttack profile with any licensed third party product. We shall not be held responsible for any third party licensing claims that arise from breaches of third party licensing agreements._**
 

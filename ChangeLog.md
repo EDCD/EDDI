@@ -2,6 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+## 5.0.0
+  * Core
+    * Target framework updated to .Net 8.
+  * VoiceAttack Responder 
+    * Updated to target VoiceAttack 2.0.0+. VoiceAttack 1.X is no longer supported. 
+  
 ## 4.1.9
   * Core
     * Add support for the Kestrel Mk. II.
