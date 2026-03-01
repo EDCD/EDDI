@@ -293,8 +293,8 @@ namespace EddiEddnResponder.Toolkit
                 }
                 else
                 {
-                    system = EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemAsync( systemAddress )
-                        .GetResultOrTimeout( TimeSpan.FromSeconds( 5 ) );
+                    system = EDDI.Instance.DataProvider.GetOrFetchQuickStarSystemAsync( systemAddress, true )
+                        .GetResultOrTimeout( TimeSpan.FromSeconds( 10 ) );
                 }
 
                 if ( systemName == system?.systemname )

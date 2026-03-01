@@ -141,7 +141,7 @@ namespace Tests
             crashLogger.Invoke( null, new object[] { agg } );
         }
 
-        [TestMethod]
+        [TestMethod, DoNotParallelize]
         public void CrashLogger_LogsUnhandledException ()
         {
             // Ensure we have a fresh log file to inspect
