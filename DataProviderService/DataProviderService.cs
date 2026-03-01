@@ -358,11 +358,13 @@ namespace EddiDataProviderService
                     // Deserialize the result
                     var result = DeserializeStarSystem( dbStarSystem.systemAddress, dbStarSystem.systemJson );
 
-                    // Exclude null results and results with missing coordinates (forcing a refresh from another source)
-                    if ( result?.x != null && result.y != null && result.z != null )
+                    // Exclude null results and results with missing bodies or coordinates (forcing a refresh from another source)
+                    if ( result?.x == null || result.y == null || result.z == null || result.bodies.Count < 1)
                     {
-                        results.Add( result );
+                        continue;
                     }
+
+                    results.Add( result );
                 }
 
             }
