@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities;
@@ -14,6 +15,7 @@ using Windows.Media.SpeechSynthesis;
 
 namespace EddiSpeechService.SpeechSynthesizers
 {
+    [SupportedOSPlatform( "windows10.0.17763.0" )]
     public sealed class WindowsMediaSynthesizer : IDisposable
     {
         private readonly SpeechSynthesizer synth = new SpeechSynthesizer();

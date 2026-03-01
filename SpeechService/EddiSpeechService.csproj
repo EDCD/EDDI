@@ -13,9 +13,6 @@
         <EmbeddedResource Include="Properties\pls.xsd" />
     </ItemGroup>
     <ItemGroup>
-        <Reference Include="System.Speech" />
-    </ItemGroup>
-    <ItemGroup>
         <Compile Update="Properties\FormatOverrides.Designer.cs">
             <AutoGen>True</AutoGen>
             <DesignTime>True</DesignTime>
@@ -60,11 +57,10 @@
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.CSharp" />
-        <PackageReference Include="Microsoft.Windows.SDK.Contracts" />
         <PackageReference Include="NAudio" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="NWaves" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
+        <PackageReference Include="System.Speech" />
+        <PackageReference Include="System.Text.RegularExpressions" />
     </ItemGroup>
 </Project>

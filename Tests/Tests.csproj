@@ -44,6 +44,7 @@
         <PackageReference Include="Cottle" />
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
         <PackageReference Include="Microsoft.NETCore.Platforms" />
         <PackageReference Include="MSTest.TestAdapter" />
         <PackageReference Include="MSTest.TestFramework" />
@@ -63,8 +64,6 @@
         <PackageReference Include="System.Reflection.Extensions" />
         <PackageReference Include="System.Reflection.Primitives" />
         <PackageReference Include="System.Resources.ResourceManager" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
         <PackageReference Include="System.Runtime.InteropServices" />
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" />
         <PackageReference Include="System.Runtime.Numerics" />
@@ -72,6 +71,7 @@
         <PackageReference Include="System.Security.Cryptography.X509Certificates" />
         <PackageReference Include="System.Text.Encoding" />
         <PackageReference Include="System.Text.Encoding.Extensions" />
+        <PackageReference Include="System.Text.RegularExpressions" />
         <PackageReference Include="System.Threading" />
         <PackageReference Include="System.Threading.Tasks" />
         <PackageReference Include="System.Threading.Timer" />

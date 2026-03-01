@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <UseWPF>true</UseWPF>
@@ -22,9 +22,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" />
         <PackageReference Include="Newtonsoft.Json" />
-        <PackageReference Include="System.Data.SQLite" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
+        <PackageReference Include="System.Data.SQLite.Core" />
+        <PackageReference Include="System.ServiceModel.Syndication" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\GalnetMonitor.Designer.cs">

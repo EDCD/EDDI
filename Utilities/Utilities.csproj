@@ -22,8 +22,6 @@
         <PackageReference Include="System.ObjectModel" />
         <PackageReference Include="System.Reflection" />
         <PackageReference Include="System.Reflection.Extensions" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\IPA.Designer.cs">

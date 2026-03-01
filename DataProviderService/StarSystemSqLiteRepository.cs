@@ -129,9 +129,21 @@ namespace EddiDataProviderService
 
         public static StarSystemSqLiteRepository Create ( bool isUnitTesting = false )
         {
-            var repository = new StarSystemSqLiteRepository(isUnitTesting);
-            repository.CreateOrUpdateDatabase();
-            return repository;
+            try
+            {
+                var repository = new StarSystemSqLiteRepository(isUnitTesting);
+                repository.CreateOrUpdateDatabase();
+                return repository;
+            }
+            catch (DllNotFoundException dllEx)
+            {
+                Logging.Error( "SQLite native library not found. The application will continue without database access for star systems.", dllEx );
+
+                // Return a repository instance that will handle database operations gracefully
+                // This allows the application to continue functioning with degraded functionality
+                var repository = new StarSystemSqLiteRepository(isUnitTesting);
+                return repository;
+            }
         }
 
         public async Task<DatabaseStarSystem> GetSqlStarSystemAsync ( ulong systemAddress, CancellationToken cancellationToken )
@@ -216,7 +228,11 @@ namespace EddiDataProviderService
             }
             catch ( SQLiteException sqle )
             {
-                Logging.Warn( $"An error occurred while fetching star system names starting with '{startingWith}': {sqle.Message}" );
+                Logging.Warn( $"An error occurred while fetching star system names starting with '{startingWith}': {sqle.Message}", sqle );
+            }
+            catch ( DllNotFoundException dllEx )
+            {
+                Logging.Warn( $"SQLite database unavailable: {dllEx.Message}", dllEx );
             }
 
             return results.ToList();
@@ -272,6 +288,10 @@ namespace EddiDataProviderService
                 {
                     // Task cancelled, nothing to do here.
                 }
+                catch ( DllNotFoundException dllEx )
+                {
+                    Logging.Warn( $"SQLite database unavailable when reading star systems: {dllEx.Message}" );
+                }
             }
 
             return results.RemoveNulls().ToList();
@@ -283,38 +303,45 @@ namespace EddiDataProviderService
             var results = new List<DatabaseStarSystem>();
             if ( !systemNames.Any() ) { return results; }
 
-            using ( var con = SimpleDbConnection() )
+            try
             {
-                await con.OpenAsync( cancellationToken ).ConfigureAwait(false);
-                using ( var cmd = new SQLiteCommand( con ) )
+                using ( var con = SimpleDbConnection() )
                 {
-                    using ( var transaction = con.BeginTransaction() )
+                    await con.OpenAsync( cancellationToken ).ConfigureAwait(false);
+                    using ( var cmd = new SQLiteCommand( con ) )
                     {
-                        foreach ( var systemName in systemNames.Where( sName => !string.IsNullOrEmpty(sName) ) )
+                        using ( var transaction = con.BeginTransaction() )
                         {
-                            try
+                            foreach ( var systemName in systemNames.Where( sName => !string.IsNullOrEmpty(sName) ) )
                             {
-                                cmd.Parameters.Clear();
-                                cmd.Parameters.AddWithValue( "@name", systemName );
-                                cmd.CommandText = SELECT_SQL + WHERE_NAME;
-                                var result = await ReadStarSystemEntryAsync( cmd, cancellationToken ).ConfigureAwait(false);
-                                if ( result != null )
+                                try
                                 {
-                                    results.Add( result );
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue( "@name", systemName );
+                                    cmd.CommandText = SELECT_SQL + WHERE_NAME;
+                                    var result = await ReadStarSystemEntryAsync( cmd, cancellationToken ).ConfigureAwait(false);
+                                    if ( result != null )
+                                    {
+                                        results.Add( result );
+                                    }
+                                }
+                                catch (InvalidOperationException ioe )
+                                {
+                                    Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", ioe );
+                                }
+                                catch ( SQLiteException sqle )
+                                {
+                                    Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", sqle );
                                 }
                             }
-                            catch (InvalidOperationException ioe )
-                            {
-                                Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", ioe );
-                            }
-                            catch ( SQLiteException sqle )
-                            {
-                                Logging.Warn( $"Problem reading data for star system '{systemName}' from database.", sqle );
-                            }
+                            transaction.Commit();
                         }
-                        transaction.Commit();
                     }
                 }
+            }
+            catch ( DllNotFoundException dllEx )
+            {
+                Logging.Warn( $"SQLite database unavailable when reading star systems by name: {dllEx.Message}" );
             }
             return results.RemoveNulls().ToList();
         }
@@ -503,6 +530,10 @@ namespace EddiDataProviderService
                         {
                             LogAndRollbackSqlLiteException( transaction, e );
                         }
+                        catch ( DllNotFoundException dllEx )
+                        {
+                            Logging.Warn( $"SQLite database unavailable. Unable to insert star systems: {dllEx.Message}" );
+                        }
                     }
                 }
             }
@@ -559,6 +590,10 @@ namespace EddiDataProviderService
                         {
                             LogAndRollbackSqlLiteException( transaction, ex );
                         }
+                        catch ( DllNotFoundException dllEx )
+                        {
+                            Logging.Warn( $"SQLite database unavailable. Unable to update star systems: {dllEx.Message}" );
+                        }
                     }
                 }
             }
@@ -606,6 +641,10 @@ namespace EddiDataProviderService
                         catch ( SQLiteException ex )
                         {
                             LogAndRollbackSqlLiteException( transaction, ex );
+                        }
+                        catch ( DllNotFoundException dllEx )
+                        {
+                            Logging.Warn( $"SQLite database unavailable. Unable to delete star systems: {dllEx.Message}" );
                         }
                     }
                 }

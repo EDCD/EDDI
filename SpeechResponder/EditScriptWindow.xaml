@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EddiSpeechResponder"
         xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:System="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="Edit script" 
         ResizeMode="CanResizeWithGrip"

@@ -56,8 +56,6 @@
     <!-- NuGet Packages -->
     <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
     </ItemGroup>
     <!-- Build Events -->
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

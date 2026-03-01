@@ -11,10 +11,10 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.4" />
     <PackageVersion Include="MathNet.Numerics" Version="5.0.0" />
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageVersion Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
-    <PackageVersion Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.4188" />
-    <PackageVersion Include="MSTest.TestAdapter" Version="3.8.3" />
-    <PackageVersion Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="4.1.0" />
+    <PackageVersion Include="MSTest.TestFramework" Version="4.1.0" />
     <PackageVersion Include="NAudio" Version="2.2.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="NWaves" Version="0.9.6" />
@@ -22,7 +22,7 @@
     <PackageVersion Include="System.Collections" Version="4.3.0" />
     <PackageVersion Include="System.Collections.Concurrent" Version="4.3.0" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.5" />
-    <PackageVersion Include="System.Data.SQLite" Version="1.0.117" />
+    <PackageVersion Include="System.Data.SQLite.Core" Version="1.0.119" />
     <PackageVersion Include="System.Diagnostics.Debug" Version="4.3.0" />
     <PackageVersion Include="System.Diagnostics.Tools" Version="4.3.0" />
     <PackageVersion Include="System.Diagnostics.Tracing" Version="4.3.0" />
@@ -35,16 +35,17 @@
     <PackageVersion Include="System.Reflection.Extensions" Version="4.3.0" />
     <PackageVersion Include="System.Reflection.Primitives" Version="4.3.0" />
     <PackageVersion Include="System.Resources.ResourceManager" Version="4.3.0" />
-    <PackageVersion Include="System.Runtime" Version="4.3.1" />
     <PackageVersion Include="System.Runtime.Caching" Version="9.0.5" />
-    <PackageVersion Include="System.Runtime.Extensions" Version="4.3.1" />
     <PackageVersion Include="System.Runtime.InteropServices" Version="4.3.0" />
     <PackageVersion Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     <PackageVersion Include="System.Runtime.Numerics" Version="4.3.0" />
     <PackageVersion Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageVersion Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+    <PackageVersion Include="System.ServiceModel.Syndication" Version="9.0.8" />
+    <PackageVersion Include="System.Speech" Version="10.0.3" />
     <PackageVersion Include="System.Text.Encoding" Version="4.3.0" />
     <PackageVersion Include="System.Text.Encoding.Extensions" Version="4.3.0" />
+    <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageVersion Include="System.Threading" Version="4.3.0" />
     <PackageVersion Include="System.Threading.Tasks" Version="4.3.0" />
     <PackageVersion Include="System.Threading.Timer" Version="4.3.0" />

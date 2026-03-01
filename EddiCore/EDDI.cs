@@ -243,7 +243,7 @@ namespace EddiCore
         public StarSystem LastStarSystem
         {
             get => lastStarSystem;
-            private set
+            internal set
             {
                 setSystemDistanceFromHome(value);
                 void childPropertyChangedHandler(object sender, PropertyChangedEventArgs e)

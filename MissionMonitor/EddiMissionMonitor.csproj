@@ -33,8 +33,6 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" />
         <PackageReference Include="Newtonsoft.Json" />
-        <PackageReference Include="System.Runtime" />
-        <PackageReference Include="System.Runtime.Extensions" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\MissionMonitor.Designer.cs">
