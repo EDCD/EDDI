@@ -245,7 +245,7 @@ namespace Tests
             testThread.Join();
         }
 
-        [ DataTestMethod ]
+        [ TestMethod ]
         [DataRow( "{", "", 0, 1, "{{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 0 }\r\n{set i to i + 1}" )]
         [DataRow( "", "}", 1, 1, "{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 0 }\r\n{set i to i + 1}}\r\n{set j to j + 2}\r\n{_ End of prepended script 1 }\r\n{set i to i + 1}" )]
         [DataRow( "{", "", 2, 2, "{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 0 }\r\n{set i to i + 1}\r\n{set j to j + 2}\r\n{_ End of prepended script 1 }\r\n{set i to i + 1}\r\n{{set j to j + 2}\r\n{_ End of prepended script 2 }\r\n{set i to i + 1}" )]

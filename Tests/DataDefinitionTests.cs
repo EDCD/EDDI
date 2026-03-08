@@ -129,7 +129,7 @@ namespace Tests
             Assert.IsFalse(starSystem.isgold, "empty system should not be gold");
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( "Tionisla", "85.25", "48.75", "68.15625", false )]
         [DataRow( "Peregrina", "-24.9375", "-80.59375", "-184.34375", true )]
         [DataRow( "Regor Sector", "1099.23828", "-146.67188", "-133.58008", true )]
@@ -550,7 +550,7 @@ namespace Tests
             Assert.AreEqual("Consumer", quote.StatusFlags.First());
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("$Datascan_DataPoint;", "Data Point")]
         [DataRow("$Datascan_Unknown_Uplink;", "Thargoid Uplink")]
         public void TestDataScanFromEDName(string edName, string invariantName)
@@ -590,7 +590,7 @@ namespace Tests
             Assert.IsTrue(@event.controllingfaction.DeepEquals(expectedSystemFaction));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("citizensuitai_admin", "Administrator", 1)]
         [DataRow("citizensuitai_industrial", "Technician", 1)]
         [DataRow("citizensuitai_scientific", "Researcher", 1)]
@@ -606,7 +606,7 @@ namespace Tests
             Assert.AreEqual(expectedGrade, result.grade);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ExplorationSuit_Class1", "Artemis Suit", 1)]
         [DataRow("FlightSuit", "Flight Suit", 1)]
         [DataRow("TacticalSuit_Class2", "Dominator Suit", 2)]
@@ -618,7 +618,7 @@ namespace Tests
             Assert.AreEqual(expectedGrade, result.grade);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("ChemicalInventory", "Chemical Inventory", "Data")]
         [DataRow("$CompactLibrary_Name;", "Compact Library", "Goods")]
         [DataRow("$healthpack_name;", "Medkit", "Consumables")]
@@ -752,7 +752,7 @@ namespace Tests
             Assert.IsNull( info.Data[ 0 ].price );
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Metal-rich body", "Metal-rich body")]
         [DataRow("High metal content world", "High metal content world")]
         [DataRow("Rocky body", "Rocky body")]
@@ -779,7 +779,7 @@ namespace Tests
             Assert.AreEqual(expectedInvariantName, planetClass.invariantName);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         // From `FSSSignalDiscovered` events
         [DataRow("$Aftermath_Large:#index=1;", "Distress Call", 1, 0)]
         [DataRow("$AttackAftermath;", "Distress Call", 0, 0)]
@@ -942,7 +942,7 @@ namespace Tests
             Assert.AreEqual( "your ship", spokenName );
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( null, "your Anaconda" )]
         [DataRow( "Testy", "Testy" )]
         public void TestShipSpokenName3 ( string testName, string result )

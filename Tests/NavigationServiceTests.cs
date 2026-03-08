@@ -65,7 +65,7 @@ namespace Tests
                 Encoding.UTF8.GetString( Resources.SpanshStarSystemDump61_Cyngi ) );
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow(QueryType.encoded, null, null, 10000.0, true, "EZ Aquarii", "Magnus Gateway")]
         [DataRow(QueryType.manufactured, null, null, 10000.0, true, "Sirius", "Patterson Enterprise")]
         [DataRow(QueryType.raw, null, null, 10000.0, true, "61 Cygni", "Broglie Terminal")]

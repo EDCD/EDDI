@@ -144,7 +144,7 @@ namespace Tests
             VoiceAttackPlugin.VaProxy = mockVAProxy;
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( "1", "1", "1", "1", "true" )] // Value is a string. Numeric results are set to 1 and bool is true.
         [DataRow( "2", "123.45", "123", "123", "true" )] // Value is decimal. Integer and short values are rounded. Value exists so bool is true.
         [DataRow( "3", "1234567.89", "1234568", null, "true" )] // Value is a decimal. Integer value is rounded, value is too large for short and thus is null. Value exists so bool is true.

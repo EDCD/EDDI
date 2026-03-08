@@ -26,7 +26,7 @@ namespace Tests
             return System.Text.RegularExpressions.Regex.Replace(s, @"\s+", " ");
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( "Priority 1", "Priority 3", 1, 3, "Priority 1", "Priority 3" )] // Queued in order
         [DataRow( "Priority 3", "Priority 1", 3, 1, "Priority 1", "Priority 3" )] // Queued out of order
         public void TestSpeechPriority(string message1, string message2, int priority1, int priority2, string expectedResult1, string expectedResult2 )
@@ -324,7 +324,7 @@ namespace Tests
             speechQueue.DequeueAllSpeech();
         }
 
-        [DataTestMethod]
+        [TestMethod]
         // Test escaping for invalid ssml.
         [DataRow("<invalid>test</invalid> <invalid withattribute='attribute'>test2</invalid>", "&lt;invalid&gt;test&lt;/invalid&gt; &lt;invalid withattribute='attribute'&gt;test2&lt;/invalid&gt;")]
         // Test escaping for double quotes, single quotes, and <phoneme> ssml commands. XML characters outside of ssml elements are escaped.
@@ -392,7 +392,7 @@ namespace Tests
             Assert.AreEqual(0, missingScripts.Count);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"   ", "")]
         [DataRow(@"Test <break time=""3s""/>", "Test")]
         [DataRow(@"<break time=""3ms""/> Test", @"<break time=""3ms""/> Test")]
@@ -403,7 +403,7 @@ namespace Tests
             Assert.AreEqual(output, SpeechFormatter.TrimSpeech(input));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( "{body.", "body" ) ]
         [DataRow( "{set test to body.", "body" ) ]
         [DataRow( "{set test to body.materials[0].", @"body.materials.<index\>" ) ]

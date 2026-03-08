@@ -20,7 +20,7 @@ namespace Tests
             MakeSafe();
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( "This is your <phoneme alphabet=\"ipa\" ph=\"leɪkɒn\">Lakon</phoneme>." )]
         [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system." )]
         [DataRow( "You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system." )]
@@ -42,7 +42,7 @@ namespace Tests
             await SpeechService.Instance.SayAsync( ShipDefinitions.FromEDModel( "Vulture" ), translated ).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( "Vulture", @"<break time=""100ms""/>Fred's ship." )]
         [DataRow( "Vulture", @"<break time=""100ms""/>7 < 10." )]
         [DataRow( "Vulture", @"<break time=""100ms""/>He said ""Foo""." )]
@@ -119,7 +119,7 @@ namespace Tests
             }
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( 0 )]
         [DataRow( 20 )]
         [DataRow( 40 )]
@@ -132,7 +132,7 @@ namespace Tests
             await SpeechService.Instance.SpeakAsync( speech ).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( 0 )]
         [DataRow( 20 )]
         [DataRow( 40 )]
@@ -144,7 +144,7 @@ namespace Tests
             await SpeechService.Instance.SpeakAsync( $"Effects level {fxLevel}", null, fxLevel ).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( "Your python has touched down." )]
         [DataRow( "Anaconda golf foxtrot lima one niner six eight returning from orbit." )]
         public async Task TestRadioAsync (string msg)
@@ -152,7 +152,7 @@ namespace Tests
             await SpeechService.Instance.SpeakAsync(new EddiSpeech(msg, radio: true)).ConfigureAwait(false);
         }
 
-        [DataTestMethod, DoNotParallelize]
+        [TestMethod, DoNotParallelize]
         [DataRow( 1 )]
         [DataRow( 2 )]
         [DataRow( 3 )]

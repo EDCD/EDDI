@@ -1862,7 +1862,7 @@ namespace Tests
             Assert.AreEqual(0, @event.loan);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2021-01-08T13:26:17Z"", ""event"":""Died"", ""KillerName"":""Xepherous"", ""KillerShip"":""federation_dropship"", ""KillerRank"":""Master"" }", @"{""killers"":[{""name"":""Xepherous"",""rating"":""Master"",""equipment"":""Federal Dropship""}],""raw"":""{ \""timestamp\"":\""2021-01-08T13:26:17Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Xepherous\"", \""KillerShip\"":\""federation_dropship\"", \""KillerRank\"":\""Master\"" }"",""timestamp"":""2021-01-08T13:26:17Z"",""type"":""Died"",""fromLoad"":false}")]
         [DataRow(@"{ ""timestamp"":""2021-05-07T11:34:12Z"", ""event"":""Died"", ""KillerName"":""Gretchen Rasmussen"", ""KillerShip"":""assaultsuitai_class1"", ""KillerRank"":""Harmless"" }", @"{""killers"":[{""name"":""Gretchen Rasmussen"",""rating"":""Harmless"",""equipment"":""Commando""}],""raw"":""{ \""timestamp\"":\""2021-05-07T11:34:12Z\"", \""event\"":\""Died\"", \""KillerName\"":\""Gretchen Rasmussen\"", \""KillerShip\"":\""assaultsuitai_class1\"", \""KillerRank\"":\""Harmless\"" }"",""timestamp"":""2021-05-07T11:34:12Z"",""type"":""Died"",""fromLoad"":false}")]
         [DataRow(@"{ ""timestamp"":""2021-05-07T12:08:29Z"", ""event"":""Died"", ""KillerShip"":""ps_turretbasesmall_3m"" }", @"{""killers"":[],""raw"":""{ \""timestamp\"":\""2021-05-07T12:08:29Z\"", \""event\"":\""Died\"", \""KillerShip\"":\""ps_turretbasesmall_3m\"" }"",""timestamp"":""2021-05-07T12:08:29Z"",""type"":""Died"",""fromLoad"":false}")]
@@ -1876,7 +1876,7 @@ namespace Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2021-05-03T22:22:12Z"", ""event"":""Embark"", ""SRV"":false, ""Taxi"":false, ""Multicrew"":false, ""ID"":6, ""StarSystem"":""Sumod"", ""SystemAddress"":3961847269739, ""Body"":""Sharp Dock"", ""BodyID"":56, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Sharp Dock"", ""StationType"":""Coriolis"", ""MarketID"":32239521286 }", false, true, false, false, 6, "Sumod", 3961847269739UL, "Sharp Dock", 56, "Sharp Dock", "Coriolis Starport", 32239521286, true, false)] // Embarking from an orbital station to your ship
         [DataRow(@"{ ""timestamp"":""2021-05-02T22:51:54Z"", ""event"":""Embark"", ""SRV"":true, ""Taxi"":false, ""Multicrew"":false, ""ID"":53, ""StarSystem"":""Nervi"", ""SystemAddress"":2518721481067, ""Body"":""Nervi 2 a"", ""BodyID"":17, ""OnStation"":false, ""OnPlanet"":true }", false, false, true, false, 53, "Nervi", 2518721481067UL, "Nervi 2 a", 17, null, "", null, false, true)] // Embarking from a surface to an SRV
         [DataRow(@"{ ""timestamp"":""2021-05-03T21:51:47Z"", ""event"":""Embark"", ""SRV"":false, ""Taxi"":true, ""Multicrew"":false, ""StarSystem"":""Firenses"", ""SystemAddress"":2868635379121, ""Body"":""Roberts Gateway"", ""BodyID"":44, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Roberts Gateway"", ""StationType"":""Coriolis"", ""MarketID"":32216360961 }", false, false, false, true, null, "Firenses", 2868635379121UL, "Roberts Gateway", 44, "Roberts Gateway", "Coriolis Starport", 32216360961, true, false)] // Embarking from an orbital station to a taxi
@@ -1901,7 +1901,7 @@ namespace Tests
             Assert.AreEqual(onStation, @event.onstation);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2021-05-03T21:57:16Z"", ""event"":""Disembark"", ""SRV"":false, ""Taxi"":true, ""Multicrew"":false, ""StarSystem"":""Sumod"", ""SystemAddress"":3961847269739, ""Body"":""Sharp Dock"", ""BodyID"":56, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Sharp Dock"", ""StationType"":""Coriolis"", ""MarketID"":32239521286 }", false, false, false, true, null, "Sumod", 3961847269739UL, "Sharp Dock", 56, "Sharp Dock", "Coriolis Starport", 32239521286, true, false)] // Disembarking from a taxi to an orbital station
         [DataRow(@"{ ""timestamp"":""2021-05-03T21:47:38Z"", ""event"":""Disembark"", ""SRV"":false, ""Taxi"":false, ""Multicrew"":false, ""ID"":6, ""StarSystem"":""Firenses"", ""SystemAddress"":2868635379121, ""Body"":""Roberts Gateway"", ""BodyID"":44, ""OnStation"":true, ""OnPlanet"":false, ""StationName"":""Roberts Gateway"", ""StationType"":""Coriolis"", ""MarketID"":32216360961 }", false, true, false, false, 6, "Firenses", 2868635379121UL, "Roberts Gateway", 44, "Roberts Gateway", "Coriolis Starport", 32216360961, true, false)] // Disembarking from your ship to an orbital station
         [DataRow(@"{ ""timestamp"":""2021-05-02T22:52:25Z"", ""event"":""Disembark"", ""SRV"":true, ""Taxi"":false, ""Multicrew"":false, ""ID"":53, ""StarSystem"":""Nervi"", ""SystemAddress"":2518721481067, ""Body"":""Nervi 2 a"", ""BodyID"":17, ""OnStation"":false, ""OnPlanet"":true }", false, false, true, false, 53, "Nervi", 2518721481067UL, "Nervi 2 a", 17, null, "", null, false, true)] // Disembarking to an SRV from on foot
@@ -1926,7 +1926,7 @@ namespace Tests
             Assert.AreEqual(onStation, @event.onstation);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("{ \"timestamp\":\"2021-05-29T21:14:30Z\", \"event\":\"BackpackChange\", \"Added\":[ { \"Name\":\"viscoelasticpolymer\", \"Name_Localised\":\"Viscoelastic Polymer\", \"OwnerID\":0, \"Count\":1, \"Type\":\"Component\" } ] }", true, "Viscoelastic Polymer", "Assets", 0, -1, 1)]
         [DataRow("{ \"timestamp\":\"2021-05-29T20:40:44Z\", \"event\":\"BackpackChange\", \"Removed\":[ { \"Name\":\"largecapacitypowerregulator\", \"Name_Localised\":\"Power Regulator\", \"OwnerID\":1642695, \"MissionID\":775573921, \"Count\":1, \"Type\":\"Item\" } ] }", false, "Power Regulator", "Goods", 1642695, 775573921, 1)]
         public void TestBackpackChanged(string line, bool isAdded, string expectedInvariantName, string expectedInvariantCategory, int expectedOwnerId, long expectedMissionId, int expectedAmount)
@@ -1967,7 +1967,7 @@ namespace Tests
             }
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2020-10-05T11:17:50Z"", ""event"":""BookTaxi"", ""Cost"":23200, ""DestinationSystem"":""Opala"", ""DestinationLocation"":""Onizuka's Hold"" }", "Taxi", 23200, "Opala", "Onizuka's Hold")]
         [DataRow(@"{ ""timestamp"":""2021-04-10T10:42:04Z"", ""event"":""BookDropship"", ""Cost"":0, ""DestinationSystem"":""Nervi"", ""DestinationLocation"":""Al-Kashi Terminal"" }", "Dropship", 0, "Nervi", "Al-Kashi Terminal")]
         public void TestBookTransport(string line, string expectedType, int expectedPrice, string expectedStarSystem, string expectedDestination)
@@ -1982,7 +1982,7 @@ namespace Tests
             Assert.AreEqual(expectedDestination, @event.destination);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2020-10-05T11:17:50Z"", ""event"":""CancelTaxi"", ""Refund"":100 }", "Taxi", 100)]
         [DataRow(@"{ ""timestamp"":""2021-04-10T10:42:04Z"", ""event"":""CancelDropship"", ""Refund"":0 }", "Dropship", 0)]
         public void TestCancelTransport(string line, string expectedType, int expectedRefund)
@@ -2023,7 +2023,7 @@ namespace Tests
             Assert.AreEqual( 3707594240, @event.marketid );
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2021-04-30T21:37:58Z"", ""event"":""BuySuit"", ""Name"":""UtilitySuit_Class1"", ""Name_Localised"":""Maverick Suit"", ""Price"":150000, ""SuitID"":1698502991022131 }", "Maverick Suit", 1, 1698502991022131, 150000)]
         [DataRow(@"{ ""timestamp"":""2021-04-30T21:38:18Z"", ""event"":""BuySuit"", ""Name"":""ExplorationSuit_Class1"", ""Name_Localised"":""Artemis Suit"", ""Price"":150000, ""SuitID"":1698503011784221 }", "Artemis Suit", 1, 1698503011784221, 150000)]
         [DataRow(@"{ ""timestamp"":""2021-04-30T21:38:39Z"", ""event"":""BuySuit"", ""Name"":""TacticalSuit_Class2"", ""Name_Localised"":""Dominator Suit"", ""Price"":150000, ""SuitID"":1698503033928536 }", "Dominator Suit", 2, 1698503033928536, 150000)]
@@ -2038,7 +2038,7 @@ namespace Tests
             Assert.AreEqual(expectedPrice, @event.price);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2019-06-12T05:12:24Z"", ""event"":""EngineerContribution"", ""Engineer"":""Petra Olmanova"", ""EngineerID"":300130, ""Type"":""Commodity"", ""Commodity"":""progenitorcells"", ""Commodity_Localised"":""Progenitor Cells"", ""Quantity"":168, ""TotalQuantity"":168 }", "Petra Olmanova", "Commodity", "Progenitor Cells", null, "Medicines", 168, 168)]
         [DataRow(@"{ ""timestamp"":""2022-02-02T23:13:17Z"", ""event"":""EngineerContribution"", ""Engineer"":""Chloe Sedesi"", ""EngineerID"":300300, ""Type"":""Materials"", ""Material"":""unknownenergysource"", ""Material_Localised"":""Sensor Fragment"", ""Quantity"":32, ""TotalQuantity"":200 }", "Chloe Sedesi", "Materials", null, "Sensor Fragment", "Manufactured", 32, 200)]
         public void TestEngineerContributedEvent(string line, string engineer, string contributiontype, string commodity, string material, string category, int amount, int total)
@@ -2065,7 +2065,7 @@ namespace Tests
             Assert.AreEqual(total, @event.total);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(@"{ ""timestamp"":""2022-03-17T18:20:53Z"", ""event"":""FSSBodySignals"", ""BodyName"":""Phroi Blou EW-W d1-1056 2 a"", ""BodyID"":18, ""SystemAddress"":36293555558035, ""Signals"":[ { ""Type"":""$SAA_SignalType_Geological;"", ""Type_Localised"":""Geological"", ""Count"":3 } ] }", "FSS", "Phroi Blou EW-W d1-1056 2 a", 18, (ulong)36293555558035, 0, 3, 0, 0, 0, 0)]
         [DataRow(@"{ ""timestamp"":""2019-04-17T13:40:39Z"", ""event"":""SAASignalsFound"", ""BodyName"":""Hermitage 4 b"", ""SystemAddress"":5363877956440, ""BodyID"":13, ""Signals"":[ { ""Type"":""$SAA_SignalType_Geological;"", ""Type_Localised"":""Geological"", ""Count"":14 } ] }", "SAA", "Hermitage 4 b", 13, (ulong)5363877956440, 0, 14, 0, 0, 0, 0)]
         [DataRow(@"{ ""timestamp"":""2022-07-01T09:14:32Z"", ""event"":""SAASignalsFound"", ""BodyName"":""Asellus 3a"", ""SystemAddress"":1144348739947, ""BodyID"":10, ""Signals"":[ { ""Type"":""$SAA_SignalType_Biological;"", ""Type_Localised"":""Biological"", ""Count"":2 }, { ""Type"":""$SAA_SignalType_Geological;"", ""Type_Localised"":""Geological"", ""Count"":3 }, { ""Type"":""$SAA_SignalType_Human;"", ""Type_Localised"":""Human"", ""Count"":8 } ], ""Genuses"":[ { ""Genus"":""$Codex_Ent_Bacterial_Genus_Name;"", ""Genus_Localised"":""Bacterium"" }, { ""Genus"":""$Codex_Ent_Stratum_Genus_Name;"", ""Genus_Localised"":""Stratum"" } ] }", "SAA", "Asellus 3a", 10, (ulong)1144348739947, 2, 3, 0, 8, 0, 0)]
@@ -2523,7 +2523,7 @@ namespace Tests
             Assert.IsTrue( ( (ShipShutdownEvent)events[ 0 ] ).partialshutdown );
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow( @"{ ""timestamp"":""2024-03-18T06:14:12Z"", ""event"":""ShipTargeted"", ""TargetLocked"":false }", false, null, null, null, "", null, null, null, "", null, null, null )]
         [DataRow( @"{ ""timestamp"":""2022-02-19T02:01:44Z"", ""event"":""ShipTargeted"", ""TargetLocked"":true, ""Ship"":""empire_eagle"", ""Ship_Localised"":""Imperial Eagle"", ""ScanStage"":0 }", true, 0, "empire_eagle", null, "", null, null, null, "", null, null, null )]
         [DataRow( @"{ ""timestamp"":""2022-02-19T02:01:45Z"", ""event"":""ShipTargeted"", ""TargetLocked"":true, ""Ship"":""empire_eagle"", ""Ship_Localised"":""Imperial Eagle"", ""ScanStage"":1, ""PilotName"":""$npc_name_decorate:#name=Syncronax;"", ""PilotName_Localised"":""Syncronax"", ""PilotRank"":""Dangerous"" }", true, 1, "empire_eagle", "Syncronax", "Dangerous", null, null, null, "", null, null, null )]

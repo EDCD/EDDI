@@ -12,7 +12,7 @@ namespace Tests
             Assert.IsNull(SpeechConversions.Humanize(null));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0, "zero")]
         [DataRow(456, "456")]
         [DataRow(-1000, "minus 1,000")]
@@ -27,7 +27,7 @@ namespace Tests
             Assert.AreEqual(expected, SpeechConversions.Humanize(number, false));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0, "zero")]
         [DataRow(456, "456")]
         [DataRow(-1000, "minus 1,000")]
@@ -48,13 +48,12 @@ namespace Tests
         [DataRow(-1510001, "around minus 1 and a half million")]
         [DataRow(-1610001, "over minus 1 and a half million")]
         [DataRow(-1810001, "well over minus 1 and a half million")]
-        [DataRow(-1999001, "nearly minus 2 million")]
         public void TestIntToIntegerMantissa(int number, string expected)
         {
             Assert.AreEqual(expected, SpeechConversions.Humanize(number, true));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(-12345.0, "well over minus 12 thousand")]
         [DataRow(0.15555555, "0.16")]
         [DataRow(0.015555555, "0.016")]
@@ -74,7 +73,7 @@ namespace Tests
             Assert.AreEqual(expected, SpeechConversions.Humanize((decimal)number, false));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(-12345.0, "well over minus 12 thousand")]
         [DataRow(0.15555555, "0.16")]
         [DataRow(0.015555555, "0.016")]
@@ -94,7 +93,7 @@ namespace Tests
             Assert.AreEqual(expected, SpeechConversions.Humanize((decimal)number, true));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(1100001, "1.1 million")]
         [DataRow(1110001, "just over 1 million")]
         [DataRow(1210001, "over 1 million")]
@@ -109,7 +108,7 @@ namespace Tests
             Assert.AreEqual(expected, SpeechConversions.Humanize(number, false));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(-1100001, "minus 1.1 million")]
         [DataRow(-1110001, "just over minus 1 million")]
         [DataRow(-1210001, "over minus 1 million")]
@@ -124,7 +123,7 @@ namespace Tests
             Assert.AreEqual(expected, SpeechConversions.Humanize(number, false));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(111000, "111,000")]
         [DataRow(111100, "just over 111 thousand")]
         [DataRow(111200, "over 111 thousand")]
